@@ -1,0 +1,407 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>刀闸试验数据记录</title>
+	<meta name="Copyright" content="新安杰系统集成有限公司" />
+	<meta name="Description" content="PM" />
+	<meta name="Version" content="0.0.1.20130614" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="../../../pm/css/viewport.css" type="text/css"></link>
+	<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
+	<link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
+
+	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+	<script type="text/javascript" src="../../../pm/script/PM_1501110302/index.js"></script>
+
+	<script type="text/javascript" src="../../../pm/script/LodopFuncs.js"></script>
+	<object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA"
+			width="0" height="0">
+		<embed id="LODOP_EM" type="application/x-print-lodop" width="0"
+			   height="0" pluginspage="install_lodop.exe"></embed>
+	</object>
+
+	<style type="text/css" id="stylePrint">
+		.wrapper {
+			width: 190mm;
+			margin: 0 auto
+		}
+
+		.editor1 {
+			margin: 0 2px;
+			border: 0;
+		}
+
+		.t_area1 {
+			width: 800px;
+			overflow-y: hidden;
+			border-left: none;
+			border-right: none;
+			border-top: none;
+			border-bottom: none;
+		}
+
+		.test2 {
+			border-collapse: collapse;
+			border-left: hidden;
+			border-right: hidden;
+			border-top: hidden;
+			border-bottom: hidden
+		}
+
+		.test3 {
+			border-left: hidden;
+			border-right: hidden;
+			border-bottom: hidden;
+		}
+
+		.test {
+			width: 649px;
+			border-collapse: collapse;
+			border-left: 2px solid #000;
+			border-right: 2px solid #000;
+			border-top: 2px solid #000;
+			border-bottom: 2px solid #000;
+		}
+
+		.test td {
+			border: 1px solid #000;
+			font-size: 12px;
+		}
+
+		.test1 {
+			width: 649px;
+			border-collapse: collapse;
+			border-left: 2px solid #000;
+			border-right: 2px solid #000;
+			border-top: 0px;
+			border-bottom: 0px;
+		} /*无上框*/
+		.test1 tr td {
+			border-left: 1px solid #000;
+			border-top: 1px solid #000;
+			/* border-top: 0px;  */
+			border-bottom: 1px solid #000;
+			border-right: 1px solid #000;
+			height: 29px;
+			font-size: 12px;
+			padding: 0px;
+			text-align: center
+		}
+
+		.width1 {
+			width: 120px
+		}
+
+		.width2 {
+			width: 204px
+		}
+
+		.width3 {
+			width: 200px
+		}
+
+		h2 {
+			width: 649px;
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto
+		}
+
+		.divTop {
+			width: 649px;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: left;
+			font-size: 14px
+		}
+
+		.divDate {
+			width: 649px;
+			text-align: right;
+			margin: auto;
+			margin-right: auto;
+			font-size: 12px
+		}
+	</style>
+</head>
+<body>
+
+<div id="public_operator">
+	<table width="100%">
+		<tbody>
+		<tr>
+			<td style="text-align: center"><input type="button"
+												  class="btn90" value="打印" onclick="dataPrint()"> <input
+					type="button" class="btn90" value="打印预览" onclick="printPreview()">
+				<font style="display: none" id="exception" color='#FF00FF'>打印控件未安装!点击这里<input
+						type='button' onclick='btnAnZhuang()' value='执行安装' />,安装后重新进入。</font></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+
+<div id="main">
+	<h1 style="text-align:center">刀闸试验记录</h1>
+
+	<! -----------------------------------基础信息-------------------------------------  >
+	<table border="1" align="center" class="test1">
+		<tr style="border-top: 1">
+			<td colspan="16" style="border-top: 2px solid #000;border-left: 0px;text-align:left">
+				<span style="margin: 0 0 0 13px">设置地点:</span><label id="szdd" style="font-size: 12px"></label>
+			</td>
+		</tr>
+		<tr style="text-align:left">
+			<td colspan="6" style="border-right: 2px;text-align:left;"><span
+					style="margin: 0 0 0 13px;float:left">试验时间:<label id="syss"
+																	  style="font-size: 12px"></label> </span>
+			</td>
+			<td colspan="5" style="border-right: 0px;border-left: 0px;">天气:<label
+					id="sstq" style="font-size: 12px;"></label></td>
+			<td colspan="5" style="border-left: 0px">气温:<label
+					id="ssqw" style="font-size: 12px"></label>℃</td>
+
+		</tr>
+		<tr style="text-align:left">
+			<td rowspan="2" colspan="1" style="width:80px">铭牌</td>
+
+			<td colspan="5" style="border-right: 0px;border-left: 0px;text-align:left">刀闸编号:<label
+					id="dzbh" style="font-size: 12px"></label></td>
+			<td colspan="5" style="border-right: 0px;border-left: 0px;text-align:left">制造厂:<label
+					id="dzzzc" style="font-size: 12px"></label></td>
+			<td colspan="5" style="border-left: 0px;text-align:left">型式:<label
+					id="dzxs" style="font-size: 12px"></label></td>
+
+		</tr>
+		<tr style="text-align:left">
+
+			<td colspan="5" style="border-right: 0px;border-left: 0px;text-align:left">额定电压:<label
+					id="eddy" style="font-size: 12px;"></label></td>
+			<td colspan="5" style="border-right: 0px;border-left: 0px;text-align:left">额定电流:<label
+					id="eddl" style="font-size: 12px;"></label></td>
+			<td colspan="5" style="border-left: 0px;text-align:left">出厂:<label
+					id="cc" style="font-size: 12px;"></label></td>
+		</tr>
+
+
+	</table>
+	<table border="1" align="center" class="test1">
+		<tr width="100%">
+			<td colspan="1" style="border-right: 0px;text-align:left"><span
+					style="margin: 0 0 0 13px">1.绝缘电阻试验(仪器型式:<label id="jydzsyyqxs"
+																	style="font-size: 12px"></label>
+				</span>
+				<span
+						style="margin: 0 0 0 13px">编号:<label
+						id="jydzsybh" style="font-size: 12px"></label>)</span></td>
+		</tr>
+	</table>
+	<! -----------------------------------表格1-------------------------------------  >
+	<table style="text-align:left" border="1" align="center"
+		   class="test1">
+		<tr style="text-align:center">
+			<td>相别/项目</td>
+			<td colspan="8">绝缘电阻</td>
+			<td colspan="8">状态</td>
+		</tr>
+		<tr style="text-align:center">
+			<td rowspan="2" width="60">A</td>
+			<td colspan="8"><label
+					id="a1" style="font-size: 12px"></label></td>
+			<td colspan="8" rowspan="6"style="border-right: 2px solid #000">分闸</td>
+		</tr>
+		<tr style="text-align:center">
+			<td colspan="8"><label
+					id="a2" style="font-size: 12px"></label></td>
+
+		</tr>
+		<tr style="text-align:center">
+			<td rowspan="2" width="60">B</td>
+			<td colspan="8"><label
+					id="b1" style="font-size: 12px"></label></td>
+
+		</tr>
+		<tr style="text-align:center">
+			<td colspan="8"><label
+					id="b2" style="font-size: 12px"></label></td>
+
+		</tr>
+		<tr style="text-align:center">
+			<td rowspan="2" width="60">C</td>
+			<td colspan="8"><label
+					id="c1" style="font-size: 12px"></label></td>
+
+		</tr>
+		<tr style="text-align:center">
+			<td colspan="8"><label
+					id="c2" style="font-size: 12px"></label></td>
+
+		</tr>
+		<tr style="text-align:center">
+			<td width="60">A</td>
+			<td colspan="8"><label
+					id="a3" style="font-size: 12px"></label></td>
+			<td colspan="8" rowspan="3" style="border-right: 2px solid #000">合闸</td>
+
+		</tr>
+		<tr>
+			<td width="60">B</td>
+			<td colspan="8"><label
+					id="b3" style="font-size: 12px"></label></td>
+
+		</tr>
+		<tr>
+			<td  width="60">C</td>
+			<td colspan="8"><label id="c3" style="font-size: 12px"></label></td>
+		</tr>
+		<tr style="text-align:left">
+			<td colspan="17" style="border-right : 1px">
+				<span style="margin: 0 0 0 13px">操作人:<label id="jydzczr" style="font-size: 12px"></label></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span style="margin: 0 0 0 13px">接线人:<label id="jydzjxr" style="font-size: 12px"></label></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span style="margin: 0 0 0 13px">记录人:<label id="jydzjlr" style="font-size: 12px"></label></span>
+			</td>
+		</tr>
+
+	</table>
+	<! -----------------------------------表格2 3-------------------------------------  >
+	<table border="1" align="center" class="test1">
+		<tr width="100%">
+			<td colspan="8" style="text-align:left;border-left: 0px"><span
+					style="margin: 0 0 0 13px">2.接触电阻测定(仪器型式:<label id="jcdysyyqxs"
+																	style="font-size: 12px"></label> 编号:<label
+					id="jcdysybh" style="font-size: 12px"></label>)</span>
+			</td>
+			<td style="border-right:0px" colspan="8"><span
+					style="margin-left :20;float:left">3.工频耐压试验(仪器型式:<label id="gcnysyyqxs"
+																			style="font-size: 12px"></label> </span> <span>编号: <label
+					id="gcnysybh" style="font-size: 12px"></label> )</span>
+			</td>
+
+
+		</tr>
+		<tr style="text-align:center">
+			<td colspan="2">相   </td>
+			<td colspan="2">读数</td>
+			<td colspan="2">倍率</td>
+			<td colspan="2">实测值(MΩ)</td>
+			<td colspan="2">电压(kV)</td>
+			<td colspan="2">电流(mA)</td>
+			<td colspan="2">时间(S)</td>
+			<td colspan="2">状态</td>
+		</tr>
+		<tr style="text-align:center">
+			<td colspan="2">A</td>
+			<td colspan="2"><label id="a_ds"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="a_bl"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="a_scz"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="hz_v"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="hz_a"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="hz_t"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2">合闸</td>
+		</tr>
+		<tr style="text-align:center">
+			<td colspan="2">B  </td>
+			<td colspan="2"><label id="b_ds"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="b_bl"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="b_scz"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="fz_v"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="fz_a"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="fz_t"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2">分闸</td>
+		</tr>
+		<tr style="text-align:center">
+			<td colspan="2">C </td>
+			<td colspan="2"><label id="c_ds"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="c_bl"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="c_scz"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="xj_v"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="xj_a"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2"><label id="xj_t"
+								   style="font-size: 12px"></label></td>
+			<td colspan="2">相间</td>
+		</tr>
+		<tr style="text-align:left">
+			<td style="border-right:0px" colspan="8">
+				<span style="margin-left :20;float:left">操作:<label id="jcdzcz" style="font-size: 12px"></label> </span>
+				<span style="margin-left :20;float:left">接线: <label id="jcdzlx" style="font-size: 12px"></label> </span>
+				<span style="margin-left :20;float:left;">记录:<label id="jcdzjl" style="font-size: 12px"></label> </span>
+			</td>
+			<td style="border-left:1px;border-right: 2px solid #000" colspan="8">
+				<span style="margin-left :20;float:left">操作:<label id="gcnycz" style="font-size: 12px"></label> </span>
+				<span style="margin-left :20;float:left">接线: <label id="gznyjx" style="font-size: 12px"></label> </span>
+				<span style="margin-left :20;float:left;">记录:<label id="gznyjl" style="font-size: 12px"></label> </span>
+			</td>
+
+		</tr>
+
+
+
+
+	</table>
+	<table border="1" align="center" class="test1 td">
+
+		<tr
+				style="text-align:left;border-bottom: 0px;border-top: 2px solid #000;border-right: 2px solid #000">
+			<td colspan="5" style="border-right: 0px;border-bottom: 0px">试验原因:</td>
+			<td colspan="17"
+				style="border-left: 0px;border-right: 2px solid #000;border-bottom: 0px;border-top: 2px solid #000"><label
+					id="syyy" style="font-size: 12px"></label>
+			</td>
+		</tr>
+		<tr
+				style="text-align:left;border-top: 0px;border-bottom: 0px;border-right: 2px solid #000">
+			<td colspan="5"
+				style="border-right: 0px;border-bottom: 0px;border-top: 0px">结论:</td>
+			<td colspan="17"
+				style="border-left: 0px;border-right: 2px solid #000;border-bottom: 0px;border-top: 0px"><label
+					id="syjl"></label>
+			</td>
+		</tr>
+		<tr style="text-align:left;border-top: 0px;">
+			<td colspan="8"
+				style="border-right: 0px;border-left: 0px;border-bottom : 2px solid #000;border-top: 0px"><label></label>
+			</td>
+			<td colspan="2"
+				style="border-left: 0px;border-right : 0px;border-bottom : 2px solid #000;border-top: 0px">负责人:</td>
+			<td colspan="5"
+				style="border-left: 0px;border-right: 0px;border-bottom : 2px solid #000;border-top: 0px"><label
+					id="syfzr"></label>
+			</td>
+			<td colspan="2"
+				style="border-left: 0px;border-right: 0px;border-bottom : 2px solid #000;border-top: 0px">审核:</td>
+			<td colspan="7"
+				style="border-left: 0px;border-right: 2px solid #000;border-bottom : 2px solid #000;border-top: 0px">&nbsp;<label
+					id="sysh"></label>
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

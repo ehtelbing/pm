@@ -1,0 +1,24 @@
+.menuskin{
+position:absolute;
+width:210px;
+background-color:menu;
+border:2px solid black;
+font:normal 14px Verdana;
+line-height:18px;
+z-index:100;
+visibility:hidden;
+}
+.menuskin a{
+text-decoration:none;
+color:black;
+padding-left:10px;
+padding-right:10px;
+}
+#mouseoverstyle{
+background-color:#333;
+}
+#mouseoverstyle a{
+color:white;
+}
+.menuitems{ padding:10px;}
+

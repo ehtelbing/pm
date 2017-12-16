@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* 个人中心 */
+html { width: 100%; }
+body { margin: 0; font-family: verdana; color: #666; font-size: 12px; }
+img { vertical-align: middle; }
+.clare { clear: both; }
+h2 { font-size: 20px; font-family: "微软雅黑"; }
+h2 span { margin-left: 30px; font-size: 12px; font-weight: normal; }
+h2 span i { font-style: normal; color: #DB2828; }
+.Ttable i { font-style: normal; color: #DB2828; }
+sup { position: relative; top: -18px; left: -10px; }
+ul, li { margin: 0; padding: 0; list-style: none; }
+.topbox { min-width: 1190px; }
+.topbar { height: 36px; background-color: #F5F5F5; }
+.topbar_container { width: 1190px; margin-left: auto; margin-right: auto; line-height: 36px; }
+.userinfo { float: left; }
+.topbar_menu { float: right; }
+.topbar_menu a, .topbar_menu a:visited { font-size: 12px; font-weight: normal; color: #666; text-decoration: none; width: 65px; display: block; float: left; }
+.topbar_menu a:hover, .topbar_menu a:active, .topbar_menu a:focus { color: #009BCE; text-decoration: none; }
+.toolbar { height: 60px; background-color: #00BFFF }
+.toolbar_container { width: 1190px; margin-left: auto; margin-right: auto; }
+.logo { float: left; padding-top: 14px; }
+.menu { float: left; line-height: 60px; margin-left: 100px; }
+.menu a, .menu a:visited { font-size: 14px; font-weight: normal; color: #fff; text-decoration: none; width: 65px; display: block; float: left; }
+.menu a:hover, .menu a:active, .menu a:focus { font-weight: bold; color: #fff; text-decoration: none; position: relative; top: 1px; left: 1px; }
+.maincontainer { margin: 20px; }
+.sidebar { float: left; width: 110px; }
+.syslist li { height: 25px; }
+.syslist li a, .syslist li a:visited { font-size: 12px; font-weight: normal; color: #666; text-decoration: none; }
+.syslist li a:hover, .syslist li a:active, .syslist li a:focus { color: #009BCE; text-decoration: none; }
+.right { padding: 20px; border: 1px solid #eee; min-height: 614px; }
+.taskbox { float: left; width: 70%; }
+.tasklist li { padding-left: 30px; padding-right: 10px; height: 50px; line-height: 50px; margin-bottom: 10px; background-color: #F8FFFF; border: 1px #A9D5DE solid; }
+.tasklist li span { text-align: center; float: right; }
+.mainright { float: left; }
+.diarylist li { padding-left: 30px; padding-right: 10px; height: 30px; line-height: 30px; margin-bottom: 10px; background-color: #f9f9f9; }
+.diarylist li span { text-align: center; float: right; }
+#button { background-color: #2185D0; border: 0; padding: 7px; color: #fff; }
+.imbox { float: left; margin-left: 30px; width: 25%; max-width:320px; min-width:200px; }
+.imlist li { float: left; padding: 8px; margin-bottom: 10px; margin-right: 10px; border: 1px solid #eee; }
+.imlist li div { padding: 5px; text-align: center; }
+.albumslist li { float: left; padding: 8px; margin-bottom: 10px; margin-right: 10px; border: 1px solid #eee; }
+.albumslist li div { padding: 5px; text-align: center; }
+.copyright { border-top: 1px solid #ccc; width: 1190px; margin-left: auto; margin-right: auto; margin-top: 20px; height: 60px; line-height: 60px; text-align: center; }
+.Ttable { border-collapse: collapse; width: 100%; }
+.Ttable th, .Ttable td { border: 1px solid #DEDEDE; }
+.Ttable th { padding: 10px; background-color:#F9FAFB; font-size: 12px; color: #333; font-weight: bold; }
+.Ttable td { padding: 10px; }
+
+.gonggaolist li {margin-bottom: 10px; background-color: #F8FFFF;  }
+.gonggaolist li span { text-align: center; float: right; }

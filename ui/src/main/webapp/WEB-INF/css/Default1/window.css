@@ -1,0 +1,200 @@
+﻿#HeaderPanel 
+{
+    height: 50px;
+    background: url('../Images/Window/header_background.png') repeat-x;
+}
+
+html,body{ height:100%;}
+body { font-size:12px; margin:0px; background-color:#fff; } /*E3F2F9*/
+ul, ol, dl,h1,h2,h3,h4,h5,h6 { padding: 0; margin: 0; }
+input:focus{ border: 1px solid #F60; background-color: #FFC; }
+a img { border: none; }
+.UserIcon{ background-image:url(Images/user.png); background-repeat:no-repeat; padding-left:20px; background-position:0 20px;}
+.tips{ font-size:12px; color:#009; font-weight:bold; }
+.font12_blue{ color:Blue; font-family:Verdana, Geneva, sans-serif; font-size:12px; }
+fieldset{ padding:14px; margin:14px; background-color:#FDFEFF;}
+legend{ font-size:14px; font-weight:bold;}
+.input_table td{ height:30px; font-weight:bold;}
+input{ background-color: #DEF; border: 1px solid #9CF; }
+.LeftTree{ float:left; width:10%; position:absolute; background-color:#F6F9FC; height:100%; border-right-width: 1px; border-right-style: solid; border-right-color: #9cb8cc; }
+.PageContainerRight{float:right; position:absolute; width:90%; margin-left:10%;}
+.divflow{height:400px; width:100%;OVERFLOW:auto; min-width:1024px;}
+.divhafe1{width:99%; border-width:1px; background-color:#E4F2F8; border-color:#88A3DF; border-style:solid; margin-left:auto; margin-right:auto; margin-top:5px; height:80%; white-space:normal}
+#Import,#Add{ display:none;}
+.textbox500{ width:500px;}
+.text50{width:50px;}
+.TabbedPanels1{ min-width:1024px; width:100%; padding:0px;}
+.disabled{ background-color:#ddd}
+#left{ float:left; width:10%; background-color:#F6F9FC; height:100%; border-right-width: 1px; border-right-style: solid; border-right-color: #9cb8cc; }
+#PageContainer{ margin:0 auto; width:98%;}
+fieldset{ min-width:1024px}
+h2{ height:30px; line-height:30px; color:#000; font-family:"宋体"; font-size:14px; font-weight:bold;}
+.ControlBar3{ min-width:1024px;width:100%; background-color: #F6F9FC; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #9CB8CC;}
+.ControlBarNew{ min-width:1024px;font-family:Verdana; color:#fff; padding-top:10px; width:100%; padding-bottom:10px; height:24px;background-image: url(../../Themes/Default/images/control_barnew.png); }
+.ControlBarNew3{font-family:Verdana; color:#fff; padding-top:10px; width:100%; padding-bottom:10px; height:24px;background-image: url(../../Themes/Default/images/control_barnew.png); }
+.ControlBar2{ min-width:1024px;width:100%; background-color: #F6F9FC; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #9CB8CC; padding:5px 0px 5px 0px;}
+.ControlBarNew2{width:100%; background-color: #F6F9FC; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #9CB8CC; }
+.ControlBar5{ min-width:800px;width:80%; background-color: #F6F9FC; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #9CB8CC; }
+
+.ControlBar{ padding:5px; background-color: #F6F9FC; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #9CB8CC; }
+.Ttable1 {min-width:1024px; border-collapse:collapse; width:2000px; background-color:#87cd37}
+.Ttable1 th,#Ttable td{ border: 1px solid #eee; background-color:#ffffff}
+.Ttable1 th{ padding:0px; height:27px; line-height:27px; background-image:url(../../Themes/Default/images/th_bg2.png); font-size:12px; color:#333; font-weight:bold;}
+.Ttable1 td{ padding:3px; background-color:#ffffff}
+
+.tdhead{ padding:0px; height:22px; line-height:22px; background-color:#f9fafa; font-size:12px; color:#333; font-weight:bold;}
+
+.Ttable {min-width:1024px; border-collapse:collapse; width:99%; background-color:#87cd37}
+.Ttable th,.Ttable td{ border: 1px solid #eee; /*background-color:#ffffff*/ }
+.Ttable th{ padding:0px; height:27px; line-height:27px; background-image:url(../..//Themes/Default/images/th_bg2.png); font-size:12px; color:#333; font-weight:bold;}
+.Ttable td{ padding:3px; text-align:left; /*background-color:#ffffff;*/ height:26px;}
+
+.Ttable2 { max-width:1024px; border-collapse:collapse; width:100%; background-color:#87cd37}
+.Ttable2 th,.Ttable td{ border: 1px solid #eee; /*background-color:#ffffff*/ }
+.Ttable2 th{ padding:0px; height:27px; line-height:27px; background-image:url(/Themes/Default/images/th_bg2.png); font-size:12px; color:#333; font-weight:bold;}
+.Ttable2 td{ padding:3px; text-align:left; background-color:#ffffff}
+
+.TtableNew {border-collapse:collapse; width:100%; background-color:#87cd37;}
+.TtableNew th,.Ttable td{ border: 1px solid #eee; background-color:#ffffff }
+.TtableNew th{ padding:0px; height:27px; line-height:27px; background-image:url(../..//Themes/Default/images/th_bg2.png); font-size:12px; color:#333; font-weight:bold;}
+.TtableNew td{ padding:3px; text-align:left; background-color:#ffffff}
+
+.TtableNew1 {border-collapse:collapse; width:100%; background-color:#87cd37; min-width:1004px;}
+.TtableNew1 th,.Ttable td{ border: 1px solid #eee; /*background-color:#ffffff*/ }
+.TtableNew1 th{ padding:0px; height:27px; line-height:27px; background-image:url(/Themes/Default/images/th_bg2.png); font-size:12px; color:#333; font-weight:bold;}
+.TtableNew1 td{ padding:3px; text-align:left; background-color:#ffffff}
+
+.Ttablehafe1 {min-width:500px; border-collapse:collapse; width:100%; background-color:#87cd37; margin:5px}
+.Ttablehafe1 th{ border: 1px solid #eee; background-color:#ffffff; text-align:center}
+.Ttablehafe1 th{ padding:0px; height:27px; line-height:27px; background-image:url(../../Themes/Default/images/th_bg2.png); font-size:12px; color:#333; font-weight:bold;}
+.Ttablehafe1 td{ padding:3px; background-color:#ffffff; text-align:center}
+
+.TtableAdd{width:99%; text-align:center; background-color:#cddfeb;}
+.TtableAdd td{background-color:#fbfdff; padding:5px; font-size:12px; font-weight:bolder}
+/*Button*/
+.btn90 { font-weight: bold; color: #FFF; font-size: 12px; cursor: pointer; background-image: url(../../Themes/Default/images/btn90.png); height: 26px; width: 90px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; }
+.btn150 { font-weight: bold; color: #FFF; font-size: 12px; cursor: pointer; background-image: url(../../Themes/Default/images/btn150.png); height: 26px; width: 150px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; }
+
+.btn,.btn2,.btn3,.btn4,.btn5,.btn6 { font-weight:bold; border:1px solid #8d8d8d; color:#222; font-size:12px; line-height:140%; cursor:pointer; background:url(/Themes/Default/images/btn.gif); background-position: 0px -5px; }
+.btn_hover,.btn_hover2,.btn_hover3,.btn_hover4,.btn_hover5,.btn_hover6 { font-weight:bold; border:1px solid #a2904d; color:#630; font-size:12px; cursor:pointer; line-height:140%; background:url(/Themes/Default/images/btn.gif); background-position: 0px -66px; }
+
+.btn2,.btn_hover2{ width:45px; }
+.btn3,.btn_hover3{ width:90px;}
+.btn4,.btn_hover4{ width:60px;}
+.btn5,.btn_hover5{ width:80px;}
+.btn6,.btn_hover6{ width:90px;}
+
+.inputWidth1{ width:80px}/*较短*/
+.inputWidth2{ width:60px}/*最短*/
+
+
+.btnwrite90 { font-weight: bold; color: #FFF; font-size: 12px; cursor: pointer; background-image: url(../../Themes/Default/images/btn90.gif); height: 26px; width: 90px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; }
+.btnwrite150 { font-weight: bold; color: #FFF; font-size: 12px; cursor: pointer; background-image: url(../../Themes/Default/images/btn150.gif); height: 26px; width: 150px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; }
+.btn { font-weight:bold; border:1px solid #8d8d8d; color:#222; font-size:12px; line-height:140%; cursor:pointer; background:url(/Themes/Default/images/btn.gif); background-position: 0px -5px; }
+.btn_hover { font-weight:bold; border:1px solid #a2904d; color:#630; font-size:12px; cursor:pointer; line-height:140%; background:url(/Themes/Default/images/btn.gif); background-position: 0px -66px; }
+.a_btn{width:50px; height:20px; display:block; background-color:#6fb6f6; border:#054090 solid 1px; text-align:center; line-height:20px; vertical-align:middle; color:#ffffff; text-decoration:none }
+.a_btn80{width:80px; height:20px; display:block; background-color:#6fb6f6; border:#054090 solid 1px; text-align:center; line-height:20px; vertical-align:middle; color:#ffffff; text-decoration:none }
+/*Button*/
+
+.sel80{ width:80px}
+.sel130{ width:130px}
+.sel100{ width:100px}
+
+/*select*/
+
+        html,body,select { font-size: 12px; } 
+ 
+        .title{ padding:1px; background:#f7f7f7;border:1px solid #ddd;}
+        .title label{ display:block; padding:7px; text-align:center; font-size:14px; font-weight:bold}
+        .con1,.con2{ padding:3px; margin-top:0px;}
+        .con3{ margin:3px; clear:left; background:#f7f7f7; height:auto; padding-left:3px; margin-top:5px;}
+        
+        .Fr{ display:block; float:right}
+        .conL,.conR{ width:48%; float:left; border:1px solid #ddd; height:auto;background:#FFF; padding-bottom:10px;}
+        .conL{ margin-right:4px; margin-left:4px;}
+        #sty tr{ border-bottom:1px solid #444;}
+        th,td{ border-right:1px solid #ddd;border-bottom:1px solid #999;}
+        tr{ height:20px;border:1px solid #ccc;}
+        
+        .leftStyle{padding-left:5px;text-align:left}
+        .rightStyle{padding-right:5px;text-align:right}
+        #Num{ padding:10px 10px 0 10px;}
+        #clear{ clear:left}
+        input{ border:1px solid #ccc; width:120px}
+        #mesShow0,#mesShow{ float:left;border:0px solid #444;}
+        #mesShow{ padding-top:3px; padding-left:10px;}
+         .treeviewleaf{ cursor:pointer}
+        .con2{ padding-top:5px; border:0px solid #444;}
+        .checkbox40{width:15px; height:15px;}
+        #left { 
+            position:absolute; 
+            left:0; 
+            top:0; 
+            padding:15px; 
+            padding-top:5px;
+            width:170px; 
+            height:100%; /* works only if parent container is assigned a height value */ 
+            color:#333; 
+            /*background:#eaeaea;*/ 
+            border:1px solid #777; 
+            }  
+         #right { 
+            margin-left:200px; 
+            margin-right:0px; 
+            margin-bottom:0px; 
+            color:#333; 
+            /*background:#f7f7f7; 
+            border:0px solid #f7f7f7; */
+            padding:0; 
+            }
+   input,#dialogShow{ font-size:12px;}
+   
+   /*单价-数量-金额-右对齐*/
+   #Ttable .Ralign{ text-align:right; padding-left:10px;}
+   #Ttable .Lalign{ text-align:left; padding-left:10px;}
+   #Ttable .Calign{ text-align:center;}
+  
+   
+   
+   /* loading css */
+     .x-mask
+        {
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            left: 0;
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+            opacity: 0.5;
+            width: 100%;
+            height: 100%;
+            zoom: 1;
+            background: #cccccc;
+        }
+        /* line 21, ../themes/stylesheets/ext4/default/widgets/_loadmask.scss */
+        .x-mask-msg
+        {
+            z-index: 20001;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 2px;
+            border: 1px solid;
+            border-color: #99bce8;
+            background-image: none;
+            background-color: #dfe9f6;
+        }
+        /* line 40, ../themes/stylesheets/ext4/default/widgets/_loadmask.scss */
+        .x-mask-msg div
+        {
+            position: relative;
+            padding: 5px 10px 5px 25px;
+            background-image: url('../Images/Ext/grid/loading.gif');
+            background-repeat: no-repeat;
+            background-position: 5px center;
+            cursor: wait;
+            border: 1px solid #a3bad9;
+            background-color: #eeeeee;
+            color: #222222;
+            font: normal 11px tahoma, arial, verdana, sans-serif;
+        }       
+        /* loading css */

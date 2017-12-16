@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>可办任务</title>
+	<meta name="Copyright" content="新安杰系统集成有限公司" />
+	<meta name="Description" content="PM" />
+	<meta name="Version" content="0.0.1.20130614" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<!--<link rel="stylesheet" href="../../../pm/css/viewport.css" type="text/css"></link>-->
+	<!--	<link rel="stylesheet" href="../../../../commons/extjs/resources/css/ext-all.css"/>
+	<link rel="stylesheet" href="../../../pm/script/example.css"/>  -->
+	<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
+	<!--<link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>-->
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
+
+	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+	<script type="text/javascript" src="../../../pm/script/PM_099902/index.js"></script>
+	<style type="text/css">
+		img,span {
+			cursor: pointer;
+		}
+
+		* {
+			font-size: 20px;
+		}
+
+	</style>
+
+</head>
+<body>
+<div align="center"  style="margin: 50px auto;">
+	<table border="0" width="600" height="400" cellpadding="2" cellspacing="20">
+		<tr align="center">
+			<td><img src="../../css/home/images/c03.jpg" onclick="toYearPlan()"  alt="" title="年计划" ></td>
+			<td><img src="../../css/home/images/c04.jpg" onclick="toQuarterPlan()"  alt="" title="季度计划" ></td>
+			<td><img src="../../css/home/images/c06.jpg" onclick="toMonthPlan()"  alt="" title="月计划"></td>
+			<td><img src="../../css/home/images/c05.jpg" onclick="toWeekPlan()"  alt="" title="周计划"></td>
+		</tr>
+		<tr align="center" height="40">
+			<td><span id="spnjh" onclick="toYearPlan()">年计划</span></td>
+			<td><span onclick="toQuarterPlan()">季度计划</span></td>
+			<td><span onclick="toMonthPlan()">月计划</span></td>
+			<td><span onclick="toWeekPlan()">周计划</span></td>
+		</tr>
+		<tr align="center">
+			<td><img src="../../css/home/images/c07.jpg" onclick="toDailyCheck()"  alt="" title="日常点检"></td>
+			<td><img src="../../css/home/images/c02.jpg" onclick="toDefectManage()"  alt="" title="缺陷管理"></td>
+			<td><img src="../../css/home/images/c01.jpg" onclick="toOrderCreate()"  alt="" title="工单创建"></td>
+			<td><img src="../../css/home/images/c08.jpg" onclick="toFixOldManager()"  alt="" title="修旧管理"></td>
+		</tr>
+		<tr align="center" height="40">
+			<td><span onclick="toDailyCheck()">日常点检</span></td>
+			<td><span onclick="toDefectManage()">缺陷管理</span></td>
+			<td><span onclick="toOrderCreate()">工单创建</span></td>
+			<td><span onclick="toFixOldManager()">修旧管理</span></td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

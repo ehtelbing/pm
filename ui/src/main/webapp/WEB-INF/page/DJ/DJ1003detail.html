@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>领用单</title>
+
+<script type="text/javascript" src="../../script/LodopFuncs.js"></script>
+<object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA"
+	width="0" height="0">
+	<embed id="LODOP_EM" type="application/x-print-lodop" width="0"
+		height="0" pluginspage="install_lodop.exe"></embed>
+</object>
+<style type="text/css" id="stylePrint">
+.wrapper {
+	width: 190mm;
+	margin: 0 auto
+}
+
+.editor1 {
+	margin: 0 2px;
+	border: 0;
+}
+
+.t_area1 {
+	width: 800px;
+	overflow-y: hidden;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-bottom: none;
+}
+
+.test2 {
+	border-collapse: collapse;
+	border-left: hidden;
+	border-right: hidden;
+	border-top: hidden;
+	border-bottom: hidden
+}
+
+.test3 {
+	border-left: hidden;
+	border-right: hidden;
+	border-bottom: hidden;
+}
+
+.test {
+	width: 649px;
+	border-collapse: collapse;
+	border-left: 2px solid #000;
+	border-right: 2px solid #000;
+	border-top: 2px solid #000;
+	border-bottom: 2px solid #000;
+}
+
+.test td {
+	border: 1px solid #000;
+	font-size: 12px;
+}
+
+.test1 {
+	width: 649px;
+	border-collapse: collapse;
+	border-left: 2px solid #000;
+	border-right: 2px solid #000;
+	border-top: 0px;
+	border-bottom: 0px;
+	margin: 0 auto
+} /*无上框*/
+.test1 td {
+	border-left: 1px solid #000;
+	border-top: 1px solid #000;
+	/* border-top: 0px;  */
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+	height: 22px;
+	font-size: 12px;
+	padding: 0px;
+	text-align: right;
+	width: 16%;
+}
+
+.test2 {
+	width: 649px;
+	border-collapse: collapse;
+	border-left: 2px solid #000;
+	border-right: 2px solid #000;
+	border-top: 0px;
+	border-bottom: 0px;
+	margin: 0 auto
+} /*无上框*/
+.test2 td {
+	border-left: 1px solid #000;
+	border-top: 1px solid #000;
+	/* border-top: 0px;  */
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+	height: 22px;
+	font-size: 12px;
+	padding: 0px;
+	text-align: center;
+}
+
+.width1 {
+	width: 120px
+}
+
+.width2 {
+	width: 204px
+}
+
+.width3 {
+	width: 200px
+}
+
+h2 {
+	width: 649px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto
+}
+
+.divTop {
+	width: 649px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	font-size: 14px
+}
+
+.divDate {
+	width: 649px;
+	text-align: right;
+	margin: auto;
+	margin-right: auto;
+	font-size: 12px
+}
+</style>
+	<script type="text/javascript" src="../../../../../commons/jquery/jquery.js"></script>
+	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+
+	<script type="text/javascript" src="../../../pm/script/DJ/DJ1003detail.js"></script>
+</head>
+<body style="text-align: center;">
+	<div id="public_operator">
+		<table width="100%">
+			<tbody>
+				<tr>
+					<td style="text-align: center"><input type="button"
+						class="btn90" value="打印" onclick="dataPrint()"> <input
+						type="button" class="btn90" value="打印预览" onclick="printPreview()">
+						<font style="display: none" id="exception" color='#FF00FF'>打印控件未安装!点击这里<input
+							type='button' onclick='btnAnZhuang()' value='执行安装' />,安装后重新进入。</font>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div id="main">
+	<h2 style="width:700;text-align:center">材料领用单</h2>
+		<table width="700" align="center">
+			<tr>
+				<td><span style="float:left;font-size:12px">电机编号:</span>
+					<span input style="float:left;width:155px;" class="editor1" id="">
+						<label id="DJ_CODE" style="font-size: 12px"></label>
+					</span></td>
+				<td><span style="float:left;font-size:12px">电机名称:</span>
+					<span input style="float:left;width:155px;" class="editor1" id="">
+						<label id="DJ_NAME" style="font-size: 12px"></label>
+					</span></td>
+				<td style="width:200px">
+					
+					<span style="text-align:left;font-size:12px">NO:</span>
+					<span input style="width:85%" class="editor1" id="">
+						<label id="ORDERID" style="font-size: 12px"></label>
+					</span></td>
+			</tr>
+			<tr>
+				<td><span style="float:left;font-size:12px">检修班:</span>
+					<span input style="float:left;width:155px;" class="editor1" id="">
+						<label id="MENDDEPT_NAME" style="font-size: 12px"></label>
+					</span></td>
+				<td>
+					<span style="float:left;font-size:12px">容量:</span>
+					<span input style="float:left;width:155px;" class="editor1" id="">
+						<label id="DJ_VOL" style="font-size: 12px"></label>
+					</span></td>
+				<td>
+					
+					<span input style="float:left;width:80px;" class="editor1" id="">
+						<label id="INSERTDATE" style="font-size: 12px"></label>
+					</span></td>
+			</tr>
+		</table>
+		<table width="700" border="1" align="center" cellspacing="0px">
+			<tr>
+				<td width="100" align="center"font-size:14px">物资编号</td>
+				<td width="100" align="center" style="font-size:14px">物资名称</td>
+				<td width="100" align="center" style="font-size:14px">规格</td>
+				<td width="100" align="center" style="font-size:14px">单位</td>
+				<td width="100" align="center" style="font-size:14px">数量</td>
+				<td width="100" align="center" style="font-size:14px">单价</td>
+				<td width="100" align="center" style="font-size:14px">金额</td>
+			</tr>
+			<tbody id="cgjsd">
+			</tbody>
+			<tr>
+				<td>&nbsp;</td>
+				<td>合计:</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td width="55"  style="font-size:14px;text-align:right"><label
+					id="hjAmount" style="font-size: 14px"></label>
+				</td>
+				<td>&nbsp;</td>
+				<td width="55" style="font-size:14px;text-align:right"><label
+					id="hjMoney" style="font-size: 14px"></label>
+				</td>
+				
+			</tr>
+
+		</table>
+
+		<table width="694" align="center">
+			<tr>
+				<td>
+					<div style="float:left;font-size:14px">送货单位及经手人：</div>
+					<div style="float:left;height:15px;width:250px;">
+						<label id="zdr" style="font-size: 12px"></label>
+					</div></td>
+				<td></td>
+				<td>
+					<div style="float:left;font-size:14px">收货单位及经手人：</div>
+					<div style="float:left;height:15px;;width:250px;">
+						<label id="spr" style="font-size: 12px"></label>
+					</div></td>
+
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+﻿Ext.onReady(function() {
+var toppanel = Ext.create('Ext.form.Panel', {
+				region : 'north',
+				id : 'toppanel',
+				layout : 'vbox',
+				border : false,
+				baseCls: 'my-panel-no-border',
+				frame : true,
+				items : [{xtype : 'panel',
+							layout : {
+								type : 'hbox',
+								padding : 5
+							},
+							border : false,
+							baseCls: 'my-panel-no-border',
+							frame : true,
+							width : '100%',
+							items : [
+								{xtype : 'textfield', id : 'dqbjms', fieldLabel : '当前备件描述', labelAlign : 'right', labelWidth : 100,margin:'5 0 3 0'},
+								{xtype : 'button', text : '查询', icon :imgpath + '/search.png', width : 70,margin:'5 0 0 5',
+									handler : function() {
+										Ext.data.StoreManager.lookup('gridStore').load({
+											params : {
+												A_BJ_ID:Ext.urlDecode(location.href.split('?')[1]).V_MPCODE
+											}
+										});
+									}
+								}
+							]
+						},
+						{
+							xtype : 'panel',
+							layout : {
+								type : 'vbox',
+								padding : 5
+							},
+							border : false,
+							baseCls: 'my-panel-no-border',
+							frame : true,
+							width : '100%',
+							items : [
+									{
+										xtype : 'panel',
+										border : false,
+										baseCls : 'my-panel-no-border',
+										layout : 'hbox',
+										frame : true,
+										width : '100%',
+										items : [
+												{
+													xtype : 'textfield',
+													id : 'wzbm',
+													fieldLabel : '物资编码',
+													labelAlign : 'right',
+													labelWidth : 100,
+													style : 'margin:0px 0px 5px 0px'
+												},
+												{
+													xtype : 'button',
+													text : '选择',
+													icon :imgpath + '/cog.png',
+													style : 'margin:0px 0px 0px 5px',
+													width : 70,
+													listeners : {
+														click : OnButtonCheckClicked
+													}
+												},
+												{
+													xtype : 'textfield',
+													id : 'wzmc',
+													fieldLabel : '物资名称',
+													labelAlign : 'right',
+													labelWidth : 60,
+													style : 'margin:0px 0px 5px 0px'
+												},
+												{
+													xtype : 'textfield',
+													id : 'ggxh',
+													fieldLabel : '规格型号',
+													labelAlign : 'right',
+													labelWidth : 60,
+													style : 'margin:0px 0px 5px 0px'
+												} ]
+									},
+									{
+										xtype : 'panel',
+										border : false,
+										baseCls : 'my-panel-no-border',
+										layout : 'hbox',
+										frame : true,
+										width : '100%',
+										items : [
+												{
+													xtype : 'textfield',
+													id : 'jldw',
+													fieldLabel : '计量单位',
+													labelAlign : 'right',
+													labelWidth : 100,
+													style : 'margin:5px 0px 5px 0px'
+												},
+												{
+													xtype : 'textfield',
+													id : 'dj',
+													fieldLabel : '单价',
+													labelAlign : 'right',
+													labelWidth : 40,
+													style : 'margin:5px 0px 5px 0px'
+												},
+												{
+													xtype : 'button',
+													text : '添加物料',
+													icon :imgpath + '/add.png',
+													style : 'margin:5px 0px 5px 10px',
+													width :80,
+													listeners : {
+														click : OnButtonAddClicked
+													}
+												},
+												{
+													xtype : 'button',
+													text : '删除选中物料',
+													icon :imgpath + '/delete1.png',
+													style : 'margin:5px 0px 5px 10px',
+													width : 100,
+													listeners : {
+														click : OnButtonDeleteClicked
+													}
+												} ]
+									} ]
+						} ]
+				});
+
+			var gridStore = Ext.create('Ext.data.Store', {
+				id : 'gridStore',
+				autoLoad : true,
+				fields : [ 'BJ_ID', 'MATERIALCODE', 'MATERIALNAME','MATERIALETALON', 'UNIT', 'F_PRICE' ],
+				proxy : {
+					type : 'ajax',
+					async : false,
+					url : AppUrl + 'PM_12/PRO_RUN_BJ_MAT_ALL',
+					actionMethods : {
+						read : 'POST'
+					},
+					reader : {
+						type : 'json',
+						root : 'list'
+					}
+				},
+				listeners : {
+					beforeload : beforeloadStore
+				}
+			});
+
+			var grid = Ext.create('Ext.grid.Panel', {
+				id : 'grid',
+				columnLines : true,
+				region : 'center',
+				selType : 'checkboxmodel',
+				width : '100%',
+				height : '100%',
+				store : gridStore,
+				autoScroll : true,
+				columns : [ {
+					xtype : 'rownumberer',
+					text : '序号',
+					width : 50,
+					sortable : false,
+					align : 'center'
+				}, {
+					text : '物资编码',
+					dataIndex : 'MATERIALCODE',
+					width : 200,
+					align : 'center',
+					renderer : atleft
+				}, {
+					text : '物资名称',
+					dataIndex : 'MATERIALNAME',
+					width : 200,
+					align : 'center',
+					renderer : atleft
+				}, {
+					text : '规格型号',
+					dataIndex : 'MATERIALETALON',
+					flex: 1 ,
+					align : 'center',
+					renderer : atleft
+				}, {
+					text : '计量单位',
+					dataIndex : 'UNIT',
+					width : 80,
+					align : 'center',
+					renderer : atleft
+				}, {
+					text : '单价',
+					dataIndex : 'F_PRICE',
+					width : 100,
+					align : 'center',
+					renderer : atleft
+				} ]
+			});
+
+			var code = Ext.urlDecode(location.href.split('?')[1]).V_MPCODE;
+			Ext.getCmp('dqbjms').setValue(code);
+
+			Ext.create('Ext.container.Viewport', {
+				split : true,
+				layout : 'border',
+				items : [ toppanel, grid ]
+			});
+
+		});
+//选择物资
+function OnButtonCheckClicked(){
+	window.open(AppUrl + "page/PM_12020101010101/index.html','', 'dialogHeight:400px;dialogWidth:650px");
+};
+function getWLReturnValue(retdata){
+	if (retdata != '' && retdata != null) {
+		var strs = [];
+		strs = retdata.split('^');
+		Ext.getCmp('wzbm').setValue(strs[0]);
+		Ext.getCmp('wzmc').setValue(strs[1]);
+		Ext.getCmp('jldw').setValue(strs[2]);
+		Ext.getCmp('dj').setValue(strs[3]);
+	}
+}
+//添加
+function OnButtonAddClicked() {
+	Ext.Ajax.request({
+				url : AppUrl + 'PM_12/PRO_RUN_BJ_MAT_ADD',
+				params : {
+					'A_BJ_ID':Ext.getCmp('dqbjms').getValue(),
+					'A_MATERIALCODE':Ext.getCmp('wzbm').getValue(),
+					'A_MATERIALNAME':Ext.getCmp('wzmc').getValue(),
+					'A_MATERIALETALON':Ext.getCmp('ggxh').getValue(),
+					'A_UNIT':Ext.getCmp('jldw').getValue(),
+					'A_PRICE':Ext.getCmp('dj').getValue()
+				},
+				success : function(resp) {
+					var resp = Ext.JSON.decode(resp.responseText);
+					if (resp.RET== 'Success') {
+						Ext.Msg.alert('操作信息', '添加成功');
+						Ext.data.StoreManager.lookup('gridStore').load({
+							params : {
+								A_BJ_ID:Ext.urlDecode(location.href.split('?')[1]).V_MPCODE
+							}
+						});
+					} else {
+						Ext.Msg.alert('操作信息', '添加失败');
+					}
+				}
+			});
+
+};
+//删除
+function OnButtonDeleteClicked() {
+	var selectModel = Ext.getCmp("grid").getSelectionModel();
+	var length = Ext.getCmp('grid').getSelectionModel().getSelection().length;
+	if (length == 0) {
+		Ext.Msg.alert('操作信息', '请选择需要删除');
+		return false;
+	} else {
+		var i_err=0;
+		var selectedRecord = Ext.getCmp("grid").getSelectionModel().getSelection();
+		for (i = 0; i <length; i++) {
+			Ext.Ajax.request({
+				url : AppUrl + 'PM_12/PRO_RUN_BJ_MAT_DEL',
+				async : false,
+				method : 'post',
+				params : {
+					A_BJ_ID:selectedRecord[i].data.BJ_ID,
+					A_MATERIALCODE:selectedRecord[i].data.MATERIALCODE
+				},
+				success : function(resp) {
+					var resp = Ext.JSON.decode(resp.responseText);
+					if (resp.RET!= 'Success') {
+						Ext.Msg.alert('操作信息', '物料删除失败');
+						i_err++;
+					}
+				}
+			});
+		}
+		if(i_err==0){
+			Ext.Msg.alert('操作信息', '物料删除成功');
+			Ext.data.StoreManager.lookup('gridStore').load({
+				params : {
+					A_BJ_ID:Ext.urlDecode(location.href.split('?')[1]).V_MPCODE
+				}
+			});
+		}
+	}
+};
+
+function beforeloadStore(store) {
+	store.proxy.extraParams.A_BJ_ID =Ext.urlDecode(location.href.split('?')[1]).V_MPCODE;
+}
+
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+	metaData.style = "text-align:left;";
+	return value;
+}

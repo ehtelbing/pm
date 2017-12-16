@@ -1,0 +1,21 @@
+﻿#HeaderPanel { height: 50px; background-color: #012A64;}
+#HeaderPanel #logo { height: 66px; width: 340px; background: url('Images/Website/logo.png') no-repeat;float: left;}
+#HeaderPanel #extra { margin: 5px 5px 0 0;float: right;color: white; text-align: right; line-height:20px;}
+
+input,select,button,img{ vertical-align:middle;}
+input{ font-family:verdana;font-weight:bold;}
+input[type=button]{ cursor: pointer;}
+button{ cursor: pointer;}
+
+#Command{border:1px solid #0667ab;line-height:18px;}
+#Run{background-image: url('Images/Website/btn_01.png'); height: 20px; width: 50px;border:none;}
+#SignOut{background-image: url('Images/Website/btn_02.png'); height: 20px; width: 50px;border:none;}
+
+.x-tree-icon .x-tree-icon-leaf{background-image: url('Images/Website/tree_icon.png'); height:25px; width:25px;}
+.x-grid-cell-inner{ font-weight:bold;color:#444;}
+.x-grid-cell-inner a:link{ color:#2693FF;text-decoration:none;font-weight: normal;}
+.x-grid-cell-inner a:visited{ color:#2693FF;text-decoration:none;font-weight:normal;}
+.x-grid-cell-inner a:hover, a:active, a:focus{color:#238C00;text-decoration:underline;font-weight:normal;}
+
+#baseinfo ul li{ line-height:30px; text-align:left; text-indent:6px; font-weight:bold;}
+#baseinfo ul li span{ font-weight:normal;}

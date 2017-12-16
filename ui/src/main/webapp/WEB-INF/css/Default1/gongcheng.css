@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+.Ttable { border-collapse:collapse; font-size:14px; }
+.Ttable th, .Ttable td { border: 1px solid #000; }
+/*.Ttable th { padding:0px; height:27px; line-height:27px; background-image:url(th_bg.png); font-size:12px; color:#333; font-weight:bold; }*/
+.Ttable td { padding:0px; }
+
+body{ font-size:14px;}
+
+.table1{ border:1px solid #000; border-collapse:collapse; font-size:14px;}
+
+.tdbr{ border-right:1px solid #000; border-bottom:1px solid #000; padding:3px;}
+
+.tdb{ border-bottom:1px solid #000; padding:3px;}
+
+
+.table2 { border:1px solid #000; border-collapse:collapse; font-size:14px; }
+
+.table2 td{ padding:5px;  border:1px solid #000;}
+
+.tableborder0  td { border:0px;}
+
+.tableneibu td{ border-bottom:#000 1px solid; border-right:#000 1px solid;}
+.tablebox td { font-size:14px; padding-top:3px; padding-bottom:3px;}
+.tablebox .td_b{border-bottom:#000 1px solid;}
+.tablebox .td_b_r{border-bottom:#000 1px solid; border-right:#000 1px solid;}
+.tablebox .td_r{border-right:#000 1px solid;}

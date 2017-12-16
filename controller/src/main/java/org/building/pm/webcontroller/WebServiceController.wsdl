@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://webcontroller.pm.building.org" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://webcontroller.pm.building.org" xmlns:intf="http://webcontroller.pm.building.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://webcontroller.pm.building.org" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="V_V_ORGSAP" type="xsd:string"/>
+   <element name="V_V_DEPTSAP" type="xsd:string"/>
+   <element name="V_V_MMCODE" type="xsd:string"/>
+   <element name="V_V_MMNAME" type="xsd:string"/>
+   <element name="V_V_NUM" type="xsd:string"/>
+   <element name="V_V_REMARK" type="xsd:string"/>
+   <element name="V_V_PERCODE" type="xsd:string"/>
+   <element name="repariOldStartReturn" type="xsd:string"/>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="repariOldStartResponse">
+
+      <wsdl:part element="impl:repariOldStartReturn" name="repariOldStartReturn"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="repariOldStartRequest">
+
+      <wsdl:part element="impl:V_V_ORGSAP" name="V_V_ORGSAP"/>
+
+      <wsdl:part element="impl:V_V_DEPTSAP" name="V_V_DEPTSAP"/>
+
+      <wsdl:part element="impl:V_V_MMCODE" name="V_V_MMCODE"/>
+
+      <wsdl:part element="impl:V_V_MMNAME" name="V_V_MMNAME"/>
+
+      <wsdl:part element="impl:V_V_NUM" name="V_V_NUM"/>
+
+      <wsdl:part element="impl:V_V_REMARK" name="V_V_REMARK"/>
+
+      <wsdl:part element="impl:V_V_PERCODE" name="V_V_PERCODE"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="WebServiceController">
+
+      <wsdl:operation name="repariOldStart" parameterOrder="V_V_ORGSAP V_V_DEPTSAP V_V_MMCODE V_V_MMNAME V_V_NUM V_V_REMARK V_V_PERCODE">
+
+         <wsdl:input message="impl:repariOldStartRequest" name="repariOldStartRequest"/>
+
+         <wsdl:output message="impl:repariOldStartResponse" name="repariOldStartResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="WebServiceControllerSoapBinding" type="impl:WebServiceController">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="repariOldStart">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="repariOldStartRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="repariOldStartResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="WebServiceControllerService">
+
+      <wsdl:port binding="impl:WebServiceControllerSoapBinding" name="WebServiceController">
+
+         <wsdlsoap:address location="http://localhost:8080//services/org/building/pm/webcontroller/WebServiceController"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

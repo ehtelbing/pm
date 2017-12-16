@@ -1,0 +1,13 @@
+*{ font-family:"Microsoft YaHei UI" !important; font-size:14px !important;}
+.menu_list{margin:15px 10px 0px 0px; padding:0px; float:right;}
+.menu_list li{list-style-type:none; width:auto !important; float:left; font-family:"微软雅黑" !important; font-size:14px !important; color:#30408d !important; text-align:center; padding-left:10px; padding-right:10px;}
+.menu_list li img{width:36px; height:auto;}
+#menuPanel_header{height:32px !important; line-height:32px !important; font-family:"微软雅黑" !important;}
+#treepanel-1046{top:5px !important;}
+#menuPanel_header-innerCt{height:32px !important; line-height:32px !important; margin-top:5px;}
+.x-accordion-item .x-accordion-hd{background:#3f57a1 !important;}
+.x-accordion-hd .x-panel-header-text-container{color:#fff !important; font-family: "Microsoft YaHei UI" !important; font-size:14px !important;}
+.x-accordion-hd-sibling-expanded{box-shadow:none !important;}
+.x-panel-header-default-framed-top{border-radius:0px !important;}
+.x-panel-default-framed{border-radius:0px !important;}
+.x-panel-body-default{border:0px !important;}

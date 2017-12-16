@@ -1,0 +1,35 @@
+@charset "gb2312";
+html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td { margin: 0; padding: 0 }
+table { border-collapse: collapse; border-spacing: 0 }
+fieldset, img { border: 0 }
+.login_title{width:1024px; height:55px; margin-left:auto; margin-right:auto; margin-top:15px}
+.div_mainbg{ width:100%; background-color:#888888; height:421px; background-image:url(login_main.png); background-repeat:no-repeat; background-position:center; min-width:1024px}
+.div_login{width:1024px; margin-left:auto; margin-right:auto;}
+.login_yhdl{margin:70px 0px 0px 678px; width:100px; float:left; font-size:16px; color:#666666; font-weight:bolder }
+.login_text{width:230px; height:27px; padding:5px; border:1px solid #B7B7B7; font-size:16px; font-family:"Î¢ÈíÑÅºÚ"; color:#666666}
+.login_div{margin-left:40px; margin-top:80px; vertical-align:top; float:left}
+.login_text:hover{width:230px; height:27px; padding:5px; border:1px solid #7A9CC0; font-size:24px; font-family:"Î¢ÈíÑÅºÚ"; color:#666666}
+.div_yhm{margin:20px 0px 0px 225px; float:left}
+.clear1{ clear:both}
+.login_pas{width:230px; height:27px; padding:5px; border:1px solid #B7B7B7; font-size:16px; font-family:"Î¢ÈíÑÅºÚ"; color:#666666; background-image:url(pasbg.png); background-repeat:no-repeat; background-position:220px center}
+.login_pas:hover{width:230px; height:27px; padding:5px; border:1px solid #7A9CC0; font-size:16px; font-family:"Î¢ÈíÑÅºÚ"; color:#666666; background-image:url(pasbg.png); background-repeat:no-repeat; background-position:220px center}
+.login_ts{display:block; font-size:12px; text-decoration:none; color:#0078B6; float:left; margin:10px 0px 0px 430px;}
+.btnblue{width:111px; height:45px; background-color:#427FA9; border:0px; font-size:18px; color:#FFF; font-family:"Î¢ÈíÑÅºÚ"}
+.login_but{float:left;margin:10px 0px 0px 225px; width:120px;}
+.font12{font-size:12px; color:#999999;margin:20px 0px 0px 342px; display:block; float:left}
+.div_center{width:100%; height:40px; background-color:#000000; margin-left:auto; margin-right:auto}
+.div_center span{font-size:12px; color:#FFF; width:200px; display:block; margin-left:auto; margin-right:auto; padding-top:10px;}
+.div_center ul li{list-style:none; width:154px; height:45px; float:left; margin:20px 125px 0px 15px}
+.div_center ul li a{font-size:20px; font-family:"Î¢ÈíÑÅºÚ"; text-decoration:none; display:block; margin:15px 0px 0px 35px; float:left; color:#666666 }
+.zxks{ background-image:url(zxksbg.png); background-repeat:no-repeat}
+.ktgl{ background-image:url(ktglbg.png); background-repeat:no-repeat}
+.ksgl{ background-image:url(ksglbg.png); background-repeat:no-repeat}
+.divloginbtm{width:1024px; margin-left:auto; margin-right:auto; margin-top:40px; border-top:1px solid #b7b7b7; font-size:12px; color:#666666; padding-top:10px; text-align:center;}
+.span12_left{font-size:12px; color:#999; float:left; margin-right:10px; margin-left:25px; margin-top:5px;}
+.khly{width:400px; border:1px solid #e7e7e7; background-color:#F8F8F8; display:block; height:50px; margin:33px 0px 0px 10px; float:left}
+.con_main{margin-top:10px; width:636px; height:90px; border:1px solid #e7e7e7; padding:5px;}
+.main_bom{width:645px; height:278px; border:1px solid #d8d8d8; float:left; background-color:#f8f8f8}
+.main_bom ul li{list-style:none; font-family:"Î¢ÈíÑÅºÚ"; font-size:14px; height:20px; border-bottom:1px dashed #e7e7e7;}
+.khlynr{height:20px; line-height:20px; text-decoration:none; float:left; color:#3B5998; display:block; width:300px}
+.main_bom ul li span{height:20px; line-height:25px; text-decoration:none; float:right; color:#333}
+.main_right{float:left; margin-left:10px; margin-top:10px; width:660px; height:560px; text-align:left}

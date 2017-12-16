@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>事故详细信息查询</title>
+	<meta name="Copyright" content="新安杰系统集成有限公司" />
+	<meta name="Description" content="PM" />
+	<meta name="Version" content="0.0.1.20130614" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="../../../pm/css/viewport.css" type="text/css"></link>
+    <link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
+    <link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+
+
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
+
+	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+
+
+</head>
+<style>
+    table{
+        width:1000px;
+        border-collapse:collapse;
+        border-top:2px solid #000;
+        border-left:2px solid #000;
+        border-right:2px solid #000;
+        border-bottom:2px solid #000
+    }
+
+    table td{
+        border:1px solid #000;
+        font-size:15px;
+        border:1px  solid #000;
+        padding:0px;
+        text-align:center;
+        height:40px;
+        padding:2px 2px
+    }
+    h1{width:649px ;text-align:center; margin-left:auto;margin-right:auto;font-size: 20px}
+
+    @media print
+    {
+        .Noprint{DISPLAY:none;}
+        .PageNext{PAGE-BREAK-AFTER:always}
+    }
+
+</style>
+
+<body>
+<h1>事故详细信息</h1>
+<button id="print"  class="Noprint" style="margin:-30px 0 30px 1000px" onclick="Print()">打印</button>
+<!--startprint-->
+<table width="1000" border="1" align="center" id="printcontent">
+    <tr>
+        <td width="150">事故名称</td>
+        <td id="name" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">事故发生时间</td>
+        <td id="occurtime" class="editor" value="" width="350"></td>
+        <td width="150">事故发生单位</td>
+        <td id="occurunit" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">事故发生地点</td>
+        <td id="occurplace" class="editor" value="" width="350"></td>
+        <td width="150">事故设备</td>
+        <td id="equip" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">事故类型</td>
+        <td id="type" class="editor" value="" width="350"></td>
+        <td width="150">事故影响时间</td>
+        <td id="influencetime" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">事故发生原因</td>
+        <td id="occurreason" class="editor" value="" width="350"></td>
+        <td width="150">事故当事人</td>
+        <td id="person" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">事故发生经过</td>
+        <td id="pass" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">事故影响</td>
+        <td id="influence" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">检修单位</td>
+        <td id="fixunit" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">检修开始时间</td>
+        <td id="fixbegintime" class="editor" value="" width="350"></td>
+        <td width="150">检修结束时间</td>
+        <td id="fixendtime" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">检修合计(小时)</td>
+        <td id="fixtotal" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">检修备注</td>
+        <td id="fixremark" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">事故整改措施</td>
+        <td id="changemeasure" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">事故修复费</td>
+        <td id="fixmoney" class="editor" value="" width="350"></td>
+        <td width="150">事故减产</td>
+        <td id="reducemoney" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">其他损失</td>
+        <td id="otherreduce" class="editor" value="" width="350"></td>
+        <td width="150">事故损失合计</td>
+        <td id="reducetotal" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">事故影响时间</td>
+        <td id="influencetime1" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">事故考核单位</td>
+        <td id="checkunit" class="editor" value="" width="350"></td>
+        <td width="150">考核职别</td>
+        <td id="checklevel" class="editor" value="" width="350"></td>
+    </tr>
+    <tr>
+        <td width="150">考核条款</td>
+        <td id="checkclause" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">考核责任人</td>
+        <td id="checkperson" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tr>
+        <td width="150">考核备注</td>
+        <td id="checkremark" class="editor" value="" width="350" colspan="3"></td>
+    </tr>
+    <tfoot style="display:table-footer-group; border:none;"></tfoot>
+</table>
+<!--endprint-->
+</body>
+<script type="text/javascript" src="../../../pm/script/PM_040101/index.js"></script>
+</html>

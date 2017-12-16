@@ -1,0 +1,168 @@
+﻿.header
+{
+    height: 50px;
+    background-color: #012A64;
+}
+
+.logo
+{
+    height: 66px;
+    width: 340px;
+    background: url('../Images/Website/logo.png') no-repeat;
+    float: left;
+    display:block;
+}
+
+.extra
+{
+    margin: 5px 5px 0 0;
+    float: right;
+    color: white;
+    text-align: right;
+    line-height: 20px;
+}
+
+    .extra ul li
+    {
+        list-style: none;
+        float: left;
+    }
+
+    .extra .searchinput
+    {
+        background: url('../images/shouyebtn.png');
+        background-repeat: no-repeat;
+        background-position: -36px -305px;
+        width: 150px;
+        height: 25px;
+        color: #666666;
+        vertical-align: top;
+        border:0px;
+        line-height:25px;
+        text-indent:5px;
+        font-size:12px;
+       
+    }
+
+    .extra .search a
+    {
+        background: url('../images/shouyebtn.png');
+        background-repeat: no-repeat;
+        background-position: -186px -305px;
+        width: 34px;
+        height: 25px;
+        border: 0px;
+        color: #0080ff;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+        .extra .search a:hover
+        {
+            background: url('../images/shouyebtn.png');
+            background-repeat: no-repeat;
+            background-position: -226px -305px;
+            display: block;
+            width: 34px;
+            height: 25px;
+            border: 0px;
+            color: #4da6ff;
+            display: block;
+            cursor: pointer;
+            text-decoration: none;
+            clear: both;
+        }
+
+    .extra .meeting a
+    {
+        background: url('../images/shouyebtn.png');
+        background-repeat: no-repeat;
+        background-position: -36px -85px;
+        display: block;
+        width: 90px;
+        height: 26px;
+        border: 0px;
+        font-size: 12px;
+        font: "宋体";
+        color: #0080ff;
+        display: block;
+        text-align: left;
+        text-indent: 30px;
+        font-weight: bold;
+        line-height: 26px;
+        cursor: pointer;
+        text-decoration: none;
+        clear: both;
+    }
+
+        .extra .meeting a:hover
+        {
+            background: url('../images/shouyebtn.png');
+            background-repeat: no-repeat;
+            background-position: -276px -85px;
+            display: block;
+            width: 90px;
+            height: 26px;
+            border: 0px;
+            color: #4da6ff;
+            display: block;
+            line-height: 26px;
+            cursor: pointer;
+            text-decoration: none;
+            text-indent: 30px;
+            clear: both;
+        }
+
+        .extra .meeting a:focus
+        {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    .extra .signout a
+    {
+        background: url('../images/shouyebtn.png');
+        background-repeat: no-repeat;
+        background-position: -36px -125px;
+        display: block;
+        width: 60px;
+        height: 26px;
+        border: 0px;
+        font-size: 12px;
+        font: "宋体";
+        color: #0080ff;
+        display: block;
+        text-align: left;
+        text-indent: 30px;
+        font-weight: bold;
+        line-height: 26px;
+        cursor: pointer;
+        text-decoration: none;
+        clear: both;
+    }
+
+        .extra .signout a:hover
+        {
+            background: url('../images/shouyebtn.png');
+            background-repeat: no-repeat;
+            background-position: -276px -125px;
+            display: block;
+            width: 60px;
+            height: 26px;
+            border: 0px;
+            color: #4da6ff;
+            display: block;
+            line-height: 26px;
+            cursor: pointer;
+            text-decoration: none;
+            clear: both;
+        }
+
+        .extra .signout a:focus
+        {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .employee ul li{ line-height:30px; text-align:left; text-indent:6px; font-weight:bold;}
+.employee ul li span{ font-weight:normal;}

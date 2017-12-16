@@ -1,0 +1,22 @@
+.ui-widget { font-size: 13px; }
+.ui-widget .ui-widget { font-size: 13px; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-size: 13px; }
+
+.ui-dialog-buttonpane { padding-top: 0;padding-bottom: 0;}
+.ui-dialog .ui-dialog-buttonpane button { margin-top: 0;margin-bottom: 0;}
+.ui-dialog .ui-dialog-buttonpane button .ui-button-text { padding-top: 2px;padding-bottom: 2px; }
+
+.ui-selected { background: #AED0EA; color: white; }
+
+.ui-grid { border-collapse:collapse; }
+.autolayout { table-layout: auto; }
+.ui-grid th, .ui-grid td { border: 1px solid #AED0EA; white-space:nowrap; padding: 4px 5px 2px 5px; }
+.ui-grid thead th, .ui-grid tfoot td { background-image: url(images/jquery.ui/ui-bg_highlight-soft_100_deedf7_1x100.png) }
+.ui-grid .number { text-align: right; }
+.ui-grid .category, .ui-grid .action { text-align: center; }
+
+.fn-gantt .row .fn-label { font-size: 13px; }
+.fn-gantt .leftPanel .name { width: 80px; }
+.fn-gantt .leftPanel .desc { width: 145px; }
+
+.datepicker { width: 100px; }
