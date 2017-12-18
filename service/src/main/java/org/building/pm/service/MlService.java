@@ -1379,7 +1379,7 @@ public class MlService {
             cstmt.execute();
 
 
-            result.put("list", cstmt.getString("RET"));
+            result.put("RET", cstmt.getString("RET"));
 
         } catch (SQLException e) {
             logger.error(e);
@@ -1538,7 +1538,7 @@ public class MlService {
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
 
-
+            result.put("RET", cstmt.getString("RET"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1619,8 +1619,8 @@ public class MlService {
         Connection conn = null;
         CallableStatement cstmt = null;
 
-        java.sql.Date sqlDate1 = new java.sql.Date(BEGINDATE_IN.getTime());
-        java.sql.Date sqlDate2 = new java.sql.Date(ENDDATE_IN.getTime());
+        Date sqlDate1 = new Date(BEGINDATE_IN.getTime());
+        Date sqlDate2 = new Date(ENDDATE_IN.getTime());
 
         try {
             conn = dataSources.getConnection();
@@ -1704,8 +1704,8 @@ public class MlService {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
-        java.sql.Date sqlDate1 = new java.sql.Date(BEGINDATE_IN.getTime());
-        java.sql.Date sqlDate2 = new java.sql.Date(ENDDATE_IN.getTime());
+        Date sqlDate1 = new Date(BEGINDATE_IN.getTime());
+        Date sqlDate2 = new Date(ENDDATE_IN.getTime());
 
         try {
             conn = dataSources.getConnection();
@@ -1824,7 +1824,7 @@ public class MlService {
     }
 
     //确认并送达检修单位
-    public HashMap CONFIRM_APPLY(String APPLYID_IN,String A_USERID)
+    public HashMap CONFIRM_APPLY(String APPLYID_IN, String A_USERID)
             throws SQLException {
         logger.info("begin CONFIRM_APPLY");
         HashMap result = new HashMap();
@@ -1859,7 +1859,7 @@ public class MlService {
     }
 
     //退回到申请部门
-    public HashMap BACK_APPLY(String APPLYID_IN,String A_USERID)
+    public HashMap BACK_APPLY(String APPLYID_IN, String A_USERID)
             throws SQLException {
         logger.info("begin BACK_APPLY");
         HashMap result = new HashMap();
@@ -1894,7 +1894,7 @@ public class MlService {
     }
 
     //查询检修单位
-    public HashMap PRO_DJ701_SELECT(String MENDDEPT_NAME_IN,String USERNAME_IN) throws SQLException {
+    public HashMap PRO_DJ701_SELECT(String MENDDEPT_NAME_IN, String USERNAME_IN) throws SQLException {
         logger.info("begin PRO_DJ701_SELECT");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1925,7 +1925,7 @@ public class MlService {
     }
 
     //修改检修单位
-    public HashMap PRO_DJ701_UPDATE1(String V_MENDDEPTCODE,String V_MENDDEPTNAME,String V_USERID,String V_USERNAME)
+    public HashMap PRO_DJ701_UPDATE1(String V_MENDDEPTCODE, String V_MENDDEPTNAME, String V_USERID, String V_USERNAME)
             throws SQLException {
         logger.info("begin PRO_DJ701_UPDATE1");
         HashMap result = new HashMap();
@@ -1989,4 +1989,1415 @@ public class MlService {
 
         return result;
     }
+
+    //检修单位配置
+    //删除检修单位
+    public HashMap PRO_DJ701_DELETE(String V_MENDDEPTCODE)
+            throws SQLException {
+        logger.info("begin PRO_DJ701_DELETE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ701_DELETE" + "(:V_MENDDEPTCODE,:RET)}");
+
+            cstmt.setString("V_MENDDEPTCODE", V_MENDDEPTCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ701_DELETE");
+
+        return result;
+    }
+
+    //新增检修单位
+    public HashMap PRO_DJ701_INSERT(String V_MENDDEPTNAME, String V_MENDDEPTCODE, String V_MENDDEPTTYPE,
+                                    String V_SUPERCODE, String V_USERID, String V_USERNAME)
+            throws SQLException {
+        logger.info("begin PRO_DJ701_INSERT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ701_INSERT" + "(:V_MENDDEPTNAME,:V_MENDDEPTCODE,:V_MENDDEPTTYPE,:V_SUPERCODE,:V_USERID,:V_USERNAME,:RET)}");
+
+            cstmt.setString("V_MENDDEPTNAME", V_MENDDEPTNAME);
+            cstmt.setString("V_MENDDEPTCODE", V_MENDDEPTCODE);
+            cstmt.setString("V_MENDDEPTTYPE", V_MENDDEPTTYPE);
+            cstmt.setString("V_SUPERCODE", V_SUPERCODE);
+            cstmt.setString("V_USERID", V_USERID);
+            cstmt.setString("V_USERNAME", V_USERNAME);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ701_INSERT");
+
+        return result;
+    }
+
+    //查询检修单位人员
+    public HashMap PRO_DJ701_VIEW(String V_MENDDEPTCODE) throws SQLException {
+        logger.info("begin PRO_DJ701_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ701_VIEW" + "(:V_MENDDEPTCODE,:V_CURSOR)}");
+
+            cstmt.setString("V_MENDDEPTCODE", V_MENDDEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ701_VIEW");
+
+        return result;
+    }
+
+    //删除检修人员
+    public HashMap PRO_DJ701_PERSONDEL(String V_USERID)
+            throws SQLException {
+        logger.info("begin PRO_DJ701_PERSONDEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ701_PERSONDEL" + "(:V_USERID,:RET)}");
+
+            cstmt.setString("V_USERID", V_USERID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ701_PERSONDEL");
+
+        return result;
+    }
+
+    //新增检修人员
+    public HashMap PRO_DJ701_PERINSERT(String MENDDEPT_CODE, String V_USERID, String V_USERNAME)
+            throws SQLException {
+        logger.info("begin PRO_DJ701_PERINSERT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ701_PERINSERT" + "(:MENDDEPT_CODE,:V_USERID,:V_USERNAME,:RET)}");
+
+            cstmt.setString("MENDDEPT_CODE", MENDDEPT_CODE);
+            cstmt.setString("V_USERID", V_USERID);
+            cstmt.setString("V_USERNAME", V_USERNAME);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ701_PERINSERT");
+
+        return result;
+    }
+
+    //检修状态
+    public HashMap PRO_DJ702_DROPLIST() throws SQLException {
+        logger.info("begin PRO_DJ702_DROPLIST");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ702_DROPLIST" + "(:V_CURSOR)}");
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ702_DROPLIST");
+
+        return result;
+    }
+
+    //检修单位查询
+    public HashMap PRO_DJ702_JXDWDROPLIST(String V_USERID) throws SQLException {
+        logger.info("begin PRO_DJ702_JXDWDROPLIST");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ702_JXDWDROPLIST" + "(:V_USERID,:V_CURSOR)}");
+
+            cstmt.setString("V_USERID", V_USERID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ702_JXDWDROPLIST");
+
+        return result;
+    }
+
+    //查询工单状态
+    public HashMap PRO_DJ702_SELECT(String V_ORDERSTS) throws SQLException {
+        logger.info("begin PRO_DJ702_SELECT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ702_SELECT" + "(:V_ORDERSTS,:V_CURSOR)}");
+
+            cstmt.setString("V_USERID", V_ORDERSTS);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ702_SELECT");
+
+        return result;
+    }
+
+    //删除工单状态
+    public HashMap PRO_DJ702_DELETE(String V_POWERID, String V_ID)
+            throws SQLException {
+        logger.info("begin PRO_DJ702_DELETE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ702_DELETE" + "(:V_POWERID,:V_ID,:RET)}");
+
+            cstmt.setString("V_POWERID", V_POWERID);
+            cstmt.setString("V_ID", V_ID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ702_DELETE");
+
+        return result;
+    }
+
+    //新增检修状态人员
+    public HashMap PRO_DJ702_INSERT(String V_ORDERSTS, String V_USERID, String V_USERNAME, String V_STS, String V_MENDDEPTCODE)
+            throws SQLException {
+        logger.info("begin PRO_DJ702_INSERT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ702_INSERT" + "(:V_ORDERSTS,:V_USERID,:V_USERNAME,:V_STS,:V_MENDDEPTCODE,:RET)}");
+
+            cstmt.setString("V_ORDERSTS", V_ORDERSTS);
+            cstmt.setString("V_USERID", V_USERID);
+            cstmt.setString("V_USERNAME", V_USERNAME);
+            cstmt.setString("V_STS", V_STS);
+            cstmt.setString("V_MENDDEPTCODE", V_MENDDEPTCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ702_INSERT");
+
+        return result;
+    }
+
+    //查询检修状态
+    public HashMap PRO_DJ703_SELECT(String V_ORDERDESC) throws SQLException {
+        logger.info("begin PRO_DJ702_SELECT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ703_SELECT" + "(:V_ORDERDESC,:V_CURSOR)}");
+
+            cstmt.setString("V_ORDERDESC", V_ORDERDESC);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ703_SELECT");
+
+        return result;
+    }
+
+    //删除检修状态
+    public HashMap PRO_DJ703_DELETE(String V_ORDERSTS)
+            throws SQLException {
+        logger.info("begin PRO_DJ703_DELETE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ703_DELETE" + "(:V_ORDERSTS,:RET)}");
+
+            cstmt.setString("V_ORDERSTS", V_ORDERSTS);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ703_DELETE");
+
+        return result;
+    }
+
+    //选择状态
+    public HashMap PRO_DJ703_UPDATEFLAG(String V_ORDERSTS, Integer V_FLAG)
+            throws SQLException {
+        logger.info("begin PRO_DJ703_UPDATEFLAG");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ703_UPDATEFLAG" + "(:V_ORDERSTS,:V_FLAG,:RET)}");
+
+            cstmt.setString("V_ORDERSTS", V_ORDERSTS);
+            cstmt.setInt("V_FLAG", V_FLAG);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ703_UPDATEFLAG");
+
+        return result;
+    }
+
+    //新增状态
+    public HashMap PRO_DJ703_INSERT(String V_ORDERSTS, String V_ORDERDESC, String V_USERFLAG, String V_NEXTSTS)
+            throws SQLException {
+        logger.info("begin PRO_DJ703_INSERT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ703_INSERT" + "(:V_ORDERSTS,:V_ORDERDESC,:V_USERFLAG,:V_NEXTSTS,:RET)}");
+
+            cstmt.setString("V_ORDERSTS", V_ORDERSTS);
+            cstmt.setString("V_ORDERDESC", V_ORDERDESC);
+            cstmt.setString("V_USERFLAG", V_USERFLAG);
+            cstmt.setString("V_NEXTSTS", V_NEXTSTS);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ703_INSERT");
+
+        return result;
+    }
+
+    //查询物资分类
+    public HashMap GETITYPELIST() throws SQLException {
+        logger.info("begin GETITYPELIST");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ704.GETITYPELIST" + "(:RET)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETITYPELIST");
+
+        return result;
+    }
+
+    //删除物资分类
+    public HashMap DELETEITYPE(String A_TYPECODE, String A_USERID, String A_USERNAME)
+            throws SQLException {
+        logger.info("begin DELETEITYPE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ704.DELETEITYPE" + "(:A_TYPECODE,:A_USERID,:A_USERNAME,:RET,:RET_MSG)}");
+
+            cstmt.setString("A_TYPECODE", A_TYPECODE);
+            cstmt.setString("A_USERID", A_USERID);
+            cstmt.setString("A_USERNAME", A_USERNAME);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DELETEITYPE");
+
+        return result;
+    }
+
+    //新增物资分类
+    public HashMap ADDITYPE(String A_TYPECODE, String A_TYPENAME, String A_STATUS, String A_TYPE_PREFIX, String A_TYPE_UNIT, String A_REC_STATUS,
+                            String A_USERID, String A_USERNAME, Integer A_INDEX)
+            throws SQLException {
+        logger.info("begin ADDITYPE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ704.ADDITYPE" + "(:A_TYPECODE,:A_TYPENAME,:A_STATUS,:A_TYPE_PREFIX,:A_TYPE_UNIT" +
+                    ",:A_REC_STATUS,:A_USERID,:A_USERNAME,:A_INDEX,:RET,:RET_MSG)}");
+
+            cstmt.setString("A_TYPECODE", A_TYPECODE);
+            cstmt.setString("A_TYPENAME", A_TYPENAME);
+            cstmt.setString("A_STATUS", A_STATUS);
+            cstmt.setString("A_TYPE_PREFIX", A_TYPE_PREFIX);
+            cstmt.setString("A_TYPE_UNIT", A_TYPE_UNIT);
+            cstmt.setString("A_REC_STATUS", A_REC_STATUS);
+
+            cstmt.setString("A_USERID", A_USERID);
+            cstmt.setString("A_USERNAME", A_USERNAME);
+            cstmt.setInt("A_INDEX", A_INDEX);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end ADDITYPE");
+
+        return result;
+    }
+
+    //修改物资分类
+    public HashMap UPDTEITYPE(String A_TYPECODE, String A_TYPENAME, String A_STATUS, String A_TYPE_PREFIX, String A_TYPE_UNIT, String A_REC_STATUS,
+                              String A_USERID, String A_USERNAME, Integer A_INDEX)
+            throws SQLException {
+        logger.info("begin UPDTEITYPE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ704.UPDTEITYPE" + "(:A_TYPECODE,:A_TYPENAME,:A_STATUS,:A_TYPE_PREFIX,:A_TYPE_UNIT" +
+                    ",:A_REC_STATUS,:A_USERID,:A_USERNAME,:A_INDEX,:RET,:RET_MSG)}");
+
+            cstmt.setString("A_TYPECODE", A_TYPECODE);
+            cstmt.setString("A_TYPENAME", A_TYPENAME);
+            cstmt.setString("A_STATUS", A_STATUS);
+            cstmt.setString("A_TYPE_PREFIX", A_TYPE_PREFIX);
+            cstmt.setString("A_TYPE_UNIT", A_TYPE_UNIT);
+            cstmt.setString("A_REC_STATUS", A_REC_STATUS);
+
+            cstmt.setString("A_USERID", A_USERID);
+            cstmt.setString("A_USERNAME", A_USERNAME);
+            cstmt.setInt("A_INDEX", A_INDEX);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end UPDTEITYPE");
+
+        return result;
+    }
+
+    //查询入库
+    public HashMap GETINPUT(String A_PLANTCODE, String A_DEPARTCODE, String A_ITYPE, String A_STORE_DESC, String A_MATERIALCODE, String A_MATERIALNAME,
+                            String A_ETALON, String A_LOC_DESC, String A_USERID) throws SQLException {
+        logger.info("begin GETINPUT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1001.GETINPUT" + "(:A_PLANTCODE,:A_DEPARTCODE,:A_ITYPE,:A_STORE_DESC,:A_MATERIALCODE,:A_MATERIALNAME,:A_ETALON,:A_LOC_DESC,:A_USERID,:RET)}");
+
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_STORE_DESC", A_STORE_DESC);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_MATERIALNAME", A_MATERIALNAME);
+
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_LOC_DESC", A_LOC_DESC);
+            cstmt.setString("A_USERID", A_USERID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETINPUT");
+
+        return result;
+    }
+
+    //新增入库
+    public HashMap SAVEINPUT(String A_KCID, String A_MATERIALCODE, String A_MATERIALNAME, String A_ETALON, String A_UNIT, String A_PRICE,
+                             String A_AMOUNT, String A_STOREDESC, String A_LOCDESC, String A_ITYPE, String A_PLANTCODE, String A_DEPARTCODE, String A_DEPARTNAME,
+                             String A_USERID, String A_USERNAME, String A_MPID)
+            throws SQLException {
+        logger.info("begin SAVEINPUT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1001.SAVEINPUT" + "(:A_KCID,:A_MATERIALCODE,:A_MATERIALNAME,:A_ETALON,:A_UNIT" +
+                    ",:A_PRICE,:A_AMOUNT,:A_STOREDESC,:A_LOCDESC,:A_ITYPE,:A_PLANTCODE,:A_DEPARTCODE,:A_DEPARTNAME,:A_USERID,:A_USERNAME,:A_MPID,:RET,:RET_MSG)}");
+
+            cstmt.setString("A_KCID", A_KCID);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_MATERIALNAME", A_MATERIALNAME);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_UNIT", A_UNIT);
+            cstmt.setString("A_PRICE", A_PRICE);
+            cstmt.setString("A_AMOUNT", A_AMOUNT);
+            cstmt.setString("A_STOREDESC", A_STOREDESC);
+            cstmt.setString("A_LOCDESC", A_LOCDESC);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_DEPARTNAME", A_DEPARTNAME);
+            cstmt.setString("A_USERID", A_USERID);
+            cstmt.setString("A_USERNAME", A_USERNAME);
+            cstmt.setString("A_MPID", A_MPID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("RET"));
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end SAVEINPUT");
+
+        return result;
+    }
+
+    //删除储备物资
+    public HashMap DELETEINPUT(String KCID) throws SQLException {
+
+        logger.info("begin DELETEINPUT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PG_DJ1001.DELETEINPUT" + "(:KCID,:RET_MSG,:RET)}");
+            cstmt.setString("KCID", KCID);
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+            result.put("RET", cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DELETEINPUT");
+        return result;
+    }
+
+    //查询计划
+    public HashMap GETMP(Integer A_YEAR, Integer A_MONTH, String A_PLANTCODE, String A_DEPARTCODE, String A_CODE, String A_NAME) throws SQLException {
+        logger.info("begin GETMP");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1001.GETMP" + "(:A_YEAR,:A_MONTH,:A_PLANTCODE,:A_DEPARTCODE,:A_CODE,:A_NAME,:RET)}");
+
+            cstmt.setInt("A_YEAR", A_YEAR);
+            cstmt.setInt("A_MONTH", A_MONTH);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_CODE", A_CODE);
+            cstmt.setString("A_NAME", A_NAME);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETMP");
+
+        return result;
+    }
+
+    //关联查询
+    public HashMap GETINPUTLIST(Date A_BEGINDATE, Date A_ENDDATE, String A_PLANTCODE, String A_DEPARTCODE, String A_ITYPE, String A_STORE_DESC,
+                                String A_MATERIALCODE, String A_MATERIALNAME, String A_ETALON, String A_LOC_DESC, String A_USERID) throws SQLException {
+        logger.info("begin GETINPUTLIST");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1004.GETINPUTLIST" + "(:A_BEGINDATE,:A_ENDDATE,:A_PLANTCODE,:A_DEPARTCODE,:A_ITYPE,:A_STORE_DESC," +
+                    ":A_MATERIALCODE,:A_MATERIALNAME,:A_ETALON,:A_LOC_DESC,:A_USERID,:RET)}");
+
+            cstmt.setDate("A_BEGINDATE", A_BEGINDATE);
+            cstmt.setDate("A_ENDDATE", A_ENDDATE);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_STORE_DESC", A_STORE_DESC);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_MATERIALNAME", A_MATERIALNAME);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_LOC_DESC", A_LOC_DESC);
+            cstmt.setString("A_USERID", A_USERID);
+
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETINPUTLIST");
+
+        return result;
+    }
+
+    //物资关联
+    public HashMap MPTOKC(String A_MPID, String A_KCID, String A_REMARK) throws SQLException {
+        logger.info("begin MPTOKC");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1001.MPTOKC" + "(:A_MPID,:A_KCID,:A_REMARK,:RET,:RET_MSG)}");
+
+            cstmt.setString("A_MPID", A_MPID);
+            cstmt.setString("A_KCID", A_KCID);
+            cstmt.setString("A_REMARK", A_REMARK);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+            result.put("RET", cstmt.getString("RET"));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MPTOKC");
+
+        return result;
+    }
+
+    //确认入库
+    public HashMap CONFIRMINPUT(String A_KCID) throws SQLException {
+        logger.info("begin CONFIRMINPUT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1001.CONFIRMINPUT" + "(:A_KCID,:RET,:RET_MSG)}");
+
+            cstmt.setString("A_KCID", A_KCID);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+            result.put("RET", cstmt.getString("RET"));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end CONFIRMINPUT");
+
+        return result;
+    }
+
+    //根据物资分类查询信息
+    public HashMap MATTYPE_UNITANDPREFIX(String A_ITYPE) throws SQLException {
+        logger.info("begin MATTYPE_UNITANDPREFIX");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1001.MATTYPE_UNITANDPREFIX" + "(:A_ITYPE,:RET_PREFIX,:RET_UNIT)}");
+
+            cstmt.setString("A_ITYPE", A_ITYPE);
+
+            cstmt.registerOutParameter("RET_PREFIX", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET_UNIT", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("RET_PREFIX", cstmt.getString("RET_PREFIX"));
+            result.put("RET_UNIT", cstmt.getString("RET_UNIT"));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MATTYPE_UNITANDPREFIX");
+
+        return result;
+    }
+
+    //查询库存列表
+    public HashMap GETKC(String A_PLANTCODE, String A_DEPARTCODE, String A_ITYPE, String A_STORE_DESC,
+                         String A_MATERIALCODE, String A_MATERIALNAME, String A_ETALON, String A_LOC_DESC, String A_USERID) throws SQLException {
+        logger.info("begin GETKC");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1002.GETKC" + "(:A_PLANTCODE,:A_DEPARTCODE,:A_ITYPE,:A_STORE_DESC," +
+                    ":A_MATERIALCODE,:A_MATERIALNAME,:A_ETALON,:A_LOC_DESC,:A_USERID,:RET)}");
+
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_STORE_DESC", A_STORE_DESC);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_MATERIALNAME", A_MATERIALNAME);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_LOC_DESC", A_LOC_DESC);
+            cstmt.setString("A_USERID", A_USERID);
+
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETKC");
+
+        return result;
+    }
+
+    //查看消耗明细
+    public HashMap GETCONSUMEDETAIL(String A_KCID) throws SQLException {
+        logger.info("begin GETCONSUMEDETAIL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1002.GETCONSUMEDETAIL" + "(:A_KCID,:RET)}");
+
+            cstmt.setString("A_KCID", A_KCID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETCONSUMEDETAIL");
+
+        return result;
+    }
+
+    //查询消耗物资
+    public HashMap DJ03_GETCONSUME(Date A_BEGINDATE, Date A_ENDDATE, String A_ORDERID, String A_PLANTCODE, String A_DEPARTCODE, String A_ITYPE,
+                                   String A_STOREDESC, String A_MATERIALCODE, String A_MATERIALNAME, String A_ETALON, String A_LCODESC) throws SQLException {
+        logger.info("begin DJ03_GETCONSUME");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1003.GETCONSUME" + "(:A_BEGINDATE,:A_ENDDATE,:A_ORDERID,:A_PLANTCODE,:A_DEPARTCODE,:A_ITYPE,:A_STOREDESC," +
+                    ":A_MATERIALCODE,:A_MATERIALNAME,:A_ETALON,:A_LCODESC,:RET)}");
+
+            cstmt.setDate("A_BEGINDATE", A_BEGINDATE);
+            cstmt.setDate("A_ENDDATE", A_ENDDATE);
+            cstmt.setString("A_ORDERID", A_ORDERID);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_STOREDESC", A_STOREDESC);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_MATERIALNAME", A_MATERIALNAME);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_LCODESC", A_LCODESC);
+
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DJ03_GETCONSUME");
+
+        return result;
+    }
+
+    //查询检修单消耗物料
+    public HashMap GETORDERCONSUME(String A_ORDERID) throws SQLException {
+        logger.info("begin GETORDERCONSUME");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1003.GETORDERCONSUME" + "(:A_ORDERID,:RET)}");
+
+            cstmt.setString("A_ORDERID", A_ORDERID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETORDERCONSUME");
+
+        return result;
+    }
+
+    //获取单据信息
+    public HashMap PRO_DJ601_ORDERMESSAGE(String ORDERID_in) throws SQLException {
+        logger.info("begin PRO_DJ601_ORDERMESSAGE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DJ601_ORDERMESSAGE" + "(:ORDERID_in,:RET)}");
+
+            cstmt.setString("ORDERID_in", ORDERID_in);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DJ601_ORDERMESSAGE");
+
+        return result;
+    }
+
+    //获取收发存
+    public HashMap GETSFC(Date A_BEGINDATE, Date A_ENDDATE, String A_PLANTCODE, String A_DEPARTCODE,
+                          String A_ITYPE, String A_CODE, String A_NAME) throws SQLException {
+        logger.info("begin GETSFC");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1005.GETSFC" + "(:A_BEGINDATE,:A_ENDDATE,:A_PLANTCODE,:A_DEPARTCODE,:A_ITYPE,:A_CODE,:A_NAME,:RET)}");
+
+            cstmt.setDate("A_BEGINDATE", A_BEGINDATE);
+            cstmt.setDate("A_ENDDATE", A_ENDDATE);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_CODE", A_CODE);
+            cstmt.setString("A_NAME", A_NAME);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETSFC");
+
+        return result;
+    }
+
+    //查看消耗待回收
+    public HashMap DJ06_GETCONSUME(Date A_BEGINDATE, Date A_ENDDATE, String A_ORDERID, String A_PLANTCODE, String A_DEPARTCODE,
+                                   String A_ITYPE, String A_STOREDESC, String A_MATERIALCODE, String A_MATERIALNAME, String A_ETALON, String A_LCODESC) throws SQLException {
+        logger.info("begin DJ06_GETCONSUME");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1006.GETCONSUME" + "(:A_BEGINDATE,:A_ENDDATE,:A_ORDERID,:A_PLANTCODE,:A_DEPARTCODE," +
+                    ":A_ITYPE,:A_STOREDESC,:A_MATERIALCODE,:A_MATERIALNAME,:A_ETALON,:A_LCODESC,:RET)}");
+
+            cstmt.setDate("A_BEGINDATE", A_BEGINDATE);
+            cstmt.setDate("A_ENDDATE", A_ENDDATE);
+            cstmt.setString("A_ORDERID", A_ORDERID);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_STOREDESC", A_STOREDESC);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_MATERIALNAME", A_MATERIALNAME);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_LCODESC", A_LCODESC);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DJ06_GETCONSUME");
+
+        return result;
+    }
+
+    //修改回收数量
+    public HashMap SAVE_RECAMOUNT(String A_ID, String A_REC_AMOUNT, String A_USERID, String A_USERNAME) throws SQLException {
+        logger.info("begin SAVE_RECAMOUNT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1006.SAVE_RECAMOUNT" + "(:A_ID,:A_REC_AMOUNT,:A_USERID,:A_USERNAME,:RET_MSG,:RET)}");
+
+            cstmt.setString("A_ID", A_ID);
+            cstmt.setString("A_REC_AMOUNT", A_REC_AMOUNT);
+            cstmt.setString("A_USERID", A_USERID);
+            cstmt.setString("A_USERNAME", A_USERNAME);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+            result.put("RET", cstmt.getString("RET"));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end SAVE_RECAMOUNT");
+
+        return result;
+    }
+
+    //确认回收
+    public HashMap CONFIRM_REC(String A_ID, String A_USERID) throws SQLException {
+        logger.info("begin CONFIRM_REC");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1006.CONFIRM_REC" + "(:A_ID,:A_USERID,:RET_MSG,:RET)}");
+
+            cstmt.setString("A_ID", A_ID);
+            cstmt.setString("A_USERID", A_USERID);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+            result.put("RET", cstmt.getString("RET"));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end CONFIRM_REC");
+
+        return result;
+    }
+
+    //获取消耗待回收工单
+    public HashMap GETCONSUMEBYORDER(Date A_BEGINDATE, Date A_ENDDATE, String A_ORDERID, String A_PLANTCODE, String A_DEPARTCODE) throws SQLException {
+        logger.info("begin GETCONSUMEBYORDER");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1006.GETCONSUMEBYORDER" + "(:A_BEGINDATE,:A_ENDDATE,:A_ORDERID,:A_PLANTCODE,:A_DEPARTCODE,:RET)}");
+
+            cstmt.setDate("A_BEGINDATE", A_BEGINDATE);
+            cstmt.setDate("A_ENDDATE", A_ENDDATE);
+            cstmt.setString("A_ORDERID", A_ORDERID);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETCONSUMEBYORDER");
+
+        return result;
+    }
+
+    //根据单号查询消耗待回收
+    public HashMap GETORDERMATCONSUME(String A_ORDERID) throws SQLException {
+        logger.info("begin GETORDERMATCONSUME");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1006.GETORDERMATCONSUME" + "(:A_ORDERID,:RET)}");
+
+            cstmt.setString("A_ORDERID", A_ORDERID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETORDERMATCONSUME");
+
+        return result;
+    }
+
+    //修改库房描述
+    public HashMap SETSTOREDESC(String A_ID, String A_NEW_STOREDESC) throws SQLException {
+        logger.info("begin SETSTOREDESC");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1002.SETSTOREDESC" + "(:A_ID,:A_NEW_STOREDESC,:RET_MSG,:RET)}");
+
+            cstmt.setString("A_ID", A_ID);
+            cstmt.setString("A_NEW_STOREDESC", A_NEW_STOREDESC);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("RET_MSG", cstmt.getString("RET_MSG"));
+            result.put("RET", cstmt.getString("RET"));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end SETSTOREDESC");
+
+        return result;
+    }
+
+    //获取消耗待回收工单
+    public HashMap GETCONSUMESELECT(Date A_BEGINDATE, Date A_ENDDATE, String A_ORDERID, String A_PLANTCODE, String A_DEPARTCODE,
+                                    String A_ITYPE, String A_STOREDESC, String A_MATERIALCODE, String A_MATERIALNAME, String A_ETALON, String A_LCODESC) throws SQLException {
+        logger.info("begin GETCONSUMESELECT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_DJ1006.GETCONSUMESELECT" + "(:A_BEGINDATE,:A_ENDDATE,:A_ORDERID,:A_PLANTCODE,:A_DEPARTCODE," +
+                    ":A_ITYPE,:A_STOREDESC,:A_MATERIALCODE,:A_MATERIALNAME,:A_ETALON,:A_LCODESC,:RET)}");
+
+            cstmt.setDate("A_BEGINDATE", A_BEGINDATE);
+            cstmt.setDate("A_ENDDATE", A_ENDDATE);
+            cstmt.setString("A_ORDERID", A_ORDERID);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_ITYPE", A_ITYPE);
+            cstmt.setString("A_STOREDESC", A_STOREDESC);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_MATERIALNAME", A_MATERIALNAME);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_LCODESC", A_LCODESC);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end GETCONSUMESELECT");
+
+        return result;
+    }
+
 }
