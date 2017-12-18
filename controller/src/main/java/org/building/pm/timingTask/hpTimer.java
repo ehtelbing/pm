@@ -25,8 +25,8 @@ public class hpTimer {
     @Autowired
     private hpService hpService;
 
-    //查询有没有新的发起工单数据,有的话往AM_SEND里SET
-    @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
+   /* //查询有没有新的发起工单数据,有的话往AM_SEND里SET
+    @Scheduled(cron = "0 0/10 * * * ?")//这是定时时间的地方
     public void setJstWherePlantime(){
         try {
             HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
@@ -66,9 +66,8 @@ public class hpTimer {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
-    //查询有没有新的发起工单数据,有的话往AM_SEND里SET
     @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
     public void setDJDB(){
         try {
@@ -97,8 +96,8 @@ public class hpTimer {
                 ca.setTime(sdftime.parse(scTime));
                 ca.add(Calendar.HOUR_OF_DAY, Integer.parseInt(intNumber));
                 ca.add(Calendar.MINUTE, (int) (d * 60));
-                //System.out.println("第" + i + "个最终时间时间为" + sdftime.format(ca.getTime()));
-               // System.out.println("第" + i + "个当前时间时间为" + sdftime.format(new Date()));
+                System.out.println("第" + i + "个最终时间时间为" + sdftime.format(ca.getTime()));
+                System.out.println("第" + i + "个当前时间时间为" + sdftime.format(new Date()));
                 String date1 = sdftime.format(ca.getTime());
                 String date2 = sdftime.format(new Date());
                 if (date1.equals(date2)) {
@@ -116,7 +115,7 @@ public class hpTimer {
 
     }
 
-    //查询AM_SEND有没有新数据有的话调用即时通
+    /*//查询AM_SEND有没有新数据有的话调用即时通
     @Scheduled(cron = "0 0/5 * * * ?")//这是定时时间的地方
     public void sendJstWithNew(){
         try {
@@ -142,5 +141,5 @@ public class hpTimer {
             e.printStackTrace();
         }
 
-    }
+    }*/
 }

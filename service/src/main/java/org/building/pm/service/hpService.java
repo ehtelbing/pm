@@ -2915,8 +2915,8 @@ public class hpService {
 
             call.setReturnType(XMLType.XSD_STRING);
 
-           // String ret = (String) call.invoke(new Object[] { xele, url });//xele为主体发送参数（详见“业务系统发送信息服务模板参数说明”）;url为推送到终端并能访问业务系统的链接地址。
-            return "";
+            String ret = (String) call.invoke(new Object[] { xele, url });//xele为主体发送参数（详见“业务系统发送信息服务模板参数说明”）;url为推送到终端并能访问业务系统的链接地址。
+            return ret;
         } catch (Exception e) {
             e.printStackTrace();
             return "Fail";
@@ -3645,6 +3645,100 @@ public class hpService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_06_DJ_DATA_UPSET");
+        return result;
+    }
+
+
+    public HashMap PM_1917_JXGX_JJ_DATA_SET(String V_V_JXGX_CODE,String V_V_JJ_CODE,String V_V_TS,String V_V_EQUCODE) throws SQLException {
+
+        logger.info("begin PM_1917_JXGX_JJ_DATA_SET");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXGX_JJ_DATA_SET" + "(:V_V_JXGX_CODE,:V_V_JJ_CODE,:V_V_TS,:V_V_EQUCODE," +
+                    ":V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JJ_CODE", V_V_JJ_CODE);
+            cstmt.setString("V_V_TS", V_V_TS);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXGX_JJ_DATA_SET");
+        return result;
+    }
+
+    public HashMap PM_1917_JXGX_JJ_DATA_DEL(String  V_V_JXGX_CODE,String V_V_JJ_CODE) throws SQLException {
+
+        logger.info("begin PM_1917_JXGX_JJ_DATA_DEL");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXGX_JJ_DATA_DEL" + "(:V_V_JXGX_CODE," +
+                    ":V_V_JJ_CODE,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JJ_CODE", V_V_JJ_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXGX_JJ_DATA_DEL");
+        return result;
+    }
+
+    public HashMap PM_1917_JXMX_JJ_TS_SET(String V_V_JXGX_CODE,String V_V_JJ_CODE,String V_V_TS) throws SQLException {
+
+        logger.info("begin PM_1917_JXGX_JJ_DATA_SET");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXMX_JJ_TS_SET" + "(:V_V_JXGX_CODE,:V_V_JJ_CODE,:V_V_TS," +
+                    ":V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JJ_CODE", V_V_JJ_CODE);
+            cstmt.setString("V_V_TS", V_V_TS);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXMX_JJ_TS_SET");
         return result;
     }
 

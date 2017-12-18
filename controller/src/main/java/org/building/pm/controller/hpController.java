@@ -2173,7 +2173,7 @@ public class hpController {
             @RequestParam(value = "V_V_WORKCODE") String V_V_WORKCODE,
             @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
             HttpServletRequest request, HttpServletResponse response, HttpSession session)
-            throws com.fasterxml.jackson.core.JsonProcessingException,
+            throws JsonProcessingException,
             NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> menu = new ArrayList<Map>();
@@ -2682,16 +2682,16 @@ public class hpController {
     }
 
     @RequestMapping(value = "/PM_06_DJ_DATA_UPSET", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> PM_06_DJ_DATA_UPSET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                 @RequestParam(value = "V_V_DJ_STATE") String V_V_DJ_STATE,
-                                                 @RequestParam(value = "V_V_DJ_DATE") String V_V_DJ_DATE,
-                                                 @RequestParam(value = "V_V_DJ_PER") String V_V_DJ_PER,
-                                                 @RequestParam(value = "V_V_DJ_NR") String V_V_DJ_NR,
-                                                 @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE,
-                                                 @RequestParam(value = "V_V_TIMER_GUID") String V_V_TIMER_GUID,
-                                                 HttpServletRequest request,
-                                                 HttpServletResponse response) throws Exception {
+     @ResponseBody
+     public Map<String, Object> PM_06_DJ_DATA_UPSET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                    @RequestParam(value = "V_V_DJ_STATE") String V_V_DJ_STATE,
+                                                    @RequestParam(value = "V_V_DJ_DATE") String V_V_DJ_DATE,
+                                                    @RequestParam(value = "V_V_DJ_PER") String V_V_DJ_PER,
+                                                    @RequestParam(value = "V_V_DJ_NR") String V_V_DJ_NR,
+                                                    @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE,
+                                                    @RequestParam(value = "V_V_TIMER_GUID") String V_V_TIMER_GUID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = hpService.PM_06_DJ_DATA_UPSET(V_V_GUID, V_V_DJ_STATE, V_V_DJ_DATE, V_V_DJ_PER, V_V_DJ_NR, V_V_DJ_TYPE, V_V_TIMER_GUID);
@@ -2699,6 +2699,59 @@ public class hpController {
         String pm_06 = (String) data.get("RET");
 
         result.put("RET", pm_06);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_1917_JXGX_JJ_DATA_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_1917_JXGX_JJ_DATA_SET(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                                   @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
+                                                   @RequestParam(value = "V_V_TS") String V_V_TS,
+                                                   @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = hpService.PM_1917_JXGX_JJ_DATA_SET(V_V_JXGX_CODE, V_V_JJ_CODE, V_V_TS, V_V_EQUCODE);
+
+        String pm_hp = (String) data.get("RET");
+
+        result.put("RET", pm_hp);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_1917_JXGX_JJ_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_1917_JXGX_JJ_DATA_DEL(
+            @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+            @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = hpService.PM_1917_JXGX_JJ_DATA_DEL(V_V_JXGX_CODE,V_V_JJ_CODE);
+        String pm_06 = (String) data.get("RET");
+
+        result.put("RET", pm_06);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_1917_JXMX_JJ_TS_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_1917_JXMX_JJ_TS_SET(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                                        @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
+                                                        @RequestParam(value = "V_V_TS") String V_V_TS,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = hpService.PM_1917_JXMX_JJ_TS_SET(V_V_JXGX_CODE, V_V_JJ_CODE, V_V_TS);
+
+        String pm_hp = (String) data.get("RET");
+
+        result.put("RET", pm_hp);
         result.put("success", true);
         return result;
     }

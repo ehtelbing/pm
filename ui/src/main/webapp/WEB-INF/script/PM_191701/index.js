@@ -3,8 +3,10 @@ var V_ORGCODE=null;
 var V_DEPTCODE=null;
 var V_EQUCODE=null;
 var V_EQUTYPE=null;
+var V_GX_CODE = null;
 if (location.href.split('?')[1] != undefined) {
     V_MX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_MX_CODE;
+
     V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
     V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
@@ -663,7 +665,7 @@ function cancel_btn() {
 function selectJXCAR() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_191704/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_191704/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue()+'&V_EQUCODE='+V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXCAR(data) {
@@ -677,7 +679,7 @@ function getReturnJXCAR(data) {
 function selectJXTOOL() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_191705/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_191705/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue()+'&V_EQUCODE='+V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXTOOL(data) {
@@ -706,7 +708,7 @@ function getReturnJXPER(data) {
 function selectJXTECHNOLOGY() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_191708/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_191708/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue()+'&V_EQUCODE='+V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXTECHNOLOGY(data) {
@@ -733,7 +735,7 @@ function getReturnJSBZ(guid,value){
 function selectJXSAFE() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_191709/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_191709/index.html?V_V_JXGX_CODE=' + Ext.getCmp('jxgxbm').getValue()+'&V_EQUCODE='+V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXSAFE(data) {

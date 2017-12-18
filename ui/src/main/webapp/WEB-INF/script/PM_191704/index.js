@@ -1,8 +1,9 @@
 var V_V_JXGX_CODE = null;
 var V_ORDERGUID = null;
-var V_EQUCODE=null;
+var V_EQUCODE = null;
 if (location.href.split('?')[1] != undefined) {
     V_V_JXGX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_V_JXGX_CODE;
+    V_MX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_MX_CODE;
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
 }
@@ -11,7 +12,7 @@ var selid = "";
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
-    fields: ['V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_FLAG', 'V_CARINFO','V_EQUCODE','V_EQUNAME','V_EQUSITE'],
+    fields: ['V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_FLAG', 'V_CARINFO', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -47,13 +48,19 @@ var gridXXStore = Ext.create("Ext.data.Store", {
         'V_CARTYPE',
         'V_CARGUISUO',
         'V_FLAG',
-        'V_FLAG'
+        'V_FLAG',
+        'V_JJ_CODE',
+        'V_JJ_NAME',
+        'V_JJ_TYPE',
+        'V_JJ_TS',
+        'V_JJ_DE',
+        'V_JXGX_CODE'
 
     ],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_14/PRO_WORKORDER_CARSEL',
+        url: AppUrl + 'pm_19/PRO_PM_19_CARDE_GXSEL',
         actionMethods: {
             read: 'POST'
         },
@@ -85,21 +92,21 @@ var Layout = {
                     icon: imgpath + '/search.png',
                     style: {margin: ' 5px 0 5px 10px'}
                 },
-                {
-                    xtype: 'button', text: '选择', handler: function () {
-                    var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-                    if (seldata.length == 0) {
-                        alert('请选择一条数据！');
-                    }else{
-                        addDetailInfo();
-                        /*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
-                            if(button == 'yes'){
-                                select();
-                            }
-                        })*/
-                    }
-                }, icon: imgpath + '/add.png', style: {margin: ' 5px 0 5px 10px'}
-                },{
+                /*{
+                 xtype: 'button', text: '选择', handler: function () {
+                 var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+                 if (seldata.length == 0) {
+                 alert('请选择一条数据！');
+                 }else{
+                 addDetailInfo();
+                 *//*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
+                 if(button == 'yes'){
+                 select();
+                 }
+                 })*//*
+                 }
+                 }, icon: imgpath + '/add.png', style: {margin: ' 5px 0 5px 10px'}
+                 },*/{
                     xtype: 'button',
                     text: '确定',
                     handler: select,
@@ -109,13 +116,15 @@ var Layout = {
             ]
         },
         {
-            xtype: 'gridpanel', region: 'center', columnLines: true, id: 'grid', store: 'gridStore',
-            height:'35%',
-
-            selType: 'checkboxmodel',
+            xtype: 'gridpanel', region: 'center', columnLines: true, id: 'grid', store: gridStore,
+            height: '35%',
+            selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
+                selType: 'checkboxmodel',
+                mode: 'SINGLE'
+            },
             plugins: [Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 1})],
             listeners: {
-                //itemclick: OnClickGrid
+                itemclick: OnClickGrid
                 //itemdblclick: OnClickGrid
             },
             columns: [
@@ -142,7 +151,7 @@ var Layout = {
                 },
                 {
                     text: '台时', align: 'center', width: 150, dataIndex: 'V_TIME', renderer: AtEdit,
-                    editor:{xtype: 'numberfield'},hidden:true
+                    editor: {xtype: 'numberfield'}, hidden: true
                 },
                 {
                     text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE'
@@ -156,56 +165,68 @@ var Layout = {
             ]
         },
         {
-            xtype: 'gridpanel', region: 'south', columnLines: true, id: 'gridXX', store: 'gridXXStore',
-            selType: 'checkboxmodel',
-            plugins: [Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 1})],
-            height:'60%',
-            title:'已选择',
+            xtype: 'gridpanel', region: 'south', columnLines: true, id: 'gridXX', store: gridXXStore,
+            selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
+                selType: 'checkboxmodel',
+                mode: 'SINGLE'
+            }
+            ,
+            plugins: Ext.create('Ext.grid.plugin.CellEditing', {
+                clicksToEdit: 1
+            }),
+            height: '60%',
+            title: '已选择',
             columns: [
                 {
                     xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '车辆编码', align: 'center', width: 150, dataIndex: 'V_CARCODE'
+                    text: '车辆编码', align: 'center', width: 150, dataIndex: 'V_JJ_CODE'
                 },
                 {
-                    text: '车辆名称', align: 'center', width: 150, dataIndex: 'V_CARNAME'
+                    text: '车辆名称', align: 'center', width: 150, dataIndex: 'V_JJ_NAME'
                 },
                 {
-                    text: '车辆类型', align: 'center', width: 150, dataIndex: 'V_CARTYPE'
+                    text: '车辆类型', align: 'center', width: 150, dataIndex: 'V_JJ_TYPE'
                 },
                 {
-                    text: '车辆归属', align: 'center', width: 150, dataIndex: 'V_CARGUISUO'
+                    text: '车辆定额', align: 'center', width: 150, dataIndex: 'V_JJ_DE'
                 },
                 {
-                    text: '车辆状态', align: 'center', width: 150, dataIndex: 'V_FLAG'
-                },
-                {
-                    text: '车辆信息', align: 'center', width: 150, dataIndex: 'V_CARINFO'
-                },
-                {
-                    text: '等候时间', align: 'center', width: 150, dataIndex: 'D_DATETIME_WITE'
-                },
-                {
-                    text: '等候地点', align: 'center', width: 150, dataIndex: 'V_DD_WITE'
-                },
-                {
-                    text: '运输物品', align: 'center', width: 150, dataIndex: 'V_WP_WITE'
-                },
-                {
-                    text: '备注', align: 'center', width: 150, dataIndex: 'V_MEMO'
-                },
-                {
-                    text: '联系人电话', align: 'center', width: 150, dataIndex: 'V_LXRDH'
-                },
-                {
-                    text: '台时', align: 'center', width: 150, dataIndex: 'V_TIME', renderer: AtEdit,
-                    editor:{xtype: 'numberfield'},hidden:true
+                    text: '车辆台时',
+                    align: 'center',
+                    width: 150,
+                    dataIndex: 'V_JJ_TS',
+                    renderer : CreateGrid1ColumnTd,
+                    editor: {
+                        id: 'jpzc',
+                        xtype: 'numberfield',
+                        allowNegative: false,
+                        minValue: 0,
+                        value: 0,
+                        decimalPrecision: 8 //这个属性是用来 精确到多少位的  目前是精确到8位
+
+
+                    }
+                }, /*,
+                 {
+                 text: '台时', align: 'center', width: 150, dataIndex: 'V_JJ_TS', renderer: AtEdit,
+                 editor:{xtype: 'numberfield'},hidden:true
+                 }*/{
+                    text: '操作',
+                    dataIndex: 'V_JXGX_CODE',
+                    width: 155,
+                    align: 'center',
+                    renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                        return '<a href=javascript:_delete(\'' + value + '\',\'' + record.data.V_JJ_CODE + '\')>' + '删除' + '</a>';
+                    }
                 }
             ]
         }
     ]
 };
+
+
 
 function select() {
     var seldata = Ext.getCmp('gridXX').getSelectionModel().getSelection();
@@ -214,215 +235,223 @@ function select() {
         return false;
     }
     /*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
-        if(button == 'yes'){*/
-            //addDetailInfo();
-           // var count=Ext.getCmp('gridXX').getStore().getCount();
-            //var seldata = Ext.getCmp('gridXX').getStore();
-            var retdata = [];
-            for (var i = 0; i < seldata.length; i++) {
-                Ext.Ajax.request({
-                    method: 'POST',
-                    async: false,
-                    url: AppUrl + 'basic/PM_1917_JXMX_JJ_CHANGE',
-                    params: {
-                        V_V_JXGX_CODE: V_V_JXGX_CODE,
-                        V_V_JJCODE: seldata[i].data.V_CARCODE,
-                        V_V_TS: seldata[i].data.V_TIME
-                    },
-                    success: function (response) {
-                        var resp = Ext.decode(response.responseText);
-                        if(i ==  seldata.length-1){
-                            retdata.push(seldata[i].data.V_CARNAME);
-                        }
-                        else{
-                            retdata.push(seldata[i].data.V_CARNAME+',');
-                        }
-                    }
-                });
+     if(button == 'yes'){*/
+    //addDetailInfo();
+    // var count=Ext.getCmp('gridXX').getStore().getCount();
+    //var seldata = Ext.getCmp('gridXX').getStore();
+    var retdata = [];
+    for (var i = 0; i < seldata.length; i++) {
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'basic/PM_1917_JXMX_JJ_CHANGE',
+            params: {
+                V_V_JXGX_CODE: V_V_JXGX_CODE,
+                V_V_JJCODE: seldata[i].data.V_JJ_CODE,
+                V_V_TS: seldata[i].data.V_JJ_TS
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if (i == seldata.length - 1) {
+                    retdata.push(seldata[i].data.V_JJ_NAME);
+                }
+                else {
+                    retdata.push(seldata[i].data.V_JJ_NAME + ',');
+                }
             }
-            window.opener.getReturnJXCAR(retdata);
-            window.close();
-        /*}else{
+        });
+    }
+    window.opener.getReturnJXCAR(retdata);
+    window.close();
+    /*}else{
 
-        }
-    })*/
+     }
+     })*/
 
 }
+
+
 //等候地点
 var dhstore = Ext.create('Ext.data.Store', {
-    autoLoad : true,
-    storeId : 'dhstore',
-    fields : ['V_DROP', 'V_DROP'],
-    proxy : {
-        type : 'ajax',
-        async : false,
-        url :  AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_DROP',
-        actionMethods : {
-            read : 'POST'
+    autoLoad: true,
+    storeId: 'dhstore',
+    fields: ['V_DROP', 'V_DROP'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_DROP',
+        actionMethods: {
+            read: 'POST'
         },
-        reader : {
-            type : 'json',
-            root : 'list'
+        reader: {
+            type: 'json',
+            root: 'list'
         },
-        extraParams : {
-            V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-            V_V_CLOUMSNAME:'v_dd_wite'
+        extraParams: {
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_CLOUMSNAME: 'v_dd_wite'
         }
     }
 });
 //运输物品
 var yswpstore = Ext.create('Ext.data.Store', {
-    autoLoad : true,
-    storeId : 'yswpstore',
-    fields : ['V_DROP', 'V_DROP'],
-    proxy : {
-        type : 'ajax',
-        async : false,
-        url :  AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_DROP',
-        actionMethods : {
-            read : 'POST'
+    autoLoad: true,
+    storeId: 'yswpstore',
+    fields: ['V_DROP', 'V_DROP'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_DROP',
+        actionMethods: {
+            read: 'POST'
         },
-        reader : {
-            type : 'json',
-            root : 'list'
+        reader: {
+            type: 'json',
+            root: 'list'
         },
-        extraParams : {
-            V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-            V_V_CLOUMSNAME:'v_wp_wite'
+        extraParams: {
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_CLOUMSNAME: 'v_wp_wite'
         }
     }
 });
 
 //联系人和电话
 var lxrstore = Ext.create('Ext.data.Store', {
-    autoLoad : true,
-    storeId : 'lxrstore',
-    fields : ['V_DROP', 'V_DROP'],
-    proxy : {
-        type : 'ajax',
-        async : false,
-        url :  AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_DROP',
-        actionMethods : {
-            read : 'POST'
+    autoLoad: true,
+    storeId: 'lxrstore',
+    fields: ['V_DROP', 'V_DROP'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_DROP',
+        actionMethods: {
+            read: 'POST'
         },
-        reader : {
-            type : 'json',
-            root : 'list'
+        reader: {
+            type: 'json',
+            root: 'list'
         },
-        extraParams : {
-            V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-            V_V_CLOUMSNAME:'V_LXRDH'
+        extraParams: {
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_CLOUMSNAME: 'V_LXRDH'
         }
     }
 });
 var window = Ext.create('Ext.window.Window', {
     id: 'window',
     width: 450,
-    height: 280,
+    height: 350,
     layout: 'vbox',
     title: '添加详细信息',
     modal: true,//弹出窗口时后面背景不可编辑
     frame: true,
     closeAction: 'hide',
     closable: true,
-    items: [{id:'cl',
-        xtype:'combo',
-        fieldLabel:'车 辆',
-        labelAlign:'right',
-        labelWidth:100,
-        width:360,
-        style : ' margin: 10px 0px 5px 0px',
-        editable:false,
+    items: [{
+        id: 'cl',
+        xtype: 'combo',
+        fieldLabel: '车 辆',
+        labelAlign: 'right',
+        labelWidth: 100,
+        width: 360,
+        style: ' margin: 10px 0px 5px 0px',
+        editable: false,
         //store:clstore,
-        valueField:'V_CARCODE',
-        displayField:'V_CARTEXT',
-        hidden:true
-    }, {xtype: 'panel',
+        valueField: 'V_CARCODE',
+        displayField: 'V_CARTEXT',
+        hidden: true
+    }, {
+        xtype: 'panel',
         layout: 'column',
         frame: true,
         baseCls: 'mu-panel-no-border',
         items: [{
-            id : 'dhtime',
-            xtype : 'datefield',
-            editable : false,
-            format : 'Y/m/d',
-            value : new Date(),//new Date().getHours()
-            fieldLabel : '等候时间',
-            labelWidth : 100,
-            labelAlign:'right',
-            width:220,
-            style : ' margin: 15px 0px 5px 0px',
-            baseCls : 'margin-bottom'
+            id: 'dhtime',
+            xtype: 'datefield',
+            editable: false,
+            format: 'Y/m/d',
+            value: new Date(),//new Date().getHours()
+            fieldLabel: '等候时间',
+            labelWidth: 100,
+            labelAlign: 'right',
+            width: 220,
+            style: ' margin: 15px 0px 5px 0px',
+            baseCls: 'margin-bottom'
         },
             {
-                xtype : 'numberfield',
-                id : 'shi',
-                width : 60,
-                value : new Date().getHours(),
-                minValue:0,
-                maxValue:59,
-                selectOnFocus : true,
-                labelAlign : 'right',
-                style : 'margin: 15px 0px 5px 10px'
+                xtype: 'numberfield',
+                id: 'shi',
+                width: 60,
+                value: new Date().getHours(),
+                minValue: 0,
+                maxValue: 59,
+                selectOnFocus: true,
+                labelAlign: 'right',
+                style: 'margin: 15px 0px 5px 10px'
             },
             {
-                xtype : 'numberfield',
-                id : 'fen',
-                width : 60,
-                value : new Date().getMinutes(),
-                minValue:0,
-                maxValue:59,
-                selectOnFocus : true,
-                labelAlign : 'right',
-                style : 'margin: 15px 0px 5px 10px'
+                xtype: 'numberfield',
+                id: 'fen',
+                width: 60,
+                value: new Date().getMinutes(),
+                minValue: 0,
+                maxValue: 59,
+                selectOnFocus: true,
+                labelAlign: 'right',
+                style: 'margin: 15px 0px 5px 10px'
             }]
     },
-        {id:'dhdd',
-            xtype:'combo',
-            fieldLabel:'等候地点',
-            labelAlign:'right',
-            labelWidth:100,
-            width:360,
-            style : ' margin: 15px 0px 5px 0px',
-            editable:true,
-            store:dhstore,
-            valueField:'V_DROP',
-            displayField:'V_DROP' ,
-            fieldStyle:'background-color:#ffffcc;background-image:none;',
+        {
+            id: 'dhdd',
+            xtype: 'combo',
+            fieldLabel: '等候地点',
+            labelAlign: 'right',
+            labelWidth: 100,
+            width: 360,
+            style: ' margin: 15px 0px 5px 0px',
+            editable: true,
+            store: dhstore,
+            valueField: 'V_DROP',
+            displayField: 'V_DROP',
+            fieldStyle: 'background-color:#ffffcc;background-image:none;',
             queryMode: 'local'
-        }, {id:'yswp',
-            xtype:'combo',
-            fieldLabel:'运输物品',
-            labelAlign:'right',
-            labelWidth:100,
-            width:360,
-            style : ' margin: 15px 0px 5px 0px',
-            editable:true,
-            store:yswpstore,
-            valueField:'V_DROP',
-            displayField:'V_DROP',
-            fieldStyle:'background-color:#ffffcc;background-image:none;',
+        }, {
+            id: 'yswp',
+            xtype: 'combo',
+            fieldLabel: '运输物品',
+            labelAlign: 'right',
+            labelWidth: 100,
+            width: 360,
+            style: ' margin: 15px 0px 5px 0px',
+            editable: true,
+            store: yswpstore,
+            valueField: 'V_DROP',
+            displayField: 'V_DROP',
+            fieldStyle: 'background-color:#ffffcc;background-image:none;',
             queryMode: 'local'
-         }, { id: 'bz',
+        }, {
+            id: 'bz',
             xtype: 'textfield',
             fieldLabel: '备 注',
             labelAlign: 'right',
             style: 'margin:15px 0px 5px 0px',
             labelWidth: 100,
-            width: 360 ,
-            fieldStyle:'background-color:#ffffcc;background-image:none;'
-        }, {id:'lxrdh',
-            xtype:'combo',
-            fieldLabel:'联系人和电话',
-             labelAlign:'right',
-            labelWidth:100,
-             width:360,
-            style : ' margin: 15px 0px 15px 0px',
-            editable:true,
-            fieldStyle:'background-color:#ffffcc;background-image:none;',
-            store:lxrstore,
-            valueField:'V_DROP',
-            displayField:'V_DROP',
+            width: 360,
+            fieldStyle: 'background-color:#ffffcc;background-image:none;'
+        }, {
+            id: 'lxrdh',
+            xtype: 'combo',
+            fieldLabel: '联系人和电话',
+            labelAlign: 'right',
+            labelWidth: 100,
+            width: 360,
+            style: ' margin: 15px 0px 15px 0px',
+            editable: true,
+            fieldStyle: 'background-color:#ffffcc;background-image:none;',
+            store: lxrstore,
+            valueField: 'V_DROP',
+            displayField: 'V_DROP',
             queryMode: 'local'
         }
     ],
@@ -446,14 +475,15 @@ var window = Ext.create('Ext.window.Window', {
 function onPageLoaded() {
     Ext.create('Ext.container.Viewport', Layout);
     queryGrid();
-    QueryXXGrid();
+
+    // QueryXXGrid();
 }
 
 function queryGrid() {
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
             V_V_CARNAME: Ext.getCmp('carname').getValue(),
-            V_V_EQUCODE:V_EQUCODE
+            V_V_EQUCODE: V_EQUCODE
         }
     });
 }
@@ -548,7 +578,7 @@ function AtEdit(value, metaData, record, rowIndex, colIndex, store) {
 }
 function addDetailInfo() {
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-    if (seldata.length ==0) {
+    if (seldata.length == 0) {
         alert('请至少选择一条数据进行添加！');
         return false;
     }
@@ -561,34 +591,34 @@ function addDetailInfo() {
     Ext.getCmp('lxrdh').setValue();
     Ext.getCmp('window').show();
 }
-function getIP(){
-    var redata='';
+function getIP() {
+    var redata = '';
     Ext.Ajax.request({
-        method : 'POST',
-        async : false,
-        url : AppUrl + 'PM_14/GetIP',
-        params : {},
-        success : function(response){
+        method: 'POST',
+        async: false,
+        url: AppUrl + 'PM_14/GetIP',
+        params: {},
+        success: function (response) {
             var resp = Ext.decode(response.responseText);
-            redata=resp.IP.split("/")[1];
+            redata = resp.IP.split("/")[1];
         }
     });
     return redata;
 }
 
-function detailInfoSave(){
+function detailInfoSave() {
     /*if(Ext.ComponentManager.get('dhdd').getValue()==''||Ext.ComponentManager.get('dhdd').getValue()==null){
-        Ext.Msg.alert("操作信息","等候地点不能为空");
-        return false;
-    }
-    if(Ext.ComponentManager.get('yswp').getValue()==''||Ext.ComponentManager.get('yswp').getValue()==null){
-        Ext.Msg.alert("操作信息","运输物品不能为空");
-        return false;
-    }
-    if(Ext.ComponentManager.get('lxrdh').getValue()==''||Ext.ComponentManager.get('lxrdh').getValue()==null){
-        Ext.Msg.alert("操作信息","联系人和电话不能为空");
-        return false;
-    }*/
+     Ext.Msg.alert("操作信息","等候地点不能为空");
+     return false;
+     }
+     if(Ext.ComponentManager.get('yswp').getValue()==''||Ext.ComponentManager.get('yswp').getValue()==null){
+     Ext.Msg.alert("操作信息","运输物品不能为空");
+     return false;
+     }
+     if(Ext.ComponentManager.get('lxrdh').getValue()==''||Ext.ComponentManager.get('lxrdh').getValue()==null){
+     Ext.Msg.alert("操作信息","联系人和电话不能为空");
+     return false;
+     }*/
     var shi = Ext.ComponentManager.get("shi").getValue();
     if (shi < 10) {
         shi = '0' + shi;
@@ -598,30 +628,30 @@ function detailInfoSave(){
         fen = '0' + fen;
     }
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-    var V_CARCODE='';
-    for(var i=0;i< seldata.length;i++){
-        V_CARCODE=V_CARCODE+seldata[i].data.V_CARCODE+',';
+    var V_CARCODE = '';
+    for (var i = 0; i < seldata.length; i++) {
+        V_CARCODE = V_CARCODE + seldata[i].data.V_CARCODE + ',';
     }
-    V_CARCODE=V_CARCODE.substring(0,V_CARCODE.length-1);
+    V_CARCODE = V_CARCODE.substring(0, V_CARCODE.length - 1);
     Ext.Ajax.request({
-        url : AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_SET',
+        url: AppUrl + 'PM_14/PM_14_CL_WORKORDER_DATA_SET',
         method: 'POST',
         async: false,
         params: {
-            V_V_IP:getIP(),
-            V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-            V_V_ORDERID:V_ORDERGUID,
-            V_V_CARCODE:V_CARCODE,//Ext.ComponentManager.get('cl').getValue(),
-            V_D_DATETIME_WITE:Ext.Date.format(Ext.ComponentManager.get("dhtime").getValue(), 'Y-m-d')+ " " + shi + ":" + fen + ':' + "00",
+            V_V_IP: getIP(),
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_ORDERID: V_ORDERGUID,
+            V_V_CARCODE: V_CARCODE,//Ext.ComponentManager.get('cl').getValue(),
+            V_D_DATETIME_WITE: Ext.Date.format(Ext.ComponentManager.get("dhtime").getValue(), 'Y-m-d') + " " + shi + ":" + fen + ':' + "00",
             V_V_DD_WITE: Ext.ComponentManager.get('dhdd').getValue(),
-            V_V_WP_WITE:Ext.ComponentManager.get('yswp').getValue(),
-            V_V_MEMO:Ext.ComponentManager.get('bz').getValue(),
-            V_V_LXRDH:Ext.ComponentManager.get('lxrdh').getValue()
+            V_V_WP_WITE: Ext.ComponentManager.get('yswp').getValue(),
+            V_V_MEMO: Ext.ComponentManager.get('bz').getValue(),
+            V_V_LXRDH: Ext.ComponentManager.get('lxrdh').getValue()
         },
         success: function (response) {
             var resp = Ext.JSON.decode(response.responseText);
             // Ext.example.msg('操作信息', '{0}', resp);
-            if(resp.RET=='success'){
+            if (resp.RET == 'success') {
                 //Ext.Msg.alert("操作信息","添加成功");
                 Ext.getCmp('window').hide();
                 QueryXXGrid();
@@ -630,10 +660,108 @@ function detailInfoSave(){
     });
 
 }
-function QueryXXGrid(){
+function QueryXXGrid() {
     Ext.data.StoreManager.lookup('gridXXStore').load({
         params: {
-            V_V_ORDERGUID: V_ORDERGUID
+            V_V_JXGX_CODE: V_V_JXGX_CODE
         }
     });
+}
+
+function OnClickGrid() {
+    var records = Ext.getCmp('grid').getSelectionModel().getSelection();//获取选中的数据
+
+    Ext.Ajax.request({
+        url: AppUrl + 'hp/PM_1917_JXGX_JJ_DATA_SET',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_JXGX_CODE: V_V_JXGX_CODE,
+            V_V_JJ_CODE: records[0].get('V_CARCODE'),
+            V_V_TS: '1',
+            V_V_EQUCODE: V_EQUCODE
+
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            QueryXXGrid();
+
+
+        }
+    });
+}
+
+
+function _delete(value, value2) {
+
+    Ext.MessageBox.show({
+        title: '确认',
+        msg: '您确定要删除吗亲？',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'hp/PM_1917_JXGX_JJ_DATA_DEL',
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        V_V_JXGX_CODE: value,
+                        V_V_JJ_CODE: value2
+                    },
+                    success: function (response) {
+                        var data = Ext.decode(response.responseText);//后台返回的值
+                        if (data.success) {//成功，会传回true
+
+                            QueryXXGrid();
+                            /*  for (var i = 0; i < records.length; i++) {
+                             // Ext.data.StoreManager.lookup('gridStore').remove(records[i]);//把这条数据，从页面数据集中移除，现实动态更新页面
+                             }
+                             //top.banner.Ext.example.msg('操作信息', '操作成功');//提示信息*/
+                        } else {
+                            Ext.MessageBox.show({
+                                title: '错误',
+                                msg: data.message,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+                        }
+                    },
+                    failure: function (response) {//访问到后台时执行的方法。
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: response.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        })
+                    }
+
+                })
+            }
+        }
+    });
+
+}
+
+function CreateGrid1ColumnTd(value, metaData, record, rowIdx, colIdx, store,
+                             view) {
+    if(record.modified.V_JJ_TS != null && record.modified.V_JJ_TS != record.data.V_JJ_TS){
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'hp/PM_1917_JXMX_JJ_TS_SET',
+            params: {
+                V_V_JXGX_CODE: V_V_JXGX_CODE,
+                V_V_JJ_CODE: record.data.V_JJ_CODE,
+                V_V_TS: value
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                //console.log(resp.RET);
+
+            }
+        });
+    }
+    metaData.style = "text-align:left; background-color:#FFFF99";
+    return value;
 }
