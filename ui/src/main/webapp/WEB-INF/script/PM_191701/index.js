@@ -47,7 +47,7 @@ var wlGridStore=Ext.create('Ext.data.Store',{
     proxy : {
         type : 'ajax',
         async : false,
-        url : AppUrl + 'pm_19/PRO_SAP_EQU_BOM_VIEW',
+        url : AppUrl + 'hp/PRO_SAP_EQU_BOM_VIEWN',
         actionMethods : {
             read : 'POST'
         },
@@ -56,10 +56,10 @@ var wlGridStore=Ext.create('Ext.data.Store',{
             root : 'list',
             total : 'total'
         }
-    },
+    }/*,
     listeners: {
         beforeload: beforewlGridStore
-    }
+    }*/
 });
 
 var wlQueryGridStore=Ext.create('Ext.data.Store',{
@@ -264,10 +264,39 @@ var win = Ext.create('Ext.window.Window', {
     }]
 });
 
+var WLwinbuttonPanel = Ext.create('Ext.panel.Panel', {
+    id: 'WLwinbuttonPanel',
+    region: 'north',
+    layout:'column',
+    height: 30,
+    frame: true,
+    //autoScroll : true,
+    baseCls: 'my-panel-no-border',
+    items: [{
+        xtype: 'button',
+        text: '查询',
+        margin: '5 5 5 5',
+        icon: imgpath + '/search.png',
+        handler: function () {
+            loadWLgrid();
+        }
+    },
+        {
+            xtype: 'textfield',
+            id: 'WLwinbjmc',
+            fieldLabel: '备件名称',
+            labelAlign : 'right',
+            margin: '5 5 5 5',
+            labelWidth: 70,
+            allowBlank: true,
+            width: 250
+        } ]
+});
+
 var WLwin = Ext.create('Ext.window.Window', {
     id: 'WLwin',
-    width: 620,
-    height: 300,
+    width: 920,
+    height: 500,
     layout: 'vbox',
     title: '',
     modal: true,//弹出窗口时后面背景不可编辑
@@ -275,7 +304,7 @@ var WLwin = Ext.create('Ext.window.Window', {
     closeAction: 'hide',
     closable: true,
     autoScroll : true,
-    items: [{xtype:'gridpanel',id:'wlGridPanel',selType : 'checkboxmodel',width:'100%',columnLines: true,store:wlGridStore,autoScroll: true,region:'center',
+    items: [WLwinbuttonPanel,{xtype:'gridpanel',id:'wlGridPanel',selType : 'checkboxmodel',width:'100%',columnLines: true,store:wlGridStore,autoScroll: true,region:'center',
         columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
             { text: '备件编码', width: 200, dataIndex: 'V_SPCODE', align: 'center', renderer: atleft },
             { text: '备件名称', width: 260, dataIndex: 'V_SPNAME', align: 'center', renderer: atleft },
@@ -301,8 +330,8 @@ var WLwin = Ext.create('Ext.window.Window', {
 
 var WLQuerywin = Ext.create('Ext.window.Window', {
     id: 'WLQuerywin',
-    width: 620,
-    height: 300,
+    width: 750,
+    height: 500,
     layout: 'vbox',
     title: '',
     modal: true,//弹出窗口时后面背景不可编辑
@@ -431,7 +460,7 @@ var Layout = {
                 },
 
                 {
-                    text: '物料详情', align: 'center', width: 150, dataIndex: 'V_WL_NAME',
+                    text: '物料详情', align: 'center', width: 250, dataIndex: 'V_WL_NAME',
                     renderer: rendererWL
                 },
                 {
@@ -477,9 +506,9 @@ function onPageLoaded() {
     });
 }
 
-function beforewlGridStore(store){
+/*function beforewlGridStore(store){
     store.proxy.extraParams.V_V_EQUCODE = V_EQUCODE;
-}
+}*/
 function queryGrid() {
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
@@ -755,7 +784,8 @@ function rendererWL(a,value, metaData, record, rowIndex, colIndex, store){
 function loadWLgrid(){
     Ext.data.StoreManager.lookup('wlGridStore').load({
         params:{
-            V_V_EQUCODE:V_EQUCODE
+            V_V_EQUCODE:V_EQUCODE,
+            V_V_SPNAME:Ext.getCmp('WLwinbjmc').getValue()
         }
     });
 }

@@ -114,7 +114,19 @@ Ext.onReady(function () {
             dataIndex: 'V_GUID',
             align: 'center',
             renderer: atleft,
-            width: 120
+            width: 300
+        }, {
+            text: '设备名称',
+            dataIndex: 'V_EQUNAME',
+            align: 'center',
+            renderer: atleft,
+            width: 200
+        },{
+            text: '装置名称',
+            dataIndex: 'V_EQUCHILDNAME',
+            align: 'center',
+            renderer: atleft,
+            width: 200
         }, {
             text: '允许值',
             dataIndex: 'V_VALUE',
@@ -148,13 +160,7 @@ Ext.onReady(function () {
                 queryMode: 'local',
                 displayField: 'V_EQUNAME',
                 valueField: 'V_EQUCODE'
-            }]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
+            },{
                 xtype: 'textfield',
                 id: 'V_V_EQUCHILDCODE',
                 fieldLabel: '装置名称',

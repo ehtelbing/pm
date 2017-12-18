@@ -71,6 +71,50 @@ var gridXXStore = Ext.create("Ext.data.Store", {
     }
 });
 
+var gridXXStore2 = Ext.create("Ext.data.Store", {
+    autoLoad: false,
+    storeId: 'gridXXStore2',
+    fields: ['I_ID',
+        'V_ORDERID',
+        'V_CARCODE',
+        'D_DATETIME_WITE',
+        'V_DD_WITE',
+        'V_WP_WITE',
+        'V_MEMO',
+        'D_DATE_CF',
+        'D_DD_CF',
+        'D_DATE_LK',
+        'D_DATE_NEXT_MDD',
+        'V_PERCODE_INPUT',
+        'V_PERCODE_SJ',
+        'V_LXRDH',
+        'V_CARNAME',
+        'V_CARTYPE',
+        'V_CARGUISUO',
+        'V_FLAG',
+        'V_FLAG',
+        'V_JJ_CODE',
+        'V_JJ_NAME',
+        'V_JJ_TYPE',
+        'V_JJ_TS',
+        'V_JJ_DE',
+        'V_JXGX_CODE'
+
+    ],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'pm_19/PRO_PM_19_CARDE_GXSEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+
 
 var Layout = {
     layout: 'border',
@@ -228,47 +272,7 @@ var Layout = {
 
 
 
-function select() {
-    var seldata = Ext.getCmp('gridXX').getSelectionModel().getSelection();
-    if (seldata.length == 0) {
-        alert('请在已选择中选择数据进行操作！');
-        return false;
-    }
-    /*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
-     if(button == 'yes'){*/
-    //addDetailInfo();
-    // var count=Ext.getCmp('gridXX').getStore().getCount();
-    //var seldata = Ext.getCmp('gridXX').getStore();
-    var retdata = [];
-    for (var i = 0; i < seldata.length; i++) {
-        Ext.Ajax.request({
-            method: 'POST',
-            async: false,
-            url: AppUrl + 'basic/PM_1917_JXMX_JJ_CHANGE',
-            params: {
-                V_V_JXGX_CODE: V_V_JXGX_CODE,
-                V_V_JJCODE: seldata[i].data.V_JJ_CODE,
-                V_V_TS: seldata[i].data.V_JJ_TS
-            },
-            success: function (response) {
-                var resp = Ext.decode(response.responseText);
-                if (i == seldata.length - 1) {
-                    retdata.push(seldata[i].data.V_JJ_NAME);
-                }
-                else {
-                    retdata.push(seldata[i].data.V_JJ_NAME + ',');
-                }
-            }
-        });
-    }
-    window.opener.getReturnJXCAR(retdata);
-    window.close();
-    /*}else{
 
-     }
-     })*/
-
-}
 
 
 //等候地点
@@ -476,7 +480,8 @@ function onPageLoaded() {
     Ext.create('Ext.container.Viewport', Layout);
     queryGrid();
 
-    // QueryXXGrid();
+    QueryXXGrid();
+    QueryXXGrid2();
 }
 
 function queryGrid() {
@@ -668,6 +673,14 @@ function QueryXXGrid() {
     });
 }
 
+function QueryXXGrid2() {
+    Ext.data.StoreManager.lookup('gridXXStore2').load({
+        params: {
+            V_V_JXGX_CODE: V_V_JXGX_CODE
+        }
+    });
+}
+
 function OnClickGrid() {
     var records = Ext.getCmp('grid').getSelectionModel().getSelection();//获取选中的数据
 
@@ -694,13 +707,7 @@ function OnClickGrid() {
 
 function _delete(value, value2) {
 
-    Ext.MessageBox.show({
-        title: '确认',
-        msg: '您确定要删除吗亲？',
-        buttons: Ext.MessageBox.YESNO,
-        icon: Ext.MessageBox.QUESION,
-        fn: function (btn) {
-            if (btn == 'yes') {
+
                 Ext.Ajax.request({
                     url: AppUrl + 'hp/PM_1917_JXGX_JJ_DATA_DEL',
                     type: 'ajax',
@@ -737,9 +744,9 @@ function _delete(value, value2) {
                     }
 
                 })
-            }
-        }
-    });
+
+
+
 
 }
 
@@ -758,10 +765,44 @@ function CreateGrid1ColumnTd(value, metaData, record, rowIdx, colIdx, store,
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
                 //console.log(resp.RET);
+                QueryXXGrid2();
 
             }
         });
     }
     metaData.style = "text-align:left; background-color:#FFFF99";
     return value;
+}
+
+function select() {
+
+    var gridXX2 = Ext.data.StoreManager.lookup('gridXXStore2');
+    var records = gridXX2.data.items;
+    var retdata = [];
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'basic/PM_1917_JXMX_JJ_CHANGE',
+            params: {
+                V_V_JXGX_CODE: V_V_JXGX_CODE,
+                V_V_JJCODE: records[i].raw.V_JJ_CODE,
+                V_V_TS: records[i].raw.V_JJ_TS
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if (i == records.length - 1) {
+                    retdata.push(records[i].raw.V_JJ_NAME);
+                }
+                else {
+                    retdata.push(records[i].raw.V_JJ_NAME + ',');
+                }
+            }
+        });
+    }
+
+    window.opener.getReturnJXCAR(retdata);
+    window.close();
+
+
 }
