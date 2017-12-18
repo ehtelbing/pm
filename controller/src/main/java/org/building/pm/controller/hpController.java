@@ -2756,6 +2756,16 @@ public class hpController {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_SAP_EQU_BOM_VIEWN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SAP_EQU_BOM_VIEWN(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                    @RequestParam(value = "V_V_SPNAME") String V_V_SPNAME,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = hpService.PRO_SAP_EQU_BOM_VIEWN(V_V_EQUCODE,V_V_SPNAME);
+        return result;
+    }
+
 
 
 

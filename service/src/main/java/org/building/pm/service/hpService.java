@@ -3742,6 +3742,32 @@ public class hpService {
         return result;
     }
 
+    public Map PRO_SAP_EQU_BOM_VIEWN(String V_V_EQUCODE,String V_V_SPNAME) throws SQLException {
+        logger.info("begin PRO_SAP_EQU_BOM_VIEW");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SAP_EQU_BOM_VIEWN" + "(:V_V_EQUCODE,:V_V_SPNAME,:V_CURSOR)}");
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_SPNAME", V_V_SPNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_SAP_EQU_BOM_VIEWN");
+        return result;
+    }
+
 
 
 }
