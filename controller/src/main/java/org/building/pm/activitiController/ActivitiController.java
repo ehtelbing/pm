@@ -455,6 +455,81 @@ public class ActivitiController {
         return result;
     }
 
+    /*
+    * nameSpace  当前人查询年计划的代办数量
+    * */
+    @RequestMapping(value = "QueryTaskListByYear", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> QueryTaskListByYear(@RequestParam(value = "PersonCode") String PersonCode
+                                            )
+            throws SQLException {
+        Map result = new HashMap();
+        String[] nameSapce = new String[1];
+        nameSapce[0] = "YearPlan";
+        try {
+            int total = (int) taskService.createNativeTaskQuery()
+                    .sql(makeNativeQuerySQLCount(nameSapce))
+                    .parameter("assignee", PersonCode).count();
+            result.put("total", total);
+            result.put("msg", "Ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("msg", "Error");
+        }
+
+        return result;
+    }
+
+    /*
+    * nameSpace  当前人查询月计划的代办数量
+    * */
+    @RequestMapping(value = "QueryTaskListByMonth", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> QueryTaskListByMonth(@RequestParam(value = "PersonCode") String PersonCode)
+            throws SQLException {
+        Map result = new HashMap();
+        String[] nameSapce = new String[1];
+        nameSapce[0] = "MonthPlan";
+        try {
+            int total = (int) taskService.createNativeTaskQuery()
+                    .sql(makeNativeQuerySQLCount(nameSapce))
+                    .parameter("assignee", PersonCode).count();
+            result.put("total", total);
+            result.put("msg", "Ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("msg", "Error");
+        }
+
+        return result;
+    }
+
+    /*
+   * nameSpace  当前人查询周计划的代办数量
+   * */
+    @RequestMapping(value = "QueryTaskListByWeek", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> QueryTaskListByWeek(@RequestParam(value = "PersonCode") String PersonCode)
+            throws SQLException {
+        Map result = new HashMap();
+        String[] nameSapce = new String[1];
+        nameSapce[0] = "WeekPlan";
+        try {
+            int total = (int) taskService.createNativeTaskQuery()
+                    .sql(makeNativeQuerySQLCount(nameSapce))
+                    .parameter("assignee", PersonCode).count();
+            result.put("total", total);
+            result.put("msg", "Ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("msg", "Error");
+        }
+
+        return result;
+    }
+
+
+
     public String makeNativeQuerySQL(String select, String[] nameSpace) {
         String categorySQL = "";
         if (nameSpace != null && nameSpace.length > 0) {
@@ -474,7 +549,7 @@ public class ActivitiController {
                 + " P " + "WHERE T.PROC_DEF_ID_ = P.ID_ "
                 + "AND T.ASSIGNEE_ =  #{assignee} " + categorySQL
                 + "ORDER BY T.CREATE_TIME_ DESC";
-        System.out.println("我是SQL语句 = " + sql);
+        System.out.println("我是SQL语句22222222222222222222 = " + sql);
         return sql;
     }
 
