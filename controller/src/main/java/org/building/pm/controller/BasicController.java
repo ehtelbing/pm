@@ -728,4 +728,35 @@ public class BasicController {
         Map result = basicService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE,V_V_DEPTCODE, V_V_HOME_MENU);
         return result;
     }
+
+    /*
+    * 根据岗位生成点检计划
+    * */
+    @RequestMapping(value = "/PM_06_DJ_CRITERION_SETBYGW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_06_DJ_CRITERION_SETBYGW(
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
+            @RequestParam(value = "V_V_POSTCODE") String V_V_POSTCODE,
+            @RequestParam(value = "V_V_PLAN_STATE") String V_V_PLAN_STATE,
+            @RequestParam(value = "V_V_PLAN_TIME") String V_V_PLAN_TIME,
+            @RequestParam(value = "V_V_PLAN_PER") String V_V_PLAN_PER,
+            @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE)
+            throws SQLException {
+        Map result = basicService.PM_06_DJ_CRITERION_SETBYGW(V_V_DEPTCODE, V_V_CRITERION_CODE, V_V_POSTCODE, V_V_PLAN_STATE,V_V_PLAN_TIME,V_V_PLAN_PER,V_V_DJ_TYPE);
+        return result;
+    }
+
+    /*
+    * 点检类型
+    * */
+
+    @RequestMapping(value = "/PRO_PM_06_CK_TYPE_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_06_CK_TYPE_VIEW(
+            @RequestParam(value = "V_V_CKTYPE") String V_V_CKTYPE)
+            throws SQLException {
+        Map result = basicService.PRO_PM_06_CK_TYPE_VIEW(V_V_CKTYPE);
+        return result;
+    }
 }

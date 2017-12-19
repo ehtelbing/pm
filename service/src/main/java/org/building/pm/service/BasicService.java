@@ -1260,4 +1260,64 @@ public class BasicService {
         return result;
     }
 
+    public HashMap PM_06_DJ_CRITERION_SETBYGW(String V_V_DEPTCODE,String V_V_CRITERION_CODE,String V_V_POSTCODE,String V_V_PLAN_STATE,String V_V_PLAN_TIME,String V_V_PLAN_PER,String V_V_DJ_TYPE) throws SQLException {
+
+        logger.info("begin PM_06_DJ_CRITERION_SETBYGW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_06_DJ_CRITERION_SETBYGW(:V_V_DEPTCODE,:V_V_CRITERION_CODE,:V_V_POSTCODE,:V_V_PLAN_STATE,:V_V_PLAN_TIME,:V_V_PLAN_PER,:V_V_DJ_TYPE,:V_INFO)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_CRITERION_CODE", V_V_CRITERION_CODE);
+            cstmt.setString("V_V_POSTCODE", V_V_POSTCODE);
+            cstmt.setString("V_V_PLAN_STATE", V_V_PLAN_STATE);
+            cstmt.setString("V_V_PLAN_TIME", V_V_PLAN_TIME);
+            cstmt.setString("V_V_PLAN_PER", V_V_PLAN_PER);
+            cstmt.setString("V_V_DJ_TYPE", V_V_DJ_TYPE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String ret = (String) cstmt.getObject("V_INFO");
+            result.put("ret", ret);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_DJ_CRITERION_SETBYGW");
+        return result;
+    }
+
+    public HashMap PRO_PM_06_CK_TYPE_VIEW(String V_V_CKTYPE ) throws SQLException {
+
+        logger.info("begin PRO_PM_06_CK_TYPE_VIEW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_06_CK_TYPE_VIEW(:V_V_CKTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_CKTYPE", V_V_CKTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_NEW_MENU_SEL");
+        return result;
+    }
+
 }
