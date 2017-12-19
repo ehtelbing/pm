@@ -7,7 +7,6 @@ var V_EQUTYPENAME = '';
 var V_V_DEPTCODE = '';
 var V_V_ORGCODE = '';
 var V_V_EQUNAME = '';
-var V_V_EQU_SATAECHOOES = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_V_CKTYPE == undefined) ? V_V_CKTYPE = '' : V_V_CKTYPE = parameters.V_V_CKTYPE;
@@ -18,9 +17,7 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.V_V_EQUNAME == undefined) ? V_V_EQUNAME = '' : V_V_EQUNAME = parameters.V_V_EQUNAME;
 }
 
-var orgLoad = false;
-var equTypeLoad = false;
-var basedicLoad = false;
+
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
@@ -53,31 +50,6 @@ Ext.onReady(function () {
         }
     });
 
-    var equTypeStore = Ext.create('Ext.data.Store', {
-        id: 'equTypeStore',
-        autoLoad: true,
-        fields: ['V_CK_EQUTYPECODE', 'V_CK_EQUTYPENAME', 'I_ORDER', 'I_ID'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'PM_06/PM_06_EQUTYPE_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
-        },
-        listeners: {
-            load: function (store, records) {
-                equTypeLoad = true;
-                Ext.getCmp('V_V_CK_EQUTYPECODE').select(store.first());
-                _init();
-            }
-        }
-    });
-
     var basedicStore = Ext.create('Ext.data.Store', {
         id: 'basedicStore',
         autoLoad: true,
@@ -105,17 +77,35 @@ Ext.onReady(function () {
         }
     });
 
+    var jhlxStore = Ext.create('Ext.data.Store', {
+        id: 'jhlxStore',
+        autoLoad: true,
+        fields: ['I_ID', 'V_CKTYPE', 'V_CKTYPENAME', 'I_ORDER'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'basic/PRO_PM_06_CK_TYPE_VIEW',
+            actionMethods: {
+                read: 'POST'
+            },
+            async: false,
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                'V_V_CKTYPE': '%'
+            }
+        }
+    });
+
     var inputPanel = Ext.create('Ext.form.Panel', {
         id: 'inputPanel',
         region: 'north',
         autoScroll: true,
-        //width:'100%',
-        //height:'90%',
         padding: '10px 0px 0px 0px',
         baseCls: 'my-panel-no-border',
         style: 'background-color:#FFFFFF',
         frame: true,
-        //border:false,
         items: [{
             xtype: 'fieldset',
             height: 450,
@@ -133,38 +123,22 @@ Ext.onReady(function () {
                     labelAlign: 'right',
                     width: 250
                 },
-                items: [{
-                    id: 'V_V_CKTYPE',
-                    readOnly: true,
-                    allowBlank: false,
-                    fieldLabel: '点检分类',
-                    labelWidth: 90
+                items: [{id: 'V_V_CKTYPE',
+                    xtype: 'combo',
+                    store: jhlxStore,
+                    fieldLabel: '点检类型',
+                    editable: false,
+                    labelWidth: 70,
+                    queryMode: 'local',
+                    displayField: 'V_CKTYPENAME',
+                    valueField: 'V_CKTYPE',
+                    labelAlign: 'right'
                 }, {
                     readOnly: true,
                     id: 'V_V_EQUTYPENAME',
                     fieldLabel: '设备类型',
                     allowBlank: false,
                     labelWidth: 90
-                },]
-            }, {
-                layout: 'column',
-                defaults: {
-                    xtype: 'combo',
-                    labelAlign: 'right',
-                    width: 500,
-                    editable: false
-                },
-                items: [{
-                    xtype: 'combo',
-                    id: 'V_V_CK_EQUTYPECODE',
-                    store: equTypeStore,
-                    queryMode: 'local',
-                    valueField: 'V_CK_EQUTYPECODE',
-                    displayField: 'V_CK_EQUTYPENAME',
-                    forceSelection: true,
-                    fieldLabel: '点检设备分类',
-                    labelWidth: 90,
-                    allowBlank: false
                 }]
             }, {
                 layout: 'column',
@@ -253,9 +227,7 @@ Ext.onReady(function () {
                     id: 'V_V_EQU_STATE1',
                     boxLabel: '运行',
                     inputValue: '1'
-                    //checked: true
                 }, {
-                    //xtype:'checkbox',
                     id: 'V_V_EQU_STATE2',
                     name:'V_V_EQU_STATE',
                     boxLabel: '停止',
@@ -430,27 +402,21 @@ Ext.onReady(function () {
         frame: true,
         style: 'background-color:#FFFFFF',
         layout: {
-            type: 'border'/*,
-            regionWeights: {
-                west: -1,
-                north: 1,
-                south: 1,
-                east: -1
-            }*/
+            type: 'border'
         },
         items: [inputPanel,buttonPanel]
+    });
+
+    Ext.data.StoreManager.lookup('jhlxStore').on('load',function(){
+        Ext.getCmp('V_V_CKTYPE').select(Ext.data.StoreManager.lookup('jhlxStore').getAt(0));
     });
 
     _init();
 });
 
 function _init() {
-    if (orgLoad && equTypeLoad && basedicLoad) {
-        Ext.getCmp('V_V_CKTYPE').setValue('岗位点检标准');
-        Ext.getCmp('V_V_EQUTYPENAME').setValue(V_EQUTYPENAME);
-
-        Ext.getBody().unmask();
-    }
+    Ext.getCmp('V_V_EQUTYPENAME').setValue(V_EQUTYPENAME);
+    Ext.getBody().unmask();
 }
 
 function _insertPM06() {
@@ -524,7 +490,7 @@ function _insertPM06() {
         params: {
             'V_V_ORGCODE': V_V_ORGCODE,
             'V_V_DEPTCODE': V_V_DEPTCODE,
-            'V_V_CK_EQUTYPECODE': Ext.getCmp('V_V_CK_EQUTYPECODE').getSubmitValue(),
+            'V_V_CK_EQUTYPECODE': '动态设备',
             'V_V_EQUTYPE': V_EQUTYPECODE ,
             'V_V_EQUCODE': V_V_EQUNAME,
             'V_V_CRITERION_CODE': '',
@@ -546,7 +512,7 @@ function _insertPM06() {
             'V_I_ORDER': Ext.getCmp('V_I_ORDER').getSubmitValue(),
             'V_V_PLAN_STATE': '1',
             'V_I_FLAG': V_I_FLAG,
-            'V_V_CKTYPE': V_V_CKTYPE,
+            'V_V_CKTYPE': Ext.getCmp('V_V_CKTYPE').getValue(),
             'V_I_WEIGHT': V_I_WEIGHT,
             'V_I_YJ': V_I_YJ,
             'V_V_INPER': Ext.util.Cookies.get('v_personcode')
@@ -555,7 +521,7 @@ function _insertPM06() {
             var data = Ext.decode(response.responseText);
             if (data.success) {
                     if(data.RET=='success'){
-                        window.opener._seltctCriterion(V_EQUTYPECODE);
+                        window.opener._seltctCriterion();
                         window.close();
                     }else{
                         Ext.MessageBox.show({
