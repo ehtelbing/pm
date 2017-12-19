@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.MwdService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -594,12 +595,12 @@ public class MwdController {
     @RequestMapping(value = "PM_REAPIR_STANDARD_DATA_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_REAPIR_STANDARD_DATA_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                         @RequestParam(value = "V_V_REPAIR_NAME") String V_V_REPAIR_NAME,
-                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                         HttpServletRequest request)
+                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                           @RequestParam(value = "V_V_REPAIR_NAME") String V_V_REPAIR_NAME,
+                                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                           HttpServletRequest request)
             throws SQLException {
 
         return mwdService.PM_REAPIR_STANDARD_DATA_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE, V_V_REPAIR_NAME, V_V_PAGE, V_V_PAGESIZE);
@@ -608,10 +609,326 @@ public class MwdController {
     @RequestMapping(value = "PM_REAPIR_STANDARD_GX_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_REAPIR_STANDARD_GX_SEL(@RequestParam(value = "V_V_REPAIR_GUID") String V_V_REPAIR_GUID,
-                                                           HttpServletRequest request)
+                                                         HttpServletRequest request)
             throws SQLException {
 
         return mwdService.PM_REAPIR_STANDARD_GX_SEL(V_V_REPAIR_GUID);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_ORDERET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ601_ORDERET(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            Integer start,
+            Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mwdService.PRO_DJ601_ORDERET(ORDERID_IN);
+        List<Map<String, Object>> list = (List) data.get("RET");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("RET", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_ORDERMAT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ601_ORDERMAT(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            Integer start,
+            Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mwdService.PRO_DJ601_ORDERMAT(ORDERID_IN);
+        List<Map<String, Object>> list = (List) data.get("RET");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("RET", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_MENDDEPT_GROUP", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_MENDDEPT_GROUP(
+            @RequestParam(value = "DEPTCODE_IN") String DEPTCODE_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_MENDDEPT_GROUP(DEPTCODE_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_PERSON", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_PERSON(
+            @RequestParam(value = "MENDDEPT_CODE_IN") String MENDDEPT_CODE_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_PERSON(MENDDEPT_CODE_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_PREORDERET", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_PREORDERET(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_PREORDERET(ORDERID_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_MODELDROPLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_MODELDROPLIST(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_MODELDROPLIST();
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_MODELET", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_MODELET(
+            @RequestParam(value = "V_MODELCODE") String V_MODELCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_MODELET(V_MODELCODE);
+    }
+
+    @RequestMapping(value = "/GETMATKC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETMATKC(
+            @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+            @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+            @RequestParam(value = "A_ITYPE") String A_ITYPE,
+            @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+            @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+            @RequestParam(value = "A_ETALON") String A_ETALON,
+            Integer start,
+            Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mwdService.GETMATKC(A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_MATERIALCODE, A_MATERIALNAME, A_ETALON);
+        List<Map<String, Object>> list = (List) data.get("RET");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("RET", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_ORDERMESSAGE", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_ORDERMESSAGE(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_ORDERMESSAGE(ORDERID_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_ORDERSTATUSLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ602_ORDERSTATUSLIST(
+            @RequestParam(value = "USERCODE_IN") String USERCODE_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ602_ORDERSTATUSLIST(USERCODE_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_MENDDEPT_POWER", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ602_MENDDEPT_POWER(
+            @RequestParam(value = "USERCODE_IN") String USERCODE_IN,
+            @RequestParam(value = "ORDER_STATUS_IN") String ORDER_STATUS_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ602_MENDDEPT_POWER(USERCODE_IN, ORDER_STATUS_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_ORDERLIST_POWER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ602_ORDERLIST_POWER(
+            @RequestParam(value = "ORDER_STATUS_IN") String ORDER_STATUS_IN,
+            @RequestParam(value = "MENDDEPT_CODE_IN") String MENDDEPT_CODE_IN,
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "CSY_RESULT_IN") String CSY_RESULT_IN,
+            Integer start,
+            Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mwdService.PRO_DJ602_ORDERLIST_POWER(ORDER_STATUS_IN, MENDDEPT_CODE_IN, ORDERID_IN, CSY_RESULT_IN);
+        List<Map<String, Object>> list = (List) data.get("RET");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("RET", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_ETLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ602_ETLIST(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            Integer start,
+            Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mwdService.PRO_DJ602_ETLIST(ORDERID_IN);
+        List<Map<String, Object>> list = (List) data.get("RET");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("RET", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/GETORDERSY", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETORDERSY(
+            @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+            @RequestParam(value = "A_MENDDEPT") String A_MENDDEPT,
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            Integer start,
+            Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mwdService.GETORDERSY(A_PLANTCODE, A_MENDDEPT, A_ORDERID);
+        List<Map<String, Object>> list = (List) data.get("RET");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("RET", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/ORDERSYDETAIL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap ORDERSYDETAIL(
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.ORDERSYDETAIL(A_ORDERID);
     }
 
     @RequestMapping(value = "/PM_REPAIR_JS_STANDARD_EDIT", method = RequestMethod.POST)
@@ -808,6 +1125,171 @@ public class MwdController {
                 A_PART_REMARK, A_DESIGN_OIL_CODE, A_SUMMER_OIL_CODE, A_WINTER_OIL_CODE, A_CURRENT_OIL_CODE, A_USERID, A_IP, A_PART_LEVEL);
     }
 
+    @RequestMapping(value = "/PRO_DJ601_SAVEORDER", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_SAVEORDER(
+            @RequestParam(value = "DJ_UQ_CODE_IN") String DJ_UQ_CODE_IN,
+            @RequestParam(value = "DJ_NAME_IN") String DJ_NAME_IN,
+            @RequestParam(value = "APPLY_ID_IN") String APPLY_ID_IN,
+            @RequestParam(value = "MEND_CONTEXT_IN") String MEND_CONTEXT_IN,
+            @RequestParam(value = "PLAN_BEGINDATE_IN") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") java.util.Date PLAN_BEGINDATE_IN,
+            @RequestParam(value = "PLAN_ENDDATE_IN") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") java.util.Date PLAN_ENDDATE_IN,
+            @RequestParam(value = "MENDDEPT_CODE_IN") String MENDDEPT_CODE_IN,
+            @RequestParam(value = "MEND_USERID_IN") String MEND_USERID_IN,
+            @RequestParam(value = "MEND_USERNAME_IN") String MEND_USERNAME_IN,
+            @RequestParam(value = "INSERT_USERID_IN") String INSERT_USERID_IN,
+            @RequestParam(value = "INSERT_USERNAME_IN") String INSERT_USERNAME_IN,
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "PLAN_TIME_IN") String PLAN_TIME_IN,
+            @RequestParam(value = "DJ_TYPE_IN") String DJ_TYPE_IN,
+            @RequestParam(value = "PICCODE_IN") String PICCODE_IN,
+            @RequestParam(value = "OP_PERSON_IN") String OP_PERSON_IN,
+            @RequestParam(value = "PHONE_NUMBER_IN") String PHONE_NUMBER_IN,
+            @RequestParam(value = "USE_LOC_IN") String USE_LOC_IN,
+            @RequestParam(value = "REQ_TIME_IN") String REQ_TIME_IN,
+            @RequestParam(value = "BUILD_REMARK_IN") String BUILD_REMARK_IN,
+            @RequestParam(value = "CHECK_LOG_IN") String CHECK_LOG_IN,
+            @RequestParam(value = "DJ_VOL_IN") String DJ_VOL_IN,
+            @RequestParam(value = "DJ_V_IN") String DJ_V_IN,
+            @RequestParam(value = "MEND_TYPE_IN") String MEND_TYPE_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        String A_IP = request.getRemoteAddr();
+
+        return mwdService.PRO_DJ601_SAVEORDER(DJ_UQ_CODE_IN, DJ_NAME_IN, APPLY_ID_IN, MEND_CONTEXT_IN, PLAN_BEGINDATE_IN,
+                PLAN_ENDDATE_IN, MENDDEPT_CODE_IN, MEND_USERID_IN, MEND_USERNAME_IN, INSERT_USERID_IN, INSERT_USERNAME_IN,
+                ORDERID_IN, PLAN_TIME_IN, DJ_TYPE_IN, PICCODE_IN, OP_PERSON_IN, PHONE_NUMBER_IN, USE_LOC_IN, REQ_TIME_IN,
+                BUILD_REMARK_IN, CHECK_LOG_IN, DJ_VOL_IN, DJ_V_IN, MEND_TYPE_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_SAVEORDERET", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_SAVEORDERET(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "PLAN_WORKTIME_IN") Double PLAN_WORKTIME_IN,
+            @RequestParam(value = "PLAN_PERSON_IN") Double PLAN_PERSON_IN,
+            @RequestParam(value = "ET_CONTEXT_IN") String ET_CONTEXT_IN,
+            @RequestParam(value = "PRE_ET_IN") String PRE_ET_IN,
+            @RequestParam(value = "INSERT_USERID_IN") String INSERT_USERID_IN,
+            @RequestParam(value = "INSERT_USERNAME_IN") String INSERT_USERNAME_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_SAVEORDERET(ORDERID_IN, PLAN_WORKTIME_IN, PLAN_PERSON_IN, ET_CONTEXT_IN, PRE_ET_IN, INSERT_USERID_IN, INSERT_USERNAME_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_SAVEORDERMAT", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_SAVEORDERMAT(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "MATERIALCODE_IN") String MATERIALCODE_IN,
+            @RequestParam(value = "MATERIALNAME_IN") String MATERIALNAME_IN,
+            @RequestParam(value = "ETALON_IN") String ETALON_IN,
+            @RequestParam(value = "MAT_CL_IN") String MAT_CL_IN,
+            @RequestParam(value = "F_PRICE_IN") Double F_PRICE_IN,
+            @RequestParam(value = "PLAN_AMOUNT_IN") Double PLAN_AMOUNT_IN,
+            @RequestParam(value = "USERCODE_IN") String USERCODE_IN,
+            @RequestParam(value = "USERNAME_IN") String USERNAME_IN,
+            @RequestParam(value = "KCID_IN") String KCID_IN,
+            @RequestParam(value = "UNIT_IN") String UNIT_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_SAVEORDERMAT(ORDERID_IN, MATERIALCODE_IN, MATERIALNAME_IN, ETALON_IN, MAT_CL_IN, F_PRICE_IN, PLAN_AMOUNT_IN, USERCODE_IN, USERNAME_IN, KCID_IN, UNIT_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_ADDMAT", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ602_ADDMAT(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "MATERIALCODE_IN") String MATERIALCODE_IN,
+            @RequestParam(value = "MATERIALNAME_IN") String MATERIALNAME_IN,
+            @RequestParam(value = "ETALON_IN") String ETALON_IN,
+            @RequestParam(value = "MAT_CL_IN") String MAT_CL_IN,
+            @RequestParam(value = "F_PRICE_IN") Double F_PRICE_IN,
+            @RequestParam(value = "ACT_AMOUNT_IN") Double ACT_AMOUNT_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ602_ADDMAT(ORDERID_IN, MATERIALCODE_IN, MATERIALNAME_IN, ETALON_IN, MAT_CL_IN, F_PRICE_IN, ACT_AMOUNT_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_CONFIRMMAT", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ602_CONFIRMMAT(
+            @RequestParam(value = "ID_IN") String ID_IN,
+            @RequestParam(value = "ACT_AMOUNT_IN") Double ACT_AMOUNT_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ602_CONFIRMMAT(ID_IN, ACT_AMOUNT_IN);
+    }
+
+    @RequestMapping(value = "/SAVEORDERSY", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap SAVEORDERSY(
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            @RequestParam(value = "A_BCSY_RESULT") String A_BCSY_RESULT,
+            @RequestParam(value = "A_BCSY_RESULT_DESC") String A_BCSY_RESULT_DESC,
+            @RequestParam(value = "A_ZBCSY_RESULT") String A_ZBCSY_RESULT,
+            @RequestParam(value = "A_ZBCSY_RESULT_DESC") String A_ZBCSY_RESULT_DESC,
+            @RequestParam(value = "A_DBCSY_RESULT") String A_DBCSY_RESULT,
+            @RequestParam(value = "A_DBCSY_RESULT_DESC") String A_DBCSY_RESULT_DESC,
+            @RequestParam(value = "A_CSY_RESULT") String A_CSY_RESULT,
+            @RequestParam(value = "A_CSY_RESULT_DESC") String A_CSY_RESULT_DESC,
+            @RequestParam(value = "A_USERID") String A_USERID,
+            @RequestParam(value = "A_USERNAME") String A_USERNAME,
+            @RequestParam(value = "A_SY_DATE") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date A_SY_DATE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.SAVEORDERSY(A_ORDERID, A_BCSY_RESULT, A_BCSY_RESULT_DESC, A_ZBCSY_RESULT, A_ZBCSY_RESULT_DESC,
+                A_DBCSY_RESULT, A_DBCSY_RESULT_DESC, A_CSY_RESULT, A_CSY_RESULT_DESC, A_USERID, A_USERNAME, A_SY_DATE);
+    }
+
+    //附件上传过程
+    @RequestMapping(value = "/FILEUPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> FILEUPDATE(@RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                           @RequestParam(value = "A_FILENAME") String A_FILENAME,
+                                           @RequestParam(value = "A_FILE_EXTEND") String A_FILE_EXTEND,
+                                           @RequestParam(value = "A_FILE") MultipartFile A_FILE,
+                                           @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+
+        HashMap data = mwdService.FILEUPDATE(A_ORDERID, A_FILENAME, A_FILE_EXTEND, A_FILE.getInputStream(), A_USERNAME);
+
+        String RET = (String) data.get("RET");
+
+        result.put("RET", RET);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_SAVEORDERET_LIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ601_SAVEORDERET_LIST(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "PLAN_WORKTIME_IN_LIST", required = false) List<String> PLAN_WORKTIME_IN_LIST,
+            @RequestParam(value = "PLAN_PERSON_IN_LIST", required = false) List<String> PLAN_PERSON_IN_LIST,
+            @RequestParam(value = "ET_CONTEXT_IN_LIST", required = false) List<String> ET_CONTEXT_IN_LIST,
+            @RequestParam(value = "PRE_ET_IN_LIST", required = false) List<String> PRE_ET_IN_LIST,
+            @RequestParam(value = "INSERT_USERID_IN") String INSERT_USERID_IN,
+            @RequestParam(value = "INSERT_USERNAME_IN") String INSERT_USERNAME_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        for (int i = 0; i < PLAN_WORKTIME_IN_LIST.size(); i++) {
+            HashMap data = mwdService.PRO_DJ601_SAVEORDERET(ORDERID_IN, Double.parseDouble(PLAN_WORKTIME_IN_LIST.get(i)), Double.parseDouble(PLAN_PERSON_IN_LIST.get(i)), ET_CONTEXT_IN_LIST.get(i), PRE_ET_IN_LIST.get(i), INSERT_USERID_IN, INSERT_USERNAME_IN);
+            result.put("RET", data.get("RET"));
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/UPDATE_EQU", method = RequestMethod.POST)
     @ResponseBody
     public HashMap UPDATE_EQU(
@@ -859,7 +1341,6 @@ public class MwdController {
             @RequestParam(value = "A_INSERT_UNIT") String A_INSERT_UNIT,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        String A_IP = request.getRemoteAddr();
 
         return mwdService.SET_PART_OIL(A_EQUIP_NO, A_PART_NO, A_CYCLE_TYPE, A_CYCLE_UNIT, A_CYCLE_VALUE, A_INSERT_AMOUNT, A_INSERT_UNIT);
     }
@@ -903,6 +1384,76 @@ public class MwdController {
             HttpServletResponse response) throws Exception {
 
         return mwdService.PRO_DJ601_ORDER_DOWNLOAD(ORDERID_IN, USERCODE_IN, USERNAME_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_UPDATEORDER", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ601_UPDATEORDER(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "MEND_CONTEXT_IN") String MEND_CONTEXT_IN,
+            @RequestParam(value = "PLAN_BEGINDATE_IN") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") java.util.Date PLAN_BEGINDATE_IN,
+            @RequestParam(value = "PLAN_ENDDATE_IN") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") java.util.Date PLAN_ENDDATE_IN,
+            @RequestParam(value = "MENDDEPT_CODE_IN") String MENDDEPT_CODE_IN,
+            @RequestParam(value = "INSERT_USERID_IN") String INSERT_USERID_IN,
+            @RequestParam(value = "INSERT_USERNAME_IN") String INSERT_USERNAME_IN,
+            @RequestParam(value = "PLAN_TIME_IN") String PLAN_TIME_IN,
+            @RequestParam(value = "DJ_TYPE_IN") String DJ_TYPE_IN,
+            @RequestParam(value = "PICCODE_IN") String PICCODE_IN,
+            @RequestParam(value = "OP_PERSON_IN") String OP_PERSON_IN,
+            @RequestParam(value = "PHONE_NUMBER_IN") String PHONE_NUMBER_IN,
+            @RequestParam(value = "USE_LOC_IN") String USE_LOC_IN,
+            @RequestParam(value = "REQ_TIME_IN") String REQ_TIME_IN,
+            @RequestParam(value = "BUILD_REMARK_IN") String BUILD_REMARK_IN,
+            @RequestParam(value = "CHECK_LOG_IN") String CHECK_LOG_IN,
+            @RequestParam(value = "DJ_VOL_IN") String DJ_VOL_IN,
+            @RequestParam(value = "DJ_V_IN") String DJ_V_IN,
+            @RequestParam(value = "MEND_TYPE_IN") String MEND_TYPE_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ601_UPDATEORDER(ORDERID_IN, MEND_CONTEXT_IN, PLAN_BEGINDATE_IN, PLAN_ENDDATE_IN,
+                MENDDEPT_CODE_IN, INSERT_USERID_IN, INSERT_USERNAME_IN, PLAN_TIME_IN, DJ_TYPE_IN, PICCODE_IN, OP_PERSON_IN,
+                PHONE_NUMBER_IN, USE_LOC_IN, REQ_TIME_IN, BUILD_REMARK_IN, CHECK_LOG_IN, DJ_VOL_IN, DJ_V_IN, MEND_TYPE_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_FINISHET", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ602_FINISHET(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "ET_ID_IN") String ET_ID_IN,
+            @RequestParam(value = "ACT_PERSON_IN") String ACT_PERSON_IN,
+            @RequestParam(value = "ACT_WORKTIME_IN") String ACT_WORKTIME_IN,
+            @RequestParam(value = "INSERT_USERID_IN") String INSERT_USERID_IN,
+            @RequestParam(value = "INSERT_USERNAME_IN") String INSERT_USERNAME_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ602_FINISHET(ORDERID_IN, ET_ID_IN, ACT_PERSON_IN, ACT_WORKTIME_IN, INSERT_USERID_IN, INSERT_USERNAME_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ602_OVER", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_DJ602_OVER(
+            @RequestParam(value = "ORDERID_IN") String ORDERID_IN,
+            @RequestParam(value = "USERID_IN") String USERID_IN,
+            @RequestParam(value = "USERNAME_IN") String USERNAME_IN,
+            @RequestParam(value = "REMARK_IN") String REMARK_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PRO_DJ602_OVER(ORDERID_IN, USERID_IN, USERNAME_IN, REMARK_IN);
+    }
+
+    @RequestMapping(value = "/ROLLBACKTOPRESTEP", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap ROLLBACKTOPRESTEP(
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            @RequestParam(value = "A_USERID") String A_USERID,
+            @RequestParam(value = "A_USERNAME") String A_USERNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.ROLLBACKTOPRESTEP(A_ORDERID, A_USERID, A_USERNAME);
     }
 
     @RequestMapping(value = "/SAP_PM_EQU_FILE_DEL", method = RequestMethod.POST)
@@ -965,6 +1516,33 @@ public class MwdController {
             HttpServletResponse response) throws Exception {
         String A_IP = request.getRemoteAddr();
         return mwdService.DELETE_PART(A_PART_NO, A_USERID, A_IP);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_DELETEET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ601_DELETEET(
+            @RequestParam(value = "ET_ID_IN") String ET_ID_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        return mwdService.PRO_DJ601_DELETEET(ET_ID_IN);
+    }
+
+    @RequestMapping(value = "/PRO_DJ601_DELETEMAT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ601_DELETEMAT(
+            @RequestParam(value = "ID_IN") String ID_IN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        return mwdService.PRO_DJ601_DELETEMAT(ID_IN);
+    }
+
+    @RequestMapping(value = "/FILEDELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> FILEDELETE(
+            @RequestParam(value = "A_FILEID") String A_FILEID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        return mwdService.FILEDELETE(A_FILEID);
     }
 
     /*设备检查（公司）导出EXCEL*/
@@ -1217,7 +1795,7 @@ public class MwdController {
                                                      @RequestParam(value = "RECFLAG_IN") String RECFLAG_IN,
                                                      @RequestParam(value = "BEGINDATE_IN") String BEGINDATE_IN,
                                                      @RequestParam(value = "ENDDATE_IN") String ENDDATE_IN,
-                                                 HttpServletResponse response)
+                                                     HttpServletResponse response)
             throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();

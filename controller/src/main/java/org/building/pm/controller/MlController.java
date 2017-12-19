@@ -828,17 +828,8 @@ public class MlController {
                                           @RequestParam(value = "A_EQUTYPE_REMARK") String A_EQUTYPE_REMARK,
                                           HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
-        Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.ADDEQUTYPE(A_EQUTYPE, A_EQUTYPE_NAME, A_EQUTYPE_REMARK);
-        List<Map<String, Object>> list = (List) data.get("list");
-
-        result.put("RET_MSG", data.get("RET_MSG"));
-        result.put("RET", data.get("RET"));
-        result.put("list", list);
-        result.put("success", true);
-
-        return result;
+        return mlService.ADDEQUTYPE(A_EQUTYPE, A_EQUTYPE_NAME, A_EQUTYPE_REMARK);
     }
 
     //设备状态修改
@@ -847,17 +838,8 @@ public class MlController {
     public Map<String, Object> SETEQUTYPESTATUS(@RequestParam(value = "A_EQUTYPE") String A_EQUTYPE,
                                                 HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
-        Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.SETEQUTYPESTATUS(A_EQUTYPE);
-        List<Map<String, Object>> list = (List) data.get("list");
-
-        result.put("RET_MSG", data.get("RET_MSG"));
-        result.put("RET", data.get("RET"));
-        result.put("list", list);
-        result.put("success", true);
-
-        return result;
+        return mlService.SETEQUTYPESTATUS(A_EQUTYPE);
     }
 
     //修改设备类型
@@ -867,15 +849,7 @@ public class MlController {
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.UPDATEEQUTYPE(A_EQUTYPE, A_EQUTYPE_NAME, A_EQUTYPE_REMARK);
-        List<Map<String, Object>> list = (List) data.get("list");
-
-        result.put("RET_MSG", data.get("RET_MSG"));
-        result.put("RET", data.get("RET"));
-        result.put("list", list);
-        result.put("success", true);
-
-        return result;
+        return mlService.UPDATEEQUTYPE(A_EQUTYPE, A_EQUTYPE_NAME, A_EQUTYPE_REMARK);
     }
 
     //设备润滑部位管理导出Excel
@@ -1041,12 +1015,8 @@ public class MlController {
     @ResponseBody
     public Map<String, Object> ADDEQUPERSON(String A_EQUIP_ID, String A_USERID, HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
-        Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = mlService.ADDEQUPERSON(A_EQUIP_ID, A_USERID);
 
-        result.put("RET_MSG", data.get("RET_MSG"));
-        result.put("RET", data.get("RET"));
-        return result;
+        return mlService.ADDEQUPERSON(A_EQUIP_ID, A_USERID);
     }
 
     //删除点检员
@@ -2753,11 +2723,7 @@ public class MlController {
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.PRO_DJ401_SUBMITAPPLY(APPLYID_IN);
-
-        result.put("RET", data.get("RET"));
-
-        return result;
+        return mlService.PRO_DJ401_SUBMITAPPLY(APPLYID_IN);
     }
 
     //删除工单
@@ -2768,12 +2734,7 @@ public class MlController {
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.PRO_DJ401_DELETEAPPLY(APPLYID_IN);
-
-        result.put("RET", data.get("list"));
-        result.put("success", true);
-
-        return result;
+        return mlService.PRO_DJ401_DELETEAPPLY(APPLYID_IN);
     }
 
     //PM_1501040101
@@ -2880,14 +2841,7 @@ public class MlController {
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.PRO_DJ401_DELETEAPPLYMAT(ID_IN);
-
-        List<Map<String, Object>> list = (List) data.get("list");
-
-        result.put("list", list);
-        result.put("success", true);
-
-        return result;
+        return mlService.PRO_DJ401_DELETEAPPLYMAT(ID_IN);
     }
 
     //生成工单号
@@ -2898,13 +2852,7 @@ public class MlController {
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.GETAPPLYORDERID(A_PLANTCODE);
-
-
-        result.put("list", data.get("RET"));
-        result.put("success", true);
-
-        return result;
+        return mlService.GETAPPLYORDERID(A_PLANTCODE);
     }
 
     //物资分类
@@ -2946,15 +2894,10 @@ public class MlController {
                                                    @RequestParam(value = "MEND_TYPE_IN") String MEND_TYPE_IN,
                                                    HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ParseException {
-        Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = mlService.PRO_DJ401_APPLYSAVE(APPLYID_IN, PLANTCODE_IN, PLANTNAME_IN, DEPARTCODE_IN, DEPARTNAME_IN, USERCODE_IN, USERNAME_IN,
+
+        return mlService.PRO_DJ401_APPLYSAVE(APPLYID_IN, PLANTCODE_IN, PLANTNAME_IN, DEPARTCODE_IN, DEPARTNAME_IN, USERCODE_IN, USERNAME_IN,
                 BILLCODE_IN, DJ_UQ_CODE_IN, DJNAME_IN, CONTEXT_IN, BEGINDATE_IN, ENDDATE_IN, V_PLANTCODEJS, REMARK_IN, DJCODE_IN, CONFIRM_FLAG_IN, MEND_TYPE_IN);
 
-
-        result.put("list", data.get("RET"));
-        result.put("success", true);
-
-        return result;
     }
 
     //PM_1501040102
@@ -2999,14 +2942,9 @@ public class MlController {
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.PRO_DJ401_APPLYUPDATE(APPLYID_IN, PLANTCODE_IN, PLANTNAME_IN, DEPARTCODE_IN, DEPARTNAME_IN, USERCODE_IN, USERNAME_IN,
+        return mlService.PRO_DJ401_APPLYUPDATE(APPLYID_IN, PLANTCODE_IN, PLANTNAME_IN, DEPARTCODE_IN, DEPARTNAME_IN, USERCODE_IN, USERNAME_IN,
                 BILLCODE_IN, DJ_UQ_CODE_IN, DJNAME_IN, CONTEXT_IN, BEGINDATE_IN, ENDDATE_IN, REMARK_IN, DJCODE_IN, MEND_TYPE_IN);
 
-
-        result.put("list", data.get("RET"));
-        result.put("success", true);
-
-        return result;
     }
 
     //PM_15010402
@@ -3222,15 +3160,15 @@ public class MlController {
     @RequestMapping(value = "/PRO_DJ402_APPLYLIST1_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void PRO_DJ402_APPLYLIST1_EXCEL(@RequestParam(value = "PLANTCODE_IN") String PLANTCODE_IN,
-                                          @RequestParam(value = "DEPARTCODE_IN") String DEPARTCODE_IN,
-                                          @RequestParam(value = "DJCODE_IN") String DJCODE_IN,
-                                          @RequestParam(value = "DJNAME_IN") String DJNAME_IN,
-                                          @RequestParam(value = "CONTEXT_IN") String CONTEXT_IN,
-                                          @RequestParam(value = "BEGINDATE_IN") String BEGINDATE_IN,
-                                          @RequestParam(value = "ENDDATE_IN") String ENDDATE_IN,
-                                          @RequestParam(value = "TOPLANTCODE_IN") String TOPLANTCODE_IN,
-                                          @RequestParam(value = "CONFIRM_FLAG_IN") String CONFIRM_FLAG_IN,
-                                          HttpServletResponse response)
+                                           @RequestParam(value = "DEPARTCODE_IN") String DEPARTCODE_IN,
+                                           @RequestParam(value = "DJCODE_IN") String DJCODE_IN,
+                                           @RequestParam(value = "DJNAME_IN") String DJNAME_IN,
+                                           @RequestParam(value = "CONTEXT_IN") String CONTEXT_IN,
+                                           @RequestParam(value = "BEGINDATE_IN") String BEGINDATE_IN,
+                                           @RequestParam(value = "ENDDATE_IN") String ENDDATE_IN,
+                                           @RequestParam(value = "TOPLANTCODE_IN") String TOPLANTCODE_IN,
+                                           @RequestParam(value = "CONFIRM_FLAG_IN") String CONFIRM_FLAG_IN,
+                                           HttpServletResponse response)
             throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
@@ -3343,47 +3281,31 @@ public class MlController {
     @RequestMapping(value = "/CONFIRM_APPLY", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> CONFIRM_APPLY(@RequestParam(value = "APPLYID_IN") String APPLYID_IN,
-                                                 @RequestParam(value = "A_USERID") String A_USERID,
-                                                 HttpServletRequest request, HttpServletResponse response)
+                                             @RequestParam(value = "A_USERID") String A_USERID,
+                                             HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
 
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        HashMap data = mlService.CONFIRM_APPLY(APPLYID_IN, A_USERID);
-
-
-        result.put("REG", data.get("RET"));
-        result.put("REG_MSG", data.get("RET_MSG"));
-
-        return result;
+        return mlService.CONFIRM_APPLY(APPLYID_IN, A_USERID);
     }
 
     //退回到申请部门
     @RequestMapping(value = "/BACK_APPLY", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> BACK_APPLY(@RequestParam(value = "APPLYID_IN") String APPLYID_IN,
-                                             @RequestParam(value = "A_USERID") String A_USERID,
-                                             HttpServletRequest request, HttpServletResponse response)
+                                          @RequestParam(value = "A_USERID") String A_USERID,
+                                          HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
 
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        HashMap data = mlService.BACK_APPLY(APPLYID_IN, A_USERID);
-
-
-        result.put("REG", data.get("RET"));
-        result.put("REG_MSG", data.get("RET_MSG"));
-
-        return result;
+        return mlService.BACK_APPLY(APPLYID_IN, A_USERID);
     }
 
     //查询检修单位
     @RequestMapping(value = "/PRO_DJ701_SELECT", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_DJ701_SELECT(@RequestParam(value = "MENDDEPT_NAME_IN") String MENDDEPT_NAME_IN,
-                                          @RequestParam(value = "USERNAME_IN") String USERNAME_IN,
-                                          Integer start,Integer limit,
-                                          HttpServletRequest request, HttpServletResponse response)
+                                                @RequestParam(value = "USERNAME_IN") String USERNAME_IN,
+                                                Integer start, Integer limit,
+                                                HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
 
         Map<String, Object> result = new HashMap<String, Object>();
@@ -3420,28 +3342,23 @@ public class MlController {
     @RequestMapping(value = "/PRO_DJ701_UPDATE1", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_DJ701_UPDATE1(@RequestParam(value = "V_MENDDEPTCODE") String V_MENDDEPTCODE,
-                                                @RequestParam(value = "V_MENDDEPTNAME") String V_MENDDEPTNAME,
-                                                @RequestParam(value = "V_USERID") String V_USERID,
-                                                @RequestParam(value = "V_USERNAME") String V_USERNAME,
-                                                HttpServletRequest request, HttpServletResponse response)
+                                                 @RequestParam(value = "V_MENDDEPTNAME") String V_MENDDEPTNAME,
+                                                 @RequestParam(value = "V_USERID") String V_USERID,
+                                                 @RequestParam(value = "V_USERNAME") String V_USERNAME,
+                                                 HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
 
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mlService.PRO_DJ701_UPDATE1(V_MENDDEPTCODE, V_MENDDEPTNAME,V_USERID,V_USERNAME);
-
-
-        result.put("list", data.get("RET"));
-
-        return result;
+        return mlService.PRO_DJ701_UPDATE1(V_MENDDEPTCODE, V_MENDDEPTNAME, V_USERID, V_USERNAME);
     }
 
     //润滑油脂查询
     @RequestMapping(value = "/PM_OIL_STANDARD_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_OIL_STANDARD_SEL(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                Integer start,Integer limit,
-                                                HttpServletRequest request, HttpServletResponse response)
+                                                   Integer start, Integer limit,
+                                                   HttpServletRequest request, HttpServletResponse response)
             throws SQLException {
 
         Map<String, Object> result = new HashMap<String, Object>();
@@ -3473,4 +3390,1440 @@ public class MlController {
 
         return result;
     }
+
+    //检修单位配置
+    //删除检修单位
+    @RequestMapping(value = "/PRO_DJ701_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ701_DELETE(@RequestParam(value = "V_MENDDEPTCODE") String V_MENDDEPTCODE,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ701_DELETE(V_MENDDEPTCODE);
+    }
+
+    //新增检修单位
+    @RequestMapping(value = "/PRO_DJ701_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ701_INSERT(@RequestParam(value = "V_MENDDEPTNAME") String V_MENDDEPTNAME,
+                                                @RequestParam(value = "V_MENDDEPTCODE") String V_MENDDEPTCODE,
+                                                @RequestParam(value = "V_MENDDEPTTYPE") String V_MENDDEPTTYPE,
+                                                @RequestParam(value = "V_SUPERCODE") String V_SUPERCODE,
+                                                @RequestParam(value = "V_USERID") String V_USERID,
+                                                @RequestParam(value = "V_USERNAME") String V_USERNAME,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ701_INSERT(V_MENDDEPTNAME, V_MENDDEPTCODE, V_MENDDEPTTYPE, V_SUPERCODE, V_USERID, V_USERNAME);
+
+    }
+
+    //查询检修单位人员
+    @RequestMapping(value = "/PRO_DJ701_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ701_VIEW(@RequestParam(value = "V_MENDDEPTCODE") String V_MENDDEPTCODE,
+                                              HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.PRO_DJ701_VIEW(V_MENDDEPTCODE);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+
+        result.put("list", list);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //删除检修人员
+    @RequestMapping(value = "/PRO_DJ701_PERSONDEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ701_PERSONDEL(@RequestParam(value = "V_USERID") String V_USERID,
+                                                   HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ701_PERSONDEL(V_USERID);
+    }
+
+    //新增检修人员
+    @RequestMapping(value = "/PRO_DJ701_PERINSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ701_PERINSERT(@RequestParam(value = "V_MENDDEPTCODE") String V_MENDDEPTCODE,
+                                                   @RequestParam(value = "V_USERID") String V_USERID,
+                                                   @RequestParam(value = "V_USERNAME") String V_USERNAME,
+                                                   HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ701_PERINSERT(V_MENDDEPTCODE, V_USERID, V_USERNAME);
+    }
+
+    //检修状态
+    @RequestMapping(value = "/PRO_DJ702_DROPLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ702_DROPLIST(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.PRO_DJ702_DROPLIST();
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+
+        result.put("list", list);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //检修单位查询
+    @RequestMapping(value = "/PRO_DJ702_JXDWDROPLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ702_JXDWDROPLIST(@RequestParam(value = "V_USERID") String V_USERID,
+                                                      HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.PRO_DJ702_JXDWDROPLIST(V_USERID);
+
+
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //查询工单状态
+    @RequestMapping(value = "/PRO_DJ702_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ702_SELECT(@RequestParam(value = "V_ORDERSTS") String V_ORDERSTS,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.PRO_DJ702_SELECT(V_ORDERSTS);
+
+
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //删除工单状态
+    @RequestMapping(value = "/PRO_DJ702_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ702_DELETE(@RequestParam(value = "V_POWERID") String V_POWERID,
+                                                @RequestParam(value = "V_ID") String V_ID,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ702_DELETE(V_POWERID, V_ID);
+    }
+
+    //新增检修状态人员
+    @RequestMapping(value = "/PRO_DJ702_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ702_INSERT(@RequestParam(value = "V_ORDERSTS") String V_ORDERSTS,
+                                                @RequestParam(value = "V_USERID") String V_USERID,
+                                                @RequestParam(value = "V_USERNAME") String V_USERNAME,
+                                                @RequestParam(value = "V_STS") String V_STS,
+                                                @RequestParam(value = "V_MENDDEPTCODE") String V_MENDDEPTCODE,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ702_INSERT(V_ORDERSTS, V_USERID, V_USERNAME, V_STS, V_MENDDEPTCODE);
+    }
+
+    //查询工单状态
+    @RequestMapping(value = "/PRO_DJ703_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ703_SELECT(@RequestParam(value = "V_ORDERDESC") String V_ORDERDESC,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.PRO_DJ703_SELECT(V_ORDERDESC);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        //result.put("success", true);
+
+        return result;
+    }
+
+    //删除检修状态
+    @RequestMapping(value = "/PRO_DJ703_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ703_DELETE(@RequestParam(value = "V_ORDERSTS") String V_ORDERSTS,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ703_DELETE(V_ORDERSTS);
+    }
+
+    //选择状态
+    @RequestMapping(value = "/PRO_DJ703_UPDATEFLAG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ703_UPDATEFLAG(@RequestParam(value = "V_ORDERSTS") String V_ORDERSTS,
+                                                    @RequestParam(value = "V_FLAG") Integer V_FLAG,
+                                                    HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ703_UPDATEFLAG(V_ORDERSTS, V_FLAG);
+    }
+
+    //新增状态
+    @RequestMapping(value = "/PRO_DJ703_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ703_INSERT(@RequestParam(value = "V_ORDERSTS") String V_ORDERSTS,
+                                                @RequestParam(value = "V_ORDERDESC") String V_ORDERDESC,
+                                                @RequestParam(value = "V_USERFLAG") String V_USERFLAG,
+                                                @RequestParam(value = "V_NEXTSTS") String V_NEXTSTS,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.PRO_DJ703_INSERT(V_ORDERSTS, V_ORDERDESC, V_USERFLAG, V_NEXTSTS);
+    }
+
+    //查询物资分类
+    @RequestMapping(value = "/GETITYPELIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETITYPELIST(Integer start, Integer limit, HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mlService.GETITYPELIST();
+
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("list", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //删除物资分类
+    @RequestMapping(value = "/DELETEITYPE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DELETEITYPE(@RequestParam(value = "A_TYPECODE") String A_TYPECODE,
+                                           @RequestParam(value = "A_USERID") String A_USERID,
+                                           @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                           HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.DELETEITYPE(A_TYPECODE, A_USERID, A_USERNAME);
+    }
+
+    //新增物资分类
+    @RequestMapping(value = "/ADDITYPE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> ADDITYPE(@RequestParam(value = "A_TYPECODE") String A_TYPECODE,
+                                        @RequestParam(value = "A_TYPENAME") String A_TYPENAME,
+                                        @RequestParam(value = "A_STATUS") String A_STATUS,
+                                        @RequestParam(value = "A_TYPE_PREFIX") String A_TYPE_PREFIX,
+                                        @RequestParam(value = "A_TYPE_UNIT") String A_TYPE_UNIT,
+                                        @RequestParam(value = "A_REC_STATUS") String A_REC_STATUS,
+                                        @RequestParam(value = "A_USERID") String A_USERID,
+                                        @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                        @RequestParam(value = "A_INDEX") Integer A_INDEX,
+                                        HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.ADDITYPE(A_TYPECODE, A_TYPENAME, A_STATUS, A_TYPE_PREFIX, A_TYPE_UNIT, A_REC_STATUS, A_USERID, A_USERNAME, A_INDEX);
+    }
+
+    //修改物资分类
+    @RequestMapping(value = "/UPDTEITYPE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> UPDTEITYPE(@RequestParam(value = "A_TYPECODE") String A_TYPECODE,
+                                          @RequestParam(value = "A_TYPENAME") String A_TYPENAME,
+                                          @RequestParam(value = "A_STATUS") String A_STATUS,
+                                          @RequestParam(value = "A_TYPE_PREFIX") String A_TYPE_PREFIX,
+                                          @RequestParam(value = "A_TYPE_UNIT") String A_TYPE_UNIT,
+                                          @RequestParam(value = "A_REC_STATUS") String A_REC_STATUS,
+                                          @RequestParam(value = "A_USERID") String A_USERID,
+                                          @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                          @RequestParam(value = "A_INDEX") Integer A_INDEX,
+                                          HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.UPDTEITYPE(A_TYPECODE, A_TYPENAME, A_STATUS, A_TYPE_PREFIX, A_TYPE_UNIT, A_REC_STATUS, A_USERID, A_USERNAME, A_INDEX);
+    }
+
+    //查询入库
+    @RequestMapping(value = "/GETINPUT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETINPUT(@RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                        @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                        @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                        @RequestParam(value = "A_STORE_DESC") String A_STORE_DESC,
+                                        @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                        @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                                        @RequestParam(value = "A_ETALON") String A_ETALON,
+                                        @RequestParam(value = "A_LOC_DESC") String A_LOC_DESC,
+                                        @RequestParam(value = "A_USERID") String A_USERID,
+                                        Integer start, Integer limit, HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mlService.GETINPUT(A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_STORE_DESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LOC_DESC, A_USERID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("list", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //新增入库(批量)
+    @RequestMapping(value = "/DRSAVEINPUT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DRSAVEINPUT(@RequestParam(value = "A_KCID") String A_KCID,
+                                           @RequestParam(value = "A_MATERIALCODE", required = false) List<String> A_MATERIALCODE_LIST,
+                                           @RequestParam(value = "A_MATERIALNAME", required = false) List<String> A_MATERIALNAME_LIST,
+                                           @RequestParam(value = "A_ETALON", required = false) List<String> A_ETALON_LIST,
+                                           @RequestParam(value = "A_UNIT", required = false) List<String> A_UNIT_LIST,
+                                           @RequestParam(value = "A_PRICE", required = false) List<String> A_PRICE_LIST,
+                                           @RequestParam(value = "A_AMOUNT", required = false) List<String> A_AMOUNT_LIST,
+                                           @RequestParam(value = "A_STOREDESC") String A_STOREDESC,
+                                           @RequestParam(value = "A_LOCDESC") String A_LOCDESC,
+                                           @RequestParam(value = "A_ITYPE", required = false) List<String> A_ITYPEE_LIST,
+                                           @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                           @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                           @RequestParam(value = "A_DEPARTNAME") String A_DEPARTNAME,
+                                           @RequestParam(value = "A_USERID") String A_USERID,
+                                           @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                           @RequestParam(value = "A_MPID", required = false) List<String> A_MPID_LIST,
+                                           HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        for (int i = 0; i < A_MATERIALCODE_LIST.size(); i++) {
+            HashMap data = mlService.SAVEINPUT(A_KCID, A_MATERIALCODE_LIST.get(i), A_MATERIALNAME_LIST.get(i), A_ETALON_LIST.get(i), A_UNIT_LIST.get(i), A_PRICE_LIST.get(i),
+                    A_AMOUNT_LIST.get(i), A_STOREDESC, A_LOCDESC, A_ITYPEE_LIST.get(i), A_PLANTCODE, A_DEPARTCODE, A_DEPARTNAME,
+                    A_USERID, A_USERNAME, A_MPID_LIST.get(i));
+
+            result.put("RET_MSG", data.get("RET_MSG"));
+            result.put("RET", data.get("RET"));
+        }
+
+        return result;
+    }
+
+    //新增入库
+    @RequestMapping(value = "/SAVEINPUT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> SAVEINPUT(@RequestParam(value = "A_KCID") String A_KCID,
+                                         @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                         @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                                         @RequestParam(value = "A_ETALON") String A_ETALON,
+                                         @RequestParam(value = "A_UNIT") String A_UNIT,
+                                         @RequestParam(value = "A_PRICE") String A_PRICE,
+                                         @RequestParam(value = "A_AMOUNT") String A_AMOUNT,
+                                         @RequestParam(value = "A_STOREDESC") String A_STOREDESC,
+                                         @RequestParam(value = "A_LOCDESC") String A_LOCDESC,
+                                         @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                         @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                         @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                         @RequestParam(value = "A_DEPARTNAME") String A_DEPARTNAME,
+                                         @RequestParam(value = "A_USERID") String A_USERID,
+                                         @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                         @RequestParam(value = "A_MPID") String A_MPID,
+                                         HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.SAVEINPUT(A_KCID, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_UNIT, A_PRICE,
+                A_AMOUNT, A_STOREDESC, A_LOCDESC, A_ITYPE, A_PLANTCODE, A_DEPARTCODE, A_DEPARTNAME,
+                A_USERID, A_USERNAME, A_MPID);
+    }
+
+    //删除储备物资
+    @RequestMapping(value = "/DELETEINPUT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DELETEINPUT(@RequestParam(value = "A_KCID") String A_KCID,
+                                           HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.DELETEINPUT(A_KCID);
+    }
+
+    //查询计划
+    @RequestMapping(value = "/GETMP", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETMP(@RequestParam(value = "A_YEAR") Integer A_YEAR,
+                                     @RequestParam(value = "A_MONTH") Integer A_MONTH,
+                                     @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                     @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                     @RequestParam(value = "A_CODE") String A_CODE,
+                                     @RequestParam(value = "A_NAME") String A_NAME,
+                                     HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.GETMP(A_YEAR, A_MONTH, A_PLANTCODE, A_DEPARTCODE, A_CODE, A_NAME);
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+
+        return result;
+    }
+
+    //关联查询
+    @RequestMapping(value = "/GETINPUTLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETINPUTLIST(@RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+                                            @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+                                            @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                            @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                            @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                            @RequestParam(value = "A_STORE_DESC") String A_STORE_DESC,
+                                            @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                            @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                                            @RequestParam(value = "A_ETALON") String A_ETALON,
+                                            @RequestParam(value = "A_LOC_DESC") String A_LOC_DESC,
+                                            @RequestParam(value = "A_USERID") String A_USERID,
+                                            Integer limit, Integer start,
+                                            HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        HashMap data = mlService.GETINPUTLIST(A_BEGINDATE, A_ENDDATE, A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_STORE_DESC,
+                A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LOC_DESC, A_USERID);
+
+
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("list", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //入库台账Excel
+    @RequestMapping(value = "/GETINPUTLIST_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void GETINPUTLIST_EXCEL(@RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+                                   @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+                                   @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                   @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                   @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                   @RequestParam(value = "A_STORE_DESC") String A_STORE_DESC,
+                                   @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                   @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                                   @RequestParam(value = "A_ETALON") String A_ETALON,
+                                   @RequestParam(value = "A_LOC_DESC") String A_LOC_DESC,
+                                   @RequestParam(value = "A_USERID") String A_USERID,
+                                   HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        A_DEPARTCODE = URLDecoder.decode(A_DEPARTCODE, "UTF-8");
+        A_ITYPE = URLDecoder.decode(A_ITYPE, "UTF-8");
+
+        HashMap data = mlService.GETINPUTLIST(A_BEGINDATE, A_ENDDATE, A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_STORE_DESC,
+                A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LOC_DESC, A_USERID);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("物资编号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("物资名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("规格");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("单价");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("入库数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("物资分类");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("库房描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("录入时间");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("MATERIALCODE") == null ? "" : map.get("MATERIALCODE").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("ETALON") == null ? "" : map.get("ETALON").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("F_PRICE") == null ? "" : map.get("F_PRICE").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("AMOUNT") == null ? "" : map.get("AMOUNT").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("F_MONEY") == null ? "" : map.get("F_MONEY").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("I_TYPE") == null ? "" : map.get("I_TYPE").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("STORE_DESC") == null ? "" : map.get("STORE_DESC").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("INSERTDATE") == null ? "" : map.get("INSERTDATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("储备物资查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //物资关联
+    @RequestMapping(value = "/MPTOKC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MPTOKC(@RequestParam(value = "A_MPID") String A_MPID,
+                                      @RequestParam(value = "A_KCID") String A_KCID,
+                                      @RequestParam(value = "A_REMARK") String A_REMARK,
+                                      HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.MPTOKC(A_MPID, A_KCID, A_REMARK);
+    }
+
+    //确认入库
+    @RequestMapping(value = "/CONFIRMINPUT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> CONFIRMINPUT(@RequestParam(value = "A_KCID", required = false) List<String> A_KCID_LIST,
+                                            HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        for (int i = 0; i < A_KCID_LIST.size(); i++) {
+            HashMap data = mlService.CONFIRMINPUT(A_KCID_LIST.get(i));
+            result.put("RET", data.get("RET"));
+        }
+        return result;
+    }
+
+    //根据物资分类查询信息
+    @RequestMapping(value = "/MATTYPE_UNITANDPREFIX", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MATTYPE_UNITANDPREFIX(@RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                                     HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.MATTYPE_UNITANDPREFIX(A_ITYPE);
+    }
+
+    //查询库存列表
+    @RequestMapping(value = "/GETKC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETKC(
+            @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+            @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+            @RequestParam(value = "A_ITYPE") String A_ITYPE,
+            @RequestParam(value = "A_STORE_DESC") String A_STORE_DESC,
+            @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+            @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+            @RequestParam(value = "A_ETALON") String A_ETALON,
+            @RequestParam(value = "A_LOC_DESC") String A_LOC_DESC,
+            @RequestParam(value = "A_USERID") String A_USERID,
+            Integer start, Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mlService.GETKC(A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_STORE_DESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LOC_DESC, A_USERID);
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("list", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //导出储备物资Excel
+    @RequestMapping(value = "/GETKC_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void GETKC_EXCEL(@RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                            @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                            @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                            @RequestParam(value = "A_STORE_DESC") String A_STORE_DESC,
+                            @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                            @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                            @RequestParam(value = "A_ETALON") String A_ETALON,
+                            @RequestParam(value = "A_LOC_DESC") String A_LOC_DESC,
+                            @RequestParam(value = "A_USERID") String A_USERID,
+                            HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        A_DEPARTCODE = URLDecoder.decode(A_DEPARTCODE, "UTF-8");
+        A_ITYPE = URLDecoder.decode(A_ITYPE, "UTF-8");
+
+        HashMap data = mlService.GETKC(A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_STORE_DESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LOC_DESC, A_USERID);
+        // System.out.println("---"+data);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("物资编号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("物资名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("规格");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("单价");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("入库数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("剩余数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("剩余金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("物资分类");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("库房描述");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("MATERIALCODE") == null ? "" : map.get("MATERIALCODE").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("ETALON") == null ? "" : map.get("ETALON").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("F_PRICE") == null ? "" : map.get("F_PRICE").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("AMOUNT") == null ? "" : map.get("AMOUNT").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("F_MONEY") == null ? "" : map.get("F_MONEY").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("KY_AMOUNT") == null ? "" : map.get("KY_AMOUNT").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("F_KYMONEY") == null ? "" : map.get("F_KYMONEY").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("I_TYPE") == null ? "" : map.get("I_TYPE").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("STORE_DESC") == null ? "" : map.get("STORE_DESC").toString());
+
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("储备物资查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //查看消耗明细
+    @RequestMapping(value = "/GETCONSUMEDETAIL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETCONSUMEDETAIL(@RequestParam(value = "A_KCID") String A_KCID,
+                                                HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.GETCONSUMEDETAIL(A_KCID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //查询消耗物资
+    @RequestMapping(value = "/DJ03_GETCONSUME", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DJ03_GETCONSUME(
+            @RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+            @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+            @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+            @RequestParam(value = "A_ITYPE") String A_ITYPE,
+            @RequestParam(value = "A_STOREDESC") String A_STOREDESC,
+            @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+            @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+            @RequestParam(value = "A_ETALON") String A_ETALON,
+            @RequestParam(value = "A_LCODESC") String A_LCODESC,
+            Integer start, Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mlService.DJ03_GETCONSUME(A_BEGINDATE, A_ENDDATE, A_ORDERID, A_PLANTCODE, A_DEPARTCODE, A_ITYPE,
+                A_STOREDESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LCODESC);
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            if (limit != 25) {
+                int endPage = start + limit;
+                if (total < endPage) {
+                    pageList = list.subList(start, total);
+                } else {
+                    pageList = list.subList(start, endPage);
+                }
+            } else {
+                pageList = list;
+            }
+        } else {
+            pageList = list;
+        }
+
+        result.put("list", pageList);
+        result.put("total", total);
+        result.put("success", true);
+
+        return result;
+    }
+
+    //导出消耗物资Excel
+    @RequestMapping(value = "/DJ03_GETCONSUME_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void DJ03_GETCONSUME_EXCEL(@RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+                                      @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+                                      @RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                      @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                      @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                      @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                      @RequestParam(value = "A_STOREDESC") String A_STOREDESC,
+                                      @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                      @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                                      @RequestParam(value = "A_ETALON") String A_ETALON,
+                                      @RequestParam(value = "A_LCODESC") String A_LCODESC,
+                                      HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        A_DEPARTCODE = URLDecoder.decode(A_DEPARTCODE, "UTF-8");
+        A_ITYPE = URLDecoder.decode(A_ITYPE, "UTF-8");
+
+        HashMap data = mlService.DJ03_GETCONSUME(A_BEGINDATE, A_ENDDATE, A_ORDERID, A_PLANTCODE, A_DEPARTCODE, A_ITYPE,
+                A_STOREDESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LCODESC);
+        // System.out.println("---"+data);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("检修单号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("物资编号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("物资名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("规格");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("单价");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("消耗数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("物资分类");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("库房描述");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("ORDERID") == null ? "" : map.get("ORDERID").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("MATERIALCODE") == null ? "" : map.get("MATERIALCODE").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("ETALON") == null ? "" : map.get("ETALON").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("F_PRICE") == null ? "" : map.get("F_PRICE").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("PLAN_AMOUNT") == null ? "" : map.get("PLAN_AMOUNT").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("F_MONEY") == null ? "" : map.get("F_MONEY").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("I_TYPE") == null ? "" : map.get("I_TYPE").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("STORE_DESC") == null ? "" : map.get("STORE_DESC").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("消耗物资统计.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //查询检修单消耗物料
+    @RequestMapping(value = "/GETORDERCONSUME", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETORDERCONSUME(
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mlService.GETORDERCONSUME(A_ORDERID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //获取单据信息
+    @RequestMapping(value = "/PRO_DJ601_ORDERMESSAGE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DJ601_ORDERMESSAGE(
+            @RequestParam(value = "ORDERID_in") String ORDERID_in,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mlService.PRO_DJ601_ORDERMESSAGE(ORDERID_in);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //获取收发存
+    @RequestMapping(value = "/GETSFC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETSFC(@RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+                                      @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+                                      @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                      @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                      @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                      @RequestParam(value = "A_CODE") String A_CODE,
+                                      @RequestParam(value = "A_NAME") String A_NAME,
+                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+
+        HashMap data = mlService.GETSFC(A_BEGINDATE, A_ENDDATE, A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_CODE, A_NAME);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //收发存统计Excel
+    @RequestMapping(value = "/GETSFC_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void GETSFC_EXCEL(@RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+                             @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+                             @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                             @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                             @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                             @RequestParam(value = "A_CODE") String A_CODE,
+                             @RequestParam(value = "A_NAME") String A_NAME,
+                             HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        A_DEPARTCODE = URLDecoder.decode(A_DEPARTCODE, "UTF-8");
+        A_ITYPE = URLDecoder.decode(A_ITYPE, "UTF-8");
+
+        HashMap data = mlService.GETSFC(A_BEGINDATE, A_ENDDATE, A_PLANTCODE, A_DEPARTCODE, A_ITYPE, A_CODE, A_NAME);
+        // System.out.println("---"+data);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("物资编号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("物资名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("规格");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("单价");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("初期数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("期初金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("收入数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("收入金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("支出数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("支出金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("期末数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
+        cell.setCellValue("期末金额");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("MATERIALCODE") == null ? "" : map.get("MATERIALCODE").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("ETALON") == null ? "" : map.get("ETALON").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("F_PRICE") == null ? "" : map.get("F_PRICE").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("QC_AMOUNT") == null ? "" : map.get("QC_AMOUNT").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("QC_MONEY") == null ? "" : map.get("QC_MONEY").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("IN_AMOUNT") == null ? "" : map.get("IN_AMOUNT").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("IN_MONEY") == null ? "" : map.get("IN_MONEY").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("OUT_AMOUNT") == null ? "" : map.get("OUT_AMOUNT").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("OUT_MONEY") == null ? "" : map.get("OUT_MONEY").toString());
+
+                row.createCell((short) 12).setCellValue(map.get("QM_AMOUNT") == null ? "" : map.get("QM_AMOUNT").toString());
+
+                row.createCell((short) 13).setCellValue(map.get("QM_MONEY") == null ? "" : map.get("QM_MONEY").toString());
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("收发存统计.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //查看消耗待回收
+    @RequestMapping(value = "/DJ06_GETCONSUME", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DJ06_GETCONSUME(
+            @RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+            @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+            @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+            @RequestParam(value = "A_ITYPE") String A_ITYPE,
+            @RequestParam(value = "A_STOREDESC") String A_STOREDESC,
+            @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+            @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+            @RequestParam(value = "A_ETALON") String A_ETALON,
+            @RequestParam(value = "A_LCODESC") String A_LCODESC,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.DJ06_GETCONSUME(A_BEGINDATE, A_ENDDATE, A_ORDERID, A_PLANTCODE, A_DEPARTCODE, A_ITYPE,
+                A_STOREDESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LCODESC);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //修改回收数量
+    @RequestMapping(value = "/SAVE_RECAMOUNT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> SAVE_RECAMOUNT(@RequestParam(value = "A_ID") String A_ID,
+                                              @RequestParam(value = "A_REC_AMOUNT") String A_REC_AMOUNT,
+                                              @RequestParam(value = "A_USERID") String A_USERID,
+                                              @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                              HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        return mlService.SAVE_RECAMOUNT(A_ID, A_REC_AMOUNT, A_USERID, A_USERNAME);
+    }
+
+    //确认回收
+    @RequestMapping(value = "/CONFIRM_REC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> CONFIRM_REC(@RequestParam(value = "A_ID", required = false) List<String> A_ID_LIST,
+                                           @RequestParam(value = "A_USERID") String A_USERID,
+                                           HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        for (int i = 0; i < A_ID_LIST.size(); i++) {
+            HashMap data = mlService.CONFIRM_REC(A_ID_LIST.get(i), A_USERID);
+            result.put("RET", data.get("RET"));
+        }
+        return result;
+    }
+
+    //获取消耗待回收工单
+    @RequestMapping(value = "/GETCONSUMEBYORDER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETCONSUMEBYORDER(
+            @RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+            @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+            @RequestParam(value = "A_ORDERID") String A_ORDERID,
+            @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+            @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.GETCONSUMEBYORDER(A_BEGINDATE, A_ENDDATE, A_ORDERID, A_PLANTCODE, A_DEPARTCODE);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //根据单号查询消耗待回收
+    @RequestMapping(value = "/GETORDERMATCONSUME", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETORDERMATCONSUME(@RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.GETORDERMATCONSUME(A_ORDERID);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //修改库房描述
+    @RequestMapping(value = "/SETSTOREDESC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> SETSTOREDESC(@RequestParam(value = "A_ID", required = false) List<String> A_ID_LIST,
+                                            @RequestParam(value = "A_NEW_STOREDESC") String A_NEW_STOREDESC,
+                                            HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        for (int i = 0; i < A_ID_LIST.size(); i++) {
+            HashMap data = mlService.SETSTOREDESC(A_ID_LIST.get(i), A_NEW_STOREDESC);
+            result.put("RET", data.get("RET"));
+        }
+        return result;
+    }
+
+    //获取消耗待回收工单
+    @RequestMapping(value = "/GETCONSUMESELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> GETCONSUMESELECT(@RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+                                                @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+                                                @RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                                @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                                @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                                @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                                @RequestParam(value = "A_STOREDESC") String A_STOREDESC,
+                                                @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                                @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                                                @RequestParam(value = "A_ETALON") String A_ETALON,
+                                                @RequestParam(value = "A_LCODESC") String A_LCODESC,
+                                                HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mlService.GETCONSUMESELECT(A_BEGINDATE, A_ENDDATE, A_ORDERID, A_PLANTCODE, A_DEPARTCODE,
+                A_ITYPE, A_STOREDESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LCODESC);
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+
+        return result;
+    }
+
+    //物资回收查询Excel
+    @RequestMapping(value = "/GETCONSUMESELECT_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void GETCONSUMESELECT_EXCEL(@RequestParam(value = "A_BEGINDATE") java.sql.Date A_BEGINDATE,
+                                       @RequestParam(value = "A_ENDDATE") java.sql.Date A_ENDDATE,
+                                       @RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                       @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                       @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                       @RequestParam(value = "A_ITYPE") String A_ITYPE,
+                                       @RequestParam(value = "A_STOREDESC") String A_STOREDESC,
+                                       @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                       @RequestParam(value = "A_MATERIALNAME") String A_MATERIALNAME,
+                                       @RequestParam(value = "A_ETALON") String A_ETALON,
+                                       @RequestParam(value = "A_LCODESC") String A_LCODESC,
+                                       HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        A_DEPARTCODE = URLDecoder.decode(A_DEPARTCODE, "UTF-8");
+        A_ITYPE = URLDecoder.decode(A_ITYPE, "UTF-8");
+
+        HashMap data = mlService.GETCONSUMESELECT(A_BEGINDATE, A_ENDDATE, A_ORDERID, A_PLANTCODE, A_DEPARTCODE,
+                A_ITYPE, A_STOREDESC, A_MATERIALCODE, A_MATERIALNAME, A_ETALON, A_LCODESC);
+        // System.out.println("---"+data);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("检修单号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("电机容量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("物资名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("消耗数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("回收数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("检修班组");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("负责人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("库房描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("物资分类");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("ORDERID") == null ? "" : map.get("ORDERID").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("DJ_VOL") == null ? "" : map.get("DJ_VOL").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("PLAN_AMOUNT") == null ? "" : map.get("PLAN_AMOUNT").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("REC_AMOUNT") == null ? "" : map.get("REC_AMOUNT").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("MENDDEPT_NAME") == null ? "" : map.get("MENDDEPT_NAME").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("MEND_USERNAME") == null ? "" : map.get("MEND_USERNAME").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("STORE_DESC") == null ? "" : map.get("STORE_DESC").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("I_TYPE") == null ? "" : map.get("I_TYPE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("物资回收查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
