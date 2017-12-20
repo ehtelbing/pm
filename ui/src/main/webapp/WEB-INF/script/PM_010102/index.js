@@ -366,7 +366,7 @@ Ext.onReady(function () {
             id: 'winjhlx',
             xtype: 'combo',
             store: winjhlxStore,
-            fieldLabel: '计划类型',
+            fieldLabel: '点检类型',
             editable: false,
             labelWidth: 70,
             queryMode: 'local',
@@ -551,6 +551,7 @@ function save(){
                     num++;
                 }else{
                     alert('生成点检计划失败！')
+                    num++;
                 }
             }
         });

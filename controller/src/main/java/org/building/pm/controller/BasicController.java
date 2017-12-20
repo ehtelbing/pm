@@ -759,4 +759,19 @@ public class BasicController {
         Map result = basicService.PRO_PM_06_CK_TYPE_VIEW(V_V_CKTYPE);
         return result;
     }
+
+    /*
+    * 点检计划所有点检详细信息
+    * */
+
+    @RequestMapping(value = "/PM_06_DJ_DATA_SEL_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_06_DJ_DATA_SEL_ALL(
+            @RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
+            @RequestParam(value = "V_V_STIME") String V_V_STIME,
+            @RequestParam(value = "V_V_ETIME") String V_V_ETIME)
+            throws SQLException {
+        Map result = basicService.PM_06_DJ_DATA_SEL_ALL(V_V_CRITERION_CODE,V_V_STIME,V_V_ETIME);
+        return result;
+    }
 }
