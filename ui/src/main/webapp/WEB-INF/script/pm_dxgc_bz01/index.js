@@ -306,11 +306,16 @@ var grid1=Ext.create('Ext.grid.Panel',{
     ],
     listeners:{
         'itemdblclick':function(a,b,c){
-            /*var owidth = window.screen.availWidth;
-            var oheight =  window.screen.availHeight - 50;
-            window.open(AppUrl + 'page/pm_dxgc_bz99/gantt.html?guid='
-                +  b.data.V_GUID+'&&fxjhbm=' +b.data.V_PROJECT_CODE+'&&fxjhmc='+b.data.V_PROJECT_NAME+'&&fxjhguid='+ b.data.V_GUID+'&&deptcode='
-                +Ext.getCmp('ck').getValue(), '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');*/
+
+            var owidth = 593;
+            var oheight = 796;
+            var w=screen.availWidth-10;
+            var h=screen.availHeight-30;
+            var objwin = window.open(AppUrl + 'page/pm_dxgc_bz01/index_detail.html?guid='+b.data.V_GUID
+                + "&V_PROJECT_NAME=" + b.data.V_PROJECT_NAME
+                + "&V_PROJECT_CODE=" + b.data.V_PROJECT_CODE,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
+
+            return ;
 
             guid= b.data.V_GUID;
             Ext.Ajax.request({
@@ -416,6 +421,7 @@ var grid1=Ext.create('Ext.grid.Panel',{
                 }
             });
             Ext.getCmp('win').show();
+
         }
     }
 });
@@ -522,41 +528,41 @@ var jjpbgrid=Ext.create('Ext.grid.Panel',{
 });
 var tabpanel = Ext.create('Ext.tab.Panel', {
     id : 'tabpanel',
-   // region:'center',
+    // region:'center',
     width : '100%',
     height:window.innerHeight/2,
     items : [
-           {
-        title : '计划用工',
-        id : 'ygtab',
-        layout : 'vbox',
-        frame:true,
-        border : false,
-        items : [jhyggrid ]
-    }, {
-        title : '计划物料',
-        id : 'wltab',
-        layout : 'vbox',
-        frame:true,
-        border : false,
-        items : [jhwlgrid ]
-    }, {
-        title : '机具配备',
-        id : 'jjtab',
-        layout : 'vbox',
-        frame:true,
-        border : false,
-        items : [ jjpbgrid]
-    }, {
-        title : '安全对策',
-        id : 'aqtab',
-        layout : 'vbox',
-        frame:true,
-        border : false,
-        items : [
-            { xtype:'textarea',id:'sgyc',editable:false,readOnly:true,style:'margin:5px 5px 5px 5px',fieldLabel:'事故预测',labelAlign:'right',labelWidth : 80,width:530,height:80},
-            { xtype:'textarea',id:'aqdc',editable:false,readOnly:true,style:'margin:5px 5px 5px 5px',fieldLabel:'安全对策',labelAlign:'right',labelWidth : 80,width:530,height:80}
-        ]}]
+        {
+            title : '计划用工',
+            id : 'ygtab',
+            layout : 'vbox',
+            frame:true,
+            border : false,
+            items : [jhyggrid ]
+        }, {
+            title : '计划物料',
+            id : 'wltab',
+            layout : 'vbox',
+            frame:true,
+            border : false,
+            items : [jhwlgrid ]
+        }, {
+            title : '机具配备',
+            id : 'jjtab',
+            layout : 'vbox',
+            frame:true,
+            border : false,
+            items : [ jjpbgrid]
+        }, {
+            title : '安全对策',
+            id : 'aqtab',
+            layout : 'vbox',
+            frame:true,
+            border : false,
+            items : [
+                { xtype:'textarea',id:'sgyc',editable:false,readOnly:true,style:'margin:5px 5px 5px 5px',fieldLabel:'事故预测',labelAlign:'right',labelWidth : 80,width:530,height:80},
+                { xtype:'textarea',id:'aqdc',editable:false,readOnly:true,style:'margin:5px 5px 5px 5px',fieldLabel:'安全对策',labelAlign:'right',labelWidth : 80,width:530,height:80}
+            ]}]
 });
 var window = Ext.create('Ext.window.Window', {
     id : 'win',
