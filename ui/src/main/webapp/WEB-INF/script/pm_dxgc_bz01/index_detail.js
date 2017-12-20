@@ -500,8 +500,89 @@ Ext.onReady(function () {
         autoScroll: true,
         columnLines: true,
         columns: [
-            {text: 'xxx', width: 120, dataIndex: 'xxx', align: 'center'},
-            {text: 'yyy', width: 120, dataIndex: 'yyy', align: 'center'}
+            {
+                xtype : 'rownumberer',
+                width : 30,
+                sortable : false
+            }, {
+                text : '工单GUID(隐藏)',
+                dataIndex : 'V_ORDERGUID',
+                align : 'center',
+                hidden : true
+            }, {
+                text : '工单号',
+                dataIndex : 'V_ORDERID',
+                width : 100,
+                align : 'center'
+            },  {
+                text : '子工单数量',
+                dataIndex : 'WORKORDERNUM',
+                width : 100,
+                align : 'center'
+            }, {
+                text : '工单描述',
+                dataIndex : 'V_SHORT_TXT',
+                width : 300,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            }, {
+                text : '设备编号（隐藏）',
+                dataIndex : 'V_EQUIP_NO',
+                align : 'center',
+                hidden : true
+            }, {
+                text : '设备名称',
+                dataIndex : 'V_EQUIP_NAME',
+                width : 130,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            }, {
+                text : '设备位置',
+                dataIndex : 'V_EQUSITENAME',
+                width : 220,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            }, {
+                text : '备件消耗',
+                dataIndex : 'V_SPARE',
+                width : 300,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            }, {
+                text : '委托单位',
+                dataIndex : 'V_DEPTNAME',
+                width : 150,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            }, {
+                text : '委托人',
+                dataIndex : 'V_PERSONNAME',
+                width : 100,
+                align : 'center'
+            }, {
+                text : '委托时间',
+                dataIndex : 'D_ENTER_DATE',
+                width : 140,
+                align : 'center'
+            }, {
+                text : '检修单位',
+                dataIndex : 'V_DEPTNAMEREPARIR',
+                width : 150,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            }, {
+                text : '工单类型描述',
+                dataIndex : 'V_ORDER_TYP_TXT',
+                width : 100,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            }, {
+                text : '工单状态',
+                dataIndex : 'V_STATENAME',
+                width : 65,
+                align : 'center',
+                renderer : tabGridFunction.CreateGridColumnTd
+            },
         ]
     });
     var panel1 = Ext.create('Ext.panel.Panel', {
@@ -1909,6 +1990,12 @@ var tabGridFunction = {
             }
 
         }
+    },
+    //工单详情 样式 方法
+    CreateGridColumnTd:function(value, metaData, record, rowIndex, colIndex, store) {
+        metaData.style = "text-align:left;";
+        var val=value==null?'':value;
+        return '<div data-qtip="' + val + '" >' + val + '</div>';
     }
 }
 
