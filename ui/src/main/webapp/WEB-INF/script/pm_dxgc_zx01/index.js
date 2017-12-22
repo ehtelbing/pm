@@ -351,7 +351,7 @@ function OnBtnZx(){
             if(resp.v_info=='success'){
                 var owidth = window.document.body.offsetWidth-200;
                 var oheight = window.document.body.offsetHeight-100 ;
-                window.open(AppUrl+'page/pm_dxgc_orderEdit/index.html?V_GUID=' + resp.list[0].V_ORDERGUID+'&&V_EQUTYPECODE='+record[0].data.V_EQUTYPECODE+'&&V_SOURCECODE=defct12', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                window.open(AppUrl+'page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=' + resp.list[0].V_ORDERGUID+'&&V_V_EQUTYPE='+record[0].data.V_EQUTYPECODE+'&&V_V_SOURCECODE=defct12', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
             }else{
                 alert(resp.v_info)
             }

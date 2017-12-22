@@ -1,8 +1,41 @@
-var today=new Date(Ext.Date.format(new Date(), 'Y-m-d'));
-var dt = new Date();
-var thisYear = dt.getFullYear();
-var years = [];
+/**
+ * @author modify by STR 2017-12-15
+ * content : To restore the ui of this page for showing grid & gantt chart view in beauty .
+ *              Then will collect any functions into a Object with different idiom ,by the way,
+ *              some functions in its function had no change in this new version(12-15),only
+ *              change some functional coding style.
+ */
 
+//初始化参数信息
+var guid = '';
+var v_guid = "";//选择指定行的guid
+var V_PROJECT_NAME = '';
+var V_PROJECT_CODE = '';
+if (location.href.split('?')[1] != undefined) {
+    var parameters = Ext.urlDecode(location.href.split('?')[1]);
+    (parameters.guid == undefined) ? guid = '' : guid = parameters.guid;
+    (parameters.V_PROJECT_NAME == undefined) ? V_PROJECT_NAME = '' : V_PROJECT_NAME = parameters.V_PROJECT_NAME;
+    (parameters.V_PROJECT_CODE == undefined) ? V_PROJECT_CODE = '' : V_PROJECT_CODE = parameters.V_PROJECT_CODE;
+}
+
+//初始化定义主表格及甘特图参数
+var cmItems = [];
+var ganttdata = [];
+
+var vStart = '';
+var vEnd = '';
+var zigener = "";
+
+var insertData = [{
+    'V_BUILD_DEPT': '', 'V_BULID_PERSON': '', 'V_CONTENT': '', 'V_DATE_B': '', 'V_DATE_E': '', 'V_GUID': '',
+    'V_GUID_FXJH': '', 'V_PROJECT_CODE_FXJH': '', 'V_PROJECT_NAME': '', 'V_SPECIALTY': '', 'V_PLAN_MONEY': ''
+}];
+
+
+//初始化时间参数
+var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
+var thisYear = new Date().getFullYear();
+var years = [];
 for (var i = 2014; i <= thisYear + 1; i++) years.push([i, i]);
 var months = [];
 for (var i = 1; i <= 12; i++) months.push({displayField: i, valueField: i});
@@ -12,21 +45,214 @@ if (new Date().getMonth() + 1 == 1) {
     yearmr = yearmr - 1;
     lastmonth = 12;
 }
-var guid = '';
-var V_PROJECT_NAME = '';
-var V_PROJECT_CODE = '';
-var jhygs = [];
-var jhwls = [];
-var jjpbs = [];
-if (location.href.split('?')[1] != undefined) {
-    var parameters = Ext.urlDecode(location.href.split('?')[1]);
-    (parameters.guid == undefined) ? guid = '' : guid = parameters.guid;
-    (parameters.V_PROJECT_NAME == undefined) ? V_PROJECT_NAME = '' : V_PROJECT_NAME = parameters.V_PROJECT_NAME;
-    (parameters.V_PROJECT_CODE == undefined) ? V_PROJECT_CODE = '' : V_PROJECT_CODE = parameters.V_PROJECT_CODE;
-}
+
+var jhygs = [];//计划用工
+var jhwls = [];//计划物料
+var jjpbs = [];//机具配备
+var gdxqs = [];//工单详情
+
+
+var gdxqStore = Ext.create('Ext.data.Store', {
+    id: 'gdxqStore',
+    pageSize: 50,
+    autoLoad: false,
+    fields: ['V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
+        'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME',
+        'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE',
+        'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WORKORDERNUM'],
+
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'str/PRO_PM_WORKORDER_BY_ORDERGUID',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list',
+            total: 'total'
+        }
+    }
+});
+
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
+
+    //主表格树形数据源
+    var treeStore = Ext.create('Ext.data.TreeStore', {
+        storeId: 'treeStore',
+        autoLoad: false,
+        root: {
+            expanded: true,
+            text: "My Root"
+        },
+        fields: ['V_BUILD_DEPT', 'V_BULID_PERSON', 'V_CONTENT', 'V_DATE_B', 'V_DATE_E', 'V_GUID',
+            'V_GUID_FXJH', 'V_PROJECT_CODE_FXJH', 'V_PROJECT_NAME', 'V_SPECIALTY', 'V_PLAN_MONEY', 'V_GUID_P'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'gantt/PRO_PM_EQUREPAIRPLAN_TREE',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json'
+            },
+            extraParams: {
+                V_V_GUID_FXJH: guid,
+                V_BY1: "",
+                V_BY2: "",
+                V_BY3: ""
+            }
+        },
+        listeners: {
+            load: function (store, records,success,eOpts) {
+                    records.childNodes.pop();
+            }
+        }
+    });
+    //主表格 树类  grid
+    var treegrid = Ext.create('Ext.tree.Panel', {
+        id: 'treegrid',
+        store: treeStore,
+        region: 'west',
+        width: '30%',
+        height: '100%',
+        useArrows: true,
+        rootVisible: false,
+        multiSelect: true,
+        singleExpand: true,
+        rowLines: true,
+        columnLines: true,
+        columns: [{xtype: 'rownumberer', width: 30, sortable: false},
+            {
+                xtype: 'treecolumn',
+                text: '工程名称',
+                dataIndex: 'V_PROJECT_NAME',
+                width: 180,
+                height: 60,
+                field: {xtype: 'textfield'},
+                align: 'center'
+            },
+            {
+                text: '工程总费用',
+                dataIndex: 'V_PLAN_MONEY',
+                width: 120,
+                height: 60,
+                field: {xtype: 'numberfield'},
+                align: 'center'
+            },
+            {text: '工程开始时间', dataIndex: 'V_DATE_B', width: 160, height: 60, align: 'center'},
+            {text: '工程结束时间', dataIndex: 'V_DATE_E', width: 160, height: 60, align: 'center'}],
+        listeners: {
+            'itemclick': function (a, b, c) {
+                jhygs = [];
+                jhwls = [];
+                jjpbs = [];
+                v_guid = b.data.V_GUID ;
+                Ext.Ajax.request({
+                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_YG_VIEW',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: b.data.V_GUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        for (var i = 0; i < resp.list.length; i++) {
+                            jhygs.push({
+                                gz: resp.list[i].V_GZ,
+                                rs: resp.list[i].V_NUM,
+                                gs: resp.list[i].V_TIME,
+                                sm: resp.list[i].V_MEMO,
+                                id: resp.list[i].I_ID,
+                                guid: resp.list[i].V_GUID
+                            });
+                        }
+                        Ext.data.StoreManager.lookup('jhygStore').loadData(jhygs);
+                    }
+                });
+                Ext.Ajax.request({
+                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_WL_VIEW',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: b.data.V_GUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        for (var i = 0; i < resp.list.length; i++) {
+                            jhwls.push({
+                                wlbm: resp.list[i].V_WL_CODE,
+                                wlmc: resp.list[i].V_WL_NAME,
+                                jldw: resp.list[i].V_JLDW,
+                                sl: resp.list[i].V_NUM,
+                                gg: resp.list[i].V_GGXH,
+                                dj: resp.list[i].V_DJ,
+                                id: resp.list[i].I_ID,
+                                guid: resp.list[i].V_GUID
+                            });
+                        }
+                        Ext.data.StoreManager.lookup('jhwlStore').loadData(jhwls);
+                    }
+                });
+                Ext.Ajax.request({
+                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_JJ_VIEW',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: b.data.V_GUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        for (var i = 0; i < resp.list.length; i++) {
+                            jjpbs.push({
+                                jjbm: resp.list[i].V_JJ_CODE,
+                                jjmc: resp.list[i].V_JJ_NAME,
+                                jldw: resp.list[i].V_JLDW,
+                                sl: resp.list[i].V_NUM,
+                                id: resp.list[i].I_ID,
+                                guid: resp.list[i].V_GUID
+                            });
+                        }
+                        Ext.data.StoreManager.lookup('jjpbStore').loadData(jjpbs);
+                    }
+                });
+                Ext.Ajax.request({
+                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TREE_GET',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: b.data.V_GUID,
+                        V_BY1: "",
+                        V_BY2: "",
+                        V_BY3: ""
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        Ext.getCmp('sgyc').setValue(resp.list[0].V_SGYC);
+                        Ext.getCmp('aqdc').setValue(resp.list[0].V_AQDC);
+
+                    }
+                });
+                //工单详情表格刷新
+                Ext.data.StoreManager.lookup('gdxqStore').load();
+                pageFunction.loadJbxqTab(b.data.V_GUID);
+            }
+        }
+    });
+    //甘特图 面板定义
+    var ganttpanel = Ext.create('Ext.panel.Panel', {
+        id: 'ganttpanel',
+        width: "70%",
+        height: "100%",
+        region: 'center',
+        frame: true,
+        layout: 'border',
+        baseCls: 'my-panel-noborder',
+        items: []
+    });
 
     var jhygStore = Ext.create("Ext.data.Store", {
         id: 'jhygStore',
@@ -64,60 +290,6 @@ Ext.onReady(function () {
         }
     });
 
-    var ganttStore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'ganttStore',
-        fields: [
-            'I_ID',
-            'V_ORGCODE',
-            'V_DEPTCODE',
-            'V_YEAR',
-            'V_MONTH',
-            'V_GUID',
-            'V_PROJECT_CODE',
-            'V_PROJECT_NAME',
-            'V_PLAN_MONEY',
-            'V_CONTENT',
-            'V_DATE_DESIGN',
-            'V_DATE_INVITE',
-            'V_DATE_B',
-            'V_DATE_E',
-            'V_BUDGET_MONEY',
-            'V_PROGRESS',
-            'V_BUILD_NAMAGER',
-            'V_BULID_PERSON',
-            'V_DIRECT_PERSON',
-            'V_EQUTYPECODE',
-            'V_EQUCODE',
-            'V_EQUNAME',
-            'V_SPECIALTY',
-            'V_BUILD_DEPT',
-            'V_GUID_P',
-            'V_PROJECT_CODE_P',
-            'V_PROJECT_NAME_P',
-            'V_GUID_FXJH',
-            'V_PROJECT_CODE_FXJH',
-            'V_PROJECT_NAME_FXJH',
-            'D_DATE_INPUT',
-            'V_PERCODE_INPUT',
-            'V_PERNAME_INPUT',
-            'V_ROWNUMBER'
-
-
-        ],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_01/PRO_PM_EQUREPAIRPLAN_TREE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
 
     var jhyggrid = Ext.create('Ext.grid.Panel', {
         width: '100%',
@@ -166,6 +338,99 @@ Ext.onReady(function () {
             {text: '数量', width: 80, dataIndex: 'sl', align: 'center', renderer: AtRight}
         ]
     });
+    var gdxqgrid = Ext.create('Ext.grid.Panel', {
+        width: '100%',
+        id: 'gdxqgrid',
+        store: gdxqStore,
+        style: 'margin:0px 0px 5px 0px',
+        autoScroll: true,
+        columnLines: true,
+        columns: [
+            {
+                xtype: 'rownumberer',
+                width: 30,
+                sortable: false
+            }, {
+                text: '工单GUID(隐藏)',
+                dataIndex: 'V_ORDERGUID',
+                align: 'center',
+                hidden: true
+            }, {
+                text: '工单号',
+                dataIndex: 'V_ORDERID',
+                width: 100,
+                align: 'center'
+            }, {
+                text: '子工单数量',
+                dataIndex: 'WORKORDERNUM',
+                width: 100,
+                align: 'center'
+            }, {
+                text: '工单描述',
+                dataIndex: 'V_SHORT_TXT',
+                width: 300,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            }, {
+                text: '设备编号（隐藏）',
+                dataIndex: 'V_EQUIP_NO',
+                align: 'center',
+                hidden: true
+            }, {
+                text: '设备名称',
+                dataIndex: 'V_EQUIP_NAME',
+                width: 130,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            }, {
+                text: '设备位置',
+                dataIndex: 'V_EQUSITENAME',
+                width: 220,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            }, {
+                text: '备件消耗',
+                dataIndex: 'V_SPARE',
+                width: 300,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            }, {
+                text: '委托单位',
+                dataIndex: 'V_DEPTNAME',
+                width: 150,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            }, {
+                text: '委托人',
+                dataIndex: 'V_PERSONNAME',
+                width: 100,
+                align: 'center'
+            }, {
+                text: '委托时间',
+                dataIndex: 'D_ENTER_DATE',
+                width: 140,
+                align: 'center'
+            }, {
+                text: '检修单位',
+                dataIndex: 'V_DEPTNAMEREPARIR',
+                width: 150,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            }, {
+                text: '工单类型描述',
+                dataIndex: 'V_ORDER_TYP_TXT',
+                width: 100,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            }, {
+                text: '工单状态',
+                dataIndex: 'V_STATENAME',
+                width: 65,
+                align: 'center',
+                renderer: pageFunction.CreateGridColumnTd
+            },
+        ]
+    });
     var panel1 = Ext.create('Ext.panel.Panel', {
         frame: true,
         layout: 'column',
@@ -189,53 +454,243 @@ Ext.onReady(function () {
         ]
     });
 
-
-    var panelpic = Ext.create('Ext.panel.Panel', {
+    var panelMain = Ext.create('Ext.panel.Panel', {
         frame: true,
-        layout: 'vbox',
-        region: 'center',
+        layout: 'border',
         bodyPadding: 5,
-        id: 'panelpic',
+        id: 'panelMain',
         width: '100%',
+        height: '50%',
+        baseCls: 'my-panel-noborder',
         defaults: {
             labelWidth: 35,
             labelAlign: 'right'
         },
-        items: [panel1]
+        items: [treegrid, ganttpanel]
     });
 
 
-    /**
+    /**基本信息
      * create by STR 2017-12-14
-     * add a tabpanel into bottom called for '"工单详情"
+     * add a tabpanel into bottom called for  "工程信息"
      * @type {Ext.grid.Panel}
      */
-    var gdxqgrid=Ext.create('Ext.panel.Panel',{
+    var gcxxgrid = Ext.create('Ext.panel.Panel', {
         layout: 'column',
-        id: 'gdxqgrid',
-        autoScroll:true,
-        region:'center',
-        baseCls:'my-panel-noborder',
+        id: 'gcxxgrid',
+        autoScroll: true,
+        region: 'center',
+        baseCls: 'my-panel-noborder',
         items: [
-            {xtype:'textfield',id:'fxjhbm_tab',fieldLabel:'放行计划编码',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'fxjhmc_tab',fieldLabel:'放行计划名称',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'sjgcbm_tab',fieldLabel:'上级工程编码',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'sjgcmc_tab',fieldLabel:'上级工程名称',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wyear_tab',fieldLabel:'年份',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wmonth_tab',fieldLabel:'月份',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wck_tab',fieldLabel:'厂矿',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wzyq_tab',fieldLabel:'作业区',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wgcbm_tab',fieldLabel:'工程项目编码',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wgcmc_tab',fieldLabel:'工程项目名称',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wys_tab',fieldLabel:'预算(万元)',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wzy_tab',fieldLabel:'专业',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wsbbm_tab',fieldLabel:'设备编码',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wsbmc_tab',fieldLabel:'设备名称',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wjsdw_tab',fieldLabel:'施工单位',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wgcfzr_tab',fieldLabel:'工程负责人',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wkssj_tab',fieldLabel:'开始时间',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textfield',id:'wjssj_tab',fieldLabel:'结束时间',labelAlign:'right',labelWidth:80,readOnly:true,fieldStyle:'background-color:#e0e0e0;background-image:none;',width:260,style:'margin:15px 5px 5px 5px'},
-            {xtype:'textarea',readOnly:true,id:'wgcnr_tab',style:'margin:5px 5px 5px 5px',fieldLabel:'工程内容',labelAlign:'right',labelWidth : 80,width:530,height:80}
+            {
+                xtype: 'textfield',
+                id: 'fxjhbm_tab',
+                fieldLabel: '放行计划编码',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'fxjhmc_tab',
+                fieldLabel: '放行计划名称',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'sjgcbm_tab',
+                fieldLabel: '上级工程编码',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'sjgcmc_tab',
+                fieldLabel: '上级工程名称',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wyear_tab',
+                fieldLabel: '年份',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wmonth_tab',
+                fieldLabel: '月份',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wck_tab',
+                fieldLabel: '厂矿',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wzyq_tab',
+                fieldLabel: '作业区',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wgcbm_tab',
+                fieldLabel: '工程项目编码',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wgcmc_tab',
+                fieldLabel: '工程项目名称',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wys_tab',
+                fieldLabel: '预算(万元)',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wzy_tab',
+                fieldLabel: '专业',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wsbbm_tab',
+                fieldLabel: '设备编码',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wsbmc_tab',
+                fieldLabel: '设备名称',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wjsdw_tab',
+                fieldLabel: '施工单位',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wgcfzr_tab',
+                fieldLabel: '工程负责人',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wkssj_tab',
+                fieldLabel: '开始时间',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textfield',
+                id: 'wjssj_tab',
+                fieldLabel: '结束时间',
+                labelAlign: 'right',
+                labelWidth: 80,
+                readOnly: true,
+                fieldStyle: 'background-color:#e0e0e0;background-image:none;',
+                width: 260,
+                style: 'margin:15px 5px 5px 5px'
+            },
+            {
+                xtype: 'textarea',
+                readOnly: true,
+                id: 'wgcnr_tab',
+                style: 'margin:5px 5px 5px 5px',
+                fieldLabel: '工程内容',
+                labelAlign: 'right',
+                labelWidth: 80,
+                width: 530,
+                height: 80
+            }
 
         ]
     });
@@ -244,8 +699,16 @@ Ext.onReady(function () {
         id: 'tabpanel',
         // region:'center',
         width: '100%',
-        height: window.innerHeight / 2,
+        height: window.innerHeight / 2 - 35,
         items: [
+            {
+                title: '工程信息',
+                id: 'gcxxtab',
+                layout: 'fit',
+                frame: true,
+                border: false,
+                items: [gcxxgrid]
+            },
             {
                 title: '计划用工',
                 id: 'ygtab',
@@ -301,13 +764,14 @@ Ext.onReady(function () {
                 ]
             },
             {
-                title : '工单详情',
-                id : 'gdtab',
-                layout : 'fit',
-                frame:true,
-                border : false,
-                items : [gdxqgrid ]
+                title: '工单详情',
+                id: 'gdxqtab',
+                layout: 'vbox',
+                frame: true,
+                border: false,
+                items: [gdxqgrid]
             }
+
         ]
     });
 
@@ -589,10 +1053,10 @@ Ext.onReady(function () {
             ]
             }
         ],
-        buttons:[{
-            text:'关闭',
-            icon : imgpath + '/cross.png',
-            handler:OnBtnClose
+        buttons: [{
+            text: '关闭',
+            icon: imgpath + '/cross.png',
+            handler: OnBtnClose
         }]
     });
 
@@ -610,316 +1074,28 @@ Ext.onReady(function () {
         items: [{
             region: 'north',
             border: false,
-            items: [panelpic]
+            items: [panel1]
         }, {
             region: 'center',
+            layout: 'fit',
+            border: false,
+            items: [panelMain]
+        }, {
+            region: 'south',
             layout: 'fit',
             border: false,
             items: [tabpanel]
         }]
     });
-    Ext.data.StoreManager.lookup('ganttStore').on('load', function (a, b, c, d, e) {
-        Ext.getCmp('panelpic').remove(Ext.getCmp('grid'), true);
-        Ext.getCmp('panelpic').doLayout();
-        var record = Ext.data.StoreManager.lookup('ganttStore').data.items;
-        var starttime = '';
-        var endtime = '';
-        for (var i = 0; i < record.length; i++) {
-            if (i == 0) {
-                starttime = record[0].data.V_DATE_B;
-                endtime = record[0].data.V_DATE_E;
-            } else {
-                if (record[i].data.V_DATE_B < starttime) {
-                    starttime = record[i].data.V_DATE_B;
-                }
-                if (record[i].data.V_DATE_E > endtime) {
-                    endtime = record[i].data.V_DATE_E;
-                }
-            }
-        }
-        list = [];
-        cmItems = [];
-        var ganttStore = Ext.data.StoreManager.lookup('ganttStore');
-        for (var i = 0; i < ganttStore.getCount(); i++) {
-            var myData = new Array();
-            var records = ganttStore.getAt(i);
-            myData.push('r' + (i + 1), records.get('V_DATE_B'), records.get('V_DATE_E'), records.get('V_PROJECT_NAME'), '#CC3333', records.get('V_GUID'), records.get('V_PROJECT_CODE'), records.get('V_GUID_P'), records.get('V_CONTENT'), records.get('V_ROWNUMBER'), records.get('V_PLAN_MONEY'));
-            list.push(myData);
-        }
-        store = Ext.create('Ext.data.ArrayStore', {
-            fields: [
-                {name: 'ResourceId'},
-                {name: 'StartDate'},
-                {name: 'EndDate'},
-                {name: 'Name'},
-                {name: 'mycolor'},
-                {name: 'id'},
-                {name: 'Code'},
-                {name: 'pid'},
-                {name: 'memo'},
-                {name: 'rownumber'},
-                {name: 'money'}
-            ],
-            data: list
-        });
-        cmItems = [];
-        var vStart = new Date(starttime);
-        var vEnd = new Date(endtime);
-        cmItems.push({
-            text: '工程名称',
-            locked: true,
-            width: 200,
-            dataIndex: 'Name'
 
-        }, {
-            text: '开始时间',
-            locked: true,
-            width: 140,
-            dataIndex: 'StartDate'
-
-        }, {
-            text: '费用',
-            locked: true,
-            width: 100,
-            dataIndex: 'money'
-
-        });
-        var vTmpDate = new Date(vStart.getFullYear(), vStart.getMonth(), vStart.getDate());
-        var dateItems = [];
-        var vmonth = vTmpDate.getMonth();
-        var vTmpMonth;
-
-        while (vTmpDate < vEnd) {
-            vTmpMonth = vTmpDate.getMonth();
-            var vzm = '';
-            if (vTmpDate.getDay() == 0 || vTmpDate.getDay() == 6) {
-
-                vzm = 'color:#CCCCCC';
-            }
-
-            if (vTmpMonth == vmonth) {
-                dateItems.push({text: vTmpDate.getDate().toString(), style: vzm, width: 40});
-            } else {
-                var vyear = vTmpDate.getFullYear();
-                if (vmonth == 11) {
-                    vyear -= 1;
-                }
-                cmItems.push({text: vyear.toString() + '年' + (vmonth + 1).toString() + '月', columns: dateItems});
-                vmonth = vTmpMonth;
-                dateItems = [];
-                dateItems.push({text: vTmpDate.getDate().toString(), style: vzm, width: 40});
-            }
-            vTmpDate = new Date((vTmpDate / 1000 + 86400) * 1000);
-        }
-        if (vTmpMonth == vmonth) {
-            cmItems.push({
-                text: vTmpDate.getFullYear().toString() + '年' + (vmonth + 1).toString() + '月',
-                columns: dateItems
-            });
-        }
-
-        cmItems.push({
-            text: '',
-            width: 0, dataIndex: 'mycolor',
-            renderer: function (value, metaData, record) {
-
-                var startd = new Date(record.data['StartDate']);
-                var endd = new Date(record.data['EndDate']);
-                if (startd < vStart) {
-                    startd = new Date(vStart);
-                }
-                if (startd > vEnd) {
-                    startd = new Date(vEnd);
-                }
-                if (endd < vStart) {
-                    endd = new Date(vStart);
-                }
-                if (endd > vEnd) {
-                    endd = new Date(vEnd);
-                }
-                if (endd < startd) {
-                    endd = new Date(startd);
-                }
-                if (endd <= today) {
-
-                    var dif = startd.getTime() - vStart.getTime();
-                    var vleft = (dif / (86400 * 1000)) * 40;
-                    dif = endd.getTime() - startd.getTime();
-                    var vwidth = (dif / (86400 * 1000)) * 40;
-                    var gtt = '<div style="left:' + vleft.toString() + 'px;height:21px;width:' + vwidth.toString() + 'px;background-color:A6FFA6;" class="sch-event" onmouseover="a1(\'' + record.data['id'] + '\')" onmouseout="a2(\'' + record.data['id'] + '\')"><div class="sch-event-inner" >' + record.data['Name'] + '</div></div><div class="lxm"  id="' + record.data['id'] + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + record.data['StartDate'] + '<br>' +
-                        '结束时间：' + record.data['EndDate'] + '<br>';
-                    var cont = record.data['memo'].split(',');
-                    var contt = '内容：';
-                    for (var i = 0; i < cont.length; i++) {
-                        if (i == 0) {
-                            contt = contt + cont[i] + '<br>';
-                        } else {
-                            contt = contt + cont[i] + '<br>';
-                        }
-                    }
-                    gtt = gtt + contt + '</div>';
-                    return gtt;
-                }
-                if (today <= startd) {
-
-                    var dif = startd.getTime() - vStart.getTime();
-                    var vleft = (dif / (86400 * 1000)) * 40;
-                    dif = endd.getTime() - startd.getTime();
-                    var vwidth = (dif / (86400 * 1000)) * 40;
-                    var gtt = '<div style="left:' + vleft.toString() + 'px;height:21px;width:' + vwidth.toString() + 'px;background-color:' + record.data['mycolor'] + ';" class="sch-event" onmouseover="a1(\'' + record.data['id'] + '\')" onmouseout="a2(\'' + record.data['id'] + '\')"><div  class="sch-event-inner">' + record.data['Name'] + '</div></div><div class="lxm"  id="' + record.data['id'] + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + record.data['StartDate'] + '<br>' +
-                        '结束时间：' + record.data['EndDate'] + '<br>';
-                    var cont = record.data['memo'].split(',');
-                    var contt = '内容：';
-                    for (var i = 0; i < cont.length; i++) {
-                        if (i == 0) {
-                            contt = contt + cont[i] + '<br>';
-                        } else {
-                            contt = contt + cont[i] + '<br>';
-                        }
-                    }
-                    gtt = gtt + contt + '</div>';
-                    return gtt;
-                }
-
-                if (startd < today && today < endd) {
-                    var nowtime2 = Ext.Date.format(new Date(), 'Y-m-d 00:00:00')
-                    var dif = startd.getTime() - vStart.getTime();
-                    var vleft = (dif / (86400 * 1000)) * 40;
-                    dif = today.getTime() - startd.getTime();
-                    var vwidth1 = (dif / (86400 * 1000)) * 40;
-                    dif = endd.getTime() - today.getTime();
-                    var vwidth2 = (dif / (86400 * 1000)) * 40;
-                    dif = endd.getTime() - startd.getTime();
-                    var vwidth = (dif / (86400 * 1000)) * 40;
-
-                    var bfb = Math.round(((vwidth1 / vwidth) * 100), 0);
-                    var gtt = '<div style="left:' + vleft.toString() + 'px;height:21px;width:' + vwidth.toString() + 'px;" class = "sch-event" onmouseover="a1(\'' + record.data['id'] + '\')" onmouseout="a2(\'' + record.data['id'] + '\')"><div style="width:' + vwidth1.toString() + 'px;border:0px;height:21px;margin:0px;background-color:#99CC66;" class = "sch-event">' + ' 完成度' + bfb + '%</div><div class="sch-event-inner" style="float:right;width:' + vwidth2.toString() + 'px;height:21px;border:0px;margin:0px;background-color:' + record.data['mycolor'] + ';">' + record.data['Name'] + '</div></div><div class="lxm"  id="' + record.data['id'] + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + record.data['StartDate'] + '<br>' +
-                        '结束时间：' + record.data['EndDate'] + '<br>';
-                    var cont = record.data['memo'].split(',');
-                    var contt = '内容：';
-                    for (var i = 0; i < cont.length; i++) {
-                        if (i == 0) {
-                            contt = contt + cont[i] + '<br>';
-                        } else {
-                            contt = contt + cont[i] + '<br>';
-                        }
-                    }
-                    gtt = gtt + contt + '</div>';
-                    return gtt;
-                }
-
-            }
-        });
-        grid = Ext.create('Ext.grid.Panel', {
-            id: 'grid',
-            store: store,
-            columnLines: true,
-            columns: cmItems,
-            height: (window.innerHeight / 2) - 50,
-            width: '100%',
-            renderTo: Ext.getBody(),
-            listeners: {
-                'itemclick': function (a, b, c) {
-                    jhygs = [];
-                    jhwls = [];
-                    jjpbs = [];
-                    zynrs = [];
-                    Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_YG_VIEW',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID: b.data.id
-                        },
-                        success: function (resp) {
-                            var resp = Ext.decode(resp.responseText);
-                            for (var i = 0; i < resp.list.length; i++) {
-                                jhygs.push({
-                                    gz: resp.list[i].V_GZ,
-                                    rs: resp.list[i].V_NUM,
-                                    gs: resp.list[i].V_TIME,
-                                    sm: resp.list[i].V_MEMO,
-                                    id: resp.list[i].I_ID,
-                                    guid: resp.list[i].V_GUID
-                                });
-                            }
-                            Ext.data.StoreManager.lookup('jhygStore').loadData(jhygs);
-                        }
-                    });
-                    Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_WL_VIEW',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID: b.data.id
-                        },
-                        success: function (resp) {
-                            var resp = Ext.decode(resp.responseText);
-                            for (var i = 0; i < resp.list.length; i++) {
-                                jhwls.push({
-                                    wlbm: resp.list[i].V_WL_CODE,
-                                    wlmc: resp.list[i].V_WL_NAME,
-                                    jldw: resp.list[i].V_JLDW,
-                                    sl: resp.list[i].V_NUM,
-                                    gg: resp.list[i].V_GGXH,
-                                    dj: resp.list[i].V_DJ,
-                                    id: resp.list[i].I_ID,
-                                    guid: resp.list[i].V_GUID
-                                });
-                            }
-                            Ext.data.StoreManager.lookup('jhwlStore').loadData(jhwls);
-                        }
-                    });
-                    Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_JJ_VIEW',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID: b.data.id
-                        },
-                        success: function (resp) {
-                            var resp = Ext.decode(resp.responseText);
-                            for (var i = 0; i < resp.list.length; i++) {
-                                jjpbs.push({
-                                    jjbm: resp.list[i].V_JJ_CODE,
-                                    jjmc: resp.list[i].V_JJ_NAME,
-                                    jldw: resp.list[i].V_JLDW,
-                                    sl: resp.list[i].V_NUM,
-                                    id: resp.list[i].I_ID,
-                                    guid: resp.list[i].V_GUID
-                                });
-                            }
-                            Ext.data.StoreManager.lookup('jjpbStore').loadData(jjpbs);
-                        }
-                    });
-                    Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TREE_GET',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID: b.data.id,
-                            V_BY1: "",
-                            V_BY2: "",
-                            V_BY3: ""
-                        },
-                        success: function (resp) {
-                            var resp = Ext.decode(resp.responseText);
-                            Ext.getCmp('sgyc').setValue(resp.list[0].V_SGYC);
-                            Ext.getCmp('aqdc').setValue(resp.list[0].V_AQDC);
-
-                        }
-                    });
-                    loadGdxqTab(b.data.id);
-                }
-            }
-        });
-        Ext.getCmp('panelpic').add(grid);
-        Ext.getCmp('panelpic').doLayout();
-
+    Ext.data.StoreManager.lookup('gdxqStore').on('beforeload', function (store) {
+        store.proxy.extraParams.V_V_ORDERGUID = v_guid;
     });
 
+    pageFunction.QueryGanttData();
 
-    _init();
+    Ext.getBody().unmask();
+
 });
 
 function _init() {
@@ -1013,32 +1189,11 @@ function _init() {
         Ext.getBody().unmask();
     }
 }
-function QueryGrid() {
-    Ext.data.StoreManager.lookup('gridStore').load({
-        params: {
-            V_V_YEAR: Ext.getCmp('year').getValue(),
-            V_V_MONTH: "",
-            V_V_ORGCODE: "",
-            V_V_SPECIALTY: "",
-            V_V_PROJECT_CODE: "",
-            V_V_PROJECT_NAME: "",
-            V_V_CONTENT: "",
-            V_V_BY1: "",
-            V_V_BY2: ""
-        }
-    });
-
-}
-
-
-function _close() {
-    window.close();
-}
 
 
 function OnBtnUpdate() {
 
-    var treenode = Ext.getCmp('grid').getSelectionModel().getSelection();
+    var treenode = Ext.getCmp('treegrid').getSelectionModel().getSelection();
     if (treenode.length == 0) {
         alert('请选择工程');
         return;
@@ -1095,78 +1250,265 @@ function OnBtnClose() {
     Ext.getCmp('lrwindow').hide();
 }
 
-function a1(id){
+function a1(id) {
     var oson = document.getElementById(id);
-    with(oson){
+    with (oson) {
         oson.style.display = "block";
-        oson.style.left = (window.event.clientX  -450)+'px';
-        oson.style.top = (window.event.clientY  -138)+'px';
-        oson.style.background='white';
+        oson.style.left = (window.event.clientX - 450) + 'px';
+        oson.style.top = (window.event.clientY - 138) + 'px';
+        oson.style.background = 'white';
     }
-    /*Ext.Ajax.request({
-     url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TREE_GET',
-     method: 'POST',
-     async : false,
-     params:{
-     V_V_GUID:id,
-     V_BY1:"",
-     V_BY2:"",
-     V_BY3:""
-     },
-     success:function(resp){
-     var resp = Ext.decode(resp.responseText);
-     if(resp.list.length!=0){
-     var str='开始时间：'+resp.list[0].V_DATE_B+' 结束时间：'+resp.list[0].V_DATE_E+' 内容：'+resp.list[0].V_CONTENT;
-     }
-     Ext.getCmp('detail').setValue(str);
-     }
-     });
-     Ext.getCmp('detail').show();*/
 }
-function a2(id){
-    document.getElementById(id).style.display='none';
-    /*
-     Ext.getCmp('detail').hide();
-     */
+function a2(id) {
+    document.getElementById(id).style.display = 'none';
+
 }
 
+
 /**
- * create by STR 2017-12-14
- * 点击win grid 中指定行，底部 渲染 工单详情 数据tab
- * @param guid
+ * 用于页面动态加载渲染组件的方法及绑定事件 集合对象.
+ * Create a Object that use for rendering the page with data in dynamic
+ * It has many properties which edited within function entity.
  */
-function loadGdxqTab(guid){
-    Ext.Ajax.request({
-        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TREE_GET',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID: guid,
-            V_BY1: "",
-            V_BY2: "",
-            V_BY3: ""
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            Ext.getCmp('fxjhbm_tab').setValue(resp.list[0].V_PROJECT_CODE_FXJH);
-            Ext.getCmp('fxjhmc_tab').setValue(resp.list[0].V_PROJECT_NAME_FXJH);
-            Ext.getCmp('sjgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE_P);
-            Ext.getCmp('sjgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME_P);
-            Ext.getCmp('wyear_tab').setValue(resp.list[0].V_YEAR);
-            Ext.getCmp('wmonth_tab').setValue(resp.list[0].V_MONTH);
-            Ext.getCmp('wck_tab').setValue(resp.list[0].V_ORGCODE);
-            Ext.getCmp('wzyq_tab').setValue(resp.list[0].V_DEPTCODE);
-            Ext.getCmp('wgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE);
-            Ext.getCmp('wgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME);
-            Ext.getCmp('wys_tab').setValue(resp.list[0].V_PLAN_MONEY);
-            Ext.getCmp('wzy_tab').setValue(resp.list[0].V_SPECIALTY);
-            Ext.getCmp('wsbbm_tab').setValue(resp.list[0].V_EQUCODE);
-            Ext.getCmp('wsbmc_tab').setValue(resp.list[0].V_EQUNAME);
-            Ext.getCmp('wjsdw_tab').setValue(resp.list[0].V_BUILD_DEPT);
-            Ext.getCmp('wgcfzr_tab').setValue(resp.list[0].V_BULID_PERSON);
-            Ext.getCmp('wkssj_tab').setValue(new Date(resp.list[0].V_DATE_B));
-            Ext.getCmp('wjssj_tab').setValue(resp.list[0].V_DATE_E);
-            Ext.getCmp('wgcnr_tab').setValue(resp.list[0].V_CONTENT);
+var pageFunction = {
+    /**
+     * 甘特图动态渲染
+     */
+    CreateGantt: function () {
+        cmItems = [];
+        var starttime = '';
+        var endtime = '';
+        for (var i = 0; i < ganttdata.length; i++) {
+            if (i == 0) {
+                starttime = ganttdata[0].V_DATE_B;
+                endtime = ganttdata[0].V_DATE_E;
+            } else {
+                if (ganttdata[i].V_DATE_B < starttime) {
+                    starttime = ganttdata[i].V_DATE_B;
+                }
+                if (ganttdata[i].V_DATE_E > endtime) {
+                    endtime = ganttdata[i].V_DATE_E;
+                }
+            }
         }
-    });
-}
+        vStart = new Date(starttime);
+        vEnd = new Date(endtime);
+        var vTmpDate = new Date(vStart.getFullYear(), vStart.getMonth(), vStart.getDate());
+        var dateItems = [];
+        var vmonth = vTmpDate.getMonth();
+        var vTmpMonth;
+
+        while (vTmpDate < vEnd) {
+            vTmpMonth = vTmpDate.getMonth();
+            var vzm = '';
+            if (vTmpDate.getDay() == 0 || vTmpDate.getDay() == 6) vzm = 'color:#CCCCCC';
+
+            if (vTmpMonth == vmonth) {
+                dateItems.push({text: vTmpDate.getDate().toString(), style: vzm, width: 40});
+            } else {
+                var vyear = vTmpDate.getFullYear();
+                if (vmonth == 11) vyear -= 1;
+                cmItems.push({text: vyear.toString() + '年' + (vmonth + 1).toString() + '月', columns: dateItems});
+                vmonth = vTmpMonth;
+                dateItems = [];
+                dateItems.push({text: vTmpDate.getDate().toString(), style: vzm, width: 40});
+            }
+            vTmpDate = new Date((vTmpDate / 1000 + 86400) * 1000);
+        }
+        if (vTmpMonth == vmonth) {
+            cmItems.push({
+                text: vTmpDate.getFullYear().toString() + '年' + (vmonth + 1).toString() + '月',
+                columns: dateItems
+            });
+        }
+
+        cmItems.push({
+            text: '',
+            width: 0, dataIndex: 'mycolor',
+            renderer: pageFunction.IndexShow
+        });
+
+        var ganttStore = Ext.create("Ext.data.Store", {
+            storeId: 'ganttStore',
+            fields: ['I_ID', 'V_ORGCODE', 'V_DEPTCODE', 'V_YEAR', 'V_MONTH', 'V_GUID',
+                'V_PROJECT_CODE', 'V_PROJECT_NAME', 'V_PLAN_MONEY', 'V_CONTENT', 'V_DATE_DESIGN',
+                'V_DATE_INVITE', 'V_DATE_B', 'V_DATE_E', 'V_BUDGET_MONEY', 'V_PROGRESS', 'V_BUILD_NAMAGER',
+                'V_BULID_PERSON', 'V_DIRECT_PERSON', 'V_EQUTYPECODE', 'V_EQUCODE', 'V_EQUNAME',
+                'V_SPECIALTY', 'V_BUILD_DEPT', 'V_GUID_P', 'V_PROJECT_CODE_P',
+                'V_PROJECT_NAME_P', 'V_GUID_FXJH', 'V_PROJECT_CODE_FXJH', 'V_PROJECT_NAME_FXJH',
+                'D_DATE_INPUT', 'V_PERCODE_INPUT', 'V_PERNAME_INPUT'],
+            data: ganttdata,
+            proxy: {
+                type: 'memory',
+                reader: {
+                    type: 'json'
+                }
+            }
+        });
+
+        var ganttgrid = Ext.create('Ext.grid.Panel', {
+            id: 'ganttgrid',
+            store: ganttStore,
+            region: 'center',
+            columnLines: true,
+            columns: cmItems,
+            renderTo: Ext.getBody()
+        });
+        Ext.getCmp('ganttpanel').add(ganttgrid);
+    },
+
+    QueryGanttData: function () {
+        ganttdata = [];
+        Ext.Ajax.request({
+            url: AppUrl + 'gantt/PRO_PM_EQUREPAIRPLAN_TREE_GANTT',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID_FXJH: guid,
+                V_BY1: "",
+                V_BY2: "",
+                V_BY3: ""
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                ganttdata = resp.list;
+                pageFunction.CreateGantt();
+            }
+        });
+    },
+
+
+    IndexShow: function (value, metaData, record) {
+        var startd = new Date(record.data.V_DATE_B);
+        var endd = new Date(record.data.V_DATE_E);
+        if (startd < vStart) {
+            startd = new Date(vStart);
+        }
+        if (startd > vEnd) {
+            startd = new Date(vEnd);
+        }
+        if (endd < vStart) {
+            endd = new Date(vStart);
+        }
+        if (endd > vEnd) {
+            endd = new Date(vEnd);
+        }
+        if (endd < startd) {
+            endd = new Date(startd);
+        }
+        if (endd <= today) {
+
+            var dif = startd.getTime() - vStart.getTime();
+            var vleft = (dif / (86400 * 1000)) * 40;
+            dif = endd.getTime() - startd.getTime();
+            var vwidth = (dif / (86400 * 1000)) * 40;
+            var gtt = '<div style="left:' + vleft.toString() + 'px;height:21px;width:' + vwidth.toString() + 'px;background-color:A6FFA6;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div class="sch-event-inner" >' + record.data.V_PROJECT_NAME + '</div></div><div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + record.data.V_DATE_B + '<br>' +
+                '结束时间：' + record.data.V_DATE_E + '<br>';
+            var cont = record.data.V_CONTENT.split(',');
+            var contt = '内容：';
+            for (var i = 0; i < cont.length; i++) {
+                if (i == 0) {
+                    contt = contt + cont[i] + '<br>';
+                } else {
+                    contt = contt + cont[i] + '<br>';
+                }
+            }
+            gtt = gtt + contt + '</div>';
+            return gtt;
+        }
+        if (today <= startd) {
+
+            var dif = startd.getTime() - vStart.getTime();
+            var vleft = (dif / (86400 * 1000)) * 40;
+            dif = endd.getTime() - startd.getTime();
+            var vwidth = (dif / (86400 * 1000)) * 40;
+            var gtt = '<div style="left:' + vleft.toString() + 'px;height:21px;width:' + vwidth.toString() + 'px;background-color: #CC3333;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div  class="sch-event-inner">' + record.data.V_PROJECT_NAME + '</div></div><div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + record.data.V_DATE_B + '<br>' +
+                '结束时间：' + record.data.V_DATE_E + '<br>';
+            var cont = record.data.V_CONTENT.split(',');
+            var contt = '内容：';
+            for (var i = 0; i < cont.length; i++) {
+                if (i == 0) {
+                    contt = contt + cont[i] + '<br>';
+                } else {
+                    contt = contt + cont[i] + '<br>';
+                }
+            }
+            gtt = gtt + contt + '</div>';
+            return gtt;
+        }
+
+        if (startd < today && today < endd) {
+            var nowtime2 = Ext.Date.format(new Date(), 'Y-m-d 00:00:00')
+            var dif = startd.getTime() - vStart.getTime();
+            var vleft = (dif / (86400 * 1000)) * 40;
+            dif = today.getTime() - startd.getTime();
+            var vwidth1 = (dif / (86400 * 1000)) * 40;
+            dif = endd.getTime() - today.getTime();
+            var vwidth2 = (dif / (86400 * 1000)) * 40;
+            dif = endd.getTime() - startd.getTime();
+            var vwidth = (dif / (86400 * 1000)) * 40;
+
+            var bfb = Math.round(((vwidth1 / vwidth) * 100), 0);
+            var gtt = '<div style="left:' + vleft.toString() + 'px;height:21px;width:' + vwidth.toString() + 'px;" class = "sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div style="width:' + vwidth1.toString() + 'px;border:0px;height:21px;margin:0px;background-color:#99CC66;" class = "sch-event">' + ' 完成度' + bfb + '%</div><div class="sch-event-inner" style="float:right;width:' + vwidth2.toString() + 'px;height:21px;border:0px;margin:0px;background-color: #CC3333;">' + record.data.V_PROJECT_NAME + '</div></div><div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + record.data.V_DATE_B + '<br>' +
+                '结束时间：' + record.data.V_DATE_E + '<br>';
+            var cont = record.data.V_CONTENT.split(',');
+            var contt = '内容：';
+            for (var i = 0; i < cont.length; i++) {
+                if (i == 0) {
+                    contt = contt + cont[i] + '<br>';
+                } else {
+                    contt = contt + cont[i] + '<br>';
+                }
+            }
+            gtt = gtt + contt + '</div>';
+            return gtt;
+        }
+    },
+
+    /** 基本信息
+     * 点击win grid 中指定行，底部 渲染 工单详情 数据tab
+     * @param guid
+     */
+    loadJbxqTab: function (guid) {
+        Ext.Ajax.request({
+            url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TREE_GET',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: guid,
+                V_BY1: "",
+                V_BY2: "",
+                V_BY3: ""
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                Ext.getCmp('fxjhbm_tab').setValue(resp.list[0].V_PROJECT_CODE_FXJH);
+                Ext.getCmp('fxjhmc_tab').setValue(resp.list[0].V_PROJECT_NAME_FXJH);
+                Ext.getCmp('sjgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE_P);
+                Ext.getCmp('sjgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME_P);
+                Ext.getCmp('wyear_tab').setValue(resp.list[0].V_YEAR);
+                Ext.getCmp('wmonth_tab').setValue(resp.list[0].V_MONTH);
+                Ext.getCmp('wck_tab').setValue(resp.list[0].V_ORGCODE);
+                Ext.getCmp('wzyq_tab').setValue(resp.list[0].V_DEPTCODE);
+                Ext.getCmp('wgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE);
+                Ext.getCmp('wgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME);
+                Ext.getCmp('wys_tab').setValue(resp.list[0].V_PLAN_MONEY);
+                Ext.getCmp('wzy_tab').setValue(resp.list[0].V_SPECIALTY);
+                Ext.getCmp('wsbbm_tab').setValue(resp.list[0].V_EQUCODE);
+                Ext.getCmp('wsbmc_tab').setValue(resp.list[0].V_EQUNAME);
+                Ext.getCmp('wjsdw_tab').setValue(resp.list[0].V_BUILD_DEPT);
+                Ext.getCmp('wgcfzr_tab').setValue(resp.list[0].V_BULID_PERSON);
+                Ext.getCmp('wkssj_tab').setValue(new Date(resp.list[0].V_DATE_B));
+                Ext.getCmp('wjssj_tab').setValue(resp.list[0].V_DATE_E);
+                Ext.getCmp('wgcnr_tab').setValue(resp.list[0].V_CONTENT);
+            }
+        });
+    },
+
+    //工单详情表格  样式调整
+    CreateGridColumnTd: function (value, metaData, record, rowIndex, colIndex, store) {
+        metaData.style = "text-align:left;";
+        var val = value == null ? '' : value;
+        return '<div data-qtip="' + val + '" >' + val + '</div>';
+    }
+};
