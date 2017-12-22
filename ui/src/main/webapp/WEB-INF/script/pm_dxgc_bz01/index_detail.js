@@ -887,7 +887,6 @@ Ext.onReady(function () {
                     fieldLabel: '工程负责人',
                     labelAlign: 'right',
                     labelWidth: 80,
-                    readOnly: true,
                     fieldStyle: 'background-color:#FFFF99;background-image:none;',
                     width: 260,
                     style: 'margin:15px 5px 5px 5px'
