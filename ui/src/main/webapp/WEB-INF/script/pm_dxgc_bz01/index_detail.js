@@ -13,6 +13,7 @@ var v_guid = ''; // 点击行的 guid
 var treeguid = '';//缓存信息 指定行guid
 var fxjhguid = '';//缓存信息 指定行父向 guid
 var zhugener = null;
+var rownumber = null;
 var guid = '';
 var V_PROJECT_NAME = '';
 var V_PROJECT_CODE = '';
@@ -150,6 +151,30 @@ var zynrgrid = Ext.create('Ext.grid.Panel', {
     ]
 });
 
+var gdxqStore = Ext.create('Ext.data.Store', {
+    id: 'gdxqStore',
+    pageSize: 15,
+    autoLoad: false,
+    fields: ['V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
+        'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME',
+        'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE',
+        'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WORKORDERNUM'],
+
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'str/PRO_PM_WORKORDER_BY_ORDERGUID',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list',
+            total: 'total'
+        }
+    }
+});
+
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
@@ -163,7 +188,7 @@ Ext.onReady(function () {
             text: "My Root"
         },
         fields: ['V_BUILD_DEPT', 'V_BULID_PERSON', 'V_CONTENT', 'V_DATE_B', 'V_DATE_E', 'V_GUID',
-            'V_GUID_FXJH', 'V_PROJECT_CODE_FXJH', 'V_PROJECT_NAME', 'V_SPECIALTY', 'V_PLAN_MONEY', 'V_GUID_P'],
+            'V_GUID_FXJH', 'V_PROJECT_CODE_FXJH', 'V_PROJECT_NAME', 'V_SPECIALTY', 'V_PLAN_MONEY', 'V_GUID_P','V_ROWNUMBER','V_P_ROWNUMBER'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'gantt/PRO_PM_EQUREPAIRPLAN_TREE',
@@ -232,8 +257,8 @@ Ext.onReady(function () {
                 Ext.data.StoreManager.lookup('jhwlStore').loadData(jhwls);
                 Ext.data.StoreManager.lookup('jjpbStore').loadData(jjpbs);
                 Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
-                genre = (b.data.V_GUID_P =='')?1:2;
-                type = (b.data.V_GUID == '')?'add' : 'edit';
+                genre = (b.data.V_GUID_P == '') ? 1 : 2;
+                type = (b.data.V_GUID == '') ? 'add' : 'edit';
                 v_guid = b.data.V_GUID;
                 if (type == 'add') return;
                 Ext.Ajax.request({
@@ -342,25 +367,9 @@ Ext.onReady(function () {
                         Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
                     }
                 });
-                //工单详情
-                /*
-                 Ext.Ajax.request({
-                 url: AppUrl + 'str/xxx???????',
-                 method: 'POST',
-                 async: false,
-                 params: {
-                 V_V_GUID: b.data.V_GUID
-                 },
-                 success: function (resp) {
-                 var resp = Ext.decode(resp.responseText);
-                 for (var i = 0; i < resp.list.length; i++) {
-                 gdxqs.push({
-                 });
-                 }
-                 Ext.data.StoreManager.lookup('gdxqStore').loadData(gdxqs);
-                 }
-                 });
-                 */
+                Ext.data.StoreManager.lookup('gdxqStore').load();
+
+
                 pageFunction.loadGdxqTab(b.data.V_GUID);
             }
         }
@@ -430,18 +439,6 @@ Ext.onReady(function () {
         }
     });
 
-    var gdxqStore = Ext.create("Ext.data.Store", {
-        id: 'gdxqStore',
-        fields: ['xxx', 'yyy'],
-        data: gdxqs,
-        proxy: {
-            type: 'memory',
-            reader: {
-                type: 'json'
-            }
-        }
-    });
-
     var jhyggrid = Ext.create('Ext.grid.Panel', {
         width: '100%',
         id: 'jhyggrid',
@@ -501,87 +498,87 @@ Ext.onReady(function () {
         columnLines: true,
         columns: [
             {
-                xtype : 'rownumberer',
-                width : 30,
-                sortable : false
+                xtype: 'rownumberer',
+                width: 30,
+                sortable: false
             }, {
-                text : '工单GUID(隐藏)',
-                dataIndex : 'V_ORDERGUID',
-                align : 'center',
-                hidden : true
+                text: '工单GUID(隐藏)',
+                dataIndex: 'V_ORDERGUID',
+                align: 'center',
+                hidden: true
             }, {
-                text : '工单号',
-                dataIndex : 'V_ORDERID',
-                width : 100,
-                align : 'center'
-            },  {
-                text : '子工单数量',
-                dataIndex : 'WORKORDERNUM',
-                width : 100,
-                align : 'center'
+                text: '工单号',
+                dataIndex: 'V_ORDERID',
+                width: 100,
+                align: 'center'
             }, {
-                text : '工单描述',
-                dataIndex : 'V_SHORT_TXT',
-                width : 300,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '子工单数量',
+                dataIndex: 'WORKORDERNUM',
+                width: 100,
+                align: 'center'
             }, {
-                text : '设备编号（隐藏）',
-                dataIndex : 'V_EQUIP_NO',
-                align : 'center',
-                hidden : true
+                text: '工单描述',
+                dataIndex: 'V_SHORT_TXT',
+                width: 300,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
             }, {
-                text : '设备名称',
-                dataIndex : 'V_EQUIP_NAME',
-                width : 130,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '设备编号（隐藏）',
+                dataIndex: 'V_EQUIP_NO',
+                align: 'center',
+                hidden: true
             }, {
-                text : '设备位置',
-                dataIndex : 'V_EQUSITENAME',
-                width : 220,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '设备名称',
+                dataIndex: 'V_EQUIP_NAME',
+                width: 130,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
             }, {
-                text : '备件消耗',
-                dataIndex : 'V_SPARE',
-                width : 300,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '设备位置',
+                dataIndex: 'V_EQUSITENAME',
+                width: 220,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
             }, {
-                text : '委托单位',
-                dataIndex : 'V_DEPTNAME',
-                width : 150,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '备件消耗',
+                dataIndex: 'V_SPARE',
+                width: 300,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
             }, {
-                text : '委托人',
-                dataIndex : 'V_PERSONNAME',
-                width : 100,
-                align : 'center'
+                text: '委托单位',
+                dataIndex: 'V_DEPTNAME',
+                width: 150,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
             }, {
-                text : '委托时间',
-                dataIndex : 'D_ENTER_DATE',
-                width : 140,
-                align : 'center'
+                text: '委托人',
+                dataIndex: 'V_PERSONNAME',
+                width: 100,
+                align: 'center'
             }, {
-                text : '检修单位',
-                dataIndex : 'V_DEPTNAMEREPARIR',
-                width : 150,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '委托时间',
+                dataIndex: 'D_ENTER_DATE',
+                width: 140,
+                align: 'center'
             }, {
-                text : '工单类型描述',
-                dataIndex : 'V_ORDER_TYP_TXT',
-                width : 100,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '检修单位',
+                dataIndex: 'V_DEPTNAMEREPARIR',
+                width: 150,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
             }, {
-                text : '工单状态',
-                dataIndex : 'V_STATENAME',
-                width : 65,
-                align : 'center',
-                renderer : tabGridFunction.CreateGridColumnTd
+                text: '工单类型描述',
+                dataIndex: 'V_ORDER_TYP_TXT',
+                width: 100,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
+            }, {
+                text: '工单状态',
+                dataIndex: 'V_STATENAME',
+                width: 65,
+                align: 'center',
+                renderer: tabGridFunction.CreateGridColumnTd
             },
         ]
     });
@@ -1209,6 +1206,10 @@ Ext.onReady(function () {
         });
     });
 
+    Ext.data.StoreManager.lookup('gdxqStore').on('beforeload', function (store) {
+        store.proxy.extraParams.V_V_ORDERGUID = v_guid;
+    });
+
     pageFunction.QueryGanttData();
 
     Ext.getBody().unmask();
@@ -1356,6 +1357,10 @@ var pageFunction = {
 
 
     OnChangePlanAmount: function (editor, e, eOpts) {
+        var state = '主项';
+        if (e.originalValue == e.value) return;
+
+        if(e.record.raw.V_GUID_P != '') state = '子项';
         Ext.Ajax.request({
             url: AppUrl + 'hp/PRO_PM_EQUREPAIRPLAN_SELMAX',
             type: 'ajax',
@@ -1363,14 +1368,19 @@ var pageFunction = {
             params: {
                 V_V_GUID_FXJH: guid,
                 V_V_ROWNUMBER: -1,
-                STATE: '主项'
+                STATE: state
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
                 if (data.success) {//成功，会传回true
                     zhugener = Math.floor(data.maxvalue) - (-1);
-                    if (e.value != '') pageFunction.ProjectInsert(e.record.raw.V_GUID, e.field, e.value);
+                    if (e.value != '') {
+                        pageFunction.ProjectInsert(e.record.raw.V_GUID, e.field, e.value);
+                    } else {
+                        alert('工程不能为空');
+                    }
                 }
+
             }
         })
     },
@@ -1386,7 +1396,31 @@ var pageFunction = {
         if (uuid == '') {
             uuid = '-1';
         }
-
+        var record = Ext.getCmp('treegrid').getSelectionModel().getSelection()[0];
+        //判别是否为子项
+        if (record.data.V_GUID_P != '') {
+            Ext.Ajax.request({
+                url: AppUrl + 'str/PM_EQUREPAIRPLAN_TREE_INSERT_Z',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
+                    V_V_GUID: uuid,
+                    V_V_GUID_P: record.data.V_GUID_P,
+                    V_V_GUID_FXJH: record.data.V_GUID_FXJH,
+                    V_V_COLUMN: fields,
+                    V_V_VALUE: values
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.V_INFO == "Success") {
+                        Ext.getCmp('treegrid').getStore().load();
+                    }
+                }
+            });
+            return;
+        }
         Ext.Ajax.request({
             url: AppUrl + 'gantt/PM_EQUREPAIRPLAN_TREE_INSERT',
             method: 'POST',
@@ -1403,7 +1437,7 @@ var pageFunction = {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.V_INFO == "Success") {
-                    QueryTreePanel()
+                    location.reload();
                 }
             }
         });
@@ -1507,11 +1541,18 @@ var pageFunction = {
             alert('请选择主项');
             return;
         }
-        fxjhguid = record[0].data.V_GUID;
-        alert('即将开发');
+        var child_V_GUID_P = record[0].data.V_GUID;
+        var child_V_GUID_FXJH = record[0].data.V_GUID_FXJH;
+        var child_node = [{leaf: true, V_GUID_P: child_V_GUID_P, V_GUID_FXJH: child_V_GUID_FXJH}];
+        var parentId = record[0].internalId;
+        var parentNode = Ext.getCmp('treegrid').getStore().getNodeById(parentId);
+        parentNode.appendChild(child_node);
+        parentNode.set('leaf', false);
+        parentNode.expand();
+
     },
 
-    /** 工单详情  暂时废弃(待修改)
+    /** 工单详情
      * 点击win grid 中指定行，底部 渲染 工单详情 数据tab
      * @param guid
      */
@@ -1639,7 +1680,11 @@ var pageFunction = {
         var treenode = Ext.getCmp('treegrid').getSelectionModel().getSelection();
         treeguid = treenode[0].data.V_GUID;
         fxjhguid = treenode[0].data.V_GUID_FXJH;
-
+        if (treeguid == '') {
+            alert('新建');
+            var next = pageFunction.checkNew();
+            if (!next) return;
+        }
         if (genre == 1) {
             Ext.Ajax.request({
                 url: AppUrl + 'hp/PRO_PM_EQUREPAIRPLAN_SELMAX',
@@ -1679,6 +1724,7 @@ var pageFunction = {
         }
 
         if (genre == 2) {
+            rownumber = treenode[0].data.V_ROWNUMBER;
             Ext.Ajax.request({
                 url: AppUrl + 'hp/PRO_PM_EQUREPAIRPLAN_SELMAX',
                 type: 'ajax',
@@ -1763,7 +1809,17 @@ var pageFunction = {
 
             })
         }
-        alert('保存成功');
+
+    },
+
+    /**
+     * 新增后 保存按钮 检验是否可提交
+     * @returns {boolean}
+     */
+    checkNew: function () {
+        var _bool = true;
+        _bool = false;
+        return _bool;
     },
 
     /**
@@ -1992,16 +2048,16 @@ var tabGridFunction = {
         }
     },
     //工单详情 样式 方法
-    CreateGridColumnTd:function(value, metaData, record, rowIndex, colIndex, store) {
+    CreateGridColumnTd: function (value, metaData, record, rowIndex, colIndex, store) {
         metaData.style = "text-align:left;";
-        var val=value==null?'':value;
+        var val = value == null ? '' : value;
         return '<div data-qtip="' + val + '" >' + val + '</div>';
     }
 }
 
 
 function OnBtnDel() {
-    var guid = Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_GUID;
+    var guid = Ext.getCmp('treegrid').getSelectionModel().getSelection()[0].data.V_GUID;
     if (guid == '' || guid == null) return;
     Ext.Ajax.request({
         url: AppUrl + 'PM_01/PRO_PM_EQUREPAIRPLAN_TREE_DEL',
@@ -2239,6 +2295,7 @@ function zhuxiangadd() {
                         }
                     });
                 }
+                alert('保存成功');
                 location.reload();
             }
         }
@@ -2275,34 +2332,34 @@ function zixiangadd() {
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
             V_V_GUID: groupguid,
-            V_V_ORGCODE: Ext.getCmp('wck').getValue(),
-            V_V_DEPTCODE: Ext.getCmp('wzyq').getValue(),
-            V_V_YEAR: Ext.getCmp('wyear').getValue(),
-            V_V_MONTH: Ext.getCmp('wmonth').getValue(),
-            V_V_PROJECT_CODE: Ext.getCmp('wgcbm').getValue(),
-            V_V_PROJECT_NAME: Ext.getCmp('wgcmc').getValue() + addText,
-            V_V_PLAN_MONEY: Ext.getCmp('wys').getValue(),
-            V_V_DATE_DESIGN: Ext.getCmp('wgcmc').getValue(),
+            V_V_ORGCODE: Ext.getCmp('wck_tab').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('wzyq_tab').getValue(),
+            V_V_YEAR: Ext.getCmp('wyear_tab').getValue(),
+            V_V_MONTH: Ext.getCmp('wmonth_tab').getValue(),
+            V_V_PROJECT_CODE: Ext.getCmp('wgcbm_tab').getValue(),
+            V_V_PROJECT_NAME: Ext.getCmp('wgcmc_tab').getValue() + addText,
+            V_V_PLAN_MONEY: Ext.getCmp('wys_tab').getValue(),
+            V_V_DATE_DESIGN: Ext.getCmp('wgcmc_tab').getValue(),
             V_V_CONTENT: ctt,
             V_V_DATE_DESIGN: "",
             V_V_DATE_INVITE: "",
-            V_V_DATE_B: Ext.Date.format(Ext.getCmp('wksrq').getValue(), 'Y-m-d') + " " + Ext.Date.format(Ext.getCmp('wkssj').getValue(), 'H:i:s'),
-            V_V_DATE_E: Ext.Date.format(Ext.getCmp('wjsrq').getValue(), 'Y-m-d') + " " + Ext.Date.format(Ext.getCmp('wjssj').getValue(), 'H:i:s'),
+            V_V_DATE_B: Ext.Date.format(Ext.getCmp('wksrq_tab').getValue(), 'Y-m-d') + " " + Ext.Date.format(Ext.getCmp('wkssj_tab').getValue(), 'H:i:s'),
+            V_V_DATE_E: Ext.Date.format(Ext.getCmp('wjsrq_tab').getValue(), 'Y-m-d') + " " + Ext.Date.format(Ext.getCmp('wjssj_tab').getValue(), 'H:i:s'),
             V_V_BUDGET_MONEY: "",
             V_V_PROGRESS: "",
             V_V_BUILD_NAMAGER: "",
-            V_V_BULID_PERSON: Ext.getCmp('wgcfzr').getValue(),
+            V_V_BULID_PERSON: Ext.getCmp('wgcfzr_tab').getValue(),
             V_V_DIRECT_PERSON: "",
-            V_V_EQUCODE: Ext.getCmp('wsbbm').getValue(),
-            V_V_EQUNAME: Ext.getCmp('wsbmc').getValue(),
-            V_V_SPECIALTY: Ext.getCmp('wzy').getValue(),
-            V_V_BUILD_DEPT: Ext.getCmp('wjsdw').getValue(),
-            V_V_GUID_P: Ext.getCmp('sjgcguid').getValue(),
-            V_V_PROJECT_CODE_P: Ext.getCmp('sjgcbm').getValue(),
-            V_V_PROJECT_NAME_P: Ext.getCmp('sjgcmc').getValue(),
-            V_V_GUID_FXJH: Ext.getCmp('fxjhguid').getValue(),
-            V_V_PROJECT_CODE_FXJH: Ext.getCmp('fxjhbm').getValue(),
-            V_V_PROJECT_NAME_FXJH: Ext.getCmp('fxjhmc').getValue(),
+            V_V_EQUCODE: Ext.getCmp('wsbbm_tab').getValue(),
+            V_V_EQUNAME: Ext.getCmp('wsbmc_tab').getValue(),
+            V_V_SPECIALTY: Ext.getCmp('wzy_tab').getValue(),
+            V_V_BUILD_DEPT: Ext.getCmp('wjsdw_tab').getValue(),
+            V_V_GUID_P: Ext.getCmp('sjgcguid_tab').getValue(),
+            V_V_PROJECT_CODE_P: Ext.getCmp('sjgcbm_tab').getValue(),
+            V_V_PROJECT_NAME_P: Ext.getCmp('sjgcmc_tab').getValue(),
+            V_V_GUID_FXJH: fxjhguid,
+            V_V_PROJECT_CODE_FXJH: Ext.getCmp('fxjhbm_tab').getValue(),
+            V_V_PROJECT_NAME_FXJH: Ext.getCmp('fxjhmc_tab').getValue(),
             V_V_SGYC: Ext.getCmp('sgyc_tab').getValue(),
             V_V_AQDC: Ext.getCmp('aqdc_tab').getValue(),
             V_V_ROWNUMBER: zigener,
@@ -2406,6 +2463,8 @@ function zixiangadd() {
                         }
                     });
                 }
+                alert('保存成功');
+                rownumber=null;
                 location.reload();
                 //重新加载 grid 以及 gantt 图
                 //window.opener.loadGantt(fxjhguid);

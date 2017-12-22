@@ -21,7 +21,7 @@ public class StrService {
     @Autowired
     private ComboPooledDataSource dataSources;
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_TOWORK_C1(String V_V_IP,String V_V_PERCODE,String V_V_PERNAME,String V_V_GUID) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_TOWORK_C1(String V_V_IP, String V_V_PERCODE, String V_V_PERNAME, String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_TOWORK_C1");
         HashMap result = new HashMap();
@@ -51,12 +51,89 @@ public class StrService {
         return result;
     }
 
+
+    /**
+     * 厂矿大修分解编制 双击详情弹窗  指定行 工单详情
+     *
+     * @param V_V_ORDERGUID
+     * @return
+     * @throws SQLException
+     */
+    public HashMap PRO_PM_WORKORDER_BY_ORDERGUID(String V_V_ORDERGUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_BY_ORDERGUID");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_BY_ORDERGUID" + "(:V_V_ORDERGUID,:V_CURSOR)}");
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_EQUREPAIRPLAN_TOWORK_C1");
+        return result;
+    }
+
+    /**
+     * 厂矿大修分解编制  创建或修改子项 触发事件
+     * @param V_V_PERCODE
+     * @param V_V_PERNAME
+     * @param V_V_GUID
+     * @param V_V_GUID_P
+     * @param V_V_GUID_FXJH
+     * @param V_V_COLUMN
+     * @param V_V_VALUE
+     * @return
+     * @throws SQLException
+     */
+    public HashMap PM_EQUREPAIRPLAN_TREE_INSERT_Z(String V_V_PERCODE, String V_V_PERNAME, String V_V_GUID, String V_V_GUID_P, String V_V_GUID_FXJH, String V_V_COLUMN, String V_V_VALUE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_EQUREPAIRPLAN_TREE_INSERT_Z" + "(:V_V_PERCODE,:V_V_PERNAME,:V_V_GUID,:V_V_GUID_P,:V_V_GUID_FXJH,:V_V_COLUMN,:V_V_VALUE,:V_INFO)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_GUID_P", V_V_GUID_P);
+            cstmt.setString("V_V_GUID_FXJH", V_V_GUID_FXJH);
+            cstmt.setString("V_V_COLUMN", V_V_COLUMN);
+            cstmt.setString("V_V_VALUE", V_V_VALUE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sss = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", sss);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_EQUREPAIRPLAN_TREE_INSERT_Z");
+        return result;
+    }
+
+
     /**
      * 工具方法: 将jdbc返回的cursor 遍历封装为 List 类型
      * this is a util function :
-     *      used for putting the cursor of the result of JdbcTemplate into a List to return the controller.
+     * used for putting the cursor of the result of JdbcTemplate into a List to return the controller.
+     *
      * @param rs
-     * @return  list
+     * @return list
      * @throws SQLException
      */
     private List<HashMap> ResultHash(ResultSet rs) throws SQLException {
