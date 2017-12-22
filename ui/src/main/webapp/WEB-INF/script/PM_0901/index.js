@@ -4,6 +4,7 @@ var processKey ='';
 var V_NEXT_SETP = '';
 var V_STEPNAME = '';
 var V_STEPCODE ='';
+var V_EQUTYPE='';
 var flag='';
 if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
@@ -42,7 +43,8 @@ $(function() {
         }
         var owidth = window.document.body.offsetWidth-200;
         var oheight = window.document.body.offsetHeight-100 ;
-        var ret = window.open(AppUrl+'page/PM_070204/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() +  '&V_DEPTREPAIRCODE=' + $("#selPlant").val() + '&V_EQUCODE='+$("#V_EQUCODE").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        var ret = window.open(AppUrl+'page/PM_070204/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() +  '&V_DEPTREPAIRCODE=' + $("#selPlant").val() + '&V_EQUCODE='+$("#V_EQUCODE").val()
+            +'&V_ORGCODE='+$("#V_ORGCODE").val()+'&V_DEPTCODE=' + $("#V_DEPTCODE").val()+'&V_EQUTYPE='+V_EQUTYPE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
         loadTaskGrid();
     });
 
@@ -462,12 +464,20 @@ function orderissued(){
 }
 
 function GetModel() {//获取模型
+    if($("#V_EQUCODE").val()==''){
+        alert('请选择设备！');
+        return;
+    }
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191710/index.html?V_GUID='+$("#V_ORDERGUID").val()+'&V_ORGCODE='+
-    $("#V_ORGCODE").val()+'&V_DEPTCODE='+$("#V_DEPTCODE").val()+'&V_EQUTYPE='+V_EQUTYPECODE+'&V_EQUCODE='+
+    $("#V_ORGCODE").val()+'&V_DEPTCODE='+$("#V_DEPTCODE").val()+'&V_EQUTYPE='+V_EQUTYPE+'&V_EQUCODE='+
     $("#V_EQUCODE").val()   , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 
+
+}
+
+function getReturnMX(){
     loadTaskGrid();
     loadMatList();
 }
@@ -538,6 +548,7 @@ function getEquipReturnValue(ret){
     $("#V_EQUNAME").val(str[1]);
     $("#V_EQUCODE").val(str[0]);
     $("#V_EQUSITE").val(str[3]);
+    V_EQUTYPE=str[4];
 }
 
 function getReturnWBS(data) {

@@ -6,6 +6,9 @@ var V_STEPCODE ='';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var taskId = '';
+var GXlength=0;
+var ifYS=0;
+var winheight;
 $(function () {
 
 	var nextSprStore = Ext.create("Ext.data.Store", {
@@ -115,6 +118,88 @@ $(function () {
 		closable: true,
 		items: [addInputPanel]
 	});
+
+
+	var valuewindow = Ext.create('Ext.window.Window', {
+		id: 'valuewindow',
+		width: 780,
+		height: 350,
+		bodyPadding: 15,
+		layout: 'vbox',
+		title: '实际值录入',
+		modal: true,//弹出窗口时后面背景不可编辑
+		frame: true,
+		closeAction: 'hide',
+		closable: true,
+		items: [{
+			xtype : 'panel',
+			frame : true,
+			id : "valuepanel",
+			width: 780,
+			baseCls : 'my-panel-noborder',
+			layout : 'column',
+			items : []
+		}]
+	});
+
+	var comboPanel = Ext.create('Ext.panel.Panel', {
+		id: 'comboPanel',
+		region: 'center',
+		layout: 'vbox',
+		frame: true,
+		border: false,
+		//title : '流程管理',
+		baseCls: 'my-panel-no-border',
+		 items: [
+			 {
+				 id: 'xc',
+				 xtype: 'combo',
+				 store: [['1','是'],['0','否']],
+				 value:'1',
+				 editable: false,
+				 fieldLabel: '是否消除缺陷',
+				 labelWidth: 90,
+				 displayField: 'displayField',
+				 valueField: 'valueField',
+				 queryMode: 'local',
+				 baseCls: 'margin-bottom'
+			 },
+			 {
+				 id: 'sc',
+				 xtype: 'combo',
+				 store: [['1','是'],['0','否']],
+				 value:'0',
+				 editable: false,
+				 fieldLabel: '是否生成新缺陷',
+				 labelWidth: 90,
+				 displayField: 'displayField',
+				 valueField: 'valueField',
+				 queryMode: 'local',
+				 baseCls: 'margin-bottom'
+			 },
+			 {
+				 xtype : 'button',
+				 text : '确定',
+				 icon: imgpath + '/saved.png',
+				 style: ' margin: 5px 0px 0px 15px',
+				 handler : comboConfirm
+			 }
+		 ]
+	});
+
+	var combowindow = Ext.create('Ext.window.Window', {
+		id: 'combowindow',
+		width: 320,
+		height: 200,
+		bodyPadding: 15,
+		layout: 'vbox',
+		title: '操作选择',
+		modal: true,//弹出窗口时后面背景不可编辑
+		frame: true,
+		closeAction: 'hide',
+		closable: true,
+		items: [comboPanel]
+	});
 	bindDate("D_FACT_START_DATE");
 	bindDate("D_FACT_FINISH_DATE");
 
@@ -164,7 +249,7 @@ function ReturnIsToTask() {
 }
 
 function loadPageInfo() {
-	Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
+	//Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 	$.ajax({
 		url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_ET_DEFAULE',
 		type : 'post',
@@ -314,23 +399,147 @@ function loadTaskGrid() {
 	});
 }
 
+function valueChange(field,newvalue,oldvalue){
+	var idtail=field.id.split('fvlaue')[1];
+	var svaluedown=Ext.getCmp('svaluedown'+idtail).getValue();
+	var svalueup=Ext.getCmp('svalueup'+idtail).getValue();
+	if(Ext.getCmp('fvlaue'+idtail).getValue()>svaluedown&&Ext.getCmp('fvlaue'+idtail).getValue()<svalueup){
+		Ext.getCmp('fvlaue'+idtail).setFieldStyle({'color' : 'black'});
+	}else{
+		Ext.getCmp('fvlaue'+idtail).setFieldStyle({'color' : 'red'});
+	}
+
+}
+function comboConfirm(){
+	//???
+}
+function ValueConfirm(){
+	GXlength=3;
+	ifYS=0;
+	for(var i=0;i<GXlength;i++){
+		if(Ext.getCmp('fvlaue'+i).fieldStyle.color=='red'){
+			ifYS++;
+		}
+	}
+	if(ifYS>0){
+		if (!confirm("含有不符合标准值数据，确定是否验收?")) {
+			return false;
+		} else {
+			Ext.getCmp('combowindow').show();
+		}
+
+	}else{
+		//???
+	}
+
+}
 function ActivitiConfirmAccept(){
-	if($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null){
+	Ext.getCmp('valuepanel').removeAll();
+	/*$.ajax({
+		url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
+		type : 'post',
+		async : false,
+		data : {
+			V_V_ORDERGUID:$.url().param("V_ORDERGUID")
+		},
+		dataType : "json",
+		traditional : true,
+		success : function(resp) {
+			for(var i=0;i<resp.list.length;i++){
+	 winheight = resp.list.length * 20;
+GXlength=resp.list.length;a
+if(GXlength==0){QRYS();}else{//window.show}
+			}
+		}
+	});*/
+	winheight = 3 * 70;
+	for ( var i = 0; i < 3; i++) {
+		var khpanel = [{
+			xtype : 'displayfield',
+			id : 'gxcode' + i,
+			fieldLabel : '工序编号',
+			labelAlign : 'right',
+			labelWidth : 80,
+			style : {
+				margin : '5px 0 5px 0px'
+			},
+			value:i,
+			width : 200
+		},{
+			xtype : 'displayfield',
+			id : 'svaluedown' + i,
+			fieldLabel : '标准值(下限)',
+			labelAlign : 'right',
+			labelWidth : 80,
+			style : {
+				margin : '5px 0 5px 0px'
+			},
+			value:i+2,
+			width : 150
+		},{
+			xtype : 'displayfield',
+			id : 'svalueup' + i,
+			fieldLabel : '标准值(上限)',
+			labelAlign : 'right',
+			labelWidth : 80,
+			style : {
+				margin : '5px 0 5px 0px'
+			},
+			value:i+8,
+			width : 150
+		},{
+			xtype : 'textfield',
+			id : 'fvlaue' + i,
+			fieldStyle : 'background :#FFFF99;',
+			fieldLabel : '实际值',
+			labelAlign : 'right',
+			labelWidth : 80,
+			style : {
+				margin : '5px 0 5px 0px'
+			},
+			listeners : {
+				change : valueChange
+			},
+			width : 200
+		}];
+
+		Ext.getCmp('valuepanel').add(khpanel);
+	}
+	var bpanel={
+		xtype : 'button',
+		text : '确定',
+		icon: imgpath + '/saved.png',
+		style: ' margin: 5px 0px 0px 35px',
+		handler : ValueConfirm
+	}
+	Ext.getCmp('valuepanel').add(bpanel);
+	Ext.getCmp('valuewindow').setHeight(winheight);
+	Ext.getCmp('valuepanel').setHeight(winheight);
+	//Ext.getCmp('valuepanel').add(panel);
+	Ext.getCmp('valuewindow').show();
+	//OpenDiv('VDiv','Vfade');
+
+
+}
+function QRYS(){
+	if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
 		Ext.MessageBox.alert('提示', '请填写验收日期');
 		return false;
 	}
 
-	if ($("#V_REPAIRSIGN").val() == "这个判断不执行" ) {
+	if ($("#V_REPAIRSIGN").val() == "这个判断不执行") {
 		Ext.MessageBox.alert('提示', '请先填写检修方签字');
 		return false;
 	}
 
-	if ($("#V_CHECKMANCONTENT").val() == "" ) {
+	if ($("#V_CHECKMANCONTENT").val() == "") {
 		Ext.MessageBox.alert('提示', '请填写点检员验收意见');
 		return false;
 	}
 
-	if (!confirm("是否验收工单")) { return false; } else {
+	if (!confirm("是否验收工单")) {
+		return false;
+	} else {
 
 		Ext.Ajax.request({
 			url: AppUrl + 'Activiti/TaskComplete',
@@ -339,54 +548,54 @@ function ActivitiConfirmAccept(){
 			params: {
 				taskId: taskId,
 				idea: '已验收',
-				parName: ['lcjs', "flow_yj",'shtgtime'],
-				parVal: ['lcjs', '已验收',Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'H:i:s') ],
-				processKey :$.url().param("ProcessDefinitionKey"),
-				businessKey : $.url().param("V_ORDERGUID"),
-				V_STEPCODE : V_STEPCODE,
-				V_STEPNAME : V_STEPNAME,
-				V_IDEA : '已验收！',
-				V_NEXTPER : 'lcjs',
-				V_INPER : Ext.util.Cookies.get('v_personcode')
+				parName: ['lcjs', "flow_yj", 'shtgtime'],
+				parVal: ['lcjs', '已验收', Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'H:i:s')],
+				processKey: $.url().param("ProcessDefinitionKey"),
+				businessKey: $.url().param("V_ORDERGUID"),
+				V_STEPCODE: V_STEPCODE,
+				V_STEPNAME: V_STEPNAME,
+				V_IDEA: '已验收！',
+				V_NEXTPER: 'lcjs',
+				V_INPER: Ext.util.Cookies.get('v_personcode')
 			},
 			success: function (response) {
 				FinBack();
 				$.ajax({
 					url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_EDIT',
-					type : 'post',
-					async : false,
-					data : {
-						'V_V_PERCODE':$.cookies.get('v_personcode'),
+					type: 'post',
+					async: false,
+					data: {
+						'V_V_PERCODE': $.cookies.get('v_personcode'),
 						'V_V_PERNAME': Ext.util.Cookies.get("v_personname2"),
-						'V_V_ORDERGUID':$("#V_ORDERGUID").val(),
-						'V_V_SHORT_TXT':$("#V_SHORT_TXT").val(),
-						'V_':$("#V_FUNC_LOC").val(),
-						'V_V_EQUIP_NO':$("#V_EQUIP_NO").val(),
-						'V_V_EQUIP_NAME':$("#V_EQUIP_NAME").val(),
-						'V_D_FACT_START_DATE':$("#D_FACT_START_DATE").val(),
+						'V_V_ORDERGUID': $("#V_ORDERGUID").val(),
+						'V_V_SHORT_TXT': $("#V_SHORT_TXT").val(),
+						'V_': $("#V_FUNC_LOC").val(),
+						'V_V_EQUIP_NO': $("#V_EQUIP_NO").val(),
+						'V_V_EQUIP_NAME': $("#V_EQUIP_NAME").val(),
+						'V_D_FACT_START_DATE': $("#D_FACT_START_DATE").val(),
 						'V_D_FACT_FINISH_DATE': $("#D_FACT_FINISH_DATE").val(),
-						'V_V_WBS':"",
-						'V_V_WBS_TXT':"",
-						'V_V_DEPTCODEREPARIR':$("#V_DEPTNAMEREPARIR").val(),//$("#selPlant").val(),
-						'V_V_TOOL':$("#tool").text()==""?" ":$("#tool").text(),
-						'V_V_TECHNOLOGY':' ',
-						'V_V_SAFE':' ',
-						'V_D_DATE_ACP':$("#D_DATE_ACP").val(),
+						'V_V_WBS': "",
+						'V_V_WBS_TXT': "",
+						'V_V_DEPTCODEREPARIR': $("#V_DEPTNAMEREPARIR").val(),//$("#selPlant").val(),
+						'V_V_TOOL': $("#tool").text() == "" ? " " : $("#tool").text(),
+						'V_V_TECHNOLOGY': ' ',
+						'V_V_SAFE': ' ',
+						'V_D_DATE_ACP': $("#D_DATE_ACP").val(),
 						'V_I_OTHERHOUR': $("#I_OTHERHOUR").val(),
 						'V_V_OTHERREASON': $("#V_OTHERREASON").val(),
 						'V_V_REPAIRCONTENT': $("#V_REPAIRCONTENT").val(),
-						'V_V_REPAIRSIGN':$("#V_REPAIRSIGN").val(),
-						'V_V_REPAIRPERSON':$("#V_REPAIRPERSON").val(),
+						'V_V_REPAIRSIGN': $("#V_REPAIRSIGN").val(),
+						'V_V_REPAIRPERSON': $("#V_REPAIRPERSON").val(),
 						'V_V_POSTMANSIGN': $("#V_POSTMANSIGN").val(),
 						'V_V_CHECKMANCONTENT': $("#V_CHECKMANCONTENT").val(),
-						'V_V_CHECKMANSIGN':Ext.util.Cookies.get("v_personname2"),
-						'V_V_WORKSHOPCONTENT':$("#V_WORKSHOPCONTENT").val(),
-						'V_V_WORKSHOPSIGN':$("#V_WORKSHOPSIGN").html(),
+						'V_V_CHECKMANSIGN': Ext.util.Cookies.get("v_personname2"),
+						'V_V_WORKSHOPCONTENT': $("#V_WORKSHOPCONTENT").val(),
+						'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").html(),
 						'V_V_DEPTSIGN': $("#V_DEPTSIGN").val()
 					},
-					dataType : "json",
-					traditional : true,
-					success : function(resp) {
+					dataType: "json",
+					traditional: true,
+					success: function (resp) {
 
 					}
 				});
@@ -404,12 +613,12 @@ function ActivitiConfirmAccept(){
 						 * 作业区签字/库管员签字 V_V_DEPTSIGN IN VARCHAR2, -- 部门签字 V_V_EQUIP_NO IN
 						 * VARCHAR2, --设备编码
 						 */
-						'V_V_PERCODE':$.cookies.get('v_personcode'),
+						'V_V_PERCODE': $.cookies.get('v_personcode'),
 						'V_V_PERNAME': Ext.util.Cookies.get("v_personname2"),
-						'V_V_ORDERGUID':$("#V_ORDERGUID").val(),
-						'V_V_POSTMANSIGN':$("#V_POSTMANSIGN").val(),
-						'V_V_CHECKMANCONTENT':$("#V_CHECKMANCONTENT").val(),
-						'V_V_CHECKMANSIGN':$("#V_CHECKMANSIGN").val(),
+						'V_V_ORDERGUID': $("#V_ORDERGUID").val(),
+						'V_V_POSTMANSIGN': $("#V_POSTMANSIGN").val(),
+						'V_V_CHECKMANCONTENT': $("#V_CHECKMANCONTENT").val(),
+						'V_V_CHECKMANSIGN': $("#V_CHECKMANSIGN").val(),
 						'V_V_WORKSHOPCONTENT': $("#V_WORKSHOPCONTENT").val(),
 						'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").html(),
 						'V_V_DEPTSIGN': $("#V_DEPTSIGN").val(),
@@ -419,10 +628,10 @@ function ActivitiConfirmAccept(){
 					traditional: true,
 					success: function (resp) {
 						// 聚进接口
-						otherServer($("#V_ORDERGUID").val(),"CLOSE","成功");
+						otherServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 						// 小神探接口
-						xstServer($("#V_ORDERGUID").val(),"CLOSE","成功");
-						Ext.Msg.alert('提示','验收工单成功');
+						xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
+						Ext.Msg.alert('提示', '验收工单成功');
 						$.ajax({
 							url: APP + '/SetMatService',
 							type: 'post',
@@ -438,8 +647,8 @@ function ActivitiConfirmAccept(){
 						});
 
 					},
-					error: function(response, opts) {
-						Ext.Msg.alert('提示','验收工单失败,请联系管理员');
+					error: function (response, opts) {
+						Ext.Msg.alert('提示', '验收工单失败,请联系管理员');
 					}
 				});
 
@@ -458,7 +667,6 @@ function ActivitiConfirmAccept(){
 
 	}
 }
-
 function loadSPR() {
 	$.ajax({//审批人
 		url: AppUrl + 'Activiti/GetTaskIdFromBusinessId',
@@ -991,3 +1199,17 @@ function GetBillMatByOrder2() {
 		traditional: true
 	});
 }
+//打开弹出层
+function OpenDiv(show_div, bg_div) {
+	document.getElementById(show_div).style.display = 'block';
+	document.getElementById(bg_div).style.display = 'block';
+	var bgdiv = document.getElementById(bg_div);
+	bgdiv.style.width = document.body.scrollWidth;
+// bgdiv.style.height = $(document).height();
+	$("#" + bg_div).height($(document).height());
+};
+//关闭弹出层
+function CloseDiv(show_div, bg_div) {
+	document.getElementById(show_div).style.display = 'none';
+	document.getElementById(bg_div).style.display = 'none';
+};

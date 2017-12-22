@@ -74,7 +74,7 @@ Ext.onReady(function () {
         id: 'jsStandardStore',
         autoLoad: false,
         fields: ['I_ID', 'V_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_BJ_IMG', 'V_PART_NUMBER', 'V_PART_NAME',
-            'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE', 'V_REPLACE_CYC', 'V_WEIGHT',
+            'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE_DOWN','V_VALUE_UP', 'V_REPLACE_CYC', 'V_WEIGHT',
             'V_IMGCODE', 'V_CONTENT', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUCHILDCODE',
             'V_EQUCHILDNAME', 'V_EQUTYPECODE'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
@@ -123,13 +123,19 @@ Ext.onReady(function () {
             width: 200
         },{
             text: '装置名称',
-            dataIndex: 'V_EQUCHILDNAME',
+            dataIndex: 'V_PART_NAME',
             align: 'center',
             renderer: atleft,
             width: 200
         }, {
-            text: '允许值',
-            dataIndex: 'V_VALUE',
+            text: '允许值（下）',
+            dataIndex: 'V_VALUE_DOWN',
+            align: 'center',
+            renderer: atright,
+            width: 150
+        }, {
+            text: '允许值（上限）',
+            dataIndex: 'V_VALUE_UP',
             align: 'center',
             renderer: atright,
             width: 150
@@ -232,7 +238,7 @@ function _selectJS(){
   if(seldata.length!=1){
       alert("请选择一条数据");
   }else{
-      window.opener.getReturnJSBZ(seldata[0].data.V_GUID,seldata[0].data.V_VALUE);
+      window.opener.getReturnJSBZ(seldata[0].data.V_GUID,seldata[0].data.V_VALUE_DOWN,seldata[0].data.V_VALUE_UP);
       window.close();
   }
 }
