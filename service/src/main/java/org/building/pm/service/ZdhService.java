@@ -1665,6 +1665,9 @@ public class ZdhService {
                 sledata.put("I_NUMBER_OF_PEOPLE", rs.getString("I_NUMBER_OF_PEOPLE"));
                 sledata.put("CLASSNAME", rs.getString("CLASSNAME"));
                 sledata.put("V_PER_LIST", rs.getString("V_PER_LIST"));
+                sledata.put("V_JXBZ", rs.getString("V_JXBZ"));
+                sledata.put("V_JXBZ_VALUE_DOWN", rs.getString("V_JXBZ_VALUE_DOWN"));
+                sledata.put("V_JXBZ_VALUE_UP", rs.getString("V_JXBZ_VALUE_UP"));
                 resultList.add(sledata);
             }
         } catch (SQLException e) {

@@ -108,6 +108,8 @@ public class GanttService {
                     temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
                     temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
                     temp.put("V_PLAN_MONEY", map.get("V_PLAN_MONEY").toString());
+                    temp.put("V_ROWNUMBER", map.get("V_ROWNUMBER").toString());
+                    temp.put("V_P_ROWNUMBER", map.get("V_P_ROWNUMBER").toString());
                     temp.put("V_GUID_P","");
                     temp.put("cls", "empty");
                     if (IfHasMenuChildNode(map.get("V_GUID").toString(), list)) {
@@ -132,6 +134,8 @@ public class GanttService {
                 temp.put("V_PROJECT_CODE_FXJH", "");
                 temp.put("V_PROJECT_CODE_FXJH", "");
                 temp.put("V_PLAN_MONEY", "");
+                temp.put("V_ROWNUMBER", "");
+                temp.put("V_P_ROWNUMBER", "");
                 temp.put("cls", "empty");
                 temp.put("expanded", false);
                 temp.put("leaf", true);
@@ -162,6 +166,8 @@ public class GanttService {
                 temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
                 temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
                 temp.put("V_PLAN_MONEY", map.get("V_PLAN_MONEY").toString());
+                temp.put("V_ROWNUMBER", map.get("V_ROWNUMBER").toString());
+                temp.put("V_P_ROWNUMBER", map.get("V_P_ROWNUMBER").toString());
                 temp.put("V_GUID_P",map.get("V_GUID_P").toString());
                 temp.put("cls", "empty");
                 if (IfHasMenuChildNode(map.get("V_GUID").toString(), list)) {

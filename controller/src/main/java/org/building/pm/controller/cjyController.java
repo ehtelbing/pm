@@ -1152,6 +1152,60 @@ public class cjyController {
             }
         }
     }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_ET_SET_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_ET_SET_NEW(@RequestParam(value = "V_I_ID") Double V_I_ID,
+                                       @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                       @RequestParam(value = "V_V_DESCRIPTION") String V_V_DESCRIPTION,
+                                       @RequestParam(value = "V_I_WORK_ACTIVITY") Double V_I_WORK_ACTIVITY,
+                                       @RequestParam(value = "V_I_DURATION_NORMAL") Double V_I_DURATION_NORMAL,
+                                       @RequestParam(value = "V_V_WORK_CENTER") String V_V_WORK_CENTER,
+                                       @RequestParam(value = "V_I_ACTUAL_TIME") Double V_I_ACTUAL_TIME,
+                                       @RequestParam(value = "V_I_NUMBER_OF_PEOPLE") Double V_I_NUMBER_OF_PEOPLE,
+                                       @RequestParam(value = "V_V_ID") String V_V_ID,
+                                       @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                       @RequestParam(value = "V_V_JXBZ") String V_V_JXBZ,
+                                       @RequestParam(value = "V_V_JXBZ_VALUE_DOWN") String V_V_JXBZ_VALUE_DOWN,
+                                       @RequestParam(value = "V_V_JXBZ_VALUE_UP") String V_V_JXBZ_VALUE_UP,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = cjyService.PRO_PM_WORKORDER_ET_SET_NEW(V_I_ID, V_V_ORDERGUID, V_V_DESCRIPTION,
+                V_I_WORK_ACTIVITY, V_I_DURATION_NORMAL, V_V_WORK_CENTER,
+                V_I_ACTUAL_TIME, V_I_NUMBER_OF_PEOPLE, V_V_ID,V_V_GUID,V_V_JXBZ,V_V_JXBZ_VALUE_DOWN,V_V_JXBZ_VALUE_UP);
+        test.put("list", result);
+        return test;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_ET_ID_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_ET_ID_DEL(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_ET_ID_DEL( V_V_ORDERGUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_SPARE_ID_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_SPARE_ID_DEL(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_SPARE_ID_DEL(V_V_ORDERGUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_ET_ID_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_ET_ID_VIEW(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_ET_ID_VIEW( V_V_GUID);
+        return result;
+    }
 }
 
 

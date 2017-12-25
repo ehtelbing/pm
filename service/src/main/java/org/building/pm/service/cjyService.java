@@ -2172,4 +2172,130 @@ public class cjyService {
         return result;
     }
 
+
+    public List<Map> PRO_PM_WORKORDER_ET_SET_NEW(Double V_I_ID,String V_V_ORDERGUID,String V_V_DESCRIPTION,
+                                             Double V_I_WORK_ACTIVITY,Double V_I_DURATION_NORMAL,String V_V_WORK_CENTER,
+                                             Double V_I_ACTUAL_TIME, Double V_I_NUMBER_OF_PEOPLE,String V_V_ID,String V_V_GUID,
+            String V_V_JXBZ,String V_V_JXBZ_VALUE_DOWN,String V_V_JXBZ_VALUE_UP) throws SQLException {
+//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_ET_SET_NEW" + "(:V_I_ID,:V_V_ORDERGUID,:V_V_DESCRIPTION," +
+                    ":V_I_WORK_ACTIVITY,:V_I_DURATION_NORMAL,:V_V_WORK_CENTER,:V_I_ACTUAL_TIME,:V_I_NUMBER_OF_PEOPLE," +
+                    ":V_V_ID,:V_V_GUID,:V_V_JXBZ,:V_V_JXBZ_VALUE_DOWN,:V_V_JXBZ_VALUE_UP)}");
+
+
+            cstmt.setDouble("V_I_ID", V_I_ID);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_DESCRIPTION", V_V_DESCRIPTION);
+            cstmt.setDouble("V_I_WORK_ACTIVITY", V_I_WORK_ACTIVITY);
+            cstmt.setDouble("V_I_DURATION_NORMAL", V_I_DURATION_NORMAL);
+            cstmt.setString("V_V_WORK_CENTER", V_V_WORK_CENTER);
+            cstmt.setDouble("V_I_ACTUAL_TIME", V_I_ACTUAL_TIME);
+            cstmt.setDouble("V_I_NUMBER_OF_PEOPLE", V_I_NUMBER_OF_PEOPLE);
+            cstmt.setString("V_V_ID", V_V_ID);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_JXBZ", V_V_JXBZ);
+            cstmt.setString("V_V_JXBZ_VALUE_DOWN", V_V_JXBZ_VALUE_DOWN);
+            cstmt.setString("V_V_JXBZ_VALUE_UP", V_V_JXBZ_VALUE_UP);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", "SUCCESS");
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_ET_SET_NEW");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_ET_ID_DEL(String V_V_ORDERGUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_ET_ID_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_ET_ID_DEL" + "(:V_V_ORDERGUID,:V_CURSOR)}");
+
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_CURSOR = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_CURSOR", V_CURSOR);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_ET_ID_DEL");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_SPARE_ID_DEL(String V_V_ORDERGUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_SPARE_ID_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_ID_DEL" + "(:V_V_ORDERGUID,:V_CURSOR)}");
+
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_CURSOR = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_CURSOR", V_CURSOR);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SPARE_ID_DEL");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_ET_ID_VIEW(String V_V_GUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_ET_ID_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_ET_ID_VIEW(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_ET_ID_VIEW");
+        return result;
+    }
 }

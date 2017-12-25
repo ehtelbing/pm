@@ -776,7 +776,7 @@ function CreateGrid1ColumnTd(value, metaData, record, rowIdx, colIdx, store,
 
 function select() {
 
-    var gridXX2 = Ext.data.StoreManager.lookup('gridXXStore2');
+    var gridXX2 = Ext.data.StoreManager.lookup('gridXXStore');
     var records = gridXX2.data.items;
     var retdata = [];
     for (var i = 0; i < records.length; i++) {

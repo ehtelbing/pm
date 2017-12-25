@@ -201,16 +201,30 @@ var inputPanel = Ext.create('Ext.form.Panel', {
             xtype: 'textfield',
             id: 'jxtechnology',
             fieldLabel: '检修技术要求',
+            hidden:true,
             readOnly: true
         }, {
             xtype: 'button',
             text: '+',
+            hidden:true,
             handler: selectJXTECHNOLOGY,
             width: 25
         },{
             xtype: 'textfield',
             id: 'jxtechnologybz',
             fieldLabel: '检修技术标准',
+            readOnly: true
+        }, {
+            xtype: 'textfield',
+            id: 'jxtechnologybzd',
+            hidden:true,
+            fieldLabel: '检修技术标准下',
+            readOnly: true
+        }, {
+            xtype: 'textfield',
+            id: 'jxtechnologybzu',
+            hidden:true,
+            fieldLabel: '检修技术标准上',
             readOnly: true
         }, {
             xtype: 'textfield',
@@ -360,7 +374,7 @@ var gridStore = Ext.create("Ext.data.Store", {
     storeId: 'gridStore',
     fields: ['V_MX_CODE', 'V_MX_NAME', 'V_JXGX_NAME', 'V_JXGX_NR', 'V_WORK_NAME', 'V_GJ_NAME', 'V_JJ_NAME',
         'V_GZ_NAME',  'V_AQCS_NAME', 'V_JSYQ_NAME', 'V_JXGX_CODE', 'V_ORDER', 'V_GZZX_CODE','V_PERNUM','V_PERTIME',
-    'V_WL_NAME','V_JXBZ','V_JXBZ_VALUE'],
+    'V_WL_NAME','V_JXBZ','V_JXBZ_VALUE_DOWN','V_JXBZ_VALUE_UP'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -464,13 +478,16 @@ var Layout = {
                     renderer: rendererWL
                 },
                 {
-                    text: '技术要求', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME'
+                    text: '技术要求', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME',hidden:true
                 },
                 {
                     text: '安全措施', align: 'center', width: 150, dataIndex: 'V_AQCS_NAME'
                 },
                 {
-                    text: ' 允许值', align: 'center', width: 150, dataIndex: 'V_JXBZ_VALUE'
+                    text: ' 允许值(下限)', align: 'center', width: 150, dataIndex: 'V_JXBZ_VALUE_DOWN'
+                },
+                {
+                    text: ' 允许值（上限）', align: 'center', width: 150, dataIndex: 'V_JXBZ_VALUE_UP'
                 }
             ]
         }
@@ -547,7 +564,9 @@ function editbtn() {
     Ext.getCmp('jxgxcontent').setValue(seldata[0].data.V_JXGX_NR);
     Ext.getCmp('jxteam').setValue(seldata[0].data.V_GZZX_CODE);
     Ext.getCmp('order').setValue(seldata[0].data.V_ORDER);
-    Ext.getCmp('jxtechnologybz').setValue(seldata[0].data.V_JXBZ_VALUE);
+    Ext.getCmp('jxtechnologybz').setValue(seldata[0].data.V_JXBZ_VALUE_DOWN+'~'+seldata[0].data.V_JXBZ_VALUE_UP);
+    Ext.getCmp('jxtechnologybzd').setValue(seldata[0].data.V_JXBZ_VALUE_DOWN);
+    Ext.getCmp('jxtechnologybzu').setValue(seldata[0].data.V_JXBZ_VALUE_UP);
     Ext.getCmp('jxtecbzguid').setValue(seldata[0].data.V_JXBZ);
 
     Ext.Ajax.request({
@@ -661,7 +680,8 @@ function save_btn() {
             V_V_PERNUM: Ext.getCmp('jxedrs').getValue(),
             V_V_PERTIME: Ext.getCmp('jxedsj').getValue(),
             V_V_JXBZ: Ext.getCmp('jxtecbzguid').getValue(),
-            V_V_JXBZ_VALUE: Ext.getCmp('jxtechnologybz').getValue()
+            V_V_JXBZ_VALUE_DOWN: Ext.getCmp('jxtechnologybzd').getValue(),
+            V_V_JXBZ_VALUE_UP: Ext.getCmp('jxtechnologybzu').getValue()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -755,8 +775,10 @@ function selectJXTECHNOLOGYBZ() {
         +'&V_V_EQUTYPE='+V_EQUTYPE
         +'&V_V_ORGCODE='+V_ORGCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
-function getReturnJSBZ(guid,value){
-    Ext.getCmp('jxtechnologybz').setValue(value);
+function getReturnJSBZ(guid,valued,valueu){
+    Ext.getCmp('jxtechnologybz').setValue(valued+'~'+valueu);
+    Ext.getCmp('jxtechnologybzd').setValue(valued);
+    Ext.getCmp('jxtechnologybzu').setValue(valueu);
     Ext.getCmp('jxtecbzguid').setValue(guid);
 
 

@@ -156,9 +156,9 @@ function OnClickSavedButton() {
 	var selectRecordGrid = Ext.getCmp('grid').getSelectionModel().getSelection();
 	var selectRecordTree=Ext.getCmp('sectTree').getSelectionModel().getSelection();
 	if(selectRecordGrid.length==1){
-		ret=selectRecordGrid[0].data.V_EQUCODE + '^' + selectRecordGrid[0].data.V_EQUNAME + '^'+selectRecordGrid[0].data.V_EQUSITE+'^'+selectRecordGrid[0].data.V_EQUSITENAME;
+		ret=selectRecordGrid[0].data.V_EQUCODE + '^' + selectRecordGrid[0].data.V_EQUNAME + '^'+selectRecordGrid[0].data.V_EQUSITE+'^'+selectRecordGrid[0].data.V_EQUSITENAME+'^'+selectRecordTree[0].data.parentid;
 	}else if(selectRecordTree[0].data.leaf==true&&selectRecordTree.length==1){
-		ret=selectRecordTree[0].data.id+ '^' + selectRecordTree[0].data.text + '^'+selectRecordTree[0].data.V_EQUSITE+'^'+selectRecordTree[0].data.V_EQUSITENAME;
+		ret=selectRecordTree[0].data.id+ '^' + selectRecordTree[0].data.text + '^'+selectRecordTree[0].data.V_EQUSITE+'^'+selectRecordTree[0].data.V_EQUSITENAME+'^'+selectRecordTree[0].data.parentid;
 	}else{
 		alert('请选择一条记录或一个叶子目录进行操作!');
 		return false;

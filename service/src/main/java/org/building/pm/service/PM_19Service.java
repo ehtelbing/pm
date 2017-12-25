@@ -564,7 +564,7 @@ public class PM_19Service {
 
 
     public List<Map> PM_1917_JXGX_DATA_SETNEW(String V_V_JXGX_CODE,String V_V_JXGX_NAME,String V_V_JXGX_NR,String V_V_GZZX_CODE,String V_V_JXMX_CODE,
-                                              String V_V_ORDER, String V_V_PERNUM,String V_V_PERTIME,String V_V_JXBZ,String V_V_JXBZ_VALUE) throws SQLException {
+                                              String V_V_ORDER, String V_V_PERNUM,String V_V_PERTIME,String V_V_JXBZ,String V_V_JXBZ_VALUE_DOWN,String V_V_JXBZ_VALUE_UP) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_DATA_SETNEW");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -573,7 +573,7 @@ public class PM_19Service {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PM_1917_JXGX_DATA_SETNEW" + "(:V_V_JXGX_CODE,:V_V_JXGX_NAME,:V_V_JXGX_NR," +
-                    ":V_V_GZZX_CODE,:V_V_JXMX_CODE,:V_V_ORDER,:V_V_PERNUM,:V_V_PERTIME,:V_V_JXBZ,:V_V_JXBZ_VALUE,:V_CURSOR)}");
+                    ":V_V_GZZX_CODE,:V_V_JXMX_CODE,:V_V_ORDER,:V_V_PERNUM,:V_V_PERTIME,:V_V_JXBZ,:V_V_JXBZ_VALUE_DOWN,:V_V_JXBZ_VALUE_UP,:V_CURSOR)}");
             cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
             cstmt.setString("V_V_JXGX_NAME", V_V_JXGX_NAME);
             cstmt.setString("V_V_JXGX_NR", V_V_JXGX_NR);
@@ -583,7 +583,8 @@ public class PM_19Service {
             cstmt.setString("V_V_PERNUM", V_V_PERNUM);
             cstmt.setString("V_V_PERTIME", V_V_PERTIME);
             cstmt.setString("V_V_JXBZ", V_V_JXBZ);
-            cstmt.setString("V_V_JXBZ_VALUE", V_V_JXBZ_VALUE);
+            cstmt.setString("V_V_JXBZ_VALUE_DOWN", V_V_JXBZ_VALUE_DOWN);
+            cstmt.setString("V_V_JXBZ_VALUE_UP", V_V_JXBZ_VALUE_UP);
             cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();

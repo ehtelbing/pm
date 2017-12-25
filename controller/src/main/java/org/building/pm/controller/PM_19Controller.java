@@ -256,14 +256,15 @@ public class PM_19Controller {
                                      @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,
                                      @RequestParam(value = "V_V_PERTIME") String V_V_PERTIME,
                                      @RequestParam(value = "V_V_JXBZ") String V_V_JXBZ,
-                                     @RequestParam(value = "V_V_JXBZ_VALUE") String V_V_JXBZ_VALUE,
+                                     @RequestParam(value = "V_V_JXBZ_VALUE_DOWN") String V_V_JXBZ_VALUE_DOWN,
+                                        @RequestParam(value = "V_V_JXBZ_VALUE_UP") String V_V_JXBZ_VALUE_UP,
                                      HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
         result = pm_19Service.PM_1917_JXGX_DATA_SETNEW(V_V_JXGX_CODE, V_V_JXGX_NAME, V_V_JXGX_NR, V_V_GZZX_CODE,
-                V_V_JXMX_CODE, V_V_ORDER,V_V_PERNUM,V_V_PERTIME,V_V_JXBZ,V_V_JXBZ_VALUE);
+                V_V_JXMX_CODE, V_V_ORDER,V_V_PERNUM,V_V_PERTIME,V_V_JXBZ,V_V_JXBZ_VALUE_DOWN,V_V_JXBZ_VALUE_UP);
         test.put("list", result);
         return test;
     }
