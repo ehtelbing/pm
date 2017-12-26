@@ -360,6 +360,9 @@ function CreateBill() {
         if (!confirm("确定下达工单?")) {
             return false;
         } else {
+
+            Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
+
             Ext.Ajax.request({
                 url :AppUrl + 'Activiti/StratProcess',
                 async:false,
@@ -397,13 +400,14 @@ function CreateBill() {
                             success : function(response) {
                                 var resp = Ext.decode(response.responseText);
                                 if (resp.RET=='成功'){
-                                    Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
+                                    //Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
                                     orderissued();
                                 }
                             }
                         });
                     } else if (Ext.decode(response.responseText).error == 'ERROR') {
                         Ext.Msg.alert('提示','该流程发起失败！');
+                        Ext.getBody().unmask();//去除页面笼罩
                     }
                 }
             });
