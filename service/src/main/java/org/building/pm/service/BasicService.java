@@ -1320,4 +1320,33 @@ public class BasicService {
         return result;
     }
 
+    public HashMap PM_06_DJ_DATA_SEL_ALL(String V_V_CRITERION_CODE,String V_V_STIME,String V_V_ETIME ) throws SQLException {
+
+        logger.info("begin PM_06_DJ_DATA_SEL_ALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_SEL_ALL(:V_V_CRITERION_CODE,:V_V_STIME,:V_V_ETIME,:V_CURSOR)}");
+            cstmt.setString("V_V_CRITERION_CODE", V_V_CRITERION_CODE);
+            cstmt.setString("V_V_STIME", V_V_STIME);
+            cstmt.setString("V_V_ETIME", V_V_ETIME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_DJ_DATA_SEL_ALL");
+        return result;
+    }
+
 }

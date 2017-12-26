@@ -87,140 +87,12 @@ Ext.onReady(function () {
         }
     });
 
-    /*var orgStore = Ext.create('Ext.data.Store', {
-        id: 'orgStore',
-        autoLoad: true,
-        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            type: 'ajax',
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': V_V_PERSONCODE,
-                'V_V_DEPTCODE': V_V_DEPTCODE,
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
-            }
-        }),
-        listeners: {
-            load: function (store, records) {
-                orgLoad = true;
-                Ext.getCmp('V_V_ORGCODE').select(store.first());
-                _init();
-            }
-        }
-    });
-
-    var deptStore = Ext.create('Ext.data.Store', {
-        id: 'deptStore',
-        autoLoad: false,
-        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy:  Ext.create("Ext.ux.data.proxy.Ajax",{
-            type: 'ajax',
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            async: false,
-            extraParams: {}
-        }),
-        listeners: {
-            load: function (store, records) {
-                deptLoad = true;
-                Ext.getCmp('V_V_DEPTCODE').select(store.first());
-                _init();
-            }
-        }
-    });
-
-    var equTypeStore = Ext.create('Ext.data.Store', {
-        id: 'equTypeStore',
-        autoLoad: true,
-        fields: ['V_CK_EQUTYPECODE', 'V_CK_EQUTYPENAME', 'I_ORDER', 'I_ID'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'PM_06/PM_06_EQUTYPE_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                equTypeLoad = true;
-                Ext.getCmp('V_CK_EQUTYPECODE').select(store.first());
-                _init();
-            }
-        }
-    });
-
-    var eTypeStore = Ext.create('Ext.data.Store', {
-        id: 'eTypeStore',
-        autoLoad: false,
-        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME', 'I_ORDER', 'I_ID'],
-        proxy:  Ext.create("Ext.ux.data.proxy.Ajax",{
-            type: 'ajax',
-            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }),
-        listeners: {
-            load: function (store, records) {
-                eTypeLoad = true;
-                Ext.getCmp('equtype').select(store.first());
-                _init();
-            }
-        }
-    });
-
-    var equNameStore = Ext.create('Ext.data.Store', {
-        id: 'equNameStore',
-        autoLoad: false,
-        fields: ['V_EQUCODE', 'V_EQUNAME', 'I_ORDER', 'I_ID'],
-        proxy:  Ext.create("Ext.ux.data.proxy.Ajax",{
-            type: 'ajax',
-            url: AppUrl + 'PM_06/pro_get_deptequ_per',
-            actionMethods: {
-                read: 'POST'
-            },
-            async: false,
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }),
-        listeners: {
-            load: function (store, records) {
-                equNameload = true;
-                Ext.getCmp('equname').select(store.first());
-                _init();
-            }
-        }
-    });*/
 
     var djDataCreateStore = Ext.create('Ext.data.Store', {
         storeId: 'djDataCreateStore',
         autoLoad: false,
         pageSize: 15,//测试好用
-        fields: ['V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT', 'V_PERNAME_INPUT', 'V_CRITERION_ITEM', 'V_CRITERION_CONTENT', 'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1', 'V_EQU_STATE2', 'V_EQU_STATE3', 'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3', 'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8', 'V_DJ_DATE', 'V_CK_EQUTYPECODE','V_GUID'],
+        fields: ['V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT', 'V_EQUNAME','V_PERNAME_INPUT', 'V_CRITERION_ITEM', 'V_CRITERION_CONTENT', 'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1', 'V_EQU_STATE2', 'V_EQU_STATE3', 'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3', 'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8', 'V_DJ_DATE', 'V_CK_EQUTYPECODE','V_GUID'],
         proxy: {
             url: AppUrl + 'PM_06/PM_06_DJ_CRITERION_DATA_SEL',
             type: 'ajax',
@@ -268,106 +140,7 @@ Ext.onReady(function () {
             labelAlign: 'right',
             margin: '5 0 5 5'
         },
-        items: [/*{
-                xtype: 'combo',
-                id: 'V_V_ORGCODE',
-                store: orgStore,
-                queryMode: 'local',
-                valueField: 'V_DEPTCODE',
-                displayField: 'V_DEPTNAME',
-                labelWidth: 80,
-                typeAhead: false,
-                editable: false,
-                forceSelection: true,
-                fieldLabel: '单位',
-                listeners: {
-                    change: function (combo, records) {
-                        _selectDept(records);
-                    }
-                }
-            }, {
-                xtype: 'combo',
-                id: 'V_V_DEPTCODE',
-                store: deptStore,
-                queryMode: 'local',
-                valueField: 'V_DEPTCODE',
-                displayField: 'V_DEPTNAME',
-                forceSelection: true,
-                typeAhead: false,
-                editable: false,
-                labelWidth: 80,
-                fieldLabel: '作业区',
-                listeners: {
-                    change: function (combo, records) {
-                        Ext.data.StoreManager.lookup('eTypeStore').load({
-                            params : {
-                                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                                V_V_DEPTCODENEXT : Ext.getCmp('V_V_DEPTCODE').getValue()
-                            }
-                        });
-                    }
-                }
-            },{
-                xtype: 'combo',
-                id: 'V_CK_EQUTYPECODE',
-                store: equTypeStore,
-                queryMode: 'local',
-                valueField: 'V_CK_EQUTYPECODE',
-                displayField: 'V_CK_EQUTYPENAME',
-                labelWidth: 90,
-                forceSelection: true,
-                fieldLabel: '点检设备分类',
-                editable: false,
-                listeners: {
-                    change: function () {
-                        if (V_EQUTYPECODE != null) {
-                        }
-                    }
-                }
-            }, {
-                xtype: 'combo',
-                id: 'equtype',
-                store: eTypeStore,
-                queryMode: 'local',
-                valueField: 'V_EQUTYPECODE',
-                displayField: 'V_EQUTYPENAME',
-                labelWidth: 80,
-                forceSelection: true,
-                fieldLabel: '设备分类',
-                editable: false,
-                listeners: {
-                    change: function () {
-                        Ext.data.StoreManager.lookup('equNameStore').load({
-                            params : {
-                                v_v_personcode: Ext.util.Cookies.get('v_personcode'),
-                                v_v_deptcodenext: Ext.getCmp('V_V_DEPTCODE').getValue(),
-                                v_v_equtypecode: Ext.getCmp('equtype').getValue()
-                            }
-                        });
-                    }
-                }
-            }, {
-                xtype: 'combo',
-                id: 'equname',
-                store: equNameStore,
-                queryMode: 'local',
-                valueField: 'V_EQUCODE',
-                displayField: 'V_EQUNAME',
-                labelWidth: 80,
-                forceSelection: true,
-                editable: false,
-                fieldLabel: '设备名称',
-                listeners: {
-                    change: function () {
-                        if(Ext.getCmp('equname').getValue() == '%'){
-                            Ext.getCmp('topPanel').setTitle('岗位点检作业&nbsp&nbsp<button type="button"; onclick="onbtnclick();style="margin-right:10px">?</button>');
-                        }
-                        else{
-                            Ext.getCmp('topPanel').setTitle(Ext.getCmp('equname').getRawValue()+'岗位点检作业&nbsp&nbsp<button type="button" onclick="onbtnclick()">?</button>');
-                        }
-                    }
-                }
-            },*/{
+        items: [{
                 xtype: 'button',
                 text: '刷新',
                 icon: imgpath + '/table_refresh.png',
@@ -416,6 +189,11 @@ Ext.onReady(function () {
             text: '详情',
             align: 'center',
             renderer : detail
+        },{
+            text : '设备名称',
+            width : 160,
+            dataIndex: 'V_EQUNAME',
+            align: 'center'
         },{
             text: '点检项目',
             dataIndex: 'V_CRITERION_ITEM',

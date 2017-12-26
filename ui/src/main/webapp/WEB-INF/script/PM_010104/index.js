@@ -305,7 +305,7 @@ Ext.onReady(function () {
                 renderer : state,
                 width : 80
             }]
-        }, {
+        }/*, {
             text: '计划状态',
             dataIndex: 'V_PLAN_STATE',
             align: 'center',
@@ -321,7 +321,7 @@ Ext.onReady(function () {
             dataIndex: 'V_PLAN_PERNAME',
             align: 'center',
             width : 100
-        }],
+        }*/],
         bbar: [{
             id: 'gpage',
             xtype: 'pagingtoolbar',
@@ -469,6 +469,7 @@ function del_plan(){
                                num++;
                             }else{
                                 alert("删除失败！")
+                                num++;
                             }
                         }
                     });
@@ -501,11 +502,11 @@ function planstate(a,metaData,record){
 }
 
 function detail(a,value,metaData){
-    return '<a href="javascript:ondetail(\'' + metaData.data.V_GUID + '\')">详情</a>';
+    return '<a href="javascript:ondetail(\'' + metaData.data.V_CRITERION_CODE + '\')">详情</a>';
 }
 
 function ondetail(a){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_060103/index.html?V_GUID=' + a , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_060103/index_all.html?V_GUID=' + a , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }

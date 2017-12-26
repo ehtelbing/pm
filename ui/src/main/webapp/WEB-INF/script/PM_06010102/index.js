@@ -1,42 +1,15 @@
 var V_V_CRITERION_CODE = '';
-var V_V_EQUTYPECODE = '';
-var V_V_EQU_SATAECHOOES = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_V_CRITERION_CODE == undefined) ? V_V_CRITERION_CODE = '' : V_V_CRITERION_CODE = parameters.V_V_CRITERION_CODE;
-    (parameters.V_V_EQUTYPECODE == undefined) ? V_V_EQUTYPECODE = '' : V_V_EQUTYPECODE = parameters.V_V_EQUTYPECODE;
 }
 
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 
 var criteion;
-var orgLoad = false;
-var equTypeLoad = false;
-var basedicLoad = false;
-var criteionLoad = false;
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
-
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_06/PM_06_DJ_CRITERION_GET',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            'V_V_CRITERION_CODE': V_V_CRITERION_CODE
-        },
-        callback: function (options, success, response) {
-            if (success) {
-                var data = Ext.decode(response.responseText);
-                if (data.success) {
-                    criteion = data.list[0];
-                }
-                criteionLoad = true;
-                _init();
-            }
-        }
-    });
-
 
     var orgStore = Ext.create('Ext.data.Store', {
         id: 'orgStore',
@@ -62,31 +35,6 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 orgLoad = true;
-                _init();
-            }
-        }
-    });
-
-    var equTypeStore = Ext.create('Ext.data.Store', {
-        id: 'equTypeStore',
-        autoLoad: true,
-        fields: ['V_CK_EQUTYPECODE', 'V_CK_EQUTYPENAME', 'I_ORDER', 'I_ID'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'PM_06/PM_06_EQUTYPE_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
-        },
-        listeners: {
-            load: function (store, records) {
-                equTypeLoad = true;
-                Ext.getCmp('V_V_CK_EQUTYPECODE').select(store.first());
                 _init();
             }
         }
@@ -119,6 +67,27 @@ Ext.onReady(function () {
         }
     });
 
+    var jhlxStore = Ext.create('Ext.data.Store', {
+        id: 'jhlxStore',
+        autoLoad: true,
+        fields: ['I_ID', 'V_CKTYPE', 'V_CKTYPENAME', 'I_ORDER'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'basic/PRO_PM_06_CK_TYPE_VIEW',
+            actionMethods: {
+                read: 'POST'
+            },
+            async: false,
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                'V_V_CKTYPE': '%'
+            }
+        }
+    });
+
     var inputPanel = Ext.create('Ext.form.Panel', {
         id: 'inputPanel',
         region: 'north',
@@ -144,12 +113,16 @@ Ext.onReady(function () {
                     labelAlign: 'right',
                     width: 250
                 },
-                items: [{
-                    id: 'V_V_CKTYPE',
-                    readOnly: true,
-                    allowBlank: false,
-                    fieldLabel: '点检分类',
-                    labelWidth: 80
+                items: [{id: 'V_V_CKTYPE',
+                    xtype: 'combo',
+                    store: jhlxStore,
+                    fieldLabel: '点检类型',
+                    editable: false,
+                    labelWidth: 70,
+                    queryMode: 'local',
+                    displayField: 'V_CKTYPENAME',
+                    valueField: 'V_CKTYPE',
+                    labelAlign: 'right'
                 }, {
                     readOnly: true,
                     id: 'V_V_EQUTYPENAME',
@@ -157,26 +130,6 @@ Ext.onReady(function () {
                     allowBlank: false,
                     labelWidth: 80
                 },]
-            }, {
-                layout: 'column',
-                defaults: {
-                    xtype: 'combo',
-                    labelAlign: 'right',
-                    width: 500,
-                    editable: false
-                },
-                items: [{
-                    xtype: 'combo',
-                    id: 'V_V_CK_EQUTYPECODE',
-                    store: equTypeStore,
-                    queryMode: 'local',
-                    valueField: 'V_CK_EQUTYPECODE',
-                    displayField: 'V_CK_EQUTYPENAME',
-                    forceSelection: true,
-                    fieldLabel: '点检设备分类',
-                    labelWidth: 80,
-                    allowBlank: false
-                }]
             }, {
                 layout: 'column',
                 defaults: {
@@ -462,41 +415,52 @@ Ext.onReady(function () {
 });
 
 function _init() {
-    if (orgLoad && equTypeLoad && basedicLoad && criteionLoad) {
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_06/PM_06_DJ_CRITERION_GET',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_CRITERION_CODE': V_V_CRITERION_CODE
+        },
+        callback: function (options, success, response) {
+            if (success) {
+                var data = Ext.decode(response.responseText);
+                if (data.success) {
+                    criteion = data.list[0];
+                    Ext.getCmp('V_V_CKTYPE').select(criteion.V_CKTYPE);
+                    Ext.getCmp('V_V_EQUTYPENAME').setValue(criteion.V_EQUTYPENAME);
+                    Ext.getCmp('V_V_CRITERION_ITEM').setValue(criteion.V_CRITERION_ITEM);
+                    Ext.getCmp('V_V_CRITERION_CONTENT').setValue(criteion.V_CRITERION_CONTENT);
+                    Ext.getCmp('V_V_CRITERION_CR').setValue(criteion.V_CRITERION_CR);
+                    Ext.getCmp('V_V_CRITERION_CYCLE').setValue(criteion.V_CRITERION_CYCLE);
+                    Ext.getCmp('V_V_CRITERION_CYCLETYPE').setValue(criteion.V_CRITERION_CYCLETYPE);
+                    if (criteion.V_EQU_STATAE1 == 1) {
+                        Ext.getCmp('V_V_EQU_STATE1').setValue(true);
+                    }
+                    if (criteion.V_EQU_STATAE2 == 1) {
+                        Ext.getCmp('V_V_EQU_STATE2').setValue(true);
+                    }
+                    Ext.getCmp('V_V_CK_FUNCTION1').setValue(criteion.V_CK_FUNCTION1);
+                    Ext.getCmp('V_V_CK_FUNCTION2').setValue(criteion.V_CK_FUNCTION2);
+                    Ext.getCmp('V_V_CK_FUNCTION3').setValue(criteion.V_CK_FUNCTION3);
+                    Ext.getCmp('V_V_CK_FUNCTION4').setValue(criteion.V_CK_FUNCTION4);
+                    Ext.getCmp('V_V_CK_FUNCTION5').setValue(criteion.V_CK_FUNCTION5);
 
-        if (criteion.V_CKTYPE == 'defct01') {
-            Ext.getCmp('V_V_CKTYPE').setValue('岗位点检标准');
+                    if (criteion.I_FLAG == 1) {
+                        Ext.getCmp('V_I_FLAG').setValue(1);
+                    }
+                    if (criteion.I_WEIGHT == 1) {
+                        Ext.getCmp('V_I_WEIGHT').setValue(1);
+                    }
+                    if (criteion.I_YJ == 1) {
+                        Ext.getCmp('V_I_YJ').setValue(1);
+                    }
+                }
+            }
         }
-        Ext.getCmp('V_V_EQUTYPENAME').setValue(criteion.V_EQUTYPENAME);
-        Ext.getCmp('V_V_CK_EQUTYPECODE').setValue(criteion.V_CK_EQUTYPECODE);
-        Ext.getCmp('V_V_CRITERION_ITEM').setValue(criteion.V_CRITERION_ITEM);
-        Ext.getCmp('V_V_CRITERION_CONTENT').setValue(criteion.V_CRITERION_CONTENT);
-        Ext.getCmp('V_V_CRITERION_CR').setValue(criteion.V_CRITERION_CR);
-        Ext.getCmp('V_V_CRITERION_CYCLE').setValue(criteion.V_CRITERION_CYCLE);
-        Ext.getCmp('V_V_CRITERION_CYCLETYPE').setValue(criteion.V_CRITERION_CYCLETYPE);
-        if (criteion.V_EQU_STATAE1 == 1) {
-            Ext.getCmp('V_V_EQU_STATE1').setValue(true);
-        }
-        if (criteion.V_EQU_STATAE2 == 1) {
-            Ext.getCmp('V_V_EQU_STATE2').setValue(true);
-        }
-        Ext.getCmp('V_V_CK_FUNCTION1').setValue(criteion.V_CK_FUNCTION1);
-        Ext.getCmp('V_V_CK_FUNCTION2').setValue(criteion.V_CK_FUNCTION2);
-        Ext.getCmp('V_V_CK_FUNCTION3').setValue(criteion.V_CK_FUNCTION3);
-        Ext.getCmp('V_V_CK_FUNCTION4').setValue(criteion.V_CK_FUNCTION4);
-        Ext.getCmp('V_V_CK_FUNCTION5').setValue(criteion.V_CK_FUNCTION5);
+    });
 
-        if (criteion.I_FLAG == 1) {
-            Ext.getCmp('V_I_FLAG').setValue(1);
-        }
-        if (criteion.I_WEIGHT == 1) {
-            Ext.getCmp('V_I_WEIGHT').setValue(1);
-        }
-        if (criteion.I_YJ == 1) {
-            Ext.getCmp('V_I_YJ').setValue(1);
-        }
-        Ext.getBody().unmask();
-    }
+    Ext.getBody().unmask();
 }
 
 function _insertPM06() {
@@ -569,7 +533,7 @@ function _insertPM06() {
         params: {
             'V_V_ORGCODE': criteion.V_ORGCODE,
             'V_V_DEPTCODE': criteion.V_DEPTCODE,
-            'V_V_CK_EQUTYPECODE': Ext.getCmp('V_V_CK_EQUTYPECODE').getSubmitValue(),
+            'V_V_CK_EQUTYPECODE':'动态设备',
             'V_V_EQUTYPE': criteion.V_EQUTYPECODE ,
             'V_V_EQUCODE': criteion.V_EQUCODE,
             'V_V_CRITERION_CODE': V_V_CRITERION_CODE,
@@ -590,7 +554,7 @@ function _insertPM06() {
             'V_V_CK_FUNCTION8': '0',
             'V_I_ORDER': Ext.getCmp('V_I_ORDER').getSubmitValue(),
             'V_I_FLAG': V_I_FLAG,
-            'V_V_CKTYPE': criteion.V_CKTYPE,
+            'V_V_CKTYPE': Ext.getCmp('V_V_CKTYPE').getValue(),
             'V_I_WEIGHT': V_I_WEIGHT,
             'V_I_YJ': V_I_YJ,
             'V_V_INPER': Ext.util.Cookies.get('v_personcode')
@@ -599,7 +563,7 @@ function _insertPM06() {
             var data = Ext.decode(response.responseText);
             if (data.success) {
                     if (data.RET == 'success') {
-                        window.opener._seltctCriterion(V_V_EQUTYPECODE);
+                        window.opener._seltctCriterion();
                         window.close();
                     } else {
                         Ext.MessageBox.show({
