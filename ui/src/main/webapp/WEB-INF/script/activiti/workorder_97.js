@@ -122,7 +122,7 @@ $(function () {
 
 	var valuewindow = Ext.create('Ext.window.Window', {
 		id: 'valuewindow',
-		width: 780,
+		width: 980,
 		height: 350,
 		bodyPadding: 15,
 		layout: 'vbox',
@@ -135,7 +135,7 @@ $(function () {
 			xtype : 'panel',
 			frame : true,
 			id : "valuepanel",
-			width: 780,
+			width: 980,
 			baseCls : 'my-panel-noborder',
 			layout : 'column',
 			items : []
@@ -152,36 +152,81 @@ $(function () {
 		baseCls: 'my-panel-no-border',
 		 items: [
 			 {
-				 id: 'xc',
-				 xtype: 'combo',
-				 store: [['1','是'],['0','否']],
-				 value:'1',
-				 editable: false,
+				 xtype: "radiogroup",
+				 id: 'radiotypexc',
 				 fieldLabel: '是否消除缺陷',
-				 labelWidth: 90,
-				 displayField: 'displayField',
-				 valueField: 'valueField',
-				 queryMode: 'local',
-				 baseCls: 'margin-bottom'
+				 labelAlign: 'right',
+				 columns: 2,
+				 width: 290,
+				 margin: '5 10 5 10',
+				 items: [
+					 {
+						 boxLabel: "是",
+						 name: "typename",
+						 inputValue: "1",
+						 margin: '0 10 0 10',
+						 checked: true
+					 },
+					 {
+						 boxLabel: "否",
+						 name: "typename",
+						 inputValue: "0",
+						 margin: '0 10 0 10'
+					 }
+				 ],
+				 listeners: {
+					 click: {
+						 element: 'el',
+						 fn: function (e) {
+							 if(Ext.getCmp('radiotypexc').getValue().typename=='1'){
+								 Ext.getCmp('qxmx').enable();
+							 }else{
+								 Ext.getCmp('qxmx').disable();
+							 }
+						 }
+					 }
+				 }
 			 },
 			 {
-				 id: 'sc',
-				 xtype: 'combo',
-				 store: [['1','是'],['0','否']],
-				 value:'0',
-				 editable: false,
+				 xtype: "radiogroup",
+				 id: 'radiotypesc',
 				 fieldLabel: '是否生成新缺陷',
-				 labelWidth: 90,
-				 displayField: 'displayField',
-				 valueField: 'valueField',
+				 labelAlign: 'right',
+				 columns: 2,
+				 width: 290,
+				 margin: '5 10 5 10',
+				 items: [
+					 {
+						 boxLabel: "是",
+						 name: "typename",
+						 inputValue: "1",
+						 margin: '0 10 0 10'
+					 },
+					 {
+						 boxLabel: "否",
+						 name: "typename",
+						 inputValue: "0",
+						 margin: '0 10 0 10',
+						 checked: true
+					 }
+				 ]
+			 },{
+				 id: 'qxmx',
+				 xtype: 'textarea',
+				 fieldLabel: '缺陷明细',
+				 editable: false,
+				 labelWidth: 110,
 				 queryMode: 'local',
-				 baseCls: 'margin-bottom'
+				 //baseCls: 'margin-bottom',
+				 style: ' margin: 5px 0px 0px 0px',
+				 labelAlign: 'right',
+				 width: 360
 			 },
 			 {
 				 xtype : 'button',
 				 text : '确定',
 				 icon: imgpath + '/saved.png',
-				 style: ' margin: 5px 0px 0px 15px',
+				 style: ' margin: 10px 0px 0px 115px',
 				 handler : comboConfirm
 			 }
 		 ]
@@ -189,8 +234,8 @@ $(function () {
 
 	var combowindow = Ext.create('Ext.window.Window', {
 		id: 'combowindow',
-		width: 320,
-		height: 200,
+		width: 520,
+		height: 300,
 		bodyPadding: 15,
 		layout: 'vbox',
 		title: '操作选择',
@@ -413,29 +458,46 @@ function valueChange(field,newvalue,oldvalue){
 function comboConfirm(){
 	//???
 }
-function ValueConfirm(){
-	GXlength=3;
-	ifYS=0;
-	for(var i=0;i<GXlength;i++){
-		if(Ext.getCmp('fvlaue'+i).fieldStyle.color=='red'){
+function ValueConfirm() {
+	ifYS = 0;
+	var temp = 0;
+	for (var k = 0; k < GXlength; k++) {
+		if (Ext.getCmp('fvlaue' + k).getValue() == '') {
+			temp++;
+		}
+
+	}
+	if (temp != 0) {
+		alert("请输入实际值！");
+		return false;
+	}
+
+	for (var i = 0; i < GXlength; i++) {
+		if (Ext.getCmp('fvlaue' + i).fieldStyle.color == 'red') {
 			ifYS++;
 		}
-	}
-	if(ifYS>0){
-		if (!confirm("含有不符合标准值数据，确定是否验收?")) {
-			return false;
+		if (ifYS > 0) {
+			if (!confirm("含有不符合标准值数据，确定是否验收?")) {
+				return false;
+			} else {
+				Ext.getCmp('combowindow').show();
+			}
+
 		} else {
 			Ext.getCmp('combowindow').show();
 		}
 
-	}else{
-		//???
 	}
 
+	if(Ext.getCmp('radiotypexc').getValue().typename=='1'){
+		Ext.getCmp('qxmx').enable();
+	}else{
+		Ext.getCmp('qxmx').disable();
+	}
 }
 function ActivitiConfirmAccept(){
 	Ext.getCmp('valuepanel').removeAll();
-	/*$.ajax({
+	$.ajax({
 		url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
 		type : 'post',
 		async : false,
@@ -445,79 +507,110 @@ function ActivitiConfirmAccept(){
 		dataType : "json",
 		traditional : true,
 		success : function(resp) {
-			for(var i=0;i<resp.list.length;i++){
-	 winheight = resp.list.length * 20;
-GXlength=resp.list.length;a
-if(GXlength==0){QRYS();}else{//window.show}
-			}
-		}
-	});*/
-	winheight = 3 * 70;
-	for ( var i = 0; i < 3; i++) {
-		var khpanel = [{
-			xtype : 'displayfield',
-			id : 'gxcode' + i,
-			fieldLabel : '工序编号',
-			labelAlign : 'right',
-			labelWidth : 80,
-			style : {
-				margin : '5px 0 5px 0px'
-			},
-			value:i,
-			width : 200
-		},{
-			xtype : 'displayfield',
-			id : 'svaluedown' + i,
-			fieldLabel : '标准值(下限)',
-			labelAlign : 'right',
-			labelWidth : 80,
-			style : {
-				margin : '5px 0 5px 0px'
-			},
-			value:i+2,
-			width : 150
-		},{
-			xtype : 'displayfield',
-			id : 'svalueup' + i,
-			fieldLabel : '标准值(上限)',
-			labelAlign : 'right',
-			labelWidth : 80,
-			style : {
-				margin : '5px 0 5px 0px'
-			},
-			value:i+8,
-			width : 150
-		},{
-			xtype : 'textfield',
-			id : 'fvlaue' + i,
-			fieldStyle : 'background :#FFFF99;',
-			fieldLabel : '实际值',
-			labelAlign : 'right',
-			labelWidth : 80,
-			style : {
-				margin : '5px 0 5px 0px'
-			},
-			listeners : {
-				change : valueChange
-			},
-			width : 200
-		}];
+			var fnum=resp.list.length;
 
-		Ext.getCmp('valuepanel').add(khpanel);
-	}
-	var bpanel={
-		xtype : 'button',
-		text : '确定',
-		icon: imgpath + '/saved.png',
-		style: ' margin: 5px 0px 0px 35px',
-		handler : ValueConfirm
-	}
-	Ext.getCmp('valuepanel').add(bpanel);
-	Ext.getCmp('valuewindow').setHeight(winheight);
-	Ext.getCmp('valuepanel').setHeight(winheight);
-	//Ext.getCmp('valuepanel').add(panel);
-	Ext.getCmp('valuewindow').show();
-	//OpenDiv('VDiv','Vfade');
+			if (resp.list.length == 0) {
+				//QRYS();//----------------------------------------??????
+			} else {
+				for(var i=0;i<resp.list.length;i++){
+					if(resp.list[i].V_JXBZ_VALUE_DOWN==''||resp.list[i].V_JXBZ_VALUE_DOWN==null||resp.list[i].V_JXBZ_VALUE_UP==''||resp.list[i].V_JXBZ_VALUE_UP==null){
+						fnum--;
+					}else{
+						var khpanel = [{
+							xtype : 'displayfield',
+							id : 'gxcode' + i,
+							fieldLabel : '工序编号',
+							labelAlign : 'right',
+							labelWidth : 80,
+							style : {
+								margin : '5px 0 5px 0px'
+							},
+							value:resp.list[i].V_ACTIVITY,
+							width : 200
+						},{
+							xtype : 'displayfield',
+							id : 'gxname' + i,
+							fieldLabel : '工序内容',
+							labelAlign : 'right',
+							labelWidth : 80,
+							style : {
+								margin : '5px 0 5px 0px'
+							},
+							value:resp.list[i].V_DESCRIPTION,
+							width : 200
+						},{
+							xtype : 'displayfield',
+							id : 'svaluedown' + i,
+							fieldLabel : '标准值(下限)',
+							labelAlign : 'right',
+							labelWidth : 80,
+							style : {
+								margin : '5px 0 5px 0px'
+							},
+							value:resp.list[i].V_JXBZ_VALUE_DOWN,
+							width : 150
+						},{
+							xtype : 'displayfield',
+							id : 'svalueup' + i,
+							fieldLabel : '标准值(上限)',
+							labelAlign : 'right',
+							labelWidth : 80,
+							style : {
+								margin : '5px 0 5px 0px'
+							},
+							value:resp.list[i].V_JXBZ_VALUE_UP,
+							width : 150
+						},{
+							xtype : 'textfield',
+							id : 'fvlaue' + i,
+							fieldStyle : 'background :#FFFF99;',
+							fieldLabel : '实际值',
+							labelAlign : 'right',
+							labelWidth : 80,
+							style : {
+								margin : '5px 0 5px 0px'
+							},
+							listeners : {
+								change : valueChange
+							},
+							width : 200
+						}];
+
+						Ext.getCmp('valuepanel').add(khpanel);
+					}
+				}
+
+				var bpanel={
+					xtype : 'button',
+					text : '确定',
+					icon: imgpath + '/saved.png',
+					style: ' margin: 5px 0px 0px 35px',
+					handler : ValueConfirm
+				}
+
+				if(fnum==1||fnum==2){
+					winheight = fnum * 140;
+				}else{
+					winheight = fnum * 70;
+				}
+
+				GXlength = fnum;
+				Ext.getCmp('valuepanel').add(bpanel);
+				Ext.getCmp('valuewindow').setHeight(winheight);
+				Ext.getCmp('valuepanel').setHeight(winheight);
+				//Ext.getCmp('valuepanel').add(panel);
+				Ext.getCmp('valuewindow').show();
+				//OpenDiv('VDiv','Vfade');
+
+			}
+
+
+
+
+		}
+	});
+
+
 
 
 }
