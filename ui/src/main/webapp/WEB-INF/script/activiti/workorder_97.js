@@ -162,30 +162,18 @@ $(function () {
 				 items: [
 					 {
 						 boxLabel: "是",
-						 name: "typename",
+						 name: "xctypename",
 						 inputValue: "1",
 						 margin: '0 10 0 10',
 						 checked: true
 					 },
 					 {
 						 boxLabel: "否",
-						 name: "typename",
+						 name: "xctypename",
 						 inputValue: "0",
 						 margin: '0 10 0 10'
 					 }
-				 ],
-				 listeners: {
-					 click: {
-						 element: 'el',
-						 fn: function (e) {
-							 if(Ext.getCmp('radiotypexc').getValue().typename=='1'){
-								 Ext.getCmp('qxmx').enable();
-							 }else{
-								 Ext.getCmp('qxmx').disable();
-							 }
-						 }
-					 }
-				 }
+				 ]
 			 },
 			 {
 				 xtype: "radiogroup",
@@ -198,18 +186,30 @@ $(function () {
 				 items: [
 					 {
 						 boxLabel: "是",
-						 name: "typename",
+						 name: "sctypename",
 						 inputValue: "1",
 						 margin: '0 10 0 10'
 					 },
 					 {
 						 boxLabel: "否",
-						 name: "typename",
+						 name: "sctypename",
 						 inputValue: "0",
 						 margin: '0 10 0 10',
 						 checked: true
 					 }
-				 ]
+				 ],
+				 listeners: {
+					 click: {
+						 element: 'el',
+						 fn: function (e) {
+							 if(Ext.getCmp('radiotypesc').getValue().sctypename=='1'){
+								 Ext.getCmp('qxmx').enable();
+							 }else{
+								 Ext.getCmp('qxmx').disable();
+							 }
+						 }
+					 }
+				 }
 			 },{
 				 id: 'qxmx',
 				 xtype: 'textarea',
@@ -456,7 +456,178 @@ function valueChange(field,newvalue,oldvalue){
 
 }
 function comboConfirm(){
-	//???
+	if(Ext.getCmp('qxmx').getValue()==''){
+		Ext.MessageBox.alert('提示', '请填写缺陷明细');
+		return false;
+	}
+
+	if(Ext.getCmp('radiotypexc').getValue().xctypename=='1'){
+		QRYS();
+	}else{
+		if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
+			Ext.MessageBox.alert('提示', '请填写验收日期');
+			return false;
+		}
+
+		if ($("#V_REPAIRSIGN").val() == "这个判断不执行") {
+			Ext.MessageBox.alert('提示', '请先填写检修方签字');
+			return false;
+		}
+
+		if ($("#V_CHECKMANCONTENT").val() == "") {
+			Ext.MessageBox.alert('提示', '请填写点检员验收意见');
+			return false;
+		}
+
+			Ext.Ajax.request({
+				url: AppUrl + 'Activiti/TaskComplete',
+				type: 'ajax',
+				method: 'POST',
+				async : false,
+				params: {
+					taskId: taskId,
+					idea: '已验收',
+					parName: ['lcjs', "flow_yj", 'shtgtime'],
+					parVal: ['lcjs', '已验收', Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'H:i:s')],
+					processKey: $.url().param("ProcessDefinitionKey"),
+					businessKey: $.url().param("V_ORDERGUID"),
+					V_STEPCODE: V_STEPCODE,
+					V_STEPNAME: V_STEPNAME,
+					V_IDEA: '已验收！',
+					V_NEXTPER: 'lcjs',
+					V_INPER: Ext.util.Cookies.get('v_personcode')
+				},
+				success: function (response) {
+					FinBack();
+					$.ajax({
+						url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_EDIT',
+						type: 'post',
+						async: false,
+						data: {
+							'V_V_PERCODE': $.cookies.get('v_personcode'),
+							'V_V_PERNAME': Ext.util.Cookies.get("v_personname2"),
+							'V_V_ORDERGUID': $("#V_ORDERGUID").val(),
+							'V_V_SHORT_TXT': $("#V_SHORT_TXT").val(),
+							'V_': $("#V_FUNC_LOC").val(),
+							'V_V_EQUIP_NO': $("#V_EQUIP_NO").val(),
+							'V_V_EQUIP_NAME': $("#V_EQUIP_NAME").val(),
+							'V_D_FACT_START_DATE': $("#D_FACT_START_DATE").val(),
+							'V_D_FACT_FINISH_DATE': $("#D_FACT_FINISH_DATE").val(),
+							'V_V_WBS': "",
+							'V_V_WBS_TXT': "",
+							'V_V_DEPTCODEREPARIR': $("#V_DEPTNAMEREPARIR").val(),//$("#selPlant").val(),
+							'V_V_TOOL': $("#tool").text() == "" ? " " : $("#tool").text(),
+							'V_V_TECHNOLOGY': ' ',
+							'V_V_SAFE': ' ',
+							'V_D_DATE_ACP': $("#D_DATE_ACP").val(),
+							'V_I_OTHERHOUR': $("#I_OTHERHOUR").val(),
+							'V_V_OTHERREASON': $("#V_OTHERREASON").val(),
+							'V_V_REPAIRCONTENT': $("#V_REPAIRCONTENT").val(),
+							'V_V_REPAIRSIGN': $("#V_REPAIRSIGN").val(),
+							'V_V_REPAIRPERSON': $("#V_REPAIRPERSON").val(),
+							'V_V_POSTMANSIGN': $("#V_POSTMANSIGN").val(),
+							'V_V_CHECKMANCONTENT': $("#V_CHECKMANCONTENT").val(),
+							'V_V_CHECKMANSIGN': Ext.util.Cookies.get("v_personname2"),
+							'V_V_WORKSHOPCONTENT': $("#V_WORKSHOPCONTENT").val(),
+							'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").html(),
+							'V_V_DEPTSIGN': $("#V_DEPTSIGN").val()
+						},
+						dataType: "json",
+						traditional: true,
+						success: function (resp) {
+
+						}
+					});
+					$.ajax({
+						url: AppUrl + 'cjy/PRO_PM_WORKORDER_YS_WXC',
+						type: 'post',
+						async: false,
+						data: {
+							'V_V_PERCODE': $.cookies.get('v_personcode'),
+							'V_V_PERNAME': Ext.util.Cookies.get("v_personname2"),
+							'V_V_ORDERGUID': $("#V_ORDERGUID").val(),
+							'V_V_POSTMANSIGN': $("#V_POSTMANSIGN").val(),
+							'V_V_CHECKMANCONTENT': $("#V_CHECKMANCONTENT").val(),
+							'V_V_CHECKMANSIGN': $("#V_CHECKMANSIGN").val(),
+							'V_V_WORKSHOPCONTENT': $("#V_WORKSHOPCONTENT").val(),
+							'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").html(),
+							'V_V_DEPTSIGN': $("#V_DEPTSIGN").val(),
+							'V_V_EQUIP_NO': $("#V_EQUIP_NO").val()
+						},
+						dataType: "json",
+						traditional: true,
+						success: function (resp) {
+							// 聚进接口
+							otherServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
+							// 小神探接口
+							xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
+							Ext.Msg.alert('提示', '验收工单成功');
+							$.ajax({
+								url: APP + '/SetMatService',
+								type: 'post',
+								async: false,
+								data: {
+									V_V_ORDERGUID: $.url().param("V_ORDERGUID")
+								},
+								success: function (resp) {
+									alert('111');
+									window.opener.OnPageLoad();
+									window.close();
+								}
+							});
+
+						},
+						error: function (response, opts) {
+							Ext.Msg.alert('提示', '验收工单失败,请联系管理员');
+						}
+					});
+
+				},
+				failure: function (response) {//访问到后台时执行的方法。
+					Ext.MessageBox.show({
+						title: '错误',
+						msg: response.responseText,
+						buttons: Ext.MessageBox.OK,
+						icon: Ext.MessageBox.ERROR
+					})
+				}
+
+			})
+	}
+
+	if(Ext.getCmp('radiotypesc').getValue().sctypename=='1'){
+		//缺陷录入
+		Ext.Ajax.request({
+			url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_SET',
+			method: 'POST',
+			async : false,
+			params:{
+				V_V_GUID:guid(),
+				V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+				V_V_DEFECTLIST:$("#V_SHORT_TXT").html(),//工单描述
+				V_V_SOURCECODE:'defct01',
+				V_V_SOURCEID:'',
+				V_D_DEFECTDATE: Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),
+				V_V_DEPTCODE: $("#V_DEPTCODE").val(),
+				V_V_EQUCODE:$("#V_EQUIP_NO").html(),
+				V_V_EQUCHILDCODE:'%',
+				V_V_IDEA:'%',
+				V_V_LEVEL:'%'
+			},
+			success:function(resp){
+				var resp=Ext.decode(resp.responseText);
+				if(resp.V_INFO=='成功'){
+					//Ext.Msg.alert('操作信息','保存成功');
+					window.close();
+					window.opener.OnPageLoad();
+
+				}else{
+					Ext.Msg.alert('操作信息','缺陷录入失败');
+				}
+			}
+		});
+	}
+
 }
 function ValueConfirm() {
 	ifYS = 0;
@@ -476,6 +647,7 @@ function ValueConfirm() {
 		if (Ext.getCmp('fvlaue' + i).fieldStyle.color == 'red') {
 			ifYS++;
 		}
+	}
 		if (ifYS > 0) {
 			if (!confirm("含有不符合标准值数据，确定是否验收?")) {
 				return false;
@@ -487,15 +659,30 @@ function ValueConfirm() {
 			Ext.getCmp('combowindow').show();
 		}
 
-	}
 
-	if(Ext.getCmp('radiotypexc').getValue().typename=='1'){
+
+	if(Ext.getCmp('radiotypesc').getValue().sctypename=='1'){
 		Ext.getCmp('qxmx').enable();
 	}else{
 		Ext.getCmp('qxmx').disable();
 	}
 }
 function ActivitiConfirmAccept(){
+	if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
+		Ext.MessageBox.alert('提示', '请填写验收日期');
+		return false;
+	}
+
+	if ($("#V_REPAIRSIGN").val() == "这个判断不执行") {
+		Ext.MessageBox.alert('提示', '请先填写检修方签字');
+		return false;
+	}
+
+	if ($("#V_CHECKMANCONTENT").val() == "") {
+		Ext.MessageBox.alert('提示', '请填写点检员验收意见');
+		return false;
+	}
+
 	Ext.getCmp('valuepanel').removeAll();
 	$.ajax({
 		url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
@@ -510,7 +697,7 @@ function ActivitiConfirmAccept(){
 			var fnum=resp.list.length;
 
 			if (resp.list.length == 0) {
-				//QRYS();//----------------------------------------??????
+				QRYS();
 			} else {
 				for(var i=0;i<resp.list.length;i++){
 					if(resp.list[i].V_JXBZ_VALUE_DOWN==''||resp.list[i].V_JXBZ_VALUE_DOWN==null||resp.list[i].V_JXBZ_VALUE_UP==''||resp.list[i].V_JXBZ_VALUE_UP==null){
@@ -1306,3 +1493,10 @@ function CloseDiv(show_div, bg_div) {
 	document.getElementById(show_div).style.display = 'none';
 	document.getElementById(bg_div).style.display = 'none';
 };
+
+function guid() {
+	function S4() {
+		return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+	}
+	return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}

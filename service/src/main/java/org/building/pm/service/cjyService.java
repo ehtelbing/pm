@@ -2298,4 +2298,43 @@ public class cjyService {
         logger.info("end PRO_PM_WORKORDER_ET_ID_VIEW");
         return result;
     }
+
+    public HashMap PRO_PM_WORKORDER_YS_WXC(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORDERGUID,String V_V_POSTMANSIGN,
+                                       String V_V_CHECKMANCONTENT,String V_V_CHECKMANSIGN,String V_V_WORKSHOPCONTENT,
+                                       String V_V_WORKSHOPSIGN,String V_V_DEPTSIGN,String V_V_EQUIP_NO)throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_YS_WXC");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_YS_WXC(:V_V_PERCODE,:V_V_PERNAME,:V_V_ORDERGUID,:V_V_POSTMANSIGN,:V_V_CHECKMANCONTENT,:V_V_CHECKMANSIGN,:V_V_WORKSHOPCONTENT,:V_V_WORKSHOPSIGN,:V_V_DEPTSIGN,:V_V_EQUIP_NO,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_POSTMANSIGN", V_V_POSTMANSIGN);
+            cstmt.setString("V_V_CHECKMANCONTENT", V_V_CHECKMANCONTENT);
+            cstmt.setString("V_V_CHECKMANSIGN", V_V_CHECKMANSIGN);
+            cstmt.setString("V_V_WORKSHOPCONTENT", V_V_WORKSHOPCONTENT);
+            cstmt.setString("V_V_WORKSHOPSIGN", V_V_WORKSHOPSIGN);
+            cstmt.setString("V_V_DEPTSIGN", V_V_DEPTSIGN);
+            cstmt.setString("V_V_EQUIP_NO", V_V_EQUIP_NO);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sss = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_INFO", sss);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_YS_WXC");
+        return result;
+    }
 }

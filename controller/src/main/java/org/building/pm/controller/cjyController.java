@@ -1206,6 +1206,24 @@ public class cjyController {
         Map result = cjyService.PRO_PM_WORKORDER_ET_ID_VIEW( V_V_GUID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_YS_WXC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_YS_WXC(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                   @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                   @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                   @RequestParam(value = "V_V_POSTMANSIGN") String V_V_POSTMANSIGN,
+                                                   @RequestParam(value = "V_V_CHECKMANCONTENT") String V_V_CHECKMANCONTENT,
+                                                   @RequestParam(value = "V_V_CHECKMANSIGN") String V_V_CHECKMANSIGN,
+                                                   @RequestParam(value = "V_V_WORKSHOPCONTENT") String V_V_WORKSHOPCONTENT,
+                                                   @RequestParam(value = "V_V_WORKSHOPSIGN") String V_V_WORKSHOPSIGN,
+                                                   @RequestParam(value = "V_V_DEPTSIGN") String V_V_DEPTSIGN,
+                                                   @RequestParam(value = "V_V_EQUIP_NO") String V_V_EQUIP_NO,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        HashMap result = cjyService.PRO_PM_WORKORDER_YS_WXC(V_V_PERCODE, V_V_PERNAME, V_V_ORDERGUID, V_V_POSTMANSIGN, V_V_CHECKMANCONTENT, V_V_CHECKMANSIGN, V_V_WORKSHOPCONTENT, V_V_WORKSHOPSIGN, V_V_DEPTSIGN, V_V_EQUIP_NO);
+        return result;
+    }
 }
 
 
