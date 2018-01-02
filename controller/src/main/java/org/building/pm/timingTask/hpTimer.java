@@ -51,12 +51,12 @@ public class hpTimer {
             Map result=hpService.PM_06_DJ_DATA_TIMER_MAXTIME(dataList.get(i).get("V_GUID").toString());
 
             String plantime = dataList.get(i).get("V_PLAN_TIME").toString().split(" ")[0] + " 00:00:01";//计划生成时间
-            String nowtime = format.format(now);//当前日期  小时分钟秒格式
+            //String nowtime = format.format(now);//当前日期  小时分钟秒格式
 
             Date nowdate = null;
             Date plandate = null;
             try {
-                nowdate = format.parse(nowtime);//当前日期 小时分钟秒格式转化为date格式
+                nowdate = format.parse(result.get("RET").toString());//当前日期 小时分钟秒格式转化为date格式
                 plandate = format.parse(plantime);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -66,12 +66,17 @@ public class hpTimer {
             int hourc=0;
 
             if (timetype.equals("小时")) {
-                //
-                if(result.get("RET") ==null){
+              /*  if(result.get("RET") ==null){
                      diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
                      hour = diff  / nh;//相差小时数
                      hourc = (int) (hour / zq);//相差周期数
-                }
+                }else{
+
+                }*/
+
+                diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
+                hour = diff  / nh;//相差小时数
+                hourc = (int) (hour / zq);//相差周期数
 
                 for (int j = 1; j <= hourc; j++) {
                     long timeer=plandate.getTime()+j*zq*nh;
