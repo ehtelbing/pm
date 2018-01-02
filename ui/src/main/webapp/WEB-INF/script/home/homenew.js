@@ -2,7 +2,7 @@ $(function (){
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     _AgencySelect();
     _QXNumSelect();
-    //_YearCountSelect()
+    //()
     //_MonthCountSelect();
     //_WeekCountSelect();
 
