@@ -3464,21 +3464,22 @@ public class hpService {
         return result;
     }
 
-    public HashMap PM_06_DJ_DATA_TIMER_SET(String V_V_GUID,String V_V_TIMER_GUID, String V_V_DJPER,String V_V_DJ_TYPE) throws SQLException {
-//        logger.info("begin PRO_PM_03_PLAN_YEAR_SET");
+    public HashMap PM_06_DJ_DATA_TIMER_SET(String V_V_GUID,String V_V_TIMER_GUID, String V_V_DJPER,String V_V_DJ_TYPE,String V_V_PLAN_TIME) throws SQLException {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_TIMER_SET" + "(:V_V_GUID,:V_V_TIMER_GUID,:V_V_DJPER,:V_V_DJ_TYPE)}");
+            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_TIMER_SET" + "(:V_V_GUID,:V_V_TIMER_GUID,:V_V_DJPER,:V_V_DJ_TYPE,:V_V_PLAN_TIME,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_TIMER_GUID", V_V_TIMER_GUID);
             cstmt.setString("V_V_DJPER", V_V_DJPER);
             cstmt.setString("V_V_DJ_TYPE", V_V_DJ_TYPE);
+            cstmt.setString("V_V_PLAN_TIME", V_V_PLAN_TIME);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("RET", "success");
+            result.put("RET", cstmt.getString("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -3767,6 +3768,31 @@ public class hpService {
         logger.info("end PRO_SAP_EQU_BOM_VIEWN");
         return result;
     }
+
+    public HashMap PM_06_DJ_DATA_TIMER_MAXTIME(String V_V_GUID) throws SQLException {
+        logger.info("begin PM_06_DJ_DATA_TIMER_MAXTIME");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_TIMER_MAXTIME" + "(:V_V_GUID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_DJ_DATA_TIMER_MAXTIME");
+        return result;
+    }
+
 
 
 

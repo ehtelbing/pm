@@ -25,66 +25,72 @@ public class hpTimer {
     @Autowired
     private hpService hpService;
 
-   /* //查询有没有新的发起工单数据,有的话往AM_SEND里SET
-    @Scheduled(cron = "0 0/10 * * * ?")//这是定时时间的地方
-    public void setJstWherePlantime(){
-        try {
-            HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
-
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
-            SimpleDateFormat sdftime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Format f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            for (int i = 0; i < dataList.size(); i++) {
-                Double zhouqi = (Double) dataList.get(i).get("V_CRITERION_CYCLE");
-                String shengchengSJ = (String) dataList.get(i).get("V_PLAN_TIME");
-                String scTime = shengchengSJ.substring(0, 10) + " 00:00:00";
-                String intNumberzhouqi = String.valueOf(zhouqi);
-                String intNumber = intNumberzhouqi.substring(0, intNumberzhouqi.indexOf("."));
-                int index = intNumberzhouqi.lastIndexOf(".");
-                char[] ch = intNumberzhouqi.toCharArray();
-                String lastString = String.copyValueOf(ch, index + 1, ch.length - index - 1);
-                String lastString2 = "0." + lastString;
-                Double d = Double.valueOf(lastString2);
-                Calendar ca = Calendar.getInstance();
-                ca.setTime(sdftime.parse(scTime));
-                ca.add(Calendar.HOUR_OF_DAY, Integer.parseInt(intNumber));
-                ca.add(Calendar.MINUTE, (int) (d * 60));
-                System.out.println("第" + i + "个最终时间时间为" + sdftime.format(ca.getTime()));
-                System.out.println("第" + i + "个当前时间时间为" + sdftime.format(new Date()));
-                String date1 = sdftime.format(ca.getTime());
-                String date2 = sdftime.format(new Date());
-                if (date1.equals(date2)) {
-                    HashMap dataSet = hpService.PM_06_DJ_CRITERION_JST_SET(pm_jst, "发送人即时通密码", "发送人即时通账号", (String) dataList.get(i).get("V_FZ_PER"), "日常点检", (String) dataList.get(i).get("V_CRITERION_CONTENT"), 0, date2);
-                }
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-    }*/
-
     @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
-    public void setDJDB(){
-        try {
-            HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
+    public void setDJDB() throws SQLException {
+        HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
 
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
-            SimpleDateFormat sdftime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Format f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            String v_v_timer_guid = String.valueOf(UUID.randomUUID());
-           // System.out.println("此时的ID为 : " + v_v_timer_guid);
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 
-            for (int i = 0; i < dataList.size(); i++) {
-                Double zhouqi = (Double) dataList.get(i).get("V_CRITERION_CYCLE");
-                String shengchengSJ = (String) dataList.get(i).get("V_PLAN_TIME");
-                String scTime = shengchengSJ.substring(0, 10) + " 00:00:00";
+        long nd = 1000 * 24 * 60 * 60;//天
+        long nh = 1000 * 60 * 60;//小时
+        long nm = 1000 * 60;//分钟
+
+        Long newzq = new Long(0);
+        String v_v_timer_guid = String.valueOf(UUID.randomUUID());
+
+        for (int i = 0; i < dataList.size(); i++) {
+            String timetype = dataList.get(i).get("V_CRITERION_CYCLETYPE").toString();//点检周期类型（小时，天，周，月，年）
+            double d= (double) dataList.get(i).get("V_CRITERION_CYCLE");
+            int zq = (int)d;//点检周期
+
+            Date now = new Date();
+
+            Map result=hpService.PM_06_DJ_DATA_TIMER_MAXTIME(dataList.get(i).get("V_GUID").toString());
+
+            String plantime = dataList.get(i).get("V_PLAN_TIME").toString().split(" ")[0] + " 00:00:01";//计划生成时间
+            String nowtime = format.format(now);//当前日期  小时分钟秒格式
+
+            Date nowdate = null;
+            Date plandate = null;
+            try {
+                nowdate = format.parse(nowtime);//当前日期 小时分钟秒格式转化为date格式
+                plandate = format.parse(plantime);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            long diff=0;
+            long hour=0;
+            int hourc=0;
+
+            if (timetype.equals("小时")) {
+                //
+                if(result.get("RET") ==null){
+                     diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
+                     hour = diff  / nh;//相差小时数
+                     hourc = (int) (hour / zq);//相差周期数
+                }
+
+                for (int j = 1; j <= hourc; j++) {
+                    long timeer=plandate.getTime()+j*zq*nh;
+
+                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                }
+            } else if (timetype.equals("天")) {
+
+            } else if (timetype.equals("周")) {
+
+            } else if (timetype.equals("月")) {
+
+            } else if (timetype.equals("年")) {
+
+            }
+        }
+    }
+/*
+
                 String intNumberzhouqi = String.valueOf(zhouqi);
                 String intNumber = intNumberzhouqi.substring(0, intNumberzhouqi.indexOf("."));
                 int index = intNumberzhouqi.lastIndexOf(".");
@@ -101,8 +107,8 @@ public class hpTimer {
                 String date1 = sdftime.format(ca.getTime());
                 String date2 = sdftime.format(new Date());
                 if (date1.equals(date2)) {
-                   // HashMap dataSet = hpService.PM_06_DJ_CRITERION_JST_SET(pm_jst, "发送人即时通密码", "发送人即时通账号", (String) dataList.get(i).get("V_PLAN_PER"), "日常点检", (String) dataList.get(i).get("V_CRITERION_CONTENT"), 0, date2);
-                    HashMap dataSet = hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"),v_v_timer_guid,(String) dataList.get(i).get("V_FZ_PER"),(String) dataList.get(i).get("V_DJ_TYPE"));
+                    // HashMap dataSet = hpService.PM_06_DJ_CRITERION_JST_SET(pm_jst, "发送人即时通密码", "发送人即时通账号", (String) dataList.get(i).get("V_PLAN_PER"), "日常点检", (String) dataList.get(i).get("V_CRITERION_CONTENT"), 0, date2);
+                    HashMap dataSet = hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"));
                 }
 
             }
@@ -111,9 +117,8 @@ public class hpTimer {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
-    }
 
     /*//查询AM_SEND有没有新数据有的话调用即时通
     @Scheduled(cron = "0 0/5 * * * ?")//这是定时时间的地方

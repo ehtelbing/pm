@@ -844,13 +844,13 @@ public class ActivitiController {
 
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 
-
         for (int i = 0; i < parName.length; i++) {
             map.put(parName[i], parVal[i]);
             if(parName[i].equals("flow_yj")){
                 map.put(taskId,  parVal[i]);
             }
         }
+
         try {
             map.put("idea",idea);
             taskService.complete(taskId, map);
@@ -860,6 +860,7 @@ public class ActivitiController {
             result.put("ret", "任务提交失败");
             result.put("msg", "Error");
         }
+
         return result;
     }
 
