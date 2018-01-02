@@ -211,7 +211,7 @@ Ext.onReady(function () {
         id: 'treegrid',
         store: treeStore,
         region: 'west',
-        width: '30%',
+        width: '35%',
         height: '100%',
         useArrows: true,
         rootVisible: false,
@@ -231,21 +231,19 @@ Ext.onReady(function () {
                 text: '工程名称',
                 dataIndex: 'V_PROJECT_NAME',
                 width: 180,
-                height: 60,
                 field: {xtype: 'textfield'},
-                align: 'center'
+                align: 'center',renderer:Atleft
             },
 
             {
                 text: '工程总费用',
                 dataIndex: 'V_PLAN_MONEY',
                 width: 120,
-                height: 60,
                 field: {xtype: 'numberfield'},
-                align: 'center'
+                align: 'center',renderer:AtRight
             },
-            {text: '工程开始时间', dataIndex: 'V_DATE_B', width: 160, height: 60, align: 'center'},
-            {text: '工程结束时间', dataIndex: 'V_DATE_E', width: 160, height: 60, align: 'center'}],
+            {text: '工程开始时间', dataIndex: 'V_DATE_B', width: 160, align: 'center',renderer:Atleft},
+            {text: '工程结束时间', dataIndex: 'V_DATE_E', width: 160,  align: 'center',renderer:Atleft}],
         listeners: {
             'itemclick': function (a, b, c) {
                 jhygs = [];
