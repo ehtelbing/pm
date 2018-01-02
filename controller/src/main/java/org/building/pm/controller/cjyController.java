@@ -1224,6 +1224,17 @@ public class cjyController {
         HashMap result = cjyService.PRO_PM_WORKORDER_YS_WXC(V_V_PERCODE, V_V_PERNAME, V_V_ORDERGUID, V_V_POSTMANSIGN, V_V_CHECKMANCONTENT, V_V_CHECKMANSIGN, V_V_WORKSHOPCONTENT, V_V_WORKSHOPSIGN, V_V_DEPTSIGN, V_V_EQUIP_NO);
         return result;
     }
+
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_NOPAGE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_NOPAGE(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_NOPAGE(V_V_STATECODE, X_PERSONCODE);
+        return result;
+    }
+
 }
 
 

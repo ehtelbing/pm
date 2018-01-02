@@ -1,13 +1,43 @@
 $(function (){
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     _AgencySelect();
-    _YearCountSelect()
-    _MonthCountSelect();
-    _WeekCountSelect();
+    _QXNumSelect();
+    //()
+    //_MonthCountSelect();
+    //_WeekCountSelect();
 
 
 });
+function _QXNumSelect(){
+    $.ajax({
+        type : 'POST',
+        url: AppUrl + 'cjy/PRO_PM_07_DEFECT_VIEW_NOPAGE',
+        dataType : 'json',
+        //async : false,
+        data : {
+            V_V_STATECODE : '10',//未处理
+            X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
+        },
+        success : function(data) {
+            var formList = data.list;
+            var length = 0;
+            var yangshi = "onmouseover=\"this.style.backgroundPosition='left -40px'\"";
 
+            var yangshi2 = "onmouseout=\"this.style.backgroundPosition='left top'\"";
+            if (formList.length >= 3) {
+                length = 3;
+            } else {
+                length = formList.length;
+            }
+            Ext.fly('wclqxcount').dom.innerHTML = '（' + formList.length + '）';
+
+            Ext.getBody().unmask();//去除页面笼罩
+        }
+    });
+
+
+
+}
 function  _AgencySelect(){
     $.ajax({
         type : 'POST',
@@ -15,11 +45,11 @@ function  _AgencySelect(){
         dataType : 'json',
         //async : false,
         data : {
-            'V_V_DJPER' : Ext.util.Cookies.get('v_personcode')
+            V_V_DJPER : Ext.util.Cookies.get('v_personcode')
         },
         success : function(data) {
             if (data.success) {
-               var formList = data.list;
+                var formList = data.list;
                 var length = 0;
                 var yangshi = "onmouseover=\"this.style.backgroundPosition='left -40px'\"";
 
@@ -29,7 +59,7 @@ function  _AgencySelect(){
                 } else {
                     length = formList.length;
                 }
-                Ext.fly('wclqxcount').dom.innerHTML = '（' + formList.length + '）';
+                //Ext.fly('wclqxcount').dom.innerHTML = '（' + formList.length + '）';
                 for (var i = 0; i < length; i++) {
                     $('<ul class="tasklist"> <li><span> <input type="button" name="button" id="button" class="btns" value="确认办理" '+yangshi + ' '+ yangshi2 +'onclick="_banli(\''+formList[i].V_TIMER_GUID+'\')"> </span>您有' +formList[i].NUM+ '条代办任务需要办理... <i>' + formList[i].V_TIMER_TIME.substring(0,19)+'</i> </li> </ul>' ).appendTo('#t1');
                 }
@@ -38,6 +68,8 @@ function  _AgencySelect(){
             } else {
                 alert(data.message);
             }
+
+            Ext.getBody().unmask();//去除页面笼罩
         }
     });
 }
