@@ -462,7 +462,9 @@ function comboConfirm(){
 	}
 
 	if(Ext.getCmp('radiotypexc').getValue().xctypename=='1'){
+
 		QRYS();
+
 	}else{
 		if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
 			Ext.MessageBox.alert('提示', '请填写验收日期');
