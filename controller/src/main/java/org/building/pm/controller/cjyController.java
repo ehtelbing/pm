@@ -1234,6 +1234,7 @@ public class cjyController {
         Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_NOPAGE(V_V_STATECODE, X_PERSONCODE);
         return result;
     }
+
 }
 
 
