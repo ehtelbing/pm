@@ -1,4 +1,5 @@
-﻿var date = new Date();
+﻿var date = new Date('2018-2-25');
+//var date=new Date(addDate(new Date('2017-12-24'),7));//当前月7天后
 var V_WEEKPLAN_GUID = '';
 var V_WEEKPLAN_TYPE = '';
 var processKey ='';
@@ -587,8 +588,8 @@ Ext.onReady(function () {
         layout: 'border',
         items: [northPanel, gridPanel]
     });
-    Ext.getCmp('nf').select(new Date().getFullYear());
-    Ext.getCmp('yf').select(new Date().getMonth() + 1);
+    /*Ext.getCmp('nf').select(date.getFullYear());
+    Ext.getCmp('yf').select(date.getMonth() + 1);*/
     Ext.getCmp('zhou').select(getWeekOfMonth());
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
@@ -728,13 +729,55 @@ function _selectNextSprStore(){
     nextSprStore.load();
 }
 //第几周
-function getWeekOfMonth() {
-    var date = new Date();
-    var w = date.getDay();
-    var d = date.getDate();
-    return Math.ceil((d + 6 - w) / 7);
-};
+/*function getWeekOfMonth(string) {//周日为起始
+    var date = new Date(string);
+    var w = date.getDay();//星期
+    var d = date.getDate();//日期
+    return Math.ceil((d + 6 - w) / 7);//向上取整
+};*/
+//第几周
+function getWeekOfMonth() {//周一为起始
+    var w = date.getDay()==0?7:date.getDay();//星期
+    var d = date.getDate();//日期
 
+    var week= Math.ceil((d + 7 - w) / 7);//向上取整
+
+    if(week==getWeeks()){//为最后周
+        if(date.getMonth() + 1==12){//为最后月，月份年份均变化
+            Ext.getCmp('nf').select(date.getFullYear()+1);
+            Ext.getCmp('yf').select(1);
+        }else{//月份变化
+            Ext.getCmp('nf').select(date.getFullYear());
+            Ext.getCmp('yf').select(date.getMonth() + 2);
+        }
+        return 1;
+    }else{
+        Ext.getCmp('nf').select(date.getFullYear());
+        Ext.getCmp('yf').select(date.getMonth() + 1);
+        return week+1;
+    }
+
+};
+//增加天后日期
+//function addDate(date,days){
+//    var d=new Date(date);
+//    d.setDate(d.getDate()+days);
+//    var m=d.getMonth()+1;
+//    return d.getFullYear()+'-'+m+'-'+d.getDate();
+//}
+//当前月有几周
+function getWeeks(){
+    var str=date;
+    var year=str.getFullYear();
+    var month=str.getMonth()+1;
+    var lastday=new Date(year, month,0);
+
+    var w = lastday.getDay()==0?7:lastday.getDay();//星期
+    var d = lastday.getDate();//日期
+
+    return Math.ceil((d + 7 - w) / 7);//向上取整
+
+}
 function Querytime() {
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PRO_PM_PLAN_LOCKING_DATE_GET',
