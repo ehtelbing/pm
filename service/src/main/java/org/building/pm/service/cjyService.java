@@ -2372,4 +2372,36 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PRO_PM_PLAN_LOCKING_DATE_VIEW(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_CONTENT) throws SQLException {
+
+        logger.info("begin PRO_PM_PLAN_LOCKING_DATE_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_PLAN_LOCKING_DATE_VIEW(:V_I_YEAR,:V_I_MONTH,:V_I_WEEKNUM,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE,:V_V_CONTENT,:V_CURSOR)}");
+            cstmt.setString("V_I_YEAR", V_I_YEAR);
+            cstmt.setString("V_I_MONTH", V_I_MONTH);
+            cstmt.setString("V_I_WEEKNUM", V_I_WEEKNUM);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_PLAN_LOCKING_DATE_VIEW");
+        return result;
+    }
+
 }

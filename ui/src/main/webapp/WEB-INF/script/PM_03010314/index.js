@@ -253,7 +253,7 @@ Ext.onReady(function() {
 				xtype : 'displayfield',
 				fieldLabel : '截止时间',
 				id : 'endtime',
-				style : ' margin: 5px 0px 5px 5px',
+				style : ' margin: 5px 10px 5px 5px',
 				labelAlign:'right',
 				labelWidth : 60,
 				width : 210
@@ -261,7 +261,7 @@ Ext.onReady(function() {
 				xtype : 'button',
 				text : '设置',
 				icon : imgpath+'/cog.png',
-				style : ' margin: 5px 0px 5px 5x',
+				style : ' margin: 5px 0px 0px 10x',
 				listeners:{click:OnButtonSetupClicked}
 			} ]
 	});
