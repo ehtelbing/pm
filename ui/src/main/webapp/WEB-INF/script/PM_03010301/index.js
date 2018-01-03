@@ -1,4 +1,4 @@
-﻿var date = new Date('2018-2-25');
+﻿var date = new Date();
 //var date=new Date(addDate(new Date('2017-12-24'),7));//当前月7天后
 var V_WEEKPLAN_GUID = '';
 var V_WEEKPLAN_TYPE = '';
