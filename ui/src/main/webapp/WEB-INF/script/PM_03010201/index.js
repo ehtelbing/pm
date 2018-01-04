@@ -331,7 +331,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             width: 250,
             displayField: 'displayField',
             valueField: 'valueField',
-            value: date.getFullYear(),
+            value: '',
             store: yearStore,
             labelAlign: 'right',
             queryMode: 'local'
@@ -347,7 +347,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             width: 250,
             displayField: 'displayField',
             valueField: 'valueField',
-            value: date.getMonth() + 1,
+            value: '',
             store: monthStore,
             queryMode: 'local'
         }, {
@@ -581,6 +581,8 @@ Ext.onReady(function () {
         layout: 'border',
         items: [northPanel, gridPanel]
     });
+    Ext.getCmp('yf').select(getMonth());
+
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
         Ext.getCmp('jhck').select(Ext.data.StoreManager.lookup('jhckStore').getAt(0));
@@ -711,6 +713,16 @@ Ext.onReady(function () {
 
 });
 
+function getMonth(){
+    if(date.getMonth()+1==12){
+        Ext.getCmp('nf').select(date.getFullYear()+1);
+        return 1;
+    }else{
+        var month=date.getMonth()+1;
+        Ext.getCmp('nf').select(date.getFullYear());
+        return month+1;
+    }
+}
 function _selectNextSprStore() {
     var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
     nextSprStore.proxy.extraParams = {

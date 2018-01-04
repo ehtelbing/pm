@@ -80,14 +80,21 @@ Ext.onReady(function () {
 			}else{
 				Ext.getCmp('lock').setValue(false);
 			}
-			var strtime=resp.list[0].D_DATE_E;
-			var strdate=strtime.split('.')[0].split(' ')[0];
-			Ext.getCmp('kssj').setValue(strdate);
-			Ext.getCmp('jssj').setValue(strdate);
-			var ehour=strtime.split('.')[0].split(' ')[1].split(':')[0];
-			var eminute=strtime.split('.')[0].split(' ')[1].split(':')[1];
+			var strtimee=resp.list[0].D_DATE_E;
+			var strdatee=strtimee.split('.')[0].split(' ')[0];
+			Ext.getCmp('jssj').setValue(strdatee);
+			var ehour=strtimee.split('.')[0].split(' ')[1].split(':')[0];
+			var eminute=strtimee.split('.')[0].split(' ')[1].split(':')[1];
 			Ext.getCmp('ehour').setValue(ehour);
 			Ext.getCmp('eminute').setValue(eminute);
+
+			var strtimes=resp.list[0].D_DATE_S;
+			var strdates=strtimes.split('.')[0].split(' ')[0];
+			Ext.getCmp('kssj').setValue(strdates);
+			var shour=strtimes.split('.')[0].split(' ')[1].split(':')[0];
+			var sminute=strtimes.split('.')[0].split(' ')[1].split(':')[1];
+			Ext.getCmp('shour').setValue(shour);
+			Ext.getCmp('sminute').setValue(sminute);
 		}
 	});
 });
@@ -95,6 +102,10 @@ Ext.onReady(function () {
 function OnButtonSaveClicked(){
 	var stime=Ext.getCmp('kssj').getSubmitValue()+' '+Ext.getCmp('shour').getValue()+':'+Ext.getCmp('sminute').getValue()+':'+'00';
 	var etime=Ext.getCmp('jssj').getSubmitValue()+' '+Ext.getCmp('ehour').getValue()+':'+Ext.getCmp('eminute').getValue()+':'+'00';
+	if(new Date(stime)>new Date(etime)){
+		alert("开始时间不能晚于结束时间");
+		return;
+	}
 	var yornlock='';
 	if(Ext.getCmp('lock').checked==true){
 		yornlock=0;
@@ -119,7 +130,7 @@ function OnButtonSaveClicked(){
 			var resp = Ext.decode(resp.responseText);
 			if(resp.V_INFO=='成功'){
 				window.opener.queryGrid();
-				window.close();
+				//window.close();
 			}else{
 				Ext.Msg.alert('操作信息', '保存失败');
 			}

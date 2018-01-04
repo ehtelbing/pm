@@ -1235,6 +1235,20 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "PRO_PM_PLAN_LOCKING_DATE_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_PLAN_LOCKING_DATE_VIEW(@RequestParam(value = "V_I_YEAR") String V_I_YEAR,
+                                                            @RequestParam(value = "V_I_MONTH") String V_I_MONTH,
+                                                             @RequestParam(value = "V_I_WEEKNUM") String V_I_WEEKNUM,
+                                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                             @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                                             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                                            HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = cjyService.PRO_PM_PLAN_LOCKING_DATE_VIEW(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM, V_V_DEPTCODE,
+                V_V_DEPTNEXTCODE, V_V_CONTENT);
+        return result;
+    }
 }
 
 
