@@ -31,17 +31,15 @@ public class hpTimer {
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 
         long nd = 1000 * 24 * 60 * 60;//天
         long nh = 1000 * 60 * 60;//小时
         long nm = 1000 * 60;//分钟
 
-        Long newzq = new Long(0);
         String v_v_timer_guid = String.valueOf(UUID.randomUUID());
 
         for (int i = 0; i < dataList.size(); i++) {
+
             String timetype = dataList.get(i).get("V_CRITERION_CYCLETYPE").toString();//点检周期类型（小时，天，周，月，年）
             double d= (double) dataList.get(i).get("V_CRITERION_CYCLE");
             int zq = (int)d;//点检周期
@@ -51,7 +49,6 @@ public class hpTimer {
             Map result=hpService.PM_06_DJ_DATA_TIMER_MAXTIME(dataList.get(i).get("V_GUID").toString());
 
             String plantime = dataList.get(i).get("V_PLAN_TIME").toString().split(" ")[0] + " 00:00:01";//计划生成时间
-            //String nowtime = format.format(now);//当前日期  小时分钟秒格式
 
             Date nowdate = null;
             Date plandate = null;
@@ -66,14 +63,6 @@ public class hpTimer {
             int hourc=0;
 
             if (timetype.equals("小时")) {
-              /*  if(result.get("RET") ==null){
-                     diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
-                     hour = diff  / nh;//相差小时数
-                     hourc = (int) (hour / zq);//相差周期数
-                }else{
-
-                }*/
-
                 diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
                 hour = diff  / nh;//相差小时数
                 hourc = (int) (hour / zq);//相差周期数
