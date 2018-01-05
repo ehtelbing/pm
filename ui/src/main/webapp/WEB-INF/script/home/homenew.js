@@ -39,16 +39,18 @@ function _QXNumSelect(){
 
 }
 function  _AgencySelect(){
+    $('#t1').empty();
     $.ajax({
         type : 'POST',
         url: AppUrl + 'hp/PM_06_DJ_DATA_TIMER_SEL',
         dataType : 'json',
-        //async : false,
+        async : false,
         data : {
             V_V_DJPER : Ext.util.Cookies.get('v_personcode')
         },
         success : function(data) {
             if (data.success) {
+
                 var formList = data.list;
                 var length = 0;
                 var yangshi = "onmouseover=\"this.style.backgroundPosition='left -40px'\"";

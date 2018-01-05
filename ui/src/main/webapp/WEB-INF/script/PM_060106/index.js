@@ -1092,6 +1092,9 @@ function _insertDjDataZC(str) {
                     _close();
                 }
 
+                window.close();
+                window.opener._AgencySelect();
+
             } else {
                 Ext.MessageBox.show({
                     title: '错误',
@@ -1147,6 +1150,8 @@ function _insertDjDataYC(str) {
                 Ext.getCmp('windowYc').hide();
                 query();
                 _close();
+                window.close();
+                window.opener._AgencySelect();
             } else {
                 Ext.MessageBox.show({
                     title: '错误',
@@ -1254,6 +1259,7 @@ function _djDataZCAll() {
             url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
             type: 'ajax',
             method: 'POST',
+            async : false,
             params: {
                 'V_V_GUID': records[i].get('V_GUID'),
                 'V_V_DJ_STATE': '0',
@@ -1271,6 +1277,7 @@ function _djDataZCAll() {
                         function callBack(id) {
                             query();
                         }
+
                     }
                 } else {
                     Ext.MessageBox.show({
@@ -1291,6 +1298,9 @@ function _djDataZCAll() {
             }
         });
     }
+    window.opener._AgencySelect();
+    window.close();
+
 }
 
 function _djDataYCAll() {
@@ -1311,6 +1321,7 @@ function _djDataYCAll() {
             url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
             type: 'ajax',
             method: 'POST',
+            async : false,
             params: {
                 'V_V_GUID': records[i].get('V_GUID'),
                 'V_V_DJ_STATE': '1',
@@ -1328,6 +1339,7 @@ function _djDataYCAll() {
                         function callBack(id) {
                             query();
                         }
+
                     }
                 } else {
                     Ext.MessageBox.show({
@@ -1348,4 +1360,6 @@ function _djDataYCAll() {
             }
         });
     }
+    window.close();
+    window.opener._AgencySelect();
 }
