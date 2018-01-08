@@ -37,9 +37,10 @@ public class hpTimer {
         long nh = 1000 * 60 * 60;//小时
         long nm = 1000 * 60;//分钟
 
-        String v_v_timer_guid = String.valueOf(UUID.randomUUID());
+
 
         for (int i = 0; i < dataList.size(); i++) {
+            String v_v_timer_guid = String.valueOf(UUID.randomUUID());
 
             String timetype = dataList.get(i).get("V_CRITERION_CYCLETYPE").toString();//点检周期类型（小时，天，周，月，年）
             double d= (double) dataList.get(i).get("V_CRITERION_CYCLE");
