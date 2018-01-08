@@ -7,7 +7,44 @@ $(function (){
     //_WeekCountSelect();
 
 
+    JHselect();
 });
+//第几周
+function getWeekOfMonth() {//周一为起始
+    var w = new Date().getDay()==0?7:new Date().getDay();//星期
+    var d = new Date().getDate();//日期
+
+    var week= Math.ceil((d + 7 - w) / 7);//向上取整
+
+    return week;
+
+};
+function JHselect(){
+    $.ajax({
+        type : 'POST',
+        url: AppUrl + 'PM_03/PRO_PM_PLAN_LOCKING_W_VIEW',
+        dataType : 'json',
+        async : false,
+        data : {
+            V_I_YEAR:new Date().getFullYear(),
+            V_I_MONTH:new Date().getMonth()+1,
+            V_I_WEEKNUM:getWeekOfMonth(),
+            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_DEPTNEXTCODE: Ext.util.Cookies.get('v_deptcode'),
+            V_V_CONTENT:''
+        },
+        success : function(data) {
+            var njhrq=  data.V_D_DATE_E.substring(0,10);
+            var njhsd=  data.V_D_DATE_E.substring(0,19);
+            $('#njhsd').html(njhsd);
+            $('#njhrq').html(njhrq);
+            $('#yjhsd').html(njhsd);
+            $('#yjhrq').html(njhrq);
+            $('#zjhsd').html(njhsd);
+            $('#zjhrq').html(njhrq);
+        }
+    });
+}
 function _QXNumSelect(){
     $.ajax({
         type : 'POST',
