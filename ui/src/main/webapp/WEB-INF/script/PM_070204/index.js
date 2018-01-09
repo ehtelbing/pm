@@ -244,6 +244,11 @@ function OnclickAddButtonLoad() {
     Ext.getCmp('jxtool').setValue('');
     Ext.getCmp('jxtechnology').setValue('');
     Ext.getCmp('jxsafe').setValue('');
+
+    Ext.getCmp('jxtechnologybz').setValue('');
+    Ext.getCmp('jxtechnologybzd').setValue('');
+    Ext.getCmp('jxtechnologybzu').setValue('');
+    Ext.getCmp('jxtecbzguid').setValue('');
     flag = 1;
     Ext.getCmp('dialog').show();
 }
@@ -304,15 +309,16 @@ function OnclickUpdateButtonLoad() {
                 params: {
                     V_I_ID : selectModel.getSelection()[i].data.I_ID
                 }, success: function (response) {
-                    Ext.getCmp('selWorkCenter').select(Ext.JSON.decode(response.responseText).list[0].V_WORK_CENTER);
-                    Ext.getCmp('workContent').setValue(Ext.JSON.decode(response.responseText).list[0].V_DESCRIPTION);
-                    Ext.getCmp('actualTime').setValue(Ext.JSON.decode(response.responseText).list[0].I_WORK_ACTIVITY);
-                    Ext.getCmp('actualPeople').setValue(Ext.JSON.decode(response.responseText).list[0].I_DURATION_NORMAL);
+                    var resp = Ext.JSON.decode(response.responseText);
+                    Ext.getCmp('selWorkCenter').select(resp.list[0].V_WORK_CENTER);
+                    Ext.getCmp('workContent').setValue(resp.list[0].V_DESCRIPTION);
+                    Ext.getCmp('actualTime').setValue(resp.list[0].I_WORK_ACTIVITY);
+                    Ext.getCmp('actualPeople').setValue(resp.list[0].I_DURATION_NORMAL);
 
-                    Ext.getCmp('jxtechnologybz').setValue(Ext.JSON.decode(response.responseText).list[0].V_JXBZ_VALUE_DOWN+'~'+Ext.JSON.decode(response.responseText).list[0].V_JXBZ_VALUE_DOWN);
-                    Ext.getCmp('jxtechnologybzd').setValue(Ext.JSON.decode(response.responseText).list[0].V_JXBZ_VALUE_DOWN);
-                    Ext.getCmp('jxtechnologybzu').setValue(Ext.JSON.decode(response.responseText).list[0].V_JXBZ_VALUE_UP);
-                    Ext.getCmp('jxtecbzguid').setValue(Ext.JSON.decode(response.responseText).list[0].V_JXBZ);
+                    Ext.getCmp('jxtechnologybz').setValue(resp.list[0].V_JXBZ_VALUE_DOWN+'~'+resp.list[0].V_JXBZ_VALUE_UP);
+                    Ext.getCmp('jxtechnologybzd').setValue(resp.list[0].V_JXBZ_VALUE_DOWN);
+                    Ext.getCmp('jxtechnologybzu').setValue(resp.list[0].V_JXBZ_VALUE_UP);
+                    Ext.getCmp('jxtecbzguid').setValue(resp.list[0].V_JXBZ);
                 }
             });
 
