@@ -1746,6 +1746,9 @@ public class ZdhService {
                 sledata.put("I_WORK_ACTIVITY", rs.getDouble("I_WORK_ACTIVITY"));
                 sledata.put("I_DURATION_NORMAL", rs.getDouble("I_DURATION_NORMAL"));
                 sledata.put("I_ID", rs.getDouble("I_ID"));
+                sledata.put("V_JXBZ_VALUE_UP", rs.getDouble("V_JXBZ_VALUE_UP"));
+                sledata.put("V_JXBZ_VALUE_DOWN", rs.getDouble("V_JXBZ_VALUE_DOWN"));
+                sledata.put("V_JXBZ", rs.getDouble("V_JXBZ"));
                 resultList.add(sledata);
             }
         } catch (SQLException e) {
