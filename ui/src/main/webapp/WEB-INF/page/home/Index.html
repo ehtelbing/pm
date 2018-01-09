@@ -28,13 +28,11 @@
 	</head>
 	<body style="margin:0px; padding:0px;">
 	<div id="HeaderPanel">
-	<div class="top_div">
-		<div class="top_form">
-			<input type="text"  id="kjcl" class="sel_text" value="请输入工单号" onclick="javascript:ClearText()" onkeypress="OnKeypress(event)"/>
-			<input type="button" id="GoPage" value="查 询" onclick="javascript:GoPage()"  class="sel_btn" value="GO"/></div>
-	</div>
 	<div class="top_div2">
 		<ul>
+			<li style="width:300px;line-height:60px;"><div class="top_form">
+				<input style="border:1px solid #ccc" type="text" id="kjcl" class="sel_text" value="请输入工单号" onclick="javascript:ClearText()" onkeypress="OnKeypress(event)">
+				<input type="button" id="GoPage" value="查 询" onclick="javascript:GoPage()" class="sel_btn"></div></li>
 			<a href="javascript:Return()" target="_blank" ><li class="dj_icon">返 回</li></a><!--id="sy_a"-->
 			<a href="javascript:LogOut()" target="_blank"><li class="zx_icon">注 销</li></a>
 			<a href="javascript:LogOut()" target="_blank"><li class="tc_icon">退 出</li></a>

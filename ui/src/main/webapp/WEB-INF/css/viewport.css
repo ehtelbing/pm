@@ -1,4 +1,5 @@
-﻿#HeaderPanel { height: 50px; background: url('images/menu_top.png'); background-repeat:repeat-x; }
+﻿#HeaderPanel { height: 50px;  }
+/*background: url('images/menu_top.png'); background-repeat:repeat-x;*/
 #HeaderPanel #logo { height: 66px; width: 340px; background: url('') no-repeat;float: left; margin-left:10px;}
 /*#HeaderPanel #extra { margin: 10px 5px 0 0;float: right;color: white;}*/
 
