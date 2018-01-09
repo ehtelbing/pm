@@ -934,6 +934,7 @@ public class MwdController {
     @RequestMapping(value = "/PM_REPAIR_JS_STANDARD_EDIT", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_REPAIR_JS_STANDARD_EDIT(
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
@@ -947,7 +948,8 @@ public class MwdController {
             @RequestParam(value = "V_V_MATERIAL") String V_V_MATERIAL,
             @RequestParam(value = "V_V_IMGSIZE") String V_V_IMGSIZE,
             @RequestParam(value = "V_V_IMGGAP") String V_V_IMGGAP,
-            @RequestParam(value = "V_V_VALUE") String V_V_VALUE,
+            @RequestParam(value = "V_V_VALUE_DOWN") String V_V_VALUE_DOWN,
+            @RequestParam(value = "V_V_VALUE_UP") String V_V_VALUE_UP,
             @RequestParam(value = "V_V_REPLACE_CYC") String V_V_REPLACE_CYC,
             @RequestParam(value = "V_V_WEIGHT") String V_V_WEIGHT,
             @RequestParam(value = "V_V_IMGCODE") String V_V_IMGCODE,
@@ -957,9 +959,9 @@ public class MwdController {
         Map<String, Object> result = new HashMap<String, Object>();
 
 
-        HashMap data = mwdService.PM_REPAIR_JS_STANDARD_EDIT(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE, V_V_EQUTYPECODE,
+        HashMap data = mwdService.PM_REPAIR_JS_STANDARD_EDIT(V_V_FLAG,V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE, V_V_EQUTYPECODE,
                 V_V_EQUCHILDCODE, V_V_BJ_IMG, V_V_PART_NUMBER, V_V_PART_NAME, V_V_PART_CODE, V_V_MATERIAL, V_V_IMGSIZE,
-                V_V_IMGGAP, V_V_VALUE, V_V_REPLACE_CYC, V_V_WEIGHT, V_V_IMGCODE, V_V_CONTENT);
+                V_V_IMGGAP, V_V_VALUE_DOWN,V_V_VALUE_UP, V_V_REPLACE_CYC, V_V_WEIGHT, V_V_IMGCODE, V_V_CONTENT);
 
         String V_INFO = (String) data.get("V_INFO");
 

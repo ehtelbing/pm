@@ -149,7 +149,7 @@ Ext.onReady(function () {
         fields: ['I_ID', 'V_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_BJ_IMG', 'V_PART_NUMBER', 'V_PART_NAME',
             'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE', 'V_REPLACE_CYC', 'V_WEIGHT',
             'V_IMGCODE', 'V_CONTENT', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUCHILDCODE',
-            'V_EQUCHILDNAME', 'V_EQUTYPECODE'],
+            'V_EQUCHILDNAME', 'V_EQUTYPECODE','V_VALUE_DOWN','V_VALUE_UP'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
@@ -240,11 +240,17 @@ Ext.onReady(function () {
                 renderer: atright,
                 width: 80
             }, {
-                text: '允许值',
-                dataIndex: 'V_VALUE',
+                text: '允许值(下限)',
+                dataIndex: 'V_VALUE_DOWN',
                 align: 'center',
                 renderer: atright,
-                width: 80
+                width: 95
+            }, {
+                text: '允许值(上限)',
+                dataIndex: 'V_VALUE_UP',
+                align: 'center',
+                renderer: atright,
+                width: 95
             }]
         }, {
             text: '更换周期',
@@ -395,7 +401,7 @@ Ext.onReady(function () {
             }, {
                 xtype: 'button',
                 text: '上一页',
-                style: ' margin: 5px 0px 5px 10px',
+                style: ' margin: 5px 0px 5px 200px',
                 icon: imgpath + '/accordion_collapse.png',
                 handler: _last
             }, {

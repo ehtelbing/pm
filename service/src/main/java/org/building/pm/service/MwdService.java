@@ -1592,10 +1592,10 @@ public class MwdService {
     }
 
     //检修技术标准字典表编辑
-    public HashMap PM_REPAIR_JS_STANDARD_EDIT(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUCODE,
+    public HashMap PM_REPAIR_JS_STANDARD_EDIT(String V_V_FLAG,String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUCODE,
                                               String V_V_EQUTYPECODE, String V_V_EQUCHILDCODE, String V_V_BJ_IMG, String V_V_PART_NUMBER,
                                               String V_V_PART_NAME, String V_V_PART_CODE, String V_V_MATERIAL, String V_V_IMGSIZE,
-                                              String V_V_IMGGAP, String V_V_VALUE, String V_V_REPLACE_CYC, String V_V_WEIGHT,
+                                              String V_V_IMGGAP, String V_V_VALUE_DOWN,String V_V_VALUE_UP, String V_V_REPLACE_CYC, String V_V_WEIGHT,
                                               String V_V_IMGCODE, String V_V_CONTENT) throws SQLException {
 
         logger.info("begin PM_REPAIR_JS_STANDARD_EDIT");
@@ -1606,9 +1606,10 @@ public class MwdService {
         try {
             conn = dataSources.getConnection();
             // conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_REPAIR_JS_STANDARD_EDIT" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE," +
+            cstmt = conn.prepareCall("{call PM_REPAIR_JS_STANDARD_EDIT" + "(:V_V_FLAG,:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE," +
                     ":V_V_EQUTYPECODE,:V_V_EQUCHILDCODE,:V_V_BJ_IMG,:V_V_PART_NUMBER,:V_V_PART_NAME,:V_V_PART_CODE,:V_V_MATERIAL,:V_V_IMGSIZE," +
-                    ":V_V_IMGGAP,:V_V_VALUE,:V_V_REPLACE_CYC,:V_V_WEIGHT,:V_V_IMGCODE,:V_V_CONTENT,:V_INFO)}");
+                    ":V_V_IMGGAP,:V_V_VALUE_DOWN,:V_V_VALUE_UP,:V_V_REPLACE_CYC,:V_V_WEIGHT,:V_V_IMGCODE,:V_V_CONTENT,:V_INFO)}");
+            cstmt.setString("V_V_FLAG", V_V_FLAG);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
@@ -1622,7 +1623,8 @@ public class MwdService {
             cstmt.setString("V_V_MATERIAL", V_V_MATERIAL);
             cstmt.setString("V_V_IMGSIZE", V_V_IMGSIZE);
             cstmt.setString("V_V_IMGGAP", V_V_IMGGAP);
-            cstmt.setString("V_V_VALUE", V_V_VALUE);
+            cstmt.setString("V_V_VALUE_DOWN", V_V_VALUE_DOWN);
+            cstmt.setString("V_V_VALUE_UP", V_V_VALUE_UP);
             cstmt.setString("V_V_REPLACE_CYC", V_V_REPLACE_CYC);
             cstmt.setString("V_V_WEIGHT", V_V_WEIGHT);
             cstmt.setString("V_V_IMGCODE", V_V_IMGCODE);

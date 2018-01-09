@@ -203,7 +203,7 @@ Ext.onReady(function () {
                 store: deptStore,
                 fieldLabel: '作业区',
                 style: ' margin: 5px 0px 5px 10px',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230,
                 labelAlign: 'right',
                 editable: false,
@@ -222,7 +222,7 @@ Ext.onReady(function () {
                 store: sbTypeStore,
                 fieldLabel: '设备类型',
                 style: ' margin: 5px 0px 5px 10px',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230,
                 labelAlign: 'right',
                 editable: false,
@@ -247,7 +247,7 @@ Ext.onReady(function () {
                 store: sbNameStore,
                 fieldLabel: '设备名称',
                 style: ' margin: 5px 0px 5px 10px',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230,
                 labelAlign: 'right',
                 editable: false,
@@ -260,7 +260,7 @@ Ext.onReady(function () {
                 fieldLabel: '装置名称',
                 //readOnly: true,
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }]
         }, {
@@ -273,20 +273,20 @@ Ext.onReady(function () {
                 id: 'V_V_PART_NUMBER',
                 fieldLabel: '零件编号',
                 margin: '5 0 5 10',
-                labelWidth: 70,
-                width: 210
-            }, {
+                labelWidth: 80,
+                width: 230
+            },/* {
                 xtype: 'button',
                 text: '+',
                 width: 28,
                 handler: function () {
                 },
                 margin: '5 0 5 0'
-            }, {
+            },*/ {
                 id: 'V_V_PART_NAME',
                 fieldLabel: '零件名称',
-                margin: '5 0 5 0',
-                labelWidth: 70,
+                margin: '5 0 5 10',
+                labelWidth: 80,
                 width: 230
             }]
         }, {
@@ -301,7 +301,7 @@ Ext.onReady(function () {
                 fieldLabel: '零件编码',
                 //readOnly: true,
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }, {
                 id: 'V_V_MATERIAL',
@@ -309,7 +309,7 @@ Ext.onReady(function () {
                 fieldLabel: '材料',
                 //readOnly: true,
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }]
         }, {
@@ -323,14 +323,14 @@ Ext.onReady(function () {
                 xtype: 'textfield',
                 fieldLabel: '图面尺寸',
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }, {
                 id: 'V_V_IMGGAP',
                 //readOnly: true,
                 fieldLabel: '图面间隙',
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }]
         }, {
@@ -340,19 +340,32 @@ Ext.onReady(function () {
                 labelAlign: 'right'
             },
             items: [{
-                id: 'V_V_VALUE',
-                fieldLabel: '允许值',
+                id: 'V_V_VALUE_DOWN',
+                fieldLabel: '允许值(下限)',
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }, {
-                id: 'V_V_REPLACE_CYC',
-                fieldLabel: '更换周期',
+                id: 'V_V_VALUE_UP',
+                fieldLabel: '允许值(上限)',
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }]
         }, {
+            layout: 'column',
+            defaults: {
+                xtype: 'textfield',
+                labelAlign: 'right'
+            },
+            items: [{
+                id: 'V_V_REPLACE_CYC',
+                fieldLabel: '更换周期',
+                margin: '5 0 5 10',
+                labelWidth: 80,
+                width: 230
+            }]
+        },  {
             layout: 'column',
             defaults: {
                 xtype: 'textfield',
@@ -362,13 +375,13 @@ Ext.onReady(function () {
                 id: 'V_V_WEIGHT',
                 fieldLabel: '重量(kg)',
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }, {
                 id: 'V_V_IMGCODE',
                 fieldLabel: '图号',
                 margin: '5 0 5 10',
-                labelWidth: 70,
+                labelWidth: 80,
                 width: 230
             }]
         }, {
@@ -380,7 +393,7 @@ Ext.onReady(function () {
                 xtype: 'textarea',
                 id: 'V_V_CONTENT',
                 fieldLabel: '备注',
-                margin: '5 0 5 -20',
+                margin: '5 0 5 -10',
                 width: 500,
                 height: 100
             }]
@@ -397,7 +410,7 @@ Ext.onReady(function () {
                 fieldLabel: '上传图片',
                 buttonText: '浏览',
                 //labelAlign: 'right',
-                labelWidth: 70,
+                labelWidth: 80,
                 inputWidth: 250,
                 margin: '5 0 5 10'
             }, {
@@ -558,6 +571,7 @@ function _init() {
             });
             return;
         }
+        Ext.getCmp('V_V_EQUTYPECODE').setValue(jsStandardGet[0].V_EQUTYPECODE);
         Ext.getCmp('V_V_EQUCHILDCODE').setValue(jsStandardGet[0].V_EQUCHILDCODE);
         Ext.getCmp('V_V_PART_NUMBER').setValue(jsStandardGet[0].V_PART_NUMBER);
         Ext.getCmp('V_V_PART_NAME').setValue(jsStandardGet[0].V_PART_NAME);
@@ -565,7 +579,8 @@ function _init() {
         Ext.getCmp('V_V_MATERIAL').setValue(jsStandardGet[0].V_MATERIAL);
         Ext.getCmp('V_V_IMGSIZE').setValue(jsStandardGet[0].V_IMGSIZE);
         Ext.getCmp('V_V_IMGGAP').setValue(jsStandardGet[0].V_IMGGAP);
-        Ext.getCmp('V_V_VALUE').setValue(jsStandardGet[0].V_VALUE);
+        Ext.getCmp('V_V_VALUE_DOWN').setValue(jsStandardGet[0].V_VALUE_DOWN);
+        Ext.getCmp('V_V_VALUE_UP').setValue(jsStandardGet[0].V_VALUE_UP);
         Ext.getCmp('V_V_REPLACE_CYC').setValue(jsStandardGet[0].V_REPLACE_CYC);
         Ext.getCmp('V_V_WEIGHT').setValue(jsStandardGet[0].V_WEIGHT);
         Ext.getCmp('V_V_IMGCODE').setValue(jsStandardGet[0].V_IMGCODE);
@@ -645,10 +660,37 @@ function _preViewImage(V_V_GUID, V_V_FILEGUID, V_V_FILENAME) {
 }
 
 function _save() {
-    if (Ext.getCmp('V_V_PART_NUMBER').getSubmitValue() == '' || Ext.getCmp('V_V_PART_NAME').getSubmitValue() == '' || Ext.getCmp('V_V_PART_CODE').getSubmitValue() == '' || Ext.getCmp('V_V_MATERIAL').getSubmitValue() == '' || Ext.getCmp('V_V_IMGSIZE').getSubmitValue() == '' || Ext.getCmp('V_V_VALUE').getSubmitValue() == '' || Ext.getCmp('V_V_REPLACE_CYC').getSubmitValue() == '' || Ext.getCmp('V_V_WEIGHT').getSubmitValue() == '' || Ext.getCmp('V_V_IMGCODE').getSubmitValue() == '') {
+    if (Ext.getCmp('V_V_PART_NUMBER').getSubmitValue() == '') {
         Ext.MessageBox.show({
             title: '提示',
-            msg: '请录入这些必填项!',
+            msg: '请录入零件编号!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.ERROR
+        });
+        return;
+    }
+    if (Ext.getCmp('V_V_PART_NAME').getSubmitValue() == '' ) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请录入零件名称!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.ERROR
+        });
+        return;
+    }
+    if (Ext.getCmp('V_V_PART_CODE').getSubmitValue() == '' ) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请录入零件编码!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.ERROR
+        });
+        return;
+    }
+    if (Ext.getCmp('V_V_EQUCHILDCODE').getSubmitValue() == '' ) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请录入装置名称!',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.ERROR
         });
@@ -660,6 +702,7 @@ function _save() {
         type: 'ajax',
         method: 'POST',
         params: {
+            'V_V_FLAG': 'edit',
             'V_V_GUID': V_V_GUID,
             'V_V_ORGCODE': V_V_PLANTCODE,
             'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getSubmitValue(),
@@ -673,7 +716,8 @@ function _save() {
             'V_V_MATERIAL': Ext.getCmp('V_V_MATERIAL').getSubmitValue(),
             'V_V_IMGSIZE': Ext.getCmp('V_V_IMGSIZE').getSubmitValue(),
             'V_V_IMGGAP': Ext.getCmp('V_V_IMGGAP').getSubmitValue(),
-            'V_V_VALUE': Ext.getCmp('V_V_VALUE').getSubmitValue(),
+            'V_V_VALUE_DOWN': Ext.getCmp('V_V_VALUE_DOWN').getSubmitValue(),
+            'V_V_VALUE_UP': Ext.getCmp('V_V_VALUE_UP').getSubmitValue(),
             'V_V_REPLACE_CYC': Ext.getCmp('V_V_REPLACE_CYC').getSubmitValue(),
             'V_V_WEIGHT': Ext.getCmp('V_V_WEIGHT').getSubmitValue(),
             'V_V_IMGCODE': Ext.getCmp('V_V_IMGCODE').getSubmitValue(),
