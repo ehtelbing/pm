@@ -160,7 +160,7 @@ function _CreateSidebar(accordions) {
                 layout: 'column',
                 height: 180,
                 border: false,
-                collapsed:false,
+                collapsed:true,
                 collapsible: true,
                 items: [
                     {

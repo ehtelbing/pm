@@ -105,7 +105,7 @@ var Layout = {
                 { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '安全措施编码', align: 'center', width: 150, dataIndex: 'V_AQCS_CODE'
+                    text: '安全措施编码', align: 'center', width: 150, dataIndex: 'V_AQCS_CODE',hidden:true
                 },
                 {
                     text: '安全措施名称', align: 'center', width: 150, dataIndex: 'V_AQCS_NAME'
@@ -137,7 +137,7 @@ var Layout = {
 var window = Ext.create('Ext.window.Window', {
     id : 'window',
     width : 320,
-    height : 200,
+    height : 150,
     layout : 'vbox',
     title : '编辑',
     modal : true,//弹出窗口时后面背景不可编辑
@@ -147,6 +147,7 @@ var window = Ext.create('Ext.window.Window', {
     items : [{
         xtype : 'textfield',
         id : 'winaqcscode',
+        hidden:true,
         fieldLabel : '安全措施编码',
         labelAlign : 'right',
         width : '300',
@@ -291,8 +292,8 @@ function addbtn(){
         Ext.Msg.alert("操作信息","请选择一个设备进行添加");
         return false;
     }
-    Ext.getCmp('winaqcscode').setReadOnly(false);
-    Ext.getCmp('winaqcscode').setValue('');
+    Ext.getCmp('winaqcscode').setReadOnly(true);
+    Ext.getCmp('winaqcscode').setValue(Ext.data.IdGenerator.get('uuid').generate());
     Ext.getCmp('winaqcsname').setValue('');
     Ext.getCmp('window').show();
 }

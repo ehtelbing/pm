@@ -168,15 +168,19 @@ Ext.onReady(function () {
             align : 'center',
             width : 100,
             tpl : '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
-        }, /*{
-            text: '工单号',
-            id: 'gdh',
-            dataIndex: 'V_ORDERID',
-            align: 'center',
-            width: 150,
-            renderer: ReadGD,
-            hidden: true
-        },*/ {
+        }, {
+            text : '单位',
+            dataIndex : 'V_DEPTNAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '缺陷状态',
+            dataIndex : 'V_STATENAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
+        }, {
             text : '缺陷类型',
             dataIndex : 'V_SOURCENAME',
             align : 'center',
@@ -207,12 +211,6 @@ Ext.onReady(function () {
             width : 300,
             renderer : CreateGridColumnTd
         }, {
-            text : '单位',
-            dataIndex : 'V_DEPTNAME',
-            align : 'center',
-            width : 100,
-            renderer : CreateGridColumnTd
-        }, {
             text : '负责人',
             dataIndex : 'V_PERNAME',
             align : 'center',
@@ -223,32 +221,6 @@ Ext.onReady(function () {
             dataIndex : 'V_IDEA',
             align : 'center',
             renderer : CreateGridColumnTd
-        }, {
-            text : '缺陷状态',
-            dataIndex : 'V_STATENAME',
-            align : 'center',
-            width : 100,
-            renderer : CreateGridColumnTd
-        }, {
-            text : '隐藏来源标识',
-            dataIndex : 'V_SOURCEID',
-            align : 'center',
-            hidden : true
-        }, {
-            text : '隐藏录入日期',
-            dataIndex : 'D_INDATE',
-            align : 'center',
-            hidden : true
-        }, {
-            text : '隐藏人员编码',
-            dataIndex : 'V_PERCODE',
-            align : 'center',
-            hidden : true
-        }, {
-            text : '唯一编码',
-            dataIndex : 'V_GUID',
-            align : 'center',
-            hidden : true
         }],
         listeners : {
             itemdblclick : itemclick
@@ -336,10 +308,10 @@ Ext.onReady(function () {
     });
 
     _init()
+    _selectOverhaulApply();
 })
 
-function _init()
-{
+function _init() {
     if(zyStoreload)
     {
         zyStoreload = false;
