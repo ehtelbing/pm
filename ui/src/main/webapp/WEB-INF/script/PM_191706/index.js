@@ -36,11 +36,12 @@ var Layout = {
                     if (seldata.length == 0) {
                         alert('请选择一条数据！');
                     }else{
-                        Ext.Msg.confirm("提示", "确定要选择？", function (button) {
+                        select();
+                        /*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
                             if(button == 'yes'){
                                 select();
                             }
-                        })
+                        })*/
                     }
                 },  icon: imgpath + '/add.png', style: { margin: ' 5px 0 5px 10px'}},
             ]
