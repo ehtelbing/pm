@@ -125,8 +125,8 @@ function _geturl(s_src, s_app) {
 function _CreateHeader() {
     return Ext.create('Ext.panel.Panel', {
         region: 'north',
-        height: 110,
-        maxHeight: 110,
+        height: 70,
+        maxHeight: 70,
         split: true,
         collapsible: true,
         collapseMode: 'mini',

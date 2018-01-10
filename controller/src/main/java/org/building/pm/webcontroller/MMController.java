@@ -350,8 +350,8 @@ public class MMController {
 
         Fields.addElement("PLANT").setText(listfirst.get(0).get("V_PLANT") == null ? "" : listfirst.get(0).get("V_PLANT").toString());
         Fields.addElement("IWERK").setText(listfirst.get(0).get("V_IWERK") == null ? "" : listfirst.get(0).get("V_IWERK").toString());
-        Fields.addElement("START_DATE").setText(listfirst.get(0).get("D_START_DATE") == null ? "" : toFormat(listfirst.get(0).get("D_START_DATE").toString()));
-        Fields.addElement("FINISH_DATE").setText(listfirst.get(0).get("D_FINISH_DATE") == null ? "" : toFormat(listfirst.get(0).get("D_FINISH_DATE").toString()));
+        Fields.addElement("START_DATE").setText(listfirst.get(0).get("D_START_DATE").toString() == "" ? "" : toFormat(listfirst.get(0).get("D_START_DATE").toString()));
+        Fields.addElement("FINISH_DATE").setText(listfirst.get(0).get("D_FINISH_DATE").toString() == "" ? "" : toFormat(listfirst.get(0).get("D_FINISH_DATE").toString()));
         Fields.addElement("ACT_TYPE").setText(listfirst.get(0).get("V_ACT_TYPE") == null ? "" : listfirst.get(0).get("V_ACT_TYPE").toString());
 
         Fields.addElement("PLANNER").setText(listfirst.get(0).get("V_PLANNER") == null ? "" : listfirst.get(0).get("V_PLANNER").toString());
