@@ -429,7 +429,7 @@ Ext.onReady(function () {
         } ]
     });
 
-    var panel3 = Ext.create('Ext.form.FormPanel', {
+    var panel3 = Ext.create('Ext.form.Panel', {
         id : 'panel3',
         //title : '<fmt:message key="inputPanel" />',
         header : false,
