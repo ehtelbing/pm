@@ -105,7 +105,7 @@ var Layout = {
                 { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '工具编码', align: 'center', width: 150, dataIndex: 'V_TOOLCODE'
+                    text: '工具编码', align: 'center', width: 150, dataIndex: 'V_TOOLCODE',hidden:true
                 },
                 {
                     text: '工具名称', align: 'center', width: 150, dataIndex: 'V_TOOLNAME'
@@ -141,7 +141,7 @@ var Layout = {
 var window = Ext.create('Ext.window.Window', {
     id : 'window',
     width : 320,
-    height : 250,
+    height : 220,
     layout : 'vbox',
     title : '编辑',
     modal : true,//弹出窗口时后面背景不可编辑
@@ -151,6 +151,7 @@ var window = Ext.create('Ext.window.Window', {
     items : [{
         xtype : 'textfield',
         id : 'wintoolcode',
+        hidden:true,
         fieldLabel : '工具编码',
         labelAlign : 'right',
         width : '300',
@@ -304,8 +305,8 @@ function addbtn(){
         Ext.Msg.alert("操作信息","请选择一个设备进行添加");
         return false;
     }
-    Ext.getCmp('wintoolcode').setReadOnly(false);
-    Ext.getCmp('wintoolcode').setValue('');
+    Ext.getCmp('wintoolcode').setReadOnly(true);
+    Ext.getCmp('wintoolcode').setValue(Ext.data.IdGenerator.get('uuid').generate());
     Ext.getCmp('wintoolname').setValue('');
     Ext.getCmp('wintooltype').setValue('');
     Ext.getCmp('window').show();

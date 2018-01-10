@@ -207,7 +207,7 @@ public class PM_22Controller {
         return result;
     }
 
-    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_PIC_SET", produces = "text/html;charset=UTF-8",method = RequestMethod.POST)
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_PIC_SET", method = RequestMethod.POST)//produces = "text/html;charset=UTF-8",
     @ResponseBody
     public String PRO_PM_EQUREPAIRPLAN_PIC_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
                                                  @RequestParam(value = "V_V_PICMOME") String V_V_PICMOME,
@@ -240,6 +240,7 @@ public class PM_22Controller {
 
         result.put("RET", pm_1012);
         result.put("V_V_PICGUID", V_V_PICGUID);
+        //result.put("ret","success");
         result.put("success", true);
 
 
