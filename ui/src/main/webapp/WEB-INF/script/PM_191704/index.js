@@ -135,22 +135,7 @@ var Layout = {
                     handler: queryGrid,
                     icon: imgpath + '/search.png',
                     style: {margin: ' 5px 0 5px 10px'}
-                },
-                /*{
-                 xtype: 'button', text: '选择', handler: function () {
-                 var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-                 if (seldata.length == 0) {
-                 alert('请选择一条数据！');
-                 }else{
-                 addDetailInfo();
-                 *//*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
-                 if(button == 'yes'){
-                 select();
-                 }
-                 })*//*
-                 }
-                 }, icon: imgpath + '/add.png', style: {margin: ' 5px 0 5px 10px'}
-                 },*/{
+                },{
                     xtype: 'button',
                     text: '确定',
                     handler: select,
@@ -162,14 +147,8 @@ var Layout = {
         {
             xtype: 'gridpanel', region: 'center', columnLines: true, id: 'grid', store: gridStore,
             height: '35%',
-            selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
-                selType: 'checkboxmodel',
-                mode: 'SINGLE'
-            },
-            plugins: [Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 1})],
             listeners: {
                 itemclick: OnClickGrid
-                //itemdblclick: OnClickGrid
             },
             columns: [
                 {
@@ -194,10 +173,6 @@ var Layout = {
                     text: '车辆信息', align: 'center', width: 150, dataIndex: 'V_CARINFO'
                 },
                 {
-                    text: '台时', align: 'center', width: 150, dataIndex: 'V_TIME', renderer: AtEdit,
-                    editor: {xtype: 'numberfield'}, hidden: true
-                },
-                {
                     text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE'
                 },
                 {
@@ -210,11 +185,6 @@ var Layout = {
         },
         {
             xtype: 'gridpanel', region: 'south', columnLines: true, id: 'gridXX', store: gridXXStore,
-            selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
-                selType: 'checkboxmodel',
-                mode: 'SINGLE'
-            }
-            ,
             plugins: Ext.create('Ext.grid.plugin.CellEditing', {
                 clicksToEdit: 1
             }),
@@ -249,14 +219,8 @@ var Layout = {
                         minValue: 0,
                         value: 0,
                         decimalPrecision: 8 //这个属性是用来 精确到多少位的  目前是精确到8位
-
-
                     }
-                }, /*,
-                 {
-                 text: '台时', align: 'center', width: 150, dataIndex: 'V_JJ_TS', renderer: AtEdit,
-                 editor:{xtype: 'numberfield'},hidden:true
-                 }*/{
+                },{
                     text: '操作',
                     dataIndex: 'V_JXGX_CODE',
                     width: 155,
