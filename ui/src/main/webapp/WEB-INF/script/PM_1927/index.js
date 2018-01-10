@@ -105,7 +105,7 @@ var Layout = {
                 { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '技术要求编码', align: 'center', width: 150, dataIndex: 'V_JSYQ_CODE'
+                    text: '技术要求编码', align: 'center', width: 150, dataIndex: 'V_JSYQ_CODE',hidden:true,
                 },
                 {
                     text: '技术要求名称', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME'
@@ -137,7 +137,7 @@ var Layout = {
 var window = Ext.create('Ext.window.Window', {
     id : 'window',
     width : 320,
-    height : 200,
+    height : 150,
     layout : 'vbox',
     title : '编辑',
     modal : true,//弹出窗口时后面背景不可编辑
@@ -149,14 +149,15 @@ var window = Ext.create('Ext.window.Window', {
         id : 'winjsyqcode',
         fieldLabel : '技术要求编码',
         labelAlign : 'right',
-        width : '300',
+        width : 280,
+        hidden:true,
         margin : '30px 0 0 0px'
     },{
         xtype : 'textfield',
         id : 'winjsyqname',
         fieldLabel : '技术要求名称',
         labelAlign : 'right',
-        width : '300',
+        width : 280,
         margin : '20px 0 0 0px'
     }],
     buttons : [{
@@ -291,9 +292,10 @@ function addbtn(){
         Ext.Msg.alert("操作信息","请选择一个设备进行添加");
         return false;
     }
-    Ext.getCmp('winjsyqcode').setReadOnly(false);
-    Ext.getCmp('winjsyqcode').setValue('');
+    Ext.getCmp('winjsyqcode').setReadOnly(true);
+    Ext.getCmp('winjsyqcode').setValue(Ext.data.IdGenerator.get('uuid').generate());
     Ext.getCmp('winjsyqname').setValue('');
+
     Ext.getCmp('window').show();
 }
 
