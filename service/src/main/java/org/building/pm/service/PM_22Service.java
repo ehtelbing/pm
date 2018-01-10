@@ -361,7 +361,7 @@ public class PM_22Service {
         return result;
     }
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_PIC_SET(String V_V_GUID, String V_V_PICMOME) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_PIC_SET(String V_V_GUID, String V_V_PICMOME,String V_V_PICPOSTFIX) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_PIC_SET");
 
@@ -371,9 +371,10 @@ public class PM_22Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_PIC_SET" + "(:V_V_GUID,:V_V_PICMOME,:V_V_PICGUID,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_PIC_SET" + "(:V_V_GUID,:V_V_PICMOME,:V_V_PICPOSTFIX,:V_V_PICGUID,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_PICMOME", V_V_PICMOME);
+            cstmt.setString("V_V_PICPOSTFIX", V_V_PICPOSTFIX);
             cstmt.registerOutParameter("V_V_PICGUID", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
 

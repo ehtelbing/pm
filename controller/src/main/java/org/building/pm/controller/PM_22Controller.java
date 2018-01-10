@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -207,42 +208,48 @@ public class PM_22Controller {
         return result;
     }
 
-    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_PIC_SET", method = RequestMethod.POST)//produces = "text/html;charset=UTF-8",
+
+    //显示上传图片---------
+    @RequestMapping(value = "/getPic", method = RequestMethod.GET)
+    @ResponseBody
+    public void getPic(HttpServletRequest request,
+                         HttpServletResponse response,String filePath,String pic,String suffix) throws Exception{
+
+        File f = new File(request.getSession().getServletContext().getRealPath("/images/pm_dxgc_wwjx/"+filePath+"/"+pic+suffix));
+        if (f.exists()) {
+            Servlets.downloadFile (request, response, pic+suffix, f);
+        }
+    }
+
+    //保存上传图片---------
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_PIC_SET", method = RequestMethod.POST)
     @ResponseBody
     public String PRO_PM_EQUREPAIRPLAN_PIC_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
                                                  @RequestParam(value = "V_V_PICMOME") String V_V_PICMOME,
+                                                 @RequestParam(value = "file") MultipartFile file,
                                                  HttpServletRequest request,
                                                  HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-
-        HashMap data = pm_22Service.PRO_PM_EQUREPAIRPLAN_PIC_SET(V_V_GUID, V_V_PICMOME);
-
+        //获取后缀名
+        int position = file.getOriginalFilename().lastIndexOf(".");
+        String extension = file.getOriginalFilename().substring(position);
+        //保存图片关联id
+        HashMap data = pm_22Service.PRO_PM_EQUREPAIRPLAN_PIC_SET(V_V_GUID, V_V_PICMOME,extension);
         String pm_1012 = (String) data.get("RET");
-
-        //for(int i = 0; i < data.get("V_V_PICGUID").)
         String V_V_PICGUID = (String) data.get("V_V_PICGUID");
-        //上传到数据库之后 开始上传到服务器
-        MultipartHttpServletRequest multipartRequest  =  (MultipartHttpServletRequest) request;
-        //  获得第1张图片（根据前台的name名称得到上传的文件）
-        MultipartFile imgFile1  =  multipartRequest.getFile("V_V_FILEBLOB");
-        UploadUtil uploadutil = new UploadUtil();
-        String fileName = imgFile1.getOriginalFilename();
-
-
-        try {
-            uploadutil.uploadImage1(request, imgFile1, imgFile1.getContentType(), fileName,V_V_GUID,V_V_PICGUID);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        //上传文件
+        String path = request.getSession().getServletContext().getRealPath("/images/pm_dxgc_wwjx/"+V_V_GUID+"/");
+        File p = new File(path);
+        if(!p.exists()){ p.mkdirs(); }
+        File f = new File(path+V_V_PICGUID+extension);
+        file.transferTo(f);
 
 
         result.put("RET", pm_1012);
         result.put("V_V_PICGUID", V_V_PICGUID);
         //result.put("ret","success");
         result.put("success", true);
-
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -255,6 +262,36 @@ public class PM_22Controller {
             return "{success:false}";
         }
     }
+
+    //删除上传图片---------
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_PIC_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_PIC_DEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                            @RequestParam(value = "V_V_PICGUID") String V_V_PICGUID,
+                                                            String suffix,   //后缀名
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        String V_V_IP =request.getRemoteAddr();
+        HashMap data = pm_22Service.PRO_PM_EQUREPAIRPLAN_PIC_DEL(V_V_GUID, V_V_PICGUID);
+        String pm_06 = (String) data.get("RET");
+
+        //物理删除
+        String path = request.getSession().getServletContext().getRealPath("/images/pm_dxgc_wwjx/"+V_V_GUID+"/"+V_V_PICGUID+suffix);
+        File f = new File(path);
+        if(f.exists()){   f.delete(); }
+
+        result.put("RET", pm_06);
+        result.put("success", true);
+        return result;
+    }
+
+
+
+
+
+
+
 
     @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_PIC_VIEW", method = RequestMethod.POST)
     @ResponseBody
@@ -279,25 +316,7 @@ public class PM_22Controller {
         return result;
     }
 
-    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_PIC_DEL", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_PIC_DEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                    @RequestParam(value = "V_V_PICGUID") String V_V_PICGUID,
-                                                    HttpServletRequest request,
-                                                    HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
 
-        String V_V_IP =request.getRemoteAddr();
-
-
-        HashMap data = pm_22Service.PRO_PM_EQUREPAIRPLAN_PIC_DEL(V_V_GUID, V_V_PICGUID);
-
-        String pm_06 = (String) data.get("RET");
-
-        result.put("RET", pm_06);
-        result.put("success", true);
-        return result;
-    }
 
     @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_DEL", method = RequestMethod.POST)
     @ResponseBody
