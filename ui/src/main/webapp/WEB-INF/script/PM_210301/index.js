@@ -159,13 +159,9 @@ Ext.onReady(function () {
     var viewImagePanel = Ext.create("Ext.form.Panel", {
         id: 'viewImagePanel',
         editable: false,
+        autoScroll: true,
         region: 'center',
         items: [{
-            layout: 'column',
-            defaults: {
-                labelAlign: 'right'
-            },
-            items: [{
                 xtype: 'box',
                 id: 'browseImage',
                 fieldLabel: "预览图片",
@@ -181,7 +177,7 @@ Ext.onReady(function () {
                     name: 'imageBrowse'
                 }
             }]
-        }]
+
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -202,8 +198,9 @@ Ext.onReady(function () {
             items : [ gridPanel ]
         }, {
             region : 'center',
-            layout : 'fit',
+            layout : 'border',
             border : false,
+            autoScroll: true,
             items : [ viewImagePanel ]
         } ]
     });
