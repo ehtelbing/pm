@@ -649,7 +649,7 @@ Ext.onReady(function () {
                 editable: false,
                 style: ' margin: 5px 0px 0px 0px',
                 labelWidth: 100,
-                width: 160,
+                width: 170,
                 displayField: 'displayField',
                 valueField: 'valueField',
                 value: today.getFullYear(),
@@ -662,7 +662,7 @@ Ext.onReady(function () {
                 editable: false,
                 style: ' margin: 5px 0px 0px 10px',
                 //labelWidth: 40,
-                width: 80,
+                width: 70,
                 displayField: 'displayField',
                 valueField: 'valueField',
                 value: today.getMonth()+1,
@@ -1073,12 +1073,12 @@ function _preViewImage() {
     var tmpl = "";
     for(var i=0;i<imagestore.getCount();i++){
 
-        tmpl+= "<td style='text-align: center'> <img src='"+AppUrl + 'PM_22/getPic?filePath='+ V_GUID+"" +
+        tmpl+= "<td style='text-align: center; vertical-align: middle; padding-top:10px;'> <img src='"+AppUrl + 'PM_22/getPic?filePath='+ V_GUID+"" +
                                                                                         "&pic="+imagestore.getAt(i).get('V_PICGUID')+
                                                                                         "&suffix="+imagestore.getAt(i).get('V_PICPOSTFIX')+"' width='120px' height='100px' />" +
                "<br> <a href='javascript:void(0);' onclick=\"_delete('"+imagestore.getAt(i).get('V_PICGUID')+"','"+imagestore.getAt(i).get('V_PICPOSTFIX')+"')\">删除</a></td> ";
     }
-    $("#yulan").html("<table  width='300' bordercolor=\"#555\"><tr> " + tmpl + "</tr> </table>");
+    $("#yulan").html("<table  width='300' border='0'><tr> " + tmpl + "</tr> </table>");// bordercolor=\"#555\"
 
 }
 
