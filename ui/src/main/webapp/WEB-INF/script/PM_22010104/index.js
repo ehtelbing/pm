@@ -63,7 +63,7 @@ Ext.onReady(function () {
     var imagestore = Ext.create('Ext.data.Store', {
         id: 'imagestore',
         autoLoad: false,
-        fields: ['I_ID', 'V_GUID', 'V_PICGUID', 'V_PICMOME'],
+        fields: ['I_ID', 'V_GUID', 'V_PICGUID', 'V_PICMOME','V_PICPOSTFIX'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
@@ -410,27 +410,13 @@ Ext.onReady(function () {
         id: 'filegridPanel',
         editable: false,
         region: 'center',
-        // height: 200,
-        html:"<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>",//width: 400,
-        style: ' margin: 5px 0px 0px 0px',
+        autoScroll:true,
+        height:150,
+        html:"<div id='yulan'></div>",
+        width: 450,
+        border: 0,
+        style: ' margin: 5px 0px 0px 0px;border:0',
         columnLines: true
-        /*store: fileGridStore,
-         autoScroll: true,
-         // margin: '10px 0 0 125px',
-         //colspan: 3,
-         columns: [{
-         text: '附件名称',
-         flex: 0.7,
-         id : 'fjname',
-         align: 'center',
-         dataIndex: "V_FILENAME"
-         // renderer: _downloadRander
-         }, {
-         text: '操作',
-         flex: 0.3,
-         align: 'center',
-         //renderer: _delRander
-         }]*/
     });
 
     var panel2 = Ext.create('Ext.Panel', {
@@ -514,6 +500,38 @@ Ext.onReady(function () {
 
         ]
     });
+
+
+    var upload = Ext.create('Ext.form.Panel', {
+        border:0,
+        layout : 'column',
+        width:500,
+        defaults : { labelAlign : 'right'  },
+        //参数
+        baseParams:{
+            V_V_GUID:V_GUID,
+            V_V_PICMOME:Ext.data.IdGenerator.get('uuid').generate()
+        },
+        items: [
+            {  xtype: 'filefield', name: 'file', id:'file', fieldLabel: '上传',
+                labelWidth: 100, width:350,  size:20, msgTarget: 'side', allowBlank: false, buttonText: '选择...'
+            },{ xtype: 'button', text: '上传', width: 60, style: ' border:1px solid #bebebe;', margin: '0 0 0 10',
+                handler: function(){
+                    var form = this.up('form').getForm();
+                    form.submit({
+                        url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_PIC_SET',
+                        method : 'POST',
+                        waitMsg: '上传中...',
+                        success: function (fp, o) {
+                            Ext.Msg.alert('成功', '上传成功');
+                            _preViewImage();
+                        },
+                        failure: function(form, action) { Ext.Msg.alert('提示信息', '上传失败'); }
+                    });
+                }
+            }
+        ]
+    })
 
     var panel3 = Ext.create('Ext.form.FormPanel', {
         id : 'panel3',
@@ -845,7 +863,10 @@ Ext.onReady(function () {
             layout: 'column',
             frame: true,
             baseCls: 'my-panel-no-border',
-            items: [ {
+            border:0,
+            items: [
+                upload
+                /*{
                 xtype: 'filefield',
                 id: 'V_V_FILEBLOB',
                 name: 'V_V_FILEBLOB',
@@ -866,7 +887,7 @@ Ext.onReady(function () {
                 text: '上传',
                 style: ' margin: 5px 0px 0px 5px',
                 handler: _upLoad
-            }, {
+            }*/, {
                 xtype: 'hidden',
                 name: 'V_V_GUID',
                 id: 'V_V_GUID'
@@ -886,9 +907,7 @@ Ext.onReady(function () {
             frame: true,
             baseCls: 'my-panel-no-border',
             items: [  {
-                //columnWidth: 1,
-                /*height: 150,
-                 width: '100%',*/
+                border:0,
                 style: ' margin: 5px 0px 0px 50px',
                 items: filegridPanel
 
@@ -968,6 +987,11 @@ Ext.onReady(function () {
     zyq_jxdwload();
 
     _init();
+
+    _preViewImage();//初始加载图片
+
+
+
 })
 
 function _init(){
@@ -1082,7 +1106,7 @@ function _init(){
         imagestore.load();
 
 
-        index01 = imagestore.getCount() - 1;
+        /*index01 = imagestore.getCount() - 1;
         index02 = imagestore.getCount() - 2;
         index03 = imagestore.getCount() - 3;
 
@@ -1102,11 +1126,19 @@ function _init(){
             V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
 
         }
-        picguidbegin = V_PICGUID1;
+        picguidbegin = V_PICGUID1;*/
         //alert(1.8);
 
-        Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
-        );
+        /*Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'>" +
+            "<tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td>" +
+            "<td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> " +
+            "<td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> " +
+            "<td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> " +
+            "<td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> " +
+            "<td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > " +
+            "<td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> " +
+            "<td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
+        );*/
 
         var spqzstore = Ext.data.StoreManager.lookup('spqzstore');
         spqzstore.proxy.extraParams = {
@@ -1253,7 +1285,30 @@ function _upLoad() {
 
 }
 
+
 function _preViewImage() {
+
+    var imagestore = Ext.data.StoreManager.lookup('imagestore');
+    imagestore.proxy.extraParams = {
+        V_V_GUID: V_GUID
+    };
+    imagestore.load();
+
+    picguidbegin = V_PICGUID1;
+
+    var tmpl = "";
+    for(var i=0;i<imagestore.getCount();i++){
+
+        tmpl+= "<td style='text-align: center'> <img src='"+AppUrl + 'PM_22/getPic?filePath='+ V_GUID+"" +
+            "&pic="+imagestore.getAt(i).get('V_PICGUID')+
+            "&suffix="+imagestore.getAt(i).get('V_PICPOSTFIX')+"' width='120px' height='100px' />" +
+            "<br> <a href='javascript:void(0);' onclick=\"_delete('"+imagestore.getAt(i).get('V_PICGUID')+"','"+imagestore.getAt(i).get('V_PICPOSTFIX')+"')\">删除</a></td> ";
+    }
+    $("#yulan").html("<table  width='300' bordercolor=\"#555\"><tr> " + tmpl + "</tr> </table>");
+
+}
+
+/*function _preViewImage() {
     var imagestore = Ext.data.StoreManager.lookup('imagestore');
     imagestore.proxy.extraParams = {
         V_V_GUID: V_GUID
@@ -1284,106 +1339,12 @@ function _preViewImage() {
 
     Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
     );
-}
-function _last()
-{
-    index01++;
-    index02++;
-    index03++;
-    var imagestore = Ext.data.StoreManager.lookup('imagestore');
-    if(V_PICGUID1 == picguidbegin)
-    {
-        Ext.Msg.alert('提示信息', '已经是第一张');
-        index01--;
-        index02--;
-        index03--;
-        return;
-
-    }else{
-        V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
-        V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
-        V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-        //console.log("退V_PICGUID1="+V_PICGUID1);
-        //console.log("退V_PICGUID2="+V_PICGUID2);
-       // console.log("退V_PICGUID3="+V_PICGUID3);
-        Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
-        );
-        PICGUID1 = "";
-
-    }
-
-}
-
-function _next()
-{
-    var imagestore = Ext.data.StoreManager.lookup('imagestore');
-
-    if(imagestore.getCount()<=3)
-    {
-        Ext.Msg.alert('提示信息', '已经是最后一张');
-    }else{
-        index01--;
-        index02--;
-        index03--;
-        if(index03 < 0)
-        {
-            Ext.Msg.alert('提示信息', '已经是最后一张');
-            index01++;
-            index02++;
-            index03++;
-            return;
-        }
-        V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
-        V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
-        V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-        //console.log("V_PICGUID1="+V_PICGUID1);
-        //console.log("V_PICGUID2="+V_PICGUID2);
-        //console.log("V_PICGUID3="+V_PICGUID3);
-
-
-        /* if(V_PICGUID3 == PICGUID1)
-         {
-         Ext.Msg.alert('提示信息', '已经是最后一张');
-         return;
-         }*/
-        /*Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='###'>删除</a></span> </td > <td align='center'> <span><a href='###'>删除</a></span></td> <td align='center'> <span><a href='####'>删除</a></span></td> <td></td> </tr> </table> </div>"
-         );*/
-        Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
-        );
-        // PICGUID1 = V_PICGUID3;
-
-
-    }
+}*/
 
 
 
-}
 
-/*function _next1()
- {
- var imagestore = Ext.data.StoreManager.lookup('imagestore');
-
-
- V_PICGUID1 = imagestore.getAt(2).get('V_PICGUID');
-
- V_PICGUID2 = imagestore.getAt(1).get('V_PICGUID');
- V_PICGUID3 = imagestore.getAt(0).get('V_PICGUID');
- console.log("V_PICGUID1="+V_PICGUID1);
- console.log("V_PICGUID2="+V_PICGUID2);
- console.log("V_PICGUID3="+V_PICGUID3);
-
- if(V_PICGUID1 == PICGUID1)
- {
- Ext.Msg.alert('提示信息', '已经是最后一张');
- return;
- }
- Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()' /> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='###'>删除</a></span> </td > <td align='center'> <span><a href='###'>删除</a></span></td> <td align='center'> <span><a href='####'>删除</a></span></td> <td></td> </tr> </table> </div>"
- );
- PICGUID1 = V_PICGUID1;
-
- }*/
-
-function _delete1()
+/*function _delete1()
 {
     if(V_PICGUID1 == null || V_PICGUID1 == "")
     {
@@ -1436,11 +1397,11 @@ function _delete1()
             }
         });
     }
-}
+}*/
 
-function _delete2()
+function _delete(id,suffix)
 {
-    if(V_PICGUID2 == null || V_PICGUID2 == "")
+    if(id == null || id == "")
     {
         Ext.Msg.alert('提示信息', '请选择一张图片');
     }else{
@@ -1458,7 +1419,8 @@ function _delete2()
                         method: 'POST',
                         params: {
                             V_V_GUID: V_GUID,
-                            V_V_PICGUID : V_PICGUID2
+                            V_V_PICGUID : id,
+                            suffix:suffix
                         },
                         success: function (response) {
                             var data = Ext.decode(response.responseText);//后台返回的值
@@ -1485,7 +1447,6 @@ function _delete2()
                                 icon: Ext.MessageBox.ERROR
                             })
                         }
-
                     })
                 }
             }
@@ -1493,60 +1454,6 @@ function _delete2()
     }
 }
 
-function _delete3()
-{
-    if(V_PICGUID3 == null || V_PICGUID3 == "")
-    {
-        Ext.Msg.alert('提示信息', '请选择一张图片');
-    }else{
-        var imagestore = Ext.data.StoreManager.lookup('imagestore');
-        Ext.MessageBox.show({
-            title: '确认',
-            msg: '您确定要删除吗亲？',
-            buttons: Ext.MessageBox.YESNO,
-            icon: Ext.MessageBox.QUESION,
-            fn: function (btn) {
-                if (btn == 'yes') {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_PIC_DEL',
-                        type: 'ajax',
-                        method: 'POST',
-                        params: {
-                            V_V_GUID: V_GUID,
-                            V_V_PICGUID : V_PICGUID3
-                        },
-                        success: function (response) {
-                            var data = Ext.decode(response.responseText);//后台返回的值
-                            if (data.success) {//成功，会传回true
-                                Ext.Msg.alert('提示信息', '删除成功');
-                                V_PICGUID1="";
-                                V_PICGUID2="";
-                                V_PICGUID3="";
-                                _preViewImage();
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: data.message,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR
-                                });
-                            }
-                        },
-                        failure: function (response) {//访问到后台时执行的方法。
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            })
-                        }
-
-                    })
-                }
-            }
-        });
-    }
-}
 
 function zssave()
 {
