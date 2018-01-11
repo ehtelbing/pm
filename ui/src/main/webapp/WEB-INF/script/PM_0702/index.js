@@ -73,6 +73,7 @@ Ext.onReady(function () {
                 Ext.getCmp('qxzt').select('defct01');
                 zyStoreload = true;
                 _init();
+                _selectOverhaulApply();
             }
         }
     });
@@ -305,7 +306,7 @@ Ext.onReady(function () {
     });
 
     _init()
-    _selectOverhaulApply();
+   // _selectOverhaulApply();
 })
 
 function _init() {
