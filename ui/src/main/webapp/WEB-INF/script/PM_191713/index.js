@@ -13,6 +13,7 @@ var V_V_DEPTCODE=null;
 var V_V_EQUTYPE=null;
 var V_V_ORGCODE=null;
 var V_V_EQUCODE=null;
+
 if (location.href.split('?')[1] != undefined) {
     V_V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
     V_V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
