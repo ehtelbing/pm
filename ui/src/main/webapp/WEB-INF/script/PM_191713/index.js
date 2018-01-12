@@ -12,10 +12,12 @@ var sw = window.screen.width / 2 + 220;
 var V_V_DEPTCODE=null;
 var V_V_EQUTYPE=null;
 var V_V_ORGCODE=null;
+var V_V_EQUCODE=null;
 if (location.href.split('?')[1] != undefined) {
     V_V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
     V_V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
     V_V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
+    V_V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUCODE;
 }
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
@@ -44,7 +46,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 Ext.onReady(function () {
     //Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
-    var sbNameStore = Ext.create("Ext.data.Store", {
+    /*var sbNameStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'sbNameStore',
         fields: ['V_EQUCODE', 'V_EQUNAME'],
@@ -68,7 +70,7 @@ Ext.onReady(function () {
                 _init();
             }
         }
-    });
+    });*/
 
     var jsStandardStore = Ext.create('Ext.data.Store', {
         id: 'jsStandardStore',
@@ -88,10 +90,10 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'RET'
             },
-            extraParams: {}
+            extraParams: {
+            }
         })
     });
-
 
     var jsStandardGridPanel = Ext.create('Ext.grid.Panel', {
         id: 'jsStandardGridPanel',
@@ -154,7 +156,7 @@ Ext.onReady(function () {
             region: 'north',
             layout: 'column',
             baseCls: 'my-panel-no-border',
-            items: [{
+            items: [/*{
                 xtype: 'combo',
                 id: 'V_V_EQUCODE',
                 store: sbNameStore,
@@ -166,7 +168,7 @@ Ext.onReady(function () {
                 queryMode: 'local',
                 displayField: 'V_EQUNAME',
                 valueField: 'V_EQUCODE'
-            },{
+            },*/{
                 xtype: 'textfield',
                 id: 'V_V_EQUCHILDCODE',
                 fieldLabel: '装置名称',
@@ -198,7 +200,16 @@ Ext.onReady(function () {
     });
 
     //_init();
-    _selectEquName();
+    /*_selectEquName();*/
+
+    Ext.data.StoreManager.lookup('jsStandardStore').proxy.extraParams = {
+        'V_V_ORGCODE': V_V_ORGCODE,
+        'V_V_DEPTCODE': V_V_DEPTCODE,
+        'V_V_EQUCODE':  V_V_EQUCODE,
+        'V_V_EQUCHILDCODE': '%'
+
+    };
+    Ext.data.StoreManager.lookup('jsStandardStore').load();
 });
 
 function _init() {
@@ -209,7 +220,7 @@ function _init() {
 
 }
 
-function _selectEquName() {
+/*function _selectEquName() {
     var sbNameStore = Ext.data.StoreManager.lookup('sbNameStore');
     sbNameStore.proxy.extraParams = {
         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
@@ -218,14 +229,14 @@ function _selectEquName() {
 
     };
     Ext.data.StoreManager.lookup('sbNameStore').load();
-}
+}*/
 
 function _select() {
     var jsStandardStore = Ext.data.StoreManager.lookup('jsStandardStore');
     jsStandardStore.proxy.extraParams = {
         'V_V_ORGCODE': V_V_ORGCODE,
         'V_V_DEPTCODE': V_V_DEPTCODE,
-        'V_V_EQUCODE': Ext.getCmp('V_V_EQUCODE').getValue(),
+        'V_V_EQUCODE': V_V_EQUCODE,
         'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getValue()
 
     };
