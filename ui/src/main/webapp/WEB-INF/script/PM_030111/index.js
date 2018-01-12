@@ -408,7 +408,7 @@ Ext.onReady(function () {
 
     //设备类型加载监听
     Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
-        Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
+        Ext.getCmp("sblx").select('%');
     });
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {

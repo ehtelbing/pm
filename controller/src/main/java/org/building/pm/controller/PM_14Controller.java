@@ -153,11 +153,11 @@ public class PM_14Controller {
     //pm_1407zsbmc
     @RequestMapping(value = "/PRO_SAP_EQU_VIEW", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> PRO_SAP_EQU_VIEW( String V_V_PERSONCODE,
-                                                 String V_V_DEPTCODE,
-                                                 String V_V_DEPTNEXTCODE,
-                                                 String V_V_EQUTYPECODE,
-                                                 String V_V_EQUCODE,
+    public Map<String, Object> PRO_SAP_EQU_VIEW(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                                @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                                 HttpServletRequest request,
                                                 HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -894,6 +894,7 @@ public class PM_14Controller {
                                                  @RequestParam(value = "V_V_REMARK") String V_V_REMARK,
                                                  HttpServletRequest request,
                                                  HttpServletResponse response) throws Exception {
+        System.out.println("controller");
         Map<String, Object> result = new HashMap<String, Object>();
 
 
@@ -903,6 +904,7 @@ public class PM_14Controller {
 
         result.put("RET", pm_1012);
         result.put("success", true);
+        System.out.println("controller");
         return result;
     }
 

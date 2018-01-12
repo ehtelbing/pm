@@ -540,6 +540,7 @@ public class PM_14Service {
     public HashMap PRO_BASE_FILE_ADD(String V_V_GUID, String V_V_FILENAME, InputStream V_V_FILEBLOB, String V_V_FILETYPECODE, String V_V_PLANT, String V_V_DEPT, String V_V_PERSON, String V_V_REMARK) throws SQLException {
 
         logger.info("begin PRO_BASE_FILE_ADD");
+        System.out.println("service");
 
         HashMap result = new HashMap();
         Connection conn = null;
@@ -568,6 +569,8 @@ public class PM_14Service {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_FILE_ADD");
+        System.out.println("service");
+
         return result;
     }
 
