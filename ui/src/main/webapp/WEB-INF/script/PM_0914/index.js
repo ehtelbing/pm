@@ -109,7 +109,7 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('sblx').select(store.first());
+                Ext.getCmp('sblx').select('%');
                 sblxload =true;
                 OnPageLoad();
             }

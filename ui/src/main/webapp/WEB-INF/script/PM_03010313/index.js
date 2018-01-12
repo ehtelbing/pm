@@ -1,97 +1,87 @@
-var GridModel = Ext.create('Ext.selection.RowModel', {});
+var mingtian = new Date();
+mingtian.setDate(mingtian.getDate()+1);
+var V_GUID = "" ;
+var zyStoreload = false;
+var dt = new Date();
+var thisYear = dt.getFullYear();
+var  tomorrowYear = dt.getFullYear() + 1;
+var years = [];
+for (var i = 2012; i <= tomorrowYear; i++)
+    years.push({
+        displayField : i,
+        valueField : i
+    });
+var V_WEEKPLAN_GUID = null;
+if (location.href.split('?')[1] != undefined) {
+    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
+}
+var V_PLANTYPE = null;
+if (location.href.split('?')[1] != undefined) {
+    V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
+}
+var YEAR = null;
+if (location.href.split('?')[1] != undefined) {
+    YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
+}
+var MONTH = null;
+if (location.href.split('?')[1] != undefined) {
+    MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
+}
+var WEEK = null;
+if (location.href.split('?')[1] != undefined) {
+    WEEK = Ext.urlDecode(location.href.split('?')[1]).WEEK;
+}
+var V_ORGCODE = null;
+if (location.href.split('?')[1] != undefined) {
+    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
+}
+var V_DEPTCODE = null;
+if (location.href.split('?')[1] != undefined) {
+    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
+}
+var stateData=[{ displayField:'全部', valueField:'%'},{ displayField:'编辑', valueField:'编辑'},{ displayField:'审批中', valueField:'审批中'},{ displayField:'审批通过', valueField:'审批通过'},{ displayField:'审批驳回', valueField:'审批驳回'}];
 
-var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
-var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
-var tabIndex=0;
+Ext.define('Ext.ux.data.proxy.Ajax', {
+    extend: 'Ext.data.proxy.Ajax',
+    async: true,
+    doRequest: function (operation, callback, scope) {
+        var writer = this.getWriter(),
+            request = this.buildRequest(operation);
+        if (operation.allowWrite()) {
+            request = writer.write(request);
+        }
+        Ext.apply(request, {
+            async: this.async,
+            binary: this.binary,
+            headers: this.headers,
+            timeout: this.timeout,
+            scope: this,
+            callback: this.createRequestCallback(request, operation, callback, scope),
+            method: this.getMethod(request),
+            disableCaching: false
+        });
+        Ext.Ajax.request(request);
+        return request;
+    }
+});
 
 Ext.onReady(function () {
-    Ext.QuickTips.init();
 
-    var ckstore = Ext.create("Ext.data.Store", {
-        autoLoad: true,
-        storeId: 'ckstore',
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl +'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': V_V_PERSONCODE,
-                'V_V_DEPTCODE': V_V_DEPTCODE,
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
-            }
-        }
-    });
-
-    var zyqstore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'zyqstore',
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
-    var ssbtype = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'ssbtype',
-        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'qx/PRO_PM_07_DEPTEQUTYPE_PER',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
-
-    var ssbname = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'ssbname',
-        fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'qx/PRO_PM_07_DEPTEQU_PER_DROP',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
+    Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var sqxzt = Ext.create("Ext.data.Store", {
         autoLoad: true,
         storeId: 'sqxzt',
-        fields: ['V_STATECODE', 'V_STATENAME'],
+        fields: ['I_ID',
+            'V_SOURCECODE',
+            'V_SOURCENAME',
+            'V_SOURCETABLE',
+            'V_SOURCEREMARK',
+            'I_ORDER'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'qx/PRO_PM_07_DEFECT_STATE_VIEW',
+            url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_VIEW',
             actionMethods: {
                 read: 'POST'
             },
@@ -102,203 +92,35 @@ Ext.onReady(function () {
             extraParams: {
 
             }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('qxzt').select('defct01');
+                zyStoreload = true;
+                _init();
+                _selectOverhaulApply();
+            }
         }
     });
 
-    var panel = Ext.create('Ext.form.Panel', {
-        id: 'panellow',
-        style: 'margin:5px 0px 2px 2px',
-        region: 'north',
-        width: '100%',
-        //baseCls: 'my-panel-no-border',
-        defaults: {
-            style: 'margin:5px 0px 5px 5px',
-            labelAlign: 'right'
-        },
-        layout: {
-            type: 'column'
-        },
-        items: [{
-            id: 'begintime',
-            xtype: 'datefield',
-            editable: false,
-            format: 'Y/m/d',
-            value: new Date(new Date().getFullYear(), 0, 1),
-            fieldLabel: '时间段选择',
-            labelWidth: 70,
-            width: 240,
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'endtime',
-            xtype: 'datefield',
-            editable: false,
-            format: 'Y/m/d',
-            value: new Date(),
-            fieldLabel: '至',
-            labelWidth: 70,
-            width: 240
-        }, {
-            id: 'ck',
-            xtype: 'combo',
-            store: ckstore,
-            editable: false,
-            fieldLabel: '厂矿',
-            labelWidth: 70,
-            width: 240,
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'zyq',
-            xtype: 'combo',
-            store: zyqstore,
-            editable: false,
-            fieldLabel: '作业区',
-            labelWidth: 70,
-            width: 240,
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'sbtype',
-            xtype: 'combo',
-            store: ssbtype,
-            editable: false,
-            fieldLabel: '设备类型',
-            labelWidth: 70,
-            width: 240,
-            displayField: 'V_EQUTYPENAME',
-            valueField: 'V_EQUTYPECODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'sbname',
-            xtype: 'combo',
-            store: ssbname,
-            editable: false,
-            fieldLabel: '设备名称',
-            labelWidth: 70,
-            width: 240,
-            displayField: 'V_EQUNAME',
-            valueField: 'V_EQUCODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'qxzt',
-            xtype: 'combo',
-            store: sqxzt,
-            editable: false,
-            fieldLabel: '缺陷状态',
-            labelWidth: 70,
-            width: 240,
-            displayField: 'V_STATENAME',
-            valueField: 'V_STATECODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'seltext',
-            xtype: 'textfield',
-            width: 165,
-            margin: '5px 0px 5px 80px',
-            emptyText: '缺陷明细模糊搜索'
-        }, {
-            id: 'query',
-            xtype: 'button',
-            icon: imgpath + '/search.png',
-            text: '查询',
-            width: 80,
-            handler: function () {
-                tabIndex=parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
 
-                Ext.getCmp('page').store.currentPage = 1;
-                Ext.data.StoreManager.lookup('gridStore').load();
-                /*gridStore.load({
-                 params: {
-                 V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-                 V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-                 V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-                 V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-                 V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-                 V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-                 V_V_SOURCECODE : Ext.ComponentManager.get("tabid").getValue(),
-                 V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-                 X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                 V_I_PAGE: currentPage,
-                 V_I_PAGENUMBER: pageSize
-                 }
-                 });*/
-                /*Ext.ComponentManager.get('tabpanel').removeAll();
-                 Ext.Ajax.request({
-                 url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_COUNT',
-                 method: 'POST',
-                 async: false,
-                 params: {
-                 V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-                 V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-                 V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-                 V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-                 V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-                 V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-                 V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-                 X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
-                 },
-                 success: function (ret) {
-                 var resp = Ext.JSON.decode(ret.responseText);
 
-                 resp = resp.list;
 
-                 for (i = 0; i < resp.length; i++) {
-                 Ext.ComponentManager.get("tabpanel").add({
-                 id : 'tabpanel'+i,
-                 title: resp[i].V_SOURCENAME,
-                 items: [{
-                 xtype: 'hidden',
-                 value: resp[i].V_SOURCECODE
-                 }]
-                 });
-                 }
-                 Ext.ComponentManager.get("tabpanel").setActiveTab(tabIndex);
-                 }
-                 });*/
-            }
-        }, {
-            xtype: 'hidden',
-            id: 'tabid'
-        }, {
-            xtype: 'button',
-            text: '缺陷统计',
-            width: 80,
-            listeners: {
-                click: GoToBad
-            },
-            hidden : true
-        }, {
-            xtype: 'button',
-            text: '选择',
-            width: 60,
-            icon: imgpath +'/add.png',
-            listeners: {
-                click: Select
-            }
-        }
-        ]
-    });
+
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 20,
+        pageSize: 15,
         autoLoad: false,
         fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID','V_REPAIRMAJOR_CODE','V_HOUR','V_ORGCODE','V_BZ'],
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE'],
 
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'qx/PRO_PM_07_DEFECT_VIEW_PER',
+            url: AppUrl + 'hp/PRO_PM_07_DEFECT_VIEW_NEW',
             actionMethods: {
                 read: 'POST'
             },
@@ -310,82 +132,122 @@ Ext.onReady(function () {
         }
     });
 
-    var gridPanel = Ext.create("Ext.grid.Panel", {
-        region: 'center',
-        id: 'gridPanel',
+    var inputPanel = Ext.create('Ext.Panel', {
+        id : 'inputPanel',
+        header : false,
+        frame : true,
+        layout : 'column',
+        style: 'background-color:#FFFFFF',
+        baseCls: 'my-panel-no-border',
+        defaults : {
+            labelAlign : 'right',
+            //labelWidth : 100,
+            //inputWidth : 240,
+            margin : '4,0,0,0'
+        },
+        items : [ {
+            id: 'qxzt',
+            xtype: 'combo',
+            store: sqxzt,
+            editable: false,
+            fieldLabel: '缺陷类型',
+            labelWidth:70,
+            width: 180,
+            displayField: 'V_SOURCENAME',
+            valueField: 'V_SOURCECODE',
+            queryMode: 'local',
+            baseCls: 'margin-bottom'
+        },{
+            xtype : 'button',
+            text : '查询',
+            handler : _selectOverhaulApply
+        },{
+            xtype: 'button',
+            text: '选择',
+            handler : Select
+        } ]
+    });
+
+    var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
+        id : 'overhaulApplyPanel',
+        store : gridStore,
+        frame : true,
+        border: false,
         columnLines: true,
-        width: '100%',
-        store: gridStore,
-        //selModel: GridModel,
-        autoScroll: true,
-        height: 400,
-        selType:'checkboxmodel',
-        columns: [{
-            xtype: 'rownumberer',
-            width: 30,
-            sortable: false
+        /*selModel : {
+         selType : 'checkboxmodel',
+         mode : 'SINGLE'
+         },*/
+        selType: 'checkboxmodel',
+        columns : [ {
+            text : '序号',
+            xtype : 'rownumberer',
+            width : 50,
+            sortable : false
+        },{
+            text : '手工消缺',
+            id : 'sgxq',
+            xtype : 'templatecolumn',
+            align : 'center',
+            width : 100,
+            tpl : '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
         }, {
-            text: '工单号',
-            id: 'gdh',
-            dataIndex: 'V_ORDERID',
-            align: 'center',
-            width: 150,
-            renderer: ReadGD,
-            hidden: true
+            text : '单位',
+            dataIndex : 'V_DEPTNAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
         }, {
-            text: '缺陷日期',
-            dataIndex: 'D_DEFECTDATE',
-            align: 'center',
-            width: 200,
-            renderer: CreateGridColumnTd
+            text : '缺陷状态',
+            dataIndex : 'V_STATENAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
         }, {
-            text: '缺陷明细',
-            dataIndex: 'V_DEFECTLIST',
-            align: 'center',
-            width: 300,
-            renderer: CreateGridColumnTd
+            text : '缺陷类型',
+            dataIndex : 'V_SOURCENAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
         }, {
-            text: '设备',
-            dataIndex: 'V_EQUNAME',
-            align: 'center',
-            width: 170,
-            renderer: CreateGridColumnTd
+            text : '缺陷日期',
+            dataIndex : 'D_DEFECTDATE',
+            align : 'center',
+            width : 200,
+            renderer : CreateGridColumnTime
         }, {
-            text: '设备位置',
-            dataIndex: 'V_EQUSITE',
-            align: 'center',
-            width: 250,
-            renderer: CreateGridColumnTd
+            text : '缺陷明细',
+            dataIndex : 'V_DEFECTLIST',
+            align : 'center',
+            width : 700,
+            renderer : CreateGridColumnTd
         }, {
-            text: '单位',
-            dataIndex: 'V_DEPTNAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
+            text : '设备',
+            dataIndex : 'V_EQUNAME',
+            align : 'center',
+            width : 200,
+            renderer : CreateGridColumnTd
         }, {
-            text: '负责人',
-            dataIndex: 'V_PERNAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
+            text : '设备位置',
+            dataIndex : 'V_EQUSITE',
+            align : 'center',
+            width : 300,
+            renderer : CreateGridColumnTd
         }, {
-            text: '处理意见',
-            dataIndex: 'V_IDEA',
-            align: 'center',
-            renderer: CreateGridColumnTd
+            text : '负责人',
+            dataIndex : 'V_PERNAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
         }, {
-            text: '缺陷状态',
-            dataIndex: 'V_STATENAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '缺陷来源',
-            dataIndex: 'V_SOURCENAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
+            text : '处理意见',
+            dataIndex : 'V_IDEA',
+            align : 'center',
+            renderer : CreateGridColumnTd
         }],
+        listeners : {
+            itemdblclick : itemclick
+        },
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -437,235 +299,137 @@ Ext.onReady(function () {
         }]
     });
 
-    var tabpanel = Ext.create("Ext.tab.Panel", {
-        id: 'tabpanel',
-        region: 'center',
-        activeTab: 0,
-        listeners: {
-
-            tabchange: function () {
-                Ext.getCmp('gdh').hide();
-                Ext.ComponentManager.get("tabid").setValue(Ext
-                    .getCmp('tabpanel').getActiveTab().down("hidden")
-                    .getValue());
-                Ext.getCmp('page').store.currentPage = 1;
-                gridStore.load({
-                    params: {
-                        V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-                        V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-                        V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-                        V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-                        V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-                        V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-                        V_V_SOURCECODE : Ext.ComponentManager.get("tabid").getValue(),
-                        V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-                        X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                        V_V_PAGE: Ext.getCmp('page').store.currentPage,
-                        V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
-                    }
-                });
-            }
-        }
-    });
-
     Ext.create('Ext.container.Viewport', {
-        id: "id",
-        layout: 'border',
-        items: [panel,
-            {
-                xtype: 'panel',
-                //region: 'center',
-                id: 'testPanel',
-                height: 50,
-                frame: true,
-                region: 'north',
-                layout: 'border'
-            },
-            gridPanel
-        ]
-    });
-    ckstore.on("load", function () {
-        Ext.getCmp("ck").select(ckstore.getAt(0));
-
-
-    });
-
-    Ext.ComponentManager.get("ck").on("change", function () {
-        Ext.ComponentManager.get('zyq').getStore().removeAll();
-        zyqstore.load({
-            params: {
-                V_V_PERSONCODE: V_V_PERSONCODE,
-                V_V_DEPTCODE: Ext.getCmp('ck').getValue(),
-                V_V_DEPTCODENEXT: Ext.util.Cookies.get('v_deptcode'),
-                V_V_DEPTTYPE: '[主体作业区]'
+        layout : {
+            type : 'border',
+            regionWeights : {
+                west : -1,
+                north : 1,
+                south : 1,
+                east : -1
             }
-        });
-    });
-
-    zyqstore.on("load", function () {
-        Ext.getCmp("zyq").select(zyqstore.getAt(0));
-    });
-
-    Ext.ComponentManager.get("zyq").on("change", function () {
-        Ext.ComponentManager.get('sbtype').getStore().removeAll();
-        ssbtype.load({
-            params: {
-                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue()
-                //parName: ['V_V_PERSONCODE', 'V_V_DEPTCODENEXT'],
-                //parType: ['s', 's'],
-                //parVal: [Ext.util.Cookies.get('v_personcode'),
-                //    Ext.getCmp("zyq").getValue()],
-                //proName: 'PRO_GET_DEPTEQUTYPE_PER',
-                //cursorName: 'V_CURSOR'
-            }
-        });
-    });
-
-    ssbtype.on("load", function () {
-        Ext.getCmp("sbtype").select(ssbtype.findRecord('V_EQUTYPENAME', '全部'));
-        ssbname.load({
-            params: {
-                //parName: ['V_V_PERSONCODE',
-                //    'V_V_DEPTCODENEXT', 'V_V_EQUTYPECODE'],
-                //parType: ['s', 's', 's'],
-                //parVal: [Ext.util.Cookies.get('v_personcode'),
-                //    Ext.getCmp("zyq").getValue(),
-                //    Ext.getCmp("sbtype").getValue()],
-                //proName: 'pro_get_deptequ_per_drop',
-                //cursorName: 'V_CURSOR'
-                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue(),
-                V_V_EQUTYPECODE : Ext.getCmp("sbtype").getValue()
-
-            }
-        });
-    });
-
-    Ext.getCmp("sbtype").on("change", function () {
-        Ext.ComponentManager.get('sbname').getStore().removeAll();
-        ssbname.load({
-            params: {
-                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue(),
-                V_V_EQUTYPECODE : Ext.getCmp("sbtype").getValue()
-                //parName: ['V_V_PERSONCODE', 'V_V_DEPTCODENEXT',
-                //    'V_V_EQUTYPECODE'],
-                //parType: ['s', 's', 's'],
-                //parVal: [Ext.util.Cookies.get('v_personcode'),
-                //    Ext.getCmp("zyq").getValue(),
-                //    Ext.getCmp("sbtype").getValue()],
-                //proName: 'PRO_GET_DEPTEQU_PER_DROP',
-                //cursorName: 'V_CURSOR'
-            }
-        });
-    });
-
-    var flag = 1;
-    ssbname.on("load", function () {
-        Ext.getCmp("sbname").select(ssbname.getAt(0));
-        if(flag == 1){
-            addTab();
-            flag++;
-        }
-    });
-
-    sqxzt.on("load", function () {
-        Ext.getCmp("qxzt").select(sqxzt.getAt(0));
-        Ext.getCmp("testPanel").add(tabpanel);
-    });
-
-    Ext.getCmp('qxzt').on("change", function () {
-        if (Ext.ComponentManager.get("qxzt").getValue() == '40') {
-            Ext.ComponentManager.get('gridPanel').columns[1].hidden = true;
-        } else {
-            Ext.ComponentManager.get('gridPanel').columns[1].hidden = false;
-        }
-    });
-
-});
-
-function itemclick(s, record, item, index, e, eOpts) {
-    window.showModalDialog(AppUrl + "/No210302/Index.html?v_guid="
-        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), "",
-        "dialogHeight:600px;dialogWidth:700px");
-}
-
-function addTab() {
-    Ext.Ajax.request({
-        url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_COUNT',
-        // url : '/NO2102/PRO_PM_DEFECT_SOURCE_COUNT',
-        method: 'POST',
-        async: false,
-        params: {
-            V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-            V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-            V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-            V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-            V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-            V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-            V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-            X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
-            //parName: ['v_d_defectdate_b', 'v_d_defectdate_e',
-            //    'v_v_deptcode', 'v_v_equtypecode', 'v_v_equcode',
-            //    'v_v_statecode', 'v_v_defectlist', 'x_personcode'],
-            //parType: ['da', 'da', 's', 's', 's', 's', 's', 's'],
-            //parVal: [
-            //    Ext.Date.format(Ext.ComponentManager
-            //            .get("begintime").getValue(),
-            //        'Y-m-d'),
-            //    Ext.Date.format(Ext.ComponentManager.get("endtime")
-            //        .getValue(), 'Y-m-d'),
-            //    Ext.ComponentManager.get("zyq").getValue(),
-            //    Ext.ComponentManager.get("sbtype").getValue(),
-            //    Ext.ComponentManager.get("sbname").getValue(),
-            //    Ext.ComponentManager.get("qxzt").getValue(),
-            //    Ext.ComponentManager.get("seltext").getValue(),
-            //    Ext.util.Cookies.get('v_personcode')],
-            //proName: 'pro_pm_defect_source_count_per',
-            //cursorName: 'V_CURSOR'
         },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-
-            resp = resp.list;
-
-            for (i = 0; i < resp.length; i++) {
-                Ext.ComponentManager.get("tabpanel").add({
-                    id : 'tabpanel'+i,
-                    title: resp[i].V_SOURCENAME,
-                    items: [{
-                        xtype: 'hidden',
-                        value: resp[i].V_SOURCECODE
-                    }]
-                });
-            }
-            Ext.ComponentManager.get("tabpanel").setActiveTab(0);
-        }
+        items : [ {
+            region : 'north',
+            border : false,
+            items : [ inputPanel]
+        }, {
+            region : 'center',
+            layout : 'fit',
+            border : false,
+            items : [ overhaulApplyPanel ]
+        } ]
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
-
         store.proxy.extraParams = {
-            V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-            V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-            V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-            V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-            V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
             V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-            V_V_SOURCECODE : Ext.ComponentManager.get("tabid").getValue(),
-            V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
             X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
-
         }
     });
+
+    _init()
+    // _selectOverhaulApply();
+})
+
+function _init() {
+    if(zyStoreload)
+    {
+        zyStoreload = false;
+        Ext.getBody().unmask();//去除页面笼罩
+    }
 }
 
-function GoToBad() {
-    window.parent.append('No2105', '缺陷统计', AppUrl + '/No2105/Index.html');
+
+function _selectOverhaulApply() {
+    var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    gridStore.proxy.extraParams = {
+        V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
+        X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+        V_V_PAGE: Ext.getCmp('page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
 }
+
+
+
+function OnBtnSxQx() {
+    var length = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection().length;
+    if (length != 1) {
+        alert('请选择一条数据进行修改');
+    } else {
+        var GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
+        var owidth = window.document.body.offsetWidth - 200;
+        var oheight = window.document.body.offsetHeight - 100;
+        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    }
+}
+function createWorkorder(){
+
+    var records = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();//获取选中的数据
+
+    if (records.length == 0) {//判断是否选中数据
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+
+
+    for (i = 0; i < records.length; i++) {
+
+        console.log("V_GUID="+records[i].data.V_GUID);
+        console.log("V_EQUTYPECODE="+records[i].data.V_EQUTYPECODE);
+        console.log("V_SOURCECODE="+records[i].data.V_SOURCECODE);
+        if(records[i].data.V_STATECODE=='10'){
+            var param="";
+            try {
+                var owidth = window.document.body.offsetWidth-200;
+                var oheight = window.document.body.offsetHeight-100 ;
+                if(url_guid!=undefined){
+                    param="&&url_guid="+url_guid;
+                }else{
+                    param="";
+                }
+                var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
+                    + records[i].data.V_GUID + '&V_EQUTYPECODE='+records[i].data.V_EQUTYPECODE+"&V_SOURCECODE="+records[i].data.V_SOURCECODE+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+            } catch (e) {
+                var owidth = window.document.body.offsetWidth-200;
+                var oheight = window.document.body.offsetHeight-100 ;
+                if(url_guid!=undefined){
+                    param="&&url_guid="+url_guid;
+                }else{
+                    param="";
+                }
+                var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
+                    + records[i].data.V_GUID+"&V_SOURCECODE="+records[i].data.V_SOURCECODE + ''+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+            }
+        }else{
+            Ext.MessageBox.alert('操作信息', '该缺陷已下票，请重新选择！');
+            return;
+        }
+    }
+
+
+
+
+}
+
+function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
+    var time=value.split('.')[0];
+    return time;
+}
+
 
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
@@ -675,11 +439,11 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
     else{
         return '<div data-qtip="' + value + '" >' + value + '</div>';
     }
-
 }
 
 function ReadGD(value, metaData) {
     if (Ext.getCmp('tabid').getValue() == 'defct01') {
+
         Ext.getCmp('gdh').show();
         return '<div><a href="javascript:OnClickGD(\'' + value + '\')">' + value + '</a></div>';
     } else {
@@ -687,30 +451,102 @@ function ReadGD(value, metaData) {
     }
 }
 
-function OnClickGD(value) {
-    try {
-        window.parent.append('411001', '检修工单验收明细', APP
-            + '/page/No411001/Index.html?V_GUID='
-            + value
-            + '');
-    } catch (e) {
-        var ret = window.showModalDialog(APP
-            + "/page/No411001/Index.html?V_GUID="
-            + value,
-            "", "dialogHeight:700px;dialogWidth:1100px");
-    }
+function itemclick(s, record, item, index, e, eOpts) {
+    //window.showModalDialog(AppUrl + "/No210302/Index.html?v_guid="
+    //    + Ext.getStore("gridStore").getAt(index).get("V_GUID"), "",
+    //    "dialogHeight:600px;dialogWidth:700px");
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
+        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
 }
+
 function Select(){
-    var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
+    var seldata = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
     if (seldata.length==0) {
         Ext.Msg.alert('操作提示','请选择一条数据！');
         return false;
     }
-    var retdata=[];
-    for(var i=0;i<seldata.length;i++){
-        retdata.push(seldata[i].data.V_GUID);
+
+    for (var j = 0; j < seldata.length; j++) {
+        if(seldata[0].data.V_EQUNAME!=seldata[j].data.V_EQUNAME){
+            alert("请选择同一设备缺陷");
+            return;
+
+        }
+
+    }
+    var num = 0;
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_WEEK_GUID: V_WEEKPLAN_GUID
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO == 'success') {
+
+                for (var i = 0; i < seldata.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_DEFECT_GUID: seldata[i].data.V_GUID,
+                            V_V_WEEK_GUID: V_WEEKPLAN_GUID
+                        },
+                        success: function (resp) {
+                            var resp = Ext.decode(resp.responseText);
+                            if (resp.V_INFO == 'success') {
+                                num++;
+                            }
+
+                        }
+                    });
+                }
+            }else{
+                alert("子数据清除错误");
+            }
+
+        }
+    });
+
+    var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
+    var V_EQUCODE=seldata[0].raw.V_EQUCODE;
+    if (num == seldata.length) {
+        var owidth = window.document.body.offsetWidth - 200;
+        var oheight = window.document.body.offsetHeight - 100;
+        var ret = window.open(AppUrl + "page/PM_03010315/index.html?V_WEEKPLAN_GUID=" + V_WEEKPLAN_GUID +
+            "&V_PLANTYPE=" + V_PLANTYPE +
+            "&YEAR=" + YEAR +
+            "&MONTH=" + MONTH +
+            "&WEEK=" + WEEK +
+            "&V_ORGCODE=" + V_ORGCODE +
+            "&V_DEPTCODE=" + V_DEPTCODE+
+            "&V_EQUTYPECODE=" + V_EQUTYPECODE+
+            "&V_EQUCODE=" + V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+       // window.close();
+    } else {
+        alert("缺陷添加错误");
     }
 
-    window.opener.getReturnQXXZ(retdata);
+
+
+
+    /*window.opener.getReturnQXXZ(retdata);
+    window.close();*/
+}
+function closeSelf(){
     window.close();
+    window.opener.query();
+}
+function guid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }

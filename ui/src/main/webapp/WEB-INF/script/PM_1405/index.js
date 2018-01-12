@@ -899,7 +899,7 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 listeners: {
-                    select: function () {
+                    change: function () {
                         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
                         initadd = false;
                         _selectDept1();
@@ -924,7 +924,7 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 listeners: {
-                    select: function (field, newValue, oldValue) {
+                    change: function (field, newValue, oldValue) {
                         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
                         initadd = false;
                         _selecteType1();
@@ -956,7 +956,7 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 listeners: {
-                    select: function (field, newValue, oldValue) {
+                    change: function (field, newValue, oldValue) {
                         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
                         initadd = false;
                         _selectequName1();
@@ -979,7 +979,7 @@ Ext.onReady(function () {
                 labelAlign: 'right',
                 width: 280,
                 listeners: {
-                    select: function (field, newValue, oldValue) {
+                    change: function (field, newValue, oldValue) {
                         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
                         initadd = false;
                         _selectsubequName1();
@@ -1424,7 +1424,8 @@ Ext.onReady(function () {
             height: 420,
             width: 580
         }, {
-            xtype: 'panel',
+            xtype: 'form',
+            id:'uploadForm',
             region: 'north',
             layout: 'vbox',
             baseCls: 'my-panel-no-border',
@@ -1515,7 +1516,8 @@ Ext.onReady(function () {
             height: 420,
             width: 580
         }, {
-            xtype: 'panel',
+            xtype: 'form',
+            id:'uploadForm2',
             region: 'north',
             layout: 'vbox',
             baseCls: 'my-panel-no-border',
@@ -1618,10 +1620,10 @@ Ext.onReady(function () {
     _init();
 
     //add
-    _selectDept1();
+    /*_selectDept1();
     _selecteType1();
     _selectequName1();
-    _selectsubequName1();
+    _selectsubequName1();*/
 
     //edit
     _selectDept2();
@@ -1953,7 +1955,7 @@ function _addFault() {
 
 
 function _upLoadFile() {
-    var addPanel = Ext.getCmp('addPanel');
+    var uploadForm = Ext.getCmp('uploadForm');
 
     var V_V_FILEBLOB = Ext.getCmp('V_V_FILEBLOB').getSubmitValue();
     var V_V_FILENAME = V_V_FILEBLOB.substring(0, V_V_FILEBLOB.indexOf('.'));
@@ -1968,7 +1970,7 @@ function _upLoadFile() {
     Ext.getCmp('V_V_PERSON').setValue(V_V_PERSONCODE);
     Ext.getCmp('V_V_REMARK').setValue(Ext.getCmp('V_V_REMARK').getSubmitValue());
 
-    if (addPanel.form.isValid()) {
+    if (uploadForm.form.isValid()) {
         if (Ext.getCmp('V_V_FILEBLOB').getValue() == '') {
             Ext.Msg.alert('错误', '请选择你要上传的文件');
             return;
@@ -1985,7 +1987,7 @@ function _upLoadFile() {
 
         });
 
-        addPanel.getForm().submit({
+        uploadForm.getForm().submit({
             url: AppUrl + 'PM_14/PRO_BASE_FILE_ADD',
             method: 'POST',
             async: false,
@@ -2007,7 +2009,7 @@ function _upLoadFile() {
 
 function _upLoadFile2() {
     var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
-    var addPanel2 = Ext.getCmp('addPanel2');
+    var uploadForm2 = Ext.getCmp('uploadForm2');
 
     var V_V_FILEBLOB = Ext.getCmp('V_V_FILEBLOB2').getSubmitValue();
     var V_V_FILENAME = V_V_FILEBLOB.substring(0, V_V_FILEBLOB.indexOf('.'));
@@ -2021,7 +2023,7 @@ function _upLoadFile2() {
     Ext.getCmp('V_V_PERSON2').setValue(V_V_PERSONCODE);
     Ext.getCmp('V_V_REMARK2').setValue(Ext.getCmp('V_V_REMARK2').getSubmitValue());
 
-    if (addPanel2.form.isValid()) {
+    if (uploadForm2.form.isValid()) {
         if (Ext.getCmp('V_V_FILEBLOB2').getValue() == '') {
             Ext.Msg.alert('错误', '请选择你要上传的文件');
             return;
@@ -2038,7 +2040,7 @@ function _upLoadFile2() {
 
         });
 
-        addPanel2.getForm().submit({
+        uploadForm2.getForm().submit({
             url: AppUrl + 'PM_14/PRO_BASE_FILE_ADDINSERT',
             method: 'POST',
             async: false,
