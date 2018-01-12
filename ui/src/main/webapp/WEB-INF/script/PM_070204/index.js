@@ -24,6 +24,11 @@ var V_EQUTYPE=null;
 if (location.href.split('?')[1] != undefined) {
     V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPE;
 }
+
+var V_EQUCODE=null;
+if (location.href.split('?')[1] != undefined) {
+    V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+}
 var gridStore = Ext.create('Ext.data.Store', {
     id: 'gridStore',
     autoLoad: true,
@@ -501,6 +506,7 @@ function selectJXTECHNOLOGYBZ() {
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191713/index.html?V_V_DEPTCODE=' + V_DEPTCODE
         +'&V_V_EQUTYPE='+V_EQUTYPE
+        +'&V_V_EQUCODE='+V_EQUCODE
         +'&V_V_ORGCODE='+V_ORGCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 function getReturnJSBZ(guid,valued,valueu){
