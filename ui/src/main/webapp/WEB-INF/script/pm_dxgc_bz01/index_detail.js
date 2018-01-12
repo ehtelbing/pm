@@ -135,7 +135,7 @@ var zynrgrid = Ext.create('Ext.grid.Panel', {
     width: '60%',
     id: 'zynrgrid',
     store: zynrStore,
-    height: 200,
+    height: 150,
     style: 'margin:0px 0px 5px 0px',
     autoScroll: true,
     columnLines: true,
@@ -378,7 +378,6 @@ Ext.onReady(function () {
         width: "70%",
         height: "100%",
         region: 'center',
-        frame: true,
         layout: 'border',
         baseCls: 'my-panel-noborder',
         items: []
@@ -577,7 +576,7 @@ Ext.onReady(function () {
                 width: 65,
                 align: 'center',
                 renderer: tabGridFunction.CreateGridColumnTd
-            },
+            }
         ]
     });
     var panel1 = Ext.create('Ext.panel.Panel', {
@@ -601,7 +600,7 @@ Ext.onReady(function () {
     });
 
     var panelMain = Ext.create('Ext.panel.Panel', {
-        frame: true,
+        //frame: true,
         layout: 'border',
         bodyPadding: 5,
         id: 'panelMain',
@@ -612,9 +611,8 @@ Ext.onReady(function () {
             labelWidth: 35,
             labelAlign: 'right'
         },
-        items: [treegrid, ganttpanel]
+        items: [treegrid,ganttpanel]
     });
-
 
     /**
      * create by STR 2017-12-14
@@ -625,11 +623,10 @@ Ext.onReady(function () {
         id: 'gcxxgrid',
         layout: 'vbox',
         autoScroll: true,
-        region: 'center',
         baseCls: 'my-panel-noborder',
         items: [
-            {
-                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true,
+           {
+                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', //frame: true,
                 items: [
                     {
                         xtype: 'textfield',
@@ -641,7 +638,7 @@ Ext.onReady(function () {
                         fieldStyle: 'background-color:#e0e0e0;background-image:none;',
                         width: 260,
                         style: 'margin:15px 5px 5px 5px'
-                    },
+                    } ,
                     {
                         xtype: 'textfield',
                         id: 'fxjhmc_tab',
@@ -714,12 +711,12 @@ Ext.onReady(function () {
                         value: new Date().getMonth() + 1,
                         editable: false,
                         queryMode: 'local'
-                    },
+                    }
                 ]
             },
 
             {
-                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true, items: [
+                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',   items: [
                 {
                     xtype: 'combo',
                     fieldLabel: '厂矿',
@@ -767,7 +764,7 @@ Ext.onReady(function () {
                     fieldStyle: 'background-color:#FFFF99;background-image:none;',
                     width: 260,
                     style: 'margin:15px 5px 5px 5px'
-                },
+                } ,
                 {
                     xtype: 'textfield',
                     id: 'wys_tab',
@@ -795,8 +792,9 @@ Ext.onReady(function () {
                 }
             ]
             },
+
             {
-                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true, items: [
+                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',   items: [
                 {
                     xtype: 'textfield',
                     id: 'wsbbm_tab',
@@ -865,10 +863,8 @@ Ext.onReady(function () {
                     width: 260
                 }
             ]
-            },
-            {
-                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true, items: [
-
+            }  ,
+            {  xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',   items: [
                 {
                     xtype: 'textfield',
                     id: 'wjsdw_tab',
@@ -878,7 +874,7 @@ Ext.onReady(function () {
                     fieldStyle: 'background-color:#FFFF99;background-image:none;',
                     width: 260,
                     style: 'margin:15px 5px 5px 5px'
-                },
+                } ,
                 {
                     xtype: 'textfield',
                     id: 'wgcfzr_tab',
@@ -892,7 +888,7 @@ Ext.onReady(function () {
             ]
             },
             {
-                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true,
+                xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',
                 items: [
                     {
                         xtype: 'textfield',
@@ -914,13 +910,12 @@ Ext.onReady(function () {
 
     var tabpanel = Ext.create('Ext.tab.Panel', {
         id: 'tabpanel',
-        // region:'center',
+
         width: '100%',
-        height: window.innerHeight / 2 - 35,
+        height: 350,//window.innerHeight / 2 - 35,
         tabBar: {
             items: [
-                {
-                    //组件靠右
+                {   //组件靠右
                     xtype: 'tbfill'
                 },
                 {
@@ -932,10 +927,10 @@ Ext.onReady(function () {
                 }]
         },
         items: [
-            {
+             {
                 title: '基础信息',
                 id: 'gcxxtab',
-                frame: true,
+                /*frame: true,*/
                 border: false,
                 items: [gcxxgrid]
             },
@@ -947,7 +942,7 @@ Ext.onReady(function () {
                 border: false,
                 items: [
                     {
-                        xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true, items: [
+                        xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',   items: [
                         {
                             xtype: 'textfield',
                             emptyText: '工种',
@@ -1002,7 +997,7 @@ Ext.onReady(function () {
                 frame: true,
                 border: false,
                 items: [{
-                    xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true, items: [
+                    xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', items: [
                         {
                             xtype: 'textfield',
                             emptyText: '物料编码',
@@ -1075,7 +1070,7 @@ Ext.onReady(function () {
                 frame: true,
                 border: false,
                 items: [{
-                    xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', frame: true, items: [
+                    xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',  items: [
                         {
                             xtype: 'textfield',
                             emptyText: '机具编码',
@@ -1125,7 +1120,7 @@ Ext.onReady(function () {
                 title: '安全对策',
                 id: 'aqtab',
                 layout: 'vbox',
-                frame: true,
+
                 border: false,
                 items: [
                     {
@@ -1168,24 +1163,25 @@ Ext.onReady(function () {
 
     Ext.create('Ext.container.Viewport', {
         layout: {
-            type: 'border',
+            type: 'border'/*,
             regionWeights: {
                 west: -1,
                 north: 1,
                 south: 1,
                 east: -1
-            }
+            }*/
         },
-        items: [{
+        items: [
+           {
             region: 'north',
             border: false,
             items: [panel1]
-        }, {
+           } , {
             region: 'center',
             layout: 'fit',
             border: false,
             items: [panelMain]
-        }, {
+           }, {
             region: 'south',
             layout: 'fit',
             border: false,
@@ -1215,30 +1211,6 @@ Ext.onReady(function () {
 })
 ;
 
-function Atleft(value, metaData) {
-    metaData.style = 'text-align: left';
-    return value;
-}
-function AtRight(value, metaData) {
-    metaData.style = 'text-align: right';
-    return value;
-}
-
-
-function a1(id) {
-    var oson = document.getElementById(id);
-    with (oson) {
-        oson.style.display = "block";
-        oson.style.left = (window.event.clientX - 450) + 'px';
-        oson.style.top = (window.event.clientY - 138) + 'px';
-        oson.style.background = 'white';
-    }
-
-}
-function a2(id) {
-    document.getElementById(id).style.display = 'none';
-
-}
 
 /**
  * 用于页面动态加载渲染组件的方法及绑定事件 集合对象.
@@ -1327,7 +1299,7 @@ var pageFunction = {
             region: 'center',
             columnLines: true,
             columns: cmItems,
-            renderTo: Ext.getBody()
+            //renderTo: Ext.getBody()
         });
         Ext.getCmp('ganttpanel').add(ganttgrid);
     },
@@ -2076,61 +2048,7 @@ function OnBtnDel() {
 
 }
 
-function Delete4(value, metaData, record, rowIdx) {
-    metaData.style = 'text-align: center';
-    return '<a href=javascript:OnBtnRemove4(\'' + rowIdx + '\');>删除</a>';
-}
-function OnBtnRemove4(idx) {
-    var data = [];
-    if (type == 'add') {
-        for (var i = 0; i < zynrs.length; i++) {
-            if (i != idx) {
-                data.push(zynrs[i]);
-            }
-        }
-        zynrs = [];
-        zynrs = data;
-        Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
-    } else if (type == 'edit') {
-        var id = zynrs[idx].id;
-        var nrid = zynrs[idx].guid;
-        Ext.Ajax.request({
-            url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_NR_DEL',
-            method: 'POST',
-            async: false,
-            params: {
-                V_I_ID: id
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText);
-                if (resp.success) {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_NR_VIEW',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID: nrid
-                        },
-                        success: function (resp) {
-                            var resp = Ext.decode(resp.responseText);
-                            zynrs = [];
-                            for (var i = 0; i < resp.list.length; i++) {
-                                zynrs.push({
-                                    nr: resp.list[i].V_MEMO,
-                                    id: resp.list[i].I_ID,
-                                    guid: resp.list[i].V_GUID
-                                });
-                            }
-                            Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
-                        }
-                    });
-                }
 
-            }
-        });
-    }
-
-}
 
 function zhuxiangadd() {
     var groupguid = '';
@@ -2469,7 +2387,6 @@ function zixiangadd() {
         }
     });
 }
-
 /*
  各种弹出页面 父窗口选择相应值后   回调 函数
  */
@@ -2499,5 +2416,89 @@ function getEquipReturnValue(ret) {
 }
 
 
+
+
+
+
+function Delete4(value, metaData, record, rowIdx) {
+    metaData.style = 'text-align: center';
+    return '<a href=javascript:OnBtnRemove4(\'' + rowIdx + '\');>删除</a>';
+}
+function OnBtnRemove4(idx) {
+    var data = [];
+    if (type == 'add') {
+        for (var i = 0; i < zynrs.length; i++) {
+            if (i != idx) {
+                data.push(zynrs[i]);
+            }
+        }
+        zynrs = [];
+        zynrs = data;
+        Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
+    } else if (type == 'edit') {
+        var id = zynrs[idx].id;
+        var nrid = zynrs[idx].guid;
+        Ext.Ajax.request({
+            url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_NR_DEL',
+            method: 'POST',
+            async: false,
+            params: {
+                V_I_ID: id
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.success) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_NR_VIEW',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: nrid
+                        },
+                        success: function (resp) {
+                            var resp = Ext.decode(resp.responseText);
+                            zynrs = [];
+                            for (var i = 0; i < resp.list.length; i++) {
+                                zynrs.push({
+                                    nr: resp.list[i].V_MEMO,
+                                    id: resp.list[i].I_ID,
+                                    guid: resp.list[i].V_GUID
+                                });
+                            }
+                            Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
+}
+
+function Atleft(value, metaData) {
+    metaData.style = 'text-align: left';
+    return value;
+}
+function AtRight(value, metaData) {
+    metaData.style = 'text-align: right';
+    return value;
+}
+
+
+function a1(id) {
+    var oson = document.getElementById(id);
+    with (oson) {
+        oson.style.display = "block";
+        oson.style.left = (window.event.clientX - 450) + 'px';
+        oson.style.top = (window.event.clientY - 138) + 'px';
+        oson.style.background = 'white';
+    }
+
+}
+function a2(id) {
+    document.getElementById(id).style.display = 'none';
+
+}
 
 

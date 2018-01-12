@@ -44,7 +44,7 @@ Ext.require([
 var ckStore = Ext.create("Ext.data.Store", {
     autoLoad: true,
     storeId: 'ckStore',
-    fields: ['V_DEPTCODE','V_DEPTNAME', ],
+    fields: ['V_DEPTCODE','V_DEPTNAME' ],
     proxy: {
         type: 'ajax',
         async: false,
@@ -75,7 +75,7 @@ var ganttgrid = Ext.create('Ext.grid.Panel', {
 var zyqStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'zyqStore',
-    fields: ['V_DEPTCODE','V_DEPTNAME', ],
+    fields: ['V_DEPTCODE','V_DEPTNAME' ],
     proxy: {
         type: 'ajax',
         async: false,
@@ -94,7 +94,7 @@ var zyqStore = Ext.create("Ext.data.Store", {
 var zyStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'zyStore',
-    fields: ['V_MAJOR_CODE','V_MAJOR_NAME', ],
+    fields: ['V_MAJOR_CODE','V_MAJOR_NAME' ],
     proxy: {
         type: 'ajax',
         async: false,
@@ -246,6 +246,15 @@ var panel = Ext.create('Ext.panel.Panel',{
     ]
 });
 
+
+
+
+
+
+
+
+
+
 var panel1 = Ext.create('Ext.panel.Panel',{
     frame : true,
     layout:'column',
@@ -312,8 +321,8 @@ var grid1=Ext.create('Ext.grid.Panel',{
             var w=screen.availWidth-10;
             var h=screen.availHeight-30;
             var objwin = window.open(AppUrl + 'page/pm_dxgc_bz01/index_detail.html?guid='+b.data.V_GUID
-                + "&V_PROJECT_NAME=" + b.data.V_PROJECT_NAME
-                + "&V_PROJECT_CODE=" + b.data.V_PROJECT_CODE,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
+                + "&V_PROJECT_NAME=" + encodeURI(b.data.V_PROJECT_NAME)
+                + "&V_PROJECT_CODE=" + encodeURI(b.data.V_PROJECT_CODE),"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
 
             return ;
 
@@ -427,7 +436,7 @@ var grid1=Ext.create('Ext.grid.Panel',{
 });
 
 var panelup = Ext.create('Ext.panel.Panel',{
-    frame : true,
+    //frame : true,
     layout:'border',
     region:'center',
     baseCls:'my-panel-noborder',
@@ -564,22 +573,23 @@ var tabpanel = Ext.create('Ext.tab.Panel', {
                 { xtype:'textarea',id:'aqdc',editable:false,readOnly:true,style:'margin:5px 5px 5px 5px',fieldLabel:'安全对策',labelAlign:'right',labelWidth : 80,width:530,height:80}
             ]}]
 });
-var window = Ext.create('Ext.window.Window', {
+var windowPanel = Ext.create('Ext.window.Window', {
     id : 'win',
     closeAction : 'hide',
     width : window.innerWidth,
-    height : window.innerHeight,
+    height: window.innerHeight,
     modal : true,
     frame : true,
     layout : 'vbox',
-    items : [ panelpic ,tabpanel]
+    items : [ panelpic ,tabpanel ]
 });
+
+
 Ext.onReady(function() {
-    Ext.QuickTips.init();
+    //Ext.QuickTips.init();
 
     Ext.create('Ext.container.Viewport', {
-        layout : 'fit',
-        id:'viewport',
+        layout : 'border',
         items : [panelup]
     });
     QueryGrid();
@@ -894,36 +904,7 @@ Ext.onReady(function() {
 
     });
 });
-function OnBtnAdd(){
-    type="add";
-    var record=Ext.getCmp('grid1').getSelectionModel().getSelection();
-    if(record.length==0){
-        alert('请在上表选择放行计划');
-        return;
-    }
-    var treenode=Ext.getCmp('grid').getSelectionModel().getSelection();
-    if(treenode.length==0){
-        alert('请在左表选择上级工程项目');
-        return;
-    }
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-    var genre = 2;
-    console.log(treenode[0].data.rownumber);
-    window.open(AppUrl+'page/pm_dxgc_bz01/edit.html?sjgcbm='+treenode[0].data.Code+'&&sjgcmc='+treenode[0].data.Name+"&&sjgcguid="+treenode[0].data.id+'&&fxjhbm=' +record[0].data.V_PROJECT_CODE+'&&fxjhmc='+record[0].data.V_PROJECT_NAME+'&&fxjhguid='+ record[0].data.V_GUID+'&&rownumber='+ treenode[0].data.rownumber+'&&type=add&&deptcode='+Ext.getCmp('ck').getValue()+'&&genre='+genre, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-}
-function OnBtnAdd2(){
-    type="add";
-    var record=Ext.getCmp('grid1').getSelectionModel().getSelection();
-    if(record.length==0){
-        alert('请在上表选择放行计划');
-        return;
-    }
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-    var genre = 1;
-    window.open(AppUrl+'page/pm_dxgc_bz01/edit.html?fxjhbm=' +record[0].data.V_PROJECT_CODE+'&&fxjhmc='+record[0].data.V_PROJECT_NAME+'&&fxjhguid='+ record[0].data.V_GUID+'&&type=add&&deptcode='+Ext.getCmp('ck').getValue()+'&&genre='+genre, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-}
+
 function a1(id){
     var oson = document.getElementById(id);
     with(oson){
@@ -958,6 +939,32 @@ function a2(id){
      Ext.getCmp('detail').hide();
      */
 }
+
+
+function loadGantt(gid){
+    Ext.data.StoreManager.lookup('ganttStore').load({
+        params: {
+            V_V_GUID_FXJH:gid,
+            V_BY1: "",
+            V_BY2: "",
+            V_BY3:""
+        }
+    });
+}
+
+
+
+
+function AtRight(value, metaData) {
+    metaData.style = 'text-align: right';
+    return value;
+}
+
+function Atleft(value, metaData) {
+    metaData.style = 'text-align: left';
+    return value;
+}
+
 function OnBtnDelete(){
     var treenode=Ext.getCmp('grid').getSelectionModel().getSelection();
     if(treenode.length==0){
@@ -991,41 +998,7 @@ function OnBtnDelete(){
         }
     });
 }
-function QueryGrid(){
-    Ext.data.StoreManager.lookup('gridStore').load({
-        params:{
-            V_V_YEAR:Ext.getCmp('year').getValue(),
-            V_V_MONTH:"",
-            V_V_ORGCODE:"",
-            V_V_SPECIALTY:"",
-            V_V_PROJECT_CODE:"",
-            V_V_PROJECT_NAME:"",
-            V_V_CONTENT:"",
-            V_V_BY1:"",
-            V_V_BY2:""
-        }
-    });
 
-}
-function loadGantt(gid){
-    Ext.data.StoreManager.lookup('ganttStore').load({
-        params: {
-            V_V_GUID_FXJH:gid,
-            V_BY1: "",
-            V_BY2: "",
-            V_BY3:""
-        }
-    });
-}
-
-function Atleft(value, metaData) {
-    metaData.style = 'text-align: left';
-    return value;
-}
-function AtRight(value, metaData) {
-    metaData.style = 'text-align: right';
-    return value;
-}
 function OnBtnUpdate(){
     var record=Ext.getCmp('grid1').getSelectionModel().getSelection();
     if(record.length==0){
@@ -1051,5 +1024,53 @@ function OnBtnUpdate(){
         xmmc=treenode[0].data.Name.split('(主)')[0];
     }
     window.open(AppUrl+'page/pm_dxgc_bz01/edit.html?genre='+genre+'&&treeguid='+treeguid+'&&sjgcbm='+treenode[0].data.Code+'&&sjgcmc='+xmmc+"&&sjgcguid="+treenode[0].data.id+'&&fxjhbm=' +record[0].data.V_PROJECT_CODE+'&&fxjhmc='+record[0].data.V_PROJECT_NAME+'&&fxjhguid='+ record[0].data.V_GUID+'&&type=edit&&deptcode='+Ext.getCmp('ck').getValue()+'&&rownumber='+ treenode[0].data.rownumber, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+}
+
+function OnBtnAdd(){
+    type="add";
+    var record=Ext.getCmp('grid1').getSelectionModel().getSelection();
+    if(record.length==0){
+        alert('请在上表选择放行计划');
+        return;
+    }
+    var treenode=Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(treenode.length==0){
+        alert('请在左表选择上级工程项目');
+        return;
+    }
+    var owidth = window.document.body.offsetWidth-200;
+    var oheight = window.document.body.offsetHeight-100 ;
+    var genre = 2;
+    console.log(treenode[0].data.rownumber);
+    window.open(AppUrl+'page/pm_dxgc_bz01/edit.html?sjgcbm='+treenode[0].data.Code+'&&sjgcmc='+treenode[0].data.Name+"&&sjgcguid="+treenode[0].data.id+'&&fxjhbm=' +record[0].data.V_PROJECT_CODE+'&&fxjhmc='+record[0].data.V_PROJECT_NAME+'&&fxjhguid='+ record[0].data.V_GUID+'&&rownumber='+ treenode[0].data.rownumber+'&&type=add&&deptcode='+Ext.getCmp('ck').getValue()+'&&genre='+genre, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+}
+function OnBtnAdd2(){
+    type="add";
+    var record=Ext.getCmp('grid1').getSelectionModel().getSelection();
+    if(record.length==0){
+        alert('请在上表选择放行计划');
+        return;
+    }
+    var owidth = window.document.body.offsetWidth-200;
+    var oheight = window.document.body.offsetHeight-100 ;
+    var genre = 1;
+    window.open(AppUrl+'page/pm_dxgc_bz01/edit.html?fxjhbm=' +record[0].data.V_PROJECT_CODE+'&&fxjhmc='+record[0].data.V_PROJECT_NAME+'&&fxjhguid='+ record[0].data.V_GUID+'&&type=add&&deptcode='+Ext.getCmp('ck').getValue()+'&&genre='+genre, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+}
+
+function QueryGrid(){
+    Ext.data.StoreManager.lookup('gridStore').load({
+        params:{
+            V_V_YEAR:Ext.getCmp('year').getValue(),
+            V_V_MONTH:"",
+            V_V_ORGCODE:"",
+            V_V_SPECIALTY:"",
+            V_V_PROJECT_CODE:"",
+            V_V_PROJECT_NAME:"",
+            V_V_CONTENT:"",
+            V_V_BY1:"",
+            V_V_BY2:""
+        }
+    });
 
 }
