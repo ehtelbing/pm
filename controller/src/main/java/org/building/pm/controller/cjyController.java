@@ -1249,6 +1249,53 @@ public class cjyController {
                 V_V_DEPTNEXTCODE, V_V_CONTENT);
         return result;
     }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SEL(@RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SEL(V_V_WEEK_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
+                                                        @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET(V_V_DEFECT_GUID,V_V_WEEK_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_SET_GUID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_SET_GUID(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_WEEK_SET_GUID(V_V_GUID, V_V_ORGCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_DEFECT_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_DEFECT_DEL(
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_WEEK_DEFECT_DEL();
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_DEL(@RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_DEL(V_V_WEEK_GUID);
+        return result;
+    }
 }
 
 
