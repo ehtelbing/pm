@@ -47,11 +47,16 @@ Ext.onReady(function () {
     var sqxzt = Ext.create("Ext.data.Store", {
         autoLoad: true,
         storeId: 'sqxzt',
-        fields: ['V_STATECODE', 'V_STATENAME'],
+        fields: ['I_ID',
+            'V_SOURCECODE',
+            'V_SOURCENAME',
+            'V_SOURCETABLE',
+            'V_SOURCEREMARK',
+            'I_ORDER'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'qx/PRO_PM_07_DEFECT_STATE_VIEW',
+            url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_VIEW',
             actionMethods: {
                 read: 'POST'
             },
@@ -65,9 +70,10 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('qxzt').select(store.first());
+                Ext.getCmp('qxzt').select('defct01');
                 zyStoreload = true;
                 _init();
+                _selectOverhaulApply();
             }
         }
     });
@@ -106,6 +112,8 @@ Ext.onReady(function () {
         header : false,
         frame : true,
         layout : 'column',
+        style: 'background-color:#FFFFFF',
+        baseCls: 'my-panel-no-border',
         defaults : {
             labelAlign : 'right',
             //labelWidth : 100,
@@ -117,23 +125,14 @@ Ext.onReady(function () {
             xtype: 'combo',
             store: sqxzt,
             editable: false,
-            fieldLabel: '缺陷状态',
+            fieldLabel: '缺陷类型',
             labelWidth:70,
             width: 180,
-            displayField: 'V_STATENAME',
-            valueField: 'V_STATECODE',
+            displayField: 'V_SOURCENAME',
+            valueField: 'V_SOURCECODE',
             queryMode: 'local',
             baseCls: 'margin-bottom'
-        } ]
-    });
-
-    var buttonPanel = Ext.create('Ext.Panel', {
-        id : 'buttonPanel',
-        defaults : {
-            style : 'margin:2px',
-            width : 80
-        },
-        items : [ {
+        },{
             xtype : 'button',
             text : '查询',
             handler : _selectOverhaulApply
@@ -141,8 +140,7 @@ Ext.onReady(function () {
             xtype: 'button',
             text: '生成工单',
             handler : createWorkorder
-        }
-        ]
+        } ]
     });
 
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
@@ -289,7 +287,7 @@ Ext.onReady(function () {
         items : [ {
             region : 'north',
             border : false,
-            items : [ inputPanel,buttonPanel ]
+            items : [ inputPanel]
         }, {
             region : 'center',
             layout : 'fit',
@@ -308,7 +306,7 @@ Ext.onReady(function () {
     });
 
     _init()
-    _selectOverhaulApply();
+   // _selectOverhaulApply();
 })
 
 function _init() {

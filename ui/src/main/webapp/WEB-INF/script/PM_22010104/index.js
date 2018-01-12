@@ -1106,40 +1106,6 @@ function _init(){
         imagestore.load();
 
 
-        /*index01 = imagestore.getCount() - 1;
-        index02 = imagestore.getCount() - 2;
-        index03 = imagestore.getCount() - 3;
-
-        if(imagestore.getCount()==1){
-            V_PICGUID1 = imagestore.getAt(0).get('V_PICGUID');
-            picguidbegin = V_PICGUID1;
-        }
-        if(imagestore.getCount()==2){
-            V_PICGUID1 = imagestore.getAt(1).get('V_PICGUID');
-            V_PICGUID2 = imagestore.getAt(0).get('V_PICGUID');
-
-        }
-        if(imagestore.getCount()>=3)
-        {
-            V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
-            V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
-            V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-
-        }
-        picguidbegin = V_PICGUID1;*/
-        //alert(1.8);
-
-        /*Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'>" +
-            "<tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td>" +
-            "<td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> " +
-            "<td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> " +
-            "<td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> " +
-            "<td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> " +
-            "<td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > " +
-            "<td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> " +
-            "<td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
-        );*/
-
         var spqzstore = Ext.data.StoreManager.lookup('spqzstore');
         spqzstore.proxy.extraParams = {
             V_V_DBGUID : V_GUID
@@ -1308,96 +1274,7 @@ function _preViewImage() {
 
 }
 
-/*function _preViewImage() {
-    var imagestore = Ext.data.StoreManager.lookup('imagestore');
-    imagestore.proxy.extraParams = {
-        V_V_GUID: V_GUID
-    };
-    //matGroupSecondStore.currentPage = 1;
-    imagestore.load();
 
-    index01 = imagestore.getCount()-1;
-    index02 = imagestore.getCount()-2;
-    index03 = imagestore.getCount()-3;
-    if(imagestore.getCount()==1){
-        V_PICGUID1 = imagestore.getAt(0).get('V_PICGUID');
-        picguidbegin = V_PICGUID1;
-    }
-    if(imagestore.getCount()==2){
-        V_PICGUID1 = imagestore.getAt(1).get('V_PICGUID');
-        V_PICGUID2 = imagestore.getAt(0).get('V_PICGUID');
-
-    }
-    if(imagestore.getCount()>=3)
-    {
-        V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
-        V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
-        V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-
-    }
-    picguidbegin = V_PICGUID1;
-
-    Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
-    );
-}*/
-
-
-
-
-/*function _delete1()
-{
-    if(V_PICGUID1 == null || V_PICGUID1 == "")
-    {
-        Ext.Msg.alert('提示信息', '请选择一张图片');
-    }else{
-        var imagestore = Ext.data.StoreManager.lookup('imagestore');
-        Ext.MessageBox.show({
-            title: '确认',
-            msg: '您确定要删除吗亲？',
-            buttons: Ext.MessageBox.YESNO,
-            icon: Ext.MessageBox.QUESION,
-            fn: function (btn) {
-                if (btn == 'yes') {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_PIC_DEL',
-                        type: 'ajax',
-                        method: 'POST',
-                        params: {
-                            V_V_GUID: V_GUID,
-                            V_V_PICGUID : V_PICGUID1
-                        },
-                        success: function (response) {
-                            var data = Ext.decode(response.responseText);//后台返回的值
-                            if (data.success) {//成功，会传回true
-                                Ext.Msg.alert('提示信息', '删除成功');
-                                V_PICGUID1="";
-                                V_PICGUID2="";
-                                V_PICGUID3="";
-                                _preViewImage();
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: data.message,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR
-                                });
-                            }
-                        },
-                        failure: function (response) {//访问到后台时执行的方法。
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            })
-                        }
-
-                    })
-                }
-            }
-        });
-    }
-}*/
 
 function _delete(id,suffix)
 {

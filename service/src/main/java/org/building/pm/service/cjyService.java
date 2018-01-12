@@ -2404,4 +2404,143 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PM_DEFECTTOWORKORDER_SEL(String V_V_WEEK_GUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWORKORDER_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SEL(:V_V_WEEK_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_WEEK_GUID", V_V_WEEK_GUID);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SEL");
+        return result;
+    }
+
+    public HashMap PM_DEFECTTOWORKORDER_SET(String V_V_DEFECT_GUID,String V_V_WEEK_GUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWORKORDER_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SET" + "(:V_V_DEFECT_GUID,:V_V_WEEK_GUID,:V_INFO)}");
+
+            cstmt.setString("V_V_DEFECT_GUID", V_V_DEFECT_GUID);
+            cstmt.setString("V_V_WEEK_GUID", V_V_WEEK_GUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SET");
+        return result;
+    }
+
+    public HashMap PRO_PM_03_PLAN_WEEK_SET_GUID(String V_V_GUID,String V_V_ORGCODE) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_WEEK_SET_GUID");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_SET_GUID" + "(:V_V_GUID,:V_V_ORGCODE,:V_INFO)}");
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_SET_GUID");
+        return result;
+    }
+
+    public HashMap PRO_PM_03_PLAN_WEEK_DEFECT_DEL() throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_WEEK_DEFECT_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_DEFECT_DEL" + "(:V_INFO)}");
+
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_DEFECT_DEL");
+        return result;
+    }
+
+    public HashMap PM_DEFECTTOWORKORDER_DEL(String V_V_WEEK_GUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWORKORDER_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_DEL" + "(:V_V_WEEK_GUID,:V_INFO)}");
+
+            cstmt.setString("V_V_WEEK_GUID", V_V_WEEK_GUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_DEL");
+        return result;
+    }
 }
