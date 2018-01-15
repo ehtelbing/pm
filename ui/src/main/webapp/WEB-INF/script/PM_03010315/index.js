@@ -1138,6 +1138,47 @@ function OnButtonSaveClick() {
                  });*/
                 //Ext.Msg.alert('操作信息', '保存成功');
 
+                //缺陷详细添加，缺陷状态变更为已计划
+                var weekid='0';
+                Ext.Ajax.request({
+                    url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+
+                        if (resp.list.length == 1) {
+                            weekid=resp.list[0].V_WEEKID;
+                        }
+                    }
+                });
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: guid(),
+                        V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+':缺陷导入周计划（'+weekid+'）',
+                        V_V_FINISHCODE: '30',
+                        V_V_KEY:retdata//缺陷guid
+
+                    },
+                    success: function (ret) {
+                        var resp = Ext.decode(ret.responseText);
+                        if(resp.V_INFO=='成功'){
+
+                        }else{
+                            alert("缺陷日志记录失败");
+                        }
+
+                    }
+                });
+
+
+
                 window.close();
                 window.opener.closeSelf();
             } else {
