@@ -1319,6 +1319,16 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_SET_STATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_SET_STATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                       @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_WEEK_SET_STATE(V_V_GUID, V_V_STATECODE);
+        return result;
+    }
+
 }
 
 

@@ -416,8 +416,36 @@ function _agree() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.ret == '任务提交成功') {
-                window.close();
-                window.opener.OnPageLoad();
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        V_V_GUID: V_ORDERGUID,
+                        V_V_STATECODE: '30'//审批完成
+
+                    },
+                    success: function (response) {
+                        var data = Ext.decode(response.responseText);
+                        if(data.V_INFO=='success'){
+                            window.close();
+                            window.opener.OnPageLoad();
+                        }else{
+                            alert("周计划状态修改失败");
+                        }
+
+
+                    },
+                    failure: function (response) {
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: response.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                    }
+                });
+
             }
 
 
