@@ -2543,4 +2543,64 @@ public class cjyService {
         logger.info("end PM_DEFECTTOWORKORDER_DEL");
         return result;
     }
+
+    public HashMap PRO_PM_DEFECT_LOG_SET(String V_V_GUID,String V_V_LOGREMARK,String V_V_FINISHCODE,String V_V_KEY) throws SQLException {
+
+        logger.info("begin PRO_PM_DEFECT_LOG_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_LOG_SET" + "(:V_V_GUID,:V_V_LOGREMARK,:V_V_FINISHCODE,:V_V_KEY,:V_CURSOR)}");
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_LOGREMARK", V_V_LOGREMARK);
+            cstmt.setString("V_V_FINISHCODE", V_V_FINISHCODE);
+            cstmt.setString("V_V_KEY", V_V_KEY);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_LOG_SET");
+        return result;
+    }
+
+    public HashMap PRO_PM_DEFECT_STATE_SET(String V_V_GUID,String V_V_STATECODE) throws SQLException {
+
+        logger.info("begin PRO_PM_DEFECT_STATE_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_STATE_SET" + "(:V_V_GUID,:V_V_STATECODE,:V_INFO)}");
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_INFO = (String) cstmt.getObject("V_INFO");
+            result.put("V_INFO", V_INFO);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_STATE_SET");
+        return result;
+    }
 }
