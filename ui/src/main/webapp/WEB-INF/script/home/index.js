@@ -52,6 +52,7 @@ function append(item, title, link) {
     }
 }
 
+//构建树
 function _AssembleAccordions(data) {
     if (data == "") {
     } else {
@@ -75,6 +76,7 @@ function _AssembleAccordions(data) {
                         }
                     }),
                     listeners: {
+
                         itemclick: function (view, model, element, index, e) {
                             e.preventDefault();
                             var htmlStr = '';
@@ -107,6 +109,10 @@ function _AssembleAccordions(data) {
                             }
                         }
                     }
+
+
+
+
                 })]
             });
             array.push(tree);
@@ -135,6 +141,7 @@ function _CreateHeader() {
     });
 }
 
+//菜单布局
 function _CreateSidebar(accordions) {
     return Ext.create('Ext.panel.Panel', {
         region: 'west',
@@ -144,14 +151,16 @@ function _CreateSidebar(accordions) {
         collapsible: true,
         collapseMode: 'mini',
         preventHeader: true,
-        items: [Ext.create('Ext.panel.Panel', {
+        items: [
+            accordions,
+        /*Ext.create('Ext.panel.Panel', {
             title: '菜单',
             titleAlign: 'center',
             width: 200,
             layout: 'accordion',
             items: accordions,
             region: 'center'
-        }),
+        })*/,
             {
                 xtype: 'panel',
                 title: '个人信息',
@@ -218,7 +227,7 @@ function _CreateViewport(header, sidebar, workplace) {
     return object;
 }
 
-function OnPageLoaded() {
+/*function OnPageLoaded() {
     if (Ext.util.Cookies.get('v_rolecode') == null) {
         location.href = AppUrl + 'page/login/login' + ".html";
     }
@@ -230,9 +239,9 @@ function OnPageLoaded() {
         //url : AppUrl + 'tree/NewMenuTree',
         url: AppUrl + 'tree/PRO_BASE_NEW_MENU_SEL',
         params: {
-            /*RoleCode : Ext.util.Cookies.get('v_rolecode'),
+            /!*RoleCode : Ext.util.Cookies.get('v_rolecode'),
              DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
-             MENUTYPE:menutype*/
+             MENUTYPE:menutype*!/
 
             IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
             IS_V_SYSTYPE: '1',
@@ -252,6 +261,100 @@ function OnPageLoaded() {
     });
     if (menucode != "" && menucode != null) {
         window.parent.append(menucode, menuname, APP + v_url);
+    }
+}*/
+
+function OnPageLoaded() {
+    if (Ext.util.Cookies.get('v_rolecode') == null) {
+        location.href = AppUrl + 'page/login/login' + ".html";
+    }
+    Ext.getBody().mask('<p>设备管理系统</p><p>系统加载中...</p>');
+
+
+    var Accordions;
+    append('Index', '首页', AppUrl + "page/home/home" + ".html", false);
+    var header = _CreateHeader();
+
+    Ext.Ajax.request({
+        url: AppUrl+'/menu/topMenu.json',
+        method: 'post',
+        params: {
+            IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
+            IS_V_SYSTYPE: '1',
+            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_HOME_MENU: menutype
+        },
+        success: function (response) {
+            var result = Ext.decode(response.responseText);
+
+            var toolbar = Ext.create("Ext.Toolbar", {
+                id: 'menuTbar',
+                dock: 'left',
+                border: 0,
+                style: ' border: 0',
+                defaults: { margin:'0 0 1px 0',width:167 }
+            });
+            var header = _CreateHeader();
+            toolbar.add(result);
+            var menu = Ext.create('Ext.panel.Panel', {
+                region: 'west',
+                title:'菜单',
+                width:180,
+                border: 0,
+                style: ' border: 0',
+                dockedItems:[toolbar]
+            });
+            //_CreateViewport(header, menu, container);
+            onHandler();
+
+            var sidebar = _CreateSidebar(menu);
+            _CreateViewport(header, sidebar, container);
+            Ext.getBody().unmask();
+            GETDDDL();
+        }
+    });
+
+    if (menucode != "" && menucode != null) {
+        window.parent.append(menucode, menuname, APP + v_url);
+    }
+}
+
+function onHandler() {
+
+    var item = Ext.ComponentQuery.query('menuitem');
+    for (var i = 0; i < item.length; i++) {
+        item[i].on("click", handlerMenu);
+    }
+}
+
+function handlerMenu(item, e) {
+    e.preventDefault();
+    var tab = container.items.map[item.sid];
+
+    if (tab === undefined) {
+        if (item.src == undefined) {
+            Ext.example.msg('提示', '正在建设中');
+        } else {
+            tab = Ext.create('Ext.panel.Panel', {
+                id: item.sid,
+                title: item.text,
+                closable: true,
+                html: [
+                    '<iframe id="Workspace'
+                    , item.sid
+                    , '" name="Workspace'
+                    , item.sid
+                    , '" frameborder="0" width="100%" height="100%" src="'
+                    , AppUrlFrame
+                    , item.src
+                    , '" />'
+                ].join('')
+            });
+            container.add(tab);
+            container.setActiveTab(tab);
+        }
+    } else {
+        container.setActiveTab(tab);
     }
 }
 
