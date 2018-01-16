@@ -27,7 +27,7 @@ public class hpTimer {
 
     @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
     public void setDJDB() throws SQLException {
-        HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
+      /*  HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -40,7 +40,7 @@ public class hpTimer {
         long nh = 1000 * 60 * 60;//小时
         long nm = 1000 * 60;//分钟
 
-        String v_v_timer_guid = String.valueOf(UUID.randomUUID());
+
         for (int i = 0; i < dataList.size(); i++) {
 
             String timetype = dataList.get(i).get("V_CRITERION_CYCLETYPE").toString();//点检周期类型（小时，天，周，月，年）
@@ -81,7 +81,7 @@ public class hpTimer {
 
                 for (int j = 1; j <= hourc; j++) {
                     long timeer = plandate.getTime() + j * zq * nh;
-
+                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
             } else if (timetype.equals("天")) {
@@ -91,7 +91,7 @@ public class hpTimer {
 
                 for (int j = 1; j <= dayc; j++) {
                     long timeer = plandate.getTime() + j * zq * nd;
-
+                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
@@ -103,7 +103,7 @@ public class hpTimer {
 
                 for (int j = 1; j <= weekc; j++) {
                     long timeer = plandate.getTime() + j * zq * nw;
-
+                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
@@ -151,7 +151,7 @@ public class hpTimer {
 
                     Date date = new Date(yearzq + "-" + monthzq + "-" + dayp);
                     long timeer = date.getTime();
-
+                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
@@ -177,70 +177,13 @@ public class hpTimer {
                     int yearzq = yearp + j * zq;
                     Date date = new Date(yearzq + "-" + monthp + "-" + dayp);
                     long timeer = date.getTime();
-
+                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
 
                 }
 
             }
-        }
-    }
-/*
-
-                String intNumberzhouqi = String.valueOf(zhouqi);
-                String intNumber = intNumberzhouqi.substring(0, intNumberzhouqi.indexOf("."));
-                int index = intNumberzhouqi.lastIndexOf(".");
-                char[] ch = intNumberzhouqi.toCharArray();
-                String lastString = String.copyValueOf(ch, index + 1, ch.length - index - 1);
-                String lastString2 = "0." + lastString;
-                Double d = Double.valueOf(lastString2);
-                Calendar ca = Calendar.getInstance();
-                ca.setTime(sdftime.parse(scTime));
-                ca.add(Calendar.HOUR_OF_DAY, Integer.parseInt(intNumber));
-                ca.add(Calendar.MINUTE, (int) (d * 60));
-                System.out.println("第" + i + "个最终时间时间为" + sdftime.format(ca.getTime()));
-                System.out.println("第" + i + "个当前时间时间为" + sdftime.format(new Date()));
-                String date1 = sdftime.format(ca.getTime());
-                String date2 = sdftime.format(new Date());
-                if (date1.equals(date2)) {
-                    // HashMap dataSet = hpService.PM_06_DJ_CRITERION_JST_SET(pm_jst, "发送人即时通密码", "发送人即时通账号", (String) dataList.get(i).get("V_PLAN_PER"), "日常点检", (String) dataList.get(i).get("V_CRITERION_CONTENT"), 0, date2);
-                    HashMap dataSet = hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"));
-                }
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }*/
+    }
 
-
-    /*//查询AM_SEND有没有新数据有的话调用即时通
-    @Scheduled(cron = "0 0/5 * * * ?")//这是定时时间的地方
-    public void sendJstWithNew(){
-        try {
-            HashMap data = hpService.PM_AM_SEND_SEL();
-
-            List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
-
-            if (dataList != null) {
-                for (int i = 0; i < dataList.size(); i++) {
-                    Double I_I_FINISH = (Double) dataList.get(i).get("I_FINISH");
-                    String state = String.valueOf(I_I_FINISH);
-                    if (state.equals("0.0")) {
-                        String V_V_SEND_PERSON = (String) dataList.get(i).get("V_SEND_PERSON");
-                        String ret = hpService.AMToMessIFCheck("<SendMessage><AM_Name>" + V_V_SEND_PERSON + "</AM_Name><UserId></UserId><Type>即时通</Type><Access></Access><EMail></EMail><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2><PhoneNum></PhoneNum><MessageTxt></MessageTxt><SystemName>AKSB</SystemName></SendMessage>", "http://localhost:8081/pm/app/pm/page/login/login.html");
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }*/
 }
