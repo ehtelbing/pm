@@ -1138,6 +1138,89 @@ function OnButtonSaveClick() {
                  });*/
                 //Ext.Msg.alert('操作信息', '保存成功');
 
+                //缺陷详细添加，缺陷状态变更为已计划
+                var weekid='0';
+                Ext.Ajax.request({//获取V_WEEKID
+                    url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+
+                        if (resp.list.length == 1) {
+                            weekid=resp.list[0].V_WEEKID;
+                        }
+                    }
+                });
+
+                Ext.Ajax.request({//获取所选缺陷GUID
+                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_WEEK_GUID: V_WEEKPLAN_GUID
+                    },
+                    success: function (resp) {
+                        var respguid = Ext.decode(resp.responseText);
+
+                        if (respguid.list.length >0) {
+
+                            for(var i=0;i<respguid.list.length;i++)
+                            {
+                                Ext.Ajax.request({//保存缺陷详细日志
+                                    url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                                    method: 'POST',
+                                    async: false,
+                                    params: {
+                                        V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                        V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+':缺陷导入周计划（'+weekid+'）',
+                                        V_V_FINISHCODE: '30',
+                                        V_V_KEY:''//缺陷guid
+
+                                    },
+                                    success: function (ret) {
+                                        var resp = Ext.decode(ret.responseText);
+                                        if(resp.V_INFO=='成功'){
+                                            //修改缺陷状态
+                                            Ext.Ajax.request({
+                                                url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                                method: 'POST',
+                                                async: false,
+                                                params: {
+                                                    V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                    V_V_STATECODE: '50',//已计划
+
+                                                },
+                                                success: function (ret) {
+                                                    var resp = Ext.decode(ret.responseText);
+                                                    if(resp.V_INFO=='success'){
+
+
+                                                    }else{
+                                                        alert("修改缺陷状态失败");
+                                                    }
+
+                                                }
+                                            });
+
+                                        }else{
+                                            alert("缺陷日志记录失败");
+                                        }
+
+                                    }
+                                });
+                            }
+                        }else{
+
+                            alert("缺陷日志添加错误");
+                        }
+                    }
+                });
+
+
                 window.close();
                 window.opener.closeSelf();
             } else {
