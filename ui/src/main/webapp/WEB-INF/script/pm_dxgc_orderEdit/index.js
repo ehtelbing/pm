@@ -12,7 +12,9 @@ if (location.href.split('?')[1] != undefined) {
     V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
     V_SOURCECODE = Ext.urlDecode(location.href.split('?')[1]).V_V_SOURCECODE;
 }
-
+var processKey = '';
+var V_NEXT_SETP = '';
+var V_STEPNAME = '';
 $(function() {
     bindDate("planStartDate");
     bindDate("planFinDate");
@@ -382,7 +384,9 @@ function CreateBill() {
         if (!confirm("确定下达工单?")) {
             return false;
         } else {
-            Ext.Ajax.request({
+            Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
+            setTimeout(BillGo, 500);
+            /*Ext.Ajax.request({
                 url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
                 type : 'post',
                 async : false,
@@ -404,19 +408,116 @@ function CreateBill() {
                     if (resp.RET=='成功'){
                         Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
                         orderissued();
-                       /* window.close();
+                       /!* window.close();
                         window.opener.addTab();
-                        window.opener.queryGrid();*/
+                        window.opener.queryGrid();*!/
 
                     }else{
                         alert("失败");
                     }
                 }
-            });
+            });*/
         }
     }
 }
+function BillGo() {
+    Ext.Ajax.request({
+        method: 'POST',
+        async: false,
+        url: AppUrl + 'mm/SetMat',
+        params: {
+            V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+            x_personcode: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.V_CURSOR == '1') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'Activiti/StratProcess',
+                    async: false,
+                    method: 'post',
+                    params: {
+                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj"],
+                        parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！"],
+                        processKey: processKey,
+                        businessKey: $("#V_ORDERGUID").val(),
+                        V_STEPCODE: 'start',
+                        V_STEPNAME: V_STEPNAME,
+                        V_IDEA: '请审批！',
+                        V_NEXTPER: $("#selApprover").val(),
+                        V_INPER: Ext.util.Cookies.get('v_personcode')
+                    },
+                    success: function (response) {
+                        if (Ext.decode(response.responseText).ret == 'OK') {
+                            Ext.Ajax.request({
+                                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
+                                type: 'post',
+                                async: false,
+                                params: {
+                                    V_V_PERNAME: $.cookies.get('v_personcode'),
+                                    V_DEFECT_GUID: $.url().param("V_GUID"),
+                                    V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                                    V_V_EQUCODE: $("#V_EQUCODE").val(),
+                                    V_V_WORKORDER_TYPE: $("#selType").val(),
+                                    V_V_DEPTCODEREPARIR: $("#selPlant").val(),
+                                    V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
+                                    V_V_WBS: $("#wbsCode").val(),
+                                    V_V_WBS_TXT: $("#proName").val(),
+                                    V_D_START_DATE: $("#planStartDate").val(),
+                                    V_D_FINISH_DATE: $("#planFinDate").val()
+                                },
+                                success: function (response) {
+                                    var resp = Ext.decode(response.responseText);
+                                    if (resp.RET == '成功') {
+                                        Ext.Ajax.request({
+                                            method: 'POST',
+                                            async: false,
+                                            url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
+                                            params: {
+                                                V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                                                V_V_SEND_STATE: "成功"
+                                            },
+                                            success: function (response) {
+                                                //   Ext.getBody().unmask();//去除页面笼罩
+                                                alert("工单创建成功：" + $("#V_ORDERID").html());
+                                                history.go(0);
+                                            }
+                                        });
+                                    } else {
+                                        alert("工单保存失败！");
+                                    }
+                                }
+                            });
+                        } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                            Ext.Msg.alert('提示', '该流程发起失败！');
+                            // Ext.getBody().unmask();//去除页面笼罩
+                            history.go(0);
+                        }
+                    }
+                });
 
+            }
+            else {
+                Ext.Ajax.request({
+                    method: 'POST',
+                    async: false,
+                    url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
+                    params: {
+                        V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                        V_V_SEND_STATE: "失败"
+                    },
+                    success: function (response) {
+                        // Ext.getBody().unmask();//去除页面笼罩
+                        alert("工单创建失败：" + $("#V_ORDERID").html());
+                        history.go(0);
+                    }
+                });
+            }
+        }
+    });
+
+
+}
 
 /*
  * 查询工单流程审批人
