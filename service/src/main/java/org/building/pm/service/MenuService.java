@@ -122,6 +122,7 @@ public class MenuService {
                 listM.add(m);
             }
         }
+        list.removeAll(listM);
         return listM;
     }
 }
