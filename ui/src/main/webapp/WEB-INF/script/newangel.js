@@ -23,6 +23,7 @@ var myAPP = getPath();
 
 var APP = myAPP;
 var AppUrl = APP + '/app/pm/';
+var AppUrlFrame = APP + '/app/pm';
 
 var imgpath = APP + '/app/pm/images/gif';
 
