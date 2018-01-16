@@ -92,7 +92,12 @@ Ext.onReady(function () {
         storeId: 'djDataCreateStore',
         autoLoad: false,
         pageSize: 15,//测试好用
-        fields: ['V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT', 'V_EQUNAME','V_PERNAME_INPUT', 'V_CRITERION_ITEM', 'V_CRITERION_CONTENT', 'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1', 'V_EQU_STATE2', 'V_EQU_STATE3', 'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3', 'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8', 'V_DJ_DATE', 'V_CK_EQUTYPECODE','V_GUID'],
+        fields: ['V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT',
+            'V_EQUNAME','V_PERNAME_INPUT', 'V_CRITERION_ITEM', 'V_CRITERION_CONTENT',
+            'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1',
+            'V_EQU_STATE2', 'V_EQU_STATE3', 'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3',
+            'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8',
+            'V_DJ_DATE', 'V_CK_EQUTYPECODE','V_GUID','V_DJ_TYPE'],
         proxy: {
             url: AppUrl + 'PM_06/PM_06_DJ_CRITERION_DATA_SEL',
             type: 'ajax',
@@ -827,7 +832,7 @@ function _insertDjDataZC(str) {
             'V_V_DJ_DATE': V_TIME,
             'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
             'V_V_DJ_NR': V_MS,
-            'V_V_DJ_TYPE':'DJ'
+            'V_V_DJ_TYPE':records[0].data.V_DJ_TYPE
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
@@ -886,7 +891,7 @@ function _insertDjDataYC(str) {
             'V_V_DJ_DATE': V_TIME,
             'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
             'V_V_DJ_NR': V_MS,
-            'V_V_DJ_TYPE':'ZY'//Ext.getCmp('djTypeSelect').getValue()
+            'V_V_DJ_TYPE':records[0].data.V_DJ_TYPE
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
