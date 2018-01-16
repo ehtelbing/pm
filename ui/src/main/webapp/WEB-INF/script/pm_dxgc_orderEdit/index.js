@@ -156,7 +156,37 @@ $(function() {
             '&V_EQUTYPECODE='+V_EQUTYPECODE+'&V_EQUCODE='+$("#V_EQUCODE").val()+'&wbsCode='+$("#wbsCode").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
 });
+function loadSPR() {
+    $.ajax({//审批人
+        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+        type: 'post',
+        async: false,
+        data: {
+            V_V_ORGCODE: $("#V_ORGCODE").val(),
+            V_V_DEPTCODE: $("#V_DEPTCODE").val(),
+            V_V_REPAIRCODE: $("#selPlant").val(),
+            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOW_STEP: 'start',
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE: ''
+        },
+        success: function (resp) {
+            $("#selApprover").empty();
+            var result = [];
+            if (resp.list != null) {
+                $.each(resp.list, function (index, item) {
+                    result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
+                });
+                processKey = resp.RET;
+                V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
 
+                $("#selApprover").html(result.join(""));
+            }
+        }
+    });
+}
 function loadPageInfo() {
     Ext.Ajax.request({
         url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_GET',
@@ -243,6 +273,7 @@ function loadRepairList() {
                         .appendTo("#selPlant");
                 }
             });
+            loadSPR();
         }
     });
 
