@@ -1243,6 +1243,28 @@ function createWorkorder() {
                                 success: function (response) {
                                     var resp = Ext.decode(response.responseText);
                                     if (resp.v_info == "success") {
+                                        for (var i = 0; i < record.length; i++) {//录入关系表
+                                            Ext.Ajax.request({//
+                                                method: 'POST',
+                                                async: false,
+                                                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_W',
+                                                params: {
+                                                    V_V_WORKORDER_GUID: V_V_ORDERGUID,
+                                                    V_V_WEEK_GUID: record[i].data.V_GUID
+                                                },
+                                                success: function (response) {
+                                                    var respm = Ext.decode(response.responseText);
+                                                    if(respm.V_INFO=='success'){
+
+                                                    }else{
+                                                        alert("关系数据保存错误,工单生成失败");
+                                                        return;
+                                                    }
+
+                                                }
+                                            });
+
+                                        }
                                         window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
                                             "", "dialogHeight:700px;dialogWidth:1100px");
                                     }

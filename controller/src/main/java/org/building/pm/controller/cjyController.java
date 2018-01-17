@@ -1329,6 +1329,35 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_W", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET_W(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                             @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET_W(V_V_WORKORDER_GUID, V_V_WEEK_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_F", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET_F(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET_F(V_V_WORKORDER_GUID);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SELBYWORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SELBYWORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYWORK(V_V_WORKORDER_GUID, V_V_FLAG);
+        return result;
+    }
 }
 
 

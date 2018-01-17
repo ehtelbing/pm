@@ -478,9 +478,67 @@ function BillGo() {
                                                 V_V_SEND_STATE: "成功"
                                             },
                                             success: function (response) {
-                                                //   Ext.getBody().unmask();//去除页面笼罩
-                                                alert("工单创建成功：" + $("#V_ORDERID").html());
-                                                history.go(0);
+
+                                                Ext.Ajax.request({//修改周计划子表状态
+                                                    method: 'POST',
+                                                    async: false,
+                                                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_F',
+                                                    params: {
+                                                        V_V_WORKORDER_GUID: V_GUID
+                                                    },
+                                                    success: function (response) {
+                                                        var respf = Ext.decode(response.responseText);
+                                                        if(respf.V_INFO=='success'){
+                                                            Ext.Ajax.request({//查找所需修改状态的周计划
+                                                                method: 'POST',
+                                                                async: false,
+                                                                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+                                                                params: {
+                                                                    V_V_WORKORDER_GUID: V_GUID,
+                                                                    V_V_FLAG: "1"
+                                                                },
+                                                                success: function (response) {
+                                                                    var respl = Ext.decode(response.responseText);
+                                                                    if(respl.list.length>0){
+                                                                        for(var i=0;i<respl.list.length;i++){
+                                                                            Ext.Ajax.request({//修改周计划状态
+                                                                                method: 'POST',
+                                                                                async: false,
+                                                                                url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+                                                                                params: {
+                                                                                    V_V_GUID: respl.list[i].V_WEEK_GUID,
+                                                                                    V_V_STATECODE: '31'//已下票
+                                                                                },
+                                                                                success: function (response) {
+                                                                                    var respm = Ext.decode(response.responseText);
+                                                                                    if(respm.V_INFO=='success'){
+
+                                                                                    }else{
+                                                                                        alert("周计划状态修改错误");
+                                                                                        return;
+                                                                                    }
+
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }else{
+                                                                        alert("周计划状态修改失败！");
+                                                                        return;
+                                                                    }
+
+                                                                }
+                                                            });
+                                                            alert("工单创建成功：" + $("#V_ORDERID").html());
+                                                            window.close();
+                                                            window.opener.query();
+                                                        }else{
+                                                            alert("工单状态修改失败！");
+                                                        }
+
+                                                    }
+                                                });
+
+
                                             }
                                         });
                                     } else {
