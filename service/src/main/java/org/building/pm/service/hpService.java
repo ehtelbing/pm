@@ -3464,15 +3464,15 @@ public class hpService {
         return result;
     }
 
-    public HashMap PM_06_DJ_DATA_TIMER_SET(String V_V_GUID,String V_V_TIMER_GUID, String V_V_DJPER,String V_V_DJ_TYPE,String V_V_PLAN_TIME) throws SQLException {
+    public HashMap PM_06_DJ_DATA_TIMER_SET(String V_V_CRITERION_CODE,String V_V_TIMER_GUID, String V_V_DJPER,String V_V_DJ_TYPE,String V_V_PLAN_TIME) throws SQLException {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_TIMER_SET" + "(:V_V_GUID,:V_V_TIMER_GUID,:V_V_DJPER,:V_V_DJ_TYPE,:V_V_PLAN_TIME,:V_INFO)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_TIMER_SET" + "(:V_V_CRITERION_CODE,:V_V_TIMER_GUID,:V_V_DJPER,:V_V_DJ_TYPE,:V_V_PLAN_TIME,:V_INFO)}");
+            cstmt.setString("V_V_CRITERION_CODE", V_V_CRITERION_CODE);
             cstmt.setString("V_V_TIMER_GUID", V_V_TIMER_GUID);
             cstmt.setString("V_V_DJPER", V_V_DJPER);
             cstmt.setString("V_V_DJ_TYPE", V_V_DJ_TYPE);
@@ -3531,14 +3531,11 @@ public class hpService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_06_DJ_CRITERION_DSDATA_SEL" + "(:V_SUMNUM,:V_CURSOR)}");
-            cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);
+            cstmt = conn.prepareCall("{call PM_06_DJ_CRITERION_DSDATA_SEL" + "(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_SUMNUM");
 
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total",sunm);
         } catch (SQLException e) {
             logger.error(e);
         } finally {

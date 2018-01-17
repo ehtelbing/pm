@@ -27,13 +27,13 @@ public class hpTimer {
 
     @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
     public void setDJDB() throws SQLException {
-      /*  HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
+        //获取点检任务
+        HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat nformat = new SimpleDateFormat("yyyy-MM-dd");
 
-        String todate = "";
 
         long nw = 1000 * 24 * 60 * 60 * 7;//天
         long nd = 1000 * 24 * 60 * 60;//天
@@ -47,17 +47,14 @@ public class hpTimer {
             double d = (double) dataList.get(i).get("V_CRITERION_CYCLE");
             int zq = (int) d;//点检周期
 
-            Map result = hpService.PM_06_DJ_DATA_TIMER_MAXTIME(dataList.get(i).get("V_GUID").toString());
-            //String plantime = dataList.get(i).get("V_PLAN_TIME").toString().split(" ")[0] + " 00:00:01";//计划生成时间
-
             Date ndate=new Date();
 
             Date nowdate = null;
             Date plandate = null;
             try {
-                nowdate = format.parse(result.get("RET").toString());//当前日期 小时分钟秒格式转化为date格式
-                todate = nformat.format(ndate) + " 00:00:01"; //当前日期 0点0分1秒
-                plandate = format.parse(todate);
+                nowdate = format.parse(format.format(ndate));//当前日期 小时分钟秒格式转化为date格式
+
+                plandate = format.parse(nformat.format(ndate) + " 00:00:01");//当前日期 0点0分1秒
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -73,16 +70,18 @@ public class hpTimer {
 
             int month = 0;
             int monthc = 0;
-
             if (timetype.equals("小时")) {
                 diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
                 hour = diff / nh;//相差小时数
                 hourc = (int) (hour / zq);//相差周期数
 
                 for (int j = 1; j <= hourc; j++) {
+
                     long timeer = plandate.getTime() + j * zq * nh;
-                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
-                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+
+                    String v_v_timer_guid= String.valueOf(UUID.randomUUID());
+
+                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_CRITERION_CODE"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
             } else if (timetype.equals("天")) {
                 diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
@@ -91,7 +90,10 @@ public class hpTimer {
 
                 for (int j = 1; j <= dayc; j++) {
                     long timeer = plandate.getTime() + j * zq * nd;
-                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
+
+                    String v_v_timer_guid= String.valueOf(UUID.randomUUID());
+
+
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
@@ -103,7 +105,9 @@ public class hpTimer {
 
                 for (int j = 1; j <= weekc; j++) {
                     long timeer = plandate.getTime() + j * zq * nw;
-                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
+
+                    String v_v_timer_guid= String.valueOf(UUID.randomUUID());
+
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
@@ -151,7 +155,9 @@ public class hpTimer {
 
                     Date date = new Date(yearzq + "-" + monthzq + "-" + dayp);
                     long timeer = date.getTime();
-                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
+
+                    String v_v_timer_guid= String.valueOf(UUID.randomUUID());
+
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
@@ -177,13 +183,15 @@ public class hpTimer {
                     int yearzq = yearp + j * zq;
                     Date date = new Date(yearzq + "-" + monthp + "-" + dayp);
                     long timeer = date.getTime();
-                    String v_v_timer_guid = String.valueOf(UUID.randomUUID());
+
+                    String v_v_timer_guid= String.valueOf(UUID.randomUUID());
+
                     hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
 
                 }
 
             }
-        }*/
+        }
     }
 
 }
