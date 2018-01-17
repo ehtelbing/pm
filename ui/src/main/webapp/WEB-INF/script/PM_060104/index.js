@@ -790,10 +790,10 @@ function _djDataZCShow() {
 function _djDataYCShow() {
     var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
 
-    if (records.length != 1) {
+    if (records.length == 0) {
         Ext.MessageBox.show({
             title: '提示',
-            msg: '请选择一条数据',
+            msg: '请选择数据',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
@@ -822,45 +822,56 @@ function _insertDjDataZC(str) {
         V_MS =  Ext.getCmp('V_V_YCMS1').getValue();
     }
 
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_06/PM_06_DJ_DATA_SET',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            'V_V_GUID': records[0].data.V_GUID,
-            'V_V_DJ_STATE': V_STATE,
-            'V_V_DJ_DATE': V_TIME,
-            'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-            'V_V_DJ_NR': V_MS,
-            'V_V_DJ_TYPE':records[0].data.V_DJ_TYPE
-        },
-        success: function (response) {
-            var data = Ext.decode(response.responseText);
-            if (data.success) {
-
-                Ext.MessageBox.alert('提示', '操作成功', callBack);
-                function callBack(id) {
-                    _close();
+    var i_err = 0;
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_06/PM_06_DJ_DATA_SET',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                'V_V_GUID': records[i].data.V_GUID,
+                'V_V_DJ_STATE': V_STATE,
+                'V_V_DJ_DATE': V_TIME,
+                'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DJ_NR': V_MS,//异常现象描述
+                'V_V_DJ_TYPE':'DJ'
+            },
+            success: function (response) {
+                var data = Ext.decode(response.responseText);//后台返回的值
+                if (data.success) {//成功，会传回true
+                    i_err++;
+                    if (i_err == records.length) {
+                        Ext.MessageBox.alert('提示', '操作成功', callBack);
+                        function callBack(id) {
+                            _close();
+                        }
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.V_CURSOR,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR,
+                        fn: function (btn) {
+                            _close();
+                        }
+                    });
                 }
-
-            } else {
+            },
+            failure: function (response) {//访问到后台时执行的方法。
                 Ext.MessageBox.show({
                     title: '错误',
-                    msg: data.message,
+                    msg: response.responseText,
                     buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                });
+                    icon: Ext.MessageBox.ERROR,
+                    fn: function (btn) {
+                        _close();
+                    }
+                })
             }
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
-        }
-    });
+
+        });
+    }
 
 }
 
@@ -881,41 +892,56 @@ function _insertDjDataYC(str) {
         V_MS =  Ext.getCmp('V_V_YCMS1').getValue();
     }
 
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_06/PM_06_DJ_DATA_SET',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            'V_V_GUID': records[0].data.V_GUID,
-            'V_V_DJ_STATE': V_STATE,
-            'V_V_DJ_DATE': V_TIME,
-            'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-            'V_V_DJ_NR': V_MS,
-            'V_V_DJ_TYPE':records[0].data.V_DJ_TYPE
-        },
-        success: function (response) {
-            var data = Ext.decode(response.responseText);
-            if (data.success) {
-                Ext.getCmp('windowYc').hide();
-                _close();
-            } else {
+    var i_err = 0;
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_06/PM_06_DJ_DATA_SET',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                'V_V_GUID': records[i].data.V_GUID,
+                'V_V_DJ_STATE': V_STATE,
+                'V_V_DJ_DATE': V_TIME,
+                'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DJ_NR': V_MS,//异常现象描述
+                'V_V_DJ_TYPE':'ZY'
+            },
+            success: function (response) {
+                var data = Ext.decode(response.responseText);//后台返回的值
+                if (data.success) {//成功，会传回true
+                    i_err++;
+                    if (i_err == records.length) {
+                        Ext.MessageBox.alert('提示', '操作成功', callBack);
+                        function callBack(id) {
+                            _close();
+                        }
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.V_CURSOR,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR,
+                        fn: function (btn) {
+                            _close();
+                        }
+                    });
+                }
+            },
+            failure: function (response) {//访问到后台时执行的方法。
                 Ext.MessageBox.show({
                     title: '错误',
-                    msg: data.message,
+                    msg: response.responseText,
                     buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                });
+                    icon: Ext.MessageBox.ERROR,
+                    fn: function (btn) {
+                        _close();
+                    }
+                })
             }
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
-        }
-    });
+
+        });
+    }
 
 }
 

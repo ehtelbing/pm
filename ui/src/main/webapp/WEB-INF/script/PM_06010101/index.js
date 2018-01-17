@@ -50,6 +50,27 @@ Ext.onReady(function () {
         }
     });
 
+    var eTypeStore = Ext.create('Ext.data.Store', {
+        id: 'eTypeStore',
+        autoLoad: true,
+        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME', 'I_ORDER', 'I_ID'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                'V_V_PERSONCODE' : V_V_PERSONCODE,
+                'V_V_DEPTCODENEXT' : V_V_DEPTCODE
+            }
+        }
+    });
+
     var basedicStore = Ext.create('Ext.data.Store', {
         id: 'basedicStore',
         autoLoad: true,
@@ -134,11 +155,16 @@ Ext.onReady(function () {
                     valueField: 'V_CKTYPE',
                     labelAlign: 'right'
                 }, {
-                    readOnly: true,
+                    xtype: 'combo',
                     id: 'V_V_EQUTYPENAME',
+                    store: eTypeStore,
                     fieldLabel: '设备类型',
-                    allowBlank: false,
-                    labelWidth: 90
+                    editable: false,
+                    labelWidth: 70,
+                    queryMode: 'local',
+                    displayField: 'V_EQUTYPENAME',
+                    valueField: 'V_EQUTYPECODE',
+                    labelAlign: 'right'
                 }]
             }, {
                 layout: 'column',
@@ -411,11 +437,14 @@ Ext.onReady(function () {
         Ext.getCmp('V_V_CKTYPE').select(Ext.data.StoreManager.lookup('jhlxStore').getAt(0));
     });
 
+    Ext.data.StoreManager.lookup('eTypeStore').on('load',function(){
+        Ext.getCmp('V_V_EQUTYPENAME').select(Ext.data.StoreManager.lookup('eTypeStore').getAt(0));
+    });
+
     _init();
 });
 
 function _init() {
-    Ext.getCmp('V_V_EQUTYPENAME').setValue(V_EQUTYPENAME);
     Ext.getBody().unmask();
 }
 
@@ -491,7 +520,7 @@ function _insertPM06() {
             'V_V_ORGCODE': V_V_ORGCODE,
             'V_V_DEPTCODE': V_V_DEPTCODE,
             'V_V_CK_EQUTYPECODE': '动态设备',
-            'V_V_EQUTYPE': V_EQUTYPECODE ,
+            'V_V_EQUTYPE': Ext.getCmp('V_V_EQUTYPENAME').getValue(),
             'V_V_EQUCODE': V_V_EQUNAME,
             'V_V_CRITERION_CODE': '',
             'V_V_CRITERION_ITEM': Ext.getCmp('V_V_CRITERION_ITEM').getSubmitValue(),
