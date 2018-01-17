@@ -560,23 +560,58 @@ function comboConfirm(){
 						traditional: true,
 						success: function (resp) {
 							// 聚进接口
-							otherServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
+							//otherServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 							// 小神探接口
-							xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
+							//xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 							Ext.Msg.alert('提示', '验收工单成功');
-							$.ajax({
+							/*$.ajax({
 								url: APP + '/SetMatService',
 								type: 'post',
 								async: false,
 								data: {
 									V_V_ORDERGUID: $.url().param("V_ORDERGUID")
 								},
-								success: function (resp) {
-									alert('111');
+								success: function (resp) {*/
+									Ext.Ajax.request({//查找所需修改状态的周计划
+										method: 'POST',
+										async: false,
+										url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+										params: {
+											V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
+											V_V_FLAG: "1"
+										},
+										success: function (response) {
+											var respl = Ext.decode(response.responseText);
+											if(respl.list.length>0){
+												for(var i=0;i<respl.list.length;i++){
+													Ext.Ajax.request({//修改周计划状态
+														method: 'POST',
+														async: false,
+														url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+														params: {
+															V_V_GUID: respl.list[i].V_WEEK_GUID,
+															V_V_STATECODE: '34'//已验收
+														},
+														success: function (response) {
+															var respm = Ext.decode(response.responseText);
+															if(respm.V_INFO=='success'){
+
+															}else{
+																alert("周计划状态修改错误");
+																return;
+															}
+
+														}
+													});
+												}
+											}
+
+										}
+									});
 									window.opener.OnPageLoad();
 									window.close();
-								}
-							});
+								/*}
+							});*/
 
 						},
 						error: function (response, opts) {
@@ -669,7 +704,7 @@ function ValueConfirm() {
 		Ext.getCmp('qxmx').disable();
 	}
 }
-function ActivitiConfirmAccept(){
+function ActivitiConfirmAccept(){//确定验收
 	if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
 		Ext.MessageBox.alert('提示', '请填写验收日期');
 		return false;
@@ -910,23 +945,58 @@ function QRYS(){
 					traditional: true,
 					success: function (resp) {
 						// 聚进接口
-						otherServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
+						//otherServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 						// 小神探接口
-						xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
+						//xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 						Ext.Msg.alert('提示', '验收工单成功');
-						$.ajax({
+						/*$.ajax({
 							url: APP + '/SetMatService',
 							type: 'post',
 							async: false,
 							data: {
 								V_V_ORDERGUID: $.url().param("V_ORDERGUID")
 							},
-							success: function (resp) {
-								alert('111');
+							success: function (resp) {*/
+								Ext.Ajax.request({//查找所需修改状态的周计划
+									method: 'POST',
+									async: false,
+									url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+									params: {
+										V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
+										V_V_FLAG: "1"
+									},
+									success: function (response) {
+										var respl = Ext.decode(response.responseText);
+										if(respl.list.length>0){
+											for(var i=0;i<respl.list.length;i++){
+												Ext.Ajax.request({//修改周计划状态
+													method: 'POST',
+													async: false,
+													url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+													params: {
+														V_V_GUID: respl.list[i].V_WEEK_GUID,
+														V_V_STATECODE: '34'//已验收
+													},
+													success: function (response) {
+														var respm = Ext.decode(response.responseText);
+														if(respm.V_INFO=='success'){
+
+														}else{
+															alert("周计划状态修改错误");
+															return;
+														}
+
+													}
+												});
+											}
+										}
+
+									}
+								});
 								window.opener.OnPageLoad();
 								window.close();
-							}
-						});
+							/*}
+						});*/
 
 					},
 					error: function (response, opts) {
