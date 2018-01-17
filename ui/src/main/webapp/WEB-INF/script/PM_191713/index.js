@@ -111,13 +111,7 @@ Ext.onReady(function () {
             text: '序号',
             width: 40,
             align: 'center'
-        }, {
-            text: '编号',
-            dataIndex: 'V_GUID',
-            align: 'center',
-            renderer: atleft,
-            width: 300
-        }, {
+        },{
             text: '设备名称',
             dataIndex: 'V_EQUNAME',
             align: 'center',
