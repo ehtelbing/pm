@@ -11,8 +11,9 @@ for (var i = 2012; i <= tomorrowYear; i++)
         displayField : i,
         valueField : i
     });
+var url_guid='';
 if (location.href.split('?')[1] != undefined) {
-    var url_guid = Ext.urlDecode(location.href.split('?')[1]).v_guid_dx;
+    url_guid = Ext.urlDecode(location.href.split('?')[1]).v_guid_dx;
 }
 var stateData=[{ displayField:'全部', valueField:'%'},{ displayField:'编辑', valueField:'编辑'},{ displayField:'审批中', valueField:'审批中'},{ displayField:'审批通过', valueField:'审批通过'},{ displayField:'审批驳回', valueField:'审批驳回'}];
 
@@ -345,8 +346,115 @@ function OnBtnSxQx() {
     }
 }
 function createWorkorder(){
+    var seldata = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
+    if (seldata.length==0) {
+        Ext.Msg.alert('操作提示','请选择一条数据！');
+        return false;
+    }
 
-    var records = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();//获取选中的数据
+    for (var j = 0; j < seldata.length; j++) {
+        if(seldata[0].data.V_EQUNAME!=seldata[j].data.V_EQUNAME){
+            alert("请选择同一设备缺陷");
+            return;
+
+        }
+
+    }
+    var num = 0;
+    var V_ORDERGUID='';
+    var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
+    var V_SOURCECODE=seldata[0].raw.V_SOURCECODE;
+    Ext.Ajax.request({
+        url: AppUrl + 'PROJECT/PRO_PM_WORKORDER_DD_CREATE',
+        type : 'post',
+        async : false,
+        params : {
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
+            V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+            V_V_SOURCECODE: V_SOURCECODE
+        },
+        success : function(response) {
+            var resp = Ext.decode(response.responseText);
+            if(url_guid!=undefined){
+                Ext.Ajax.request({
+                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
+                    type: 'post',
+                    async: false,
+                    params: {
+                        V_V_IP: GetIP().ip,
+                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                        V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
+                        V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
+                        V_V_GUID: url_guid
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                    }
+                });
+            }
+            if (resp.list != "" && resp.list != null) {
+                V_ORDERGUID=resp.list[0].V_ORDERGUID;
+
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DELBYWORK',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_WORKORDER_GUID: V_ORDERGUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        if (resp.V_INFO == 'success') {
+
+                            for (var i = 0; i < seldata.length; i++) {
+                                Ext.Ajax.request({
+                                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_WD',
+                                    method: 'POST',
+                                    async: false,
+                                    params: {
+                                        V_V_DEFECT_GUID: seldata[i].data.V_GUID,
+                                        V_V_WORKORDER_GUID: V_ORDERGUID
+                                    },
+                                    success: function (resp) {
+                                        var resp = Ext.decode(resp.responseText);
+                                        if (resp.V_INFO == 'success') {
+                                            num++;
+                                        }
+
+                                    }
+                                });
+                            }
+                        }else{
+                            alert("子数据清除错误");
+                        }
+
+                    }
+                });
+            } else {
+
+                alert("生成工单失败");
+            }
+        }
+    });
+
+
+
+    if (num == seldata.length) {
+        var owidth = window.document.body.offsetWidth - 200;
+        var oheight = window.document.body.offsetHeight - 100;
+
+        var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
+            + V_ORDERGUID + '&V_EQUTYPECODE='+V_EQUTYPECODE+"&V_SOURCECODE="+V_SOURCECODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+        // window.close();
+    } else {
+        alert("缺陷添加错误");
+    }
+
+
+    /*var records = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();//获取选中的数据
 
     if (records.length == 0) {//判断是否选中数据
         Ext.MessageBox.show({
@@ -394,7 +502,7 @@ function createWorkorder(){
             return;
         }
     }
-
+*/
 
 
 
@@ -435,4 +543,10 @@ function itemclick(s, record, item, index, e, eOpts) {
     var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
         + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
+}function guid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }

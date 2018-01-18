@@ -1,5 +1,5 @@
 var V_GUID = null;
-var url_guid = null;
+var url_guid = '';
 var V_EQUTYPECODE = null;
 var V_SOURCECODE=null;
 var processKey ='';
@@ -160,62 +160,46 @@ $(function() {
 
 function loadPageInfo() {
     Ext.Ajax.request({
-            url: AppUrl + 'qx/PRO_PM_07_WORKORDER_DEFECT',
-            type : 'post',
-            async : false,
-            params : {
-                V_V_PERNAME : Ext.util.Cookies.get('v_personcode'),
-                V_DEFECT_GUID :  V_GUID
-            },
-            success : function(response) {
-                var resp = Ext.decode(response.responseText);
-                if(url_guid!=undefined){
-                    Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                        type: 'post',
-                        async: false,
-                        params: {
-                            V_V_IP: GetIP().ip,
-                            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                            V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                            V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                            V_V_GUID: url_guid
-                        },
-                        success: function (response) {
-                            var resp = Ext.decode(response.responseText);
-                        }
-                    });
-                }
-                if (resp.list != "" && resp.list != null) {
-                    $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
-                    $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
-                    $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
-                    $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
+        url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_GET',
+        type : 'post',
+        async : false,
+        params : {
+            V_V_ORDERGUID :  V_GUID
+        },
+        success : function(response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.list != "" && resp.list != null) {
+                $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
+                $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
+                $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
+                $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
 
-                    $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
-                    $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
-                    $("#V_EQUSITE").val(resp.list[0].V_EQUSITENAME);
+                $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
+                $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
+                $("#V_EQUSITE").val(resp.list[0].V_EQUSITENAME);
 
-                    $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
-                    $("#selType").empty();
-                    $("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">"
+                $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
+                $("#selType").empty();
+                $("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">"
                     + resp.list[0].V_ORDER_TYP_TXT + "</option>")
-                        .appendTo("#selType");
-                    $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
-                    $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
-                    $("#V_ORDERID").html(resp.list[0].V_ORDERID);
-                    $("#V_DEPTCODEREPARIR").val(
-                        resp.list[0].V_DEPTCODEREPARIR);
-                    $("#tool").val(resp.list[0].V_TOOL);
-                    $("#tech").val(resp.list[0].V_TECHNOLOGY);
-                    $("#safe").val(resp.list[0].V_SAFE);
-                    $("#wbsCode").val(resp.list[0].V_WBS);
-                    $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
-                } else {
+                    .appendTo("#selType");
+                $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
+                $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
+                $("#V_ORDERID").html(resp.list[0].V_ORDERID);
+                $("#V_DEPTCODEREPARIR").val(
+                    resp.list[0].V_DEPTCODEREPARIR);
+                $("#tool").val(resp.list[0].V_TOOL);
+                $("#tech").val(resp.list[0].V_TECHNOLOGY);
+                $("#safe").val(resp.list[0].V_SAFE);
+                $("#wbsCode").val(resp.list[0].V_WBS);
+                $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
 
-                }
+
+            } else {
             }
-        });
+        }
+    });
+
 }
 
 function loadTypelist() {
