@@ -351,7 +351,7 @@ function createWorkorder(){
         Ext.Msg.alert('操作提示','请选择一条数据！');
         return false;
     }
-
+    var V_GUIDList = '';
     for (var j = 0; j < seldata.length; j++) {
         if(seldata[0].data.V_EQUNAME!=seldata[j].data.V_EQUNAME){
             alert("请选择同一设备缺陷");
@@ -359,8 +359,42 @@ function createWorkorder(){
 
         }
 
+        if (j == 0) {
+            V_GUIDList = seldata[j].data.V_GUID;
+        } else {
+            V_GUIDList += ',' + seldata[j].data.V_GUID;
+        }
+
     }
-    var num = 0;
+
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PRO_PM_WORKORDER_DEFECT_NC',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_PERNAME: Ext.util.Cookies.get('v_personcode'),
+            V_DEFECT_GUID:V_GUIDList
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.list.length>0) {
+                var V_ORDERGUID=resp.list[0].V_ORDERGUID;
+                var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
+                var V_SOURCECODE=seldata[0].raw.V_SOURCECODE;
+                var owidth = window.document.body.offsetWidth - 200;
+                var oheight = window.document.body.offsetHeight - 100;
+
+                var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
+                    + V_ORDERGUID + '&V_EQUTYPECODE='+V_EQUTYPECODE+"&V_SOURCECODE="+V_SOURCECODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+            }else{
+                alert('创建工单失败');
+            }
+
+        }
+    });
+   /* var num = 0;
     var V_ORDERGUID='';
     var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
     var V_SOURCECODE=seldata[0].raw.V_SOURCECODE;
@@ -451,7 +485,7 @@ function createWorkorder(){
         // window.close();
     } else {
         alert("缺陷添加错误");
-    }
+    }*/
 
 
     /*var records = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();//获取选中的数据

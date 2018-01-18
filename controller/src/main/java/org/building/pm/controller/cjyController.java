@@ -1358,6 +1358,36 @@ public class cjyController {
         Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYWORK(V_V_WORKORDER_GUID, V_V_FLAG);
         return result;
     }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_WD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET_WD(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
+                                                          @RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET_WD(V_V_DEFECT_GUID, V_V_WORKORDER_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DELBYWORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_DELBYWORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_DELBYWORK(V_V_WORKORDER_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_NC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_DEFECT_NC(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                          @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_DEFECT_NC(V_V_ORGCODE, V_V_PERNAME, V_DEFECT_GUID);
+        return result;
+    }
 }
 
 
