@@ -6,6 +6,7 @@ var processKey ='';
 var V_NEXT_SETP = '';
 var V_STEPNAME = '';
 var V_STEPCODE ='';
+var V_EQUTYPE = '';
 if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
     url_guid = Ext.urlDecode(location.href.split('?')[1]).url_guid;
@@ -60,13 +61,13 @@ $(function() {
         closable: true,
         layout: 'border',
         items: [{xtype:'panel',region:'north',frame:true,widtt:'100%', baseCls: 'my-panel-no-border',layout:'column',
-                    items:[{xtype:'button', margin: '5px 0px 5px 5px',text:'选择',icon: imgpath + '/add.png',handler: checkPer}]},
-                {xtype: 'gridpanel', region: 'center', columnLines: true, id: 'grid', store: 'gridStore', selType: 'checkboxmodel',
-                    columns: [
-                            {xtype: 'rownumberer', text: '序号', width: 60, align: 'center' },
-                            {text: '流程步骤名称', align: 'center', width: 150, dataIndex: 'V_FLOWSTEP'},
-                            {text: '审批人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME'}]
-                }]
+            items:[{xtype:'button', margin: '5px 0px 5px 5px',text:'选择',icon: imgpath + '/add.png',handler: checkPer}]},
+            {xtype: 'gridpanel', region: 'center', columnLines: true, id: 'grid', store: 'gridStore', selType: 'checkboxmodel',
+                columns: [
+                    {xtype: 'rownumberer', text: '序号', width: 60, align: 'center' },
+                    {text: '流程步骤名称', align: 'center', width: 150, dataIndex: 'V_FLOWSTEP'},
+                    {text: '审批人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME'}]
+            }]
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('load',function(){
@@ -142,7 +143,7 @@ $(function() {
         var owidth = window.document.body.offsetWidth-200;
         var oheight = window.document.body.offsetHeight-100 ;
         var ret = window.open(AppUrl+'page/PM_070204/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() +  '&V_DEPTREPAIRCODE=' + $("#selPlant").val()
-        + '&V_EQUCODE='+$("#V_EQUCODE").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            + '&V_EQUCODE='+$("#V_EQUCODE").val()+ '&V_DEPTCODE=' + $("#V_DEPTCODE").val() + '&V_ORGCODE=' + $("#V_ORGCODE").val()+'&V_EQUTYPE=' + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
         loadTaskGrid();
     });
 
@@ -154,68 +155,68 @@ $(function() {
         var owidth = window.document.body.offsetWidth-200;
         var oheight = window.document.body.offsetHeight-100 ;
         var ret = window.open(AppUrl+'page/PM_04/index.html?V_ORGCODE='+$("#V_ORGCODE").val()+'&V_DEPTCODE=' + $("#V_DEPTCODE").val() +
-        '&V_EQUTYPECODE='+V_EQUTYPECODE+'&V_EQUCODE='+$("#V_EQUCODE").val()+'&wbsCode='+$("#wbsCode").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            '&V_EQUTYPECODE='+V_EQUTYPECODE+'&V_EQUCODE='+$("#V_EQUCODE").val()+'&wbsCode='+$("#wbsCode").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
 });
 
 function loadPageInfo() {
     Ext.Ajax.request({
-            url: AppUrl + 'qx/PRO_PM_07_WORKORDER_DEFECT',
-            type : 'post',
-            async : false,
-            params : {
-                V_V_PERNAME : Ext.util.Cookies.get('v_personcode'),
-                V_DEFECT_GUID :  V_GUID
-            },
-            success : function(response) {
-                var resp = Ext.decode(response.responseText);
-                if(url_guid!=undefined){
-                    Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                        type: 'post',
-                        async: false,
-                        params: {
-                            V_V_IP: GetIP().ip,
-                            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                            V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                            V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                            V_V_GUID: url_guid
-                        },
-                        success: function (response) {
-                            var resp = Ext.decode(response.responseText);
-                        }
-                    });
-                }
-                if (resp.list != "" && resp.list != null) {
-                    $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
-                    $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
-                    $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
-                    $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
-
-                    $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
-                    $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
-                    $("#V_EQUSITE").val(resp.list[0].V_EQUSITENAME);
-
-                    $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
-                    $("#selType").empty();
-                    $("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">"
-                    + resp.list[0].V_ORDER_TYP_TXT + "</option>")
-                        .appendTo("#selType");
-                    $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
-                    $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
-                    $("#V_ORDERID").html(resp.list[0].V_ORDERID);
-                    $("#V_DEPTCODEREPARIR").val(
-                        resp.list[0].V_DEPTCODEREPARIR);
-                    $("#tool").val(resp.list[0].V_TOOL);
-                    $("#tech").val(resp.list[0].V_TECHNOLOGY);
-                    $("#safe").val(resp.list[0].V_SAFE);
-                    $("#wbsCode").val(resp.list[0].V_WBS);
-                    $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
-                } else {
-
-                }
+        url: AppUrl + 'qx/PRO_PM_07_WORKORDER_DEFECT',
+        type : 'post',
+        async : false,
+        params : {
+            V_V_PERNAME : Ext.util.Cookies.get('v_personcode'),
+            V_DEFECT_GUID :  V_GUID
+        },
+        success : function(response) {
+            var resp = Ext.decode(response.responseText);
+            if(url_guid!=undefined){
+                Ext.Ajax.request({
+                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
+                    type: 'post',
+                    async: false,
+                    params: {
+                        V_V_IP: GetIP().ip,
+                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                        V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
+                        V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
+                        V_V_GUID: url_guid
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                    }
+                });
             }
-        });
+            if (resp.list != "" && resp.list != null) {
+                $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
+                $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
+                $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
+                $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
+
+                $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
+                $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
+                $("#V_EQUSITE").val(resp.list[0].V_EQUSITENAME);
+
+                $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
+                $("#selType").empty();
+                $("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">"
+                    + resp.list[0].V_ORDER_TYP_TXT + "</option>")
+                    .appendTo("#selType");
+                $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
+                $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
+                $("#V_ORDERID").html(resp.list[0].V_ORDERID);
+                $("#V_DEPTCODEREPARIR").val(
+                    resp.list[0].V_DEPTCODEREPARIR);
+                $("#tool").val(resp.list[0].V_TOOL);
+                $("#tech").val(resp.list[0].V_TECHNOLOGY);
+                $("#safe").val(resp.list[0].V_SAFE);
+                $("#wbsCode").val(resp.list[0].V_WBS);
+                $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
+            } else {
+
+            }
+        }
+    });
 }
 
 function loadTypelist() {
@@ -412,9 +413,9 @@ function CreateBill() {
                                 if (resp.RET=='成功'){
                                     Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
                                     orderissued();
-                                   /* window.close();
-                                    window.opener.addTab();
-                                    window.opener.queryGrid();*/
+                                    /* window.close();
+                                     window.opener.addTab();
+                                     window.opener.queryGrid();*/
 
                                 }else{
                                     alert("失败");
@@ -438,8 +439,8 @@ function CreateBill() {
 
 
 /*
-* 查询工单流程审批人
-* */
+ * 查询工单流程审批人
+ * */
 function QueryPer(){
     Ext.data.StoreManager.lookup('gridStore').load({
         params:{
@@ -568,15 +569,15 @@ function orderissued(){
             }
         }
     });
-   // history.go(0);
+    // history.go(0);
 }
 
 function GetModel() {//获取模型
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191710/index.html?V_GUID='+$("#V_ORDERGUID").val()+'&V_ORGCODE='+
-    $("#V_ORGCODE").val()+'&V_DEPTCODE='+$("#V_DEPTCODE").val()+'&V_EQUTYPE='+V_EQUTYPECODE+'&V_EQUCODE='+
-    $("#V_EQUCODE").val()   , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+        $("#V_ORGCODE").val()+'&V_DEPTCODE='+$("#V_DEPTCODE").val()+'&V_EQUTYPE='+V_EQUTYPECODE+'&V_EQUCODE='+
+        $("#V_EQUCODE").val()   , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 
     loadTaskGrid();
     loadMatList();
