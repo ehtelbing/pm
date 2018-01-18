@@ -534,6 +534,71 @@ function orderissued(){
                             success: function (response) {
                                 var respf = Ext.decode(response.responseText);
                                 if(respf.V_INFO=='success'){
+
+                                    Ext.Ajax.request({//获取所选缺陷GUID
+                                        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+                                        method: 'POST',
+                                        async: false,
+                                        params: {
+                                            V_V_WORKORDER_GUID: $.url().param("V_GUID"),
+                                            V_V_FLAG:'1'
+                                        },
+                                        success: function (resp) {
+                                            var respguid = Ext.decode(resp.responseText);
+
+                                            if (respguid.list.length >0) {
+
+                                                for(var i=0;i<respguid.list.length;i++)
+                                                {
+                                                    Ext.Ajax.request({//保存缺陷详细日志
+                                                        url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                                                        method: 'POST',
+                                                        async: false,
+                                                        params: {
+                                                            V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                            V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+'工单已下达（'+$.url().param("V_GUID")+'）',
+                                                            V_V_FINISHCODE: '30',
+                                                            V_V_KEY:''//缺陷guid
+
+                                                        },
+                                                        success: function (ret) {
+                                                            var resp = Ext.decode(ret.responseText);
+                                                            if(resp.V_INFO=='成功'){
+                                                                //修改缺陷状态
+                                                                Ext.Ajax.request({
+                                                                    url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                                                    method: 'POST',
+                                                                    async: false,
+                                                                    params: {
+                                                                        V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                                        V_V_STATECODE: '20',//已下票
+
+                                                                    },
+                                                                    success: function (ret) {
+                                                                        var resp = Ext.decode(ret.responseText);
+                                                                        if(resp.V_INFO=='success'){
+
+
+                                                                        }else{
+                                                                            alert("修改缺陷状态失败");
+                                                                        }
+
+                                                                    }
+                                                                });
+
+                                                            }else{
+                                                                alert("缺陷日志记录失败");
+                                                            }
+
+                                                        }
+                                                    });
+                                                }
+                                            }else{
+
+                                                alert("缺陷日志添加错误");
+                                            }
+                                        }
+                                    });
                                     Ext.getBody().unmask();//去除页面笼罩
                                     alert("工单创建成功："+$("#V_ORDERID").html());
                                     window.close();
