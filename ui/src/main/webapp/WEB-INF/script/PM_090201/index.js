@@ -1,5 +1,5 @@
 var V_GUID = null;
-var url_guid = '';
+var url_guid = null;
 var V_EQUTYPECODE = null;
 var V_SOURCECODE=null;
 var processKey ='';
@@ -199,7 +199,6 @@ function loadPageInfo() {
             }
         }
     });
-
 }
 
 function loadTypelist() {
