@@ -523,11 +523,26 @@ function orderissued(){
                         V_V_SEND_STATE :  "成功"
                     },
                     success: function (response) {
-                        Ext.getBody().unmask();//去除页面笼罩
-                        alert("工单创建成功："+$("#V_ORDERID").html());
-                        window.close();
-                        window.opener.addTab();
-                        window.opener.queryGrid()
+
+                        Ext.Ajax.request({//修改关系表状态
+                            method: 'POST',
+                            async: false,
+                            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_F',
+                            params: {
+                                V_V_WORKORDER_GUID:  $.url().param("V_GUID")
+                            },
+                            success: function (response) {
+                                var respf = Ext.decode(response.responseText);
+                                if(respf.V_INFO=='success'){
+                                    Ext.getBody().unmask();//去除页面笼罩
+                                    alert("工单创建成功："+$("#V_ORDERID").html());
+                                    window.close();
+                                    window.opener.addTab();
+                                    window.opener.queryGrid()
+                                }
+                            }
+                        });
+
                     }
                 });
             }
