@@ -10,6 +10,8 @@ var eTypeLoad = false;
 var guid = '';
 var V_V_DJ_TYPE = '';
 
+
+
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_TIMER_GUID == undefined) ? V_TIMER_GUID = '' : V_TIMER_GUID = parameters.V_TIMER_GUID;
@@ -970,7 +972,6 @@ Ext.onReady(function () {
     });
     _init();
 
-
 });
 
 function _init() {
@@ -1099,8 +1100,8 @@ function _insertDjDataZC(str) {
                             query();
                             _close();
                         }
+                        window.opener.location.href=window.opener.location.href;
                         window.close();
-                        window.opener._AgencySelect();
                     }
                 } else {
                     Ext.MessageBox.show({
@@ -1144,20 +1145,9 @@ function _insertDjDataYC(str) {
         icon: Ext.MessageBox.QUESION,
         fn: function (btn) {
             if (btn == 'yes') {
-                var V_V_LOGREMARK='';
-                var DJTYPE='';
                 var i_err = 0;
                 for (var i = 0; i < records.length; i++) {
-                    if(records[i].data.V_DJ_TYPE=='GW'){
-                        DJTYPE='岗位点检';
-                    }
-                    if(records[i].data.V_DJ_TYPE=='JM'){
-                        DJTYPE='精密点检';
-                    }
-                    if(records[i].data.V_DJ_TYPE=='ZY'){
-                        DJTYPE='专业点检';
-                    }
-                    /*Ext.Ajax.request({
+                    Ext.Ajax.request({
                         url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
                         type: 'ajax',
                         method: 'POST',
@@ -1179,8 +1169,8 @@ function _insertDjDataYC(str) {
                                     Ext.MessageBox.alert('提示', '操作成功');
                                     query();
                                     _close();
+                                    window.opener.location.href=window.opener.location.href;
                                     window.close();
-                                    window.opener._AgencySelect();
                                 }
                             } else {
                                 Ext.MessageBox.show({
@@ -1197,52 +1187,6 @@ function _insertDjDataYC(str) {
                                 msg: response.responseText,
                                 buttons: Ext.MessageBox.OK,
                                 icon: Ext.MessageBox.ERROR
-                            })
-                        }
-                    });*/
-
-                    V_V_LOGREMARK=Ext.util.Cookies.get('v_personname2')+'从'+DJTYPE+'生成缺陷';
-                    Ext.Ajax.request({
-                        url: AppUrl + 'sxd/PRO_PM_DEFECT_LOG_SET',
-                        type: 'ajax',
-                        method: 'POST',
-                        params: {
-                            'V_V_GUID': records[i].data.V_GUID,
-                            'V_V_LOGREMARK': V_V_LOGREMARK,
-                            'V_V_FINISHCODE': '30',
-                            'V_V_KEY': ''
-                        },
-                        success: function (response) {
-                            var data = Ext.decode(response.responseText);//后台返回的值
-                            if (data.V_CURSOR == '成功') {//成功，会传回true
-                                i_err++;
-                                if (i_err == records.length) {
-                                    Ext.MessageBox.alert('提示', '操作成功', callBack);
-                                    function callBack(id) {
-                                        _close();
-                                    }
-                                }
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: data.V_CURSOR,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR,
-                                    fn: function (btn) {
-                                        _close();
-                                    }
-                                });
-                            }
-                        },
-                        failure: function (response) {//访问到后台时执行的方法。
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR,
-                                fn: function (btn) {
-                                    _close();
-                                }
                             })
                         }
                     });
@@ -1377,7 +1321,7 @@ function _djDataZCAll() {
             }
         });
     }
-    window.opener._AgencySelect();
+    window.opener.location.href=window.opener.location.href;
     window.close();
 
 }
@@ -1439,6 +1383,11 @@ function _djDataYCAll() {
             }
         });
     }
+    window.opener.location.href=window.opener.location.href;
     window.close();
-    window.opener._AgencySelect();
+}
+
+window.onunload = function()
+{
+    window.opener.location.href=window.opener.location.href;
 }
