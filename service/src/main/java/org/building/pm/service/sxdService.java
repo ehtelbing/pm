@@ -1060,4 +1060,31 @@ public class sxdService {
         logger.info("end PRO_BASE_FILE_DEL");
         return result;
     }
+
+    public HashMap PRO_PM_DEFECT_LOG_SET(String  V_V_GUID,String  V_V_LOGREMARK,String  V_V_FINISHCODE,String  V_V_KEY) throws SQLException {
+        logger.info("begin PRO_PM_DEFECT_LOG_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_LOG_SET" + "(:V_V_GUID,:V_V_LOGREMARK,:V_V_FINISHCODE,:V_V_KEY,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_LOGREMARK", V_V_LOGREMARK);
+            cstmt.setString("V_V_FINISHCODE", V_V_FINISHCODE);
+            cstmt.setString("V_V_KEY", V_V_KEY);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_CURSOR", cstmt.getString("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_LOG_SET");
+        return result;
+    }
 }
