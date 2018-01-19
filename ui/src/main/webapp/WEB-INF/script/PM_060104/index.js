@@ -18,7 +18,7 @@ for (var i = 0; i <= 59; i++)Minutes.push({displayField: i, valueField: i});
 
 var DjType = [{displayField : '岗位点检',valueField: 'GW'},{displayField : '精密点检',valueField: 'JM'},{displayField : '专业点检',valueField: 'ZY'}];
 
-
+//小时Store
 var hoursStore = Ext.create('Ext.data.Store', {
     id: 'hoursStore',
     autoLoad: true,
@@ -31,7 +31,7 @@ var hoursStore = Ext.create('Ext.data.Store', {
         }
     }
 });
-
+//分钟Store
 var minuteStore = Ext.create('Ext.data.Store', {
     id: 'minuteStore',
     autoLoad: true,
@@ -73,7 +73,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-
+    //点检类型Store
     var DjTypeStore = Ext.create('Ext.data.Store', {
         id: 'DjTypeStore',
         autoLoad: true,
@@ -87,7 +87,7 @@ Ext.onReady(function () {
         }
     });
 
-
+    //主表格Store
     var djDataCreateStore = Ext.create('Ext.data.Store', {
         storeId: 'djDataCreateStore',
         autoLoad: false,
@@ -133,7 +133,7 @@ Ext.onReady(function () {
             }
         }
     });
-
+    //主页面按钮panel
     var topPanel = Ext.create('Ext.form.Panel', {
         region: 'north',
         id : 'topPanel',
@@ -172,7 +172,7 @@ Ext.onReady(function () {
                 listeners: {click: OnButtonExcelClicked}
             }]
     });
-
+    //主页面表格panel
     var djDataCreatePanel = Ext.create('Ext.grid.Panel', {
         id: 'djDataCreatePanel',
         store: djDataCreateStore,
@@ -341,7 +341,7 @@ Ext.onReady(function () {
             flex: 1
         }]
     });
-
+    //录入描述panel
     var djDataZCPanel = Ext.create('Ext.form.Panel', {
         id: 'djDataZCPanel',
         region: 'center',
@@ -449,7 +449,7 @@ Ext.onReady(function () {
             }]
         }]
     });
-
+    //正常录入描述按钮panel
     var jDataZCbuttonPanel = Ext.create('Ext.panel.Panel', {
         id: 'jDataZCbuttonPanel',
         region: 'north',
@@ -478,7 +478,7 @@ Ext.onReady(function () {
             handler: _close
         },]
     });
-
+    //正常录入描述window
     var djDataZCWindow = Ext.create('Ext.window.Window', {
         id: 'djDataZCWindow',
         title: '正常描述录入',
@@ -533,7 +533,7 @@ Ext.onReady(function () {
             }
         }]
     });
-
+    //发现异常弹出内容panel
     var djDataYCPanel = Ext.create('Ext.form.Panel', {
         id: 'djDataYCPanel',
         region: 'center',
@@ -641,7 +641,7 @@ Ext.onReady(function () {
             }]
         },]
     });
-
+    //发现异常弹出按钮panel
     var jDataYCbuttonPanel = Ext.create('Ext.panel.Panel', {
         id: 'jDataYCbuttonPanel',
         region: 'north',
@@ -671,7 +671,7 @@ Ext.onReady(function () {
             handler: _close
         },]
     });
-
+    //发现异常弹出Window
     var djDataYCWindow = Ext.create('Ext.window.Window', {
         id: 'djDataYCWindow',
         title: '异常描述录入',
@@ -749,8 +749,7 @@ function _preChooseDjType(){
     Ext.getCmp('windowYc').show();
 }
 
-
-
+//正常按钮弹出函数
 function _djDataZCShow() {
     var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
 
@@ -767,9 +766,9 @@ function _djDataZCShow() {
     if(records.length > 1)
     {
         for(var i=0;i<records.length;i++){
-            Ext.getCmp('zchour').setValue(new Date().getHours());
+            /*Ext.getCmp('zchour').setValue(new Date().getHours());
             Ext.getCmp('zcminute').setValue(new Date().getMinutes());
-            Ext.getCmp('V_V_YCMS').setValue(records[i].data.V_CRITERION_CONTENT);
+            Ext.getCmp('V_V_YCMS').setValue(records[i].data.V_CRITERION_CONTENT);*/
             _insertDjDataZC('zc');
 
 
@@ -786,7 +785,7 @@ function _djDataZCShow() {
 
 
 }
-
+//发现异常按钮弹出函数
 function _djDataYCShow() {
     var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
 
@@ -799,27 +798,44 @@ function _djDataYCShow() {
         });
         return false;
     }
-    Ext.getCmp('ychour').setValue(new Date().getHours());
-    Ext.getCmp('ycminute').setValue(new Date().getMinutes());
-    Ext.getCmp('V_V_YCMS1').setValue(records[0].data.V_CRITERION_CONTENT);
-    Ext.getCmp('djDataYCWindow').show();
-}
 
+    if(records.length > 1)
+    {
+        for(var i=0;i<records.length;i++){
+            /*Ext.getCmp('zchour').setValue(new Date().getHours());
+             Ext.getCmp('zcminute').setValue(new Date().getMinutes());
+             Ext.getCmp('V_V_YCMS').setValue(records[i].data.V_CRITERION_CONTENT);*/
+            _insertDjDataYC('yc');
+
+
+        }
+    }
+
+    if(records.length == 1)
+    {
+        Ext.getCmp('ychour').setValue(new Date().getHours());
+        Ext.getCmp('ycminute').setValue(new Date().getMinutes());
+        Ext.getCmp('V_V_YCMS1').setValue(records[0].data.V_CRITERION_CONTENT);
+        Ext.getCmp('djDataYCWindow').show();
+
+    }
+}
+//正常确定调用函数
 function _insertDjDataZC(str) {
     var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
 
-    var V_V_YCMS = Ext.getCmp('V_V_YCMS').getSubmitValue();
+    //var V_V_YCMS = Ext.getCmp('V_V_YCMS').getSubmitValue();
     var V_STATE = '';
     var V_TIME = '';
-    var V_MS = '';
+    //var V_MS = '';
     if (str == 'zc') {
         V_STATE = '0';
-        V_TIME =  Ext.getCmp('V_D_DATE_SJ').getSubmitValue()+' '+Ext.getCmp('zchour').getValue()+':'+Ext.getCmp('zcminute').getValue()+':00';
-        V_MS =  Ext.getCmp('V_V_YCMS').getValue();
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
+        //V_MS =  Ext.getCmp('V_V_YCMS').getValue();
     }else{
         V_STATE = '1';
-        V_TIME =  Ext.getCmp('V_D_DATE_FX').getSubmitValue()+' '+Ext.getCmp('ychour').getValue()+':'+Ext.getCmp('ycminute').getValue()+':00';
-        V_MS =  Ext.getCmp('V_V_YCMS1').getValue();
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
+        //V_MS =  Ext.getCmp('V_V_YCMS1').getValue();
     }
 
     var i_err = 0;
@@ -833,8 +849,8 @@ function _insertDjDataZC(str) {
                 'V_V_DJ_STATE': V_STATE,
                 'V_V_DJ_DATE': V_TIME,
                 'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DJ_NR': V_MS,//异常现象描述
-                'V_V_DJ_TYPE':'DJ'
+                'V_V_DJ_NR': records[i].data.V_CRITERION_CONTENT,//异常现象描述
+                'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
@@ -874,7 +890,7 @@ function _insertDjDataZC(str) {
     }
 
 }
-
+//发现异常确定调用函数
 function _insertDjDataYC(str) {
     var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
 
@@ -884,65 +900,130 @@ function _insertDjDataYC(str) {
     var V_MS = '';
     if (str == 'zc') {
         V_STATE = '0';
-        V_TIME =  Ext.getCmp('V_D_DATE_SJ').getSubmitValue()+' '+Ext.getCmp('zchour').getValue()+':'+Ext.getCmp('zcminute').getValue()+':00';
-        V_MS =  Ext.getCmp('V_V_YCMS').getValue();
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
+        //V_MS =  Ext.getCmp('V_V_YCMS').getValue();
     }else{
         V_STATE = '1';
-        V_TIME =  Ext.getCmp('V_D_DATE_FX').getSubmitValue()+' '+Ext.getCmp('ychour').getValue()+':'+Ext.getCmp('ycminute').getValue()+':00';
-        V_MS =  Ext.getCmp('V_V_YCMS1').getValue();
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
+        //V_MS =  Ext.getCmp('V_V_YCMS1').getValue();
     }
 
-    var i_err = 0;
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'PM_06/PM_06_DJ_DATA_SET',
-            type: 'ajax',
-            method: 'POST',
-            params: {
-                'V_V_GUID': records[i].data.V_GUID,
-                'V_V_DJ_STATE': V_STATE,
-                'V_V_DJ_DATE': V_TIME,
-                'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DJ_NR': V_MS,//异常现象描述
-                'V_V_DJ_TYPE':'ZY'
-            },
-            success: function (response) {
-                var data = Ext.decode(response.responseText);//后台返回的值
-                if (data.success) {//成功，会传回true
-                    i_err++;
-                    if (i_err == records.length) {
-                        Ext.MessageBox.alert('提示', '操作成功', callBack);
-                        function callBack(id) {
-                            _close();
-                        }
+    Ext.MessageBox.show({
+        title: '确认',
+        msg: '您确定要生成缺陷吗？',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                var V_V_LOGREMARK='';
+                var DJTYPE='';
+                var i_err = 0;
+                for (var i = 0; i < records.length; i++) {
+                    if(records[i].data.V_DJ_TYPE=='GW'){
+                        DJTYPE='岗位点检';
                     }
-                } else {
-                    Ext.MessageBox.show({
-                        title: '错误',
-                        msg: data.V_CURSOR,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR,
-                        fn: function (btn) {
-                            _close();
+                    if(records[i].data.V_DJ_TYPE=='JM'){
+                        DJTYPE='精密点检';
+                    }
+                    if(records[i].data.V_DJ_TYPE=='ZY'){
+                        DJTYPE='专业点检';
+                    }
+                    Ext.Ajax.request({
+                        url: AppUrl + 'PM_06/PM_06_DJ_DATA_SET',
+                        type: 'ajax',
+                        method: 'POST',
+                        params: {
+                            'V_V_GUID': records[i].data.V_GUID,
+                            'V_V_DJ_STATE': V_STATE,
+                            'V_V_DJ_DATE': V_TIME,
+                            'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
+                            'V_V_DJ_NR': records[i].data.V_CRITERION_CONTENT,//异常现象描述
+                            'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE
+                        },
+                        success: function (response) {
+                            var data = Ext.decode(response.responseText);//后台返回的值
+                            if (data.success) {//成功，会传回true
+                                i_err++;
+                                if (i_err == records.length) {
+                                    Ext.MessageBox.alert('提示', '操作成功', callBack);
+                                    function callBack(id) {
+                                        _close();
+                                    }
+                                }
+                            } else {
+                                Ext.MessageBox.show({
+                                    title: '错误',
+                                    msg: data.V_CURSOR,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR,
+                                    fn: function (btn) {
+                                        _close();
+                                    }
+                                });
+                            }
+                        },
+                        failure: function (response) {//访问到后台时执行的方法。
+                            Ext.MessageBox.show({
+                                title: '错误',
+                                msg: response.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR,
+                                fn: function (btn) {
+                                    _close();
+                                }
+                            })
+                        }
+                    });
+
+                    V_V_LOGREMARK=Ext.util.Cookies.get('v_personname2')+'从'+DJTYPE+'生成缺陷';
+                    Ext.Ajax.request({
+                        url: AppUrl + 'sxd/PRO_PM_DEFECT_LOG_SET',
+                        type: 'ajax',
+                        method: 'POST',
+                        params: {
+                            'V_V_GUID': records[i].data.V_GUID,
+                            'V_V_LOGREMARK': V_V_LOGREMARK,
+                            'V_V_FINISHCODE': '30',
+                            'V_V_KEY': ''
+                        },
+                        success: function (response) {
+                            var data = Ext.decode(response.responseText);//后台返回的值
+                            if (data.V_CURSOR == '成功') {//成功，会传回true
+                                i_err++;
+                                if (i_err == records.length) {
+                                    Ext.MessageBox.alert('提示', '操作成功', callBack);
+                                    function callBack(id) {
+                                        _close();
+                                    }
+                                }
+                            } else {
+                                Ext.MessageBox.show({
+                                    title: '错误',
+                                    msg: data.V_CURSOR,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR,
+                                    fn: function (btn) {
+                                        _close();
+                                    }
+                                });
+                            }
+                        },
+                        failure: function (response) {//访问到后台时执行的方法。
+                            Ext.MessageBox.show({
+                                title: '错误',
+                                msg: response.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR,
+                                fn: function (btn) {
+                                    _close();
+                                }
+                            })
                         }
                     });
                 }
-            },
-            failure: function (response) {//访问到后台时执行的方法。
-                Ext.MessageBox.show({
-                    title: '错误',
-                    msg: response.responseText,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR,
-                    fn: function (btn) {
-                        _close();
-                    }
-                })
             }
-
-        });
-    }
-
+        }
+    });
 }
 
 function _close() {
