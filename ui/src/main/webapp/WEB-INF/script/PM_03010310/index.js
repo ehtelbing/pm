@@ -887,6 +887,8 @@ Ext.onReady(function () {
             }
         });
     }
+    Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+    Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
 });
 //第几周
 function getWeekOfMonth() {
