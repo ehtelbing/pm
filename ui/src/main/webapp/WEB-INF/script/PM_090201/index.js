@@ -605,7 +605,7 @@ function orderissued(){
                                     try{window.opener.addTab();
                                         window.opener.queryGrid();
                                     }catch(e){
-                                        window.opener._selectOverhaulApply();
+                                        window.opener._selectOverhaulApply('close');
                                     }
 
 
