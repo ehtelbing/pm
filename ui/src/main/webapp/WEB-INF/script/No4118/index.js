@@ -424,22 +424,24 @@ Ext.onReady(function() {
         });*/
 
 
-    Ext.data.StoreManager.lookup('gridStore').on('beforeload',function(store) {
-            store.proxy.extraParams.V_D_ENTER_DATE_B = '%';//Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d');
-            store.proxy.extraParams.V_D_ENTER_DATE_E = '%';//Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d');
-            store.proxy.extraParams.V_V_ORGCODE = '%';//Ext.getCmp( "ck").getValue();
-            store.proxy.extraParams.V_V_DEPTCODE = '%';//Ext.getCmp( "zyq").getValue();
-            store.proxy.extraParams.V_V_DEPTCODEREPARIR ='';
-            store.proxy.extraParams.V_V_STATECODE = Ext.getCmp( "gdzt").getValue();
-            store.proxy.extraParams.V_EQUTYPE_CODE = '%';//Ext.getCmp( "sblx").getValue();
-            store.proxy.extraParams.V_EQU_CODE = '%';//Ext.getCmp( "sbmc").getValue();
-            store.proxy.extraParams.V_DJ_PERCODE =Ext.util.Cookies.get('v_personcode');//Ext.getCmp( "djy").getValue();
-            store.proxy.extraParams.V_V_SHORT_TXT = '%';//Ext.getCmp( "selshortTxt").getValue();
-            store.proxy.extraParams.V_V_BJ_TXT = '%';//Ext.getCmp("selmatDesc").getValue();
-            store.proxy.extraParams.V_V_ORDER_TYP = '%';//Ext.getCmp('tabpanel').getActiveTab().id;
-            store.proxy.extraParams.V_V_PAGE= Ext.getCmp('page').store.currentPage;
-            store.proxy.extraParams.V_V_PAGESIZE= Ext.getCmp('page').store.pageSize;
-        });
+    Ext.data.StoreManager.lookup('gridStore').load({
+        params: {
+            V_D_ENTER_DATE_B : '%',
+            V_D_ENTER_DATE_E : '%',
+            V_V_ORGCODE : '%',
+            V_V_DEPTCODE : '%',
+            V_V_DEPTCODEREPARIR :'',
+            V_V_STATECODE : Ext.getCmp( "gdzt").getValue(),
+            V_EQUTYPE_CODE : '%',
+            V_EQU_CODE : '%',
+            V_DJ_PERCODE :Ext.util.Cookies.get('v_personcode'),
+            V_V_SHORT_TXT : '%',
+            V_V_BJ_TXT : '%',
+            V_V_ORDER_TYP : '%',
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        }
+    });
     //addTab();
 });
 function OnSearch() {
