@@ -556,7 +556,7 @@ function orderissued(){
                                                         async: false,
                                                         params: {
                                                             V_V_GUID: respguid.list[i].V_DEFECT_GUID,
-                                                            V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+'工单已下达（'+$.url().param("V_GUID")+'）',
+                                                            V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+'工单已下达（'+$("#V_ORDERID").html()+'）',
                                                             V_V_FINISHCODE: '30',
                                                             V_V_KEY:''//缺陷guid
 

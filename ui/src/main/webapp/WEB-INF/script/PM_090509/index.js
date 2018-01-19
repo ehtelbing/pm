@@ -1178,6 +1178,73 @@ function orderissued(){
                     success : function(res) {
                         var resp = Ext.JSON.decode(res.responseText);
                         if (resp.list[0].V_INFO == '成功') {
+
+                            Ext.Ajax.request({//获取所选缺陷GUID
+                                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+                                method: 'POST',
+                                async: false,
+                                params: {
+                                    V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
+                                    V_V_FLAG:'1'
+                                },
+                                success: function (resp) {
+                                    var respguid = Ext.decode(resp.responseText);
+
+                                    if (respguid.list.length >0) {
+
+                                        for(var i=0;i<respguid.list.length;i++)
+                                        {
+                                            Ext.Ajax.request({//保存缺陷详细日志
+                                                url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                                                method: 'POST',
+                                                async: false,
+                                                params: {
+                                                    V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                    V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+'工单已打印（'+$("#V_ORDERID").html()+'）',
+                                                    V_V_FINISHCODE: '30',
+                                                    V_V_KEY:''
+
+                                                },
+                                                success: function (ret) {
+                                                    var resp = Ext.decode(ret.responseText);
+                                                    if(resp.V_INFO=='成功'){
+                                                        //修改缺陷状态
+                                                        Ext.Ajax.request({
+                                                            url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                                            method: 'POST',
+                                                            async: false,
+                                                            params: {
+                                                                V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                                V_V_STATECODE: '21',//已打印
+
+                                                            },
+                                                            success: function (ret) {
+                                                                var resp = Ext.decode(ret.responseText);
+                                                                if(resp.V_INFO=='success'){
+
+
+                                                                }else{
+                                                                    alert("修改缺陷状态失败");
+                                                                }
+
+                                                            }
+                                                        });
+
+                                                    }else{
+                                                        alert("缺陷日志记录失败");
+                                                    }
+
+                                                }
+                                            });
+                                        }
+                                    }else{
+
+                                        alert("缺陷日志添加错误");
+                                    }
+                                }
+                            });
+
+
                             Ext.MessageBox.alert('提示', '工单接收成功', callBack);
                             function callBack(id) {
                                 selectID.push(V_ORDERGUID);
