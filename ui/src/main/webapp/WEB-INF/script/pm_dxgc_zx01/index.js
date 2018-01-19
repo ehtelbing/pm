@@ -367,7 +367,7 @@ function OnBtnSx(){
     }
     var owidth = window.document.body.offsetWidth-200;
     var oheight = window.document.body.offsetHeight-100 ;
-    window.open(AppUrl+'page/PM_0702/index.html?v_guid_dx=' + record[0].data.V_GUID+'&&v_deptcode='+record[0].data.V_DEPTCODE+'&&v_equtypecode='+record[0].data.V_EQUTYPECODE
+    window.open(AppUrl+'page/pm_dxgc_zx01_addqx/index.html?v_guid_dx=' + record[0].data.V_GUID+'&&v_deptcode='+record[0].data.V_DEPTCODE+'&&v_equtypecode='+record[0].data.V_EQUTYPECODE
         +'&&v_equcode='+record[0].data.V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }

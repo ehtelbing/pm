@@ -2803,4 +2803,34 @@ public class cjyService {
         logger.info("end PRO_PM_WORKORDER_DEFECT_NC");
         return result;
     }
+
+    public HashMap PRO_PM_WORKORDER_DEFECT_PRO(String V_V_ORGCODE,String V_V_PERNAME,String V_DEFECT_GUID,String V_V_PROJECT_GUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_DEFECT_PRO");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_DEFECT_PRO(:V_V_ORGCODE,:V_V_PERNAME,:V_DEFECT_GUID,:V_V_PROJECT_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_DEFECT_GUID", V_DEFECT_GUID);
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_DEFECT_PRO");
+        return result;
+    }
 }
