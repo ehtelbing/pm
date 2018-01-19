@@ -572,7 +572,7 @@ function comboConfirm(){
 									V_V_ORDERGUID: $.url().param("V_ORDERGUID")
 								},
 								success: function (resp) {*/
-									Ext.Ajax.request({//查找所需修改状态的周计划
+									Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
 										method: 'POST',
 										async: false,
 										url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
@@ -599,6 +599,48 @@ function comboConfirm(){
 															}else{
 																alert("周计划状态修改错误");
 																return;
+															}
+
+														}
+													});
+													Ext.Ajax.request({//保存缺陷详细日志
+														url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+														method: 'POST',
+														async: false,
+														params: {
+															V_V_GUID: respl.list[i].V_DEFECT_GUID,
+															V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+'工单已验收（'+$("#V_ORDERID").html()+'）',
+															V_V_FINISHCODE: '30',
+															V_V_KEY:''//缺陷guid
+
+														},
+														success: function (ret) {
+															var resp = Ext.decode(ret.responseText);
+															if(resp.V_INFO=='成功'){
+																//修改缺陷状态
+																Ext.Ajax.request({
+																	url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+																	method: 'POST',
+																	async: false,
+																	params: {
+																		V_V_GUID: respl.list[i].V_DEFECT_GUID,
+																		V_V_STATECODE: '23',//已验收
+
+																	},
+																	success: function (ret) {
+																		var resp = Ext.decode(ret.responseText);
+																		if(resp.V_INFO=='success'){
+
+
+																		}else{
+																			alert("修改缺陷状态失败");
+																		}
+
+																	}
+																});
+
+															}else{
+																alert("缺陷日志记录失败");
 															}
 
 														}
@@ -957,7 +999,7 @@ function QRYS(){
 								V_V_ORDERGUID: $.url().param("V_ORDERGUID")
 							},
 							success: function (resp) {*/
-								Ext.Ajax.request({//查找所需修改状态的周计划
+								Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
 									method: 'POST',
 									async: false,
 									url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
@@ -988,11 +1030,54 @@ function QRYS(){
 
 													}
 												});
+												Ext.Ajax.request({//保存缺陷详细日志
+													url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+													method: 'POST',
+													async: false,
+													params: {
+														V_V_GUID: respl.list[i].V_DEFECT_GUID,
+														V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+'工单已验收（'+$("#V_ORDERID").html()+'）',
+														V_V_FINISHCODE: '30',
+														V_V_KEY:''//缺陷guid
+
+													},
+													success: function (ret) {
+														var resp = Ext.decode(ret.responseText);
+														if(resp.V_INFO=='成功'){
+															//修改缺陷状态
+															Ext.Ajax.request({
+																url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+																method: 'POST',
+																async: false,
+																params: {
+																	V_V_GUID: respl.list[i].V_DEFECT_GUID,
+																	V_V_STATECODE: '23',//已验收
+
+																},
+																success: function (ret) {
+																	var resp = Ext.decode(ret.responseText);
+																	if(resp.V_INFO=='success'){
+
+
+																	}else{
+																		alert("修改缺陷状态失败");
+																	}
+
+																}
+															});
+
+														}else{
+															alert("缺陷日志记录失败");
+														}
+
+													}
+												});
 											}
 										}
 
 									}
 								});
+
 								window.opener.OnPageLoad();
 								window.close();
 							/*}
