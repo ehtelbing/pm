@@ -444,7 +444,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             displayField: 'displayField',
                             valueField: 'valueField',
                             store: hourStore,
-                            queryMode: 'local'/*,
+                            queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
                                     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
@@ -458,8 +458,8 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
-                                        //Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+                                    }/*else{
+                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                             Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -472,9 +472,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
-                            }*/
+                            }
                         },
                         {
                             xtype: 'combo',
@@ -488,7 +488,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             displayField: 'displayField',
                             valueField: 'valueField',
                             store: minuteStore,
-                            queryMode: 'local'/*,
+                            queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
                                     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
@@ -502,8 +502,8 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
-                                        //Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+                                    }/*else{
+                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                             Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -516,9 +516,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
-                            }*/
+                            }
                         }
                     ]
                 },
@@ -558,7 +558,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             displayField: 'displayField',
                             valueField: 'valueField',
                             store: hourStore,
-                            queryMode: 'local'/*,
+                            queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
                                     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
@@ -572,7 +572,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
+                                    }/*else{
                                         Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
@@ -586,9 +586,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
-                            }*/
+                            }
                         },
                         {
                             xtype: 'combo',
@@ -602,7 +602,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             displayField: 'displayField',
                             valueField: 'valueField',
                             store: minuteStore,
-                            queryMode: 'local'/*,
+                            queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
                                     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
@@ -616,7 +616,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
+                                    }/*else{
                                         Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
@@ -630,9 +630,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
-                            }*/
+                            }
                         }
                     ]
                 },
@@ -1115,7 +1115,6 @@ function OnButtonCancelClick() {
     window.close();
 }
 
-/*
 function _gongshiheji() {
     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
     var date11 = new Date(date1);
@@ -1127,4 +1126,4 @@ function _gongshiheji() {
     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
     Ext.getCmp('jhgshj').setValue(gongshicha2);
 
-}*/
+}
