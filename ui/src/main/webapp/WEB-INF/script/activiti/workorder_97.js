@@ -564,14 +564,14 @@ function comboConfirm(){
 							// 小神探接口
 							//xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 							Ext.Msg.alert('提示', '验收工单成功');
-							/*$.ajax({
+							$.ajax({
 								url: APP + '/SetMatService',
 								type: 'post',
 								async: false,
 								data: {
 									V_V_ORDERGUID: $.url().param("V_ORDERGUID")
 								},
-								success: function (resp) {*/
+								success: function (resp) {
 									Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
 										method: 'POST',
 										async: false,
@@ -652,8 +652,8 @@ function comboConfirm(){
 									});
 									window.opener.OnPageLoad();
 									window.close();
-								/*}
-							});*/
+								}
+							});
 
 						},
 						error: function (response, opts) {
@@ -991,14 +991,14 @@ function QRYS(){
 						// 小神探接口
 						//xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 						Ext.Msg.alert('提示', '验收工单成功');
-						/*$.ajax({
+						$.ajax({
 							url: APP + '/SetMatService',
 							type: 'post',
 							async: false,
 							data: {
 								V_V_ORDERGUID: $.url().param("V_ORDERGUID")
 							},
-							success: function (resp) {*/
+							success: function (resp) {
 								Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
 									method: 'POST',
 									async: false,
@@ -1080,8 +1080,8 @@ function QRYS(){
 
 								window.opener.OnPageLoad();
 								window.close();
-							/*}
-						});*/
+							}
+						});
 
 					},
 					error: function (response, opts) {
