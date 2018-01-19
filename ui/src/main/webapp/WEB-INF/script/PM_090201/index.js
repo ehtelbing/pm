@@ -602,8 +602,13 @@ function orderissued(){
                                     Ext.getBody().unmask();//去除页面笼罩
                                     alert("工单创建成功："+$("#V_ORDERID").html());
                                     window.close();
-                                    window.opener.addTab();
-                                    window.opener.queryGrid()
+                                    try{window.opener.addTab();
+                                        window.opener.queryGrid();
+                                    }catch(e){
+                                        window.opener._selectOverhaulApply();
+                                    }
+
+
                                 }
                             }
                         });
