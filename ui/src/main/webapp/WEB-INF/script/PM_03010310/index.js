@@ -911,7 +911,7 @@ function jhSelect() {
     + '&V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
     + '&V_EQUCODE=' + Ext.getCmp('sbmc').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }*/
-function getReturnJHXZ(retdata, type) {
+/*function getReturnJHXZ(retdata, type) {
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
         method: 'POST',
@@ -964,8 +964,8 @@ function getReturnJHXZ(retdata, type) {
 
         }
     });
-}
-function getReturnMXXZ(retdata) {
+}*/
+/*function getReturnMXXZ(retdata) {
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PM_03_JXMX_DATA_MXCODE_SEL',
         method: 'POST',
@@ -994,7 +994,7 @@ function getReturnMXXZ(retdata) {
             Ext.getCmp('bz').setValue(V_BZ);  //备注
         }
     });
-}
+}*/
 function OnButtonSaveClick() {
     //获取流动编码
     /*var V_FLOWCODE="";
@@ -1115,6 +1115,7 @@ function OnButtonCancelClick() {
     window.close();
 }
 
+/*
 function _gongshiheji() {
     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
     var date11 = new Date(date1);
@@ -1126,4 +1127,4 @@ function _gongshiheji() {
     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
     Ext.getCmp('jhgshj').setValue(gongshicha2);
 
-}
+}*/
