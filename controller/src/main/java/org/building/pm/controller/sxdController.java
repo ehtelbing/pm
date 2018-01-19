@@ -960,4 +960,16 @@ public class sxdController {
         Map result = sxdService.PRO_BASE_FILE_DEL(V_V_FILEGUID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_DEFECT_LOG_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_DEFECT_LOG_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                     @RequestParam(value = "V_V_LOGREMARK") String V_V_LOGREMARK,
+                                                     @RequestParam(value = "V_V_FINISHCODE") String V_V_FINISHCODE,
+                                                     @RequestParam(value = "V_V_KEY") String V_V_KEY,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = sxdService.PRO_PM_DEFECT_LOG_SET(V_V_GUID,V_V_LOGREMARK,V_V_FINISHCODE,V_V_KEY);
+        return result;
+    }
 }
