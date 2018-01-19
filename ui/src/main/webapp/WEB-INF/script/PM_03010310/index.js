@@ -1,35 +1,23 @@
 var V_WEEKPLAN_GUID = 0;
-if (location.href.split('?')[1] != undefined) {
-    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
-}
 var V_PLANTYPE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
-}
 var YEAR = null;
-if (location.href.split('?')[1] != undefined) {
-    YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
-}
 var MONTH = null;
-if (location.href.split('?')[1] != undefined) {
-    MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
-}
 var WEEK = null;
-if (location.href.split('?')[1] != undefined) {
-    WEEK = Ext.urlDecode(location.href.split('?')[1]).WEEK;
-}
 var V_ORGCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
-}
 var V_DEPTCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
-}
 var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
-
 var V_PLANCODE = null;
+
+if (location.href.split('?')[1] != undefined) {
+    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
+    V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
+    YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
+    MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
+    WEEK = Ext.urlDecode(location.href.split('?')[1]).WEEK;
+    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
+    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
+}
 
 var date = new Date();
 //年份
