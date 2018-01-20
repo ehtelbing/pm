@@ -1,5 +1,20 @@
 ﻿
 $(function () {
+    tabreload();
+});
+
+function _banli(V_TIMER_GUID){
+   /* var w=screen.availWidth-10;
+    var h=screen.availHeight-30;
+    var objwin = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
+   */ var owidth = window.screen.availWidth;
+    var oheight =  window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+
+}
+
+function tabreload(){
+    $('#t1').empty();
     $.ajax({
         type : 'POST',
         url: AppUrl + 'hp/PM_06_DJ_DATA_TIMER_SEL',
@@ -22,16 +37,6 @@ $(function () {
             }
         }
     });
-});
-
-function _banli(V_TIMER_GUID){
-   /* var w=screen.availWidth-10;
-    var h=screen.availHeight-30;
-    var objwin = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
-   */ var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
-    var ret = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
-
 }
 
 
