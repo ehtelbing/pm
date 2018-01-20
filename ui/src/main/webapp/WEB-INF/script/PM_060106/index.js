@@ -1100,7 +1100,7 @@ function _insertDjDataZC(str) {
                             query();
                             _close();
                         }
-                        window.opener.location.href=window.opener.location.href;
+                        window.opener.tabreload();
                         window.close();
                     }
                 } else {
@@ -1169,7 +1169,7 @@ function _insertDjDataYC(str) {
                                     Ext.MessageBox.alert('提示', '操作成功');
                                     query();
                                     _close();
-                                    window.opener.location.href=window.opener.location.href;
+                                    window.opener.tabreload();
                                     window.close();
                                 }
                             } else {
@@ -1321,7 +1321,7 @@ function _djDataZCAll() {
             }
         });
     }
-    window.opener.location.href=window.opener.location.href;
+    window.opener.tabreload();
     window.close();
 
 }
@@ -1383,11 +1383,11 @@ function _djDataYCAll() {
             }
         });
     }
-    window.opener.location.href=window.opener.location.href;
+    window.opener.tabreload();
     window.close();
 }
 
 window.onunload = function()
 {
-    window.opener.location.href=window.opener.location.href;
+    window.opener.tabreload();
 }
