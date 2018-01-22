@@ -43,9 +43,7 @@ import java.util.zip.ZipInputStream;
 /**
  * Created by zjh on 2017/1/22.
  * <p>
- *流程图controller
- *
- *
+ * 流程图controller
  */
 @Controller
 @RequestMapping("/app/pm/Activiti")
@@ -123,7 +121,7 @@ public class ActivitiController {
                 param.put(parName[i].toString(), parVal[i].toString());
             }
 
-            param.put("idea",V_IDEA);
+            param.put("idea", V_IDEA);
 
             ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
                     param);
@@ -154,9 +152,6 @@ public class ActivitiController {
             throws SQLException {
 
 
-
-
-
         Map result = new HashMap();
         List resultlist = new ArrayList();
 
@@ -172,11 +167,11 @@ public class ActivitiController {
             List<HistoricTaskInstance> tasks;
             int total = (int) historyService
                     .createNativeHistoricTaskInstanceQuery()
-                    .sql(makeNativeQuerySQLCountHistory(nameSapce,beginTime,endTime))
+                    .sql(makeNativeQuerySQLCountHistory(nameSapce, beginTime, endTime))
                     .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime).count();
             tasks = historyService
                     .createNativeHistoricTaskInstanceQuery()
-                    .sql(makeNativeQuerySQLResultHistory(nameSapce,beginTime,endTime))
+                    .sql(makeNativeQuerySQLResultHistory(nameSapce, beginTime, endTime))
                     .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime).listPage(Integer.valueOf(start), Integer.valueOf(limit));
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -219,9 +214,9 @@ public class ActivitiController {
                         .userId(taskmap.get("originator").toString()).singleResult();
 
                 if (user != null)
-                    taskmap.put("startName",user.getFirstName());
+                    taskmap.put("startName", user.getFirstName());
                 else {
-                    taskmap.put("startName","未知");
+                    taskmap.put("startName", "未知");
                 }
 
                 resultlist.add(taskmap);
@@ -240,7 +235,7 @@ public class ActivitiController {
         return result;
     }
 
-    public String makeNativeQuerySQLHistory(String select, String[] nameSpace,String startTime,String endTime) {
+    public String makeNativeQuerySQLHistory(String select, String[] nameSpace, String startTime, String endTime) {
         String categorySQL = "";
         if (nameSpace != null && nameSpace.length > 0) {
             int i = 1;
@@ -276,9 +271,9 @@ public class ActivitiController {
                     + managementService.getTableName(ProcessDefinition.class)
                     + " P " + "WHERE RES.PROC_DEF_ID_ = P.ID_ "
                     + "AND RES.START_TIME_ >=\n" +
-                    "  TO_DATE(" + '\''+ startTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
+                    "  TO_DATE(" + '\'' + startTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
                     + "AND RES.START_TIME_ <=\n" +
-                    "  TO_DATE(" + '\''+ endTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
+                    "  TO_DATE(" + '\'' + endTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
                     + "AND RES.END_TIME_ IS NOT NULL "
                     + "AND RES.ASSIGNEE_ =  #{assignee} " + categorySQL
                     + "ORDER BY RES.END_TIME_ DESC ) s\n" +
@@ -305,7 +300,7 @@ public class ActivitiController {
         return sql;
     }
 
-    public String makeNativeQuerySQLHistoryCount(String select, String[] nameSpace,String startTime,String endTime) {
+    public String makeNativeQuerySQLHistoryCount(String select, String[] nameSpace, String startTime, String endTime) {
         String categorySQL = "";
         if (nameSpace != null && nameSpace.length > 0) {
             int i = 1;
@@ -329,9 +324,9 @@ public class ActivitiController {
                     + managementService.getTableName(ProcessDefinition.class)
                     + " P " + "WHERE RES.PROC_DEF_ID_ = P.ID_ "
                     + "AND RES.START_TIME_ >=\n" +
-                    "  TO_DATE(" + '\''+ startTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
+                    "  TO_DATE(" + '\'' + startTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
                     + "AND RES.START_TIME_ <=\n" +
-                    "  TO_DATE(" + '\''+ endTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
+                    "  TO_DATE(" + '\'' + endTime + '\'' + ", 'yyyy-mm-dd hh24:mi:ss')"
                     + "AND RES.END_TIME_ IS NOT NULL "
                     + "AND RES.ASSIGNEE_ =  #{assignee} " + categorySQL
                     + "ORDER BY RES.END_TIME_ DESC ";
@@ -357,29 +352,36 @@ public class ActivitiController {
     }
 
 
-    public String makeNativeQuerySQLCountHistory(String[] nameSpace,String startTime,String endTime) {
-        return makeNativeQuerySQLHistoryCount("count(*)", nameSpace,startTime,endTime);
+    public String makeNativeQuerySQLCountHistory(String[] nameSpace, String startTime, String endTime) {
+        return makeNativeQuerySQLHistoryCount("count(*)", nameSpace, startTime, endTime);
     }
 
-    private String makeNativeQuerySQLResultHistory(String[] nameSpace,String startTime,String endTime) {
-        return makeNativeQuerySQLHistory("RES.*", nameSpace, startTime,endTime);
+    private String makeNativeQuerySQLResultHistory(String[] nameSpace, String startTime, String endTime) {
+        return makeNativeQuerySQLHistory("RES.*", nameSpace, startTime, endTime);
     }
+
     /*
     * nameSpace  人员编码查询当前人员代办信息
     * */
     @RequestMapping(value = "QueryTaskList", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> QueryTaskList(@RequestParam(value = "PersonCode") String PersonCode,
+                                             @RequestParam(value = "FlowType") String FlowType,
                                              @RequestParam(value = "start") String start,
                                              @RequestParam(value = "limit") String limit)
             throws SQLException {
 
         Map result = new HashMap();
         List resultlist = new ArrayList();
+        List list = new ArrayList();
 
-        Map<String, Object> ProcessType = activitiService.QueryProcessType();
+        if (FlowType.equals("全部")){
+            Map<String, Object> ProcessType = activitiService.QueryProcessType();
+            list = (List) ProcessType.get("list");
+        }else{
+          list.add(FlowType);
+        }
 
-        List list = (List) ProcessType.get("list");
         String[] nameSapce = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             Map map = (Map) list.get(i);
@@ -435,9 +437,9 @@ public class ActivitiController {
                         .userId(taskmap.get("originator").toString()).singleResult();
 
                 if (user != null)
-                    taskmap.put("startName",user.getFirstName());
+                    taskmap.put("startName", user.getFirstName());
                 else {
-                    taskmap.put("startName","未知");
+                    taskmap.put("startName", "未知");
                 }
                 resultlist.add(taskmap);
             }
@@ -459,7 +461,7 @@ public class ActivitiController {
     @RequestMapping(value = "QueryTaskListByYear", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> QueryTaskListByYear(@RequestParam(value = "PersonCode") String PersonCode
-                                            )
+    )
             throws SQLException {
         Map result = new HashMap();
         String[] nameSapce = new String[1];
@@ -525,7 +527,6 @@ public class ActivitiController {
 
         return result;
     }
-
 
 
     public String makeNativeQuerySQL(String select, String[] nameSpace) {
@@ -616,9 +617,9 @@ public class ActivitiController {
                     .processInstanceBusinessKey(businessKey).listPage(0, 1)
                     .get(0);
             result.put("InstanceId", instance.getId());
-            Map data =  InstanceState(instance.getId());
+            Map data = InstanceState(instance.getId());
             List<Map<String, Object>> list = (List) data.get("list");
-            result.put("list", list.get(list.size()-1));
+            result.put("list", list.get(list.size() - 1));
             result.put("msg", "Ok");
         } catch (Exception e) {
             result.put("msg", "Error");
@@ -844,13 +845,13 @@ public class ActivitiController {
 
         for (int i = 0; i < parName.length; i++) {
             map.put(parName[i], parVal[i]);
-            if(parName[i].equals("flow_yj")){
-                map.put(taskId,  parVal[i]);
+            if (parName[i].equals("flow_yj")) {
+                map.put(taskId, parVal[i]);
             }
         }
 
         try {
-            map.put("idea",idea);
+            map.put("idea", idea);
             taskService.complete(taskId, map);
             result.put("ret", "任务提交成功");
             result.put("msg", "OK");
