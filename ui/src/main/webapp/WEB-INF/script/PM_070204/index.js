@@ -12,12 +12,12 @@ if (location.href.split('?')[1] != undefined) {
 
 var V_ORGCODE=null;
 if (location.href.split('?')[1] != undefined) {
-    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
+    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
 }
 
 var V_DEPTCODE=null;
 if (location.href.split('?')[1] != undefined) {
-    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
+    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
 }
 
 var V_EQUTYPE=null;
@@ -505,7 +505,6 @@ function selectJXTECHNOLOGYBZ() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191713/index.html?V_V_DEPTCODE=' + V_DEPTCODE
-        +'&V_V_EQUTYPE='+V_EQUTYPE
         +'&V_V_EQUCODE='+V_EQUCODE
         +'&V_V_ORGCODE='+V_ORGCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
