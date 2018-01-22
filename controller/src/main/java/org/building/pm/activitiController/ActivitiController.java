@@ -224,13 +224,9 @@ public class ActivitiController {
                     taskmap.put("startName","未知");
                 }
 
-
                 resultlist.add(taskmap);
 
-
             }
-
-
 
             result.put("list", resultlist);
             result.put("total", total);

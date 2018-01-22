@@ -93,10 +93,10 @@ Ext.onReady(function () {
         store : gridStore,
         frame : true,
         columnLines : true,
-        selModel: {
+       /* selModel: {
             selType: 'checkboxmodel',
             mode: 'SIMPLE'
-        },
+        },*/
         columns : [ {
             xtype : 'rownumberer',
             text : '序号',

@@ -288,7 +288,7 @@ public class QxService {
                 sledata.put("V_IDEA", rs.getString("V_IDEA"));
                 sledata.put("V_STATECODE", rs.getString("V_STATECODE"));
                 sledata.put("V_IDEA", rs.getString("V_IDEA"));
-                sledata.put("V_STATENA9ME", rs.getString("V_STATENAME"));
+                sledata.put("V_STATENAME", rs.getString("V_STATENAME"));
                 sledata.put("V_STATECOLOR", rs.getString("V_STATECOLOR"));
                 sledata.put("V_GUID", rs.getString("V_GUID"));
                 sledata.put("V_ORDERID", rs.getString("V_ORDERID"));
