@@ -1400,6 +1400,18 @@ public class cjyController {
         Map result = cjyService.PRO_PM_WORKORDER_DEFECT_PRO(V_V_ORGCODE, V_V_PERNAME, V_DEFECT_GUID,V_V_PROJECT_GUID);
         return result;
     }
+
+    @RequestMapping(value = "/PM_03_PLAN_PORJECT_WORKORDER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_PORJECT_WORKORDER(@RequestParam(value = "V_V_PROJECT_CODE") String V_V_PROJECT_CODE,
+                                                           @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_03_PLAN_PORJECT_WORKORDER(V_V_PROJECT_CODE, V_V_WEEK_GUID, V_V_ORGCODE, V_V_PERCODE);
+        return result;
+    }
 }
 
 
