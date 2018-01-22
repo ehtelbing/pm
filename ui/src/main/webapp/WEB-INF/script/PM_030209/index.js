@@ -518,6 +518,7 @@ Ext.onReady(function () {
                                 baseCls: 'margin-bottom',
                                 listeners: {
                                     select: function (field, newValue, oldValue) {
+                                        Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
                                         _gongshiheji();
                                     }
                                 }
@@ -583,6 +584,7 @@ Ext.onReady(function () {
                                 baseCls: 'margin-bottom',
                                 listeners: {
                                     select: function (field, newValue, oldValue) {
+                                        Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
                                         _gongshiheji();
                                     }
                                 }
@@ -712,7 +714,10 @@ Ext.onReady(function () {
 
 
     _init();
-})
+
+    Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+    Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
+});
 
 function _init() {
     _gongshiheji();
