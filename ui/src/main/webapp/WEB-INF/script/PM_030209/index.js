@@ -518,6 +518,7 @@ Ext.onReady(function () {
                                 baseCls: 'margin-bottom',
                                 listeners: {
                                     select: function (field, newValue, oldValue) {
+                                        Ext.getCmp('jhjgsj').setMinValue(Ext.getCmp('jhtgsj').getSubmitValue());
                                         _gongshiheji();
                                     }
                                 }
@@ -583,6 +584,7 @@ Ext.onReady(function () {
                                 baseCls: 'margin-bottom',
                                 listeners: {
                                     select: function (field, newValue, oldValue) {
+                                        Ext.getCmp('jhtgsj').setMaxValue(Ext.getCmp('jhjgsj').getSubmitValue());
                                         _gongshiheji();
                                     }
                                 }
@@ -712,7 +714,10 @@ Ext.onReady(function () {
 
 
     _init();
-})
+
+    Ext.getCmp('jhjgsj').setMinValue(Ext.getCmp('jhtgsj').getSubmitValue());
+    Ext.getCmp('jhtgsj').setMaxValue(Ext.getCmp('jhjgsj').getSubmitValue());
+});
 
 function _init() {
     _gongshiheji();

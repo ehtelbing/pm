@@ -396,6 +396,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             listeners: {
                                 select: function () {
                                     Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+                                    _gongshiheji();
                                 }
                             }
                         },
@@ -510,6 +511,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             listeners: {
                                 select: function () {
                                     Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
+                                    _gongshiheji();
                                 }
                             }
                         },
