@@ -584,7 +584,7 @@ function comboConfirm(){
 											var respl = Ext.decode(response.responseText);
 											if(respl.list.length>0){
 												for(var i=0;i<respl.list.length;i++){
-													Ext.Ajax.request({//修改周计划状态
+													/*Ext.Ajax.request({//修改周计划状态
 														method: 'POST',
 														async: false,
 														url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
@@ -602,7 +602,7 @@ function comboConfirm(){
 															}
 
 														}
-													});
+													});*/
 													Ext.Ajax.request({//保存缺陷详细日志
 														url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
 														method: 'POST',
@@ -1011,7 +1011,7 @@ function QRYS(){
 										var respl = Ext.decode(response.responseText);
 										if(respl.list.length>0){
 											for(var i=0;i<respl.list.length;i++){
-												Ext.Ajax.request({//修改周计划状态
+												/*Ext.Ajax.request({//修改周计划状态
 													method: 'POST',
 													async: false,
 													url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
@@ -1029,7 +1029,7 @@ function QRYS(){
 														}
 
 													}
-												});
+												});*/
 												Ext.Ajax.request({//保存缺陷详细日志
 													url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
 													method: 'POST',
