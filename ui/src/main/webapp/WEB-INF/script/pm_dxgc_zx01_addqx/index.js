@@ -319,7 +319,12 @@ function _init() {
 }
 
 
-function _selectOverhaulApply() {
+function _selectOverhaulApply(mes) {
+    if(mes=='close'){
+        window.close();
+        window.opener.QueryGrid();
+    }
+
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
         V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
@@ -366,15 +371,15 @@ function createWorkorder(){
         }
 
     }
-
     Ext.Ajax.request({
-        url: AppUrl + 'cjy/PRO_PM_WORKORDER_DEFECT_NC',
+        url: AppUrl + 'cjy/PRO_PM_WORKORDER_DEFECT_PRO',
         method: 'POST',
         async: false,
         params: {
             V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
             V_V_PERNAME: Ext.util.Cookies.get('v_personcode'),
-            V_DEFECT_GUID:V_GUIDList
+            V_DEFECT_GUID:V_GUIDList,
+            V_V_PROJECT_GUID:url_guid
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

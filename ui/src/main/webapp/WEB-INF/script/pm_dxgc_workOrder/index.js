@@ -530,7 +530,7 @@ function BillGo() {
                                                             });
                                                             alert("工单创建成功：" + $("#V_ORDERID").html());
                                                             window.close();
-                                                            window.opener.query();
+                                                            window.opener.QueryGrid();
                                                         }else{
                                                             alert("工单状态修改失败！");
                                                         }

@@ -84,24 +84,13 @@ Ext.onReady(function () {
                 labelWidth: 100,
                 width: 250,
                 baseCls: 'margin-bottom'
+            },{
+                xtype : 'button',
+                text : '查询',
+                style: ' margin: 5px 0px 5px 20px',
+                icon: imgpath + '/search.png',
+                handler : _select
             }
-        ]
-    });
-
-
-
-    var buttonPanel = Ext.create('Ext.Panel', {
-        id : 'buttonPanel',
-        defaults : {
-            style: ' margin: 5px 0px 5px 10px',
-            width : 70
-        },
-        items : [  {
-            xtype : 'button',
-            text : '查询',
-            icon: imgpath + '/search.png',
-            handler : _select
-        }
         ]
     });
 
@@ -182,10 +171,6 @@ Ext.onReady(function () {
             border : false,
             items : [ editPanel ]
         }, {
-            region : 'north',
-            border : false,
-            items : [ buttonPanel ]
-        }, {
             region : 'center',
             layout : 'fit',
             border : false,
@@ -193,14 +178,21 @@ Ext.onReady(function () {
         } ]
     });
 
-    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+    Ext.data.StoreManager.lookup('gridStore').load({
+        params:{
+            PersonCode:  Ext.util.Cookies.get('v_personcode'),
+            beginTime:Ext.getCmp('beginTime').getSubmitValue(),
+            endTime: Ext.getCmp('endTime').getSubmitValue()
+        }
+    })
+
+   /* Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             PersonCode:  Ext.util.Cookies.get('v_personcode'),
             beginTime:Ext.getCmp('beginTime').getSubmitValue(),
             endTime: Ext.getCmp('endTime').getSubmitValue()
-
         }
-    });
+    });*/
 
     _init()
 })

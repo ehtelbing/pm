@@ -52,22 +52,16 @@ var Layout = {
                 { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '工具编码', align: 'center', width: 150, dataIndex: 'V_TOOLCODE'
+                    text: '工具名称', align: 'center', width: 150, dataIndex: 'V_TOOLNAME',renderer:AtLeft
                 },
                 {
-                    text: '工具名称', align: 'center', width: 150, dataIndex: 'V_TOOLNAME'
+                    text: '工具类型', align: 'center', width: 150, dataIndex: 'V_TOOLTYPE',renderer:AtLeft
                 },
                 {
-                    text: '工具类型', align: 'center', width: 150, dataIndex: 'V_TOOLTYPE'
+                    text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE',renderer:AtTy
                 },
                 {
-                    text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE'
-                },
-                {
-                    text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME'
-                },
-                {
-                    text: '功能位置', align: 'center', width: 150, dataIndex: 'V_EQUSITE'
+                    text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME',renderer:AtTy
                 }
             ]
         }
@@ -118,8 +112,16 @@ function queryGrid(){
     });
 }
 
+function AtTy(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    if(value=="TY"){
+        value="通用";
+    }
+    return value ;
+}
 
-function renderFont(value, metaData){
+
+function AtLeft(value, metaData){
     metaData.style = 'text-align: left';
     return value;
 }

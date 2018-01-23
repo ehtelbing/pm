@@ -855,9 +855,6 @@ public class PM_14Controller {
         return result;
     }*/
 
-
-
-
     @RequestMapping(value = "/PRO_BASE_FILE_ADDINSERT", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_FILE_ADDINSERT(@RequestParam(value = "V_V_GUID2") String V_V_GUID2,
@@ -867,9 +864,7 @@ public class PM_14Controller {
                                                   @RequestParam(value = "V_V_PLANT2") String V_V_PLANT2,
                                                   @RequestParam(value = "V_V_DEPT2") String V_V_DEPT2,
                                                   @RequestParam(value = "V_V_PERSON2") String V_V_PERSON2,
-                                                  @RequestParam(value = "V_V_REMARK2") String V_V_REMARK2,
-                                                  HttpServletRequest request,
-                                                  HttpServletResponse response) throws Exception {
+                                                  @RequestParam(value = "V_V_REMARK2") String V_V_REMARK2) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
 

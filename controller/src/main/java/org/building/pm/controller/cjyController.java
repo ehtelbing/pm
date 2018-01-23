@@ -1329,6 +1329,142 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_W", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET_W(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                             @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET_W(V_V_WORKORDER_GUID, V_V_WEEK_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_F", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET_F(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET_F(V_V_WORKORDER_GUID);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SELBYWORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SELBYWORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYWORK(V_V_WORKORDER_GUID, V_V_FLAG);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_WD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET_WD(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
+                                                          @RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET_WD(V_V_DEFECT_GUID, V_V_WORKORDER_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DELBYWORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_DELBYWORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_DELBYWORK(V_V_WORKORDER_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_NC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_DEFECT_NC(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                          @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_DEFECT_NC(V_V_ORGCODE, V_V_PERNAME, V_DEFECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_PRO", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_DEFECT_PRO(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                          @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                          @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
+                                                           @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_DEFECT_PRO(V_V_ORGCODE, V_V_PERNAME, V_DEFECT_GUID,V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_03_PLAN_PORJECT_WORKORDER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_PORJECT_WORKORDER(@RequestParam(value = "V_V_PROJECT_CODE") String V_V_PROJECT_CODE,
+                                                           @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_03_PLAN_PORJECT_WORKORDER(V_V_PROJECT_CODE, V_V_WEEK_GUID, V_V_ORGCODE, V_V_PERCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_NSET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_WEEK_NSET(
+            @RequestParam(value = "V_V_INPER") String V_V_INPER,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE,
+
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_STARTTIME") String V_V_STARTTIME,
+            @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
+            @RequestParam(value = "V_V_OTHERPLAN_GUID") String V_V_OTHERPLAN_GUID,
+            @RequestParam(value = "V_V_OTHERPLAN_TYPE") String V_V_OTHERPLAN_TYPE,
+
+            @RequestParam(value = "V_V_JHMX_GUID") String V_V_JHMX_GUID,
+            @RequestParam(value = "V_V_HOUR") String V_V_HOUR,
+            @RequestParam(value = "V_V_BZ") String V_V_BZ,
+            @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_WEEK_NSET(
+                V_V_INPER,
+                V_V_GUID,
+                V_V_YEAR,
+                V_V_MONTH,
+                V_V_WEEK,
+
+                V_V_ORGCODE,
+                V_V_DEPTCODE,
+                V_V_EQUTYPECODE,
+                V_V_EQUCODE,
+                V_V_REPAIRMAJOR_CODE,
+
+                V_V_CONTENT,
+                V_V_STARTTIME,
+                V_V_ENDTIME,
+                V_V_OTHERPLAN_GUID,
+                V_V_OTHERPLAN_TYPE,
+
+                V_V_JHMX_GUID,
+                V_V_HOUR,
+                V_V_BZ,
+                V_V_DEFECTGUID);
+        return result;
+    }
 }
 
 

@@ -1,6 +1,7 @@
 /**
  * Created by lxm on 2017/8/14.
  */
+var date = new Date();
 var dt = new Date();
 var thisYear = dt.getFullYear();
 var years = [];
@@ -174,7 +175,8 @@ Ext.onReady(function () {
             'V_OTHERPLAN_TYPE',
             'V_WEEKID',
             'V_STATE',
-'V_WORKFLAG_NAME'
+'V_WORKFLAG_NAME',
+            'V_STATENAME'
 
         ],
         proxy: {
@@ -206,13 +208,13 @@ Ext.onReady(function () {
             {id:'year',xtype:'combo',labelWidth: 80,
                 labelAlign:'right',fieldLabel:'年份',
                 store:years,displayField:'Item1',valueField:'Item2',
-                value:thisYear,editable:false,queryMode:'local'},
+                value:'',editable:false,queryMode:'local'},
             {id: 'month', store: months, xtype: 'combo', fieldLabel: '月份',
-                value: new Date().getMonth()+1,labelWidth: 80,
+                value: '',labelWidth: 80,
                 labelAlign:'right', editable: false,
                 displayField: 'displayField', valueField: 'valueField'},
             {id: 'week', store: weeks, xtype: 'combo', fieldLabel: '周',
-                value: '1',labelWidth: 80,
+                value: '',labelWidth: 80,
                 labelAlign:'right', editable: false,
                 displayField: 'displayField', valueField: 'valueField'},
             {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
@@ -240,28 +242,6 @@ Ext.onReady(function () {
             queryMode: 'local',
             baseCls: 'margin-bottom'
         }, {
-            id: 'zy',
-            xtype: 'combo',
-            store: zyStore,
-            editable: false,
-            fieldLabel: '专业',
-            labelWidth: 80,
-            displayField: 'V_MAJOR_CODE',
-            valueField: 'V_MAJOR_NAME',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'zt',
-            xtype: 'combo',
-            store: ztstore,
-            editable: false,
-            fieldLabel: '状态',
-            labelWidth: 80,
-            displayField: 'V_BASENAME',
-            valueField: 'V_BASECODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
                 xtype: 'combo',
                 id: 'sblx',
                 fieldLabel: '设备类型',
@@ -284,6 +264,29 @@ Ext.onReady(function () {
                 store: sbmcStore,
                 queryMode: 'local'
             },{
+            id: 'zy',
+            xtype: 'combo',
+            store: zyStore,
+            editable: false,
+            fieldLabel: '专业',
+            labelWidth: 80,
+            displayField: 'V_MAJOR_CODE',
+            valueField: 'V_MAJOR_NAME',
+            queryMode: 'local',
+            baseCls: 'margin-bottom'
+        }, {
+            id: 'zt',
+            xtype: 'combo',
+            store: ztstore,
+            editable: false,
+            fieldLabel: '状态',
+            labelWidth: 80,
+            hidden:true,
+            displayField: 'V_BASENAME',
+            valueField: 'V_BASECODE',
+            queryMode: 'local',
+            baseCls: 'margin-bottom'
+        }, {
             id: 'seltext',
             xtype: 'textfield',
             width: 158,
@@ -326,7 +329,7 @@ Ext.onReady(function () {
                 text : '序号',
                 width : 50,
                 align : 'center' },
-            { text: '计划状态',width:200,dataIndex:'V_WORKFLAG_NAME', align: 'center',renderer:Atleft },
+            { text: '计划状态',width:200,dataIndex:'V_STATENAME', align: 'center',renderer:Atleft },
             { text: '设备名称',width:200,dataIndex:'V_EQUTYPENAME', align: 'center',renderer:Atleft },
             { text: '专业',width:200,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft },
             { text: '检修内容',width:200,dataIndex:'V_CONTENT', align: 'center',renderer:Atleft },
@@ -353,6 +356,8 @@ Ext.onReady(function () {
         layout: 'border',
         items: [panel, grid]
     });
+
+    Ext.getCmp('week').select(getWeekOfMonth());
     ckstore.on("load", function () {
         if(url_deptcode!=undefined){
             Ext.getCmp("ck").select(url_deptcode.substring(0,4));
@@ -458,7 +463,7 @@ Ext.onReady(function () {
             V_V_EQUCODE:Ext.getCmp('sbmc').getValue(),
             V_V_CONTENT:Ext.getCmp('seltext').getValue()==""?"%":Ext.getCmp('seltext').getValue(),
             V_V_FLOWTYPE:'WORK',
-            V_V_STATE:Ext.getCmp('zt').getValue(),
+            V_V_STATE:'30,31',//审批完成，已下票
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -469,6 +474,42 @@ function rendererTime(value, metaData){
 
     return value.split(".")[0];
 }
+//第几周
+function getWeekOfMonth() {//周一为起始
+    var w = date.getDay()==0?7:date.getDay();//星期
+    var d = date.getDate();//日期
+
+    var week= Math.ceil((d + 7 - w) / 7);//向上取整
+
+    if(week==getWeeks()){//为最后周
+        if(date.getMonth() + 1==12){//为最后月，月份年份均变化
+            Ext.getCmp('year').select(date.getFullYear()+1);
+            Ext.getCmp('month').select(1);
+        }else{//月份变化
+            Ext.getCmp('year').select(date.getFullYear());
+            Ext.getCmp('month').select(date.getMonth() + 2);
+        }
+        return 1;
+    }else{
+        Ext.getCmp('year').select(date.getFullYear());
+        Ext.getCmp('month').select(date.getMonth() + 1);
+        return week+1;
+    }
+
+}
+//当前月有几周
+function getWeeks(){
+    var str=date;
+    var year=str.getFullYear();
+    var month=str.getMonth()+1;
+    var lastday=new Date(year, month,0);
+
+    var w = lastday.getDay()==0?7:lastday.getDay();//星期
+    var d = lastday.getDate();//日期
+
+    return Math.ceil((d + 7 - w) / 7);//向上取整
+
+}
 function createWorkorder(){
     var record=Ext.getCmp('grid').getSelectionModel().getSelection();
     if(record.length==0){
@@ -478,6 +519,12 @@ function createWorkorder(){
 
     var V_GUIDList='';
     for(var i=0;i<record.length;i++){
+        if(record[0].data.V_EQUTYPECODE!=record[i].data.V_EQUTYPECODE){
+            alert("请选择同一设备缺陷");
+            return;
+
+        }
+
         if(i==0){
             V_GUIDList=record[i].data.V_GUID;
         }else{
@@ -496,18 +543,20 @@ function createWorkorder(){
                 var resp = Ext.decode(resp.responseText);
                 if(resp.v_info=="SUCCESS"){
                     Ext.Ajax.request({
-                        url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDER',
+                        url: AppUrl + 'cjy/PM_03_PLAN_PORJECT_WORKORDER',
                         method: 'POST',
                         async : false,
                         params:{
-                            V_V_GUID:V_GUIDList,
+                            V_V_PROJECT_CODE:url_guid,
+                            V_V_WEEK_GUID:V_GUIDList,
+                            V_V_ORGCODE:Ext.getCmp('ck').getValue(),
                             V_V_PERCODE:Ext.util.Cookies.get('v_personcode')
                         },
                         success:function(resp){
                             var resp = Ext.decode(resp.responseText);
-                            var V_V_ORDERGUID=resp.V_V_ORDERGUID;
+                            var V_V_ORDERGUID=resp.list[0].V_ORDERGUID;
                             var V_V_SOURCECODE=resp.V_V_SOURCECODE;
-                            var V_V_EQUTYPE=resp.V_V_EQUTYPE;
+                            var V_V_EQUTYPE=record[0].data.V_EQUTYPECODE;
                             if(url_guid!=undefined){
                                 Ext.Ajax.request({
                                     url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
@@ -523,13 +572,13 @@ function createWorkorder(){
                                     success: function (response) {
                                         var resp = Ext.decode(response.responseText);
                                         if (resp.v_info == "success") {
-                                            window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID+"&V_V_SOURCECODE="+V_V_SOURCECODE+'&V_V_EQUTYPE='+V_V_EQUTYPE,
+                                            window.open(AppUrl + "page/pm_dxgc_workOrder/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID+"&V_V_SOURCECODE="+V_V_SOURCECODE+'&V_V_EQUTYPE='+V_V_EQUTYPE,
                                                 "", "dialogHeight:700px;dialogWidth:1100px");
                                         }
                                     }
                                 });
                             }else{
-                                alert(resp.v_info);
+                                alert(resp.V_INFO);
                             }
                         }
                     });

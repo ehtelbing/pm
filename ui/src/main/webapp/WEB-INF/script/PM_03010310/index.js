@@ -1,35 +1,23 @@
 var V_WEEKPLAN_GUID = 0;
-if (location.href.split('?')[1] != undefined) {
-    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
-}
 var V_PLANTYPE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
-}
 var YEAR = null;
-if (location.href.split('?')[1] != undefined) {
-    YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
-}
 var MONTH = null;
-if (location.href.split('?')[1] != undefined) {
-    MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
-}
 var WEEK = null;
-if (location.href.split('?')[1] != undefined) {
-    WEEK = Ext.urlDecode(location.href.split('?')[1]).WEEK;
-}
 var V_ORGCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
-}
 var V_DEPTCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
-}
 var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
-
 var V_PLANCODE = null;
+
+if (location.href.split('?')[1] != undefined) {
+    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
+    V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
+    YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
+    MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
+    WEEK = Ext.urlDecode(location.href.split('?')[1]).WEEK;
+    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
+    V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
+}
 
 var date = new Date();
 //年份
@@ -439,33 +427,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             width: 280,
                             value: '',
                             listeners: {
-                                select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
-                                    var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
-                                    var date22 = new Date(date2);
-
-
-                                    var gongshicha = date22.getTime() - date11.getTime();
-                                    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                                    if(gongshicha2 >= 0)
-                                    {
-                                        _gongshiheji();
-                                    }else{
-                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                        function callBack(id) {
-                                            Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                            Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                            Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhgshj').setValue(0);
-                                            return ;
-
-                                        }
-
-                                    }
+                                select: function () {
+                                    Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+                                    _gongshiheji();
                                 }
                             }
                         },
@@ -495,7 +459,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
+                                    }/*else{
                                         Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
@@ -509,7 +473,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
                             }
                         },
@@ -539,7 +503,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
+                                    }/*else{
                                         Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
@@ -553,7 +517,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
                             }
                         }
@@ -577,34 +541,10 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             labelWidth: 80,
                             width: 280,
                             value: '',
-                            listeners: {
-                                select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
-                                    var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
-                                    var date22 = new Date(date2);
-
-
-                                    var gongshicha = date22.getTime() - date11.getTime();
-                                    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                                    if(gongshicha2 >= 0)
-                                    {
-                                        _gongshiheji();
-                                    }else{
-                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                        function callBack(id) {
-                                            Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                            Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                            Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhgshj').setValue(0);
-                                            return ;
-
-                                        }
-
-                                    }
+                            listeners : {
+                                select: function () {
+                                    Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
+                                    _gongshiheji();
                                 }
                             }
                         },
@@ -634,7 +574,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
+                                    }/*else{
                                         Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
@@ -648,7 +588,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
                             }
                         },
@@ -678,7 +618,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
-                                    }else{
+                                    }/*else{
                                         Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
                                         function callBack(id) {
                                             Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
@@ -692,7 +632,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
 
                                         }
 
-                                    }
+                                    }*/
                                 }
                             }
                         }
@@ -937,6 +877,8 @@ Ext.onReady(function () {
             }
         });
     }
+    Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+    Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
 });
 //第几周
 function getWeekOfMonth() {
@@ -963,15 +905,15 @@ function jhSelect() {
     + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
     + '&V_V_JXNR=' + Ext.getCmp('jxnr').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
-function mxSelect() {
+/*function mxSelect() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_03010312/index.html?V_ORGCODE=' + Ext.getCmp('ck').getValue()
     + '&V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
     + '&V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
     + '&V_EQUCODE=' + Ext.getCmp('sbmc').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-}
-function getReturnJHXZ(retdata, type) {
+}*/
+/*function getReturnJHXZ(retdata, type) {
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
         method: 'POST',
@@ -1024,8 +966,8 @@ function getReturnJHXZ(retdata, type) {
 
         }
     });
-}
-function getReturnMXXZ(retdata) {
+}*/
+/*function getReturnMXXZ(retdata) {
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PM_03_JXMX_DATA_MXCODE_SEL',
         method: 'POST',
@@ -1054,7 +996,7 @@ function getReturnMXXZ(retdata) {
             Ext.getCmp('bz').setValue(V_BZ);  //备注
         }
     });
-}
+}*/
 function OnButtonSaveClick() {
     //获取流动编码
     /*var V_FLOWCODE="";
@@ -1094,7 +1036,7 @@ function OnButtonSaveClick() {
     V_JXMX_CODE = guid();
     //保存
     Ext.Ajax.request({
-        url: AppUrl + 'basic/PRO_PM_03_PLAN_WEEK_SET',
+        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_NSET',
         method: 'POST',
         params: {
             V_V_INPER: Ext.util.Cookies.get('v_personcode'),               //人员cookies                                    //人员编码

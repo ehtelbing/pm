@@ -10,6 +10,8 @@ var eTypeLoad = false;
 var guid = '';
 var V_V_DJ_TYPE = '';
 
+
+
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_TIMER_GUID == undefined) ? V_TIMER_GUID = '' : V_TIMER_GUID = parameters.V_TIMER_GUID;
@@ -229,7 +231,9 @@ Ext.onReady(function () {
         storeId: 'djDataCreateStore',
         autoLoad: false,
         pageSize: 15,//测试好用
-        fields: ['V_DJ_TYPE', 'V_EQUNAME', 'V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT', 'V_PERNAME_INPUT', 'V_CRITERION_ITEM', 'V_CRITERION_CONTENT', 'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1', 'V_EQU_STATE2', 'V_EQU_STATE3', 'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3', 'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8', 'V_DJ_DATE', 'V_CK_EQUTYPECODE', 'V_GUID'],
+        fields: ['V_DJ_TYPE', 'V_EQUNAME', 'V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT', 'V_PERNAME_INPUT', 'V_CRITERION_ITEM',
+            'V_CRITERION_CONTENT', 'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1', 'V_EQU_STATE2', 'V_EQU_STATE3',
+            'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3', 'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8', 'V_DJ_DATE', 'V_CK_EQUTYPECODE', 'V_GUID'],
         proxy: {
             url: AppUrl + 'hp/PM_06_DJ_CRITERION_DBDATA_SEL',
             type: 'ajax',
@@ -388,14 +392,14 @@ Ext.onReady(function () {
             text: '正常',
             icon: imgpath + '/saved.png',
             handler: function () {
-                _djDataZCAll();
+                _djDataZCShow();
             }
         }, {
             xtype: 'button',
             text: '发现异常',
             icon: imgpath + '/tree_dnd_no.png',
             handler: function () {
-                _djDataYCAll();
+                _djDataYCShow();
             }
         }, {
             xtype: 'button',
@@ -968,7 +972,6 @@ Ext.onReady(function () {
     });
     _init();
 
-
 });
 
 function _init() {
@@ -1003,174 +1006,194 @@ function _preChooseDjType() {
 }
 
 
-function _djDataZCShow(a, b, c) {
-    guid = a;
-    V_V_DJ_TYPE = b;
-    Ext.getCmp('djDataZCWindow').show();
-    Ext.getCmp('zchour').setValue(new Date().getHours());
-    Ext.getCmp('zcminute').setValue(new Date().getMinutes());
-    Ext.getCmp('V_V_YCMS').setValue(c);
-    /*var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
+function _djDataZCShow() {
+    var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
 
-     if (records.length !=1) {
-     Ext.MessageBox.show({
-     title: '提示',
-     msg: '请选择一条数据',
-     buttons: Ext.MessageBox.OK,
-     icon: Ext.MessageBox.WARNING
-     });
-     return false;
-     }
-
-     if(records.length > 1)
-     {
-     for(var i=0;i<records.length;i++){
-     Ext.getCmp('zchour').setValue(new Date().getHours());
-     Ext.getCmp('zcminute').setValue(new Date().getMinutes());
-     Ext.getCmp('V_V_YCMS').setValue(records[i].data.V_CRITERION_CONTENT);
-     _insertDjDataZC('zc');
-
-
-     }
-     }
-     if(records.length == 1)
-     {
-     Ext.getCmp('djDataZCWindow').show();
-     Ext.getCmp('zchour').setValue(new Date().getHours());
-     Ext.getCmp('zcminute').setValue(new Date().getMinutes());
-     Ext.getCmp('V_V_YCMS').setValue(records[0].data.V_CRITERION_CONTENT);
-
-     }*/
-
-
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    if(records.length > 1)
+    {
+        for(var i=0;i<records.length;i++){
+            _insertDjDataZC('zc');
+        }
+    }
+    if(records.length == 1)
+    {
+        Ext.getCmp('djDataZCWindow').show();
+        Ext.getCmp('zchour').setValue(new Date().getHours());
+        Ext.getCmp('zcminute').setValue(new Date().getMinutes());
+        Ext.getCmp('V_V_YCMS').setValue(records[0].data.V_CRITERION_CONTENT);
+    }
 }
 
-function _djDataYCShow(a, b, c) {
-    guid = a;
-    V_V_DJ_TYPE = b;
-    Ext.getCmp('ychour').setValue(new Date().getHours());
-    Ext.getCmp('ycminute').setValue(new Date().getMinutes());
-    Ext.getCmp('V_V_YCMS1').setValue(c);
-    Ext.getCmp('djDataYCWindow').show();
+function _djDataYCShow() {
+    var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+
+    if(records.length > 1)
+    {
+        for(var i=0;i<records.length;i++){
+            _insertDjDataYC('yc');
+        }
+    }
+
+    if(records.length == 1)
+    {
+        Ext.getCmp('ychour').setValue(new Date().getHours());
+        Ext.getCmp('ycminute').setValue(new Date().getMinutes());
+        Ext.getCmp('V_V_YCMS1').setValue(records[0].data.V_CRITERION_CONTENT);
+        Ext.getCmp('djDataYCWindow').show();
+    }
 }
 
 function _insertDjDataZC(str) {
-    var V_V_YCMS = Ext.getCmp('V_V_YCMS').getSubmitValue();
+    var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
+
     var V_STATE = '';
     var V_TIME = '';
-    var V_MS = '';
     if (str == 'zc') {
         V_STATE = '0';
-        V_TIME = Ext.getCmp('V_D_DATE_SJ').getSubmitValue() + ' ' + Ext.getCmp('zchour').getValue() + ':' + Ext.getCmp('zcminute').getValue() + ':00';
-        V_MS = Ext.getCmp('V_V_YCMS').getValue();
-    } else {
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
+    }else{
         V_STATE = '1';
-        V_TIME = Ext.getCmp('V_D_DATE_FX').getSubmitValue() + ' ' + Ext.getCmp('ychour').getValue() + ':' + Ext.getCmp('ycminute').getValue() + ':00';
-        V_MS = Ext.getCmp('V_V_YCMS1').getValue();
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
     }
 
-    Ext.Ajax.request({
-        url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            'V_V_GUID': guid,
-            'V_V_DJ_STATE': V_STATE,
-            'V_V_DJ_DATE': V_TIME,
-            'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-            'V_V_DJ_NR': V_MS,
-            'V_V_DJ_TYPE': V_V_DJ_TYPE,
-            'V_V_TIMER_GUID': V_TIMER_GUID
-        },
-        success: function (response) {
-            var data = Ext.decode(response.responseText);
-            if (data.success) {
-
-                Ext.MessageBox.alert('提示', '操作成功', callBack);
-                function callBack(id) {
-                    query();
-                    _close();
+    var i_err = 0;
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                'V_V_GUID': records[i].data.V_GUID,
+                'V_V_DJ_STATE': V_STATE,
+                'V_V_DJ_DATE': V_TIME,
+                'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DJ_NR': records[i].data.V_CRITERION_CONTENT,//异常现象描述
+                'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE,
+                'V_V_TIMER_GUID': V_TIMER_GUID
+            },
+            success: function (response) {
+                var data = Ext.decode(response.responseText);//后台返回的值
+                if (data.success) {//成功，会传回true
+                    i_err++;
+                    if (i_err == records.length) {
+                        Ext.MessageBox.alert('提示', '操作成功', callBack);
+                        function callBack(id) {
+                            query();
+                            _close();
+                        }
+                        window.opener.tabreload();
+                        window.close();
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.V_CURSOR,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
                 }
-
-                window.close();
-                window.opener._AgencySelect();
-
-            } else {
+            },
+            failure: function (response) {//访问到后台时执行的方法。
                 Ext.MessageBox.show({
                     title: '错误',
-                    msg: data.message,
+                    msg: response.responseText,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
-                });
+                })
             }
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
-        }
-    });
-
+        });
+    }
 }
 
 function _insertDjDataYC(str) {
+    var records = Ext.getCmp('djDataCreatePanel').getSelectionModel().getSelection();
+
     var V_V_YCMS = Ext.getCmp('V_V_YCMS').getSubmitValue();
     var V_STATE = '';
     var V_TIME = '';
-    var V_MS = '';
     if (str == 'zc') {
         V_STATE = '0';
-        V_TIME = Ext.getCmp('V_D_DATE_SJ').getSubmitValue() + ' ' + Ext.getCmp('zchour').getValue() + ':' + Ext.getCmp('zcminute').getValue() + ':00';
-        V_MS = Ext.getCmp('V_V_YCMS').getValue();
-    } else {
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
+    }else{
         V_STATE = '1';
-        V_TIME = Ext.getCmp('V_D_DATE_FX').getSubmitValue() + ' ' + Ext.getCmp('ychour').getValue() + ':' + Ext.getCmp('ycminute').getValue() + ':00';
-        V_MS = Ext.getCmp('V_V_YCMS1').getValue();
+        V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
     }
 
-    Ext.Ajax.request({
-        url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            'V_V_GUID': guid,
-            'V_V_DJ_STATE': V_STATE,
-            'V_V_DJ_DATE': V_TIME,
-            'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-            'V_V_DJ_NR': V_MS,
-            'V_V_DJ_TYPE': V_V_DJ_TYPE,
-            'V_V_TIMER_GUID': V_TIMER_GUID
-        },
-        success: function (response) {
-            var data = Ext.decode(response.responseText);
-            if (data.success) {
-                Ext.getCmp('windowYc').hide();
-                query();
-                _close();
-                window.close();
-                window.opener._AgencySelect();
-            } else {
-                Ext.MessageBox.show({
-                    title: '错误',
-                    msg: data.message,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                });
+    Ext.MessageBox.show({
+        title: '确认',
+        msg: '您确定要生成缺陷吗？',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                var i_err = 0;
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
+                        type: 'ajax',
+                        method: 'POST',
+                        params: {
+                            'V_V_GUID': records[i].data.V_GUID,
+                            'V_V_DJ_STATE': V_STATE,
+                            'V_V_DJ_DATE': V_TIME,
+                            'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
+                            'V_V_DJ_NR': records[i].data.V_CRITERION_CONTENT,//异常现象描述
+                            'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE,
+                            'V_V_TIMER_GUID': V_TIMER_GUID
+
+                        },
+                        success: function (response) {
+                            var data = Ext.decode(response.responseText);//后台返回的值
+                            if (data.success) {//成功，会传回true
+                                i_err++;
+                                if (i_err == records.length) {
+                                    Ext.MessageBox.alert('提示', '操作成功');
+                                    query();
+                                    _close();
+                                    window.opener.tabreload();
+                                    window.close();
+                                }
+                            } else {
+                                Ext.MessageBox.show({
+                                    title: '错误',
+                                    msg: data.V_CURSOR,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR
+                                });
+                            }
+                        },
+                        failure: function (response) {//访问到后台时执行的方法。
+                            Ext.MessageBox.show({
+                                title: '错误',
+                                msg: response.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            })
+                        }
+                    });
+                }
             }
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
         }
     });
-
 }
 
 function _close() {
@@ -1298,7 +1321,7 @@ function _djDataZCAll() {
             }
         });
     }
-    window.opener._AgencySelect();
+    window.opener.tabreload();
     window.close();
 
 }
@@ -1360,6 +1383,11 @@ function _djDataYCAll() {
             }
         });
     }
+    window.opener.tabreload();
     window.close();
-    window.opener._AgencySelect();
+}
+
+window.onunload = function()
+{
+    window.opener.tabreload();
 }
