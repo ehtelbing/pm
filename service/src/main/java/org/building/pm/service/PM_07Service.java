@@ -65,7 +65,7 @@ public class PM_07Service {
     @Autowired
     private ComboPooledDataSource dataSources;
 
-    public HashMap PRO_PM_WORKORDER_DEFECT_SAVE(String V_V_PERNAME,String  V_DEFECT_GUID,String  V_V_ORDERGUID,String  V_V_SHORT_TXT,
+    public HashMap PRO_PM_WORKORDER_DEFECT_SAVE(String V_V_PERNAME,String  V_V_DEFECT_GUID,String  V_V_ORDERGUID,String  V_V_SHORT_TXT,
                                                 String V_D_START_DATE,String V_D_FINISH_DATE,String V_V_WBS,String V_V_WBS_TXT,
                                                 String V_V_DEPTCODEREPARIR) throws SQLException {
 
@@ -83,7 +83,7 @@ public class PM_07Service {
                     ":V_V_ORDERGUID,:V_V_SHORT_TXT,:V_D_START_DATE,:V_D_FINISH_DATE,:V_V_WBS,:V_V_WBS_TXT," +
                     ":V_V_DEPTCODEREPARIR,:V_CURSOR)}");
             cstmt.setString("V_V_PERNAME", V_V_PERNAME);
-            cstmt.setString("V_DEFECT_GUID", V_DEFECT_GUID);
+            cstmt.setString("V_DEFECT_GUID", V_V_DEFECT_GUID);
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
             cstmt.setString("V_D_START_DATE", V_D_START_DATE);

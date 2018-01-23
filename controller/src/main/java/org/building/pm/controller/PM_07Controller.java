@@ -28,7 +28,7 @@ public class PM_07Controller {
     @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_SAVE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_DEFECT_SAVE(@RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
-                                                            @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
+                                                            @RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
                                                             @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
                                                             @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
                                                             @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
@@ -40,7 +40,7 @@ public class PM_07Controller {
                                                             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_07Service.PRO_PM_WORKORDER_DEFECT_SAVE(V_V_PERNAME, V_DEFECT_GUID, V_V_ORDERGUID, V_V_SHORT_TXT,
+        HashMap data = pm_07Service.PRO_PM_WORKORDER_DEFECT_SAVE(V_V_PERNAME, V_V_DEFECT_GUID, V_V_ORDERGUID, V_V_SHORT_TXT,
                 V_D_START_DATE,V_D_FINISH_DATE,V_V_WBS,V_V_WBS_TXT,V_V_DEPTCODEREPARIR);
 
         String pm_06 = (String) data.get("RET");
