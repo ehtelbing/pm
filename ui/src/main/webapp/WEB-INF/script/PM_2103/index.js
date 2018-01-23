@@ -1,4 +1,5 @@
 var V_GUID = "" ;
+var num=0;
 var V_V_GUID_COPY = '';
 var personStoreLoad = false;
 var initLoad = true;
@@ -47,7 +48,24 @@ Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
 
-
+//流程类型
+    var lclxStore= Ext.create('Ext.data.Store', {
+        autoLoad: true,
+        storeId: 'lclxStore',
+        fields: ['V_FLOWTYPE_CODE', 'V_FLOWTYPE_NAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'pm_19/PM_FLOW_TYPE_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         pageSize: 15,
@@ -75,16 +93,47 @@ Ext.onReady(function () {
 
     var buttonPanel = Ext.create('Ext.Panel', {
         id : 'buttonPanel',
+        title:'我的待办任务（'+num+'）条',
+        width:'100%',
         defaults : {
-            style: ' margin: 5px 0px 5px 10px',
-            width : 70
+            style: ' margin: 5px 0px 5px 10px'
         },
-        items : [  {
-            xtype : 'button',
-            text : '查询',
-            icon: imgpath + '/search.png',
-            handler : OnPageLoad
-        }
+        layout:'column',
+        items : [{
+            xtype: 'combo',
+            id: 'lclx',
+            fieldLabel: '流程类型',
+            editable: false,
+            labelWidth: 55,
+            width:200,
+            displayField: 'V_FLOWTYPE_NAME',
+            valueField: 'V_FLOWTYPE_CODE',
+            store: lclxStore,
+            queryMode: 'local'
+        },
+            {
+                xtype: 'button',
+                text: '查询',
+                width : 70,
+                icon: imgpath + '/search.png',
+                handler: OnPageLoad
+            },
+            {
+                xtype: 'button',
+                text: '批量通过',
+                width : 100,
+                id:'agr',
+                icon: imgpath + '/search.png',
+                handler: batchAgree
+            },
+            {
+                xtype: 'button',
+                text: '批量驳回',
+                width : 100,
+                id:'dagr',
+                icon: imgpath + '/search.png',
+                handler: batchDisAgree
+            }
         ]
     });
 
@@ -93,10 +142,10 @@ Ext.onReady(function () {
         store : gridStore,
         frame : true,
         columnLines : true,
-       /* selModel: {
-            selType: 'checkboxmodel',
-            mode: 'SIMPLE'
-        },*/
+        selModel: {
+            selType: 'checkboxmodel'/*,
+            mode: 'SIMPLE'*/
+        },
         columns : [ {
             xtype : 'rownumberer',
             text : '序号',
@@ -256,14 +305,36 @@ Ext.onReady(function () {
         } ]
     });
 
+    Ext.data.StoreManager.lookup('lclxStore').on('load', function () {
+        Ext.data.StoreManager.lookup('lclxStore').insert(0, {
+            'V_FLOWTYPE_CODE' : '全部',
+            'V_FLOWTYPE_NAME' : '全部'
+        });
+        Ext.getCmp("lclx").select(Ext.data.StoreManager.lookup('lclxStore').getAt(0));
+        Ext.getCmp('dagr').hide();
+        Ext.getCmp('agr').hide();
+        _init();
+    });
+
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
-            PersonCode:  Ext.util.Cookies.get('v_personcode')
+            PersonCode:  Ext.util.Cookies.get('v_personcode'),
+            FlowType:Ext.getCmp('lclx').getValue()
 
         }
     });
 
-    _init()
+    Ext.ComponentManager.get("lclx").on("change", function () {
+        OnPageLoad();
+        if(Ext.getCmp('lclx').getValue()=='全部'||Ext.getCmp('lclx').getValue()=='WORK'){//工单流程
+            Ext.getCmp('dagr').hide();
+            Ext.getCmp('agr').hide();
+        }else{
+            Ext.getCmp('dagr').show();
+            Ext.getCmp('agr').show();
+        }
+    });
+
 })
 
 function _init()
@@ -336,9 +407,33 @@ function _dealWith(ProcessDefinitionKey,TaskDefinitionKey,BusinessKey,ProcessIns
 function OnPageLoad() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
-        PersonCode:  Ext.util.Cookies.get('v_personcode')
+        PersonCode:  Ext.util.Cookies.get('v_personcode'),
+        FlowType:Ext.getCmp('lclx').getValue()
     };
     gridStore.currentPage = 1;
     gridStore.load();
+
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/QueryTaskListSum',
+        method: 'POST',
+        async : false,
+        params:{
+            PersonCode:  Ext.util.Cookies.get('v_personcode')
+        },
+        success:function(resp){
+            var resp=Ext.decode(resp.responseText);
+            if(resp.msg=='Ok'){
+                num=resp.total;
+                Ext.getCmp('buttonPanel').setTitle('我的待办任务（'+num+'）条');
+
+            }
+        }
+    });
+}
+function batchAgree(){
+    var record=Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
 }
 
+function batchDisAgree(){
+    var record=Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
+}

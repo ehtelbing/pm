@@ -416,15 +416,18 @@ public class ActivitiController {
 
         if (FlowType.equals("全部")) {
             Map<String, Object> ProcessType = activitiService.QueryProcessType();
-            list = (List) ProcessType.get("list");
+            List rlist = (List) ProcessType.get("list");
+            for (int i = 0; i < rlist.size(); i++) {
+                Map map = (Map) rlist.get(i);
+                list.add(map.get("V_FLOWTYPE_CODE").toString()) ;
+            }
         } else {
             list.add(FlowType);
         }
 
         String[] nameSapce = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            Map map = (Map) list.get(i);
-            nameSapce[i] = map.get("V_FLOWTYPE_CODE").toString();
+            nameSapce[i] = list.get(i).toString();
         }
         try {
             List<Task> taskList = null;
