@@ -1,63 +1,63 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>设备智慧管控平台</title>
-		<meta name="Copyright" content="新安杰系统集成有限公司" />
-		<meta name="Description" content="PM" />
-		<meta name="Version" content="0.0.1.20130614" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+	<title>设备智慧管控平台</title>
+	<meta name="Copyright" content="新安杰系统集成有限公司" />
+	<meta name="Description" content="PM" />
+	<meta name="Version" content="0.0.1.20130614" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 
-		<link rel="stylesheet" href="../../../pm/css/viewport.css" type="text/css" />
-		<!--<link rel="stylesheet" href="../../../../commons/extjs/resources/css/ext-all.css"/>-->
-		<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
-		<link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>
-		<link rel="stylesheet" href="../../../pm/css/login/csslogin.css"/>
-		<script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
-		<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+	<link rel="stylesheet" href="../../../pm/css/viewport.css" type="text/css" />
+	<!--<link rel="stylesheet" href="../../../../commons/extjs/resources/css/ext-all.css"/>-->
+	<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
+	<link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>
+	<link rel="stylesheet" href="../../../pm/css/login/csslogin.css"/>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
 
-		<script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
-		<script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
-		<script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
-		<script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
-		<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
 
-		<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
-		<!--<script type="text/javascript" src="../../../pm/script/home/index.js"></script>-->     <!--tree菜单-->
-		<!--<script type="text/javascript" src="../../../pm/script/home/indexMenu.js"></script>--> <!--menu菜单-->
-		<script type="text/javascript" src="../../../pm/script/home/indexMenuNew.js"></script>		   <!--menu菜单新样式-->
+	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+	<!--<script type="text/javascript" src="../../../pm/script/home/index.js"></script>-->     <!--tree菜单-->
+	<!--<script type="text/javascript" src="../../../pm/script/home/indexMenu.js"></script>--> <!--menu菜单-->
+	<script type="text/javascript" src="../../../pm/script/home/indexMenuNew.js"></script>		   <!--menu菜单新样式-->
 
-	</head>
-	<body style="margin:0px; padding:0px;">
-	<div id="HeaderPanel">
+</head>
+<body style="margin:0px; padding:0px;">
+<div id="HeaderPanel">
 	<div class="top_div2">
 		<ul>
 			<li style="width:300px;line-height:60px;"><div class="top_form">
 				<input style="border:1px solid #ccc" type="text" id="kjcl" class="sel_text" value="请输入工单号" onclick="javascript:ClearText()" onkeypress="OnKeypress(event)">
 				<input type="button" id="GoPage" value="查 询" onclick="javascript:GoPage()" class="sel_btn"></div></li>
-			<a href="javascript:Return()" target="_blank" ><li class="dj_icon">返 回</li></a><!--id="sy_a"-->
-			<a href="javascript:LogOut()" target="_blank"><li class="zx_icon">注 销</li></a>
-			<a href="javascript:LogOut()" target="_blank"><li class="tc_icon">退 出</li></a>
+			<a onclick="Return()" style="cursor: pointer" target="_blank" ><li class="dj_icon">返 回</li></a><!--id="sy_a"-->
+			<a onclick="LogOut()" style="cursor: pointer" target="_blank"><li class="zx_icon">注 销</li></a>
+			<a onclick="LogOut()" style="cursor: pointer" target="_blank"><li class="tc_icon">退 出</li></a>
 		</ul>
 	</div>
-	</div>
-	<!--<div id="HeaderPanel">
-        <div id="logo">
-            <img src="../../../pm/images/menu/menu_title.png">
-        </div>
-        <div class="topbtn1" id="extra">
-            <div style="float:left;margin:10px 10px 0px 0px">
+</div>
+<!--<div id="HeaderPanel">
+    <div id="logo">
+        <img src="../../../pm/images/menu/menu_title.png">
+    </div>
+    <div class="topbtn1" id="extra">
+        <div style="float:left;margin:10px 10px 0px 0px">
 
-            <span style="float:left; margin-top:2px"><input type="text" id="kjcl" value="请输入工单号" onclick="javascript:ClearText()" onkeypress="OnKeypress(event)" /></span>
-            <span style="float:left; margin-top:2px"><input type="button" id="GoPage" onclick="javascript:GoPage()" value="GO"/></span>
-            </div>
-            <a href="#"  id="sy_a" class="sy_a" target="_blank" onclick="javascript:HomePage()"> </a>
-            <a href="javascript:LogOut()"
-                class="zx_a"> </a>
-            <a href="#"
-                onclick="javascript:Return()"
-                class="tc_a"> </a>
+        <span style="float:left; margin-top:2px"><input type="text" id="kjcl" value="请输入工单号" onclick="javascript:ClearText()" onkeypress="OnKeypress(event)" /></span>
+        <span style="float:left; margin-top:2px"><input type="button" id="GoPage" onclick="javascript:GoPage()" value="GO"/></span>
         </div>
-    </div>-->
+        <a href="#"  id="sy_a" class="sy_a" target="_blank" onclick="javascript:HomePage()"> </a>
+        <a href="javascript:LogOut()"
+            class="zx_a"> </a>
+        <a href="#"
+            onclick="javascript:Return()"
+            class="tc_a"> </a>
+    </div>
+</div>-->
 </body>
 </html>
