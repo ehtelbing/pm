@@ -1086,7 +1086,7 @@ function _insertDjDataZC(str) {
                 'V_V_DJ_STATE': V_STATE,
                 'V_V_DJ_DATE': V_TIME,
                 'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DJ_NR': records[i].data.V_CRITERION_CONTENT,//异常现象描述
+                'V_V_DJ_NR': Ext.getCmp('V_V_YCMS').getValue(),//异常现象描述
                 'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE,
                 'V_V_TIMER_GUID': V_TIMER_GUID
             },
@@ -1095,13 +1095,14 @@ function _insertDjDataZC(str) {
                 if (data.success) {//成功，会传回true
                     i_err++;
                     if (i_err == records.length) {
-                        Ext.MessageBox.alert('提示', '操作成功', callBack);
+                       // Ext.MessageBox.alert('提示', '操作成功', callBack);
+                        callBack();
                         function callBack(id) {
                             query();
                             _close();
                         }
                         window.opener.tabreload();
-                        window.close();
+                       // window.close();
                     }
                 } else {
                     Ext.MessageBox.show({
@@ -1138,62 +1139,63 @@ function _insertDjDataYC(str) {
         V_TIME =  Ext.Date.format(new Date(),"Y-m-d H:i:s")+'';
     }
 
-    Ext.MessageBox.show({
+    /*Ext.MessageBox.show({
         title: '确认',
         msg: '您确定要生成缺陷吗？',
         buttons: Ext.MessageBox.YESNO,
         icon: Ext.MessageBox.QUESION,
         fn: function (btn) {
-            if (btn == 'yes') {
-                var i_err = 0;
-                for (var i = 0; i < records.length; i++) {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
-                        type: 'ajax',
-                        method: 'POST',
-                        params: {
-                            'V_V_GUID': records[i].data.V_GUID,
-                            'V_V_DJ_STATE': V_STATE,
-                            'V_V_DJ_DATE': V_TIME,
-                            'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
-                            'V_V_DJ_NR': records[i].data.V_CRITERION_CONTENT,//异常现象描述
-                            'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE,
-                            'V_V_TIMER_GUID': V_TIMER_GUID
+            if (btn == 'yes') {*/
+    var i_err = 0;
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'hp/PM_06_DJ_DATA_UPSET',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                'V_V_GUID': records[i].data.V_GUID,
+                'V_V_DJ_STATE': V_STATE,
+                'V_V_DJ_DATE': V_TIME,
 
-                        },
-                        success: function (response) {
-                            var data = Ext.decode(response.responseText);//后台返回的值
-                            if (data.success) {//成功，会传回true
-                                i_err++;
-                                if (i_err == records.length) {
-                                    Ext.MessageBox.alert('提示', '操作成功');
-                                    query();
-                                    _close();
-                                    window.opener.tabreload();
-                                    window.close();
-                                }
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: data.V_CURSOR,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR
-                                });
-                            }
-                        },
-                        failure: function (response) {//访问到后台时执行的方法。
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            })
-                        }
+                'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DJ_NR': Ext.getCmp('V_V_YCMS1').getValue(),//异常现象描述
+                'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE,
+                'V_V_TIMER_GUID': V_TIMER_GUID
+
+            },
+            success: function (response) {
+                var data = Ext.decode(response.responseText);//后台返回的值
+                if (data.success) {//成功，会传回true
+                    i_err++;
+                    if (i_err == records.length) {
+                        //Ext.MessageBox.alert('提示', '操作成功');
+                        query();
+                        _close();
+                        window.opener.tabreload();
+                        // window.close();
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.V_CURSOR,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
                     });
                 }
+            },
+            failure: function (response) {//访问到后台时执行的方法。
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: response.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                })
             }
+        });
+    }
+            /*}
         }
-    });
+    });*/
 }
 
 function _close() {

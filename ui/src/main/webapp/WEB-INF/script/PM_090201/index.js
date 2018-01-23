@@ -374,86 +374,71 @@ function CreateBill() {
     var ss = $("#V_ORDERGUID").val();
     if ($("#V_DEFECTLIST").val() == '') {
         Ext.Msg.confirm('提示信息', '工单描述不能为空,请重新输入！');
+        return;
+    }
+
+    if (!confirm("确定下达工单?")) {
+        return;
     } else {
-
-        if (!confirm("确定下达工单?")) {
-            return false;
-        } else {
-            Ext.Ajax.request({
-                url: AppUrl + 'Activiti/StratProcess',
-                async: false,
-                method: 'post',
-                params: {
-                    parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj"],
-                    parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！"],
-                    processKey: processKey,
-                    businessKey: $("#V_ORDERGUID").val(),
-                    V_STEPCODE: 'start',
-                    V_STEPNAME: V_STEPNAME,
-                    V_IDEA: '请审批！',
-                    V_NEXTPER: $("#selApprover").val(),
-                    V_INPER: Ext.util.Cookies.get('v_personcode')
-                },
-                success: function (response) {
-                    if (Ext.decode(response.responseText).ret == 'OK') {
-                        Ext.Ajax.request({
-                            url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
-                            type: 'post',
-                            async: false,
-                            params: {
-                                V_V_PERNAME: $.cookies.get('v_personcode'),
-                                V_V_DEFECT_GUID: $.url().param("V_GUID"),
-                                V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                                V_V_EQUCODE: $("#V_EQUCODE").val(),
-                                V_V_WORKORDER_TYPE: $("#selType").val(),
-                                V_V_DEPTCODEREPARIR: $("#selPlant").val(),
-                                V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
-                                V_V_WBS: $("#wbsCode").val(),
-                                V_V_WBS_TXT: $("#proName").val(),
-                                V_D_START_DATE: $("#planStartDate").val(),
-                                V_D_FINISH_DATE: $("#planFinDate").val()
-                            },
-                            success: function (response) {
-                                var resp = Ext.decode(response.responseText);
-                                if (resp.RET == '成功') {
-                                    Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
-                                    orderissued();
-                                    /* window.close();
-                                     window.opener.addTab();
-                                     window.opener.queryGrid();*/
-
-                                } else {
-                                    alert("失败");
-                                }
-                            }
-                        });
-
-
-                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                        Ext.Msg.alert('提示', '该流程发起失败！');
-                    }
-                }
-            });
-
-
-        }
+        Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
+        setTimeout(BillGo, 500);
     }
 }
 
-
-/*
- * 查询工单流程审批人
- * */
-function QueryPer() {
-    Ext.data.StoreManager.lookup('gridStore').load({
+function BillGo() {
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/StratProcess',
+        async: false,
+        method: 'post',
         params: {
-            V_V_DEPTCODE: $("#V_DEPTCODE").val(),
-            V_V_DEPTCODEREPARIR: $("#selPlant").val(),
-            V_V_GUID: $("#V_ORDERGUID").val(),
-            V_V_FLOWTYPE: 'WORK'
+            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj"],
+            parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！"],
+            processKey: processKey,
+            businessKey: $("#V_ORDERGUID").val(),
+            V_STEPCODE: 'start',
+            V_STEPNAME: V_STEPNAME,
+            V_IDEA: '请审批！',
+            V_NEXTPER: $("#selApprover").val(),
+            V_INPER: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            if (Ext.decode(response.responseText).ret == 'OK') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
+                    type: 'post',
+                    async: false,
+                    params: {
+                        V_V_PERNAME: $.cookies.get('v_personcode'),
+                        V_V_DEFECT_GUID: $.url().param("V_GUID"),
+                        V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                        V_V_EQUCODE: $("#V_EQUCODE").val(),
+                        V_V_WORKORDER_TYPE: $("#selType").val(),
+                        V_V_DEPTCODEREPARIR: $("#selPlant").val(),
+                        V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
+                        V_V_WBS: $("#wbsCode").val(),
+                        V_V_WBS_TXT: $("#proName").val(),
+                        V_D_START_DATE: $("#planStartDate").val(),
+                        V_D_FINISH_DATE: $("#planFinDate").val()
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp.RET == '成功') {
+                            orderissued();
+
+                        } else {
+                            alert("失败");
+                        }
+                    }
+                });
+
+
+            } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                Ext.Msg.alert('提示', '该流程发起失败！');
+            }
         }
-    })
+    });
 }
+
 
 function checkPer() {
     var sumpercode = "";
