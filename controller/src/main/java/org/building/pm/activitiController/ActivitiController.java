@@ -361,6 +361,45 @@ public class ActivitiController {
     }
 
     /*
+    * 查询人员代办总数
+    * */
+    @RequestMapping(value = "QueryTaskListSum", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> QueryTaskListSum(@RequestParam(value = "PersonCode") String PersonCode)
+            throws SQLException {
+
+        Map result = new HashMap();
+
+        Map<String, Object> ProcessType = activitiService.QueryProcessType();
+        List list = (List) ProcessType.get("list");
+
+        String[] nameSapce = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            nameSapce[i] = map.get("V_FLOWTYPE_CODE").toString();
+        }
+        try {
+
+            NativeTaskQuery nativeTaskQuery = taskService
+                    .createNativeTaskQuery().sql(makeNativeQuerySQLResult(nameSapce));
+
+            nativeTaskQuery.parameter("assignee", PersonCode);
+
+            int total = (int) taskService.createNativeTaskQuery()
+                    .sql(makeNativeQuerySQLCount(nameSapce))
+                    .parameter("assignee", PersonCode).count();
+
+            result.put("total", total);
+            result.put("msg", "Ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("msg", "Error");
+        }
+
+        return result;
+    }
+
+    /*
     * nameSpace  人员编码查询当前人员代办信息
     * */
     @RequestMapping(value = "QueryTaskList", method = RequestMethod.POST)
@@ -375,11 +414,11 @@ public class ActivitiController {
         List resultlist = new ArrayList();
         List list = new ArrayList();
 
-        if (FlowType.equals("全部")){
+        if (FlowType.equals("全部")) {
             Map<String, Object> ProcessType = activitiService.QueryProcessType();
             list = (List) ProcessType.get("list");
-        }else{
-          list.add(FlowType);
+        } else {
+            list.add(FlowType);
         }
 
         String[] nameSapce = new String[list.size()];
