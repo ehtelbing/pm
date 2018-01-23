@@ -1036,7 +1036,7 @@ function OnButtonSaveClick() {
     V_JXMX_CODE = guid();
     //保存
     Ext.Ajax.request({
-        url: AppUrl + 'basic/PRO_PM_03_PLAN_WEEK_SET',
+        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_NSET',
         method: 'POST',
         params: {
             V_V_INPER: Ext.util.Cookies.get('v_personcode'),               //人员cookies                                    //人员编码

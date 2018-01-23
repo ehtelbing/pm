@@ -228,7 +228,7 @@ function CreateBill() {
                 async : false,
                 params : {
                     V_V_PERNAME: $.cookies.get('v_personcode'),
-                    V_DEFECT_GUID:  $.url().param("V_GUID"),
+                    V_V_DEFECT_GUID:  $.url().param("V_GUID"),
                     V_V_ORDERGUID:  $("#V_ORDERGUID").val(),
                     V_V_SHORT_TXT:  $("#V_DEFECTLIST").val(),
                     V_D_START_DATE: $("#planStartDate").val(),

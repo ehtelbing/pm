@@ -73,16 +73,19 @@ public class hpTimer {
             if (timetype.equals("小时")) {
                 diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
                 hour = diff / nh;//相差小时数
-                hourc = (int) (hour / zq);//相差周期数
+                if(zq!=0){
+                    hourc = (int) (hour / zq);//相差周期数
 
-                for (int j = 1; j <= hourc; j++) {
+                    for (int j = 1; j <= hourc; j++) {
 
-                    long timeer = plandate.getTime() + j * zq * nh;
+                        long timeer = plandate.getTime() + j * zq * nh;
 
-                    String v_v_timer_guid= String.valueOf(UUID.randomUUID());
+                        String v_v_timer_guid= String.valueOf(UUID.randomUUID());
 
-                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_CRITERION_CODE"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                        hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_CRITERION_CODE"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                    }
                 }
+
             } else if (timetype.equals("天")) {
                 diff = nowdate.getTime() - plandate.getTime();// 获得两个时间的毫秒时间差异
                 day = diff / nd;//相差天数

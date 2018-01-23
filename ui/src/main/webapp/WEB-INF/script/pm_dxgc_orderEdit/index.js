@@ -79,7 +79,7 @@ $(function() {
                 async : false,
                 params : {
                     V_V_PERNAME: $.cookies.get('v_personcode'),
-                    V_DEFECT_GUID:  $.url().param("V_GUID"),
+                    V_V_DEFECT_GUID:  $.url().param("V_GUID"),
                     V_V_ORDERGUID:  $("#V_ORDERGUID").val(),
                     V_V_EQUCODE:$("#V_EQUCODE").val(),
                     V_V_WORKORDER_TYPE:$("#selType").val(),
@@ -455,7 +455,7 @@ function BillGo() {
                                 async: false,
                                 params: {
                                     V_V_PERNAME: $.cookies.get('v_personcode'),
-                                    V_DEFECT_GUID: $.url().param("V_GUID"),
+                                    V_V_DEFECT_GUID: $.url().param("V_GUID"),
                                     V_V_ORDERGUID: $("#V_ORDERGUID").val(),
                                     V_V_EQUCODE: $("#V_EQUCODE").val(),
                                     V_V_WORKORDER_TYPE: $("#selType").val(),
@@ -604,7 +604,7 @@ function checkPer(){
             async : false,
             params : {
                 V_V_PERNAME: $.cookies.get('v_personcode'),
-                V_DEFECT_GUID:  $.url().param("V_GUID"),
+                V_V_DEFECT_GUID:  $.url().param("V_GUID"),
                 V_V_ORDERGUID:  $("#V_ORDERGUID").val(),
                 V_V_EQUCODE:$("#V_EQUCODE").val(),
                 V_V_WORKORDER_TYPE:$("#selType").val(),

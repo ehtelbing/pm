@@ -1194,7 +1194,7 @@ function createWorkorder() {
 
     var V_GUIDList = '';
     for (var i = 0; i < record.length; i++) {
-        if(record[i].data.V_STATENAME!='审批完成'){
+        if(record[i].data.V_STATENAME!='审批完成'&&record[i].data.V_STATENAME!='已下票'){
             alert("该计划状态无法生成工单");
             return;
         }
