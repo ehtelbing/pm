@@ -572,7 +572,7 @@ function createWorkorder(){
                                     success: function (response) {
                                         var resp = Ext.decode(response.responseText);
                                         if (resp.v_info == "success") {
-                                            window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID+"&V_V_SOURCECODE="+V_V_SOURCECODE+'&V_V_EQUTYPE='+V_V_EQUTYPE,
+                                            window.open(AppUrl + "page/pm_dxgc_workOrder/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID+"&V_V_SOURCECODE="+V_V_SOURCECODE+'&V_V_EQUTYPE='+V_V_EQUTYPE,
                                                 "", "dialogHeight:700px;dialogWidth:1100px");
                                         }
                                     }
