@@ -463,7 +463,7 @@ Ext.onReady(function () {
             V_V_EQUCODE:Ext.getCmp('sbmc').getValue(),
             V_V_CONTENT:Ext.getCmp('seltext').getValue()==""?"%":Ext.getCmp('seltext').getValue(),
             V_V_FLOWTYPE:'WORK',
-            V_V_STATE:'30',//审批完成
+            V_V_STATE:'30,31',//审批完成，已下票
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
