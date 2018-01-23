@@ -469,6 +469,7 @@ Ext.onReady(function () {
             handler: function () {
                 _insertDjDataZC('zc');
             }
+
         }, {
             xtype: 'button',
             text: '取消',

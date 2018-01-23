@@ -1156,6 +1156,7 @@ function _insertDjDataYC(str) {
                 'V_V_GUID': records[i].data.V_GUID,
                 'V_V_DJ_STATE': V_STATE,
                 'V_V_DJ_DATE': V_TIME,
+
                 'V_V_DJ_PER': Ext.util.Cookies.get('v_personcode'),
                 'V_V_DJ_NR': Ext.getCmp('V_V_YCMS1').getValue(),//异常现象描述
                 'V_V_DJ_TYPE':records[i].data.V_DJ_TYPE,
