@@ -1102,7 +1102,7 @@ function _insertDjDataZC(str) {
                             _close();
                         }
                         window.opener.tabreload();
-                       // window.close();
+                        window.close();
                     }
                 } else {
                     Ext.MessageBox.show({
@@ -1172,7 +1172,7 @@ function _insertDjDataYC(str) {
                         query();
                         _close();
                         window.opener.tabreload();
-                        // window.close();
+                        window.close();
                     }
                 } else {
                     Ext.MessageBox.show({

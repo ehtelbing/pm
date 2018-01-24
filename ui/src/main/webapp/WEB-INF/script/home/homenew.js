@@ -1,6 +1,6 @@
 $(function (){
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-    _AgencySelect();
+    tabreload();
     _QXNumSelect();
     //()
     //_MonthCountSelect();
@@ -75,7 +75,7 @@ function _QXNumSelect(){
 
 
 }
-function  _AgencySelect(){
+function  tabreload(){
     $('#t1').empty();
     $.ajax({
         type : 'POST',
