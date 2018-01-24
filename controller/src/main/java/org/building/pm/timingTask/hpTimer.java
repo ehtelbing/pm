@@ -52,9 +52,11 @@ public class hpTimer {
             Date nowdate = null;
             Date plandate = null;
             try {
-                nowdate = format.parse(format.format(ndate));//当前日期 小时分钟秒格式转化为date格式
 
-                plandate = format.parse(nformat.format(ndate) + " 00:00:01");//当前日期 0点0分1秒
+                Map result = hpService.PM_06_DJ_DATA_TIMER_MAXTIME(dataList.get(i).get("V_CRITERION_CODE").toString());
+                nowdate = format.parse(format.format(ndate));//当前日期 小时分钟秒格式转化为date格式
+                plandate=format.parse(result.get("RET").toString());
+               // plandate = format.parse(nformat.format(ndate) + " 00:00:01");//当前日期 0点0分1秒
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

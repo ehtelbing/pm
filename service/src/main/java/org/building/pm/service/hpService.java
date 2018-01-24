@@ -3766,7 +3766,7 @@ public class hpService {
         return result;
     }
 
-    public HashMap PM_06_DJ_DATA_TIMER_MAXTIME(String V_V_GUID) throws SQLException {
+    public HashMap PM_06_DJ_DATA_TIMER_MAXTIME(String V_CRITERION_CODE) throws SQLException {
         logger.info("begin PM_06_DJ_DATA_TIMER_MAXTIME");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -3774,8 +3774,8 @@ public class hpService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_TIMER_MAXTIME" + "(:V_V_GUID,:V_INFO)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt = conn.prepareCall("{call PM_06_DJ_DATA_TIMER_MAXTIME" + "(:V_CRITERION_CODE,:V_INFO)}");
+            cstmt.setString("V_CRITERION_CODE", V_CRITERION_CODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("RET", cstmt.getString("V_INFO"));
