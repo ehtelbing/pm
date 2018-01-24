@@ -88,7 +88,8 @@ Ext.onReady(onPageLoaded);
 
 function state(a,value,metaData){
     if(a == '1'){
-        return '异常';
+        return '<span style = "color:red"> 异常</span>';
+
     }
     else{
         return '正常';

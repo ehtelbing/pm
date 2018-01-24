@@ -1102,7 +1102,7 @@ function _insertDjDataZC(str) {
                             _close();
                         }
                         window.opener.tabreload();
-                       // window.close();
+                        window.close();
                     }
                 } else {
                     Ext.MessageBox.show({
@@ -1169,10 +1169,13 @@ function _insertDjDataYC(str) {
                     i_err++;
                     if (i_err == records.length) {
                         //Ext.MessageBox.alert('提示', '操作成功');
-                        query();
-                        _close();
+                        callBack();
+                        function callBack(id) {
+                            query();
+                            _close();
+                        }
                         window.opener.tabreload();
-                        // window.close();
+                        window.close();
                     }
                 } else {
                     Ext.MessageBox.show({
@@ -1204,7 +1207,10 @@ function _close() {
 }
 
 function detail(value, metaData, record, rowIndex, colIndex, store, view) {
-    return '<a href="javascript:ondetail(\'' + record.data.V_GUID + '\')">详情</a>&nbsp;<input type="image" onclick="_djDataZCShow(\'' + record.data.V_GUID + '\',\'' + record.data.V_DJ_TYPE + '\',\'' + record.data.V_CRITERION_CONTENT + '\')" src="../../images/gif/saved.png">&nbsp;<input type="image" onclick="_djDataYCShow(\'' + record.data.V_GUID + '\',\'' + record.data.V_DJ_TYPE + '\',\'' + record.data.V_CRITERION_CONTENT + '\')" src="../../images/gif/tree_dnd_no.png">';
+    return  '<input type="image" onclick="_djDataZCShow(\'' + record.data.V_GUID + '\',\'' + record.data.V_DJ_TYPE + '\',\'' +
+        record.data.V_CRITERION_CONTENT + '\')" src="../../images/gif/saved.png">&nbsp;<input type="image" onclick="_djDataYCShow(\'' +
+        record.data.V_GUID + '\',\'' + record.data.V_DJ_TYPE + '\',\'' +
+        record.data.V_CRITERION_CONTENT + '\')" src="../../images/gif/tree_dnd_no.png">';
 }
 
 function ondetail(a) {

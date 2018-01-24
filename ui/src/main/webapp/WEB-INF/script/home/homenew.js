@@ -1,7 +1,6 @@
 $(function (){
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-    _AgencySelect();
-    _QXNumSelect();
+    tabreload();
     //()
     //_MonthCountSelect();
     //_WeekCountSelect();
@@ -9,6 +8,11 @@ $(function (){
 
     JHselect();
 });
+function tabreload(){
+    _AgencySelect();
+    _QXNumSelect();
+}
+
 //第几周
 function getWeekOfMonth() {//周一为起始
     var w = new Date().getDay()==0?7:new Date().getDay();//星期
@@ -100,7 +104,9 @@ function  _AgencySelect(){
                 }
                 //Ext.fly('wclqxcount').dom.innerHTML = '（' + formList.length + '）';
                 for (var i = 0; i < length; i++) {
-                    $('<ul class="tasklist"> <li><span> <input type="button" name="button" id="button" class="btns" value="确认办理" '+yangshi + ' '+ yangshi2 +'onclick="_banli(\''+formList[i].V_TIMER_GUID+'\')"> </span>您有' +formList[i].NUM+ '条代办任务需要办理... <i>' + formList[i].V_TIMER_TIME.substring(0,19)+'</i> </li> </ul>' ).appendTo('#t1');
+                    $('<ul class="tasklist"> <li><span> <input type="button" name="button" id="button" class="btns" value="确认办理" '+yangshi + ' '+
+                        yangshi2 +'onclick="_banli(\''+formList[i].V_TIMER_GUID+'\')"> </span>您有' +formList[i].NUM+ '条代办任务需要办理... <i>' +
+                        formList[i].V_TIMER_TIME.substring(0,19)+'</i> </li> </ul>' ).appendTo('#t1');
                 }
 
 
