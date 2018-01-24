@@ -340,6 +340,7 @@ Ext.onReady(function () {
     });
     var gdxqgrid = Ext.create('Ext.grid.Panel', {
         width: '100%',
+        height:250,
         id: 'gdxqgrid',
         store: gdxqStore,
         style: 'margin:0px 0px 5px 0px',
@@ -699,6 +700,7 @@ Ext.onReady(function () {
         id: 'tabpanel',
         // region:'center',
         width: '100%',
+        autoScroll: true,
         height: window.innerHeight / 2 - 35,
         items: [
             {
@@ -1084,6 +1086,7 @@ Ext.onReady(function () {
             region: 'south',
             layout: 'fit',
             border: false,
+            autoScroll: true,
             items: [tabpanel]
         }]
     });
