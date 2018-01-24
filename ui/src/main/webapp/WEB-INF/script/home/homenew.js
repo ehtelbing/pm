@@ -9,6 +9,12 @@ $(function (){
 
     JHselect();
 });
+
+function tabreload(){
+    _QXNumSelect();
+    _AgencySelect();
+}
+
 //第几周
 function getWeekOfMonth() {//周一为起始
     var w = new Date().getDay()==0?7:new Date().getDay();//星期
