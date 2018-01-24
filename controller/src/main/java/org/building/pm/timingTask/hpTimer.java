@@ -28,7 +28,7 @@ public class hpTimer {
     @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
     public void setDJDB() throws SQLException {
         //获取点检任务
-        HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
+       /* HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -196,7 +196,7 @@ public class hpTimer {
                 }
 
             }
-        }
+        }*/
     }
 
 }
