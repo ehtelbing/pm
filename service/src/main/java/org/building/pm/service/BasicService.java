@@ -71,42 +71,29 @@ public class BasicService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
-        try {
+        try{
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PRO_BASE_PERSONROLE_VIEW_NEW(:V_V_DEPTCODE,:V_CURSOR)}");
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_ROLENAME", rs.getString("V_ROLENAME"));
-                sledata.put("V_ROLECODE", rs.getString("V_ROLECODE"));
-                sledata.put("I_ROLEID", rs.getDouble("I_ROLEID"));
-                sledata.put("V_ROLETYPE", rs.getString("V_ROLETYPE"));
-                sledata.put("V_ROLEMEMO", rs.getString("V_ROLEMEMO"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("I_ORDERID", rs.getDouble("I_ORDERID"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_PERSONROLE_VIEW_NEW");
         return result;
     }
 
     public List<Map> PRO_BASE_PERSONROLE_SET_NEW(String V_V_ROLECODE,String V_V_ROLENAME,String V_V_ROLEMEMO,
-                               String V_V_ROLETYPE,Double V_I_ORDERID,String V_V_DEPTCODE) throws SQLException {
+                                                 String V_V_ROLETYPE,Double V_I_ORDERID,String V_V_DEPTCODE) throws SQLException {
 //        logger.info("begin PRO_BASE_PERSONROLE_SET_NEW");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -633,8 +620,8 @@ public class BasicService {
 
     //��ѯ״̬����
     public List<Map> PRO_PM_03_PLAN_YEAR_SET(String V_V_INPER,String V_V_YEARPLAN_GUID,String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_REPAIRMAJOR_CODE,
-                                        String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_FLOWCODE,String V_V_JXGX_CODE,String V_V_JXMX_CODE,String V_V_JXBZ_CODE,String V_V_REPAIRDEPT_CODE
-                                        ) throws SQLException {
+                                             String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_FLOWCODE,String V_V_JXGX_CODE,String V_V_JXMX_CODE,String V_V_JXBZ_CODE,String V_V_REPAIRDEPT_CODE
+    ) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_JSYQ_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -643,8 +630,8 @@ public class BasicService {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_SET" + "(:V_V_INPER,:V_V_YEARPLAN_GUID,:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE," +
-                                     ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
-                                     ":V_V_FLOWCODE,:V_V_JXGX_CODE,:V_V_JXMX_CODE,:V_V_JXBZ_CODE,:V_V_REPAIRDEPT_CODE,:V_INFO)}");
+                    ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
+                    ":V_V_FLOWCODE,:V_V_JXGX_CODE,:V_V_JXMX_CODE,:V_V_JXBZ_CODE,:V_V_REPAIRDEPT_CODE,:V_INFO)}");
             cstmt.setString("V_V_INPER", V_V_INPER);
             cstmt.setString("V_V_YEARPLAN_GUID", V_V_YEARPLAN_GUID);
             cstmt.setString("V_V_YEAR", V_V_YEAR);
@@ -726,8 +713,8 @@ public class BasicService {
     }
     //季度检修计划保存
     public Map PRO_PM_03_PLAN_QUARTER_SET(String V_V_INPER,String V_V_QUARTERPLAN_GUID,String V_V_YEAR,String V_V_QUARTER,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_REPAIRMAJOR_CODE,
-                                                String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_FLOWCODE,String V_V_JXGX_CODE,String V_V_JXMX_CODE,String V_V_JXBZ_CODE,String V_V_REPAIRDEPT_CODE,
-                                                String V_V_YEARPLAN_CODE,String V_V_HOUR,String V_V_BZ) throws SQLException {
+                                          String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_FLOWCODE,String V_V_JXGX_CODE,String V_V_JXMX_CODE,String V_V_JXBZ_CODE,String V_V_REPAIRDEPT_CODE,
+                                          String V_V_YEARPLAN_CODE,String V_V_HOUR,String V_V_BZ) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_QUARTER_SET");
         Map result = new HashMap();
         Connection conn = null;
@@ -878,7 +865,7 @@ public class BasicService {
             result.put("V_INFO", cstmt.getObject("V_INFO").toString());
             result.put("list",
                     ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-           // result.put("RET", cstmt.getString("V_INFO"));
+            // result.put("RET", cstmt.getString("V_INFO"));
             //result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);

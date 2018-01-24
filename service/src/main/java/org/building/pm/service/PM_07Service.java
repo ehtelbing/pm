@@ -65,7 +65,7 @@ public class PM_07Service {
     @Autowired
     private ComboPooledDataSource dataSources;
 
-    public HashMap PRO_PM_WORKORDER_DEFECT_SAVE(String V_V_PERNAME,String  V_V_DEFECT_GUID,String  V_V_ORDERGUID,String  V_V_SHORT_TXT,
+    public HashMap PRO_PM_WORKORDER_DEFECT_SAVE(String V_V_PERNAME,String  V_DEFECT_GUID,String  V_V_ORDERGUID,String  V_V_SHORT_TXT,
                                                 String V_D_START_DATE,String V_D_FINISH_DATE,String V_V_WBS,String V_V_WBS_TXT,
                                                 String V_V_DEPTCODEREPARIR) throws SQLException {
 
@@ -83,7 +83,7 @@ public class PM_07Service {
                     ":V_V_ORDERGUID,:V_V_SHORT_TXT,:V_D_START_DATE,:V_D_FINISH_DATE,:V_V_WBS,:V_V_WBS_TXT," +
                     ":V_V_DEPTCODEREPARIR,:V_CURSOR)}");
             cstmt.setString("V_V_PERNAME", V_V_PERNAME);
-            cstmt.setString("V_DEFECT_GUID", V_V_DEFECT_GUID);
+            cstmt.setString("V_DEFECT_GUID", V_DEFECT_GUID);
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
             cstmt.setString("V_D_START_DATE", V_D_START_DATE);
@@ -175,7 +175,6 @@ public class PM_07Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -190,44 +189,13 @@ public class PM_07Service {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQULEV", rs.getString("V_EQULEV"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                sledata.put("V_ZZCH", rs.getString("V_ZZCH"));
-                sledata.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                sledata.put("F_MONEY", rs.getString("F_MONEY"));
-                sledata.put("V_MONEYTYPE", rs.getString("V_MONEYTYPE"));
-                sledata.put("F_WEIGHT", rs.getString("F_WEIGHT"));
-                sledata.put("V_WEIGHTTYPE", rs.getString("V_WEIGHTTYPE"));
-                sledata.put("V_DATE_B", rs.getString("V_DATE_B"));
-                sledata.put("V_DATE_E", rs.getString("V_DATE_E"));
-                sledata.put("V_ZZS", rs.getString("V_ZZS"));
-                sledata.put("V_GGXH", rs.getString("V_GGXH"));
-                sledata.put("V_YWFW", rs.getString("V_YWFW"));
-                sledata.put("V_ABC", rs.getString("V_ABC"));
-                sledata.put("V_SIZE", rs.getString("V_SIZE"));
-                sledata.put("V_WHGC", rs.getString("V_WHGC"));
-                sledata.put("V_JHWHGC", rs.getString("V_JHWHGC"));
-                sledata.put("V_CBZX", rs.getString("V_CBZX"));
-                sledata.put("V_GZRQ", rs.getString("V_GZRQ"));
-                sledata.put("V_JHZY", rs.getString("V_JHZY"));
-                sledata.put("V_SBYDH", rs.getString("V_SBYDH"));
-                sledata.put("V_EQUCODEUP", rs.getString("V_EQUCODEUP"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_SAP_EQU_GET");
         return result;

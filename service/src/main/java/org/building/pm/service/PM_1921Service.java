@@ -66,7 +66,7 @@ public class PM_1921Service {
     }
 
     public HashMap PM_1921_PLAN_MX_DATA_SEL(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_ZYCODE,
-                                         String V_V_MXNAME,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+                                            String V_V_MXNAME,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_1921_PLAN_MX_DATA_SEL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);

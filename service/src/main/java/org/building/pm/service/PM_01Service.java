@@ -130,7 +130,6 @@ public class PM_01Service {
 
         logger.info("begin PRO_HZTJ_RIGHT_GD");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
-
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -172,8 +171,7 @@ public class PM_01Service {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
-            result.put("list",
-                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -352,8 +350,7 @@ public class PM_01Service {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
 
-            result.put("V_INFO",
-                    (String) cstmt.getObject("V_INFO"));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

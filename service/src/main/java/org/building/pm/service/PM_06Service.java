@@ -697,7 +697,7 @@ public class PM_06Service {
     }
 
 
-        public HashMap PM_06_DJ_CRITERION_DATA_DEL(String V_V_CRITERION_CODE,String V_V_PLAN_STATE,
+    public HashMap PM_06_DJ_CRITERION_DATA_DEL(String V_V_CRITERION_CODE,String V_V_PLAN_STATE,
                                                String V_V_PLAN_TIME,String V_V_PLAN_PER) throws SQLException {
 
         logger.info("begin PM_06_DJ_CRITERION_DATA_DEL");

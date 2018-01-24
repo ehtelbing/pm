@@ -2029,9 +2029,9 @@ public class MwdService {
 
     //物料消耗管理PM_1501060202-追加物料-保存
     public HashMap SAVEORDERSY(String A_ORDERID, String A_BCSY_RESULT, String A_BCSY_RESULT_DESC, String A_ZBCSY_RESULT,
-                                    String A_ZBCSY_RESULT_DESC, String A_DBCSY_RESULT, String A_DBCSY_RESULT_DESC,
-                                    String A_CSY_RESULT, String A_CSY_RESULT_DESC, String A_USERID, String A_USERNAME,
-                                    java.util.Date A_SY_DATE) throws SQLException {
+                               String A_ZBCSY_RESULT_DESC, String A_DBCSY_RESULT, String A_DBCSY_RESULT_DESC,
+                               String A_CSY_RESULT, String A_CSY_RESULT_DESC, String A_USERID, String A_USERNAME,
+                               java.util.Date A_SY_DATE) throws SQLException {
 
         logger.info("begin SAVEORDERSY");
         HashMap result = new HashMap();
