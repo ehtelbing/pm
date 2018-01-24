@@ -71,7 +71,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -82,21 +81,13 @@ public class QxService {
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                sledata.put("leaf", true);
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEPTEQUTYPE_PER");
         return result;
@@ -108,7 +99,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -120,24 +110,13 @@ public class QxService {
             cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                sledata.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEPTEQU_PER_DROP");
         return result;
@@ -149,7 +128,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -158,22 +136,13 @@ public class QxService {
             cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_STATE_VIEW(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_STATECODE", rs.getString("V_STATECODE"));
-                sledata.put("V_STATENAME", rs.getString("V_STATENAME"));
-                sledata.put("V_STATEREMARK", rs.getString("V_STATEREMARK"));
-                sledata.put("V_STATECOLOR", rs.getString("V_STATECOLOR"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_STATE_VIEW");
         return result;
@@ -187,7 +156,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -205,25 +173,15 @@ public class QxService {
             cstmt.setString("X_PERSONCODE", X_PERSONCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_SOURCECODE", rs.getString("V_SOURCECODE"));
-                sledata.put("V_SOURCENAME", rs.getString("V_SOURCENAME"));
-                sledata.put("V_SOURCETABLE", rs.getString("V_SOURCETABLE"));
-                sledata.put("V_SOURCEREMARK", rs.getString("V_SOURCEREMARK"));
-                sledata.put("I_ORDER", rs.getString("I_ORDER"));
-                sledata.put("V_COUNT", rs.getDouble("V_COUNT"));
-                resultList.add(sledata);
-            }
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_SOURCE_COUNT");
         return result;
@@ -259,52 +217,15 @@ public class QxService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
 
-            result.put("total", cstmt.getObject("V_V_SNUM").toString());
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_DEFECTLIST", rs.getString("V_DEFECTLIST"));
-                sledata.put("V_SOURCECODE", rs.getString("V_SOURCECODE"));
-                sledata.put("V_SOURCENAME", rs.getString("V_SOURCENAME"));
-                sledata.put("V_SOURCETABLE", rs.getString("V_SOURCETABLE"));
-                sledata.put("V_SOURCEREMARK", rs.getString("V_SOURCEREMARK"));
-                sledata.put("V_SOURCEID", rs.getString("V_SOURCEID"));
-                sledata.put("D_DEFECTDATE", rs.getDate("D_DEFECTDATE"));
-                sledata.put("D_INDATE", rs.getDate("D_INDATE"));
-                sledata.put("V_PERCODE", rs.getString("V_PERCODE"));
-                sledata.put("V_PERNAME", rs.getString("V_PERNAME"));
-                sledata.put("V_ORGCODE", rs.getString("V_ORGCODE"));
-                sledata.put("V_ORGNAME", rs.getString("V_ORGNAME"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                sledata.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                sledata.put("V_IDEA", rs.getString("V_IDEA"));
-                sledata.put("V_STATECODE", rs.getString("V_STATECODE"));
-                sledata.put("V_IDEA", rs.getString("V_IDEA"));
-                sledata.put("V_STATENAME", rs.getString("V_STATENAME"));
-                sledata.put("V_STATECOLOR", rs.getString("V_STATECOLOR"));
-                sledata.put("V_GUID", rs.getString("V_GUID"));
-                sledata.put("V_ORDERID", rs.getString("V_ORDERID"));
-                sledata.put("V_REPAIRMAJOR_CODE", rs.getString("V_REPAIRMAJOR_CODE"));
-                sledata.put("V_HOUR", rs.getString("V_HOUR"));
-                sledata.put("V_BZ", rs.getString("V_BZ"));
-                resultList.add(sledata);
-            }
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
-
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_VIEW_PER");
         return result;
@@ -316,7 +237,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -326,47 +246,14 @@ public class QxService {
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_DEFECTLIST", rs.getString("V_DEFECTLIST"));
-                sledata.put("V_SOURCECODE", rs.getString("V_SOURCECODE"));
-                sledata.put("V_SOURCENAME", rs.getString("V_SOURCENAME"));
-                sledata.put("V_SOURCETABLE", rs.getString("V_SOURCETABLE"));
-                sledata.put("V_SOURCEREMARK", rs.getString("V_SOURCEREMARK"));
-                sledata.put("V_SOURCEID", rs.getString("V_SOURCEID"));
-                sledata.put("D_DEFECTDATE", rs.getDate("D_DEFECTDATE"));
-                sledata.put("D_INDATE", rs.getDate("D_INDATE"));
-                sledata.put("V_PERCODE", rs.getString("V_PERCODE"));
-                sledata.put("V_PERNAME", rs.getString("V_PERNAME"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                sledata.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                sledata.put("V_IDEA", rs.getString("V_IDEA"));
-                sledata.put("V_STATECODE", rs.getString("V_STATECODE"));
-                sledata.put("V_IDEA", rs.getString("V_IDEA"));
-                sledata.put("V_STATENAME", rs.getString("V_STATENAME"));
-                sledata.put("V_STATECOLOR", rs.getString("V_STATECOLOR"));
-                sledata.put("V_GUID", rs.getString("V_GUID"));
-                sledata.put("V_REPAIRMAJOR_CODE", rs.getString("V_REPAIRMAJOR_CODE"));
-                sledata.put("V_HOUR", rs.getString("V_HOUR"));
-                sledata.put("V_BZ", rs.getString("V_BZ"));
-                sledata.put("V_ORGCODE", rs.getString("V_ORGCODE"));
-                resultList.add(sledata);
-            }
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_GET");
         return result;
@@ -407,7 +294,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -417,21 +303,13 @@ public class QxService {
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("D_DATE", rs.getDate("D_DATE"));
-                sledata.put("V_LOGREMARK", rs.getString("V_LOGREMARK"));
-                sledata.put("V_FINISHNAME", rs.getString("V_FINISHNAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_LOG_VIEW");
         return result;
@@ -445,7 +323,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -462,25 +339,13 @@ public class QxService {
             cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_1", rs.getString("V_1"));
-                sledata.put("V_2", rs.getString("V_2"));
-                sledata.put("上报数量", rs.getString("上报数量"));
-                sledata.put("有效数量", rs.getString("有效数量"));
-                sledata.put("已处理数量", rs.getString("已处理数量"));
-                sledata.put("F_4", rs.getString("F_4"));
-                sledata.put("F_5", rs.getString("F_5"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_TJ_VIEW");
         return result;
@@ -492,7 +357,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -501,24 +365,13 @@ public class QxService {
             cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_SOURCE_VIEW(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_SOURCECODE", rs.getString("V_SOURCECODE"));
-                sledata.put("V_SOURCENAME", rs.getString("V_SOURCENAME"));
-                sledata.put("V_SOURCETABLE", rs.getString("V_SOURCETABLE"));
-                sledata.put("V_SOURCEREMARK", rs.getString("V_SOURCEREMARK"));
-                sledata.put("I_ORDER", rs.getDouble("I_ORDER"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_SOURCE_VIEW");
         return result;
@@ -530,7 +383,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -542,24 +394,13 @@ public class QxService {
             cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                sledata.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_GET_DEPTEQU_PER");
         return result;
@@ -574,7 +415,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -584,20 +424,13 @@ public class QxService {
             cstmt.setString("IS_V_BASETYPE", IS_V_BASETYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_BASECODE", rs.getString("V_BASECODE"));
-                sledata.put("V_BASENAME", rs.getString("V_BASENAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_BASEDIC_LIST");
         return result;
@@ -613,7 +446,6 @@ public class QxService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -628,44 +460,13 @@ public class QxService {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQULEV", rs.getString("V_EQULEV"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                sledata.put("V_ZZCH", rs.getString("V_ZZCH"));
-                sledata.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                sledata.put("F_MONEY", rs.getString("F_MONEY"));
-                sledata.put("V_MONEYTYPE", rs.getString("V_MONEYTYPE"));
-                sledata.put("F_WEIGHT", rs.getString("F_WEIGHT"));
-                sledata.put("V_WEIGHTTYPE", rs.getString("V_WEIGHTTYPE"));
-                sledata.put("V_DATE_B", rs.getString("V_DATE_B"));
-                sledata.put("V_DATE_E", rs.getString("V_DATE_E"));
-                sledata.put("V_ZZS", rs.getString("V_ZZS"));
-                sledata.put("V_GGXH", rs.getString("V_GGXH"));
-                sledata.put("V_YWFW", rs.getString("V_YWFW"));
-                sledata.put("V_ABC", rs.getString("V_ABC"));
-                sledata.put("V_SIZE", rs.getString("V_SIZE"));
-                sledata.put("V_WHGC", rs.getString("V_WHGC"));
-                sledata.put("V_JHWHGC", rs.getString("V_JHWHGC"));
-                sledata.put("V_CBZX", rs.getString("V_CBZX"));
-                sledata.put("V_GZRQ", rs.getString("V_GZRQ"));
-                sledata.put("V_JHZY", rs.getString("V_JHZY"));
-                sledata.put("V_SBYDH", rs.getString("V_SBYDH"));
-                sledata.put("V_EQUCODEUP", rs.getString("V_EQUCODEUP"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_SAP_EQU_GET");
         return result;
@@ -768,20 +569,13 @@ public class QxService {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_DESCRIPTION", rs.getString("V_DESCRIPTION"));
-                sledata.put("V_SUGGESTION", rs.getString("V_SUGGESTION"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECTDESCRIPTION_L");
         return result;

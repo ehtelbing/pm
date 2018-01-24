@@ -1015,7 +1015,6 @@ public class hpService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -1026,25 +1025,13 @@ public class hpService {
             cstmt.setString("X_PERSONCODE", X_PERSONCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_SOURCECODE", rs.getString("V_SOURCECODE"));
-                sledata.put("V_SOURCENAME", rs.getString("V_SOURCENAME"));
-                sledata.put("V_SOURCETABLE", rs.getString("V_SOURCETABLE"));
-                sledata.put("V_SOURCEREMARK", rs.getString("V_SOURCEREMARK"));
-                sledata.put("I_ORDER", rs.getString("I_ORDER"));
-                sledata.put("V_COUNT", rs.getDouble("V_COUNT"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_07_DEFECT_SOURCE_NEW");
         return result;
@@ -1391,7 +1378,6 @@ public class hpService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -1402,22 +1388,13 @@ public class hpService {
             cstmt.setString("V_V_POSTNAME", V_V_POSTNAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("V_PERSONCODE", rs.getString("V_PERSONCODE"));
-                sledata.put("V_POSTCODE", rs.getString("V_POSTCODE"));
-                sledata.put("V_POSTNAME", rs.getString("V_POSTNAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end BASE_PER_POST_SEL");
         return result;
@@ -1629,7 +1606,7 @@ public class hpService {
     }
 
     public HashMap PM_13_EXAMINED_SET(String V_V_GUID,String V_V_DATE,String V_V_BEEXAMINED_DEPT,String V_V_JCBW,String V_V_CZWT,String V_V_ZGCS,
-                                           String V_V_KHYJ,String V_V_KHFS,String V_V_KKJE,String V_V_DEPTCODE
+                                      String V_V_KHYJ,String V_V_KHFS,String V_V_KKJE,String V_V_DEPTCODE
             ,String V_V_TYPE,String V_V_BEEXAMINED_TYPE,String V_V_YQZGSJ,String V_V_TBSJ, String V_V_TB_PER ,String V_V_STATE,String V_V_JX_PER) throws SQLException {
 //        logger.info("begin PRO_PM_03_PLAN_YEAR_SET");
         HashMap result = new HashMap();
@@ -2624,7 +2601,6 @@ public class hpService {
 //        logger.debug("params:V_V_PERSONCODE:" + V_V_PERSONCODE + "params:V_V_DEPTCODE:" + V_V_DEPTCODE+ "params:V_V_DEPTCODENEXT:" + V_V_DEPTCODENEXT+ "params:V_V_DEPTTYPE:" + V_V_DEPTTYPE);
 
         HashMap result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -2635,23 +2611,13 @@ public class hpService {
             cstmt.setString("IS_V_DEPTTYPE", IS_V_DEPTTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_SAP_JHGC", rs.getString("V_SAP_JHGC"));
-                sledata.put("V_SAP_DEPT", rs.getString("V_SAP_DEPT"));
-                sledata.put("V_SAP_WORK", rs.getString("V_SAP_WORK"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_DEPT_VIEW");
         return result;
@@ -2663,7 +2629,6 @@ public class hpService {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         HashMap<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -2673,26 +2638,13 @@ public class hpService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_PERSONCODE", rs.getString("V_PERSONCODE"));
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("V_LOGINNAME", rs.getString("V_LOGINNAME"));
-                sledata.put("V_PASSWORD", rs.getString("V_PASSWORD"));
-                sledata.put("V_ROLENAME", rs.getString("V_ROLENAME"));
-                sledata.put("V_POSTNAME", rs.getString("V_POSTNAME"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-//                sledata.put("V_CLASS_NAME", rs.getString("V_CLASS_NAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_PERSON_VIEW");
         return result;
@@ -2724,7 +2676,7 @@ public class hpService {
     }
 
     public HashMap PM_06_DJ_CRITERION_NOGENERATE(String V_V_ORGCODE, String V_V_DEPTCODE,  String V_V_CK_EQUTYPECODE,
-                                          String V_V_EQUTYPE, String V_V_EQUCODE,String  V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+                                                 String V_V_EQUTYPE, String V_V_EQUCODE,String  V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_06_DJ_CRITERION_NOGENERATE");
 
@@ -2761,7 +2713,7 @@ public class hpService {
     }
 
     public HashMap PM_06_DJ_CRITERION_GENERATE(String V_V_ORGCODE, String V_V_DEPTCODE,  String V_V_CK_EQUTYPECODE,
-                                                 String V_V_EQUTYPE, String V_V_EQUCODE,String  V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+                                               String V_V_EQUTYPE, String V_V_EQUCODE,String  V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_06_DJ_CRITERION_GENERATE");
 
@@ -2811,10 +2763,9 @@ public class hpService {
             cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_SUMNUM");
 
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total",sunm);
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2828,7 +2779,7 @@ public class hpService {
 
 
     public HashMap PM_06_DJ_CRITERION_JST_SET(String V_V_SERVERNAME, String V_V_SENDPASSWORD, String V_V_SEND_PERSON,
-                                                String V_V_RECEIVE_PERSON, String V_V_SUBJECT, String V_V_BODY
+                                              String V_V_RECEIVE_PERSON, String V_V_SUBJECT, String V_V_BODY
             , Integer V_I_FINISH, String V_D_IN_DATE) throws SQLException {
 //        logger.info("begin PRO_PM_03_PLAN_YEAR_SET");
         HashMap result = new HashMap();
@@ -2924,7 +2875,7 @@ public class hpService {
     }
 
     public HashMap PM_13_EXAMINED_COMPANY_SET(String V_V_GUID,String V_V_DATE,String V_V_BEEXAMINED_ORG,String V_V_BEEXAMINED_DEPT,String V_V_JCBW,String V_V_CZWT,String V_V_ZGCS,
-                                      String V_V_KHYJ,String V_V_KHFS,String V_V_KKJE,String V_V_DEPTCODE
+                                              String V_V_KHYJ,String V_V_KHFS,String V_V_KKJE,String V_V_DEPTCODE
             ,String V_V_TYPE,String V_V_BEEXAMINED_TYPE,String V_V_YQZGSJ,String V_V_TBSJ, String V_V_TB_PER ,String V_V_STATE,String V_V_JX_PER) throws SQLException {
 //        logger.info("begin PRO_PM_03_PLAN_YEAR_SET");
         HashMap result = new HashMap();
@@ -2969,7 +2920,7 @@ public class hpService {
     }
 
     public Map PRO_PM_EQUREPAIRPLAN_NEXTPERN(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_SPECIALTY,String V_V_GUID,String
-                                            V_I_STATE,String V_V_FLOWTYPE,String V_V_FLOW_STEP) throws SQLException {
+            V_I_STATE,String V_V_FLOWTYPE,String V_V_FLOW_STEP) throws SQLException {
 
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_NEXTPERN");
@@ -3009,12 +2960,12 @@ public class hpService {
     }
 
     public HashMap PM_06_DJ_CRITERION_SETN(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_CK_EQUTYPECODE,String V_V_EQUTYPE,
-                                          String V_V_EQUCODE,String V_V_CRITERION_CODE, String V_V_CRITERION_ITEM,String  V_V_CRITERION_CONTENT,
-                                          String V_V_CRITERION_CR,String V_V_CRITERION_CYCLE,String  V_V_CRITERION_CYCLETYPE,String V_V_EQU_STATE1,String V_V_EQU_STATE2,
-                                          String V_V_CK_FUNCTION1, String V_V_CK_FUNCTION2, String V_V_CK_FUNCTION3, String V_V_CK_FUNCTION4,
-                                          String V_V_CK_FUNCTION5,String  V_V_CK_FUNCTION6,String  V_V_CK_FUNCTION7,String  V_V_CK_FUNCTION8,
-                                          String V_I_ORDER,String V_V_PLAN_STATE,String  V_I_FLAG, String V_V_CKTYPE,String  V_I_WEIGHT,
-                                          String V_I_YJ,String  V_V_INPER) throws SQLException {
+                                           String V_V_EQUCODE,String V_V_CRITERION_CODE, String V_V_CRITERION_ITEM,String  V_V_CRITERION_CONTENT,
+                                           String V_V_CRITERION_CR,String V_V_CRITERION_CYCLE,String  V_V_CRITERION_CYCLETYPE,String V_V_EQU_STATE1,String V_V_EQU_STATE2,
+                                           String V_V_CK_FUNCTION1, String V_V_CK_FUNCTION2, String V_V_CK_FUNCTION3, String V_V_CK_FUNCTION4,
+                                           String V_V_CK_FUNCTION5,String  V_V_CK_FUNCTION6,String  V_V_CK_FUNCTION7,String  V_V_CK_FUNCTION8,
+                                           String V_I_ORDER,String V_V_PLAN_STATE,String  V_I_FLAG, String V_V_CKTYPE,String  V_I_WEIGHT,
+                                           String V_I_YJ,String  V_V_INPER) throws SQLException {
 
         logger.info("begin PM_06_DJ_CRITERION_SETN");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -3577,7 +3528,7 @@ public class hpService {
     }
 
     public HashMap PM_06_DJ_CRITERION_DATA_SETN(String V_V_CRITERION_CODE,String V_V_FZ_PER,String V_V_PLAN_STATE,
-                                               String V_V_PLAN_TIME,String V_V_PLAN_PER,String V_V_DJ_TYPE) throws SQLException {
+                                                String V_V_PLAN_TIME,String V_V_PLAN_PER,String V_V_DJ_TYPE) throws SQLException {
 
         logger.info("begin PM_06_DJ_CRITERION_DATA_SETN");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);

@@ -68,7 +68,7 @@ public class PM_22Service {
     }
 
     public HashMap PRO_PM_EQUREPAIRPLAN_EDITVIEW(String V_V_IP,String V_V_PERCODE,String V_D_INDATE_B,
-                                                  String V_D_INDATE_E,String V_V_SPECIALTY,String V_V_DEFECT) throws SQLException {
+                                                 String V_D_INDATE_E,String V_V_SPECIALTY,String V_V_DEFECT) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_EDITVIEW");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -123,20 +123,13 @@ public class PM_22Service {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("V_PERSONCODE", rs.getString("V_PERSONCODE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_SPECIALTYTOPERSON_SEL");
         return result;
@@ -172,12 +165,7 @@ public class PM_22Service {
             ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             System.out.println("rs+++++++++++++++++++++++++++++++++++++++++++++"+rs);
             if(rs!=null) {
-                while (rs.next()) {
-                    Map sledata = new HashMap();
-                    sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                    sledata.put("V_PERSONCODE", rs.getString("V_PERSONCODE"));
-                    resultList.add(sledata);
-                }
+                result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             }
 
         } catch (SQLException e) {
@@ -186,7 +174,6 @@ public class PM_22Service {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_EQUREPAIRPLAN_NEXTPER");
         return result;
@@ -235,20 +222,13 @@ public class PM_22Service {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_DEPTREPAIRNAME", rs.getString("V_DEPTREPAIRNAME"));
-                sledata.put("V_DEPTREPAIRCODE", rs.getString("V_DEPTREPAIRCODE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_REPAIRDEPT_SEL");
         return result;
@@ -557,7 +537,7 @@ public class PM_22Service {
 
     public HashMap PRO_PM_EQUREPAIRPLAN_SET(String V_V_IP,String V_V_PERCODE, String V_V_PERNAME,String V_V_GUID,String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_PROJECTNAME,String V_V_PLANDATE,String V_V_SPECIALTY,String V_V_SPECIALTYNAME,String V_V_SPECIALTYMANCODE
             ,String V_V_SPECIALTYMAN,Double V_F_MONEYUP,Double V_F_MONEYBUDGET,String V_V_REPAIRDEPTTYPE,String V_V_REPAIRDEPTCODE,String V_V_REPAIRDEPT,String V_V_DEFECT,String V_V_MEASURE,String V_I_RUSHTO,String V_V_PROJECTCODE_GS,String V_V_REPAIRDEPT_GS,
-                                              String V_F_MONEY_GS,String V_D_INDATE_GS,String V_I_YEAR_PLAN,String V_I_MONTH_PLAN) throws SQLException {
+                                            String V_F_MONEY_GS,String V_D_INDATE_GS,String V_I_YEAR_PLAN,String V_I_MONTH_PLAN) throws SQLException {
 //        logger.info("begin PM_14_FAULT_ITEM_SET");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -670,7 +650,7 @@ public class PM_22Service {
     }
 
     public HashMap PRO_PM_EQUREPAIRPLAN_VIEW(String V_V_IP,String V_V_PERCODE,String V_V_ORGCODE,String V_V_DEPTCODE,String
-                                             V_D_INDATE_B,String V_D_INDATE_E,String V_V_SPECIALTY,String V_V_DEFECT,String V_V_FLAG) throws SQLException {
+            V_D_INDATE_B,String V_D_INDATE_E,String V_V_SPECIALTY,String V_V_DEFECT,String V_V_FLAG) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_VIEW");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -888,7 +868,6 @@ public class PM_22Service {
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         HashMap result = new HashMap();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -897,20 +876,13 @@ public class PM_22Service {
             cstmt = conn.prepareCall("{call PM_04_PROJECT_TYPE_DROP(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_TYPE_CODE", rs.getString("V_TYPE_CODE"));
-                sledata.put("V_TYPE_NAME", rs.getString("V_TYPE_NAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_04_PROJECT_TYPE_DROP");
         return result;

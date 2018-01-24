@@ -89,21 +89,13 @@ public class DxService {
             cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_SAP_JHGC", rs.getString("V_SAP_JHGC"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_DEPT_VIEW_ROLE");
         return result;
@@ -128,20 +120,13 @@ public class DxService {
             cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_SAP_DEPT", rs.getString("V_SAP_DEPT"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_DEPT_VIEW_ROLE");
         return result;
@@ -160,29 +145,10 @@ public class DxService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("ID", rs.getString("V_DEPTCODE"));
-                sledata.put("NAME", rs.getString("V_DEPTNAME"));
-                sledata.put("I_DEPTID", rs.getDouble("I_DEPTID"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_DEPTCODE_UP", rs.getString("V_DEPTCODE_UP"));
-                sledata.put("V_DEPTSMALLNAME", rs.getString("V_DEPTSMALLNAME"));
-                sledata.put("V_DEPTFULLNAME", rs.getString("V_DEPTFULLNAME"));
-                sledata.put("V_DEPTTYPE", rs.getString("V_DEPTTYPE"));
-                sledata.put("I_ORDERID", rs.getDouble("I_ORDERID"));
-                sledata.put("I_FLAG", rs.getDouble("I_FLAG"));
-                sledata.put("V_SAP_DEPT", rs.getString("V_SAP_DEPT"));
-                sledata.put("V_SAP_WORK", rs.getString("V_SAP_WORK"));
-                sledata.put("V_SAP_JHGC", rs.getString("V_SAP_JHGC"));
-                sledata.put("V_SAP_YWFW", rs.getString("V_SAP_YWFW"));
-                sledata.put("D_DATE_EDITTIME", rs.getDate("D_DATE_EDITTIME"));
-                sledata.put("V_EDIT_GUID", rs.getString("V_EDIT_GUID"));
-//                sledata.put("V_CLASS_FLAG", rs.getString("V_CLASS_FLAG"));
-                result.add(sledata);
-            }
+            Map sledata = new HashMap();
+            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(sledata);
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -209,13 +175,9 @@ public class DxService {
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("ID", rs.getString("V_EQUTYPECODE"));
-                sledata.put("NAME", rs.getString("V_EQUTYPENAME"));
-                result.add(sledata);
-            }
+            Map sledata = new HashMap();
+            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -242,21 +204,13 @@ public class DxService {
             cstmt = conn.prepareCall("{call PMDX_ITEMS_TYPE_SEL(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getString("I_ID"));
-                sledata.put("V_ITEMTYPE_CODE", rs.getString("V_ITEMTYPE_CODE"));
-                sledata.put("V_ITEMTYPE_NAME", rs.getString("V_ITEMTYPE_NAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PMDX_ITEMS_TYPE_SEL");
         return result;
@@ -280,38 +234,13 @@ public class DxService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_ITEMTYPE", rs.getString("V_ITEMTYPE"));
-                sledata.put("V_ITEMTYPE_NAME", rs.getString("V_ITEMTYPE_NAME"));
-                sledata.put("V_ITEM_CODE", rs.getString("V_ITEM_CODE"));
-                sledata.put("V_ITEM_CODEUP", rs.getString("V_ITEM_CODEUP"));
-                sledata.put("V_ITEM_MEMO", rs.getString("V_ITEM_MEMO"));
-                sledata.put("D_DATE_B", rs.getString("D_DATE_B"));
-                sledata.put("D_DATE_E", rs.getString("D_DATE_E"));
-                sledata.put("D_DATE_IN", rs.getString("D_DATE_IN"));
-                sledata.put("V_PERCODE", rs.getString("V_PERCODE"));
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("I_YEAR", rs.getDouble("I_YEAR"));
-                sledata.put("V_ORGCODE", rs.getString("V_ORGCODE"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_GUID", rs.getString("V_GUID"));
-                sledata.put("V_ITEM_NAME", rs.getString("V_ITEM_NAME"));
-                sledata.put("V_ITEM_NAMEUP", rs.getString("V_ITEM_NAMEUP"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PMDX_ITEMS_SEL");
         return result;
@@ -415,23 +344,13 @@ public class DxService {
             cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_GET_DEPTEQU_WXPER");
         return result;
@@ -453,24 +372,13 @@ public class DxService {
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_GUID", rs.getString("V_GUID"));
-                sledata.put("V_FILE_GUID", rs.getString("V_FILE_GUID"));
-                sledata.put("V_FILE_NAME", rs.getString("V_FILE_NAME"));
-                sledata.put("V_PERCODE", rs.getString("V_PERCODE"));
-                sledata.put("V_DATE_IN", rs.getString("V_DATE_IN"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PMDX_ITEM_FILE_SEL");
         return result;
@@ -548,12 +456,9 @@ public class DxService {
             cstmt.setString("V_V_POSTCODE", V_V_POSTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_POSTCODE", rs.getString("V_POSTCODE"));
-                result.add(sledata);
-            }
+            Map sledata = new HashMap();
+            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -605,19 +510,10 @@ public class DxService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_POSTID", rs.getDouble("I_POSTID"));
-                sledata.put("V_POSTCODE", rs.getString("V_POSTCODE"));
-                sledata.put("V_POSTNAME", rs.getString("V_POSTNAME"));
-                sledata.put("V_POSTMEMO", rs.getString("V_POSTMEMO"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_POSTCODE_UP", rs.getString("V_POSTCODE_UP"));
-                sledata.put("D_DATE_EDITTIME", rs.getDate("D_DATE_EDITTIME"));
-                sledata.put("V_EDIT_GUID", rs.getString("V_EDIT_GUID"));
-                result.add(sledata);
-            }
+            Map sledata = new HashMap();
+            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(sledata);
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {

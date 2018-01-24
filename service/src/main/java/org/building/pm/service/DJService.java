@@ -2928,12 +2928,12 @@ public class DJService {
     }
 
     public HashMap pro_dj301_updatebyqmain(String BYQ_UNIQUE_CODE_in, String BYQ_NAME_in, String SUPPLY_CODE_in, String BYQ_V_in, String QSZL_in,
-                                        String BYQ_SERIES_in, String BYQ_SERIES_NAME_in, String BYQ_TYPE_in, String SUPPLY_NAME_in, String BYQ_A_in,
-                                        String YZ_in, String PLANTCODE_in, String PLANTNAME_in, String DEPARTCODE_in,String DEPARTNAME_in,
-                                        String PRODUCE_DATE_in, String LJZBH_in, String ZZ_in,  String LOC_PLANTCODE_in, String LOC_PLANTNAME_in,
-                                        String DJ_LOC_in, String BYQ_VOL_in, String ZKDY_in,String KZSH_in, String LQFS_in,
-                                        String SYTJ_in, String DLSH_in,String KZDL_in,  String WORK_STATUS_in, String REMARK_in,
-                                        String USERCODE_in, String USERNAME_in) throws SQLException {
+                                           String BYQ_SERIES_in, String BYQ_SERIES_NAME_in, String BYQ_TYPE_in, String SUPPLY_NAME_in, String BYQ_A_in,
+                                           String YZ_in, String PLANTCODE_in, String PLANTNAME_in, String DEPARTCODE_in,String DEPARTNAME_in,
+                                           String PRODUCE_DATE_in, String LJZBH_in, String ZZ_in,  String LOC_PLANTCODE_in, String LOC_PLANTNAME_in,
+                                           String DJ_LOC_in, String BYQ_VOL_in, String ZKDY_in,String KZSH_in, String LQFS_in,
+                                           String SYTJ_in, String DLSH_in,String KZDL_in,  String WORK_STATUS_in, String REMARK_in,
+                                           String USERCODE_in, String USERNAME_in) throws SQLException {
 
         logger.info("begin pro_dj301_updatebyqmain");
 

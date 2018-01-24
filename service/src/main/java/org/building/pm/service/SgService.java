@@ -164,6 +164,7 @@ public class SgService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+
             while (rs.next()) {
                 Map sledata = new HashMap();
                 sledata.put("V_DEPTCODE", rs.getString("V_SG_ORGCODE"));

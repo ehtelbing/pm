@@ -432,8 +432,8 @@ public class PM_12Service {
         return result;
     }
     public Map PRO_RUN_SITE_ADD(String A_SITE_DESC,String A_EQUID,String A_REMARK,String A_USERNAME,
-                                  String A_MEND_DEPART,String A_MEND_USERNAME,String A_MEND_USERNAMEID,
-                                  String A_BJ_ID,String A_BJ_AMOUNT) throws SQLException {
+                                String A_MEND_DEPART,String A_MEND_USERNAME,String A_MEND_USERNAMEID,
+                                String A_BJ_ID,String A_BJ_AMOUNT) throws SQLException {
         logger.info("begin PRO_RUN_SITE_ADD");
         Map result = new HashMap();
         Connection conn = null;
@@ -467,8 +467,8 @@ public class PM_12Service {
         return result;
     }
     public Map PRO_RUN_SITE_UPDATE(String A_SITE_ID,String A_SITE_DESC,String A_REMARK,String A_USERNAME,
-                                String A_MEND_DEPART,String A_MEND_USERNAME,String A_MEND_USERNAMEID,
-                                String A_BJ_ID,String A_BJ_AMOUNT) throws SQLException {
+                                   String A_MEND_DEPART,String A_MEND_USERNAME,String A_MEND_USERNAMEID,
+                                   String A_BJ_ID,String A_BJ_AMOUNT) throws SQLException {
         logger.info("begin PRO_RUN_SITE_UPDATE");
         Map result = new HashMap();
         Connection conn = null;
@@ -1963,7 +1963,7 @@ public class PM_12Service {
             cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
             cstmt.setString("A_EQUID", A_EQUID);
             cstmt.setString("A_BJ_UNIQUE_CODE", A_BJ_UNIQUE_CODE);
-			cstmt.setDate("A_BEGINDATE", Date.valueOf(A_BEGINDATE));
+            cstmt.setDate("A_BEGINDATE", Date.valueOf(A_BEGINDATE));
             cstmt.setDate("A_ENDDATE", Date.valueOf(A_ENDDATE));
             cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
             cstmt.execute();

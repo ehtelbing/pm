@@ -107,20 +107,13 @@ public class ProjectService {
             cstmt = conn.prepareCall("{call PM_04_PROJECT_TYPE_SEL(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_TYPE_CODE", rs.getString("V_TYPE_CODE"));
-                sledata.put("V_TYPE_NAME", rs.getString("V_TYPE_NAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_04_PROJECT_TYPE_SEL");
         return result;
@@ -141,20 +134,13 @@ public class ProjectService {
             cstmt = conn.prepareCall("{call PM_04_PROJECT_MAJOR_SEL(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_MAJOR_CODE", rs.getString("V_MAJOR_CODE"));
-                sledata.put("V_MAJOR_NAME", rs.getString("V_MAJOR_NAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_04_PROJECT_MAJOR_SEL");
         return result;
@@ -389,8 +375,6 @@ public class ProjectService {
             cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-
-
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
