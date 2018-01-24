@@ -4,10 +4,7 @@ $(function () {
 });
 
 function _banli(V_TIMER_GUID){
-   /* var w=screen.availWidth-10;
-    var h=screen.availHeight-30;
-    var objwin = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
-   */ var owidth = window.screen.availWidth;
+    var owidth = window.screen.availWidth;
     var oheight =  window.screen.availHeight - 50;
     var ret = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID, '', 'height='+
         oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
@@ -30,6 +27,9 @@ function tabreload(){
                 var yangshi = "onmouseover=\"this.style.backgroundPosition='left -40px'\"";
 
                 var yangshi2 = "onmouseout=\"this.style.backgroundPosition='left top'\"";
+
+                $("#t1").empty();
+
                 for (var i = 0; i < formList.length; i++) {
                     $('<ul class="tasklist"> <li><span> <input type="button" name="button" id="button" ' +
                         'class="btns" value="确认办理" '+yangshi + ' '+ yangshi2 +'onclick="_banli(\''+formList[i].V_TIMER_GUID+'\')"> </span>您有' +
