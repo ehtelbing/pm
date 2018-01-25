@@ -75,7 +75,6 @@ public class InfoService {
         logger.debug("params:userName:" + userName + "params:userIp:" + userIp);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -86,36 +85,13 @@ public class InfoService {
             cstmt.setString("V_V_IP", userIp);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_PERSONID", rs.getString("I_PERSONID"));
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("V_LOGINNAME", rs.getString("V_LOGINNAME"));
-                sledata.put("V_PASSWORD", rs.getString("V_PASSWORD"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_ROLECODE", rs.getString("V_ROLECODE"));
-                sledata.put("V_ROLENAME", rs.getString("V_ROLENAME"));
-                sledata.put("V_POSTCODE", rs.getString("V_POSTCODE"));
-                sledata.put("V_POSTNAME", rs.getString("V_POSTNAME"));
-                sledata.put("V_DEPTSMALLNAME", rs.getString("V_DEPTSMALLNAME"));
-                sledata.put("V_DEPTFULLNAME", rs.getString("V_DEPTFULLNAME"));
-                sledata.put("V_DEPTTYPE", rs.getString("V_DEPTTYPE"));
-                sledata.put("V_ORGCODE", rs.getString("V_ORGCODE"));
-                sledata.put("V_ORGNAME", rs.getString("V_ORGNAME"));
-//                sledata.put("V_CLASS_CODE", rs.getString("V_CLASS_CODE"));
-                sledata.put("V_WORKCSS", rs.getString("V_WORKCSS"));
-
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_PERSON_LOGIN");
         return result;
@@ -155,7 +131,6 @@ public class InfoService {
         logger.debug("params:userName:" + LoginName + "params:LoginType:" + LoginType);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -168,15 +143,13 @@ public class InfoService {
             cstmt.execute();
             ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             cstmt.execute();
-            result.put("list",
-                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_PERSON_LOGIN_DDDL");
         return result;

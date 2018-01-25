@@ -257,7 +257,7 @@ public class YSService {
     }
 
     public HashMap ys_charge_workorder_year_sel(String V_D_ENTER_YEAR,String V_V_ORGCODE, String V_V_DEPTCODE,String V_EQUTYPE_CODE,
-                                                 String V_EQU_CODE, String V_DJ_PERCODE) throws SQLException {
+                                                String V_EQU_CODE, String V_DJ_PERCODE) throws SQLException {
 
         logger.info("begin ys_charge_workorder_year_sel");
         HashMap result = new HashMap();
@@ -1015,7 +1015,7 @@ public class YSService {
     }
 
     public HashMap YS_CHARGE_W_CON_TOTAL_SEL(String V_D_ENTER_DATE_B,String V_D_ENTER_DATE_E,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                               String V_EQUTYPE_CODE,String V_EQU_CODE,String V_DJ_PERCODE,String V_V_STATE_BILL) throws SQLException {
+                                             String V_EQUTYPE_CODE,String V_EQU_CODE,String V_DJ_PERCODE,String V_V_STATE_BILL) throws SQLException {
 
         logger.info("begin YS_CHARGE_W_CON_TOTAL_SEL");
         HashMap result = new HashMap();

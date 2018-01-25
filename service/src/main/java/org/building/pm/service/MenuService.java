@@ -40,16 +40,16 @@ public class MenuService {
         cstmt.execute();
         ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
         while (rs.next()) {
-                Map temp = new HashMap();
-                temp.put("id", rs.getString("V_MENUCODE").toString());
-                temp.put("text", rs.getString("V_MENUNAME").toString());
-                temp.put("pid", rs.getString("V_MENUCODE_UP").toString());
-                if(rs.getString("V_URL")!=null) {
-                    temp.put("src", rs.getString("V_URL").toString());
-                }else{
-                    temp.put("src", "");
-                }
-                result.add(temp);
+            Map temp = new HashMap();
+            temp.put("id", rs.getString("V_MENUCODE").toString());
+            temp.put("text", rs.getString("V_MENUNAME").toString());
+            temp.put("pid", rs.getString("V_MENUCODE_UP").toString());
+            if(rs.getString("V_URL")!=null) {
+                temp.put("src", rs.getString("V_URL").toString());
+            }else{
+                temp.put("src", "");
+            }
+            result.add(temp);
         }
         cstmt.close();
         conn.close();
@@ -74,12 +74,12 @@ public class MenuService {
         for (Map<String, Object> m : list) {
 
             Map item = new LinkedHashMap();
-                item.put("sid", m.get("id").toString());
-                item.put("text", m.get("text").toString());
+            item.put("sid", m.get("id").toString());
+            item.put("text", m.get("text").toString());
 
-                Map itemNode = new LinkedHashMap();
-                    itemNode.put("items",this.getMenuItems(listAll, m.get("id").toString()));
-                item.put("menu", itemNode);
+            Map itemNode = new LinkedHashMap();
+            itemNode.put("items",this.getMenuItems(listAll, m.get("id").toString()));
+            item.put("menu", itemNode);
 
             if(st>0)result.add("-");
             result.add(item);
@@ -92,25 +92,25 @@ public class MenuService {
     private List<Map> getMenuItems(List<Map> list, String pid) {
 
         List<Map> listMenu = new ArrayList<Map>();
-               //获取下级数据
-               List<Map> listData = findMenu(list,pid);
-               //构建下级菜单
-               for(Map m:listData){
-                   Map item = new LinkedHashMap();
-                       item.put("sid",m.get("id").toString());
-                       item.put("text", m.get("text").toString());
-                       //查询子级
-                       List<Map> mmm = this.getMenuItems(list, m.get("id").toString());
-                       if(mmm.size()>0) {
-                           Map itemNode = new LinkedHashMap();
-                           itemNode.put("items", mmm);
-                           item.put("menu", itemNode);
-                       }else{
-                           item.put("src",m.get("src").toString()); //添加链接
-                       }
-                   listMenu.add(item);
-               }
-            return listMenu;
+        //获取下级数据
+        List<Map> listData = findMenu(list,pid);
+        //构建下级菜单
+        for(Map m:listData){
+            Map item = new LinkedHashMap();
+            item.put("sid",m.get("id").toString());
+            item.put("text", m.get("text").toString());
+            //查询子级
+            List<Map> mmm = this.getMenuItems(list, m.get("id").toString());
+            if(mmm.size()>0) {
+                Map itemNode = new LinkedHashMap();
+                itemNode.put("items", mmm);
+                item.put("menu", itemNode);
+            }else{
+                item.put("src",m.get("src").toString()); //添加链接
+            }
+            listMenu.add(item);
+        }
+        return listMenu;
     }
 
     //查找菜单

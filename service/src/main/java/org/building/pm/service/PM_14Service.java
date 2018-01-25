@@ -787,7 +787,6 @@ public class PM_14Service {
 
 
         HashMap result = new HashMap();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -797,20 +796,13 @@ public class PM_14Service {
             cstmt.setString("V_V_FLAG", V_V_FLAG);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_CARCODE", rs.getString("V_CARCODE"));
-                sledata.put("V_CARTEXT", rs.getString("V_CARTEXT"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_14_CL_DIC_CAR_VIEW");
         return result;
@@ -1050,16 +1042,10 @@ public class PM_14Service {
             cstmt.setString("V_NAME", V_NAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map temp = new HashMap();
-                temp.put("id", rs.getString("V_CODE"));
-                temp.put("text", rs.getString("V_NAME"));
-                temp.put("parentid", rs.getString("V_CODEUP"));
-                temp.put("leaf", true);
-                temp.put("expanded", false);
-                result.add(temp);
-            }
+            Map temp = new HashMap();
+            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(temp);
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1114,15 +1100,9 @@ public class PM_14Service {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map temp = new HashMap();
-                temp.put("id", rs.getString("V_TOOLCODE"));
-                temp.put("text", rs.getString("V_TOOLNAME"));
-                temp.put("leaf", true);
-                temp.put("expanded", false);
-                result.add(temp);
-            }
+            Map temp = new HashMap();
+            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(temp);
         } catch (SQLException e) {
             logger.error(e);
         } finally {

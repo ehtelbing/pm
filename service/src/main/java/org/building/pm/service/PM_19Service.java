@@ -71,7 +71,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -81,21 +80,14 @@ public class PM_19Service {
             cstmt.setString("V_V_WORKNAME", V_V_WORKNAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_WORKCODE", rs.getString("V_WORKCODE"));
-                sledata.put("V_WORKNAME", rs.getString("V_WORKNAME"));
-                sledata.put("V_WORKTYPE", rs.getString("V_WORKTYPE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_19_WORKTYPE_SEL");
         return result;
@@ -163,7 +155,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -174,24 +165,14 @@ public class PM_19Service {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_TOOLCODE", rs.getString("V_TOOLCODE"));
-                sledata.put("V_TOOLNAME", rs.getString("V_TOOLNAME"));
-                sledata.put("V_TOOLTYPE", rs.getString("V_TOOLTYPE"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_19_TOOLTYPE_SEL");
         return result;
@@ -262,7 +243,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -273,29 +253,13 @@ public class PM_19Service {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_CARCODE", rs.getString("V_CARCODE"));
-                sledata.put("V_CARNAME", rs.getString("V_CARNAME"));
-                sledata.put("V_CARTYPE", rs.getString("V_CARTYPE"));
-                sledata.put("V_CARGUISUO", rs.getString("V_CARGUISUO"));
-                sledata.put("V_FLAG", rs.getString("V_FLAG"));
-                sledata.put("V_CARINFO", rs.getString("V_CARINFO"));
-                sledata.put("I_ID", rs.getString("I_ID"));
-                sledata.put("V_DE", rs.getString("V_DE"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_19_CARTYPE_SEL");
         return result;
@@ -370,7 +334,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -380,24 +343,13 @@ public class PM_19Service {
             cstmt.setString("V_V_WORKNAME", V_V_WORKNAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_ID", rs.getDouble("I_ID"));
-                sledata.put("V_WORKCODE", rs.getString("V_WORKCODE"));
-                sledata.put("V_WORKNAME", rs.getString("V_WORKNAME"));
-                sledata.put("V_WORKTYPE", rs.getString("V_WORKTYPE"));
-                sledata.put("V_TIME", rs.getString("V_TIME"));
-                sledata.put("V_DE", rs.getString("V_DE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_19_WORKDE_SEL");
         return result;
@@ -465,7 +417,7 @@ public class PM_19Service {
     }
 
     public List<Map> PRO_PM_19_CARDE_EDIT(String I_I_ID, String V_V_CARCODE,String V_V_CARNAME,String V_V_CARTYPE,
-                                           String V_V_CARGUISUO,String V_V_FLAG,String V_V_CARINFO) throws SQLException {
+                                          String V_V_CARGUISUO,String V_V_FLAG,String V_V_CARINFO) throws SQLException {
 //        logger.info("begin PRO_PM_19_CARDE_EDIT");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -747,7 +699,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -758,23 +709,13 @@ public class PM_19Service {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_AQCS_CODE", rs.getString("V_AQCS_CODE"));
-                sledata.put("V_AQCS_NAME", rs.getString("V_AQCS_NAME"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_PM_19_AQCS_SEL");
         return result;
@@ -786,7 +727,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -797,23 +737,14 @@ public class PM_19Service {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_JSYQ_CODE", rs.getString("V_JSYQ_CODE"));
-                sledata.put("V_JSYQ_NAME", rs.getString("V_JSYQ_NAME"));
-                sledata.put("V_EQUCODE", rs.getString("V_EQUCODE"));
-                sledata.put("V_EQUNAME", rs.getString("V_EQUNAME"));
-                sledata.put("V_EQUSITE", rs.getString("V_EQUSITE"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
+
         logger.debug("result:" + result);
         logger.info("end PRO_PM_19_JSYQ_SEL");
         return result;
@@ -825,7 +756,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -835,24 +765,13 @@ public class PM_19Service {
             cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_JJ_NAME", rs.getString("V_JJ_NAME"));
-                sledata.put("V_GJ_NAME", rs.getString("V_GJ_NAME"));
-                sledata.put("V_PER_NAME", rs.getString("V_PER_NAME"));
-                sledata.put("V_WL_NAME", rs.getString("V_WL_NAME"));
-                sledata.put("V_JSQY_NAME", rs.getString("V_JSQY_NAME"));
-                sledata.put("V_AQSC_NAME", rs.getString("V_AQSC_NAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_1917_JXGX_BYCODE_SEL");
         return result;
@@ -864,7 +783,6 @@ public class PM_19Service {
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -875,22 +793,13 @@ public class PM_19Service {
             cstmt.setString("V_V_POSTCODE", V_V_POSTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("V_PERSONCODE", rs.getString("V_PERSONCODE"));
-                sledata.put("V_POSTCODE", rs.getString("V_POSTCODE"));
-                sledata.put("V_POSTNAME", rs.getString("V_POSTNAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end BASE_PER_POST_SEL");
         return result;
@@ -926,7 +835,6 @@ public class PM_19Service {
     public Map PM_REPAIRDEPT_SEL(String V_V_DEPTCODE) throws SQLException {
         logger.info("begin PM_REPAIRDEPT_SEL");
         Map result = new HashMap();
-        List resultList = new ArrayList();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -936,20 +844,13 @@ public class PM_19Service {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_DEPTREPAIRCODE", rs.getString("V_DEPTREPAIRCODE"));
-                sledata.put("V_DEPTREPAIRNAME", rs.getString("V_DEPTREPAIRNAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_REPAIRDEPT_SEL");
         return result;
@@ -957,7 +858,6 @@ public class PM_19Service {
     public Map PM_FLOW_TYPE_SEL() throws SQLException {
         logger.info("begin PM_FLOW_TYPE_SEL");
         Map result = new HashMap();
-        List resultList = new ArrayList();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -966,20 +866,13 @@ public class PM_19Service {
             cstmt = conn.prepareCall("{call PM_FLOW_TYPE_SEL" + "(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_FLOWTYPE_CODE", rs.getString("V_FLOWTYPE_CODE"));
-                sledata.put("V_FLOWTYPE_NAME", rs.getString("V_FLOWTYPE_NAME"));
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PM_FLOW_TYPE_SEL");
         return result;
@@ -2203,14 +2096,10 @@ public class PM_19Service {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs=(ResultSet)cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map temp = new HashMap();
-                temp.put("id",rs.getString("V_PERSONCODE").toString());
-                temp.put("text",rs.getString("V_PERSONNAME").toString());
-                temp.put("leaf",true);
-                result.add(temp);
-            }
+            Map temp = new HashMap();
+            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(temp);
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2266,14 +2155,9 @@ public class PM_19Service {
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs=(ResultSet)cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map temp = new HashMap();
-                temp.put("id",rs.getString("V_EQUTYPECODE").toString());
-                temp.put("text",rs.getString("V_EQUTYPENAME").toString());
-                temp.put("leaf",true);
-                result.add(temp);
-            }
+            Map temp = new HashMap();
+            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(temp);
             conn.commit();
         } catch (SQLException e) {
             logger.error(e);
@@ -2397,15 +2281,9 @@ public class PM_19Service {
             cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs=(ResultSet)cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map temp = new HashMap();
-                temp.put("id",rs.getString("V_DEPTCODE").toString());
-                temp.put("text",rs.getString("V_DEPTNAME").toString());
-                temp.put("parentid","0");
-                temp.put("leaf",true);
-                result.add(temp);
-            }
+            Map temp = new HashMap();
+            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.add(temp);
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -3462,7 +3340,7 @@ public class PM_19Service {
                     temp.put("leaf", true);
 
                     if (IsChecked(V_V_DEPTCODE_UP,list.get(i).get("V_DEPTCODE").toString())) {
-                                temp.put("checked", true);
+                        temp.put("checked", true);
 
                     }else{
                         temp.put("checked", false);
