@@ -2922,4 +2922,39 @@ public class cjyService {
         logger.info("end PRO_PM_03_PLAN_WEEK_NSET");
         return result;
     }
+
+    public HashMap PRO_SAP_EQU_VIEW_SEL(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,
+                                    String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_EQUNAME) throws SQLException {
+
+        logger.info("begin PRO_SAP_EQU_VIEW_SEL");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SAP_EQU_VIEW_SEL" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE," +
+                    ":V_V_EQUCODE,:V_V_EQUTYPECODE,:V_V_EQUNAME,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUNAME", V_V_EQUNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_SAP_EQU_VIEW_SEL");
+        return result;
+    }
 }
