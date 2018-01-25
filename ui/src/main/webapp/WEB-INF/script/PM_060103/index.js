@@ -38,25 +38,25 @@ var Layout = {
         { xtype: 'gridpanel', region: 'center',  columnLines: true, id: 'grid', store: 'gridStore',
             selType : 'checkboxmodel',
             columns: [
-                { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
+                { xtype: 'rownumberer', text: '序号', width: 60, align: 'center',renderer : stateStyleNum
                 },
                 {
-                    text: '点检时间', align: 'center', width: 150, dataIndex: 'V_DJ_DATE'
+                    text: '点检时间', align: 'center', width: 150, dataIndex: 'V_DJ_DATE',renderer : stateStyle
                 },
                 {
-                    text: '点检人', align: 'center', width: 150, dataIndex: 'V_DJ_PERNAME'
+                    text: '点检人', align: 'center', width: 150, dataIndex: 'V_DJ_PERNAME',renderer : stateStyle
                 },
                 {
-                    text: '点检内容', align: 'center', width: 150, dataIndex: 'V_CRITERION_CONTENT'
+                    text: '点检内容', align: 'center', width: 150, dataIndex: 'V_CRITERION_CONTENT',renderer : stateStyle
                 },
                 {
                     text: '是否异常', align: 'center', width: 150, dataIndex: 'V_DJ_STATE',renderer : state
                 },
                 {
-                    text: '点检周期', align: 'center', width: 150, dataIndex: 'V_DJ_ZQ'
+                    text: '点检周期', align: 'center', width: 150, dataIndex: 'V_DJ_ZQ',renderer : stateStyle
                 },
                 {
-                    text: '点检描述', align: 'center', width: 150, dataIndex: 'V_DJ_NR'
+                    text: '点检描述', align: 'center', width: 150, dataIndex: 'V_DJ_NR',renderer : stateStyle
                 }
             ]
         }
@@ -93,5 +93,24 @@ function state(a,value,metaData){
     }
     else{
         return '正常';
+    }
+}
+
+function stateStyle(value,metaData,record){
+    if(record.data.V_DJ_STATE=='1'){
+        return '<span style = "color:red">'+value+'</span>';
+
+    }
+    else{
+        return value;
+    }
+}
+function stateStyleNum(value,metaData,record,rowIndex){
+    if(record.data.V_DJ_STATE=='1'){
+        return '<span style = "color:red">'+rowIndex+'</span>';
+
+    }
+    else{
+        return rowIndex;
     }
 }
