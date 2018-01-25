@@ -132,7 +132,12 @@ Ext.onReady(function () {
             displayField: 'V_SOURCENAME',
             valueField: 'V_SOURCECODE',
             queryMode: 'local',
-            baseCls: 'margin-bottom'
+            baseCls: 'margin-bottom',
+            listeners: {
+                change: function (field, newValue, oldValue) {
+                    _selectOverhaulApply();
+                }
+            }
         },{
             xtype : 'button',
             text : '查询',
