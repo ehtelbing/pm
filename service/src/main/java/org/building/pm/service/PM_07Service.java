@@ -124,8 +124,7 @@ public class PM_07Service {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
-            result.put("list",
-                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -289,8 +288,7 @@ public class PM_07Service {
             cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
-            String sss = (String) cstmt.getObject("RET");
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("RET"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);

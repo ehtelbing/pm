@@ -95,9 +95,8 @@ public class PM_03Service {
             cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -123,9 +122,8 @@ public class PM_03Service {
             cstmt.setString("V_V_JXGX_CODE_OLD", V_V_JXGX_CODE_OLD);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -526,9 +524,8 @@ public class PM_03Service {
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -818,9 +815,8 @@ public class PM_03Service {
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);

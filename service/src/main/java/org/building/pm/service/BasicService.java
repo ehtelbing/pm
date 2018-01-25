@@ -261,9 +261,8 @@ public class BasicService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total",sunm);
+            result.put("total",cstmt.getObject("V_V_SNUM"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -302,9 +301,8 @@ public class BasicService {
             cstmt.setString("V_V_IN_DATE", V_V_IN_DATE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO",  cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -331,9 +329,8 @@ public class BasicService {
             cstmt.setString("V_V_TS", V_V_TS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -359,9 +356,8 @@ public class BasicService {
             cstmt.setString("V_V_GJ_CODE", V_V_GJ_CODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -388,9 +384,8 @@ public class BasicService {
             cstmt.setString("V_V_TS", V_V_TS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -444,9 +439,8 @@ public class BasicService {
             cstmt.setString("V_V_AQCS_CODE", V_V_AQCS_CODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -472,9 +466,8 @@ public class BasicService {
             cstmt.setString("V_V_JSYQ_CODE", V_V_JSYQ_CODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -599,9 +592,8 @@ public class BasicService {
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -650,9 +642,8 @@ public class BasicService {
             cstmt.setString("V_V_REPAIRDEPT_CODE", V_V_REPAIRDEPT_CODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -700,7 +691,7 @@ public class BasicService {
             cstmt.setString("V_V_BZ", V_V_BZ);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+            result.put("V_INFO",  cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -896,7 +887,7 @@ public class BasicService {
             cstmt.setString("V_V_NUM", V_V_NUM);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));;
+            result.put("V_INFO",  cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -924,8 +915,7 @@ public class BasicService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-
-
+            result.put("V_INFO",  cstmt.getObject("V_INFO"));
             result.put("list",
                     ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
@@ -1145,10 +1135,9 @@ public class BasicService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("V_V_SNUM");
-            result.put("total", ret);
-            result.put("list",
-                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+            result.put("total",cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1176,8 +1165,7 @@ public class BasicService {
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("V_INFO");
-            result.put("ret", ret);
+            result.put("ret", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1267,8 +1255,7 @@ public class BasicService {
             cstmt.setString("V_V_DJ_TYPE", V_V_DJ_TYPE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("V_INFO");
-            result.put("ret", ret);
+            result.put("ret", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

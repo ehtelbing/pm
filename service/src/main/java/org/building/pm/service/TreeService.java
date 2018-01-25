@@ -790,7 +790,6 @@ public class TreeService {
             cstmt.setString("V_V_HOME_MENU", V_V_HOME_MENU);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
 
             HashMap result = new HashMap();
             result.put("list",

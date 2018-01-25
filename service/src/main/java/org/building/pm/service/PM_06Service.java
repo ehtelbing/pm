@@ -153,10 +153,9 @@ public class PM_06Service {
             cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_SUMNUM");
 
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total",sunm);
+            result.put("total",(String) cstmt.getObject("V_SUMNUM"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -559,10 +558,9 @@ public class PM_06Service {
             cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_SUMNUM");
 
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total",sunm);
+            result.put("total",(String) cstmt.getObject("V_SUMNUM"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

@@ -2447,8 +2447,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2476,8 +2475,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO",  cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2503,8 +2501,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2531,8 +2528,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2562,8 +2558,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_CURSOR");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2591,8 +2586,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2620,8 +2614,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2649,8 +2642,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2677,8 +2669,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2734,8 +2725,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2762,8 +2752,7 @@ public class cjyService {
 
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_INFO = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", V_INFO);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

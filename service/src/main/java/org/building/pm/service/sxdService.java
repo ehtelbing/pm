@@ -364,9 +364,8 @@ public class sxdService {
             cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("RET");
             Map sledata = new HashMap();
-            sledata.put("ret", sss);
+            sledata.put("ret", (String) cstmt.getObject("RET"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -472,8 +471,7 @@ public class sxdService {
             cstmt.setString("A_REASON_REMARK", A_REASON_REMARK);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            String RET = (String) cstmt.getObject("RET");
-            result.put("RET", RET);
+            result.put("RET", (String) cstmt.getObject("RET"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -511,8 +509,7 @@ public class sxdService {
 
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            String RET = (String) cstmt.getObject("RET");
-            result.put("RET", RET);
+            result.put("RET", (String) cstmt.getObject("RET"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -646,8 +643,7 @@ public class sxdService {
             cstmt.setString("V_V_FILENAME", V_V_FILENAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String V_CURSOR = (String) cstmt.getObject("V_CURSOR");
-            result.put("V_CURSOR", V_CURSOR);
+            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -704,8 +700,7 @@ public class sxdService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
-            List<HashMap> list = GetSapChildEquChildren(ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("list", list);
+            result.put("list", GetSapChildEquChildren(ResultHash((ResultSet) cstmt.getObject("V_CURSOR"))));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

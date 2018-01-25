@@ -107,10 +107,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -136,8 +134,7 @@ public class DJService {
             cstmt.setString("contenr_code_in", contenr_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -163,8 +160,7 @@ public class DJService {
             cstmt.setString("contenr_code_in", contenr_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -191,10 +187,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -248,10 +242,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -277,8 +269,7 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -304,8 +295,7 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -332,10 +322,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -389,10 +377,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -418,8 +404,8 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -445,8 +431,7 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -473,10 +458,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -530,10 +513,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -559,8 +540,7 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -586,8 +566,7 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -614,10 +593,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -698,10 +675,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -727,8 +702,7 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -754,8 +728,7 @@ public class DJService {
             cstmt.setString("type_code_in", type_code_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -782,10 +755,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -839,10 +810,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -868,8 +837,8 @@ public class DJService {
             cstmt.setString("series_class_in", series_class_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -895,8 +864,7 @@ public class DJService {
             cstmt.setString("series_class_in", series_class_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -923,10 +891,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1007,10 +973,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1036,8 +1000,7 @@ public class DJService {
             cstmt.setString("dj_type_in", dj_type_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1063,8 +1026,7 @@ public class DJService {
             cstmt.setString("dj_type_in", dj_type_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1091,10 +1053,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1148,10 +1108,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1177,8 +1135,8 @@ public class DJService {
             cstmt.setString("byq_series_class_in", byq_series_class_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1204,8 +1162,7 @@ public class DJService {
             cstmt.setString("byq_series_class_in", byq_series_class_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1232,10 +1189,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1316,10 +1271,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1345,8 +1298,7 @@ public class DJService {
             cstmt.setString("byq_type_in", byq_type_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1372,8 +1324,7 @@ public class DJService {
             cstmt.setString("byq_type_in", byq_type_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1400,10 +1351,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1522,10 +1471,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1552,10 +1499,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1592,10 +1537,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1711,10 +1654,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1741,10 +1682,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1778,10 +1717,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1849,10 +1786,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1879,10 +1814,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1921,10 +1854,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2013,10 +1944,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2043,10 +1972,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2079,10 +2006,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2215,10 +2140,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2245,10 +2168,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2295,10 +2216,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2352,10 +2271,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2382,10 +2299,8 @@ public class DJService {
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            String ret_msg = (String) cstmt.getObject("ret_msg");
-            result.put("ret", ret);
-            result.put("ret_msg", ret_msg);
+            result.put("ret", (String) cstmt.getObject("ret"));
+            result.put("ret_msg", (String) cstmt.getObject("ret_msg"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2411,8 +2326,7 @@ public class DJService {
             cstmt.setString("set_status_in", set_status_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -2438,8 +2352,7 @@ public class DJService {
             cstmt.setString("set_status_in", set_status_in);
             cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-            String ret = (String) cstmt.getObject("ret");
-            result.put("ret", ret);
+            result.put("ret", (String) cstmt.getObject("ret"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
