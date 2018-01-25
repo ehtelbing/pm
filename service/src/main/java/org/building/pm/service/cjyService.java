@@ -2341,7 +2341,6 @@ public class cjyService {
     public Map PRO_PM_07_DEFECT_VIEW_NOPAGE(String V_V_STATECODE,String X_PERSONCODE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_VIEW_NOPAGE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -2350,14 +2349,12 @@ public class cjyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_VIEW_NOPAGE(:V_V_STATECODE,:X_PERSONCODE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_VIEW_NOPAGE(:V_V_STATECODE,:X_PERSONCODE,:V_V_SNUM)}");
             cstmt.setString("V_V_STATECODE", V_V_STATECODE);
             cstmt.setString("X_PERSONCODE", X_PERSONCODE);
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
-            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             String sunm = (String) cstmt.getObject("V_V_SNUM");
-            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             result.put("total", sunm);
 
         } catch (SQLException e) {
