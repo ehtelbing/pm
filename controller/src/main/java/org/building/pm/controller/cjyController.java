@@ -1465,6 +1465,28 @@ public class cjyController {
                 V_V_DEFECTGUID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_SAP_EQU_VIEW_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_SAP_EQU_VIEW(
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PRO_SAP_EQU_VIEW_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE,V_V_EQUNAME);
+
+        List<Map<String, Object>> pm_06list = (List) data.get("list");
+
+        result.put("list", pm_06list);
+        result.put("success", true);
+        return result;
+    }
 }
 
 

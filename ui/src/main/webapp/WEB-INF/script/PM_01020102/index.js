@@ -178,7 +178,51 @@ Ext.onReady(function () {
             extraParams: {}
         }
     });
+    var ChiEquStore = Ext.create('Ext.data.Store', {
+        id: 'ChiEquStore',
+        pageSize: 100,
+        autoLoad: false,
+        fields: ['V_EQUCODE',
+            'V_EQULEV',
+            'V_EQUNAME',
+            'V_EQUSITE',
+            'V_EQUSITENAME',
+            'V_ZZCH',
+            'V_EQUTYPECODE',
+            'V_EQUTYPENAME',
+            'F_MONEY',
+            'V_MONEYTYPE',
+            'F_WEIGHT',
+            'V_WEIGHTTYPE',
+            'V_DATE_B',
+            'V_DATE_E',
+            'V_ZZS',
+            'V_GGXH',
+            'V_YWFW',
+            'V_ABC',
+            'V_SIZE',
+            'V_WHGC',
+            'V_JHWHGC',
+            'V_CBZX',
+            'V_GZRQ',
+            'V_JHZY',
+            'V_SBYDH',
+            'V_EQUCODEUP'
+        ],
 
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url : AppUrl + 'cjy/PRO_SAP_EQU_VIEW_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
     var inputPanel = Ext.create('Ext.form.Panel', {
         id: 'inputPanel',
         region: 'north',
@@ -261,8 +305,37 @@ Ext.onReady(function () {
                 //readOnly: true,
                 margin: '5 0 5 10',
                 labelWidth: 80,
-                width: 230
-            }]
+                width: 230,
+                listeners: {
+                    render: function (p) {
+                        // Append the Panel to the click handler's argument list.
+                        p.getEl().on('click', function (p) {
+                            Ext.getCmp('windowEqu').show();
+                            Ext.data.StoreManager.lookup('ChiEquStore').load({
+                                params: {
+                                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                                    V_V_DEPTCODE: V_V_PLANTCODE,
+                                    V_V_DEPTNEXTCODE: V_V_DEPTCODE,
+                                    V_V_EQUTYPECODE: V_V_EQUTYPECODE,
+                                    V_V_EQUCODE: V_V_EQUCODE,
+                                    V_V_EQUNAME: Ext.ComponentManager.get("sbmc").getValue()
+                                }
+                            });
+                            //处理点击事件代码
+                        });
+                    }
+                }
+            },
+                {
+                    id: 'V_V_EQUCHILDCODE_c',
+                    xtype: 'textfield',
+                    fieldLabel: '装置名称编码',
+                    //readOnly: true,
+                    hidden:true,
+                    margin: '5 0 5 10',
+                    labelWidth: 80,
+                    width: 230
+                }]
         }, {
             layout: 'column',
             defaults: {
@@ -535,6 +608,96 @@ Ext.onReady(function () {
 
     });
 
+    var ChiEquGridPanel = Ext.create('Ext.grid.Panel', {
+        id: 'ChiEquGridPanel',
+        store: ChiEquStore,
+        width: '100%',
+        height: '100%',
+        region: 'center',
+        border: false,
+        columnLines: true,
+        selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SINGLE'
+        },
+        columns: [{
+            text : '设备分类',
+            dataIndex : 'V_EQUTYPENAME',
+            align : 'center',
+            width : 100
+        }, {
+            text : '设备编号',
+            dataIndex : 'V_EQUCODE',
+            align : 'center',
+            width : 100
+        }, {
+            text : '设备名称',
+            dataIndex : 'V_EQUNAME',
+            align : 'center',
+            width : 100
+        },  {
+            text : '设备位置',
+            dataIndex : 'V_EQUSITENAME',
+            align : 'center',
+            width : 200
+        }],
+        listeners : {
+            itemclick : function(panel, record, item, index, e, eOpts) {
+                // _preViewImage(record.data.V_GUID, record.data.V_FILEGUID, record.data.V_FILENAME);
+            }
+        }
+
+    });
+
+    var windowpanel = Ext.create('Ext.form.Panel', {
+        id: 'windowpanel',
+        region: 'north',
+        width: '100%',
+        frame: true,
+        layout: 'column',
+        items: [ {
+            xtype: 'textfield',
+            id: 'sbmc',
+            fieldLabel: '设备名称',
+            labelWidth: 70,
+            style: ' margin: 5px 0px 5px 0px',
+            labelAlign: 'right'
+        }, {
+            xtype: 'button',
+            text: '查询',
+            style: ' margin: 5px 0px 5px 10px',
+            icon: imgpath + '/search.png',
+            handler: queryEdu
+        }
+        ]
+    });
+    var windowEqu = Ext.create('Ext.window.Window', {
+        id: 'windowEqu',
+        width: 600,
+        height: 400,
+        title: '子设备选择',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        layout:'border',
+        items: [windowpanel,ChiEquGridPanel],
+        buttons: [{
+            xtype: 'button',
+            text: '确定',
+            width: 40,
+            handler: function () {
+                saved_btn();
+            }
+        }, {
+            xtype: 'button',
+            text: '取消',
+            width: 40,
+            handler: function () {
+                Ext.getCmp('windowEqu').hide();
+            }
+        }]
+    });
     Ext.create('Ext.container.Viewport', {
         layout: {
             type: 'border',
@@ -572,7 +735,8 @@ function _init() {
             return;
         }
         Ext.getCmp('V_V_EQUTYPECODE').setValue(jsStandardGet[0].V_EQUTYPECODE);
-        Ext.getCmp('V_V_EQUCHILDCODE').setValue(jsStandardGet[0].V_EQUCHILDCODE);
+        Ext.getCmp('V_V_EQUCHILDCODE').setValue(jsStandardGet[0].V_EQUCHILDNAME);
+        Ext.getCmp('V_V_EQUCHILDCODE_c').setValue(jsStandardGet[0].V_EQUCHILDCODE);
         Ext.getCmp('V_V_PART_NUMBER').setValue(jsStandardGet[0].V_PART_NUMBER);
         Ext.getCmp('V_V_PART_NAME').setValue(jsStandardGet[0].V_PART_NAME);
         Ext.getCmp('V_V_PART_CODE').setValue(jsStandardGet[0].V_PART_CODE);
@@ -592,7 +756,18 @@ function _init() {
         Ext.getBody().unmask();
     }
 }
-
+function queryEdu(){
+    Ext.data.StoreManager.lookup('ChiEquStore').load({
+        params: {
+            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTCODE: V_V_PLANTCODE,
+            V_V_DEPTNEXTCODE: V_V_DEPTCODE,
+            V_V_EQUTYPECODE: V_V_EQUTYPECODE,
+            V_V_EQUCODE: V_V_EQUCODE,
+            V_V_EQUNAME: Ext.ComponentManager.get("sbmc").getValue()
+        }
+    });
+}
 function _selectEquType() {
     var sbTypeStore = Ext.data.StoreManager.lookup('sbTypeStore');
     sbTypeStore.proxy.extraParams = {
@@ -623,7 +798,13 @@ function _selectImage() {
     };
     imageStore.load();
 }
+function saved_btn(){
+    var records = Ext.getCmp('ChiEquGridPanel').getSelectionModel().getSelection();
 
+    Ext.getCmp('V_V_EQUCHILDCODE').setValue(records[0].data.V_EQUNAME);
+    Ext.getCmp('V_V_EQUCHILDCODE_c').setValue(records[0].data.V_EQUCODE);
+    Ext.getCmp('windowEqu').hide();
+}
 function _upLoad() {
     V_V_FILEGUID = Ext.data.IdGenerator.get('uuid').generate();
 
@@ -708,7 +889,7 @@ function _save() {
             'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getSubmitValue(),
             'V_V_EQUCODE': Ext.getCmp('V_V_EQUCODE').getSubmitValue(),
             'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUTYPECODE').getSubmitValue(),
-            'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getSubmitValue(),
+            'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE_c').getSubmitValue(),
             'V_V_BJ_IMG': V_V_GUID,
             'V_V_PART_NUMBER': Ext.getCmp('V_V_PART_NUMBER').getSubmitValue(),
             'V_V_PART_NAME': Ext.getCmp('V_V_PART_NAME').getSubmitValue(),

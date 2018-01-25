@@ -28,7 +28,7 @@ public class hpTimer {
     @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
     public void setDJDB() throws SQLException {
         //获取点检任务
-       /* HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
+        HashMap data = hpService.PM_06_DJ_CRITERION_DSDATA_SEL();
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) data.get("list");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -55,7 +55,7 @@ public class hpTimer {
 
                 Map result = hpService.PM_06_DJ_DATA_TIMER_MAXTIME(dataList.get(i).get("V_CRITERION_CODE").toString());
                 nowdate = format.parse(format.format(ndate));//当前日期 小时分钟秒格式转化为date格式
-                plandate=format.parse(result.get("RET").toString());
+                plandate=format.parse(result.get("RET").toString()+" 00:00:01");
                // plandate = format.parse(nformat.format(ndate) + " 00:00:01");//当前日期 0点0分1秒
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -196,7 +196,7 @@ public class hpTimer {
                 }
 
             }
-        }*/
+        }
     }
 
 }

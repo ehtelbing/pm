@@ -56,23 +56,13 @@ function _QXNumSelect(){
         type : 'POST',
         url: AppUrl + 'cjy/PRO_PM_07_DEFECT_VIEW_NOPAGE',
         dataType : 'json',
-        //async : false,
         data : {
             V_V_STATECODE : '10',//未处理
             X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
         },
         success : function(data) {
-            var formList = data.list;
-            var length = 0;
-            var yangshi = "onmouseover=\"this.style.backgroundPosition='left -40px'\"";
 
-            var yangshi2 = "onmouseout=\"this.style.backgroundPosition='left top'\"";
-            if (formList.length >= 3) {
-                length = 3;
-            } else {
-                length = formList.length;
-            }
-            Ext.fly('wclqxcount').dom.innerHTML = '（' + formList.length + '）';
+            Ext.fly('wclqxcount').dom.innerHTML = '（' + data.total + '）';
 
             Ext.getBody().unmask();//去除页面笼罩
         }
