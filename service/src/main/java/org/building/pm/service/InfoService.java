@@ -141,7 +141,6 @@ public class InfoService {
             cstmt.setString("V_V_TYPE", LoginType);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {

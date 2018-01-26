@@ -121,8 +121,7 @@ public class WorkOrderService {
             cstmt.setString("V_D_FINISH_DATE", V_D_FINISH_DATE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -151,7 +150,6 @@ public class WorkOrderService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("list", resultList);
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -184,8 +182,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_FLOWNAME", V_V_FLOWNAME);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -542,8 +539,7 @@ public class WorkOrderService {
             cstmt.setString("V_CHANGETIME", V_CHANGETIME);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -614,8 +610,7 @@ public class WorkOrderService {
             cstmt.setString("A_REASON_REMARK", A_REASON_REMARK);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -641,8 +636,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -733,8 +727,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_DEPTSIGN", V_V_DEPTSIGN);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -771,8 +764,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_EQUIP_NO", V_V_EQUIP_NO);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -801,8 +793,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_MOD_NAME", V_V_MOD_NAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -832,8 +823,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_MOD_NAME", V_V_MOD_NAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -926,7 +916,6 @@ public class WorkOrderService {
             cstmt.setString("IN_DEPARTCODE", IN_DEPARTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             List<Map> list = new ArrayList<Map>();
             Map temp = new HashMap();
             temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
@@ -1104,7 +1093,6 @@ public class WorkOrderService {
             cstmt.setString("V_NAME", V_NAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             Map temp = new HashMap();
             temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             list.add(temp);
@@ -1160,7 +1148,6 @@ public class WorkOrderService {
             cstmt.setString("V_PERCODE", V_PERCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             Map temp = new HashMap();
             temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             list.add(temp);
@@ -1852,7 +1839,6 @@ public class WorkOrderService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             Map temp = new HashMap();
             temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             list.add(temp);
@@ -1883,7 +1869,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+
             Map temp = new HashMap();
             temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             list.add(temp);
@@ -1947,7 +1933,7 @@ public class WorkOrderService {
             cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+
             Map temp = new HashMap();
             temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             list.add(temp);
@@ -2074,8 +2060,7 @@ public class WorkOrderService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             conn.commit();
-            String  sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO",sss);
+            result.put("V_INFO",(String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

@@ -2048,9 +2048,8 @@ public class ZdhService {
             cstmt.setString("V_I_ID", V_I_ID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -2076,9 +2075,9 @@ public class ZdhService {
             cstmt.setString("V_I_ID", V_I_ID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
+
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -2198,9 +2197,8 @@ public class ZdhService {
             cstmt.setString("V_FIX_EXPLAIN", V_FIX_EXPLAIN);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -2268,9 +2266,8 @@ public class ZdhService {
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("RET");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("RET"));
 
             result.add(sledata);
         } catch (SQLException e) {
@@ -2296,9 +2293,8 @@ public class ZdhService {
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("RET");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("RET"));
 
             result.add(sledata);
         } catch (SQLException e) {
@@ -2413,7 +2409,6 @@ public class ZdhService {
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             Map sledata = new HashMap();
             sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             resultList.add(sledata);
@@ -2496,9 +2491,9 @@ public class ZdhService {
             cstmt.setString("V_V_SEND_STATE", V_V_SEND_STATE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
+
             Map sledata = new HashMap();
-            sledata.put("V_CURSOR", sss);
+            sledata.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
 
             result.add(sledata);
         } catch (SQLException e) {
@@ -2524,9 +2519,8 @@ public class ZdhService {
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
             Map sledata = new HashMap();
-            sledata.put("V_CURSOR", sss);
+            sledata.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
 
             result.add(sledata);
         } catch (SQLException e) {
@@ -2552,9 +2546,8 @@ public class ZdhService {
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
             Map sledata = new HashMap();
-            sledata.put("V_CURSOR", sss);
+            sledata.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
 
             result.add(sledata);
         } catch (SQLException e) {
@@ -2580,9 +2573,8 @@ public class ZdhService {
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
 
             result.add(sledata);
         } catch (SQLException e) {
@@ -2621,9 +2613,8 @@ public class ZdhService {
             cstmt.setString("V_BILLTYPE", BILLTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_CURSOR");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
 
             result.add(sledata);
         } catch (SQLException e) {
@@ -2710,7 +2701,6 @@ public class ZdhService {
             cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
             Map sledata = new HashMap();
             sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             resultList.add(sledata);

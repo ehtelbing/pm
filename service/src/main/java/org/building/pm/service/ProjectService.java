@@ -237,10 +237,10 @@ public class ProjectService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            sum=cstmt.getObject("V_V_SNUM").toString();
 
 
-            result.put("total",sum);
+
+            result.put("total",cstmt.getObject("V_V_SNUM").toString());
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -312,9 +312,8 @@ public class ProjectService {
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -341,9 +340,8 @@ public class ProjectService {
             cstmt.setString("V_V_WBSCODE", V_V_WBSCODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);

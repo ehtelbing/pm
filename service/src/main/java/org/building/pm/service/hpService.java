@@ -357,9 +357,8 @@ public class hpService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total", sunm);
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1059,9 +1058,8 @@ public class hpService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total", sunm);
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
 
         } catch (SQLException e) {
             logger.error(e);
@@ -1139,9 +1137,9 @@ public class hpService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
+
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total", sunm);
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
 
         } catch (SQLException e) {
             logger.error(e);
@@ -1214,8 +1212,7 @@ public class hpService {
             cstmt.setString("V_V_SAFE", V_V_SAFE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1250,9 +1247,8 @@ public class hpService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total", sunm);
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
 
         } catch (SQLException e) {
             logger.error(e);
@@ -1290,9 +1286,8 @@ public class hpService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total", sunm);
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
 
         } catch (SQLException e) {
             logger.error(e);
@@ -1327,9 +1322,8 @@ public class hpService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total", sunm);
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
 
         } catch (SQLException e) {
             logger.error(e);
@@ -2255,9 +2249,8 @@ public class hpService {
             cstmt.registerOutParameter("V_ACTIVITI_IMG", OracleTypes.BLOB);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Blob blob = (Blob) cstmt.getObject("V_ACTIVITI_IMG");
 
-            result.put("V_ACTIVITI_IMG", blob);
+            result.put("V_ACTIVITI_IMG", (Blob) cstmt.getObject("V_ACTIVITI_IMG"));
             result.put("RET", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
 
         } catch (SQLException e) {
@@ -2356,8 +2349,7 @@ public class hpService {
             cstmt.setString("V_V_STEPNEXT_CODE", V_V_STEPNEXT_CODE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

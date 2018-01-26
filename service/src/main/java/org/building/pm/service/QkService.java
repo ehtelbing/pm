@@ -177,9 +177,8 @@ public class QkService {
             cstmt.setString("V_V_REMARK", V_V_REMARK);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -242,11 +241,9 @@ public class QkService {
             cstmt.registerOutParameter("V_BLOB", OracleTypes.BLOB);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            Blob stream = (Blob) cstmt.getObject("V_BLOB");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
-            sledata.put("V_BLOB", stream);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+            sledata.put("V_BLOB", (Blob) cstmt.getObject("V_BLOB"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);

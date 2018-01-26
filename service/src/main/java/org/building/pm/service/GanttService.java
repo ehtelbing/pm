@@ -211,8 +211,7 @@ public class GanttService {
             cstmt.setString("V_V_VALUE", V_V_VALUE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            result.put("V_INFO", sss);
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

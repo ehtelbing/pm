@@ -264,9 +264,8 @@ public class DxService {
             cstmt.setString("V_V_FILEDATE", V_V_FILEDATE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -312,9 +311,8 @@ public class DxService {
             cstmt.setString("V_V_ITEM_NAMEUP", V_V_ITEM_NAMEUP);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -397,9 +395,8 @@ public class DxService {
             cstmt.setString("V_V_FILEGUID", V_V_FILEGUID);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -426,11 +423,10 @@ public class DxService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_FILEBLOB", OracleTypes.BLOB);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("V_INFO");
-            Blob stream = (Blob) cstmt.getObject("V_FILEBLOB");
+
             Map sledata = new HashMap();
-            sledata.put("V_INFO", sss);
-            sledata.put("V_FILEBLOB", stream);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+            sledata.put("V_FILEBLOB", (Blob) cstmt.getObject("V_FILEBLOB"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -564,6 +560,7 @@ public class DxService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
+            result.put("V_INFO",  cstmt.getObject("V_INFO"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -588,6 +585,7 @@ public class DxService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
+            result.put("V_INFO",  cstmt.getObject("V_INFO"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -612,6 +610,7 @@ public class DxService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
+            result.put("V_INFO",  cstmt.getObject("V_INFO"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);

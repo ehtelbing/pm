@@ -217,6 +217,7 @@ public class QxService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
+            result.put("total",  cstmt.getObject("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
 
 
@@ -274,8 +275,7 @@ public class QxService {
             cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
-            String sss = (String) cstmt.getObject("V_CURSOR");
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -503,8 +503,7 @@ public class QxService {
             cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
-            String sss = (String) cstmt.getObject("RET");
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("RET"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -539,8 +538,7 @@ public class QxService {
             cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
-            String sss = (String) cstmt.getObject("RET");
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("RET"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -596,8 +594,7 @@ public class QxService {
             cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
-            String sss = (String) cstmt.getObject("V_CURSOR");
-            sledata.put("V_INFO", sss);
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
