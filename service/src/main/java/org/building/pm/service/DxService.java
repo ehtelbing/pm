@@ -145,10 +145,29 @@ public class DxService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Map sledata = new HashMap();
-            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.add(sledata);
-
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()) {
+                Map sledata = new HashMap();
+                sledata.put("ID", rs.getString("V_DEPTCODE"));
+                sledata.put("NAME", rs.getString("V_DEPTNAME"));
+                sledata.put("I_DEPTID", rs.getDouble("I_DEPTID"));
+                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
+                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
+                sledata.put("V_DEPTCODE_UP", rs.getString("V_DEPTCODE_UP"));
+                sledata.put("V_DEPTSMALLNAME", rs.getString("V_DEPTSMALLNAME"));
+                sledata.put("V_DEPTFULLNAME", rs.getString("V_DEPTFULLNAME"));
+                sledata.put("V_DEPTTYPE", rs.getString("V_DEPTTYPE"));
+                sledata.put("I_ORDERID", rs.getDouble("I_ORDERID"));
+                sledata.put("I_FLAG", rs.getDouble("I_FLAG"));
+                sledata.put("V_SAP_DEPT", rs.getString("V_SAP_DEPT"));
+                sledata.put("V_SAP_WORK", rs.getString("V_SAP_WORK"));
+                sledata.put("V_SAP_JHGC", rs.getString("V_SAP_JHGC"));
+                sledata.put("V_SAP_YWFW", rs.getString("V_SAP_YWFW"));
+                sledata.put("D_DATE_EDITTIME", rs.getDate("D_DATE_EDITTIME"));
+                sledata.put("V_EDIT_GUID", rs.getString("V_EDIT_GUID"));
+//                sledata.put("V_CLASS_FLAG", rs.getString("V_CLASS_FLAG"));
+                result.add(sledata);
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
