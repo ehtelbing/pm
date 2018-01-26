@@ -525,10 +525,19 @@ public class DxService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Map sledata = new HashMap();
-            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.add(sledata);
-
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()) {
+                Map sledata = new HashMap();
+                sledata.put("I_POSTID", rs.getDouble("I_POSTID"));
+                sledata.put("V_POSTCODE", rs.getString("V_POSTCODE"));
+                sledata.put("V_POSTNAME", rs.getString("V_POSTNAME"));
+                sledata.put("V_POSTMEMO", rs.getString("V_POSTMEMO"));
+                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
+                sledata.put("V_POSTCODE_UP", rs.getString("V_POSTCODE_UP"));
+                sledata.put("D_DATE_EDITTIME", rs.getDate("D_DATE_EDITTIME"));
+                sledata.put("V_EDIT_GUID", rs.getString("V_EDIT_GUID"));
+                result.add(sledata);
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {

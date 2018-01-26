@@ -2029,7 +2029,11 @@ public class PM_19Service {
             for (int i=0;i<list.size();i++) {
                 if (list.get(i).get("V_DEPTCODE").equals(V_V_DEPTCODE)) {
                     Map temp = new HashMap();
-                    temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+                    temp.put("id", list.get(i).get("V_DEPTCODE"));
+                    temp.put("text", list.get(i).get("V_DEPTNAME"));
+                    temp.put("leaf", false);
+                    temp.put("expanded", false);
+                    temp.put("children", GetDEPTChildren(list, V_V_DEPTCODE));
                     result.add(temp);
                 }
             }

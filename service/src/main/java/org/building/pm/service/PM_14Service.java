@@ -1042,10 +1042,16 @@ public class PM_14Service {
             cstmt.setString("V_NAME", V_NAME);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.add(temp);
-
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()) {
+                Map temp = new HashMap();
+                temp.put("id", rs.getString("V_CODE"));
+                temp.put("text", rs.getString("V_NAME"));
+                temp.put("parentid", rs.getString("V_CODEUP"));
+                temp.put("leaf", true);
+                temp.put("expanded", false);
+                result.add(temp);
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
