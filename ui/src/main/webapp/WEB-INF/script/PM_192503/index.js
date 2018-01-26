@@ -124,6 +124,7 @@ Ext.onReady(function () {
                     id: 'plantname',
                     xtype: 'combo',
                     store: splantname,
+                    editable: false,
                     displayField: 'V_DEPTNAME',
                     valueField: 'V_DEPTCODE',
                     queryMode: 'local'
