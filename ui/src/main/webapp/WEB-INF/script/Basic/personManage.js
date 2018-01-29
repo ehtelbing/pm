@@ -386,6 +386,7 @@ Ext.onReady(function () {
                                         url: AppUrl + 'tree/ModelTree',
                                         extraParams: {
                                             V_V_DEPTCODE: Ext.ComponentManager.get("plantname").getValue(),
+                                            V_V_DEPTNAME: Ext.ComponentManager.get("plantname").getRawValue(),
                                             V_V_ID: "V_POSTCODE",
                                             V_V_TEXT: "V_POSTNAME",
                                             V_V_PARENTID: "-1",
@@ -453,6 +454,7 @@ Ext.onReady(function () {
                                                             url: AppUrl + 'tree/ModelTree',
                                                             extraParams: {
                                                                 V_V_DEPTCODE: Ext.ComponentManager.get("plantname").getValue(),
+                                                                V_V_DEPTNAME: Ext.ComponentManager.get("plantname").getRawValue(),
                                                                 V_V_ID: "V_POSTCODE",
                                                                 V_V_TEXT: "V_POSTNAME",
                                                                 V_V_PARENTID: "-1",
@@ -630,6 +632,7 @@ Ext.onReady(function () {
                 url: AppUrl + 'tree/ModelTree',
                 extraParams: {
                     V_V_DEPTCODE: Ext.ComponentManager.get("plantname").getValue(),
+                    V_V_DEPTNAME: Ext.ComponentManager.get("plantname").getRawValue(),
                     V_V_ID: "V_DEPTCODE",
                     V_V_TEXT: "V_DEPTNAME",
                     V_V_PARENTID: "-1",

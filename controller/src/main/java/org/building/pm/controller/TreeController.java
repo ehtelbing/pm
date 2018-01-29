@@ -57,6 +57,7 @@ public class TreeController {
     @RequestMapping(value = "/ModelTree", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> ModelTree(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                               @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
                                @RequestParam(value = "V_V_ID") String V_V_ID,
                                @RequestParam(value = "V_V_TEXT") String V_V_TEXT,
                                @RequestParam(value = "V_V_PARENTID") String V_V_PARENTID,
@@ -66,7 +67,7 @@ public class TreeController {
                                @RequestParam(value = "V_V_CODEVAL") String V_V_CODEVAL,
                                @RequestParam(value = "V_V_PRONAME") String V_V_PRONAME)
             throws SQLException {
-        List<Map> result = treeService.ModelTree(V_V_DEPTCODE,V_V_ID,V_V_TEXT,V_V_PARENTID,V_V_LEAF,
+        List<Map> result = treeService.ModelTree(V_V_DEPTCODE,V_V_DEPTNAME,V_V_ID,V_V_TEXT,V_V_PARENTID,V_V_LEAF,
                 V_V_CHECKED,V_V_DEPTVAL,V_V_CODEVAL,V_V_PRONAME);
         return result;
     }
