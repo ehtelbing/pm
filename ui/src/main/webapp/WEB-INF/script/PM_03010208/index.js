@@ -510,7 +510,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             value: '',
                             listeners: {
                                 select: function () {
-                                    Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
+                                    //Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
                                     _gongshiheji();
                                 }
                             }
@@ -854,7 +854,7 @@ Ext.onReady(function () {
         });
     }
     Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
-    Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
+    //Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
 });
 function guid() {
     function S4() {
