@@ -2943,4 +2943,37 @@ public class cjyService {
         logger.info("end PRO_SAP_EQU_VIEW_SEL");
         return result;
     }
+
+    public Map login(String userName, String UserPassword,String userIp) throws SQLException {
+
+        logger.info("begin PRO_BASE_PERSON_LOGIN_NEW");
+        logger.debug("params:userName:" + userName + "params:userIp:" + userIp);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN_NEW(:V_V_LOGINNAME,:V_V_PASSWORD,:V_V_IP,:V_INFO,:V_CURSOR)}");
+            cstmt.setString("V_V_LOGINNAME", userName);
+            cstmt.setString("V_V_PASSWORD", UserPassword);
+            cstmt.setString("V_V_IP", userIp);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_PERSON_LOGIN_NEW");
+        return result;
+    }
 }

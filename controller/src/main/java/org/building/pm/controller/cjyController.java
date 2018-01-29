@@ -1487,6 +1487,17 @@ public class cjyController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> login(@RequestParam(value = "UserName") String UserName,
+                                     @RequestParam(value = "UserPassword") String UserPassword,
+                                     @RequestParam(value = "UserIp") String UserIp)
+            throws SQLException {
+        Map<String, Object> result = cjyService.login(UserName,UserPassword, UserIp);
+        return result;
+    }
+
 }
 
 
