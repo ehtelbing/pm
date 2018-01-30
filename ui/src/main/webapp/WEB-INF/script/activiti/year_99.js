@@ -497,7 +497,7 @@ function _reject() {
             V_STEPCODE: 'fqrxg',
             V_STEPNAME: '发起人修改',
             V_IDEA: '不通过',
-            V_NEXTPER: V_PERSONCODE,
+            V_NEXTPER: Assignee,
             V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
