@@ -5,7 +5,6 @@
 Ext.Loader.setPath('Ext.ux', '../../../pm/resources/shared/ux');
  */
 
-
 var contextTemp = {};
 Ext.define('Ext.ux.TabCloseMenuX', {
     alias: 'plugin.tabclosemenu',
