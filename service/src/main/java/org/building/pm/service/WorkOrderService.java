@@ -1839,10 +1839,16 @@ public class WorkOrderService {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            list.add(temp);
-
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()){
+                Map temp = new HashMap();
+                temp.put("id", rs.getString("V_DEPTCODE"));
+                temp.put("text", rs.getString("V_DEPTNAME"));
+                temp.put("parentid","-1");
+                temp.put("treeid",rs.getString("V_DEPTCODE"));
+                temp.put("expanded", false);
+                list.add(temp);
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1869,11 +1875,16 @@ public class WorkOrderService {
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            list.add(temp);
-
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()){
+                Map temp = new HashMap();
+                temp.put("id", rs.getString("V_EQUTYPECODE"));
+                temp.put("text", rs.getString("V_EQUTYPENAME"));
+                temp.put("parentid",V_V_DEPTCODENEXT);
+                temp.put("treeid",rs.getString("V_EQUTYPECODE"));
+                temp.put("expanded", false);
+                list.add(temp);
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1933,11 +1944,21 @@ public class WorkOrderService {
             cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()){
+                Map temp = new HashMap();
+                temp.put("id", V_V_DEPTCODENEXT+V_V_EQUTYPECODE+rs.getString("V_EQUCODE"));
+                temp.put("text", rs.getString("V_EQUNAME"));
+                temp.put("leaf", true);
+                temp.put("parentid",V_V_DEPTCODENEXT+V_V_EQUTYPECODE);
+                temp.put("treeid",rs.getString("V_EQUCODE"));
 
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            list.add(temp);
-
+                temp.put("V_EQUSITE", rs.getString("V_EQUSITE"));
+                temp.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
+                temp.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
+                temp.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
+                list.add(temp);
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {

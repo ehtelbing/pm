@@ -1106,9 +1106,15 @@ public class PM_14Service {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.add(temp);
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()) {
+                Map temp = new HashMap();
+                temp.put("id", rs.getString("V_TOOLCODE"));
+                temp.put("text", rs.getString("V_TOOLNAME"));
+                temp.put("leaf", true);
+                temp.put("expanded", false);
+                result.add(temp);
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
