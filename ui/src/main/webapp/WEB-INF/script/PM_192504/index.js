@@ -190,26 +190,37 @@ var westPanel= Ext.create('Ext.panel.Panel', {
         } ]
     },GridPanel ]
 });
+
+
+
+var MenuTreeStore = Ext.create('Ext.data.TreeStore',{
+	id : 'MenuTreeStore',
+	autoLoad : false,
+	fields : [ 'id', 'text', 'parentid'],
+	autoDestroy : true,
+	checked:false,
+	listeners: {
+		load: function (store, records) {
+			menuTreeLoad = true;
+		}
+	}
+});
+
 var MenuTree = Ext.create('Ext.tree.Panel', {
 	flex : 1,
 	id : 'MenuTree',
 	rootVisible : false,
 	border : false,
 	autoScroll : true,
-	store : Ext.create('Ext.data.TreeStore', {
-		id : 'menutreestore',
-		autoLoad : false,
-		fields : [ 'id', 'text', 'parentid'],
-		autoDestroy : true,
-		listeners: {
-		load: function (store, records) {
-			menuTreeLoad = true;
-	}
-}
-	}),
+	store:MenuTreeStore,
 	listeners : {
-		checkchange : OnClickMenuCheckTree
+		checkchange: function(node, checked, eOpts){
+			OnClickMenu(node, checked, eOpts);
+		}
+
 	}
+
+
 });
 
 var RoleTree = Ext.create('Ext.tree.Panel', {
@@ -221,12 +232,14 @@ var RoleTree = Ext.create('Ext.tree.Panel', {
 	store : Ext.create('Ext.data.TreeStore', {
 		id : 'roletreestore',
 		autoLoad : false,
+		checked:false,
 		fields : [ 'id', 'text', 'parentid' ],
 		autoDestroy : true
 	})
 });
 
 Ext.onReady(function() {
+
 	Ext.create('Ext.container.Viewport', {
 		xtype : 'panel',
 		layout : {
@@ -235,6 +248,7 @@ Ext.onReady(function() {
 		},
 		items : [ westPanel, MenuTree, RoleTree ]
 	});
+
 
 	Ext.create('Ext.window.Window', {
 		id : 'Dialog',
@@ -362,8 +376,27 @@ function OnClickGridPanel(pp, record, item, index, e, eOpts) {
 	}
 
 }
-
-function OnClickMenuCheckTree(node, checked, eOpts) {
+function OnClickMenu(node, checked, eOpts){
+	function ck(node) {
+		Ext.Array.each(node.childNodes, function(item, index, allItems){
+			item.set('checked', checked);
+			if(!item.isLeaf() && node.hasChildNodes())
+				ck(item);
+		});
+	}
+	function rck(node) {
+		var cnt = 0;
+		Ext.Array.each(node.parentNode.childNodes, function(item, index, allItems){
+			if(item.get('checked')) {
+				cnt += 1;
+			}
+		});
+		node.parentNode.set('checked', (cnt == node.parentNode.childNodes.length));
+		if(!node.parentNode.isRoot()) rck(node.parentNode);
+	}
+	if(!node.isLeaf() && node.hasChildNodes()) {
+		ck(node);
+	}
 	var selectModel = Ext.getCmp('gridPanel').getSelectionModel();
 	if (!selectModel.hasSelection()) {
 		return;
@@ -379,7 +412,7 @@ function OnClickMenuCheckTree(node, checked, eOpts) {
 			params : {
 				V_V_ROLECODE : selectedModel.V_ROLECODE,
 				V_V_MENUCODE : node.raw.id,
-			    V_V_DEPTCODE : selectedModel.V_DEPTCODE
+				V_V_DEPTCODE : selectedModel.V_DEPTCODE
 			}
 		});
 
@@ -396,8 +429,11 @@ function OnClickMenuCheckTree(node, checked, eOpts) {
 			}
 		});
 	}
+
 	QueryRoleTree();
 }
+
+
 function QueryMenuTree(){
 	menuTreeLoad = false;
 	var seldata= Ext.getCmp('gridPanel').getSelectionModel().getSelection();
