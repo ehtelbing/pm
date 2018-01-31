@@ -1121,7 +1121,20 @@ function _butongyi()
     } else {
         spyj = Ext.getCmp('yj').getValue();
     }
-
+    var Assignee='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/InstanceState',
+        method: 'POST',
+        async: false,
+        params: {
+            instanceId: ProcessInstanceId
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            Assignee=resp.list[0].Assignee;
+        }
+    });
+    if(Assignee!=''){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -1201,7 +1214,9 @@ function _butongyi()
         }
 
     })
-
+    }else{
+        alert("发起人信息错误，无法驳回");
+    }
 
 
 }
