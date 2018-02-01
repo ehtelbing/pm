@@ -261,7 +261,7 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
-            V_V_DEPTCODE: '99050201',//Ext.util.Cookies.get('v_deptcode'),
+            V_V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
             V_V_CK_EQUTYPECODE: '%',
             V_V_EQUTYPE: '%',
             V_V_EQUCODE: '%',
@@ -289,7 +289,7 @@ function _selectWorkOrder() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
         V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
-        V_V_DEPTCODE: '99050201',//Ext.util.Cookies.get('v_deptcode'),
+        V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
         V_V_CK_EQUTYPECODE: '%',
         V_V_EQUTYPE: '%',
         V_V_EQUCODE: '%',
