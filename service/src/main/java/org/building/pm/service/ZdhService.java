@@ -80,6 +80,7 @@ public class ZdhService {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_BASE_DEPT_VIEW(:IS_V_DEPTCODE,:IS_V_DEPTTYPE,:V_CURSOR)}");
+
             cstmt.setString("IS_V_DEPTCODE", IS_V_DEPTCODE);
             cstmt.setString("IS_V_DEPTTYPE", IS_V_DEPTTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
