@@ -606,6 +606,7 @@ Ext.onReady(function () {
                 valueField: 'V_EQUTYPECODE',
                 queryMode: 'local',
                 baseCls: 'margin-bottom',
+
                 listeners: {
                     change: function () {
                         Ext.data.StoreManager.lookup('ssbmc').load({
