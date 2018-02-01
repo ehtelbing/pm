@@ -14,6 +14,7 @@ for (var i = 1; i <= 12; i++) {
     }
 
 }
+var deptcode='';
 var STATEDATA = [{ displayField: '全部', valueField: '%' },{ displayField: '已整改', valueField: '已整改' },{ displayField: '未整改', valueField: '未整改' }
     ,{ displayField: '未反馈', valueField: '未反馈' }];
 Ext.define('Ext.ux.data.proxy.Ajax', {
@@ -104,6 +105,27 @@ Ext.onReady(function () {
         }
     });
 
+    var gridCKStore = Ext.create('Ext.data.Store', {
+        id: 'gridCKStore',
+        pageSize: 15,
+        autoLoad: false,
+        fields: ['DJCOUNT','RN','SBCOUNT','V_DEPTCODE','V_DEPTNAME','YCCOUNT'],
+        groupField: 'V_EQUNAME',
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'cjy/PM_06_DJ_CRITERION_BYDEPT',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list',
+                total: 'total'
+            }
+        }
+    });
+
 
     var editPanel = Ext.create('Ext.form.Panel', {
         id: 'editPanel',
@@ -114,7 +136,7 @@ Ext.onReady(function () {
         baseCls: 'my-panel-no-border',
         defaults : {
             labelAlign: 'right',
-            style: ' margin: 5px 0px 0px 0px'
+            style: ' margin: 5px 0px 10px 0px'
         },
         items: [
             {xtype: 'datefield', fieldLabel: '开始时间',editable: false, labelWidth: 80,format: 'Y-m-d', value : new Date(new Date().getFullYear() + '/'
@@ -125,21 +147,80 @@ Ext.onReady(function () {
 
     var buttonPanel = Ext.create('Ext.Panel', {
         id : 'buttonPanel',
+        baseCls: 'my-panel-no-border',
         defaults : {
-            style: ' margin: 5px 0px 0px 10px',
+            style: ' margin: 5px 0px 10px 10px',
             width : 70
         },
         items : [  {
             xtype : 'button',
             text : '查询',
             icon: imgpath + '/search.png',
-            handler : _selectWorkOrder
+            handler : _selectCKWorkOrder
         }
         ]
     });
 
+    var ckPanel = Ext.create('Ext.grid.Panel', {
+        id : 'ckPanel',
+        width:'35%',
+        height:'100%',
+        store : gridCKStore,
+        frame : true,
+        columnLines : true,
+        /*selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SIMPLE'
+        },*/
+        columns : [ {
+            xtype : 'rownumberer',
+            text : '序号',
+            width : 40,
+            align: 'center'
+        },{
+            text: '作业区',
+            dataIndex: 'V_DEPTNAME',
+            align: 'center',
+            width: 120
+        },{
+            text: '设备数',
+            dataIndex: 'SBCOUNT',
+            align: 'center',
+            width : 70
+        }, {
+            text: '点检次数',
+            dataIndex: 'DJCOUNT',
+            align: 'center',
+            width : 70
+        }, {
+            text: '异常次数',
+            dataIndex: 'YCCOUNT',
+            align: 'center',
+            width : 70
+        }],
+        listeners: {
+            itemclick: function(view, record, item, index, evt)  //①
+            {
+                deptcode=record.get('V_DEPTCODE');
+                _selectWorkOrder(record.get('V_DEPTCODE'))
+
+            }
+        },
+        bbar: [{
+            id: 'gpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            width: '100%',
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridCKStore'
+        }]
+    });
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
         id : 'overhaulApplyPanel',
+        width:'65%',
+        height:'100%',
         store : gridStore,
         frame : true,
         columnLines : true,
@@ -165,7 +246,7 @@ Ext.onReady(function () {
                     }
                 }],
             ftype : 'groupingsummary'/*,
-            collapsible : false*///不可伸缩
+             collapsible : false*///不可伸缩
         }],
         columns : [ {
             xtype : 'rownumberer',
@@ -175,28 +256,28 @@ Ext.onReady(function () {
         },{
             text: '详情',
             align: 'center',
-            width: 150,
+            width: 60,
             renderer : detail
         }, /*{
-            text: '设备名称',
-            dataIndex: 'V_EQUNAME',
-            align: 'center',
-            width: 200
-        },*/{
+         text: '设备名称',
+         dataIndex: 'V_EQUNAME',
+         align: 'center',
+         width: 200
+         },*/{
             text: '点检项目',
             dataIndex: 'V_CRITERION_ITEM',
             align: 'center',
-            width : 150
+            width : 120
         }, {
             text: '点检内容',
             dataIndex: 'V_CRITERION_CONTENT',
             align: 'center',
-            width : 150
+            width : 120
         }, {
             text: '点检标准',
             dataIndex: 'V_CRITERION_CR',
             align: 'center',
-            width : 250
+            width : 200
         }, {
             text: '点检周期',
             dataIndex: 'V_CRITERION_CYCLE',
@@ -211,12 +292,12 @@ Ext.onReady(function () {
             text: '点检次数',
             dataIndex: 'DJCOUNT',
             align: 'center',
-            width : 80,
+            width : 70,
             summaryType: 'sum',
             summaryRenderer: function (value, metadata) {
-                    metadata.style = 'font-weight: bold;';
-                    return '合计 : '+value;
-                }
+                metadata.style = 'font-weight: bold;';
+                return '合计 : '+value;
+            }
 
         }],
         bbar: [{
@@ -231,37 +312,40 @@ Ext.onReady(function () {
         }]
     });
 
-
     Ext.create('Ext.container.Viewport', {
         layout : {
-            type : 'border',
-            regionWeights : {
-                west : -1,
-                north : 1,
-                south : 1,
-                east : -1
-            }
+            type : 'border'
         },
         items : [ {
             region : 'north',
-            border : false,
-            items : [ editPanel ]
-        }, {
-            region : 'north',
-            border : false,
-            items : [ buttonPanel ]
+            layout : 'hbox',
+            items : [ editPanel,buttonPanel ]
         }, {
             region : 'center',
-            layout : 'fit',
+            layout : 'hbox',
+            width:'100%',
             border : false,
-            items : [ overhaulApplyPanel ]
+            items : [ ckPanel,overhaulApplyPanel ]
         } ]
+    });
+
+    Ext.data.StoreManager.lookup('gridCKStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_CK_EQUTYPECODE: '%',
+            V_V_EQUTYPE: '%',
+            V_V_EQUCODE: '%',
+            V_V_STIME : Ext.getCmp('stime').getSubmitValue()+" 00:00:00",
+            V_V_ETIME : Ext.getCmp('etime').getSubmitValue()+" 23:59:59",
+            V_V_PAGE: Ext.getCmp('gpage').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('gpage').store.pageSize
+        }
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
-            V_V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+            V_V_DEPTCODE:deptcode,
             V_V_CK_EQUTYPECODE: '%',
             V_V_EQUTYPE: '%',
             V_V_EQUCODE: '%',
@@ -283,12 +367,28 @@ function _init()
 
 }
 
+function _selectCKWorkOrder() {
+    var gridCKStore = Ext.data.StoreManager.lookup('gridCKStore');
+    gridCKStore.proxy.extraParams = {
+        V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+        V_V_CK_EQUTYPECODE: '%',
+        V_V_EQUTYPE: '%',
+        V_V_EQUCODE: '%',
+        V_V_STIME : Ext.getCmp('stime').getSubmitValue()+" 00:00:00",
+        V_V_ETIME : Ext.getCmp('etime').getSubmitValue()+" 23:59:59",
+        V_V_PAGE: Ext.getCmp('gpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('gpage').store.pageSize
 
-function _selectWorkOrder() {
+    };
+    gridCKStore.currentPage = 1;
+    gridCKStore.load();
+}
+
+function _selectWorkOrder(DEPTCODE) {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
         V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
-        V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+        V_V_DEPTCODE: DEPTCODE,
         V_V_CK_EQUTYPECODE: '%',
         V_V_EQUTYPE: '%',
         V_V_EQUCODE: '%',

@@ -1505,7 +1505,7 @@ public class cjyController {
                                            @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
                                            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
                                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                             @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                             //@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                              @RequestParam(value = "V_V_STIME") String V_V_STIME,
                                              @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
@@ -1514,7 +1514,7 @@ public class cjyController {
                                            HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cjyService.PM_06_DJ_CRITERION_GENERATE_N(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_PERSONCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
+        HashMap data = cjyService.PM_06_DJ_CRITERION_GENERATE_N(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
@@ -1552,6 +1552,23 @@ public class cjyController {
         return data;
     }
 
+    @RequestMapping(value = "/PM_06_DJ_CRITERION_BYDEPT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_06_DJ_CRITERION_BYDEPT(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                             @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
+                                             @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                             @RequestParam(value = "V_V_STIME") String V_V_STIME,
+                                             @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
+                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PM_06_DJ_CRITERION_BYDEPT(V_V_ORGCODE,  V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
 }
 
 

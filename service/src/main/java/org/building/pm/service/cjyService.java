@@ -2978,7 +2978,7 @@ public class cjyService {
     }
 
     public HashMap PM_06_DJ_CRITERION_GENERATE_N(String V_V_ORGCODE, String V_V_DEPTCODE,  String V_V_CK_EQUTYPECODE,
-                                               String V_V_EQUTYPE, String V_V_EQUCODE,String V_V_PERSONCODE,String V_V_STIME,String V_V_ETIME,
+                                               String V_V_EQUTYPE, String V_V_EQUCODE,String V_V_STIME,String V_V_ETIME,
                                                  String  V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_06_DJ_CRITERION_GENERATE_N");
@@ -2990,14 +2990,13 @@ public class cjyService {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PM_06_DJ_CRITERION_GENERATE_N" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_CK_EQUTYPECODE,:V_V_EQUTYPE,:V_V_EQUCODE," +
-                    ":V_V_PERSONCODE,:V_V_STIME,:V_V_ETIME," +
+                    ":V_V_STIME,:V_V_ETIME," +
                     ":V_V_PAGE,:V_V_PAGESIZE,:V_SUMNUM,:V_CURSOR)}");
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_CK_EQUTYPECODE", V_V_CK_EQUTYPECODE);
             cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
-            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_STIME", V_V_STIME);
             cstmt.setString("V_V_ETIME", V_V_ETIME);
             cstmt.setString("V_V_PAGE", V_V_PAGE);
@@ -3079,6 +3078,47 @@ public class cjyService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_06_DJ_DATA_SEL_BYSTATE_NUM");
+        return result;
+    }
+
+    public HashMap PM_06_DJ_CRITERION_BYDEPT(String V_V_ORGCODE,  String V_V_CK_EQUTYPECODE,
+                                                 String V_V_EQUTYPE, String V_V_EQUCODE,String V_V_STIME,String V_V_ETIME,
+                                                 String  V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PM_06_DJ_CRITERION_BYDEPT");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_DJ_CRITERION_BYDEPT" + "(:V_V_ORGCODE,:V_V_CK_EQUTYPECODE,:V_V_EQUTYPE,:V_V_EQUCODE," +
+                    ":V_V_STIME,:V_V_ETIME," +
+                    ":V_V_PAGE,:V_V_PAGESIZE,:V_SUMNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_CK_EQUTYPECODE", V_V_CK_EQUTYPECODE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_STIME", V_V_STIME);
+            cstmt.setString("V_V_ETIME", V_V_ETIME);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("V_SUMNUM");
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total",sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_DJ_CRITERION_BYDEPT");
         return result;
     }
 }
