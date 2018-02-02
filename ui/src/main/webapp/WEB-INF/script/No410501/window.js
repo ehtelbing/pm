@@ -44,7 +44,7 @@ Ext.onReady(function () {
 				proxy : {
 					type : 'ajax',
 					async : false,
-					url : APP + '/mm/WS_MMToXLReadMaterailService',
+					url : AppUrl + 'mm/WS_MMToXLReadMaterailService',
 					actionMethods : {
 						read : 'POST'
 					},
@@ -190,6 +190,7 @@ Ext.onReady(function () {
 							.getValue();
 					gridStore.proxy.extraParams.x_type = Ext.getCmp('selType')
 							.getValue();
+					gridStore.proxy.extraParams.x_personcode = Ext.util.Cookies.get("v_personcode");
 					Ext.ComponentManager.get('grid').getStore().load();
 				 
 			}

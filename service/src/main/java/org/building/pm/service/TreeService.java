@@ -280,7 +280,7 @@ public class TreeService {
 
 
     //基本树
-    public List<Map> ModelTree(String V_V_DEPTCODE,String V_V_ID,String V_V_TEXT,String V_V_PARENTID,
+    public List<Map> ModelTree(String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_ID,String V_V_TEXT,String V_V_PARENTID,
                                String V_V_LEAF,String V_V_CHECKED,String V_V_DEPTVAL,String V_V_CODEVAL,
                                String V_V_PRONAME) throws SQLException {
 
@@ -295,16 +295,17 @@ public class TreeService {
         }
         List<Map> ListTree = new ArrayList<Map>();
 
-        for(int i=0;i<list.size();i++){
 
             Map tree = new HashMap();
 
-            tree.put("id",list.get(i).get(V_V_ID));
-            tree.put("text",list.get(i).get(V_V_TEXT));
-            tree.put("parentid",list.get(i).get(V_V_PARENTID));
-            tree.put("leaf",V_V_LEAF);
+            tree.put("parentid","-1");
+            tree.put("id", V_V_DEPTCODE);
+            tree.put("text", V_V_DEPTNAME);
+            tree.put("expanded", true);
+            tree.put("children", GetSecondTreeChildren(list, V_V_DEPTCODE));
 
-            if(V_V_CHECKED.equals("true")){
+
+            /*if(V_V_CHECKED.equals("true")){
 
                 if(V_V_CODEVAL.equals("PRO_BASE_POSTTOPERSON_GET")){
                     Map ff =list.get(i);
@@ -322,11 +323,28 @@ public class TreeService {
                     else {tree.put("checked",false); }
                 }
                 //tree.put("checked",check);
-            }
+            }*/
             ListTree.add(tree);
-        }
 
         return  ListTree;
+    }
+    private List<Map> GetSecondTreeChildren(List<Map> list, String code) {
+        List<Map> menu = new ArrayList<Map>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get("V_DEPTCODE_UP").equals(code)) {
+                HashMap temp = new HashMap();
+                temp.put("id", list.get(i).get("V_DEPTCODE"));
+                temp.put("text", list.get(i).get("V_DEPTNAME"));
+                if(GetSecondTreeChildren(list, list.get(i).get("V_DEPTCODE").toString()).size()>0){
+                    temp.put("expanded", false);
+                    temp.put("children", GetSecondTreeChildren(list, list.get(i).get("V_DEPTCODE").toString()));
+                }else{
+                    temp.put("leaf", true);
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
     }
 
     public List<Map> AllMenuTree(String RoleCode,String DEPTCODE) throws SQLException {
@@ -630,7 +648,18 @@ public class TreeService {
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()){
+                Map temp = new HashMap();
+                if(!rs.getString("V_EQUTYPECODE").toString().equals("%")){
+                    temp.put("id", rs.getString("V_EQUTYPECODE"));
+                    temp.put("text", rs.getString("V_EQUTYPENAME"));
+                    temp.put("parentid",V_V_DEPTCODENEXT);
+                    temp.put("treeid",rs.getString("V_EQUTYPECODE"));
+                    temp.put("expanded", false);
+                    list.add(temp);
+                }
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -660,10 +689,22 @@ public class TreeService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            if(!rs.getString("V_EQUCODE").toString().equals("%")){
-                result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            }
+            while (rs.next()){
+                Map temp = new HashMap();
+                if(!rs.getString("V_EQUCODE").toString().equals("%")){
+                    temp.put("id", rs.getString("V_EQUCODE"));
+                    temp.put("text", rs.getString("V_EQUNAME"));
+                    temp.put("leaf", true);
+                    temp.put("parentid",V_V_EQUTYPECODE);
+                    temp.put("treeid",rs.getString("V_EQUCODE"));
+                    temp.put("V_EQUSITE", rs.getString("V_EQUSITE"));
+                    temp.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
+                    temp.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
+                    temp.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
+                    list.add(temp);
+                }
 
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -701,10 +742,21 @@ public class TreeService {
             cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
             cstmt.execute();
             ResultSet rs = (ResultSet) cstmt.getObject("RET");
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            list.add(temp);
+            while (rs.next()) {
+
+                Map temp = new HashMap();
+                temp.put("V_CLASS_CODE", rs.getString("V_CLASS_CODE"));
+                temp.put("V_CLASS_NAME", rs.getString("V_CLASS_NAME"));
+                temp.put("V_PERSONCODE", rs.getString("V_PERSONCODE"));
+                temp.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
+                temp.put("V_CRAFTCODE", rs.getString("V_CRAFTCODE"));
+                temp.put("V_CRAFTNAME", rs.getString("V_CRAFTNAME"));
+                temp.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
+                list.add(temp);
+
+            }
             if(list.size()>0){
+                Map temp = new HashMap();
                 temp.put("parentid", "");
                 temp.put("text", list.get(0).get("V_DEPTNAME"));
                 temp.put("expanded", true);

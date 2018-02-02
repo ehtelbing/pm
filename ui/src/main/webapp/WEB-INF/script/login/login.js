@@ -125,18 +125,19 @@ function OnLogInClick() {
         return;
     } else {
         Ext.Ajax.request({
-            url : AppUrl + 'info/login',
+            url : AppUrl + 'cjy/login',
             method: 'POST',
             async: false,
             params : {
                 UserName : document.getElementById('username').value,
+                UserPassword: document.getElementById('password').value,
                 UserIp : GetIP().ip
             },
             success : function(response) {
                 var resp = Ext.decode(response.responseText);
-                if (resp.list != "") {
+                if (resp.V_INFO == "SUCCESS") {
 
-                    if (resp.list[0].V_PASSWORD == document.getElementById('password').value) {
+                    //if (resp.list[0].V_PASSWORD == document.getElementById('password').value) {
 
                         Ext.util.Cookies.set("v_class_code",
                             encodeURI(resp.list[0].V_CLASS_CODE));
@@ -185,11 +186,12 @@ function OnLogInClick() {
 
 
                         location.href = "../../page/home/findex.html";
-                    } else {
+                    /*} else {
                         msgbox("密码错误！");
-                    }
+                    }*/
                 } else {
-                    msgbox("不存在此用户！");
+                    alert(resp.V_INFO);
+                    //msgbox("不存在此用户！");
                 }
             }
         });

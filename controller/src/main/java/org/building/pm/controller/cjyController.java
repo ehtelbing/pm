@@ -1487,6 +1487,101 @@ public class cjyController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> login(@RequestParam(value = "UserName") String UserName,
+                                     @RequestParam(value = "UserPassword") String UserPassword,
+                                     @RequestParam(value = "UserIp") String UserIp)
+            throws SQLException {
+        Map<String, Object> result = cjyService.login(UserName,UserPassword, UserIp);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_06_DJ_CRITERION_GENERATE_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_06_DJ_CRITERION_GENERATE_N(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                           @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
+                                           @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                             //@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                             @RequestParam(value = "V_V_STIME") String V_V_STIME,
+                                             @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
+                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PM_06_DJ_CRITERION_GENERATE_N(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    @RequestMapping(value = "/PM_06_DJ_DATA_SEL_BYSTATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_DJ_DATA_SEL_BYSTATE(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_STIME") String V_V_STIME,
+            @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PM_06_DJ_DATA_SEL_BYSTATE(V_V_GUID, V_V_STIME, V_V_ETIME);
+
+        List<Map<String, Object>> pm_06list = (List) data.get("list");
+
+        result.put("list", pm_06list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_06_DJ_DATA_SEL_BYSTATE_NUM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_DJ_DATA_SEL_BYSTATE_NUM(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_STIME") String V_V_STIME,
+            @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PM_06_DJ_DATA_SEL_BYSTATE_NUM(V_V_GUID, V_V_STIME, V_V_ETIME);
+
+        return data;
+    }
+
+    @RequestMapping(value = "/PM_06_DJ_CRITERION_BYDEPT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_06_DJ_CRITERION_BYDEPT(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                             @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
+                                             @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                             @RequestParam(value = "V_V_STIME") String V_V_STIME,
+                                             @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
+                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PM_06_DJ_CRITERION_BYDEPT(V_V_ORGCODE,  V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYROLE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYROLE(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYROLE(V_V_STATECODE, X_PERSONCODE, V_V_PAGE,
+                V_V_PAGESIZE);
+        return result;
+    }
 }
 
 

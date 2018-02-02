@@ -11,9 +11,13 @@ var V_PERSONCODE = '';
 var taskId = '';
 var V_STEPCODE = '';
 var V_PERSONNAME ='';
+
+var ProcessInstanceId = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
+    (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
+
 }
 
 var orgLoad = false;
@@ -477,7 +481,20 @@ function _reject() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-
+    var Assignee='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/InstanceState',
+        method: 'POST',
+        async: false,
+        params: {
+            instanceId: ProcessInstanceId
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            Assignee=resp.list[0].Assignee;
+        }
+    });
+    if(Assignee!=''){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -486,13 +503,13 @@ function _reject() {
             taskId: taskId,
             idea: '不通过',
             parName: ['fqrxg', "flow_yj"],
-            parVal: [V_PERSONCODE, spyj],
+            parVal: [Assignee, spyj],
             processKey: processKey,
             businessKey: V_ORDERGUID,
             V_STEPCODE: 'fqrxg',
             V_STEPNAME: '发起人修改',
             V_IDEA: '不通过',
-            V_NEXTPER: V_PERSONCODE,
+            V_NEXTPER: Assignee,
             V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
@@ -532,6 +549,10 @@ function _reject() {
         }
 
     })
+    }else{
+        alert("发起人信息错误，无法驳回");
+    }
+
 }
 
 

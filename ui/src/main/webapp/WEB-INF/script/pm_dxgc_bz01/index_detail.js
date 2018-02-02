@@ -378,8 +378,9 @@ Ext.onReady(function () {
         width: "70%",
         height: "100%",
         region: 'center',
-        layout: 'border',
-        baseCls: 'my-panel-noborder',
+        //layout: 'fit',
+        //baseCls: 'my-panel-noborder',
+        //style:'border:5px solid red;',
         items: []
     });
 
@@ -1207,7 +1208,6 @@ Ext.onReady(function () {
 
     Ext.getBody().unmask();
 
-
 })
 ;
 
@@ -1225,27 +1225,32 @@ var pageFunction = {
         cmItems = [];
         var starttime = '';
         var endtime = '';
+
         for (var i = 0; i < ganttdata.length; i++) {
             if (i == 0) {
-                starttime = ganttdata[0].V_DATE_B;
-                endtime = ganttdata[0].V_DATE_E;
+                starttime = new Date(ganttdata[0].V_DATE_B.replace(/-/g,"/"));
+                endtime =   new Date(ganttdata[0].V_DATE_E.replace(/-/g,"/"));
             } else {
-                if (ganttdata[i].V_DATE_B < starttime) {
-                    starttime = ganttdata[i].V_DATE_B;
+
+                if (new Date(ganttdata[i].V_DATE_B.replace(/-/g,"/")) < starttime) {
+                    starttime = new Date(ganttdata[i].V_DATE_B.replace(/-/g,"/"));
                 }
-                if (ganttdata[i].V_DATE_E > endtime) {
-                    endtime = ganttdata[i].V_DATE_E;
+                if (new Date(ganttdata[i].V_DATE_E.replace(/-/g,"/")) > endtime) {
+                    endtime =   new Date(ganttdata[i].V_DATE_E.replace(/-/g,"/"));
                 }
             }
         }
-        vStart = new Date(starttime);
-        vEnd = new Date(endtime);
+
+        vStart = starttime;
+        vEnd = endtime;
+
         var vTmpDate = new Date(vStart.getFullYear(), vStart.getMonth(), vStart.getDate());
         var dateItems = [];
         var vmonth = vTmpDate.getMonth();
         var vTmpMonth;
 
         while (vTmpDate < vEnd) {
+
             vTmpMonth = vTmpDate.getMonth();
             var vzm = '';
             if (vTmpDate.getDay() == 0 || vTmpDate.getDay() == 6) vzm = 'color:#CCCCCC';
@@ -1275,6 +1280,7 @@ var pageFunction = {
             renderer: pageFunction.IndexShow
         });
 
+
         var ganttStore = Ext.create("Ext.data.Store", {
             storeId: 'ganttStore',
             fields: ['I_ID', 'V_ORGCODE', 'V_DEPTCODE', 'V_YEAR', 'V_MONTH', 'V_GUID',
@@ -1296,10 +1302,9 @@ var pageFunction = {
         var ganttgrid = Ext.create('Ext.grid.Panel', {
             id: 'ganttgrid',
             store: ganttStore,
-            region: 'center',
+            height:400,
             columnLines: true,
-            columns: cmItems,
-            //renderTo: Ext.getBody()
+            columns: cmItems
         });
         Ext.getCmp('ganttpanel').add(ganttgrid);
     },
@@ -1319,6 +1324,7 @@ var pageFunction = {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 ganttdata = resp.list;
+
                 pageFunction.CreateGantt();
             }
         });
@@ -1383,8 +1389,11 @@ var pageFunction = {
                 },
                 success: function (resp) {
                     var resp = Ext.decode(resp.responseText);
-                    if (resp.V_INFO == "Success") {
-                        Ext.getCmp('treegrid').getStore().load();
+
+
+                    if (resp.v_info == "Success") {
+                        //Ext.getCmp('treegrid').getStore().load();
+                        location.reload();
                     }
                 }
             });
@@ -1411,9 +1420,11 @@ var pageFunction = {
             }
         });
     },
+    /**构造显示结构*/
     IndexShow: function (value, metaData, record) {
-        var startd = new Date(record.data.V_DATE_B);
-        var endd = new Date(record.data.V_DATE_E);
+        var startd = new Date(record.data.V_DATE_B.replace(/-/g,"/"));
+        var endd = new Date(record.data.V_DATE_E.replace(/-/g,"/"));
+
         if (startd < vStart) {
             startd = new Date(vStart);
         }
@@ -1519,6 +1530,9 @@ var pageFunction = {
         parentNode.set('leaf', false);
         parentNode.expand();
 
+
+        //window.location.reload();
+
     },
 
     /** 工单详情
@@ -1554,10 +1568,17 @@ var pageFunction = {
                 Ext.getCmp('wsbmc_tab').setValue(resp.list[0].V_EQUNAME);
                 Ext.getCmp('wjsdw_tab').setValue(resp.list[0].V_BUILD_DEPT);
                 Ext.getCmp('wgcfzr_tab').setValue(resp.list[0].V_BULID_PERSON);
-                Ext.getCmp('wksrq_tab').setValue(new Date(resp.list[0].V_DATE_B));
-                Ext.getCmp('wkssj_tab').setValue(new Date(resp.list[0].V_DATE_B));
-                Ext.getCmp('wjsrq_tab').setValue(new Date(resp.list[0].V_DATE_E));
-                Ext.getCmp('wjssj_tab').setValue(new Date(resp.list[0].V_DATE_E));
+
+                if(resp.list[0].V_DATE_B!=null && resp.list[0].V_DATE_B!=""){
+                    Ext.getCmp('wksrq_tab').setValue(resp.list[0].V_DATE_B.split(" ")[0]);
+                    Ext.getCmp('wkssj_tab').setValue(resp.list[0].V_DATE_B.split(" ")[1]);
+                }
+
+                if(resp.list[0].V_DATE_E!=null && resp.list[0].V_DATE_E!="") {
+                    Ext.getCmp('wjsrq_tab').setValue(resp.list[0].V_DATE_E.split(" ")[0]);
+                    Ext.getCmp('wjssj_tab').setValue(resp.list[0].V_DATE_E.split(" ")[1]);
+                }
+
                 Ext.getCmp('sjgcguid_tab').setValue(resp.list[0].V_GUID_P);
                 // Ext.getCmp('wgcnr_tab').setValue(resp.list[0].V_CONTENT);
             }

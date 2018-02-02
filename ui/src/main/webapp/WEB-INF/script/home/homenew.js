@@ -455,3 +455,14 @@ function rendererTime(value, metaData) {
     //return Ext.Date.format(value, 'Y-m-d');
     return value.split('.0')[0];
 }
+
+function toDownloadChrome()
+{
+    location.href = AppUrl+"/resources/Chrome28.exe";
+}
+function toDownloadLodop()
+{
+    location.href = AppUrl+"/resources/install_lodop32.exe";
+}
+
+

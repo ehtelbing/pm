@@ -2026,10 +2026,14 @@ public class PM_19Service {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+
             for (int i=0;i<list.size();i++) {
                 if (list.get(i).get("V_DEPTCODE").equals(V_V_DEPTCODE)) {
                     Map temp = new HashMap();
-                    temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+                    temp.put("id", list.get(i).get("V_DEPTCODE"));
+                    temp.put("text", list.get(i).get("V_DEPTNAME"));
+                    temp.put("expanded", false);
+                    temp.put("children", GetDEPTChildren(list, V_V_DEPTCODE));
                     result.add(temp);
                 }
             }
@@ -2051,12 +2055,14 @@ public class PM_19Service {
                 Map temp = new HashMap();
                 temp.put("id", list.get(i).get("V_DEPTCODE"));
                 temp.put("text", list.get(i).get("V_DEPTNAME"));
-                temp.put("leaf", false);
-                temp.put("expanded", false);
+
                 if(GetDEPTChildren(list, list.get(i).get("V_DEPTCODE").toString()).size()>0){
                     temp.put("children", GetDEPTChildren(list, list.get(i).get("V_DEPTCODE").toString()));
+                    temp.put("leaf", false);
+                    temp.put("expanded", false);
                 }else{
                     temp.put("children",GetPersonChildren(list.get(i).get("V_DEPTCODE").toString()));
+
                 }
                 menu.add(temp);
             }
@@ -2074,9 +2080,16 @@ public class PM_19Service {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.add(temp);
+
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+
+            for(int i = 0; i < list.size(); i++) {
+                Map temp = new HashMap();
+                temp.put("id", list.get(i).get("V_PERSONCODE"));
+                temp.put("text", list.get(i).get("V_PERSONNAME"));
+                temp.put("leaf", true);
+                result.add(temp);
+            }
 
         } catch (SQLException e) {
             logger.error(e);
@@ -2133,9 +2146,14 @@ public class PM_19Service {
             cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Map temp = new HashMap();
-            temp.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.add(temp);
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            for(int i = 0; i < list.size(); i++) {
+                Map temp = new HashMap();
+                temp.put("id", list.get(i).get("V_EQUTYPECODE"));
+                temp.put("text", list.get(i).get("V_EQUTYPENAME"));
+                temp.put("leaf", true);
+                result.add(temp);
+            }
             conn.commit();
         } catch (SQLException e) {
             logger.error(e);

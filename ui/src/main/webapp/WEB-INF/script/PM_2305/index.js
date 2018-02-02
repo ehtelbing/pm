@@ -82,18 +82,17 @@ Ext.onReady(function () {
         id: 'gridStore',
         pageSize: 15,
         autoLoad: false,
-        fields: ['I_ID', 'V_DEFECTLIST', 'V_SOURCECODE',
-            'V_SOURCENAME','V_SOURCETABLE','V_SOURCEREMARK','V_SOURCEID','D_DEFECTDATE','D_INDATE','V_PERCODE'
-            ,'V_PERNAME','V_ORGCODE','V_ORGNAME','V_DEPTCODE','V_DEPTNAME','V_EQUCODE','V_EQUNAME'
-            ,'V_EQUSITE','V_EQUSITENAME','V_EQUTYPECODE','V_EQUTYPENAME','V_IDEA','V_STATECODE','V_STATENAME'
-            ,'V_STATECOLOR','V_GUID','V_EQUSITE1','D_DATE_EDITTIME','V_EDIT_GUID','V_SOURCE_GRADE','V_EQUCHILDCODE'
-            ,'V_INPERCODE','V_INPERNAME','V_BZ','V_REPAIRMAJOR_CODE'
-            ,'V_HOUR'],
-
+        fields: ['V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT',
+            'V_EQUNAME','V_PERNAME_INPUT', 'V_CRITERION_ITEM', 'V_CRITERION_CONTENT',
+            'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1',
+            'V_EQU_STATE2', 'V_EQU_STATE3', 'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3',
+            'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8',
+            'V_DJ_DATE', 'V_CK_EQUTYPECODE','V_GUID','V_DJ_TYPE',{ name: 'DJCOUNT', type: 'number'}],
+        groupField: 'V_EQUNAME',
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PM_23_CHECKACCOUNT_SEL',
+            url: AppUrl + 'cjy/PM_06_DJ_CRITERION_GENERATE_N',
             actionMethods: {
                 read: 'POST'
             },
@@ -118,27 +117,9 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 0px 0px'
         },
         items: [
-            {
-                id: 'beginTime',
-                xtype: 'datefield',
-                editable: false,
-                format: 'Y/m/d',
-                value:  Ext.util.Format.date(new Date(), "Y-m-") + "01",
-                fieldLabel: '起始日期',
-                labelWidth: 100,
-                width: 250,
-                baseCls: 'margin-bottom'
-            },{
-                id: 'endTime',
-                xtype: 'datefield',
-                editable: false,
-                format: 'Y/m/d',
-                value: Ext.util.Format.date(new Date(new Date(new Date().getUTCFullYear(), new Date().getMonth() + 1, 1) - 86400000), "Y-m-d"),
-                fieldLabel: '结束日期',
-                labelWidth: 100,
-                width: 250,
-                baseCls: 'margin-bottom'
-            }
+            {xtype: 'datefield', fieldLabel: '开始时间',editable: false, labelWidth: 80,format: 'Y-m-d', value : new Date(new Date().getFullYear() + '/'
+                + (new Date().getMonth() + 1) + '/' + 1),id: 'stime' },
+            {xtype: 'datefield', fieldLabel: '结束时间', editable: false,labelWidth: 80,format: 'Y-m-d',value : new Date(),id: 'etime' },
         ]
     });
 
@@ -166,54 +147,77 @@ Ext.onReady(function () {
             selType: 'checkboxmodel',
             mode: 'SIMPLE'
         },
+        features : [{
+            ftype : 'groupingsummary',
+            groupHeaderTpl : '{name}',
+            hideGroupedHeader : true,
+            enableGroupingMenu : false
+        }],
+
+        features : [{
+            groupHeaderTpl : ['{name:this.formatName}',
+                {
+                    formatName : function(name) {
+                    }
+                },'{rows:this.formatRows}',{
+                    formatRows:function(data){
+                        return '设备名称：'+data[0].raw.V_EQUNAME;
+                    }
+                }],
+            ftype : 'groupingsummary'/*,
+            collapsible : false*///不可伸缩
+        }],
         columns : [ {
             xtype : 'rownumberer',
             text : '序号',
             width : 40,
             align: 'center'
-        }, {
-            text : '单位名称',
-            dataIndex : 'V_ORGNAME',
-            align : 'center',
-            width : 200
         },{
-            text : '设备名称',
-            dataIndex : 'V_EQUNAME',
-            align : 'center',
-            width : 200
-        },{
-            text : '点检项目',
-            dataIndex : 'V_DEFECTLIST',
-            align : 'center',
-            width : 250
-        },{
-            text : '缺陷明细',
-            dataIndex : 'V_DEFECTLIST',
-            align : 'center',
-            width : 250
-        },{
-            text : '缺陷来源',
-            dataIndex : 'V_SOURCENAME',
-            align : 'center',
+            text: '详情',
+            align: 'center',
+            width: 150,
+            renderer : detail
+        }, /*{
+            text: '设备名称',
+            dataIndex: 'V_EQUNAME',
+            align: 'center',
+            width: 200
+        },*/{
+            text: '点检项目',
+            dataIndex: 'V_CRITERION_ITEM',
+            align: 'center',
             width : 150
+        }, {
+            text: '点检内容',
+            dataIndex: 'V_CRITERION_CONTENT',
+            align: 'center',
+            width : 150
+        }, {
+            text: '点检标准',
+            dataIndex: 'V_CRITERION_CR',
+            align: 'center',
+            width : 250
+        }, {
+            text: '点检周期',
+            dataIndex: 'V_CRITERION_CYCLE',
+            align: 'center',
+            width : 80
+        }, {
+            text: '周期类型',
+            dataIndex: 'V_CRITERION_CYCLETYPE',
+            align: 'center',
+            width : 80
         },{
-            text : '点检人',
-            dataIndex : 'V_INPERNAME',
-            align : 'center',
-            width : 100
-        },{
-            text : '缺陷时间',
-            dataIndex : 'D_DEFECTDATE',
-            align : 'center',
-            width : 200,
-            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
-                return value.substring(0,10);
-            }
-        },{
-            text : '处理结果',
-            dataIndex : 'V_STATENAME',
-            align : 'center',
-            width : 100
+            text: '点检次数',
+            dataIndex: 'DJCOUNT',
+            align: 'center',
+            width : 80,
+            summaryType: 'sum',
+            summaryRenderer: function (value, metadata) {
+                    metadata.style = 'font-weight: bold;';
+                    return '合计 : '+value;
+                }
+
         }],
         bbar: [{
             id: 'page',
@@ -226,6 +230,7 @@ Ext.onReady(function () {
             store: 'gridStore'
         }]
     });
+
 
     Ext.create('Ext.container.Viewport', {
         layout : {
@@ -255,10 +260,13 @@ Ext.onReady(function () {
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
-            V_V_ORGCODE:  Ext.util.Cookies.get('v_orgCode'),
-            V_V_EQUIP_NO : '',
-            V_V_BEGINTIME:Ext.getCmp('beginTime').getSubmitValue(),
-            V_V_ENDTIME: Ext.getCmp('endTime').getSubmitValue(),
+            V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+            V_V_CK_EQUTYPECODE: '%',
+            V_V_EQUTYPE: '%',
+            V_V_EQUCODE: '%',
+            V_V_STIME : Ext.getCmp('stime').getSubmitValue()+" 00:00:00",
+            V_V_ETIME : Ext.getCmp('etime').getSubmitValue()+" 23:59:59",
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -279,10 +287,13 @@ function _init()
 function _selectWorkOrder() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
-        V_V_ORGCODE:  Ext.util.Cookies.get('v_orgCode'),
-        V_V_EQUIP_NO :'',
-        V_V_BEGINTIME:Ext.getCmp('beginTime').getSubmitValue(),
-        V_V_ENDTIME: Ext.getCmp('endTime').getSubmitValue(),
+        V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+        V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+        V_V_CK_EQUTYPECODE: '%',
+        V_V_EQUTYPE: '%',
+        V_V_EQUCODE: '%',
+        V_V_STIME : Ext.getCmp('stime').getSubmitValue()+" 00:00:00",
+        V_V_ETIME : Ext.getCmp('etime').getSubmitValue()+" 23:59:59",
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
 
@@ -291,3 +302,16 @@ function _selectWorkOrder() {
     gridStore.load();
 }
 
+function detail(a,value,metaData){
+    return '<a href="javascript:ondetail(\'' + metaData.data.V_GUID + '\')">详情</a>';
+}
+
+function ondetail(a){
+    var stime=Ext.getCmp('stime').getSubmitValue()+" 00:00:00";
+    var etime=Ext.getCmp('etime').getSubmitValue()+" 23:59:59";
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_230501/index.html?V_GUID=' + a
+        +'&stime='+stime
+        +'&etime='+etime, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+}
