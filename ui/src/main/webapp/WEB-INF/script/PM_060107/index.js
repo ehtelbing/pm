@@ -1011,7 +1011,7 @@ function query(){
     djDataCreateStore.proxy.extraParams = {
         V_V_ORGCODE : '%',//Ext.getCmp('V_V_ORGCODE').getValue(),
         V_V_DEPTCODE : '%',//Ext.getCmp('V_V_DEPTCODE').getValue(),
-        V_V_CK_EQUTYPECODE : '%',//Ext.getCmp('V_CK_EQUTYPECODE').getValue(),
+        V_V_CK_EQUTYPECODE : 'ZY',//Ext.getCmp('V_CK_EQUTYPECODE').getValue(),
         V_V_EQUTYPE : '%',//Ext.getCmp('equtype').getValue(),
         V_V_EQUCODE : '%',//Ext.getCmp('equname').getValue(),
         V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),

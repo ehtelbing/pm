@@ -3121,4 +3121,41 @@ public class cjyService {
         logger.info("end PM_06_DJ_CRITERION_BYDEPT");
         return result;
     }
+
+    public Map PRO_PM_07_DEFECT_VIEW_BYROLE(String V_V_STATECODE,
+                                         String X_PERSONCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PRO_PM_07_DEFECT_VIEW_BYROLE");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_VIEW_BYROLE(:V_V_STATECODE,:X_PERSONCODE,:V_V_PAGE," +
+                    ":V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+            cstmt.setString("X_PERSONCODE", X_PERSONCODE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_VIEW_BYROLE");
+        return result;
+    }
 }

@@ -1569,6 +1569,19 @@ public class cjyController {
         HashMap data = cjyService.PM_06_DJ_CRITERION_BYDEPT(V_V_ORGCODE,  V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
+
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYROLE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYROLE(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYROLE(V_V_STATECODE, X_PERSONCODE, V_V_PAGE,
+                V_V_PAGESIZE);
+        return result;
+    }
 }
 
 

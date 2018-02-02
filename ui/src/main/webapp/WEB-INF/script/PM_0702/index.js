@@ -96,7 +96,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PRO_PM_07_DEFECT_VIEW_NEW',
+            url: AppUrl + 'cjy/PRO_PM_07_DEFECT_VIEW_BYROLE',
             actionMethods: {
                 read: 'POST'
             },
