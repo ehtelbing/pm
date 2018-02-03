@@ -1,4 +1,4 @@
-﻿﻿/// <reference path="../Shared/ext-all-debug-w-comments.js" />
+/// <reference path="../Shared/ext-all-debug-w-comments.js" />
 //Ext.BLANK_IMAGE_URL = '../../resources/themes/images/Default/tree/s.gif';
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
@@ -388,12 +388,16 @@ function OnClickMenu(node, checked, eOpts){
 
     function rck(node, checked, eOpts) {
         if(checked){
-            Ext.Array.each(node.parentNode.childNodes, function(item, index, allItems){
-                item.parentNode.set('checked',checked);
-                if(!item.parentNode.isRoot())
-                  rck(item.parentNode);
-            });
+            node.parentNode.set('checked',checked);
+            onclick(node, checked, eOpts);
+            if(!node.parentNode.isRoot()){
+                node = node.parentNode;
+                rck(node, checked, eOpts);
+            }
+
+
         }
+
     }
     if(!node.isLeaf() && node.hasChildNodes()){
         ck(node, checked, eOpts);
