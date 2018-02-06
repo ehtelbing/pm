@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Service
-public class FolwService {
+public class FlowService {
     private static final Logger logger = Logger.getLogger(InfoService.class.getName());
 
     @Autowired
