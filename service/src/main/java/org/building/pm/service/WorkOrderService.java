@@ -197,7 +197,6 @@ public class WorkOrderService {
     public HashMap PRO_GET_DEPTEQUTYPE_ADMIN(String V_V_DEPTCODENEXT) throws SQLException {
         logger.info("begin PRO_GET_DEPTEQUTYPE_ADMIN");
         HashMap result = new HashMap();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -214,7 +213,6 @@ public class WorkOrderService {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_GET_DEPTEQUTYPE_ADMIN");
         return result;

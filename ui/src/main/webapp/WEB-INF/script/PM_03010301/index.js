@@ -18,6 +18,7 @@ if (location.href.split('?')[1] != undefined) {
 for (var i = date.getFullYear() - 4; i <= date.getFullYear() + 1; i++) {
     years.push({displayField: i, valueField: i});
 }
+var flowtype="";
 var yearStore = Ext.create("Ext.data.Store", {
     storeId: 'yearStore',
     fields: ['displayField', 'valueField'],
@@ -971,7 +972,7 @@ function OnButtonUp() {
                 V_V_GUID: records[i].data.V_GUID,
                 V_V_ORGCODE: records[i].data.V_ORGCODE,
                 V_V_DEPTCODE: records[i].data.V_DEPTCODE,
-                V_V_FLOWCODE: records[i].data.V_FLOWCODE,
+                V_V_FLOWCODE: '上报',
                 V_V_PLANTYPE: 'WEEK',
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
             },
