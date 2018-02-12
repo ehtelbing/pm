@@ -497,7 +497,7 @@ function OnPageLoaded() {
     var header = _CreateHeader();
 
     Ext.Ajax.request({
-        url: AppUrl+'/menu/topMenu.json',
+        url: AppUrl+'menu/topMenu.json',
         method: 'post',
         params: {
             IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
