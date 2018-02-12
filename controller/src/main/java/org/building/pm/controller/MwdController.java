@@ -187,6 +187,16 @@ public class MwdController {
         return mwdService.PM_REPAIR_JS_STANDARD_GET(V_V_GUID);
     }
 
+    @RequestMapping(value = "/PM_REAPIR_STANDARD_DATA_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PM_REAPIR_STANDARD_DATA_GET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return mwdService.PM_REAPIR_STANDARD_DATA_GET(V_V_GUID);
+    }
+
     @RequestMapping(value = "/GET_EQU_TYPE_LIST_ABLE", method = RequestMethod.POST)
     @ResponseBody
     public HashMap GET_EQU_TYPE_LIST_ABLE(
@@ -592,7 +602,7 @@ public class MwdController {
         return result;
     }
 
-    @RequestMapping(value = "PM_REAPIR_STANDARD_DATA_SEL", method = RequestMethod.POST)
+    @RequestMapping(value = "/PM_REAPIR_STANDARD_DATA_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_REAPIR_STANDARD_DATA_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
                                                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
@@ -600,10 +610,39 @@ public class MwdController {
                                                            @RequestParam(value = "V_V_REPAIR_NAME") String V_V_REPAIR_NAME,
                                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                           HttpServletRequest request)
-            throws SQLException {
+                                                           HttpServletRequest request) throws SQLException {
 
         return mwdService.PM_REAPIR_STANDARD_DATA_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE, V_V_REPAIR_NAME, V_V_PAGE, V_V_PAGESIZE);
+    }
+
+    @RequestMapping(value = "/PM_REAPIR_STANDARD_GX_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_REAPIR_STANDARD_GX_SET(
+            @RequestParam(value = "V_V_GXCODE") String V_V_GXCODE,
+            @RequestParam(value = "V_V_GXNAME") String V_V_GXNAME,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_TIEM") String V_V_TIEM,
+            @RequestParam(value = "V_V_WORKTYPE") String V_V_WORKTYPE,
+            @RequestParam(value = "V_V_WORKPER_NUM") String V_V_WORKPER_NUM,
+            @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+            @RequestParam(value = "V_V_AQ") String V_V_AQ,
+            @RequestParam(value = "V_V_XZ_DEPT") String V_V_XZ_DEPT,
+            @RequestParam(value = "V_V_INPER") String V_V_INPER,
+            @RequestParam(value = "V_V_INTIME") String V_V_INTIME,
+            @RequestParam(value = "V_V_ORDER") int V_V_ORDER,
+            @RequestParam(value = "V_V_WORKWAY") String V_V_WORKWAY,
+            @RequestParam(value = "V_V_JSYQ") String V_V_JSYQ,
+            @RequestParam(value = "V_V_REPAIR_CODE") String V_V_REPAIR_CODE,
+            HttpServletRequest request) throws SQLException {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mwdService.PM_REAPIR_STANDARD_GX_SET(V_V_GXCODE,V_V_GXNAME,V_V_CONTENT,V_V_TIEM,V_V_WORKTYPE,V_V_WORKPER_NUM,
+                V_V_TOOL,V_V_AQ,V_V_XZ_DEPT,V_V_INPER,V_V_INTIME,V_V_ORDER,V_V_WORKWAY,V_V_JSYQ,V_V_REPAIR_CODE);
+
+        String V_INFO = (String) data.get("V_INFO");
+        result.put("V_INFO", V_INFO);
+        result.put("success", true);
+        return result;
     }
 
     @RequestMapping(value = "PM_REAPIR_STANDARD_GX_SEL", method = RequestMethod.POST)
@@ -970,6 +1009,39 @@ public class MwdController {
         return result;
     }
 
+
+    @RequestMapping(value = "/PM_REAPIR_STANDARD_DATA_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_REAPIR_STANDARD_DATA_SET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
+            @RequestParam(value = "V_V_PROJECT_IMG") String V_V_PROJECT_IMG,
+            @RequestParam(value = "V_V_WORK_BEFORE") String V_V_WORK_BEFORE,
+            @RequestParam(value = "V_V_WORK_PER") String V_V_WORK_PER,
+            @RequestParam(value = "V_V_WORK_CRAFT") String V_V_WORK_CRAFT,
+            @RequestParam(value = "V_V_WORK_TOOL") String V_V_WORK_TOOL,
+            @RequestParam(value = "V_V_WORK_TIME") String V_V_WORK_TIME,
+            @RequestParam(value = "V_V_SUM_TIME") String V_V_SUM_TIME,
+            @RequestParam(value = "V_V_WORK_AQ") String V_V_WORK_AQ,
+            @RequestParam(value = "V_V_WORK_DEPT") String V_V_WORK_DEPT,
+            @RequestParam(value = "V_V_REPAIR_NAME") String V_V_REPAIR_NAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = mwdService.PM_REAPIR_STANDARD_DATA_SET(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE,V_V_EQUNAME, V_V_PROJECT_IMG,V_V_WORK_BEFORE,
+                V_V_WORK_PER,V_V_WORK_CRAFT,V_V_WORK_TOOL,   V_V_WORK_TIME, V_V_SUM_TIME, V_V_WORK_AQ, V_V_WORK_DEPT, V_V_REPAIR_NAME);
+
+        String V_INFO = (String) data.get("V_INFO");
+
+        result.put("V_INFO", V_INFO);
+        result.put("success", true);
+        return result;
+    }
+
     @RequestMapping(value = "/SAP_PM_EQU_FILE_SET", method = RequestMethod.POST)
     @ResponseBody
     public String SAP_PM_EQU_FILE_SET(
@@ -1037,6 +1109,40 @@ public class MwdController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_REPAIRT_IMG_SEL_DATA", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Map PM_REPAIRT_IMG_SEL_DATA(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                  @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
+                                  @RequestParam(value = "V_V_FILETYPE") String V_V_FILETYPE,
+                                  @RequestParam(value = "V_V_FILENAME") String V_V_FILENAME,
+                                  HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        V_V_FILETYPE = URLDecoder.decode(V_V_FILETYPE, "UTF-8");
+        HashMap data = mwdService.PM_REPAIRT_IMG_SEL(V_V_GUID, V_V_FILEGUID, V_V_FILETYPE);
+
+        Blob fileblob = (Blob) data.get("V_FILEBLOB");
+        InputStream is = fileblob.getBinaryStream();
+
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("UTF-8");
+        try {
+            V_V_FILENAME = URLDecoder.decode(V_V_FILENAME, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setHeader("Content-Disposition", "attachment; filename=" + V_V_FILENAME);
+        OutputStream fos = response.getOutputStream();
+        byte[] b = new byte[2048];
+        int length = 0;
+        while (( length = is.read(b)) > 0) {
+            fos.write(b, 0, length);
+        }
+        is.close();
+        fos.close();
+        result.put("success", true);
+        return result;
+    }
+
     //获取图片过程
     @RequestMapping(value = "/PM_REPAIRT_IMG_SEL", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -1069,6 +1175,20 @@ public class MwdController {
         }
         is.close();
         fos.close();
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_REPAIRT_IMG_TABLE_DATA", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Map PM_REPAIRT_IMG_TABLE_DATA(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                    @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
+                                    @RequestParam(value = "V_V_FILETYPE") String V_V_FILETYPE,
+                                    HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = mwdService.PM_REPAIRT_IMG_SEL(V_V_GUID, V_V_FILEGUID, V_V_FILETYPE);
+
+        result.put("RET", data.get("RET"));
         result.put("success", true);
         return result;
     }
@@ -1253,12 +1373,12 @@ public class MwdController {
     @RequestMapping(value = "/FILEUPDATE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> FILEUPDATE(@RequestParam(value = "A_ORDERID") String A_ORDERID,
-                                           @RequestParam(value = "A_FILENAME") String A_FILENAME,
-                                           @RequestParam(value = "A_FILE_EXTEND") String A_FILE_EXTEND,
-                                           @RequestParam(value = "A_FILE") MultipartFile A_FILE,
-                                           @RequestParam(value = "A_USERNAME") String A_USERNAME,
-                                           HttpServletRequest request,
-                                           HttpServletResponse response) throws Exception {
+                                          @RequestParam(value = "A_FILENAME") String A_FILENAME,
+                                          @RequestParam(value = "A_FILE_EXTEND") String A_FILE_EXTEND,
+                                          @RequestParam(value = "A_FILE") MultipartFile A_FILE,
+                                          @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
 
@@ -1471,6 +1591,15 @@ public class MwdController {
         result.put("v_info", V_INFO);
         result.put("success", true);
         return result;
+    }
+
+    @RequestMapping(value = "/PM_REAPIR_STANDARD_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_REAPIR_STANDARD_DATA_DEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        return mwdService.PM_REAPIR_STANDARD_DATA_DEL(V_V_GUID);
     }
 
     @RequestMapping(value = "/PM_REPAIR_JS_STANDARD_DEL", method = RequestMethod.POST)
