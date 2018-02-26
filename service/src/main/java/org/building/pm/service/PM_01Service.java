@@ -165,8 +165,8 @@ public class PM_01Service {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PRO_BASE_DEPT_VIEW_PER" + "(:V_DEPTCODE,:V_DEPTTYPE,:V_V_PERSON,:V_CURSOR)}");
-            cstmt.setString("V_DEPTCODE", V_DEPTCODE);
-            cstmt.setString("V_DEPTTYPE", V_DEPTTYPE);
+            cstmt.setString("IS_V_DEPTCODE", V_DEPTCODE);
+            cstmt.setString("IS_V_DEPTTYPE", V_DEPTTYPE);
             cstmt.setString("V_V_PERSON", V_V_PERSON);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();

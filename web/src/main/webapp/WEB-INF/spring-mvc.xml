@@ -106,4 +106,28 @@
     <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
     <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
 
+
+    <!--备件修旧数据库添加-->
+    <bean id="nammDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${namm.className}"/>
+        <property name="jdbcUrl" value="${namm.Url}"/>
+        <property name="user" value="${namm.username}"/>
+        <property name="password" value="${namm.password}"/>
+        <property name="minPoolSize" value="1"/>
+        <property name="maxPoolSize" value="3"/>
+        <property name="maxIdleTime" value="1800"/>
+        <property name="acquireIncrement" value="3"/>
+        <property name="maxStatements" value="1000"/>
+        <property name="initialPoolSize" value="10"/>
+        <property name="idleConnectionTestPeriod" value="60"/>
+        <property name="acquireRetryAttempts" value="30"/>
+        <property name="breakAfterAcquireFailure" value="true"/>
+        <property name="testConnectionOnCheckout" value="false"/>
+    </bean>
+
+    <bean id="transactionManagerNamm"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="nammDataSource"/>
+    </bean>
+
 </beans>

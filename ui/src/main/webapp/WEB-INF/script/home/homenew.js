@@ -1,4 +1,4 @@
-$(function (){
+$(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     _AgencySelect();
     _QXNumSelect();
@@ -6,42 +6,66 @@ $(function (){
     //_MonthCountSelect();
     //_WeekCountSelect();
 
-
+    QuerySumDb();
     JHselect();
 });
 
-function tabreload(){
+function QuerySumDb() {
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/QueryTaskListSum',
+        method: 'POST',
+        async: false,
+        params: {
+            PersonCode: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.msg == 'Ok') {
+                Ext.fly('onSumDb').dom.innerHTML = '（' + resp.total + '）';
+            }
+        }
+    });
+
+}
+
+function GoToDb() {
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    window.open(AppUrl + 'page/PM_2103/index.html', '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+
+function tabreload() {
     _QXNumSelect();
     _AgencySelect();
 }
 
 //第几周
 function getWeekOfMonth() {//周一为起始
-    var w = new Date().getDay()==0?7:new Date().getDay();//星期
+    var w = new Date().getDay() == 0 ? 7 : new Date().getDay();//星期
     var d = new Date().getDate();//日期
 
-    var week= Math.ceil((d + 7 - w) / 7);//向上取整
+    var week = Math.ceil((d + 7 - w) / 7);//向上取整
 
     return week;
 
 };
-function JHselect(){
+function JHselect() {
     $.ajax({
-        type : 'POST',
+        type: 'POST',
         url: AppUrl + 'PM_03/PRO_PM_PLAN_LOCKING_W_VIEW',
-        dataType : 'json',
-        async : false,
-        data : {
-            V_I_YEAR:new Date().getFullYear(),
-            V_I_MONTH:new Date().getMonth()+1,
-            V_I_WEEKNUM:getWeekOfMonth(),
+        dataType: 'json',
+        async: false,
+        data: {
+            V_I_YEAR: new Date().getFullYear(),
+            V_I_MONTH: new Date().getMonth() + 1,
+            V_I_WEEKNUM: getWeekOfMonth(),
             V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
             V_V_DEPTNEXTCODE: Ext.util.Cookies.get('v_deptcode'),
-            V_V_CONTENT:''
+            V_V_CONTENT: ''
         },
-        success : function(data) {
-            var njhrq=  data.V_D_DATE_E.substring(0,10);
-            var njhsd=  data.V_D_DATE_E.substring(0,19);
+        success: function (data) {
+            var njhrq = data.V_D_DATE_E.substring(0, 10);
+            var njhsd = data.V_D_DATE_E.substring(0, 19);
             $('#njhsd').html(njhsd);
             $('#njhrq').html(njhrq);
             $('#yjhsd').html(njhsd);
@@ -51,16 +75,16 @@ function JHselect(){
         }
     });
 }
-function _QXNumSelect(){
+function _QXNumSelect() {
     $.ajax({
-        type : 'POST',
+        type: 'POST',
         url: AppUrl + 'cjy/PRO_PM_07_DEFECT_VIEW_NOPAGE',
-        dataType : 'json',
-        data : {
-            V_V_STATECODE : '10',//未处理
-            X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
+        dataType: 'json',
+        data: {
+            V_V_STATECODE: '10',//未处理
+            X_PERSONCODE: Ext.util.Cookies.get('v_personcode')
         },
-        success : function(data) {
+        success: function (data) {
 
             Ext.fly('wclqxcount').dom.innerHTML = '（' + data.total + '）';
 
@@ -69,19 +93,18 @@ function _QXNumSelect(){
     });
 
 
-
 }
-function  _AgencySelect(){
+function _AgencySelect() {
     $('#t1').empty();
     $.ajax({
-        type : 'POST',
+        type: 'POST',
         url: AppUrl + 'hp/PM_06_DJ_DATA_TIMER_SEL',
-        dataType : 'json',
-        async : false,
-        data : {
-            V_V_DJPER : Ext.util.Cookies.get('v_personcode')
+        dataType: 'json',
+        async: false,
+        data: {
+            V_V_DJPER: Ext.util.Cookies.get('v_personcode')
         },
-        success : function(data) {
+        success: function (data) {
             if (data.success) {
 
                 var formList = data.list;
@@ -96,7 +119,7 @@ function  _AgencySelect(){
                 }
                 //Ext.fly('wclqxcount').dom.innerHTML = '（' + formList.length + '）';
                 for (var i = 0; i < length; i++) {
-                    $('<ul class="tasklist"> <li><span> <input type="button" name="button" id="button" class="btns" value="确认办理" '+yangshi + ' '+ yangshi2 +'onclick="_banli(\''+formList[i].V_TIMER_GUID+'\')"> </span>您有' +formList[i].NUM+ '条代办任务需要办理... <i>' + formList[i].V_TIMER_TIME.substring(0,19)+'</i> </li> </ul>' ).appendTo('#t1');
+                    $('<ul class="tasklist"> <li><span> <input type="button" name="button" id="button" class="btns" value="确认办理" ' + yangshi + ' ' + yangshi2 + 'onclick="_banli(\'' + formList[i].V_TIMER_GUID + '\')"> </span>您有' + formList[i].NUM + '条代办任务需要办理... <i>' + formList[i].V_TIMER_TIME.substring(0, 19) + '</i> </li> </ul>').appendTo('#t1');
                 }
 
 
@@ -109,74 +132,75 @@ function  _AgencySelect(){
     });
 }
 
-function _YearCountSelect(){
+function _YearCountSelect() {
     $.ajax({
-        type : 'POST',
+        type: 'POST',
         url: AppUrl + 'Activiti/QueryTaskListByYear',
-        dataType : 'json',
+        dataType: 'json',
         //async : false,
-        data : {
-            'PersonCode' : Ext.util.Cookies.get('v_personcode')
+        data: {
+            'PersonCode': Ext.util.Cookies.get('v_personcode')
         },
-        success : function(resp) {
+        success: function (resp) {
             Ext.fly('wclnjhcount').dom.innerHTML = '（' + resp.total + '）';
         }
     });
 }
 
-function _MonthCountSelect(){
+function _MonthCountSelect() {
     $.ajax({
-        type : 'POST',
+        type: 'POST',
         url: AppUrl + 'Activiti/QueryTaskListByMonth',
-        dataType : 'json',
+        dataType: 'json',
         //async : false,
-        data : {
-            'PersonCode' : Ext.util.Cookies.get('v_personcode')
+        data: {
+            'PersonCode': Ext.util.Cookies.get('v_personcode')
         },
-        success : function(resp) {
+        success: function (resp) {
             Ext.fly('wclyjhcount').dom.innerHTML = '（' + resp.total + '）';
         }
     });
 }
 
-function _WeekCountSelect(){
+function _WeekCountSelect() {
     $.ajax({
-        type : 'POST',
+        type: 'POST',
         url: AppUrl + 'Activiti/QueryTaskListByWeek',
-        dataType : 'json',
+        dataType: 'json',
         //async : false,
-        data : {
-            'PersonCode' : Ext.util.Cookies.get('v_personcode')
+        data: {
+            'PersonCode': Ext.util.Cookies.get('v_personcode')
         },
-        success : function(resp) {
+        success: function (resp) {
             Ext.fly('wclzjhcount').dom.innerHTML = '（' + resp.total + '）';
             Ext.getBody().unmask();//去除页面笼罩
         }
     });
 }
 
-function _preDbView(){
+function _preDbView() {
     /* var w=screen.availWidth-10;
      var h=screen.availHeight-30;
      var objwin = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
-     */ var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
-   // var ret = window.open(AppUrl + 'page/PM_2103/index.html', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
-    var ret = window.open(AppUrl + 'page/PM_0702/index.html', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+     */
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    // var ret = window.open(AppUrl + 'page/PM_2103/index.html', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_0702/index.html', '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
 
-function _banli(V_TIMER_GUID){
+function _banli(V_TIMER_GUID) {
     /* var w=screen.availWidth-10;
      var h=screen.availHeight-30;
      var objwin = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
-     */ var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
-    var ret = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID='+V_TIMER_GUID, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+     */
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID=' + V_TIMER_GUID, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
 
-function toYearPlan()
-{
+function toYearPlan() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_030201/index.html';
     var n = container.getComponent("njh");
@@ -195,8 +219,7 @@ function toYearPlan()
     container.setActiveTab(n);
 }
 
-function toQuarterPlan()
-{
+function toQuarterPlan() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_03010101/index.html';
     var n = container.getComponent("jdjh");
@@ -215,8 +238,7 @@ function toQuarterPlan()
     container.setActiveTab(n);
 }
 
-function toMonthPlan()
-{
+function toMonthPlan() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_03010201/index.html';
     var n = container.getComponent("yjh");
@@ -235,8 +257,7 @@ function toMonthPlan()
     container.setActiveTab(n);
 }
 
-function toWeekPlan()
-{
+function toWeekPlan() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_03010301/index.html';
     var n = container.getComponent("zjh");
@@ -255,8 +276,7 @@ function toWeekPlan()
     container.setActiveTab(n);
 }
 
-function toDailyCheck()
-{
+function toDailyCheck() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_060105/index.html';
     var n = container.getComponent("rcdj");
@@ -275,8 +295,7 @@ function toDailyCheck()
     container.setActiveTab(n);
 }
 
-function toDefectManage()
-{
+function toDefectManage() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_0702/index.html';
     var n = container.getComponent("qxgl");
@@ -295,8 +314,7 @@ function toDefectManage()
     container.setActiveTab(n);
 }
 
-function toOrderCreate()
-{
+function toOrderCreate() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_0901/index.html';
     var n = container.getComponent("gdcj");
@@ -316,8 +334,7 @@ function toOrderCreate()
 }
 
 
-function toFixOldManager()
-{
+function toFixOldManager() {
     var container = top.Ext.getCmp('container');
     var url = AppUrl + 'page/PM_0920/index.html';
     var n = container.getComponent("xjgl");
@@ -350,8 +367,8 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('db').setValue(resp.V_DBNUM+'条');
-            Ext.getCmp('yb').setValue(resp.V_YBNUM+'条');
+            Ext.getCmp('db').setValue(resp.V_DBNUM + '条');
+            Ext.getCmp('yb').setValue(resp.V_YBNUM + '条');
 
         }
     });
@@ -368,11 +385,11 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('wclqx').setValue(resp.V_WCL_NUM+'条');
-            Ext.getCmp('yxpqx').setValue(resp.V_YXP_NUM+'条');
-            Ext.getCmp('yxqqx').setValue(resp.V_YCL_NUM+'条');
-            Ext.getCmp('sgxqqx').setValue(resp.V_SGXQ_NUM+'条');
-            Ext.getCmp('ylqx').setValue(resp.V_YL_NUM+'条');
+            Ext.getCmp('wclqx').setValue(resp.V_WCL_NUM + '条');
+            Ext.getCmp('yxpqx').setValue(resp.V_YXP_NUM + '条');
+            Ext.getCmp('yxqqx').setValue(resp.V_YCL_NUM + '条');
+            Ext.getCmp('sgxqqx').setValue(resp.V_SGXQ_NUM + '条');
+            Ext.getCmp('ylqx').setValue(resp.V_YL_NUM + '条');
 
         }
     });
@@ -389,10 +406,10 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('njh').setValue(resp.V_YEAR_NUM+'条');
-            Ext.getCmp('jjh').setValue(resp.V_QUARTER_NUM+'条');
-            Ext.getCmp('yjh').setValue(resp.V_MONTH_NUM+'条');
-            Ext.getCmp('zjh').setValue(resp.V_WEEK_NUM+'条');
+            Ext.getCmp('njh').setValue(resp.V_YEAR_NUM + '条');
+            Ext.getCmp('jjh').setValue(resp.V_QUARTER_NUM + '条');
+            Ext.getCmp('yjh').setValue(resp.V_MONTH_NUM + '条');
+            Ext.getCmp('zjh').setValue(resp.V_WEEK_NUM + '条');
 
         }
     });
@@ -408,25 +425,25 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('cjgd').setValue(resp.V_CJ_NUM+'条');
-            Ext.getCmp('jsgd').setValue(resp.V_JS_NUM+'条');
-            Ext.getCmp('fkgd').setValue(resp.V_FK_NUM+'条');
-            Ext.getCmp('ysgd').setValue(resp.V_YS_NUM+'条');
-            Ext.getCmp('ylgd').setValue(resp.V_YL_NUM+'条');
+            Ext.getCmp('cjgd').setValue(resp.V_CJ_NUM + '条');
+            Ext.getCmp('jsgd').setValue(resp.V_JS_NUM + '条');
+            Ext.getCmp('fkgd').setValue(resp.V_FK_NUM + '条');
+            Ext.getCmp('ysgd').setValue(resp.V_YS_NUM + '条');
+            Ext.getCmp('ylgd').setValue(resp.V_YL_NUM + '条');
 
         }
     });
 
 
 }
-function dealWith(URL, V_ORDERID, V_DBGUID, V_ORDERGUID, V_FLOWSTEP,V_FLOWTYPE) {
-    checktabid=parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
+function dealWith(URL, V_ORDERID, V_DBGUID, V_ORDERGUID, V_FLOWSTEP, V_FLOWTYPE) {
+    checktabid = parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
     var owidth = window.document.body.offsetWidth - 800;
     var oheight = window.document.body.offsetHeight - 200;
-    if (V_FLOWTYPE=='WORK'){
-        window.open(AppUrl +"page"+ URL+"?V_ORDERID="+V_ORDERID+"&V_DBGUID="+V_DBGUID+"&V_ORDERGUID="+V_ORDERGUID+"&V_FLOWSTEP="+V_FLOWSTEP ,
+    if (V_FLOWTYPE == 'WORK') {
+        window.open(AppUrl + "page" + URL + "?V_ORDERID=" + V_ORDERID + "&V_DBGUID=" + V_DBGUID + "&V_ORDERGUID=" + V_ORDERGUID + "&V_FLOWSTEP=" + V_FLOWSTEP,
             "", 'height=' + 600 + ',width=' + 1000 + ',top=10px,left=10px,resizable=no');
-    }else{
+    } else {
         window.open(AppUrl + "page" + URL + "?V_GUID=" + V_ORDERGUID + '&random=' + Math.random(),
             "", 'height=' + 600 + ',width=' + 1000 + ',top=10px,left=10px,resizable=no');
     }
@@ -445,7 +462,7 @@ function addEdit(id) {
 }
 
 function Query() {
-    tabIndex=parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
+    tabIndex = parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
     OnPageLoad();
     Ext.getCmp('page').store.currentPage = 1;
     Ext.data.StoreManager.lookup('gridStore').load();
@@ -456,13 +473,11 @@ function rendererTime(value, metaData) {
     return value.split('.0')[0];
 }
 
-function toDownloadChrome()
-{
-    location.href = AppUrl+"/resources/Chrome28.exe";
+function toDownloadChrome() {
+    location.href = AppUrl + "/resources/Chrome28.exe";
 }
-function toDownloadLodop()
-{
-    location.href = AppUrl+"/resources/install_lodop32.exe";
+function toDownloadLodop() {
+    location.href = AppUrl + "/resources/install_lodop32.exe";
 }
 
 

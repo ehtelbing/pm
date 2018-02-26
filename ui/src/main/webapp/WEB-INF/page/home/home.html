@@ -1,182 +1,215 @@
 ﻿<!doctype html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>个人中心</title>
-	<!--<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>-->
-	<link href="../../css/home/Style/Main.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <!--<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>-->
+    <link href="../../css/home/Style/Main.css" rel="stylesheet" type="text/css"/>
 
 
-	<script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
-	<script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
-	<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
-	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../../pm/script/newangel.js"></script>
 
-	<script type="text/javascript" src="../../../pm/script/home/homenew.js"></script>
-	<style>
-		img { border:0px; vertical-align:middle; padding:0px; margin:0px; }
-		.btns { width:80px; height:40px;cursor:pointer; background:url("../../images/gif/buttonbackground3.png") no-repeat left top; color:#FFF; }
-		img,span {
-			cursor: pointer;
-		}
-		/* line 1, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
-		.x-mask {
-			filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
-			opacity: 0.7;
-			background: white;
-		}
+    <script type="text/javascript" src="../../../pm/script/home/homenew.js"></script>
+    <style>
+        img {
+            border: 0px;
+            vertical-align: middle;
+            padding: 0px;
+            margin: 0px;
+        }
 
-		/* line 9, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
-		.x-mask-msg {
-			padding: 8px;
-			-webkit-border-radius: 3px;
-			-moz-border-radius: 3px;
-			-ms-border-radius: 3px;
-			-o-border-radius: 3px;
-			border-radius: 3px;
-			background-image: none;
-			background-color: #e5e5e5;
-		}
+        .btns {
+            width: 80px;
+            height: 40px;
+            cursor: pointer;
+            background: url("../../images/gif/buttonbackground3.png") no-repeat left top;
+            color: #FFF;
+        }
 
-		/* line 29, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
-		.x-mask-msg-inner {
-			padding: 0;
-			background-color: transparent;
-			color: #666666;
-			font: normal 13px helvetica, arial, verdana, sans-serif;
-		}
+        img, span {
+            cursor: pointer;
+        }
 
-		/* line 41, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
-		.x-mask-msg-text {
-			padding: 21px 0 0;
-			background-image: url(../../css/Default1/ext-theme-neptune/images/loadmask/loading.gif);
-			background-repeat: no-repeat;
-			background-position: center 0;
-		}
-		/* line 1, ../../../ext-theme-base/sass/src/LoadMask.scss */
-		.x-mask {
-			z-index: 100;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			zoom: 1;
-		}
+        /* line 1, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
+        .x-mask {
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
+            opacity: 0.7;
+            background: white;
+        }
 
-		/* line 10, ../../../ext-theme-base/sass/src/LoadMask.scss */
-		.x-mask-shim {
-			z-index: 100;
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-		}
+        /* line 9, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
+        .x-mask-msg {
+            padding: 8px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            -ms-border-radius: 3px;
+            -o-border-radius: 3px;
+            border-radius: 3px;
+            background-image: none;
+            background-color: #e5e5e5;
+        }
 
-		/* line 20, ../../../ext-theme-base/sass/src/LoadMask.scss */
-		.x-mask-msg {
-			z-index: 20001;
-			position: absolute;
-		}
+        /* line 29, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
+        .x-mask-msg-inner {
+            padding: 0;
+            background-color: transparent;
+            color: #666666;
+            font: normal 13px helvetica, arial, verdana, sans-serif;
+        }
+
+        /* line 41, ../../../ext-theme-neutral/sass/src/LoadMask.scss */
+        .x-mask-msg-text {
+            padding: 21px 0 0;
+            background-image: url(../../css/Default1/ext-theme-neptune/images/loadmask/loading.gif);
+            background-repeat: no-repeat;
+            background-position: center 0;
+        }
+
+        /* line 1, ../../../ext-theme-base/sass/src/LoadMask.scss */
+        .x-mask {
+            z-index: 100;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            zoom: 1;
+        }
+
+        /* line 10, ../../../ext-theme-base/sass/src/LoadMask.scss */
+        .x-mask-shim {
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* line 20, ../../../ext-theme-base/sass/src/LoadMask.scss */
+        .x-mask-msg {
+            z-index: 20001;
+            position: absolute;
+        }
 
 
-	</style>
+    </style>
 </head>
 <body>
 <div class="maincontainer">
-	<div class="right">
-		<div class="taskbox">
-			<div class=""> </div>
-			<h2>我的待办任务<span onclick="_preDbView()" >未处理缺陷<i id="wclqxcount"></i></span>
-			</h2>
-			<!--<span onclick="_preDbView()">未处理年计划<i id="wclnjhcount"></i></span><span onclick="_preDbView()">未处理月计划<i id="wclyjhcount"></i></span><span onclick="_preDbView()">未处理周计划<i id="wclzjhcount"></i></span>-->
-			<ul class="tasklist">
-				<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="t1"  >
+    <div class="right">
+        <div class="taskbox">
+            <div class=""></div>
+            <h2>我的待办任务<span onclick="GoToDb()">流程待办<i id="onSumDb"></i>条</span><span onclick="_preDbView()">未处理缺陷<i
+                    id="wclqxcount"></i>条</span>
+            </h2>
+            <ul class="tasklist">
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="t1">
 
 
-				</table>
-				<!--<li><span>
+                </table>
+                <!--<li><span>
           <input type="button" name="button" id="button" value="确认办理">
           </span> 公司对学习宣传贯彻鞍钢首次党代会精神作出安排... <i>2017-10-11</i></li>
-				<li><span>
+                <li><span>
           <input type="button" name="button" id="button" value="确认办理">
           </span>公司一举荣获全国TnPM管理十二项奖项... <i>2017-10-09</i></li>
-				<li><span>
+                <li><span>
           <input type="button" name="button" id="button" value="确认办理">
           </span>铁矿石硅硫含量测定两项新国标接轨国际标准... <i>2017-09-28</i></li>-->
-			</ul>
-			<h2>工作小贴士</h2>
-			<table class="Ttable">
-				<caption>
-				</caption>
-				<thead>
-				<tr>
-					<th align="left">标题</th>
-					<th>日期</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr>
-					<td align="left"> 本年计划将于<i id="njhsd"></i>进行锁定 </td>
-					<td align="center"><span id="njhrq"></span></td>
-				</tr>
-				<tr>
-					<td align="left">本月计划将于<i id="yjhsd"></i>进行锁定 </td>
-					<td align="center"><span id="yjhrq"></span></td>
-				</tr>
-				<tr>
-					<td align="left">本周计划将于<i id="zjhsd"></i>进行锁定 </td>
-					<td align="center"><span id="zjhrq"></span></td>
-				</tr>
+            </ul>
+            <h2>工作小贴士</h2>
+            <table class="Ttable">
+                <caption>
+                </caption>
+                <thead>
+                <tr>
+                    <th align="left">标题</th>
+                    <th>日期</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td align="left"> 本年计划将于<i id="njhsd"></i>进行锁定</td>
+                    <td align="center"><span id="njhrq"></span></td>
+                </tr>
+                <tr>
+                    <td align="left">本月计划将于<i id="yjhsd"></i>进行锁定</td>
+                    <td align="center"><span id="yjhrq"></span></td>
+                </tr>
+                <tr>
+                    <td align="left">本周计划将于<i id="zjhsd"></i>进行锁定</td>
+                    <td align="center"><span id="zjhrq"></span></td>
+                </tr>
 
-				</tbody>
-			</table>
-		</div>
-		<div class="imbox">
-			<h2>最新公告</h2>
-			<ul class="gonggaolist">
-				<li><span>
+                </tbody>
+            </table>
+        </div>
+        <div class="imbox">
+            <h2>最新公告</h2>
+            <ul class="gonggaolist">
+                <li><span>
           
-          </span> <img src="../../css/home/images/bullet_blue.png" width="16" height="16"  alt="" />公司对学习宣传贯彻鞍钢首次党代会... <i>2017-10-09</i></li>
-				<li><span>
+          </span> <img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>公司对学习宣传贯彻鞍钢首次党代会...
+                    <i>2017-10-09</i></li>
+                <li><span>
           
-          </span><img src="../../css/home/images/bullet_blue.png" width="16" height="16"  alt=""/>公司一举荣获全国TnPM管理十二项... <i>2017-09-29</i></li>
-				<li><span>
+          </span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>公司一举荣获全国TnPM管理十二项...
+                    <i>2017-09-29</i></li>
+                <li><span>
          
-          </span><img src="../../css/home/images/bullet_blue.png" width="16" height="16"  alt=""/>铁矿石硅硫含量测定两项新国标接轨... <i>2017-09-19</i></li>
-			</ul>
-			<h2>快捷方式</h2>
-			<ul class="imlist">
-				<li><img src="../../css/home/images/c03.jpg" onclick="toYearPlan()"  alt="" title="年计划" width ="70" height="70" >
-					<div><span id="spnjh" onclick="toYearPlan()">年计划</span></div>
-				</li>
-				<li><img src="../../css/home/images/c06.jpg" onclick="toMonthPlan()" width ="70" height="70" alt="" title="月计划">
-					<div><span onclick="toMonthPlan()">月计划</span></div>
-				</li>
-				<li><img src="../../css/home/images/c05.jpg" onclick="toWeekPlan()" width ="70" height="70" alt="" title="周计划">
-					<div><span onclick="toWeekPlan()">周计划</span></div>
-				</li>
-				<li><img src="../../css/home/images/c07.jpg" onclick="toDailyCheck()"  width ="70" height="70" alt="" title="日常点检">
-					<div><span onclick="toDailyCheck()">日常点检</span></div>
-				</li>
-				<li><img src="../../css/home/images/c02.jpg" onclick="toDefectManage()"  width ="70" height="70"  alt="" title="缺陷处理">
-					<div><span onclick="toDefectManage()">缺陷处理</span></div>
-				</li>
-				<li><img src="../../css/home/images/c01.jpg" onclick="toOrderCreate()"   width ="70" height="70" alt="" title="快捷工单">
-					<div><span onclick="toOrderCreate()">快捷工单</span></div>
-				</li>
-			</ul>
-			<div class="clare"></div>
-			<h2>常用工具</h2>
-			<ul class="imlist">
-				<li><img src="../../css/home/images/c07.jpg"  onclick="toDownloadChrome()" width="70" height="70"  alt=""/>
-					<div><span onclick="toDownloadChrome()">浏览器</span></div>
-				</li>
-				<li><img src="../../css/home/images/c08.jpg"  onclick="toDownloadLodop()" width="70" height="70"  alt=""/>
-					<div><span onclick="toDownloadLodop()">打印控件</span></div>
-				</li>
-			</ul>
-		</div>
-	</div>
+          </span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量测定两项新国标接轨... <i>2017-09-19</i>
+                </li>
+            </ul>
+            <h2>快捷方式</h2>
+            <ul class="imlist">
+                <li><img src="../../css/home/images/c03.jpg" onclick="toYearPlan()" alt="" title="年计划" width="70"
+                         height="70">
+
+                    <div><span id="spnjh" onclick="toYearPlan()">年计划</span></div>
+                </li>
+                <li><img src="../../css/home/images/c06.jpg" onclick="toMonthPlan()" width="70" height="70" alt=""
+                         title="月计划">
+
+                    <div><span onclick="toMonthPlan()">月计划</span></div>
+                </li>
+                <li><img src="../../css/home/images/c05.jpg" onclick="toWeekPlan()" width="70" height="70" alt=""
+                         title="周计划">
+
+                    <div><span onclick="toWeekPlan()">周计划</span></div>
+                </li>
+                <li><img src="../../css/home/images/c07.jpg" onclick="toDailyCheck()" width="70" height="70" alt=""
+                         title="日常点检">
+
+                    <div><span onclick="toDailyCheck()">日常点检</span></div>
+                </li>
+                <li><img src="../../css/home/images/c02.jpg" onclick="toDefectManage()" width="70" height="70" alt=""
+                         title="缺陷处理">
+
+                    <div><span onclick="toDefectManage()">缺陷处理</span></div>
+                </li>
+                <li><img src="../../css/home/images/c01.jpg" onclick="toOrderCreate()" width="70" height="70" alt=""
+                         title="快捷工单">
+
+                    <div><span onclick="toOrderCreate()">快捷工单</span></div>
+                </li>
+            </ul>
+            <div class="clare"></div>
+            <h2>常用工具</h2>
+            <ul class="imlist">
+                <li><img src="../../css/home/images/c07.jpg" onclick="toDownloadChrome()" width="70" height="70"
+                         alt=""/>
+
+                    <div><span onclick="toDownloadChrome()">浏览器</span></div>
+                </li>
+                <li><img src="../../css/home/images/c08.jpg" onclick="toDownloadLodop()" width="70" height="70" alt=""/>
+
+                    <div><span onclick="toDownloadLodop()">打印控件</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
 </html>
