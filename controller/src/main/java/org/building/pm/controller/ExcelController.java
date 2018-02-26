@@ -32,6 +32,8 @@ public class ExcelController {
     @Autowired
     private SgService sgService;
 
+
+
     @Autowired
     private QxService qxService;
 
@@ -43,6 +45,9 @@ public class ExcelController {
 
     @Autowired
     private PM_12Service pm_12Service;
+
+    @Autowired
+    private PM_22Service pm_22Service;
 
     /*事故EXCEL*/
     @RequestMapping(value = "/SG_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
@@ -133,6 +138,149 @@ public class ExcelController {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
                 response.setHeader("Content-Disposition", "attachment; filename="
                         + URLEncoder.encode("事故Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/FXJH_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void FXJH_EXCEL(@RequestParam(value = "V_V_IP") String V_V_IP,
+                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                           @RequestParam(value = "V_D_INDATE_B") String V_D_INDATE_B,
+                           @RequestParam(value = "V_D_INDATE_E") String V_D_INDATE_E,
+                           @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                           @RequestParam(value = "V_V_DEFECT") String V_V_DEFECT,
+                           @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                         HttpServletResponse response)
+            throws //com.fasterxml.jackson.core.JsonProcessingException,
+            NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        V_V_DEFECT = new String(V_V_DEFECT.getBytes("iso-8859-1"), "utf-8");
+
+        Map<String, Object> data = pm_22Service.PRO_PM_EQUREPAIRPLAN_VIEW(V_V_IP, V_V_PERCODE, V_V_ORGCODE, V_V_DEPTCODE,
+                V_D_INDATE_B, V_D_INDATE_E,V_V_SPECIALTY,V_V_DEFECT,V_V_FLAG);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for(int i=0;i<=1;i++){
+            sheet.setColumnWidth(i,3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("放行工程编码");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("放行建设单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("放行计划金额");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("申请日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("项目编号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("项目名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("缺陷内容");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("计划施工日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("工程总概算（万元）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("工程总预算（万元）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("检修单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
+        cell.setCellValue("是否特殊抢修");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 14);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 15);
+        cell.setCellValue("申请厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 16);
+        cell.setCellValue("申请作业区");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_PROJECTCODE_GS") == null ? "" : map.get("V_PROJECTCODE_GS").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_REPAIRDEPT_GS") == null ? "" : map.get("V_REPAIRDEPT_GS").toString());
+                row.createCell((short) 3).setCellValue(map.get("F_MONEY_GS") == null ? "" : map.get("F_MONEY_GS").toString());
+                row.createCell((short) 4).setCellValue(map.get("D_DATE") == null ? "" : map.get("D_DATE").toString());
+                row.createCell((short) 5).setCellValue(map.get("V_PROJECTCODE") == null ? "" : map.get("V_PROJECTCODE").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_PROJECTNAME") == null ? "" : map.get("V_PROJECTNAME").toString());
+                row.createCell((short) 7).setCellValue(map.get("V_DEFECT") == null ? "" : map.get("V_DEFECT").toString());
+                row.createCell((short) 8).setCellValue(map.get("V_PLANDATE") == null ? "" : map.get("V_PLANDATE").toString());
+                row.createCell((short) 9).setCellValue(map.get("V_SPECIALTY") == null ? "" : map.get("V_SPECIALTY").toString());
+                row.createCell((short) 10).setCellValue(map.get("F_MONEYUP") == null ? "" : map.get("F_MONEYUP").toString());
+                row.createCell((short) 11).setCellValue(map.get("F_MONEYBUDGET") == null ? "" : map.get("F_MONEYBUDGET").toString());
+                row.createCell((short) 12).setCellValue(map.get("V_REPAIRDEPT") == null ? "" : map.get("V_REPAIRDEPT").toString());
+                row.createCell((short) 13).setCellValue(map.get("I_RUSHTO") == null ? "" : map.get("I_RUSHTO").toString());
+                row.createCell((short) 14).setCellValue(map.get("V_INMAN") == null ? "" : map.get("V_INMAN").toString());
+                row.createCell((short) 15).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+                row.createCell((short) 16).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("放行计划Excel.xls", "UTF-8"));
                 OutputStream out = response.getOutputStream();
 
                 wb.write(out);

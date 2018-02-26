@@ -128,7 +128,6 @@ Ext.onReady(function () {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_VIEW',
-            // url: 'PRO_PM_EQUREPAIRPLAN_VIEW',
             actionMethods: {
                 read: 'POST'
             },
@@ -261,6 +260,15 @@ Ext.onReady(function () {
             //icon: imgpath + '/add.png',
             handler: _fangxingjihua,
             style: 'margin: 5px 0px 10px 2px'
+        },{
+            xtype: 'button',
+            text: '导出excel',
+            icon: imgpath + '/excel.gif',
+            width: 100,
+            style: 'margin: 5px 0px 10px 2px',
+            listeners: {
+                click: ExcelButton
+            }
         }
         ]
     });
@@ -376,7 +384,21 @@ Ext.onReady(function () {
         layout: 'border',
         items: [panel2, grid]
     });
-})
+});
+
+function ExcelButton() {
+    var V_V_IP = '';
+    var V_V_FLAG = '审批通过';
+    document.location.href=AppUrl + 'excel/FXJH_EXCEL?V_V_IP='+V_V_IP+
+        '&V_V_PERCODE='+Ext.util.Cookies.get('v_personcode')
+       + '&V_V_ORGCODE='+Ext.getCmp("ck").getValue()
+       + '&V_V_DEPTCODE='+Ext.getCmp("zyq").getValue()
+       + '&V_D_INDATE_B='+Ext.getCmp("begintime").getSubmitValue()
+       + '&V_D_INDATE_E='+Ext.getCmp("endtime").getSubmitValue()
+       + '&V_V_SPECIALTY='+ Ext.getCmp('zy').getValue()
+       + '&V_V_DEFECT='+ Ext.getCmp('qxcontent').getValue()
+       + '&V_V_FLAG='+ V_V_FLAG;
+}
 
 function queryGrid() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');

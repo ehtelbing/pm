@@ -419,6 +419,33 @@ public class MwdService {
         return result;
     }
 
+    public HashMap PM_REAPIR_STANDARD_DATA_GET(String V_V_GUID) throws SQLException {
+
+        logger.info("begin PM_REAPIR_STANDARD_DATA_GET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_GET" + "(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_REAPIR_STANDARD_DATA_GET");
+        return result;
+    }
+
     //选择设备类型列表
     public HashMap GET_EQU_TYPE_LIST_ABLE() throws SQLException {
 
@@ -1065,7 +1092,8 @@ public class MwdService {
     }
 
     //查询维修标准主表
-    public Map PM_REAPIR_STANDARD_DATA_SEL(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUCODE, String V_V_REPAIR_NAME, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+    public Map PM_REAPIR_STANDARD_DATA_SEL(String V_V_ORGCODE, String V_V_DEPTCODE,
+                                           String V_V_EQUCODE, String V_V_REPAIR_NAME, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_REAPIR_STANDARD_DATA_SEL");
 
@@ -1076,7 +1104,8 @@ public class MwdService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_SEL(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_REPAIR_NAME,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_SEL(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_REPAIR_NAME," +
+                    ":V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
@@ -1129,6 +1158,8 @@ public class MwdService {
         logger.info("end PM_REAPIR_STANDARD_GX_SEL");
         return result;
     }
+
+
 
     //查询当前工序
     public HashMap PRO_DJ601_ORDERET(String ORDERID_IN) throws SQLException {
@@ -1641,6 +1672,98 @@ public class MwdService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_REPAIR_JS_STANDARD_EDIT");
+        return result;
+    }
+
+    public HashMap PM_REAPIR_STANDARD_GX_SET(String V_V_GXCODE,String V_V_GXNAME, String V_V_CONTENT, String V_V_TIEM, String V_V_WORKTYPE,
+                                             String V_V_WORKPER_NUM, String V_V_TOOL,String V_V_AQ,String V_V_XZ_DEPT,String V_V_INPER,
+                                             String V_V_INTIME,int V_V_ORDER,String V_V_WORKWAY, String V_V_JSYQ,String V_V_REPAIR_CODE)
+            throws SQLException {
+
+        logger.info("begin PM_REAPIR_STANDARD_GX_SET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            //conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_GX_SET" + "(:V_V_GXCODE,:V_V_GXNAME,:V_V_CONTENT," +
+                    ":V_V_TIEM,:V_V_WORKTYPE,:V_V_WORKPER_NUM,:V_V_TOOL,:V_V_AQ,:V_V_XZ_DEPT,:V_V_INPER,:V_V_INTIME,:V_V_ORDER," +
+                    ":V_V_WORKWAY,:V_V_JSYQ,:V_V_REPAIR_CODE,:V_INFO)}");
+            cstmt.setString("V_V_GXCODE", V_V_GXCODE);
+            cstmt.setString("V_V_GXNAME", V_V_GXNAME);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setString("V_V_TIEM", V_V_TIEM);
+            cstmt.setString("V_V_WORKTYPE", V_V_WORKTYPE);
+            cstmt.setString("V_V_WORKPER_NUM", V_V_WORKPER_NUM);
+            cstmt.setString("V_V_TOOL", V_V_TOOL);
+            cstmt.setString("V_V_AQ", V_V_AQ);
+            cstmt.setString("V_V_XZ_DEPT", V_V_XZ_DEPT);
+            cstmt.setString("V_V_INPER", V_V_INPER);
+            cstmt.setString("V_V_INTIME", V_V_INTIME);
+            cstmt.setInt("V_V_ORDER", V_V_ORDER);
+            cstmt.setString("V_V_WORKWAY", V_V_WORKWAY);
+            cstmt.setString("V_V_JSYQ", V_V_JSYQ);
+            cstmt.setString("V_V_REPAIR_CODE", V_V_REPAIR_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_REAPIR_STANDARD_GX_SET");
+        return result;
+    }
+
+    public HashMap PM_REAPIR_STANDARD_DATA_SET(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUCODE,String V_V_EQUNAME,String V_V_PROJECT_IMG,
+                                               String V_V_WORK_BEFORE,String V_V_WORK_PER,String V_V_WORK_CRAFT,String V_V_WORK_TOOL,
+                                               String V_V_WORK_TIME, String V_V_SUM_TIME, String V_V_WORK_AQ, String V_V_WORK_DEPT,String V_V_REPAIR_NAME
+    ) throws SQLException {
+
+        logger.info("begin PM_REAPIR_STANDARD_DATA_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            // conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_SET" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUNAME,:V_V_PROJECT_IMG," +
+                    ":V_V_WORK_BEFORE,:V_V_WORK_PER,:V_V_WORK_CRAFT,:V_V_WORK_TOOL,:V_V_WORK_TIME,:V_V_SUM_TIME,:V_V_WORK_AQ,:V_V_WORK_DEPT,:V_V_REPAIR_NAME," +
+                    ":V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUNAME", V_V_EQUNAME);
+            cstmt.setString("V_V_PROJECT_IMG", V_V_PROJECT_IMG);
+            cstmt.setString("V_V_WORK_BEFORE", V_V_WORK_BEFORE);
+            cstmt.setString("V_V_WORK_PER", V_V_WORK_PER);
+            cstmt.setString("V_V_WORK_CRAFT", V_V_WORK_CRAFT);
+            cstmt.setString("V_V_WORK_TOOL", V_V_WORK_TOOL);
+            cstmt.setString("V_V_WORK_TIME", V_V_WORK_TIME);
+            cstmt.setString("V_V_SUM_TIME", V_V_SUM_TIME);
+            cstmt.setString("V_V_WORK_AQ", V_V_WORK_AQ);
+            cstmt.setString("V_V_WORK_DEPT", V_V_WORK_DEPT);
+            cstmt.setString("V_V_REPAIR_NAME", V_V_REPAIR_NAME);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_REAPIR_STANDARD_DATA_SET");
         return result;
     }
 
@@ -2553,6 +2676,33 @@ public class MwdService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_REPAIR_JS_STANDARD_DEL");
+        return result;
+    }
+
+    public HashMap PM_REAPIR_STANDARD_DATA_DEL(String V_V_GUID) throws SQLException {
+
+        logger.info("begin PM_REAPIR_STANDARD_DATA_DEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_DEL" + "(:V_V_GUID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_REAPIR_STANDARD_DATA_DEL");
         return result;
     }
 

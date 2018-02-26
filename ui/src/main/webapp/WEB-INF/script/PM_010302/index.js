@@ -3,7 +3,9 @@ var deptStoreLoad = false;
 var sbTypeStoreLoad = false;
 var sbNameStoreLoad = false;
 var V_V_EDIT_GUID = '';
+var V_V_FILEGUID = '';
 var V_PICGUID = '';
+var V_V_REPAIR_GUID = '';
 var sh = window.screen.height / 2 + 42;
 var sw = window.screen.width / 2 - 130;
 
@@ -108,7 +110,7 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('V_V_EQUTYPECODE').select(store.last());
+                Ext.getCmp('V_V_EQUCODE').select(store.last());
                 sbTypeStoreLoad = true;
                 _init();
             }
@@ -134,17 +136,41 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('V_V_EQUCODE').select(store.first());
+                Ext.getCmp('V_V_EQUNAME').select(store.first());
                 sbNameStoreLoad = true;
                 _init();
             }
         }
     });
 
+    var imageStore = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'imageStore',
+        fields: ['I_ID', 'V_FILENAME', 'V_FILETYPE', 'V_INPER', 'V_INPERNAME', 'V_INTIME', 'V_GUID', 'V_FILEGUID'],
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'mwd/PM_REPAIRT_IMG_TABLE_DATA',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'RET'
+            },
+            extraParams: {}
+        })
+    });
+
     var reapirStandardDataStore = Ext.create('Ext.data.Store', {
         id: 'reapirStandardDataStore',
         autoLoad: false,
-        fields: ['I_ID', 'V_GUID', 'V_ORGCODE', 'V_DEPTCODE', 'V_EQUCODE', 'V_EQUNAME', 'V_PROJECT_IMG', 'V_WORK_BEFORE', 'V_WORK_PER', 'V_WORK_TIME', 'V_WORK_CRAFT', 'V_WORK_TOOL', 'V_SUM_TIME', 'V_WORK_AQ', 'V_WORK_DEPT', 'V_REPAIR_NAME'],
+        fields: ['I_ID', 'V_GUID', 'V_ORGCODE',
+            'V_DEPTCODE', 'V_EQUCODE', 'V_EQUNAME',
+            'V_PROJECT_IMG', 'V_WORK_BEFORE', 'V_WORK_PER',
+            'V_WORK_TIME', 'V_WORK_CRAFT', 'V_WORK_TOOL',
+            'V_SUM_TIME', 'V_WORK_AQ', 'V_WORK_DEPT',
+            'V_REPAIR_NAME'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'mwd/PM_REAPIR_STANDARD_DATA_SEL',
@@ -163,7 +189,9 @@ Ext.onReady(function () {
     var reapirStandardGXStore = Ext.create('Ext.data.Store', {
         id: 'reapirStandardGXStore',
         autoLoad: false,
-        fields: ['V_GXCODE', 'V_GXNAME', 'V_CONTENT', 'V_TIEM', 'V_WORKTYPE', 'V_WORKPER_NUM', 'V_TOOL', 'V_AQ', 'V_XZ_DEPT', 'V_INPER', 'V_INTIME', 'V_ORDER', 'V_WORKWAY', 'V_JSYQ', 'V_REPAIR_CODE'],
+        fields: ['V_GXCODE', 'V_GXNAME', 'V_CONTENT', 'V_TIEM', 'V_WORKTYPE',
+            'V_WORKPER_NUM', 'V_TOOL', 'V_AQ', 'V_XZ_DEPT', 'V_INPER', 'V_INTIME',
+            'V_ORDER', 'V_WORKWAY', 'V_JSYQ', 'V_REPAIR_CODE'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'mwd/PM_REAPIR_STANDARD_GX_SEL',
@@ -184,10 +212,10 @@ Ext.onReady(function () {
         height: window.screen.height / 2 - 120,
         border: false,
         columnLines: true,
-        /*selModel: {
-         selType: 'checkboxmodel',
-         mode: 'SIMPLE'
-         },*/
+        selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SINGLE'
+        },
         columns: [{
             xtype: 'rownumberer',
             text: '序号',
@@ -235,10 +263,15 @@ Ext.onReady(function () {
             align: 'center',
             renderer: atleft,
             width: 120
+        },{
+            text: '添加详情',
+            align: 'center',
+            renderer : detail
         }],
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
                 _selectGX(record.data.V_GUID);
+                _preViewImage(record.data.V_GUID);
             }
         },
         dockedItems: [{
@@ -247,17 +280,7 @@ Ext.onReady(function () {
             store: reapirStandardDataStore,
             dock: 'bottom',
             displayInfo: true
-        }]/*,
-        bbar: [{
-            id: 'page',
-            xtype: 'pagingtoolbar',
-            dock: 'bottom',
-            displayInfo: true,
-            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-            emptyMsg: '没有记录',
-            store: reapirStandardDataStore
-        }]*/
-
+        }]
     });
 
     var reapirStandardGXGridPanel = Ext.create('Ext.grid.Panel', {
@@ -265,10 +288,6 @@ Ext.onReady(function () {
         store: reapirStandardGXStore,
         border: false,
         columnLines: true,
-        /*selModel: {
-         selType: 'checkboxmodel',
-         mode: 'SIMPLE'
-         },*/
         columns: [{
             text: '程序',
             dataIndex: 'V_GXNAME',
@@ -329,7 +348,6 @@ Ext.onReady(function () {
                 listeners: {
                     change: function (field, newValue, oldValue) {
                         _selectDept();
-
                     }
                 }
             }, {
@@ -352,7 +370,7 @@ Ext.onReady(function () {
                 }
             }, {
                 xtype: 'combo',
-                id: 'V_V_EQUTYPECODE',
+                id: 'V_V_EQUCODE',
                 store: sbTypeStore,
                 fieldLabel: '设备类型',
                 style: ' margin: 5px 0px 5px 10px',
@@ -369,7 +387,7 @@ Ext.onReady(function () {
                 }
             }, {
                 xtype: 'combo',
-                id: 'V_V_EQUCODE',
+                id: 'V_V_EQUNAME',
                 store: sbNameStore,
                 fieldLabel: '设备名称',
                 style: ' margin: 5px 0px 5px 10px',
@@ -391,21 +409,58 @@ Ext.onReady(function () {
                 text: '查询',
                 style: ' margin: 5px 0px 5px 20px',
                 icon: imgpath + '/search.png',
-                handler: _selectReapirStandardData
-            }]
+                handler: _select
+            }, {
+                xtype: 'button',
+                text: '添加',
+                style: ' margin: 5px 0px 5px 10px',
+                icon: imgpath + '/add.png',
+                handler: _insert
+            }, {
+                xtype: 'button',
+                text: '修改',
+                style: ' margin: 5px 0px 5px 10px',
+                icon: imgpath + '/edit.png',
+                handler: _update
+            },{
+                xtype: 'button',
+                text: '删除',
+                style: ' margin: 5px 0px 5px 10px',
+                icon: imgpath + '/delete.png',
+                handler: _delete
+            }
+
+            ]
         }]
 
     });
 
-    var viewImagePanel = Ext.create("Ext.panel.Panel", {
+    var viewImagePanel = Ext.create("Ext.form.Panel", {
         id: 'viewImagePanel',
         editable: false,
-        frame: true,
         region: 'center',
-        width: 500,
-        border: false,
-        html: "<div id = 'yulan'> <table border='0' width='50%' height='100%'><tr> <td> </td><td> <img src='" + imgpath + "/sblj.jpg' width= '" + sw + "px' height='" + sh + "px' /> </td> <td> </td> </tr> <tr> <td></td> <td align='center'></td> <td></td> </tr> </table> </div>",
-        style: ' margin: -1px 0px 0pbx 0px'
+        items: [{
+            layout: 'column',
+            defaults: {
+                labelAlign: 'right'
+            },
+            items: [{
+                        xtype: 'box',
+                        id: 'browseImage',
+                        fieldLabel: "预览图片",
+                        autoEl: {
+                            width: window.screen.width / 2 - 110,
+                            height: window.screen.height / 2 + 38,
+                            tag: 'input',
+                            type: 'image',
+                            src: Ext.BLANK_IMAGE_URL,
+                    style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe; margin-left: 0px;margin-top: 0px;',
+                    // complete: 'off',
+                    id: 'imageBrowse',
+                    name: 'imageBrowse'
+                }
+            }]
+        }]
     });
 
     var leftPanel = Ext.create('Ext.Panel', {
@@ -484,7 +539,6 @@ function _selectEquType() {
     sbTypeStore.proxy.extraParams = {
         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
         'V_V_DEPTCODENEXT': Ext.getCmp('V_V_DEPTCODE').getValue()
-
     };
     sbTypeStore.load();
 }
@@ -494,13 +548,12 @@ function _selectEquName() {
     sbNameStore.proxy.extraParams = {
         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
         'V_V_DEPTCODENEXT': Ext.getCmp('V_V_DEPTCODE').getValue(),
-        'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUTYPECODE').getValue()
-
+        'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUCODE').getValue()
     };
     sbNameStore.load();
 }
 
-function _selectReapirStandardData() {
+function _select() {
     var reapirStandardDataStore = Ext.data.StoreManager.lookup('reapirStandardDataStore');
     reapirStandardDataStore.proxy.extraParams = {
         'V_V_ORGCODE': Ext.getCmp('V_V_ORGCODE').getValue(),
@@ -515,10 +568,113 @@ function _selectReapirStandardData() {
     reapirStandardDataStore.load();
 }
 
-function _selectGX(V_GUID) {
+function _update() {
+    var records = Ext.getCmp('reapirStandardDataGridPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+
+    window.open(AppUrl + 'page/PM_01020102/index_update.html?V_V_ORGCODE=' + records[0].get('V_ORGCODE') +
+        '&V_V_DEPTCODE=' + records[0].get('V_DEPTCODE') + '&V_V_EQUCODE=' + records[0].get('V_EQUCODE') +
+        '&V_V_EQUNAME=' + records[0].get('V_EQUNAME') + '&V_V_GUID=' + records[0].get('V_GUID'), '_blank',
+        'width=900,height=600,resizable=yes,scrollbars=yes');
+}
+
+function _delete() {
+
+    var records = Ext.getCmp('reapirStandardDataGridPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+
+    Ext.Ajax.request({
+        url: AppUrl + 'mwd/PM_REAPIR_STANDARD_DATA_DEL',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_GUID': records[0].get('V_GUID')
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);
+            if (data.V_INFO == 'SUCCESS') {
+                _select();
+                Ext.Msg.alert('提示信息', '删除成功');
+                _deleteFile(records[0].get('V_GUID'));
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: '删除失败',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+    _selectGX(V_V_GUID = null);
+
+}
+
+function _deleteFile(V_V_GUID) {
+
+    Ext.Ajax.request({
+        url: AppUrl + 'mwd/PM_REPAIRT_IMG_GUID_DEL',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_GUID': V_V_GUID
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);
+            if (data.V_INFO == 'success') {
+
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: '删除附件失败',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+}
+
+function _selectGX(V_V_GUID) {
     var reapirStandardGXStore = Ext.data.StoreManager.lookup('reapirStandardGXStore');
     reapirStandardGXStore.proxy.extraParams = {
-        V_V_REPAIR_GUID: V_GUID
+        V_V_REPAIR_GUID: V_V_GUID
 
     };
     reapirStandardGXStore.load();
@@ -532,4 +688,84 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
     return value;
+}
+
+function detail(a,value,metaData){
+
+    return '<a href="javascript:insert(\'' + metaData.data.V_GUID + '\')">添加详情</a>';
+}
+
+function insert(V_GUID){
+    var metaData = Ext.getCmp('reapirStandardDataGridPanel').getSelectionModel().getSelection();
+    window.open(AppUrl + 'page/PM_01020101/index_insert.html?V_V_ORGCODE=' + metaData[0].get('V_ORGCODE') +
+        '&V_V_DEPTCODE=' + metaData[0].get('V_DEPTCODE') + '&V_V_EQUCODE=' +metaData[0].get('V_EQUCODE') +
+        '&V_V_EQUNAME=' +metaData[0].get('V_EQUNAME') + '&V_V_GUID=' +metaData[0].get('V_GUID') ,'_blank',
+        'width=900,height=600,resizable=yes,scrollbars=yes');
+}
+
+function _insert(){
+    var V_V_ORGCODE = Ext.getCmp('V_V_ORGCODE').getSubmitValue();
+    var V_V_DEPTCODE = Ext.getCmp('V_V_DEPTCODE').getSubmitValue();
+    var V_V_EQUCODE = Ext.getCmp('V_V_EQUCODE').getSubmitValue();
+    var V_V_EQUNAME = Ext.getCmp('V_V_EQUNAME').getSubmitValue();
+    var V_V_REPAIR_NAME = Ext.getCmp('V_V_REPAIR_NAME').getSubmitValue();
+
+    if(V_V_DEPTCODE == '%'){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择作业区',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    if(V_V_EQUCODE == '%'){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备类型',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    if(V_V_EQUNAME == '%'){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+
+    window.open(AppUrl + 'page/PM_01020101/index_01.html?V_V_ORGCODE=' + V_V_ORGCODE +
+        '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUCODE=' + V_V_EQUCODE +
+        '&V_V_EQUNAME=' + V_V_EQUNAME , '_blank',
+        'width=900,height=600,resizable=yes,scrollbars=yes');
+
+}
+
+function _preViewImage(V_V_GUID) {
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    imageStore.proxy.extraParams = {
+        'V_V_GUID': V_V_GUID,
+        'V_V_FILEGUID': '',
+        'V_V_FILETYPE': '检修作业标准'
+    };
+    imageStore.load();
+
+    index = 0;
+    if (imageStore.getCount() != 0) {
+        V_V_FILEGUID = imageStore.getAt(0).get('V_FILEGUID');
+        var url = AppUrl + 'mwd/PM_REPAIRT_IMG_SEL_DATA?V_V_GUID=' + V_V_GUID + '&V_V_FILEGUID=' + V_V_FILEGUID +
+            '&V_V_FILETYPE=' + encodeURI(encodeURI('检修作业标准')) + '&V_V_FILENAME=' + encodeURI(encodeURI(imageStore.getAt(0).get('V_FILENAME')));
+
+        Ext.getCmp("browseImage").getEl().dom.src = url;
+        picguidbegin = V_V_FILEGUID;
+    } else {
+        var url = AppUrl + 'mwd/PM_REPAIRT_IMG_SEL_DATA?V_V_GUID=' + V_V_GUID + '&V_V_FILEGUID=' + V_V_FILEGUID +
+            '&V_V_FILETYPE=' + encodeURI(encodeURI('检修作业标准')) + '&V_V_FILENAME=' + encodeURI(encodeURI('JSBZ'));
+
+        Ext.getCmp("browseImage").getEl().dom.src = url;
+    }
 }
