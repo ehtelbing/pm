@@ -102,7 +102,7 @@ Ext.onReady(function () {
         style: 'background-color:#FFFFFF',
         items:[
             {xtype : 'button', icon : '../../images/gif/search.png',text : '查询',style : ' margin: 5px 0px 5px 50px', width : 80,listeners: {click: QueryGrid}},
-            {xtype : 'button', icon : '../../images/gif/search.png',text : '生成修旧工单',style : ' margin: 5px 5px 0px 10px', width : 110,listeners: {click: QueryGrid}},
+            {xtype : 'button', icon : '../../images/gif/search.png',text : '生成修旧工单',style : ' margin: 5px 5px 0px 10px', width : 110,listeners: {click: createOrder}},
             {xtype : 'button', icon : '../../images/gif/search.png',text : '导出Excel',style : ' margin: 5px 0px 5px 10px', width : 90,listeners: {click: OnButtonExcelClicked}}]
     });
     var grid= Ext.create('Ext.grid.Panel', {
@@ -225,6 +225,6 @@ function createOrder(){
         return;
     }
 
-    window.open(AppUrl + "page/PM_100402/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
+    window.open(AppUrl + "page/PM_100402/index.html?MATERIALCODE=" + record[0].data.MATERIALCODE + "&MATERIALNAME=" + record[0].data.MATERIALNAME ,
         "", "dialogHeight:700px;dialogWidth:1100px");
 }
