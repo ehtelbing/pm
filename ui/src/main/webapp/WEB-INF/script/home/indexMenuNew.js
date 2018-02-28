@@ -562,21 +562,41 @@ function handlerMenu(item, e) {
         if (item.src == undefined) {
             Ext.example.msg('提示', '正在建设中');
         } else {
-            tab = Ext.create('Ext.panel.Panel', {
-                id: item.sid,
-                title: item.text,
-                closable: true,
-                html: [
-                    '<iframe id="Workspace'
-                    , item.sid
-                    , '" name="Workspace'
-                    , item.sid
-                    , '" frameborder="0" width="100%" height="100%" src="'
-                    , AppUrlFrame
-                    , item.src
-                    , '" />'
-                ].join('')
-            });
+
+            if(item.flag==0){
+                tab = Ext.create('Ext.panel.Panel', {
+                    id: item.sid,
+                    title: item.text,
+                    closable: true,
+                    html: [
+                        '<iframe id="Workspace'
+                        , item.sid
+                        , '" name="Workspace'
+                        , item.sid
+                        , '" frameborder="0" width="100%" height="100%" src="'
+                        , AppUrlFrame
+                        , item.src
+                        , '" />'
+                    ].join('')
+                });
+            }else{
+                tab = Ext.create('Ext.panel.Panel', {
+                    id: item.sid,
+                    title: item.text,
+                    closable: true,
+                    html: [
+                        '<iframe id="Workspace'
+                        , item.sid
+                        , '" name="Workspace'
+                        , item.sid
+                        , '" frameborder="0" width="100%" height="100%" src="'
+                        , ''
+                        , item.src
+                        , '" />'
+                    ].join('')
+                });
+            }
+
             container.add(tab);
             container.setActiveTab(tab);
         }

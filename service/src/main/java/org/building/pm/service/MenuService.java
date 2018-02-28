@@ -44,10 +44,13 @@ public class MenuService {
             temp.put("id", rs.getString("V_MENUCODE").toString());
             temp.put("text", rs.getString("V_MENUNAME").toString());
             temp.put("pid", rs.getString("V_MENUCODE_UP").toString());
+
             if(rs.getString("V_URL")!=null) {
                 temp.put("src", rs.getString("V_URL").toString());
+                temp.put("flag", rs.getString("V_OTHER").toString());
             }else{
                 temp.put("src", "");
+                temp.put("flag", "");
             }
             result.add(temp);
         }
@@ -99,6 +102,7 @@ public class MenuService {
             Map item = new LinkedHashMap();
             item.put("sid",m.get("id").toString());
             item.put("text", m.get("text").toString());
+            item.put("flag", m.get("flag").toString());
             //查询子级
             List<Map> mmm = this.getMenuItems(list, m.get("id").toString());
             if(mmm.size()>0) {
