@@ -539,6 +539,15 @@ Ext.onReady(function () {
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             {text: '计划状态', width: 70, dataIndex: 'V_STATENAME', align: 'center'/*, renderer: atleft*/},
+            {
+                text: '详细',
+                dataIndex: 'V_ORDERID',
+                width: 55,
+                align: 'center',
+                renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+                }
+            },
             {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center'},
             {text: '专业', width: 70, dataIndex: 'V_REPAIRMAJOR_CODE', align: 'center'},
             {xtype: 'linebreakcolumn', text: '检修内容', width: 250, dataIndex: 'V_CONTENT', align: 'center'},
@@ -576,8 +585,8 @@ Ext.onReady(function () {
                     }
                     return null;
                 }
-            },
-            {text: '流程步骤', align: 'center', width: 140, dataIndex: 'V_FLOWNAME', renderer: rendererStep}],
+            }/*,
+            {text: '流程步骤', align: 'center', width: 140, dataIndex: 'V_FLOWNAME', renderer: rendererStep}*/],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -596,7 +605,10 @@ Ext.onReady(function () {
     });
 
     _init();
-
+    stateStore
+    Ext.data.StoreManager.lookup('stateStore').on('load', function () {
+        OnButtonQueryClicked();
+    });
 });
 
 function _init() {
@@ -1002,4 +1014,41 @@ function rendererStep(value, metaData, record, rowIndex, colIndex, store, view) 
     })
 
     return stepValue;
+}
+
+function _preViewProcess(businessKey)
+{
+
+    var ProcessInstanceId='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if(data.msg == 'Ok'){
+                ProcessInstanceId=data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    })
+
+    var owidth = window.screen.availWidth;
+    var oheight =  window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }
