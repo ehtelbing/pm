@@ -605,7 +605,6 @@ Ext.onReady(function () {
     });
 
     _init();
-    stateStore
     Ext.data.StoreManager.lookup('stateStore').on('load', function () {
         OnButtonQueryClicked();
     });

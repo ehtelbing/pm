@@ -361,6 +361,15 @@ Ext.onReady(function () {
         height: 400,
         columns: [{xtype: 'rownumberer', text: '序号', width : 50,align:'center'},
             {text: '计划状态', width : 70, dataIndex: 'V_STATENAME', align: 'center'/*, renderer: atleft*/},
+            {
+                text: '详细',
+                dataIndex: 'V_ORDERID',
+                width: 55,
+                align: 'center',
+                renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+                }
+            },
             {text: '设备名称', width : 140, dataIndex: 'V_EQUNAME', align: 'center'},
             //{text: '设备编号',flex: 1, dataIndex: 'V_EQUCODE', align: 'center', renderer: atleft},
             {text: '专业',  width : 70, dataIndex: 'V_REPAIRMAJOR_CODE', align: 'center'},
@@ -395,8 +404,8 @@ Ext.onReady(function () {
                         return gridStore.getAt(index).get('V_INDATE').substring(0,19);
                     }
                     return null;
-                }},
-            {text: '流程步骤', align: 'center',width : 140,dataIndex: 'V_FLOWNAME'}],
+                }}/*,
+            {text: '流程步骤', align: 'center',width : 140,dataIndex: 'V_FLOWNAME'}*/],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -428,6 +437,10 @@ Ext.onReady(function () {
     grid.on("itemcontextmenu",function(view,record,item,index,e){
         e.preventDefault();
         contextmenu.showAt(e.getXY());
+    });
+
+    Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
+        OnButtonQueryClicked();
     });
 });
 
@@ -714,5 +727,41 @@ function OnButtonExcelClicked() {
         + '&V_V_PEROCDE=' + Ext.util.Cookies.get('v_personcode');
 
 
+
+}
+function _preViewProcess(businessKey)
+{
+
+    var ProcessInstanceId='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if(data.msg == 'Ok'){
+                ProcessInstanceId=data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    })
+
+    var owidth = window.screen.availWidth;
+    var oheight =  window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
