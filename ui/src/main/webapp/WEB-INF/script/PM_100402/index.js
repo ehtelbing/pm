@@ -1,5 +1,8 @@
 var V_GUID = null;
 var V_EQUTYPECODE = null;
+var MATERIALCODE = null;
+var MATERIALNAME = null;
+var KCID = null;
 var processKey = '';
 var V_NEXT_SETP = '';
 var V_STEPNAME = '';
@@ -9,6 +12,10 @@ var flag = '';
 if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
     V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPECODE;
+    MATERIALCODE = Ext.urlDecode(location.href.split('?')[1]).MATERIALCODE;
+    MATERIALNAME = Ext.urlDecode(location.href.split('?')[1]).MATERIALNAME;
+    KCID = Ext.urlDecode(location.href.split('?')[1]).KCID;
+
 }
 
 $(function () {
@@ -24,8 +31,6 @@ $(function () {
     loadTypelist();
     loadDEPT();
     loadRepairList();
-    loadTaskGrid();
-    loadMatList();
 
 
     $("#V_EQUNAME").click(function () {
@@ -96,7 +101,8 @@ function loadDEPT() {//工厂单位
 
         }
     });
-
+    $("#V_EQUIP_NAME").val(MATERIALCODE);
+    $("#V_EQUIP_NO").val(MATERIALNAME);
 
 }
 
@@ -124,8 +130,8 @@ function loadZYQ(dwcode) {
 }
 
 function createDD() {
-    $.ajax({//作业区
-        url: AppUrl + 'PROJECT/PRO_PM_WORKORDER_DD_CREATE',
+    $.ajax({
+        url: AppUrl + 'PROJECT/PRO_PM_WORKORDER_DD_CREATE_XJ',
         type: 'post',
         async: false,
         data: {
@@ -141,18 +147,38 @@ function createDD() {
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
                 $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
+                $("#D_DATE_ACP").html(resp.list[0].D_DATE_ACP);
+                $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
+                $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
+                $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
+                $("#V_REPAIRSIGN").html(resp.list[0].V_REPAIRSIGN);
+                $("#V_REPAIRPERSON").html(resp.list[0].V_REPAIRPERSON);
+                $("#V_POSTMANSIGN").html(resp.list[0].V_POSTMANSIGN);
+                $("#V_CHECKMANCONTENT").html(resp.list[0].V_CHECKMANCONTENT);
+                $("#V_CHECKMANSIGN").html(resp.list[0].V_CHECKMANSIGN);
+                $("#V_WORKSHOPCONTENT").html(resp.list[0].V_WORKSHOPCONTENT);
+                $("#V_WORKSHOPSIGN").html(resp.list[0].V_WORKSHOPSIGN);
+                $("#V_DEPTSIGN").html(resp.list[0].V_DEPTSIGN);
 
                 $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
                 $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
                 $("#V_EQUSITE").val(resp.list[0].V_FUNC_LOC);
+                $("#D_START_DATE").val(resp.list[0].D_START_DATE);
+                $("#D_FINISH_DATE").val(resp.list[0].D_FINISH_DATE);
+                $("#V_TOOL").val(resp.list[0].V_TOOL);
+                $("#V_TECHNOLOGY").val(resp.list[0].V_TECHNOLOGY);
+                $("#V_SAFE").val(resp.list[0].V_SAFE);
 
                 $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
+                $("#V_ENTERED_BY").html(resp.list[0].V_ENTERED_BY);
+                $("#D_ENTER_DATE").html(resp.list[0].D_ENTER_DATE);
+                $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
+                $("#D_FACT_FINISH_DATE").html(resp.list[0].D_FACT_FINISH_DATE);
 
                 $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
-                $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
-                $("#V_ORDERID").html(resp.list[0].V_ORDERID);
-                $("#V_DEPTCODEREPARIR").val(
-                    resp.list[0].V_DEPTCODEREPARIR);
+                $("#V_SHORT_TXT").val(resp.list[0].V_SHORT_TXT);
+                 $("#V_ORDERID").html(resp.list[0].V_ORDERID);
+                $("#V_DEPTCODEREPARIR").val(resp.list[0].V_DEPTCODEREPARIR);
                 $("#tool").val(resp.list[0].V_TOOL);
                 $("#tech").val(resp.list[0].V_TECHNOLOGY);
                 $("#safe").val(resp.list[0].V_SAFE);
@@ -174,7 +200,7 @@ function loadTypelist() {
         type: 'post',
         async: false,
         data: {
-            V_V_SOURCECODE: 'defct01'
+            V_V_SOURCECODE: 'defct11'
         },
         success: function (resp) {
             var result = [];
@@ -187,31 +213,19 @@ function loadTypelist() {
 }
 
 function loadRepairList() {
-    Ext.Ajax.request({
-        url: AppUrl + 'zdh/fixdept_sel',
-        method: 'POST',
+    $.ajax({
+        url: AppUrl + 'PROJECT/PRO_PM_REPAIRDEPT_VIEW ',
+        type: 'post',
         async: false,
-        params: {
-            'V_V_DEPTCODE': $("#selZYQ").val()
+        data: {
+            V_V_DEPTCODE: $("#selZYQ").val()
         },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            $("#selPlant").empty();
+        success: function (resp) {
+            var result = [];
             $.each(resp.list, function (index, item) {
-                if (item.V_DEPTREPAIRCODE == $("#V_DEPTCODEREPARIR").val()) {
-                    $(
-                        "<option selected=\"selected\" value=\""
-                        + item.V_DEPTREPAIRCODE + "\">"
-                        + item.V_DEPTREPAIRNAME + "</option>")
-                        .appendTo("#selPlant");
-                } else {
-                    $(
-                        "<option value=\"" + item.V_DEPTREPAIRCODE + "\">"
-                        + item.V_DEPTREPAIRNAME + "</option>")
-                        .appendTo("#selPlant");
-                }
+                result.push("<option value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>");
             });
-
+            $("#selPlant").html(result.join(""));
             loadSPR();
         }
     });
@@ -253,139 +267,7 @@ function loadSPR() {
 /**
  * 加载编辑任务的grid
  */
-function loadTaskGrid(){
-    $
-        .ajax({
-            url : APP + '/ModelSelect',
-            // url: "/No410701/PRO_PM_WORKORDER_ET_OPERATIONS",
-            type : 'post',
-            async : false,
-            data : {
-                parName : [ 'V_V_ORDERGUID' ],
-                parType : [ 's' ],
-                parVal : [ $("#V_ORDERGUID").val() ],
-                proName : 'PRO_PM_WORKORDER_ET_OPERATIONS',
-                cursorName : 'V_CURSOR'
-            },
-            traditional : true,
-            success : function(resp) {
-                if (resp.list != "" && resp.list != null) {
-                    $("#TtableT tbody").empty();
-                    if (resp.list.length < 3) {
-                        $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
-                            "#TtableT tbody");
-                        for ( var i = 0; i < 3 - resp.list.length; i++) {
-                            $("#TtableT tbody")
-                                .append(
-                                "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-                        }
-                    } else {
-                        $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
-                            "#TtableT tbody");
-                        var tool = document.getElementById('tool');
-                        tool.style.height = $("#TtableT").height()-28;
-
-                        var tech = document.getElementById('tech');
-                        tech.style.height = $("#TtableT").height()-28;
-
-                        var safe = document.getElementById('safe');
-                        safe.style.height = $("#TtableT").height()-28;
-                    }
-                    // $("#TtableTaskTemplate").tmpl(resp.list).appendTo("#TtableT
-                    // tbody");
-                } else {
-                    $("#TtableT tbody").empty();
-                    for ( var i = 0; i < 3 ; i++) {
-                        $("#TtableT tbody")
-                            .append(
-                            "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-                    }
-                }
-            }
-        });
-}
-function OpenTask() {
-    var ret = window.showModalDialog(
-        '../../page/No41070101/Index.html?V_ORDERGUID='
-        + $("#V_ORDERGUID").val()
-        + '&V_DEPTREPAIRCODE=' + $("#selPlant").val()
-        + '', '41070101',
-        'dialogHeight:500px;dialogWidth:800px');
-    loadTaskGrid();
-}
-
-function OpenEditMat() {
-    if ($("#V_EQUCODE").val() == '') {
-        alert('请选择设备！');
-        return;
-    }
-    Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
-        type: "post",
-        async: false,
-        params: {
-            V_V_ORDERGUID: $("#V_ORDERGUID").val()
-        },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            if ($("#V_EQUIP_NO").val() == "") {
-                alert("设备编码不能为空.");
-            } else {
-                var owidth = window.document.body.offsetWidth - 200;
-                var oheight = window.document.body.offsetHeight - 100;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-                loadMatList();
-            }
-        }
-    });
-}
-
-
-function OpenGJJJ() {
-    var ret = window.showModalDialog(
-        '../../page/No41070103/Index.html?V_ORDERGUID='
-        + $("#V_ORDERGUID").val() + '', '41070103',
-        'dialogHeight:500px;dialogWidth:800px');
-    loadToolList();
-};
-
-function loadMatList() {
-    $.ajax({
-        url : APP + '/ModelSelect',
-        // url: "/No41070102/PRO_PM_WORKORDER_SPARE_VIEW",
-        type : 'post',
-        data : {
-            parName : [ 'V_V_ORDERGUID' ],
-            parType : [ 's' ],
-            parVal : [ $("#V_ORDERGUID").val() ],
-            proName : 'PRO_PM_WORKORDER_SPARE_VIEW',
-            cursorName : 'V_CURSOR'
-        },
-        traditional : true,
-        success : function(resp) {
-            if (resp.list != null && resp.list != "") {
-                $("#TtableM tbody").empty();
-                $.each(resp.list, function(index, item) {
-                    item["sid"] = index + 1;
-                });
-                $("#TtableMTemplate").tmpl(resp.list)
-                    .appendTo("#TtableM tbody");
-            } else {
-                $("#TtableM tbody").empty();
-            }
-            Ext.getBody().unmask();//去除页面笼罩
-        }
-    });
-}
 function CreateBill() {
-    var ss = $("#V_ORDERGUID").val();
-    if ($("#V_DEFECTLIST").val() == '') {
-        Ext.Msg.confirm('提示信息', '工单描述不能为空,请重新输入！');
-        return;
-    } else if ($("#V_EQUCODE").val() == '') {
-        Ext.Msg.confirm('提示信息', '设备编号不能为空,请重新输入！');
-        return;
-    }
 
     if (!confirm("确定下达工单?")) {
         return;
@@ -399,98 +281,20 @@ function BillGo() {
     Ext.Ajax.request({
         method: 'POST',
         async: false,
-        url: AppUrl + 'mm/SetMat',
+        url: AppUrl + 'oldR/PG_MM_JUNK_INTERFACE',
         params: {
-            V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-            x_personcode: Ext.util.Cookies.get('v_personcode')
+            V_USERID: $("#V_ORDERID").val(),
+            V_KCID:KCID,
+            F_MEND_AMOUNT:$("#V_FUNC_LOC").val(),
+            V_ORDERID:$("#V_ORDERGUID").val()
         },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);
-            if (resp.V_CURSOR == '1') {
-                Ext.Ajax.request({
-                    url: AppUrl + 'Activiti/StratProcess',
-                    async: false,
-                    method: 'post',
-                    params: {
-                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj"],
-                        parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！"],
-                        processKey: processKey,
-                        businessKey: $("#V_ORDERGUID").val(),
-                        V_STEPCODE: 'start',
-                        V_STEPNAME: V_STEPNAME,
-                        V_IDEA: '请审批！',
-                        V_NEXTPER: $("#selApprover").val(),
-                        V_INPER: Ext.util.Cookies.get('v_personcode')
-                    },
-                    success: function (response) {
-                        if (Ext.decode(response.responseText).ret == 'OK') {
-                            Ext.Ajax.request({
-                                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
-                                type: 'post',
-                                async: false,
-                                params: {
-                                    V_V_PERNAME: $.cookies.get('v_personcode'),
-                                    V_V_DEFECT_GUID: $.url().param("V_GUID"),
-                                    V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                                    V_V_EQUCODE: $("#V_EQUCODE").val(),
-                                    V_V_WORKORDER_TYPE: $("#selType").val(),
-                                    V_V_DEPTCODEREPARIR: $("#selPlant").val(),
-                                    V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
-                                    V_V_WBS: $("#wbsCode").val(),
-                                    V_V_WBS_TXT: $("#proName").val(),
-                                    V_D_START_DATE: $("#planStartDate").val(),
-                                    V_D_FINISH_DATE: $("#planFinDate").val()
-                                },
-                                success: function (response) {
-                                    var resp = Ext.decode(response.responseText);
-                                    if (resp.RET == '成功') {
-                                        Ext.Ajax.request({
-                                            method: 'POST',
-                                            async: false,
-                                            url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
-                                            params: {
-                                                V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                                                V_V_SEND_STATE: "成功"
-                                            },
-                                            success: function (response) {
-                                                //   Ext.getBody().unmask();//去除页面笼罩
-                                                alert("工单创建成功：" + $("#V_ORDERID").html());
-                                                history.go(0);
-                                            }
-                                        });
-                                    } else {
-                                        alert("工单保存失败！");
-                                    }
-                                }
-                            });
-                        } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                            Ext.Msg.alert('提示', '该流程发起失败！');
-                             Ext.getBody().unmask();//去除页面笼罩
-                            history.go(0);
-                        }
-                    }
-                });
+        success: function (resp) {
+            //   Ext.getBody().unmask();//去除页面笼罩
+            alert("工单创建成功：" + $("#V_ORDERID").html());
+            history.go(0);
 
-            }
-            else {
-                Ext.Ajax.request({
-                    method: 'POST',
-                    async: false,
-                    url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
-                    params: {
-                        V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                        V_V_SEND_STATE: "失败"
-                    },
-                    success: function (response) {
-                        // Ext.getBody().unmask();//去除页面笼罩
-                        alert("工单创建失败：" + $("#V_ORDERID").html());
-                        history.go(0);
-                    }
-                });
-            }
         }
     });
-
 
 }
 

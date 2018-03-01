@@ -33,17 +33,13 @@ public class OldRepairService {
 
         ResultSetMetaData rsm = rs.getMetaData();
 
-        int colNum = 0;
-
-        colNum = rsm.getColumnCount();
+        int colNum = rsm.getColumnCount();
 
         while (rs.next()) {
             HashMap model = new HashMap();
             for (int i = 1; i <= rsm.getColumnCount(); i++) {
                 if (rsm.getColumnType(i) == 91) {
-                    model.put(rsm.getColumnName(i),
-                            rs.getString(i) == null ? "" : rs.getString(i)
-                                    .split("\\.")[0]);
+                    model.put(rsm.getColumnName(i), rs.getString(i) == null ? "" : rs.getString(i).split("\\.")[0]);
                 } else {
                     if (rsm.getColumnType(i) == 2) {
                         if (rs.getString(i) == null) {
@@ -52,9 +48,7 @@ public class OldRepairService {
                             model.put(rsm.getColumnName(i), rs.getDouble(i));
                         }
                     } else {
-                        model.put(rsm.getColumnName(i),
-                                rs.getString(i) == null ? "" : rs.getString(i)
-                                        .toString().replaceAll("\\n", ""));
+                        model.put(rsm.getColumnName(i), rs.getString(i) == null ? "" : rs.getString(i).toString().replaceAll("\\n", ""));
                     }
                 }
             }
@@ -114,6 +108,34 @@ public class OldRepairService {
             conn.close();
         }
         logger.info("end GETWAITMENDKCTABLE");
+        return result;
+    }
+
+    public Map PG_MM_JUNK_INTERFACE(String V_USERID, String V_KCID,int F_MEND_AMOUNT,String V_ORDERID) throws SQLException{
+        logger.info("begin outputMendForOrder");
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = nammDataSource.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PG_MM_JUNK_INTERFACE.outputMendForOrder(:V_USERID,:V_KCID,:F_MEND_AMOUNT,:V_ORDERID,:RET_ID,:RET_MSG,:RET)}");
+            cstmt.setString("V_USERID", V_USERID);
+            cstmt.setString("V_KCID", V_KCID);
+            cstmt.setInt("F_MEND_AMOUNT", F_MEND_AMOUNT);
+            cstmt.setString("V_ORDERID", V_ORDERID);
+            cstmt.registerOutParameter("RET_ID", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end outputMendForOrder");
         return result;
     }
 }

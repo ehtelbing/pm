@@ -225,6 +225,8 @@ function createOrder(){
         return;
     }
 
-    window.open(AppUrl + "page/PM_100402/index.html?MATERIALCODE=" + record[0].data.MATERIALCODE + "&MATERIALNAME=" + record[0].data.MATERIALNAME ,
+    window.open(AppUrl + "page/PM_100402/index.html?MATERIALCODE=" + record[0].data.MATERIALCODE
+        + "&MATERIALNAME=" + record[0].data.MATERIALNAME
+    + "&KCID=" + record[0].data.KCID ,
         "", "dialogHeight:700px;dialogWidth:1100px");
 }

@@ -55,8 +55,6 @@
         .btnprint {
             width: 128px;
             height: 26px;
-            background-image:
-            url('../../../pm/images/gif/btnprint.png');
             background-repeat: no-repeat;
             border: 0px;
         }
@@ -64,8 +62,6 @@
         .btnWBS {
             width: 16px;
             height: 16px;
-            background-image:
-            url('../../../pm/images/gif/add.png');
             background-repeat: no-repeat;
             border: 0px;
         }
@@ -92,6 +88,9 @@
 </div>
 <br />
 <div style="padding-bottom: 10px">
+    审批人：&nbsp;&nbsp;&nbsp;
+    <select id="selApprover" style="background-color: #FFFF99; width:150px; height:25px"></select>
+    &nbsp;&nbsp;&nbsp;
     <input type="button" value="生成工单" id="btnCreateBill" class="btnprint"
            onclick="CreateBill();" />
     &nbsp;&nbsp;&nbsp;
@@ -116,7 +115,7 @@
                     </td>
                     <td
                             style="border-bottom: 1px solid #000; border-right: 0px; width: 70%; text-align: left">
-                        <select id="V_ORGNAME" style="background-color: #FFFF99; width:100%; height:25px"></select>
+                        <select id="selDW" style="background-color: #FFFF99; width:100%; height:25px"></select>
                     </td>
                 </tr>
                 <tr>
@@ -125,7 +124,7 @@
                         作业区：
                     </td>
                     <td style="border-bottom: 1px solid #000; border-right: 0px; width: 70%; text-align: left">
-                        <select id="V_DEPTNAME" style="background-color: #FFFF99; width:100%; height:25px"></select>
+                        <select id="selZYQ" style="background-color: #FFFF99; width:100%; height:25px"></select>
                     </td>
                 </tr>
                 <tr>
@@ -134,7 +133,7 @@
                         旧件编码：
                     </td>
                     <td style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">
-                        <input type="text" id="V_EQUIP_NAME" readonly="readonly" style="height:20px; line-height:20px; width:100%" />
+                        <input type="text" id="V_EQUIP_NAME" readonly="readonly" value="" style="height:20px; line-height:20px; width:100%" />
                     </td>
                 </tr>
                 <tr>
@@ -154,7 +153,7 @@
                     </td>
                     <td
                             style="border-bottom: 0px solid #000; border-right: 0px; text-align: left">
-                        <input type="text" id="V_FUNC_LOC" readonly="readonly" style="background-color: #FFFF99; height:25px; width:100%; line-height:20px" />
+                        <input type="text" id="V_FUNC_LOC" value="1" style="background-color: #FFFF99; height:25px; width:100%; line-height:20px" />
                     </td>
                 </tr>
             </table>
@@ -172,10 +171,8 @@
                             style="border-top: 0px; border-left: 0px; width: 30%; text-align: right; background-color: #BFDFFF">
                         检修类型：
                     </td>
-                    <td
-                            style="border-top: 0px; border-right: 0px; width: 70%; text-align: left"
-                            colspan="1">
-                        <select id="" style="background-color: #FFFF99; width:100%; height:25px">
+                    <td style="border-top: 0px; border-right: 0px; width: 70%; text-align: left" colspan="1">
+                        <select id="selType" style="background-color: #FFFF99; width:100%; height:25px">
 
                         </select>
                     </td>
@@ -204,7 +201,7 @@
                     <td
                             style="border-top: 0px; border-right: 0px; width: 70%; text-align: left"
                             colspan="2">
-                        <select id="V_DEPTNAMEREPARIR" style="background-color: #FFFF99; width:100%; height:25px">
+                        <select id="selPlant" style="background-color: #FFFF99; width:100%; height:25px">
 
                         </select>
 
@@ -215,9 +212,8 @@
                             style="border-top: 0px; height:50px; border-left: 0px; border-bottom: 0px; width: 30%; text-align: right; background-color: #BFDFFF">
                         工单描述：
                     </td>
-                    <td
-                            style="border-top: 0px; border-right: 0px; border-bottom: 0px; width: 70%; text-align: left"colspan="2">
-                        <textarea id="V_SHORT_TXT" cols="2"style="width: 100%; height:50px; background-color: #FFFF99;"></textarea>
+                    <td style="border-top: 0px; border-right: 0px; border-bottom: 0px; width: 70%; text-align: left"colspan="2">
+                        <textarea id="V_SHORT_TXT" cols="2"  style="width: 100%; height:50px; background-color: #FFFF99;"></textarea>
                     </td>
                 </tr>
             </table>
@@ -263,9 +259,6 @@
                     <td
                             style="border-bottom: 0;border-right: 1px solid #000; border-left: 0; text-align: left" colspan="3">
                         <input type="text" id="D_FINISH_DATE" style="width: 98%; height:20px; background-color: #FFFF99;" />
-                    </td>
-                    <!--<td style="border-bottom: 1px solid #000; border-right: 0px;" colspan="3"-->
-                    <!--id="D_FINISH_DATE">-->
                     </td>
                 </tr>
                 <tr>
@@ -526,7 +519,7 @@
                         验收日期：
                     </td>
                     <td
-                            style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left">
+                            style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left" id="D_DATE_ACP">
                         &nbsp;
                     </td>
                     <td
@@ -534,7 +527,7 @@
                         提前、逾期时间：
                     </td>
                     <td
-                            style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left">
+                            style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left" id="I_OTHERHOUR">
                         &nbsp;
                     </td>
                     <td
@@ -542,7 +535,7 @@
                         逾期原因：
                     </td>
                     <td
-                            style="width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left">
+                            style="width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left" id="V_OTHERREASON">
                         &nbsp;
                     </td>
                 </tr>
@@ -551,14 +544,14 @@
                             style="width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
                         检修方说明：
                     </td>
-                    <td style="width: 22%; border-bottom: 0px; text-align: left">
+                    <td style="width: 22%; border-bottom: 0px; text-align: left" id="V_REPAIRCONTENT">
                         &nbsp;
                     </td>
                     <td
                             style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
                         检修方签字：
                     </td>
-                    <td style="width: 22%; border-bottom: 0px; text-align: left">
+                    <td style="width: 22%; border-bottom: 0px; text-align: left" id="V_REPAIRSIGN">
                         &nbsp;
                     </td>
                     <td
@@ -566,7 +559,7 @@
                         检修人员：
                     </td>
                     <td
-                            style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left">
+                            style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left" id="V_REPAIRPERSON">
                         &nbsp;
                     </td>
                 </tr>
@@ -575,14 +568,14 @@
                             style="width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
                         岗位签字：
                     </td>
-                    <td style="width: 22%; border-bottom: 0px; text-align: left">
+                    <td style="width: 22%; border-bottom: 0px; text-align: left" id="V_POSTMANSIGN">
                         &nbsp;
                     </td>
                     <td
                             style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
                         点检员验收意见：
                     </td>
-                    <td style="width: 22%; border-bottom: 0px; text-align: left">
+                    <td style="width: 22%; border-bottom: 0px; text-align: left" id="V_CHECKMANCONTENT">
                         &nbsp;
                     </td>
                     <td
@@ -590,7 +583,7 @@
                         点检员签字：
                     </td>
                     <td
-                            style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left">
+                            style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left" id="V_CHECKMANSIGN">
                         &nbsp;
                     </td>
                 </tr>
@@ -599,14 +592,14 @@
                             style="width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
                         作业区验收：
                     </td>
-                    <td style="width: 22%; border-bottom: 0px; text-align: left">
+                    <td style="width: 22%; border-bottom: 0px; text-align: left" id="V_WORKSHOPCONTENT">
                         &nbsp;
                     </td>
                     <td
                             style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
                         库管员签字：
                     </td>
-                    <td style="width: 22%; border-bottom: 0px; text-align: left">
+                    <td style="width: 22%; border-bottom: 0px; text-align: left" id="V_WORKSHOPSIGN">
                         &nbsp;
                     </td>
                     <td
@@ -614,7 +607,7 @@
                         部门签字：
                     </td>
                     <td
-                            style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left">
+                            style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left" id="V_DEPTSIGN">
                         &nbsp;
                     </td>
                 </tr>
