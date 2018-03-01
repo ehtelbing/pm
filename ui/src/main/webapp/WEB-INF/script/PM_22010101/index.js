@@ -135,6 +135,13 @@ Ext.onReady(function () {
                 Ext.getCmp('zyq').select(store.first());
                 zyqstoreload = true;
                 _init();
+                Ext.ComponentManager.get('sbtype').getStore().removeAll();
+                ssbtype.load({
+                    params: {
+                        V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+                        V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue()
+                    }
+                });
             }
         }
     });
@@ -359,7 +366,41 @@ Ext.onReady(function () {
             }
         }
     });
+    var ssbtype = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'ssbtype',
+        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'qx/PRO_PM_07_DEPTEQUTYPE_PER',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
 
+    var ssbname = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'ssbname',
+        fields: ['V_EQUCODE', 'V_EQUNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'qx/PRO_PM_07_DEPTEQU_PER_DROP',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
 
     var filegridPanel = Ext.create("Ext.panel.Panel", {
         id: 'filegridPanel',
@@ -452,6 +493,7 @@ Ext.onReady(function () {
         id : 'panel3',
         //title : '<fmt:message key="inputPanel" />',
         header : false,
+        autoScroll:true,
         frame : true,
         layout : 'vbox',
         defaults : {
@@ -559,6 +601,41 @@ Ext.onReady(function () {
                 width: 500,
                 labelAlign: 'right'
             }  ]
+        },{
+            xtype: 'panel',
+            region: 'center',
+            layout: 'column',
+            frame: true,
+            baseCls: 'my-panel-no-border',
+            items: [{
+                id: 'sbtype',
+                xtype: 'combo',
+                store: ssbtype,
+                editable: false,
+                fieldLabel: '设备类型',
+                labelWidth: 100,
+                labelAlign: 'right',
+                style: ' margin: 5px 0px 0px 0px',
+                width: 250,
+                displayField: 'V_EQUTYPENAME',
+                valueField: 'V_EQUTYPECODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
+                id: 'sbname',
+                xtype: 'combo',
+                store: ssbname,
+                editable: false,
+                fieldLabel: '设备名称',
+                labelWidth: 100,
+                labelAlign: 'right',
+                style: ' margin: 5px 0px 0px 0px',
+                width: 250,
+                displayField: 'V_EQUNAME',
+                valueField: 'V_EQUCODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            } ]
         },{
             xtype: 'panel',
             region: 'center',
@@ -811,25 +888,6 @@ Ext.onReady(function () {
             frame: true,
             baseCls: 'my-panel-no-border',
             items: [ {
-                id: 'qxsmjfy',
-                xtype: 'textarea',
-                fieldLabel: '缺陷说明及费用 ',
-                editable: false,
-                labelWidth: 100,
-                queryMode: 'local',
-                fieldStyle:'background-color: #FFEBCD; background-image: none;',
-                //baseCls: 'margin-bottom',
-                style: ' margin: 5px 0px 0px 0px',
-                width: 500,
-                labelAlign: 'right'
-            }]
-        },{
-            xtype: 'panel',
-            region: 'center',
-            layout: 'column',
-            frame: true,
-            baseCls: 'my-panel-no-border',
-            items: [ {
                 id: 'cqfa',
                 xtype: 'textarea',
                 fieldLabel: '采取方案 ',
@@ -842,11 +900,64 @@ Ext.onReady(function () {
                 width: 500,
                 labelAlign: 'right'
             }]
+        },{
+            xtype: 'panel',
+            region: 'center',
+            layout: 'column',
+            frame: true,
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                id: 'qxsmjfy',
+                xtype: 'textarea',
+                fieldLabel: '缺陷说明及费用 ',
+                editable: false,
+                labelWidth: 100,
+                queryMode: 'local',
+                fieldStyle:'background-color: #FFEBCD; background-image: none;',
+                //baseCls: 'margin-bottom',
+                style: ' margin: 5px 0px 0px 0px',
+                width: 470,
+                labelAlign: 'right'
+            },{
+                xtype: 'button',
+                text: '+',
+                height:65,
+                style: 'margin: 5px 5px 5px 5px',
+                handler: qxSelect
+                //style: 'margin: 5px 0px 10px 0px'
+            }]
+        },{
+            xtype: 'panel',
+            region: 'center',
+            layout: 'column',
+            frame: true,
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                id: 'mxxz',
+                xtype: 'textarea',
+                fieldLabel: '模型选择 ',
+                editable: false,
+                labelWidth: 100,
+                queryMode: 'local',
+                fieldStyle:'background-color: #FFEBCD; background-image: none;',
+                //baseCls: 'margin-bottom',
+                style: ' margin: 5px 0px 0px 0px',
+                width: 470,
+                labelAlign: 'right'
+            },{
+                xtype: 'button',
+                text: '+',
+                height:65,
+                style: 'margin: 5px 5px 5px 5px',
+                handler: mxSelect
+                //style: 'margin: 5px 0px 10px 0px'
+            }]
         }]
     });
 
     Ext.create('Ext.container.Viewport', {
         id: "viewport",
+        autoScroll:true,
         layout : {
             type : 'border',
             regionWeights : {
@@ -874,6 +985,49 @@ Ext.onReady(function () {
     _init();
 
     _preViewImage();//初始加载图片
+
+
+
+    Ext.ComponentManager.get("zyq").on("change", function () {
+        Ext.ComponentManager.get('sbtype').getStore().removeAll();
+        ssbtype.load({
+            params: {
+                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue()
+            }
+        });
+    });
+
+    ssbtype.on("load", function () {
+        //Ext.getCmp("sbtype").select(ssbtype.findRecord('V_EQUTYPENAME', '全部'));
+        Ext.getCmp("sbtype").select(ssbtype.getAt(0));
+        ssbname.load({
+            params: {
+                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue(),
+                V_V_EQUTYPECODE : Ext.getCmp("sbtype").getValue()
+
+            }
+        });
+
+
+    });
+
+    Ext.getCmp("sbtype").on("change", function () {
+        Ext.ComponentManager.get('sbname').getStore().removeAll();
+        ssbname.load({
+            params: {
+                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue(),
+                V_V_EQUTYPECODE : Ext.getCmp("sbtype").getValue()
+            }
+        });
+    });
+
+    var flag = 1;
+    ssbname.on("load", function () {
+        Ext.getCmp("sbname").select(ssbname.getAt(0));
+    });
 })
 
 function _init(){
@@ -1395,4 +1549,27 @@ function save()
 function _close()
 {
     window.close();
+}
+
+function qxSelect(){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_22010106/index.html??V_GUID='+V_GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+
+}
+function mxSelect(){
+    if(Ext.getCmp('sbtype').getValue()=='%'){
+        alert("请选择设备类型");
+        return;
+    }
+    if(Ext.getCmp('sbname').getValue()=='%'){
+        alert("请选择设备名称");
+        return;
+    }
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_22010105/index.html?V_GUID=' + V_GUID + '&V_ORGCODE=' +
+        Ext.getCmp('ck').getValue() + '&V_DEPTCODE=' + Ext.getCmp('zyq').getValue() + '&V_EQUTYPE=' + Ext.getCmp('sbtype').getValue() + '&V_EQUCODE=' +
+        Ext.getCmp('sbname').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+
 }
