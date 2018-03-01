@@ -540,6 +540,15 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
+        {
+            text: '详细',
+            dataIndex: 'V_ORDERID',
+            width: 55,
+            align: 'center',
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+            }
+        },
         {text: '厂矿', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_ORGNAME'},
         {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
@@ -568,8 +577,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width: 150,
             dataIndex: 'V_INDATE',
             renderer: Ext.util.Format.dateRenderer('Y-m-d H:m:s')
-        },
-        {text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME'},
+        }/*,
+        {text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME'},*/
     ],
     bbar: ["->",
         {
@@ -680,6 +689,8 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('stateStore').on('load', function () {
         Ext.data.StoreManager.lookup('stateStore').insert(0, {V_BASENAME: '全部', V_BASECODE: '%'});
         Ext.getCmp("state").select(Ext.data.StoreManager.lookup('stateStore').getAt(0));
+
+        Ext.data.StoreManager.lookup('gridStore').load();
     });
     Querytime();
     Ext.getCmp('zks').setValue(getWeekStartDate());
@@ -1292,4 +1303,41 @@ function guid() {
     }
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+function _preViewProcess(businessKey)
+{
+
+    var ProcessInstanceId='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if(data.msg == 'Ok'){
+                ProcessInstanceId=data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    })
+
+    var owidth = window.screen.availWidth;
+    var oheight =  window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }

@@ -59,7 +59,7 @@ Ext.define('Ext.grid.column.LineBreakColumn', {
 });
 
 Ext.onReady(function () {
-    Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
+   // Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     Ext.QuickTips.init();
     var dt = new Date();
     var thisYear = dt.getFullYear();
@@ -90,7 +90,7 @@ Ext.onReady(function () {
                 'V_V_DEPTCODENEXT': '%',
                 'V_V_DEPTTYPE': '基层单位'
             }
-        }),
+        })/*,
         listeners: {
             load: function (store, records) {
 
@@ -98,7 +98,7 @@ Ext.onReady(function () {
                 ckStoreLoad = true;
                 _init();
             }
-        }
+        }*/
     });
 
     //作业区加载
@@ -117,14 +117,14 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
+        })/*,
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('zyq').select(store.first());
                 zyqStoreLoad = true;
                 _init();
             }
-        }
+        }*/
     });
 
     var zyStore = Ext.create('Ext.data.Store', {
@@ -142,14 +142,14 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
+        })/*,
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('zy').select(store.first());
                 zyStoreLoad = true;
                 _init();
             }
-        }
+        }*/
     });
 
     var sbmcStore = Ext.create('Ext.data.Store', {
@@ -167,14 +167,14 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
+        })/*,
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('sbmc').select(store.first());
                 sbmcStoreLoad = true;
                 _init();
             }
-        }
+        }*/
     });
 
     var sblxStore = Ext.create('Ext.data.Store', {
@@ -192,14 +192,14 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
+        })/*,
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('sblx').select(store.first());
                 sblxStoreLoad = true;
                 _init();
             }
-        }
+        }*/
     });
 
     var nextSprStore = Ext.create("Ext.data.Store", {
@@ -250,7 +250,7 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        },
+        }/*,
         listeners: {
             load: function (store, records) {
                 store.insert(0, {
@@ -262,7 +262,7 @@ Ext.onReady(function () {
 
                 _init();
             }
-        }
+        }*/
     });
 
     //表格信息加载
@@ -304,7 +304,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PRO_PM_03_PLAN_YEAR_VIEW',
+            url: AppUrl + 'cjy/PRO_PM_03_PLAN_YEAR_VIEW',
             actionMethods: {
                 read: 'POST'
             },
@@ -362,7 +362,7 @@ Ext.onReady(function () {
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
             labelWidth: 80,
-            width: 250,
+            width: 250/*,
             listeners: {
                 change: function (field, newValue, oldValue) {
                     _ck_zyqload();
@@ -371,7 +371,7 @@ Ext.onReady(function () {
                     _zyq_sblx();
                     _zyq_sbmc();
                 }
-            }
+            }*/
         }, {
             xtype: 'combo',
             id: "zyq",
@@ -382,7 +382,7 @@ Ext.onReady(function () {
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
             labelWidth: 80,
-            width: 250,
+            width: 250/*,
             listeners: {
                 select: function (field, newValue, oldValue) {
                     // _zyq_jxdw();
@@ -391,7 +391,7 @@ Ext.onReady(function () {
                     _zyq_sbmc();
                     OnButtonQueryClicked();
                 }
-            }
+            }*/
         }, {
             xtype: 'combo',
             id: "zy",
@@ -402,12 +402,12 @@ Ext.onReady(function () {
             displayField: 'V_BASENAME',
             valueField: 'V_SPECIALTYCODE',
             labelWidth: 80,
-            width: 250,
+            width: 250/*,
             listeners: {
                 select: function (field, newValue, oldValue) {
                     OnButtonQueryClicked();
                 }
-            }
+            }*/
         }, {
             xtype: 'combo',
             id: "sblx",
@@ -418,13 +418,13 @@ Ext.onReady(function () {
             displayField: 'V_EQUTYPENAME',
             valueField: 'V_EQUTYPECODE',
             labelWidth: 80,
-            width: 250,
+            width: 250/*,
             listeners: {
                 select: function (field, newValue, oldValue) {
                     _zyq_sbmc();
                     OnButtonQueryClicked();
                 }
-            }
+            }*/
         }, {
             xtype: 'combo',
             id: "sbmc",
@@ -435,12 +435,12 @@ Ext.onReady(function () {
             displayField: 'V_EQUNAME',
             valueField: 'V_EQUCODE',
             labelWidth: 80,
-            width: 250,
+            width: 250/*,
             listeners: {
                 select: function (field, newValue, oldValue) {
                     OnButtonQueryClicked();
                 }
-            }
+            }*/
         }, {
             xtype: 'combo',
             id: 'state',
@@ -451,12 +451,12 @@ Ext.onReady(function () {
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
             store: stateStore,
-            queryMode: 'local',
+            queryMode: 'local'/*,
             listeners: {
                 select: function (field, newValue, oldValue) {
                     OnButtonQueryClicked();
                 }
-            }
+            }*/
         }, {
             xtype: 'textfield',
             id: "jxnr",
@@ -539,6 +539,15 @@ Ext.onReady(function () {
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             {text: '计划状态', width: 70, dataIndex: 'V_STATENAME', align: 'center'/*, renderer: atleft*/},
+            {
+                text: '详细',
+                dataIndex: 'V_ORDERID',
+                width: 55,
+                align: 'center',
+                renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+                }
+            },
             {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center'},
             {text: '专业', width: 70, dataIndex: 'V_REPAIRMAJOR_CODE', align: 'center'},
             {xtype: 'linebreakcolumn', text: '检修内容', width: 250, dataIndex: 'V_CONTENT', align: 'center'},
@@ -576,8 +585,8 @@ Ext.onReady(function () {
                     }
                     return null;
                 }
-            },
-            {text: '流程步骤', align: 'center', width: 140, dataIndex: 'V_FLOWNAME', renderer: rendererStep}],
+            }/*,
+            {text: '流程步骤', align: 'center', width: 140, dataIndex: 'V_FLOWNAME', renderer: rendererStep}*/],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -595,8 +604,127 @@ Ext.onReady(function () {
         items: [panel, grid]
     });
 
-    _init();
+//计划厂矿加载监听
+    Ext.data.StoreManager.lookup('ckStore').on('load', function () {
+        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
+        Ext.data.StoreManager.lookup('zyqStore').load({
+            params: {
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            }
+        });
+    });
+    //计划作业区加载监听
+    Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
+        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+    });
+    //计划厂矿更改时
+    Ext.getCmp('ck').on('select', function () {
+        Ext.data.StoreManager.lookup('zyqStore').load({
+            params: {
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            }
+        });
 
+    });
+
+    //加载专业
+    Ext.data.StoreManager.lookup('zyStore').load({
+        params: {
+            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue()
+        }
+    });
+
+
+    //作业区改变
+    Ext.getCmp('zyq').on('change', function () {
+        Ext.data.StoreManager.lookup('zyStore').load({
+            params: {
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue()
+            }
+        });
+        Ext.data.StoreManager.lookup('sblxStore').load({
+            params: {
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
+            }
+        });
+
+    });
+
+    Ext.getCmp('sblx').on('change', function () {
+        Ext.data.StoreManager.lookup('sbmcStore').load({
+            params: {
+                v_v_personcode: Ext.util.Cookies.get('v_personcode'),
+                v_v_deptcodenext: Ext.getCmp('zyq').getValue(),
+                v_v_equtypecode: Ext.getCmp('sblx').getValue()
+            }
+        });
+
+    });
+    Ext.data.StoreManager.lookup('stateStore').load({
+        params: {}
+    });
+
+
+    //设备类型加载监听
+    Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
+        Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
+    });
+    //设备名称加载监听
+    Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
+        Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
+        //query();
+    });
+    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
+        Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+    });
+
+    Ext.data.StoreManager.lookup('stateStore').on('load', function () {
+        Ext.data.StoreManager.lookup('stateStore').insert(0, {V_BASENAME: '全部', V_BASECODE: '%'});
+        Ext.getCmp("state").select(Ext.data.StoreManager.lookup('stateStore').getAt(0));
+
+        Ext.data.StoreManager.lookup('gridStore').load();
+        _selectNextSprStore();
+    });
+
+    Ext.getCmp('year').on('select', function () {
+        query();
+    });
+
+    Ext.getCmp('sbmc').on('select', function () {
+        query();
+    });
+
+    Ext.getCmp('zy').on('select', function () {
+        query();
+    });
+
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+
+        store.proxy.extraParams = {
+            V_V_YEAR: Ext.getCmp('year').getValue(),
+            V_V_PLANTYPE: 'YEAR',
+            V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+            V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
+            V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
+            V_V_ZY: Ext.getCmp('zy').getValue(),
+            V_V_CONTENT: Ext.getCmp('jxnr').getValue(),
+            V_V_STATECODE: Ext.getCmp('state').getValue(),
+            V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+
+        }
+    });
 });
 
 function _init() {
@@ -606,19 +734,6 @@ function _init() {
         Ext.getBody().unmask();//去除页面笼罩
 
     }
-}
-
-function QueryGrid() {
-    Ext.data.StoreManager.lookup('gridStore').load({
-        params: {
-            V_V_INPER: Ext.util.Cookies.get('v_personcode'),
-            V_V_YEAR: Ext.getCmp('year').getValue(),
-            V_V_ORGCODE: Ext.getCmp('ck').getValue(),
-            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
-            V_V_REPAIRMAJOR_CODE: '%',
-            V_V_PLANTYPE: 'YEAR'
-        }
-    });
 }
 
 function beforeloadStore(store) {
@@ -864,26 +979,23 @@ function guid() {
 
 
 function OnButtonQueryClicked() {
-    var string = '2017-08-01 05:00:00.0';
-    var gridStore = Ext.data.StoreManager.lookup('gridStore');
-    gridStore.proxy.extraParams = {
-        //V_V_ORGCODE :Ext.util.Cookies.get('v_orgCode'),
-        V_V_YEAR: Ext.getCmp('year').getValue(),
-        V_V_PLANTYPE: 'YEAR',
-        V_V_ORGCODE: Ext.getCmp('ck').getValue(),
-        V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
-        V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
-        V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
-        V_V_ZY: Ext.getCmp('zy').getValue(),
-        V_V_CONTENT: Ext.getCmp('jxnr').getValue(),
-        V_V_STATECODE: Ext.getCmp('state').getValue(),
-        V_V_PEROCDE: Ext.util.Cookies.get('v_personcode')
-        /* V_V_PAGE: Ext.getCmp('page').store.currentPage,
-         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,*/
+    Ext.data.StoreManager.lookup('gridStore').load({
+        params: {
+            V_V_YEAR: Ext.getCmp('year').getValue(),
+            V_V_PLANTYPE: 'YEAR',
+            V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+            V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
+            V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
+            V_V_ZY: Ext.getCmp('zy').getValue(),
+            V_V_CONTENT: Ext.getCmp('jxnr').getValue(),
+            V_V_STATECODE: Ext.getCmp('state').getValue(),
+            V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        }
+    });
 
-    };
-    //flowDicListStore.currentPage = 1;
-    gridStore.load();
 
     _selectNextSprStore();
 }
@@ -1002,4 +1114,41 @@ function rendererStep(value, metaData, record, rowIndex, colIndex, store, view) 
     })
 
     return stepValue;
+}
+
+function _preViewProcess(businessKey)
+{
+
+    var ProcessInstanceId='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if(data.msg == 'Ok'){
+                ProcessInstanceId=data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    })
+
+    var owidth = window.screen.availWidth;
+    var oheight =  window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }

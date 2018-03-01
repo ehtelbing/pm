@@ -1298,13 +1298,9 @@ public class hpController {
             @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = hpService.PM_EQU_REPAIR_FLOW_MENU_SEL(V_V_PROCESS_KEY, V_V_FLOW_STEP);
+        Map result = hpService.PM_EQU_REPAIR_FLOW_MENU_SEL(V_V_PROCESS_KEY, V_V_FLOW_STEP);
 
-        List<Map<String, Object>> list = (List) data.get("list");
-
-        result.put("list", list);
         result.put("success", true);
         return result;
     }

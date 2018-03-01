@@ -1582,6 +1582,29 @@ public class cjyController {
                 V_V_PAGESIZE);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_YEAR_VIEW(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+            @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        HashMap data = cjyService.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_PLANTYPE, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY,
+                V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
 }
 
 
