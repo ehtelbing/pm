@@ -3366,4 +3366,65 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PRO_PM_EQUREPAIRPLAN_SET_NEW(String V_V_IP,String V_V_PERCODE, String V_V_PERNAME,String V_V_GUID,String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_PROJECTNAME,String V_V_PLANDATE,String V_V_SPECIALTY,String V_V_SPECIALTYNAME,String V_V_SPECIALTYMANCODE
+            ,String V_V_SPECIALTYMAN,Double V_F_MONEYUP,Double V_F_MONEYBUDGET,String V_V_REPAIRDEPTTYPE,String V_V_REPAIRDEPTCODE,String V_V_REPAIRDEPT,String V_V_DEFECT,String V_V_MEASURE,String V_I_RUSHTO,String V_V_PROJECTCODE_GS,String V_V_REPAIRDEPT_GS,
+                                            String V_F_MONEY_GS,String V_D_INDATE_GS,String V_I_YEAR_PLAN,String V_I_MONTH_PLAN,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_SPR) throws SQLException {
+//        logger.info("begin PM_14_FAULT_ITEM_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_SET_NEW" + "(:V_V_IP,:V_V_PERCODE,:V_V_PERNAME,:V_V_GUID,:V_V_DEPTCODE," +
+                    ":V_V_DEPTNAME,:V_V_PROJECTNAME,:V_V_PLANDATE,:V_V_SPECIALTY,:V_V_SPECIALTYNAME," +
+                    ":V_V_SPECIALTYMANCODE,:V_V_SPECIALTYMAN,:V_F_MONEYUP,:V_F_MONEYBUDGET,:V_V_REPAIRDEPTTYPE," +
+                    ":V_V_REPAIRDEPTCODE,:V_V_REPAIRDEPT,:V_V_DEFECT,:V_V_MEASURE,:V_I_RUSHTO," +
+                    ":V_V_PROJECTCODE_GS,:V_V_REPAIRDEPT_GS,:V_F_MONEY_GS,:V_D_INDATE_GS,:V_I_YEAR_PLAN," +
+                    ":V_I_MONTH_PLAN,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_SPR,:V_V_INFO)}");
+            cstmt.setString("V_V_IP", V_V_IP);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+            cstmt.setString("V_V_PROJECTNAME", V_V_PROJECTNAME);
+            cstmt.setString("V_V_PLANDATE", V_V_PLANDATE);
+            cstmt.setString("V_V_SPECIALTY", V_V_SPECIALTY);
+            cstmt.setString("V_V_SPECIALTYNAME", V_V_SPECIALTYNAME);
+            cstmt.setString("V_V_SPECIALTYMANCODE", V_V_SPECIALTYMANCODE);
+            cstmt.setString("V_V_SPECIALTYMAN", V_V_SPECIALTYMAN);
+            cstmt.setDouble("V_F_MONEYUP", V_F_MONEYUP);
+            cstmt.setDouble("V_F_MONEYBUDGET", V_F_MONEYBUDGET);
+            cstmt.setString("V_V_REPAIRDEPTTYPE", V_V_REPAIRDEPTTYPE);
+            cstmt.setString("V_V_REPAIRDEPTCODE", V_V_REPAIRDEPTCODE);
+            cstmt.setString("V_V_REPAIRDEPT", V_V_REPAIRDEPT);
+            cstmt.setString("V_V_DEFECT", V_V_DEFECT);
+            cstmt.setString("V_V_MEASURE", V_V_MEASURE);
+            cstmt.setString("V_I_RUSHTO", V_I_RUSHTO);
+            cstmt.setString("V_V_PROJECTCODE_GS", V_V_PROJECTCODE_GS);
+            cstmt.setString("V_V_REPAIRDEPT_GS", V_V_REPAIRDEPT_GS);
+            cstmt.setString("V_F_MONEY_GS", V_F_MONEY_GS);
+            cstmt.setString("V_D_INDATE_GS", V_D_INDATE_GS);
+            cstmt.setString("V_I_YEAR_PLAN", V_I_YEAR_PLAN);
+            cstmt.setString("V_I_MONTH_PLAN", V_I_MONTH_PLAN);
+
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_SPR", V_V_SPR);
+
+            cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_EQUREPAIRPLAN_SET_NEW");
+        return result;
+    }
+
 }

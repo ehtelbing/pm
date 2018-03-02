@@ -1662,6 +1662,56 @@ public class cjyController {
         Map result = cjyService.PM_PROJECT_DX_MX_DEL(V_V_PROJECT_GUID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_SET_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_SET_NEW(
+            @RequestParam(value = "V_V_IP") String V_V_IP,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+            @RequestParam(value = "V_V_PROJECTNAME") String V_V_PROJECTNAME,
+            @RequestParam(value = "V_V_PLANDATE") String V_V_PLANDATE,
+            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value = "V_V_SPECIALTYNAME") String V_V_SPECIALTYNAME,
+            @RequestParam(value = "V_V_SPECIALTYMANCODE") String V_V_SPECIALTYMANCODE,
+            @RequestParam(value = "V_V_SPECIALTYMAN") String V_V_SPECIALTYMAN,
+            @RequestParam(value = "V_F_MONEYUP") Double V_F_MONEYUP,
+            @RequestParam(value = "V_F_MONEYBUDGET") Double V_F_MONEYBUDGET,
+            @RequestParam(value = "V_V_REPAIRDEPTTYPE") String V_V_REPAIRDEPTTYPE,
+            @RequestParam(value = "V_V_REPAIRDEPTCODE") String V_V_REPAIRDEPTCODE,
+            @RequestParam(value = "V_V_REPAIRDEPT") String V_V_REPAIRDEPT,
+            @RequestParam(value = "V_V_DEFECT") String V_V_DEFECT,
+            @RequestParam(value = "V_V_MEASURE") String V_V_MEASURE,
+            @RequestParam(value = "V_I_RUSHTO") String V_I_RUSHTO,
+            @RequestParam(value = "V_V_PROJECTCODE_GS") String V_V_PROJECTCODE_GS,
+            @RequestParam(value = "V_V_REPAIRDEPT_GS") String V_V_REPAIRDEPT_GS,
+            @RequestParam(value = "V_F_MONEY_GS") String V_F_MONEY_GS,
+            @RequestParam(value = "V_D_INDATE_GS") String V_D_INDATE_GS,
+            @RequestParam(value = "V_I_YEAR_PLAN") String V_I_YEAR_PLAN,
+            @RequestParam(value = "V_I_MONTH_PLAN") String V_I_MONTH_PLAN,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_SPR") String V_V_SPR,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        V_V_IP =request.getRemoteAddr();
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+
+        HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_SET_NEW(V_V_IP, V_V_PERCODE, V_V_PERNAME, V_V_GUID, V_V_DEPTCODE, V_V_DEPTNAME, V_V_PROJECTNAME, V_V_PLANDATE, V_V_SPECIALTY, V_V_SPECIALTYNAME, V_V_SPECIALTYMANCODE
+                , V_V_SPECIALTYMAN, V_F_MONEYUP, V_F_MONEYBUDGET, V_V_REPAIRDEPTTYPE, V_V_REPAIRDEPTCODE, V_V_REPAIRDEPT, V_V_DEFECT, V_V_MEASURE, V_I_RUSHTO, V_V_PROJECTCODE_GS, V_V_REPAIRDEPT_GS,
+                V_F_MONEY_GS, V_D_INDATE_GS, V_I_YEAR_PLAN, V_I_MONTH_PLAN,V_V_EQUTYPE,V_V_EQUCODE,V_V_SPR);
+        String pm_06 = (String) data.get("RET");
+
+        result.put("RET", pm_06);
+        result.put("success", true);
+        return result;
+    }
+
 }
 
 
