@@ -1028,6 +1028,9 @@ Ext.onReady(function () {
     ssbname.on("load", function () {
         Ext.getCmp("sbname").select(ssbname.getAt(0));
     });
+
+    getReturnQX();
+    getReturnMX();
 })
 
 function _init(){
@@ -1554,8 +1557,41 @@ function _close()
 function qxSelect(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_22010106/index.html??V_GUID='+V_GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_22010106/index.html?V_GUID='+V_GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 
+}
+
+function getReturnQX(){
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYPRO',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            V_V_PROJECT_GUID: V_GUID,
+            V_V_FLAG : '0'
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);//后台返回的值
+
+            var resdata='';
+            for(var i=0;i<resp.list.length;i++){
+                if(i==0){
+                    resdata=resp.list[i].V_DEFECTLIST;
+                }else{
+                    resdata+=','+resp.list[i].V_DEFECTLIST;
+                }
+            }
+            Ext.getCmp('qxsmjfy').setValue(resdata);
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
+    })
 }
 function mxSelect(){
     if(Ext.getCmp('sbtype').getValue()=='%'){
@@ -1572,4 +1608,35 @@ function mxSelect(){
         Ext.getCmp('ck').getValue() + '&V_DEPTCODE=' + Ext.getCmp('zyq').getValue() + '&V_EQUTYPE=' + Ext.getCmp('sbtype').getValue() + '&V_EQUCODE=' +
         Ext.getCmp('sbname').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 
+}
+function getReturnMX(){
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_PROJECT_DX_MX_SEL',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            V_V_PROJECT_GUID: V_GUID
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);//后台返回的值
+
+            var resdata='';
+            for(var i=0;i<resp.list.length;i++){
+                if(i==0){
+                    resdata=resp.list[i].V_MX_NAME;
+                }else{
+                    resdata+=','+resp.list[i].V_MX_NAME;
+                }
+            }
+            Ext.getCmp('mxxz').setValue(resdata);
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
+    })
 }

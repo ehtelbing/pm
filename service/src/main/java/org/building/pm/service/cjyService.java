@@ -3200,4 +3200,170 @@ public class cjyService {
         logger.info("end PRO_PM_03_PLAN_YEAR_VIEW");
         return result;
     }
+
+    public HashMap PM_DEFECTTOWORKORDER_SELBYPRO(String V_V_PROJECT_GUID,String V_V_FLAG) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWORKORDER_SELBYPRO");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SELBYPRO(:V_V_PROJECT_GUID,:V_V_FLAG,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.setString("V_V_FLAG", V_V_FLAG);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SELBYPRO");
+        return result;
+    }
+
+    public HashMap PM_DEFECTTOWORKORDER_SET_PD(String V_V_DEFECT_GUID,String V_V_PROJECT_GUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWORKORDER_SET_PD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_SET_PD" + "(:V_V_DEFECT_GUID,:V_V_PROJECT_GUID,:V_INFO)}");
+
+            cstmt.setString("V_V_DEFECT_GUID", V_V_DEFECT_GUID);
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_SET_PD");
+        return result;
+    }
+
+    public HashMap PM_DEFECTTOWORKORDER_DELBYPRO(String V_V_PROJECT_GUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWORKORDER_DELBYPRO");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_DELBYPRO" + "(:V_V_PROJECT_GUID,:V_INFO)}");
+
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_DELBYPRO");
+        return result;
+    }
+
+    public HashMap PM_PROJECT_DX_MX_SEL(String V_V_PROJECT_GUID) throws SQLException {
+
+        logger.info("begin PM_PROJECT_DX_MX_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PROJECT_DX_MX_SEL(:V_V_PROJECT_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PROJECT_DX_MX_SEL");
+        return result;
+    }
+
+    public HashMap PM_PROJECT_DX_MX_SET(String V_V_MX_GUID,String V_V_PROJECT_GUID) throws SQLException {
+
+        logger.info("begin PM_PROJECT_DX_MX_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PROJECT_DX_MX_SET" + "(:V_V_MX_GUID,:V_V_PROJECT_GUID,:V_INFO)}");
+
+            cstmt.setString("V_V_MX_GUID", V_V_MX_GUID);
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PROJECT_DX_MX_SET");
+        return result;
+    }
+
+    public HashMap PM_PROJECT_DX_MX_DEL(String V_V_PROJECT_GUID) throws SQLException {
+
+        logger.info("begin PM_PROJECT_DX_MX_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PROJECT_DX_MX_DEL" + "(:V_V_PROJECT_GUID,:V_INFO)}");
+
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PROJECT_DX_MX_DEL");
+        return result;
+    }
+
 }

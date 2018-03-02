@@ -1605,6 +1605,63 @@ public class cjyController {
                 V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SELBYPRO", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SELBYPRO(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                             @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                                             HttpServletRequest request,
+                                                              HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYPRO(V_V_PROJECT_GUID,V_V_FLAG);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_PD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_SET_PD(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
+                                                        @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SET_PD(V_V_DEFECT_GUID, V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DELBYPRO", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_DELBYPRO(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_DELBYPRO(V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_SEL(V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_SET(@RequestParam(value = "V_V_MX_GUID") String V_V_MX_GUID,
+                                                           @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_SET(V_V_MX_GUID, V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_DEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_DEL(V_V_PROJECT_GUID);
+        return result;
+    }
 }
 
 
