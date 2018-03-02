@@ -80,8 +80,6 @@ Ext.onReady(function () {
             load: function (store, records) {
                 //alert(0.5);
                 Ext.getCmp('zyq').select(store.first());
-                //zyqstoreload = true;
-                //_init();
             }
         }
     });
@@ -107,8 +105,6 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('zy').select(store.first());
-                /* zyStoreload = true;
-                 _init();*/
             }
         }
     });

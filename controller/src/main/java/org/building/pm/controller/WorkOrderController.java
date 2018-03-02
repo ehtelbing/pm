@@ -39,9 +39,9 @@ public class WorkOrderController {
         result.put("success", true);
         return result;
     }
-    @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_SAVE", method = RequestMethod.POST)
+    @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_SA_XJ", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> PRO_PM_WORKORDER_DEFECT_SAVE(@RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+    public Map<String, Object> PRO_PM_WORKORDER_DEFECT_SA_XJ(@RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
                                                             @RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
                                                             @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
                                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
@@ -56,7 +56,7 @@ public class WorkOrderController {
                                                             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = workOrderService.PRO_PM_WORKORDER_DEFECT_SAVE(V_V_PERNAME, V_V_DEFECT_GUID, V_V_ORDERGUID, V_V_EQUCODE,
+        HashMap data = workOrderService.PRO_PM_WORKORDER_DEFECT_SA_XJ(V_V_PERNAME, V_V_DEFECT_GUID, V_V_ORDERGUID, V_V_EQUCODE,
                 V_V_WORKORDER_TYPE,V_V_DEPTCODEREPARIR,V_V_SHORT_TXT,V_V_WBS,V_V_WBS_TXT,V_D_START_DATE,V_D_FINISH_DATE);
 
         String ret = (String) data.get("V_INFO");

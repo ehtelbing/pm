@@ -57,6 +57,16 @@ public class OldRepairController {
         Map result = oldRepairService.GETWAITMENDKCTABLE(V_SAP_PLANTCODE, V_SAP_DEPARTCODE,V_STOREID,V_MAT_NO,V_MAT_DESC);
         return result;
     }
+
+    @RequestMapping(value = "/PG_MM_JUNK_INTERFACE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PG_MM_JUNK_INTERFACE(@RequestParam(value = "V_USERID") String V_USERID,
+                                               @RequestParam(value = "V_KCID") String V_KCID,
+                                               @RequestParam(value = "F_MEND_AMOUNT") int F_MEND_AMOUNT,
+                                               @RequestParam(value = "V_ORDERID") String V_ORDERID) throws Exception{
+        Map result = oldRepairService.PG_MM_JUNK_INTERFACE(V_USERID, V_KCID,F_MEND_AMOUNT,V_ORDERID);
+        return result;
+    }
     /*
     *获取待修旧件库存导出Excel
     * */
