@@ -1,6 +1,9 @@
 package org.building.pm.controller;
 
+import com.sun.net.httpserver.HttpContext;
+import net.sf.json.JSONObject;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
 import org.building.pm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,14 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +38,6 @@ public class ExcelController {
     @Autowired
     private SgService sgService;
 
-
-
     @Autowired
     private QxService qxService;
 
@@ -48,6 +52,27 @@ public class ExcelController {
 
     @Autowired
     private PM_22Service pm_22Service;
+
+    @RequestMapping(value="/upload",method = RequestMethod.POST)
+    @ResponseBody
+    public List  upload(@RequestParam(value="file",required = false)MultipartFile file,
+
+                          HttpServletRequest request, HttpServletResponse response){
+        String result ="";
+        //创建处理EXCEL的类
+        ReadExcel readExcel=new ReadExcel();
+        List useList = readExcel.getExcelInfo(file);
+
+        //pm_03Service.pm_04_project_data_item_set(useList);
+
+        if(useList != null && !useList.isEmpty()){
+            result = "上传成功";
+        }else{
+            result = "上传失败";
+        }
+        return useList;
+    }
+
 
     /*事故EXCEL*/
     @RequestMapping(value = "/SG_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")

@@ -992,7 +992,8 @@ public class PM_03Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_PLAN_LOCKING_DATE_SET" + "(:V_I_YEAR,:V_I_MONTH,:V_I_WEEKNUM,:V_V_TYPE,:V_D_DATE_E,:V_I_LOCK,:V_D_DATE_S,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_PLAN_LOCKING_DATE_SET" + "(:V_I_YEAR,:V_I_MONTH,:V_I_WEEKNUM,:V_V_TYPE,:V_D_DATE_E," +
+                    ":V_I_LOCK,:V_D_DATE_S,:V_CURSOR)}");
             cstmt.setString("V_I_YEAR", V_I_YEAR);
             cstmt.setString("V_I_MONTH", V_I_MONTH);
             cstmt.setString("V_I_WEEKNUM", V_I_WEEKNUM);

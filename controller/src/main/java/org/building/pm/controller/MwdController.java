@@ -1042,6 +1042,45 @@ public class MwdController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_04_PROJECT_DATA_ITEM_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_04_PROJECT_DATA_ITEM_SET(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_TYPE_CODE") String V_V_TYPE_CODE,
+            @RequestParam(value = "V_V_MAJOR_CODE") String V_V_MAJOR_CODE,
+            @RequestParam(value = "V_V_PROJECT_CODE") String V_V_PROJECT_CODE,
+            @RequestParam(value = "V_V_PROJECT_NAME") String V_V_PROJECT_NAME,
+            @RequestParam(value = "V_V_WBS_CODE") String V_V_WBS_CODE,
+            @RequestParam(value = "V_V_WBS_NAME") String V_V_WBS_NAME,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_BUDGET_MONEY") double V_V_BUDGET_MONEY,
+            @RequestParam(value = "V_V_REPAIR_DEPT") String V_V_REPAIR_DEPT,
+            @RequestParam(value = "V_V_FZR") String V_V_FZR,
+            @RequestParam(value = "V_V_DATE_B") String V_V_DATE_B,
+            @RequestParam(value = "V_V_DATE_E") String V_V_DATE_E,
+            @RequestParam(value = "V_V_BZ") String V_V_BZ,
+            @RequestParam(value = "V_V_FLOW_STATE") String V_V_FLOW_STATE,
+            @RequestParam(value = "V_V_INPER") String V_V_INPER,
+            @RequestParam(value = "V_V_INTIEM") String V_V_INTIEM,
+            @RequestParam(value = "V_V_FALG") String V_V_FALG,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = mwdService.PM_04_PROJECT_DATA_ITEM_SET(V_V_ORGCODE, V_V_DEPTCODE, V_V_TYPE_CODE, V_V_MAJOR_CODE,V_V_PROJECT_CODE, V_V_PROJECT_NAME,V_V_WBS_CODE,
+                V_V_WBS_NAME,V_V_CONTENT,V_V_BUDGET_MONEY,V_V_REPAIR_DEPT, V_V_FZR, V_V_DATE_B, V_V_DATE_E, V_V_BZ,V_V_FLOW_STATE,V_V_INPER, V_V_INTIEM,V_V_FALG,V_V_YEAR,
+                V_V_MONTH,V_V_GUID);
+
+        String V_INFO = (String) data.get("V_INFO");
+
+        result.put("V_INFO", V_INFO);
+        result.put("success", true);
+        return result;
+    }
+
     @RequestMapping(value = "/SAP_PM_EQU_FILE_SET", method = RequestMethod.POST)
     @ResponseBody
     public String SAP_PM_EQU_FILE_SET(

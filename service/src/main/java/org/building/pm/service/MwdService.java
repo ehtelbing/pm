@@ -1734,8 +1734,10 @@ public class MwdService {
         try {
             conn = dataSources.getConnection();
             // conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_SET" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUNAME,:V_V_PROJECT_IMG," +
-                    ":V_V_WORK_BEFORE,:V_V_WORK_PER,:V_V_WORK_CRAFT,:V_V_WORK_TOOL,:V_V_WORK_TIME,:V_V_SUM_TIME,:V_V_WORK_AQ,:V_V_WORK_DEPT,:V_V_REPAIR_NAME," +
+            cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_SET" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUNAME," +
+                    ":V_V_PROJECT_IMG," +
+                    ":V_V_WORK_BEFORE,:V_V_WORK_PER,:V_V_WORK_CRAFT,:V_V_WORK_TOOL,:V_V_WORK_TIME,:V_V_SUM_TIME," +
+                    ":V_V_WORK_AQ,:V_V_WORK_DEPT,:V_V_REPAIR_NAME," +
                     ":V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -1764,6 +1766,62 @@ public class MwdService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_REAPIR_STANDARD_DATA_SET");
+        return result;
+    }
+
+    public HashMap PM_04_PROJECT_DATA_ITEM_SET(
+            String V_V_ORGCODE,String V_V_DEPTCODE, String V_V_TYPE_CODE,String V_V_MAJOR_CODE, String V_V_PROJECT_CODE,String V_V_PROJECT_NAME,
+            String V_V_WBS_CODE,String V_V_WBS_NAME,
+            String V_V_CONTENT,double V_V_BUDGET_MONEY, String V_V_REPAIR_DEPT,String V_V_FZR, String V_V_DATE_B,String V_V_DATE_E,
+            String V_V_BZ,String V_V_FLOW_STATE,
+            String V_V_INPER,String V_V_INTIEM, String V_V_FALG,String V_V_YEAR, String V_V_MONTH,String V_V_GUID ) throws SQLException{
+
+        logger.info("begin PM_04_PROJECT_DATA_ITEM_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try{
+
+            conn = dataSources.getConnection();
+            // conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_04_PROJECT_DATA_ITEM_SET" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_TYPE_CODE,:V_V_MAJOR_CODE," +
+                    ":V_V_PROJECT_CODE,:V_V_PROJECT_NAME,:V_V_WBS_CODE,:V_V_WBS_NAME,:V_V_CONTENT,:V_V_BUDGET_MONEY,:V_V_REPAIR_DEPT," +
+                    ":V_V_FZR,:V_V_DATE_B,:V_V_DATE_E,:V_V_BZ,:V_V_FLOW_STATE,:V_V_INPER,:V_V_INTIEM,:V_V_FALG,:V_V_YEAR,:V_V_MONTH,:V_V_GUID," +
+                    ":V_INFO)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_TYPE_CODE", V_V_TYPE_CODE);
+            cstmt.setString("V_V_MAJOR_CODE", V_V_MAJOR_CODE);
+            cstmt.setString("V_V_PROJECT_CODE", V_V_PROJECT_CODE);
+            cstmt.setString("V_V_PROJECT_NAME", V_V_PROJECT_NAME);
+            cstmt.setString("V_V_WBS_CODE", V_V_WBS_CODE);
+            cstmt.setString("V_V_WBS_NAME", V_V_WBS_NAME);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setDouble("V_V_BUDGET_MONEY", V_V_BUDGET_MONEY);
+            cstmt.setString("V_V_REPAIR_DEPT", V_V_REPAIR_DEPT);
+            cstmt.setString("V_V_FZR", V_V_FZR);
+            cstmt.setString("V_V_DATE_B", V_V_DATE_B);
+            cstmt.setString("V_V_DATE_E", V_V_DATE_E);
+            cstmt.setString("V_V_BZ", V_V_BZ);
+            cstmt.setString("V_V_FLOW_STATE", V_V_FLOW_STATE);
+            cstmt.setString("V_V_INPER", V_V_INPER);
+            cstmt.setString("V_V_INTIEM", V_V_INTIEM);
+            cstmt.setString("V_V_FALG", V_V_FALG);
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_GUID",V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_04_PROJECT_DATA_ITEM_SET");
         return result;
     }
 
