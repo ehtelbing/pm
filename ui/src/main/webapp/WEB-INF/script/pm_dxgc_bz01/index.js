@@ -248,7 +248,7 @@ var panel = Ext.create('Ext.panel.Panel',{
 });
 
 function DAO() {
-    window.open(AppUrl + 'page/pm_dxgc_bz01/index_01.html?V_DEPTCODE=' + V_DEPTCODE, '_blank', 'width=900,height=600,resizable=yes,scrollbars=yes');
+    window.open(AppUrl + 'page/pm_dxgc_bz01/index_01.html' , '_blank', 'width=900,height=600,resizable=yes,scrollbars=yes');
 }
 
 var panel1 = Ext.create('Ext.panel.Panel',{
