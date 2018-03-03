@@ -455,11 +455,11 @@ function Select(){
     }
     var num = 0;
     Ext.Ajax.request({
-        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DEL',
+        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DELBYPRO',
         method: 'POST',
         async: false,
         params: {
-            V_V_WEEK_GUID: V_WEEKPLAN_GUID
+            V_V_PROJECT_GUID: V_GUID
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
@@ -467,12 +467,12 @@ function Select(){
 
                 for (var i = 0; i < seldata.length; i++) {
                     Ext.Ajax.request({
-                        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET',
+                        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_PD',
                         method: 'POST',
                         async: false,
                         params: {
                             V_V_DEFECT_GUID: seldata[i].data.V_GUID,
-                            V_V_WEEK_GUID: V_WEEKPLAN_GUID
+                            V_V_PROJECT_GUID: V_GUID
                         },
                         success: function (resp) {
                             var resp = Ext.decode(resp.responseText);
@@ -490,21 +490,9 @@ function Select(){
         }
     });
 
-    var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
-    var V_EQUCODE=seldata[0].raw.V_EQUCODE;
     if (num == seldata.length) {
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + "page/PM_03010315/index.html?V_WEEKPLAN_GUID=" + V_WEEKPLAN_GUID +
-            "&V_PLANTYPE=" + V_PLANTYPE +
-            "&YEAR=" + YEAR +
-            "&MONTH=" + MONTH +
-            "&WEEK=" + WEEK +
-            "&V_ORGCODE=" + V_ORGCODE +
-            "&V_DEPTCODE=" + V_DEPTCODE+
-            "&V_EQUTYPECODE=" + V_EQUTYPECODE+
-            "&V_EQUCODE=" + V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-       // window.close();
+        window.opener.getReturnQX();
+        window.close();
     } else {
         alert("缺陷添加错误");
     }
@@ -512,8 +500,7 @@ function Select(){
 
 
 
-    /*window.opener.getReturnQXXZ(retdata);
-    window.close();*/
+
 }
 function closeSelf(){
     window.close();

@@ -84,8 +84,8 @@ Ext.onReady(function () {
                 icon: imgpath + '/add.png',
                 handler: function () {
                     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
-                    if (seldata.length != 1) {
-                        alert('请选择一条数据！');
+                    if (seldata.length == 0) {
+                        alert('请至少选择一条数据！');
                     }else{
                         Ext.Msg.confirm("提示", "确定要选择？", function (button) {
                             if(button == 'yes'){
@@ -175,170 +175,56 @@ function query() {
 }
 
 function btn_select(){
-    /*var result=[];
+
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
-    Ext.Ajax.request({
-        url: AppUrl + 'pm_19/PM_1917_JXGX_BYCODE_SEL',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_JXGX_CODE: seldata[0].data.V_JXGX_CODE
-        },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            if(resp.list.length!=0){
-                result.push(resp.list[0].V_JJ_NAME);
-                result.push(resp.list[0].V_GJ_NAME);
-                result.push(resp.list[0].V_PER_NAME);
-                result.push(resp.list[0].V_WL_NAME);
-                result.push(resp.list[0].V_JSQY_NAME);
-                result.push(resp.list[0].V_AQSC_NAME);
-            }
-        }
-    });
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_YEAR_SELECT',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_JXGX_CODE_NEW: V_JXGX_CODE,
-            V_V_JXGX_CODE_OLD: seldata[0].data.V_JXGX_CODE
-        },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            result.push(seldata[0].data.V_JXGX_NR);
-            result.push(seldata[0].data.V_MX_NAME);
-            window.opener.getReturnMX(result);
-            window.close();
-        }
-    });*/
-    var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
-    if(seldata.length!=1){
-        alert("请选择一条数据");
+    if(seldata.length==0){
+        alert("请至少选择一条数据");
         return false;
     }
+    var num = 0;
     Ext.Ajax.request({
-        url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_SEL',//获取该模型下的工序
+        url: AppUrl + 'cjy/PM_PROJECT_DX_MX_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_JXMX_CODE :  seldata[0].data.V_GX_CODE
-        }, success: function (response) {
-            var resp = Ext.JSON.decode(response.responseText);
-            Ext.Ajax.request({
-                url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_ID_DEL',//删除该guid下工序
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_ORDERGUID:V_GUID
-                }, success: function (response) {}
+            V_V_PROJECT_GUID: V_GUID
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO == 'success') {
 
-            });
-            Ext.Ajax.request({
-                url: AppUrl + 'cjy/PRO_PM_WORKORDER_SPARE_ID_DEL',//删除该guid下物料
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_ORDERGUID:V_GUID
-                }, success: function (response) {}
+                for (var i = 0; i < seldata.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'cjy/PM_PROJECT_DX_MX_SET',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_MX_GUID: seldata[i].data.V_MX_CODE,
+                            V_V_PROJECT_GUID: V_GUID
+                        },
+                        success: function (resp) {
+                            var resp = Ext.decode(resp.responseText);
+                            if (resp.V_INFO == 'success') {
+                                num++;
+                            }
 
-            });
-            for(var i=0;i<resp.list.length;i++){
-                Ext.Ajax.request({//添加工序
-                    url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_SET_NEW',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        V_I_ID :  '-1',
-                        V_V_ORDERGUID:V_GUID,
-                        V_V_DESCRIPTION:resp.list[i].V_JXGX_NR,
-                        V_I_WORK_ACTIVITY:resp.list[i].V_PERTIME,
-                        V_I_DURATION_NORMAL:resp.list[i].V_PERNUM,
-                        V_V_WORK_CENTER:resp.list[i].V_WORK_NAME,
-                        V_I_ACTUAL_TIME:'0',
-                        V_I_NUMBER_OF_PEOPLE: '0',
-                        V_V_ID:'',
-                        V_V_GUID: resp.list[i].V_JXGX_CODE,
-                        V_V_JXBZ:resp.list[i].V_JXBZ,
-                        V_V_JXBZ_VALUE_DOWN:resp.list[i].V_JXBZ_VALUE_DOWN,
-                        V_V_JXBZ_VALUE_UP:resp.list[i].V_JXBZ_VALUE_UP
-                    }, success: function (response) {
-
-                    }
-                });
-                Ext.Ajax.request({//查找该工序下的物料
-                    url: AppUrl + 'zdh/PM_1917_JXGX_WL_DATA_SEL',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        V_V_JXGX_CODE:resp.list[i].V_JXGX_CODE
-                    },
-                    success: function (response) {
-                        var respwl = Ext.JSON.decode(response.responseText);
-
-
-
-                        for(var j=0;j<respwl.list.length;j++){
-
-                            var gxcode='';
-                            Ext.Ajax.request({
-                                url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_ID_VIEW',//查找对应工序编号
-                                method: 'POST',
-                                async: false,
-                                params: {
-                                    V_V_GUID:resp.list[i].V_JXGX_CODE
-                                }, success: function (response) {
-                                    var respgx = Ext.JSON.decode(response.responseText);
-                                    gxcode=respgx.list[0].V_ACTIVITY;
-                                }
-
-                            });
-
-                            //添加物料
-                            Ext.Ajax.request({
-                                url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_SET',
-                                // url : '/No41070102/PRO_PM_WORKORDER_SPARE_SET',
-                                method: 'POST',
-                                async: false,
-                                params: {
-                                    V_I_ID: '-1',
-                                    V_V_ORDERGUID: V_GUID,
-                                    V_V_FETCHORDERGUID: '',
-                                    V_V_ACTIVITY: gxcode,
-                                    V_V_MATERIALCODE: respwl.list[j].V_WLCODE,
-                                    V_V_MATERIALNAME: respwl.list[j].V_WLSM,
-                                    V_V_SPEC: respwl.list[j].V_GGXH,
-                                    V_V_UNIT: respwl.list[j].V_JLDW,
-                                    V_F_UNITPRICE: respwl.list[j].V_PRICE==null?0:respwl.list[j].V_PRICE,
-                                    V_I_PLANAMOUNT:'1',
-                                    V_F_PLANMONEY: '0',
-                                    V_I_ACTUALAMOUNT:'0',
-                                    V_F_ACTUALMONEY: '0',
-                                    V_V_TYPE: V_EQUTYPE,
-                                    V_V_MEMO: ' ',
-                                    V_V_SUBTYPE: '',
-                                    V_V_STATUS: '',
-                                    V_I_ABANDONEDAMOUNT: '0',
-                                    V_I_RECLAIMEDAMOUNT: '0',
-                                    V_I_FIXEDAMOUNT: '0',
-                                    V_V_ID: ''
-                                },
-                                success: function (response) {
-
-                                }
-                            });
                         }
-                    }
-                });
-
-
-
+                    });
+                }
+            }else{
+                alert("子数据清除错误");
             }
+
         }
     });
 
-    window.close();
-    window.opener.getReturnMX();
+    if (num == seldata.length) {
+        window.opener.getReturnMX();
+        window.close();
+    } else {
+        alert("模型添加错误");
+    }
+
 
 
 }
