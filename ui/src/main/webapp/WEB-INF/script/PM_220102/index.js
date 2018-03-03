@@ -1,3 +1,6 @@
+V_PICGUID1='';
+V_PICGUID2='';
+V_PICGUID3='';
 var mingtian = new Date();
 mingtian.setDate(mingtian.getDate()+1);
 var V_GUID = "" ;
@@ -280,7 +283,8 @@ Ext.onReady(function () {
                 displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
                 emptyMsg: '没有记录'
             }
-        ]
+        ],
+        listeners:{itemdblclick:GridItemClick}
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -318,7 +322,8 @@ Ext.onReady(function () {
         }
     });
 
-    _init()
+    _init();
+
 })
 
 function _init()
@@ -326,6 +331,7 @@ function _init()
     if(zyStoreload)
     {
         zyStoreload = false;
+        _selectOverhaulApply();
         Ext.getBody().unmask();//去除页面笼罩
     }
 }
@@ -350,6 +356,12 @@ function _selectOverhaulApply() {
 }
 
 
+function GridItemClick(s, record, item, index, e, eOpts){
+    var owidth = window.document.body.offsetWidth ;
+    var oheight = window.document.body.offsetHeight;
+    window.open(AppUrl + 'page/PM_22010107/index.html?V_GUID=' + record.raw.V_GUID  + '&V_PICGUID1='+ V_PICGUID1 + '&V_PICGUID2='+ V_PICGUID2 + '&V_PICGUID3=' + V_PICGUID3 + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+
+}
 
 
 function applicationDate(value, metaData, record, rowIndex, colIndex, store, view) {
