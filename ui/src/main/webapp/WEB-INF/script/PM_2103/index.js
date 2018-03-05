@@ -1,5 +1,6 @@
 var V_GUID = "" ;
 var num=0;
+var tabIndex = 0;
 var V_V_GUID_COPY = '';
 var personStoreLoad = false;
 var initLoad = true;
@@ -99,18 +100,20 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 5px 10px'
         },
         layout:'column',
-        items : [{
-            xtype: 'combo',
-            id: 'lclx',
-            fieldLabel: '流程类型',
-            editable: false,
-            labelWidth: 55,
-            width:200,
-            displayField: 'V_FLOWTYPE_NAME',
-            valueField: 'V_FLOWTYPE_CODE',
-            store: lclxStore,
-            queryMode: 'local'
-        },
+        items : [
+            {
+                xtype:'textfield',
+                id:'lxbh',
+                fieldLabel: '流程编号',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 5px 0px',
+                labelAlign: 'right',
+                dataIndex : 'flow_code'
+            },
+            {
+                xtype: 'hidden',
+                id: 'tabid'
+            },
             {
                 xtype: 'button',
                 text: '查询',
@@ -135,6 +138,34 @@ Ext.onReady(function () {
                 handler: batchDisAgree
             }
         ]
+    });
+
+    var tabpanel = Ext.create("Ext.tab.Panel",{
+       id:'tabpanel' ,
+        region: 'center',
+        activeTab: 0,
+        listeners: {
+            tabchange: function () {
+                Ext.ComponentManager.get("tabid").setValue(Ext
+                    .getCmp('tabpanel').getActiveTab().down("hidden")
+                    .getValue());
+                Ext.getCmp('page').store.currentPage = 1;
+                gridStore.load({
+                    params:{
+                        PersonCode:  Ext.util.Cookies.get('v_personcode'),
+                        FlowType:Ext.getCmp('tabpanel').getActiveTab().down("hidden").getValue()
+                    }
+                });
+
+                if(Ext.getCmp('tabpanel').getActiveTab().down("hidden").getValue()=='WORK'){//工单流程
+                    Ext.getCmp('dagr').hide();
+                    Ext.getCmp('agr').hide();
+                }else{
+                    Ext.getCmp('dagr').show();
+                    Ext.getCmp('agr').show();
+                }
+            }
+        }
     });
 
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
@@ -296,7 +327,7 @@ Ext.onReady(function () {
         items : [  {
             region : 'north',
             border : false,
-            items : [ buttonPanel ]
+            items : [ buttonPanel, tabpanel]
         }, {
             region : 'center',
             layout : 'fit',
@@ -305,37 +336,25 @@ Ext.onReady(function () {
         } ]
     });
 
+    addTab();
+
     Ext.data.StoreManager.lookup('lclxStore').on('load', function () {
         Ext.data.StoreManager.lookup('lclxStore').insert(0, {
             'V_FLOWTYPE_CODE' : '全部',
             'V_FLOWTYPE_NAME' : '全部'
         });
-        Ext.getCmp("lclx").select(Ext.data.StoreManager.lookup('lclxStore').getAt(0));
-        Ext.getCmp('dagr').hide();
-        Ext.getCmp('agr').hide();
         _init();
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             PersonCode:  Ext.util.Cookies.get('v_personcode'),
-            FlowType:Ext.getCmp('lclx').getValue()
+           FlowType:Ext.getCmp('tabpanel').getActiveTab().down("hidden").getValue()
 
-        }
+        };
     });
 
-    Ext.ComponentManager.get("lclx").on("change", function () {
-        OnPageLoad();
-        if(Ext.getCmp('lclx').getValue()=='全部'||Ext.getCmp('lclx').getValue()=='WORK'){//工单流程
-            Ext.getCmp('dagr').hide();
-            Ext.getCmp('agr').hide();
-        }else{
-            Ext.getCmp('dagr').show();
-            Ext.getCmp('agr').show();
-        }
-    });
-
-})
+});
 
 function _init()
 {
@@ -408,11 +427,10 @@ function OnPageLoad() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
         PersonCode:  Ext.util.Cookies.get('v_personcode'),
-        FlowType:Ext.getCmp('lclx').getValue()
+        FlowType:Ext.getCmp('tabpanel').getActiveTab().down("hidden").getValue()
     };
     gridStore.currentPage = 1;
     gridStore.load();
-
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskListSum',
         method: 'POST',
@@ -436,4 +454,39 @@ function batchAgree(){
 
 function batchDisAgree(){
     var record=Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
+}
+
+function addTab() {
+    Ext.Ajax.request({
+        url: AppUrl + 'pm_19/PM_FLOW_TYPE_SEL',
+        method: 'POST',
+        async: false,
+        params: {
+
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            resp = resp.list;
+            for (i = 0; i < resp.length; i++) {
+                Ext.ComponentManager.get("tabpanel").add({
+                    id : 'tabpanel'+i,
+                    title: resp[i].V_FLOWTYPE_NAME,
+                    items: [{
+                        xtype: 'hidden',
+                        value: resp[i].V_FLOWTYPE_CODE
+                    }]
+                })
+            }
+            Ext.ComponentManager.get("tabpanel").setActiveTab(0);
+        }
+
+    });
+
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            PersonCode:  Ext.util.Cookies.get('v_personcode'),
+            FlowType:Ext.getCmp('tabpanel').getActiveTab().down("hidden").getValue()
+
+        };
+    });
 }
