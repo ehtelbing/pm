@@ -228,6 +228,25 @@ public class ProjectController {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_PM_WORKORDER_DD_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_DD_CREATE(
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = projectService.PRO_PM_WORKORDER_DD_CREATE(V_V_PERCODE,V_V_PERNAME, V_V_ORGCODE, V_V_DEPTCODE, V_V_SOURCECODE);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
     @RequestMapping(value = "/PRO_PM_WORKORDER_DD_CREATE_XJ", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_DD_CREATE_XJ(

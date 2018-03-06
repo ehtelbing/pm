@@ -71,25 +71,6 @@ function Login(){
                             Ext.util.Cookies.set('v_workcss',
                                 resp.list[0].V_WORKCSS);
 
-                            if(Ext.urlDecode(location.href.split('?')[1]).V_V_MENUCODE!=null&&Ext.urlDecode(location.href.split('?')[1]).V_V_MENUCODE!=''){
-                                Ext.Ajax.request({
-                                    url : APP + '/ModelChange',
-                                    params : {
-                                        parName : [ 'V_V_MENUCODE' ],
-                                        parType : ['s'],
-                                        parVal :  [Ext.urlDecode(location.href.split('?')[1]).V_V_MENUCODE],
-                                        proName : 'PRO_BASE_MENU_GET',
-                                        returnStr : ['V_V_MENUNAME','V_V_URL'],
-                                        returnStrType : ['s','s']
-                                    },
-                                    success:function(resp){
-                                        var resp = Ext.decode(resp.responseText);
-                                        location.href = "../../page/home/Index.html?v_menucode="+Ext.urlDecode(location.href.split('?')[1]).V_V_MENUCODE+"&v_menuname="+resp[0]+"&v_url="+resp[1];
-                                    }
-                                });
-                            }else{
-                                location.href = "../../page/home/findex.html";
-                            }
                         }else{
                             msgbox("不存在此用户！");
                         }
@@ -209,9 +190,9 @@ function OnPageLoad(){
         async: false,
         success : function(response) {
             if(response.responseText!='timeout'){
-                var resp = Ext.decode(response.responseText);
-                if(resp[0]!=''){
-                    document.getElementById('username').value =resp[0];
+                var resp = response.responseText;
+                if(resp!=''){
+                    document.getElementById('username').value =resp;
                 }
             }
         }

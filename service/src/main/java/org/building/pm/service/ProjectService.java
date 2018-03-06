@@ -354,6 +354,37 @@ public class ProjectService {
         return result;
     }
 
+    public HashMap PRO_PM_WORKORDER_DD_CREATE(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_SOURCECODE) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_DD_CREATE(:V_V_PERCODE,:V_V_PERNAME,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_SOURCECODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_DD_CREATE");
+        return result;
+    }
+
     public HashMap PRO_PM_WORKORDER_DD_CREATE_XJ(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_SOURCECODE) throws SQLException {
 
         logger.info("begin PRO_PM_WORKORDER_DD_CREATE_XJ");

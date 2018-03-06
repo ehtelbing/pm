@@ -69,7 +69,7 @@ public class ZdhService {
     public Map plant_sel(String IS_V_DEPTCODE,String IS_V_DEPTTYPE) throws SQLException {
 
 
-        logger.info("begin PRO_BASE_DEPT_VIEW_ROLE");
+        logger.info("begin PRO_BASE_DEPT_VIEW");
 //        logger.debug("params:V_V_PERSONCODE:" + V_V_PERSONCODE + "params:V_V_DEPTCODE:" + V_V_DEPTCODE+ "params:V_V_DEPTCODENEXT:" + V_V_DEPTCODENEXT+ "params:V_V_DEPTTYPE:" + V_V_DEPTTYPE);
 
         Map<String, Object> result = new HashMap<String, Object>();
@@ -93,7 +93,7 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_BASE_DEPT_VIEW_ROLE");
+        logger.info("end PRO_BASE_DEPT_VIEW");
         return result;
     }
 
@@ -159,8 +159,7 @@ public class ZdhService {
     public Map orderid_create(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORGCODE,String V_V_DEPTCODE
     ) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTCODE:" + V_V_DEPTCODE);
+        logger.info("begin PRO_PM_WORKORDER_WX_CREATE");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -184,14 +183,13 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_WORKORDER_DD_CREATE");
+        logger.info("end PRO_PM_WORKORDER_WX_CREATE");
         return result;
     }
 
     public HashMap PRO_BASE_FILE_SEL(String V_V_GUID,String V_V_FILETYPECODE) throws SQLException {
 
         logger.info("begin PRO_BASE_FILE_SEL");
-//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         HashMap result = new HashMap();
         Connection conn = null;
@@ -219,8 +217,7 @@ public class ZdhService {
 
     public Map workcenter_sel(String V_V_DEPTREPAIRCODE) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_BASE_DEPTTOSAPWORKCSAT");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -241,7 +238,7 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_WORKORDER_DD_CREATE");
+        logger.info("end PRO_BASE_DEPTTOSAPWORKCSAT");
         return result;
     }
 
@@ -250,7 +247,6 @@ public class ZdhService {
                                     String V_V_EQUIP_NAME, String V_D_START_DATE,String V_D_FINISH_DATE,
                                     String V_V_WBS,String V_V_WBS_TXT,String V_V_DEPTCODEREPARIR,
                                     String V_V_TOOL,String V_V_TECHNOLOGY,String V_V_SAFE) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -290,14 +286,13 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_WORKORDER_DD_SAVE");
+        logger.info("end PRO_PM_WORKORDER_WX_SAVE");
         return result;
     }
 
     public Map select_engineer(String V_V_EQUIPCODE,String V_V_DEPTREPAIRCODE) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_WX_WORKORDER_SELECT_PER");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -326,8 +321,7 @@ public class ZdhService {
     public Map create_workorder(String V_V_PERCODE,String V_V_PERNAME,
                                 String V_V_ORGCODE,String V_V_DEPTCODE) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_PM_WORKORDER_WX_CREATE");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -352,14 +346,13 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_WORKORDER_DD_CREATE");
+        logger.info("end PRO_PM_WORKORDER_WX_CREATE");
         return result;
     }
 
     public Map workorderstate_sel() throws SQLException {
 
         logger.info("begin PRO_PM_WORKORDER_WXSTATE_VIEW");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -385,8 +378,7 @@ public class ZdhService {
 
     public Map equipname_sel(String V_V_DEPTCODENEXT,String V_V_EQUTYPECODE) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_GET_DEPTEQU_ADMIN");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -408,14 +400,13 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_WX_WORKORDER_SELECT_PER");
+        logger.info("end PRO_GET_DEPTEQU_ADMIN");
         return result;
     }
 
     public Map equiptype_sel(String V_V_DEPTCODENEXT) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_GET_DEPTEQUTYPE_ADMIN");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -436,7 +427,7 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_WX_WORKORDER_SELECT_PER");
+        logger.info("end PRO_GET_DEPTEQUTYPE_ADMIN");
         return result;
     }
 
@@ -444,7 +435,6 @@ public class ZdhService {
                              String V_V_DEPTCODE,String V_V_DEPTCODEREPARIR,String V_V_STATECODE,
                              String V_EQUTYPE_CODE,String V_EQU_CODE,String V_DJ_PERCODE,
                              String V_V_SHORT_TXT,String V_V_BJ_TXT,String V_V_ORDER_TYP,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
@@ -474,31 +464,7 @@ public class ZdhService {
             cstmt.execute();
             result.put("total",cstmt.getString("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            /*ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_ORDERGUID", rs.getString("V_ORDERGUID"));
-                sledata.put("V_ORDERID", rs.getString("V_ORDERID"));
-                sledata.put("V_SHORT_TXT", rs.getString("V_SHORT_TXT"));
-                sledata.put("V_EQUIP_NO", rs.getString("V_EQUIP_NO"));
-                sledata.put("V_EQUIP_NAME", rs.getString("V_EQUIP_NAME"));
-                sledata.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
-                sledata.put("V_SPARE", rs.getString("V_SPARE"));
-                sledata.put("V_ORGNAME", rs.getString("V_ORGNAME"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("D_ENTER_DATE", rs.getString("D_ENTER_DATE"));
-                sledata.put("V_DEPTNAMEREPARIR", rs.getString("V_DEPTNAMEREPARIR"));
-                sledata.put("V_DEPTCODEREPARIR", rs.getString("V_DEPTCODEREPARIR"));
-                sledata.put("V_ORDER_TYP_TXT", rs.getString("V_ORDER_TYP_TXT"));
-                sledata.put("V_STATECODE", rs.getString("V_STATECODE"));
-                sledata.put("V_STATENAME", rs.getString("V_STATENAME"));
-                sledata.put("WX_STATENAME", rs.getString("WX_STATENAME"));
-                sledata.put("V_WXTEAM", rs.getString("V_WXTEAM"));
-                sledata.put("V_REASON", rs.getString("V_REASON"));
-                sledata.put("V_CHECKMANSIGN", rs.getString("V_CHECKMANSIGN"));
-                resultList.add(sledata);
-            }*/
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -513,7 +479,6 @@ public class ZdhService {
 
     public List<Map> send_manager(String V_V_DEPTREPAIRCODE,String V_V_ORDERGUID,
                                   String V_V_REASON) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -543,8 +508,7 @@ public class ZdhService {
 
     public Map team_sel(String IN_DEPARTCODE,String IN_CLASSNAME) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_CLASS_M_QUERY");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -566,14 +530,13 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_WX_WORKORDER_SELECT_PER");
+        logger.info("end PRO_CLASS_M_QUERY");
         return result;
     }
 
     public Map workCenter_sel(String V_V_DEPTREPAIRCODE) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_BASE_DEPTTOSAPWORKCSAT");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -601,7 +564,6 @@ public class ZdhService {
     public Map role_sel() throws SQLException {
 
         logger.info("begin PRO_BASE_PERSONROLE_VIEW");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -622,14 +584,13 @@ public class ZdhService {
         }
 
         logger.debug("result:" + result);
-        logger.info("end PRO_BASE_DEPTTOSAPWORKCSAT");
+        logger.info("end PRO_BASE_PERSONROLE_VIEW");
         return result;
     }
 
     public Map role_new_sel(String V_V_DEPTCODE) throws SQLException {
 
-        logger.info("begin PRO_BASE_PERSONROLE_VIEW");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_BASE_PERSONROLE_NEW_VIEW");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -650,7 +611,7 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_BASE_DEPTTOSAPWORKCSAT");
+        logger.info("end PRO_BASE_PERSONROLE_NEW_VIEW");
         return result;
     }
 
@@ -658,8 +619,7 @@ public class ZdhService {
                              String IN_PERSONCODE,String IN_PERSONNAME,
                              String IN_CLASSCODE,String IN_ORDERGUID) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_CLASS_FIND_WXPERSON");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -686,15 +646,14 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_CLASS_FIND_PERSON");
+        logger.info("end PRO_CLASS_FIND_WXPERSON");
         return result;
     }
 
     public Map addbaseperson_sel(String IN_DEPTCODE,String IN_ROLECODE,
                                  String IN_PERSONCODE,String IN_PERSONNAME) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_CLASS_FIND_PERSON");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -725,8 +684,7 @@ public class ZdhService {
 
     public Map teamdetail_sel(String IN_CLASSCODE,String IN_ORDERGUID) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_CLASS_M_QUERY_WX");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -748,14 +706,13 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_CLASS_M_QUERY_P");
+        logger.info("end PRO_CLASS_M_QUERY_WX");
         return result;
     }
 
     public Map teamname_sel(String IN_CLASSCODE) throws SQLException {
 
         logger.info("begin PRO_CLASS_NAME_QUERY_WX");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -782,8 +739,7 @@ public class ZdhService {
 
     public Map teambasedetail_sel(String IN_CLASSCODE) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_CLASS_M_QUERY_P");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -810,7 +766,6 @@ public class ZdhService {
 
     public List<Map> team_save(String IN_DEPARTCODE,String IN_CLASSNAME,String IN_WORKCODE,
                                String IN_PERSONCODE) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -836,13 +791,12 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_CLASS_ADD_S");
+        logger.info("end PRO_CLASS_ADD_WX");
         return result;
     }
 
     public List<Map> teambase_save(String IN_DEPARTCODE,String IN_CLASSNAME,String IN_WORKCODE,
                                    String IN_PERSONCODE) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -874,7 +828,6 @@ public class ZdhService {
 
     public List<Map> team_edit(String IN_CLASSCODE,String IN_DEPARTCODE,String IN_CLASSNAME,
                                String IN_WORKCODE,String IN_PERSONCODE,String IN_ORDERGUID) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -902,13 +855,12 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_CLASS_ADD_S");
+        logger.info("end PRO_CLASS_EDIT_WX");
         return result;
     }
 
     public List<Map> teambase_edit(String IN_CLASSCODE,String IN_DEPARTCODE,String IN_CLASSNAME,
                                    String IN_WORKCODE,String IN_PERSONCODE) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -935,14 +887,13 @@ public class ZdhService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_CLASS_ADD_S");
+        logger.info("end PRO_CLASS_EDIT_S");
         return result;
     }
 
     public Map teamedit_sel(String IN_CLASSCODE) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_CLASS_QUERY_EDIT");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -969,7 +920,6 @@ public class ZdhService {
 
 
     public List<Map> team_del(String IN_CLASSCODE) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -996,7 +946,6 @@ public class ZdhService {
     }
 
     public List<Map> send_team(String V_V_TEAMCODE,String V_V_ORDERGUID) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -1028,7 +977,6 @@ public class ZdhService {
                                 String V_EQUTYPE_CODE,String V_EQU_CODE,String V_DJ_PERCODE,
                                 String V_V_SHORT_TXT,String V_V_BJ_TXT,String V_V_ORDER_TYP,
                                 String V_V_USERCODE) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
@@ -1068,8 +1016,7 @@ public class ZdhService {
 
     public Map PRO_PM_WORKORDER_ET_ACTIVITY(String V_V_ORDERGUID) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_DD_CREATE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_PM_WORKORDER_ET_ACTIVITY");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1097,7 +1044,6 @@ public class ZdhService {
     public Map PRO_PM_WORKORDER_SPARE_VIEW(String V_V_ORDERGUID) throws SQLException {
 
         logger.info("begin PRO_PM_WORKORDER_SPARE_VIEW");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1124,8 +1070,7 @@ public class ZdhService {
 
     public   List<Map> PRO_PM_WORKORDER_SPARE_VIEW1(String V_V_ORDERGUID) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_SPARE_VIEW1");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_PM_WORKORDER_SPARE_VIEW");
 
         List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
@@ -1146,14 +1091,13 @@ public class ZdhService {
             cstmt.close();
             conn.close();
         }
-        logger.info("end PRO_PM_WORKORDER_SPARE_VIEW1");
+        logger.info("end PRO_PM_WORKORDER_SPARE_VIEW");
         return resultList;
     }
 
     public Map PRO_WORKORDER_SPARE_ZY(String V_V_ORDERGUID) throws SQLException {
 
         logger.info("begin PRO_WORKORDER_SPARE_ZY");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1180,8 +1124,7 @@ public class ZdhService {
 
     public Map PRO_MM_STORE_DIC() throws SQLException {
 
-        logger.info("begin PRO_WORKORDER_SPARE_ZY");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+        logger.info("begin PRO_MM_STORE_DIC");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1208,7 +1151,6 @@ public class ZdhService {
     public Map PRO_PM_WORKORDER_JIP_VIEW(String V_V_EQUIP_NO,String V_I_FLAG) throws SQLException {
 
         logger.info("begin PRO_PM_WORKORDER_JIP_VIEW");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1237,7 +1179,6 @@ public class ZdhService {
     public Map PRO_BASE_DEPT_SAP_JHGC(String V_V_SAP_JHGC ) throws SQLException {
 
         logger.info("begin PRO_BASE_DEPT_SAP_JHGC");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1267,7 +1208,6 @@ public class ZdhService {
                                    String V_EQUTYPE_CODE,String V_EQU_CODE,String V_DJ_PERCODE,
                                    String V_V_SHORT_TXT,String V_V_BJ_TXT,String V_V_ORDER_TYP,
                                    String V_V_USERCODE) throws SQLException {
-//        logger.info("begin PRO_PM_WORKORDER_SELECT_MEMBER");
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
@@ -1308,7 +1248,6 @@ public class ZdhService {
     public Map PRO_PM_WORKORDER_ET_OPERATIONS(String V_V_ORDERGUID) throws SQLException {
 
         logger.info("begin PRO_PM_WORKORDER_ET_OPERATIONS");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1336,7 +1275,6 @@ public class ZdhService {
     public List<Map> PRO_PM_WORKORDER_ET_SET(Double V_I_ID,String V_V_ORDERGUID,String V_V_DESCRIPTION,
                                              Double V_I_WORK_ACTIVITY,Double V_I_DURATION_NORMAL,String V_V_WORK_CENTER,
                                              Double V_I_ACTUAL_TIME, Double V_I_NUMBER_OF_PEOPLE,String V_V_ID,String V_V_GUID) throws SQLException {
-//        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -1376,7 +1314,6 @@ public class ZdhService {
     public Map PRO_PM_WORKORDER_ET_GET(Double V_I_ID) throws SQLException {
 
         logger.info("begin PRO_PM_WORKORDER_ET_GET");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1402,7 +1339,6 @@ public class ZdhService {
     }
 
     public List<Map> PRO_PM_WORKORDER_ET_DEL(Double V_I_ID,String V_V_ORDERGUID) throws SQLException {
-//        logger.info("begin PRO_PM_WORKORDER_ET_DEL");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -1431,7 +1367,6 @@ public class ZdhService {
     public Map PRO_WX_WORKORDER_GET(String V_V_ORDERGUID) throws SQLException {
 
         logger.info("begin PRO_WX_WORKORDER_GET");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1459,7 +1394,6 @@ public class ZdhService {
     public Map PRO_BASE_DEPT_TREE(String V_V_DEPTCODE) throws SQLException {
 
         logger.info("begin PRO_BASE_DEPT_TREE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1487,7 +1421,6 @@ public class ZdhService {
     public Map PRO_BASE_CRAFT_QUERY() throws SQLException {
 
         logger.info("begin PRO_BASE_DEPT_TREE");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1515,7 +1448,6 @@ public class ZdhService {
     public Map PRO_BASE_PERSON_VIEW(String V_V_DEPTCODE) throws SQLException {
 
         logger.info("begin PRO_BASE_PERSON_VIEW");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -1542,7 +1474,6 @@ public class ZdhService {
 
     public List<Map> PRO_BASE_PERSON_SET(String V_V_PERSONCODE,String V_V_PERSONNAME,String V_V_LOGINNAME,String V_V_PASSWORD,
                                          String V_V_DEPTCODE,String V_V_ROLECODE,Double V_I_ORDERID,String V_I_CLASS) throws SQLException {
-//        logger.info("begin PRO_PM_WORKORDER_ET_DEL");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -1581,7 +1512,6 @@ public class ZdhService {
     public Map PRO_BASE_PERSON_GET(String V_V_PERSONCODE) throws SQLException {
 
         logger.info("begin PRO_BASE_PERSON_GET");
-//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();

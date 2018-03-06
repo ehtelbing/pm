@@ -4,22 +4,8 @@ var tabIndex = 0;
 var V_V_GUID_COPY = '';
 var personStoreLoad = false;
 var initLoad = true;
-var dt = new Date();
-var thisYear = dt.getFullYear();
-var years = [];
-for (var i = 2013; i <= thisYear + 1; i++) years.push({displayField: i, valueField: i});
-var months = [];
-for (var i = 1; i <= 12; i++) {
-    if(i<10)
-    {
-        months.push({displayField: '0'+i, valueField: '0'+i});
-    }else{
-        months.push({displayField: i, valueField: i});
-    }
 
-}
-var STATEDATA = [{ displayField: '全部', valueField: '%' },{ displayField: '已整改', valueField: '已整改' },{ displayField: '未整改', valueField: '未整改' }
-    ,{ displayField: '未反馈', valueField: '未反馈' }];
+
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
