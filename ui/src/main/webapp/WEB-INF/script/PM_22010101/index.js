@@ -1505,6 +1505,7 @@ Ext.onReady(function () {
         id:'centerpanel',
         region:'center',
         layout:'border',
+        autoScroll : true,
         //frame: true,
         //baseCls: 'my-panel-no-border',
         //width:'80%',
