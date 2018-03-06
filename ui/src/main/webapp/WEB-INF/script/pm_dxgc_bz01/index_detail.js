@@ -1325,6 +1325,8 @@ var pageFunction = {
                 var resp = Ext.decode(resp.responseText);
                 ganttdata = resp.list;
 
+                Ext.getBody().unmask();
+
                 pageFunction.CreateGantt();
             }
         });
