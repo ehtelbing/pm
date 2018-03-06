@@ -1502,7 +1502,7 @@ Ext.onReady(function () {
 
 
     var centerpanel=Ext.create('Ext.panel.Panel',{
-        id:'centerpanel',
+        i丑d:'centerpanel',
         region:'center',
         layout:'border',
         autoScroll : true,
