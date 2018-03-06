@@ -108,8 +108,35 @@ Ext.onReady(function () {
         }
     });
 
+    var grid6Store=Ext.create('Ext.data.Store',{
+        id : 'grid6Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
+            'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
+            'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
+            'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYPRO',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid6Store
+        }
+    });
     var inputPanel = Ext.create('Ext.Panel', {
         id : 'inputPanel',
+        region : 'north',
         header : false,
         frame : true,
         layout : 'column',
@@ -147,9 +174,12 @@ Ext.onReady(function () {
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
         id : 'overhaulApplyPanel',
         store : gridStore,
+        title:'缺陷选择',
         frame : true,
         border: false,
         columnLines: true,
+        region : 'west',
+        width:'50%',
         /*selModel : {
          selType : 'checkboxmodel',
          mode : 'SINGLE'
@@ -158,52 +188,45 @@ Ext.onReady(function () {
         columns : [ {
             text : '序号',
             xtype : 'rownumberer',
-            width : 50,
+            width : 40,
             sortable : false
         },{
-            text : '手工消缺',
-            id : 'sgxq',
-            xtype : 'templatecolumn',
-            align : 'center',
-            width : 100,
-            tpl : '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
-        }, {
             text : '单位',
             dataIndex : 'V_DEPTNAME',
             align : 'center',
             width : 100,
             renderer : CreateGridColumnTd
-        }, {
+        }, /*{
             text : '缺陷状态',
             dataIndex : 'V_STATENAME',
             align : 'center',
             width : 100,
             renderer : CreateGridColumnTd
-        }, {
+        },*/ {
             text : '缺陷类型',
             dataIndex : 'V_SOURCENAME',
             align : 'center',
-            width : 100,
+            width : 80,
             renderer : CreateGridColumnTd
         }, {
             text : '缺陷日期',
             dataIndex : 'D_DEFECTDATE',
             align : 'center',
-            width : 200,
+            width : 150,
             renderer : CreateGridColumnTime
         }, {
             text : '缺陷明细',
             dataIndex : 'V_DEFECTLIST',
             align : 'center',
-            width : 700,
+            width : 200,
             renderer : CreateGridColumnTd
         }, {
             text : '设备',
             dataIndex : 'V_EQUNAME',
             align : 'center',
-            width : 200,
+            width : 150,
             renderer : CreateGridColumnTd
-        }, {
+        }/*, {
             text : '设备位置',
             dataIndex : 'V_EQUSITE',
             align : 'center',
@@ -220,9 +243,9 @@ Ext.onReady(function () {
             dataIndex : 'V_IDEA',
             align : 'center',
             renderer : CreateGridColumnTd
-        }],
+        }*/],
         listeners : {
-            itemdblclick : itemclick
+            itemclick : itemclick
         },
         bbar: [{
             id: 'page',
@@ -232,69 +255,77 @@ Ext.onReady(function () {
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
             store: 'gridStore'
-        }, {
-            xtype: 'label',
-            text: '已计划',
-            style: ' margin: 0px 0px 0px 10px;color:#FFCC00'
-        }, {
-            xtype: 'label',
-            text: '已接收',
-            style: ' margin: 0px 0px 0px 10px;color:#009933'
-        }, {
-            xtype: 'label',
-            text: '已反馈',
-            style: ' margin: 0px 0px 0px 10px;color:#6666FF'
-        }, {
-            xtype: 'label',
-            text: '已验收',
-            style: ' margin: 0px 0px 0px 10px;color:#333300'
-        }, {
-            xtype: 'label',
-            text: '遗留缺陷',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '工单驳回',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '未处理',
-            style: ' margin: 0px 0px 0px 10px;color:#FF0000'
-        }, {
-            xtype: 'label',
-            text: '已下票',
-            style: ' margin: 0px 0px 0px 10px;color:#FF33CC'
-        }, {
-            xtype: 'label',
-            text: '已消缺',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '手工消缺',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
         }]
     });
 
-    Ext.create('Ext.container.Viewport', {
-        layout : {
-            type : 'border',
-            regionWeights : {
-                west : -1,
-                north : 1,
-                south : 1,
-                east : -1
-            }
-        },
-        items : [ {
-            region : 'north',
-            border : false,
-            items : [ inputPanel]
+    var selectPanel = Ext.create('Ext.grid.Panel', {
+        id : 'selectPanel',
+        autoScroll : true,
+        store : grid6Store,
+        //frame : true,
+        width:'100%',
+        //height:'80%',
+        border: false,
+        columnLines: true,
+        selType: 'checkboxmodel',
+        columns : [ {
+            text : '序号',
+            xtype : 'rownumberer',
+            width : 40,
+            sortable : false
+        },{
+            text : '单位',
+            dataIndex : 'V_DEPTNAME',
+            align : 'center',
+            width : 120
         }, {
-            region : 'center',
-            layout : 'fit',
-            border : false,
-            items : [ overhaulApplyPanel ]
-        } ]
+            text : '缺陷类型',
+            dataIndex : 'V_SOURCENAME',
+            align : 'center',
+            width : 80
+        }, {
+            text : '缺陷日期',
+            dataIndex : 'D_DEFECTDATE',
+            align : 'center',
+            width : 150
+        }, {
+            text : '缺陷明细',
+            dataIndex : 'V_DEFECTLIST',
+            align : 'center',
+            width : 200
+        }, {
+            text : '设备',
+            dataIndex : 'V_EQUNAME',
+            align : 'center',
+            width : 150
+        }]
+    });
+
+    var centerpanel=Ext.create('Ext.panel.Panel',{
+        id:'centerpanel',
+        region:'east',
+        layout:'border',
+        width:'50%',
+        //autoScroll : true,
+        items:[{xtype:'panel', region:'west',width:'100%',layout:'vbox',frame:true,title:'已选择',autoScroll : true,
+            items:[{xtype:'panel', width:'100%', layout:'hbox',baseCls: 'my-panel-no-border',
+                items:[
+                    {
+                        xtype: 'button',
+                        text: '删除',
+                        icon: imgpath + '/delete.png',
+                        handler: _delete,
+                        style: 'margin: 5px 0px 0px 10px'
+                    }]},selectPanel
+            ]}
+
+            ]
+    });
+
+    Ext.create('Ext.container.Viewport', {
+        layout : 'border',
+        autoScroll : true,
+        items : [ inputPanel,overhaulApplyPanel,centerpanel]
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -314,10 +345,14 @@ function _init() {
     if(zyStoreload)
     {
         zyStoreload = false;
+        QueryGrid6();
         Ext.getBody().unmask();//去除页面笼罩
     }
 }
-
+function beforeGrid6Store(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_FLAG = '0';
+}
 
 function _selectOverhaulApply() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
@@ -427,19 +462,8 @@ function ReadGD(value, metaData) {
     }
 }
 
-function itemclick(s, record, item, index, e, eOpts) {
-    //window.showModalDialog(AppUrl + "/No210302/Index.html?v_guid="
-    //    + Ext.getStore("gridStore").getAt(index).get("V_GUID"), "",
-    //    "dialogHeight:600px;dialogWidth:700px");
-    var owidth = window.document.body.offsetWidth - 200;
-    var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
-        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-
-}
-
 function Select(){
-    var seldata = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
+    /*var seldata = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
     if (seldata.length==0) {
         Ext.Msg.alert('操作提示','请选择一条数据！');
         return false;
@@ -490,13 +514,13 @@ function Select(){
         }
     });
 
-    if (num == seldata.length) {
+    if (num == seldata.length) {*/
         window.opener.getReturnQX();
         window.close();
-    } else {
+   /* } else {
         alert("缺陷添加错误");
     }
-
+*/
 
 
 
@@ -512,4 +536,74 @@ function guid() {
     }
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+function _delete(){
+    var seldata = Ext.getCmp('selectPanel').getSelectionModel().getSelection();
+     if (seldata.length==0) {
+     Ext.Msg.alert('操作提示','请至少选择一条数据！');
+     return false;
+     }
+     var num = 0;
+
+    for (var i = 0; i < seldata.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DELBYPD',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_DEFECT_GUID: seldata[i].data.V_GUID,
+                V_V_PROJECT_GUID: V_GUID
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.V_INFO == 'success') {
+                    num++;
+                }
+
+            }
+        });
+    }
+
+
+    if (num == seldata.length) {
+        QueryGrid6();
+    } else {
+        alert("删除失败");
+    }
+}
+function QueryGrid6(){
+    Ext.data.StoreManager.lookup('grid6Store').load({
+        params:{
+            V_V_PROJECT_GUID:V_GUID,
+            V_V_FLAG:'0'
+        }
+    });
+
+
+}
+function itemclick(s, record, item, index, e, eOpts) {
+    if(Ext.getStore("gridStore").data.length!=0){
+        if(Ext.getStore("gridStore").getAt(0).get("V_EQUNAME")!=Ext.getStore("gridStore").getAt(index).get("V_EQUNAME")){
+            alert("请选择同一设备缺陷");
+            return;
+        }
+    }
+
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_PD',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_DEFECT_GUID: record.data.V_GUID,
+            V_V_PROJECT_GUID: V_GUID
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO == 'success') {
+                QueryGrid6();
+            }
+
+        }
+    });
 }
