@@ -1712,6 +1712,16 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DELBYPD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWORKORDER_DELBYPD(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
+                                                           @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_DELBYPD(V_V_DEFECT_GUID, V_V_PROJECT_GUID);
+        return result;
+    }
+
 }
 
 

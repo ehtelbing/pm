@@ -3427,4 +3427,31 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PM_DEFECTTOWORKORDER_DELBYPD(String V_V_DEFECT_GUID,String V_V_PROJECT_GUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWORKORDER_DELBYPD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWORKORDER_DELBYPD" + "(:V_V_DEFECT_GUID,:V_V_PROJECT_GUID,:V_INFO)}");
+
+            cstmt.setString("V_V_DEFECT_GUID", V_V_DEFECT_GUID);
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWORKORDER_DELBYPD");
+        return result;
+    }
 }

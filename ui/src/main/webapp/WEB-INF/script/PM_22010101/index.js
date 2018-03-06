@@ -1417,7 +1417,7 @@ Ext.onReady(function () {
         }],
         listeners : {
             itemclick : itemclick
-        },
+        }
     });
 
     var grid8 = Ext.create('Ext.grid.Panel', {
@@ -1502,7 +1502,7 @@ Ext.onReady(function () {
 
 
     var centerpanel=Ext.create('Ext.panel.Panel',{
-        i丑d:'centerpanel',
+        id:'centerpanel',
         region:'center',
         layout:'border',
         autoScroll : true,
