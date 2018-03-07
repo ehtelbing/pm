@@ -617,6 +617,80 @@ Ext.onReady(function () {
             }
         }
     });
+
+    var gridRGStore=Ext.create('Ext.data.Store',{
+        id : 'gridRGStore',
+        pageSize : 20,
+        autoLoad : false,
+        fields : ['V_PERCODE_DE',
+            'V_PERNAME_DE',
+            'V_PERTYPE_DE',
+            'RGNUM'
+
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_RG_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        }
+    });
+    var gridJJStore=Ext.create('Ext.data.Store',{
+        id : 'gridJJStore',
+        pageSize : 20,
+        autoLoad : false,
+        fields : ['V_JJ_CODE',
+            'V_JJ_NAME',
+            'JJNUM',
+            'V_JJ_TYPE'
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_JJ_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        }
+    });
+    var gridBJStore=Ext.create('Ext.data.Store',{
+        id : 'gridBJStore',
+        pageSize : 20,
+        autoLoad : false,
+        fields : ['V_WLCODE',
+            'V_WLSM',
+            'V_JLDW',
+            'V_GGXH',
+            'BJNUM',
+            'BJPRICE'
+
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_BJ_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        }
+    });
     var filegridPanel = Ext.create("Ext.panel.Panel", {
         id: 'filegridPanel',
         editable: false,
@@ -1384,7 +1458,7 @@ Ext.onReady(function () {
         }]
     });
     var grid7 = Ext.create('Ext.grid.Panel', {
-        id:'grid7',width:'100%',height:'50%',store:grid7Store,columnLines: true,autoScroll: true,region:'center',/*title:'模型列表',*/height:200,
+        id:'grid7',width:'100%',height:'50%',store:grid7Store,columnLines: true,autoScroll: true,region:'center',title:'模型列表',height:200,
         columns:[{
             xtype: 'rownumberer',
             text: '序号',
@@ -1481,7 +1555,151 @@ Ext.onReady(function () {
             store: 'grid8Store'
         }]*/
     });
-
+    var rgPanel = Ext.create('Ext.grid.Panel', {
+        id: 'rgPanel',
+        title:'人工',
+        store: gridRGStore,
+        border: false,
+        width:'100%',
+        height:'33%',
+        columnLines: true,
+        region: 'north',
+        columns:[{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '工种编码',
+            dataIndex: 'V_PERCODE_DE',
+            align: 'center',
+            width: 150
+        }, {
+            text: '工种名称',
+            dataIndex: 'V_PERNAME_DE',
+            align: 'center',
+            width: 150
+        },  {
+            text: '工种类型',
+            dataIndex: 'V_PERTYPE_DE',
+            align: 'center',
+            width: 150
+        },  {
+            text: '台时',
+            dataIndex: 'RGNUM',
+            align: 'center',
+            width: 150
+        }],
+        bbar: [{
+            id:'rgpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridRGStore'
+        }]
+    });
+    var jjPanel = Ext.create('Ext.grid.Panel', {
+        id: 'jjPanel',
+        title:'机具',
+        store: gridJJStore,
+        border: false,
+        width:'100%',
+        height:'33%',
+        columnLines: true,
+        region: 'center',
+        columns:[{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '机具编码',
+            dataIndex: 'V_JJ_CODE',
+            align: 'center',
+            width: 150
+        }, {
+            text: '机具名称',
+            dataIndex: 'V_JJ_NAME',
+            align: 'center',
+            width: 150
+        },  {
+            text: '机具类型',
+            dataIndex: 'V_JJ_TYPE',
+            align: 'center',
+            width: 150
+        },  {
+            text: '台时',
+            dataIndex: 'JJNUM',
+            align: 'center',
+            width: 150
+        }],
+        bbar: [{
+            id:'jjpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridJJStore'
+        }]
+    });
+    var bjPanel = Ext.create('Ext.grid.Panel', {
+        id: 'bjPanel',
+        title:'备件',
+        store: gridBJStore,
+        border: false,
+        width:'100%',
+        height:'33%',
+        columnLines: true,
+        region: 'south',
+        columns: [{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '物料编码',
+            dataIndex: 'V_WLCODE',
+            align: 'center',
+            width: 150
+        }, {
+            text: '物料描述',
+            dataIndex: 'V_WLSM',
+            align: 'center',
+            width: 150
+        }, {
+            text: '规格型号',
+            dataIndex: 'V_GGXH',
+            align: 'center',
+            width: 150
+        }, {
+            text: '计量单位',
+            dataIndex: 'V_JLDW',
+            align: 'center',
+            width: 150
+        }, {
+            text: '使用数量',
+            dataIndex: 'BJNUM',
+            align: 'center',
+            width: 150
+        }, {
+            text: '单价',
+            dataIndex: 'BJPRICE',
+            align: 'center',
+            width: 150
+        }],
+        bbar: [{
+            id:'bjpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridBJStore'
+        }]
+    });
     var mxpanel=Ext.create('Ext.panel.Panel',{
         id:'mxpanel',
         title:'模型列表',
@@ -1496,7 +1714,7 @@ Ext.onReady(function () {
         frame:true,
         region : 'center',
         //layout : 'border',
-        items: [grid6,mxpanel
+        items: [grid6,grid7,rgPanel,jjPanel,bjPanel
         ]
     });
 
@@ -1509,7 +1727,7 @@ Ext.onReady(function () {
         //frame: true,
         //baseCls: 'my-panel-no-border',
         //width:'80%',
-        items:[{xtype:'panel', region:'west',minWidth:330,layout:'hbox',frame:true,title:'设备明细',
+        items:[{xtype:'panel', region:'north',minWidth:330,height:'70%',layout:'hbox',frame:true,title:'设备明细',
             items:[{xtype:'panel', minWidth:330, layout:'vbox',baseCls: 'my-panel-no-border',
                 items:[
                     {xtype:'textfield',id:'rsbbm',fieldLabel:'设备编码',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
@@ -1529,26 +1747,15 @@ Ext.onReady(function () {
                     {xtype:'textfield',id:'rzczzs',fieldLabel:'资产制造商',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
                     {xtype:'textfield',id:'rgzjz',fieldLabel:'购置价值',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
                     {xtype:'textfield',id:'rdxzl',fieldLabel:'对象重量',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true}]}
-            ]}
-
-            /*tab1{xtype:'panel',region:'center',layout:'vbox',autoScroll: true,
-                items:[tab1]}*/]
+            ]},{xtype:'panel',region:'center',layout:'vbox',height:'30%',autoScroll: true,frame:true,/*baseCls: 'my-panel-no-border',*/title:'固定资产',
+                items:[{xtype:'textfield',id:'rsbbmn',fieldLabel:'设备编码',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'rsbmcn',fieldLabel:'设备名称',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'yz',fieldLabel:'原值',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true,value:0},
+                    {xtype:'textfield',id:'zj',fieldLabel:'折旧',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true,value:0},
+                    {xtype:'textfield',id:'jxfy',fieldLabel:'检修费用',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true,value:0},
+                ]}]
     });
 
-  /*  var rightPanel = Ext.create('Ext.panel.Panel', {
-        region : 'center',
-        layout : 'hbox',
-        frame : true,
-        autoScroll : true,
-        items : [ centerpanel/!*, tab1*!/]
-    });
-    var tabpanel=Ext.create('Ext.panel.Panel',{
-        id:'tabpanel',
-        region:'east',
-        layout:'border',
-        items:[/!*tab1{xtype:'panel',region:'center',layout:'vbox',autoScroll: true,
-             items:[tab1]}*!/]
-    });*/
 
     var tabpanel=Ext.create('Ext.panel.Panel',{
         id:'tabpanel',
@@ -1619,6 +1826,9 @@ Ext.onReady(function () {
         QueryGrid3();
         QueryGrid4();
         QueryGrid5();
+        queryRG();
+        queryJJ();
+        queryBJ();
     });
 
     Ext.getCmp("sbname").on("change", function () {
@@ -1628,6 +1838,9 @@ Ext.onReady(function () {
         QueryGrid3();
         QueryGrid4();
         QueryGrid5();
+        queryRG();
+        queryJJ();
+        queryBJ();
     });
 
     getReturnQX();
@@ -2336,6 +2549,9 @@ function QueryList(){
                 Ext.getCmp('rzczzs').setValue(resp.list[0].V_ZZS);//资产制造商
                 Ext.getCmp('rgzjz').setValue(resp.list[0].F_MONEY);//购置价值
                 Ext.getCmp('rdxzl').setValue(resp.list[0].F_WEIGHT);//对象重量
+
+                Ext.getCmp('rsbbmn').setValue(resp.list[0].V_EQUCODE);//设备编码(固定资产)
+                Ext.getCmp('rsbmcn').setValue(resp.list[0].V_EQUNAME);//设备名称(固定资产)
             }
         }
     });
@@ -2427,7 +2643,27 @@ function QueryGrid8(V_MX_CODE){
 
 
 }
-
+function queryRG() {
+    Ext.data.StoreManager.lookup('gridRGStore').load({
+        params: {
+            V_V_PROJECT_GUID: V_GUID
+        }
+    });
+}
+function queryJJ() {
+    Ext.data.StoreManager.lookup('gridJJStore').load({
+        params: {
+            V_V_PROJECT_GUID: V_GUID
+        }
+    });
+}
+function queryBJ() {
+    Ext.data.StoreManager.lookup('gridBJStore').load({
+        params: {
+            V_V_PROJECT_GUID: V_GUID
+        }
+    });
+}
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left";
     if(value == null){
