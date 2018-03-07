@@ -1722,6 +1722,43 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_DEL_BYPM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_DEL_BYPM(@RequestParam(value = "V_V_MX_GUID") String V_V_MX_GUID,
+                                                    @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_DEL_BYPM(V_V_MX_GUID, V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_RG_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_RG_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_RG_SEL(V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_JJ_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_JJ_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_JJ_SEL(V_V_PROJECT_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_BJ_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_BJ_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_BJ_SEL(V_V_PROJECT_GUID);
+        return result;
+    }
+
 }
 
 

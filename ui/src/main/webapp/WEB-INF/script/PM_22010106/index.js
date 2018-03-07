@@ -262,6 +262,7 @@ Ext.onReady(function () {
         id : 'selectPanel',
         autoScroll : true,
         store : grid6Store,
+        region:'center',
         //frame : true,
         width:'100%',
         //height:'80%',
@@ -307,8 +308,8 @@ Ext.onReady(function () {
         layout:'border',
         width:'50%',
         //autoScroll : true,
-        items:[{xtype:'panel', region:'west',width:'100%',layout:'vbox',frame:true,title:'已选择',autoScroll : true,
-            items:[{xtype:'panel', width:'100%', layout:'hbox',baseCls: 'my-panel-no-border',
+        items:[{xtype:'panel', region:'west',width:'100%',layout:'border',frame:true,title:'已选择',autoScroll : true,
+            items:[{xtype:'panel', width:'100%', region:'north',layout:'hbox',frame:true,//baseCls: 'my-panel-no-border',
                 items:[
                     {
                         xtype: 'button',
