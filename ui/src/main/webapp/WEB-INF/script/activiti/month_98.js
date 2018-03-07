@@ -794,7 +794,7 @@ Ext.onReady(function () {
             handler: _agree
         }, {
             xtype: 'button',
-            text: '作废',
+            text: '驳回',
             style: ' margin: 5px 20px 0px 0px',
             icon: imgpath + '/cross.png',
             handler: _reject
@@ -1087,12 +1087,12 @@ function _reject() {
             taskId: taskId,
             idea: '不通过',
             parName: [ "flow_yj"],
-            parVal: [ '作废'],
+            parVal: [ '驳回' ],
             processKey :processKey,
             businessKey : V_ORDERGUID,
             V_STEPCODE : 'end',
-            V_STEPNAME : '作废',
-            V_IDEA : '作废',
+            V_STEPNAME : '驳回',
+            V_IDEA : '驳回',
             V_NEXTPER : '',
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
