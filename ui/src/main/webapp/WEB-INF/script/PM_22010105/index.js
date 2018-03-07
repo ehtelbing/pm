@@ -187,8 +187,8 @@ Ext.onReady(function () {
                     query();
                 }
             }, {
-                text: '选择',
-                width : 60,
+                text: '确认返回',
+                width : 80,
                 icon: imgpath + '/add.png',
                 handler: function () {
                     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();

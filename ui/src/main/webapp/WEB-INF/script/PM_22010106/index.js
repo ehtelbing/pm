@@ -171,11 +171,7 @@ Ext.onReady(function () {
             xtype : 'button',
             text : '查询',
             handler : _selectOverhaulApply
-        },{
-            xtype: 'button',
-            text: '选择',
-            handler : Select
-        } ]
+        }]
     });
 
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
@@ -323,7 +319,12 @@ Ext.onReady(function () {
                         icon: imgpath + '/delete.png',
                         handler: _delete,
                         style: 'margin: 5px 0px 0px 10px'
-                    }]},selectPanel
+                    },{
+                        xtype: 'button',
+                        text: '确认返回',
+                        handler : Select,
+                        style: 'margin: 5px 0px 0px 10px'
+                    } ]},selectPanel
             ]}
 
             ]
