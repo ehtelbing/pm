@@ -35,7 +35,7 @@ Ext.onReady(function () {
             'V_EQUCODE_CHILD',
             'V_BZ',
             'V_IN_DATE',
-            'V_IN_PER'],
+            'V_IN_PER','V_BB'],
         proxy: {
             url: AppUrl + 'basic/PM_1917_JXMX_DATA_SEL',//'PM_03/PM_03_JXMX_DATA_SEL',
             type: 'ajax',
@@ -66,7 +66,7 @@ Ext.onReady(function () {
             'V_EQUCODE_CHILD',
             'V_BZ',
             'V_IN_DATE',
-            'V_IN_PER'],
+            'V_IN_PER','V_BB'],
         proxy : {
             type : 'ajax',
             async : false,
@@ -216,9 +216,9 @@ Ext.onReady(function () {
         height:'50%',
         columnLines: true,
         region: 'north',
+        selType: 'checkboxmodel',
         selModel: {
-            selType: 'checkboxmodel',
-            mode: 'SIMPLE'
+            mode: 'SINGLE'
         },
         columns: [{
             xtype: 'rownumberer',
@@ -236,7 +236,7 @@ Ext.onReady(function () {
             align: 'center',
             width: 150
         }, {
-            text: '工序名称',
+            text: '工序详情',
             align: 'center',
             width: 150,
             renderer : detail
@@ -245,6 +245,11 @@ Ext.onReady(function () {
             dataIndex: 'V_BZ',
             align: 'center',
             width: 150
+        }, {
+            text: '版本号',
+            dataIndex: 'V_BB',
+            align: 'center',
+            width: 100
         }
         ],
         bbar: [{
@@ -279,11 +284,21 @@ Ext.onReady(function () {
             dataIndex: 'V_MX_NAME',
             align: 'center',
             width: 150
-        },  {
+        },   {
+            text: '工序详情',
+            align: 'center',
+            width: 150,
+            renderer : detail
+        }, {
             text: '备注',
             dataIndex: 'V_BZ',
             align: 'center',
             width: 150
+        }, {
+            text: '版本号',
+            dataIndex: 'V_BB',
+            align: 'center',
+            width: 100
         }],
         bbar: [{
             id:'grid7page',
@@ -303,7 +318,7 @@ Ext.onReady(function () {
         //autoScroll : true,
         items:[gridPanel,
             {xtype:'panel', region:'center',width:'100%',layout:'border',frame:true,title:'已选择',autoScroll : true,
-            items:[{xtype:'panel', width:'100%',region:'north',layout:'hbox',frame:true,//baseCls: 'my-panel-no-border',
+            items:[{xtype:'panel', width:'100%', height:50,region:'north',layout:'hbox',frame:true,//baseCls: 'my-panel-no-border',
                 items:[
                     {
                         xtype: 'button',
@@ -331,22 +346,22 @@ Ext.onReady(function () {
             width: 40,
             align: 'center'
         }, {
-            text: '检修模型编码',
+            text: '工种编码',
             dataIndex: 'V_PERCODE_DE',
             align: 'center',
             width: 150
         }, {
-            text: '检修模型名称',
+            text: '工种名称',
             dataIndex: 'V_PERNAME_DE',
             align: 'center',
             width: 150
         },  {
-            text: '备注',
+            text: '工种类型',
             dataIndex: 'V_PERTYPE_DE',
             align: 'center',
             width: 150
         },  {
-            text: '备注',
+            text: '台时',
             dataIndex: 'RGNUM',
             align: 'center',
             width: 150

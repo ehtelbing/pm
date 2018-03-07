@@ -185,11 +185,10 @@ Ext.onReady(function () {
         columnLines: true,
         region : 'west',
         width:'50%',
-        /*selModel : {
-         selType : 'checkboxmodel',
-         mode : 'SINGLE'
-         },*/
         selType: 'checkboxmodel',
+        selModel: {
+            mode: 'SINGLE'
+        },
         columns : [ {
             text : '序号',
             xtype : 'rownumberer',
