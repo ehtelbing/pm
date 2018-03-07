@@ -361,8 +361,8 @@ public class ActivitiController {
     }
 
     /*
-    * 查询人员代办总数
-    * */
+     * 查询人员代办总数
+     * */
     @RequestMapping(value = "QueryTaskListSum", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> QueryTaskListSum(@RequestParam(value = "PersonCode") String PersonCode)
@@ -400,46 +400,41 @@ public class ActivitiController {
     }
 
     /*
-    * nameSpace  人员编码查询当前人员代办信息
-    * */
+     * nameSpace  人员编码查询当前人员代办信息
+     * */
     @RequestMapping(value = "QueryTaskList", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> QueryTaskList(@RequestParam(value = "PersonCode") String PersonCode,
                                              @RequestParam(value = "FlowType") String FlowType,
+                                             @RequestParam(value = "FlowCode") String FlowCode,
                                              @RequestParam(value = "start") String start,
                                              @RequestParam(value = "limit") String limit)
             throws SQLException {
 
         Map result = new HashMap();
         List resultlist = new ArrayList();
-        List list = new ArrayList();
 
-        if (FlowType.equals("全部")) {
-            Map<String, Object> ProcessType = activitiService.QueryProcessType();
-            List rlist = (List) ProcessType.get("list");
-            for (int i = 0; i < rlist.size(); i++) {
-                Map map = (Map) rlist.get(i);
-                list.add(map.get("V_FLOWTYPE_CODE").toString()) ;
-            }
-        } else {
-            list.add(FlowType);
-        }
+        int total = 0;
 
-        String[] nameSapce = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            nameSapce[i] = list.get(i).toString();
-        }
+        String[] nameSapce = new String[1];
+        nameSapce[0] = FlowType;
         try {
             List<Task> taskList = null;
 
             NativeTaskQuery nativeTaskQuery = taskService
                     .createNativeTaskQuery().sql(makeNativeQuerySQLResult(nameSapce));
 
-            nativeTaskQuery.parameter("assignee", PersonCode);
-
-            int total = (int) taskService.createNativeTaskQuery()
-                    .sql(makeNativeQuerySQLCount(nameSapce))
-                    .parameter("assignee", PersonCode).count();
+            if (FlowCode.equals("")) {
+                nativeTaskQuery.parameter("assignee", PersonCode);
+                total = (int) taskService.createNativeTaskQuery()
+                        .sql(makeNativeQuerySQLCount(nameSapce))
+                        .parameter("assignee", PersonCode).count();
+            } else {
+                nativeTaskQuery.parameter("assignee", PersonCode).parameter("flow_code", FlowCode);
+                total = (int) taskService.createNativeTaskQuery()
+                        .sql(makeNativeQuerySQLCount(nameSapce))
+                        .parameter("assignee", PersonCode).parameter("flow_code", FlowCode).count();
+            }
 
             taskList = nativeTaskQuery.listPage(Integer.valueOf(start), Integer.valueOf(limit));
 
@@ -498,8 +493,8 @@ public class ActivitiController {
     }
 
     /*
-    * nameSpace  当前人查询年计划的代办数量
-    * */
+     * nameSpace  当前人查询年计划的代办数量
+     *
     @RequestMapping(value = "QueryTaskListByYear", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> QueryTaskListByYear(@RequestParam(value = "PersonCode") String PersonCode
@@ -520,11 +515,11 @@ public class ActivitiController {
         }
 
         return result;
-    }
+    }*/
 
     /*
-    * nameSpace  当前人查询月计划的代办数量
-    * */
+     * nameSpace  当前人查询月计划的代办数量
+     *
     @RequestMapping(value = "QueryTaskListByMonth", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> QueryTaskListByMonth(@RequestParam(value = "PersonCode") String PersonCode)
@@ -544,11 +539,11 @@ public class ActivitiController {
         }
 
         return result;
-    }
+    }*/
 
     /*
-   * nameSpace  当前人查询周计划的代办数量
-   * */
+     * nameSpace  当前人查询周计划的代办数量
+     *
     @RequestMapping(value = "QueryTaskListByWeek", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> QueryTaskListByWeek(@RequestParam(value = "PersonCode") String PersonCode)
@@ -568,7 +563,7 @@ public class ActivitiController {
         }
 
         return result;
-    }
+    } */
 
 
     public String makeNativeQuerySQL(String select, String[] nameSpace) {

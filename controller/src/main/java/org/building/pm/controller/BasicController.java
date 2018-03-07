@@ -28,8 +28,8 @@ public class BasicController {
     private BasicService basicService;
 
     /*
-         * 班组详情查询
-         * */
+     * 班组详情查询
+     * */
     @RequestMapping(value = "PRO_BASE_PERSONROLE_VIEW_NEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_PERSONROLE_VIEW_NEW(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
@@ -174,7 +174,7 @@ public class BasicController {
 
         List<Map> result = null;
         result = basicService.PM_1917_JXMX_DATA_SET(V_V_JXMX_CODE, V_V_JXMX_NAME, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE,
-                V_V_EQUCODE, V_V_EQUCODE_CHILD,V_V_REPAIRMAJOR_CODE, V_V_BZ,V_V_HOUR, V_V_IN_PER, V_V_IN_DATE);
+                V_V_EQUCODE, V_V_EQUCODE_CHILD, V_V_REPAIRMAJOR_CODE, V_V_BZ, V_V_HOUR, V_V_IN_PER, V_V_IN_DATE);
         test.put("list", result);
         return test;
     }
@@ -555,7 +555,7 @@ public class BasicController {
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = basicService.PRO_FLOW_TYPE_PERNUM_SEL(V_V_PERCODE,V_D_BEGINTIME,V_D_ENDTIME);
+        HashMap data = basicService.PRO_FLOW_TYPE_PERNUM_SEL(V_V_PERCODE, V_D_BEGINTIME, V_D_ENDTIME);
 
         List<Map<String, Object>> list = (List) data.get("list");
 
@@ -571,23 +571,24 @@ public class BasicController {
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_D_BEGINTIME") String V_D_BEGINTIME,
             @RequestParam(value = "V_D_ENDTIME") String V_D_ENDTIME,
-            @RequestParam(value = "V_V_GDH") String  V_V_GDH,
-            @RequestParam(value = "V_V_FLOWTYPE") String  V_V_FLOWTYPE,
+            @RequestParam(value = "V_V_GDH") String V_V_GDH,
+            @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
             @RequestParam(value = "V_I_PAGE") Integer V_I_PAGE,
             @RequestParam(value = "V_I_PAGENUMBER") Integer V_I_PAGENUMBER,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = basicService.PRO_WO_FLOW_DATA_SEL(V_V_PERCODE,V_D_BEGINTIME,V_D_ENDTIME,V_V_GDH,V_V_FLOWTYPE,V_I_PAGE,V_I_PAGENUMBER);
+        HashMap data = basicService.PRO_WO_FLOW_DATA_SEL(V_V_PERCODE, V_D_BEGINTIME, V_D_ENDTIME, V_V_GDH, V_V_FLOWTYPE, V_I_PAGE, V_I_PAGENUMBER);
 
         List<Map<String, Object>> list = (List) data.get("list");
 
-        result.put("V_INFO",data.get("V_INFO").toString());
+        result.put("V_INFO", data.get("V_INFO").toString());
         result.put("list", list);
         result.put("success", true);
         return result;
     }
+
     @RequestMapping(value = "/PM_1917_JXGX_WL_DATA_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_1917_JXGX_WL_DATA_SET(
@@ -601,7 +602,7 @@ public class BasicController {
             @RequestParam(value = "V_V_NUM") String V_V_NUM,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = basicService.PM_1917_JXGX_WL_DATA_SET(V_V_JXGX_CODE, V_V_KFNAME,V_V_WLCODE,V_V_WLSM,V_V_GGXH,V_V_JLDW,V_V_PRICE,V_V_NUM);
+        Map result = basicService.PM_1917_JXGX_WL_DATA_SET(V_V_JXGX_CODE, V_V_KFNAME, V_V_WLCODE, V_V_WLSM, V_V_GGXH, V_V_JLDW, V_V_PRICE, V_V_NUM);
         return result;
     }
 
@@ -612,7 +613,7 @@ public class BasicController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = basicService.PRO_WO_FLOW_DATA_DETAIL_SEL(V_V_ORDERID,V_V_DEPTCODE);
+        Map result = basicService.PRO_WO_FLOW_DATA_DETAIL_SEL(V_V_ORDERID, V_V_DEPTCODE);
         return result;
     }
 
@@ -624,7 +625,7 @@ public class BasicController {
             @RequestParam(value = "V_D_ENDDTTE") String V_D_ENDDTTE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = basicService.PRO_HOME_FLOW_NUM_SEL(V_V_PERCODE, V_D_STARTDATE,V_D_ENDDTTE);
+        Map result = basicService.PRO_HOME_FLOW_NUM_SEL(V_V_PERCODE, V_D_STARTDATE, V_D_ENDDTTE);
         return result;
     }
 
@@ -636,7 +637,7 @@ public class BasicController {
             @RequestParam(value = "V_V_PERSON") String V_V_PERSON,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = basicService.PM_PRO_DB_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE,V_V_PERSON);
+        Map result = basicService.PM_PRO_DB_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE, V_V_PERSON);
         return result;
     }
 
@@ -648,19 +649,19 @@ public class BasicController {
             @RequestParam(value = "V_V_PERSON") String V_V_PERSON,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = basicService.PM_PRO_DEFECT_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE,V_V_PERSON);
+        Map result = basicService.PM_PRO_DEFECT_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE, V_V_PERSON);
         return result;
     }
 
     @RequestMapping(value = "/PM_PRO_PLAN_PERSONNUM_SEL", method = RequestMethod.POST)
-     @ResponseBody
-     public Map PM_PRO_PLAN_PERSONNUM_SEL(
+    @ResponseBody
+    public Map PM_PRO_PLAN_PERSONNUM_SEL(
             @RequestParam(value = "V_V_SDATE") String V_V_SDATE,
             @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
             @RequestParam(value = "V_V_PERSON") String V_V_PERSON,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = basicService.PM_PRO_PLAN_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE,V_V_PERSON);
+        Map result = basicService.PM_PRO_PLAN_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE, V_V_PERSON);
         return result;
     }
 
@@ -672,7 +673,7 @@ public class BasicController {
             @RequestParam(value = "V_V_PERSON") String V_V_PERSON,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = basicService.PM_PRO_WORKORDER_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE,V_V_PERSON);
+        Map result = basicService.PM_PRO_WORKORDER_PERSONNUM_SEL(V_V_SDATE, V_V_EDATE, V_V_PERSON);
         return result;
     }
 
@@ -725,13 +726,13 @@ public class BasicController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU)
             throws SQLException {
-        Map result = basicService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE,V_V_DEPTCODE, V_V_HOME_MENU);
+        Map result = basicService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE, V_V_DEPTCODE, V_V_HOME_MENU);
         return result;
     }
 
     /*
-    * 根据岗位生成点检计划
-    * */
+     * 根据岗位生成点检计划
+     * */
     @RequestMapping(value = "/PM_06_DJ_CRITERION_SETBYGW", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_06_DJ_CRITERION_SETBYGW(
@@ -743,13 +744,13 @@ public class BasicController {
             @RequestParam(value = "V_V_PLAN_PER") String V_V_PLAN_PER,
             @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE)
             throws SQLException {
-        Map result = basicService.PM_06_DJ_CRITERION_SETBYGW(V_V_DEPTCODE, V_V_CRITERION_CODE, V_V_POSTCODE, V_V_PLAN_STATE,V_V_PLAN_TIME,V_V_PLAN_PER,V_V_DJ_TYPE);
+        Map result = basicService.PM_06_DJ_CRITERION_SETBYGW(V_V_DEPTCODE, V_V_CRITERION_CODE, V_V_POSTCODE, V_V_PLAN_STATE, V_V_PLAN_TIME, V_V_PLAN_PER, V_V_DJ_TYPE);
         return result;
     }
 
     /*
-    * 点检类型
-    * */
+     * 点检类型
+     * */
 
     @RequestMapping(value = "/PRO_PM_06_CK_TYPE_VIEW", method = RequestMethod.POST)
     @ResponseBody
@@ -761,8 +762,8 @@ public class BasicController {
     }
 
     /*
-    * 点检计划所有点检详细信息
-    * */
+     * 点检计划所有点检详细信息
+     * */
 
     @RequestMapping(value = "/PM_06_DJ_DATA_SEL_ALL", method = RequestMethod.POST)
     @ResponseBody
@@ -771,7 +772,9 @@ public class BasicController {
             @RequestParam(value = "V_V_STIME") String V_V_STIME,
             @RequestParam(value = "V_V_ETIME") String V_V_ETIME)
             throws SQLException {
-        Map result = basicService.PM_06_DJ_DATA_SEL_ALL(V_V_CRITERION_CODE,V_V_STIME,V_V_ETIME);
+        Map result = basicService.PM_06_DJ_DATA_SEL_ALL(V_V_CRITERION_CODE, V_V_STIME, V_V_ETIME);
         return result;
     }
+
+
 }
