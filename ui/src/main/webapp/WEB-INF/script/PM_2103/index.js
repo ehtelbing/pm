@@ -94,7 +94,7 @@ Ext.onReady(function () {
                 text: '批量通过',
                 width : 100,
                 id:'agr',
-                icon: imgpath + '/search.png',
+                icon: imgpath + '/saved.png',
                 handler: batchAgree
             },
             {
@@ -102,7 +102,7 @@ Ext.onReady(function () {
                 text: '批量驳回',
                 width : 100,
                 id:'dagr',
-                icon: imgpath + '/search.png',
+                icon: imgpath + '/cross.png',
                 handler: batchDisAgree
             }
         ]
