@@ -1759,6 +1759,19 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYEQU", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYEQU(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYEQU(V_V_STATECODE, X_PERSONCODE, V_V_EQUCODE, V_V_PAGE,
+                V_V_PAGESIZE);
+        return result;
+    }
 }
 
 

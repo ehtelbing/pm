@@ -12,8 +12,10 @@ for (var i = 2012; i <= tomorrowYear; i++)
         valueField : i
     });
 var V_GUID = null;
+var V_EQUCODE = "" ;
 if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
+    V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
 }
 var stateData=[{ displayField:'全部', valueField:'%'},{ displayField:'编辑', valueField:'编辑'},{ displayField:'审批中', valueField:'审批中'},{ displayField:'审批通过', valueField:'审批通过'},{ displayField:'审批驳回', valueField:'审批驳回'}];
 
@@ -96,7 +98,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PRO_PM_07_DEFECT_VIEW_NEW',
+            url: AppUrl + 'cjy/PRO_PM_07_DEFECT_VIEW_BYEQU',
             actionMethods: {
                 read: 'POST'
             },
@@ -337,6 +339,7 @@ Ext.onReady(function () {
         store.proxy.extraParams = {
             V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
             X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+            V_V_EQUCODE : V_EQUCODE,
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -364,6 +367,7 @@ function _selectOverhaulApply() {
     gridStore.proxy.extraParams = {
         V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+        V_V_EQUCODE : V_EQUCODE,
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
 
