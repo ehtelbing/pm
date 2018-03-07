@@ -1329,11 +1329,9 @@ public class ZdhController {
     public Map<String, Object> PM_1917_JXGX_WL_DATA_SEL(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
                                                         HttpServletRequest request,
                                                         HttpServletResponse response)throws SQLException {
-        Map<String, Object> result = new HashMap<String, Object>();
-        List list= zdhService.PM_1917_JXGX_WL_DATA_SEL(V_V_JXGX_CODE);
-        result.put("list", list);
-        result.put("success", true);
-        return result;
+        Map list= zdhService.PM_1917_JXGX_WL_DATA_SEL(V_V_JXGX_CODE);
+
+        return list;
     }
     @RequestMapping(value = "/PM_1917_JXGX_WL_DATA_DEL", method = RequestMethod.POST)
     @ResponseBody

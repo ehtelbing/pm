@@ -9,9 +9,9 @@ var flag = "";
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
-    fields: ['V_MX_CODE', 'V_MX_NAME', 'V_JXGX_NAME','V_JXGX_NR','V_WORK_NAME','V_GJ_NAME','V_JJ_NAME',
-    'V_PER_NUM','V_PER_DE','V_PER_TS','V_AQCS_NAME','V_JSYQ_NAME','V_JXGX_CODE','V_ORDER','V_GZZX_CODE',
-        'V_JXBZ','V_JXBZ_VALUE_DOWN','V_JXBZ_VALUE_UP'],
+    fields: ['V_MX_CODE', 'V_MX_NAME', 'V_JXGX_NAME', 'V_JXGX_NR', 'V_WORK_NAME', 'V_GJ_NAME', 'V_JJ_NAME',
+        'V_GZ_NAME',  'V_AQCS_NAME', 'V_JSYQ_NAME', 'V_JXGX_CODE', 'V_ORDER', 'V_GZZX_CODE','V_PERNUM','V_PERTIME',
+        'V_WL_NAME','V_JXBZ','V_JXBZ_VALUE_DOWN','V_JXBZ_VALUE_UP'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -26,6 +26,34 @@ var gridStore = Ext.create("Ext.data.Store", {
     }
 });
 
+
+var wlQueryGridStore=Ext.create('Ext.data.Store',{
+    id : 'wlQueryGridStore',
+    pageSize : 15,
+    autoLoad : false,
+    fields : [ 'V_JXGX_CODE',
+        'V_KFNAME',
+        'V_WLCODE',
+        'V_WLSM',
+        'V_GGXH',
+        'V_JLDW',
+        'V_PRICE',
+        'V_USE_NUM'
+    ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url: AppUrl + 'zdh/PM_1917_JXGX_WL_DATA_SEL',
+        actionMethods : {
+            read : 'POST'
+        },
+        reader : {
+            type : 'json',
+            root : 'list',
+            total : 'total'
+        }
+    }
+});
 var Layout = {
     layout : 'border',
     items : [
@@ -44,33 +72,35 @@ var Layout = {
                     text: '检修工序名称', align: 'center', width: 150, dataIndex: 'V_JXGX_NAME'
                 },
                 {
-                    text: '工作中心', align: 'center', width: 220, dataIndex: 'V_WORK_NAME',renderer :TipRender
+                    text: '工作中心', align: 'center', width: 220, dataIndex: 'V_WORK_NAME', renderer: TipRender
+                },
+                {
+                    text: '检修额定人数', align: 'center', width: 120, dataIndex: 'V_PERNUM'
+                },
+                {
+                    text: '检修额定时间', align: 'center', width: 120, dataIndex: 'V_PERTIME'
                 },
                 {
                     text: '检修工序内容', align: 'center', width: 150, dataIndex: 'V_JXGX_NR'
                 },
                 {
-                    text: '机具', align: 'center', width: 150, dataIndex: 'V_JJ_NAME',
-                    renderer : detailcar
+                    text: '检修车辆', align: 'center', width: 150, dataIndex: 'V_JJ_NAME',
+                    renderer: detailcar
                 },
                 {
-                    text: '工具', align: 'center', width: 150, dataIndex: 'V_GJ_NAME'
+                    text: '检修工具', align: 'center', width: 150, dataIndex: 'V_GJ_NAME'
                 },
                 {
-                    text: '定额人数', align: 'center', width: 80, dataIndex: 'V_PER_NUM',
-                    renderer : detailper
+                    text: '检修工种', align: 'center', width: 80, dataIndex: 'V_GZ_NAME',
+                    renderer: detailper
+                },
+
+                {
+                    text: '物料详情', align: 'center', width: 250, dataIndex: 'V_WL_NAME',
+                    renderer: rendererWL
                 },
                 {
-                    text: '定额工时', align: 'center', width: 80, dataIndex: 'V_PER_TS'
-                },
-                {
-                    text: '金额', align: 'center', width: 80, dataIndex: 'V_PER_DE'
-                },
-                {
-                    text: '物料详情', align: 'center', width: 150, dataIndex: 'V_TOOLTYPE'
-                },
-                {
-                    text: '技术要求', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME'
+                    text: '技术要求', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME',hidden:true
                 },
                 {
                     text: '安全措施', align: 'center', width: 150, dataIndex: 'V_AQCS_NAME'
@@ -86,7 +116,45 @@ var Layout = {
     ]
 
 };
+var wlQueryGridPanel = Ext.create('Ext.grid.Panel', {
+    id: 'wlQueryGridPanel',
+    //title:'物料详细',
+    store: wlQueryGridStore,
+    //border: false,
+    width:'100%',
+    frame:true,
+    //baseCls: 'my-panel-no-border',
+    height:200,
+    columnLines: true,
+    region: 'north',
+    columns: [{ xtype: 'rownumberer', width: 30},
+        { text: '备件编码', width: 200, dataIndex: 'V_WLCODE' },
+        { text: '备件名称', width: 260, dataIndex: 'V_WLSM' },
+        { text: '数量', width: 80, dataIndex: 'V_USE_NUM'}
+    ]
 
+});
+var WLQuerywin = Ext.create('Ext.window.Window', {
+    id: 'WLQuerywin',
+    width: 750,
+    height: 500,
+    layout: 'border',
+    title: '',
+    modal: true,//弹出窗口时后面背景不可编辑
+    frame: true,
+    closeAction: 'hide',
+    closable: true,
+    autoScroll : true,
+    items: [wlQueryGridPanel],
+    buttons: [ {
+        xtype: 'button',
+        text: '关闭',
+        width: 40,
+        handler: function () {
+            cancelWLQ_btn();
+        }
+    }]
+});
 
 function onPageLoaded() {
     Ext.QuickTips.init();
@@ -103,6 +171,13 @@ function queryGrid(){
     });
 }
 
+function loadWLQgrid(V_JXGX_CODE){
+    Ext.data.StoreManager.lookup('wlQueryGridStore').load({
+        params:{
+            V_V_JXGX_CODE:V_JXGX_CODE
+        }
+    });
+}
 function renderFont(value, metaData){
     metaData.style = 'text-align: left';
     return value;
@@ -132,4 +207,18 @@ function ondetailper(a){
 
 function TipRender(value, metaData, record, rowIndex, colIndex, store) {
     return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+function rendererWL(a,value, metaData, record, rowIndex, colIndex, store){
+    return '<a href="javascript:goToWL(\'' + metaData.data.V_JXGX_CODE + '\')">'+a/*record.raw.V_WL_NAME*/+'</a>';
+}
+function goToWL(V_JXGX_CODE){
+    loadWLQgrid(V_JXGX_CODE);
+    Ext.getCmp('WLQuerywin').show();
+}
+function cancelWLQ_btn() {
+    Ext.getCmp('WLQuerywin').hide();
+}
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>' ;
 }

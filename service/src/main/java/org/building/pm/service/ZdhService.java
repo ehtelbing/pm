@@ -2620,8 +2620,10 @@ public class ZdhService {
         logger.info("end PM_1917_JXGX_WL_DATA_SET");
         return sledata;
     }
-    public List<Map> PM_1917_JXGX_WL_DATA_SEL(String V_V_JXGX_CODE) throws SQLException {
+
+    public HashMap PM_1917_JXGX_WL_DATA_SEL(String V_V_JXGX_CODE) throws SQLException {
         logger.info("begin PM_1917_JXGX_WL_DATA_SEL");
+        HashMap result = new HashMap();
         List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -2632,18 +2634,16 @@ public class ZdhService {
             cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            Map sledata = new HashMap();
-            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            resultList.add(sledata);
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        logger.debug("result:" + resultList);
+        logger.debug("result:" + result);
         logger.info("end PM_1917_JXGX_WL_DATA_SEL");
-        return resultList;
+        return result;
     }
     public Map PM_1917_JXGX_WL_DATA_DEL(String V_V_JXGX_CODE,String V_V_WLCODE) throws SQLException {
         logger.info("begin PM_1917_JXGX_WL_DATA_SET");
