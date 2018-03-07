@@ -1610,9 +1610,11 @@ public class cjyController {
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_SELBYPRO(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
                                                              @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                              HttpServletRequest request,
                                                               HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYPRO(V_V_PROJECT_GUID,V_V_FLAG);
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYPRO(V_V_PROJECT_GUID,V_V_FLAG,V_V_PAGE,V_V_PAGESIZE);
         return result;
     }
 
@@ -1638,9 +1640,11 @@ public class cjyController {
     @RequestMapping(value = "/PM_PROJECT_DX_MX_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_PROJECT_DX_MX_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                    @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                    @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                              HttpServletRequest request,
                                                              HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_SEL(V_V_PROJECT_GUID);
+        Map result = cjyService.PM_PROJECT_DX_MX_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
         return result;
     }
 
@@ -1735,27 +1739,33 @@ public class cjyController {
     @RequestMapping(value = "/PM_PROJECT_DX_MX_RG_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_PROJECT_DX_MX_RG_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                     HttpServletRequest request,
                                                     HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_RG_SEL(V_V_PROJECT_GUID);
+        Map result = cjyService.PM_PROJECT_DX_MX_RG_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "/PM_PROJECT_DX_MX_JJ_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_PROJECT_DX_MX_JJ_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                        HttpServletRequest request,
                                                        HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_JJ_SEL(V_V_PROJECT_GUID);
+        Map result = cjyService.PM_PROJECT_DX_MX_JJ_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "/PM_PROJECT_DX_MX_BJ_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_PROJECT_DX_MX_BJ_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                        HttpServletRequest request,
                                                        HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_BJ_SEL(V_V_PROJECT_GUID);
+        Map result = cjyService.PM_PROJECT_DX_MX_BJ_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
         return result;
     }
 
@@ -1770,6 +1780,83 @@ public class cjyController {
             throws SQLException {
         Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYEQU(V_V_STATECODE, X_PERSONCODE, V_V_EQUCODE, V_V_PAGE,
                 V_V_PAGESIZE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_SAP_EQU_TYPE_TXVAL_SEL_P", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SAP_EQU_TYPE_TXVAL_SEL_P(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                             @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_SAP_EQU_TYPE_TXVAL_SEL_P(V_V_EQUCODE, V_V_EQUTYPECODE,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_SAP_EQU_BOM_VIEW_P", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SAP_EQU_BOM_VIEW_P(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                      @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                      @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_SAP_EQU_BOM_VIEW_P(V_V_EQUCODE,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_DEFECT_VIEW_P", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_DEFECT_VIEW_P(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                                  @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                  @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                  @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                  @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                  @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+                                  @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                    @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                    @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_DEFECT_VIEW_P(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE, V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE,
+                V_V_SOURCECODE, V_V_DEFECTLIST,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_SAP_WORKORDER_SELECT_P", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SAP_WORKORDER_SELECT_P(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                        @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                        @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                        @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                        @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                        @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                        @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
+                                        @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                        @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
+                                        @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
+                                          @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                          @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_SAP_WORKORDER_SELECT_P(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
+                V_V_STATECODE, V_EQUTYPE_CODE, V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT, V_V_BJ_TXT, V_V_ORDER_TYP,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_EQU_BJ_ALERT_ALL_P", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN_EQU_BJ_ALERT_ALL_P(@RequestParam(value = "A_EQUID") String A_EQUID,
+                                        @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                          @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                          @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_RUN_EQU_BJ_ALERT_ALL_P(A_EQUID, A_CYCLE_ID,V_V_PAGE,V_V_PAGESIZE);
         return result;
     }
 }
