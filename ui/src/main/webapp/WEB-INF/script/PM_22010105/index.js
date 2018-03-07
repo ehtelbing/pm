@@ -646,8 +646,7 @@ function _delete(){
             }
         });
     }
-
-
+    
     if (num == seldata.length) {
         QueryGrid7();
         queryRG();
