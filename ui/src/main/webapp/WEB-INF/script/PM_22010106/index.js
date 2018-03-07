@@ -159,7 +159,12 @@ Ext.onReady(function () {
             displayField: 'V_SOURCENAME',
             valueField: 'V_SOURCECODE',
             queryMode: 'local',
-            baseCls: 'margin-bottom'
+            baseCls: 'margin-bottom',
+    listeners: {
+        select: function (field, newValue, oldValue) {
+            _selectOverhaulApply();
+        }
+    }
         },{
             xtype : 'button',
             text : '查询',
@@ -584,8 +589,8 @@ function QueryGrid6(){
 
 }
 function itemclick(s, record, item, index, e, eOpts) {
-    if(Ext.getStore("gridStore").data.length!=0){
-        if(Ext.getStore("gridStore").getAt(0).get("V_EQUNAME")!=Ext.getStore("gridStore").getAt(index).get("V_EQUNAME")){
+    if(Ext.getStore("grid6Store").data.length!=0){
+        if(Ext.getStore("grid6Store").getAt(0).get("V_EQUNAME")!=Ext.getStore("gridStore").getAt(index).get("V_EQUNAME")){
             alert("请选择同一设备缺陷");
             return;
         }
