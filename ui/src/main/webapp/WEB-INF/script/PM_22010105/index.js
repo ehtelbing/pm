@@ -107,6 +107,9 @@ Ext.onReady(function () {
                 root : 'list',
                 total : 'total'
             }
+        },
+        listeners: {
+            beforeload: beforeGridRGStore
         }
     });
     var gridJJStore=Ext.create('Ext.data.Store',{
@@ -130,6 +133,9 @@ Ext.onReady(function () {
                 root : 'list',
                 total : 'total'
             }
+        },
+        listeners: {
+            beforeload: beforeGridJJStore
         }
     });
     var gridBJStore=Ext.create('Ext.data.Store',{
@@ -156,6 +162,9 @@ Ext.onReady(function () {
                 root : 'list',
                 total : 'total'
             }
+        },
+        listeners: {
+            beforeload: beforeGridBJStore
         }
     });
 
@@ -229,12 +238,12 @@ Ext.onReady(function () {
             text: '检修模型编码',
             dataIndex: 'V_MX_CODE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '检修模型名称',
             dataIndex: 'V_MX_NAME',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '工序详情',
             align: 'center',
@@ -244,12 +253,12 @@ Ext.onReady(function () {
             text: '备注',
             dataIndex: 'V_BZ',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '版本号',
             dataIndex: 'V_BB',
             align: 'center',
-            width: 100
+            width: 100, renderer: atright
         }
         ],
         bbar: [{
@@ -278,12 +287,12 @@ Ext.onReady(function () {
             text: '检修模型编码',
             dataIndex: 'V_MX_CODE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '检修模型名称',
             dataIndex: 'V_MX_NAME',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         },   {
             text: '工序详情',
             align: 'center',
@@ -293,12 +302,12 @@ Ext.onReady(function () {
             text: '备注',
             dataIndex: 'V_BZ',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '版本号',
             dataIndex: 'V_BB',
             align: 'center',
-            width: 100
+            width: 100, renderer: atright
         }],
         bbar: [{
             id:'grid7page',
@@ -349,22 +358,22 @@ Ext.onReady(function () {
             text: '工种编码',
             dataIndex: 'V_PERCODE_DE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '工种名称',
             dataIndex: 'V_PERNAME_DE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         },  {
             text: '工种类型',
             dataIndex: 'V_PERTYPE_DE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         },  {
             text: '台时',
             dataIndex: 'RGNUM',
             align: 'center',
-            width: 150
+            width: 150, renderer: atright
         }],
         bbar: [{
             id:'rgpage',
@@ -394,22 +403,22 @@ Ext.onReady(function () {
             text: '机具编码',
             dataIndex: 'V_JJ_CODE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '机具名称',
             dataIndex: 'V_JJ_NAME',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         },  {
             text: '机具类型',
             dataIndex: 'V_JJ_TYPE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         },  {
             text: '台时',
             dataIndex: 'JJNUM',
             align: 'center',
-            width: 150
+            width: 150, renderer: atright
         }],
         bbar: [{
             id:'jjpage',
@@ -439,32 +448,32 @@ Ext.onReady(function () {
             text: '物料编码',
             dataIndex: 'V_WLCODE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '物料描述',
             dataIndex: 'V_WLSM',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '规格型号',
             dataIndex: 'V_GGXH',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '计量单位',
             dataIndex: 'V_JLDW',
             align: 'center',
-            width: 150
+            width: 150, renderer: atleft
         }, {
             text: '使用数量',
             dataIndex: 'BJNUM',
             align: 'center',
-            width: 150
+            width: 150, renderer: atright
         }, {
             text: '单价',
             dataIndex: 'BJPRICE',
             align: 'center',
-            width: 150
+            width: 150, renderer: atright
         }],
         bbar: [{
             id:'bjpage',
@@ -491,6 +500,18 @@ Ext.onReady(function () {
         border:false,
         items: [topPanel,westpanel,centerpanel]
     });
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            V_V_ORGCODE: V_ORGCODE,
+            V_V_DEPTCODE: V_DEPTCODE,
+            V_V_EQUTYPE: V_EQUTYPE,
+            V_V_EQUCODE: V_EQUCODE,
+            V_V_EQUCHILD_CODE: '%',
+            V_V_JXMX_NAME: Ext.getCmp('jxequipname').getValue(),
+            V_V_PAGE: Ext.getCmp('gpage').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('gpage').store.pageSize
+        }
+    });
     query();
     QueryGrid7();
     queryRG();
@@ -501,6 +522,26 @@ Ext.onReady(function () {
 
 function beforeGrid7Store(store){
     store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid7page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid7page').store.pageSize;
+
+}
+function beforeGridRGStore(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('rgpage').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('rgpage').store.pageSize;
+
+}
+function beforeGridJJStore(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('jjpage').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('jjpage').store.pageSize;
+
+}
+function beforeGridBJStore(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('bjpage').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('bjpage').store.pageSize;
 
 }
 function query() {
@@ -518,25 +559,37 @@ function query() {
     });
 }
 function queryRG() {
-    Ext.data.StoreManager.lookup('gridRGStore').load({
-        params: {
-            V_V_PROJECT_GUID: V_GUID
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('gridRGStore');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('rgpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('rgpage').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
 }
 function queryJJ() {
-    Ext.data.StoreManager.lookup('gridJJStore').load({
-        params: {
-            V_V_PROJECT_GUID: V_GUID
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('gridJJStore');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('jjpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('jjpage').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
 }
 function queryBJ() {
-    Ext.data.StoreManager.lookup('gridBJStore').load({
-        params: {
-            V_V_PROJECT_GUID: V_GUID
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('gridBJStore');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('bjpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('bjpage').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
 }
 function btn_select(){
 
@@ -626,11 +679,15 @@ function itemclick(s, record, item, index, e, eOpts) {
     });
 }
 function QueryGrid7(){
-    Ext.data.StoreManager.lookup('grid7Store').load({
-        params:{
-            V_V_PROJECT_GUID:V_GUID
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('grid7Store');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('grid7page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid7page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
 
 
 }
@@ -671,4 +728,12 @@ function _delete(){
     } else {
         alert("删除失败");
     }
+}
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>' ;
+}
+function atright(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:right;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>' ;
 }

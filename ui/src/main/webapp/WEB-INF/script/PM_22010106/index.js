@@ -301,6 +301,15 @@ Ext.onReady(function () {
             dataIndex : 'V_EQUNAME',
             align : 'center',
             width : 150
+        }],
+        bbar: [{
+            id:'grid6page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid6Store'
         }]
     });
 
@@ -361,6 +370,8 @@ function _init() {
 function beforeGrid6Store(store){
     store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
     store.proxy.extraParams.V_V_FLAG = '0';
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid6page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid6page').store.pageSize;
 }
 
 function _selectOverhaulApply() {
@@ -583,12 +594,16 @@ function _delete(){
     }
 }
 function QueryGrid6(){
-    Ext.data.StoreManager.lookup('grid6Store').load({
-        params:{
-            V_V_PROJECT_GUID:V_GUID,
-            V_V_FLAG:'0'
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('grid6Store');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_FLAG:'0',
+        V_V_PAGE: Ext.getCmp('grid6page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid6page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
 
 
 }
