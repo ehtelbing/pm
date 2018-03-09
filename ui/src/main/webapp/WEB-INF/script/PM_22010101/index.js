@@ -2567,6 +2567,9 @@ function getReturnMX(){
     });
 
     QueryGrid7();
+    queryRG();
+    queryJJ();
+    queryBJ();
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
