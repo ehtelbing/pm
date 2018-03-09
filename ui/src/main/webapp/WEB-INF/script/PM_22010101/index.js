@@ -2421,8 +2421,8 @@ function save()
                         async: false,
                         method: 'post',
                         params: {
-                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj"],
-                            parVal: [Ext.util.Cookies.get('v_personcode'), V_GUID, Ext.getCmp('sp').getValue(), "请审批!", Ext.getCmp('xmname').getValue(), V_FLOW_CODE, "请审批！"],
+                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
+                            parVal: [Ext.util.Cookies.get('v_personcode'), V_GUID, Ext.getCmp('sp').getValue(), "请审批!", Ext.getCmp('xmname').getValue(), V_FLOW_CODE, "请审批！","Project"],
                             processKey: processKey,
                             businessKey: V_GUID,
                             V_STEPCODE: 'Start',

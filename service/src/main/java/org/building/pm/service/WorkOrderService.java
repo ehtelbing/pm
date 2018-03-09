@@ -91,6 +91,48 @@ public class WorkOrderService {
         return result;
     }
 
+    public HashMap PRO_PM_WORKORDER_DEFECT_SAVE(String V_V_PERNAME,String  V_DEFECT_GUID,String  V_V_ORDERGUID,String  V_V_EQUCODE,
+                                                String V_V_WORKORDER_TYPE,String V_V_DEPTCODEREPARIR,String V_V_SHORT_TXT,String V_V_WBS,
+                                                String V_V_WBS_TXT,String V_D_START_DATE,String V_D_FINISH_DATE) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_DEFECT_SAVE");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_DEFECT_SAVE" + "(:V_V_PERNAME,:V_DEFECT_GUID," +
+                    ":V_V_ORDERGUID,:V_V_EQUCODE,:V_V_WORKORDER_TYPE,:V_V_DEPTCODEREPARIR,:V_V_SHORT_TXT,:V_V_WBS,:V_V_WBS_TXT," +
+                    ":V_D_START_DATE,:V_D_FINISH_DATE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_DEFECT_GUID", V_DEFECT_GUID);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_WORKORDER_TYPE", V_V_WORKORDER_TYPE);
+            cstmt.setString("V_V_DEPTCODEREPARIR", V_V_DEPTCODEREPARIR);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.setString("V_V_WBS", V_V_WBS);
+            cstmt.setString("V_V_WBS_TXT", V_V_WBS_TXT);
+            cstmt.setString("V_D_START_DATE", V_D_START_DATE);
+            cstmt.setString("V_D_FINISH_DATE", V_D_FINISH_DATE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_DEFECT_SAVE");
+        return result;
+    }
+
     public HashMap PRO_PM_WORKORDER_DEFECT_SA_XJ(String V_V_PERNAME,String  V_V_DEFECT_GUID,String  V_V_ORDERGUID,String  V_V_MATERIALCODE,
                                                 String V_V_MATERIALNAME,String V_V_WORKORDER_TYPE,String V_V_DEPTCODEREPARIR,String V_V_SHORT_TXT,
                                                 String V_V_JJCOUNT,String V_D_START_DATE,String V_D_FINISH_DATE) throws SQLException {

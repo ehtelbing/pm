@@ -17,6 +17,8 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
 import org.building.pm.service.ActivitiService;
+import org.building.pm.service.PM_03Service;
+import org.building.pm.service.hpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,6 +66,12 @@ public class ActivitiController {
 
     @Autowired
     private ActivitiService activitiService;
+
+    @Autowired
+    private PM_03Service pm_03Service;
+
+    @Autowired
+    private hpService hpService;
 
 
     //部署流程
@@ -367,27 +375,10 @@ public class ActivitiController {
     @ResponseBody
     public Map<String, Object> QueryTaskListSum(@RequestParam(value = "PersonCode") String PersonCode)
             throws SQLException {
-
         Map result = new HashMap();
 
-        Map<String, Object> ProcessType = activitiService.QueryProcessType();
-        List list = (List) ProcessType.get("list");
-
-        String[] nameSapce = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            Map map = (Map) list.get(i);
-            nameSapce[i] = map.get("V_FLOWTYPE_CODE").toString();
-        }
         try {
-
-            NativeTaskQuery nativeTaskQuery = taskService
-                    .createNativeTaskQuery().sql(makeNativeQuerySQLResult(nameSapce));
-
-            nativeTaskQuery.parameter("assignee", PersonCode);
-
-            int total = (int) taskService.createNativeTaskQuery()
-                    .sql(makeNativeQuerySQLCount(nameSapce))
-                    .parameter("assignee", PersonCode).count();
+            int total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).count();
 
             result.put("total", total);
             result.put("msg", "Ok");
@@ -400,6 +391,37 @@ public class ActivitiController {
     }
 
     /*
+     * 查询当前登录人各个流程类型下的代办数量
+     * */
+    @RequestMapping(value = "QueryTaskTypeNum", method = RequestMethod.POST)
+    @ResponseBody
+    public Map QueryTaskTypeNum(@RequestParam(value = "PersonCode") String PersonCode,
+                                @RequestParam(value = "FlowCode") String FlowCode) throws SQLException {
+        Map result = new HashMap();
+        List retlist = new ArrayList();
+        HashMap retType = activitiService.QueryProcessType();
+        List list = (List) retType.get("list");
+        for (int i = 0; i < list.size(); i++) {
+            Map ret = new HashMap();
+            Map map = (Map) list.get(i);
+
+            if (FlowCode.equals("")) {
+                int total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
+                ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
+            } else {
+                int total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
+                ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
+            }
+
+            retlist.add(ret);
+        }
+        result.put("list", retlist);
+        return result;
+    }
+
+    /*
      * nameSpace  人员编码查询当前人员代办信息
      * */
     @RequestMapping(value = "QueryTaskList", method = RequestMethod.POST)
@@ -407,36 +429,23 @@ public class ActivitiController {
     public Map<String, Object> QueryTaskList(@RequestParam(value = "PersonCode") String PersonCode,
                                              @RequestParam(value = "FlowType") String FlowType,
                                              @RequestParam(value = "FlowCode") String FlowCode,
-                                             @RequestParam(value = "start") String start,
-                                             @RequestParam(value = "limit") String limit)
+                                             @RequestParam(value = "Page") String Page,
+                                             @RequestParam(value = "PageSize") String PageSize)
             throws SQLException {
 
         Map result = new HashMap();
         List resultlist = new ArrayList();
 
         int total = 0;
-
-        String[] nameSapce = new String[1];
-        nameSapce[0] = FlowType;
+        int start = (Integer.valueOf(Page) - 1) * Integer.valueOf(PageSize);
+        int limit = Integer.valueOf(PageSize);
         try {
             List<Task> taskList = null;
-
-            NativeTaskQuery nativeTaskQuery = taskService
-                    .createNativeTaskQuery().sql(makeNativeQuerySQLResult(nameSapce));
-
             if (FlowCode.equals("")) {
-                nativeTaskQuery.parameter("assignee", PersonCode);
-                total = (int) taskService.createNativeTaskQuery()
-                        .sql(makeNativeQuerySQLCount(nameSapce))
-                        .parameter("assignee", PersonCode).count();
+                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", FlowType).listPage(start, limit);
             } else {
-                nativeTaskQuery.parameter("assignee", PersonCode).parameter("flow_code", FlowCode);
-                total = (int) taskService.createNativeTaskQuery()
-                        .sql(makeNativeQuerySQLCount(nameSapce))
-                        .parameter("assignee", PersonCode).parameter("flow_code", FlowCode).count();
+                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).listPage(start, limit);
             }
-
-            taskList = nativeTaskQuery.listPage(Integer.valueOf(start), Integer.valueOf(limit));
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -492,80 +501,6 @@ public class ActivitiController {
         return result;
     }
 
-    /*
-     * nameSpace  当前人查询年计划的代办数量
-     *
-    @RequestMapping(value = "QueryTaskListByYear", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> QueryTaskListByYear(@RequestParam(value = "PersonCode") String PersonCode
-    )
-            throws SQLException {
-        Map result = new HashMap();
-        String[] nameSapce = new String[1];
-        nameSapce[0] = "YearPlan";
-        try {
-            int total = (int) taskService.createNativeTaskQuery()
-                    .sql(makeNativeQuerySQLCount(nameSapce))
-                    .parameter("assignee", PersonCode).count();
-            result.put("total", total);
-            result.put("msg", "Ok");
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("msg", "Error");
-        }
-
-        return result;
-    }*/
-
-    /*
-     * nameSpace  当前人查询月计划的代办数量
-     *
-    @RequestMapping(value = "QueryTaskListByMonth", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> QueryTaskListByMonth(@RequestParam(value = "PersonCode") String PersonCode)
-            throws SQLException {
-        Map result = new HashMap();
-        String[] nameSapce = new String[1];
-        nameSapce[0] = "MonthPlan";
-        try {
-            int total = (int) taskService.createNativeTaskQuery()
-                    .sql(makeNativeQuerySQLCount(nameSapce))
-                    .parameter("assignee", PersonCode).count();
-            result.put("total", total);
-            result.put("msg", "Ok");
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("msg", "Error");
-        }
-
-        return result;
-    }*/
-
-    /*
-     * nameSpace  当前人查询周计划的代办数量
-     *
-    @RequestMapping(value = "QueryTaskListByWeek", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> QueryTaskListByWeek(@RequestParam(value = "PersonCode") String PersonCode)
-            throws SQLException {
-        Map result = new HashMap();
-        String[] nameSapce = new String[1];
-        nameSapce[0] = "WeekPlan";
-        try {
-            int total = (int) taskService.createNativeTaskQuery()
-                    .sql(makeNativeQuerySQLCount(nameSapce))
-                    .parameter("assignee", PersonCode).count();
-            result.put("total", total);
-            result.put("msg", "Ok");
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("msg", "Error");
-        }
-
-        return result;
-    } */
-
-
     public String makeNativeQuerySQL(String select, String[] nameSpace) {
         String categorySQL = "";
         if (nameSpace != null && nameSpace.length > 0) {
@@ -588,15 +523,6 @@ public class ActivitiController {
         System.out.println("我是SQL语句22222222222222222222 = " + sql);
         return sql;
     }
-
-    public String makeNativeQuerySQLCount(String[] nameSpace) {
-        return makeNativeQuerySQL("count(*)", nameSpace);
-    }
-
-    private String makeNativeQuerySQLResult(String[] nameSpace) {
-        return makeNativeQuerySQL("t.*", nameSpace);
-    }
-
 
     //通过业务Id获得流程实例信息
     @RequestMapping(value = "GetInstanceFromBusinessId", method = RequestMethod.POST)
@@ -900,5 +826,41 @@ public class ActivitiController {
         return result;
     }
 
+    /*
+     * 批量审批
+     * */
+    @RequestMapping(value = "TaskCompleteList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> TaskCompleteList(@RequestParam(value = "V_IDEA") String V_IDEA,
+                                                @RequestParam(value = "V_INPER") String V_INPER,
+                                                @RequestParam(value = "FlowType") String FlowType,
+                                                @RequestParam(value = "BusinessKeys") String[] BusinessKeys) throws SQLException {
+        HashMap mapdata = new HashMap();
+        Map acdata = new HashMap();
+        HashMap nextPer = new HashMap();
 
+        for (int i = 0; i < BusinessKeys.length; i++) {
+
+            if (FlowType.equals("WeekPlan")) {
+                /*
+                 * 根据businessKey,FlowType获取业务数据
+                 * */
+                mapdata = pm_03Service.PRO_PM_03_PLAN_WEEK_GET(BusinessKeys[i]);
+                List maplist = (List) mapdata.get("list");
+                Map map = (Map) maplist.get(0);
+                /*
+                 *根据businessKey,v_inper获取activiti数据
+                 * */
+                acdata = GetTaskIdFromBusinessId(BusinessKeys[i], V_INPER);
+
+                /*
+                * 获取下一步审批人信息
+                * */
+                nextPer = hpService.PM_ACTIVITI_PROCESS_PER_SEL(map.get("V_ORGCODE").toString(), map.get("V_DEPTCODE").toString(), "", FlowType, acdata.get("TaskDefinitionKey").toString(), V_INPER, map.get("V_REPAIRMAJOR_CODE").toString(), "通过");
+
+
+            }
+        }
+        return acdata;
+    }
 }
