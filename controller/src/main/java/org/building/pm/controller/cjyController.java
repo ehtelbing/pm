@@ -1859,6 +1859,78 @@ public class cjyController {
         Map result = cjyService.PRO_RUN_EQU_BJ_ALERT_ALL_P(A_EQUID, A_CYCLE_ID,V_V_PAGE,V_V_PAGESIZE);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_YG_VIEW_Z", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_YG_VIEW_Z(
+            @RequestParam(value = "V_V_GUID_FXJH") String V_V_GUID_FXJH,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_YG_VIEW_Z(V_V_GUID_FXJH);
+
+        List<Map<String, Object>> rlist = (List) data.get("list");
+        String v_info = (String) data.get("V_INFO");
+        result.put("list", rlist);
+        result.put("v_info", v_info);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_WL_VIEW_Z", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_WL_VIEW_Z(
+            @RequestParam(value = "V_V_GUID_FXJH") String V_V_GUID_FXJH,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_WL_VIEW_Z(V_V_GUID_FXJH);
+
+        List<Map<String, Object>> rlist = (List) data.get("list");
+        String v_info = (String) data.get("V_INFO");
+        result.put("list", rlist);
+        result.put("v_info", v_info);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_JJ_VIEW_Z", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_JJ_VIEW_Z(
+            @RequestParam(value = "V_V_GUID_FXJH") String V_V_GUID_FXJH,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_JJ_VIEW_Z(V_V_GUID_FXJH);
+
+        List<Map<String, Object>> rlist = (List) data.get("list");
+        String v_info = (String) data.get("V_INFO");
+        result.put("list", rlist);
+        result.put("v_info", v_info);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_TRE_GET_Z", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_TRE_GET_Z(
+            @RequestParam(value = "V_V_GUID_FXJH") String V_V_GUID_FXJH,
+            @RequestParam(value = "V_BY1") String V_BY1,
+            @RequestParam(value = "V_BY2") String V_BY2,
+            @RequestParam(value = "V_BY3") String V_BY3,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_TRE_GET_Z( V_V_GUID_FXJH,V_BY1, V_BY2, V_BY3);
+        List<Map<String, Object>> lxmlist = (List) data.get("list");
+        result.put("list", lxmlist);
+        result.put("success", true);
+        return result;
+    }
 }
 
 

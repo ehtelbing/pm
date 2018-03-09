@@ -3786,4 +3786,120 @@ public class cjyService {
         logger.info("end PRO_RUN_EQU_BJ_ALERT_ALL_P");
         return result;
     }
+
+    public HashMap PRO_PM_EQUREPAIRPLAN_YG_VIEW_Z(String V_V_GUID_FXJH) throws SQLException {
+
+        logger.info("begin PRO_PM_EQUREPAIRPLAN_YG_VIEW_Z");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_YG_VIEW_Z" + "(:V_V_GUID_FXJH,:V_INFO,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID_FXJH", V_V_GUID_FXJH);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_EQUREPAIRPLAN_YG_VIEW_Z");
+        return result;
+    }
+
+    public HashMap PRO_PM_EQUREPAIRPLAN_WL_VIEW_Z(String V_V_GUID_FXJH) throws SQLException {
+
+        logger.info("begin PRO_PM_EQUREPAIRPLAN_WL_VIEW_Z");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_WL_VIEW_Z" + "(:V_V_GUID_FXJH,:V_INFO,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID_FXJH", V_V_GUID_FXJH);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_EQUREPAIRPLAN_WL_VIEW_Z");
+        return result;
+    }
+
+    public HashMap PRO_PM_EQUREPAIRPLAN_JJ_VIEW_Z(String V_V_GUID_FXJH) throws SQLException {
+
+        logger.info("begin PRO_PM_EQUREPAIRPLAN_JJ_VIEW_Z");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_JJ_VIEW_Z" + "(:V_V_GUID_FXJH,:V_INFO,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID_FXJH", V_V_GUID_FXJH);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_EQUREPAIRPLAN_JJ_VIEW_Z");
+        return result;
+    }
+
+    public HashMap PRO_PM_EQUREPAIRPLAN_TRE_GET_Z(String V_V_GUID_FXJH,String V_BY1,String V_BY2,String V_BY3) throws SQLException {
+//        logger.info("begin PRO_PM_EQUREPAIRPLAN_TREE_GET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_TRE_GET_Z" + "(:V_V_GUID_FXJH,:V_BY1,:V_BY2,:V_BY3,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID_FXJH", V_V_GUID_FXJH);
+            cstmt.setString("V_BY1", V_BY1);
+            cstmt.setString("V_BY2", V_BY2);
+            cstmt.setString("V_BY3", V_BY3);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_EQUREPAIRPLAN_TRE_GET_Z");
+        return result;
+    }
 }
