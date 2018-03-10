@@ -422,137 +422,6 @@ Ext.onReady(function () {
         })
     });
 
-    var grid1Store=Ext.create('Ext.data.Store',{
-        id : 'grid1Store',
-        pageSize : 20,
-        autoLoad : false,
-        fields : [ 'V_EQUTYPETXCODE','V_EQUTYPETXNAME','V_EQUTYPETXVALUE'],
-        proxy : {
-            type : 'ajax',
-            async : false,
-            url : AppUrl + 'pm_19/PRO_SAP_EQU_TYPE_TXVAL_SELECT',
-            actionMethods : {
-                read : 'POST'
-            },
-            reader : {
-                type : 'json',
-                root : 'list',
-                total : 'total'
-            }
-        },
-        listeners: {
-            beforeload: beforeGrid1Store
-        }
-    });
-
-    var grid2Store=Ext.create('Ext.data.Store',{
-        id : 'grid2Store',
-        pageSize : 20,
-        autoLoad : false,
-        fields : [ 'I_ID','V_EQUCODE','V_SPCODE','V_SPNAME',
-            'V_SPTYPE','V_SPCODE_OLD','V_NUMBER','V_MEMO'],
-        proxy : {
-            type : 'ajax',
-            async : false,
-            url : AppUrl + 'pm_19/PRO_SAP_EQU_BOM_VIEW',
-            actionMethods : {
-                read : 'POST'
-            },
-            reader : {
-                type : 'json',
-                root : 'list',
-                total : 'total'
-            }
-        },
-        listeners: {
-            beforeload: beforeGrid2Store
-        }
-    });
-
-    var grid3Store=Ext.create('Ext.data.Store',{
-        id : 'grid3Store',
-        pageSize : 20,
-        autoLoad : false,
-        fields : [ 'I_ID','V_DEFECTLIST','V_SOURCECODE','V_SOURCENAME','V_SOURCETABLE',
-            'V_SOURCEREMARK','V_SOURCEID','D_DEFECTDATE','D_INDATE','V_PERCODE',
-            'V_PERNAME','V_ORGCODE','V_ORGNAME','V_DEPTCODE','V_DEPTNAME',
-            'V_EQUCODE','V_EQUNAME','V_EQUSITE','V_EQUSITENAME','V_EQUTYPECODE',
-            'V_EQUTYPENAME','V_IDEA','V_STATECODE','V_STATENAME','V_STATECOLOR','V_GUID'],
-        proxy : {
-            type : 'ajax',
-            async : false,
-            url : AppUrl + 'pm_19/PRO_PM_DEFECT_VIEW',
-            actionMethods : {
-                read : 'POST'
-            },
-            reader : {
-                type : 'json',
-                root : 'list',
-                total : 'total'
-            }
-        },
-        listeners: {
-            beforeload: beforeGrid3Store
-        }
-    });
-
-    var grid4Store=Ext.create('Ext.data.Store',{
-        id : 'grid4Store',
-        pageSize : 20,
-        autoLoad : false,
-        fields : [ 'I_ID','V_ORDERGUID','V_ORDERID','V_ORDER_TYP','V_ORDER_TYP_TXT',
-            'V_FUNC_LOC','V_EQUSITENAME','V_EQUIP_NO','V_EQUIP_NAME','V_PLANT',
-            'V_IWERK','D_START_DATE','D_FINISH_DATE','D_FACT_START_DATE','D_FACT_FINISH_DATE',
-            'V_ACT_TYPE','V_PLANNER','V_WORK_CTR','V_SHORT_TXT','V_GSBER','V_GSBER_TXT',
-            'V_WORK_AREA','V_WBS','V_WBS_TXT','V_ENTERED_BY','V_PERSONNAME','D_ENTER_DATE',
-            'V_SYSTEM_STATUS','V_SYSNAME','V_ORGCODE','V_ORGNAME','V_DEPTCODE',
-            'V_DEPTNAME','V_DEPTCODEREPARIR','V_DEPTNAMEREPARIR','V_DEFECTGUID','V_STATECODE',
-            'V_STATENAME','V_SPARE','V_TOOL','V_TECHNOLOGY','V_SAFE','D_DATE_FK','D_DATE_ACP',
-            'I_OTHERHOUR','V_OTHERREASON','V_REPAIRCONTENT','V_REPAIRSIGN','V_REPAIRPERSON',
-            'V_POSTMANSIGN','V_CHECKMANCONTENT','V_CHECKMANSIGN','V_WORKSHOPCONTENT','V_WORKSHOPSIGN',
-            'V_DEPTSIGN','V_SEND_STATE'],
-        proxy : {
-            type : 'ajax',
-            async : false,
-            url : AppUrl+ 'pm_19/PRO_SAP_WORKORDER_SELECT',
-            actionMethods : {
-                read : 'POST'
-            },
-            reader : {
-                type : 'json',
-                root : 'list',
-                total : 'total'
-            }
-        },
-        listeners: {
-            beforeload: beforeGrid4Store
-        }
-    });
-
-    var grid5Store=Ext.create('Ext.data.Store',{
-        id : 'grid5Store',
-        pageSize : 20,
-        autoLoad : false,
-        fields : [ 'BJ_UNIQUE_CODE','ALERT_VALUE','OFFSET','ACT_ALERT_VALUE','SUM_YEILD',
-            'MATERIALCODE','MATERIALNAME','UNIT','SITE_DESC','NEWOROLD','CHANGEDATE',
-            'BJ_STATUS','CYCLE_DESC'],
-        proxy : {
-            type : 'ajax',
-            async : false,
-            url : AppUrl + 'pm_19/PRO_RUN_EQU_BJ_ALERT_ALL',
-            actionMethods : {
-                read : 'POST'
-            },
-            reader : {
-                type : 'json',
-                root : 'list',
-                total : 'total'
-            }
-        },
-        listeners: {
-            beforeload: beforeGrid5Store
-        }
-    });
     var ssbtype = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'ssbtype',
@@ -588,6 +457,304 @@ Ext.onReady(function () {
             }
         }
     });
+
+    var grid1Store=Ext.create('Ext.data.Store',{
+        id : 'grid1Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields : [ 'V_EQUTYPETXCODE','V_EQUTYPETXNAME','V_EQUTYPETXVALUE'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'cjy/PRO_SAP_EQU_TYPE_TXVAL_SEL_P',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid1Store
+        }
+    });
+
+    var grid2Store=Ext.create('Ext.data.Store',{
+        id : 'grid2Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields : [ 'I_ID','V_EQUCODE','V_SPCODE','V_SPNAME',
+            'V_SPTYPE','V_SPCODE_OLD','V_NUMBER','V_MEMO'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'cjy/PRO_SAP_EQU_BOM_VIEW_P',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid2Store
+        }
+    });
+
+    var grid3Store=Ext.create('Ext.data.Store',{
+        id : 'grid3Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields : [ 'I_ID','V_DEFECTLIST','V_SOURCECODE','V_SOURCENAME','V_SOURCETABLE',
+            'V_SOURCEREMARK','V_SOURCEID','D_DEFECTDATE','D_INDATE','V_PERCODE',
+            'V_PERNAME','V_ORGCODE','V_ORGNAME','V_DEPTCODE','V_DEPTNAME',
+            'V_EQUCODE','V_EQUNAME','V_EQUSITE','V_EQUSITENAME','V_EQUTYPECODE',
+            'V_EQUTYPENAME','V_IDEA','V_STATECODE','V_STATENAME','V_STATECOLOR','V_GUID'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'cjy/PRO_PM_DEFECT_VIEW_P',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid3Store
+        }
+    });
+
+    var grid4Store=Ext.create('Ext.data.Store',{
+        id : 'grid4Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields : [ 'I_ID','V_ORDERGUID','V_ORDERID','V_ORDER_TYP','V_ORDER_TYP_TXT',
+            'V_FUNC_LOC','V_EQUSITENAME','V_EQUIP_NO','V_EQUIP_NAME','V_PLANT',
+            'V_IWERK','D_START_DATE','D_FINISH_DATE','D_FACT_START_DATE','D_FACT_FINISH_DATE',
+            'V_ACT_TYPE','V_PLANNER','V_WORK_CTR','V_SHORT_TXT','V_GSBER','V_GSBER_TXT',
+            'V_WORK_AREA','V_WBS','V_WBS_TXT','V_ENTERED_BY','V_PERSONNAME','D_ENTER_DATE',
+            'V_SYSTEM_STATUS','V_SYSNAME','V_ORGCODE','V_ORGNAME','V_DEPTCODE',
+            'V_DEPTNAME','V_DEPTCODEREPARIR','V_DEPTNAMEREPARIR','V_DEFECTGUID','V_STATECODE',
+            'V_STATENAME','V_SPARE','V_TOOL','V_TECHNOLOGY','V_SAFE','D_DATE_FK','D_DATE_ACP',
+            'I_OTHERHOUR','V_OTHERREASON','V_REPAIRCONTENT','V_REPAIRSIGN','V_REPAIRPERSON',
+            'V_POSTMANSIGN','V_CHECKMANCONTENT','V_CHECKMANSIGN','V_WORKSHOPCONTENT','V_WORKSHOPSIGN',
+            'V_DEPTSIGN','V_SEND_STATE'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl+ 'cjy/PRO_SAP_WORKORDER_SELECT_P',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid4Store
+        }
+    });
+
+    var grid5Store=Ext.create('Ext.data.Store',{
+        id : 'grid5Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields : [ 'BJ_UNIQUE_CODE','ALERT_VALUE','OFFSET','ACT_ALERT_VALUE','SUM_YEILD',
+            'MATERIALCODE','MATERIALNAME','UNIT','SITE_DESC','NEWOROLD','CHANGEDATE',
+            'BJ_STATUS','CYCLE_DESC'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'cjy/PRO_RUN_EQU_BJ_ALERT_ALL_P',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid5Store
+        }
+    });
+
+    var grid6Store=Ext.create('Ext.data.Store',{
+        id : 'grid6Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
+            'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
+            'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
+            'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYPRO',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid6Store
+        }
+    });
+
+    var grid7Store=Ext.create('Ext.data.Store',{
+        id : 'grid7Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields : [ 'I_ID',
+            'V_MX_CODE',
+            'V_MX_NAME',
+            'V_GX_CODE',
+            'V_ORGCODE',
+            'V_DEPTCODE',
+            'V_EQUTYPE',
+            'V_EQUCODE',
+            'V_EQUCODE_CHILD',
+            'V_BZ',
+            'V_IN_DATE',
+            'V_IN_PER'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGrid7Store
+        }
+    });
+
+    var grid8Store=Ext.create('Ext.data.Store',{
+        id : 'grid8Store',
+        pageSize : 20,
+        autoLoad : false,
+        fields : [ 'V_MX_CODE', 'V_MX_NAME', 'V_JXGX_NAME','V_JXGX_NR','V_WORK_NAME','V_GJ_NAME','V_JJ_NAME',
+            'V_PER_NUM','V_PER_DE','V_PER_TS','V_AQCS_NAME','V_JSYQ_NAME','V_JXGX_CODE','V_ORDER','V_GZZX_CODE',
+            'V_JXBZ','V_JXBZ_VALUE_DOWN','V_JXBZ_VALUE_UP'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        }
+    });
+
+    var gridRGStore=Ext.create('Ext.data.Store',{
+        id : 'gridRGStore',
+        pageSize : 20,
+        autoLoad : false,
+        fields : ['V_PERCODE_DE',
+            'V_PERNAME_DE',
+            'V_PERTYPE_DE',
+            'RGNUM'
+
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_RG_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGridRGStore
+        }
+    });
+    var gridJJStore=Ext.create('Ext.data.Store',{
+        id : 'gridJJStore',
+        pageSize : 20,
+        autoLoad : false,
+        fields : ['V_JJ_CODE',
+            'V_JJ_NAME',
+            'JJNUM',
+            'V_JJ_TYPE'
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_JJ_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGridJJStore
+        }
+    });
+    var gridBJStore=Ext.create('Ext.data.Store',{
+        id : 'gridBJStore',
+        pageSize : 20,
+        autoLoad : false,
+        fields : ['V_WLCODE',
+            'V_WLSM',
+            'V_JLDW',
+            'V_GGXH',
+            'BJNUM',
+            'BJPRICE'
+
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_BJ_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGridBJStore
+        }
+    });
     var filegridPanel = Ext.create("Ext.panel.Panel", {
         id: 'filegridPanel',
         editable: false,
@@ -603,6 +770,7 @@ Ext.onReady(function () {
 
     var panel2 = Ext.create('Ext.Panel', {
         id : 'panel2',
+        region: 'north',
         layout: 'column',
         defaults : {
             style : 'margin:2px',
@@ -721,6 +889,9 @@ Ext.onReady(function () {
         header : false,
         autoScroll:true,
         frame : true,
+        width:'26%',
+        minWidth:550,
+        region : 'west',
         layout : 'vbox',
         defaults : {
             labelAlign : 'right',
@@ -1205,15 +1376,490 @@ Ext.onReady(function () {
             }]
         }]
     });
+    var grid1 = Ext.create('Ext.grid.Panel', {
+        id:'grid1',width:'50%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'设备特性列表',height:200,
+        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+            { text: '特性名称', width: 150, dataIndex: 'V_EQUTYPETXNAME', align: 'center', renderer: atleft },
+            { text: '特性值', width: 150, dataIndex: 'V_EQUTYPETXVALUE', align: 'center', renderer: atleft }],
+        bbar: [{
+            id:'grid1page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid1Store'
+        }]
+    });
+    var grid2 = Ext.create('Ext.grid.Panel', {
+        id:'grid2',width:'50%',store:grid2Store,columnLines: true,autoScroll: true,region:'center',title:'设备备件清单',height:200,
+        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+            { text: '备件编码', width: 150, dataIndex: 'V_SPCODE', align: 'center', renderer: atleft },
+            { text: '备件名称', width: 150, dataIndex: 'V_SPNAME', align: 'center', renderer: atleft },
+            { text: '数量', width: 80, dataIndex: 'V_NUMBER', align: 'center', renderer: atright },
+            { text: '备注', width: 150, dataIndex: 'V_MEMO', align: 'center', renderer: atleft }],
+        bbar: [{
+            id:'grid2page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid2Store'
+        }]
+    });
+    var grid3 = Ext.create('Ext.grid.Panel', {
+        id:'grid3',width:'100%',store:grid3Store,columnLines: true,autoScroll: true,region:'center',title:'缺陷历史',height:200,
+        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+            { text: '发现日期', width: 150, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft },
+            { text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft },
+            { text: '状态', width: 150, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft },
+            { text: '发现人', width: 150, dataIndex: 'V_PERNAME', align: 'center', renderer: atleft },
+            { text: '缺陷来源', width: 150, dataIndex: 'V_SOURCENAME', align: 'center', renderer: atleft }],
+        bbar: [{
+            id:'grid3page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid3Store'
+        }]
+    });
+    var grid4 = Ext.create('Ext.grid.Panel', {
+        id:'grid4',width:'100%',store:grid4Store,columnLines: true,autoScroll: true,region:'center',title:'检修工单历史',height:200,
+        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+            { text: '工单日期', width: 150, dataIndex: 'D_ENTER_DATE', align: 'center', renderer: atleft },
+            { text: '工单内容', width: 300, dataIndex: 'V_SHORT_TXT', align: 'center', renderer: atleft },
+            { text: '检修单位', width: 150, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: atleft },
+            { text: '状态', width: 150, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft },
+            { text: '制单人', width: 150, dataIndex: 'V_PERSONNAME', align: 'center', renderer: atleft },
+            { text: '工单类型', width: 150, dataIndex: 'V_ORDER_TYP_TXT', align: 'center', renderer: atleft }],
+        bbar: [{
+            id:'grid4page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid4Store'
+        }]
+    });
+    var grid5 = Ext.create('Ext.grid.Panel', {
+        id:'grid5',width:'100%',store:grid5Store,columnLines: true,autoScroll: true,region:'center',title:'设备运行台账',height:200,
+        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+            { text: '设备位置', width: 150, dataIndex: 'SITE_DESC', align: 'center', renderer: atleft },
+            { text: '备件唯一标识', width: 300, dataIndex: 'BJ_UNIQUE_CODE', align: 'center', renderer: atleft },
+            { text: '物资编码', width: 150, dataIndex: 'MATERIALCODE', align: 'center', renderer: atleft },
+            { text: '物资描述', width: 150, dataIndex: 'MATERIALNAME', align: 'center', renderer: atleft },
+            { text: '计量单位', width: 150, dataIndex: 'UNIT', align: 'center', renderer: atleft },
+            { text: '更换时间', width: 150, dataIndex: 'CHANGEDATE', align: 'center', renderer: atleft },
+            { text: '作业量', width: 150, dataIndex: 'SUM_YEILD', align: 'center', renderer: atleft },
+            { text: '周期类型', width: 150, dataIndex: 'CYCLE_DESC', align: 'center', renderer: atleft },
+            { text: '报警值', width: 150, dataIndex: 'ALERT_VALUE', align: 'center', renderer: atright },
+            { text: '预警偏移量', width: 150, dataIndex: 'OFFSET', align: 'center', renderer: atright },
+            { text: '备件状态', width: 150, dataIndex: 'BJ_STATUS', align: 'center', renderer: atleft }],
+        bbar: [{
+            id:'grid5page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid5Store'
+        }]
+    });
+
+    var grid9 = Ext.create('Ext.grid.Panel', {
+        id:'grid9',width:'100%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'预防性周期',height:200,
+        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+            { text: '预防性周期', width: 150, dataIndex: 'SITE_DESC', align: 'center', renderer: atleft }],
+        bbar: [{
+            id:'grid9page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid5Store'
+        }]
+    });
+
+    var grid10 = Ext.create('Ext.grid.Panel', {
+        id:'grid10',width:'100%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'四项瞄准',height:200,
+        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+            { text: '四项标准', width: 150, dataIndex: 'SITE_DESC', align: 'center', renderer: atleft }],
+        bbar: [{
+            id:'grid10page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid5Store'
+        }]
+    });
+
+    var tab1 = Ext.create('Ext.tab.Panel', {
+        id:'tab1',
+        title:'设备信息',
+        frame:true,
+        region : 'north',
+        height:'50%',
+        //layout : 'border',
+        items: [ grid1,
+            grid2,
+            grid3,
+            grid4,
+            grid5,
+            grid9,
+            grid10
+        ]
+    });
+
+
+    var grid6 = Ext.create('Ext.grid.Panel', {
+        id:'grid6',width:'50%',store:grid6Store,columnLines: true,autoScroll: true,region:'center',title:'缺陷列表',height:200,
+        columns:[{
+            text : '序号',
+            xtype : 'rownumberer',
+            width : 50,
+            sortable : false
+        }, {
+            text : '单位',
+            dataIndex : 'V_DEPTNAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '缺陷状态',
+            dataIndex : 'V_STATENAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '缺陷类型',
+            dataIndex : 'V_SOURCENAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '缺陷日期',
+            dataIndex : 'D_DEFECTDATE',
+            align : 'center',
+            width : 200,
+            renderer : CreateGridColumnTime
+        }, {
+            text : '缺陷明细',
+            dataIndex : 'V_DEFECTLIST',
+            align : 'center',
+            width : 700,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '设备',
+            dataIndex : 'V_EQUNAME',
+            align : 'center',
+            width : 200,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '设备位置',
+            dataIndex : 'V_EQUSITE',
+            align : 'center',
+            width : 300,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '负责人',
+            dataIndex : 'V_PERNAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
+        }, {
+            text : '处理意见',
+            dataIndex : 'V_IDEA',
+            align : 'center',
+            renderer : CreateGridColumnTd
+        }],
+        bbar: [{
+            id:'grid6page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid6Store'
+        }]
+    });
+    var grid7 = Ext.create('Ext.grid.Panel', {
+        id:'grid7',width:'100%',height:'50%',store:grid7Store,columnLines: true,autoScroll: true,region:'center',title:'模型列表',height:200,
+        columns:[{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '检修模型编码',
+            dataIndex: 'V_MX_CODE',
+            align: 'center',
+            width: 150
+        }, {
+            text: '检修模型名称',
+            dataIndex: 'V_MX_NAME',
+            align: 'center',
+            width: 150
+        },  {
+            text: '备注',
+            dataIndex: 'V_BZ',
+            align: 'center',
+            width: 150
+        }],
+        bbar: [{
+            id:'grid7page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'grid7Store'
+        }],
+        listeners : {
+            itemclick : itemclick
+        }
+    });
+
+    var grid8 = Ext.create('Ext.grid.Panel', {
+        id:'grid8',width:'100%',height:'50%',store:grid8Store,columnLines: true,autoScroll: true,region:'center',title:'工序列表',height:200,
+        columns:[{ xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
+        },
+            {
+                text: '检修模型编码', align: 'center', width: 150, dataIndex: 'V_MX_CODE'
+            },
+            {
+                text: '检修模型名称', align: 'center', width: 150, dataIndex: 'V_MX_NAME'
+            },
+            {
+                text: '检修工序名称', align: 'center', width: 150, dataIndex: 'V_JXGX_NAME'
+            },
+            {
+                text: '工作中心', align: 'center', width: 220, dataIndex: 'V_WORK_NAME',renderer :TipRender
+            },
+            {
+                text: '检修工序内容', align: 'center', width: 150, dataIndex: 'V_JXGX_NR'
+            },
+            {
+                text: '机具', align: 'center', width: 150, dataIndex: 'V_JJ_NAME',
+                renderer : detailcar
+            },
+            {
+                text: '工具', align: 'center', width: 150, dataIndex: 'V_GJ_NAME'
+            },
+            {
+                text: '定额人数', align: 'center', width: 80, dataIndex: 'V_PER_NUM',
+                renderer : detailper
+            },
+            {
+                text: '定额工时', align: 'center', width: 80, dataIndex: 'V_PER_TS'
+            },
+            {
+                text: '金额', align: 'center', width: 80, dataIndex: 'V_PER_DE'
+            },
+            {
+                text: '物料详情', align: 'center', width: 150, dataIndex: 'V_TOOLTYPE'
+            },
+            {
+                text: '技术要求', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME'
+            },
+            {
+                text: '安全措施', align: 'center', width: 150, dataIndex: 'V_AQCS_NAME'
+            },
+            {
+                text: ' 允许值(下限)', align: 'center', width: 150, dataIndex: 'V_JXBZ_VALUE_DOWN'
+            },
+            {
+                text: ' 允许值（上限）', align: 'center', width: 150, dataIndex: 'V_JXBZ_VALUE_UP'
+            }]/*,
+         bbar: [{
+         id:'grid8page',
+         xtype: 'pagingtoolbar',
+         dock: 'bottom',
+         displayInfo: true,
+         displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+         emptyMsg: '没有记录',
+         store: 'grid8Store'
+         }]*/
+    });
+    var rgPanel = Ext.create('Ext.grid.Panel', {
+        id: 'rgPanel',
+        title:'人工',
+        store: gridRGStore,
+        border: false,
+        width:'100%',
+        height:'33%',
+        columnLines: true,
+        region: 'north',
+        columns:[{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '工种编码',
+            dataIndex: 'V_PERCODE_DE',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '工种名称',
+            dataIndex: 'V_PERNAME_DE',
+            align: 'center',
+            width: 150, renderer: atleft
+        },  {
+            text: '工种类型',
+            dataIndex: 'V_PERTYPE_DE',
+            align: 'center',
+            width: 150, renderer: atleft
+        },  {
+            text: '台时',
+            dataIndex: 'RGNUM',
+            align: 'center',
+            width: 150, renderer: atright
+        }],
+        bbar: [{
+            id:'rgpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridRGStore'
+        }]
+    });
+    var jjPanel = Ext.create('Ext.grid.Panel', {
+        id: 'jjPanel',
+        title:'机具',
+        store: gridJJStore,
+        border: false,
+        width:'100%',
+        height:'33%',
+        columnLines: true,
+        region: 'center',
+        columns:[{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '机具编码',
+            dataIndex: 'V_JJ_CODE',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '机具名称',
+            dataIndex: 'V_JJ_NAME',
+            align: 'center',
+            width: 150, renderer: atleft
+        },  {
+            text: '机具类型',
+            dataIndex: 'V_JJ_TYPE',
+            align: 'center',
+            width: 150, renderer: atleft
+        },  {
+            text: '台时',
+            dataIndex: 'JJNUM',
+            align: 'center',
+            width: 150, renderer: atright
+        }],
+        bbar: [{
+            id:'jjpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridJJStore'
+        }]
+    });
+    var bjPanel = Ext.create('Ext.grid.Panel', {
+        id: 'bjPanel',
+        title:'备件',
+        store: gridBJStore,
+        border: false,
+        width:'100%',
+        height:'33%',
+        columnLines: true,
+        region: 'south',
+        columns: [{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '物料编码',
+            dataIndex: 'V_WLCODE',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '物料描述',
+            dataIndex: 'V_WLSM',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '规格型号',
+            dataIndex: 'V_GGXH',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '计量单位',
+            dataIndex: 'V_JLDW',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '使用数量',
+            dataIndex: 'BJNUM',
+            align: 'center',
+            width: 150, renderer: atright
+        }, {
+            text: '单价',
+            dataIndex: 'BJPRICE',
+            align: 'center',
+            width: 150, renderer: atright
+        }],
+        bbar: [{
+            id:'bjpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridBJStore'
+        }]
+    });
+    var mxpanel=Ext.create('Ext.panel.Panel',{
+        id:'mxpanel',
+        title:'模型列表',
+        //region:'east',
+        layout:'vbox',
+        width:'100%',
+        items:[grid7,grid8]
+    });
+    var tab2 = Ext.create('Ext.tab.Panel', {
+        id:'tab2',
+        title:'已选信息',
+        frame:true,
+        region : 'center',
+        //layout : 'border',
+        items: [grid6,grid7,rgPanel,jjPanel,bjPanel
+        ]
+    });
+
 
     var centerpanel=Ext.create('Ext.panel.Panel',{
         id:'centerpanel',
         region:'center',
         layout:'border',
+        autoScroll : true,
         //frame: true,
         //baseCls: 'my-panel-no-border',
         //width:'80%',
-        items:[{xtype:'panel', region:'west',minWidth:330,layout:'hbox',frame:true,title:'设备明细',
+        items:[{xtype:'panel', region:'north',minWidth:330,height:'70%',layout:'hbox',frame:true,title:'设备明细',
             items:[{xtype:'panel', minWidth:330, layout:'vbox',baseCls: 'my-panel-no-border',
                 items:[
                     {xtype:'textfield',id:'rsbbm',fieldLabel:'设备编码',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
@@ -1233,121 +1879,28 @@ Ext.onReady(function () {
                     {xtype:'textfield',id:'rzczzs',fieldLabel:'资产制造商',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
                     {xtype:'textfield',id:'rgzjz',fieldLabel:'购置价值',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
                     {xtype:'textfield',id:'rdxzl',fieldLabel:'对象重量',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true}]}]},
-            {xtype:'panel',region:'center',layout:'vbox',frame:true,baseCls: 'my-panel-no-border',autoScroll: true,
-                items:[{xtype:'panel',frame:true,layout:'hbox',width:'100%',baseCls: 'my-panel-no-border',
-                    items:[{xtype:'grid',id:'grid1',width:'50%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'设备特性列表',height:200,
-                        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
-                            { text: '特性名称', width: 150, dataIndex: 'V_EQUTYPETXNAME', align: 'center', renderer: atleft },
-                            { text: '特性值', width: 150, dataIndex: 'V_EQUTYPETXVALUE', align: 'center', renderer: atleft }],
-                        bbar: [{
-                            id:'grid1page',
-                            xtype: 'pagingtoolbar',
-                            dock: 'bottom',
-                            displayInfo: true,
-                            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-                            emptyMsg: '没有记录',
-                            store: 'grid1Store'
-                        }]},
-                        {xtype:'grid',id:'grid2',width:'50%',store:grid2Store,columnLines: true,autoScroll: true,region:'center',title:'设备备件清单',height:200,
-                            columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
-                                { text: '备件编码', width: 150, dataIndex: 'V_SPCODE', align: 'center', renderer: atleft },
-                                { text: '备件名称', width: 150, dataIndex: 'V_SPNAME', align: 'center', renderer: atleft },
-                                { text: '数量', width: 80, dataIndex: 'V_NUMBER', align: 'center', renderer: atleft },
-                                { text: '备注', width: 150, dataIndex: 'V_MEMO', align: 'center', renderer: atleft }],
-                            bbar: [{
-                                id:'grid2page',
-                                xtype: 'pagingtoolbar',
-                                dock: 'bottom',
-                                displayInfo: true,
-                                displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-                                emptyMsg: '没有记录',
-                                store: 'grid2Store'
-                            }]}]},
-                    {xtype:'grid',id:'grid3',width:'100%',store:grid3Store,columnLines: true,autoScroll: true,region:'center',title:'缺陷列表',height:200,
-                        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
-                            { text: '发现日期', width: 150, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft },
-                            { text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft },
-                            { text: '状态', width: 150, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft },
-                            { text: '发现人', width: 150, dataIndex: 'V_PERNAME', align: 'center', renderer: atleft },
-                            { text: '缺陷来源', width: 150, dataIndex: 'V_SOURCENAME', align: 'center', renderer: atleft }],
-                        bbar: [{
-                            id:'grid3page',
-                            xtype: 'pagingtoolbar',
-                            dock: 'bottom',
-                            displayInfo: true,
-                            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-                            emptyMsg: '没有记录',
-                            store: 'grid3Store'
-                        }]},
-                    {xtype:'grid',id:'grid4',width:'100%',store:grid4Store,columnLines: true,autoScroll: true,region:'center',title:'检修工单列表',height:200,
-                        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
-                            { text: '工单日期', width: 150, dataIndex: 'D_ENTER_DATE', align: 'center', renderer: atleft },
-                            { text: '工单内容', width: 300, dataIndex: 'V_SHORT_TXT', align: 'center', renderer: atleft },
-                            { text: '检修单位', width: 150, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: atleft },
-                            { text: '状态', width: 150, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft },
-                            { text: '制单人', width: 150, dataIndex: 'V_PERSONNAME', align: 'center', renderer: atleft },
-                            { text: '工单类型', width: 150, dataIndex: 'V_ORDER_TYP_TXT', align: 'center', renderer: atleft }],
-                        bbar: [{
-                            id:'grid4page',
-                            xtype: 'pagingtoolbar',
-                            dock: 'bottom',
-                            displayInfo: true,
-                            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-                            emptyMsg: '没有记录',
-                            store: 'grid4Store'
-                        }]},
-                    {xtype:'grid',id:'grid5',width:'100%',store:grid5Store,columnLines: true,autoScroll: true,region:'center',title:'设备运行台账',height:200,
-                        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
-                            { text: '设备位置', width: 150, dataIndex: 'SITE_DESC', align: 'center', renderer: atleft },
-                            { text: '备件唯一标识', width: 300, dataIndex: 'BJ_UNIQUE_CODE', align: 'center', renderer: atleft },
-                            { text: '物资编码', width: 150, dataIndex: 'MATERIALCODE', align: 'center', renderer: atleft },
-                            { text: '物资描述', width: 150, dataIndex: 'MATERIALNAME', align: 'center', renderer: atleft },
-                            { text: '计量单位', width: 150, dataIndex: 'UNIT', align: 'center', renderer: atleft },
-                            { text: '更换时间', width: 150, dataIndex: 'CHANGEDATE', align: 'center', renderer: atleft },
-                            { text: '作业量', width: 150, dataIndex: 'SUM_YEILD', align: 'center', renderer: atleft },
-                            { text: '周期类型', width: 150, dataIndex: 'CYCLE_DESC', align: 'center', renderer: atleft },
-                            { text: '报警值', width: 150, dataIndex: 'ALERT_VALUE', align: 'center', renderer: atleft },
-                            { text: '预警偏移量', width: 150, dataIndex: 'OFFSET', align: 'center', renderer: atleft },
-                            { text: '备件状态', width: 150, dataIndex: 'BJ_STATUS', align: 'center', renderer: atleft }],
-                        bbar: [{
-                            id:'grid5page',
-                            xtype: 'pagingtoolbar',
-                            dock: 'bottom',
-                            displayInfo: true,
-                            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-                            emptyMsg: '没有记录',
-                            store: 'grid5Store'
-                        }]}]}]
+            {xtype:'panel',region:'center',layout:'vbox',height:'30%',autoScroll: true,frame:true,/*baseCls: 'my-panel-no-border',*/title:'固定资产',
+                items:[{xtype:'textfield',id:'rsbbmn',fieldLabel:'设备编码',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'rsbmcn',fieldLabel:'设备名称',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'yz',fieldLabel:'原值',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true,value:0},
+                    {xtype:'textfield',id:'zj',fieldLabel:'折旧',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true,value:0},
+                    {xtype:'textfield',id:'jxfy',fieldLabel:'检修费用',labelAlign:'right',labelWidth:90,width:300,style: ' margin: 5px 0px 0px 10px',readOnly:true,value:0},
+                ]}]
+    });
+
+    var tabpanel=Ext.create('Ext.panel.Panel',{
+        id:'tabpanel',
+        region:'east',
+        layout:'border',
+        width:'53%',
+        items:[tab1,tab2]
     });
 
     Ext.create('Ext.container.Viewport', {
-        id: "viewport",
-        layout : {
-            type : 'border',
-            regionWeights : {
-                west : -1,
-                north : 1,
-                south : 1,
-                east : -1
-            }
-        },
-        items : [ {
-            region : 'north',
-            border : false,
-            items : [ panel2 ]
-        }, {
-            region : 'west',
-            layout : 'fit',
-            border : false,
-            items : [ panel3 ]
-        } , {
-            region : 'center',
-            layout : 'fit',
-            border : false,
-            items : [ centerpanel ]
-        }]
+        layout : 'border',
+        autoScroll : true,
+        items : [ panel2,panel3,centerpanel,tabpanel ]
     });
-
 
     /* Ext.EventManager.onWindowResize(function(width,height){//改变窗口的时候会提示出窗口的宽高
      Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
@@ -1358,7 +1911,7 @@ Ext.onReady(function () {
     //_spload();
     zyq_jxdwload();
 
-
+    _init();
 
     _preViewImage();//初始加载图片
 
@@ -1406,6 +1959,9 @@ Ext.onReady(function () {
         QueryGrid3();
         QueryGrid4();
         QueryGrid5();
+        queryRG();
+        queryJJ();
+        queryBJ();
     });
 
     Ext.getCmp("sbname").on("change", function () {
@@ -1415,19 +1971,25 @@ Ext.onReady(function () {
         QueryGrid3();
         QueryGrid4();
         QueryGrid5();
+        queryRG();
+        queryJJ();
+        queryBJ();
     });
 
-    _init();
     getReturnQX();
     getReturnMX();
 })
 function beforeGrid1Store(store){
     store.proxy.extraParams.V_V_EQUCODE =Ext.getCmp('sbname').getValue();
     store.proxy.extraParams.V_V_EQUTYPECODE = Ext.getCmp('sbtype').getValue();
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid1page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid1page').store.pageSize;
 }
 
 function beforeGrid2Store(store){
     store.proxy.extraParams.V_V_EQUCODE = Ext.getCmp('sbname').getValue();
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid2page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid2page').store.pageSize;
 }
 
 function beforeGrid3Store(store){
@@ -1439,6 +2001,8 @@ function beforeGrid3Store(store){
     store.proxy.extraParams.V_V_STATECODE='%';
     store.proxy.extraParams.V_V_SOURCECODE='%';
     store.proxy.extraParams.V_V_DEFECTLIST='%';
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid3page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid3page').store.pageSize;
 }
 
 function beforeGrid4Store(store){
@@ -1454,11 +2018,46 @@ function beforeGrid4Store(store){
     store.proxy.extraParams.V_V_SHORT_TXT = '%';
     store.proxy.extraParams.V_V_BJ_TXT = '%';
     store.proxy.extraParams.V_V_ORDER_TYP = '%';
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid4page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid4page').store.pageSize;
 }
 
 function beforeGrid5Store(store){
     store.proxy.extraParams.A_EQUID = Ext.getCmp('sbname').getValue();
     store.proxy.extraParams.A_CYCLE_ID = '%';
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid5page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid5page').store.pageSize;
+}
+
+function beforeGrid6Store(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_FLAG = '0';
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid6page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid6page').store.pageSize;
+}
+function beforeGrid7Store(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid7page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid7page').store.pageSize;
+
+}
+function beforeGridRGStore(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('rgpage').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('rgpage').store.pageSize;
+
+}
+function beforeGridJJStore(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('jjpage').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('jjpage').store.pageSize;
+
+}
+function beforeGridBJStore(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('bjpage').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('bjpage').store.pageSize;
+
 }
 function _init(){
     if(ckstoreload && zyqstoreload && zystoreload && fzload)
@@ -2079,7 +2678,7 @@ function _close()
 function qxSelect(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_22010106/index.html?V_GUID='+V_GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_22010106/index.html?V_GUID='+V_GUID+'&V_EQUCODE='+Ext.getCmp('sbname').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 
 }
 
@@ -2090,7 +2689,9 @@ function getReturnQX(){
         method: 'POST',
         params: {
             V_V_PROJECT_GUID: V_GUID,
-            V_V_FLAG : '0'
+            V_V_FLAG : '0',
+            V_V_PAGE:1,
+            V_V_PAGESIZE: 999
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);//后台返回的值
@@ -2113,7 +2714,8 @@ function getReturnQX(){
                 icon: Ext.MessageBox.ERROR
             })
         }
-    })
+    });
+    QueryGrid6();
 }
 function mxSelect(){
     if(Ext.getCmp('sbtype').getValue()=='%'){
@@ -2137,7 +2739,9 @@ function getReturnMX(){
         type: 'ajax',
         method: 'POST',
         params: {
-            V_V_PROJECT_GUID: V_GUID
+            V_V_PROJECT_GUID: V_GUID,
+            V_V_PAGE:1,
+            V_V_PAGESIZE: 999
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);//后台返回的值
@@ -2160,11 +2764,20 @@ function getReturnMX(){
                 icon: Ext.MessageBox.ERROR
             })
         }
-    })
+    });
+
+    QueryGrid7();
+    queryRG();
+    queryJJ();
+    queryBJ();
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>' ;
+}
+function atright(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:right;";
     return '<div data-qtip="' + value + '" >' + value + '</div>' ;
 }
 
@@ -2195,63 +2808,199 @@ function QueryList(){
                 Ext.getCmp('rzczzs').setValue(resp.list[0].V_ZZS);//资产制造商
                 Ext.getCmp('rgzjz').setValue(resp.list[0].F_MONEY);//购置价值
                 Ext.getCmp('rdxzl').setValue(resp.list[0].F_WEIGHT);//对象重量
+
+                Ext.getCmp('rsbbmn').setValue(resp.list[0].V_EQUCODE);//设备编码(固定资产)
+                Ext.getCmp('rsbmcn').setValue(resp.list[0].V_EQUNAME);//设备名称(固定资产)
+                Ext.getCmp('yz').setValue(resp.list[0].F_MONEY);//原值
             }
         }
     });
 }
 
 function QueryGrid1(){
-    Ext.data.StoreManager.lookup('grid1Store').load({
-        params:{
-            V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
-            V_V_EQUTYPECODE:Ext.getCmp("sbtype").getValue()
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('grid1Store');
+    gridStore.proxy.extraParams = {
+        V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
+        V_V_EQUTYPECODE:Ext.getCmp("sbtype").getValue(),
+        V_V_PAGE: Ext.getCmp('grid1page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid1page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+
 }
 function QueryGrid2(){
-    Ext.data.StoreManager.lookup('grid2Store').load({
-        params:{
-            V_V_EQUCODE:Ext.getCmp("sbname").getValue()
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('grid2Store');
+    gridStore.proxy.extraParams = {
+        V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
+        V_V_PAGE: Ext.getCmp('grid2page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid2page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+
 }
 function QueryGrid3(){
-    Ext.data.StoreManager.lookup('grid3Store').load({
-        params:{
-            V_D_DEFECTDATE_B:'1999-1-1',
-            V_D_DEFECTDATE_E:'2099-1-1',
-            V_V_DEPTCODE:'%',
-            V_V_EQUTYPECODE:'%',
-            V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
-            V_V_STATECODE:'%',
-            V_V_SOURCECODE:'%',
-            V_V_DEFECTLIST:'%'
-        }
-    });
+    var gridStore = Ext.data.StoreManager.lookup('grid3Store');
+    gridStore.proxy.extraParams = {
+        V_D_DEFECTDATE_B:'1999-1-1',
+        V_D_DEFECTDATE_E:'2099-1-1',
+        V_V_DEPTCODE:'%',
+        V_V_EQUTYPECODE:'%',
+        V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
+        V_V_STATECODE:'%',
+        V_V_SOURCECODE:'%',
+        V_V_DEFECTLIST:'%',
+        V_V_PAGE: Ext.getCmp('grid3page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid3page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
 }
 function QueryGrid4(){
-    Ext.data.StoreManager.lookup('grid4Store').load({
-        params:{
-            V_D_ENTER_DATE_B:'1999-1-1',
-            V_D_ENTER_DATE_E:'2099-1-1',
-            V_V_ORGCODE:'%',
-            V_V_DEPTCODE:'%',
-            V_V_DEPTCODEREPARIR:'',
-            V_V_STATECODE:'%',
-            V_EQUTYPE_CODE:'%',
-            V_EQU_CODE:Ext.getCmp("sbname").getValue(),
-            V_DJ_PERCODE:'%',
-            V_V_SHORT_TXT:'%',
-            V_V_BJ_TXT:'%',
-            V_V_ORDER_TYP:'%'
-        }
-    });
+
+    var gridStore = Ext.data.StoreManager.lookup('grid4Store');
+    gridStore.proxy.extraParams = {
+        V_D_ENTER_DATE_B:'1999-1-1',
+        V_D_ENTER_DATE_E:'2099-1-1',
+        V_V_ORGCODE:'%',
+        V_V_DEPTCODE:'%',
+        V_V_DEPTCODEREPARIR:'',
+        V_V_STATECODE:'%',
+        V_EQUTYPE_CODE:'%',
+        V_EQU_CODE:Ext.getCmp("sbname").getValue(),
+        V_DJ_PERCODE:'%',
+        V_V_SHORT_TXT:'%',
+        V_V_BJ_TXT:'%',
+        V_V_ORDER_TYP:'%',
+        V_V_PAGE: Ext.getCmp('grid4page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid4page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+
 }
 function QueryGrid5(){
-    Ext.data.StoreManager.lookup('grid5Store').load({
+    var gridStore = Ext.data.StoreManager.lookup('grid5Store');
+    gridStore.proxy.extraParams = {
+        A_EQUID:Ext.getCmp("sbname").getValue(),
+        A_CYCLE_ID:'%',
+        V_V_PAGE: Ext.getCmp('grid5page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid5page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+}
+
+function QueryGrid6(){
+    var gridStore = Ext.data.StoreManager.lookup('grid6Store');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_FLAG:'0',
+        V_V_PAGE: Ext.getCmp('grid6page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid6page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+
+}
+
+function QueryGrid7(){
+
+    var gridStore = Ext.data.StoreManager.lookup('grid7Store');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('grid7page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('grid7page').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+
+}
+
+function QueryGrid8(V_MX_CODE){
+    Ext.data.StoreManager.lookup('grid8Store').load({
         params:{
-            A_EQUID:Ext.getCmp("sbname").getValue(),
-            A_CYCLE_ID:'%'
+            V_V_JXMX_CODE : V_MX_CODE
         }
     });
+
+
+}
+function queryRG() {
+    var gridStore = Ext.data.StoreManager.lookup('gridRGStore');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('rgpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('rgpage').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+}
+function queryJJ() {
+    var gridStore = Ext.data.StoreManager.lookup('gridJJStore');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('jjpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('jjpage').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+}
+function queryBJ() {
+    var gridStore = Ext.data.StoreManager.lookup('gridBJStore');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('bjpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('bjpage').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+}
+function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left";
+    if(value == null){
+        return '<div data-qtip="' + value + '" ></div>';
+    }
+    else{
+        return '<div data-qtip="' + value + '" >' + value + '</div>';
+    }
+}
+function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
+    var time=value.split('.')[0];
+    return time;
+}
+function itemclick(s, record, item, index, e, eOpts) {
+    QueryGrid8(Ext.getStore("grid7Store").getAt(index).get("V_GX_CODE"));
+}
+function TipRender(value, metaData, record, rowIndex, colIndex, store) {
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+function detailcar(a,value,metaData){
+    return '<a href="javascript:ondetailcar(\'' + metaData.data.V_JXGX_CODE + '\')">'+a+'</a>';
+}
+
+function ondetailcar(a){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_19170101/index.html?V_JXGX_CODE=' + a , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,channelmode=yes,resizable=yes');
+}
+function detailper(a,value,metaData){
+    return '<a href="javascript:ondetailper(\'' + metaData.data.V_JXGX_CODE + '\')">'+a+'</a>';
+}
+
+function ondetailper(a){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_19170102/index.html?V_JXGX_CODE=' + a , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
