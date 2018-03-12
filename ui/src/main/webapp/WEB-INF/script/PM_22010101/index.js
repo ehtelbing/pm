@@ -878,6 +878,7 @@ Ext.onReady(function () {
                 id: 'xmcode',
                 xtype: 'textfield',
                 fieldLabel: '项目编号',
+                readOnly : true,
                 labelWidth: 100,
                 queryMode: 'local',
                 //baseCls: 'margin-bottom',
@@ -1973,6 +1974,7 @@ function _init(){
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
+                Ext.getCmp('xmcode').setValue(data.list[0].V_PROJECTCODE);
                 if (data.success) {//成功，会传回true
                     V_FLOW_CODE = data.list[0].V_PROJECTCODE;
                     var spstore = Ext.data.StoreManager.lookup('spstore');
