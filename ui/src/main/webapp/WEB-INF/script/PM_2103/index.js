@@ -35,8 +35,8 @@ Ext.onReady(function () {
         items : [{ xtype:'textfield',id:'lxbh',fieldLabel: '流程编号',labelWidth: 70,labelAlign: 'right'},
                 { xtype: 'hidden',id: 'tabid'},
                 {xtype: 'button',text: '查询', width : 70,icon: imgpath + '/search.png',handler:QueryGrid},
-                {xtype: 'button',text: '批量通过',width : 100,id:'agr',icon: imgpath + '/search.png',handler:AgreeData},
-                {xtype: 'button',text: '批量驳回',width : 100,id:'dagr', icon: imgpath + '/search.png' }
+                {xtype: 'button',text: '批量通过',width : 100,id:'agr',icon: imgpath + '/saved.png',handler:AgreeData},
+                {xtype: 'button',text: '批量驳回',width : 100,id:'dagr', icon: imgpath + '/cross.png' }
                  ]
     });
 
