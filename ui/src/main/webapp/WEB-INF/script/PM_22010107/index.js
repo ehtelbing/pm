@@ -1403,14 +1403,14 @@ Ext.onReady(function () {
     getReturnMX();
 })
 function beforeGrid1Store(store){
-    store.proxy.extraParams.V_V_EQUCODE =Ext.getCmp('sbname').getValue();
-    store.proxy.extraParams.V_V_EQUTYPECODE = Ext.getCmp('sbtype').getValue();
+    store.proxy.extraParams.V_V_EQUCODE =sbcode;
+    store.proxy.extraParams.V_V_EQUTYPECODE = sbtypecode;
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid1page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid1page').store.pageSize;
 }
 
 function beforeGrid2Store(store){
-    store.proxy.extraParams.V_V_EQUCODE = Ext.getCmp('sbname').getValue();
+    store.proxy.extraParams.V_V_EQUCODE = sbcode;
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid2page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid2page').store.pageSize;
 }
@@ -1420,7 +1420,7 @@ function beforeGrid3Store(store){
     store.proxy.extraParams.V_D_DEFECTDATE_E='2099-1-1';
     store.proxy.extraParams.V_V_DEPTCODE='%';
     store.proxy.extraParams.V_V_EQUTYPECODE='%';
-    store.proxy.extraParams.V_V_EQUCODE=Ext.getCmp('sbname').getValue();
+    store.proxy.extraParams.V_V_EQUCODE=sbcode;
     store.proxy.extraParams.V_V_STATECODE='%';
     store.proxy.extraParams.V_V_SOURCECODE='%';
     store.proxy.extraParams.V_V_DEFECTLIST='%';
@@ -1436,7 +1436,7 @@ function beforeGrid4Store(store){
     store.proxy.extraParams.V_V_DEPTCODEREPARIR = '';
     store.proxy.extraParams.V_V_STATECODE = '%';
     store.proxy.extraParams.V_EQUTYPE_CODE = '%';
-    store.proxy.extraParams.V_EQU_CODE = Ext.getCmp('sbname').getValue();
+    store.proxy.extraParams.V_EQU_CODE = sbcode;
     store.proxy.extraParams.V_DJ_PERCODE = '%';
     store.proxy.extraParams.V_V_SHORT_TXT = '%';
     store.proxy.extraParams.V_V_BJ_TXT = '%';
@@ -1446,7 +1446,7 @@ function beforeGrid4Store(store){
 }
 
 function beforeGrid5Store(store){
-    store.proxy.extraParams.A_EQUID = Ext.getCmp('sbname').getValue();
+    store.proxy.extraParams.A_EQUID = sbcode;
     store.proxy.extraParams.A_CYCLE_ID = '%';
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid5page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid5page').store.pageSize;
@@ -1957,8 +1957,8 @@ function QueryList(){
 function QueryGrid1(){
     var gridStore = Ext.data.StoreManager.lookup('grid1Store');
     gridStore.proxy.extraParams = {
-        V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
-        V_V_EQUTYPECODE:Ext.getCmp("sbtype").getValue(),
+        V_V_EQUCODE:Ext.sbcode,
+        V_V_EQUTYPECODE:sbtypecode,
         V_V_PAGE: Ext.getCmp('grid1page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('grid1page').store.pageSize
 
@@ -1970,7 +1970,7 @@ function QueryGrid1(){
 function QueryGrid2(){
     var gridStore = Ext.data.StoreManager.lookup('grid2Store');
     gridStore.proxy.extraParams = {
-        V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
+        V_V_EQUCODE:sbcode,
         V_V_PAGE: Ext.getCmp('grid2page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('grid2page').store.pageSize
 
@@ -1986,7 +1986,7 @@ function QueryGrid3(){
         V_D_DEFECTDATE_E:'2099-1-1',
         V_V_DEPTCODE:'%',
         V_V_EQUTYPECODE:'%',
-        V_V_EQUCODE:Ext.getCmp("sbname").getValue(),
+        V_V_EQUCODE:sbcode,
         V_V_STATECODE:'%',
         V_V_SOURCECODE:'%',
         V_V_DEFECTLIST:'%',
@@ -2008,7 +2008,7 @@ function QueryGrid4(){
         V_V_DEPTCODEREPARIR:'',
         V_V_STATECODE:'%',
         V_EQUTYPE_CODE:'%',
-        V_EQU_CODE:Ext.getCmp("sbname").getValue(),
+        V_EQU_CODE:sbcode,
         V_DJ_PERCODE:'%',
         V_V_SHORT_TXT:'%',
         V_V_BJ_TXT:'%',
@@ -2024,7 +2024,7 @@ function QueryGrid4(){
 function QueryGrid5(){
     var gridStore = Ext.data.StoreManager.lookup('grid5Store');
     gridStore.proxy.extraParams = {
-        A_EQUID:Ext.getCmp("sbname").getValue(),
+        A_EQUID:sbcode,
         A_CYCLE_ID:'%',
         V_V_PAGE: Ext.getCmp('grid5page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('grid5page').store.pageSize
