@@ -438,15 +438,29 @@ Ext.onReady(function () {
         style: ' margin: 5px 0px 0px 0px;border:0',
         columnLines: true
     });
+    var panel2 = Ext.create('Ext.Panel', {
+        id : 'panel2',
+        title:'<h1 style="font-size:22px !important;">设备维修查询</h1>',
+        titleAlign:'center',
+        region: 'north',
+        layout: 'column',
+        defaults : {
+            style : 'margin:2px',
+            xtype: 'button'
+        },
+        items : [ ]
+    });
+
+
 
 
     var panel3 = Ext.create('Ext.form.FormPanel', {
         id : 'panel3',
-        //title : '<fmt:message key="inputPanel" />',
         header : false,
         autoScroll:true,
-        frame : true,
-        region : 'west',
+        //frame : true,
+        //baseCls: 'my-panel-no-border',
+        region : 'center',
         layout : 'vbox',
         defaults : {
             labelAlign : 'right',
@@ -834,6 +848,19 @@ Ext.onReady(function () {
             }]
         }]
     });
+
+    var panelt = Ext.create('Ext.Panel', {
+        id : 'panelt',
+        title:'基本信息',
+        width:'26%',
+        minWidth:560,
+        //frame:true,
+        //baseCls: 'my-panel-no-border',
+        region : 'west',
+        layout : 'border',
+        items : [panel3 ]
+    });
+
     var grid1 = Ext.create('Ext.grid.Panel', {
         id:'grid1',width:'50%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'设备特性列表',height:200,
         columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
@@ -944,7 +971,7 @@ Ext.onReady(function () {
     });
 
     var grid10 = Ext.create('Ext.grid.Panel', {
-        id:'grid10',width:'100%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'四项瞄准',height:200,
+        id:'grid10',width:'100%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'四项标准',height:200,
         columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
             { text: '四项标准', width: 150, dataIndex: 'SITE_DESC', align: 'center', renderer: atleft }],
         bbar: [{
@@ -1354,7 +1381,7 @@ Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
         layout : 'border',
         autoScroll : true,
-        items : [panel3,centerpanel,tabpanel ]
+        items : [panel2,panelt,centerpanel,tabpanel ]
     });
 
 
