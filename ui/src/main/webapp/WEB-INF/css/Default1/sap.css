@@ -2,6 +2,31 @@
     border-color: #f6f69a;
 }
 
+.x-panel-header-default-framed-top {
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+    padding: 5px 5px 5px 5px;
+    border-width: 5px 5px 0 5px;
+    border-style: solid;
+    background-color: #a9bce6;
+}
+
+.x-panel-header-default-framed {
+    font-size: 13px;
+    border: 5px solid #a9bce6;
+}
+
+.x-panel-header-text-container-default-framed {
+    color: #000000;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: arial, helvetica, verdana, sans-serif;
+    line-height: 15px;
+    padding: 1px 0 0;
+    text-transform: none;
+}
+
 
 .x-btn-default-small {
     -webkit-border-radius: 3px;
