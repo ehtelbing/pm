@@ -1273,7 +1273,7 @@ Ext.onReady(function () {
     });
     var grid1 = Ext.create('Ext.grid.Panel', {
         id:'grid1',width:'50%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'设备特性列表',height:200,
-        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
+        columns:[/*{ xtype: 'rownumberer', width: 30, sortable: false},*/
             { text: '特性名称', width: 150, dataIndex: 'V_EQUTYPETXNAME', align: 'center', renderer: atleft },
             { text: '特性值', width: 150, dataIndex: 'V_EQUTYPETXVALUE', align: 'center', renderer: atleft }],
         bbar: [{
@@ -1367,8 +1367,8 @@ Ext.onReady(function () {
 
     var grid9 = Ext.create('Ext.grid.Panel', {
         id:'grid9',width:'100%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'预防性周期',height:200,
-        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
-            { text: '预防性周期', width: 150, dataIndex: 'SITE_DESC', align: 'center', renderer: atleft }],
+        columns:[/*{ xtype: 'rownumberer', width: 30, sortable: false},*/
+            { text: '预防性周期', width: 150, dataIndex: 'V_EQUTYPETXNAME', align: 'center', renderer: atleft }],
         bbar: [{
             id:'grid9page',
             xtype: 'pagingtoolbar',
@@ -1382,8 +1382,8 @@ Ext.onReady(function () {
 
     var grid10 = Ext.create('Ext.grid.Panel', {
         id:'grid10',width:'100%',store:grid1Store,columnLines: true,autoScroll: true,region:'center',title:'四项标准',height:200,
-        columns:[{ xtype: 'rownumberer', width: 30, sortable: false},
-            { text: '四项标准', width: 150, dataIndex: 'SITE_DESC', align: 'center', renderer: atleft }],
+        columns:[/*{ xtype: 'rownumberer', width: 30, sortable: false},*/
+            { text: '四项标准', width: 150, dataIndex: 'V_EQUTYPETXNAME', align: 'center', renderer: atleft }],
         bbar: [{
             id:'grid10page',
             xtype: 'pagingtoolbar',
@@ -1872,13 +1872,19 @@ Ext.onReady(function () {
 
     getReturnQX();
     getReturnMX();
+    Ext.data.StoreManager.lookup('grid1Store').on("load", function () {
+        for(var i=0;i<3;i++){
+            Ext.data.StoreManager.lookup('grid1Store').insert(i,{V_EQUTYPETXNAME:' <br>',V_EQUTYPETXVALUE:' <br>'});
+        }
 
+    });
 })
 function beforeGrid1Store(store){
     store.proxy.extraParams.V_V_EQUCODE =Ext.getCmp('sbname').getValue();
     store.proxy.extraParams.V_V_EQUTYPECODE = Ext.getCmp('sbtype').getValue();
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('grid1page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('grid1page').store.pageSize;
+
 }
 
 function beforeGrid2Store(store){
@@ -2640,6 +2646,9 @@ function QueryGrid1(){
     };
     gridStore.currentPage = 1;
     gridStore.load();
+
+    Ext.data.StoreManager.lookup('grid1Store').insert(0,{V_EQUTYPETXNAME:'5',V_EQUTYPETXVALUE:'5'});
+    Ext.data.StoreManager.lookup('grid1Store').insert(1,{V_EQUTYPETXNAME:'6',V_EQUTYPETXVALUE:'6'});
 
 }
 function QueryGrid2(){
