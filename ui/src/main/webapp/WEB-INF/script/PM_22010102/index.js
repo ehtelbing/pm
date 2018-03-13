@@ -85,27 +85,46 @@ Ext.onReady(function () {
         })
     });
 
-    var spqzstore = Ext.create('Ext.data.Store', {
+   /* var spqzstore = Ext.create('Ext.data.Store', {
         id: 'spqzstore',
         autoLoad: false,
-        fields: ['I_ID', 'V_ORDERID', 'V_DBGUID', 'V_FLOWSTEP', 'I_STATUS',
-            'V_PERCODE', 'V_IDEA', 'V_DATE', 'D_DATE', 'V_TS',
-            'V_FLOWTYPE', 'V_FLOWCODE', 'V_FLOWNAME', 'V_URL', 'V_FLOWSTEPCODE', 'V_ORDER',
-            'V_DATE_B', 'V_PERSONNAME'],
+        fields: ['AssigneeName','Assignee', 'ActivityName', 'EndTime', 'Idea', 'ActivityId', 'ActivityType', 'StartTime', 'Id'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_22/PRO_WO_FLOW_DATA_SPVIEW',
+            //url: AppUrl + 'PM_22/PRO_WO_FLOW_DATA_SPVIEW',
             // url: 'PRO_WO_FLOW_DATA_SPVIEW',
+            url: AppUrl + 'Activiti/InstanceState',
             actionMethods: {
                 read: 'POST'
             },
             reader: {
                 type: 'json',
-                root: 'list'
+                root: 'list',
+                total: 'total'
             },
             extraParams: {}
         })
+    });*/
+
+    var spqzstore = Ext.create('Ext.data.Store', {
+        storeId: 'spqzstore',
+        autoLoad: false,
+        pageSize: 15,
+        fields: ['AssigneeName','Assignee', 'ActivityName', 'EndTime', 'Idea', 'ActivityId', 'ActivityType', 'StartTime', 'Id'],
+        proxy: {
+            url: AppUrl + 'Activiti/InstanceState',
+            type: 'ajax',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'list',
+                total: 'total'
+            }
+        }
     });
 
     var imagestore = Ext.create('Ext.data.Store', {
@@ -285,7 +304,7 @@ Ext.onReady(function () {
         columnLines: true
     });
 
-    var filegridPanel2 = Ext.create("Ext.grid.Panel", {
+    /*var filegridPanel2 = Ext.create("Ext.grid.Panel", {
         id: 'filegridPanel2',
         region: 'center',
         height: 200,
@@ -296,73 +315,58 @@ Ext.onReady(function () {
         // margin: '10px 0 0 125px',
         //colspan: 3,
         columns: [{
-            text: '审批步骤',
-            id: 'spbz',
-            flex: 1,
-            align: 'center',
-            dataIndex: "V_FLOWSTEP",
-            // renderer: _downloadRander
+            text: '流程步骤',
+            width: '23%',
+            dataIndex: 'ActivityName',
+            align: 'center'
         }, {
-            text: '审批人',
-            id: 'spr',
-            flex: 1,
-            align: 'center',
-            dataIndex: "V_PERSONNAME",
-            // renderer: _downloadRander
+            text: '操作人',
+            width: '23%',
+            dataIndex: 'AssigneeName',
+            align: 'center'
         }, {
             text: '审批意见',
-            id: 'spyj',
-            flex: 3,
-            align: 'center',
-            dataIndex: "V_IDEA",
-            // renderer: _downloadRander
+            width: '24%',
+            dataIndex: 'Idea',
+            align: 'center'
         }, {
             text: '审批时间',
-            id: 'spsj',
-            flex: 1,
-            align: 'center',
-            dataIndex: "V_DATE"
+            width: '30%',
+            dataIndex: 'EndTime',
+            align: 'center'
+        }]
+    });*/
+    var gridPanel = Ext.create('Ext.grid.Panel', {
+        id : 'gridPanel',
+        store : spqzstore,
+        frame : true,
+        height:'28%',
+        columnLines : true,
+        region: 'south',
+        autoScroll:true,
+        columns : [ {
+            text: '流程步骤',
+            width: '23%',
+            dataIndex: 'ActivityName',
+            align: 'center'
+        }, {
+            text: '操作人',
+            width: '23%',
+            dataIndex: 'AssigneeName',
+            align: 'center'
+        }, {
+            text: '审批意见',
+            width: '24%',
+            dataIndex: 'Idea',
+            align: 'center'
+        }, {
+            text: '审批时间',
+            width: '30%',
+            dataIndex: 'EndTime',
+            align: 'center'
         }]
     });
 
-    var grid = Ext.create('Ext.grid.Panel', {
-        id: 'grid',
-        store: spqzstore,
-        width: 200,
-        height: 200,
-        border: false,
-        frame: true,
-        columnLines: true,
-        autoscroll: true,
-        //bodyStyle : 'overflow-x:hidden; overflow-y:auto',
-        //title: '删除年计划',
-        region: 'south',
-        //width: '100%',
-        columns: [
-            {
-                text: '审批步骤',
-                dataIndex: 'V_FLOWSTEP',
-                flex: 2,
-                align: 'center'
-            }, {
-                text: '审批人',
-                dataIndex: 'V_PERSONNAME',
-                flex: 1,
-                align: 'center'
-            }, {
-                text: '审批意见',
-                dataIndex: 'V_IDEA',
-                flex: 3,
-                align: 'center'
-            }, {
-                text: '审批时间',
-                dataIndex: 'V_DATE',
-                flex: 1,
-                align: 'center'
-            }
-
-        ]
-    });
 
     var panel2 = Ext.create('Ext.Panel', {
         id : 'panel2',
@@ -1047,7 +1051,7 @@ Ext.onReady(function () {
         id : 'rightPanel',
         layout : 'border',
         border : false,
-        items : [ panel3,tab2,grid]
+        items : [ panel3,tab2,gridPanel]
     });
 
 
@@ -1134,13 +1138,44 @@ function _init() {
     index02 = imagestore.getCount() - 2;
     index03 = imagestore.getCount() - 3;
 
+
+    var ProcessInstanceId='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: V_GUID
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if(data.msg == 'Ok'){
+                ProcessInstanceId=data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+    _select(ProcessInstanceId);
+}
+
+function _select(ProcessInstanceId) {
     var spqzstore = Ext.data.StoreManager.lookup('spqzstore');
     spqzstore.proxy.extraParams = {
-        V_V_DBGUID : V_GUID
+        instanceId: ProcessInstanceId
     };
-
+    spqzstore.currentPage = 1;
     spqzstore.load();
-
 
 }
 function beforeGrid6Store(store){
