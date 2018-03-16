@@ -3902,4 +3902,182 @@ public class cjyService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_TRE_GET_Z");
         return result;
     }
+
+
+    public HashMap PRO_BASE_POST_TREE() throws SQLException {
+//        logger.info("begin PRO_BASE_POST_TREE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_POST_TREE(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", "-1");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_POST_TREE");
+        return result;
+    }
+
+    public List<Map> PostTree() throws SQLException {
+
+        HashMap data = PRO_BASE_POST_TREE();
+        List<Map> list = (List) data.get("list");
+
+        List<Map> result= GetSecondTreeChildren(list, "-1");
+
+        return  result;
+    }
+    private List<Map> GetSecondTreeChildren(List<Map> list, String code) {
+        List<Map> menu = new ArrayList<Map>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get("V_POSTCODE_UP").equals(code)) {
+                HashMap temp = new HashMap();
+                temp.put("id", list.get(i).get("V_POSTCODE"));
+                temp.put("text", list.get(i).get("V_POSTNAME"));
+                if(GetSecondTreeChildren(list, list.get(i).get("V_POSTCODE").toString()).size()>0){
+                    temp.put("expanded", false);
+                    temp.put("children", GetSecondTreeChildren(list, list.get(i).get("V_POSTCODE").toString()));
+                }else{
+                    temp.put("leaf", true);
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
+
+    public Map BASE_PERSON_SEL_BYDEPT(String V_V_DEPTCODE) throws SQLException {
+        logger.info("begin BASE_PERSON_SEL_BYDEPT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_PERSON_SEL_BYDEPT" + "(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_PERSON_SEL_BYDEPT");
+        return result;
+    }
+
+    public Map PRO_BASE_PERSON_GET_BYDEPT(String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin PRO_BASE_PERSON_GET_BYDEPT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_GET_BYDEPT" + "(:V_V_PERSONCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_PERSON_GET_BYDEPT");
+        return result;
+    }
+
+    public Map PRO_BASE_POST_GET_BYPER(String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin PRO_BASE_POST_GET_BYPER");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_POST_GET_BYPER" + "(:V_V_PERSONCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_POST_GET_BYPER");
+        return result;
+    }
+
+    public List<HashMap> PRO_BASE_SPECIALTY_TREE_CHECK(String V_V_PERSONCODE,String V_V_DEPTCODE) throws SQLException {
+        logger.info("begin PRO_BASE_SPECIALTY_TREE_CHECK");
+        List<HashMap> result = new ArrayList<HashMap>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_SPECIALTY_TREE_CHECK" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+             result=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_SPECIALTY_TREE_CHECK");
+        return result;
+    }
+
+    public Map PRO_BASE_CRAFTTOPER_GETBYPER(String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin PRO_BASE_CRAFTTOPER_GETBYPER");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_CRAFTTOPER_GETBYPER" + "(:V_V_PERSONCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_CRAFTTOPER_GETBYPER");
+        return result;
+    }
+
 }
