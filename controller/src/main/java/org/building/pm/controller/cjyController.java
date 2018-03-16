@@ -1931,6 +1931,61 @@ public class cjyController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "/PostTree", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PostTree()
+            throws SQLException {
+        List<Map> result = cjyService.PostTree();
+        return result;
+    }
+
+    @RequestMapping(value = "/BASE_PERSON_SEL_BYDEPT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_PERSON_SEL_BYDEPT(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.BASE_PERSON_SEL_BYDEPT(V_V_DEPTCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_PERSON_GET_BYDEPT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_PERSON_GET_BYDEPT(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_BASE_PERSON_GET_BYDEPT(V_V_PERSONCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_POST_GET_BYPER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_POST_GET_BYPER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_BASE_POST_GET_BYPER(V_V_PERSONCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_SPECIALTY_TREE_CHECK", method = RequestMethod.POST)
+    @ResponseBody
+    public List<HashMap> PRO_BASE_SPECIALTY_TREE_CHECK(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws Exception {
+        List<HashMap> result = cjyService.PRO_BASE_SPECIALTY_TREE_CHECK(V_V_PERSONCODE, V_V_DEPTCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_CRAFTTOPER_GETBYPER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_CRAFTTOPER_GETBYPER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_BASE_CRAFTTOPER_GETBYPER(V_V_PERSONCODE);
+        return result;
+    }
+
 }
 
 
