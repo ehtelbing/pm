@@ -651,6 +651,7 @@ Ext.onReady(function () {
                                             V_V_DEPTCODE : Ext.ComponentManager.get("tree1hidden").getValue()
                                         }
                                     });
+
                                 });
 
                         }
@@ -1305,14 +1306,15 @@ Ext.onReady(function () {
                                 success: function () {
                                 }
                             });
-
+                         */
                         gridStore
                             .load({
                                 params: {
                                     V_V_DEPTCODE : Ext.ComponentManager.get("tree1hidden").getValue()
                                 }
                             });
-                        window.close();*/
+
+                        window.close();
 
                     }
                 });
