@@ -192,7 +192,7 @@ Ext.onReady(function () {
 
     var gridStore = Ext.create('Ext.data.Store', {
         fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_LOGINNAME',
-            'V_PASSWORD', 'V_ROLENAME', 'V_POSTNAME', 'V_DEPTNAME',
+            'V_PASSWORD', 'V_ROLENAME', 'V_POSTNAME', 'V_DEPTNAME','V_DEPTCODE',
             'V_CLASS_NAME'],
         autoLoad: false,
         id: 'gridStore',
@@ -263,7 +263,7 @@ Ext.onReady(function () {
         proxy : {
             type : 'ajax',
             async : false,
-            url: AppUrl + 'pm_19/PRO_BASE_PERSONROLE_VIEW',
+            url: AppUrl + 'basic/PRO_BASE_PERSONROLE_VIEW_NEW',
             actionMethods : {
                 read : 'POST'
             },
@@ -384,7 +384,14 @@ Ext.onReady(function () {
     var gridProfesStore = Ext.create('Ext.data.Store', {
         id : 'gridProfesStore',
         autoLoad : false,
-        fields : [ 'V_1', 'V_2', 'V_3', 'V_4','V_5' ],
+        fields : ['I_ID',
+            'V_SPECIALTYCODE',
+            'V_DEPTCODE',
+            'V_PERSONCODE',
+            'D_DATE_EDITTIME',
+            'V_EDIT_GUID',
+            'V_PERSONNAME'
+        ],
         proxy : {
             type : 'ajax',
             async : false,
@@ -1039,12 +1046,12 @@ Ext.onReady(function () {
             // 'center'},
             {
                 text: '人员名称',
-                dataIndex: 'V_5',
+                dataIndex: 'V_PERSONNAME',
                 align: 'center',
                 flex: 1
             }, {
                 text: '专业名称',
-                dataIndex: 'V_2',
+                dataIndex: 'V_SPECIALTYCODE',
                 align: 'center',
                 flex: 1
             }]
@@ -1174,7 +1181,7 @@ Ext.onReady(function () {
     });
 
     loadPostTree();
-    loadRoleGrid();
+
     splantname.on("load", function () {
         Ext.getCmp("plantname").select(splantname.getAt(0));
         Ext.getCmp("ck").select(splantname.getAt(0));
@@ -1348,6 +1355,7 @@ Ext.onReady(function () {
 
 function itemclick(s, record, item, index, e, eOpts) {
     loadPostGrid(Ext.getStore("gridStore").getAt(index).get("V_PERSONCODE"));
+    loadRoleGrid(Ext.getStore("gridStore").getAt(index).get("V_DEPTCODE"));
     loadRoleSelGrid(Ext.getStore("gridStore").getAt(index).get("V_PERSONCODE"));
     loadClassGrid(Ext.getStore("gridStore").getAt(index).get("V_DEPTCODE"));
     loadClassSelGrid(Ext.getStore("gridStore").getAt(index).get("V_PERSONCODE"));
@@ -1396,7 +1404,7 @@ function postTreeitemclick(view, node){
                 V_V_TYPE :  true
             },
             success: function () {
-                loadRoleSelGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
+                loadPostGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
             }
         });
 
@@ -1419,9 +1427,10 @@ function _delPost(V_V_POSTCODE){
         });
 }
 //-----------------------------------------------------------------------------role
-function loadRoleGrid(){
+function loadRoleGrid(deptcode){
     Ext.data.StoreManager.lookup('gridRoleStore').load({
             params: {
+                V_V_DEPTCODE:Ext.getCmp('plantname').getValue()
             }
         });
 }
