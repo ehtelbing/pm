@@ -52,6 +52,8 @@ Ext.onReady(function () {
 
     var grid3 = Ext.create('Ext.grid.Panel', {
         id: 'grid3',
+        //region : 'south',
+        height:'50%',
         border: false,
         columnLines: true,
         columns: [
@@ -80,6 +82,7 @@ Ext.onReady(function () {
         id: 'grid4',
         border: false,
         title:'机具报废审批流程',
+        region: 'center',
         columnLines: true,
         columns: [
             {
@@ -98,12 +101,10 @@ Ext.onReady(function () {
         id: 'buttonPanel',
         frame: true,
         region: 'north',
-        defaults: {
-            style: ' margin: 5px 0px 5px 10px'
-        },
+        defaults: { style: { margin: '5px 0px 5px 5px'}, labelAlign: 'right'},
         layout: 'column',
-        items: [{xtype: 'combo', id: 'gjbm', queryMode: 'local', fieldLabel: '工具编码', editable: false, labelWidth: 80},
-            {xtype: 'combo', id: 'gjmc', queryMode: 'local', fieldLabel: '工具名称', editable: false, labelWidth: 80},
+        items: [{xtype: 'textfield', id: 'gjbm', queryMode: 'local', fieldLabel: '工具编码', editable: false, labelWidth: 80},
+            {xtype: 'textfield', id: 'gjmc', queryMode: 'local', fieldLabel: '工具名称', editable: false, labelWidth: 80},
             {xtype: 'button', text: '查询', icon: imgpath + '/search.png', style: {margin: ' 5px 0 5px 10px'}},
             {xtype: 'button', text: '添加', icon: imgpath + '/add.png', style: {margin: ' 5px 0 5px 10px'}},
             {xtype: 'button', text: '修改', icon: imgpath + '/edit.png', style: {margin: ' 5px 0 5px 10px'}},
@@ -114,11 +115,10 @@ Ext.onReady(function () {
 
     var pan = Ext.create('Ext.Panel', {
         id: 'pan',
+        layout:'border',
         frame: true,
         region: 'north',
-        defaults: {
-            style: ' margin: 5px 0px 5px 10px'
-        },
+        defaults: { style: { margin: '5px 0px 5px 5px'}, labelAlign: 'right'},
         layout: 'column',
         items: [{xtype: 'combo', id: 'ck', queryMode: 'local', fieldLabel: '厂矿', editable: false, labelWidth: 80},
             {xtype: 'combo', id: 'zyq', queryMode: 'local', fieldLabel: '作业区', editable: false, labelWidth: 80}]
@@ -127,12 +127,12 @@ Ext.onReady(function () {
     var pan2 = Ext.create('Ext.Panel', {
         id: 'pan2',
         frame: true,
-        defaults: {
-            style: ' margin: 5px 0px 5px 10px'
-        },
+        layout:'border',
+        region: 'west',
+        defaults: { style: { margin: '5px 5px 5px 5px'}, labelAlign: 'right'},
         layout: {
             type:'table',
-            columns: 3
+            columns: 1
         },
         items: [
             {xtype: 'textfield', id: 'gjbm1', queryMode: 'local', fieldLabel: '工具编码', editable: false, labelWidth: 80},
@@ -206,21 +206,112 @@ Ext.onReady(function () {
         }]
     });
 
+    var grid5 = Ext.create('Ext.grid.Panel', {
+        id: 'grid5',
+        border: false,
+        columnLines: true,
+        columns: [
+            {
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
+            },
+            {
+                text: '工种编码', align: 'center'
+            },
+            {
+                text: '工种名称', align: 'center'
+            },
+            {
+                text: '工种类型', align: 'center'
+            },
+            {
+                text: '台时', align: 'center'
+            }
+        ]
+    });
+    var grid6 = Ext.create('Ext.grid.Panel', {
+        id: 'grid6',
+        border: false,
+        columnLines: true,
+        columns: [
+            {
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
+            },
+            {
+                text: '工具编码', align: 'center'
+            },
+            {
+                text: '工具名称', align: 'center'
+            },
+            {
+                text: '工具类型', align: 'center'
+            },
+            {
+                text: '台时', align: 'center'
+            }
+        ]
+    });
+    var grid7 = Ext.create('Ext.grid.Panel', {
+        id: 'grid7',
+        border: false,
+        columnLines: true,
+        columns: [
+            {
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
+            },
+            {
+                text: '机具编码', align: 'center'
+            },
+            {
+                text: '机具名称', align: 'center'
+            },
+            {
+                text: '机具类型', align: 'center'
+            },
+            {
+                text: '台时', align: 'center'
+            }
+        ]
+    });
+    var grid8 = Ext.create('Ext.grid.Panel', {
+        id: 'grid8',
+        border: false,
+        columnLines: true,
+        columns: [
+            {
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
+            },
+            {
+                text: '物料编码', align: 'center'
+            },
+            {
+                text: '物料名称', align: 'center'
+            },
+            {
+                text: '物料类型', align: 'center'
+            },
+            {
+                text: '台时', align: 'center'
+            }
+        ]
+    });
     var tab =  Ext.create("Ext.tab.Panel", {
         id:'tab',
         region: 'center',
         border: false,
         items:[
-            {id: 'tab1', title: '维修信息'},
-            {id: 'tab2', title: '工种'},
-            {id: 'tab3', title: '工具'},
-            {id: 'tab4', title: '机具'},
-            {id: 'tab5', title: '物料'}
+            {id: 'tab1', title: '维修信息',items:[grid2]},
+            {id: 'tab2', title: '工种',items:[grid5]},
+            {id: 'tab3', title: '工具',items:[grid6]},
+            {id: 'tab4', title: '机具',items:[grid7]},
+            {id: 'tab5', title: '物料',items:[grid8]}
             ]
     });
 
     var tree1=Ext.create('Ext.tree.Panel', {
-
+        id : 'tree1',
+        region : 'west',
+        // border:false,
+        width : 200,
         root:{
             id:"root",
             border:true,
@@ -258,11 +349,10 @@ Ext.onReady(function () {
     var pan3 = Ext.create('Ext.Panel', {
         id: 'pan3',
         frame: true,
+        layout:'border',
+        //region : 'center',
         title:'设备信息',
-        region: 'center',
-        defaults: {
-            style: ' margin: 5px 0px 5px 10px'
-        },
+        defaults: { style: { margin: '5px 0px 5px 5px'}, labelAlign: 'right'},
         layout: {
             type:'table',
             columns: 3
@@ -290,21 +380,6 @@ Ext.onReady(function () {
             {xtype: 'textfield', id: 'jxfy', queryMode: 'local', fieldLabel: '检修费用',  labelWidth: 80}
         ]
     });
-    var tabPanel = Ext.create("Ext.tab.Panel", {
-        id:'tabPanel',
-        region: 'center',
-        border: false,
-        items:[
-            {
-                id: 'tabId1',
-                title: '工具使用明细',
-                items: [grid1]
-            },
-            {id: 'tabId2', title: '工具维修明细',items:[tab,grid2] },
-            {id: 'tabId3', title: '关联设备',items:[pan,tree1,pan3,grid3]},
-            {id: 'tabId4', title: '关联设备工具报废明细',items:[pan2,grid4]}
-            ]
-    });
 
     var leftPanel = Ext.create('Ext.Panel', {
         id: 'leftPanel',
@@ -323,6 +398,41 @@ Ext.onReady(function () {
             items: [viewImagePanel]
         }]
     });
+    var leftPanel1 = Ext.create('Ext.Panel', {
+        id: 'leftPanel1',
+        layout: 'border',
+        region: 'center',
+        border: false,
+        items: [{
+            region: 'north',
+            border: false,
+            items: [pan3]
+        }, {
+            region: 'center',
+            layout: 'fit',
+            border: false,
+            items: [grid3]
+        }]
+    });
+    var tabPanel = Ext.create("Ext.tab.Panel", {
+        id:'tabPanel',
+        region: 'center',
+        border: false,
+        items:[
+            {
+                id: 'tabId1',
+                title: '工具使用明细',
+                items: [grid1]
+            },
+            {id: 'tabId2', title: '工具维修明细',items:[tab] },
+            {id: 'tabId3', title: '关联设备',xtype:'panel',layout:'border',
+                items: [pan,tree1,leftPanel1]
+            },
+            {id: 'tabId4', title: '工具报废明细',xtype:'panel',layout:'border', items:[pan2,grid4]}
+            ]
+    });
+
+
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [buttonPanel,leftPanel,tabPanel]
