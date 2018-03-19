@@ -426,6 +426,31 @@ Ext.onReady(function () {
             beforeload: beforeGridBJStore
         }
     });
+    var gridGJStore=Ext.create('Ext.data.Store',{
+        id : 'gridGJStore',
+        pageSize : 20,
+        autoLoad : false,
+        fields : ['V_GJ_CODE',
+            'V_GJ_NAME',
+            'V_GJ_TYPE'
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'cjy/PM_PROJECT_DX_MX_GJ_SEL',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total : 'total'
+            }
+        },
+        listeners: {
+            beforeload: beforeGridGJStore
+        }
+    });
     var filegridPanel = Ext.create("Ext.panel.Panel", {
         id: 'filegridPanel',
         editable: false,
@@ -1317,6 +1342,46 @@ Ext.onReady(function () {
             store: 'gridBJStore'
         }]
     });
+    var gjPanel = Ext.create('Ext.grid.Panel', {
+        id: 'gjPanel',
+        title:'工具',
+        store: gridGJStore,
+        border: false,
+        width:'100%',
+        height:'33%',
+        columnLines: true,
+        region: 'south',
+        columns: [{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center'
+        }, {
+            text: '工具编码',
+            dataIndex: 'V_GJ_CODE',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '工具名称',
+            dataIndex: 'V_GJ_NAME',
+            align: 'center',
+            width: 150, renderer: atleft
+        }, {
+            text: '工具类型',
+            dataIndex: 'V_GJ_TYPE',
+            align: 'center',
+            width: 150, renderer: atleft
+        }],
+        bbar: [{
+            id:'gjpage',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridGJStore'
+        }]
+    });
     var mxpanel=Ext.create('Ext.panel.Panel',{
         id:'mxpanel',
         title:'模型列表',
@@ -1331,7 +1396,7 @@ Ext.onReady(function () {
         frame:true,
         region : 'center',
         //layout : 'border',
-        items: [grid6,grid7,rgPanel,jjPanel,bjPanel
+        items: [grid6,grid7,rgPanel,jjPanel,bjPanel,gjPanel
         ]
     });
 
@@ -1399,6 +1464,7 @@ Ext.onReady(function () {
     queryRG();
     queryJJ();
     queryBJ();
+    queryGJ();
     getReturnQX();
     getReturnMX();
 })
@@ -1480,6 +1546,12 @@ function beforeGridBJStore(store){
     store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('bjpage').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('bjpage').store.pageSize;
+
+}
+function beforeGridGJStore(store){
+    store.proxy.extraParams.V_V_PROJECT_GUID = V_GUID;
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('gjpage').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('gjpage').store.pageSize;
 
 }
 function _init() {
@@ -1906,6 +1978,7 @@ function getReturnMX(){
     queryRG();
     queryJJ();
     queryBJ();
+    queryGJ();
 }
 
 
@@ -2099,6 +2172,17 @@ function queryBJ() {
         V_V_PROJECT_GUID:V_GUID,
         V_V_PAGE: Ext.getCmp('bjpage').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('bjpage').store.pageSize
+
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+}
+function queryGJ() {
+    var gridStore = Ext.data.StoreManager.lookup('gridGJStore');
+    gridStore.proxy.extraParams = {
+        V_V_PROJECT_GUID:V_GUID,
+        V_V_PAGE: Ext.getCmp('gjpage').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('gjpage').store.pageSize
 
     };
     gridStore.currentPage = 1;
