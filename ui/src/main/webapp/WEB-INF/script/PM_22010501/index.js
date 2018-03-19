@@ -171,7 +171,7 @@ Ext.onReady(function () {
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_22/PRO_PM_04_PROJECT_DATA_ITEM_V',
+            url: AppUrl + 'PM_22/PRO_PM_04_PROJECT_DATA_ITEM_N',
             // url: 'PRO_PM_04_PROJECT_DATA_ITEM_V',
             actionMethods: {
                 read: 'POST'
@@ -199,14 +199,14 @@ Ext.onReady(function () {
             editable: false,
             style: ' margin: 5px 0px 0px 0px',
             labelWidth: 60,
-            width: 120,
+            width: 150,
             displayField: 'displayField',
             valueField: 'valueField',
             value: today.getFullYear(),
             store: yearStore,
             queryMode: 'local',
             labelAlign: 'right'
-        }, {
+        }, /*{
             xtype: 'combo',
             id: 'jhmonth',
             editable: false,
@@ -218,7 +218,7 @@ Ext.onReady(function () {
             value: today.getMonth()+1,
             store: monthStore,
             queryMode: 'local'
-        },{
+        },*/{
             id: 'ck',
             xtype: 'combo',
             store: ckstore,
@@ -399,7 +399,7 @@ function queryGrid() {
     gridStore.proxy.extraParams = {
         //V_V_ORGCODE :Ext.util.Cookies.get('v_orgCode'),
         V_V_YEAR :Ext.getCmp("jhyear").getValue(),
-        V_V_MONTH :Ext.getCmp("jhmonth").getValue(),
+        V_V_MONTH :'',//Ext.getCmp("jhmonth").getValue(),
         V_V_ORGCODE : Ext.getCmp("ck").getValue(),
         V_V_SPECIALTY : Ext.getCmp('zy').getValue(),
         V_V_PROJECT_CODE  : Ext.getCmp('gcbm').getValue(),
