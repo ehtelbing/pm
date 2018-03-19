@@ -2266,6 +2266,7 @@ function zssave()
     if(Ext.getCmp('sfww').getValue() == 1){
         Ext.Ajax.request({
             url: AppUrl + 'cjy/PRO_PM_EQUREPAIRPLAN_SET_NEW',
+            async: false,
             type: 'ajax',
             method: 'POST',
             params: {
@@ -2407,17 +2408,19 @@ function _validate(obj) {
 
 function save()
 {
-    if (!saveload) {
-        Ext.MessageBox.show({
-            title : '提示',
-            msg : '请先执行暂时保存',
-            buttons : Ext.MessageBox.OK,
-            icon : Ext.MessageBox.ERROR
-        });
-        return;
-    }
+    //if (!saveload) {
+    //    Ext.MessageBox.show({
+    //        title : '提示',
+    //        msg : '请先执行暂时保存',
+    //        buttons : Ext.MessageBox.OK,
+    //        icon : Ext.MessageBox.ERROR
+    //    });
+    //    return;
+    //}
+    zssave();
     Ext.Ajax.request({
         url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_SEND',
+        async: false,
         type: 'ajax',
         method: 'POST',
         params: {
@@ -2428,14 +2431,15 @@ function save()
             V_V_DEPTCODE :Ext.getCmp('zyq').getValue(),
             V_V_GUID : V_GUID,
             V_I_STATE : "sbzyz",
-            V_V_FLAG : '审批中',
+            V_V_FLAG : '审批通过',
             V_V_NEXTSPR :Ext.getCmp('sp').getValue()
 
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值
             if (data.success) {//成功，会传回true
-                    Ext.Ajax.request({
+
+                    /*Ext.Ajax.request({
                         url: AppUrl + 'Activiti/StratProcess',
                         async: false,
                         method: 'post',
@@ -2461,8 +2465,12 @@ function save()
                                 Ext.Msg.alert('提示', '该流程发起失败！');
                             }
                         }
-                    });
-
+                    });*/
+                var owidth = window.document.body.offsetWidth ;
+                var oheight = window.document.body.offsetHeight;
+                window.opener.queryGrid();
+                window.open(AppUrl + 'page/PM_22010102/index.html?V_GUID=' + V_GUID  + '&V_PICGUID1='+ V_PICGUID1 + '&V_PICGUID2='+ V_PICGUID2 + '&V_PICGUID3=' + V_PICGUID3 + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+                _close();
 
 
 
