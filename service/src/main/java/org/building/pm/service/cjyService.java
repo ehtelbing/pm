@@ -3581,6 +3581,36 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PM_PROJECT_DX_MX_GJ_SEL(String V_V_PROJECT_GUID, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PM_PROJECT_DX_MX_GJ_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PROJECT_DX_MX_GJ_SEL(:V_V_PROJECT_GUID,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PROJECT_DX_MX_GJ_SEL");
+        return result;
+    }
+
     public Map PRO_PM_07_DEFECT_VIEW_BYEQU(String V_V_STATECODE,
                                          String X_PERSONCODE,String V_V_EQUCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 

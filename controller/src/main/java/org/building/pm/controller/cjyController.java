@@ -1769,6 +1769,17 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_PROJECT_DX_MX_GJ_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_DX_MX_GJ_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_GJ_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
     @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYEQU", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYEQU(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
