@@ -318,8 +318,8 @@ var grid1=Ext.create('Ext.grid.Panel',{
             var h=screen.availHeight-30;
             var objwin = window.open(AppUrl + 'page/pm_dxgc_bz01/index_detail.html?guid='+b.data.V_GUID
                 + "&V_PROJECT_NAME=" + encodeURI(b.data.V_PROJECT_NAME)
-                + "&V_PROJECT_CODE=" + encodeURI(b.data.V_PROJECT_CODE),"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
-
+                + "&V_PROJECT_CODE=" + encodeURI(b.data.V_PROJECT_CODE)
+                + "&V_MAJOR_CODE=" + encodeURI(b.data.V_MAJOR_CODE),"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
             return ;
 
             guid= b.data.V_GUID;
