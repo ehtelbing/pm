@@ -1997,6 +1997,15 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PM_03_PLAN_CHOOSE_SEL_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_CHOOSE_SEL_NEW(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                         @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_03_PLAN_CHOOSE_SEL_NEW(V_V_GUID,V_V_PLANTYPE);
+        return result;
+    }
 }
 
 
