@@ -304,7 +304,7 @@ Ext.onReady(function () {
                     height: window.screen.height / 2,
                     tag: 'input',
                     type: 'image',
-                    src: Ext.BLANK_IMAGE_URL,
+                    src:"../../../pm/images/gif/1.png",
                     style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe; margin-left: 0px;margin-top: 0px;',
                     // complete: 'off',
                     id: 'imageBrowse',
