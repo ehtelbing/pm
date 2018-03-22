@@ -9,7 +9,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: APP + '/YS/selectProBaseDeptView',
+            //url: APP + '/YS/selectProBaseDeptView',
             actionMethods: {
                 read: 'POST'
             },
@@ -32,7 +32,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: APP + '/YS/selectProBaseDeptView',
+            //url: APP + '/YS/selectProBaseDeptView',
             actionMethods: {
                 read: 'POST'
             },
@@ -49,7 +49,12 @@ Ext.onReady(function () {
         autoLoad: false,
         pageSize: 2,
         fields: ['data_'],
-        data:[['M'],['S'],['P'],[' '],[' ']]
+        data:[['M'],['S'],['P'],
+            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],
+            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],
+            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],
+            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],[' ']
+        ]
     });
 
     //司机
@@ -316,14 +321,30 @@ Ext.onReady(function () {
         id: 'Panel2',
         editable: false,
         frame: true,
+        border:false,
         region: 'center',
+        layout: {
+            type: 'hbox',
+            align: 'middle'
+        },
         title: '机具示意图',
         items: [{
-            layout: 'column',
             defaults: {labelAlign: 'right'},
+            border:false,
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
+            width:'100%',
+            region: 'center',
             items: [{
+                width:'300px',
+                height: '300px',
+
                 xtype: 'image',
-                src: imgpath + '/111.jpg'
+                border:false,
+                region: 'center',
+                src:"../../../pm/images/gif/1.png"
                 /* id: 'browseImage',
                  fieldLabel: "预览图片",
                  autoEl: {width: window.screen.width / 2 - 110, height: window.screen.height / 2 + 38, tag: 'input', type: 'image', src: imgpath + '/111.jpg'
