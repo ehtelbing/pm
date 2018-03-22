@@ -114,6 +114,36 @@ public class PM_22Controller {
         return data;
     }
 
+    @RequestMapping(value = "/PRO_PM_04_PROJECT_DATA_ITEM_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_04_PROJECT_DATA_ITEM_N(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value = "V_V_PROJECT_CODE") String V_V_PROJECT_CODE,
+            @RequestParam(value = "V_V_PROJECT_NAME") String V_V_PROJECT_NAME,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_BY1") String V_V_BY1,
+            @RequestParam(value = "V_V_BY2") String V_V_BY2,
+
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = pm_22Service.PRO_PM_04_PROJECT_DATA_ITEM_N(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_SPECIALTY,
+                V_V_PROJECT_CODE, V_V_PROJECT_NAME, V_V_CONTENT, V_V_BY1, V_V_BY2);
+        List<Map<String, Object>> pm_06list = (List) data.get("list");
+
+        result.put("list", pm_06list);
+        result.put("success", true);
+
+        return data;
+    }
+
+
+
    /* @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_NEXTPER", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_EQUREPAIRPLAN_NEXTPER(

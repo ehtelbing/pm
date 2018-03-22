@@ -897,7 +897,7 @@ function guid() {
 function jhSelect() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_03010311/index.html?V_V_YEAR=' + Ext.getCmp('year').getValue()
+    var ret = window.open(AppUrl + 'page/PM_03010316/index.html?V_V_YEAR=' + Ext.getCmp('year').getValue()
     + '&V_V_ORGCODE=' + Ext.getCmp('ck').getValue()
     + '&V_V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
     + '&V_V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
@@ -913,60 +913,116 @@ function jhSelect() {
     + '&V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
     + '&V_EQUCODE=' + Ext.getCmp('sbmc').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }*/
-/*function getReturnJHXZ(retdata, type) {
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID: retdata,
-            V_V_PLANTYPE: type
-        },
-        success: function (ret) {
-            var resp = Ext.decode(ret.responseText);
-            if (resp.list.length > 0) {
-                var V_ORGCODE = resp.list[0].V_ORGCODE;
-                var V_DEPTCODE = resp.list[0].V_DEPTCODE;
-                var V_EQUTYPE = resp.list[0].V_EQUTYPECODE;
-                var V_EQUCODE = resp.list[0].V_EQUCODE;
-                var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;
-                var V_HOUR = resp.list[0].V_HOUR;
-                var V_CONTENT = resp.list[0].V_CONTENT;
-                var V_BZ = resp.list[0].V_BZ;
+function getReturnJHXZ(retdata, type) {
+    if(type=='MONTH'){
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: retdata,
+                V_V_PLANTYPE: type
+            },
+            success: function (ret) {
+                var resp = Ext.decode(ret.responseText);
+                if (resp.list.length > 0) {
+                    var V_ORGCODE = resp.list[0].V_ORGCODE;
+                    var V_DEPTCODE = resp.list[0].V_DEPTCODE;
+                    var V_EQUTYPE = resp.list[0].V_EQUTYPECODE;
+                    var V_EQUCODE = resp.list[0].V_EQUCODE;
+                    var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;
+                    var V_HOUR = resp.list[0].V_HOUR;
+                    var V_CONTENT = resp.list[0].V_CONTENT;
+                    var V_BZ = resp.list[0].V_BZ;
 
-                var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
-                var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
-                var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
-                var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
-                var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
-                var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
-                var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
-                var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
-                V_PLANCODE = resp.list[0].V_PLANCODE;
-                V_PLANTYPE = resp.list[0].V_PLANTYPE;
+                    var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
+                    var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
+                    var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
+                    var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
+                    var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
+                    var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
+                    var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
+                    var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
+                    V_PLANCODE = resp.list[0].V_PLANCODE;
+                    V_PLANTYPE = resp.list[0].V_PLANTYPE;
 
-                Ext.getCmp('ck').select(V_ORGCODE);
-                Ext.getCmp('zyq').select(V_DEPTCODE);
-                Ext.getCmp("zy").select(V_REPAIRMAJOR_CODE);
-                Ext.getCmp("sblx").select(V_EQUTYPE);
-                Ext.getCmp("sbmc").select(V_EQUCODE);
-                Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
-                Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
-                //Ext.getCmp('bz').setValue(V_BZ);  //备注
+                    Ext.getCmp('ck').select(V_ORGCODE);
+                    Ext.getCmp('zyq').select(V_DEPTCODE);
+                    Ext.getCmp("zy").select(V_REPAIRMAJOR_CODE);
+                    Ext.getCmp("sblx").select(V_EQUTYPE);
+                    Ext.getCmp("sbmc").select(V_EQUCODE);
+                    Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+                    Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
+                    //Ext.getCmp('bz').setValue(V_BZ);  //备注
 
 
-                Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
-                Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
-                Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
-                Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
-                Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
-                Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+                    Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
+                    Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
+                    Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
+                    Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
+                    Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
+                    Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+
+                }
 
             }
+        });
+    }else{
+        Ext.Ajax.request({
+            url: AppUrl + 'cjy/PM_03_PLAN_CHOOSE_SEL_NEW',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: retdata,
+                V_V_PLANTYPE: type
+            },
+            success: function (ret) {
+                var resp = Ext.decode(ret.responseText);
 
-        }
-    });
-}*/
+                if (resp.list.length > 0) {
+                    var V_ORGCODE = resp.list[0].V_ORGCODE;
+                    var V_DEPTCODE = resp.list[0].V_DEPTCODE;
+                    var V_EQUTYPE = resp.list[0].V_EQUTYPE;
+                    var V_EQUCODE = resp.list[0].V_EQUCODE;
+                    var V_REPAIRMAJOR_CODE = resp.list[0].V_MAJOR_CODE;
+                    var V_HOUR = resp.list[0].V_HOUR;
+                    var V_CONTENT = resp.list[0].V_CONTENT;
+                    var V_BZ = resp.list[0].V_BZ;
+
+                    var V_STARTTIME = resp.list[0].V_DATE_B;     //开始时间
+                    var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
+                    var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
+                    var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
+                    var V_ENDTIME = resp.list[0].V_DATE_E;         //结束时间
+                    var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
+                    var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
+                    var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
+                    V_PLANCODE = resp.list[0].V_PLANCODE;
+                    V_PLANTYPE = resp.list[0].V_PLANTYPE;
+
+                    Ext.getCmp('ck').select(V_ORGCODE);
+                    //Ext.getCmp('zyq').select(V_DEPTCODE);
+                    Ext.getCmp("zy").setValue(V_REPAIRMAJOR_CODE);
+                    //Ext.getCmp("sblx").select(V_EQUTYPE);
+                    //Ext.getCmp("sbmc").select(V_EQUCODE);
+                    Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+                    Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
+                    //Ext.getCmp('bz').setValue(V_BZ);  //备注
+
+                    Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
+                    Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
+                    Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
+                    Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
+                    Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
+                    Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+
+                }
+
+            }
+        });
+    }
+
+}
 /*function getReturnMXXZ(retdata) {
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PM_03_JXMX_DATA_MXCODE_SEL',

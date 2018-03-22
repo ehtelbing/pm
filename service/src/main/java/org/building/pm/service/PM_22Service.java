@@ -727,6 +727,46 @@ public class PM_22Service {
         return result;
     }
 
+    public HashMap PRO_PM_04_PROJECT_DATA_ITEM_N(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_SPECIALTY,
+                                                 String V_V_PROJECT_CODE,String V_V_PROJECT_NAME,String V_V_CONTENT,String V_V_BY1,String V_V_BY2) throws SQLException {
+
+        logger.info("begin PRO_PM_04_PROJECT_DATA_ITEM_N");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_04_PROJECT_DATA_ITEM_N" + "(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE," +
+                    ":V_V_SPECIALTY,:V_V_PROJECT_CODE,:V_V_PROJECT_NAME,:V_V_CONTENT,:V_V_BY1,:V_V_BY2,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_SPECIALTY", V_V_SPECIALTY);
+            cstmt.setString("V_V_PROJECT_CODE", V_V_PROJECT_CODE);
+            cstmt.setString("V_V_PROJECT_NAME", V_V_PROJECT_NAME);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setString("V_V_BY1", V_V_BY1);
+            cstmt.setString("V_V_BY2", V_V_BY2);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            //111
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_04_PROJECT_DATA_ITEM_N");
+        return result;
+    }
+
+
+
     public HashMap PRO_SAP_EQU_GET_C(String V_V_PERSONCODE,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
         logger.info("begin PRO_SAP_EQU_GET_C");
         logger.debug("params:V_V_PERSONCODE:" + V_V_PERSONCODE + ",V_V_ORGCODE:" + V_V_ORGCODE + ",V_V_DEPTCODE:" + V_V_DEPTCODE + ",V_V_EQUTYPECODE:" + V_V_EQUTYPECODE + ",V_V_EQUCODE:" + V_V_EQUCODE);

@@ -830,7 +830,7 @@ Ext.onReady(function () {
                     Ext.getCmp('month').select(V_MONTH);  //月
                     Ext.getCmp('ck').select(V_ORGCODE);  //厂矿编码
                     Ext.getCmp('zyq').select(V_DEPTCODE);  //作业区编码
-                    Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
+                    Ext.getCmp('zy').setValue(V_REPAIRMAJOR_CODE);  //专业编码
                     Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
                     Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
                     Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
@@ -866,7 +866,7 @@ function guid() {
 function jhSelect() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_03010211/index.html?V_V_YEAR=' + Ext.getCmp('year').getValue()
+    var ret = window.open(AppUrl + 'page/PM_03010217/index.html?V_V_YEAR=' + Ext.getCmp('year').getValue()
         + '&V_V_ORGCODE=' + Ext.getCmp('ck').getValue()
         + '&V_V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
         + '&V_V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
@@ -885,7 +885,7 @@ function mxSelect() {
 }
 function getReturnJHXZ(retdata, type) {
     Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
+        url: AppUrl + 'cjy/PM_03_PLAN_CHOOSE_SEL_NEW',
         method: 'POST',
         async: false,
         params: {
@@ -894,21 +894,22 @@ function getReturnJHXZ(retdata, type) {
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
+
             if (resp.list.length > 0) {
                 var V_ORGCODE = resp.list[0].V_ORGCODE;
                 var V_DEPTCODE = resp.list[0].V_DEPTCODE;
-                var V_EQUTYPE = resp.list[0].V_EQUTYPECODE;
+                var V_EQUTYPE = resp.list[0].V_EQUTYPE;
                 var V_EQUCODE = resp.list[0].V_EQUCODE;
-                var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;
+                var V_REPAIRMAJOR_CODE = resp.list[0].V_MAJOR_CODE;
                 var V_HOUR = resp.list[0].V_HOUR;
                 var V_CONTENT = resp.list[0].V_CONTENT;
                 var V_BZ = resp.list[0].V_BZ;
 
-                var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
+                var V_STARTTIME = resp.list[0].V_DATE_B;     //开始时间
                 var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
                 var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
                 var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
-                var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
+                var V_ENDTIME = resp.list[0].V_DATE_E;         //结束时间
                 var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
                 var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
                 var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
@@ -916,14 +917,13 @@ function getReturnJHXZ(retdata, type) {
                 V_PLANTYPE = resp.list[0].V_PLANTYPE;
 
                 Ext.getCmp('ck').select(V_ORGCODE);
-                Ext.getCmp('zyq').select(V_DEPTCODE);
-                Ext.getCmp("zy").select(V_REPAIRMAJOR_CODE);
-                Ext.getCmp("sblx").select(V_EQUTYPE);
-                Ext.getCmp("sbmc").select(V_EQUCODE);
+                //Ext.getCmp('zyq').select(V_DEPTCODE);
+                Ext.getCmp("zy").setValue(V_REPAIRMAJOR_CODE);
+                //Ext.getCmp("sblx").select(V_EQUTYPE);
+                //Ext.getCmp("sbmc").select(V_EQUCODE);
                 Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
                 Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
                 //Ext.getCmp('bz').setValue(V_BZ);  //备注
-
 
                 Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
                 Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时

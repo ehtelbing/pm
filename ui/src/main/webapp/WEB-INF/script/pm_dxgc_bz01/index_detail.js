@@ -17,9 +17,11 @@ var rownumber = null;
 var guid = '';
 var V_PROJECT_NAME = '';
 var V_PROJECT_CODE = '';
+var V_MAJOR_CODE='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.guid == undefined) ? guid = '' : guid = parameters.guid;
+    (parameters.V_MAJOR_CODE == undefined) ? V_MAJOR_CODE = '' : V_MAJOR_CODE = parameters.V_MAJOR_CODE;
     (parameters.V_PROJECT_NAME == undefined) ? V_PROJECT_NAME = '' : V_PROJECT_NAME = parameters.V_PROJECT_NAME;
     (parameters.V_PROJECT_CODE == undefined) ? V_PROJECT_CODE = '' : V_PROJECT_CODE = parameters.V_PROJECT_CODE;
 }
@@ -625,7 +627,20 @@ Ext.onReady(function () {
         layout: 'vbox',
         autoScroll: true,
         baseCls: 'my-panel-noborder',
-        items: [
+        items: [{
+            xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', //frame: true,
+            items: [
+                {
+                    xtype: 'button',
+                    text: '保存',
+                    listeners: {
+                        'click': pageFunction.saveTab
+                    },
+                    width: 100,
+                    style: 'margin:15px 5px 5px 5px'
+                }
+            ]
+        },
            {
                 xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', //frame: true,
                 items: [
@@ -918,14 +933,14 @@ Ext.onReady(function () {
             items: [
                 {   //组件靠右
                     xtype: 'tbfill'
-                },
+                }/*,
                 {
                     xtype: 'button',
                     text: '保存',
                     listeners: {
                         'click': pageFunction.saveTab
                     }
-                }]
+                }*/]
         },
         items: [
              {
@@ -1206,6 +1221,7 @@ Ext.onReady(function () {
 
     pageFunction.QueryGanttData();
 
+    Ext.getCmp('wzy_tab').setValue(V_MAJOR_CODE);
     Ext.getBody().unmask();
 
 })

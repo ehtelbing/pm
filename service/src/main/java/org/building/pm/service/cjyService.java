@@ -4110,4 +4110,29 @@ public class cjyService {
         return result;
     }
 
+    public Map PM_03_PLAN_CHOOSE_SEL_NEW(String V_V_GUID,String V_V_PLANTYPE) throws SQLException {
+        logger.info("begin PM_03_PLAN_CHOOSE_SEL_NEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_CHOOSE_SEL_NEW" + "(:V_V_GUID,:V_V_PLANTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PLANTYPE", V_V_PLANTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_CHOOSE_SEL_NEW");
+        return result;
+    }
+
 }
