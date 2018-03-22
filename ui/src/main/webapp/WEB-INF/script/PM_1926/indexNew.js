@@ -28,20 +28,8 @@ Ext.onReady(function () {
         storeId: 'gridStore',
         autoLoad: false,
         pageSize: 2,
-        fields: ['PRODUCT_ID_', 'PRODUCT_CODE_', 'PRODUCT_NAME_', 'FIXED_AMOUNT_', 'UNIT_FACTOR_', 'UNIT_', 'COM_CODE_', 'STATUS_'],
-        proxy: {
-            url: 'selectZZ.do',
-            type: 'ajax',
-            actionMethods: {
-                read: 'POST'
-            },
-            extraParams: {},
-            reader: {
-                type: 'json',
-                root: 'ZZlist',
-                totalProperty: 'total'
-            }
-        }
+        fields: ['data_'],
+        data:[['M'],['S'],['P'],[' '],[' ']]
     });
 
 //顶部查询条件
@@ -107,8 +95,8 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '安全措施编码', dataIndex: 'aqcsbm_', style: 'text-align: center;', flex: 1},
-            {text: '安全措施名称', dataIndex: 'aqcsmc_', style: 'text-align: center;', flex: 1}],
+            {text: '安全措施编码', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '安全措施名称', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid1page',
             xtype: 'pagingtoolbar',
@@ -184,10 +172,10 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '预案编码', dataIndex: 'yabm_', style: 'text-align: center;', flex: 1},
-            {text: '预案名称', dataIndex: 'yamc_', style: 'text-align: center;', flex: 1},
-            {text: '预案详情', dataIndex: 'yaxq_', style: 'text-align: center;', flex: 1},
-            {text: '附件', dataIndex: 'fj_', style: 'text-align: center;', flex: 1}],
+            {text: '预案编码', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '预案名称', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '预案详情', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '附件', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid2page',
             xtype: 'pagingtoolbar',
@@ -225,8 +213,8 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '附件名称', dataIndex: 'fjmc_', style: 'text-align: center;', flex: 1},
-            {text: '下载', dataIndex: 'xz_', style: 'text-align: center;', flex: 1}],
+            {text: '附件名称', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '下载', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid3page',
             xtype: 'pagingtoolbar',
@@ -288,11 +276,11 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '事故发生时间', dataIndex: 'sgfssj_', style: 'text-align: center;', flex: 1},
-            {text: '事故发生地点', dataIndex: 'sgfsdd_', style: 'text-align: center;', flex: 1},
-            {text: '事故影响', dataIndex: 'sgyx_', style: 'text-align: center;', flex: 1},
-            {text: '事故详情', dataIndex: 'sgxq_', style: 'text-align: center;', flex: 1},
-            {text: '附件', dataIndex: 'fj_', style: 'text-align: center;', flex: 1}],
+            {text: '事故发生时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '事故发生地点', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '事故影响', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '事故详情', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '附件', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid4page',
             xtype: 'pagingtoolbar',
@@ -329,12 +317,12 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '整改时间', dataIndex: 'sgfssj_', style: 'text-align: center;', flex: 1},
-            {text: '整改地点', dataIndex: 'sgfsdd_', style: 'text-align: center;', flex: 1},
-            {text: '整改负责人', dataIndex: 'sgyx_', style: 'text-align: center;', flex: 1},
-            {text: '整改方案明细', dataIndex: 'sgxq_', style: 'text-align: center;', flex: 1},
-            {text: '整改费用', dataIndex: 'fj_', style: 'text-align: center;', flex: 1},
-            {text: '附件', dataIndex: 'fj_', style: 'text-align: center;', flex: 1}],
+            {text: '整改时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '整改地点', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '整改负责人', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '整改方案明细', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '整改费用', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '附件', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid5page',
             xtype: 'pagingtoolbar',
@@ -357,10 +345,10 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '审批人', dataIndex: 'sgfssj_', style: 'text-align: center;', flex: 1},
-            {text: '审批时间', dataIndex: 'sgfsdd_', style: 'text-align: center;', flex: 1},
-            {text: '审批意见', dataIndex: 'sgyx_', style: 'text-align: center;', flex: 1},
-            {text: '附件', dataIndex: 'fj_', style: 'text-align: center;', flex: 1}],
+            {text: '审批人', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '审批时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '审批意见', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '附件', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid6page',
             xtype: 'pagingtoolbar',
@@ -383,10 +371,10 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '整改进度', dataIndex: 'sgfssj_', style: 'text-align: center;', flex: 1},
-            {text: '计划时间', dataIndex: 'sgfsdd_', style: 'text-align: center;', flex: 1},
-            {text: '完成时间', dataIndex: 'sgyx_', style: 'text-align: center;', flex: 1},
-            {text: '附件', dataIndex: 'fj_', style: 'text-align: center;', flex: 1}],
+            {text: '整改进度', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '计划时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '完成时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '附件', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid7page',
             xtype: 'pagingtoolbar',
@@ -407,10 +395,10 @@ Ext.onReady(function () {
         //selType: 'checkboxmodel',
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '工种编码', dataIndex: 'gzbm_', align: 'center', flex: 1},
-            {text: '工种名称', dataIndex: 'gzmc_', align: 'center', flex: 1},
-            {text: '工种类型', dataIndex: 'gzlx_', align: 'center', flex: 1},
-            {text: '台时', dataIndex: 'ts_', align: 'center', flex: 1}],
+            {text: '工种编码', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '工种名称', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '工种类型', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '台时', dataIndex: 'data_', align: 'center', flex: 1}],
         bbar: [{
             id: 'grid8page',
             xtype: 'pagingtoolbar',
@@ -432,12 +420,12 @@ Ext.onReady(function () {
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '工具编码', dataIndex: 'gjbm_', align: 'center', flex: 1},
-            {text: '工具名称', dataIndex: 'gjmc_', align: 'center', flex: 1},
-            {text: '使用时间', dataIndex: 'sysj_', align: 'center', flex: 1},
-            {text: '使用地点', dataIndex: 'sydd_', align: 'center', flex: 1},
-            {text: '使用台时', dataIndex: 'syts_', align: 'center', flex: 1},
-            {text: '用途', dataIndex: 'yt_', align: 'center', flex: 1}],
+            {text: '工具编码', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '工具名称', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '使用时间', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '使用地点', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '使用台时', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '用途', dataIndex: 'data_', align: 'center', flex: 1}],
         bbar: [{
             id: 'grid9page',
             xtype: 'pagingtoolbar',
@@ -459,10 +447,10 @@ Ext.onReady(function () {
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '机具编码', dataIndex: 'jjbm_', align: 'center', flex: 1},
-            {text: '机具名称', dataIndex: 'jjmc_', align: 'center', flex: 1},
-            {text: '机具类型', dataIndex: 'jjlx_', align: 'center', flex: 1},
-            {text: '台时', dataIndex: 'ts_', align: 'center', flex: 1}],
+            {text: '机具编码', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '机具名称', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '机具类型', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '台时', dataIndex: 'data_', align: 'center', flex: 1}],
         bbar: [{
             id: 'grid10page',
             xtype: 'pagingtoolbar',
@@ -485,10 +473,10 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '整改进度', dataIndex: 'sgfssj_', style: 'text-align: center;', flex: 1},
-            {text: '计划时间', dataIndex: 'sgfsdd_', style: 'text-align: center;', flex: 1},
-            {text: '完成时间', dataIndex: 'sgyx_', style: 'text-align: center;', flex: 1},
-            {text: '附件', dataIndex: 'fj_', style: 'text-align: center;', flex: 1}],
+            {text: '整改进度', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '计划时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '完成时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '附件', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid11page',
             xtype: 'pagingtoolbar',
@@ -550,10 +538,10 @@ Ext.onReady(function () {
         selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '附件名称', dataIndex: 'fjmc_', style: 'text-align: center;', flex: 1},
-            {text: '上传时间', dataIndex: 'fjmc_', style: 'text-align: center;', flex: 1},
-            {text: '上传人', dataIndex: 'fjmc_', style: 'text-align: center;', flex: 1},
-            {text: '下载', dataIndex: 'xz_', style: 'text-align: center;', flex: 1}],
+            {text: '附件名称', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '上传时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '上传人', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
+            {text: '下载', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
         bbar: [{
             id: 'grid12page',
             xtype: 'pagingtoolbar',
@@ -654,12 +642,12 @@ Ext.onReady(function () {
         //autoScroll: false,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '设备编码', dataIndex: 'V_PERSONNAME', align: 'center', flex: 1},
-            {text: '设备名称', dataIndex: 'V_WORKNAME', align: 'center', flex: 1},
-            {text: '功能位置', dataIndex: 'V_DE', align: 'center', flex: 1},
-            {text: '关联时间', dataIndex: 'V_WORKNAME', align: 'center', flex: 1},
-            {text: '关联人', dataIndex: 'V_WORKNAME', align: 'center', flex: 1},
-            {text: '取消关联', dataIndex: 'V_WORKNAME', align: 'center', flex: 1}],
+            {text: '设备编码', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '设备名称', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '功能位置', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '关联时间', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '关联人', dataIndex: 'data_', align: 'center', flex: 1},
+            {text: '取消关联', dataIndex: 'data_', align: 'center', flex: 1}],
         bbar: [{
             id: 'grid13page',
             xtype: 'pagingtoolbar',
