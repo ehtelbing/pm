@@ -2,97 +2,185 @@
 
 Ext.onReady(function () {
 
+    var gridStore1 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore1',
+        fields:['gjbm', 'gjmc', 'sysj','sydd', 'gjts', 'yt'],
+        data:{'items':[
+            { 'gjbm': ' ',  "gjmc":" ",  "sysj":" ",  "sydd":" ",  "gjts":" ",  "yt":" "  },
+            { 'gjbm': ' ',  "gjmc":" ",  "sysj":" ",  "sydd":" ",  "gjts":" ",  "yt":" "  },
+            { 'gjbm': ' ',  "gjmc":" ",  "sysj":" ",  "sydd":" ",  "gjts":" ",  "yt":" "  }
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
+    });
+
     var grid1 = Ext.create('Ext.grid.Panel', {
         id: 'grid1',
+        store:gridStore1,
         border: false,
         columnLines: true,
         columns: [
             {
-                text: '工具编码', align: 'center'
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '工具名称', align: 'center'
+                text: '工具编码', align: 'center',dataIndex: 'gjbm'
             },
             {
-                text: '使用时间', align: 'center'
+                text: '工具名称', align: 'center',dataIndex: 'gjmc'
             },
             {
-                text: '使用地点', align: 'center'
+                text: '使用时间', align: 'center',dataIndex: 'sysj'
             },
             {
-                text: '使用台时', align: 'center'
+                text: '使用地点', align: 'center',dataIndex: 'sydd'
             },
             {
-                text: '用途', align: 'center'
+                text: '使用台时', align: 'center',dataIndex: 'gjts'
+            },
+            {
+                text: '用途', align: 'center',dataIndex: 'yt'
             }
+            //
         ]
+    });
+
+    var gridStore2 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore2',
+        fields:['gjbm', 'gjmc', 'wxsj','wxnr', 'wxgdh'],
+        data:{'items':[
+            { 'gjbm': ' ',  "gjmc":" ",  "wxsj":" ",  "wxnr":" ",  "wxgdh":" " },
+            { 'gjbm': ' ',  "gjmc":" ",  "wxsj":" ",  "wxnr":" ",  "wxgdh":" " },
+            { 'gjbm': ' ',  "gjmc":" ",  "wxsj":" ",  "wxnr":" ",  "wxgdh":" " }
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
     });
     var grid2 = Ext.create('Ext.grid.Panel', {
         id: 'grid2',
         border: false,
+        store:gridStore2,
         columnLines: true,
         columns: [
             {
-                text: '工具编码', align: 'center'
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '工具名称', align: 'center'
+                text: '工具编码', align: 'center',dataIndex: 'gjbm'
             },
             {
-                text: '维修时间', align: 'center'
+                text: '工具名称', align: 'center',dataIndex: 'gjmc'
             },
             {
-                text: '维修内容', align: 'center'
+                text: '维修时间', align: 'center',dataIndex: 'wxsj'
             },
             {
-                text: '维修工单号', align: 'center'
+                text: '维修内容', align: 'center',dataIndex: 'wxnr'
+            },
+            {
+                text: '维修工单号', align: 'center',dataIndex: 'wxgdh'
             }
+            //
         ]
     });
 
+    var gridStore3 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore3',
+        fields:['sbbm', 'sbmc', 'gnwz','glsj', 'glr', 'qxgl'],
+        data:{'items':[
+            { 'sbbm': ' ',  "sbmc":" ",  "gnwz":" ",  "glsj":" ",  "glr":" ",  "qxgl":" " },
+            { 'sbbm': ' ',  "sbmc":" ",  "gnwz":" ",  "glsj":" ",  "glr":" ",  "qxgl":" " },
+            { 'sbbm': ' ',  "sbmc":" ",  "gnwz":" ",  "glsj":" ",  "glr":" ",  "qxgl":" " }
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
+    });
     var grid3 = Ext.create('Ext.grid.Panel', {
         id: 'grid3',
+        store:gridStore3,
         //region : 'south',
         height:'50%',
         border: false,
         columnLines: true,
         columns: [
             {
-                text: '设备编码', align: 'center'
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '设备名称', align: 'center'
+                text: '设备编码', align: 'center',dataIndex: 'sbbm'
             },
             {
-                text: '功能位置', align: 'center'
+                text: '设备名称', align: 'center',dataIndex: 'sbmc'
             },
             {
-                text: '关联时间', align: 'center'
+                text: '功能位置', align: 'center',dataIndex: 'gnwz'
             },
             {
-                text: '关联人', align: 'center'
+                text: '关联时间', align: 'center',dataIndex: 'glsj'
             },
             {
-                text: '取消关联', align: 'center'
+                text: '关联人', align: 'center',dataIndex: 'glr'
+            },
+            {
+                text: '取消关联', align: 'center',dataIndex: 'qxgl'
             }
+            //
         ]
     });
+    var gridStore4 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore4',
+        fields:['spbz', 'spsj', 'spyj'],
+        data:{'items':[
+            { 'spbz': ' ',  "spsj":" ",  "spyj":" "},
+            { 'spbz': ' ',  "spsj":" ",  "spyj":" "},
+            { 'spbz': ' ',  "spsj":" ",  "spyj":" "}
 
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
+    });
     var grid4 = Ext.create('Ext.grid.Panel', {
         id: 'grid4',
         border: false,
+        store:gridStore4,
         title:'机具报废审批流程',
         region: 'center',
         columnLines: true,
         columns: [
             {
-                text: '审批步骤', align: 'center'
+                xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '审批时间', align: 'center'
+                text: '审批步骤', align: 'center',dataIndex: 'spbz'
             },
             {
-                text: '审批意见', align: 'center'
+                text: '审批时间', align: 'center',dataIndex: 'spsj'
+            },
+            {
+                text: '审批意见', align: 'center',dataIndex: 'spyj'
             }
         ]
     });
@@ -145,8 +233,27 @@ Ext.onReady(function () {
             ]
     });
 
+   var gridStore =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore',
+        fields:['gjbm', 'gjmc', 'gjlx','gjszd', 'gjcgrq', 'gjzt'],
+        data:{'items':[
+            { 'gjbm': ' ',  "gjmc":" ",  "gjlx":" ",  "gjszd":" ",  "gjcgrq":" ",  "gjzt":" "  },
+            { 'gjbm': ' ',  "gjmc":" ",  "gjlx":" ",  "gjszd":" ",  "gjcgrq":" ",  "gjzt":" "  },
+            { 'gjbm': ' ',  "gjmc":" ",  "gjlx":" ",  "gjszd":" ",  "gjcgrq":" ",  "gjzt":" "  }
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
+    });
+
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
+        store:gridStore,
         height: window.screen.height / 2 - 120,
         border: false,
         columnLines: true,
@@ -156,26 +263,27 @@ Ext.onReady(function () {
         },
         columns: [
             {
-                xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
+                xtype: 'rownumberer', text: '序号', width: 100, align: 'center'
             },
             {
-                text: '工具编码', align: 'center', width: 100
+                text: '工具编码', align: 'center', width: 100,dataIndex: 'gjbm'
             },
             {
-                text: '工具名称', align: 'center', width: 100
+                text: '工具名称', align: 'center', width: 100,dataIndex: 'gjmc'
             },
             {
-                text: '工具类型', align: 'center', width: 100
+                text: '工具类型', align: 'center', width: 100,dataIndex: 'gjlx'
             },
             {
-                text: '工具所在地', align: 'center', width: 100
+                text: '工具所在地', align: 'center', width: 100,dataIndex: 'gjszd'
             },
             {
-                text: '工具采购日期', align: 'center', width: 100
+                text: '工具采购日期', align: 'center', width: 100,dataIndex: 'gjcgrq'
             },
             {
-                text: '工具状态', align: 'center', width: 100
+                text: '工具状态', align: 'center', width: 100,dataIndex: 'gjzt'
             }
+            //
         ]
     });
 
@@ -206,8 +314,26 @@ Ext.onReady(function () {
         }]
     });
 
+    var gridStore5 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore5',
+        fields:['gzbm', 'gzmc', 'gzlx','ts'],
+        data:{'items':[
+            { 'gzbm': ' ',  "gzmc":" ",  "gzlx":" ",  "ts":" "},
+            { 'gzbm': ' ',  "gzmc":" ",  "gzlx":" ",  "ts":" "},
+            { 'gzbm': ' ',  "gzmc":" ",  "gzlx":" ",  "ts":" "}
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
+    });
     var grid5 = Ext.create('Ext.grid.Panel', {
         id: 'grid5',
+        store:gridStore5,
         border: false,
         columnLines: true,
         columns: [
@@ -215,21 +341,41 @@ Ext.onReady(function () {
                 xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '工种编码', align: 'center'
+                text: '工种编码', align: 'center',dataIndex: 'gzbm'
             },
             {
-                text: '工种名称', align: 'center'
+                text: '工种名称', align: 'center',dataIndex: 'gzmc'
             },
             {
-                text: '工种类型', align: 'center'
+                text: '工种类型', align: 'center',dataIndex: 'gzlx'
             },
             {
-                text: '台时', align: 'center'
+                text: '台时', align: 'center',dataIndex: 'ts'
             }
+            //
         ]
+    });
+
+    var gridStore6 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore6',
+        fields:['gjbm', 'gjmc', 'gjlx','ts'],
+        data:{'items':[
+            { 'gjbm': ' ',  "gjmc":" ",  "gjlx":" ",  "ts":" "},
+            { 'gjbm': ' ',  "gjmc":" ",  "gjlx":" ",  "ts":" "},
+            { 'gjbm': ' ',  "gjmc":" ",  "gjlx":" ",  "ts":" "}
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
     });
     var grid6 = Ext.create('Ext.grid.Panel', {
         id: 'grid6',
+        store:gridStore6,
         border: false,
         columnLines: true,
         columns: [
@@ -237,21 +383,40 @@ Ext.onReady(function () {
                 xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '工具编码', align: 'center'
+                text: '工具编码', align: 'center',dataIndex: 'gjbm'
             },
             {
-                text: '工具名称', align: 'center'
+                text: '工具名称', align: 'center',dataIndex: 'gjmc'
             },
             {
-                text: '工具类型', align: 'center'
+                text: '工具类型', align: 'center',dataIndex: 'gjlx'
             },
             {
-                text: '台时', align: 'center'
+                text: '台时', align: 'center',dataIndex: 'ts'
             }
         ]
+    });
+
+    var gridStore7 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore7',
+        fields:['jjbm', 'jjmc', 'jjlx','ts'],
+        data:{'items':[
+            { 'jjbm': ' ',  "jjmc":" ",  "jjlx":" ",  "ts":" "},
+            { 'jjbm': ' ',  "jjmc":" ",  "jjlx":" ",  "ts":" "},
+            { 'jjbm': ' ',  "jjmc":" ",  "jjlx":" ",  "ts":" "}
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
     });
     var grid7 = Ext.create('Ext.grid.Panel', {
         id: 'grid7',
+        store:gridStore7,
         border: false,
         columnLines: true,
         columns: [
@@ -259,21 +424,40 @@ Ext.onReady(function () {
                 xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '机具编码', align: 'center'
+                text: '机具编码', align: 'center',dataIndex: 'jjbm'
             },
             {
-                text: '机具名称', align: 'center'
+                text: '机具名称', align: 'center',dataIndex: 'jjmc'
             },
             {
-                text: '机具类型', align: 'center'
+                text: '机具类型', align: 'center',dataIndex: 'jjlx'
             },
             {
-                text: '台时', align: 'center'
+                text: '台时', align: 'center',dataIndex: 'ts'
             }
         ]
     });
+
+    var gridStore8 =  Ext.create('Ext.data.Store', {
+        storeId:'gridStore8',
+        fields:['wlbm', 'wlmc', 'wllx','ts'],
+        data:{'items':[
+            { 'wlbm': ' ',  "wlmc":" ",  "wllx":" ",  "ts":" "},
+            { 'wlbm': ' ',  "wlmc":" ",  "wllx":" ",  "ts":" "},
+            { 'wlbm': ' ',  "wlmc":" ",  "wllx":" ",  "ts":" "}
+
+        ]},
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json',
+                root: 'items'
+            }
+        }
+    });
     var grid8 = Ext.create('Ext.grid.Panel', {
         id: 'grid8',
+        store:gridStore8,
         border: false,
         columnLines: true,
         columns: [
@@ -281,16 +465,16 @@ Ext.onReady(function () {
                 xtype: 'rownumberer', text: '序号', align: 'center',width:60
             },
             {
-                text: '物料编码', align: 'center'
+                text: '物料编码', align: 'center',dataIndex: 'wlbm'
             },
             {
-                text: '物料名称', align: 'center'
+                text: '物料名称', align: 'center',dataIndex: 'wlmc'
             },
             {
-                text: '物料类型', align: 'center'
+                text: '物料类型', align: 'center',dataIndex: 'wllx'
             },
             {
-                text: '台时', align: 'center'
+                text: '台时', align: 'center',dataIndex: 'ts'
             }
         ]
     });
