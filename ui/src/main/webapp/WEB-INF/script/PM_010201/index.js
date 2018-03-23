@@ -540,7 +540,7 @@ function _insert() {
         return;
     }
 
-    window.open(AppUrl + 'page/PM_01020101/index.html?V_V_PLANTCODE=' + V_V_PLANTCODE + '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUTYPECODE=' + V_V_EQUTYPECODE + '&V_V_EQUCODE=' + V_V_EQUCODE + '&V_V_EQUCHILDCODE=' + V_V_EQUCHILDCODE, '_blank', 'width=900,height=600,resizable=yes,scrollbars=yes');
+    window.open(AppUrl + 'page/PM_01020101/index.html?V_V_PLANTCODE=' + V_V_PLANTCODE + '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUTYPECODE=' + V_V_EQUTYPECODE + '&V_V_EQUCODE=' + V_V_EQUCODE + '&V_V_EQUCHILDCODE=' + V_V_EQUCHILDCODE, '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
 }
 
 function _update() {
@@ -556,7 +556,7 @@ function _update() {
         return;
     }
 
-    window.open(AppUrl + 'page/PM_01020102/index.html?V_V_PLANTCODE=' + records[0].get('V_ORGCODE') + '&V_V_DEPTCODE=' + records[0].get('V_DEPTCODE') + '&V_V_EQUTYPECODE=' + records[0].get('V_EQUTYPECODE') + '&V_V_EQUCODE=' + records[0].get('V_EQUCODE') + '&V_V_GUID=' + records[0].get('V_GUID'), '_blank', 'width=900,height=600,resizable=yes,scrollbars=yes');
+    window.open(AppUrl + 'page/PM_01020102/index.html?V_V_PLANTCODE=' + records[0].get('V_ORGCODE') + '&V_V_DEPTCODE=' + records[0].get('V_DEPTCODE') + '&V_V_EQUTYPECODE=' + records[0].get('V_EQUTYPECODE') + '&V_V_EQUCODE=' + records[0].get('V_EQUCODE') + '&V_V_GUID=' + records[0].get('V_GUID'), '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
 }
 
 function _preViewImage(V_V_GUID) {

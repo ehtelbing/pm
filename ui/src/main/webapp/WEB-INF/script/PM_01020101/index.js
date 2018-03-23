@@ -205,13 +205,14 @@ Ext.onReady(function () {
     var inputPanel = Ext.create('Ext.form.Panel', {
         id: 'inputPanel',
         width: '100%',
+        title : '添加',
+        titleAlign : 'center',
         region: 'north',
         defaults: {
             baseCls: 'my-panel-no-border'
         },
         padding: '10px 0px 0px 0px',
-        baseCls: 'my-panel-no-border',
-        style: 'background-color:#FFFFFF',
+
         frame: true,
         //  border:false,
         layout: 'vbox',

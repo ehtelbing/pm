@@ -110,11 +110,11 @@ Ext.onReady(function () {
 
     var inputPanel = Ext.create('Ext.Panel', {
         id : 'inputPanel',
-        header : false,
+        border:true,
+        title : '缺陷处理',
+        titleAlign : 'center',
         frame : true,
         layout : 'column',
-        style: 'background-color:#FFFFFF',
-        baseCls: 'my-panel-no-border',
         defaults : {
             labelAlign : 'right',
             //labelWidth : 100,
@@ -156,9 +156,9 @@ Ext.onReady(function () {
         border: false,
         columnLines: true,
         /*selModel : {
-            selType : 'checkboxmodel',
-            mode : 'SINGLE'
-        },*/
+         selType : 'checkboxmodel',
+         mode : 'SINGLE'
+         },*/
         selType: 'checkboxmodel',
         columns : [ {
             text : '序号',
@@ -312,7 +312,7 @@ Ext.onReady(function () {
     });
 
     _init()
-   // _selectOverhaulApply();
+    // _selectOverhaulApply();
 })
 
 function _init() {
@@ -345,11 +345,373 @@ function OnBtnSxQx() {
         alert('请选择一条数据进行修改');
     } else {
         var GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        var owidth = window.document.body.offsetWidth - 700;
+        var oheight = window.document.body.offsetHeight - 500;
+        Ext.getCmp('windowEqu').show();
+        bind(GUID);
     }
 }
+
+var windowEqu = Ext.create('Ext.window.Window', {
+    id: 'windowEqu',
+    width: 900,
+    height: 500,
+    title : '手工消缺',
+    modal: true,//弹出窗口时后面背景不可编辑
+    frame: true,
+    closeAction: 'hide',
+    closable: true,
+    region:'center',
+    layout : 'vbox',
+    items : [
+        {
+            xtype : 'panel',
+
+            layout : 'hbox',
+            margin : '15px 15px 0px 15px',
+            items : [{
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+
+                layout : 'fit',
+                baseCls : 'border_top_left',
+                items : [{
+                    xtype : 'label',
+                    text : '缺陷来源：'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 300,
+                height : 30,
+                layout : 'fit',
+                baseCls : 'border_top2',
+
+                items : [{
+                    xtype : 'label',
+                    id : 'qxly'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+                layout : 'fit',
+
+                baseCls : 'border_top3',
+                items : [{
+                    xtype : 'label',
+                    text : '缺陷日期：'
+                }]
+            }, {
+                xtype : 'panel',
+
+                baseCls : 'border_top4',
+                width : 300,
+                height : 30,
+                layout : 'fit',
+                items : [{
+                    id : 'qxrq',
+                    xtype : 'label'
+                }]
+            }]
+        }, {
+            xtype : 'panel',
+
+            layout : 'hbox',
+            margin : '0px 15px 0px 15px',
+            items : [{
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+                baseCls : 'border_top5',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    text : '负责人：'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 300,
+                height : 30,
+                baseCls : 'border_top6',
+
+                layout : 'fit',
+                items : [{
+                    id : 'fzr',
+                    xtype : 'label'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+                layout : 'fit',
+                baseCls : 'border_top7',
+
+                items : [{
+                    xtype : 'label',
+                    text : '单位：'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 300,
+                height : 30,
+                baseCls : 'border_top8',
+
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    id : 'dw'
+                }]
+            }]
+        }, {
+            xtype : 'panel',
+
+            layout : 'hbox',
+            margin : '0px 0px 0px 15px',
+            items : [{
+                xtype : 'panel',
+                width : 120,
+                height : 120,
+                border : false,
+                baseCls : 'border_top5',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    text : '缺陷明细：'
+                }]
+            }, {
+                xtype : 'panel',
+                border : false,
+                baseCls : 'border_top6',
+                width : 720,
+                height : 120,
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    height : 110,
+                    width : 680,
+                    id : 'qxmx'
+                }]
+            }]
+        }, {
+            xtype : 'panel',
+
+            layout : 'hbox',
+            margin : '0px 0px 0px 15px',
+            items : [{
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+                border : false,
+                baseCls : 'border_top5',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    text : '设备：'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 300,
+                height : 30,
+                border : false,
+                baseCls : 'border_top6',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    id : 'sb'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+                border : false,
+                baseCls : 'border_top7',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    text : '设备位置：'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 300,
+                height : 30,
+                border : false,
+                baseCls : 'border_top8',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    id : 'sbwz'
+                }]
+            }]
+        }, {
+            xtype : 'panel',
+
+            layout : 'hbox',
+            margin : '0px 0px 0px 15px',
+            items : [{
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+                border : false,
+                baseCls : 'border_top5',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    text : '处理意见：'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 300,
+                height : 30,
+                border : false,
+                baseCls : 'border_top6',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    id : 'clyj'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 120,
+                height : 30,
+
+                baseCls : 'border_top7',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    text : '缺陷状态：'
+                }]
+            }, {
+                xtype : 'panel',
+                width : 300,
+                height : 30,
+                border : false,
+                baseCls : 'border_top8',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    id : 'qxzt1'
+                }]
+            }]
+        }, {
+            xtype : 'panel',
+            layout : 'hbox',
+            margin : '0px 0px 0px 15px',
+            items : [{
+                xtype : 'panel',
+                width : 120,
+                height : 120,
+                border : false,
+                baseCls : 'border_top5',
+                layout : 'fit',
+                items : [{
+                    xtype : 'label',
+                    text : '消缺原因：'
+                },{xtype:'label',text:'*',style:'color:red'}]
+            }, {
+                xtype : 'panel',
+                width : 720,
+                height : 120,
+                border : false,
+                baseCls : 'border_top6',
+                items : [{
+                    xtype : 'textareafield',
+                    height : 110,
+                    width : 680,
+                    id : 'xqyy'
+                }]
+            }]
+        }],
+    buttons : [
+        {
+            text : '确定',
+            width : 70,
+            listeners : {
+                click : OnSaveButtonClicked
+            }
+        }, {
+            text : '返回',
+            width : 70,
+            listeners : {
+                click : OnBackButtonClicked
+            }
+        }]
+});
+
+function OnSaveButtonClicked() {
+    var id = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
+    if (Ext.ComponentManager.get("xqyy").getValue() != '') {
+        Ext.Ajax.request({
+            url : AppUrl + 'qx/PRO_PM_07_DEFECT_SET_XQ',
+            params : {
+                V_V_GUID : id,
+                V_V_PERCODE : Ext.util.Cookies.get("v_personcode"),
+                V_V_XQYY : Ext.getCmp('xqyy').getValue()
+            },
+            success : function(resp) {
+                var resp = Ext.JSON.decode(resp.responseText);
+                if (resp.list[0].V_INFO == "成功") {
+                    alert("保存成功");
+                    //window.opener.getReturnValue("yes");
+                    window.close();
+                    window.opener._selectOverhaulApply();
+                } else {
+                    Ext.Msg.alert('提示', '保存失败');
+                }
+            },
+            failure : function() {
+                Ext.Msg.alert('提示', '保存失败');
+            }
+
+        });
+    } else {
+        Ext.Msg.alert('提示', '录入内容不能为空，请重新输入!');
+    }
+}
+
+function OnBackButtonClicked() {
+    window.close();
+}
+function bind(GUID) {
+    if (location.href.split('?')[1] != undefined) {
+        var id = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
+    }
+    if (GUID != "") {
+        Ext.Ajax.request({
+            url : AppUrl + 'qx/PRO_PM_07_DEFECT_GET',
+            method : 'POST',
+            params : {
+                V_V_GUID: GUID
+            },
+            success : function(ret) {
+                var resp = Ext.JSON.decode(ret.responseText);
+
+                resp = resp.list;
+
+                Ext.ComponentManager.get("qxly")
+                    .setText(resp[0].V_SOURCENAME);// 缺陷来源
+                Ext.ComponentManager.get("qxrq")
+                    .setText(resp[0].D_DEFECTDATE);// 缺陷日期
+                Ext.ComponentManager.get("fzr")
+                    .setText(resp[0].V_PERNAME);// 负责人
+                Ext.ComponentManager.get("qxmx")
+                    .setText(resp[0].V_DEFECTLIST);// 缺陷明细
+                Ext.ComponentManager.get("dw")
+                    .setText(resp[0].V_DEPTNAME);// 单位
+                Ext.ComponentManager.get("sb")
+                    .setText(resp[0].V_EQUNAME);// 设备
+                Ext.ComponentManager.get("sbwz")
+                    .setText(resp[0].V_EQUSITE);// 设备位置
+                Ext.ComponentManager.get("clyj")
+                    .setText(resp[0].V_IDEA);// 处理意见
+                Ext.ComponentManager.get("qxzt1")
+                    .setText(resp[0].V_STATENAME);// 缺陷状态
+
+            }
+        });
+    }
+}
+
 function createWorkorder(){
     var seldata = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
     if (seldata.length==0) {
@@ -385,10 +747,10 @@ function createWorkorder(){
             var resp = Ext.decode(resp.responseText);
             if (resp.list.length>0) {
                 var V_ORDERGUID=resp.list[0].V_ORDERGUID;
-                var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
+                var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;
                 var V_SOURCECODE=seldata[0].raw.V_SOURCECODE;
-                var owidth = window.document.body.offsetWidth - 200;
-                var oheight = window.document.body.offsetHeight - 100;
+                var owidth = window.document.body.offsetWidth - 500;
+                var oheight = window.document.body.offsetHeight - 500;
 
                 var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
                     + V_ORDERGUID + '&V_EQUTYPECODE='+V_EQUTYPECODE+"&V_SOURCECODE="+V_SOURCECODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
@@ -399,149 +761,149 @@ function createWorkorder(){
 
         }
     });
-   /* var num = 0;
-    var V_ORDERGUID='';
-    var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
-    var V_SOURCECODE=seldata[0].raw.V_SOURCECODE;
-    Ext.Ajax.request({
-        url: AppUrl + 'PROJECT/PRO_PM_WORKORDER_DD_CREATE',
-        type : 'post',
-        async : false,
-        params : {
-            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
-            V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
-            V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
-            V_V_SOURCECODE: V_SOURCECODE
-        },
-        success : function(response) {
-            var resp = Ext.decode(response.responseText);
-            if(url_guid!=undefined){
-                Ext.Ajax.request({
-                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                    type: 'post',
-                    async: false,
-                    params: {
-                        V_V_IP: GetIP().ip,
-                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                        V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                        V_V_GUID: url_guid
-                    },
-                    success: function (response) {
-                        var resp = Ext.decode(response.responseText);
-                    }
-                });
-            }
-            if (resp.list != "" && resp.list != null) {
-                V_ORDERGUID=resp.list[0].V_ORDERGUID;
+    /* var num = 0;
+     var V_ORDERGUID='';
+     var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
+     var V_SOURCECODE=seldata[0].raw.V_SOURCECODE;
+     Ext.Ajax.request({
+     url: AppUrl + 'PROJECT/PRO_PM_WORKORDER_DD_CREATE',
+     type : 'post',
+     async : false,
+     params : {
+     V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+     V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
+     V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+     V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+     V_V_SOURCECODE: V_SOURCECODE
+     },
+     success : function(response) {
+     var resp = Ext.decode(response.responseText);
+     if(url_guid!=undefined){
+     Ext.Ajax.request({
+     url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
+     type: 'post',
+     async: false,
+     params: {
+     V_V_IP: GetIP().ip,
+     V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+     V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
+     V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
+     V_V_GUID: url_guid
+     },
+     success: function (response) {
+     var resp = Ext.decode(response.responseText);
+     }
+     });
+     }
+     if (resp.list != "" && resp.list != null) {
+     V_ORDERGUID=resp.list[0].V_ORDERGUID;
 
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DELBYWORK',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        V_V_WORKORDER_GUID: V_ORDERGUID
-                    },
-                    success: function (resp) {
-                        var resp = Ext.decode(resp.responseText);
-                        if (resp.V_INFO == 'success') {
+     Ext.Ajax.request({
+     url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DELBYWORK',
+     method: 'POST',
+     async: false,
+     params: {
+     V_V_WORKORDER_GUID: V_ORDERGUID
+     },
+     success: function (resp) {
+     var resp = Ext.decode(resp.responseText);
+     if (resp.V_INFO == 'success') {
 
-                            for (var i = 0; i < seldata.length; i++) {
-                                Ext.Ajax.request({
-                                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_WD',
-                                    method: 'POST',
-                                    async: false,
-                                    params: {
-                                        V_V_DEFECT_GUID: seldata[i].data.V_GUID,
-                                        V_V_WORKORDER_GUID: V_ORDERGUID
-                                    },
-                                    success: function (resp) {
-                                        var resp = Ext.decode(resp.responseText);
-                                        if (resp.V_INFO == 'success') {
-                                            num++;
-                                        }
+     for (var i = 0; i < seldata.length; i++) {
+     Ext.Ajax.request({
+     url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_WD',
+     method: 'POST',
+     async: false,
+     params: {
+     V_V_DEFECT_GUID: seldata[i].data.V_GUID,
+     V_V_WORKORDER_GUID: V_ORDERGUID
+     },
+     success: function (resp) {
+     var resp = Ext.decode(resp.responseText);
+     if (resp.V_INFO == 'success') {
+     num++;
+     }
 
-                                    }
-                                });
-                            }
-                        }else{
-                            alert("子数据清除错误");
-                        }
+     }
+     });
+     }
+     }else{
+     alert("子数据清除错误");
+     }
 
-                    }
-                });
-            } else {
+     }
+     });
+     } else {
 
-                alert("生成工单失败");
-            }
-        }
-    });
+     alert("生成工单失败");
+     }
+     }
+     });
 
 
 
-    if (num == seldata.length) {
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
+     if (num == seldata.length) {
+     var owidth = window.document.body.offsetWidth - 200;
+     var oheight = window.document.body.offsetHeight - 100;
 
-        var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
-            + V_ORDERGUID + '&V_EQUTYPECODE='+V_EQUTYPECODE+"&V_SOURCECODE="+V_SOURCECODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+     var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
+     + V_ORDERGUID + '&V_EQUTYPECODE='+V_EQUTYPECODE+"&V_SOURCECODE="+V_SOURCECODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
-        // window.close();
-    } else {
-        alert("缺陷添加错误");
-    }*/
+     // window.close();
+     } else {
+     alert("缺陷添加错误");
+     }*/
 
 
     /*var records = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();//获取选中的数据
 
-    if (records.length == 0) {//判断是否选中数据
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择一条数据',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return false;
-    }
+     if (records.length == 0) {//判断是否选中数据
+     Ext.MessageBox.show({
+     title: '提示',
+     msg: '请选择一条数据',
+     buttons: Ext.MessageBox.OK,
+     icon: Ext.MessageBox.WARNING
+     });
+     return false;
+     }
 
 
-    for (i = 0; i < records.length; i++) {
+     for (i = 0; i < records.length; i++) {
 
-        console.log("V_GUID="+records[i].data.V_GUID);
-        console.log("V_EQUTYPECODE="+records[i].data.V_EQUTYPECODE);
-        console.log("V_SOURCECODE="+records[i].data.V_SOURCECODE);
-        if(records[i].data.V_STATECODE=='10'){
-            var param="";
-            try {
-                var owidth = window.document.body.offsetWidth-200;
-                var oheight = window.document.body.offsetHeight-100 ;
-                if(url_guid!=undefined){
-                    param="&&url_guid="+url_guid;
-                }else{
-                    param="";
-                }
-                var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID + '&V_EQUTYPECODE='+records[i].data.V_EQUTYPECODE+"&V_SOURCECODE="+records[i].data.V_SOURCECODE+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+     console.log("V_GUID="+records[i].data.V_GUID);
+     console.log("V_EQUTYPECODE="+records[i].data.V_EQUTYPECODE);
+     console.log("V_SOURCECODE="+records[i].data.V_SOURCECODE);
+     if(records[i].data.V_STATECODE=='10'){
+     var param="";
+     try {
+     var owidth = window.document.body.offsetWidth-200;
+     var oheight = window.document.body.offsetHeight-100 ;
+     if(url_guid!=undefined){
+     param="&&url_guid="+url_guid;
+     }else{
+     param="";
+     }
+     var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
+     + records[i].data.V_GUID + '&V_EQUTYPECODE='+records[i].data.V_EQUTYPECODE+"&V_SOURCECODE="+records[i].data.V_SOURCECODE+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
-            } catch (e) {
-                var owidth = window.document.body.offsetWidth-200;
-                var oheight = window.document.body.offsetHeight-100 ;
-                if(url_guid!=undefined){
-                    param="&&url_guid="+url_guid;
-                }else{
-                    param="";
-                }
-                var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID+"&V_SOURCECODE="+records[i].data.V_SOURCECODE + ''+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+     } catch (e) {
+     var owidth = window.document.body.offsetWidth-200;
+     var oheight = window.document.body.offsetHeight-100 ;
+     if(url_guid!=undefined){
+     param="&&url_guid="+url_guid;
+     }else{
+     param="";
+     }
+     var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
+     + records[i].data.V_GUID+"&V_SOURCECODE="+records[i].data.V_SOURCECODE + ''+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
-            }
-        }else{
-            Ext.MessageBox.alert('操作信息', '该缺陷已下票，请重新选择！');
-            return;
-        }
-    }
-*/
+     }
+     }else{
+     Ext.MessageBox.alert('操作信息', '该缺陷已下票，请重新选择！');
+     return;
+     }
+     }
+     */
 
 
 
@@ -549,7 +911,7 @@ function createWorkorder(){
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time=value.split('.')[0];
-   return time;
+    return time;
 }
 
 
