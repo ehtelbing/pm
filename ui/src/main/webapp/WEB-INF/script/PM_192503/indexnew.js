@@ -10,6 +10,7 @@ Ext.Loader.setPath({
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 Ext.require(['com.data.Manage', 'com.store.GridStore']);
+var treepercode='';
 Ext.onReady(function () {
     var dataManage = Ext.create('com.data.Manage');
     var splantname = Ext.create("Ext.data.Store", {
@@ -92,7 +93,7 @@ Ext.onReady(function () {
             }
         }
     });
-    var tree1 = Ext.create('Ext.tree.Panel', {
+    /*var tree1 = Ext.create('Ext.tree.Panel', {
         id: 'tree1',
         region: 'center',
         rootVisible: false,
@@ -102,6 +103,52 @@ Ext.onReady(function () {
         store: Ext.create('Ext.data.TreeStore', {
             fields: ['id', 'text', 'parentid']
         })
+    });*/
+
+    var treeStore = Ext.create('Ext.data.TreeStore', {
+        storeId: 'treeStore',
+        autoLoad: false,
+        fields: ['sid', 'text', 'parentid', 'craftcode', 'craftname'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'cjy/selectPersonTreeFromDept',
+            extraParams: {
+                V_V_DEPTCODE : '',
+                V_V_DEPTTYPE : '',
+                V_V_FLAG : ''
+            },
+            reader: {
+                type: 'json',
+                root: 'children'
+            },
+            root: {
+                text: 'root',
+                expanded: true
+            }
+        },
+        listeners: {
+            'beforeexpand': function (node, eOpts) {
+                //点击父亲节点的菜单会将节点的id通过ajax请求，将到后台
+                this.proxy.extraParams.V_V_DEPTCODE = node.raw.sid;
+                this.proxy.extraParams.V_V_FLAG = 'false';
+            }
+        }
+    });
+    var tree1 = Ext.create('Ext.tree.Panel', {
+        id: 'tree1',
+        store: treeStore,
+        region: 'center',
+        animate: true,//开启动画效果
+        rootVisible: false,
+        hideHeaders: true,//是否隐藏表头,默认为false
+        columns: [{
+            xtype: 'treecolumn',
+            dataIndex: 'text',
+            flex: 1
+        }],
+        listeners: {
+            //checkchange: OnClickMenuCheckTree
+        }
     });
     var treePanel1= Ext.create('Ext.panel.Panel', {
         region: 'west',
@@ -449,7 +496,7 @@ Ext.onReady(function () {
             }
         }
     });
-    var grid = Ext.create('Ext.grid.Panel', {
+    /*var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
         region: 'center',
         columnLines: true,
@@ -484,6 +531,26 @@ Ext.onReady(function () {
         listeners : {
             itemclick : itemclick
         }
+    });*/
+
+    var personPanel=Ext.create('Ext.panel.Panel',{
+        id:'personPanel',
+        region: 'center',
+        width: '100%',
+        //autoScroll: true,
+        frame:true,
+        items:[{xtype:'panel', region:'north',minWidth:330,layout:'hbox',height:'100%',frame:true,baseCls: 'my-panel-no-border',
+            items:[{xtype:'panel', minWidth:330,  layout:'vbox',baseCls: 'my-panel-no-border',
+                items:[
+                    {xtype:'textfield',id:'percode',fieldLabel:'人员编码',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 15px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'pername',fieldLabel:'人员名称',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perlogname',fieldLabel:'登录名',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perpassword',fieldLabel:'密码',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perdept',fieldLabel:'厂矿',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perrole',fieldLabel:'角色',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perclass',fieldLabel:'工作中心',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'pertel',fieldLabel:'电话',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true}
+                    ]}]}]
     });
     var centerPanel1= Ext.create('Ext.panel.Panel', {
         region: 'center',
@@ -536,32 +603,28 @@ Ext.onReady(function () {
                     width: 80,
                     handler: function () {
 
-                        var selectModel = Ext
+                        /*var selectModel = Ext
                             .getCmp("grid")
                             .getSelectionModel();
                         var id = Ext
                             .getCmp('grid')
                             .getSelectionModel()
                             .getSelection().length;
-
-                        if (id == '0' || id > 1) {
+*/
+                        //if (id == '0' || id > 1) {
+                        if (treepercode == '') {
                             Ext.Msg.alert('操作信息',
                                 '只能选择一条数据修改');
                             return false;
                         } else {
 
-                            for (i = 0; i < Ext
-                                .getCmp('grid')
-                                .getSelectionModel()
-                                .getSelection().length; i++) {
                                 Ext.Ajax
                                     .request({
                                         url: AppUrl
                                         + 'cjy/PRO_BASE_PERSON_GET_BYDEPT',
                                         method: 'POST',
                                         params: {
-                                            V_V_PERSONCODE : selectModel
-                                                .getSelection()[i].data.V_PERSONCODE
+                                            V_V_PERSONCODE : treepercode
                                         },
                                         success: function (resp) {
                                             response = Ext.JSON.decode(resp.responseText);
@@ -573,14 +636,14 @@ Ext.onReady(function () {
 
                                         }
                                     });
-                            }
+
                             Ext.Ajax
                                 .request({
                                     url: AppUrl
                                     + 'zdh/PRO_PERSON_QUERY_CRAFT',
                                     method: 'POST',
                                     params: {
-                                        IN_PERSON : Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE
+                                        IN_PERSON : treepercode//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE
                                     },
                                     success: function (resp) {
                                         re = Ext.JSON
@@ -602,14 +665,15 @@ Ext.onReady(function () {
                     icon: imgpath + '/delete1.png',
                     width: 80,
                     handler: function () {
-                        var selectModel = Ext
+                       /* var selectModel = Ext
                             .getCmp("grid")
                             .getSelectionModel();
                         var id = Ext
                             .getCmp('grid')
                             .getSelectionModel()
                             .getSelection().length;
-                        if (id == '0') {
+                        if (id == '0') {*/
+                        if (treepercode == '') {
                             Ext.example.msg('操作信息',
                                 '{0}',
                                 '请选择数据进行删除');
@@ -623,11 +687,6 @@ Ext.onReady(function () {
                                     if (button != "yes") {
                                         return;
                                     }
-                                    for (i = 0; i < Ext
-                                        .getCmp(
-                                        'grid')
-                                        .getSelectionModel()
-                                        .getSelection().length; i++) {
 
                                         Ext.Ajax
                                             .request({
@@ -635,7 +694,7 @@ Ext.onReady(function () {
                                                 + 'zdh/PRO_BASE_PERSON_DEL',
                                                 method: 'POST',
                                                 params: {
-                                                    V_V_PERSONCODE :selectModel.getSelection()[i].data.V_PERSONCODE
+                                                    V_V_PERSONCODE :treepercode//selectModel.getSelection()[i].data.V_PERSONCODE
                                                 },
                                                 success: function () {
 
@@ -647,17 +706,18 @@ Ext.onReady(function () {
                                                 + 'zdh/PRO_PERSON_DELETE_CRAFT',
                                                 method: 'POST',
                                                 params: {
-                                                    IN_PERSONCODE : Ext.getCmp('grid').getSelectionModel().getSelection()[i].data.V_PERSONCODE
+                                                    IN_PERSONCODE : treepercode//Ext.getCmp('grid').getSelectionModel().getSelection()[i].data.V_PERSONCODE
                                                 },
                                                 success: function () {
                                                 }
                                             });
-                                    }
-                                    gridStore.load({
+                                    /*gridStore.load({
                                         params: {
                                             V_V_DEPTCODE : Ext.ComponentManager.get("tree1hidden").getValue()
                                         }
-                                    });
+                                    });*/
+                                    loadTree();
+                                    loadPerson('del');
 
                                 });
 
@@ -665,7 +725,7 @@ Ext.onReady(function () {
 
                     }
                 }]
-        },grid]
+        },personPanel]
     });
     var postTree = Ext.create('Ext.tree.Panel', {
         id: 'postTree',
@@ -1220,7 +1280,7 @@ Ext.onReady(function () {
     Ext.getCmp("plantname").on(
         "change",
         function () {
-            Ext.getCmp('tree1').store.setProxy({
+            /*Ext.getCmp('tree1').store.setProxy({
                 type: 'ajax',
                 actionMethods: {
                     read: 'POST'
@@ -1239,7 +1299,15 @@ Ext.onReady(function () {
                     V_V_PRONAME : "PRO_BASE_DEPT_TREE"
                 }
             });
-            Ext.getCmp('tree1').store.load();
+            Ext.getCmp('tree1').store.load();*/
+            var treeStore = Ext.data.StoreManager.lookup('treeStore');
+            treeStore.proxy.extraParams = {
+                V_V_DEPTCODE: Ext.getCmp('plantname').getValue(),
+                V_V_DEPTTYPE:  '[主体作业区]',
+                V_V_FLAG: 'true'
+            };
+            treeStore.currentPage = 1;
+            treeStore.load();
 
             editzyqStore.load({
                 params: {
@@ -1252,12 +1320,40 @@ Ext.onReady(function () {
 
 
     Ext.getCmp("tree1").on('itemclick', function (view, node) {
-        Ext.ComponentManager.get("tree1hidden").setValue(node.data.id);
-        gridStore.load({
+        Ext.ComponentManager.get("tree1hidden").setValue(node.data.parentid);
+        treepercode=node.data.sid;
+        /*gridStore.load({
             params: {
                 V_V_DEPTCODE : node.data.id
             }
-        });
+        });*/
+        Ext.Ajax
+            .request({
+                url: AppUrl
+                + 'cjy/PRO_BASE_PERSON_GET_BYDEPT',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE : node.data.sid
+                },
+                success: function (resp) {
+                    var response = Ext.JSON.decode(resp.responseText);
+                    if(response.list.length>0){
+                        Ext.ComponentManager.get("percode").setValue(response.list[0].V_PERSONCODE);
+                        Ext.ComponentManager.get("pername").setValue(response.list[0].V_PERSONNAME);
+                        Ext.ComponentManager.get("perlogname").setValue(response.list[0].V_LOGINNAME);
+                        Ext.ComponentManager.get("perpassword").setValue(response.list[0].V_PASSWORD);
+                        Ext.ComponentManager.get("perdept").setValue(response.list[0].V_DEPTNAME);
+                        Ext.ComponentManager.get("perrole").setValue(response.list[0].V_ROLENAME);
+                        Ext.ComponentManager.get("perclass").setValue(response.list[0].V_SAP_WORKNAME);
+                        Ext.ComponentManager.get("pertel").setValue(response.list[0].V_TEL);
+
+                        loadTab(response.list[0].V_PERSONCODE,response.list[0].V_DEPTCODE,response.list[0].V_PERSONNAME);
+                    }
+
+
+
+                }
+            });
     });
     Ext.ComponentManager
         .get('btnbc')
@@ -1314,14 +1410,15 @@ Ext.onReady(function () {
                                 }
                             });
                          */
-                        gridStore
+                        /*gridStore
                             .load({
                                 params: {
                                     V_V_DEPTCODE : Ext.ComponentManager.get("tree1hidden").getValue()
                                 }
-                            });
-
+                            });*/
                         window.close();
+                        loadPerson(Ext.ComponentManager.get("rybm").getValue());
+                        loadTree();
 
                     }
                 });
@@ -1338,7 +1435,7 @@ Ext.onReady(function () {
                 async : false,
                 method : 'post',
                 params : {
-                    V_V_PERSONCODE:Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
+                    V_V_PERSONCODE:treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
                     V_V_EQUCODE:Ext.data.StoreManager.get('gridEquStore').data.getAt(i).data.V_EQUCODE
                 },
                 success : function(resp) {
@@ -1351,8 +1448,67 @@ Ext.onReady(function () {
     });
 });
 
+function loadPerson(percode){
+    if(percode=='del'){
+        Ext.ComponentManager.get("percode").setValue('');
+        Ext.ComponentManager.get("pername").setValue('');;
+        Ext.ComponentManager.get("perlogname").setValue('');
+        Ext.ComponentManager.get("perpassword").setValue('');
+        Ext.ComponentManager.get("perdept").setValue('');
+        Ext.ComponentManager.get("perrole").setValue('');
+        Ext.ComponentManager.get("perclass").setValue('');
+        Ext.ComponentManager.get("pertel").setValue('');
+    }else{
+        Ext.Ajax
+            .request({
+                url: AppUrl
+                + 'cjy/PRO_BASE_PERSON_GET_BYDEPT',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE : percode
+                },
+                success: function (resp) {
+                    var response = Ext.JSON.decode(resp.responseText);
+                    if(response.list.length>0){
+                        Ext.ComponentManager.get("percode").setValue(response.list[0].V_PERSONCODE);
+                        Ext.ComponentManager.get("pername").setValue(response.list[0].V_PERSONNAME);
+                        Ext.ComponentManager.get("perlogname").setValue(response.list[0].V_LOGINNAME);
+                        Ext.ComponentManager.get("perpassword").setValue(response.list[0].V_PASSWORD);
+                        Ext.ComponentManager.get("perdept").setValue(response.list[0].V_DEPTNAME);
+                        Ext.ComponentManager.get("perrole").setValue(response.list[0].V_ROLENAME);
+                        Ext.ComponentManager.get("perclass").setValue(response.list[0].V_SAP_WORKNAME);
+                        Ext.ComponentManager.get("pertel").setValue(response.list[0].V_TEL);
+                    }
 
 
+
+                }
+            });
+    }
+
+}
+function loadTree(){
+    var treeStore = Ext.data.StoreManager.lookup('treeStore');
+    treeStore.proxy.extraParams = {
+        V_V_DEPTCODE: Ext.getCmp('plantname').getValue(),
+        V_V_DEPTTYPE:  '[主体作业区]',
+        V_V_FLAG: 'true'
+    };
+    treeStore.currentPage = 1;
+    treeStore.load();
+}
+
+function loadTab(percode,deptcode,pername){
+    loadPostGrid(percode);
+    loadRoleGrid(deptcode);
+    loadRoleSelGrid(percode);
+    loadClassGrid(deptcode);
+    loadClassSelGrid(percode);
+    loadProfesTree(percode,deptcode);
+    loadProfesGrid(percode,deptcode);
+    loadTypeSelGrid(percode);
+    Ext.getCmp('uname').setValue(pername);
+}
 function itemclick(s, record, item, index, e, eOpts) {
     loadPostGrid(Ext.getStore("gridStore").getAt(index).get("V_PERSONCODE"));
     loadRoleGrid(Ext.getStore("gridStore").getAt(index).get("V_DEPTCODE"));
@@ -1389,7 +1545,8 @@ function loadPostGrid(personcode){
 }
 
 function postTreeitemclick(view, node){
-    if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    //if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+     if(treepercode==''){
         alert("请选择一条人员进行操作");
         return;
     }
@@ -1400,11 +1557,11 @@ function postTreeitemclick(view, node){
             method: 'POST',
             params: {
                 V_V_POSTCODE:node.data.id,
-                V_V_PERSONCODE: Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
+                V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
                 V_V_TYPE :  true
             },
             success: function () {
-                loadPostGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
+                loadPostGrid(treepercode);
             }
         });
 
@@ -1418,11 +1575,11 @@ function _delPost(V_V_POSTCODE){
             method: 'POST',
             params: {
                 V_V_POSTCODE:V_V_POSTCODE,
-                V_V_PERSONCODE: Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
+                V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
                 V_V_TYPE :  false
             },
             success: function () {
-                loadPostGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
+                loadPostGrid(treepercode);
             }
         });
 }
@@ -1435,7 +1592,8 @@ function loadRoleGrid(deptcode){
         });
 }
 function roleitemclick(s, record, item, index, e, eOpts) {
-    if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    //if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    if(treepercode==''){
         alert("请选择一条人员进行操作");
         return;
     }
@@ -1443,7 +1601,7 @@ function roleitemclick(s, record, item, index, e, eOpts) {
             url: AppUrl+ 'cjy/PRO_BASE_PERSON_GET_BYDEPT',
             method: 'POST',
             params: {
-                V_V_PERSONCODE: Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
+                V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
             },
             success: function (resp) {
                 var response = Ext.JSON.decode(resp.responseText);
@@ -1461,7 +1619,7 @@ function roleitemclick(s, record, item, index, e, eOpts) {
                             V_I_CLASS: response.list[0].V_CLASS_CODE
                         },
                         success: function () {
-                            loadRoleSelGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
+                            loadRoleSelGrid(treepercode);
                         }
                     });
             }
@@ -1477,12 +1635,13 @@ function loadRoleSelGrid(personcode){
         });
 }
 function _delRole(V_V_PERSONCODE){
-    if (Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE == V_V_PERSONCODE) {
+    //if (Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE == V_V_PERSONCODE) {
+    if (treepercode == V_V_PERSONCODE) {
         Ext.Ajax.request({
             url: AppUrl+ 'cjy/PRO_BASE_PERSON_GET_BYDEPT',
             method: 'POST',
             params: {
-                V_V_PERSONCODE: Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
+                V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
             },
             success: function (resp) {
                 var response = Ext.JSON.decode(resp.responseText);
@@ -1501,7 +1660,7 @@ function _delRole(V_V_PERSONCODE){
                             V_I_CLASS: response.list[0].V_CLASS_CODE
                         },
                         success: function () {
-                            loadRoleSelGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
+                            loadRoleSelGrid(treepercode);
                         }
                     });
             }
@@ -1523,7 +1682,8 @@ function loadClassGrid(deptcode){
 }
 
 function classitemclick(s, record, item, index, e, eOpts) {
-    if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    //if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    if(treepercode==''){
         alert("请选择一条人员进行操作");
         return;
     }
@@ -1531,7 +1691,7 @@ function classitemclick(s, record, item, index, e, eOpts) {
         url: AppUrl + 'cjy/PRO_BASE_PERSON_GET_BYDEPT',
         method: 'POST',
         params: {
-            V_V_PERSONCODE: Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
+            V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
         },
         success: function (resp) {
             var response = Ext.JSON.decode(resp.responseText);
@@ -1546,10 +1706,10 @@ function classitemclick(s, record, item, index, e, eOpts) {
                     V_V_DEPTCODE: response.list[0].V_DEPTCODE,
                     V_V_ROLECODE: response.list[0].V_ROLECODE,
                     V_I_ORDERID: '0',
-                    V_I_CLASS: record.data.V_CLASS_CODE
+                    V_I_CLASS: record.data.V_SAP_WORK
                 },
                 success: function () {
-                    loadClassSelGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
+                    loadClassSelGrid(treepercode);
                 }
             });
         }
@@ -1564,12 +1724,13 @@ function loadClassSelGrid(personcode){
     });
 }
 function _delClass(V_V_PERSONCODE){
-    if (Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE == V_V_PERSONCODE) {
+    //if (Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE == V_V_PERSONCODE) {
+    if (treepercode == V_V_PERSONCODE) {
         Ext.Ajax.request({
             url: AppUrl + 'cjy/PRO_BASE_PERSON_GET_BYDEPT',
             method: 'POST',
             params: {
-                V_V_PERSONCODE: Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
+                V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
             },
             success: function (resp) {
                 var response = Ext.JSON.decode(resp.responseText);
@@ -1588,7 +1749,7 @@ function _delClass(V_V_PERSONCODE){
                             V_I_CLASS: ''
                         },
                         success: function () {
-                            loadClassSelGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE);
+                            loadClassSelGrid(treepercode);
                         }
                     });
             }
@@ -1599,7 +1760,8 @@ function _delClass(V_V_PERSONCODE){
 }
 //-----------------------------------------------------------------------------equ
 function equTreeitemclick(aa, record, item, index, e, eOpts){
-    if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    //if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    if(treepercode==''){
         alert("请选择一条人员进行操作");
         return;
     }
@@ -1623,7 +1785,7 @@ function OnSelectionEquChanged(pp, record, index, eOpts) {
             method : 'POST',
             async : false,
             params : {
-                V_V_PERSONCODE:Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
+                V_V_PERSONCODE:treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
                 V_V_EQUCODE: record.data.V_EQUCODE
             }
         });
@@ -1637,7 +1799,7 @@ function OnClickEquGridPanel(pp, record, index, eOpts) {
             method : 'POST',
             async : false,
             params : {
-                V_V_PERSONCODE:Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
+                V_V_PERSONCODE:treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
                 V_V_EQUCODE:record.data.V_EQUCODE
             }
         });
@@ -1668,7 +1830,8 @@ function loadProfesGrid(personcode,deptcode){
 }
 
 function profesTreeitemclick(aa, record, item, index, e, eOpts){
-    if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    //if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    if(treepercode==''){
         alert("请选择一条人员进行操作");
         return;
     }
@@ -1688,7 +1851,7 @@ function profesTreeitemclick(aa, record, item, index, e, eOpts){
             params:{
                 V_V_SPECIALTYCODE:SPECIALTYCODE,
                 V_V_DEPTCODE:parentid,
-                V_V_PERSONCODE:Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE
+                V_V_PERSONCODE:treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE
             },
             success:function (resp){
                 var resp=Ext.JSON.decode(resp.responseText);
@@ -1697,15 +1860,15 @@ function profesTreeitemclick(aa, record, item, index, e, eOpts){
                         type : 'ajax',
                         url : AppUrl + 'pm_19/PersonTree',
                         extraParams : {
-                            V_V_PERSONCODE : Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
-                            V_V_DEPTCODE : Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_DEPTCODE
+                            V_V_PERSONCODE : treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
+                            V_V_DEPTCODE : Ext.ComponentManager.get("tree1hidden").getValue()//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_DEPTCODE
                         },
                         actionMethods : {
                             read : 'POST'
                         }
                     });
                     Ext.getCmp('profesTree').store.load();
-                    loadProfesGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,Ext.getCmp('plantname').getValue());
+                    loadProfesGrid(treepercode,Ext.getCmp('plantname').getValue());
                 }else{
                     Ext.Msg.alert('操作信息',  '操作失败');
                 }
@@ -1719,7 +1882,7 @@ function profesTreeitemclick(aa, record, item, index, e, eOpts){
             params:{
                 V_V_SPECIALTYCODE:SPECIALTYCODE,
                 V_V_DEPTCODE:parentid,
-                V_V_PERSONCODE:Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE
+                V_V_PERSONCODE:treepercode//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE
             },
             success:function (resp){
                 var resp=Ext.JSON.decode(resp.responseText);
@@ -1728,15 +1891,15 @@ function profesTreeitemclick(aa, record, item, index, e, eOpts){
                         type : 'ajax',
                         url : AppUrl + 'pm_19/PersonTree',
                         extraParams : {
-                            V_V_PERSONCODE : Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
-                            V_V_DEPTCODE : Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_DEPTCODE
+                            V_V_PERSONCODE : treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
+                            V_V_DEPTCODE : Ext.ComponentManager.get("tree1hidden").getValue()//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_DEPTCODE
                         },
                         actionMethods : {
                             read : 'POST'
                         }
                     });
                     Ext.getCmp('profesTree').store.load();
-                    loadProfesGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,Ext.getCmp('plantname').getValue());
+                    loadProfesGrid(treepercode,Ext.getCmp('plantname').getValue());
                 }else{
                     Ext.Msg.alert('操作信息',  '操作失败');
                 }
@@ -1746,7 +1909,8 @@ function profesTreeitemclick(aa, record, item, index, e, eOpts){
 }
 //-----------------------------------------------------------------------------type
 function typeitemclick(s, record, item, index, e, eOpts) {
-    if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    //if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    if(treepercode==''){
         alert("请选择一条人员进行操作");
         return;
     }
@@ -1758,7 +1922,7 @@ function typeitemclick(s, record, item, index, e, eOpts) {
         params: {
             V_V_FLAG: 1,
             V_V_WORKCODE: record.data.V_WORKCODE,
-            V_V_PERSONCODE: Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE
+            V_V_PERSONCODE: treepercode//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE
 
         },
         success: function (response) {
@@ -1766,7 +1930,7 @@ function typeitemclick(s, record, item, index, e, eOpts) {
             if (resp.RET != 'success') {
                 Ext.MessageBox.alert('提示', '操作失败');
             }else{
-                loadTypeSelGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE);
+                loadTypeSelGrid(treepercode);
             }
         }
     });
@@ -1796,14 +1960,15 @@ function _delType(personcode,workcode){
             if (resp.RET != 'success') {
                 Ext.MessageBox.alert('提示', '操作失败');
             }else{
-                loadTypeSelGrid(Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE);
+                loadTypeSelGrid(treepercode);
             }
         }
     });
 }
 //-----------------------------------------------------------------------------password
 function OnButtonSaveClicked(){
-    if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    //if(Ext.getCmp('grid').getSelectionModel().getSelection().length!=1){
+    if(treepercode==''){
         alert("请选择一条人员进行操作");
         return;
     }
@@ -1827,7 +1992,7 @@ function OnButtonSaveClicked(){
                     method : 'POST',
                     async : false,
                     params : {
-                        V_V_PERSONCODE:Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
+                        V_V_PERSONCODE:treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].raw.V_PERSONCODE,
                         V_V_PASSWORD:ypassword,
                         V_V_PASSWORD_NEW:npassword
                     },
@@ -1837,6 +2002,7 @@ function OnButtonSaveClicked(){
                         Ext.getCmp('ymm').setValue('');
                         Ext.getCmp('xmm').setValue('');
                         Ext.getCmp('cfxma').setValue('');
+                        loadPerson(treepercode);
                     }
                 });
             }
