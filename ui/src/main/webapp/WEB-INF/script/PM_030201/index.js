@@ -756,7 +756,7 @@ function OnButtonAddClicked() {
     var ret = window.open(AppUrl + 'page/PM_030209/index.html?V_YEARPLAN_GUID=0'
     + "&YEAR=" + Ext.getCmp("year").getValue()
     + "&V_ORGCODE=" + Ext.getCmp("ck").getValue()
-    + "&V_DEPTCODE=" + Ext.getCmp("zyq").getValue(), '', 'height=796px,width=593px,top=50px,left=100px,resizable=yes');
+    + "&V_DEPTCODE=" + Ext.getCmp("zyq").getValue(), '', 'height=496px,width=593px,top=50px,left=100px,resizable=yes');
 
 }
 
@@ -774,7 +774,9 @@ function OnButtonEditClicked() {
             var update = 'update';
             var owidth = window.document.body.offsetWidth - 200;
             var oheight = window.document.body.offsetHeight - 100;
-            var ret = window.open(AppUrl + 'page/PM_030209/index.html?V_V_GUID=' + V_V_GUID + '&UPDATE=' + update + '&YEAR=' + Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_YEAR, '', 'height=796px,width=593px,top=50px,left=100px,resizable=yes');
+            var ret = window.open(AppUrl + 'page/PM_030209/index.html?V_V_GUID=' + V_V_GUID +
+                '&UPDATE=' + update + '&YEAR=' + Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_YEAR, '',
+                'height=496px,width=593px,top=50px,left=100px,resizable=yes');
 
 
         } else {

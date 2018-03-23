@@ -202,6 +202,8 @@ Ext.onReady(function () {
     var panel2 = Ext.create('Ext.panel.Panel', {
         region: 'north',
         layout: 'column',
+        title : '模型选择',
+        titleAlign : 'center',
         border:false,
         defaults : {
             style : 'margin:5px 0px 5px 5px',
