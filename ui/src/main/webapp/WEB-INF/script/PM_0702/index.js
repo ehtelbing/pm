@@ -110,11 +110,11 @@ Ext.onReady(function () {
 
     var inputPanel = Ext.create('Ext.Panel', {
         id : 'inputPanel',
-        header : false,
+        border:true,
+        title : '缺陷处理',
+        titleAlign : 'center',
         frame : true,
         layout : 'column',
-        style: 'background-color:#FFFFFF',
-        baseCls: 'my-panel-no-border',
         defaults : {
             labelAlign : 'right',
             //labelWidth : 100,
@@ -345,8 +345,8 @@ function OnBtnSxQx() {
         alert('请选择一条数据进行修改');
     } else {
         var GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
+        var owidth = window.document.body.offsetWidth - 1000;
+        var oheight = window.document.body.offsetHeight - 500;
         var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     }
 }
@@ -385,10 +385,10 @@ function createWorkorder(){
             var resp = Ext.decode(resp.responseText);
             if (resp.list.length>0) {
                 var V_ORDERGUID=resp.list[0].V_ORDERGUID;
-                var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
+                var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;
                 var V_SOURCECODE=seldata[0].raw.V_SOURCECODE;
-                var owidth = window.document.body.offsetWidth - 200;
-                var oheight = window.document.body.offsetHeight - 100;
+                var owidth = window.document.body.offsetWidth - 500;
+                var oheight = window.document.body.offsetHeight - 500;
 
                 var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
                     + V_ORDERGUID + '&V_EQUTYPECODE='+V_EQUTYPECODE+"&V_SOURCECODE="+V_SOURCECODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
