@@ -4135,4 +4135,59 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PRO_BASE_DEPT_VIEW(String IS_V_DEPTCODE, String IS_V_DEPTTYPE) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_VIEW_ROLE");
+//        logger.debug("params:V_V_PERSONCODE:" + V_V_PERSONCODE + "params:V_V_DEPTCODE:" + V_V_DEPTCODE+ "params:V_V_DEPTCODENEXT:" + V_V_DEPTCODENEXT+ "params:V_V_DEPTTYPE:" + V_V_DEPTTYPE);
+
+        HashMap result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_VIEW(:IS_V_DEPTCODE,:IS_V_DEPTTYPE,:V_CURSOR)}");
+            cstmt.setString("IS_V_DEPTCODE", IS_V_DEPTCODE);
+            cstmt.setString("IS_V_DEPTTYPE", IS_V_DEPTTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_VIEW");
+        return result;
+    }
+
+    public HashMap PRO_BASE_PERSON_VIEW(String V_V_DEPTCODE) throws SQLException {
+
+        logger.info("begin PRO_BASE_PERSON_VIEW");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_VIEW(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_PERSON_VIEW");
+        return result;
+    }
+
+
 }

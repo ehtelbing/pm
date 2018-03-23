@@ -1,5 +1,6 @@
 package org.building.pm.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.cjyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
@@ -2005,6 +2007,59 @@ public class cjyController {
                                             HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_03_PLAN_CHOOSE_SEL_NEW(V_V_GUID,V_V_PLANTYPE);
         return result;
+    }
+
+    @RequestMapping(value = "selectPersonTreeFromDept")
+    @ResponseBody
+    public List<Map> selectPersonTreeFromDept(
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+            HttpServletRequest request, HttpServletResponse response, HttpSession session)
+            throws JsonProcessingException,
+            NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> menu = new ArrayList<Map>();
+        if (V_V_FLAG.equals("true")) {
+            HashMap data = cjyService.PRO_BASE_DEPT_VIEW(V_V_DEPTCODE, V_V_DEPTTYPE);
+            List<Map<String, Object>> deptList = (List<Map<String, Object>>) data.get("list");
+            Map<String, Object> budgetClass;
+            for (int i = 0; i < deptList.size(); i++) {
+                budgetClass = deptList.get(i);
+                Map temp = new HashMap();
+                temp.put("parentid", budgetClass.get("V_DEPTCODE"));
+                temp.put("sid", budgetClass.get("V_DEPTCODE"));
+                temp.put("text", budgetClass.get("V_DEPTNAME"));
+                temp.put("expanded", false);
+                //result.add(temp);
+                menu.add(temp);
+                //fillChildren(budgetClass);
+
+            }
+
+            result.put("success", true);
+        } else {
+            Map data = cjyService.BASE_PERSON_SEL_BYDEPT(V_V_DEPTCODE);
+            Map<String, Object> subMatBudgetCat;
+            List<Map<String, Object>> personTreeList = (List<Map<String, Object>>) data.get("list");
+
+            for (int i = 0; i < personTreeList.size(); i++) {
+                subMatBudgetCat = personTreeList.get(i);
+                Map temp = new HashMap();
+                temp.put("parentid", V_V_DEPTCODE);
+                temp.put("sid", subMatBudgetCat.get("V_PERSONCODE"));
+                temp.put("text", subMatBudgetCat.get("V_PERSONNAME"));
+                temp.put("leaf", true);
+                menu.add(temp);
+                //children.add(subMatBudgetCat);
+            }
+
+            result.put("children", menu);
+            result.put("success", true);
+        }
+
+
+        return menu;
     }
 }
 
