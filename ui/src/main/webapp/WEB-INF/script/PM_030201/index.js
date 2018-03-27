@@ -1380,11 +1380,12 @@ function OnButtonEditClicked() {
     } else {
 
         if (records[0].get('V_STATE') == 10 || records[0].get('V_STATE') == 100) {
-            var V_V_GUID = Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_GUID;
+             V_V_GUID = Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_GUID;
             var owidth = 593;
             var oheight = 496;
             UPDATE = 'update';
             var YEAR =  Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_YEAR;
+
             var yearStore = Ext.create("Ext.data.Store", {
                 storeId: 'yearStore',
                 fields: ['displayField', 'valueField'],
@@ -1416,6 +1417,7 @@ function OnButtonEditClicked() {
                     }
                 }
             });
+
             var gridStore1 = Ext.create('Ext.data.Store', {
                 id: 'gridStore1',
                 pageSize: 15,
@@ -1464,6 +1466,7 @@ function OnButtonEditClicked() {
                     }
                 })
             });
+
             var sbmcStore1 = Ext.create('Ext.data.Store', {
                 autoLoad: false,
                 storeId: 'sbmcStore1',
@@ -1486,6 +1489,7 @@ function OnButtonEditClicked() {
                     }
                 }
             });
+
             var ckStore1 = Ext.create('Ext.data.Store', {
                 autoLoad: true,
                 storeId: 'ckStore1',
@@ -2414,28 +2418,28 @@ function _zyq_sbmc() {
     sbmcStore1.load();
 
     if (UPDATE == 'update' && UPDATELOAD) {
-        var gridStore1 = Ext.data.StoreManager.lookup('gridStore1');
-        gridStore1.proxy.extraParams = {
+        var gridStore = Ext.data.StoreManager.lookup('gridStore');
+        gridStore.proxy.extraParams = {
             V_V_GUID: V_V_GUID
         };
         //matGroupSecondStore.currentPage = 1;
-        gridStore1.load();
+        gridStore.load();
 
 
-        Ext.getCmp('ck1').setValue(gridStore1.getAt(0).get('V_ORGCODE'));
-        Ext.getCmp('zyq1').setValue(gridStore1.getAt(0).get('V_DEPTCODE'));
-        Ext.getCmp('zy1').setValue(gridStore1.getAt(0).get('V_REPAIRMAJOR_CODE'));
-        Ext.getCmp('sblx1').setValue(gridStore1.getAt(0).get('V_EQUTYPECODE'));
-        Ext.getCmp('sbmc1').setValue(gridStore1.getAt(0).get('V_EQUCODE'));
-        Ext.getCmp('jxnr1').setValue(gridStore1.getAt(0).get('V_CONTENT'));
-        Ext.getCmp('jhtgsj').setValue(gridStore1.getAt(0).get('V_STARTTIME').substring(0, 10));
-        Ext.getCmp('tghour').setValue(gridStore1.getAt(0).get('V_STARTTIME').substring(11, 13));
-        Ext.getCmp('tgminute').setValue(gridStore1.getAt(0).get('V_STARTTIME').substring(14, 16));
-        Ext.getCmp('jhjgsj').setValue(gridStore1.getAt(0).get('V_ENDTIME').substring(0, 10));
-        Ext.getCmp('jghour').setValue(gridStore1.getAt(0).get('V_ENDTIME').substring(11, 13));
-        Ext.getCmp('jgminute').setValue(gridStore1.getAt(0).get('V_ENDTIME').substring(14, 16));
-        Ext.getCmp('jhgshj').setValue(gridStore1.getAt(0).get('V_HOUR'));
-        Ext.getCmp('bz').setValue(gridStore1.getAt(0).get('V_BZ'));
+        Ext.getCmp('ck1').setValue(gridStore.getAt(0).get('V_ORGCODE'));
+        Ext.getCmp('zyq1').setValue(gridStore.getAt(0).get('V_DEPTCODE'));
+        Ext.getCmp('zy1').setValue(gridStore.getAt(0).get('V_REPAIRMAJOR_CODE'));
+        Ext.getCmp('sblx1').setValue(gridStore.getAt(0).get('V_EQUTYPECODE'));
+        Ext.getCmp('sbmc1').setValue(gridStore.getAt(0).get('V_EQUCODE'));
+        Ext.getCmp('jxnr1').setValue(gridStore.getAt(0).get('V_CONTENT'));
+        Ext.getCmp('jhtgsj').setValue(gridStore.getAt(0).get('V_STARTTIME').substring(0, 10));
+        Ext.getCmp('tghour').setValue(gridStore.getAt(0).get('V_STARTTIME').substring(11, 13));
+        Ext.getCmp('tgminute').setValue(gridStore.getAt(0).get('V_STARTTIME').substring(14, 16));
+        Ext.getCmp('jhjgsj').setValue(gridStore.getAt(0).get('V_ENDTIME').substring(0, 10));
+        Ext.getCmp('jghour').setValue(gridStore.getAt(0).get('V_ENDTIME').substring(11, 13));
+        Ext.getCmp('jgminute').setValue(gridStore.getAt(0).get('V_ENDTIME').substring(14, 16));
+        Ext.getCmp('jhgshj').setValue(gridStore.getAt(0).get('V_HOUR'));
+        Ext.getCmp('bz').setValue(gridStore.getAt(0).get('V_BZ'));
         UPDATELOAD = false;
 
     }
