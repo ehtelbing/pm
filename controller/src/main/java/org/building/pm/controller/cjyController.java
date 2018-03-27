@@ -2212,6 +2212,71 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/batchDisAgreeForWeek", method = RequestMethod.POST)
+    @ResponseBody
+    public Map batchDisAgreeForWeek(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                    @RequestParam(value = "V_ORDERGUID") String V_ORDERGUID,
+                                    @RequestParam(value = "ProcessInstanceId") String ProcessInstanceId,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = new HashMap();
+        Map stateresult = new HashMap();
+        Map stepresult = new HashMap();
+        HashMap perresult = new HashMap();
+        Map spperresult = new HashMap();
+        Map complresult = new HashMap();
+        Map flowresult = new HashMap();
+        ActivitiController ActivitiController = new ActivitiController();
+
+        String taskid ="";
+        String V_STEPCODE ="";
+        try {
+            stateresult = activitiController.InstanceState(ProcessInstanceId);
+            List<Map<String, Object>> Assigneelist = (List) stateresult.get("list");
+            String Assignee = Assigneelist.get(0).get("Assignee").toString();
+            if (Assignee.equals("")) {
+                result.put("ret", "发起人信息错误，无法驳回");
+            } else {
+                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID, V_V_PERSONCODE);
+                taskid = stepresult.get("taskId").toString();
+                V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+            }
+
+            perresult = cjyService.PRO_PM_03_PLAN_WEEK_GET(V_ORDERGUID);
+            List<Map<String, Object>> perlist = (List) perresult.get("list");
+            String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+            String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+            String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+
+
+            String processKey = "";
+
+
+            spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+            List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+
+            processKey = spperresult.get("RET").toString();
+
+            String[] parName = new String[]{"fqrxg", "flow_yj"};
+            String[] parVal = new String[]{Assignee, "批量审批驳回"};
+
+            complresult = activitiController.TaskComplete(taskid, "不通过", parName, parVal, processKey, V_ORDERGUID, "fqrxg", "发起人修改", "不通过", Assignee, V_V_PERSONCODE);
+            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID, "WeekPlan", processKey, V_STEPCODE, "fqrxg");
+                if (flowresult.get("V_INFO").toString().equals("success")) {
+                    result.put("ret", "success");
+                    result.put("Assignee", Assignee);
+                }
+            } else {
+                result.put("ret", "任务提交失败");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("ret", "任务提交失败");
+        }
+        return result;
+    }
 }
 
 
