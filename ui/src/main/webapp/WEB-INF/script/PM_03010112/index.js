@@ -245,31 +245,6 @@ Ext.onReady(function () {
             }
         }
     });
-
-    var jxdwStore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
-        storeId: 'jxdwStore',
-        fields: ['V_DEPTREPAIRCODE', 'V_DEPTREPAIRNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'basic/PRO_PM_REPAIRDEPT_VIEW',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }),
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('jxdw').select(store.first());
-            }
-        }
-    });
-
-
     var zyqStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'zyqStore',
@@ -292,35 +267,6 @@ Ext.onReady(function () {
             }
         }
     });
-
-
-    var jxdwstore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'jxdwstore',
-        fields: ['V_DEPTREPAIRCODE', 'V_DEPTREPAIRNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_22/PM_REPAIRDEPT_SEL',
-            // url: 'PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                /* V_V_DEPTCODE : Ext.getCmp('zyq').getValue()*/
-            }
-        }),
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('jxdw').select(store.first());
-            }
-        }
-    });
-
 
     var monthStore = Ext.create("Ext.data.Store", {
         storeId: 'monthStore',
@@ -1016,60 +962,60 @@ function _save() {
 
     })
 }
-function getReturnJHXZ(retdata,type){
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID: retdata,
-            V_V_PLANTYPE:type
-        },
-        success: function (ret) {
-            var resp = Ext.decode(ret.responseText);
-            if(resp.list.length>0){
-                var V_ORGCODE=resp.list[0].V_ORGCODE;
-                var V_DEPTCODE=resp.list[0].V_DEPTCODE;
-                var V_EQUTYPE=resp.list[0].V_EQUTYPECODE;
-                var V_EQUCODE=resp.list[0].V_EQUCODE;
-                var V_REPAIRMAJOR_CODE=resp.list[0].V_REPAIRMAJOR_CODE;
-                var V_HOUR=resp.list[0].V_HOUR;
-                var V_CONTENT=resp.list[0].V_CONTENT;
-                var V_BZ=resp.list[0].V_BZ;
-
-                var V_STARTTIME=resp.list[0].V_STARTTIME;     //开始时间
-                var V_STARTTIME_DATE=V_STARTTIME.split(" ")[0];
-                var V_STARTTIME_HOUR=V_STARTTIME.split(" ")[1].split(":")[0];
-                var V_STARTTIME_MINUTE=V_STARTTIME.split(" ")[1].split(":")[1];
-                var V_ENDTIME=resp.list[0].V_ENDTIME;         //结束时间
-                var V_ENDTIME_DATE=V_ENDTIME.split(" ")[0];
-                var V_ENDTIME_HOUR=V_ENDTIME.split(" ")[1].split(":")[0];
-                var V_ENDTIME_MINUTE=V_ENDTIME.split(" ")[1].split(":")[1];
-                V_PLANCODE=resp.list[0].V_PLANCODE;
-                V_PLANTYPE=resp.list[0].V_PLANTYPE;
-
-                Ext.getCmp('ck').select(V_ORGCODE);
-                Ext.getCmp('zyq').select(V_DEPTCODE);
-                Ext.getCmp("zy").select(V_REPAIRMAJOR_CODE);
-                Ext.getCmp("sblx").select(V_EQUTYPE);
-                Ext.getCmp("sbmc").select(V_EQUCODE);
-                Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
-                Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
-                //Ext.getCmp('bz').setValue(V_BZ);  //备注
-
-
-                Ext.getCmp('jhtgsj').setValue(V_STARTTIME_DATE);  //停工时间
-                Ext.getCmp('tghour').select(V_STARTTIME_HOUR);  //停工时间小时
-                Ext.getCmp('tgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
-                Ext.getCmp('jhjgsj').setValue(V_ENDTIME_DATE);  //竣工时间
-                Ext.getCmp('jghour').select(V_ENDTIME_HOUR);  //竣工时间小时
-                Ext.getCmp('jgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
-
-            }
-
-        }
-    });
-}
+// function getReturnJHXZ(retdata,type){
+//     Ext.Ajax.request({
+//         url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
+//         method: 'POST',
+//         async: false,
+//         params: {
+//             V_V_GUID: retdata,
+//             V_V_PLANTYPE:type
+//         },
+//         success: function (ret) {
+//             var resp = Ext.decode(ret.responseText);
+//             if(resp.list.length>0){
+//                 var V_ORGCODE=resp.list[0].V_ORGCODE;
+//                 var V_DEPTCODE=resp.list[0].V_DEPTCODE;
+//                 var V_EQUTYPE=resp.list[0].V_EQUTYPECODE;
+//                 var V_EQUCODE=resp.list[0].V_EQUCODE;
+//                 var V_REPAIRMAJOR_CODE=resp.list[0].V_REPAIRMAJOR_CODE;
+//                 var V_HOUR=resp.list[0].V_HOUR;
+//                 var V_CONTENT=resp.list[0].V_CONTENT;
+//                 var V_BZ=resp.list[0].V_BZ;
+//
+//                 var V_STARTTIME=resp.list[0].V_STARTTIME;     //开始时间
+//                 var V_STARTTIME_DATE=V_STARTTIME.split(" ")[0];
+//                 var V_STARTTIME_HOUR=V_STARTTIME.split(" ")[1].split(":")[0];
+//                 var V_STARTTIME_MINUTE=V_STARTTIME.split(" ")[1].split(":")[1];
+//                 var V_ENDTIME=resp.list[0].V_ENDTIME;         //结束时间
+//                 var V_ENDTIME_DATE=V_ENDTIME.split(" ")[0];
+//                 var V_ENDTIME_HOUR=V_ENDTIME.split(" ")[1].split(":")[0];
+//                 var V_ENDTIME_MINUTE=V_ENDTIME.split(" ")[1].split(":")[1];
+//                 V_PLANCODE=resp.list[0].V_PLANCODE;
+//                 V_PLANTYPE=resp.list[0].V_PLANTYPE;
+//
+//                 Ext.getCmp('ck').select(V_ORGCODE);
+//                 Ext.getCmp('zyq').select(V_DEPTCODE);
+//                 Ext.getCmp("zy").select(V_REPAIRMAJOR_CODE);
+//                 Ext.getCmp("sblx").select(V_EQUTYPE);
+//                 Ext.getCmp("sbmc").select(V_EQUCODE);
+//                 Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+//                 Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
+//                 //Ext.getCmp('bz').setValue(V_BZ);  //备注
+//
+//
+//                 Ext.getCmp('jhtgsj').setValue(V_STARTTIME_DATE);  //停工时间
+//                 Ext.getCmp('tghour').select(V_STARTTIME_HOUR);  //停工时间小时
+//                 Ext.getCmp('tgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
+//                 Ext.getCmp('jhjgsj').setValue(V_ENDTIME_DATE);  //竣工时间
+//                 Ext.getCmp('jghour').select(V_ENDTIME_HOUR);  //竣工时间小时
+//                 Ext.getCmp('jgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+//
+//             }
+//
+//         }
+//     });
+// }
 function jhSelect(){
    // var owidth = window.document.body.offsetWidth - 200;
    // var oheight = window.document.body.offsetHeight - 100;
