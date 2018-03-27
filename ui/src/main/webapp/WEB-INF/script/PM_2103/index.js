@@ -36,7 +36,7 @@ Ext.onReady(function () {
                 { xtype: 'hidden',id: 'tabid'},
                 {xtype: 'button',text: '查询', width : 70,icon: imgpath + '/search.png',handler:QueryGrid},
                 {xtype: 'button',text: '批量通过',width : 100,id:'agr',icon: imgpath + '/saved.png',handler:AgreeData},
-                {xtype: 'button',text: '批量驳回',width : 100,id:'dagr', icon: imgpath + '/cross.png' }
+                {xtype: 'button',text: '批量驳回',width : 100,id:'dagr', icon: imgpath + '/cross.png',handler:DisAgreeData }
                  ]
     });
 
@@ -287,6 +287,60 @@ function AgreeData(){
                 var data = Ext.decode(response.responseText);
             }
         });*/
+    }else{
+        alert("请选择审批数据！");
+        return ;
+    }
+
+}
+/*
+ * 批量驳回
+ * */
+function DisAgreeData(){
+    var BusinessKeysData=[];
+    var record=Ext.getCmp('grid').getSelectionModel().getSelection();
+    var num=0;
+    if(record.length>0){
+        for(var i=0;i<record.length;i++){
+            //BusinessKeysData.push(record[i].data.BusinessKey);
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchDisAgreeForWeek',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID:record[i].data.BusinessKey,
+                    ProcessInstanceId:record[i].data.ProcessInstanceId
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    if(data.ret=="success"){
+                        num++;
+                    }
+                }
+            });
+        }
+        if(num==record.length){
+            alert("批量驳回成功");
+            QueryGrid();
+        }else{
+            alert("批量驳回成功"+num+"条，失败"+(record.length-num)+"条");
+        }
+        /*Ext.Ajax.request({
+         url: AppUrl + 'Activiti/TaskCompleteList',
+         type: 'ajax',
+         method: 'POST',
+         params: {
+         V_IDEA: "通过",
+         V_INPER:Ext.util.Cookies.get('v_personcode'),
+         FlowType: Ext.getCmp('tabid').getValue(),
+         BusinessKeys:BusinessKeysData
+         },
+         success: function (response) {
+         var data = Ext.decode(response.responseText);
+         }
+         });*/
     }else{
         alert("请选择审批数据！");
         return ;
