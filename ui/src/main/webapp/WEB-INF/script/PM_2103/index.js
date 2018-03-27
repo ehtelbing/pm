@@ -117,6 +117,7 @@ Ext.onReady(function () {
             tabchange: function () {
                 Ext.ComponentManager.get("tabid").setValue(Ext.getCmp('tabpanel').getActiveTab().id);
                 QueryGrid();
+                _init();
             }
         }
     });
@@ -139,8 +140,18 @@ Ext.onReady(function () {
 
     QueryTab();
     QuerySum();
+    _init();
 });
+function _init(){
+    if(Ext.getCmp('tabid').getValue()=='WORK'){
+        Ext.getCmp("agr").hide();
+        Ext.getCmp("dagr").hide();
+    }else{
+        Ext.getCmp("agr").show();
+        Ext.getCmp("dagr").show();
+    }
 
+}
 function QueryTab(){
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
@@ -247,6 +258,7 @@ function AgreeData(){
     if (Ext.getCmp('tabid').getValue() == 'WeekPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
+        var fnum=0;
         if (record.length > 0) {
             for (var i = 0; i < record.length; i++) {
                 //BusinessKeysData.push(record[i].data.BusinessKey);
@@ -264,15 +276,17 @@ function AgreeData(){
                         var data = Ext.decode(response.responseText);
                         if (data.ret == "success") {
                             num++;
+                        }else if(data.ret == "fqr"){
+                            fnum++;
                         }
                     }
                 });
             }
-            if (num == record.length) {
-                alert("周计划批量审批成功");
+            if ((num+fnum) == record.length) {
+                alert("周计划批量审批成功"+ num + "条,无法批量审批"+fnum+"条");
                 QueryGrid();
             } else {
-                alert("周计划批量审批成功" + num + "条，失败" + (record.length - num) + "条");
+                alert("周计划批量审批成功" + num + "条,失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
             }
             /*Ext.Ajax.request({
              url: AppUrl + 'Activiti/TaskCompleteList',
@@ -295,6 +309,7 @@ function AgreeData(){
     } else if (Ext.getCmp('tabid').getValue() == 'MonthPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
+        var fnum=0;
         if (record.length > 0) {
             for (var i = 0; i < record.length; i++) {
                 //BusinessKeysData.push(record[i].data.BusinessKey);
@@ -312,15 +327,17 @@ function AgreeData(){
                         var data = Ext.decode(response.responseText);
                         if (data.ret == "success") {
                             num++;
+                        }else if(data.ret == "fqr"){
+                            fnum++;
                         }
                     }
                 });
             }
-            if (num == record.length) {
-                alert("月计划批量审批成功");
+            if ((num+fnum) == record.length) {
+                alert("月计划批量审批成功"+ num + "条,无法批量审批"+fnum+"条");
                 QueryGrid();
             } else {
-                alert("月计划批量审批成功" + num + "条，失败" + (record.length - num) + "条");
+                alert("月计划批量审批成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
             }
         } else {
             alert("请选择审批数据！");
@@ -338,6 +355,7 @@ function DisAgreeData(){
     if(Ext.getCmp('tabid').getValue()=='WeekPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
+        var fnum=0;
         if (record.length > 0) {
             for (var i = 0; i < record.length; i++) {
                 //BusinessKeysData.push(record[i].data.BusinessKey);
@@ -356,15 +374,17 @@ function DisAgreeData(){
                         var data = Ext.decode(response.responseText);
                         if (data.ret == "success") {
                             num++;
+                        }else if(data.ret == "fqr"){
+                            fnum++;
                         }
                     }
                 });
             }
-            if (num == record.length) {
-                alert("周计划批量驳回成功");
+            if ((num+fnum) == record.length) {
+                alert("周计划批量驳回成功"+ num + "条,无法批量审批"+fnum+"条");
                 QueryGrid();
             } else {
-                alert("周计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条");
+                alert("周计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
             }
             /*Ext.Ajax.request({
              url: AppUrl + 'Activiti/TaskCompleteList',
@@ -387,6 +407,7 @@ function DisAgreeData(){
     }else if (Ext.getCmp('tabid').getValue() == 'MonthPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
+        var fnum=0;
         if (record.length > 0) {
             for (var i = 0; i < record.length; i++) {
                 //BusinessKeysData.push(record[i].data.BusinessKey);
@@ -405,15 +426,17 @@ function DisAgreeData(){
                         var data = Ext.decode(response.responseText);
                         if (data.ret == "success") {
                             num++;
+                        }else if(data.ret == "fqr"){
+                            fnum++;
                         }
                     }
                 });
             }
-            if (num == record.length) {
-                alert("月计划批量驳回成功");
+            if ((num+fnum) == record.length) {
+                alert("月计划批量驳回成功"+ num + "条,无法批量审批"+fnum+"条");
                 QueryGrid();
             } else {
-                alert("月计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条");
+                alert("月计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
             }
         } else {
             alert("请选择审批数据！");
