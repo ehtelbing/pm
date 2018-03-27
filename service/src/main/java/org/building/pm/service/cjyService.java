@@ -4189,5 +4189,96 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PRO_PM_03_PLAN_WEEK_GET(String V_V_WEEKPLAN_GUID) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_WEEK_GET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_GET" + "(:V_V_WEEKPLAN_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_WEEKPLAN_GUID", V_V_WEEKPLAN_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_GET");
+        return result;
+    }
+
+    public HashMap PM_ACTIVITI_PROCESS_PER_SEL(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRCODE,String V_V_FLOWTYPE,String V_V_FLOW_STEP,String V_V_PERCODE,String V_V_SPECIALTY,String V_V_WHERE) throws SQLException {
+
+        logger.info("begin PM_ACTIVITI_PROCESS_PER_SEL");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_ACTIVITI_PROCESS_PER_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_REPAIRCODE,:V_V_FLOWTYPE,:V_V_FLOW_STEP,:V_V_PERCODE,:V_V_SPECIALTY,:V_V_PROCESS_CODE,:V_V_WHERE,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_REPAIRCODE", V_V_REPAIRCODE);
+            cstmt.setString("V_V_FLOWTYPE", V_V_FLOWTYPE);
+            cstmt.setString("V_V_FLOW_STEP", V_V_FLOW_STEP);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_SPECIALTY", V_V_SPECIALTY);
+            cstmt.setString("V_V_WHERE", V_V_WHERE);
+            cstmt.registerOutParameter("V_V_PROCESS_CODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("V_V_PROCESS_CODE"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_ACTIVITI_PROCESS_PER_SEL");
+        return result;
+    }
+
+    public HashMap PRO_ACTIVITI_FLOW_AGREE(String V_V_ORDERID,String V_V_PROCESS_NAMESPACE,String V_V_PROCESS_CODE,String V_V_STEPCODE,String V_V_STEPNEXT_CODE) throws SQLException {
+        logger.info("begin PRO_WO_FLOW_AGREE");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_ACTIVITI_FLOW_AGREE" + "(:V_V_ORDERID,:V_V_PROCESS_NAMESPACE,:V_V_PROCESS_CODE,:V_V_STEPCODE,:V_V_STEPNEXT_CODE,:V_INFO)}");
+            cstmt.setString("V_V_ORDERID", V_V_ORDERID);
+            cstmt.setString("V_V_PROCESS_NAMESPACE", V_V_PROCESS_NAMESPACE);
+            cstmt.setString("V_V_PROCESS_CODE", V_V_PROCESS_CODE);
+            cstmt.setString("V_V_STEPCODE", V_V_STEPCODE);
+            cstmt.setString("V_V_STEPNEXT_CODE", V_V_STEPNEXT_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_ACTIVITI_FLOW_AGREE");
+        return result;
+    }
+
 
 }

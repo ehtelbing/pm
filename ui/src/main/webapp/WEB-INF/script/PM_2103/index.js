@@ -245,11 +245,35 @@ function _dealWith(ProcessDefinitionKey,TaskDefinitionKey,BusinessKey,ProcessIns
 function AgreeData(){
     var BusinessKeysData=[];
     var record=Ext.getCmp('grid').getSelectionModel().getSelection();
+    var num=0;
     if(record.length>0){
         for(var i=0;i<record.length;i++){
-            BusinessKeysData.push(record[i].data.BusinessKey);
+            //BusinessKeysData.push(record[i].data.BusinessKey);
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchAgreeForWeek',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID:record[i].data.BusinessKey,
+                    ProcessDefinitionKey:record[i].data.ProcessDefinitionKey
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    if(data.ret=="success"){
+                        num++;
+                    }
+                }
+            });
         }
-        Ext.Ajax.request({
+        if(num==record.length){
+            alert("批量审批成功");
+            QueryGrid();
+        }else{
+            alert("批量审批成功"+num+"条，失败"+(record.length-num)+"条");
+        }
+        /*Ext.Ajax.request({
             url: AppUrl + 'Activiti/TaskCompleteList',
             type: 'ajax',
             method: 'POST',
@@ -262,7 +286,7 @@ function AgreeData(){
             success: function (response) {
                 var data = Ext.decode(response.responseText);
             }
-        });
+        });*/
     }else{
         alert("请选择审批数据！");
         return ;
