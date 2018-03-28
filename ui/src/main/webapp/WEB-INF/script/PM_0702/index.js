@@ -338,13 +338,13 @@ function _selectOverhaulApply() {
 }
 
 
-
+var GUID;
 function OnBtnSxQx() {
     var length = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection().length;
     if (length != 1) {
         alert('请选择一条数据进行修改');
     } else {
-        var GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
+         GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
         var owidth = window.document.body.offsetWidth - 700;
         var oheight = window.document.body.offsetHeight - 500;
         Ext.getCmp('windowEqu').show();
@@ -363,265 +363,136 @@ var windowEqu = Ext.create('Ext.window.Window', {
     closable: true,
     region:'center',
     layout : 'vbox',
-    items : [
-        {
-            xtype : 'panel',
-
-            layout : 'hbox',
-            margin : '15px 15px 0px 15px',
-            items : [{
+    items:[{region:'center',
+        layout : 'vbox',
+        height : 440,
+        border:false,
+        baseCls: 'my-panel-no-border',
+        frame:true,
+        defaults: {labelAlign: 'right'},
+        items : [
+            {
                 xtype : 'panel',
-                width : 120,
-                height : 30,
-
-                layout : 'fit',
-                baseCls : 'border_top_left',
-                items : [{
-                    xtype : 'label',
-                    text : '缺陷来源：'
-                }]
+                border : false,
+                layout : 'hbox',
+                margin : '15px 15px 0px 15px',
+                items : [
+                    {xtype: 'textfield',
+                        id: 'qxly',
+                        fieldLabel: '缺陷来源',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    },{xtype: 'textfield',
+                        id: 'qxrq',
+                        fieldLabel: '缺陷日期',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    }]
             }, {
                 xtype : 'panel',
-                width : 300,
-                height : 30,
-                layout : 'fit',
-                baseCls : 'border_top2',
-
-                items : [{
-                    xtype : 'label',
-                    id : 'qxly'
-                }]
+                border : false,
+                layout : 'hbox',
+                margin : '0px 15px 0px 15px',
+                items : [
+                    {xtype: 'textfield',
+                        id: 'fzr',
+                        fieldLabel: '负责人',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    },
+                    {xtype: 'textfield',
+                        id: 'dw',
+                        fieldLabel: '单位',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    }]
             }, {
                 xtype : 'panel',
-                width : 120,
-                height : 30,
-                layout : 'fit',
-
-                baseCls : 'border_top3',
-                items : [{
-                    xtype : 'label',
-                    text : '缺陷日期：'
-                }]
+                border : false,
+                layout : 'hbox',
+                margin : '0px 0px 0px 15px',
+                items : [
+                    {xtype: 'textareafield',
+                        id: 'qxmx',
+                        fieldLabel: '缺陷明细',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 600
+                    }]
             }, {
                 xtype : 'panel',
-
-                baseCls : 'border_top4',
-                width : 300,
-                height : 30,
-                layout : 'fit',
+                border : false,
+                layout : 'hbox',
+                margin : '0px 0px 0px 15px',
+                items : [
+                    {xtype: 'textfield',
+                        id: 'sb',
+                        fieldLabel: '设备',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    },
+                    {xtype: 'textfield',
+                        id: 'sbwz',
+                        fieldLabel: '设备位置',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    }]
+            }, {
+                xtype : 'panel',
+                border : false,
+                layout : 'hbox',
+                margin : '0px 0px 0px 15px',
+                items : [
+                    {xtype: 'textfield',
+                        id: 'clyj',
+                        fieldLabel: '处理意见',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    },{xtype: 'textfield',
+                        id: 'qxzt1',
+                        fieldLabel: '缺陷状态',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 230
+                    }]
+            }, {
+                xtype : 'panel',
+                border : false,
+                layout : 'hbox',
+                margin : '0px 0px 0px 15px',
                 items : [{
-                    id : 'qxrq',
-                    xtype : 'label'
+                    xtype : 'panel',
+                    width : 120,
+                    height : 120,
+                    border : false,
+                    baseCls : 'border_top5',
+                    layout : 'fit',
+                    items : [{
+                        xtype : 'label',
+                        text : '消缺原因：'
+                    },{xtype:'label',text:'*',style:'color:red'}]
+                }, {
+                    xtype : 'panel',
+                    width : 720,
+                    height : 120,
+                    border : false,
+                    baseCls : 'border_top6',
+                    items : [{
+                        xtype : 'textareafield',
+                        height : 110,
+                        width : 600,
+                        id : 'xqyy'
+                    }]
                 }]
             }]
-        }, {
-            xtype : 'panel',
-
-            layout : 'hbox',
-            margin : '0px 15px 0px 15px',
-            items : [{
-                xtype : 'panel',
-                width : 120,
-                height : 30,
-                baseCls : 'border_top5',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    text : '负责人：'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 300,
-                height : 30,
-                baseCls : 'border_top6',
-
-                layout : 'fit',
-                items : [{
-                    id : 'fzr',
-                    xtype : 'label'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 120,
-                height : 30,
-                layout : 'fit',
-                baseCls : 'border_top7',
-
-                items : [{
-                    xtype : 'label',
-                    text : '单位：'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 300,
-                height : 30,
-                baseCls : 'border_top8',
-
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    id : 'dw'
-                }]
-            }]
-        }, {
-            xtype : 'panel',
-
-            layout : 'hbox',
-            margin : '0px 0px 0px 15px',
-            items : [{
-                xtype : 'panel',
-                width : 120,
-                height : 120,
-                border : false,
-                baseCls : 'border_top5',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    text : '缺陷明细：'
-                }]
-            }, {
-                xtype : 'panel',
-                border : false,
-                baseCls : 'border_top6',
-                width : 720,
-                height : 120,
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    height : 110,
-                    width : 680,
-                    id : 'qxmx'
-                }]
-            }]
-        }, {
-            xtype : 'panel',
-
-            layout : 'hbox',
-            margin : '0px 0px 0px 15px',
-            items : [{
-                xtype : 'panel',
-                width : 120,
-                height : 30,
-                border : false,
-                baseCls : 'border_top5',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    text : '设备：'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 300,
-                height : 30,
-                border : false,
-                baseCls : 'border_top6',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    id : 'sb'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 120,
-                height : 30,
-                border : false,
-                baseCls : 'border_top7',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    text : '设备位置：'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 300,
-                height : 30,
-                border : false,
-                baseCls : 'border_top8',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    id : 'sbwz'
-                }]
-            }]
-        }, {
-            xtype : 'panel',
-
-            layout : 'hbox',
-            margin : '0px 0px 0px 15px',
-            items : [{
-                xtype : 'panel',
-                width : 120,
-                height : 30,
-                border : false,
-                baseCls : 'border_top5',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    text : '处理意见：'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 300,
-                height : 30,
-                border : false,
-                baseCls : 'border_top6',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    id : 'clyj'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 120,
-                height : 30,
-
-                baseCls : 'border_top7',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    text : '缺陷状态：'
-                }]
-            }, {
-                xtype : 'panel',
-                width : 300,
-                height : 30,
-                border : false,
-                baseCls : 'border_top8',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    id : 'qxzt1'
-                }]
-            }]
-        }, {
-            xtype : 'panel',
-            layout : 'hbox',
-            margin : '0px 0px 0px 15px',
-            items : [{
-                xtype : 'panel',
-                width : 120,
-                height : 120,
-                border : false,
-                baseCls : 'border_top5',
-                layout : 'fit',
-                items : [{
-                    xtype : 'label',
-                    text : '消缺原因：'
-                },{xtype:'label',text:'*',style:'color:red'}]
-            }, {
-                xtype : 'panel',
-                width : 720,
-                height : 120,
-                border : false,
-                baseCls : 'border_top6',
-                items : [{
-                    xtype : 'textareafield',
-                    height : 110,
-                    width : 680,
-                    id : 'xqyy'
-                }]
-            }]
-        }],
+    }],
     buttons : [
         {
             text : '确定',
@@ -639,7 +510,7 @@ var windowEqu = Ext.create('Ext.window.Window', {
 });
 
 function OnSaveButtonClicked() {
-    var id = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
+    var id = GUID;
     if (Ext.ComponentManager.get("xqyy").getValue() != '') {
         Ext.Ajax.request({
             url : AppUrl + 'qx/PRO_PM_07_DEFECT_SET_XQ',
@@ -672,16 +543,15 @@ function OnSaveButtonClicked() {
 function OnBackButtonClicked() {
     window.close();
 }
-function bind(GUID) {
-    if (location.href.split('?')[1] != undefined) {
-        var id = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
-    }
-    if (GUID != "") {
+function bind() {
+    var id = GUID;
+    if (id != "") {
         Ext.Ajax.request({
             url : AppUrl + 'qx/PRO_PM_07_DEFECT_GET',
+            // url: '/NO210201/PRO_PM_DEFECT_GET',
             method : 'POST',
             params : {
-                V_V_GUID: GUID
+                V_V_GUID: id
             },
             success : function(ret) {
                 var resp = Ext.JSON.decode(ret.responseText);
@@ -689,23 +559,23 @@ function bind(GUID) {
                 resp = resp.list;
 
                 Ext.ComponentManager.get("qxly")
-                    .setText(resp[0].V_SOURCENAME);// 缺陷来源
+                    .setValue(resp[0].V_SOURCENAME);// 缺陷来源
                 Ext.ComponentManager.get("qxrq")
-                    .setText(resp[0].D_DEFECTDATE);// 缺陷日期
+                    .setValue(resp[0].D_DEFECTDATE);// 缺陷日期
                 Ext.ComponentManager.get("fzr")
-                    .setText(resp[0].V_PERNAME);// 负责人
+                    .setValue(resp[0].V_PERNAME);// 负责人
                 Ext.ComponentManager.get("qxmx")
-                    .setText(resp[0].V_DEFECTLIST);// 缺陷明细
+                    .setValue(resp[0].V_DEFECTLIST);// 缺陷明细
                 Ext.ComponentManager.get("dw")
-                    .setText(resp[0].V_DEPTNAME);// 单位
+                    .setValue(resp[0].V_DEPTNAME);// 单位
                 Ext.ComponentManager.get("sb")
-                    .setText(resp[0].V_EQUNAME);// 设备
+                    .setValue(resp[0].V_EQUNAME);// 设备
                 Ext.ComponentManager.get("sbwz")
-                    .setText(resp[0].V_EQUSITE);// 设备位置
+                    .setValue(resp[0].V_EQUSITE);// 设备位置
                 Ext.ComponentManager.get("clyj")
-                    .setText(resp[0].V_IDEA);// 处理意见
+                    .setValue(resp[0].V_IDEA);// 处理意见
                 Ext.ComponentManager.get("qxzt1")
-                    .setText(resp[0].V_STATENAME);// 缺陷状态
+                    .setValue(resp[0].V_STATENAME);// 缺陷状态
 
             }
         });
