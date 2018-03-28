@@ -290,7 +290,7 @@ function OnSetUpClicked(){
 	var owidth = window.document.body.offsetWidth - 200;
 	var oheight = window.document.body.offsetHeight - 100;
     V_YEAR = Ext.getCmp('year').getValue();
-    V_MONTH= Ext.getCmp('quarter').getValue()
+    V_MONTH= Ext.getCmp('quarter').getValue();
 	// var ret = window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR=' +Ext.getCmp('year').getValue()
 	// 	+'&V_MONTH='+Ext.getCmp('quarter').getValue()
 	// 	+'&V_WEEK=0'
@@ -299,7 +299,7 @@ function OnSetUpClicked(){
         id: 'windowEqu',
         width: 900,
         height: 500,
-        title : '手工消缺',
+        title : '设置',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,
         closeAction: 'hide',
