@@ -108,19 +108,31 @@
         Ext.getCmp("plantname").select(splantname.getAt(0));
     });
 
-
     Ext.getCmp("plantname").on("change", function () {
         Ext.getCmp('tree1').store.setProxy({
             type: 'ajax',
             actionMethods: {
                 read: 'POST'
             },
-            url: AppUrl+'pm_19/PRO_BASE_DEPT_VIEW_ROLE',
+            /*url: AppUrl+'pm_19/PRO_BASE_DEPT_VIEW_ROLE',
             extraParams: {
                 V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
                 V_V_DEPTCODE:Ext.ComponentManager.get("plantname").getValue(),
                 V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_orgCode'),
                 V_V_DEPTTYPE: '[主体作业区]'
+            }*/
+            url: AppUrl + 'tree/ModelTree',
+            extraParams: {
+                V_V_DEPTCODE: Ext.ComponentManager.get("plantname").getValue(),
+                V_V_DEPTNAME: Ext.ComponentManager.get("plantname").getRawValue(),
+                V_V_ID: "V_DEPTCODE",
+                V_V_TEXT: "V_DEPTNAME",
+                V_V_PARENTID: "-1",
+                V_V_LEAF: true,
+                V_V_CHECKED: "",
+                V_V_DEPTVAL: "",
+                V_V_CODEVAL: "",
+                V_V_PRONAME : "PRO_BASE_DEPT_TREE"
             }
         });
         Ext.getCmp('tree1').store.load();
