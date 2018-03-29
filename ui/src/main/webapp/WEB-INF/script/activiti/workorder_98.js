@@ -339,7 +339,7 @@ function loadPageInfo() {
         }
     });
     $.ajax({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_GET',
+        url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_GET',
         type: 'post',
         async: false,
         data: {
@@ -350,45 +350,45 @@ function loadPageInfo() {
         success: function (resp) {
 
             if (resp != "" && resp != null) {
-                V_DEPTCODE = resp[0].V_DEPTCODE
-                V_DEPTCODEREPARIR = resp[0].V_DEPTCODEREPARIR;
-                $("#V_ORGCODE").val(resp[0].V_ORGCODE);
-                $("#V_ORGNAME").html(resp[0].V_ORGNAME);
-                $("#V_DEPTCODE").val(resp[0].V_DEPTCODE);
-                $("#V_EQUIP_NAME").html(resp[0].V_EQUIP_NAME);
-                $("#V_EQUIP_NO").html(resp[0].V_EQUIP_NO);
-                $("#V_FUNC_LOC").html(resp[0].V_EQUSITENAME);
-                V_FUNC_LOC=resp[0].V_FUNC_LOC;
-                $("#V_ORDER_TYP").html(resp[0].V_ORDER_TYP);
-                $("#V_DEPTNAME").html(resp[0].V_DEPTNAME);
-                $("#V_ORDERGUID").val(resp[0].V_ORDERGUID);
-                $("#V_DEPTNAMEREPARIR").html(resp[0].V_DEPTNAMEREPARIR);
+                V_DEPTCODE = resp.list[0].V_DEPTCODE
+                V_DEPTCODEREPARIR = resp.list[0].V_DEPTCODEREPARIR;
+                $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
+                $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
+                $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
+                $("#V_EQUIP_NAME").html(resp.list[0].V_EQUIP_NAME);
+                $("#V_EQUIP_NO").html(resp.list[0].V_EQUIP_NO);
+                $("#V_FUNC_LOC").html(resp.list[0].V_EQUSITENAME);
+                V_FUNC_LOC=resp.list[0].V_FUNC_LOC;
+                $("#V_ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
+                $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
+                $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
+                $("#V_DEPTNAMEREPARIR").html(resp.list[0].V_DEPTNAMEREPARIR);
 
-                $("#V_ORDER_TYP_TXT").html(resp[0].V_ORDER_TYP_TXT);
+                $("#V_ORDER_TYP_TXT").html(resp.list[0].V_ORDER_TYP_TXT);
 
-                $("#D_START_DATE").html(resp[0].D_START_DATE);
-                $("#D_FINISH_DATE").html(resp[0].D_FINISH_DATE);
+                $("#D_START_DATE").html(resp.list[0].D_START_DATE);
+                $("#D_FINISH_DATE").html(resp.list[0].D_FINISH_DATE);
 
-                $("#wbsCode").html(resp[0].V_WBS);
-                $("#proName").html(resp[0].V_WBS_TXT);
+                $("#wbsCode").html(resp.list[0].V_WBS);
+                $("#proName").html(resp.list[0].V_WBS_TXT);
 
-                if (resp[0].D_FACT_START_DATE != "") {
-                    $("#D_FACT_START_DATE").val(resp[0].D_FACT_START_DATE);
+                if (resp.list[0].D_FACT_START_DATE != "") {
+                    $("#D_FACT_START_DATE").val(resp.list[0].D_FACT_START_DATE);
                 }
                 else {
-                    $("#D_FACT_START_DATE").val(resp[0].D_START_DATE);
+                    $("#D_FACT_START_DATE").val(resp.list[0].D_START_DATE);
                 }
-                if (resp[0].D_FACT_FINISH_DATE != "") {
-                    $("#D_FACT_FINISH_DATE").val(resp[0].D_FACT_FINISH_DATE);
+                if (resp.list[0].D_FACT_FINISH_DATE != "") {
+                    $("#D_FACT_FINISH_DATE").val(resp.list[0].D_FACT_FINISH_DATE);
                 } else {
-                    $("#D_FACT_FINISH_DATE").val(resp[0].D_FINISH_DATE);
+                    $("#D_FACT_FINISH_DATE").val(resp.list[0].D_FINISH_DATE);
                 }
-                $("#V_SHORT_TXT").html(resp[0].V_SHORT_TXT);
+                $("#V_SHORT_TXT").html(resp.list[0].V_SHORT_TXT);
 
-                $("#V_ENTERED_BY").html(resp[0].V_ENTERED_BY);
+                $("#V_ENTERED_BY").html(resp.list[0].V_ENTERED_BY);
                 var s1, st1;
-                if (resp[0].D_ENTER_DATE != '') {
-                    s1 = resp[0].D_ENTER_DATE;
+                if (resp.list[0].D_ENTER_DATE != '') {
+                    s1 = resp.list[0].D_ENTER_DATE;
                     st1 = [];
                     st1 = s1.split(' ');
                 } else {
@@ -397,38 +397,38 @@ function loadPageInfo() {
                     st1 = s1.split(' ');
                 }
                 $("#D_ENTER_DATE").html(st1[0]);
-                $("#V_WBS").html(resp[0].V_WBS);
-                $("#V_WBS_TXT").html(resp[0].V_WBS_TXT);
+                $("#V_WBS").html(resp.list[0].V_WBS);
+                $("#V_WBS_TXT").html(resp.list[0].V_WBS_TXT);
 
-                $("#V_ORDERID").html(resp[0].V_ORDERID);
-                $("#V_DEPTCODEREPARIR").val(resp[0].V_DEPTCODEREPARIR);
+                $("#V_ORDERID").html(resp.list[0].V_ORDERID);
+                $("#V_DEPTCODEREPARIR").val(resp.list[0].V_DEPTCODEREPARIR);
 
 
-                $("#tool").val(resp[0].V_TOOL);
-                $("#tech").html(resp[0].V_TECHNOLOGY);
-                $("#safe").html(resp[0].V_SAFE);
+                $("#tool").val(resp.list[0].V_TOOL);
+                $("#tech").html(resp.list[0].V_TECHNOLOGY);
+                $("#safe").html(resp.list[0].V_SAFE);
 
-                if (resp[0].D_DATE_ACP != "") {
-                    $("#D_DATE_ACP").html(resp[0].D_DATE_ACP);
+                if (resp.list[0].D_DATE_ACP != "") {
+                    $("#D_DATE_ACP").html(resp.list[0].D_DATE_ACP);
                 } else {
-                    $("#D_DATE_ACP").html(resp[0].D_FINISH_DATE);
+                    $("#D_DATE_ACP").html(resp.list[0].D_FINISH_DATE);
                 }
-                $("#V_POSTMANSIGN").html(resp[0].V_POSTMANSIGN);
-                $("#V_CHECKMANCONTENT").html(resp[0].V_CHECKMANCONTENT);
-                $("#V_CHECKMANSIGN").html(resp[0].V_CHECKMANSIGN);
-                $("#V_WORKSHOPCONTENT").html(resp[0].V_WORKSHOPCONTENT);
-                $("#V_WORKSHOPSIGN").html(resp[0].V_WORKSHOPSIGN);
-                $("#V_DEPTSIGN").html(resp[0].V_DEPTSIGN);
+                $("#V_POSTMANSIGN").html(resp.list[0].V_POSTMANSIGN);
+                $("#V_CHECKMANCONTENT").html(resp.list[0].V_CHECKMANCONTENT);
+                $("#V_CHECKMANSIGN").html(resp.list[0].V_CHECKMANSIGN);
+                $("#V_WORKSHOPCONTENT").html(resp.list[0].V_WORKSHOPCONTENT);
+                $("#V_WORKSHOPSIGN").html(resp.list[0].V_WORKSHOPSIGN);
+                $("#V_DEPTSIGN").html(resp.list[0].V_DEPTSIGN);
 
-                $("#I_OTHERHOUR").val(resp[0].I_OTHERHOUR);
-                $("#V_OTHERREASON").val(resp[0].V_OTHERREASON);
-                $("#V_REPAIRCONTENT").val(resp[0].V_REPAIRCONTENT);
+                $("#I_OTHERHOUR").val(resp.list[0].I_OTHERHOUR);
+                $("#V_OTHERREASON").val(resp.list[0].V_OTHERREASON);
+                $("#V_REPAIRCONTENT").val(resp.list[0].V_REPAIRCONTENT);
 
-                $("#V_REPAIRSIGN").val(resp[0].V_REPAIRSIGN);
-                $("#V_REPAIRPERSON").val(resp[0].V_REPAIRPERSON);
+                $("#V_REPAIRSIGN").val(resp.list[0].V_REPAIRSIGN);
+                $("#V_REPAIRPERSON").val(resp.list[0].V_REPAIRPERSON);
 
-                $("#wbsCode").html(resp[0].V_WBS);
-                $("#proName").html(resp[0].V_WBS_TXT);
+                $("#wbsCode").html(resp.list[0].V_WBS);
+                $("#proName").html(resp.list[0].V_WBS_TXT);
             } else {
             }
         }
