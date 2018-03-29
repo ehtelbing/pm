@@ -564,8 +564,8 @@ function ConfirmAccept() {
                     V_V_PERCODE: $.cookies.get('v_personcode'),
                     V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
                     V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                    V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val(),
-                    V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val(),
+                    V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val().split(".")[0],
+                    V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val().split(".")[0],
 
                     V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
                     V_V_OTHERREASON: $("#V_OTHERREASON").val(),
