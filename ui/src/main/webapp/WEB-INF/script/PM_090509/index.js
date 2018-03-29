@@ -197,7 +197,7 @@ $(function () {
 
     loadOrder();
 
-    loadTeam();
+    //loadTeam();
 
     loadTaskGrid();
 
@@ -261,7 +261,7 @@ function loadOrder(){
 
                // V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
-                loadTeam(resp.list[0].V_WXTEAM);
+                //loadTeam(resp.list[0].V_WXTEAM);
             }
         }
     });
@@ -992,7 +992,7 @@ function saved_btn() {
         }
     });
     Ext.getCmp('awindow').hide();
-    loadTeam(V_TEAMCODE);
+    //loadTeam(V_TEAMCODE);
 }
 
 function OrderBooked(){
