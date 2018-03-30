@@ -2436,6 +2436,51 @@ public class cjyController {
         }
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_1917_JXGX_PER_DATA_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_1917_JXGX_PER_DATA_VIEW(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_1917_JXGX_PER_DATA_VIEW(V_V_JXGX_CODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_1917_JXGX_JJ_DATA_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_1917_JXGX_JJ_DATA_VIEW(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                              HttpServletRequest request,
+                                              HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_1917_JXGX_JJ_DATA_VIEW(V_V_JXGX_CODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_1917_JXGX_GJ_DATA_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_1917_JXGX_GJ_DATA_VIEW(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_1917_JXGX_GJ_DATA_VIEW(V_V_JXGX_CODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_1917_JXGX_JSYQ_DATA_V", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_1917_JXGX_JSYQ_DATA_V(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_1917_JXGX_JSYQ_DATA_V(V_V_JXGX_CODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_1917_JXGX_AQCS_DATA_V", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_1917_JXGX_AQCS_DATA_V(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_1917_JXGX_AQCS_DATA_V(V_V_JXGX_CODE);
+        return result;
+    }
 }
 
 

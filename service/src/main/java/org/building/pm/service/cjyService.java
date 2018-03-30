@@ -4305,4 +4305,124 @@ public class cjyService {
         logger.info("end PRO_PM_03_PLAN_MONTH_GET");
         return result;
     }
+
+    public Map PRO_PM_1917_JXGX_PER_DATA_VIEW(String V_V_JXGX_CODE) throws SQLException {
+        logger.info("begin PRO_PM_1917_JXGX_PER_DATA_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_1917_JXGX_PER_DATA_VIEW" + "(:V_V_JXGX_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_1917_JXGX_PER_DATA_VIEW");
+        return result;
+    }
+
+    public Map PRO_PM_1917_JXGX_JJ_DATA_VIEW(String V_V_JXGX_CODE) throws SQLException {
+        logger.info("begin PRO_PM_1917_JXGX_JJ_DATA_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_1917_JXGX_JJ_DATA_VIEW" + "(:V_V_JXGX_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_1917_JXGX_JJ_DATA_VIEW");
+        return result;
+    }
+
+    public Map PRO_PM_1917_JXGX_GJ_DATA_VIEW(String V_V_JXGX_CODE) throws SQLException {
+        logger.info("begin PRO_PM_1917_JXGX_GJ_DATA_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_1917_JXGX_GJ_DATA_VIEW" + "(:V_V_JXGX_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_1917_JXGX_GJ_DATA_VIEW");
+        return result;
+    }
+
+    public Map PRO_PM_1917_JXGX_JSYQ_DATA_V(String V_V_JXGX_CODE) throws SQLException {
+        logger.info("begin PRO_PM_1917_JXGX_JSYQ_DATA_V");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_1917_JXGX_JSYQ_DATA_V" + "(:V_V_JXGX_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_1917_JXGX_JSYQ_DATA_V");
+        return result;
+    }
+
+    public Map PRO_PM_1917_JXGX_AQCS_DATA_V(String V_V_JXGX_CODE) throws SQLException {
+        logger.info("begin PRO_PM_1917_JXGX_AQCS_DATA_V");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_1917_JXGX_AQCS_DATA_V" + "(:V_V_JXGX_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_1917_JXGX_AQCS_DATA_V");
+        return result;
+    }
 }
