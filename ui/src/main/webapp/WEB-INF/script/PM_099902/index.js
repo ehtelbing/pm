@@ -7,7 +7,7 @@ function toYearPlan()
     if (!n) {
         n = container.add({
             id: 'njh',
-            title: '年计划',
+            title: '大修计划',
             closable: true,
             loadMask: true,
             autoWidth: true,
@@ -25,7 +25,7 @@ function toQuarterPlan()
     var n = container.getComponent("jdjh");
 
     if (!n) {
-        n = container.add({
+       /* n = container.add({
             id: 'jdjh',
             title: '季度计划',
             closable: true,
@@ -33,7 +33,7 @@ function toQuarterPlan()
             autoWidth: true,
             autoHeight: true,
             html: '<iframe scrolling="auto" frameborder="0" width="100%" height="100%" src="' + url + '" />'
-        }).show();
+        }).show();*/
     }
     container.setActiveTab(n);
 }
