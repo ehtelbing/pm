@@ -383,8 +383,11 @@ Ext.onReady(function () {
                     },
                     success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
-                        Ext.getCmp('sgyc_tab').setValue(resp.list[0].V_SGYC);
-                        Ext.getCmp('aqdc_tab').setValue(resp.list[0].V_AQDC);
+                        if(resp.list.length>0){
+                            Ext.getCmp('sgyc_tab').setValue(resp.list[0].V_SGYC);
+                            Ext.getCmp('aqdc_tab').setValue(resp.list[0].V_AQDC);
+                        }
+
 
                     }
                 });
@@ -1648,7 +1651,8 @@ var pageFunction = {
 
                     if (resp.v_info == "Success") {
                         //Ext.getCmp('treegrid').getStore().load();
-                        location.reload();
+                        //location.reload();
+                        //pageFunction.QueryGanttData();
                     }
                 }
             });
@@ -1670,7 +1674,8 @@ var pageFunction = {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.V_INFO == "Success") {
-                    location.reload();
+                    //location.reload();
+                    pageFunction.QueryGanttData();
                 }
             }
         });
@@ -1807,35 +1812,38 @@ var pageFunction = {
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
-                Ext.getCmp('fxjhbm_tab').setValue(resp.list[0].V_PROJECT_CODE_FXJH);
-                Ext.getCmp('fxjhmc_tab').setValue(resp.list[0].V_PROJECT_NAME_FXJH);
-                Ext.getCmp('sjgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE_P);
-                Ext.getCmp('sjgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME_P);
-                Ext.getCmp('wyear_tab').setValue(resp.list[0].V_YEAR);
-                Ext.getCmp('wmonth_tab').setValue(resp.list[0].V_MONTH);
-                Ext.getCmp('wck_tab').setValue(resp.list[0].V_ORGCODE);
-                Ext.getCmp('wzyq_tab').setValue(resp.list[0].V_DEPTCODE);
-                Ext.getCmp('wgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE);
-                Ext.getCmp('wgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME);
-                Ext.getCmp('wys_tab').setValue(resp.list[0].V_PLAN_MONEY);
-                Ext.getCmp('wzy_tab').setValue(resp.list[0].V_SPECIALTY);
-                Ext.getCmp('wsbbm_tab').setValue(resp.list[0].V_EQUCODE);
-                Ext.getCmp('wsbmc_tab').setValue(resp.list[0].V_EQUNAME);
-                Ext.getCmp('wjsdw_tab').setValue(resp.list[0].V_BUILD_DEPT);
-                Ext.getCmp('wgcfzr_tab').setValue(resp.list[0].V_BULID_PERSON);
+                if(resp.list.length>0){
+                    Ext.getCmp('fxjhbm_tab').setValue(resp.list[0].V_PROJECT_CODE_FXJH);
+                    Ext.getCmp('fxjhmc_tab').setValue(resp.list[0].V_PROJECT_NAME_FXJH);
+                    Ext.getCmp('sjgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE_P);
+                    Ext.getCmp('sjgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME_P);
+                    Ext.getCmp('wyear_tab').setValue(resp.list[0].V_YEAR);
+                    Ext.getCmp('wmonth_tab').setValue(resp.list[0].V_MONTH);
+                    Ext.getCmp('wck_tab').setValue(resp.list[0].V_ORGCODE);
+                    Ext.getCmp('wzyq_tab').setValue(resp.list[0].V_DEPTCODE);
+                    Ext.getCmp('wgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE);
+                    Ext.getCmp('wgcmc_tab').setValue(resp.list[0].V_PROJECT_NAME);
+                    Ext.getCmp('wys_tab').setValue(resp.list[0].V_PLAN_MONEY);
+                    Ext.getCmp('wzy_tab').setValue(resp.list[0].V_SPECIALTY);
+                    Ext.getCmp('wsbbm_tab').setValue(resp.list[0].V_EQUCODE);
+                    Ext.getCmp('wsbmc_tab').setValue(resp.list[0].V_EQUNAME);
+                    Ext.getCmp('wjsdw_tab').setValue(resp.list[0].V_BUILD_DEPT);
+                    Ext.getCmp('wgcfzr_tab').setValue(resp.list[0].V_BULID_PERSON);
 
-                if(resp.list[0].V_DATE_B!=null && resp.list[0].V_DATE_B!=""){
-                    Ext.getCmp('wksrq_tab').setValue(resp.list[0].V_DATE_B.split(" ")[0]);
-                    Ext.getCmp('wkssj_tab').setValue(resp.list[0].V_DATE_B.split(" ")[1]);
+                    if(resp.list[0].V_DATE_B!=null && resp.list[0].V_DATE_B!=""){
+                        Ext.getCmp('wksrq_tab').setValue(resp.list[0].V_DATE_B.split(" ")[0]);
+                        Ext.getCmp('wkssj_tab').setValue(resp.list[0].V_DATE_B.split(" ")[1]);
+                    }
+
+                    if(resp.list[0].V_DATE_E!=null && resp.list[0].V_DATE_E!="") {
+                        Ext.getCmp('wjsrq_tab').setValue(resp.list[0].V_DATE_E.split(" ")[0]);
+                        Ext.getCmp('wjssj_tab').setValue(resp.list[0].V_DATE_E.split(" ")[1]);
+                    }
+
+                    Ext.getCmp('sjgcguid_tab').setValue(resp.list[0].V_GUID_P);
+                    // Ext.getCmp('wgcnr_tab').setValue(resp.list[0].V_CONTENT);
                 }
 
-                if(resp.list[0].V_DATE_E!=null && resp.list[0].V_DATE_E!="") {
-                    Ext.getCmp('wjsrq_tab').setValue(resp.list[0].V_DATE_E.split(" ")[0]);
-                    Ext.getCmp('wjssj_tab').setValue(resp.list[0].V_DATE_E.split(" ")[1]);
-                }
-
-                Ext.getCmp('sjgcguid_tab').setValue(resp.list[0].V_GUID_P);
-                // Ext.getCmp('wgcnr_tab').setValue(resp.list[0].V_CONTENT);
             }
         });
     },

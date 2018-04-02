@@ -243,7 +243,7 @@ var panel = Ext.create('Ext.panel.Panel',{
         { xtype:'textfield',hidden:true, id:'gcmc',fieldLabel:'工程名称',fieldStyle : 'background-color:#FFFF99;background-image:none;',labelAlign:'right',labelWidth : 65,width:200},
         { xtype:'textfield',hidden:true, id:'gcnr',fieldLabel:'工程内容',fieldStyle : 'background-color:#FFFF99;background-image:none;',labelAlign:'right',labelWidth : 65,width:200},
         { xtype : 'button',text : '查询',style : { margin : '0px 0px 0px 10px' },icon : imgpath + '/search.png',handler:QueryGrid},
-        { xtype : 'button',text : '导入',style : { margin : '0px 0px 0px 10px' },handler:DAO}
+        { xtype : 'button',text : '导入',hidden:true,style : { margin : '0px 0px 0px 10px' },handler:DAO}
     ]
 });
 
