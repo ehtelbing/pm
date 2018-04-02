@@ -45,7 +45,8 @@ Ext.onReady(function () {
         autoLoad: false,
         fields: ['V_DJ_TYPE', 'V_EQUNAME', 'V_CRITERION_CODE', 'V_CKTYPE', 'V_EQUTYPECODE', 'V_PERCODE_INPUT', 'V_PERNAME_INPUT', 'V_CRITERION_ITEM',
             'V_CRITERION_CONTENT', 'V_CRITERION_CR', 'V_CRITERION_CYCLE', 'V_CRITERION_CYCLETYPE', 'V_EQU_STATE1', 'V_EQU_STATE2', 'V_EQU_STATE3',
-            'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3', 'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8', 'V_DJ_DATE', 'V_CK_EQUTYPECODE', 'V_GUID'],
+            'V_CK_FUNCTION1', 'V_CK_FUNCTION2', 'V_CK_FUNCTION3', 'V_CK_FUNCTION4', 'V_CK_FUNCTION5', 'V_CK_FUNCTION6', 'V_CK_FUNCTION7', 'V_CK_FUNCTION8', 'V_DJ_DATE', 'V_CK_EQUTYPECODE', 'V_GUID',
+        'V_CKTYPENAME'],
         proxy: {
             url: AppUrl + 'hp/PM_06_DJ_CRITERION_DBDATA_SEL',
             type: 'ajax',
@@ -118,6 +119,11 @@ Ext.onReady(function () {
             align: 'center',
             width: 150,
             renderer: detail
+        }, {
+            text: '点检类型',
+            dataIndex: 'V_CKTYPENAME',
+            align: 'center',
+            width: 200
         }, {
             text: '设备名称',
             dataIndex: 'V_EQUNAME',
