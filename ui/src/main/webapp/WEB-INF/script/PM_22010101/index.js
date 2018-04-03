@@ -742,7 +742,7 @@ Ext.onReady(function () {
 
     var panel2 = Ext.create('Ext.Panel', {
         id : 'panel2',
-        title:'<h1 style="font-size:22px !important;">设备维修查询</h1>',
+        title:'<h1 style="font-size:22px !important;">检修工程申请</h1>',
         titleAlign:'center',
         region: 'north',
         layout: 'column',
@@ -772,6 +772,7 @@ Ext.onReady(function () {
             style: 'margin: 5px 5px 5px 5px',
             labelWidth: 80,
             queryMode: 'local',
+            hidden:true,
             displayField: 'V_PERSONNAME',
             valueField: 'V_PERSONCODE',
             labelAlign: 'right'
