@@ -33,7 +33,7 @@ var gridStore = Ext.create('Ext.data.Store', {
     id: 'gridStore',
     autoLoad: true,
     fields: ['V_ACTIVITY', 'V_WORK_CENTER', 'V_DESCRIPTION', 'I_WORK_ACTIVITY', 'I_DURATION_NORMAL', 'I_ID',
-    'V_JJ_NAME','V_GJ_NAME','V_JSQY_NAME','V_AQSC_NAME','V_GUID','V_JXBZ','V_JXBZ_VALUE_DOWN','V_JXBZ_VALUE_UP'],
+    'V_JJ_NAME','V_GJ_NAME','V_JSQY_NAME','V_AQSC_NAME','V_GUID','V_JXBZ','V_JXBZ_VALUE_DOWN','V_JXBZ_VALUE_UP','V_PER_NAME'],
     proxy: {
         type: 'ajax',
         url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
@@ -90,6 +90,7 @@ var gridPanel = Ext.create('Ext.panel.Panel', {
             { text: '工序内容', width:365, align: 'center', dataIndex: 'V_DESCRIPTION' },
             { text: '额定时间', width: 80, align: 'center', dataIndex: 'I_WORK_ACTIVITY' },
             { text: '额定人数', width: 80, align: 'center', dataIndex: 'I_DURATION_NORMAL' },
+            { text: '工种', width: 80, align: 'center', dataIndex: 'V_PER_NAME' },
             { text: '机具', width: 80, align: 'center', dataIndex: 'V_JJ_NAME' },
             { text: '工具', width: 80, align: 'center', dataIndex: 'V_GJ_NAME' },
             { text: '技术要求', width: 80, align: 'center', dataIndex: 'V_JSQY_NAME',hidden:true},
@@ -337,6 +338,7 @@ function OnclickUpdateButtonLoad() {
                 success: function (ret) {
                     var resp = Ext.JSON.decode(ret.responseText);
                     Ext.getCmp('jxcar').setValue(resp.list[0].V_JJ_NAME);
+                    Ext.getCmp('jxper').setValue(resp.list[0].V_PER_NAME);
                     Ext.getCmp('jxtool').setValue(resp.list[0].V_GJ_NAME);
                     Ext.getCmp('jxtechnology').setValue(resp.list[0].V_JSQY_NAME);
                     Ext.getCmp('jxsafe').setValue(resp.list[0].V_AQSC_NAME);

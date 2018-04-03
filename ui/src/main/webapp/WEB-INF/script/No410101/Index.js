@@ -135,7 +135,7 @@ function loadPageInfo() {
                     dataType : "json",
                     traditional : true,
                     success : function(resp) {
-                        orderID = resp[0].V_ORDERID;
+                        orderID = resp[0].list[0].V_ORDERID;
                         //$("#yesprint").empty();
                         for (var x = 0; x < max; x++) {
                             result.push('   <div id="'+index.toString()+x.toString()+'">');
@@ -153,20 +153,20 @@ function loadPageInfo() {
                             result.push('      <table  border="0" align="center" cellpadding="0" cellspacing="0">');
                             result.push(' <tr><td></td><td></td></tr><tr>');
                             result.push('                        <td><b>检修类型：</b></td><td><b>');
-                            result.push(resp[0].V_ORDER_TYP_TXT);
+                            result.push(resp[0].list[0].V_ORDER_TYP_TXT);
                             result.push('                        &nbsp;</b></td>');
                             result.push('                        </tr><tr>');
                             result.push('                        <td><b>工&nbsp;单&nbsp;号：</b></td><td><b>');
-                            result.push(resp[0].V_ORDERID);
+                            result.push(resp[0].list[0].V_ORDERID);
                             result.push('                       &nbsp;</b></td>');
                             result.push('                        </tr><tr>');
 
                             result.push('                        <td><b>检修单位：</b></td><td><b>');
-                            result.push(resp[0].V_DEPTNAMEREPARIR);
+                            result.push(resp[0].list[0].V_DEPTNAMEREPARIR);
                             result.push('                         &nbsp;</b></td></tr>');
                             result.push(' <tr>');
                             result.push(' <td style="vertical-align: top"><b>工单描述：</b></td><td style="text-align:left"><b>');
-                            result.push(descBill(resp[0].V_SHORT_TXT));
+                            result.push(descBill(resp[0].list[0].V_SHORT_TXT));
                             result.push('&nbsp;</b></td>');
                             result.push(' </tr>');
                             result.push(' </table>');
@@ -182,7 +182,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td width="250" class="border_r_b">');
                             result.push('                        <span>');
-                            result.push(resp[0].V_ORGNAME);
+                            result.push(resp[0].list[0].V_ORGNAME);
                             result.push('                        </span>');
                             result.push('                        &nbsp;');
                             result.push('                    </td>');
@@ -191,7 +191,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td width="80" align="center" class="border_r_b">');
                             result.push('                        <span>');
-                            result.push(resp[0].V_ENTERED_BY);
+                            result.push(resp[0].list[0].V_ENTERED_BY);
                             result.push('</span>');
                             result.push('</td>');
                             result.push('                    <td width="80" align="center" class="border_r_b">');
@@ -200,8 +200,8 @@ function loadPageInfo() {
                             result.push('                    <td width="140" align="center" class="border_b">');
                             result.push('                        <span>');
                             var s1, st1;
-                            if(resp[0].D_ENTER_DATE!=''){
-                                s1 = resp[0].D_ENTER_DATE;
+                            if(resp[0].list[0].D_ENTER_DATE!=''){
+                                s1 = resp[0].list[0].D_ENTER_DATE;
                                 st1 = [];
                                 st1 = s1.split(' ');
                             }else{
@@ -220,7 +220,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('                        <span>');
-                            result.push(resp[0].V_DEPTNAME);
+                            result.push(resp[0].list[0].V_DEPTNAME);
                             result.push('</span>');
                             result.push('                        &nbsp;');
                             result.push('                    </td>');
@@ -238,7 +238,7 @@ function loadPageInfo() {
                             result.push('</td>');
                             result.push('<td align="left" colspan="3" class="border_b">');
                             result.push('<span>');
-                            result.push(resp[0].V_WBS);
+                            result.push(resp[0].list[0].V_WBS);
                             result.push('</span>');
                             result.push('<input type="hidden" id="wbsDesc" />');
                             result.push('</td>');
@@ -249,7 +249,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('                        <span>');
-                            result.push(resp[0].V_EQUIP_NAME);
+                            result.push(resp[0].list[0].V_EQUIP_NAME);
                             result.push('</span>');
                             result.push('                        &nbsp;');
                             result.push('                    </td>');
@@ -265,7 +265,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td align="left" colspan="3" class="border_b">');
                             result.push('<span>');
-                            result.push(resp[0].V_WBS_TXT);
+                            result.push(resp[0].list[0].V_WBS_TXT);
                             result.push('</span>');
                             result.push('                        &nbsp;');
                             result.push('                    </td>');
@@ -276,7 +276,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('                        <span>');
-                            result.push(resp[0].V_EQUIP_NO);
+                            result.push(resp[0].list[0].V_EQUIP_NO);
                             result.push('</span>');
                             result.push('                        &nbsp;');
                             result.push('                    </td>');
@@ -293,7 +293,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td align="left"  class="border_r_b">');
                             result.push('<span>');
-                            result.push(resp[0].D_START_DATE);
+                            result.push(resp[0].list[0].D_START_DATE);
                             result.push('&nbsp;</span>');
                             result.push('                    </td>');
                             result.push('                    <td align="center" class="border_r_b">');
@@ -301,7 +301,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td align="left"  class="border_b">');
                             result.push('<span>');
-                            result.push(resp[0].D_FACT_START_DATE);
+                            result.push(resp[0].list[0].D_FACT_START_DATE);
                             result.push('&nbsp;</span>');
                             result.push('                    </td>');
                             result.push('                </tr>');
@@ -311,7 +311,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('                        <span>');
-                            result.push(resp[0].V_EQUSITENAME);
+                            result.push(resp[0].list[0].V_EQUSITENAME);
                             result.push('</span>');
                             result.push('</td>');
                            /* result.push('                    <td align="center" class="border_r_b">');
@@ -327,7 +327,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td align="left"  class="border_r_b">');
                             result.push('<span>');
-                            result.push(resp[0].D_FINISH_DATE);
+                            result.push(resp[0].list[0].D_FINISH_DATE);
                             result.push('&nbsp;</span>');
                             result.push('                    </td>');
                             result.push('                    <td align="center" class="border_r_b">');
@@ -335,7 +335,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td align="left"  class="border_b">');
                             result.push('<span>');
-                            result.push(resp[0].D_FACT_FINISH_DATE);
+                            result.push(resp[0].list[0].D_FACT_FINISH_DATE);
                             result.push('&nbsp;</span>');
                             result.push('                    </td>');
                             result.push('                </tr>');
@@ -590,57 +590,57 @@ function loadPageInfo() {
                             result.push('                <tr>');
                             result.push('                    <td width="280" class="border_r_b">');
                             result.push('验收日期：');
-                            result.push(resp[0].D_DATE_ACP);
+                            result.push(resp[0].list[0].D_DATE_ACP);
                             result.push('</td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('提前/逾期时间：');
-                            result.push(resp[0].I_OTHERHOUR);
+                            result.push(resp[0].list[0].I_OTHERHOUR);
                             result.push('</td>');
                             result.push('                    <td width="405" class="border_b">');
                             result.push('逾期原因：');
-                            result.push(resp[0].V_OTHERREASON);
+                            result.push(resp[0].list[0].V_OTHERREASON);
                             result.push('</td>');
                             result.push('                </tr>');
                             result.push('                <tr>');
                             result.push('                    <td class="border_r_b">');
                             result.push('检修方说明：');
-                            result.push(resp[0].V_REPAIRCONTENT);
+                            result.push(resp[0].list[0].V_REPAIRCONTENT);
                             result.push('</td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('检修方签字：');
-                            result.push(resp[0].V_REPAIRSIGN);
+                            result.push(resp[0].list[0].V_REPAIRSIGN);
                             result.push('</td>');
                             result.push('                    <td class="border_b">');
                             result.push('检修人员：');
-                            result.push(resp[0].V_REPAIRPERSON);
+                            result.push(resp[0].list[0].V_REPAIRPERSON);
                             result.push('</td>');
                             result.push('                </tr>');
                             result.push('                <tr>');
                             result.push('                    <td class="border_r_b">');
                             result.push('岗位签字：');
-                            result.push(resp[0].V_POSTMANSIGN);
+                            result.push(resp[0].list[0].V_POSTMANSIGN);
                             result.push('</td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('点检员验收意见：');
-                            result.push(resp[0].V_CHECKMANCONTENT);
+                            result.push(resp[0].list[0].V_CHECKMANCONTENT);
                             result.push('</td>');
                             result.push('                    <td class="border_b">');
                             result.push('点检员签字：');
-                            result.push(resp[0].V_CHECKMANSIGN);
+                            result.push(resp[0].list[0].V_CHECKMANSIGN);
                             result.push('</td>');
                             result.push('                    </tr>');
                             result.push('               <tr>');
                             result.push('                    <td class="border_r">');
                             result.push('作业区验收：');
-                            result.push(resp[0].V_WORKSHOPCONTENT);
+                            result.push(resp[0].list[0].V_WORKSHOPCONTENT);
                             result.push('</td>');
                             result.push('                    <td class="border_r">');
                             result.push('库管员签字：');
-                            result.push(resp[0].V_WORKSHOPSIGN);
+                            result.push(resp[0].list[0].V_WORKSHOPSIGN);
                             result.push('</td>');
                             result.push('                    <td>');
                             result.push('部门签字：');
-                            result.push(resp[0].V_DEPTSIGN);
+                            result.push(resp[0].list[0].V_DEPTSIGN);
                             result.push('</td>');
                             result.push('                </tr>');
                             result.push('            </table>');
@@ -739,7 +739,6 @@ function NowTime() {
 
     return s;
 }
-
 function descBill(content){
     var temp = [];
     for(var i=0;i<content.length;i++){
