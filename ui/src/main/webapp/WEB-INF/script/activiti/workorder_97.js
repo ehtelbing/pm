@@ -248,7 +248,7 @@ $(function () {
 	bindDate("D_FACT_START_DATE");
 	bindDate("D_FACT_FINISH_DATE");
 
-	bindDate("D_DATE_ACP");
+	//bindDate("D_DATE_ACP");
 
 	//bindDate("D_ENTER_DATE");//创建时间
 	//NowDate2("D_ENTER_DATE");
@@ -256,7 +256,8 @@ $(function () {
 	NowDate_b("D_FACT_START_DATE");
 	NowDate_e("D_FACT_FINISH_DATE");
 
-	NowDate_e("D_DATE_ACP");
+	//NowDate_e("D_DATE_ACP");
+	NowDate2("D_DATE_ACP");
 
 	loadPageInfo();
 	loadTaskGrid();
@@ -267,6 +268,7 @@ $(function () {
 	$("#btnTask").click(function () {
 		ReturnIsToTask();
 	});
+
 });
 
 
@@ -382,7 +384,9 @@ function loadPageInfo() {
 					$("#D_DATE_ACP").val(resp.list[0].D_DATE_ACP);
 				}else
 // {$("#D_DATE_ACP").val(resp.list[0].D_FINISH_DATE);}
-				{$("#D_DATE_ACP").val("");}
+				{
+					NowDate2("D_DATE_ACP");/*$("#D_DATE_ACP").val("");*/
+				}
 				$("#V_POSTMANSIGN").val(resp.list[0].V_POSTMANSIGN);
 				$("#V_CHECKMANCONTENT").val(resp.list[0].V_CHECKMANCONTENT);
 				$("#V_CHECKMANSIGN").val(Ext.util.Cookies.get("v_personname2"));
@@ -456,9 +460,12 @@ function valueChange(field,newvalue,oldvalue){
 
 }
 function comboConfirm(){
-	if(Ext.getCmp('qxmx').getValue()==''){
-		Ext.MessageBox.alert('提示', '请填写缺陷明细');
-		return false;
+	if(Ext.getCmp('radiotypesc').getValue().sctypename=='1'){
+		if(Ext.getCmp('qxmx').getValue()==''){
+			Ext.MessageBox.alert('提示', '请填写缺陷明细');
+			return false;
+		}
+
 	}
 
 	if(Ext.getCmp('radiotypexc').getValue().xctypename=='1'){
@@ -732,10 +739,12 @@ function ValueConfirm() {
 				return false;
 			} else {
 				Ext.getCmp('combowindow').show();
+				Ext.getCmp('qxmx').disable();
 			}
 
 		} else {
 			Ext.getCmp('combowindow').show();
+			Ext.getCmp('qxmx').disable();
 		}
 
 
@@ -854,24 +863,25 @@ function ActivitiConfirmAccept(){//确定验收
 					handler : ValueConfirm
 				}
 
-				if(fnum==1||fnum==2){
-					winheight = fnum * 140;
+				if(fnum==0){
+					Ext.getCmp('combowindow').show();
+					Ext.getCmp('qxmx').disable();
 				}else{
-					winheight = fnum * 70;
+					if(fnum==1||fnum==2){
+						winheight = fnum * 140;
+					}else{
+						winheight = fnum * 70;
+					}
+
+					GXlength = fnum;
+					Ext.getCmp('valuepanel').add(bpanel);
+					Ext.getCmp('valuewindow').setHeight(winheight);
+					Ext.getCmp('valuepanel').setHeight(winheight);
+					//Ext.getCmp('valuepanel').add(panel);
+					Ext.getCmp('valuewindow').show();
+					//OpenDiv('VDiv','Vfade');
 				}
-
-				GXlength = fnum;
-				Ext.getCmp('valuepanel').add(bpanel);
-				Ext.getCmp('valuewindow').setHeight(winheight);
-				Ext.getCmp('valuepanel').setHeight(winheight);
-				//Ext.getCmp('valuepanel').add(panel);
-				Ext.getCmp('valuewindow').show();
-				//OpenDiv('VDiv','Vfade');
-
 			}
-
-
-
 
 		}
 	});
@@ -1490,9 +1500,9 @@ function NowDate2(id) {
 	var sen = d.getSeconds().toString();
 	// s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " +
 	// dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-	s = year + "-" + dateFomate(month) + "-" + dateFomate(date) ;
+	s = year + "-" + dateFomate(month) + "-" + dateFomate(date) +" "+hou+":"+min+":"+sen;
 	// try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
-	$("#" + id + "").html(s);
+	$("#" + id + "").val(s);
 }
 
 function dateFomate(val){
