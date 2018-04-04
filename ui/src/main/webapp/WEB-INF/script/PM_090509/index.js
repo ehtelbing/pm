@@ -12,6 +12,7 @@ var V_STEPCODE ='';
 var processKey = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
+var wuliaochaxunlist=[];
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_DBGUID = Ext.urlDecode(location.href.split('?')[1]).V_DBGUID;
@@ -79,6 +80,38 @@ $(function () {
                 V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
 
                 Ext.getCmp('nextSpr2').select(store.first());
+
+            }
+
+        }
+    });
+
+    var nextSprStoreb = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'nextSprStoreb',
+        fields: ['V_PERSONCODE', 'V_PERSONNAME','V_V_NEXT_SETP','V_V_FLOW_STEPNAME'],
+        proxy:{
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+            }
+        },
+        listeners: {
+
+            load: function (store, records,success,eOpts) {
+                processKey = store.getProxy().getReader().rawData.RET;
+                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+                V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+
+                Ext.getCmp('nextSprb').select(store.first());
 
             }
 
@@ -194,6 +227,64 @@ $(function () {
         closable: true,
         items: [addInputPanel2]
     });
+    var addInputPanelb = Ext.create('Ext.form.Panel', {
+        id: 'addInputPanelb',
+        region: 'center',
+        layout: 'vbox',
+        frame: true,
+        border: false,
+        //title : '流程管理',
+        baseCls: 'my-panel-no-border',
+        items: [
+            {
+                xtype: 'panel',
+                region: 'center',
+                layout: 'column',
+                border:false,
+                frame: true,
+                baseCls: 'my-panel-no-border',
+                items: [{
+                    id: 'nextSprb',
+                    xtype: 'combo',
+                    store: nextSprStoreb,
+                    fieldLabel: '下一步接收人',
+                    editable: false,
+                    labelWidth: 100,
+                    displayField: 'V_PERSONNAME',
+                    valueField: 'V_PERSONCODE',
+                    queryMode: 'local',
+                    //baseCls: 'margin-bottom',
+                    style: ' margin: 5px 0px 0px 0px',
+                    labelAlign: 'right',
+                    width: 250
+                },{
+                    xtype : 'button',
+                    text : '确定',
+                    icon: imgpath + '/saved.png',
+                    style: ' margin: 5px 0px 0px 15px',
+                    handler : ConfirmAccept
+                }  ]
+            }
+        ]
+    });
+    var windowb = Ext.create('Ext.window.Window', {
+        id: 'windowb',
+        width: 370,
+        height: 150,
+        bodyPadding: 15,
+        layout: 'vbox',
+        title: '选择反馈接收人',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        items: [addInputPanelb]
+    });
+    bindDate("D_FACT_START_DATE");
+    bindDate("D_FACT_FINISH_DATE");
+
+    NowDate_b("D_FACT_START_DATE");
+    NowDate_e("D_FACT_FINISH_DATE");
 
     loadOrder();
 
@@ -211,6 +302,10 @@ $(function () {
         var owidth = window.document.body.offsetWidth-200;
         var oheight = window.document.body.offsetHeight-100 ;
         var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_DEPTREPAIRCODE=' + V_DEPTREPAIRCODE +  '&V_TEAMCODE=' + V_TEAMCODE +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    });
+
+    $("#btnGS").click(function () {
+        ReturnIsToTask();
     });
 
     /*$("#btnonPrint").click(function () {
@@ -497,6 +592,7 @@ function loadMatList() {
             if (resp.list != null && resp.list != "") {
                 $("#TtableM tbody").empty();
                 $.each(resp.list, function (index, item) { item["sid"] = index + 1; });
+                wuliaochaxunlist = resp.list;
                 $("#TtableMTemplate").tmpl(resp.list).appendTo("#TtableM tbody");
             } else { $("#TtableM tbody").empty(); }
         }
@@ -514,9 +610,9 @@ function loadOther(){
             var resp = Ext.JSON.decode(ret.responseText);
             if (resp.list != null && resp.list != "") {
                 //$("#D_DATE_ACP").val(resp.list[0].D_DATE_ACP);
-                $("#D_DATE_OVERDUE").val(resp.list[0].I_OTHERHOUR);
-                $("#V_REASON_OVERDUE").val(resp.list[0].V_OTHERREASON);
-                $("#V_FIX_EXPLAIN").val(resp.list[0].V_REPAIRCONTENT);
+                $("#I_OTHERHOUR").val(resp.list[0].I_OTHERHOUR);
+                $("#V_OTHERREASON").val(resp.list[0].V_OTHERREASON);
+                $("#V_REPAIRCONTENT").val(resp.list[0].V_REPAIRCONTENT);
                 $("#V_REPAIRPERSON").html(resp.list[0].V_REPAIRPERSON);
                 $("#V_CHECKMANSIGN").html(resp.list[0].V_CHECKMANSIGN);
             }
@@ -602,9 +698,9 @@ function OrderSave() {
         params: {
             V_V_ORDERGUID: V_ORDERGUID,
             D_DATE_ACP:  "",
-            D_DATE_OVERDUE: $("#D_DATE_OVERDUE").val(),
-            V_REASON_OVERDUE: $("#V_REASON_OVERDUE").val(),
-            V_FIX_EXPLAIN:  $("#V_FIX_EXPLAIN").val()
+            D_DATE_OVERDUE: $("#I_OTHERHOUR").val(),
+            V_REASON_OVERDUE: $("#V_OTHERREASON").val(),
+            V_FIX_EXPLAIN:  $("#V_REPAIRCONTENT").val()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -1014,7 +1110,7 @@ function OrderBooked(){
     });
 }
 function OrderBooked2(){
-    if($("#D_DATE_OVERDUE").val() == '' || $("#V_REASON_OVERDUE").val() == ''){
+    if($("#I_OTHERHOUR").val() == '' || $("#V_OTHERREASON").val() == ''){
         Ext.MessageBox.alert('提示', '请填写逾期时间和逾期原因');
         return false;
     }
@@ -1116,8 +1212,8 @@ function _reserveWorkOrder(){
                 url: AppUrl + 'hp/PRO_WX_ORDER_BOOKED',
                 params: {
                     V_V_ORDERGUID: V_ORDERGUID,
-                    V_V_YQTIME:$("#D_DATE_OVERDUE").val(),
-                    V_V_YQYY: $("#V_REASON_OVERDUE").val()
+                    V_V_YQTIME:$("#I_OTHERHOUR").val(),
+                    V_V_YQYY: $("#V_OTHERREASON").val()
                 },
                 success: function (response) {
                     var resp = Ext.decode(response.responseText);
@@ -1348,3 +1444,204 @@ function OrderBooked(){
     });*/
 }
 
+function ReturnIsToTask() {
+
+    //var ret = window.showModalDialog(AppUrl+'/No41100101/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '&V_DEPTCODEREPARIR=' + $("#V_DEPTCODEREPARIR").val() + '', '', 'dialogHeight:500px;dialogWidth:800px');
+    $.ajax({
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+        type: 'post',
+        async: false,
+        data: {
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+        },
+        dataType: "json",
+        traditional: true,
+        success: function (resp) {
+            if (resp.list == "" || resp.list == null) {
+                alert("请先添加工序");
+            } else {
+                var ret = window.open(AppUrl
+                    + 'page/No41020102/Index.html?V_ORDERGUID='
+                    + $.url().param("V_ORDERGUID") + '&V_DEPTCODEREPARIR='
+                    + V_V_REPAIRCODE + '', '',
+                    'dialogHeight:500px;dialogWidth:800px');
+                loadTaskGrid();
+            }
+        }
+    });
+}
+
+function feedBack(){
+    var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
+    nextSprStoreb.proxy.extraParams = {
+        V_V_ORGCODE: V_V_ORGCODE,
+        V_V_DEPTCODE: V_V_DEPTCODE,
+        V_V_REPAIRCODE: V_V_REPAIRCODE,
+        V_V_FLOWTYPE: 'WORK',
+        V_V_FLOW_STEP:'gdfk',// $.url().param("TaskDefinitionKey"),
+        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+        V_V_SPECIALTY: '%',
+        V_V_WHERE:''
+
+    };
+
+    nextSprStoreb.currentPage = 1;
+    nextSprStoreb.load();
+    Ext.getCmp('windowb').show();
+}
+function ConfirmAccept() {
+
+
+    if ($("#D_FACT_START_DATE").val() == "") {
+        Ext.MessageBox.alert('提示', '请输入实际开始时间');
+        return;
+    }
+
+    if ($("#D_FACT_FINISH_DATE").val() == "") {
+        Ext.MessageBox.alert('提示', '请输入实际结束时间');
+        return;
+    }
+
+    //var test = new Array(wuliaochaxunlist);
+    //console.log(test);
+    if(wuliaochaxunlist.length==0){
+
+    }else{
+        for (var i = 0; i < wuliaochaxunlist.length; i++) {
+            if (wuliaochaxunlist[i].I_ACTUALAMOUNT != 0 && wuliaochaxunlist[i].FUJIAN_COUNT == 0) {
+                Ext.Msg.alert('失败','请上传附件');
+                //alert('请在物料信息列表序号为' + wuliaochaxunlist[i].sid + '的信息里添加至少一个附件');
+                return;
+            }
+        }
+    }
+
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/TaskComplete',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            taskId: taskId,
+            idea: '已反馈',
+            parName: [V_NEXT_SETP, "flow_yj"],
+            parVal: [Ext.getCmp('nextSprb').getValue(), '已反馈'],
+            processKey :processKey,
+            businessKey : $.url().param("V_ORDERGUID"),
+            V_STEPCODE : V_STEPCODE,
+            V_STEPNAME : V_STEPNAME,
+            V_IDEA : '请审批！',
+            V_NEXTPER : Ext.getCmp('nextSpr').getValue(),
+            V_INPER : Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            $.ajax({
+                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_FK',
+                type: 'post',
+                async: false,
+                data: {
+                    V_V_PERCODE: $.cookies.get('v_personcode'),
+                    V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
+                    V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                    V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val().split(".")[0],
+                    V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val().split(".")[0],
+
+                    V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
+                    V_V_OTHERREASON: $("#V_OTHERREASON").val(),
+                    V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
+                    V_V_REPAIRSIGN: $("#V_REPAIRSIGN").val(),
+                    V_V_REPAIRPERSON: $("#V_REPAIRPERSON").val(),
+                    V_V_TOOL: ' '
+                },
+                dataType: "json",
+                traditional: true,
+                success: function (resp) {
+                    if (resp.V_INFO == '成功') {
+                        window.returnValue = 'yes';
+                        //Ext.example.msg('操作信息', '反馈完成');
+                        Ext.Ajax.request({//获取所选缺陷GUID
+                            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+                            method: 'POST',
+                            async: false,
+                            params: {
+                                V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
+                                V_V_FLAG:'1'
+                            },
+                            success: function (resp) {
+                                var respguid = Ext.decode(resp.responseText);
+
+                                if (respguid.list.length >0) {
+
+                                    for(var i=0;i<respguid.list.length;i++)
+                                    {
+                                        Ext.Ajax.request({//保存缺陷详细日志
+                                            url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                                            method: 'POST',
+                                            async: false,
+                                            params: {
+                                                V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+'工单已反馈（'+$("#V_ORDERID").html()+'）',
+                                                V_V_FINISHCODE: '30',
+                                                V_V_KEY:''//缺陷guid
+
+                                            },
+                                            success: function (ret) {
+                                                var resp = Ext.decode(ret.responseText);
+                                                if(resp.V_INFO=='成功'){
+                                                    //修改缺陷状态
+                                                    Ext.Ajax.request({
+                                                        url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                                        method: 'POST',
+                                                        async: false,
+                                                        params: {
+                                                            V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                            V_V_STATECODE: '22',//已反馈
+
+                                                        },
+                                                        success: function (ret) {
+                                                            var resp = Ext.decode(ret.responseText);
+                                                            if(resp.V_INFO=='success'){
+
+
+                                                            }else{
+                                                                alert("修改缺陷状态失败");
+                                                            }
+
+                                                        }
+                                                    });
+
+                                                }else{
+                                                    alert("缺陷日志记录失败");
+                                                }
+
+                                            }
+                                        });
+                                    }
+                                }else{
+
+                                    alert("缺陷日志添加错误");
+                                }
+                            }
+                        });
+                        alert('反馈完成');
+                        window.close();
+                        window.opener.OnPageLoad();
+                    } else {
+                        Ext.example.msg('操作信息', '操作失败');
+                    }
+                }
+            });
+
+
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
+
+    })
+
+}

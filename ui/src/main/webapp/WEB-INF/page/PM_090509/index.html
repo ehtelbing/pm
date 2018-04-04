@@ -4,10 +4,12 @@
 <head>
 	<title>工单审批</title>
 
+
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="../../../pm/css/viewport.css" type="text/css"></link>
 	<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
 	<link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>
+	<link rel="stylesheet" href="../../../pm/css/Default1/jquery.ui.all.css" type="text/css"></link>
 	<script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
 	<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
 
@@ -17,6 +19,7 @@
 	<script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
 	<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
 
+	<script type="text/javascript" src="../../../pm/script/jquery-ui-timepicker-addon.js"></script>
 	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
 	<script type="text/javascript" src="../../../pm/script/PM_090509/index.js"></script>
 	<style type="text/css">
@@ -82,6 +85,8 @@
 	<input type="button" value="转为预留工单" class="btnprint" id="btnBooked" onclick="OrderBooked2();" />
 	&nbsp;&nbsp;&nbsp;
 	<input type="button" value="工单接收并打印" class="btnprint" id="btnWorkorder" onclick="_preOrderissued();" />
+	&nbsp;&nbsp;&nbsp;
+	<input type="button" value="工单反馈" class="btnprint" id="btnFeedback" onclick="feedBack();" />
 	&nbsp;&nbsp;&nbsp;
 </div>
 <table class="Tabel_p">
@@ -231,8 +236,10 @@
 					<td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
 						实际开始时间：
 					</td>
-					<td style="border-bottom: 1px solid #000; border-right: 0px;" id="D_START_DATE">
-					   <label type="text" id="D_FACT_START_DATE" style="width: 130px; height:35px; " ></label>
+					<td style="border-bottom: 1px solid #000; border-right: 0px;">
+						<input type="text" id="D_FACT_START_DATE"
+							   style="background-color: #FFFF99; width: 130px; height:35px;" />
+					   <!--<label type="text" id="D_FACT_START_DATE" style="width: 130px; height:35px; " ></label>-->
 					</td>
 				</tr>
 				<tr>
@@ -246,7 +253,9 @@
 						实际完成时间：
 					</td>
 					<td style="border-bottom: 0; border-right: 0px;">
-						<label type="text" id="D_FACT_FINISH_DATE" style="width: 95%; height:35px;"></label>
+						<input type="text" id="D_FACT_FINISH_DATE"
+							   style="background-color: #FFFF99; width: 130px; height:35px;" />
+						<!--<label type="text" id="D_FACT_FINISH_DATE" style="width: 95%; height:35px;"></label>-->
 					</td>
 				</tr>
 			</table>
@@ -256,6 +265,7 @@
 		<td colspan="3" style="text-align: left; background-color: #F4F5F7">
 			③任务细节
 			<!--<input type="button" id="btnTask" class="btnprint" value="人员与工时查看" onclick="ViewTask()" />-->
+			<input type="button" class="btnprint" id="btnGS" value="人员与工时填写" />
 			<input type="button" id="btnTask" class="btnprint" value="编辑任务" />
 		</td>
 	</tr>
@@ -499,36 +509,43 @@
 						提前、逾期时间：
 					</td>
 					<td
-							style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;"
-							id="I_OTHERHOUR"><input type="text" id="D_DATE_OVERDUE" style="width: 98%; height:20px; background-color: #FFFF99;" /></td>
+							style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;">
+						<input type="text" id="I_OTHERHOUR" style="width: 98%; height:20px; background-color: #FFFF99;" /></td>
+
 					<td
 							style="width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
 						逾期原因：
 					</td>
 					<td
-							style="width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left;"
-							id="V_OTHERREASON"><input type="text" id="V_REASON_OVERDUE" style="width: 98%; height:20px; background-color: #FFFF99;" /></td>
+							style="width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left;">
+						<input type="text" id="V_OTHERREASON" style="width: 98%; height:20px; background-color: #FFFF99;" /></td>
 				</tr>
 				<tr>
 					<td
 							style="width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
 						检修方说明：
 					</td>
-					<td style="width: 22%; border-bottom: 0px; text-align: left;" id="V_REPAIRCONTENT">
-						<input type="text" id="V_FIX_EXPLAIN" style="width: 98%; height:20px; background-color: #FFFF99;" />
+					<td style="width: 22%; border-bottom: 0px; text-align: left;" >
+						<input type="text" id="V_REPAIRCONTENT" style="width: 98%; height:20px; background-color: #FFFF99;" />
 					</td>
 					<td
 							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
 						检修方签字：
 					</td>
-					<td style="width: 22%; border-bottom: 0px; text-align: left;"
-						id="V_REPAIRSIGN"></td>
+					<td style="width: 22%; border-bottom: 0px; text-align: left;">
+						<input type="text" id="V_REPAIRSIGN"
+							   style="background-color: #FFFF99; width:100%; height:25px;" />
+					</td>
+
 					<td
 							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
 						检修人员：
 					</td>
-					<td style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;"
-						id="V_REPAIRPERSON"></td>
+					<td
+							style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;">
+						<input type="text" id="V_REPAIRPERSON"
+							   style="background-color: #FFFF99; width:100%; height:25px;" />
+					</td>
 				</tr>
 				<tr>
 					<td
