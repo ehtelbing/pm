@@ -4425,4 +4425,75 @@ public class cjyService {
         logger.info("end PRO_PM_1917_JXGX_AQCS_DATA_V");
         return result;
     }
+
+    public List<Map> PM_091104Tree(String ORDER_ID,String WORK_ID,String DEPARTCODE) throws SQLException {
+        List<Map> result = GetParentTree(ORDER_ID, WORK_ID, DEPARTCODE);
+        return result;
+    }
+
+    public List<Map> GetParentTree(String ORDER_ID,String WORK_ID,String DEPARTCODE) throws SQLException {
+        logger.info("begin PRO_ORDER_PERSON_TREE");
+
+        List<Map> list = new ArrayList<Map>();
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_ORDER_PERSON_TREE(:IN_ORDER_ID,:IN_WORK_ID,:IN_DEPARTCODE,:RET)}");
+            cstmt.setString("IN_ORDER_ID", ORDER_ID);
+            cstmt.setString("IN_WORK_ID", WORK_ID);
+            cstmt.setString("IN_DEPARTCODE", DEPARTCODE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            ResultSet rs = (ResultSet) cstmt.getObject("RET");
+            while (rs.next()) {
+
+                Map temp = new HashMap();
+                temp.put("V_CLASS_CODE", rs.getString("V_CLASS_CODE"));
+                temp.put("V_CLASS_NAME", rs.getString("V_CLASS_NAME"));
+                temp.put("V_PERSONCODE", rs.getString("V_PERSONCODE"));
+                temp.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
+                temp.put("V_CRAFTCODE", rs.getString("V_CRAFTCODE"));
+                temp.put("V_CRAFTNAME", rs.getString("V_CRAFTNAME"));
+                temp.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
+                list.add(temp);
+
+            }
+            if(list.size()>0){
+                Map temp = new HashMap();
+                temp.put("parentid", "");
+                temp.put("text", list.get(0).get("V_DEPTNAME"));
+                temp.put("expanded", true);
+                temp.put("children", GetChildren(list));
+                result.add(temp);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_ORDER_PERSON_TREE");
+        return result;
+    }
+
+    private List<Map> GetChildren(List<Map> list) {
+        List<Map> menu = new ArrayList<Map>();
+        List listarr=new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            if(!listarr.contains(list.get(i).get("V_CLASS_CODE"))){
+                listarr.add(list.get(i).get("V_CLASS_CODE"));
+                Map temp = new HashMap();
+                temp.put("sid", list.get(i).get("V_CLASS_CODE"));
+                temp.put("text", list.get(i).get("V_CLASS_NAME"));
+                temp.put("leaf", true);
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
 }

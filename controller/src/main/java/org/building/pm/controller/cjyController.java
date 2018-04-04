@@ -2481,6 +2481,15 @@ public class cjyController {
         Map result = cjyService.PRO_PM_1917_JXGX_AQCS_DATA_V(V_V_JXGX_CODE);
         return result;
     }
+    @RequestMapping(value = "/PM_091104Tree", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PM_091104Tree(@RequestParam(value = "ORDER_ID") String ORDER_ID,
+                                    @RequestParam(value = "WORK_ID") String WORK_ID,
+                                    @RequestParam(value = "DEPARTCODE") String DEPARTCODE)
+            throws SQLException {
+        List<Map> result = cjyService.PM_091104Tree(ORDER_ID, WORK_ID, DEPARTCODE);
+        return result;
+    }
 }
 
 
