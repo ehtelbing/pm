@@ -460,7 +460,9 @@ function OnClickFiniBackButton() {
                 });
             }
         }
+        window.close();
     } else {
+        window.close();
     }
    /* Ext.Ajax.request({
         url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_HOURS_RETURN',
