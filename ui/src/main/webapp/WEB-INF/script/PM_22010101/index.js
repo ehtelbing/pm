@@ -1942,12 +1942,12 @@ Ext.onReady(function () {
 
     getReturnQX();
     getReturnMX();
-    Ext.data.StoreManager.lookup('grid1Store').on("load", function () {
+    /*Ext.data.StoreManager.lookup('grid1Store').on("load", function () {
         for(var i=0;i<3;i++){
             Ext.data.StoreManager.lookup('grid1Store').insert(i,{V_EQUTYPETXNAME:' <br>',V_EQUTYPETXVALUE:' <br>'});
         }
 
-    });
+    });*/
 })
 function beforeGrid1Store(store){
     store.proxy.extraParams.V_V_EQUCODE =Ext.getCmp('sbname').getValue();
@@ -2732,8 +2732,8 @@ function QueryGrid1(){
     gridStore.currentPage = 1;
     gridStore.load();
 
-    Ext.data.StoreManager.lookup('grid1Store').insert(0,{V_EQUTYPETXNAME:'5',V_EQUTYPETXVALUE:'5'});
-    Ext.data.StoreManager.lookup('grid1Store').insert(1,{V_EQUTYPETXNAME:'6',V_EQUTYPETXVALUE:'6'});
+    /*Ext.data.StoreManager.lookup('grid1Store').insert(0,{V_EQUTYPETXNAME:'5',V_EQUTYPETXVALUE:'5'});
+    Ext.data.StoreManager.lookup('grid1Store').insert(1,{V_EQUTYPETXNAME:'6',V_EQUTYPETXVALUE:'6'});*/
 
 }
 function QueryGrid2(){
