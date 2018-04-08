@@ -518,7 +518,7 @@ function _save() {
                 } else {
                     Ext.MessageBox.alert('提示', '操作成功');
                 }
-
+                history.go(0);
             } else {
                 Ext.MessageBox.show({
                     title: '错误',

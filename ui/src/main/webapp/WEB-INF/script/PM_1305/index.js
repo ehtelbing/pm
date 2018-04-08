@@ -417,10 +417,11 @@ function _selectSbSecond() {
 
 function _select() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    var yue=Ext.getCmp('yue').getValue()<10?'0'+Ext.getCmp('yue').getValue():Ext.getCmp('yue').getValue();
     gridStore.proxy.extraParams = {
         V_V_ORGCODE: Ext.getCmp('ck').getValue(),
         V_V_DEPTCODE: Ext.getCmp('bkhdw').getValue(),
-        V_V_DATE: Ext.getCmp('xznf').getValue() + '' + Ext.getCmp('yue').getValue(),
+        V_V_DATE: Ext.getCmp('xznf').getValue() + '' + yue,
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
 
