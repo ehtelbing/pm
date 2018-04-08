@@ -442,9 +442,9 @@ public class ActivitiController {
         try {
             List<Task> taskList = null;
             if (FlowCode.equals("")) {
-                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", FlowType).listPage(start, limit);
+                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
             } else {
-                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).listPage(start, limit);
+                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
             }
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
