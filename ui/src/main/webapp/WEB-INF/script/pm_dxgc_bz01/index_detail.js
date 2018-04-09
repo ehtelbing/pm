@@ -43,7 +43,7 @@ var thisYear = new Date().getFullYear();
 var years = [];
 for (var i = 2014; i <= thisYear + 1; i++) years.push([i, i]);
 var months = [];
-for (var i = 1; i <= 12; i++) months.push({displayField: i, valueField: i});
+for (var i = 1; i <= 12; i++) months.push([i, i]);
 var yearmr = new Date().getFullYear();
 var lastmonth = new Date().getMonth();
 if (new Date().getMonth() + 1 == 1) {
@@ -413,6 +413,7 @@ Ext.onReady(function () {
                     }
                 });
                 Ext.data.StoreManager.lookup('gdxqStore').load();
+
 
 
                 pageFunction.loadGdxqTab(b.data.V_GUID);
@@ -1598,6 +1599,7 @@ var pageFunction = {
             url: AppUrl + 'hp/PRO_PM_EQUREPAIRPLAN_SELMAX',
             type: 'ajax',
             method: 'POST',
+            async: false,
             params: {
                 V_V_GUID_FXJH: guid,
                 V_V_ROWNUMBER: -1,
@@ -1650,9 +1652,10 @@ var pageFunction = {
 
 
                     if (resp.v_info == "Success") {
-                        //Ext.getCmp('treegrid').getStore().load();
+
                         //location.reload();
-                        //pageFunction.QueryGanttData();
+                        Ext.getCmp('treegrid').getStore().load();
+                        pageFunction.QueryGanttData();
                     }
                 }
             });
@@ -1675,6 +1678,7 @@ var pageFunction = {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.V_INFO == "Success") {
                     //location.reload();
+                    Ext.getCmp('treegrid').getStore().load();
                     pageFunction.QueryGanttData();
                 }
             }
@@ -1934,9 +1938,10 @@ var pageFunction = {
         treeguid = treenode[0].data.V_GUID;
         fxjhguid = treenode[0].data.V_GUID_FXJH;
         if (treeguid == '') {
-            alert('新建');
-            var next = pageFunction.checkNew();
-            if (!next) return;
+            alert("请选择子项");
+            return;
+            /*var next = pageFunction.checkNew();
+            if (!next) return;*/
         }
         if (genre == 1) {
             Ext.Ajax.request({
