@@ -38,6 +38,7 @@ $(function () {
 				V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
 
 				Ext.getCmp('nextSpr').select(store.first());
+				Ext.getCmp('nextSprp').select(store.first());
 
 			}
 
@@ -117,6 +118,81 @@ $(function () {
 		closeAction: 'hide',
 		closable: true,
 		items: [addInputPanel]
+	});
+
+	var addInputPanelp = Ext.create('Ext.form.Panel', {
+		id: 'addInputPanelp',
+		region: 'center',
+		layout: 'vbox',
+		frame: true,
+		border: false,
+		//title : '流程管理',
+		baseCls: 'my-panel-no-border',
+		items: [
+			{
+				xtype: 'panel',
+				region: 'center',
+				layout: 'column',
+				border:false,
+				frame: true,
+				baseCls: 'my-panel-no-border',
+				items: [{
+					id: 'nextSprp',
+					xtype: 'combo',
+					store: nextSprStore,
+					fieldLabel: '下一步接收人',
+					editable: false,
+					labelWidth: 100,
+					displayField: 'V_PERSONNAME',
+					valueField: 'V_PERSONCODE',
+					queryMode: 'local',
+					//baseCls: 'margin-bottom',
+					style: ' margin: 5px 0px 0px 0px',
+					labelAlign: 'right',
+					width: 250
+				} ]
+			},
+			{
+				xtype: 'panel',
+				region: 'center',
+				layout: 'column',
+				border:false,
+				frame: true,
+				baseCls: 'my-panel-no-border',
+				items: [{
+					id: 'winspyjp',
+					xtype: 'textfield',
+					fieldLabel: '驳回意见',
+					editable: false,
+					labelWidth: 100,
+					queryMode: 'local',
+					//baseCls: 'margin-bottom',
+					style: ' margin: 5px 0px 0px 0px',
+					labelAlign: 'right',
+					width: 250
+				},{
+					xtype : 'button',
+					text : '确定',
+					icon: imgpath + '/saved.png',
+					style: ' margin: 5px 0px 0px 15px',
+					handler : DisAgreeP
+				}  ]
+			}
+		]
+	});
+
+	var windowp = Ext.create('Ext.window.Window', {
+		id: 'windowp',
+		width: 370,
+		height: 150,
+		bodyPadding: 15,
+		layout: 'vbox',
+		title: '选择下一步接收人',
+		modal: true,//弹出窗口时后面背景不可编辑
+		frame: true,
+		closeAction: 'hide',
+		closable: true,
+		items: [addInputPanelp]
 	});
 
 
@@ -1587,6 +1663,23 @@ function preDisAgree(){
 	Ext.getCmp('window1').show();
 }
 
+function preDisAgreePri(){
+	var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
+	nextSprStore.proxy.extraParams = {
+		V_V_ORGCODE: V_V_ORGCODE,
+		V_V_DEPTCODE: V_V_DEPTCODE,
+		V_V_REPAIRCODE: V_V_DEPTCODEREPARIR,
+		V_V_FLOWTYPE: 'WORK',
+		V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+		V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+		V_V_SPECIALTY: '%',
+		V_V_WHERE:'未打印'
+
+	};
+	nextSprStore.currentPage = 1;
+	nextSprStore.load();
+	Ext.getCmp('windowp').show();
+}
 
 function DisAgree() {
 	var spyj ='';
@@ -1635,6 +1728,52 @@ function DisAgree() {
 
 }
 
+function DisAgreeP() {
+	var spyj ='';
+	if(Ext.getCmp('winspyjp').getValue() == '' ){
+		spyj ='验收驳回'
+	}else{
+		spyj = Ext.getCmp('winspyjp').getValue();
+	}
+
+
+
+	Ext.Ajax.request({
+		url: AppUrl + 'Activiti/TaskComplete',
+		type: 'ajax',
+		method: 'POST',
+		params: {
+			taskId: taskId,
+			idea: '未打印',
+			parName: [V_NEXT_SETP, "flow_yj",],
+			parVal: [Ext.getCmp('nextSprp').getValue(), spyj],
+			processKey :$.url().param("ProcessDefinitionKey"),
+			businessKey : $.url().param("V_ORDERGUID"),
+			V_STEPCODE : V_STEPCODE,
+			V_STEPNAME : V_STEPNAME,
+			V_IDEA : '未打印',
+			V_NEXTPER :Ext.getCmp('nextSpr').getValue(),
+			V_INPER : Ext.util.Cookies.get('v_personcode')
+		},
+		success: function (response) {
+			window.close();
+			window.opener.OnPageLoad();
+
+
+		},
+		failure: function (response) {//访问到后台时执行的方法。
+			Ext.MessageBox.show({
+				title: '错误',
+				msg: response.responseText,
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			})
+		}
+
+	})
+
+
+}
 function GetBillMatByOrder2() {
 	$.ajax({
 		url: AppUrl + '/mm/WS_EquipGetBillMaterialByOrderService',
