@@ -151,6 +151,7 @@ Ext.QuickTips.init();
 	});
 	firstStep();
 	Ext.fly('V_EQUTYPENAME').on('click',ChoiceEquLev);//,listeners:{focus:ChoiceEquLev}
+	Ext.fly('V_EQUSITENAME').on('click',ChoiceEquSite);//,listeners:{focus:ChoiceEquSite}
 });
 
 function firstStep(){
@@ -210,45 +211,136 @@ function OnClickSaveButton(){
 	if(!ValidateMes(limits)){
 		Ext.Msg.alert('操作信息',"请填写必填项后再保存！");
 	}else{
-		Ext.Ajax.request({
-	    	url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_SET',
-	        method: 'POST',
-	        params: {
-				V_V_DEPTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTCODE,
-				V_V_DEPTNEXTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTNEXTCODE,
-				V_V_EQUCODE:equCode,
-				V_V_EQULEV:Ext.getCmp('equlev').getValue(),
-				V_V_EQUNAME:Ext.getCmp('V_EQUNAME').getValue(),
-				V_V_EQUSITE:Ext.getCmp('V_EQUSITE').getValue(),
-				V_V_ZZCH:'',
-				V_V_EQUTYPECODE:Ext.getCmp('V_EQUTYPECODE').getValue(),
-				V_F_MONEY:Ext.getCmp('F_MONEY').getValue(),
-				V_V_MONEYTYPE:Ext.getCmp('V_MONEYTYPE').getValue(),
-				V_F_WEIGHT:Ext.getCmp('F_WEIGHT').getValue(),
-				V_V_WEIGHTTYPE:Ext.getCmp('V_WEIGHTTYPE').getValue(),
-				V_V_DATE_B:Ext.Date.format(Ext.getCmp('V_DATE_B').getValue(), 'Ymd').split('-')[0],
-				V_V_DATE_E:Ext.Date.format(Ext.getCmp('V_DATE_E').getValue(), 'Ymd').split('-')[0],
-				V_V_ZZS:Ext.getCmp('V_ZZS').getValue(),
-				V_V_GGXH:Ext.getCmp('V_GGXH').getValue(),
-				V_V_ABC:Ext.getCmp('V_ABC').getValue(),
-				V_V_SIZE:Ext.getCmp('V_SIZE').getValue(),
-				V_V_CBZX:Ext.getCmp('V_CBZX').getValue(),
-				V_V_EQUCODEUP:Ext.getCmp('V_EQUCODEUP').getValue()
-	        },
-			success: function (response) {
-	        	 var resp = Ext.decode(response.responseText);
-	        	 if(resp.V_CURSOR=='成功'){
-	        		 equCode = resp.V_V_EQUCODENEW;
-	        		 Ext.data.StoreManager.lookup('gridstore').load({
-						params:{
-							V_V_EQUCODE:resp.V_V_EQUCODENEW,
-							V_V_EQUTYPECODE:Ext.getCmp('V_EQUTYPECODE').getValue()
-						}
-	        		});
-	        		 Ext.getCmp('nnArea').setVisible(true);
-	        	 }
-	        }
-	    });
+		if(Ext.urlDecode(location.href.split('?')[1]).EQUCODE=='no'){//修改设备
+			Ext.Ajax.request({
+				url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_SET',
+				method: 'POST',
+				async: false,
+				params: {
+					V_V_DEPTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTCODE,
+					V_V_DEPTNEXTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTNEXTCODE,
+					V_V_EQUCODE:equCode,
+					V_V_EQULEV:Ext.getCmp('equlev').getValue(),
+					V_V_EQUNAME:Ext.getCmp('V_EQUNAME').getValue(),
+					V_V_EQUSITE:Ext.getCmp('V_EQUSITE').getValue(),
+					V_V_ZZCH:'',
+					V_V_EQUTYPECODE:Ext.getCmp('V_EQUTYPECODE').getValue(),
+					V_F_MONEY:Ext.getCmp('F_MONEY').getValue(),
+					V_V_MONEYTYPE:Ext.getCmp('V_MONEYTYPE').getValue(),
+					V_F_WEIGHT:Ext.getCmp('F_WEIGHT').getValue(),
+					V_V_WEIGHTTYPE:Ext.getCmp('V_WEIGHTTYPE').getValue(),
+					V_V_DATE_B:Ext.Date.format(Ext.getCmp('V_DATE_B').getValue(), 'Ymd').split('-')[0],
+					V_V_DATE_E:Ext.Date.format(Ext.getCmp('V_DATE_E').getValue(), 'Ymd').split('-')[0],
+					V_V_ZZS:Ext.getCmp('V_ZZS').getValue(),
+					V_V_GGXH:Ext.getCmp('V_GGXH').getValue(),
+					V_V_ABC:Ext.getCmp('V_ABC').getValue(),
+					V_V_SIZE:Ext.getCmp('V_SIZE').getValue(),
+					V_V_CBZX:Ext.getCmp('V_CBZX').getValue(),
+					V_V_EQUCODEUP:Ext.getCmp('V_EQUCODEUP').getValue()
+				},
+				success: function (response) {
+					var resp = Ext.decode(response.responseText);
+					Ext.Msg.alert('操作信息',resp.V_CURSOR);
+					if(resp.V_CURSOR=='成功'){
+						equCode = resp.V_V_EQUCODENEW;
+						Ext.data.StoreManager.lookup('gridstore').load({
+							params:{
+								V_V_EQUCODE:resp.V_V_EQUCODENEW,
+								V_V_EQUTYPECODE:Ext.getCmp('V_EQUTYPECODE').getValue()
+							}
+						});
+						Ext.getCmp('nnArea').setVisible(true);
+					}
+				}
+			});
+		}else{//修改主设备，同时修改相应子设备
+			var num=0;
+			Ext.Ajax.request({
+				url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_SET',
+				method: 'POST',
+				async: false,
+				params: {
+					V_V_DEPTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTCODE,
+					V_V_DEPTNEXTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTNEXTCODE,
+					V_V_EQUCODE:equCode,
+					V_V_EQULEV:Ext.getCmp('equlev').getValue(),
+					V_V_EQUNAME:Ext.getCmp('V_EQUNAME').getValue(),
+					V_V_EQUSITE:Ext.getCmp('V_EQUSITE').getValue(),
+					V_V_ZZCH:'',
+					V_V_EQUTYPECODE:Ext.getCmp('V_EQUTYPECODE').getValue(),
+					V_F_MONEY:Ext.getCmp('F_MONEY').getValue(),
+					V_V_MONEYTYPE:Ext.getCmp('V_MONEYTYPE').getValue(),
+					V_F_WEIGHT:Ext.getCmp('F_WEIGHT').getValue(),
+					V_V_WEIGHTTYPE:Ext.getCmp('V_WEIGHTTYPE').getValue(),
+					V_V_DATE_B:Ext.Date.format(Ext.getCmp('V_DATE_B').getValue(), 'Ymd').split('-')[0],
+					V_V_DATE_E:Ext.Date.format(Ext.getCmp('V_DATE_E').getValue(), 'Ymd').split('-')[0],
+					V_V_ZZS:Ext.getCmp('V_ZZS').getValue(),
+					V_V_GGXH:Ext.getCmp('V_GGXH').getValue(),
+					V_V_ABC:Ext.getCmp('V_ABC').getValue(),
+					V_V_SIZE:Ext.getCmp('V_SIZE').getValue(),
+					V_V_CBZX:Ext.getCmp('V_CBZX').getValue(),
+					V_V_EQUCODEUP:Ext.getCmp('V_EQUCODEUP').getValue()
+				},
+				success: function (response) {
+					var resp = Ext.decode(response.responseText);
+					if(resp.V_CURSOR=='成功'){
+						equCode = resp.V_V_EQUCODENEW;
+						Ext.data.StoreManager.lookup('gridstore').load({
+							params:{
+								V_V_EQUCODE:resp.V_V_EQUCODENEW,
+								V_V_EQUTYPECODE:Ext.getCmp('V_EQUTYPECODE').getValue()
+							}
+						});
+						Ext.getCmp('nnArea').setVisible(true);
+
+						Ext.Ajax.request({//查找子设备
+							url: AppUrl + 'pm_19/PRO_SAP_EQU_TREE_BY_EQUNAME',
+							method: 'POST',
+							async: false,
+							params: {
+								V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+								V_V_DEPTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTCODE,
+								V_V_DEPTNEXTCODE:Ext.urlDecode(location.href.split('?')[1]).DEPTNEXTCODE,
+								V_V_EQUCODE:Ext.urlDecode(location.href.split('?')[1]).EQUCODE,
+								V_V_EQUNAME:''
+							},
+							success: function (response) {
+								var resp = Ext.decode(response.responseText);
+								for(var i=0;i<resp.list.length;i++){
+									Ext.Ajax.request({
+										url: AppUrl + 'cjy/PRO_SAP_PM_EQU_P_UPDATE',
+										method: 'POST',
+										async: false,
+										params: {
+											V_V_EQUCODE:resp.list[i].V_EQUCODE,
+											V_V_EQUSITE:Ext.getCmp('V_EQUSITE').getValue(),
+											V_V_EQUTYPECODE:Ext.getCmp('V_EQUTYPECODE').getValue(),
+											V_V_CBZX:Ext.getCmp('V_CBZX').getValue()
+										},
+										success: function (response) {
+											var resp = Ext.decode(response.responseText);
+											if(resp.V_CURSOR=='成功'){
+												num++;
+											}
+										}
+									});
+								}
+								if(num==resp.list.length){
+									Ext.Msg.alert('操作信息',"成功");
+								}else{
+									Ext.Msg.alert('操作信息',"子设备修改失败");
+								}
+
+							}
+						});
+					}else{
+						Ext.Msg.alert('操作信息',resp.V_CURSOR);
+					}
+				}
+			});
+
+		}
+
 	}
 }
 //设备类型选择

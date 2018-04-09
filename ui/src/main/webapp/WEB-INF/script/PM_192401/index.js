@@ -100,6 +100,7 @@ Ext.onReady(function() {
 				{xtype:'button',text:'复制设备', style: ' margin: 5px 0px 5px 5px',listeners:{click:OnCopyClicked}},
 				{xtype:'button',text:'添加设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/add.png',listeners:{click:OnBtnClicked}},
 				{xtype:'button',text:'修改设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnEditClicked}},
+				{xtype:'button',text:'修改主设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnEditMainClicked}},
 				{xtype:'button',text:'备件清单编辑', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnBZEditClicked}}
 			]},
 			{xtype:'grid',id:'grid', store: gridStore,columnLines : true,autoScroll : true,region:'center',border:false,
@@ -292,13 +293,29 @@ function OnCopyClicked(){
 
 //修改设备
 function OnEditClicked(){
+	if(Ext.getCmp('grid').getSelectionModel().getSelection().length==0){
+		alert("请选择设备表中子设备进行操作");
+		return;
+	}
 	var ckcode=Ext.getCmp('ck').getValue();
 	var zyqcode=Ext.getCmp('zyq').getValue();
 	var equCode = 	Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_EQUCODE;
 	try{
-		window.top.append('95010103','修改设备',AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode);
+		window.top.append('95010103','修改设备',AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=no');
 	}catch(E){
-		window.open(AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode);
+		window.open(AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=no');
+	}
+}
+
+//修改主设备
+function OnEditMainClicked(){
+	var ckcode=Ext.getCmp('ck').getValue();
+	var zyqcode=Ext.getCmp('zyq').getValue();
+	var equCode = 	treeid;
+	try{
+		window.top.append('95010103','修改设备',AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=yes');
+	}catch(E){
+		window.open(AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=yes');
 	}
 }
 

@@ -4496,4 +4496,32 @@ public class cjyService {
         }
         return menu;
     }
+
+    public HashMap PRO_SAP_PM_EQU_P_UPDATE(String V_V_EQUCODE,String V_V_EQUSITE,String V_V_EQUTYPECODE,String V_V_CBZX) throws SQLException {
+        logger.info("begin PRO_SAP_PM_EQU_P_UPDATE");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_SAP_PM_EQU_P_UPDATE" + "(:V_V_EQUCODE,:V_V_EQUSITE,:V_V_EQUTYPECODE,:V_V_CBZX,:V_CURSOR)}");
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUSITE", V_V_EQUSITE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_CBZX", V_V_CBZX);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_SAP_PM_EQU_P_UPDATE");
+        return result;
+    }
 }

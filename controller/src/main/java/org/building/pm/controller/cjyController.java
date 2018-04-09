@@ -2490,6 +2490,18 @@ public class cjyController {
         List<Map> result = cjyService.PM_091104Tree(ORDER_ID, WORK_ID, DEPARTCODE);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_SAP_PM_EQU_P_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SAP_PM_EQU_P_UPDATE(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                       @RequestParam(value = "V_V_EQUSITE") String V_V_EQUSITE,
+                                       @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                       @RequestParam(value = "V_V_CBZX") String V_V_CBZX,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_SAP_PM_EQU_P_UPDATE(V_V_EQUCODE,V_V_EQUSITE,V_V_EQUTYPECODE,V_V_CBZX);
+        return result;
+    }
 }
 
 

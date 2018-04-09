@@ -170,6 +170,8 @@ Ext.QuickTips.init();
 	Ext.fly('V_EQUTYPENAME').on('change',function(){
 		Ext.getCmp('nnArea').setVisible(false);
 	});
+
+	Ext.fly('V_EQUSITENAME').on('click',ChoiceEquSite);//,listeners:{focus:ChoiceEquSite}
 });
 
 function OnClickSaveButton(){
@@ -199,7 +201,7 @@ function OnClickSaveButton(){
 				V_V_ABC:Ext.getCmp('V_ABC').getValue(),
 				V_V_SIZE:Ext.getCmp('V_SIZE').getValue(),
 				V_V_CBZX:Ext.getCmp('V_CBZX').getValue(),
-				V_V_EQUCODEUP:Ext.urlDecode(location.href.split('?')[1]).EQUCODEUP
+				V_V_EQUCODEUP:Ext.urlDecode(location.href.split('?')[1]).EQUCODEUP=='-1'?null:Ext.urlDecode(location.href.split('?')[1]).EQUCODEUP
 	        },
 			success: function (response) {
 	        	 var resp = Ext.decode(response.responseText);
