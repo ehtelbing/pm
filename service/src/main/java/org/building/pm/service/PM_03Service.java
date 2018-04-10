@@ -1275,4 +1275,37 @@ public class PM_03Service {
         logger.info("end PRO_PM_PLAN_LOCKING_W_VIEW");
         return result;
     }
+
+
+    public Map PRO_PLAN_LOCK_DATE_HOMENOW(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM) throws SQLException {
+        logger.info("begin PRO_PLAN_LOCK_DATE_HOMENOW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PLAN_LOCK_DATE_HOMENOW" + "(:V_I_YEAR,:V_I_MONTH,:V_I_WEEKNUM,:V_Y_DATE,:V_Q_DATE,:V_M_DATE,:V_W_DATE)}");
+            cstmt.setString("V_I_YEAR", V_I_YEAR);
+            cstmt.setString("V_I_MONTH", V_I_MONTH);
+            cstmt.setString("V_I_WEEKNUM", V_I_WEEKNUM);
+            cstmt.registerOutParameter("V_Y_DATE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_Q_DATE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_M_DATE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_W_DATE", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_Y_DATE",(String) cstmt.getObject("V_Y_DATE"));
+            result.put("V_Q_DATE",(String) cstmt.getObject("V_Q_DATE"));
+            result.put("V_M_DATE",(String) cstmt.getObject("V_M_DATE"));
+            result.put("V_W_DATE",(String) cstmt.getObject("V_W_DATE"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PLAN_LOCK_DATE_HOMENOW");
+        return result;
+    }
 }

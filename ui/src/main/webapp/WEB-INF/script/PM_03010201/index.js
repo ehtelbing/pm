@@ -893,11 +893,11 @@ function OnButtonDelete() {
 }
 
 function OnButtonUp() {
-    if (Ext.Date.format(new Date(Ext.getCmp('endtime').getValue()), 'Y/m/d') < Ext.Date.format(new Date(), 'Y/m/d')) {
+   /* if (Ext.Date.format(new Date(Ext.getCmp('endtime').getValue()), 'Y/m/d') < Ext.Date.format(new Date(), 'Y/m/d')) {
         alert("已过上报时间，不能上报");
         return false;
     }
-
+*/
 
     var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
     if (records.length == 0) {//判断是否选中数据
@@ -933,7 +933,10 @@ function OnButtonUp() {
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText).list[0];
-                if (resp.V_INFO == '成功') {
+                if (resp.V_INFO != 'Fail') {
+                    if(resp.V_INFO!='success'){
+                        Ext.Msg.alert('提示', resp.V_INFO);
+                    }
                     Ext.Ajax.request({
                         url: AppUrl + 'Activiti/StratProcess',
                         async: false,
@@ -958,21 +961,11 @@ function OnButtonUp() {
                         }
                     });
                     i_err++;
-
                     if (i_err == records.length) {
-
                         query();
                     }
                 } else {
-                    Ext.MessageBox.show({
-                        title: '错误',
-                        msg: resp.V_INFO,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR,
-                        fn: function (btn) {
-                            query();
-                        }
-                    });
+                    Ext.Msg.alert('提示', '上报失败！');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
@@ -989,18 +982,6 @@ function OnButtonUp() {
         });
     }
 
-
-    //Ext.MessageBox.show({
-    //    title: '确认',
-    //    msg: '您确定要上报吗？',
-    //    buttons: Ext.MessageBox.YESNO,
-    //    icon: Ext.MessageBox.QUESION,
-    //    fn: function (btn) {
-    //        if (btn == 'yes') {
-
-    //        }
-    //    }
-    //});
 }
 //截止上报时间
 function Queryendtime() {
