@@ -129,7 +129,7 @@ Ext.onReady(function () {
                         }
                     }
                 }),
-                fieldLabel: '计划周',
+                fieldLabel: '计划年份',
                 labelAlign: 'right',
                 labelWidth: 60,
                 width: 210,
@@ -152,21 +152,15 @@ Ext.onReady(function () {
                     }
                 }),
                 xtype: 'combo',
-                fieldLabel: '年',
+                fieldLabel: '计划月份',
                 labelAlign: 'left',
                 labelWidth: 60,
                 width: 210,
                 style: ' margin: 5px 0px 5px 5px',
-                value: (new Date().getMonth() + 1),
+                value: (new Date().getMonth() + 2),
                 editable: false,
                 displayField: 'displayField',
                 valueField: 'valueField'
-            }, {
-                xtype: 'label',
-                text: '月',
-                //labelWidth: 60,
-                //width: 210,
-                style: ' margin: 10px 0px 5px 5px'
             }, {
                 xtype: 'combo',
                 id: "ck",

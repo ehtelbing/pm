@@ -130,7 +130,7 @@ function OnButtonSaveClicked(){
 			var resp = Ext.decode(resp.responseText);
 			if(resp.V_INFO=='成功'){
 				window.opener.queryGrid();
-				//window.close();
+				window.close();
 			}else{
 				Ext.Msg.alert('操作信息', '保存失败');
 			}
