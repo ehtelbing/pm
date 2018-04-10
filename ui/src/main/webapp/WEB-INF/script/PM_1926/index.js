@@ -1,3 +1,5 @@
+var flag='';
+
 //厂矿
 var ckStore = Ext.create('Ext.data.Store', {
     id: 'ckStore',
@@ -96,7 +98,8 @@ var Layout = {
                 { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png'},
                 { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png'},
                 { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png'},
-                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png'}
+                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png'},
+                { xtype: 'button', text: '通用', handler: addTYbtn,  icon: imgpath + '/add.png'}
             ]
         },
         { xtype: 'gridpanel', region: 'center',  columnLines: true, id: 'grid', store: 'gridStore',
@@ -243,6 +246,7 @@ function onPageLoaded() {
         }
     });
 }
+
 //树查询
 function QueryTree(){
     Ext.getCmp('tree').store.setProxy({
@@ -274,8 +278,11 @@ function TreeChecked(TreeChecked){
 function queryGrid(){
     var seldata=Ext.getCmp('tree').getSelectionModel().getSelection();
     if(seldata.length!=1){
-        Ext.Msg.alert("操作信息","请选择一个设备");
-        return false;
+        if(flag=='TY'){}
+        else{
+            Ext.Msg.alert("操作信息","请选择一条数据");
+            return false;
+        }
     }
     if(seldata[0].data.sid!='') {
         Ext.data.StoreManager.lookup('gridStore').load({
@@ -287,6 +294,7 @@ function queryGrid(){
     }
 }
 function addbtn(){
+    flag='add';
     var seldata=Ext.getCmp('tree').getSelectionModel().getSelection();
     if(seldata.length!=1){
         Ext.Msg.alert("操作信息","请选择一个设备进行添加");
@@ -297,9 +305,20 @@ function addbtn(){
     Ext.getCmp('winaqcsname').setValue('');
     Ext.getCmp('window').show();
 }
-
+function addTYbtn(){
+    flag='TY';
+    Ext.getCmp('winaqcscode').setReadOnly(true);
+    Ext.getCmp('winaqcscode').setValue(Ext.data.IdGenerator.get('uuid').generate());
+    Ext.getCmp('winaqcsname').setValue('');
+    Ext.getCmp('window').show();
+}
 function editbtn(){
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(seldata[0].raw.V_EQUCODE=='TY'){
+        flag='TY';
+    }else{
+        flag='edit';
+    }
     if (seldata.length != 1) {
         Ext.Msg.alert("操作信息","请选择一条数据进行修改！");
         return false;
@@ -339,19 +358,18 @@ function delbtn(){
     queryGrid();
 }
 
-function save(){
-    var seldata=Ext.getCmp('tree').getSelectionModel().getSelection();
-    if(seldata[0].data.sid!=''){
+function save() {
+    if (flag == 'TY') {
         Ext.Ajax.request({
             url: AppUrl + 'pm_19/PRO_PM_19_AQCS_EDIT',
             method: 'POST',
             async: false,
             params: {
-                V_V_AQCSCODE : Ext.getCmp('winaqcscode').getValue(),
-                V_V_AQCSNAME : Ext.getCmp('winaqcsname').getValue(),
-                V_V_EQUCODE : seldata[0].data.sid,
-                V_V_EQUNAME : seldata[0].data.text,
-                V_V_EQUSITE : seldata[0].data.V_EQUSITE
+                V_V_AQCSCODE: Ext.getCmp('winaqcscode').getValue(),
+                V_V_AQCSNAME: Ext.getCmp('winaqcsname').getValue(),
+                V_V_EQUCODE:  'TY',
+                V_V_EQUNAME:  'TY',
+                V_V_EQUSITE:  'TY'
             },
             success: function (ret) {
                 var resp = Ext.JSON.decode(ret.responseText);
@@ -359,6 +377,27 @@ function save(){
                 queryGrid();
             }
         });
+    } else {
+        var seldata = Ext.getCmp('tree').getSelectionModel().getSelection();
+        if (seldata[0].data.sid != '') {
+            Ext.Ajax.request({
+                url: AppUrl + 'pm_19/PRO_PM_19_AQCS_EDIT',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_AQCSCODE: Ext.getCmp('winaqcscode').getValue(),
+                    V_V_AQCSNAME: Ext.getCmp('winaqcsname').getValue(),
+                    V_V_EQUCODE: seldata[0].data.sid,
+                    V_V_EQUNAME: seldata[0].data.text,
+                    V_V_EQUSITE: seldata[0].data.V_EQUSITE
+                },
+                success: function (ret) {
+                    var resp = Ext.JSON.decode(ret.responseText);
+                    Ext.getCmp('window').hide();
+                    queryGrid();
+                }
+            });
+        }
     }
 }
 

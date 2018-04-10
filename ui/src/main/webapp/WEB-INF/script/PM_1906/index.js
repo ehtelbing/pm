@@ -1,3 +1,5 @@
+var flag='';
+
 //厂矿
 var ckStore = Ext.create('Ext.data.Store', {
     id: 'ckStore',
@@ -125,7 +127,8 @@ var Layout = {
                     handler: delbtn,
                     icon: imgpath + '/delete.png',
                     style: {margin: ' 5px 0 5px 10px'}
-                }
+                },
+                { xtype: 'button', text: '通用', handler: addTYbtn,  icon: imgpath + '/add.png', style: { margin: ' 5px 0 5px 10px'}}
             ]
         },
         {
@@ -364,20 +367,26 @@ function TreeChecked(TreeChecked){
 function queryGrid() {
     var seldata=Ext.getCmp('tree').getSelectionModel().getSelection();
     if(seldata.length!=1){
-        Ext.Msg.alert("操作信息","请选择一个设备");
-        return false;
+        if(flag=='TY'){}
+        else{
+            Ext.Msg.alert("操作信息","请选择一条数据");
+            return false;
+        }
+
     }
-    if(seldata[0].data.sid!='') {
+    if(seldata[0].data.sid!=''){
         Ext.data.StoreManager.lookup('gridStore').load({
             params: {
-                V_V_CARNAME: Ext.getCmp('carname').getValue(),
-                V_V_EQUCODE: seldata[0].data.sid
+                V_V_CARNAME : Ext.getCmp('carname').getValue(),
+                V_V_EQUCODE : seldata[0].data.sid
             }
         });
     }
+
 }
 
 function addbtn() {
+    flag='add';
     var seldata=Ext.getCmp('tree').getSelectionModel().getSelection();
     if(seldata.length!=1){
         Ext.Msg.alert("操作信息","请选择一个设备进行添加");
@@ -393,9 +402,24 @@ function addbtn() {
 
     Ext.getCmp('win').show();
 }
-
+function addTYbtn(){
+    flag='TY';
+    Ext.getCmp('wincarcode').setReadOnly(false);
+    Ext.getCmp('wincarcode').setValue(Ext.data.IdGenerator.get('uuid').generate());
+    Ext.getCmp('wincarname').setValue('');
+    Ext.getCmp('wincartype').setValue('');
+    Ext.getCmp('wings').setValue('');
+    Ext.getCmp('wininf').setValue('');
+    Ext.getCmp('winde').setValue('');
+    Ext.getCmp('win').show();
+}
 function editbtn() {
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(seldata[0].raw.V_EQUCODE=='TY'){
+        flag='TY';
+    }else{
+        flag='edit';
+    }
     if (seldata.length != 1) {
         Ext.Msg.alert("操作信息",'请选择一条数据进行修改！');
         return false;
@@ -442,8 +466,7 @@ function delbtn() {
 }
 
 function save() {
-    var seldata=Ext.getCmp('tree').getSelectionModel().getSelection();
-    if(seldata[0].data.sid!='') {
+    if (flag == 'TY') {
         Ext.Ajax.request({
             url: AppUrl + 'pm_19/PRO_PM_19_CARTYPE_EDIT',
             method: 'POST',
@@ -456,9 +479,9 @@ function save() {
                 V_V_FLAG: Ext.getCmp('winfalg').getValue(),
                 V_V_CARINFO: Ext.getCmp('wininf').getValue(),
                 V_V_DE: Ext.getCmp('winde').getValue(),
-                V_V_EQUCODE : seldata[0].data.sid,
-                V_V_EQUNAME : seldata[0].data.text,
-                V_V_EQUSITE : seldata[0].data.V_EQUSITE
+                V_V_EQUCODE: 'TY',
+                V_V_EQUNAME: 'TY',
+                V_V_EQUSITE: 'TY'
             },
             success: function (ret) {
                 var resp = Ext.JSON.decode(ret.responseText);
@@ -466,9 +489,34 @@ function save() {
                 queryGrid();
             }
         });
+    } else {
+        var seldata = Ext.getCmp('tree').getSelectionModel().getSelection();
+        if (seldata[0].data.sid != '') {
+            Ext.Ajax.request({
+                url: AppUrl + 'pm_19/PRO_PM_19_CARTYPE_EDIT',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_CARCODE: Ext.getCmp('wincarcode').getValue(),
+                    V_V_CARNAME: Ext.getCmp('wincarname').getValue(),
+                    V_V_CARTYPE: Ext.getCmp('wincartype').getValue(),
+                    V_V_CARGUISUO: Ext.getCmp('wings').getValue(),
+                    V_V_FLAG: Ext.getCmp('winfalg').getValue(),
+                    V_V_CARINFO: Ext.getCmp('wininf').getValue(),
+                    V_V_DE: Ext.getCmp('winde').getValue(),
+                    V_V_EQUCODE: seldata[0].data.sid,
+                    V_V_EQUNAME: seldata[0].data.text,
+                    V_V_EQUSITE: seldata[0].data.V_EQUSITE
+                },
+                success: function (ret) {
+                    var resp = Ext.JSON.decode(ret.responseText);
+                    Ext.getCmp('win').hide();
+                    queryGrid();
+                }
+            });
+        }
     }
 }
-
 function renderFont(value, metaData) {
     metaData.style = 'text-align: left';
     return value;
