@@ -13,10 +13,13 @@ var processKey = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var wuliaochaxunlist=[];
+var ProcessInstanceId = '';
+var Assignee='';
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_DBGUID = Ext.urlDecode(location.href.split('?')[1]).V_DBGUID;
     V_FLOWSTEP = Ext.urlDecode(location.href.split('?')[1]).V_FLOWSTEP;
+    ProcessInstanceId = Ext.urlDecode(location.href.split('?')[1]).ProcessInstanceId;
 }
 var selectID = [];
 $(function () {
@@ -111,7 +114,7 @@ $(function () {
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                 V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
 
-                Ext.getCmp('nextSprb').select(store.first());
+                Ext.getCmp('nextSprb').select(Assignee);
 
             }
 
@@ -297,6 +300,8 @@ $(function () {
     loadOther();
 
     getTaskId();
+
+    getAssignee();
     $("#btnTask").click(function () {
 
         var owidth = window.document.body.offsetWidth-200;
@@ -317,8 +322,23 @@ $(function () {
     Ext.data.StoreManager.lookup('workCenterStore').on('load', function () {
         Ext.getCmp('addgzzx').select(Ext.data.StoreManager.lookup('workCenterStore').getAt(0));
     });
-});
 
+
+});
+function getAssignee(){
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/InstanceState',
+        method: 'POST',
+        async: false,
+        params: {
+            instanceId: ProcessInstanceId
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            Assignee=resp.list[0].Assignee;
+        }
+    });
+}
 function loadOrder(){
     Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',

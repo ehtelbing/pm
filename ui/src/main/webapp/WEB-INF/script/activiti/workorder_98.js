@@ -11,10 +11,13 @@ var V_PERSONNAME= '';
 var taskId = '';
 var wuliaochaxunlist=[];
 var V_FUNC_LOC='';
+var ProcessInstanceId = '';
+var Assignee='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_V_PLANT == undefined) ? V_V_PLANT = '' : V_V_PLANT = parameters.V_V_PLANT;
     (parameters.V_V_DEPT == undefined) ? V_V_DEPT = '' : V_V_DEPT = parameters.V_V_DEPT;
+    (parameters.ProcessInstanceId == undefined) ? ProcessInstanceId = '' : ProcessInstanceId = parameters.ProcessInstanceId;
 }
 
 Ext.onReady(function () {
@@ -190,7 +193,7 @@ $(function () {
     GetBillMatByOrder();
 
     loadMatList();
-
+    getAssignee();
     loadSPR();
 
     $("#btnTask").click(function () {
@@ -198,7 +201,20 @@ $(function () {
     });
    // Ext.getBody().unmask();//去除页面笼罩
 });
-
+function getAssignee(){
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/InstanceState',
+        method: 'POST',
+        async: false,
+        params: {
+            instanceId: ProcessInstanceId
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            Assignee=resp.list[0].Assignee;
+        }
+    });
+}
 function onClickSave() {
     if ($("#D_FACT_START_DATE").val() == "") {
         alert('请输入完成开始时间');
@@ -1176,6 +1192,7 @@ function loadSPR() {
                 V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
 
                 $("#selApprover").html(result.join(""));
+                $("#selApprover").val(Assignee);
             }
 
             Ext.getBody().unmask();//去除页面笼罩
