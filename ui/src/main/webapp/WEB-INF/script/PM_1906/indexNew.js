@@ -12,7 +12,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            async:true,
+            async: true,
             actionMethods: {
                 read: 'POST'
             },
@@ -26,6 +26,11 @@ Ext.onReady(function () {
                 'V_V_DEPTCODENEXT': '%',
                 'V_V_DEPTTYPE': '基层单位'
             }
+        },
+        listeners: {//给下拉框默认赋值
+            load: function (store, records) {
+                Ext.getCmp('ck').select(ckStore.getAt(0));
+            }
         }
     });
 
@@ -37,7 +42,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            async:true,
+            async: true,
             actionMethods: {
                 read: 'POST'
             },
@@ -50,57 +55,25 @@ Ext.onReady(function () {
                 'V_V_DEPTCODENEXT': '%',
                 'V_V_DEPTTYPE': '主体作业区'
             }
+        },
+        listeners: {//给子集下拉框赋值
+            load: function (store, records) {
+                Ext.getCmp('zyq').select(zyqStore.getAt(0));
+            }
         }
     });
 
     //左上机具store
     var carStore = Ext.create('Ext.data.Store', {
-        id : 'carStore',
-        autoLoad : false,
-        loading : false,
-        pageSize : 20,
-        fields : [ 'V_GUID','V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_CARINDATE', 'V_DE', 'V_FLAG'],
-        proxy : {
-            url : AppUrl + 'CarManage/BASE_EXAMINE_CAR_SEL',
-            type : 'ajax',
-            async : true,
-            actionMethods : {
-                read : 'POST'
-            },
-            extraParams : {},
-            reader : {
-                type : 'json',
-                root : 'list',
-                totalProperty : 'total'
-            }
-        }
-    });
-
-    //左上表格store
-    var zuoshangStore = Ext.create('Ext.data.Store', {
-        storeId: 'zuoshangStore',
+        id: 'carStore',
         autoLoad: false,
-        pageSize: 2,
-        fields: ['data_'],
-        data:[['M'],['S'],['P'],
-            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],
-            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],
-            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],
-            [' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],[' '],[' ']
-        ]
-    });
-
-    //司机详情
-    var driverStore = Ext.create('Ext.data.Store', {
-        storeId: 'driverStore',
-        autoLoad: false,
-        loading : false,
+        loading: false,
         pageSize: 20,
-        fields: ['V_GUID', 'V_CAR_GUID', 'V_DRIVER_NAME', 'V_WORK_DATE', 'V_DRIVER_DE'],
+        fields: ['V_GUID', 'V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_CARINDATE', 'V_DE', 'V_FLAG'],
         proxy: {
-            url: AppUrl +'CarManage/BASE_DRIVER_SEL',
+            url: AppUrl + 'CarManage/BASE_EXAMINE_CAR_SEL',
             type: 'ajax',
-            async : true,
+            async: true,
             actionMethods: {
                 read: 'POST'
             },
@@ -113,17 +86,77 @@ Ext.onReady(function () {
         }
     });
 
+    //左上表格store
+    var zuoshangStore = Ext.create('Ext.data.Store', {
+        storeId: 'zuoshangStore',
+        autoLoad: false,
+        pageSize: 2,
+        fields: ['data_'],
+        data: [['M'], ['S'], ['P'],
+            [' '], [' '], [' '], [' '], [' '], [' '], [' '], [' '],
+            [' '], [' '], [' '], [' '], [' '], [' '], [' '], [' '],
+            [' '], [' '], [' '], [' '], [' '], [' '], [' '], [' '],
+            [' '], [' '], [' '], [' '], [' '], [' '], [' '], [' '], [' '], [' ']
+        ]
+    });
+
+    //司机详情
+    var driverStore = Ext.create('Ext.data.Store', {
+        storeId: 'driverStore',
+        autoLoad: false,
+        loading: false,
+        pageSize: 20,
+        fields: ['V_GUID', 'V_CAR_GUID', 'V_DRIVER_NAME', 'V_WORK_DATE', 'V_DRIVER_DE'],
+        proxy: {
+            url: AppUrl + 'CarManage/BASE_DRIVER_SEL',
+            type: 'ajax',
+            async: true,
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'list',
+                totalProperty: 'total'
+            }
+        }
+    });
+
+    var CCDetailStore = Ext.create('Ext.data.Store', {//出车明细数据集
+        storeId: 'CCDetailStore',
+        autoLoad: false,
+        loading: false,
+        pageSize: 20,
+        fields: ['V_GUID', 'V_CAR_GUID', 'V_DRIVER_GUID', 'V_BEGIN_TIME', 'V_END_TIME', 'V_PLACE', 'V_USE', 'V_STATUS', 'V_USE_TIME'],
+        proxy: {
+            url: AppUrl + 'CarManage/base_driveout_detail_sel',
+            type: 'ajax',
+            async: true,
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'list',
+                totalProperty: 'total'
+            }
+        }
+    });
+
+
     //机具使用明细
     var carUseDetailStore = Ext.create('Ext.data.Store', {
         storeId: 'carUseDetailStore',
         autoLoad: false,
-        loading : false,
+        loading: false,
         pageSize: 20,
         fields: ['V_CARCODE', 'V_CARNAME', 'V_DE', 'V_BEGIN_TIME', 'V_PLACE', 'V_USE_TIME', 'V_USE', 'V_DRIVER_NAME'],
         proxy: {
-            url: AppUrl +'CarManage/BASE_CAR_USE_DETAIL_SEL',
+            url: AppUrl + 'CarManage/BASE_CAR_USE_DETAIL_SEL',
             type: 'ajax',
-            async : true,
+            async: true,
             actionMethods: {
                 read: 'POST'
             },
@@ -140,13 +173,13 @@ Ext.onReady(function () {
     var repairInfoStore = Ext.create('Ext.data.Store', {
         storeId: 'repairInfoStore',
         autoLoad: false,
-        loading : false,
+        loading: false,
         pageSize: 20,
         fields: ['V_CARCODE', 'V_CARNAME', 'D_FACT_START_DATE', 'V_SHORT_TXT', 'V_ORDERID'],
         proxy: {
-            url: AppUrl +'CarManage/BASE_CAR_REP_DETAIL_SEL',
+            url: AppUrl + 'CarManage/BASE_CAR_REP_DETAIL_SEL',
             type: 'ajax',
-            async : true,
+            async: true,
             actionMethods: {
                 read: 'POST'
             },
@@ -244,23 +277,24 @@ Ext.onReady(function () {
     });
 
     //设备树
-    var treeStore=Ext.create('Ext.data.TreeStore', {
-        id : 'treeStore',
-        autoLoad : false,
-        fields : ['sid', 'text', 'parentid','V_EQUSITE']
+    var treeStore = Ext.create('Ext.data.TreeStore', {
+        id: 'treeStore',
+        autoLoad: false,
+        fields: ['sid', 'text', 'parentid', 'V_EQUSITE']
     });
 
     //关联设备表格
     var sbbgStore = Ext.create('Ext.data.Store', {
         storeId: 'sbbgStore',
         autoLoad: false,
-        loading : false,
+        loading: false,
         pageSize: 20,
         fields: ['V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_LINK_TIME', 'V_LINK_PERSON'],
         proxy: {
             url: AppUrl + 'CarManage/BASE_EXAMINE_CAR_BYCODE_SEL',
             type: 'ajax',
-            async : true,
+
+            async: true,
             actionMethods: {
                 read: 'POST'
             },
@@ -315,8 +349,15 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: 'margin:5px 0px 5px 0px'
             },
-            {xtype: 'button', text: '查询', icon: imgpath + '/search.png', style: 'margin:5px 0px 5px 20px', width: 60, handler: _preSelectCarStore},
-            {xtype: 'button', text: '添加', icon: imgpath + '/add.png', width: 60, handler:_insertCar },
+            {
+                xtype: 'button',
+                text: '查询',
+                icon: imgpath + '/search.png',
+                style: 'margin:5px 0px 5px 20px',
+                width: 60,
+                handler: _preSelectCarStore
+            },
+            {xtype: 'button', text: '添加', icon: imgpath + '/add.png', width: 60, handler: _insertCar},
             {xtype: 'button', text: '修改', icon: imgpath + '/edit.png', width: 60, handler: _updateCar}]
     });
 
@@ -334,20 +375,22 @@ Ext.onReady(function () {
             {text: '机具名称', dataIndex: 'V_CARNAME', style: 'text-align: center;', flex: 1},
             {text: '机具类型', dataIndex: 'V_CARTYPE', style: 'text-align: center;', flex: 1},
             {text: '机具归属', dataIndex: 'V_CARGUISUO', style: 'text-align: center;', flex: 1},
-            {text: '机具入厂时间', dataIndex: 'V_CARINDATE', style: 'text-align: center;',  width: 100},
+            {text: '机具入厂时间', dataIndex: 'V_CARINDATE', style: 'text-align: center;', width: 100},
             {text: '机具定额', dataIndex: 'V_DE', style: 'text-align: center;', flex: 1},
             {text: '机具状态', dataIndex: 'V_FLAG', style: 'text-align: center;', flex: 1},
-            {text: '删除',  dataIndex: '',style: 'text-align: center;',  width: 50,
-                renderer : function(v) {
+            {
+                text: '删除', dataIndex: '', style: 'text-align: center;', width: 50,
+                renderer: function (v) {
                     return "<span style='margin-right:10px'><a href='#' onclick='_deleteCar()'>删除</a></span>";
                 }
-            },{text: '报废',  dataIndex: '',style: 'text-align: center;',  width: 50,
-                renderer : function(v) {
+            }, {
+                text: '报废', dataIndex: '', style: 'text-align: center;', width: 50,
+                renderer: function (v) {
                     return "<span style='margin-right:10px'><a href='#' onclick='_disableCar()'>报废</a></span>";
                 }
             }],
-        listeners : {
-            itemclick : function(panel, record, item, index, e, eOpts) {
+        listeners: {//itemclick监听查询司机详情，机具使用明细，机具维修明细，关联设备，机具报废明细的操作
+            itemclick: function (panel, record, item, index, e, eOpts) {
                 _selectDriver(record.get('V_GUID'));
                 _selectCarUseDetail(record.get('V_GUID'));
                 _selectRepairInfo(record.get('V_GUID'));
@@ -355,7 +398,7 @@ Ext.onReady(function () {
                 _preViewImage(record.get('V_GUID'));
             }
         },
-        bbar: [{
+        bbar: [{//汽车数据集的分页
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -369,7 +412,7 @@ Ext.onReady(function () {
         id: 'viewImagePanel',
         editable: false,
         frame: true,
-        border:false,
+        border: false,
         region: 'center',
         title: '机具示意图',
         items: [{
@@ -380,7 +423,7 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'box',
                 id: 'browseImage',
-                autoEl: {
+                autoEl: {//
                     width: window.screen.width / 2 - 110,
                     height: window.screen.height / 2 + 38,
                     tag: 'input',
@@ -423,10 +466,12 @@ Ext.onReady(function () {
             {text: '司机姓名', dataIndex: 'V_DRIVER_NAME', style: 'text-align: center;', flex: 1},
             {text: '上岗时间', dataIndex: 'V_WORK_DATE', style: 'text-align: center;', flex: 1},
             {text: '司机定额', dataIndex: 'V_DRIVER_DE', style: 'text-align: center;', flex: 1},
-            {text: '出车明细',  dataIndex: '',style: 'text-align: center;', width: 60,
-                renderer : function(v) {
+            {
+                text: '出车明细', dataIndex: '', style: 'text-align: center;', width: 60,
+                renderer: function (v) {
                     return "<span style='margin-right:10px'><a href='#' onclick='_carUseDetail()'>查看</a></span>";
-                }}],
+                }
+            }],
         bbar: [{
             xtype: 'pagingtoolbar',
             dock: 'bottom',
@@ -436,6 +481,36 @@ Ext.onReady(function () {
             store: 'driverStore'
         }]
     });
+
+    //出车明细gridpanel
+    var CCDetailPanel = Ext.create("Ext.grid.Panel", {
+        id: 'CCDetailPanel',
+        store: 'CCDetailStore',
+        columnLines: true,
+        frame: true,
+        // selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
+        columns: [
+            {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
+            {text: '出车GUID', dataIndex: 'V_GUID', style: 'text-align: center;', flex: 1},
+            {text: '机具GUID', dataIndex: 'V_CAR_GUID', style: 'text-align: center;', flex: 1},
+            {text: '司机GUID', dataIndex: 'V_DRIVER_GUID', style: 'text-align: center;', flex: 1},
+            {text: '出车开始时间', dataIndex: 'V_BEGIN_TIME', style: 'text-align: center;', flex: 1},
+            {text: '出车结束时间', dataIndex: 'V_END_TIME', style: 'text-align: center;', flex: 1},
+            {text: '地点', dataIndex: 'V_PLACE', style: 'text-align: center;', flex: 1},
+            {text: '用途', dataIndex: 'V_USE', style: 'text-align: center;', flex: 1},
+            {text: '车辆状态', dataIndex: 'V_STATUS', style: 'text-align: center;', flex: 1},
+            {text: '使用台时', dataIndex: 'V_USE_TIME', style: 'text-align: center;', flex: 1}
+        ],
+        bbar: [{
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'CCDetailStore'
+        }]
+    });
+
 
     var sjxqPanel = Ext.create('Ext.panel.Panel', {
         title: '司机详情',
@@ -622,7 +697,7 @@ Ext.onReady(function () {
         items: [{
             xtype: 'combo',
             id: 'ck',
-            store: ckStore,
+            store: ckStore,//根节点数据集，厂矿数据集
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
@@ -630,24 +705,24 @@ Ext.onReady(function () {
             labelWidth: 35,
             forceSelection: true,
             fieldLabel: '厂矿',
-            listeners : {
-                select : function(combo, records) {
-                    if (records.length != null) {//空选择不处理。(点击下拉框，然后点击页面其他位置)
-                        _selectDept(records[0].get('V_DEPTCODE'));//级联操作，加载级联下拉框Store
-                    }
+            listeners: {
+                change: function (combo, records) {
+                    _selectDept();
                 }
+
             }
         }, {
             xtype: 'combo',
             id: 'zyq',
-            store: zyqStore,
+            store: zyqStore,//作业区数据集
             queryMode: 'local',
             valueField: 'V_DEPTCODE',
             displayField: 'V_DEPTNAME',
             //emptyText: '全部',
             forceSelection: true,
-            fieldLabel: '作业区',listeners : {
-                select : function(combo, records) {
+            fieldLabel: '作业区',
+            listeners: {
+                change: function (combo, records) {
                     _queryTree();
                 }
             }
@@ -660,11 +735,11 @@ Ext.onReady(function () {
         title: '设备类型树',
         region: 'west',
         width: '30%',
-        rootVisible : false,
+        rootVisible: false,
         autoScroll: true,
         store: treeStore,
-        listeners : {
-            itemclick:TreeChecked
+        listeners: {
+            itemclick: TreeChecked
         }
     });
 
@@ -713,8 +788,9 @@ Ext.onReady(function () {
             {text: '功能位置', dataIndex: 'V_EQUSITE', align: 'center', flex: 1},
             {text: '关联时间', dataIndex: 'V_LINK_TIME', align: 'center', flex: 1},
             {text: '关联人', dataIndex: 'V_LINK_PERSON', align: 'center', flex: 1},
-            {text: '取消关联',  dataIndex: '',style: 'text-align: center;',width:80,
-                renderer : function(v) {
+            {
+                text: '取消关联', dataIndex: '', style: 'text-align: center;', width: 80,
+                renderer: function (v) {
                     return "<span style='margin-right:10px'><a href='#' onclick='_deleteLink()'>取消关联</a></span>";
                 }
             }],
@@ -801,6 +877,44 @@ Ext.onReady(function () {
         }]
     });
 
+    var chakancar = Ext.create('Ext.window.Window', {
+        id: 'chakancar',
+        width: 850,
+        height: 500,
+        title: '出车明细',
+        modal: true,//弹出窗口时后面背景不可编辑
+        closeAction: 'hide',
+        layout: 'fit',
+        closable: true,
+        items: [Ext.create("Ext.grid.Panel", {
+            id: 'CCDetailPanel',
+            store: 'CCDetailStore',
+            columnLines: true,
+            columns: [
+                {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
+                {text: '出车GUID', dataIndex: 'V_GUID', style: 'text-align: center;', flex: 1},
+                {text: '机具GUID', dataIndex: 'V_CAR_GUID', style: 'text-align: center;', flex: 1},
+                {text: '司机GUID', dataIndex: 'V_DRIVER_GUID', style: 'text-align: center;', flex: 1},
+                {text: '出车开始时间', dataIndex: 'V_BEGIN_TIME', style: 'text-align: center;', width: 120},
+                {text: '出车结束时间', dataIndex: 'V_END_TIME', style: 'text-align: center;', width: 120},
+                {text: '地点', dataIndex: 'V_PLACE', style: 'text-align: center;', flex: 1},
+                {text: '用途', dataIndex: 'V_USE', style: 'text-align: center;', flex: 1},
+                {text: '车辆状态', dataIndex: 'V_STATUS', style: 'text-align: center;', flex: 1},
+                {text: '使用台时', dataIndex: 'V_USE_TIME', style: 'text-align: center;', flex: 1}
+            ],
+            bbar: [{
+                xtype: 'pagingtoolbar',
+                dock: 'bottom',
+                displayInfo: true,
+                displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+                emptyMsg: '没有记录',
+                store: 'CCDetailStore',
+                width: '100%'
+            }]
+        })]
+    });
+
+
     //机具报废明细
     var jjbfmxPanel = Ext.create('Ext.Panel', {
         id: 'jjbfmxPanel',
@@ -819,7 +933,7 @@ Ext.onReady(function () {
     });
 
     var tab1 = Ext.create('Ext.tab.Panel', {
-        id: 'tab1',
+        id: 'tab1',//相关司机详情，机具使用明细，机具维修明细，关联设备，机具报废明细
         frame: true,
         items: [sjxqPanel, jjsymxPanel, tab2, glsbPanel, jjbfmxPanel]
     });
@@ -870,18 +984,19 @@ Ext.onReady(function () {
         }]
     });
 
-    Ext.getCmp("sblxTree").on("beforeload",function(store,operation){
-        if(operation.node.data.parentid==-1){
-            Ext.apply(store.proxy.extraParams,{
-                    V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                    V_V_DEPTCODE:Ext.getCmp('ck').getValue(),
-                    V_V_DEPTNEXTCODE:Ext.getCmp('zyq').getValue(),
-                    V_V_EQUTYPECODE:'%',
-                    V_V_EQUCODE:operation.node.data.sid
+    Ext.getCmp("sblxTree").on("beforeload", function (store, operation) {
+        if (operation.node.data.parentid == -1) {
+            Ext.apply(store.proxy.extraParams, {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_V_DEPTCODE: Ext.getCmp('ck').getValue(),
+                    V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue(),
+                    V_V_EQUTYPECODE: '%',
+                    V_V_EQUCODE: operation.node.data.sid
                 },
-                store.proxy.url=AppUrl + 'pm_19/PRO_SAP_PM_CHILDEQU_TREE')
+                store.proxy.url = AppUrl + 'pm_19/PRO_SAP_PM_CHILDEQU_TREE')
         }
     });
+    _preSelectCarStore();
 });
 
 var insertCarWindow = Ext.create('Ext.window.Window', {
@@ -900,35 +1015,40 @@ var insertCarWindow = Ext.create('Ext.window.Window', {
         {xtype: 'textfield', id: 'WIN_CAR_NAME_', fieldLabel: '机具名称', width: '300'},
         {xtype: 'textfield', id: 'WIN_CAR_TYPE_', fieldLabel: '机具类型', width: '300'},
         {xtype: 'textfield', id: 'WIN_GS_', fieldLabel: '机具归属', width: '300'},
-        {xtype: 'combo',
-        id: 'WIN_FLAG_',
-        fieldLabel: '机具状态',
-        displayField: 'displayField',
-        valueField: 'valueField',
-        store: [['在用', '在用'], ['停用', '停用']],
-        queryMode: 'local',
-        value: '在用',
-        editable: false,
-        width: '300'
-    },{xtype : 'datefield',//日期录入
-            id : 'WIN_CAR_INDATE_',
-            format : 'Y-m-d H:i:s',
-            submitFormat : 'Y-m-d H:i:s',
-            fieldLabel : '机具入厂时间'
+        {
+            xtype: 'combo',
+            id: 'WIN_FLAG_',
+            fieldLabel: '机具状态',
+            displayField: 'displayField',
+            valueField: 'valueField',
+            store: [['在用', '在用'], ['停用', '停用']],
+            queryMode: 'local',
+            value: '在用',
+            editable: false,
+            width: '300'
+        }, {
+            xtype: 'datefield',//日期录入
+            id: 'WIN_CAR_INDATE_',
+            format: 'Y-m-d H:i:s',
+            submitFormat: 'Y-m-d H:i:s',
+            fieldLabel: '机具入厂时间'
         },
         {xtype: 'numberfield', id: 'WIN_DE_', fieldLabel: '机具定额', width: '300'}],
     buttons: [{
         xtype: 'button',
         text: '保存',
         width: 40,
-        handler: function () {_insertCarSave();}
-    }, {xtype: 'button', text: '取消', width: 40, handler: function () {
+        handler: function () {
+            _insertCarSave();
+        }
+    }, {
+        xtype: 'button', text: '取消', width: 40, handler: function () {
             Ext.getCmp('insertCarWindow').hide();
         }
     }]
 });
 
-var updateCarWindow = Ext.create('Ext.window.Window', {
+var updateCarWindow = Ext.create('Ext.window.Window', {//修改机具的窗口
     id: 'updateCarWindow',
     width: 320,
     height: 380,
@@ -944,7 +1064,8 @@ var updateCarWindow = Ext.create('Ext.window.Window', {
         {xtype: 'textfield', id: 'WIN2_CAR_NAME_', fieldLabel: '机具名称', width: '300'},
         {xtype: 'textfield', id: 'WIN2_CAR_TYPE_', fieldLabel: '机具类型', width: '300'},
         {xtype: 'textfield', id: 'WIN2_GS_', fieldLabel: '机具归属', width: '300'},
-        {xtype: 'combo',
+        {
+            xtype: 'combo',
             id: 'WIN2_FLAG_',
             fieldLabel: '机具状态',
             displayField: 'displayField',
@@ -954,28 +1075,32 @@ var updateCarWindow = Ext.create('Ext.window.Window', {
             value: '在用',
             editable: false,
             width: '300'
-        },{xtype : 'datefield',//日期录入
-            id : 'WIN2_CAR_INDATE_',
-            format : 'Y-m-d H:i:s',
-            submitFormat : 'Y-m-d H:i:s',
-            fieldLabel : '机具入厂时间'
+        }, {
+            xtype: 'datefield',//日期录入
+            id: 'WIN2_CAR_INDATE_',
+            format: 'Y-m-d H:i:s',
+            submitFormat: 'Y-m-d H:i:s',
+            fieldLabel: '机具入厂时间'
         },
         {xtype: 'numberfield', id: 'WIN2_DE_', fieldLabel: '机具定额', width: '300'}],
     buttons: [{
         xtype: 'button',
         text: '保存',
         width: 40,
-        handler: function () {_updateCarSave();}
-    }, {xtype: 'button', text: '取消', width: 40, handler: function () {
-        Ext.getCmp('updateCarWindow').hide();
-    }
+        handler: function () {
+            _updateCarSave();
+        }
+    }, {
+        xtype: 'button', text: '取消', width: 40, handler: function () {
+            Ext.getCmp('updateCarWindow').hide();
+        }
     }]
 });
 
 var insertDriverWindow = Ext.create('Ext.window.Window', {
     id: 'insertDriverWindow',
     width: 320,
-    height: 380,
+    height: 200,
     layout: 'vbox',
     title: '编辑',
     modal: true,//弹出窗口时后面背景不可编辑
@@ -984,13 +1109,25 @@ var insertDriverWindow = Ext.create('Ext.window.Window', {
     closable: true,
     defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
     items: [
+        {xtype: 'textfield', id: 'INS_DRIVER_GUID', fieldLabel: '司机编码'},
+        {xtype: 'textfield', id: 'INS_CAR_GUID', fieldLabel: '机具编码'},
         {xtype: 'textfield', id: 'INS_DRIVER_NAME', fieldLabel: '司机姓名'},
-        {xtype: 'datefield', id: 'INS_WORK_DATE', fieldLabel: '上岗时间', format : 'Y-m-d H:i:s', submitFormat : 'Y-m-d H:i:s'},
+        {
+            xtype: 'datefield',
+            id: 'INS_WORK_DATE',
+            fieldLabel: '上岗时间',
+            format: 'Y-m-d H:i:s',
+            submitFormat: 'Y-m-d H:i:s'
+        },
         {xtype: 'textfield', id: 'INS_DRIVER_DE', fieldLabel: '司机定额'}],
-    buttons: [{xtype: 'button', text: '保存', width: 40, handler: function () {_insertDriverSave();}
-    }, {xtype: 'button', text: '取消', width: 40, handler: function () {
-        Ext.getCmp('insertDriverWindow').hide();
-    }
+    buttons: [{
+        xtype: 'button', text: '保存', width: 40, handler: function () {
+            _insertDriverSave();
+        }
+    }, {
+        xtype: 'button', text: '取消', width: 40, handler: function () {
+            Ext.getCmp('insertDriverWindow').hide();
+        }
     }]
 });
 
@@ -1007,16 +1144,40 @@ var updateDriverWindow = Ext.create('Ext.window.Window', {
     defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
     items: [
         {xtype: 'textfield', id: 'UPD_DRIVER_NAME', fieldLabel: '司机姓名'},
-        {xtype: 'datefield', id: 'UPD_WORK_DATE', fieldLabel: '上岗时间', format : 'Y-m-d H:i:s', submitFormat : 'Y-m-d H:i:s'},
+        {
+            xtype: 'datefield',
+            id: 'UPD_WORK_DATE',
+            fieldLabel: '上岗时间',
+            format: 'Y-m-d H:i:s',
+            submitFormat: 'Y-m-d H:i:s'
+        },
         {xtype: 'textfield', id: 'UPD_DRIVER_DE', fieldLabel: '司机定额'}],
-    buttons: [{xtype: 'button', text: '保存', width: 40, handler: function () {_updateDriverSave();}
-    }, {xtype: 'button', text: '取消', width: 40, handler: function () {
-        Ext.getCmp('updateDriverWindow').hide();
-    }
+    buttons: [{
+        xtype: 'button', text: '保存', width: 40, handler: function () {
+            _updateDriverSave();
+        }
+    }, {
+        xtype: 'button', text: '取消', width: 40, handler: function () {
+            Ext.getCmp('updateDriverWindow').hide();
+        }
     }]
 });
 
-function _preSelectCarStore() {
+var CCDetailWindow = Ext.create('Ext.window.Window', {//暂时不用
+    id: 'CCDetailWindow',
+    width: 320,
+    height: 380,
+    layout: 'vbox',
+    title: '编辑',
+    modal: true,//弹出窗口时后面背景不可编辑
+    frame: true,
+    closeAction: 'hide',
+    closable: true,
+    defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+    items: []
+});
+
+function _preSelectCarStore() {//查询机具的方法
     Ext.data.StoreManager.lookup('carStore').load({
         params: {
             V_V_CARCODE: Ext.getCmp('CAR_CODE_').getValue(),
@@ -1032,16 +1193,13 @@ function _insertCar() {
     Ext.getCmp('WIN_GS_').setValue('');
     Ext.getCmp('WIN_CAR_INDATE_').setValue('');
     Ext.getCmp('WIN_DE_').setValue('');
-
     Ext.getCmp('insertCarWindow').show();
 }
 
 function _updateCar() {
     var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
-    alert(Ext.Date.format(records[0].data.V_CAR_INDATE, 'Y-m-d H:i:s'));
-
     if (records.length != 1) {
-        Ext.Msg.alert("操作信息",'请选择一条数据进行修改！');
+        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
         return false;
     }
     updCarGuid = records[0].data.V_GUID;
@@ -1050,39 +1208,40 @@ function _updateCar() {
     Ext.getCmp('WIN2_CAR_TYPE_').setValue(records[0].data.V_CARTYPE);
     Ext.getCmp('WIN2_GS_').setValue(records[0].data.V_CARGUISUO);
     Ext.getCmp('WIN2_FLAG_').setValue(records[0].data.V_FLAG);
-    Ext.getCmp('WIN2_CAR_INDATE_').setValue(Ext.Date.format(records[0].data.V_CAR_INDATE, 'Y-m-d H:i:s'));
+    //将时间截取
+    Ext.getCmp('WIN2_CAR_INDATE_').setValue((records[0].data.V_CARINDATE).substring(0, 19));
     Ext.getCmp('WIN2_DE_').setValue(records[0].data.V_DE);
     Ext.getCmp('updateCarWindow').show();
 
 }
 
 function _insertCarSave() {
-        Ext.Ajax.request({
-            url: AppUrl + 'CarManage/BASE_EXAMINE_CAR_INS',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_CARCODE: Ext.getCmp('WIN_CAR_CODE_').getValue(),
-                V_V_CARNAME: Ext.getCmp('WIN_CAR_NAME_').getValue(),
-                V_V_CARTYPE: Ext.getCmp('WIN_CAR_TYPE_').getValue(),
-                V_V_CARGUISUO: Ext.getCmp('WIN_GS_').getValue(),
-                V_V_CARINDATE:Ext.Date.format(Ext.getCmp('WIN_CAR_INDATE_').getValue(), 'Y-m-d'),
-                V_V_FLAG: Ext.getCmp('WIN_FLAG_').getValue(),
-                V_V_CARINFO: '',
-                V_V_DE: Ext.getCmp('WIN_DE_').getValue()
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    //top.banner.Toast.alert('信息', '成功', 1000);
-                    Ext.getCmp('insertCarWindow').hide();
-                    Ext.Msg.alert("信息", "成功！");
-                    _preSelectCarStore();
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
-                }
+    Ext.Ajax.request({
+        url: AppUrl + 'CarManage/BASE_EXAMINE_CAR_INS',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_CARCODE: Ext.getCmp('WIN_CAR_CODE_').getValue(),
+            V_V_CARNAME: Ext.getCmp('WIN_CAR_NAME_').getValue(),
+            V_V_CARTYPE: Ext.getCmp('WIN_CAR_TYPE_').getValue(),
+            V_V_CARGUISUO: Ext.getCmp('WIN_GS_').getValue(),
+            V_V_CARINDATE: Ext.Date.format(Ext.getCmp('WIN_CAR_INDATE_').getValue(), 'Y-m-d'),
+            V_V_FLAG: Ext.getCmp('WIN_FLAG_').getValue(),
+            V_V_CARINFO: '',
+            V_V_DE: Ext.getCmp('WIN_DE_').getValue()
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);
+            if (data.INFO == 'SUCCESS') {
+                //top.banner.Toast.alert('信息', '成功', 1000);
+                Ext.getCmp('insertCarWindow').hide();
+                Ext.Msg.alert("信息", "成功！");
+                _preSelectCarStore();
+            } else {
+                Ext.Msg.alert("信息", "失败！");
             }
-        });
+        }
+    });
 }
 
 function _updateCarSave() {
@@ -1091,12 +1250,12 @@ function _updateCarSave() {
         method: 'POST',
         async: false,
         params: {
-            V_V_GUID:updCarGuid,
+            V_V_GUID: updCarGuid,
             V_V_CARCODE: Ext.getCmp('WIN2_CAR_CODE_').getValue(),
             V_V_CARNAME: Ext.getCmp('WIN2_CAR_NAME_').getValue(),
             V_V_CARTYPE: Ext.getCmp('WIN2_CAR_TYPE_').getValue(),
             V_V_CARGUISUO: Ext.getCmp('WIN2_GS_').getValue(),
-            V_V_CARINDATE:Ext.Date.format(Ext.getCmp('WIN2_CAR_INDATE_').getValue(), 'Y-m-d'),
+            V_V_CARINDATE: Ext.Date.format(Ext.getCmp('WIN_CAR_INDATE_').getValue(), 'Y-m-d'),
             V_V_FLAG: Ext.getCmp('WIN2_FLAG_').getValue(),
             V_V_CARINFO: '',
             V_V_DE: Ext.getCmp('WIN2_DE_').getValue()
@@ -1121,7 +1280,7 @@ function _deleteCar() {
         method: 'POST',
         async: false,
         params: {
-            V_V_GUID:records[0].data.V_GUID
+            V_V_GUID: records[0].data.V_GUID
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);
@@ -1136,15 +1295,14 @@ function _deleteCar() {
     });
 }
 
-function _disableCar(){
-    alert("报废");
+function _disableCar() {
     var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
     Ext.Ajax.request({
         url: AppUrl + 'CarManage/BASE_EXAMINE_CAR_DIS',
         method: 'POST',
         async: false,
         params: {
-            V_V_GUID:records[0].data.V_GUID
+            V_V_GUID: records[0].data.V_GUID
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);
@@ -1160,7 +1318,7 @@ function _disableCar(){
 }
 
 
-function _selectDriver(V_GUID){
+function _selectDriver(V_GUID) {
     insDriverGuid = V_GUID;
     var driverStore = Ext.data.StoreManager.lookup('driverStore');
     driverStore.proxy.extraParams.V_V_GUID = V_GUID;
@@ -1168,7 +1326,9 @@ function _selectDriver(V_GUID){
     driverStore.load();
 }
 
-function _insertDriver(){
+function _insertDriver() {
+    Ext.getCmp('INS_DRIVER_GUID').setValue(Ext.data.IdGenerator.get('uuid').generate()).hide();
+    Ext.getCmp('INS_CAR_GUID').setValue(insDriverGuid).hide();
     Ext.getCmp('INS_DRIVER_NAME').setValue('');
     Ext.getCmp('INS_WORK_DATE').setValue('');
     Ext.getCmp('INS_DRIVER_DE').setValue('');
@@ -1176,13 +1336,14 @@ function _insertDriver(){
     Ext.getCmp('insertDriverWindow').show();
 }
 
-function _insertDriverSave(){
+function _insertDriverSave() {
     Ext.Ajax.request({
         url: AppUrl + 'CarManage/BASE_DRIVER_INS',
         method: 'POST',
         async: false,
         params: {
-            V_V_CAR_GUID:insDriverGuid,
+            V_V_DRIVER_GUID: Ext.getCmp('INS_DRIVER_GUID').getValue(),
+            V_V_CAR_GUID: Ext.getCmp('INS_CAR_GUID').getValue(),
             V_V_DRIVER_NAME: Ext.getCmp('INS_DRIVER_NAME').getValue(),
             V_V_WORK_DATE: Ext.Date.format(Ext.getCmp('INS_WORK_DATE').getValue(), 'Y-m-d'),
             V_V_DRIVER_DE: Ext.getCmp('INS_DRIVER_DE').getValue()
@@ -1202,30 +1363,29 @@ function _insertDriverSave(){
     });
 }
 
-function _updateDriver(){
+function _updateDriver() {//修改司机详情
     var records = Ext.getCmp('driverPanel').getSelectionModel().getSelection();
-    //alert(Ext.Date.format(records[0].data.V_CAR_INDATE, 'Y-m-d H:i:s'));
-
     if (records.length != 1) {
-        Ext.Msg.alert("操作信息",'请选择一条数据进行修改！');
+        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
         return false;
     }
     updDriverGuid = records[0].data.V_GUID;
     Ext.getCmp('UPD_DRIVER_NAME').setValue(records[0].data.V_DRIVER_NAME);
-    Ext.getCmp('UPD_WORK_DATE').setValue(Ext.Date.format(records[0].data.V_WORK_DATE, 'Y-m-d H:i:s'));
+    Ext.getCmp('UPD_WORK_DATE').setValue((records[0].data.V_WORK_DATE).substring(0, 19));
     Ext.getCmp('UPD_DRIVER_DE').setValue(records[0].data.V_DRIVER_DE);
     Ext.getCmp('updateDriverWindow').show();
 }
 
-function _updateDriverSave(){
+
+function _updateDriverSave() {
     Ext.Ajax.request({
         url: AppUrl + 'CarManage/BASE_DRIVER_UPD',
         method: 'POST',
         async: false,
         params: {
-            V_V_GUID:updDriverGuid,
+            V_V_GUID: updDriverGuid,
             V_V_DRIVER_NAME: Ext.getCmp('UPD_DRIVER_NAME').getValue(),
-            V_V_WORK_DATE:Ext.Date.format(Ext.getCmp('UPD_WORK_DATE').getValue(), 'Y-m-d'),
+            V_V_WORK_DATE: Ext.Date.format(Ext.getCmp('INS_WORK_DATE').getValue(), 'Y-m-d'),
             V_V_DRIVER_DE: Ext.getCmp('UPD_DRIVER_DE').getValue()
         },
         success: function (resp) {
@@ -1243,14 +1403,14 @@ function _updateDriverSave(){
     });
 }
 
-function _deleteDriver(){
+function _deleteDriver() {
     var records = Ext.getCmp('driverPanel').getSelectionModel().getSelection();
     Ext.Ajax.request({
         url: AppUrl + 'CarManage/BASE_DRIVER_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_GUID:records[0].data.V_GUID
+            V_V_GUID: records[0].data.V_GUID
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);
@@ -1266,7 +1426,7 @@ function _deleteDriver(){
     });
 }
 
-function _selectCarUseDetail(V_GUID){
+function _selectCarUseDetail(V_GUID) {
     var carUseDetailStore = Ext.data.StoreManager.lookup('carUseDetailStore');
     carUseDetailStore.proxy.extraParams.V_V_GUID = V_GUID;
     carUseDetailStore.currentPage = 1;
@@ -1276,34 +1436,34 @@ function _selectCarUseDetail(V_GUID){
 function _preUpdateCarStore() {
 }
 
-function _selectRepairInfo(V_GUID){
+function _selectRepairInfo(V_GUID) {
     var repairInfoStore = Ext.data.StoreManager.lookup('repairInfoStore');
     repairInfoStore.proxy.extraParams.V_V_CAR_GUID = V_GUID;
     repairInfoStore.currentPage = 1;
     repairInfoStore.load();
 }
 
-function TreeChecked(TreeChecked){
+function TreeChecked(TreeChecked) {
     _queryEquDetail();
     _queryEquLink();
 }
 
 function _queryEquDetail() {
-    var records=Ext.getCmp('sblxTree').getSelectionModel().getSelection();
-    if(records.length!=1){
-        Ext.Msg.alert("操作信息","请选择一个设备");
+    var records = Ext.getCmp('sblxTree').getSelectionModel().getSelection();
+    if (records.length != 1) {
+        Ext.Msg.alert("操作信息", "请选择一个设备");
         return false;
     }
-    if(records[0].data.sid!='') {
+    if (records[0].data.sid != '') {
         Ext.Ajax.request({
             url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_GET',
             method: 'POST',
-            params:{
-                V_V_EQUCODE:records[0].data.sid
+            params: {
+                V_V_EQUCODE: records[0].data.sid
             },
-            success:function(resp){
+            success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
-                if(resp.list.length!=0){
+                if (resp.list.length != 0) {
                     Ext.getCmp('rsbbm').setValue(resp.list[0].V_EQUCODE);//设备编码
                     Ext.getCmp('rsbmc').setValue(resp.list[0].V_EQUNAME);//设备名称
                     Ext.getCmp('rsblxbm').setValue(resp.list[0].V_EQUTYPECODE);//设备类型编码
@@ -1327,22 +1487,38 @@ function _queryEquDetail() {
     }
 }
 
-function _selectCarDestroy(V_GUID){
+function _selectCarDestroy(V_GUID) {
     Ext.Ajax.request({
         url: AppUrl + 'CarManage/BASE_EXAMINE_CAR_BYGUID_SEL',
         method: 'POST',
-        params:{
-            V_V_GUID:V_GUID
+        params: {
+            V_V_GUID: V_GUID
         },
-        success:function(resp){
+        success: function (resp) {
             //var resp = Ext.decode(response.responseText);
             var resp = Ext.decode(resp.responseText);
-            if(resp.list.length!=0){
+            if (resp.list.length != 0) {
                 Ext.getCmp('jjbm_').setValue(resp.list[0].V_CARCODE);//机具编码
                 Ext.getCmp('jjmc_').setValue(resp.list[0].V_CARNAME);//机具名称
                 Ext.getCmp('jjcgsj_').setValue(resp.list[0].V_CARINDATE);//机具采购时间
                 Ext.getCmp('jjcgfy_').setValue(resp.list[0].V_PRICE);//机具采购费用
                 Ext.getCmp('jjssjg_').setValue(resp.list[0].V_CARGUISUO);//机具所属机构
+                data1 = Ext.util.Format.date(new Date(), 'Y-m-d h:i:s');
+
+                data2 = resp.list[0].V_CARINDATE.substring(0, 19);
+                alert(data1.toString());
+                alert(data2);
+                alert(Ext.Date.getElapsed(data2.toString(), data1.toString()));
+
+                //  data2=Ext.Date.now()
+
+                // data1=resp.list[0].V_CARINDATE.substring(0, 19)
+                //alert(data1.getMilliseconds())
+                var dateA = new Date("2016-09-20 11:35:32");
+                var dateB = new Date("2016-09-21 00:00:00");
+                alert(Ext.Date.getElapsed(dateA, dateB));
+                //alert(Ext.Date.getElapsed(Ext.util.Format.date(resp.list[0].V_CARINDATE.substring(0, 19),'Y-m-d h:i:s'),Ext.util.Format.date(new Date(), 'Y-m-d h:i:s')));
+                // alert(new Date() - resp.list[0].V_CARINDATE)
                 Ext.getCmp('jjsysc_').setValue(resp.list[0].V_CARINDATE);//机具使用时长
                 Ext.getCmp('jjbfyy_').setValue(resp.list[0].V_REASON);//机具报废原因
             }
@@ -1350,54 +1526,54 @@ function _selectCarDestroy(V_GUID){
     });
 }
 
-function _queryEquLink(){
-    var records=Ext.getCmp('sblxTree').getSelectionModel().getSelection();
-    if(records.length!=1){
-        Ext.Msg.alert("操作信息","请选择一个设备");
+function _queryEquLink() {
+    var records = Ext.getCmp('sblxTree').getSelectionModel().getSelection();
+    if (records.length != 1) {
+        Ext.Msg.alert("操作信息", "请选择一个设备");
         return false;
     }
-    if(records[0].data.sid!='') {
+    if (records[0].data.sid != '') {
         var sbbgStore = Ext.data.StoreManager.lookup('sbbgStore');
         sbbgStore.proxy.extraParams.V_V_EQUCODE = records[0].data.sid;
         sbbgStore.currentPage = 1;
         sbbgStore.load();
     }
 }
-
-function _selectDept(V_DEPTCODE){
-    Ext.getCmp('zyq').setValue(null);
+function _selectDept() {//动态加载子数据集（作业区的数据集）
+    //Ext.getCmp('zyq').setValue(null);
     var zyqStore = Ext.data.StoreManager.lookup('zyqStore');
-    zyqStore.proxy.extraParams.V_V_DEPTCODE = V_DEPTCODE;
+    zyqStore.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('ck').getValue();
     zyqStore.load();
+
 }
 
 //树查询
-function _queryTree(){
+function _queryTree() {
     Ext.getCmp('sblxTree').store.setProxy({
-        type : 'ajax',
-        actionMethods : {
-            read : 'POST'
+        type: 'ajax',
+        actionMethods: {
+            read: 'POST'
         },
-        async : false,
-        url : AppUrl + 'pm_19/PRO_SAP_PM_EQU_TREE',
-        reader : {
-            type : 'json'
+        async: false,
+        url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_TREE',
+        reader: {
+            type: 'json'
         },
-        root : {
-            expanded : true
+        root: {
+            expanded: true
         },
-        extraParams : {
-            V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-            V_V_DEPTCODE:Ext.getCmp('ck').getValue(),
-            V_V_DEPTNEXTCODE:Ext.getCmp('zyq').getValue(),
-            V_V_EQUTYPECODE:'%',
-            V_V_EQUCODE:'%'
+        extraParams: {
+            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTCODE: Ext.getCmp('ck').getValue(),
+            V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue(),
+            V_V_EQUTYPECODE: '%',
+            V_V_EQUCODE: '%'
         }
     });
     Ext.getCmp('sblxTree').store.load();
 }
 
-function _deleteLink(){
+function _deleteLink() {
     alert("取消关联");
     var records = Ext.getCmp('sbbgPanel').getSelectionModel().getSelection();
     Ext.Ajax.request({
@@ -1405,7 +1581,7 @@ function _deleteLink(){
         method: 'POST',
         async: false,
         params: {
-            V_V_EQUCODE:records[0].data.V_EQUCODE
+            V_V_EQUCODE: records[0].data.V_EQUCODE
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);
@@ -1423,12 +1599,16 @@ function _deleteLink(){
 
 function _preViewImage(V_GUID) {
     var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID;
-
     Ext.getCmp("browseImage").getEl().dom.src = url;
 }
 
-function _carUseDetail(){
+function _carUseDetail() {//查看的弹出窗口
     var records = Ext.getCmp('driverPanel').getSelectionModel().getSelection();
+    var CCDetailStore = Ext.data.StoreManager.lookup('CCDetailStore');
+    CCDetailStore.proxy.extraParams.V_V_GUID = records[0].data.V_GUID;
+    CCDetailStore.currentPage = 1;
+    CCDetailStore.load();
+    Ext.getCmp('chakancar').show();
 
 }
 
