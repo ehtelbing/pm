@@ -444,14 +444,14 @@ public class CarManageService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call BASE_FILE_IMAGE_SEL" + "(:V_V_GUID,:V_NAME,:V_IMAGE)}");
+            cstmt = conn.prepareCall("{call BASE_FILE_IMAGE_SEL" + "(:V_V_GUID,:V_NAME,:V_FILE)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.registerOutParameter("V_NAME", OracleTypes.VARCHAR);
-            cstmt.registerOutParameter("V_IMAGE", OracleTypes.BLOB);
+            cstmt.registerOutParameter("V_FILE", OracleTypes.BLOB);
 
             cstmt.execute();
             result.put("O_FILENAME", (String) cstmt.getObject("V_NAME"));
-            result.put("O_FILE", cstmt.getBlob("V_IMAGE"));
+            result.put("O_FILE", cstmt.getBlob("V_FILE"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -460,6 +460,166 @@ public class CarManageService {
         }
         logger.debug("result:" + result);
         logger.info("end BASE_FILE_IMAGE_SEL");
+        return result;
+    }
+
+    //设备类型树
+    public List<Map> PRO_GET_DEPTEQUTYPE_PER(String V_V_PERSONCODE,String V_V_DEPTCODENEXT) throws SQLException {
+        logger.info("begin PRO_GET_DEPTEQUTYPE_PER");
+        List<Map> menu = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_GET_DEPTEQUTYPE_PER" + "(:V_V_PERSONCODE,:V_V_DEPTCODENEXT,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            Map temp = new HashMap();
+            temp.put("parentid","");
+            temp.put("sid", "-1");
+            temp.put("text", "设备类型");
+            temp.put("expanded", true);
+            temp.put("children", GetSapEquChildren(list));
+            menu.add(temp);
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_GET_DEPTEQUTYPE_PER");
+        return menu;
+    }
+    private List<HashMap> GetSapEquChildren(List<HashMap> list){
+        List<HashMap> menu = new ArrayList<HashMap>();
+        for (int i = 0; i < list.size(); i++) {
+                HashMap temp = new HashMap();
+                temp.put("sid", list.get(i).get("V_EQUTYPECODE"));
+                temp.put("text", list.get(i).get("V_EQUTYPENAME"));
+                temp.put("parentid","-1");
+                temp.put("leaf", false);
+                temp.put("expanded", false);
+                menu.add(temp);
+        }
+        return menu;
+    }
+
+    public List<Map> PRO_SAP_PM_EQU_TREE(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+        logger.info("begin PRO_SAP_PM_EQU_TREE");
+        List<Map> menu = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SAP_PM_EQU_TREE" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE,:V_V_EQUTYPECODE,:V_V_EQUCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+           Map temp = new HashMap();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).get("V_EQUCODEUP").equals("")) {
+                    temp.put("sid", list.get(i).get("V_EQUCODE"));
+                    temp.put("text", list.get(i).get("V_EQUNAME"));
+                    temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
+                    temp.put("parentid","-2");
+                    temp.put("leaf", false);
+                    temp.put("expanded", false);
+                    menu.add(temp);
+                }
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_SAP_PM_EQU_TREE");
+        return menu;
+    }
+
+    public List<HashMap> PRO_SAP_PM_CHILDEQU_TREE(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+        logger.info("begin PRO_SAP_PM_CHILDEQU_TREE");
+        List<HashMap> menu = new ArrayList<HashMap>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SAP_PM_CHILDEQU_TREE" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE,:V_V_EQUTYPECODE,:V_V_EQUCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            menu=GetSapChildEquChildren(list,V_V_EQUCODE);
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_SAP_PM_CHILDEQU_TREE");
+        return menu;
+    }
+
+    private List<HashMap> GetSapChildEquChildren(List<HashMap> list,String V_EQUCODE){
+        List<HashMap> menu = new ArrayList<HashMap>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get("V_EQUCODEUP").equals(V_EQUCODE)) {
+                HashMap temp = new HashMap();
+                temp.put("sid", list.get(i).get("V_EQUCODE"));
+                temp.put("text", list.get(i).get("V_EQUNAME"));
+                temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
+                if(GetSapChildEquChildren(list, list.get(i).get("V_EQUCODE").toString()).size()>0){
+                    temp.put("expanded", false);
+                    temp.put("children", GetSapChildEquChildren(list, list.get(i).get("V_EQUCODE").toString()));
+                }else{
+                    temp.put("leaf", true);
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
+
+    public HashMap BASE_DRIVEOUT_DETAIL_SEL(String V_V_GUID) throws SQLException {//出车明细
+        logger.info("begin BASE_DRIVEOUT_DETAIL_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_DRIVEOUT_DETAIL_SEL" + "(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_DRIVEOUT_DETAIL_SEL");
         return result;
     }
 }
