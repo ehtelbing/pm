@@ -509,9 +509,9 @@ public class CarManageService {
         return menu;
     }
 
-    public List<Map> PRO_SAP_PM_EQU_TREE(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+    public List<HashMap> PRO_SAP_PM_EQU_TREE(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
         logger.info("begin PRO_SAP_PM_EQU_TREE");
-        List<Map> menu = new ArrayList<Map>();
+        List<HashMap> menu = new ArrayList<HashMap>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -526,18 +526,7 @@ public class CarManageService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
-           Map temp = new HashMap();
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).get("V_EQUCODEUP").equals("")) {
-                    temp.put("sid", list.get(i).get("V_EQUCODE"));
-                    temp.put("text", list.get(i).get("V_EQUNAME"));
-                    temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
-                    temp.put("parentid","-2");
-                    temp.put("leaf", false);
-                    temp.put("expanded", false);
-                    menu.add(temp);
-                }
-            }
+            menu=GetSapEquChildren(list, "");
             conn.commit();
         } catch (SQLException e) {
             logger.error(e);
@@ -546,6 +535,22 @@ public class CarManageService {
             conn.close();
         }
         logger.info("end PRO_SAP_PM_EQU_TREE");
+        return menu;
+    }
+    private List<HashMap> GetSapEquChildren(List<HashMap> list,String V_EQUCODE){
+        List<HashMap> menu = new ArrayList<HashMap>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get("V_EQUCODEUP").equals(V_EQUCODE)) {
+                HashMap temp = new HashMap();
+                temp.put("sid", list.get(i).get("V_EQUCODE"));
+                temp.put("text", list.get(i).get("V_EQUNAME"));
+                temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
+                temp.put("parentid","-2");
+                temp.put("leaf", false);
+                temp.put("expanded", false);
+                menu.add(temp);
+            }
+        }
         return menu;
     }
 
