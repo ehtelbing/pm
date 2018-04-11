@@ -340,4 +340,68 @@ public class CarManageController {
         result.put("success",true);
         return result;
     }
+
+    //设备类型树
+    @RequestMapping(value = "/PRO_GET_DEPTEQUTYPE_PER", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> DepartAndEquTypeTree(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                          @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
+        List<Map> result = CarManageService.PRO_GET_DEPTEQUTYPE_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_SAP_PM_EQU_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PRO_SAP_PM_EQU_TREE(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                         @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                         @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
+        List<Map> result = CarManageService.PRO_SAP_PM_EQU_TREE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_SAP_PM_CHILDEQU_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public List<HashMap> PRO_SAP_PM_CHILDEQU_TREE(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                  @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                                  @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                  @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        List<HashMap> result = CarManageService.PRO_SAP_PM_CHILDEQU_TREE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE);
+        return result;
+    }
+
+    //出车详情
+    @RequestMapping(value = "/BASE_DRIVEOUT_DETAIL_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> BASE_DRIVEOUT_DETAIL_SEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "start") Integer start,
+            @RequestParam(value = "limit") Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = CarManageService.BASE_DRIVEOUT_DETAIL_SEL(V_V_GUID);
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
+    }
 }
