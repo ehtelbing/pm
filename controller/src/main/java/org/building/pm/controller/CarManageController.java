@@ -354,14 +354,14 @@ public class CarManageController {
 
     @RequestMapping(value = "/PRO_SAP_PM_EQU_TREE", method = RequestMethod.POST)
     @ResponseBody
-    public List<Map> PRO_SAP_PM_EQU_TREE(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+    public List<HashMap> PRO_SAP_PM_EQU_TREE(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                          @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                          @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
                                          @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
                                          @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                          HttpServletRequest request,
                                          HttpServletResponse response) throws Exception {
-        List<Map> result = CarManageService.PRO_SAP_PM_EQU_TREE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE);
+        List<HashMap> result = CarManageService.PRO_SAP_PM_EQU_TREE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE);
         return result;
     }
 
@@ -378,7 +378,7 @@ public class CarManageController {
         return result;
     }
 
-    //出车详情
+    //出车详情.
     @RequestMapping(value = "/BASE_DRIVEOUT_DETAIL_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> BASE_DRIVEOUT_DETAIL_SEL(

@@ -950,6 +950,7 @@ Ext.onReady(function () {
         }]
     });
 
+
     Ext.getCmp("sblxTree").on("beforeload", function (store, operation) {
         if (operation.node.data.parentid == -1) {
             Ext.apply(store.proxy.extraParams, {
@@ -1402,12 +1403,7 @@ function TreeChecked(TreeChecked) {
 }
 
 function _queryEquDetail() {
-    var records = Ext.getCmp('sblxTree').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", "请选择一个设备");
-        return false;
-    }
-    if (records[0].data.sid != '') {
+ var records = Ext.getCmp('sblxTree').getSelectionModel().getSelection();
         Ext.Ajax.request({
             url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_GET',
             method: 'POST',
@@ -1437,7 +1433,6 @@ function _queryEquDetail() {
                 }
             }
         });
-    }
 }
 
 function _selectCarDestroy(V_GUID) {
