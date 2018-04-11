@@ -661,6 +661,9 @@ function ConfirmAccept() {
                             }
                         });
                         alert('反馈完成');
+                        window.opener.QueryTab();
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
                         window.close();
                         window.opener.OnPageLoad();
                     } else {

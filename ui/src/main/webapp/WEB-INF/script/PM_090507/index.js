@@ -244,9 +244,12 @@ function Agree() {
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
-
+                            window.opener.QueryTab();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
                             window.close();
                             window.opener.OnPageLoad();
+
                         }
                     }
                 });
@@ -330,9 +333,12 @@ function DisAgree() {
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
-
+                            window.opener.QueryTab();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
                             window.close();
                             window.opener.OnPageLoad();
+
                         }
                     }
                 });

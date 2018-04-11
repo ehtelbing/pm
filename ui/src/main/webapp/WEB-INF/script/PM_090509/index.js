@@ -704,6 +704,9 @@ function accept(){
             var resp = Ext.decode(response.responseText);
             if (resp.list[0].V_INFO == 'SUCCESS') {
                 alert("验收成功!");
+                window.opener.QueryTab();
+                window.opener.QuerySum();
+                window.opener.QueryGrid();
                 window.close();
                 window.opener.gridquery();
             }
@@ -1123,6 +1126,9 @@ function OrderBooked(){
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.list[0].V_INFO == 'SUCCESS') {
+                window.opener.QueryTab();
+                window.opener.QuerySum();
+                window.opener.QueryGrid();
                 window.close();
                 window.opener.gridquery();
             }
@@ -1238,6 +1244,9 @@ function _reserveWorkOrder(){
                 success: function (response) {
                     var resp = Ext.decode(response.responseText);
                     if (resp.list[0].V_INFO == 'SUCCESS') {
+                        window.opener.QueryTab();
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
                         window.close();
                         window.opener.OnPageLoad();
                     }
@@ -1362,6 +1371,9 @@ function orderissued(){
 
 
                             Ext.MessageBox.alert('提示', '工单接收成功', callBack);
+                            window.opener.QueryTab();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
                             function callBack(id) {
                                 selectID.push(V_ORDERGUID);
                                 window.open(AppUrl + "page/No410101/Index.html", selectID,
@@ -1430,6 +1442,9 @@ function OrderBooked(){
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
+            window.opener.QueryTab();
+            window.opener.QuerySum();
+            window.opener.QueryGrid();
             window.close();
             window.opener.OnPageLoad();
 
@@ -1643,6 +1658,9 @@ function ConfirmAccept() {
                             }
                         });
                         alert('反馈完成');
+                        window.opener.QueryTab();
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
                         window.close();
                         window.opener.OnPageLoad();
                     } else {

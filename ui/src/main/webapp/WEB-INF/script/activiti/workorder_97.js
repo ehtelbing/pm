@@ -733,8 +733,12 @@ function comboConfirm(){
 
 										}
 									});
-									window.opener.OnPageLoad();
+									window.opener.QueryTab();
+									window.opener.QuerySum();
+									window.opener.QueryGrid();
 									window.close();
+									window.opener.OnPageLoad();
+
 								}
 							});
 
@@ -780,6 +784,9 @@ function comboConfirm(){
 				var resp=Ext.decode(resp.responseText);
 				if(resp.V_INFO=='成功'){
 					//Ext.Msg.alert('操作信息','保存成功');
+					window.opener.QueryTab();
+					window.opener.QuerySum();
+					window.opener.QueryGrid();
 					window.close();
 					window.opener.OnPageLoad();
 
@@ -1077,14 +1084,14 @@ function QRYS(){
 						// 小神探接口
 						//xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 						Ext.Msg.alert('提示', '验收工单成功');
-						$.ajax({
+						/*$.ajax({
 							url: APP + '/SetMatService',
 							type: 'post',
 							async: false,
 							data: {
 								V_V_ORDERGUID: $.url().param("V_ORDERGUID")
 							},
-							success: function (resp) {
+							success: function (resp) {*/
 								Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
 									method: 'POST',
 									async: false,
@@ -1163,11 +1170,14 @@ function QRYS(){
 
 									}
 								});
-
-								window.opener.OnPageLoad();
+								window.opener.QueryTab();
+								window.opener.QuerySum();
+								window.opener.QueryGrid();
 								window.close();
-							}
-						});
+								window.opener.OnPageLoad();
+
+						/*}
+						});*/
 
 					},
 					error: function (response, opts) {
@@ -1295,7 +1305,9 @@ function ConfirmAccept() {
 						// 小神探接口
 						xstServer($("#V_ORDERGUID").val(),"CLOSE","成功");
 						Ext.Msg.alert('提示','验收工单成功');
-						window.opener.queryGrid();
+						window.opener.QueryTab();
+						window.opener.QuerySum();
+						window.opener.QueryGrid();
 						window.close();
 					},
 					error: function(response, opts) {
@@ -1709,6 +1721,9 @@ function DisAgree() {
 			V_INPER : Ext.util.Cookies.get('v_personcode')
 		},
 		success: function (response) {
+			window.opener.QueryTab();
+			window.opener.QuerySum();
+			window.opener.QueryGrid();
 			window.close();
 			window.opener.OnPageLoad();
 
@@ -1756,6 +1771,9 @@ function DisAgreeP() {
 			V_INPER : Ext.util.Cookies.get('v_personcode')
 		},
 		success: function (response) {
+			window.opener.QueryTab();
+			window.opener.QuerySum();
+			window.opener.QueryGrid();
 			window.close();
 			window.opener.OnPageLoad();
 

@@ -607,6 +607,9 @@ function Submit() {
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
+            window.opener.QueryTab();
+            window.opener.QuerySum();
+            window.opener.QueryGrid();
             window.close();
             window.opener.OnPageLoad();
 
@@ -665,6 +668,9 @@ function toVoid() {
                                 V_INPER : Ext.util.Cookies.get('v_personcode')
                             },
                             success: function (response) {
+                                window.opener.QueryTab();
+                                window.opener.QuerySum();
+                                window.opener.QueryGrid();
                                 window.close();
                                 window.opener.OnPageLoad();
 
