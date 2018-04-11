@@ -74,7 +74,7 @@ Ext.onReady(function () {
         items: [ {
             id: 'gcbm',
             xtype: 'textfield',
-            fieldLabel: '旅行工程编码:',
+            fieldLabel: '放行工程编码:',
             fieldStyle:'background-color: #FFEBCD; background-image: none;',
             editable: false,
             labelWidth: 80,
@@ -86,7 +86,7 @@ Ext.onReady(function () {
         }, {
             id: 'gcmc',
             xtype: 'textfield',
-            fieldLabel: '旅行工程名称:',
+            fieldLabel: '放行工程名称:',
             editable: false,
             labelWidth: 80,
             queryMode: 'local',
@@ -98,7 +98,7 @@ Ext.onReady(function () {
         }, {
             id: 'gcnr',
             xtype: 'textfield',
-            fieldLabel: '旅行工程内容',
+            fieldLabel: '放行工程内容',
             fieldStyle:'background-color: #FFEBCD; background-image: none;',
             editable: false,
             labelWidth: 80,
