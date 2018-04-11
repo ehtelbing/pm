@@ -378,7 +378,7 @@ public class CarManageController {
         return result;
     }
 
-    //出车详情
+    //出车详情.
     @RequestMapping(value = "/BASE_DRIVEOUT_DETAIL_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> BASE_DRIVEOUT_DETAIL_SEL(

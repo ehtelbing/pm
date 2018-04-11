@@ -603,7 +603,7 @@ public class CarManageService {
         return menu;
     }
 
-    public HashMap BASE_DRIVEOUT_DETAIL_SEL(String V_V_GUID) throws SQLException {//出车明细
+    public HashMap BASE_DRIVEOUT_DETAIL_SEL(String V_V_GUID) throws SQLException {//出车明细.
         logger.info("begin BASE_DRIVEOUT_DETAIL_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
