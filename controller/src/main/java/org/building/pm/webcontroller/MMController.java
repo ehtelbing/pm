@@ -500,7 +500,9 @@ public class MMController {
             webPCService.PRO_LOG_WEB_SET("服务日志:"+MMEquurl, null, titleNameTime, "WS_MMToXL", x_personcode);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            test.put("V_CURSOR", "Fail");
         } catch (Exception e) {
+            test.put("V_CURSOR", "Fail");
             e.printStackTrace();
         }
 
