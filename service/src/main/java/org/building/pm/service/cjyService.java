@@ -4524,4 +4524,30 @@ public class cjyService {
         logger.info("end PRO_SAP_PM_EQU_P_UPDATE");
         return result;
     }
+
+    public HashMap PRO_PM_WORKORDER_ET_OPERA_SET(String V_V_GUID,String V_V_FACT_VALUE) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_ET_OPERA_SET");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_ET_OPERA_SET" + "(:V_V_GUID,:V_V_FACT_VALUE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_FACT_VALUE", V_V_FACT_VALUE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_ET_OPERA_SET");
+        return result;
+    }
 }

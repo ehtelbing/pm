@@ -2502,6 +2502,16 @@ public class cjyController {
         Map result = cjyService.PRO_SAP_PM_EQU_P_UPDATE(V_V_EQUCODE,V_V_EQUSITE,V_V_EQUTYPECODE,V_V_CBZX);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_ET_OPERA_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_ET_OPERA_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                       @RequestParam(value = "V_V_FACT_VALUE") String V_V_FACT_VALUE,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_ET_OPERA_SET(V_V_GUID, V_V_FACT_VALUE);
+        return result;
+    }
 }
 
 

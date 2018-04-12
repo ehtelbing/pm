@@ -798,6 +798,7 @@ function comboConfirm(){
 	}
 
 }
+
 function ValueConfirm() {
 	ifYS = 0;
 	var temp = 0;
@@ -810,6 +811,31 @@ function ValueConfirm() {
 	if (temp != 0) {
 		alert("请输入实际值！");
 		return false;
+	}else{
+		var fnum=0;
+		for (var j = 0; j < GXlength; j++) {
+			Ext.Ajax.request({
+				url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_OPERA_SET',
+				method: 'POST',
+				async: false,
+				params: {
+					V_V_GUID: Ext.getCmp('gxguid' + j).getValue(),
+					V_V_FACT_VALUE: Ext.getCmp('fvlaue' + j).getValue()
+
+				},
+				success: function (ret) {
+					var resp = Ext.decode(ret.responseText);
+					if (resp.V_INFO == 'success') {
+						fnum++;
+					}
+
+				}
+			});
+		}
+		if(fnum!=GXlength){
+			alert("实际值保存失败");
+			return;
+		}
 	}
 
 	for (var i = 0; i < GXlength; i++) {
@@ -932,6 +958,16 @@ function ActivitiConfirmAccept(){//确定验收
 								change : valueChange
 							},
 							width : 200
+						},{
+							xtype : 'textfield',
+							id : 'gxguid' + i,
+							fieldStyle : 'background :#FFFF99;',
+							fieldLabel : '工序guid',
+							hidden:true,
+							labelAlign : 'right',
+							labelWidth : 80,
+							width : 200,
+							value:resp.list[i].V_GUID
 						}];
 
 						Ext.getCmp('valuepanel').add(khpanel);
