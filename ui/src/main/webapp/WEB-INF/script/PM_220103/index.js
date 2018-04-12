@@ -1058,8 +1058,8 @@ function _initPlugin() {
         LODOP.SET_SHOW_MODE('HIDE_PAPER_BOARD', 1);
         LODOP.SET_SHOW_MODE('SHOW_SCALEBAR', 1);
     } catch (err) {
-        Ext.Msg.alert('操作信息', '请点击页面上出现的安装打印控件按钮安装打印控件');
-        _printInstall();
+        Ext.Msg.alert('操作信息', '请安装打印控件');
+        //_printInstall();
         return false;
     }
     return true;
