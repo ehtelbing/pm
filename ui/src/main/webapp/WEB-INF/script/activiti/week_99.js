@@ -451,6 +451,9 @@ function _agree() {
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
+                            window.opener.QueryTabW();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
                             window.close();
                             window.opener.OnPageLoad();
                         }
@@ -530,6 +533,9 @@ function _reject() {
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
+                            window.opener.QueryTabW();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
                             window.close();
                             window.opener.OnPageLoad();
                         }

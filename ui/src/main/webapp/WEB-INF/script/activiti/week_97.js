@@ -428,6 +428,9 @@ function _agree() {
                     success: function (response) {
                         var data = Ext.decode(response.responseText);
                         if(data.V_INFO=='success'){
+                            window.opener.QueryTabW();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
                             window.close();
                             window.opener.OnPageLoad();
                         }else{
@@ -482,7 +485,7 @@ function _reject() {
             idea: '不通过',
             parName: ['fqrxg', "flow_yj"],
             parVal: [V_PERSONCODE, spyj],
-            processKey: processKey,
+            processKey: $.url().param("ProcessDefinitionKey"),
             businessKey: V_ORDERGUID,
             V_STEPCODE: 'fqrxg',
             V_STEPNAME: '发起人修改',
@@ -501,14 +504,16 @@ function _reject() {
                     params: {
                         'V_V_ORDERID': V_ORDERGUID,
                         'V_V_PROCESS_NAMESPACE': 'WeekPlan',
-                        'V_V_PROCESS_CODE': processKey,
+                        'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
                         'V_V_STEPCODE': V_STEPCODE,
                         'V_V_STEPNEXT_CODE': 'fqrxg'
                     },
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
-
+                            window.opener.QueryTabW();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
                             window.close();
                             window.opener.OnPageLoad();
                         }

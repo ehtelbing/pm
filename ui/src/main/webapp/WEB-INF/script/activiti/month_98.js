@@ -794,7 +794,7 @@ Ext.onReady(function () {
             handler: _agree
         }, {
             xtype: 'button',
-            text: '驳回',
+            text: '作废',
             style: ' margin: 5px 20px 0px 0px',
             icon: imgpath + '/cross.png',
             handler: _reject
@@ -1046,7 +1046,9 @@ function _agree() {
                                 success: function (ret) {
                                     var resp = Ext.JSON.decode(ret.responseText);
                                     if (resp.V_INFO == 'success') {
-
+                                        window.opener.QueryTabY();
+                                        window.opener.QuerySum();
+                                        window.opener.QueryGrid();
                                         window.close();
                                         window.opener.OnPageLoad();
                                     }
@@ -1097,6 +1099,9 @@ function _reject() {
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
+            window.opener.QueryTabY();
+            window.opener.QuerySum();
+            window.opener.QueryGrid();
             window.close();
             window.opener.OnPageLoad();
 
