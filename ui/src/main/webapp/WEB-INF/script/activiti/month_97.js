@@ -409,12 +409,30 @@ function _agree() {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
+
             if (resp.ret == '任务提交成功') {
-                window.opener.QueryTabY();
-                window.opener.QuerySum();
-                window.opener.QueryGrid();
-                window.close();
-                window.opener.OnPageLoad();
+                Ext.Ajax.request({
+                    url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        'V_V_ORDERID': V_ORDERGUID,
+                        'V_V_PROCESS_NAMESPACE': 'MonthPlan',
+                        'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
+                        'V_V_STEPCODE': V_STEPCODE,
+                        'V_V_STEPNEXT_CODE': 'fqrxg'
+                    },
+                    success: function (ret) {
+                        var resp = Ext.JSON.decode(ret.responseText);
+                        if (resp.V_INFO == 'success') {
+                            window.opener.QueryTabY();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
+                            window.close();
+                            window.opener.OnPageLoad();
+                        }
+                    }
+                });
             }
 
 
