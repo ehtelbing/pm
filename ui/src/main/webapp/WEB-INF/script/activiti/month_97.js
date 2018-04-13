@@ -420,7 +420,7 @@ function _agree() {
                         'V_V_PROCESS_NAMESPACE': 'MonthPlan',
                         'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
                         'V_V_STEPCODE': V_STEPCODE,
-                        'V_V_STEPNEXT_CODE': 'fqrxg'
+                        'V_V_STEPNEXT_CODE': 'lcjs'
                     },
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
