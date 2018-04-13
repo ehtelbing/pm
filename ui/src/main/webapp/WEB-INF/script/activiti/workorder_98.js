@@ -190,7 +190,7 @@ $(function () {
 
     loadPlantlist();
 
-    GetBillMatByOrder();
+    //GetBillMatByOrder();
 
     loadMatList();
     getAssignee();

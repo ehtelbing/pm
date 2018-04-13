@@ -17,7 +17,7 @@ $(function () {
     loadPageInfo();
     loadTaskGrid();
 
-    GetBillMatByOrder();
+ //   GetBillMatByOrder();
     loadMatList();
     loadSPR();
 
