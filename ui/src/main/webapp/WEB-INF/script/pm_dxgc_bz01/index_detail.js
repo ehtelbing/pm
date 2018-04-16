@@ -283,7 +283,7 @@ Ext.onReady(function () {
                 text: '工程总费用',
                 dataIndex: 'V_PLAN_MONEY',
                 width: 120,
-                field: {xtype: 'numberfield'},
+                field: {xtype: 'numberfield',minValue:0},
                 align: 'center',renderer:AtRight
             },
             {text: '工程开始时间', dataIndex: 'V_DATE_B', width: 160, align: 'center',renderer:Atleft},
@@ -1267,7 +1267,7 @@ Ext.onReady(function () {
                         xtype: 'textarea',
                         id: 'sgyc_tab',
                         editable: false,
-                        readOnly: true,
+                      //  readOnly: true,
                         style: 'margin:5px 5px 5px 5px',
                         fieldLabel: '事故预测',
                         labelAlign: 'right',
@@ -1279,7 +1279,7 @@ Ext.onReady(function () {
                         xtype: 'textarea',
                         id: 'aqdc_tab',
                         editable: false,
-                        readOnly: true,
+                       // readOnly: true,
                         style: 'margin:5px 5px 5px 5px',
                         fieldLabel: '安全对策',
                         labelAlign: 'right',
@@ -1935,14 +1935,13 @@ var pageFunction = {
      */
     saveTab: function () {
         var treenode = Ext.getCmp('treegrid').getSelectionModel().getSelection();
-        treeguid = treenode[0].data.V_GUID;
-        fxjhguid = treenode[0].data.V_GUID_FXJH;
-        if (treeguid == '') {
+
+        if (treenode.length == 0) {
             alert("请选择子项");
             return;
-            /*var next = pageFunction.checkNew();
-            if (!next) return;*/
         }
+        treeguid = treenode[0].data.V_GUID;
+        fxjhguid = treenode[0].data.V_GUID_FXJH;
         if (genre == 1) {
             Ext.Ajax.request({
                 url: AppUrl + 'hp/PRO_PM_EQUREPAIRPLAN_SELMAX',
