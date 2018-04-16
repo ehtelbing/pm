@@ -85,8 +85,6 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('zy').select(store.first());
-                // zystoreload = true;
-                //_init();
             }
         }
     });
@@ -109,6 +107,82 @@ Ext.onReady(function () {
             },
             extraParams: {}
         })
+    });
+
+    //设备类型
+    var eTypeStore = Ext.create('Ext.data.Store', {
+        id: 'eTypeStore',
+        autoLoad: true,
+        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME', 'I_ORDER', 'I_ID'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODENEXT':v_deptcode
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('equtype').select(store.first());
+            }
+        }
+    });
+
+    //设备名称
+    var equNameStore = Ext.create('Ext.data.Store', {
+        id: 'equNameStore',
+        autoLoad: false,
+        fields: ['V_EQUCODE', 'V_EQUNAME', 'I_ORDER', 'I_ID'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'PM_06/pro_get_deptequ_per',
+            actionMethods: {
+                read: 'POST'
+            },
+            async: false,
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('equname').select(store.first());
+            }
+        }
+    });
+
+    //子设备名称
+    var subequNameStore = Ext.create('Ext.data.Store', {
+        id: 'subequNameStore',
+        autoLoad: false,
+        fields: ['sid', 'text'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'pm_19/PRO_SAP_PM_CHILDEQU_TREE',
+            actionMethods: {
+                read: 'POST'
+            },
+            async: false,
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                store.insert(0, {text: '全部', sid: '%'});
+                Ext.getCmp('subequname').select(store.first());
+            }
+        }
     });
 
     var qxdjstore = Ext.create("Ext.data.Store", {
@@ -171,33 +245,6 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-            }
-        }
-    });
-
-    var zsbstore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'zsbstore',
-        fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_22/PRO_SAP_EQU_GET_C',
-            // url: 'PRO_SAP_EQU_VIEW',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
-        }),
-        listeners: {
-            load: function (store, records) {
-
-                 Ext.getCmp('zsb').select(store.first());
-
             }
         }
     });
@@ -292,19 +339,60 @@ Ext.onReady(function () {
                         frame: true,
                         border: false,
                         baseCls: 'my-panel-no-border',
-                        items: [
-                            {
-                                id: 'sblx',
-                                xtype: 'textfield',
-                                fieldLabel: '设备类型',
-                                labelWidth: 100,
-                                queryMode: 'local',
-                                //baseCls: 'margin-bottom',
-                                style: ' margin: 5px 0px 0px 0px',
-                                width: 282,
-                                readOnly : true,
-                                labelAlign: 'right'
-                            }, {
+                        items: [{
+                            xtype: 'combo',
+                            id: 'equtype',
+                            store: eTypeStore,
+                            queryMode: 'local',
+                            valueField: 'V_EQUTYPECODE',
+                            displayField: 'V_EQUTYPENAME',
+                            labelWidth: 100,
+                            width: 282,
+                            style: ' margin: 5px 0px 0px 0px',
+                            forceSelection: true,
+                            fieldLabel: '设备类型',
+                            fieldStyle: 'background-color:#FFEBCD;background-image:none;',
+                            editable: false,
+                            listeners: {
+                                change: function () {
+                                    Ext.data.StoreManager.lookup('equNameStore').load({
+                                        params: {
+                                            v_v_personcode: Ext.util.Cookies.get('v_personcode'),
+                                            v_v_deptcodenext: v_deptcode,
+                                            v_v_equtypecode: Ext.getCmp('equtype').getValue()
+                                        }
+                                    });
+                                }
+                            }
+                        }, {
+                            xtype: 'combo',
+                            id: 'equname',
+                            store: equNameStore,
+                            queryMode: 'local',
+                            valueField: 'V_EQUCODE',
+                            displayField: 'V_EQUNAME',
+                            labelWidth: 100,
+                            width: 282,
+                            style: ' margin: 5px 0px 0px 0px',
+                            forceSelection: true,
+                            fieldLabel: '设备名称',
+                            fieldStyle: 'background-color:#FFEBCD;background-image:none;',
+                            editable: false,
+                            listeners: {
+                                change: function () {
+                                    Ext.data.StoreManager.lookup('subequNameStore').load({
+                                        params: {
+                                            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                                            V_V_DEPTCODE: ck,
+                                            V_V_DEPTNEXTCODE: v_deptcode,
+                                            V_V_EQUTYPECODE: Ext.getCmp('equtype').getValue(),
+                                            V_V_EQUCODE: Ext.getCmp('equname').getValue()
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                            /*, {
                                 id: 'zsb',
                                 xtype: 'combo',
                                 store: zsbstore,
@@ -318,16 +406,16 @@ Ext.onReady(function () {
                                 labelAlign: 'right',
                                 style: ' margin: 5px 0px 0px 0px',
                                 width: 250,
-                                fieldStyle: 'background-color:#FFEBCD;background-image:none;'/*,
+                                fieldStyle: 'background-color:#FFEBCD;background-image:none;'*//*,
                                  listeners: {
                                  change: function (field, newValue, oldValue) {
                                  // _ck_zyqfzrload();
                                  // zyq_jxdwload();
                                  // _spload();
                                  }
-                                 }*/
+                                 }*//*
 
-                            }]
+                            }*/]
                     }, {
                         layout: 'column',
                         defaults: {labelAlign: 'right'},
@@ -335,6 +423,21 @@ Ext.onReady(function () {
                         border: false,
                         baseCls: 'my-panel-no-border',
                         items: [{
+                            xtype: 'combo',
+                            id: 'subequname',
+                            store: subequNameStore,
+                            queryMode: 'local',
+                            valueField: 'sid',
+                            displayField: 'text',
+                            labelWidth: 100,
+                            width: 282,
+                            style: ' margin: 5px 0px 0px 0px',
+                            forceSelection: true,
+                            fieldLabel: '子设备',
+                            fieldStyle: 'background-color:#FFEBCD;background-image:none;',
+                            labelAlign: 'right',
+                            editable: false
+                        },{
                             id: 'zy',
                             xtype: 'combo',
                             store: zystore,
@@ -355,27 +458,6 @@ Ext.onReady(function () {
                              _spload();
                              }
                              }*/
-                        }, {
-                            id: 'qxdj',
-                            xtype: 'combo',
-                            store: qxdjstore,
-                            fieldLabel: '缺陷等级',
-                            editable: false,
-                            labelWidth: 100,
-                            displayField: 'V_LEVELNAME',
-                            valueField: 'V_LEVELCODE',
-                            queryMode: 'local',
-                            //baseCls: 'margin-bottom',
-                            style: ' margin: 5px 0px 0px 0px',
-                            width: 250,
-                            fieldStyle: 'background-color:#FFEBCD;background-image:none;',
-                            labelAlign: 'right'/*,
-                             listeners: {
-                             select: function (field, newValue, oldValue) {
-                             _ck_zyfzrload();
-                             _spload();
-                             }
-                             }*/
                         }]
                     }, {
                         layout: 'column',
@@ -384,6 +466,28 @@ Ext.onReady(function () {
                         border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
+                            {
+                                id: 'qxdj',
+                                xtype: 'combo',
+                                store: qxdjstore,
+                                fieldLabel: '缺陷等级',
+                                editable: false,
+                                labelWidth: 100,
+                                displayField: 'V_LEVELNAME',
+                                valueField: 'V_LEVELCODE',
+                                queryMode: 'local',
+                                //baseCls: 'margin-bottom',
+                                style: ' margin: 5px 0px 0px 0px',
+                                width: 282,
+                                fieldStyle: 'background-color:#FFEBCD;background-image:none;',
+                                labelAlign: 'right'/*,
+                             listeners: {
+                             select: function (field, newValue, oldValue) {
+                             _ck_zyfzrload();
+                             _spload();
+                             }
+                             }*/
+                            },
                             {
                                 id: 'fxsjymd',
                                 xtype: 'datefield',
@@ -407,18 +511,18 @@ Ext.onReady(function () {
                                 fieldStyle: 'background-color:#FFEBCD;background-image:none;',
                                 labelAlign: 'right',
                                 width: 80
-                            } ,{
-                                id: 'fxr',
-                                xtype: 'textfield',
-                                fieldLabel: '发现人',
-                                labelWidth: 100,
-                                queryMode: 'local',
-                                //baseCls: 'margin-bottom',
-                                style: ' margin: 5px 0px 0px 0px',
-                                width: 250,
-                                labelAlign: 'right'
-                            }]
-                    },  {
+                            } ]
+                    }, ,{
+                        id: 'fxr',
+                        xtype: 'textfield',
+                        fieldLabel: '发现人',
+                        labelWidth: 100,
+                        queryMode: 'local',
+                        //baseCls: 'margin-bottom',
+                        style: ' margin: 5px 0px 0px 0px',
+                        width: 282,
+                        labelAlign: 'right'
+                    }, {
                         id: 'ycxx',
                         xtype: 'textarea',
                         fieldLabel: '异常现象 ',
@@ -428,7 +532,7 @@ Ext.onReady(function () {
                         fieldStyle: 'background-color: #FFEBCD; background-image: none;',
                         //baseCls: 'margin-bottom',
                         style: ' margin: 5px 0px 0px 0px',
-                        width: 500,
+                        width: 562,
                         labelAlign: 'right'
                     }, {
                         id: 'cljy',
@@ -440,7 +544,7 @@ Ext.onReady(function () {
                         queryMode: 'local',
                         //baseCls: 'margin-bottom',
                         style: ' margin: 5px 0px 0px 0px',
-                        width: 500,
+                        width: 562,
                         labelAlign: 'right'
                     }, {
                         //columnWidth: 1,
@@ -478,37 +582,8 @@ Ext.onReady(function () {
 
      });*/
 
-    _init();
-})
+});
 
-function _init() {
-
-    //.log(ck);
-    var zsbstore = Ext.data.StoreManager.lookup('zsbstore');
-    zsbstore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_ORGCODE: ck,
-        V_V_DEPTCODE: v_deptcode,
-        V_V_EQUTYPECODE: v_equtypecode,
-        V_V_EQUCODE: v_equcode
-
-    };
-    //flowDicListStore.currentPage = 1;
-    zsbstore.load();
-
-    var sbtypestore = Ext.data.StoreManager.lookup('sbtypestore');
-    sbtypestore.proxy.extraParams = {
-        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-        'V_V_DEPTCODENEXT':v_deptcode
-
-    };
-    //matGroupThirdStore.currentPage = 1;
-    sbtypestore.load();
-    var index = sbtypestore.find('V_EQUTYPECODE', v_equtypecode);
-    Ext.getCmp('sblx').setValue(sbtypestore.getAt(index).get('V_EQUTYPENAME'));
-
-
-}
 
 function _savezuizhong()
 {
