@@ -519,7 +519,7 @@ Ext.onReady(function () {
                         //baseCls: 'margin-bottom',
                         style: ' margin: 5px 0px 0px 0px',
                         width: 282,
-                        value: Ext.util.Cookies.get('v_personcode'),
+                        value: Ext.util.Cookies.get('v_personname2'),
                         labelAlign: 'right'
                     }, {
                         id: 'ycxx',
