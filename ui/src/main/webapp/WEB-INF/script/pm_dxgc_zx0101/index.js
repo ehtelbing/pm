@@ -593,7 +593,7 @@ function _savezuizhong() {
         params: {
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_GUID_GC: v_guid_dx,
-            V_V_GUID_QX: RETRUNV_GUID
+            V_V_GUID_QX: Ext.data.IdGenerator.get('uuid').generate()
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值
