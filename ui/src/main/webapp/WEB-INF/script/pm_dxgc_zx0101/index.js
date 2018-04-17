@@ -36,8 +36,6 @@ if (location.href.split('?')[1] != undefined) {
 }
 
 
-
-
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -126,7 +124,7 @@ Ext.onReady(function () {
             },
             extraParams: {
                 'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODENEXT':v_deptcode
+                'V_V_DEPTCODENEXT': v_deptcode
             }
         },
         listeners: {
@@ -189,7 +187,7 @@ Ext.onReady(function () {
         autoLoad: true,
         storeId: 'qxdjstore',
         fields: ['V_LEVELCODE', 'V_LEVELNAME'],
-        proxy:  Ext.create("Ext.ux.data.proxy.Ajax", {
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_LEVEL_SEL',
@@ -265,7 +263,7 @@ Ext.onReady(function () {
         editable: false,
         region: 'center',
         // height: 200,
-        html:"<table border='0' width='500' height='50'><tr> <td> <input id='jyk'type='checkbox' />添加异常现象及建议到常用异常现象及建议库 </td><td> <input type='button' value='从常用异常现象及建议库选择' onclick='_jyk()'</td>  </tr> </table>",//width: 400,
+        html: "<table border='0' width='500' height='50'><tr> <td> <input id='jyk'type='checkbox' />添加异常现象及建议到常用异常现象及建议库 </td><td> <input type='button' value='从常用异常现象及建议库选择' onclick='_jyk()'</td>  </tr> </table>",//width: 400,
         style: ' margin: 5px 0px 0px 0px',
         columnLines: true
         /*store: fileGridStore,
@@ -333,7 +331,7 @@ Ext.onReady(function () {
                                 handler: _close,
                                 style: 'margin: 5px 0px 0px 10px'
                             }]
-                    },{
+                    }, {
                         layout: 'column',
                         defaults: {labelAlign: 'right'},
                         frame: true,
@@ -393,29 +391,29 @@ Ext.onReady(function () {
                             }
                         }
                             /*, {
-                                id: 'zsb',
-                                xtype: 'combo',
-                                store: zsbstore,
-                                fieldLabel: '子设备',
-                                editable: false,
-                                labelWidth: 100,
-                                displayField: 'V_EQUNAME',
-                                valueField: 'V_EQUCODE',
-                                queryMode: 'local',
-                                //baseCls: 'margin-bottom',
-                                labelAlign: 'right',
-                                style: ' margin: 5px 0px 0px 0px',
-                                width: 250,
-                                fieldStyle: 'background-color:#FFEBCD;background-image:none;'*//*,
-                                 listeners: {
-                                 change: function (field, newValue, oldValue) {
-                                 // _ck_zyqfzrload();
-                                 // zyq_jxdwload();
-                                 // _spload();
-                                 }
-                                 }*//*
+                             id: 'zsb',
+                             xtype: 'combo',
+                             store: zsbstore,
+                             fieldLabel: '子设备',
+                             editable: false,
+                             labelWidth: 100,
+                             displayField: 'V_EQUNAME',
+                             valueField: 'V_EQUCODE',
+                             queryMode: 'local',
+                             //baseCls: 'margin-bottom',
+                             labelAlign: 'right',
+                             style: ' margin: 5px 0px 0px 0px',
+                             width: 250,
+                             fieldStyle: 'background-color:#FFEBCD;background-image:none;'*//*,
+                             listeners: {
+                             change: function (field, newValue, oldValue) {
+                             // _ck_zyqfzrload();
+                             // zyq_jxdwload();
+                             // _spload();
+                             }
+                             }*//*
 
-                            }*/]
+                             }*/]
                     }, {
                         layout: 'column',
                         defaults: {labelAlign: 'right'},
@@ -437,7 +435,7 @@ Ext.onReady(function () {
                             fieldStyle: 'background-color:#FFEBCD;background-image:none;',
                             labelAlign: 'right',
                             editable: false
-                        },{
+                        }, {
                             id: 'zy',
                             xtype: 'combo',
                             store: zystore,
@@ -511,8 +509,8 @@ Ext.onReady(function () {
                                 fieldStyle: 'background-color:#FFEBCD;background-image:none;',
                                 labelAlign: 'right',
                                 width: 80
-                            } ]
-                    }, ,{
+                            }]
+                    }, , {
                         id: 'fxr',
                         xtype: 'textfield',
                         fieldLabel: '发现人',
@@ -521,6 +519,7 @@ Ext.onReady(function () {
                         //baseCls: 'margin-bottom',
                         style: ' margin: 5px 0px 0px 0px',
                         width: 282,
+                        value: Ext.util.Cookies.get('v_personcode'),
                         labelAlign: 'right'
                     }, {
                         id: 'ycxx',
@@ -564,11 +563,11 @@ Ext.onReady(function () {
     });
 
 
-   /* Ext.create('Ext.container.Viewport', {
-        id: "viewport",
-        // layout: 'border',
-        items: [panel2, panel3]
-    });*/
+    /* Ext.create('Ext.container.Viewport', {
+     id: "viewport",
+     // layout: 'border',
+     items: [panel2, panel3]
+     });*/
 
     Ext.create('Ext.container.Viewport', {
         id: "viewport",
@@ -585,41 +584,98 @@ Ext.onReady(function () {
 });
 
 
-function _savezuizhong()
-{
+function _savezuizhong() {
+    _save();
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_TOWORK',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_GUID_GC: v_guid_dx,
+            V_V_GUID_QX: RETRUNV_GUID
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);//后台返回的值
+            if (data.success) {//成功，会传回true
+                Ext.MessageBox.alert('提示', '保存成功');
+                RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_GUID=' + RETURNV_ORDERGUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+                //jykload = false;
+                _close();
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: data.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
 
-    if(jykload)
-    {
+    })
+}
 
+/*function callBack(id) {
+ alert(2222);
+ // alert('单击的按钮id是：'+id);
+ //_spupdate();
+ //window.close();
+ //!!!!!!!!!!!这里少东西 !!!!!!!!!!!!!!!!!!!!!!!!后台返回工单ID
+ RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
+ //console.log(RETURNV_ORDERGUID);
+ var owidth = window.document.body.offsetWidth;
+ var oheight = window.document.body.offsetHeight;
+ window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_GUID=' + RETURNV_ORDERGUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+ jykload = false;
+ _close();
+ }*/
+
+function _save() {
+    var time1 = Ext.getCmp('fxsjymd').getSubmitValue() + ' ' + Ext.getCmp('fxsjhis').getSubmitValue();
+
+
+    var checked = $("input[type='checkbox']").is(':checked');
+
+    if (checked) {
+        //Ext.Ajax.request
         Ext.Ajax.request({
-            url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_TOWORK',
-            type: 'ajax',
+            url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_SET',
             method: 'POST',
+            async: false,
             params: {
-                V_V_PERCODE : Ext.util.Cookies.get('v_personcode'),
-                V_V_GUID_GC :v_guid_dx,
-                V_V_GUID_QX  : RETRUNV_GUID
-
+                V_V_GUID_GC: v_guid_dx,
+                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_ORGCODE: ck,
+                V_V_DEPTCODE: v_deptcode,
+                V_V_EQUTYPECODE: Ext.getCmp('equtype').getValue(),
+                V_V_EQUCODE: Ext.getCmp('equname').getValue(),
+                V_V_EQUCHILDCODE: Ext.getCmp('subequname').getValue(),
+                V_V_REPAIRMAJOR_CODE: Ext.getCmp('zy').getValue(),
+                V_V_SOURCECODE: 'defct12',
+                V_V_PERNAME_FX: Ext.getCmp('fxr').getValue(),
+                V_V_SOURCE_GRADE: Ext.getCmp('qxdj').getValue(),
+                V_D_DEFECTDATE: time1,
+                V_V_DEFECTLIST: Ext.getCmp('ycxx').getValue(),
+                V_V_IDEA: Ext.getCmp('cljy').getValue(),
+                V_V_ISTODIC: "是"
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
                 if (data.success) {//成功，会传回true
-                    Ext.MessageBox.alert('提示', '保存成功', callBack);
-                    function callBack(id) {
-                        // alert('单击的按钮id是：'+id);
-                        //_spupdate();
-                        //window.close();
-                        //!!!!!!!!!!!这里少东西 !!!!!!!!!!!!!!!!!!!!!!!!后台返回工单ID
-                        RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
-                        //console.log(RETURNV_ORDERGUID);
-                        var owidth = window.document.body.offsetWidth ;
-                        var oheight = window.document.body.offsetHeight;
-                        window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_GUID=' + RETURNV_ORDERGUID  + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
-                        jykload = false;
-                        _close();
-
-                    }
-
+                    Ext.Msg.alert('提示信息', '成功');
+                    RETRUNV_GUID = data.list[0].V_GUID;
+                    //jykload = true;
                 } else {
                     Ext.MessageBox.show({
                         title: '错误',
@@ -637,92 +693,28 @@ function _savezuizhong()
                     icon: Ext.MessageBox.ERROR
                 })
             }
-
-        })
-
-    }else{
-        Ext.Msg.alert('提示信息', '请先执行保存');
-        return;
-    }
-
-}
-
-function _save()
-{
-    var time1 = Ext.getCmp('fxsjymd').getSubmitValue() +' '+  Ext.getCmp('fxsjhis').getSubmitValue();
-
-
-    var checked = $("input[type='checkbox']").is(':checked');
-    if(checked)
-    {
-         Ext.Ajax.request({
-         url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_SET',
-         type: 'ajax',
-         method: 'POST',
-         params: {
-         V_V_GUID_GC : v_guid_dx,
-         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-         V_V_ORGCODE:ck,
-         V_V_DEPTCODE : v_deptcode,
-         V_V_EQUTYPECODE :v_equtypecode,
-         V_V_EQUCODE : v_equcode,
-         V_V_EQUCHILDCODE : Ext.getCmp('zsb').getValue(),
-         V_V_REPAIRMAJOR_CODE : Ext.getCmp('zy').getValue(),
-         V_V_SOURCECODE :'defct12',
-         V_V_PERNAME_FX :Ext.getCmp('fxr').getValue(),
-         V_V_SOURCE_GRADE : Ext.getCmp('qxdj').getValue(),
-         V_D_DEFECTDATE :time1,
-         V_V_DEFECTLIST : Ext.getCmp('ycxx').getValue(),
-         V_V_IDEA : Ext.getCmp('cljy').getValue(),
-         V_V_ISTODIC : "是"
-
-         },
-         success: function (response) {
-         var data = Ext.decode(response.responseText);//后台返回的值
-         if (data.success) {//成功，会传回true
-            Ext.Msg.alert('提示信息', '成功');
-             RETRUNV_GUID = data.list[0].V_GUID;
-             jykload = true;
-         } else {
-         Ext.MessageBox.show({
-         title: '错误',
-         msg: data.message,
-         buttons: Ext.MessageBox.OK,
-         icon: Ext.MessageBox.ERROR
-         });
-         }
-         },
-         failure: function (response) {//访问到后台时执行的方法。
-         Ext.MessageBox.show({
-         title: '错误',
-         msg: response.responseText,
-         buttons: Ext.MessageBox.OK,
-         icon: Ext.MessageBox.ERROR
-         })
-         }
-
-         })
-    }else{
+        });
+    } else {
         Ext.Ajax.request({
             url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_SET',
             type: 'ajax',
             method: 'POST',
             params: {
-                V_V_GUID_GC : v_guid_dx,
+                V_V_GUID_GC: v_guid_dx,
                 V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_ORGCODE:ck,
-                V_V_DEPTCODE : v_deptcode,
-                V_V_EQUTYPECODE :v_equtypecode,
-                V_V_EQUCODE : v_equcode,
-                V_V_EQUCHILDCODE : Ext.getCmp('zsb').getValue(),
-                V_V_REPAIRMAJOR_CODE : Ext.getCmp('zy').getValue(),
-                V_V_SOURCECODE :'defct12',
-                V_V_PERNAME_FX :Ext.getCmp('fxr').getValue(),
-                V_V_SOURCE_GRADE : Ext.getCmp('qxdj').getValue(),
-                V_D_DEFECTDATE :time1,
-                V_V_DEFECTLIST : Ext.getCmp('ycxx').getValue(),
-                V_V_IDEA : Ext.getCmp('cljy').getValue(),
-                V_V_ISTODIC : "否"
+                V_V_ORGCODE: ck,
+                V_V_DEPTCODE: v_deptcode,
+                V_V_EQUTYPECODE: Ext.getCmp('equtype').getValue(),
+                V_V_EQUCODE: Ext.getCmp('equname').getValue(),
+                V_V_EQUCHILDCODE: Ext.getCmp('subequname').getValue(),
+                V_V_REPAIRMAJOR_CODE: Ext.getCmp('zy').getValue(),
+                V_V_SOURCECODE: 'defct12',
+                V_V_PERNAME_FX: Ext.getCmp('fxr').getValue(),
+                V_V_SOURCE_GRADE: Ext.getCmp('qxdj').getValue(),
+                V_D_DEFECTDATE: time1,
+                V_V_DEFECTLIST: Ext.getCmp('ycxx').getValue(),
+                V_V_IDEA: Ext.getCmp('cljy').getValue(),
+                V_V_ISTODIC: "否"
 
             },
             success: function (response) {
@@ -730,7 +722,7 @@ function _save()
                 if (data.success) {//成功，会传回true
                     Ext.Msg.alert('提示信息', '成功');
                     RETRUNV_GUID = data.list[0].V_GUID;
-                    jykload = true;
+                    //jykload = true;
                 } else {
                     Ext.MessageBox.show({
                         title: '错误',
@@ -751,7 +743,6 @@ function _save()
 
         })
     }
-
 
 
 }
@@ -773,21 +764,18 @@ function queryGrid() {
 }
 
 
-
 function _close() {
     window.close();
 }
 
-function _jyk()
-{
-    var owidth = window.document.body.offsetWidth ;
+function _jyk() {
+    var owidth = window.document.body.offsetWidth;
     var oheight = window.document.body.offsetHeight;
-    window.open(AppUrl + 'page/pm_dxgc_zx010101/index.html?V_ORGCODE=' + ck  +'&v_equtypecode=' + v_equtypecode +  '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    window.open(AppUrl + 'page/pm_dxgc_zx010101/index.html?V_ORGCODE=' + ck + '&v_equtypecode=' + v_equtypecode + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
 
 }
 
-function querySet(V_DEFECTLIST,V_IDEA)
-{
+function querySet(V_DEFECTLIST, V_IDEA) {
     Ext.getCmp('ycxx').setValue(V_DEFECTLIST);
     Ext.getCmp('cljy').setValue(V_IDEA);
 }

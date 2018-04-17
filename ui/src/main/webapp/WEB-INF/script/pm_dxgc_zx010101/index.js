@@ -135,7 +135,8 @@ Ext.onReady(function () {
         layout: 'border',
         items: [panel2, grid]
     });
-})
+    queryGrid();
+});
 
 function queryGrid() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
