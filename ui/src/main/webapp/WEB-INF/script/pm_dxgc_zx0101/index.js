@@ -19,6 +19,7 @@ var v_equtypecode = "";
 var v_equcode = "";
 var v_specialty = "";
 var V_EQUTYPENAME = "";
+var jykload = false;
 var RETRUNV_GUID = "";
 var RETURNV_ORDERGUID = "";
 
@@ -315,6 +316,12 @@ Ext.onReady(function () {
                                 xtype: 'button',
                                 text: '保存并下票',
                                 icon: imgpath + '/filesave.png',
+                                handler: _savezuizhong,
+                                style: 'margin: 5px 0px 0px 10px'
+                            }, {
+                                xtype: 'button',
+                                text: '保存',
+                                icon: imgpath + '/filesave.png',
                                 handler: _save,
                                 style: 'margin: 5px 0px 0px 10px'
                             }, {
@@ -576,45 +583,47 @@ Ext.onReady(function () {
 
 });
 
+
 function _savezuizhong() {
-        Ext.Ajax.request({
-            url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_TOWORK',
-            async: false,
-            method: 'POST',
-            params: {
-                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_GUID_GC: v_guid_dx,
-                V_V_GUID_QX: RETRUNV_GUID
-            },
-            success: function (response) {
-                var data = Ext.decode(response.responseText);//后台返回的值
-                if (data.success) {//成功，会传回true
-                    Ext.MessageBox.alert('提示', '保存成功');
-                    RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
-                    var owidth = window.document.body.offsetWidth;
-                    var oheight = window.document.body.offsetHeight;
-                    window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_GUID=' + RETURNV_ORDERGUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
-                    //jykload = false;
-                    _close();
-                } else {
-                    Ext.MessageBox.show({
-                        title: '错误',
-                        msg: data.message,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR
-                    });
-                }
-            },
-            failure: function (response) {//访问到后台时执行的方法。
+    _save();
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_TOWORK',
+        type: 'ajax',
+        async: false,
+        method: 'POST',
+        params: {
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_GUID_GC: v_guid_dx,
+            V_V_GUID_QX: RETRUNV_GUID
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);//后台返回的值
+            if (data.success) {//成功，会传回true
+                Ext.MessageBox.alert('提示', '保存成功');
+                RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_GUID=' + RETURNV_ORDERGUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+                _close();
+            } else {
                 Ext.MessageBox.show({
                     title: '错误',
-                    msg: response.responseText,
+                    msg: data.message,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
-                })
+                });
             }
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
 
-        })
+    })
 }
 
 /*function callBack(id) {
@@ -633,12 +642,14 @@ function _savezuizhong() {
  }*/
 
 function _save() {
+    RETRUNV_GUID='';
     var time1 = Ext.getCmp('fxsjymd').getSubmitValue() + ' ' + Ext.getCmp('fxsjhis').getSubmitValue();
 
 
     var checked = $("input[type='checkbox']").is(':checked');
 
     if (checked) {
+        //Ext.Ajax.request
         Ext.Ajax.request({
             url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_SET',
             method: 'POST',
@@ -664,14 +675,14 @@ function _save() {
                 var data = Ext.decode(response.responseText);//后台返回的值
                 if (data.success) {//成功，会传回true
                     Ext.Msg.alert('提示信息', '成功');
-                    if (data.list.length > 0) {
-                        RETRUNV_GUID = data.list[0].V_GUID;
-                        _savezuizhong();
-                    } else {
-                        Ext.Msg.alert('提示信息', '没有数据');
-                    }
+                    RETRUNV_GUID = data.list[0].V_GUID;
                 } else {
-                    Ext.Msg.alert('提示信息', '失败');
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
@@ -686,7 +697,7 @@ function _save() {
     } else {
         Ext.Ajax.request({
             url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_SET',
-            async: false,
+            type: 'ajax',
             method: 'POST',
             params: {
                 V_V_GUID_GC: v_guid_dx,
@@ -710,14 +721,15 @@ function _save() {
                 var data = Ext.decode(response.responseText);//后台返回的值
                 if (data.success) {//成功，会传回true
                     Ext.Msg.alert('提示信息', '成功');
-                    if (data.list.length > 0) {
-                        RETRUNV_GUID = data.list[0].V_GUID;
-                        _savezuizhong();
-                    } else {
-                        Ext.Msg.alert('提示信息', '没有数据');
-                    }
+                    RETRUNV_GUID = data.list[0].V_GUID;
+                    //jykload = true;
                 } else {
-                    Ext.Msg.alert('提示信息', '失败');
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。

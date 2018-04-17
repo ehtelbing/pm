@@ -50,7 +50,7 @@ function loadPageInfo() {
             async : false,
             params : {
                 V_V_PERNAME : Ext.util.Cookies.get('v_personcode'),
-                V_DEFECT_GUID :  V_GUID
+                V_V_DEFECT_GUID :  V_GUID
             },
             success : function(response) {
                 var resp = Ext.decode(response.responseText);

@@ -272,12 +272,12 @@ public class QxController {
     @ResponseBody
     public Map<String, Object> PRO_PM_07_WORKORDER_DEFECT(
             @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
-            @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
+            @RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = qxService.PRO_PM_07_WORKORDER_DEFECT(V_V_PERNAME,V_DEFECT_GUID);
+        HashMap data = qxService.PRO_PM_07_WORKORDER_DEFECT(V_V_PERNAME,V_V_DEFECT_GUID);
 
         List<Map<String, Object>> pm_06list = (List) data.get("list");
 

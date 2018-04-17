@@ -607,7 +607,7 @@ public class QxService {
         return result;
     }
 
-    public HashMap PRO_PM_07_WORKORDER_DEFECT(String V_V_PERNAME,String V_DEFECT_GUID) throws SQLException {
+    public HashMap PRO_PM_07_WORKORDER_DEFECT(String V_V_PERNAME,String V_V_DEFECT_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_07_WORKORDER_DEFECT");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -618,9 +618,9 @@ public class QxService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_07_WORKORDER_DEFECT" + "(:V_V_PERNAME,:V_DEFECT_GUID,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_07_WORKORDER_DEFECT" + "(:V_V_PERNAME,:V_V_DEFECT_GUID,:V_CURSOR)}");
             cstmt.setString("V_V_PERNAME", V_V_PERNAME);
-            cstmt.setString("V_DEFECT_GUID", V_DEFECT_GUID);
+            cstmt.setString("V_V_DEFECT_GUID", V_V_DEFECT_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
