@@ -19,7 +19,6 @@ var v_equtypecode = "";
 var v_equcode = "";
 var v_specialty = "";
 var V_EQUTYPENAME = "";
-var flag = false;
 var RETRUNV_GUID = "";
 var RETURNV_ORDERGUID = "";
 
@@ -316,12 +315,6 @@ Ext.onReady(function () {
                                 xtype: 'button',
                                 text: '保存并下票',
                                 icon: imgpath + '/filesave.png',
-                                handler: _savezuizhong,
-                                style: 'margin: 5px 0px 0px 10px'
-                            }, {
-                                xtype: 'button',
-                                text: '保存',
-                                icon: imgpath + '/filesave.png',
                                 handler: _save,
                                 style: 'margin: 5px 0px 0px 10px'
                             }, {
@@ -583,10 +576,7 @@ Ext.onReady(function () {
 
 });
 
-
 function _savezuizhong() {
-    _save();
-    if(flag) {
         Ext.Ajax.request({
             url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_TOWORK',
             async: false,
@@ -625,7 +615,6 @@ function _savezuizhong() {
             }
 
         })
-    }
 }
 
 /*function callBack(id) {
@@ -677,18 +666,12 @@ function _save() {
                     Ext.Msg.alert('提示信息', '成功');
                     if (data.list.length > 0) {
                         RETRUNV_GUID = data.list[0].V_GUID;
-                        flag = true;
+                        _savezuizhong();
                     } else {
                         Ext.Msg.alert('提示信息', '没有数据');
-                        flag = false;
                     }
                 } else {
-                    Ext.MessageBox.show({
-                        title: '错误',
-                        msg: data.message,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR
-                    });
+                    Ext.Msg.alert('提示信息', '失败');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
@@ -729,18 +712,12 @@ function _save() {
                     Ext.Msg.alert('提示信息', '成功');
                     if (data.list.length > 0) {
                         RETRUNV_GUID = data.list[0].V_GUID;
-                        flag = true;
+                        _savezuizhong();
                     } else {
                         Ext.Msg.alert('提示信息', '没有数据');
-                        flag = false;
                     }
                 } else {
-                    Ext.MessageBox.show({
-                        title: '错误',
-                        msg: data.message,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR
-                    });
+                    Ext.Msg.alert('提示信息', '失败');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
