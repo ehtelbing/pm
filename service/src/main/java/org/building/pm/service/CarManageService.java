@@ -544,6 +544,9 @@ public class CarManageService {
                 HashMap temp = new HashMap();
                 temp.put("sid", list.get(i).get("V_EQUCODE"));
                 temp.put("text", list.get(i).get("V_EQUNAME"));
+                temp.put("V_EQUCODEUP", list.get(i).get("V_EQUCODEUP"));
+                temp.put("V_EQUTYPECODE", list.get(i).get("V_EQUTYPECODE"));
+                temp.put("V_EQUSITENAME", list.get(i).get("V_EQUSITENAME"));
                 temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
                 temp.put("parentid","-2");
                 temp.put("leaf", false);
@@ -590,6 +593,9 @@ public class CarManageService {
                 HashMap temp = new HashMap();
                 temp.put("sid", list.get(i).get("V_EQUCODE"));
                 temp.put("text", list.get(i).get("V_EQUNAME"));
+                temp.put("V_EQUCODEUP", list.get(i).get("V_EQUCODEUP"));
+                temp.put("V_EQUTYPECODE", list.get(i).get("V_EQUTYPECODE"));
+                temp.put("V_EQUTYPECODE", list.get(i).get("V_EQUTYPECODE"));
                 temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
                 if(GetSapChildEquChildren(list, list.get(i).get("V_EQUCODE").toString()).size()>0){
                     temp.put("expanded", false);
