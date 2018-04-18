@@ -1304,7 +1304,7 @@ Ext.onReady(function () {
             {text: '事故详情', dataIndex: 'V_FAULT_XX', align: 'center', flex: 1},
             {
                 text: '附件', align: 'center', flex: 1,
-                renderer: function () {
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     return '<a href=javascript:_openAttachWindow(\'' + record.data.V_FILE_GUID + '\')>查看</a>';
                 }
             }],
@@ -1327,17 +1327,16 @@ Ext.onReady(function () {
         store: 'aqcszgStore',
         title: '整改信息',
         columnLines: true,
-        //baseCls: 'my-panel-no-border',
-        //frame:'true',
+        autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '整改时间', dataIndex: 'V_ZG_TIME', style: 'text-align: center;', flex: 1},
-            {text: '整改地点', dataIndex: 'V_ZG_PLACE', style: 'text-align: center;', flex: 1},
-            {text: '整改负责人', dataIndex: 'V_ZG_PERSON', style: 'text-align: center;', flex: 1},
-            {text: '整改方案明细', dataIndex: 'V_ZG_DETAIL', style: 'text-align: center;', flex: 1},
-            {text: '整改费用', dataIndex: 'V_ZG_COST', style: 'text-align: center;', flex: 1},
+            {text: '整改时间', dataIndex: 'V_ZG_TIME', align: 'center', flex: 1},
+            {text: '整改地点', dataIndex: 'V_ZG_PLACE', align: 'center', flex: 1},
+            {text: '整改负责人', dataIndex: 'V_ZG_PERSON', align: 'center', flex: 1},
+            {text: '整改方案明细', dataIndex: 'V_ZG_DETAIL', align: 'center', flex: 1},
+            {text: '整改费用', dataIndex: 'V_ZG_COST', align: 'center', flex: 1},
             {
-                text: '附件', style: 'text-align: center;', flex: 1,
+                text: '附件', align: 'center', flex: 1,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     return '<a href=javascript:_openAttachWindow(\'' + record.data.V_ZG_GUID + '\')>查看</a>';
                 }
