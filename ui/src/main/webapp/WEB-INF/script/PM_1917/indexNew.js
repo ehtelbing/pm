@@ -2064,7 +2064,7 @@ Ext.onReady(function () {
         id: 'wxxxPanel',
         title: '维修信息',
         columnLines: true,
-        store: 'gdgzStore',
+        store: 'lsgdStore',
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
@@ -2088,7 +2088,7 @@ Ext.onReady(function () {
             displayInfo: true,
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
-            store: 'gdgzStore',
+            store: 'lsgdStore',
             width: '100%'
         }]
     });
