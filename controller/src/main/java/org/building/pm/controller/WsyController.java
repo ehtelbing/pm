@@ -17,6 +17,7 @@ import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("/app/pm/Wsy")
@@ -385,5 +386,18 @@ public class WsyController {
             HttpServletResponse response) throws Exception {
         HashMap data = wsyService.BASE_JXBZ_BY_GXCODE_INS(V_V_JXGX_CODE, V_V_JSYQ_CODE, V_V_JSYQ_NAME);
         return data;
+    }
+
+    @RequestMapping(value = "/PRO_SAP_PM_EQU_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public List<HashMap> PRO_SAP_PM_EQU_TREE(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                             @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                             @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
+        List<HashMap> result = wsyService.PRO_SAP_PM_EQU_TREE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE);
+        return result;
     }
 }
