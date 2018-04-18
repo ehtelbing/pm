@@ -801,4 +801,53 @@ public class WsyService {
         logger.info("end BASE_JXBZ_BY_GXCODE_INS");
         return result;
     }
+
+    public List<HashMap> PRO_SAP_PM_EQU_TREE(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+        logger.info("begin PRO_SAP_PM_EQU_TREE");
+        List<HashMap> menu = new ArrayList<HashMap>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SAP_PM_EQU_TREE" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE,:V_V_EQUTYPECODE,:V_V_EQUCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            menu=GetSapEquChildren(list, "");
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_SAP_PM_EQU_TREE");
+        return menu;
+    }
+
+    private List<HashMap> GetSapEquChildren(List<HashMap> list,String V_EQUCODE){
+        List<HashMap> menu = new ArrayList<HashMap>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).get("V_EQUCODEUP").equals(V_EQUCODE)) {
+                HashMap temp = new HashMap();
+                temp.put("sid", list.get(i).get("V_EQUCODE"));
+                temp.put("text", list.get(i).get("V_EQUNAME"));
+                temp.put("V_EQUCODEUP", list.get(i).get("V_EQUCODEUP"));
+                temp.put("V_EQUTYPECODE", list.get(i).get("V_EQUTYPECODE"));
+                temp.put("V_EQUSITENAME", list.get(i).get("V_EQUSITENAME"));
+                temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
+                temp.put("parentid","-1");
+                temp.put("leaf", true);
+                // temp.put("expanded", false);
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
 }
