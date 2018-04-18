@@ -660,7 +660,7 @@ Ext.onReady(function () {
         autoLoad: false,
         loading: false,
         pageSize: 20,
-        fields: ['V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS'],
+        fields: ['V_GJ_CODE', 'V_GJ_NAME', 'V_GJ_TYPE'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GJ_BY_GDGUID_SEL',
             type: 'ajax',
@@ -795,14 +795,14 @@ Ext.onReady(function () {
                 icon: imgpath + '/search.png',
                 style: 'margin:5px 0px 5px 30px',
                 width: 60,
-                handler: _query
+                handler: _select
             },
             {
                 xtype: 'button',
                 text: '添加',
                 icon: imgpath + '/add.png',
                 width: 60,
-                handler: _add
+                handler: _insert
             },
             {
                 xtype: 'button',
@@ -1304,7 +1304,7 @@ Ext.onReady(function () {
             {text: '事故详情', dataIndex: 'V_FAULT_XX', align: 'center', flex: 1},
             {
                 text: '附件', align: 'center', flex: 1,
-                renderer: function () {
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     return '<a href=javascript:_openAttachWindow(\'' + record.data.V_FILE_GUID + '\')>查看</a>';
                 }
             }],
@@ -1327,18 +1327,17 @@ Ext.onReady(function () {
         store: 'aqcszgStore',
         title: '整改信息',
         columnLines: true,
-        //baseCls: 'my-panel-no-border',
-        //frame:'true',
+        autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '整改时间', dataIndex: 'V_ZG_TIME', style: 'text-align: center;', flex: 1},
-            {text: '整改地点', dataIndex: 'V_ZG_PLACE', style: 'text-align: center;', flex: 1},
-            {text: '整改负责人', dataIndex: 'V_ZG_PERSON', style: 'text-align: center;', flex: 1},
-            {text: '整改方案明细', dataIndex: 'V_ZG_DETAIL', style: 'text-align: center;', flex: 1},
-            {text: '整改费用', dataIndex: 'V_ZG_COST', style: 'text-align: center;', flex: 1},
+            {text: '整改时间', dataIndex: 'V_ZG_TIME', align: 'center', flex: 1},
+            {text: '整改地点', dataIndex: 'V_ZG_PLACE', align: 'center', flex: 1},
+            {text: '整改负责人', dataIndex: 'V_ZG_PERSON', align: 'center', flex: 1},
+            {text: '整改方案明细', dataIndex: 'V_ZG_DETAIL', align: 'center', flex: 1},
+            {text: '整改费用', dataIndex: 'V_ZG_COST', align: 'center', flex: 1},
             {
-                text: '附件', style: 'text-align: center;', flex: 1,
-                renderer: function () {
+                text: '附件', align: 'center', flex: 1,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     return '<a href=javascript:_openAttachWindow(\'' + record.data.V_ZG_GUID + '\')>查看</a>';
                 }
             }],
@@ -1579,7 +1578,7 @@ Ext.onReady(function () {
         layout: 'column',
         items: [{
             xtype: 'button', text: '删除', width: 60, style: 'margin:5px 0px 5px 10px',
-            icon: imgpath + '/delete1.png', handler: _delete
+            icon: imgpath + '/delete1.png', handler: _deletejxjsbz
         }]
     });
 
@@ -2064,7 +2063,7 @@ Ext.onReady(function () {
         id: 'wxxxPanel',
         title: '维修信息',
         columnLines: true,
-        store: 'gdgzStore',
+        store: 'lsgdStore',
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
@@ -2088,7 +2087,7 @@ Ext.onReady(function () {
             displayInfo: true,
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
-            store: 'gdgzStore',
+            store: 'lsgdStore',
             width: '100%'
         }]
     });
@@ -2726,16 +2725,28 @@ function _queryjjxx(V_JJ_CODE) {
     });
 }
 
-function _query() {
+function _select() {
+    var jsStandardStore = Ext.data.StoreManager.lookup('jsStandardStore');
+    jsStandardStore.proxy.extraParams = {
+        'V_V_ORGCODE': Ext.getCmp('V_V_ORGCODE').getValue(),
+        'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getValue(),
+        'V_V_EQUCODE': Ext.getCmp('V_V_EQUCODE').getValue(),
+        'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getValue()
+
+    };
+    jsStandardStore.load();
 }
 
-function _add() {
+function _insert() {
 }
 
 function _update() {
 }
 
 function _delete() {
+}
+
+function _deletejxjsbz() {
 }
 
 function _open() {
