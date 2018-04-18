@@ -498,13 +498,13 @@ public class CarManageService {
     private List<HashMap> GetSapEquChildren(List<HashMap> list){
         List<HashMap> menu = new ArrayList<HashMap>();
         for (int i = 0; i < list.size(); i++) {
-                HashMap temp = new HashMap();
-                temp.put("sid", list.get(i).get("V_EQUTYPECODE"));
-                temp.put("text", list.get(i).get("V_EQUTYPENAME"));
-                temp.put("parentid","-1");
-                temp.put("leaf", false);
-                temp.put("expanded", false);
-                menu.add(temp);
+            HashMap temp = new HashMap();
+            temp.put("sid", list.get(i).get("V_EQUTYPECODE"));
+            temp.put("text", list.get(i).get("V_EQUTYPENAME"));
+            temp.put("parentid","-1");
+            temp.put("leaf", false);
+            temp.put("expanded", false);
+            menu.add(temp);
         }
         return menu;
     }
@@ -537,6 +537,7 @@ public class CarManageService {
         logger.info("end PRO_SAP_PM_EQU_TREE");
         return menu;
     }
+
     private List<HashMap> GetSapEquChildren(List<HashMap> list,String V_EQUCODE){
         List<HashMap> menu = new ArrayList<HashMap>();
         for (int i = 0; i < list.size(); i++) {
@@ -595,7 +596,7 @@ public class CarManageService {
                 temp.put("text", list.get(i).get("V_EQUNAME"));
                 temp.put("V_EQUCODEUP", list.get(i).get("V_EQUCODEUP"));
                 temp.put("V_EQUTYPECODE", list.get(i).get("V_EQUTYPECODE"));
-                temp.put("V_EQUTYPECODE", list.get(i).get("V_EQUTYPECODE"));
+                temp.put("V_EQUTYPENAME", list.get(i).get("V_EQUTYPENAME"));
                 temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
                 if(GetSapChildEquChildren(list, list.get(i).get("V_EQUCODE").toString()).size()>0){
                     temp.put("expanded", false);
