@@ -62,7 +62,7 @@ Ext.onReady(function () {
     var treeStore = Ext.create('Ext.data.TreeStore', {
         id: 'treeStore',
         autoLoad: false,
-        fields: ['sid', 'text', 'parentid', 'V_EQUSITE']
+        fields: ['sid', 'text', 'parentid', 'V_EQUSITE', 'V_EQUTYPECODE', 'V_EQUCODEUP']
     });
 
     //子设备检修技术标准store
@@ -71,7 +71,10 @@ Ext.onReady(function () {
         autoLoad: false,
         loading: false,
         pageSize: 20,
-        fields: ['V_GUID', 'V_PART_NUMBER', 'V_PART_NAME', 'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE_UP', 'V_VALUE_DOWN', 'V_REPLACE_CYC', 'V_WEIGHT', 'V_IMGCODE', 'V_CONTENT'],
+        fields: ['I_ID', 'V_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_BJ_IMG', 'V_PART_NUMBER', 'V_PART_NAME',
+            'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE', 'V_REPLACE_CYC', 'V_WEIGHT',
+            'V_IMGCODE', 'V_CONTENT', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUCHILDCODE',
+            'V_EQUCHILDNAME', 'V_EQUTYPECODE', 'V_VALUE_DOWN', 'V_VALUE_UP'],
         proxy: {
             url: AppUrl + 'Wsy/PM_REPAIR_JS_STANDARD_SEL',
             type: 'ajax',
@@ -310,7 +313,7 @@ Ext.onReady(function () {
                 text: '添加',
                 icon: imgpath + '/add.png',
                 width: 60,
-                handler: _add
+                handler: _insert
             },
             {
                 xtype: 'button',
@@ -761,17 +764,18 @@ Ext.onReady(function () {
                     V_V_EQUTYPECODE: operation.node.data.sid,
                     V_V_EQUCODE: '%'
                 },
-                store.proxy.url = AppUrl + 'CarManage/PRO_SAP_PM_EQU_TREE')
-        } else if (operation.node.data.parentid == -2) {
-            Ext.apply(store.proxy.extraParams, {
-                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                    V_V_DEPTCODE: Ext.getCmp('plant').getValue(),
-                    V_V_DEPTNEXTCODE: Ext.getCmp('dept').getValue(),
-                    V_V_EQUTYPECODE: '%',
-                    V_V_EQUCODE: operation.node.data.sid
-                },
-                store.proxy.url = AppUrl + 'CarManage/PRO_SAP_PM_CHILDEQU_TREE')
+                store.proxy.url = AppUrl + 'Wsy/PRO_SAP_PM_EQU_TREE')
         }
+        /*else if (operation.node.data.parentid == -2) {
+                   Ext.apply(store.proxy.extraParams, {
+                           V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                           V_V_DEPTCODE: Ext.getCmp('plant').getValue(),
+                           V_V_DEPTNEXTCODE: Ext.getCmp('dept').getValue(),
+                           V_V_EQUTYPECODE: '%',
+                           V_V_EQUCODE: operation.node.data.sid
+                       },
+                       store.proxy.url = AppUrl + 'CarManage/PRO_SAP_PM_CHILDEQU_TREE')
+               }*/
     });
 });
 
@@ -805,7 +809,6 @@ function _queryTree() {
     Ext.getCmp('sblxTreePanel').store.load();
 }
 
-
 //点击设备树item查询子设备检修技术标准
 function _queryzsbjx(sid) {
     Ext.getCmp('zsbmc').setValue('');
@@ -822,7 +825,6 @@ function _queryzsbjx(sid) {
 //点击子设备名称按钮查询子设备检修技术标准
 function _queryzsb() {
     var records = Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection();
-    alert(records[0].data.sid);
     Ext.data.StoreManager.lookup('zsbjxStore').load({
         params: {
             V_V_ORGCODE: Ext.getCmp('plant').getValue(),
@@ -833,7 +835,7 @@ function _queryzsb() {
     });
 }
 
-//点击检修模型item显示部件简图
+//点击检修技术标准item显示部件简图
 function _preViewImage(V_IMGCODE) {
     var url = AppUrl + 'Wsy/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_IMGCODE;
     Ext.getCmp("browseImage").getEl().dom.src = url;
@@ -901,13 +903,143 @@ function _openqxlyWindow(V_GUID) {
         + V_GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
-function _add() {
+function _insert() {
+    var selectedNode = Ext.getCmp('sblxTreePanel').getSelectionModel().selected.items[0];  //获取当前节点
+    var selectedParentNode = selectedNode.parentNode;   //获取该节点的父节点
+    //alert(records[0].data.sid);
+    alert(selectedNode.data.sid);
+    alert(selectedParentNode.data.sid);//父节点的CODE(EQUTYPECODE)
+    var V_V_PLANTCODE = Ext.getCmp('plant').getSubmitValue();
+    var V_V_DEPTCODE = Ext.getCmp('dept').getSubmitValue();
+    var V_V_EQUTYPECODE = selectedParentNode.data.sid;
+    var V_V_EQUCODE = selectedNode.data.sid;
+    var V_V_EQUCHILDCODE = Ext.getCmp('zsbmc').getValue()
+
+    if (V_V_DEPTCODE == '%') {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择作业区',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    if (V_V_EQUTYPECODE == '%') {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    if (V_V_EQUCODE == '%') {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    window.open(AppUrl + 'page/PM_01020101/index.html?V_V_PLANTCODE=' + V_V_PLANTCODE + '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUTYPECODE=' + V_V_EQUTYPECODE + '&V_V_EQUCODE=' + V_V_EQUCODE + '&V_V_EQUCHILDCODE=' + V_V_EQUCHILDCODE, '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
 }
 
 function _update() {
+    var records = Ext.getCmp('zsbjxPanel1').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+
+    window.open(AppUrl + 'page/PM_01020102/index.html?V_V_PLANTCODE=' + records[0].get('V_ORGCODE') + '&V_V_DEPTCODE=' + records[0].get('V_DEPTCODE') + '&V_V_EQUTYPECODE=' + records[0].get('V_EQUTYPECODE') + '&V_V_EQUCODE=' + records[0].get('V_EQUCODE') + '&V_V_GUID=' + records[0].get('V_GUID'), '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
 }
 
 function _delete() {
+    var records = Ext.getCmp('zsbjxPanel1').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+
+    Ext.Ajax.request({
+        url: AppUrl + 'mwd/PM_REPAIR_JS_STANDARD_DEL',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_GUID': records[0].get('V_GUID')
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);
+            if (data.V_INFO == 'success') {
+                _queryzsb();
+                Ext.Msg.alert('提示信息', '删除成功');
+                _deleteFile(records[0].get('V_GUID'));
+                _preViewImage();
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: '删除失败',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+}
+
+function _deleteFile(V_V_GUID) {
+
+    Ext.Ajax.request({
+        url: AppUrl + 'mwd/PM_REPAIRT_IMG_GUID_DEL',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_GUID': V_V_GUID
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);
+            if (data.V_INFO == 'success') {
+
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: '删除附件失败',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
 }
 
 function _open() {
