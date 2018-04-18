@@ -660,7 +660,7 @@ Ext.onReady(function () {
         autoLoad: false,
         loading: false,
         pageSize: 20,
-        fields: ['V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS'],
+        fields: ['V_GJ_CODE', 'V_GJ_NAME', 'V_GJ_TYPE'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GJ_BY_GDGUID_SEL',
             type: 'ajax',
