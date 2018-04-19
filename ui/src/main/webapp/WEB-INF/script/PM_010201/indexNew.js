@@ -259,7 +259,12 @@ Ext.onReady(function () {
         frame: true,
         border: false,
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        defaults: {
+            labelAlign: 'right',
+            labelWidth: 100,
+            inputWidth: 140,
+            style: 'margin:5px 0px 5px 10px'
+        },
         items: [
             {
                 xtype: 'combo',
@@ -358,19 +363,59 @@ Ext.onReady(function () {
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '零件编号', dataIndex: 'V_PART_NUMBER', align: 'center', width: 80},
-            {text: '零件名称', dataIndex: 'V_PART_NAME', align: 'center', width: 80},
-            {text: '零件编码', dataIndex: 'V_PART_CODE', align: 'center', width: 80},
+            {
+                text: '零件编号',
+                dataIndex: 'V_PART_NUMBER',
+                align: 'center',
+                width: 80
+            },
+            {
+                text: '零件名称',
+                dataIndex: 'V_PART_NAME',
+                align: 'center',
+                width: 80
+            },
+            {
+                text: '零件编码',
+                dataIndex: 'V_PART_CODE',
+                align: 'center',
+                width: 80
+            },
             {text: '材料', dataIndex: 'V_MATERIAL', align: 'center', width: 80},
             {
                 text: '维修技术标准', align: 'center', flex: 4,
                 columns: [
-                    {text: '图面尺寸', dataIndex: 'V_IMGSIZE', align: 'center', flex: 1},
-                    {text: '图面间隙', dataIndex: 'V_IMGGAP', align: 'center', flex: 1},
-                    {text: '允许值(上限)', dataIndex: 'V_VALUE_UP', align: 'center', flex: 1},
-                    {text: '允许值(下限)', dataIndex: 'V_VALUE_DOWN', align: 'center', flex: 1}]
+                    {
+                        text: '图面尺寸',
+                        dataIndex: 'V_IMGSIZE',
+                        align: 'center',
+                        flex: 1
+                    },
+                    {
+                        text: '图面间隙',
+                        dataIndex: 'V_IMGGAP',
+                        align: 'center',
+                        flex: 1
+                    },
+                    {
+                        text: '允许值(上限)',
+                        dataIndex: 'V_VALUE_UP',
+                        align: 'center',
+                        flex: 1
+                    },
+                    {
+                        text: '允许值(下限)',
+                        dataIndex: 'V_VALUE_DOWN',
+                        align: 'center',
+                        flex: 1
+                    }]
             },
-            {text: '更换周期', dataIndex: 'V_REPLACE_CYC', align: 'center', width: 80},
+            {
+                text: '更换周期',
+                dataIndex: 'V_REPLACE_CYC',
+                align: 'center',
+                width: 80
+            },
             {text: '重量', dataIndex: 'V_WEIGHT', align: 'center', width: 80},
             {text: '图号', dataIndex: 'V_IMGCODE', align: 'center', width: 80},
             {text: '备注', dataIndex: 'V_CONTENT', align: 'center', width: 150}],
@@ -400,7 +445,10 @@ Ext.onReady(function () {
         id: 'zuoshangPanel',
         frame: true,
         border: false,
-        layout: {type: 'border', regionWeights: {north: 3, east: 1, south: 1, west: 4}},
+        layout: {
+            type: 'border',
+            regionWeights: {north: 3, east: 1, south: 1, west: 4}
+        },
         items: [sblxTreePanel, zsbjxPanel1]
     });
 
@@ -440,8 +488,12 @@ Ext.onReady(function () {
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '工单编号', dataIndex: 'V_ORDERID', align: 'center', width:150},
-            {text: '工单创建日期', dataIndex: 'D_ENTER_DATE', align: 'center', width:230,
+            {text: '工单编号', dataIndex: 'V_ORDERID', align: 'center', width: 150},
+            {
+                text: '工单创建日期',
+                dataIndex: 'D_ENTER_DATE',
+                align: 'center',
+                width: 230,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = gdmxStore.find('D_ENTER_DATE', value);
                     if (index != -1) {
@@ -450,11 +502,31 @@ Ext.onReady(function () {
                     return null;
                 }
             },
-            {text: '工单检修描述', dataIndex: 'V_SHORT_TXT', align: 'center', width:100},
-            {text: '工单类型', dataIndex: 'V_ORDER_TYP', align: 'center', width:100},
-            {text: '检修单位', dataIndex: 'V_DEPTNAME', align: 'center', width:230},
-            {text: '检修标准值', dataIndex: '', align: 'center', width:100},
-            {text: '工单状态', dataIndex: 'V_STATECODE', align: 'center', width:100}],
+            {
+                text: '工单检修描述',
+                dataIndex: 'V_SHORT_TXT',
+                align: 'center',
+                width: 100
+            },
+            {
+                text: '工单类型',
+                dataIndex: 'V_ORDER_TYP',
+                align: 'center',
+                width: 100
+            },
+            {
+                text: '检修单位',
+                dataIndex: 'V_DEPTNAME',
+                align: 'center',
+                width: 230
+            },
+            {text: '检修标准值', dataIndex: '', align: 'center', width: 100},
+            {
+                text: '工单状态',
+                dataIndex: 'V_STATECODE',
+                align: 'center',
+                width: 100
+            }],
         bbar: [{
             id: 'gdmxPanel_toolbar',
             xtype: 'pagingtoolbar',
@@ -483,19 +555,34 @@ Ext.onReady(function () {
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '缺陷发现日期', dataIndex: 'D_DEFECTDATE', align: 'center', width:230,
+            {
+                text: '缺陷发现日期',
+                dataIndex: 'D_DEFECTDATE',
+                align: 'center',
+                width: 230,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = qxmxStore.find('D_DEFECTDATE', value);
                     if (index != -1) {
                         return qxmxStore.getAt(index).get('D_DEFECTDATE').substring(0, 19);
                     }
                     return null;
-                }},
-            {text: '缺陷明细', dataIndex: 'V_DEFECTLIST', align: 'center', width:100},
-            {text: '处理意见', dataIndex: 'V_IDEA', align: 'center', width:100},
-            {text: '缺陷状态', dataIndex: 'V_STATECODE', align: 'center', width:100},
+                }
+            },
             {
-                text: '缺陷来源', align: 'center', flex:1,
+                text: '缺陷明细',
+                dataIndex: 'V_DEFECTLIST',
+                align: 'center',
+                width: 100
+            },
+            {text: '处理意见', dataIndex: 'V_IDEA', align: 'center', width: 100},
+            {
+                text: '缺陷状态',
+                dataIndex: 'V_STATECODE',
+                align: 'center',
+                width: 100
+            },
+            {
+                text: '缺陷来源', align: 'center', flex: 1,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     return '<a href=javascript:_openqxlyWindow(\'' + record.data.V_GUID + '\')>查看</a>';//超链接导出
                 }
@@ -619,13 +706,23 @@ Ext.onReady(function () {
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '机具编码', dataIndex: 'V_CARCODE', align: 'center', flex:1},
-            {text: '机具名称', dataIndex: 'V_CARNAME', align: 'center', flex:1},
-            {text: '机具定额', dataIndex: 'V_DE', align: 'center', flex:1},
-            {text: '机具所属单位', dataIndex: 'V_CARGUISUO', align: 'center', flex:1},
-            {text: '机具用途', dataIndex: 'V_USE', align: 'center', flex:1},
-            {text: '机具状态', dataIndex: 'V_FLAG', align: 'center', flex:1},
-            {text: '司机姓名', dataIndex: 'V_DRIVER_NAME', align: 'center', flex:1}],
+            {text: '机具编码', dataIndex: 'V_CARCODE', align: 'center', flex: 1},
+            {text: '机具名称', dataIndex: 'V_CARNAME', align: 'center', flex: 1},
+            {text: '机具定额', dataIndex: 'V_DE', align: 'center', flex: 1},
+            {
+                text: '机具所属单位',
+                dataIndex: 'V_CARGUISUO',
+                align: 'center',
+                flex: 1
+            },
+            {text: '机具用途', dataIndex: 'V_USE', align: 'center', flex: 1},
+            {text: '机具状态', dataIndex: 'V_FLAG', align: 'center', flex: 1},
+            {
+                text: '司机姓名',
+                dataIndex: 'V_DRIVER_NAME',
+                align: 'center',
+                flex: 1
+            }],
         bbar: [{
             id: 'jxjjPanel2_toolbar',
             xtype: 'pagingtoolbar',
@@ -644,7 +741,10 @@ Ext.onReady(function () {
         title: '检修机具',
         baseCls: 'my-panel-no-border',
         frame: true,
-        layout: {type: 'border', regionWeights: {north: 3, east: 4, south: 1, west: 1}},
+        layout: {
+            type: 'border',
+            regionWeights: {north: 3, east: 4, south: 1, west: 1}
+        },
         items: [jxjjPanel1, jxjjPanel2]
     });
 
@@ -662,15 +762,25 @@ Ext.onReady(function () {
             {text: '工具名称', dataIndex: 'V_TOOLNAME', align: 'center', flex: 1},
             {text: '工具类型', dataIndex: 'V_TOOLTYPE', align: 'center', flex: 1},
             {text: '工具存在地', dataIndex: 'V_TOOLPLACE', align: 'center', flex: 1},
-            {text: '工具入厂时间', dataIndex: 'V_TOOLINDATE', align: 'center', width:230,
+            {
+                text: '工具入厂时间',
+                dataIndex: 'V_TOOLINDATE',
+                align: 'center',
+                width: 230,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = jxgjStore1.find('V_TOOLINDATE', value);
                     if (index != -1) {
                         return jxgjStore1.getAt(index).get('V_TOOLINDATE').substring(0, 19);
                     }
                     return null;
-                }},
-            {text: '工具状态', dataIndex: 'V_TOOLSTATUS', align: 'center', flex: 1}],
+                }
+            },
+            {
+                text: '工具状态',
+                dataIndex: 'V_TOOLSTATUS',
+                align: 'center',
+                flex: 1
+            }],
         bbar: [{
             id: 'jxgjPanel1_toolbar',
             xtype: 'pagingtoolbar',
@@ -739,7 +849,10 @@ Ext.onReady(function () {
     });
 
     Ext.create('Ext.container.Viewport', {
-        layout: {type: 'border', regionWeights: {north: 4, east: 3, south: 2, west: -1}},
+        layout: {
+            type: 'border',
+            regionWeights: {north: 4, east: 3, south: 2, west: -1}
+        },
         defaults: {border: false},
         items: [
             {region: 'north', items: [inputPanel]},
@@ -893,47 +1006,59 @@ function _openqxlyWindow(V_GUID) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + "page/PM_070301/index.html?v_guid="
-    + V_GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        + V_GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function _insert() {
-    var selectedNode = Ext.getCmp('sblxTreePanel').getSelectionModel().selected.items[0];  //获取当前节点
-    var selectedParentNode = selectedNode.parentNode;   //获取该节点的父节点
-    //alert(records[0].data.sid);
-   /* alert(selectedNode.data.sid);
-    alert(selectedParentNode.data.sid)*/;//父节点的CODE(EQUTYPECODE)
-    var V_V_PLANTCODE = Ext.getCmp('plant').getSubmitValue();
-    var V_V_DEPTCODE = Ext.getCmp('dept').getSubmitValue();
-    var V_V_EQUTYPECODE = selectedParentNode.data.sid;
-    var V_V_EQUCODE = selectedNode.data.sid;
-    var V_V_EQUCHILDCODE = Ext.getCmp('zsbmc').getValue()
-
-    if (V_V_DEPTCODE == '%') {
+    var selectedNode = null;
+    selectedNode = Ext.getCmp('sblxTreePanel').getSelectionModel().selected.items[0];  //获取当前节点
+    if (selectedNode == null) {
         Ext.MessageBox.show({
             title: '提示',
-            msg: '请选择作业区',
+            msg: '请选择设备!',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
         return;
     }
-    if (V_V_EQUTYPECODE == '%') {
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择设备',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return;
-    }
-    if (V_V_EQUCODE == '%') {
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择设备',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return;
+    else {
+        var selectedParentNode = selectedNode.parentNode;   //获取该节点的父节点
+        //alert(records[0].data.sid);
+        /* alert(selectedNode.data.sid);
+         alert(selectedParentNode.data.sid)*///父节点的CODE(EQUTYPECODE)
+        var V_V_PLANTCODE = Ext.getCmp('plant').getSubmitValue();
+        var V_V_DEPTCODE = Ext.getCmp('dept').getSubmitValue();
+        var V_V_EQUTYPECODE = selectedParentNode.data.sid;
+        var V_V_EQUCODE = selectedNode.data.sid;
+        var V_V_EQUCHILDCODE = Ext.getCmp('zsbmc').getValue();
+        alert(V_V_EQUCODE);
+        if (V_V_DEPTCODE == '%') {
+            Ext.MessageBox.show({
+                title: '提示',
+                msg: '请选择作业区',
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.WARNING
+            });
+            return;
+        }
+        if (V_V_EQUTYPECODE == '%') {
+            Ext.MessageBox.show({
+                title: '提示',
+                msg: '请选择设备',
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.WARNING
+            });
+            return;
+        }
+        if (V_V_EQUCODE == '%') {
+            Ext.MessageBox.show({
+                title: '提示',
+                msg: '请选择设备',
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.WARNING
+            });
+            return;
+        }
     }
     window.open(AppUrl + 'page/PM_01020101/index.html?V_V_PLANTCODE=' + V_V_PLANTCODE + '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUTYPECODE=' + V_V_EQUTYPECODE + '&V_V_EQUCODE=' + V_V_EQUCODE + '&V_V_EQUCHILDCODE=' + V_V_EQUCHILDCODE, '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
 }
