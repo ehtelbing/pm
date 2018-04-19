@@ -551,20 +551,22 @@ function _init() {
             async: false,
             method: 'POST',
             params: {
-                V_V_GUID_GC: V_GC_GUID
+                V_V_GUID_GC: '77'
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
                 if (data.success) {//成功，会传回true
-                    //data.list[0].V_EQUTYPECODE?0:Ext.getCmp('equtype').setValue(data.list[0].V_EQUTYPECODE);
-                    Ext.getCmp('equtype').setValue(data.list[0].V_EQUTYPECODE);
-                    Ext.getCmp('equname').setValue(data.list[0].V_EQUCODE);
-                    Ext.getCmp('subequname').setValue(data.list[0].V_EQUCHILDCODE);
-                    Ext.getCmp('zy').setValue(data.list[0].V_REPAIRMAJOR_CODE);
-                    Ext.getCmp('fxsjymd').setValue((data.list[0].D_DEFECTDATE).substring(0, 19));
-                    Ext.getCmp('qxdj').setValue(data.list[0].V_SOURCE_GRADE);
-                    Ext.getCmp('ycxx').setValue(data.list[0].V_DEFECTLIST);
-                    Ext.getCmp('cljy').setValue(data.list[0].V_IDEA);
+                    if (data.list.length > 0) {
+                        //data.list[0].V_EQUTYPECODE?0:Ext.getCmp('equtype').setValue(data.list[0].V_EQUTYPECODE);
+                        Ext.getCmp('equtype').setValue(data.list[0].V_EQUTYPECODE);
+                        Ext.getCmp('equname').setValue(data.list[0].V_EQUCODE);
+                        Ext.getCmp('subequname').setValue(data.list[0].V_EQUCHILDCODE);
+                        Ext.getCmp('zy').setValue(data.list[0].V_REPAIRMAJOR_CODE);
+                        Ext.getCmp('fxsjymd').setValue((data.list[0].D_DEFECTDATE).substring(0, 19));
+                        Ext.getCmp('qxdj').setValue(data.list[0].V_SOURCE_GRADE);
+                        Ext.getCmp('ycxx').setValue(data.list[0].V_DEFECTLIST);
+                        Ext.getCmp('cljy').setValue(data.list[0].V_IDEA);
+                   }
                 } else {
                     Ext.MessageBox.alert('提示', '失败');
                 }
