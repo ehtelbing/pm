@@ -21,7 +21,6 @@ var v_specialty = "";
 var V_EQUTYPENAME = "";
 var RETRUNV_GUID = "";
 var RETURNV_ORDERGUID = "";
-var V_GC_GUID = ""
 
 
 if (location.href.split('?')[1] != undefined) {
@@ -32,7 +31,6 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.v_equcode == undefined) ? v_equcode = '' : v_equcode = parameters.v_equcode;
     (parameters.v_specialty == undefined) ? v_specialty = '' : v_specialty = parameters.v_specialty;
     (parameters.ck == undefined) ? ck = '' : ck = parameters.ck;
-    (parameters.V_GC_GUID == undefined) ? V_GC_GUID = '' : V_GC_GUID = parameters.V_GC_GUID;
 
 }
 
@@ -481,10 +479,12 @@ Ext.onReady(function () {
                     }, {
                         id: 'fxr',
                         xtype: 'textfield',
+                        //xtype: 'displayfield',
                         fieldLabel: '发现人',
                         labelWidth: 100,
+                        //disabled:true,
+                        readOnly: true,
                         queryMode: 'local',
-                        //baseCls: 'margin-bottom',
                         style: ' margin: 5px 0px 0px 0px',
                         width: 282,
                         value: Ext.util.Cookies.get('v_personname2'),
@@ -551,7 +551,7 @@ function _init() {
             async: false,
             method: 'POST',
             params: {
-                V_V_GUID_GC: V_GC_GUID
+                V_V_GUID_GC: v_guid_dx
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
