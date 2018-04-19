@@ -21,6 +21,7 @@ var v_specialty = "";
 var V_EQUTYPENAME = "";
 var RETRUNV_GUID = "";
 var RETURNV_ORDERGUID = "";
+var V_GC_GUID = ""
 
 
 if (location.href.split('?')[1] != undefined) {
@@ -31,6 +32,7 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.v_equcode == undefined) ? v_equcode = '' : v_equcode = parameters.v_equcode;
     (parameters.v_specialty == undefined) ? v_specialty = '' : v_specialty = parameters.v_specialty;
     (parameters.ck == undefined) ? ck = '' : ck = parameters.ck;
+    (parameters.V_GC_GUID == undefined) ? V_GC_GUID = '' : V_GC_GUID = parameters.V_GC_GUID;
 
 }
 
@@ -59,6 +61,11 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
     }
 });
 
+var equ_type_ = false;
+var equ_name_ = false;
+var equ_subname_ = false;
+var zy_ = false;
+var qxdj_ = false;
 Ext.onReady(function () {
 
 
@@ -82,6 +89,8 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('zy').select(store.first());
+                zy_ = true;
+                _init();
             }
         }
     });
@@ -113,6 +122,7 @@ Ext.onReady(function () {
         fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME', 'I_ORDER', 'I_ID'],
         proxy: {
             type: 'ajax',
+            async: false,
             url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
             actionMethods: {
                 read: 'POST'
@@ -129,6 +139,8 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('equtype').select(store.first());
+                equ_type_ = true;
+                _init();
             }
         }
     });
@@ -153,6 +165,8 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('equname').select(store.first());
+                equ_name_ = true;
+                _init();
             }
         }
     });
@@ -178,6 +192,8 @@ Ext.onReady(function () {
             load: function (store, records) {
                 store.insert(0, {text: '全部', sid: '%'});
                 Ext.getCmp('subequname').select(store.first());
+                equ_subname_ = true;
+                _init();
             }
         }
     });
@@ -201,7 +217,8 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('qxdj').setValue(3);
-
+                qxdj_ = true;
+                _init();
             }
         }
     });
@@ -382,31 +399,7 @@ Ext.onReady(function () {
                                     });
                                 }
                             }
-                        }
-                            /*, {
-                             id: 'zsb',
-                             xtype: 'combo',
-                             store: zsbstore,
-                             fieldLabel: '子设备',
-                             editable: false,
-                             labelWidth: 100,
-                             displayField: 'V_EQUNAME',
-                             valueField: 'V_EQUCODE',
-                             queryMode: 'local',
-                             //baseCls: 'margin-bottom',
-                             labelAlign: 'right',
-                             style: ' margin: 5px 0px 0px 0px',
-                             width: 250,
-                             fieldStyle: 'background-color:#FFEBCD;background-image:none;'*//*,
-                             listeners: {
-                             change: function (field, newValue, oldValue) {
-                             // _ck_zyqfzrload();
-                             // zyq_jxdwload();
-                             // _spload();
-                             }
-                             }*//*
-
-                             }*/]
+                        }]
                     }, {
                         layout: 'column',
                         defaults: {labelAlign: 'right'},
@@ -471,39 +464,21 @@ Ext.onReady(function () {
                                 style: ' margin: 5px 0px 0px 0px',
                                 width: 282,
                                 fieldStyle: 'background-color:#FFEBCD;background-image:none;',
-                                labelAlign: 'right'/*,
-                             listeners: {
-                             select: function (field, newValue, oldValue) {
-                             _ck_zyfzrload();
-                             _spload();
-                             }
-                             }*/
+                                labelAlign: 'right'
                             },
                             {
                                 id: 'fxsjymd',
-                                xtype: 'datefield',
-                                editable: false,
-                                format: 'Y-m-d',
-                                //submitFormat: 'yyyy-mm-dd',
-                                value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
                                 fieldLabel: '发现时间',
-                                labelWidth: 100,
+                                xtype: 'datefield',
+                                format: 'Y-m-d H:i:s',
                                 style: ' margin: 5px 0px 0px 0px',
-                                labelAlign: 'right',
-                                width: 200,
-                                fieldStyle: 'background-color:#FFEBCD;background-image:none;',
-                                baseCls: 'margin-bottom'
-                            }, {
-                                xtype: 'timefield',
-                                id: 'fxsjhis',
-                                format: 'H:i:s',
-                                style: 'margin:5px 0px 0px 2px',
+                                labelWidth: 100,
                                 value: new Date(),
                                 fieldStyle: 'background-color:#FFEBCD;background-image:none;',
                                 labelAlign: 'right',
-                                width: 80
+                                width: 282
                             }]
-                    }, , {
+                    }, {
                         id: 'fxr',
                         xtype: 'textfield',
                         fieldLabel: '发现人',
@@ -555,13 +530,6 @@ Ext.onReady(function () {
         ]
     });
 
-
-    /* Ext.create('Ext.container.Viewport', {
-     id: "viewport",
-     // layout: 'border',
-     items: [panel2, panel3]
-     });*/
-
     Ext.create('Ext.container.Viewport', {
         id: "viewport",
         layout: 'border',
@@ -573,36 +541,32 @@ Ext.onReady(function () {
      );
 
      });*/
-
+    _init();
 });
 
-function _savezuizhong() {
+function _init() {
+    if (equ_type_ && equ_name_ && equ_subname_ && zy_ && qxdj_) {
         Ext.Ajax.request({
-            url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_TOWORK',
+            url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_SEL',
             async: false,
             method: 'POST',
             params: {
-                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_GUID_GC: v_guid_dx,
-                V_V_GUID_QX: RETRUNV_GUID
+                V_V_GUID_GC: V_GC_GUID
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
                 if (data.success) {//成功，会传回true
-                    Ext.MessageBox.alert('提示', '保存成功');
-                    RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
-                    var owidth = window.document.body.offsetWidth;
-                    var oheight = window.document.body.offsetHeight;
-                    window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=' + RETURNV_ORDERGUID + '&V_V_EQUTYPE='+Ext.getCmp('equtype').getValue()+'&V_V_SOURCECODE=defct12&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
-                    //jykload = false;
-                    _close();
+                    //data.list[0].V_EQUTYPECODE?0:Ext.getCmp('equtype').setValue(data.list[0].V_EQUTYPECODE);
+                    Ext.getCmp('equtype').setValue(data.list[0].V_EQUTYPECODE);
+                    Ext.getCmp('equname').setValue(data.list[0].V_EQUCODE);
+                    Ext.getCmp('subequname').setValue(data.list[0].V_EQUCHILDCODE);
+                    Ext.getCmp('zy').setValue(data.list[0].V_REPAIRMAJOR_CODE);
+                    Ext.getCmp('fxsjymd').setValue((data.list[0].D_DEFECTDATE).substring(0, 19));
+                    Ext.getCmp('qxdj').setValue(data.list[0].V_SOURCE_GRADE);
+                    Ext.getCmp('ycxx').setValue(data.list[0].V_DEFECTLIST);
+                    Ext.getCmp('cljy').setValue(data.list[0].V_IDEA);
                 } else {
-                    Ext.MessageBox.show({
-                        title: '错误',
-                        msg: data.message,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR
-                    });
+                    Ext.MessageBox.alert('提示', '失败');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
@@ -615,6 +579,48 @@ function _savezuizhong() {
             }
 
         })
+    }
+}
+
+function _savezuizhong() {
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_TOWORK',
+        async: false,
+        method: 'POST',
+        params: {
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_GUID_GC: v_guid_dx,
+            V_V_GUID_QX: RETRUNV_GUID
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);//后台返回的值
+            if (data.success) {//成功，会传回true
+                Ext.MessageBox.alert('提示', '保存成功');
+                RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=' + RETURNV_ORDERGUID + '&V_V_EQUTYPE=' + Ext.getCmp('equtype').getValue() + '&V_V_SOURCECODE=defct12&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+                //jykload = false;
+                _close();
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: data.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
+
+    })
 }
 
 /*function callBack(id) {
@@ -633,7 +639,7 @@ function _savezuizhong() {
  }*/
 
 function _save() {
-    var time1 = Ext.getCmp('fxsjymd').getSubmitValue() + ' ' + Ext.getCmp('fxsjhis').getSubmitValue();
+    var time1 = Ext.getCmp('fxsjymd').getSubmitValue();
 
 
     var checked = $("input[type='checkbox']").is(':checked');
