@@ -1123,7 +1123,6 @@ function _delete() {
             });
         }
     });
-
 }
 
 function _deleteFile(V_V_GUID) {
