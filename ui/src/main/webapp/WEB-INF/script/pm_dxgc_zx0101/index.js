@@ -60,8 +60,6 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 var equ_type_ = false;
-var equ_name_ = false;
-var equ_subname_ = false;
 var zy_ = false;
 var qxdj_ = false;
 Ext.onReady(function () {
@@ -118,7 +116,7 @@ Ext.onReady(function () {
         id: 'eTypeStore',
         autoLoad: true,
         fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME', 'I_ORDER', 'I_ID'],
-        proxy: {
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
@@ -133,10 +131,15 @@ Ext.onReady(function () {
                 'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
                 'V_V_DEPTCODENEXT': v_deptcode
             }
-        },
+        }),
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('equtype').select(store.first());
+                if (v_equtypecode == '') {
+                    Ext.getCmp('equtype').select(store.first())
+                }
+                else {
+                    Ext.getCmp('equtype').setValue(v_equtypecode)
+                }
                 equ_type_ = true;
                 _init();
             }
@@ -148,7 +151,7 @@ Ext.onReady(function () {
         id: 'equNameStore',
         autoLoad: false,
         fields: ['V_EQUCODE', 'V_EQUNAME', 'I_ORDER', 'I_ID'],
-        proxy: {
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             url: AppUrl + 'PM_06/pro_get_deptequ_per',
             actionMethods: {
@@ -159,12 +162,16 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        },
+        }),
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('equname').select(store.first());
-                equ_name_ = true;
-                _init();
+                if (v_equcode == '') {
+                    Ext.getCmp('equname').select(store.first())
+                }
+                else {
+                    Ext.getCmp('equname').setValue(v_equcode)
+                }
+                //Ext.getCmp('equname').select(store.first());
             }
         }
     });
@@ -174,7 +181,7 @@ Ext.onReady(function () {
         id: 'subequNameStore',
         autoLoad: false,
         fields: ['sid', 'text'],
-        proxy: {
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             url: AppUrl + 'pm_19/PRO_SAP_PM_CHILDEQU_TREE',
             actionMethods: {
@@ -185,13 +192,11 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        },
+        }),
         listeners: {
             load: function (store, records) {
                 store.insert(0, {text: '全部', sid: '%'});
                 Ext.getCmp('subequname').select(store.first());
-                equ_subname_ = true;
-                _init();
             }
         }
     });
@@ -545,7 +550,7 @@ Ext.onReady(function () {
 });
 
 function _init() {
-    if (equ_type_ && equ_name_ && equ_subname_ && zy_ && qxdj_) {
+    if (zy_ && equ_type_ && qxdj_) {
         Ext.Ajax.request({
             url: AppUrl + 'PM_22/PRO_PM_DEFECT_GC_SEL',
             async: false,
@@ -566,7 +571,7 @@ function _init() {
                         Ext.getCmp('qxdj').setValue(data.list[0].V_SOURCE_GRADE);
                         Ext.getCmp('ycxx').setValue(data.list[0].V_DEFECTLIST);
                         Ext.getCmp('cljy').setValue(data.list[0].V_IDEA);
-                   }
+                    }
                 } else {
                     Ext.MessageBox.alert('提示', '失败');
                 }
