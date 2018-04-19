@@ -551,7 +551,7 @@ function _init() {
             async: false,
             method: 'POST',
             params: {
-                V_V_GUID_GC: '77'
+                V_V_GUID_GC: V_GC_GUID
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);//后台返回的值
