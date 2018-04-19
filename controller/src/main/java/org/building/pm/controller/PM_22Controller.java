@@ -652,4 +652,18 @@ public class PM_22Controller {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_PM_DEFECT_GC_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_DEFECT_GC_SEL(@RequestParam(value = "V_V_GUID_GC") String V_V_GUID_GC,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = pm_22Service.PRO_PM_DEFECT_GC_SEL(V_V_GUID_GC);
+        List<Map<String, Object>> pm_1407 = (List) data.get("list");
+
+        result.put("list", pm_1407);
+        result.put("success", true);
+        return result;
+    }
+
 }

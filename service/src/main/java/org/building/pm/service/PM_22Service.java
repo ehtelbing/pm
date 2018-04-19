@@ -928,5 +928,29 @@ public class PM_22Service {
         return result;
     }
 
+    public HashMap PRO_PM_DEFECT_GC_SEL(String V_V_GUID_GC) throws SQLException {
+        logger.info("begin PRO_PM_DEFECT_GC_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_GC_SEL" + "(:V_V_GUID_GC,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID_GC", V_V_GUID_GC);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_PM_DEFECT_GC_SEL");
+        return result;
+    }
+
 
 }
