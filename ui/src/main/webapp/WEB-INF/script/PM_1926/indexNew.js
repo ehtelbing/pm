@@ -158,7 +158,7 @@ Ext.onReady(function () {
     var gjStore = Ext.create('Ext.data.Store', { //安全措施数据集
         id: 'gjStore',
         autoLoad: false,
-        fields: ['V_GJ_CODE', 'V_GJ_NAME'],
+        fields: ['V_GJ_CODE', 'V_GJ_NAME','V_GJ_TYPE'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'zs/BASE_GJ_BY_ZGGUID_SEL',
@@ -293,7 +293,7 @@ Ext.onReady(function () {
         frame: true,
         border: false,
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:5px 0px 5px 10px'},
         items: []
     });
 
@@ -304,7 +304,7 @@ Ext.onReady(function () {
         border: false,
         baseCls: 'my-panel-no-border',//?????
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:5px 0px 5px 10px'},
         items: [
             {
                 xtype: 'textfield',
@@ -333,12 +333,10 @@ Ext.onReady(function () {
         columnLines: true,
         border: false,
         //frame: true,
+        selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-           // {text: '安全措施编码', dataIndex: 'V_AQCS_CODE', style: 'text-align: center;', flex: 1},
-            {
-                text: '安全措施名称', dataIndex: 'V_AQCS_NAME', style: 'text-align: center;', flex: 1
-            }],
+            {text: '安全措施名称', dataIndex: 'V_AQCS_NAME', style: 'text-align: center;', flex: 1}],
         listeners: {//itemclick监听查询相关安全措施详情
             itemclick: function (panel, record) {
                 _selectAqcsDetail(record.get('V_AQCS_CODE'));
@@ -349,7 +347,6 @@ Ext.onReady(function () {
             }
         },
         bbar: [{
-            id: 'grid1page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -362,16 +359,16 @@ Ext.onReady(function () {
     var _editAqcsWindow = Ext.create('Ext.window.Window', {
         id: '_editAqcsWindow',
         width: 320,
-        height: 200,
+        height: 220,
         layout: 'vbox',
         title: '编辑',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,
         closeAction: 'hide',
         closable: true,
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:10px 0px 0px 0px'},
         items: [
-            {xtype: 'textfield', id: 'WIN_AQCS_CODE1', fieldLabel: '安全措施编码', width: '300'},
+            {xtype: 'textfield', id: 'WIN_AQCS_CODE', fieldLabel: '安全措施编码', width: '300'},
             {xtype: 'textfield', id: 'WIN_AQCS_NAME', fieldLabel: '安全措施名称', width: '300'},
             {xtype: 'textfield', id: 'WIN_AQ_ZYSX', fieldLabel: '安全注意事项', width: '300'},
             {xtype: 'textfield', id: 'WIN_AQCS_DETAIL', fieldLabel: '安全措施明细', width: '300'}],
@@ -412,7 +409,7 @@ Ext.onReady(function () {
         frame: true,
         defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 300, style: 'margin:20px 0px 10px 50px'},
         //defaults: {labelAlign: 'right', autoWidth: true},
-        items: [{xtype: 'textfield', id: 'AQCS_CODE', fieldLabel: '安全措施编码:', maxLength: 60, allowBlank: false},
+        items: [//{xtype: 'textfield', id: 'AQCS_CODE', fieldLabel: '安全措施编码:', maxLength: 60, allowBlank: false},
             {xtype: 'textfield', id: 'AQCS_NAME', fieldLabel: '安全措施名称:', maxLength: 60, allowBlank: false},
             {xtype: 'textareafield', id: 'AQ_ZYSX', fieldLabel: '安全措施明细:', maxLength: 60, allowBlank: false},
             {xtype: 'textareafield', id: "AQCS_DETAIL", fieldLabel: '安全措施注意事项', maxLength: 60, allowBlank: false}
@@ -441,6 +438,7 @@ Ext.onReady(function () {
         border: 'false',
         //baseCls: 'my-panel-no-border',
         //frame:'true',
+        selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
           //  {text: '预案编码', dataIndex: 'V_AQYA_CODE', style: 'text-align: center;', flex: 1},
@@ -453,7 +451,6 @@ Ext.onReady(function () {
                 }
             }],
         bbar: [{
-            id: 'grid2page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -473,9 +470,9 @@ Ext.onReady(function () {
         frame: true,
         closeAction: 'hide',
         closable: true,
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:10px 0px 0px 0px'},
         items: [
-            {xtype: 'textfield', id: 'WIN_AQCS_CODE', fieldLabel: '安全措施编码', width: '300'},
+            {xtype: 'textfield', id: 'WIN_AQCSYA_CODE', fieldLabel: '安全措施编码', width: '300'},
             {xtype: 'textfield', id: 'WIN_AQYA_CODE', fieldLabel: '预案编码', width: '300'},
             {xtype: 'textfield', id: 'WIN_AQYA_NAME', fieldLabel: '预案名称', width: '300'},
             {xtype: 'textfield', id: 'WIN_AQYA_DETAIL', fieldLabel: '预案详情', width: '300'}],
@@ -529,7 +526,14 @@ Ext.onReady(function () {
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '附件名称', dataIndex: 'V_FILENAME', style: 'text-align: center;', flex: 1},
-            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', flex: 1},
+            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', flex: 1,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = yafjStore.find('V_TIME', value);
+                    if (index != -1) {
+                        return yafjStore.getAt(index).get('V_TIME').substring(0, 19);
+                    }
+                    return null;
+                } },
             {text: '上传人', dataIndex: 'V_PERSON', style: 'text-align: center;', flex: 1},
             {
                 text: '下载', dataIndex: '', style: 'text-align: center;', flex: 1,
@@ -538,7 +542,6 @@ Ext.onReady(function () {
                 }
             }],
         bbar: [{
-            id: 'grid3page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -600,7 +603,14 @@ Ext.onReady(function () {
         frame: 'true',
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '事故发生时间', dataIndex: 'V_FINDTIME', style: 'text-align: center;', flex: 1},
+            {text: '事故发生时间', dataIndex: 'V_FINDTIME', style: 'text-align: center;', width:230,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = aqSgAlStore.find('V_FINDTIME', value);
+                    if (index != -1) {
+                        return aqSgAlStore.getAt(index).get('V_FINDTIME').substring(0, 19);
+                    }
+                    return null;
+                }},
             {text: '事故发生地点', dataIndex: 'V_FAULT_DD', style: 'text-align: center;', flex: 1},
             {text: '事故影响', dataIndex: 'V_FAULT_YY', style: 'text-align: center;', flex: 1},
             {text: '事故详情', dataIndex: 'V_FAULT_XX', style: 'text-align: center;', flex: 1},
@@ -611,7 +621,6 @@ Ext.onReady(function () {
                 }
             }],
         bbar: [{
-            id: 'grid4page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -657,7 +666,14 @@ Ext.onReady(function () {
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '附件名称', dataIndex: 'V_FILENAME', style: 'text-align: center;', flex: 1},
-            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', flex: 1},
+            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', width:230,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = yafjStore.find('V_TIME', value);
+                    if (index != -1) {
+                        return yafjStore.getAt(index).get('V_TIME').substring(0, 19);
+                    }
+                    return null;
+                }},
             {text: '上传人', dataIndex: 'V_PERSON', style: 'text-align: center;', flex: 1},
             {
                 text: '下载', dataIndex: '', style: 'text-align: center;', flex: 1,
@@ -666,7 +682,6 @@ Ext.onReady(function () {
                 }
             }],
         bbar: [{
-            id: 'grid3page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -717,7 +732,7 @@ Ext.onReady(function () {
         border: false,
         // baseCls: 'my-panel-no-border',
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:5px 0px 5px 10px'},
         items: [
             {xtype: 'button', text: '添加', icon: imgpath + '/add.png', handler: _addAqCsZg},
             {xtype: 'button', text: '修改', icon: imgpath + '/edit.png', handler: _updateAqCsZg},
@@ -727,14 +742,14 @@ Ext.onReady(function () {
     var _editAqCsZgWindow = Ext.create('Ext.window.Window', {//安全预案
         id: '_editAqCsZgWindow',
         width: 350,
-        height: 450,
+        height: 300,
         layout: 'vbox',
         title: '编辑',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,
         closeAction: 'hide',
         closable: true,
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:10px 0px 0px 0px'},
         items: [
            // {xtype: 'textfield', id: 'WIN_AQCS_CODE', fieldLabel: '安全措施编码', width: '300'},
            {xtype: 'textfield', id: 'WIN_ZG_GUID', fieldLabel: '整改GUID', width: '300'},
@@ -768,13 +783,20 @@ Ext.onReady(function () {
     var zgdetailPanel = Ext.create('Ext.grid.Panel', {
         id: 'zgdetailPanel',
         store: 'aqCsZgStore',
-        // title: '整改工单',
         columnLines: true,
         //baseCls: 'my-panel-no-border',
         //frame:'true',
+        selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             //{xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '整改时间', dataIndex: 'V_ZG_TIME', style: 'text-align: center;', flex: 1},
+            {text: '整改时间', dataIndex: 'V_ZG_TIME', style: 'text-align: center;', width:230,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = aqCsZgStore.find('V_ZG_TIME', value);
+                    if (index != -1) {
+                        return aqCsZgStore.getAt(index).get('V_ZG_TIME').substring(0, 19);
+                    }
+                    return null;
+                }},
             {text: '整改地点', dataIndex: 'V_ZG_PLACE', style: 'text-align: center;', flex: 1},
             {text: '整改负责人', dataIndex: 'V_ZG_PERSON', style: 'text-align: center;', flex: 1},
             {text: '整改方案明细', dataIndex: 'V_ZG_DETAIL', style: 'text-align: center;', flex: 1},
@@ -795,7 +817,6 @@ Ext.onReady(function () {
             }
         },
         bbar: [{
-            id: 'grid11page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -811,7 +832,7 @@ Ext.onReady(function () {
         border: false,
         baseCls: 'my-panel-no-border',
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:5px 0px 5px 10px'},
         items: [
             {
                 xtype: 'filefield',
@@ -841,7 +862,14 @@ Ext.onReady(function () {
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '附件名称', dataIndex: 'V_FILENAME', style: 'text-align: center;', flex: 1},
-            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', flex: 1},
+            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', width:230,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = yafjStore.find('V_TIME', value);
+                    if (index != -1) {
+                        return yafjStore.getAt(index).get('V_TIME').substring(0, 19);
+                    }
+                    return null;
+                }},
             {text: '上传人', dataIndex: 'V_PERSON', style: 'text-align: center;', flex: 1},
             {
                 text: '下载', dataIndex: '', style: 'text-align: center;', flex: 1,
@@ -850,7 +878,6 @@ Ext.onReady(function () {
                 }
             }],
         bbar: [{
-            id: 'grid3page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -916,9 +943,15 @@ Ext.onReady(function () {
             {text: '流程步骤', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
             {text: '操作人', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
             {text: '审批意见', dataIndex: 'data_', style: 'text-align: center;', flex: 1},
-            {text: '审批时间', dataIndex: 'data_', style: 'text-align: center;', flex: 1}],
+            {text: '审批时间', dataIndex: 'data_', style: 'text-align: center;', width:230,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = zggdStore.find('D_ENTER_DATE', value);
+                    if (index != -1) {
+                        return zggdStore.getAt(index).get('D_ENTER_DATE').substring(0, 19);
+                    }
+                    return null;
+                }}],
         bbar: [{
-            id: 'grid6page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -941,7 +974,6 @@ Ext.onReady(function () {
             {text: '工种类型', dataIndex: 'V_PERTYPE_DE', align: 'center', flex: 1},
             {text: '台时', dataIndex: 'V_TS', align: 'center', flex: 1}],
         bbar: [{
-            id: 'grid8page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -960,8 +992,9 @@ Ext.onReady(function () {
         //selType: 'checkboxmodel',
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '工具编码', dataIndex: 'V_GJ_CODE', align: 'center', flex: 1},
-            {text: '工具名称', dataIndex: 'V_GJ_NAME', align: 'center', flex: 1}],
+           // {text: '工具编码', dataIndex: 'V_GJ_CODE', align: 'center', flex: 1},
+            {text: '工具名称', dataIndex: 'V_GJ_NAME', align: 'center', flex: 1},
+            {text: '工具类型', dataIndex: 'V_GJ_TYPE', align: 'center', flex: 1}],
         bbar: [{
             xtype: 'pagingtoolbar',
             dock: 'bottom',
@@ -983,9 +1016,9 @@ Ext.onReady(function () {
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '机具编码', dataIndex: 'V_JJ_CODE', align: 'center', flex: 1},
-            {text: '机具名称', dataIndex: 'V_JJ_CODE', align: 'center', flex: 1},
-            {text: '机具类型', dataIndex: 'V_JJ_CODE', align: 'center', flex: 1},
-            {text: '台时', dataIndex: 'V_JJ_CODE', align: 'center', flex: 1}],
+            {text: '机具名称', dataIndex: 'V_JJ_NAME', align: 'center', flex: 1},
+            {text: '机具类型', dataIndex: 'V_JJ_TYPE', align: 'center', flex: 1},
+            {text: '台时', dataIndex: 'V_JJ_TS', align: 'center', flex: 1}],
         bbar: [{
             xtype: 'pagingtoolbar',
             dock: 'bottom',
@@ -1005,17 +1038,24 @@ Ext.onReady(function () {
         columnLines: true,
         //baseCls: 'my-panel-no-border',
         //frame:'true',
-        selModel: {selType: 'checkboxmodel', mode: 'single'},
+        //selModel: {selType: 'checkboxmodel', mode: 'single'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '工单号', dataIndex: 'V_ORDERGUID', style: 'text-align: center;', width: 80},
+            //{text: '工单号', dataIndex: 'V_ORDERGUID', style: 'text-align: center;', width: 80},
             {text: '工单描述', dataIndex: 'V_SHORT_TXT', style: 'text-align: center;', width: 80},
-            {text: '设备名称', dataIndex: 'V_EQUIP_NAME', style: 'text-align: center;', width: 80},
-            {text: '设备位置', dataIndex: 'V_FUNC_LOC', style: 'text-align: center;', width: 80},
+            {text: '设备名称', dataIndex: 'V_EQUIP_NAME', style: 'text-align: center;', width: 130},
+            {text: '设备位置', dataIndex: 'V_FUNC_LOC', style: 'text-align: center;', width: 200},
             {text: '委托人', dataIndex: 'V_ENTERED_BY', style: 'text-align: center;', width: 80},
-            {text: '委托单位', dataIndex: 'V_DEPTNAME', style: 'text-align: center;', width: 80},
-            {text: '委托时间', dataIndex: 'D_ENTER_DATE', style: 'text-align: center;', width: 80},
-            {text: '检修单位', dataIndex: 'V_JX_DEPTNAME', style: 'text-align: center;', width: 80}],
+            {text: '委托单位', dataIndex: 'V_DEPTNAME', style: 'text-align: center;', width: 130},
+            {text: '委托时间', dataIndex: 'D_ENTER_DATE', style: 'text-align: center;', width: 200,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = zggdStore.find('D_ENTER_DATE', value);
+                    if (index != -1) {
+                        return zggdStore.getAt(index).get('D_ENTER_DATE').substring(0, 19);
+                    }
+                    return null;
+                }},
+            {text: '检修单位', dataIndex: 'V_JX_DEPTNAME', style: 'text-align: center;', width: 130}],
         bbar: [{
             xtype: 'pagingtoolbar',
             dock: 'bottom',
@@ -1089,7 +1129,7 @@ Ext.onReady(function () {
         border: false,
         baseCls: 'my-panel-no-border',
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:5px 0px 5px 10px'},
         items: [
             {
                 xtype: 'filefield',
@@ -1118,10 +1158,18 @@ Ext.onReady(function () {
         border: 'false',
         //baseCls: 'my-panel-no-border',
         //frame:'true',
+        selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '附件名称', dataIndex: 'V_FILENAME', style: 'text-align: center;', flex: 1},
-            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', flex: 1},
+            {text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', width:230,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = yafjStore.find('V_TIME', value);
+                    if (index != -1) {
+                        return yafjStore.getAt(index).get('V_TIME').substring(0, 19);
+                    }
+                    return null;
+                }},
             {text: '上传人', dataIndex: 'V_PERSON', style: 'text-align: center;', flex: 1},
             {
                 text: '下载', dataIndex: '', style: 'text-align: center;', flex: 1,
@@ -1130,7 +1178,6 @@ Ext.onReady(function () {
                 }
             }],
         bbar: [{
-            id: 'grid12page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
@@ -1156,7 +1203,7 @@ Ext.onReady(function () {
         id: 'Panel4',
         frame: true,
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 50, inputWidth: 140, style: 'margin:5px 0px 5px 20px'},
+        defaults: {labelAlign: 'right', labelWidth: 50, inputWidth: 160, style: 'margin:5px 0px 5px 20px'},
         items: [{
             xtype: 'combo',
             id: 'ck',
@@ -1247,11 +1294,18 @@ Ext.onReady(function () {
         //autoScroll: false,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '设备编码', dataIndex: 'V_EQUCODE', align: 'center', flex: 1},
-            {text: '设备名称', dataIndex: 'V_EQUNAME', align: 'center', flex: 1},
-            {text: '功能位置', dataIndex: 'V_EQUSITE', align: 'center', flex: 1},
-            {text: '关联时间', dataIndex: 'V_LINK_TIME', align: 'center', flex: 1},
-            {text: '关联人', dataIndex: 'V_LINK_PERSON', align: 'center', flex: 1},
+            {text: '设备编码', dataIndex: 'V_EQUCODE', align: 'center', width:180},
+            {text: '设备名称', dataIndex: 'V_EQUNAME', align: 'center',width:180},
+            {text: '功能位置', dataIndex: 'V_EQUSITE', align: 'center', width:230},
+            {text: '关联时间', dataIndex: 'V_LINK_TIME', align: 'center', width:230,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = sbbgStore.find('V_LINK_TIME', value);
+                    if (index != -1) {
+                        return sbbgStore.getAt(index).get('V_LINK_TIME').substring(0, 19);
+                    }
+                    return null;
+                }},
+            {text: '关联人', dataIndex: 'V_LINK_PERSON', align: 'center', width:180},
             {
                 text: '取消关联', dataIndex: '', style: 'text-align: center;', width: 80,
                 renderer: function (v) {
@@ -1363,7 +1417,6 @@ function _selectAqcsDetail(V_AQCS_CODE) {//左上列表点击行，可查看相�
             //var resp = Ext.decode(response.responseText);
             var resp = Ext.decode(resp.responseText);
             if (resp.list.length != 0) {
-                Ext.getCmp('AQCS_CODE').setValue(resp.list[0].V_AQCS_CODE);//安全措施编码
                 Ext.getCmp('AQCS_NAME').setValue(resp.list[0].V_AQCS_NAME);//安全措施名称
                 Ext.getCmp('AQ_ZYSX').setValue(resp.list[0].V_AQ_ZYSX);//安全注意事项
                 Ext.getCmp('AQCS_DETAIL').setValue(resp.list[0].V_AQCS_DETAIL);//安全注意详情
@@ -1372,8 +1425,8 @@ function _selectAqcsDetail(V_AQCS_CODE) {//左上列表点击行，可查看相�
     });
 }
 function _addAqcs() {//安全措施的新增
-    Ext.getCmp('WIN_AQCS_CODE').hide();
-    Ext.getCmp('WIN_AQCS_CODE').setValue(Ext.data.IdGenerator.get('uuid').generate());
+    //Ext.getCmp('WIN_AQCS_CODE').hide();
+    Ext.getCmp('WIN_AQCS_CODE').setValue(Ext.data.IdGenerator.get('uuid').generate()).hide();
     Ext.getCmp('WIN_AQCS_NAME').setValue('');
     Ext.getCmp('WIN_AQ_ZYSX').setValue('');
     Ext.getCmp('WIN_AQCS_DETAIL').setValue('');
@@ -1381,9 +1434,12 @@ function _addAqcs() {//安全措施的新增
 }
 function _updateAqcs() {//安全措施的修改
     var records = Ext.getCmp('gridPanel1').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length ==0) {
+        Ext.MessageBox.alert("提示", '请选择一条数据进行修改！', Ext.MessageBox.WARNING);
+        return;
+    }else if(records.length >1){
+        Ext.MessageBox.alert("提示", '一次只能修改一条数据！', Ext.MessageBox.WARNING);
+        return;
     }
     Ext.getCmp('WIN_AQCS_CODE').setValue(records[0].data.V_AQCS_CODE);
     Ext.getCmp('WIN_AQCS_CODE').hide();
@@ -1391,66 +1447,86 @@ function _updateAqcs() {//安全措施的修改
     Ext.getCmp('WIN_AQ_ZYSX').setValue(records[0].data.V_AQ_ZYSX);
     Ext.getCmp('WIN_AQCS_DETAIL').setValue(records[0].data.V_AQCS_DETAIL);
     Ext.getCmp('_editAqcsWindow').show();
-
 }
 function _editAqcsSave() {//新增和修改的保存
-    Ext.Ajax.request({
-        url: AppUrl + 'zs/BASE_AQCS_EDIT ',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_AQCS_CODE: Ext.getCmp('WIN_AQCS_CODE').getValue(),
-            V_V_AQCS_NAME: Ext.getCmp('WIN_AQCS_NAME').getValue(),
-            V_V_AQ_ZYSX: Ext.getCmp('WIN_AQ_ZYSX').getValue(),
-            V_V_AQCS_DETAIL: Ext.getCmp('WIN_AQCS_DETAIL').getValue()
-        },
-        success: function (resp) {
-            var data = Ext.decode(resp.responseText);
-            if (data.INFO == 'SUCCESS') {
-                Ext.getCmp('_editAqcsWindow').hide();
-                Ext.Msg.alert("信息", "成功！");
-                _queryAqcs();
-                Ext.getCmp('AQCS_CODE').setValue('');//安全措施编码
-                Ext.getCmp('AQCS_NAME').setValue('');//安全措施名称
-                Ext.getCmp('AQ_ZYSX').setValue('');//安全注意事项
-                Ext.getCmp('AQCS_DETAIL').setValue('');//安全注意详情
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '是否编辑',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'zs/BASE_AQCS_EDIT ',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_AQCS_CODE: Ext.getCmp('WIN_AQCS_CODE').getValue(),
+                        V_V_AQCS_NAME: Ext.getCmp('WIN_AQCS_NAME').getValue(),
+                        V_V_AQ_ZYSX: Ext.getCmp('WIN_AQ_ZYSX').getValue(),
+                        V_V_AQCS_DETAIL: Ext.getCmp('WIN_AQCS_DETAIL').getValue()
+                    },
+                    success: function (resp) {
+                        var data = Ext.decode(resp.responseText);
+                        if (data.INFO == 'SUCCESS') {
+                            Ext.getCmp('_editAqcsWindow').hide();
+                            Ext.Msg.alert("信息", "成功！");
+                            _queryAqcs();
+                        } else {
+                            Ext.Msg.alert("信息", "失败！");
+                        }
+                    }
+                });
             } else {
-                Ext.Msg.alert("信息", "失败！");
+                Ext.MessageBox.hide();
             }
         }
     });
-
 }
 function _deleteAqcs() {//安全措施的删除方法
     var records = Ext.getCmp('gridPanel1').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    console.log(records.length);
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择至少一条数据进行删除！', Ext.MessageBox.WARNING);
+        return;
     }
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'zs/BASE_AQCS_DEL ',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_AQCS_CODE: records[i].data.V_AQCS_CODE
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    Ext.getCmp('_editAqcsWindow').hide();
-                    Ext.Msg.alert("信息", "成功！");
-                    _queryAqcs();
-                    Ext.getCmp('AQCS_CODE').setValue('');//安全措施编码
-                    Ext.getCmp('AQCS_NAME').setValue('');//安全措施名称
-                    Ext.getCmp('AQ_ZYSX').setValue('');//安全注意事项
-                    Ext.getCmp('AQCS_DETAIL').setValue('');//安全注意详情
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
+    Ext.MessageBox.show({
+        title : '请确认',
+        msg : '是否删除',
+        buttons : Ext.MessageBox.YESNO,
+        icon : Ext.MessageBox.QUESTION,
+        fn : function(btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'zs/BASE_AQCS_DEL ',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_AQCS_CODE: records[i].data.V_AQCS_CODE
+                        },
+                        success: function (resp) {
+                            var data = Ext.decode(resp.responseText);
+                            if (data.INFO == 'SUCCESS') {
+                                Ext.getCmp('_editAqcsWindow').hide();
+                                Ext.Msg.alert("信息", "成功！");
+                                Ext.getCmp('AQCS_NAME').setValue('');//安全措施名称
+                                Ext.getCmp('AQ_ZYSX').setValue('');//安全注意事项
+                                Ext.getCmp('AQCS_DETAIL').setValue('');//安全注意详情
+                            } else {
+                                Ext.Msg.alert("信息", "失败！");
+                            }
+                        }
+                    });
                 }
+                _queryAqcs();
+            }else{
+                Ext.MessageBox.hide();
+
             }
+        }
         });
-    }
+
 }
 function _selectAqcs_ya(V_AQCS_CODE) {//查看安全措施预案的方法
     AQCS_CODE_ = V_AQCS_CODE;
@@ -1463,8 +1539,8 @@ function _selectAqcs_ya(V_AQCS_CODE) {//查看安全措施预案的方法
 
 
 function _addAqcs_Ya() {
-    Ext.getCmp('WIN_AQCS_CODE').setValue(AQCS_CODE_);
-    Ext.getCmp('WIN_AQCS_CODE').hide();
+    Ext.getCmp('WIN_AQCSYA_CODE').setValue(AQCS_CODE_);
+    Ext.getCmp('WIN_AQCSYA_CODE').hide();
     //  Ext.getCmp('WIN_AQYA_CODE').setReadOnly(true);
     Ext.getCmp('WIN_AQYA_CODE').setValue(Ext.data.IdGenerator.get('uuid').generate());
     Ext.getCmp('WIN_AQYA_CODE').hide();
@@ -1474,12 +1550,15 @@ function _addAqcs_Ya() {
 }
 function _updateAqcs_Ya() {
     var records = Ext.getCmp('gridPanel2').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length ==0) {
+        Ext.MessageBox.alert("提示", '请选择一条数据进行修改！', Ext.MessageBox.WARNING);
+        return;
+    }else if(records.length >1){
+        Ext.MessageBox.alert("提示", '一次只能修改一条数据！', Ext.MessageBox.WARNING);
+        return;
     }
-    Ext.getCmp('WIN_AQCS_CODE').setValue(records[0].data.V_AQCS_CODE);
-    Ext.getCmp('WIN_AQCS_CODE').hide();
+    Ext.getCmp('WIN_AQCSYA_CODE').setValue(records[0].data.V_AQCS_CODE);
+    Ext.getCmp('WIN_AQCSYA_CODE').hide();
     Ext.getCmp('WIN_AQYA_CODE').setValue(records[0].data.V_AQYA_CODE);
     Ext.getCmp('WIN_AQYA_CODE').hide();
     Ext.getCmp('WIN_AQYA_NAME').setValue(records[0].data.V_AQYA_NAME);
@@ -1487,59 +1566,79 @@ function _updateAqcs_Ya() {
     Ext.getCmp('_editAqcs_Ya_Window').show();
 }
 function _editAqcs_YaSave() {//新增和修改的保存
-    Ext.Ajax.request({
-        url: AppUrl + 'zs/BASE_AQCS_AQYA_EDIT ',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_AQCS_CODE: Ext.getCmp('WIN_AQCS_CODE').getValue(),
-            V_V_AQYA_CODE: Ext.getCmp('WIN_AQYA_CODE').getValue(),
-            V_V_AQYA_NAME: Ext.getCmp('WIN_AQYA_NAME').getValue(),
-            V_V_AQYA_DETAIL: Ext.getCmp('WIN_AQYA_DETAIL').getValue()
-        },
-        success: function (resp) {
-            var data = Ext.decode(resp.responseText);
-            if (data.INFO == 'SUCCESS') {
-                Ext.getCmp('_editAqcs_Ya_Window').hide();
-                Ext.Msg.alert("信息", "成功！");
-                _selectAqcs_ya(AQCS_CODE_);
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '是否编辑',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'zs/BASE_AQCS_AQYA_EDIT ',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_AQCS_CODE: Ext.getCmp('WIN_AQCSYA_CODE').getValue(),
+                        V_V_AQYA_CODE: Ext.getCmp('WIN_AQYA_CODE').getValue(),
+                        V_V_AQYA_NAME: Ext.getCmp('WIN_AQYA_NAME').getValue(),
+                        V_V_AQYA_DETAIL: Ext.getCmp('WIN_AQYA_DETAIL').getValue()
+                    },
+                    success: function (resp) {
+                        var data = Ext.decode(resp.responseText);
+                        if (data.INFO == 'SUCCESS') {
+                            Ext.getCmp('_editAqcs_Ya_Window').hide();
+                            Ext.Msg.alert("信息", "成功！");
+                            _selectAqcs_ya(AQCS_CODE_);
+                        } else {
+                            Ext.Msg.alert("信息", "失败！");
+                        }
+                    }
+                });
             } else {
-                Ext.Msg.alert("信息", "失败！");
+                Ext.MessageBox.hide();
             }
         }
     });
-
 }
 function _deleteAqcs_Ya() {
     var records = Ext.getCmp('gridPanel2').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择一条数据进行删除！', Ext.MessageBox.WARNING);
+        return;
     }
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'zs/BASE_AQCS_AQYA_DEL ',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_AQYA_CODE: records[i].data.V_AQYA_CODE
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    Ext.getCmp('_editAqcs_Ya_Window').hide();
-                    Ext.Msg.alert("信息", "成功！");
-                    _selectAqcs_ya(AQCS_CODE_);
-                    Ext.getCmp('AQCS_CODE').setValue('');//安全措施编码
-                    Ext.getCmp('AQCS_NAME').setValue('');//安全措施名称
-                    Ext.getCmp('AQ_ZYSX').setValue('');//安全注意事项
-                    Ext.getCmp('AQCS_DETAIL').setValue('');//安全注意详情
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
+    Ext.MessageBox.show({
+        title : '请确认',
+        msg : '是否删除',
+        buttons : Ext.MessageBox.YESNO,
+        icon : Ext.MessageBox.QUESTION,
+        fn : function(btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'zs/BASE_AQCS_AQYA_DEL ',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_AQYA_CODE: records[i].data.V_AQYA_CODE
+                        },
+                        success: function (resp) {
+                            var data = Ext.decode(resp.responseText);
+                            if (data.INFO == 'SUCCESS') {
+                                Ext.getCmp('_editAqcs_Ya_Window').hide();
+                                Ext.Msg.alert("信息", "成功！");
+                                _selectAqcs_ya(AQCS_CODE_);
+                            } else {
+                                Ext.Msg.alert("信息", "失败！");
+                            }
+                        }
+                    });
                 }
+            }else{
+                Ext.MessageBox.hide();
+
             }
-        });
-    }
+        }
+    });
 }
 
 //安全预案附件上传
@@ -1664,9 +1763,12 @@ function _addAqCsZg() {
 //修改安全措施整改
 function _updateAqCsZg() {
     var records = Ext.getCmp('zgdetailPanel').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length ==0) {
+        Ext.MessageBox.alert("提示", '请选择一条数据进行修改！', Ext.MessageBox.WARNING);
+        return;
+    }else if(records.length >1){
+        Ext.MessageBox.alert("提示", '一次只能修改一条数据！', Ext.MessageBox.WARNING);
+        return;
     }
     Ext.getCmp('WIN_AQCS_CODE').setValue(records[0].data.V_AQCS_CODE);
     Ext.getCmp('WIN_AQCS_CODE').hide();
@@ -1682,59 +1784,83 @@ function _updateAqCsZg() {
 }
 //安全措施整改新增和修改的保存
 function _editAqCsZgSave() {
-    Ext.Ajax.request({
-        url: AppUrl + 'zs/BASE_AQCS_ZG_EDIT ',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_AQCS_CODE: Ext.getCmp('WIN_AQCS_CODE').getValue(),
-            V_V_ZG_GUID: Ext.getCmp('WIN_ZG_GUID').getValue(),
-            V_V_ZG_TIME: Ext.Date.format(Ext.getCmp('WIN_ZG_TIME').getValue(), 'Y-m-d'),
-            V_V_ZG_PLACE: Ext.getCmp('WIN_ZG_PLACE').getValue(),
-            V_V_ZG_PERSON: Ext.getCmp('WIN_ZG_PERSON').getValue(),
-            V_V_ZG_DETAIL: Ext.getCmp('WIN_ZG_DETAIL').getValue(),
-            V_V_ZG_COST: Ext.getCmp('WIN_ZG_COST').getValue()
-        },
-        success: function (resp) {
-            var data = Ext.decode(resp.responseText);
-            if (data.INFO == 'SUCCESS') {
-                Ext.getCmp('_editAqCsZgWindow').hide();
-                Ext.Msg.alert("信息", "成功！");
-                _queryAqCsZg(AQCS_CODE_);
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '是否编辑',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'zs/BASE_AQCS_ZG_EDIT ',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_AQCS_CODE: Ext.getCmp('WIN_AQCS_CODE').getValue(),
+                        V_V_ZG_GUID: Ext.getCmp('WIN_ZG_GUID').getValue(),
+                        V_V_ZG_TIME: Ext.Date.format(Ext.getCmp('WIN_ZG_TIME').getValue(), 'Y-m-d'),
+                        V_V_ZG_PLACE: Ext.getCmp('WIN_ZG_PLACE').getValue(),
+                        V_V_ZG_PERSON: Ext.getCmp('WIN_ZG_PERSON').getValue(),
+                        V_V_ZG_DETAIL: Ext.getCmp('WIN_ZG_DETAIL').getValue(),
+                        V_V_ZG_COST: Ext.getCmp('WIN_ZG_COST').getValue()
+                    },
+                    success: function (resp) {
+                        var data = Ext.decode(resp.responseText);
+                        if (data.INFO == 'SUCCESS') {
+                            Ext.getCmp('_editAqCsZgWindow').hide();
+                            Ext.Msg.alert("信息", "成功！");
+                            _queryAqCsZg(AQCS_CODE_);
+                        } else {
+                            Ext.Msg.alert("信息", "失败！");
+                        }
+                    }
+                });
             } else {
-                Ext.Msg.alert("信息", "失败！");
+                Ext.MessageBox.hide();
             }
         }
     });
-
 }
 //删除安全措施整改
 function _deleteAqCsZg() {
     var records = Ext.getCmp('zgdetailPanel').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择一条数据进行删除！', Ext.MessageBox.WARNING);
+        return;
     }
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'zs/BASE_AQCS_ZG_DEL ',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_ZG_GUID: records[i].data.V_ZG_GUID
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    Ext.getCmp('_editAqcsWindow').hide();
-                    Ext.Msg.alert("信息", "成功！");
-                    _queryAqCsZg(AQCS_CODE_);
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
+    Ext.MessageBox.show({
+        title : '请确认',
+        msg : '是否删除',
+        buttons : Ext.MessageBox.YESNO,
+        icon : Ext.MessageBox.QUESTION,
+        fn : function(btn) {
+            if (btn == 'yes') {
+                    for (var i = 0; i < records.length; i++) {
+                        Ext.Ajax.request({
+                            url: AppUrl + 'zs/BASE_AQCS_ZG_DEL ',
+                            method: 'POST',
+                            async: false,
+                            params: {
+                                V_V_ZG_GUID: records[i].data.V_ZG_GUID
+                            },
+                            success: function (resp) {
+                                var data = Ext.decode(resp.responseText);
+                                if (data.INFO == 'SUCCESS') {
+                                    Ext.getCmp('_editAqcsWindow').hide();
+                                    Ext.Msg.alert("信息", "成功！");
+                                    _queryAqCsZg(AQCS_CODE_);
+                                } else {
+                                    Ext.Msg.alert("信息", "失败！");
+                                }
+                            }
+                        });
                 }
+            }else{
+                Ext.MessageBox.hide();
+
             }
-        });
-    }
+        }
+    });
 }
 
 //查看安全措施整改附件详情
@@ -1952,7 +2078,7 @@ function _downloadAqcsfj(V_FILEGUID) {
 }
 //查询整改工单的函数
 function _selectZggd(V_ZG_GUID) {
-    ZG_GUID = V_ZG_GUID;
+    Ext.getCmp('tab1').setActiveTab(1);
     var zggdStore = Ext.data.StoreManager.lookup('zggdStore');
     zggdStore.proxy.extraParams.V_V_ZG_GUID = V_ZG_GUID;
     zggdStore.currentPage = 1;
@@ -1963,29 +2089,41 @@ function _selectZggd(V_ZG_GUID) {
 //删除安全预案附件
 function _deleteFj() {
     var records = Ext.getCmp('gridPanel3').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择一条数据进行修改！', Ext.MessageBox.WARNING);
+        return;
     }
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: records[i].data.V_FILEGUID
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    _queryFile(AQYA_CODE_FILE);
-                    Ext.Msg.alert("信息", "成功！");
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
+    Ext.MessageBox.show({
+        title : '请确认',
+        msg : '是否删除',
+        buttons : Ext.MessageBox.YESNO,
+        icon : Ext.MessageBox.QUESTION,
+        fn : function(btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].data.V_FILEGUID
+                        },
+                        success: function (resp) {
+                            var data = Ext.decode(resp.responseText);
+                            if (data.INFO == 'SUCCESS') {
+                                _queryFile(AQYA_CODE_FILE);
+                                Ext.Msg.alert("信息", "成功！");
+                            } else {
+                                Ext.Msg.alert("信息", "失败！");
+                            }
+                        }
+                    });
                 }
+            }else{
+                Ext.MessageBox.hide();
             }
-        });
-    }
+        }
+    });
 }
 
 //查询人工函数
@@ -2020,86 +2158,123 @@ function _selectJj(V_ZG_GUID) {
 
 function _deleteAQSGFj(){
     var records = Ext.getCmp('aqsgfjGridPanel').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
-    }
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: records[i].data.V_FILEGUID
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    _queryFileAqsg(AQSG_CODE_FILE);
-                    Ext.Msg.alert("信息", "成功！");
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
-                }
-            }
-        });
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择一条数据进行修改！', Ext.MessageBox.WARNING);
+        return;
     }
 
+    Ext.MessageBox.show({
+        title : '请确认',
+        msg : '是否删除',
+        buttons : Ext.MessageBox.YESNO,
+        icon : Ext.MessageBox.QUESTION,
+        fn : function(btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].data.V_FILEGUID
+                        },
+                        success: function (resp) {
+                            var data = Ext.decode(resp.responseText);
+                            if (data.INFO == 'SUCCESS') {
+                                _queryFileAqsg(AQSG_CODE_FILE);
+                                Ext.Msg.alert("信息", "成功！");
+                            } else {
+                                Ext.Msg.alert("信息", "失败！");
+                            }
+                        }
+                    });
+                }
+            }else{
+                Ext.MessageBox.hide();
+            }
+        }
+    });
 }
 
 
 function _deleteAQZGFj(){
     var records = Ext.getCmp('aqzgfjGridPanel').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择一条数据进行修改！', Ext.MessageBox.WARNING);
+        return;
     }
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: records[i].data.V_FILEGUID
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    _queryAqCsZgFile(ZG_CODE_FILE);
-                    Ext.Msg.alert("信息", "成功！");
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
+    Ext.MessageBox.show({
+        title : '请确认',
+        msg : '是否删除',
+        buttons : Ext.MessageBox.YESNO,
+        icon : Ext.MessageBox.QUESTION,
+        fn : function(btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].data.V_FILEGUID
+                        },
+                        success: function (resp) {
+                            var data = Ext.decode(resp.responseText);
+                            if (data.INFO == 'SUCCESS') {
+                                _queryAqCsZgFile(ZG_CODE_FILE);
+                                Ext.Msg.alert("信息", "成功！");
+                            } else {
+                                Ext.Msg.alert("信息", "失败！");
+                            }
+                        }
+                    });
                 }
+            }else{
+                Ext.MessageBox.hide();
             }
-        });
-    }
-
+        }
+    });
 }
-
 
 function _deleteAqCsFj(){
     var records = Ext.getCmp('gridPanel5').getSelectionModel().getSelection();
-    if (records.length != 1) {
-        Ext.Msg.alert("操作信息", '请选择一条数据进行修改！');
-        return false;
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择至少一条数据进行删除！', Ext.MessageBox.WARNING);
+        return;
     }
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: records[i].data.V_FILEGUID
-            },
-            success: function (resp) {
-                var data = Ext.decode(resp.responseText);
-                if (data.INFO == 'SUCCESS') {
-                    _queryAqCsFile(AQCS_CODE_);
-                    Ext.Msg.alert("信息", "成功！");
-                } else {
-                    Ext.Msg.alert("信息", "失败！");
+    Ext.MessageBox.show({
+        title : '请确认',
+        msg : '是否删除',
+        buttons : Ext.MessageBox.YESNO,
+        icon : Ext.MessageBox.QUESTION,
+        fn : function(btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].data.V_FILEGUID
+                        },
+                        success: function (resp) {
+                            var data = Ext.decode(resp.responseText);
+                            if (data.INFO == 'SUCCESS') {
+                                _queryAqCsFile(AQCS_CODE_);
+                                Ext.Msg.alert("信息", "成功！");
+                            } else {
+                                Ext.Msg.alert("信息", "失败！");
+                            }
+                        }
+                    });
                 }
+            }else{
+                Ext.MessageBox.hide();
             }
-        });
-    }
-
+        }
+    });
 }
+
+
+
+
