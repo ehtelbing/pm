@@ -22,10 +22,10 @@ var AutoApp = getIpPort() + "AutoDeviceManage";
 var myAPP = getPath();
 
 var APP = myAPP;
-var AppUrl = APP + '/app/pm/';
+var AppUrl = APP + '/pm/';
 var AppUrlFrame = APP + '/app/pm';
 
-var imgpath = APP + '/app/pm/images/gif';
+var imgpath = APP + '/pm/images/gif';
 
 document.write('<script type="text/javascript" charset="UTF-8" src="../../../pm/resources/shared/examples.js"></script>');
 
