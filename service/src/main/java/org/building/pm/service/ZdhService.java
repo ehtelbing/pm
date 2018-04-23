@@ -2354,61 +2354,6 @@ public class ZdhService {
         return resultList;
     }
 
-//    public   List<Map> PRO_PM_WORKORDER_SPARE_VIEW1(String V_V_ORDERGUID) throws SQLException {
-//
-//        logger.info("begin PRO_PM_WORKORDER_SPARE_VIEW1");
-////        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
-//
-//        List<Map> resultList = new ArrayList<Map>();
-//        Connection conn = null;
-//        CallableStatement cstmt = null;
-//        try {
-//            conn = dataSources.getConnection();
-//            conn.setAutoCommit(false);
-//            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_VIEW(:V_V_ORDERGUID,:V_CURSOR)}");
-//            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
-//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-//            cstmt.execute();
-//            ResultSet myrs = (ResultSet) cstmt.getObject("V_CURSOR");
-//            while (myrs.next()) {
-//                Map sledata = new HashMap();
-//                sledata.put("I_ID", myrs.getDouble("I_ID"));
-//                sledata.put("V_ORDERGUID", myrs.getString("V_ORDERGUID"));
-//                sledata.put("V_FETCHORDERGUID", myrs.getString("V_FETCHORDERGUID"));
-//                sledata.put("V_ACTIVITY", myrs.getString("V_ACTIVITY"));
-//                sledata.put("V_MATERIALCODE", myrs.getString("V_MATERIALCODE"));
-//                sledata.put("V_MATERIALNAME", myrs.getString("V_MATERIALNAME"));
-//                sledata.put("V_SPEC", myrs.getString("V_SPEC"));
-//                sledata.put("V_UNIT", myrs.getString("V_UNIT"));
-//                sledata.put("F_UNITPRICE", myrs.getString("F_UNITPRICE"));
-//                sledata.put("I_PLANAMOUNT", myrs.getDouble("I_PLANAMOUNT"));
-//                sledata.put("F_PLANMONEY", myrs.getString("F_PLANMONEY"));
-//                sledata.put("I_OUTNUMBER", myrs.getDouble("I_OUTNUMBER"));
-//                sledata.put("F_ACTUALMONEY", myrs.getString("F_ACTUALMONEY"));
-//                sledata.put("V_TYPE", myrs.getString("V_TYPE"));
-//                sledata.put("V_MEMO", myrs.getString("V_MEMO"));
-//                sledata.put("V_SUBTYPE", myrs.getString("V_SUBTYPE"));
-//                sledata.put("V_STATUS", myrs.getString("V_STATUS"));
-//                sledata.put("I_ABANDONEDAMOUNT", myrs.getDouble("I_ABANDONEDAMOUNT"));
-//                sledata.put("I_RECLAIMEDAMOUNT", myrs.getDouble("I_RECLAIMEDAMOUNT"));
-//                sledata.put("I_FIXEDAMOUNT", myrs.getDouble("I_FIXEDAMOUNT"));
-//                sledata.put("V_ID", myrs.getString("V_ID"));
-//                sledata.put("I_KC_ID", myrs.getDouble("I_KC_ID"));
-//                sledata.put("I_JIIP", myrs.getDouble("I_JIIP"));
-//                sledata.put("I_BACK", myrs.getDouble("I_BACK"));
-//                sledata.put("I_ACTUALAMOUNT", myrs.getDouble("I_ACTUALAMOUNT"));
-//                resultList.add(sledata);
-//            }
-//        } catch (SQLException e) {
-//            logger.error(e);
-//        } finally {
-//            cstmt.close();
-//            conn.close();
-//        }
-//        logger.info("end PRO_PM_WORKORDER_SPARE_VIEW1");
-//        return resultList;
-//    }
-
     public List<Map> PRO_PM_WORKORDER_SEND_UPDATE(String V_V_ORDERGUID,String V_V_SEND_STATE) throws SQLException {
 //        logger.info("begin PRO_WX_ORDER_BOOK");
         List<Map> result = new ArrayList<Map>();

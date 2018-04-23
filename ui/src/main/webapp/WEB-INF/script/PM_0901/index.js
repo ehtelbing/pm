@@ -372,7 +372,7 @@ function CreateBill() {
 }
 
 function BillGo() {
-    /*Ext.Ajax.request({
+    Ext.Ajax.request({
         method: 'POST',
         async: false,
         url: AppUrl + 'mm/SetMat',
@@ -382,14 +382,14 @@ function BillGo() {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            if (resp.V_CURSOR == '1') {*/
+            if (resp.V_CURSOR == '1') {
                 Ext.Ajax.request({
                     url: AppUrl + 'Activiti/StratProcess',
                     async: false,
                     method: 'post',
                     params: {
-                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
-                        parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！","WORK"],
+                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                        parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
                         processKey: processKey,
                         businessKey: $("#V_ORDERGUID").val(),
                         V_STEPCODE: 'start',
@@ -446,8 +446,7 @@ function BillGo() {
                         }
                     }
                 });
-
-                /* }
+            }
             else {
                 Ext.Ajax.request({
                     method: 'POST',
@@ -464,10 +463,8 @@ function BillGo() {
                     }
                 });
             }
-       }
-    });*/
-
-
+        }
+    });
 }
 
 function GetModel() {//获取模型
@@ -501,6 +498,7 @@ function NowDate_b(id) {
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00";
     $("#" + id + "").val(s);
 }
+
 function NowDate_e(id) {
     var d, s;
     d = new Date();
@@ -513,6 +511,7 @@ function NowDate_e(id) {
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00";
     $("#" + id + "").val(s);
 }
+
 function NowDate2(id) {
     var d, s;
     d = new Date();

@@ -323,7 +323,7 @@ public class MMController {
 
     private String xmlData(String V_V_ORDERGUID) throws ParseException, SQLException {
 
-        List<Map> listfirst = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
+        List<Map> flist = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
 
         //root
         Document root = DocumentHelper.createDocument();
@@ -339,58 +339,69 @@ public class MMController {
         Element Fields = WriteDataRecord.addElement("Fields");
         //4
 
-        String ORDERID = listfirst.get(0).get("V_ORDERID").toString();  //底部留用
 
-        Fields.addElement("ORDERID").setText(listfirst.get(0).get("V_ORDERID") == null ? "" : listfirst.get(0).get("V_ORDERID").toString());
-        Fields.addElement("ORDER_TYP").setText(listfirst.get(0).get("V_ORDER_TYP") == null ? "" : listfirst.get(0).get("V_ORDER_TYP").toString());
-        Fields.addElement("ORDER_TYP_TXT").setText(listfirst.get(0).get("V_ORDER_TYP_TXT") == null ? "" : listfirst.get(0).get("V_ORDER_TYP_TXT").toString());
-        Fields.addElement("FUNC_LOC").setText(listfirst.get(0).get("V_FUNC_LOC") == null ? "" : listfirst.get(0).get("V_FUNC_LOC").toString());
-        Fields.addElement("EQUIP_NO").setText(listfirst.get(0).get("V_EQUIP_NO") == null ? "" : listfirst.get(0).get("V_EQUIP_NO").toString());
-        Fields.addElement("EQUIP_NAME").setText(listfirst.get(0).get("V_EQUIP_NAME") == null ? "" : listfirst.get(0).get("V_EQUIP_NAME").toString());
+        Map map= flist.get(0);
 
-        Fields.addElement("PLANT").setText(listfirst.get(0).get("V_PLANT") == null ? "" : listfirst.get(0).get("V_PLANT").toString());
-        Fields.addElement("IWERK").setText(listfirst.get(0).get("V_IWERK") == null ? "" : listfirst.get(0).get("V_IWERK").toString());
-        Fields.addElement("START_DATE").setText(listfirst.get(0).get("D_START_DATE").toString() == "" ? "" : toFormat(listfirst.get(0).get("D_START_DATE").toString()));
-        Fields.addElement("FINISH_DATE").setText(listfirst.get(0).get("D_FINISH_DATE").toString() == "" ? "" : toFormat(listfirst.get(0).get("D_FINISH_DATE").toString()));
-        Fields.addElement("ACT_TYPE").setText(listfirst.get(0).get("V_ACT_TYPE") == null ? "" : listfirst.get(0).get("V_ACT_TYPE").toString());
+        List listfirst= (List) map.get("list");
+        Map fmap= (Map) listfirst.get(0);
+        String ORDERID = fmap.get("V_ORDERID").toString();  //底部留用
 
-        Fields.addElement("PLANNER").setText(listfirst.get(0).get("V_PLANNER") == null ? "" : listfirst.get(0).get("V_PLANNER").toString());
-        Fields.addElement("WORK_CTR").setText(listfirst.get(0).get("V_WORK_CTR") == null ? "" : listfirst.get(0).get("V_WORK_CTR").toString());
-        Fields.addElement("SHORT_TXT").setText(listfirst.get(0).get("V_SHORT_TXT") == null ? "" : listfirst.get(0).get("V_SHORT_TXT").toString());
-        Fields.addElement("GSBER").setText(listfirst.get(0).get("V_GSBER") == null ? "" : listfirst.get(0).get("V_GSBER").toString());
-        Fields.addElement("GSBER_TXT").setText(listfirst.get(0).get("V_GSBER_TXT") == null ? "" : listfirst.get(0).get("V_GSBER_TXT").toString());
+        Fields.addElement("ORDERID").setText(fmap.get("V_ORDERID") == null ? "" : fmap.get("V_ORDERID").toString());
+        Fields.addElement("ORDER_TYP").setText(fmap.get("V_ORDER_TYP") == null ? "" : fmap.get("V_ORDER_TYP").toString());
+        Fields.addElement("ORDER_TYP_TXT").setText(fmap.get("V_ORDER_TYP_TXT") == null ? "" : fmap.get("V_ORDER_TYP_TXT").toString());
+        Fields.addElement("FUNC_LOC").setText(fmap.get("V_FUNC_LOC") == null ? "" : fmap.get("V_FUNC_LOC").toString());
+        Fields.addElement("EQUIP_NO").setText(fmap.get("V_EQUIP_NO") == null ? "" : fmap.get("V_EQUIP_NO").toString());
+        Fields.addElement("EQUIP_NAME").setText(fmap.get("V_EQUIP_NAME") == null ? "" : fmap.get("V_EQUIP_NAME").toString());
 
-        Fields.addElement("WORK_AREA").setText(listfirst.get(0).get("V_DEPTNAME") == null ? "" : listfirst.get(0).get("V_DEPTNAME").toString());
-        Fields.addElement("WBS").setText(listfirst.get(0).get("V_WBS") == null ? "" : listfirst.get(0).get("V_WBS").toString());
-        Fields.addElement("WBS_TXT").setText(listfirst.get(0).get("V_WBS_TXT") == null ? "" : listfirst.get(0).get("V_WBS_TXT").toString());
-        Fields.addElement("ENTERED_BY").setText(listfirst.get(0).get("V_CHECKMANSIGN") == null ? "" : listfirst.get(0).get("V_CHECKMANSIGN").toString());
-        Fields.addElement("ENTER_DATE").setText(listfirst.get(0).get("D_ENTER_DATE") == null ? "" : this.toFormat(listfirst.get(0).get("D_ENTER_DATE").toString()));
+        Fields.addElement("PLANT").setText(fmap.get("V_PLANT") == null ? "" :fmap.get("V_PLANT").toString());
+        Fields.addElement("IWERK").setText(fmap.get("V_IWERK") == null ? "" :fmap.get("V_IWERK").toString());
+        Fields.addElement("START_DATE").setText(fmap.get("D_START_DATE").toString() == "" ? "" : toFormat(fmap.get("D_START_DATE").toString()));
+        Fields.addElement("FINISH_DATE").setText(fmap.get("D_FINISH_DATE").toString() == "" ? "" : toFormat(fmap.get("D_FINISH_DATE").toString()));
+        Fields.addElement("ACT_TYPE").setText(fmap.get("V_ACT_TYPE") == null ? "" : fmap.get("V_ACT_TYPE").toString());
+
+        Fields.addElement("PLANNER").setText(fmap.get("V_PLANNER") == null ? "" : fmap.get("V_PLANNER").toString());
+        Fields.addElement("WORK_CTR").setText(fmap.get("V_WORK_CTR") == null ? "" : fmap.get("V_WORK_CTR").toString());
+        Fields.addElement("SHORT_TXT").setText(fmap.get("V_SHORT_TXT") == null ? "" : fmap.get("V_SHORT_TXT").toString());
+        Fields.addElement("GSBER").setText(fmap.get("V_GSBER") == null ? "" : fmap.get("V_GSBER").toString());
+        Fields.addElement("GSBER_TXT").setText(fmap.get("V_GSBER_TXT") == null ? "" : fmap.get("V_GSBER_TXT").toString());
+
+        Fields.addElement("WORK_AREA").setText(fmap.get("V_DEPTNAME") == null ? "" : fmap.get("V_DEPTNAME").toString());
+        Fields.addElement("WBS").setText(fmap.get("V_WBS") == null ? "" : fmap.get("V_WBS").toString());
+        Fields.addElement("WBS_TXT").setText(fmap.get("V_WBS_TXT") == null ? "" : fmap.get("V_WBS_TXT").toString());
+        Fields.addElement("ENTERED_BY").setText(fmap.get("V_CHECKMANSIGN") == null ? "" : fmap.get("V_CHECKMANSIGN").toString());
+        Fields.addElement("ENTER_DATE").setText(fmap.get("D_ENTER_DATE") == null ? "" : this.toFormat(fmap.get("D_ENTER_DATE").toString()));
 
         Fields.addElement("SYSNAME").setText("");
-        Fields.addElement("SYSTEM_STATUS").setText(listfirst.get(0).get("SYSTEM_STATUS") == null ? "" : listfirst.get(0).get("SYSTEM_STATUS").toString());
+        Fields.addElement("SYSTEM_STATUS").setText(fmap.get("SYSTEM_STATUS") == null ? "" : fmap.get("SYSTEM_STATUS").toString());
 
         System.out.print(root.asXML());
 
         List<Map> listsecond = zdhService.PRO_PM_WORKORDER_ET_OPERATIONS1(V_V_ORDERGUID);
 
-        for (int i = 0; i < listsecond.size(); i++) {
+        Map smap= listsecond.get(0);
+
+        List slrst= (List) smap.get("list");
+
+        for (int i = 0; i < slrst.size(); i++) {
+            Map srmap= (Map) slrst.get(i);
+
             Element ET_OPERATIONS = Fields.addElement("ET_OPERATIONS"); //添加子节点
 
             ET_OPERATIONS.addElement("ORDERID").setText(ORDERID);
-            ET_OPERATIONS.addElement("ACTIVITY").setText(listsecond.get(i).get("V_ACTIVITY") == null ? "" : listsecond.get(i).get("V_ACTIVITY").toString());
-            ET_OPERATIONS.addElement("SUB_ACTIVITY").setText(listsecond.get(i).get("V_SUB_ACTIVITY") == null ? "" : listsecond.get(i).get("V_SUB_ACTIVITY").toString());
-            ET_OPERATIONS.addElement("CONTROL_KEY").setText(listsecond.get(i).get("V_CONTROL_KEY") == null ? "" : listsecond.get(i).get("V_CONTROL_KEY").toString());
+            ET_OPERATIONS.addElement("ACTIVITY").setText(srmap.get("V_ACTIVITY") == null ? "" : srmap.get("V_ACTIVITY").toString());
+            ET_OPERATIONS.addElement("SUB_ACTIVITY").setText(srmap.get("V_SUB_ACTIVITY") == null ? "" : srmap.get("V_SUB_ACTIVITY").toString());
+            ET_OPERATIONS.addElement("CONTROL_KEY").setText(srmap.get("V_CONTROL_KEY") == null ? "" : srmap.get("V_CONTROL_KEY").toString());
 
-            ET_OPERATIONS.addElement("DESCRIPTION").setText(listsecond.get(i).get("V_DESCRIPTION") == null ? "" : listsecond.get(i).get("V_DESCRIPTION").toString());
-            ET_OPERATIONS.addElement("NUMBER_OF_CAPACITIES").setText(listsecond.get(i).get("I_NUMBER_OF_CAPACITIES") == null ? "" : listsecond.get(i).get("I_NUMBER_OF_CAPACITIES").toString());
-            ET_OPERATIONS.addElement("WORK_ACTIVITY").setText(listsecond.get(i).get("I_WORK_ACTIVITY") == null ? "" : listsecond.get(i).get("I_WORK_ACTIVITY").toString());
-            ET_OPERATIONS.addElement("UN_WORK").setText(listsecond.get(i).get("V_UN_WORK") == null ? "" : listsecond.get(i).get("V_UN_WORK").toString());
-            ET_OPERATIONS.addElement("DURATION_NORMAL").setText(listsecond.get(i).get("I_DURATION_NORMAL") == null ? "" : listsecond.get(i).get("I_DURATION_NORMAL").toString());
+            ET_OPERATIONS.addElement("DESCRIPTION").setText(srmap.get("V_DESCRIPTION") == null ? "" : srmap.get("V_DESCRIPTION").toString());
+            ET_OPERATIONS.addElement("NUMBER_OF_CAPACITIES").setText(srmap.get("I_NUMBER_OF_CAPACITIES") == null ? "" : srmap.get("I_NUMBER_OF_CAPACITIES").toString());
+            ET_OPERATIONS.addElement("WORK_ACTIVITY").setText(srmap.get("I_WORK_ACTIVITY") == null ? "" : srmap.get("I_WORK_ACTIVITY").toString());
+            ET_OPERATIONS.addElement("UN_WORK").setText(srmap.get("V_UN_WORK") == null ? "" : srmap.get("V_UN_WORK").toString());
+            ET_OPERATIONS.addElement("DURATION_NORMAL").setText(srmap.get("I_DURATION_NORMAL") == null ? "" : srmap.get("I_DURATION_NORMAL").toString());
 
-            ET_OPERATIONS.addElement("DURATION_NORMAL_UNIT").setText(listsecond.get(i).get("V_DURATION_NORMAL_UNIT") == null ? "" : listsecond.get(i).get("V_DURATION_NORMAL_UNIT").toString());
-            ET_OPERATIONS.addElement("WORK_CENTER").setText(listsecond.get(i).get("V_WORK_CENTER") == null ? "" : listsecond.get(i).get("V_WORK_CENTER").toString());
-            ET_OPERATIONS.addElement("ACTUAL_TIME").setText(listsecond.get(i).get("I_ACTUAL_TIME") == null ? "" : listsecond.get(i).get("I_ACTUAL_TIME").toString());
-            ET_OPERATIONS.addElement("NUMBER_OF_PEOPLE").setText(listsecond.get(i).get("I_NUMBER_OF_PEOPLE") == null ? "" : listsecond.get(i).get("I_NUMBER_OF_PEOPLE").toString());
+            ET_OPERATIONS.addElement("DURATION_NORMAL_UNIT").setText(srmap.get("V_DURATION_NORMAL_UNIT") == null ? "" : srmap.get("V_DURATION_NORMAL_UNIT").toString());
+            ET_OPERATIONS.addElement("WORK_CENTER").setText(srmap.get("V_WORK_CENTER") == null ? "" : srmap.get("V_WORK_CENTER").toString());
+            ET_OPERATIONS.addElement("ACTUAL_TIME").setText(srmap.get("I_ACTUAL_TIME") == null ? "" : srmap.get("I_ACTUAL_TIME").toString());
+            ET_OPERATIONS.addElement("NUMBER_OF_PEOPLE").setText(srmap.get("I_NUMBER_OF_PEOPLE") == null ? "" : srmap.get("I_NUMBER_OF_PEOPLE").toString());
         }
 
         List<Map> listthird = zdhService.PRO_PM_WORKORDER_SPARE_VIEW1(V_V_ORDERGUID);
@@ -398,21 +409,27 @@ public class MMController {
         System.out.print("---------------------------物料信息开始----------------------------");
         System.out.println("第三段长度 : " + listthird.size());
 
-        for (int i = 0; i < listthird.size(); i++) {
+        Map tmap= listthird.get(0);
+
+        List tlrst= (List) tmap.get("list");
+
+        for (int i = 0; i < tlrst.size(); i++) {
+
+            Map trmap= (Map) tlrst.get(i);
 
             Element Materials = Fields.addElement("Materials"); //添加子节点
 
-            System.out.println(listthird.get(0).get("I_KC_ID").toString());
+            System.out.println(trmap.get("I_KC_ID").toString());
 
             Materials.addElement("ORDERID").setText(ORDERID);
-            Materials.addElement("ACTIVITY").setText(listthird.get(i).get("V_ACTIVITY") == null ? "" : listthird.get(i).get("V_ACTIVITY").toString());
+            Materials.addElement("ACTIVITY").setText(trmap.get("V_ACTIVITY") == null ? "" : trmap.get("V_ACTIVITY").toString());
 
-            Materials.addElement("materialcode").setText(listthird.get(i).get("V_MATERIALCODE") == null ? "" : listthird.get(i).get("V_MATERIALCODE").toString());
-            Materials.addElement("materialname").setText(listthird.get(i).get("V_MATERIALNAME") == null ? "" : listthird.get(i).get("V_MATERIALNAME").toString());
-            Materials.addElement("materialunit").setText(listthird.get(i).get("V_UNIT") == null ? "" : listthird.get(i).get("V_UNIT").toString());
-            Materials.addElement("f_price").setText(listthird.get(i).get("F_UNITPRICE") == null ? "" : listthird.get(i).get("F_UNITPRICE").toString());
-            Materials.addElement("pln_amount").setText(listthird.get(i).get("I_PLANAMOUNT") == null ? "" : listthird.get(i).get("I_PLANAMOUNT").toString());
-            Materials.addElement("kc_id").setText(listthird.get(i).get("I_KC_ID") == null ? "" : listthird.get(i).get("I_KC_ID").toString());
+            Materials.addElement("materialcode").setText(trmap.get("V_MATERIALCODE") == null ? "" : trmap.get("V_MATERIALCODE").toString());
+            Materials.addElement("materialname").setText(trmap.get("V_MATERIALNAME") == null ? "" : trmap.get("V_MATERIALNAME").toString());
+            Materials.addElement("materialunit").setText(trmap.get("V_UNIT") == null ? "" : trmap.get("V_UNIT").toString());
+            Materials.addElement("f_price").setText(trmap.get("F_UNITPRICE") == null ? "" : trmap.get("F_UNITPRICE").toString());
+            Materials.addElement("pln_amount").setText(trmap.get("I_PLANAMOUNT") == null ? "" : trmap.get("I_PLANAMOUNT").toString());
+            Materials.addElement("kc_id").setText(trmap.get("I_KC_ID") == null ? "" : trmap.get("I_KC_ID").toString());
         }
 
 
