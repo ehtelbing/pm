@@ -7,6 +7,7 @@ package org.building.pm.controller;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.ZpfService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -443,6 +444,122 @@ public class ZpfController {
                 e.printStackTrace();
             }
         }
+    }
+
+    //查询润滑数据
+    @RequestMapping(value = "/PRO_QUERYLUBRECORD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_QUERYLUBRECORD(
+            @RequestParam(value = "X_TIMELOWERLIMIT") Date X_TIMELOWERLIMIT,
+            @RequestParam(value = "X_TIMEUPPERLIMIT") Date X_TIMEUPPERLIMIT,
+            @RequestParam(value = "X_DEPTCODE") String X_DEPTCODE,
+            @RequestParam(value = "X_EQUTYPECODE") String X_EQUTYPECODE,
+            @RequestParam(value = "X_EQUCODE") String X_EQUCODE,
+            @RequestParam(value = "X_LUBRICATIONCODE") String X_LUBRICATIONCODE,
+            /*@RequestParam(value = "start") Integer start,
+            @RequestParam(value = "limit") Integer limit,*/
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT,X_TIMEUPPERLIMIT,X_DEPTCODE,X_EQUTYPECODE,X_EQUCODE,X_LUBRICATIONCODE);
+        //List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        /*int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }*/
+        //result.put("total", total);
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/pro_addlubrecord", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap pro_addlubrecord(
+            @RequestParam(value = "x_deptcode") String x_deptcode,
+            @RequestParam(value = "x_equcode") String x_equcode,
+            @RequestParam(value = "x_setname") String x_setname,
+            @RequestParam(value = "x_lubaddress") String x_lubaddress,
+            @RequestParam(value = "x_lubmode") String x_lubmode,
+            @RequestParam(value = "x_lubtrademark") String x_lubtrademark,
+            @RequestParam(value = "x_lubcount") int x_lubcount,
+            @RequestParam(value = "x_oilamount") int x_oilamount,
+            @RequestParam(value = "x_addorchange") String x_addorchange,
+            @RequestParam(value = "x_operatedate" ) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") java.util.Date x_operatedate,
+            @RequestParam(value = "x_operateperson") String x_operateperson,
+            @RequestParam(value = "x_operatereason") String x_operatereason,
+            @RequestParam(value = "x_unit") int x_unit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return zpfService.pro_addlubrecord(x_deptcode, x_equcode, x_setname, x_lubaddress, x_lubmode, x_lubtrademark,
+                x_lubcount, x_oilamount, x_addorchange, x_operatedate, x_operateperson, x_operatereason, x_unit);
+    }
+
+    @RequestMapping(value = "/droplist_lubmode", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> droplist_lubmode(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zpfService.droplist_lubmode();
+        List<Map<String, Object>> zpflist = (List) data.get("list");
+        result.put("list", zpflist);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/droplist_lubaddtype", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> droplist_lubaddtype(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zpfService.droplist_lubaddtype();
+        List<Map<String, Object>> zpflist = (List) data.get("list");
+        result.put("list", zpflist);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/pro_alterlubrecord", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap pro_alterlubrecord(
+            @RequestParam(value = "x_equname") String x_equname,
+            @RequestParam(value = "x_lubaddress") String x_lubaddress,
+            @RequestParam(value = "x_lubmode") String x_lubmode,
+            @RequestParam(value = "x_lubtrademark") String x_lubtrademark,
+            @RequestParam(value = "x_lubcount") int x_lubcount,
+            @RequestParam(value = "x_oilamount") int x_oilamount,
+            @RequestParam(value = "x_addorchange") String x_addorchange,
+            @RequestParam(value = "x_operatedate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") java.util.Date x_operatedate,
+
+            @RequestParam(value = "x_operateperson") String x_operateperson,
+            @RequestParam(value = "x_operatereason" ) String x_operatereason,
+            @RequestParam(value = "x_unit") int x_unit,
+            @RequestParam(value = "x_lubricationcode") String x_lubricationcode,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return zpfService.pro_alterlubrecord(x_equname, x_lubaddress, x_lubmode, x_lubtrademark, x_lubcount, x_oilamount,
+                x_addorchange, x_operatedate, x_operateperson, x_operatereason, x_unit, x_lubricationcode);
+    }
+
+    @RequestMapping(value = "/pro_dellubrecord", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap pro_dellubrecord(
+            @RequestParam(value = "x_lubricationcode") String x_lubricationcode,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return zpfService.pro_dellubrecord(x_lubricationcode);
     }
 }
 

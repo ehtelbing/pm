@@ -656,8 +656,8 @@ public class ZpfService {
     }
 
     //表格数据
-    public HashMap PG_DJ604_GETDJMENDTABLE(String A_DATETYPE, Date A_BEGINDATE, Date A_ENDDATE, String A_DJ_SERIES_CLASS,String  A_ORDERID,
-                                           String  A_SENDPLANT, String A_PLANT,String  A_DEPT,String  A_GROUP) throws SQLException {
+    public HashMap PG_DJ604_GETDJMENDTABLE(String A_DATETYPE, Date A_BEGINDATE, Date A_ENDDATE, String A_DJ_SERIES_CLASS, String A_ORDERID,
+                                           String A_SENDPLANT, String A_PLANT, String A_DEPT, String A_GROUP) throws SQLException {
 
         logger.info("BEGIN PG_DJ604.GETDJMENDTABLE");
 
@@ -690,6 +690,194 @@ public class ZpfService {
         }
         logger.debug("result:" + result);
         logger.info("end PG_DJ604.GETDJMENDTABLE");
+        return result;
+    }
+
+    public HashMap PRO_QUERYLUBRECORD(Date X_TIMELOWERLIMIT, Date X_TIMEUPPERLIMIT, String X_DEPTCODE,
+                                      String X_EQUTYPECODE, String X_EQUCODE, String X_LUBRICATIONCODE) throws SQLException {
+        logger.info("begin PRO_QUERYLUBRECORD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_QUERYLUBRECORD" + "(:X_TIMELOWERLIMIT,:X_TIMEUPPERLIMIT,:X_DEPTCODE,:X_EQUTYPECODE,:X_EQUCODE,:X_LUBRICATIONCODE,:O_CURSOR)}");
+            cstmt.setDate("X_TIMELOWERLIMIT", X_TIMELOWERLIMIT);
+            cstmt.setDate("X_TIMEUPPERLIMIT", X_TIMEUPPERLIMIT);
+            cstmt.setString("X_DEPTCODE", X_DEPTCODE);
+            cstmt.setString("X_EQUTYPECODE", X_EQUTYPECODE);
+            cstmt.setString("X_EQUCODE", X_EQUCODE);
+            cstmt.setString("X_LUBRICATIONCODE", X_LUBRICATIONCODE);
+            cstmt.registerOutParameter("O_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("O_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_QUERYLUBRECORD");
+        return result;
+    }
+
+    //
+    public HashMap pro_addlubrecord(String x_deptcode, String x_equcode, String x_setname, String x_lubaddress, String x_lubmode, String x_lubtrademark,
+                                    int x_lubcount, int x_oilamount, String x_addorchange, java.util.Date x_operatedate, String x_operateperson, String x_operatereason, int x_unit) throws SQLException {
+
+        logger.info("begin pro_addlubrecord");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        Date sqlDate1 = new Date(x_operatedate.getTime());
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call pro_addlubrecord" + "(:x_deptcode,:x_equcode,:x_setname,:x_lubaddress,:x_lubmode," +
+                    ":x_lubtrademark,:x_lubcount,:x_oilamount,:x_addorchange,:x_operatedate,:x_operateperson,:x_operatereason,:x_unit)}");
+            cstmt.setString("x_deptcode", x_deptcode);
+            cstmt.setString("x_equcode", x_equcode);
+            cstmt.setString("x_setname", x_setname);
+            cstmt.setString("x_lubaddress", x_lubaddress);
+            cstmt.setString("x_lubmode", x_lubmode);
+            cstmt.setString("x_lubtrademark", x_lubtrademark);
+            cstmt.setInt("x_lubcount", x_lubcount);
+            cstmt.setInt("x_oilamount", x_oilamount);
+            cstmt.setString("x_addorchange", x_addorchange);
+            cstmt.setDate("x_operatedate", sqlDate1);
+            cstmt.setString("x_operateperson", x_operateperson);
+            cstmt.setString("x_operatereason", x_operatereason);
+            cstmt.setInt("x_unit", x_unit);
+
+            cstmt.execute();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end pro_addlubrecord");
+        return result;
+    }
+
+    //
+    public HashMap droplist_lubmode() throws SQLException {
+        logger.info("begin droplist_lubmode");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call droplist_lubmode" + "(:o_cursor)}");
+            cstmt.registerOutParameter("o_cursor", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("o_cursor")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end droplist_lubmode");
+        return result;
+    }
+
+    //
+    public HashMap droplist_lubaddtype() throws SQLException {
+        logger.info("begin droplist_lubaddtype");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call droplist_lubaddtype" + "(:o_cursor)}");
+            cstmt.registerOutParameter("o_cursor", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("o_cursor")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end droplist_lubaddtype");
+        return result;
+    }
+
+    public HashMap pro_alterlubrecord(String x_equname, String x_lubaddress, String x_lubmode, String x_lubtrademark, int x_lubcount, int x_oilamount,
+                                      String x_addorchange, java.util.Date x_operatedate, String x_operateperson, String x_operatereason, int x_unit, String x_lubricationcode) throws SQLException {
+
+        logger.info("begin pro_alterlubrecord");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        Date sqlDate1 = new Date(x_operatedate.getTime());
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call pro_alterlubrecord" + "(:x_equname,:x_lubaddress,:x_lubmode,:x_lubtrademark,:x_lubcount," +
+                    ":x_oilamount,:x_addorchange,:x_operatedate,:x_operateperson,:x_operatereason,:x_unit,:x_lubricationcode)}");
+            cstmt.setString("x_equname", x_equname);
+            cstmt.setString("x_lubaddress", x_lubaddress);
+            cstmt.setString("x_lubmode", x_lubmode);
+            cstmt.setString("x_lubtrademark", x_lubtrademark);
+            cstmt.setInt("x_lubcount", x_lubcount);
+
+            cstmt.setInt("x_oilamount", x_oilamount);
+            cstmt.setString("x_addorchange", x_addorchange);
+            cstmt.setDate("x_operatedate", sqlDate1);
+            cstmt.setString("x_operateperson", x_operateperson);
+            cstmt.setString("x_operatereason", x_operatereason);
+            cstmt.setInt("x_unit", x_unit);
+            cstmt.setString("x_lubricationcode", x_lubricationcode);
+
+            cstmt.execute();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end pro_alterlubrecord");
+        return result;
+    }
+
+    public HashMap pro_dellubrecord(String x_lubricationcode) throws SQLException {
+
+        logger.info("begin pro_dellubrecord");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call pro_dellubrecord" + "(:x_lubricationcode)}");
+            cstmt.setString("x_lubricationcode", x_lubricationcode);
+            cstmt.execute();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end pro_dellubrecord");
         return result;
     }
 }
