@@ -87,7 +87,7 @@ Ext.onReady(function () {
         }
     });
 
-    //左上表格store
+    //空表格store
     var zuoshangStore = Ext.create('Ext.data.Store', {
         storeId: 'zuoshangStore',
         autoLoad: false,
@@ -371,7 +371,7 @@ Ext.onReady(function () {
         frame: true,
         border: false,
         columnLines: true,
-        selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
+        //selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '机具编码', dataIndex: 'V_CARCODE', style: 'text-align: center;', flex: 1},
@@ -463,7 +463,7 @@ Ext.onReady(function () {
         store: 'driverStore',
         columnLines: true,
         frame: true,
-        selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
+        //selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '司机姓名', dataIndex: 'V_DRIVER_NAME', style: 'text-align: center;', flex: 1},
@@ -1393,6 +1393,10 @@ function _selectDriver(V_GUID) {
 function _insertDriver() {
     Ext.getCmp('INS_DRIVER_GUID').setValue(Ext.data.IdGenerator.get('uuid').generate()).hide();
     Ext.getCmp('INS_CAR_GUID').setValue(insDriverGuid).hide();
+    if (Ext.getCmp('INS_CAR_GUID').getValue() == '') {
+        Ext.MessageBox.alert("提示", '请选择相应的机具进行添加');
+        return false;
+    }
     Ext.getCmp('INS_DRIVER_NAME').setValue('');
     Ext.getCmp('INS_WORK_DATE').setValue('');
     Ext.getCmp('INS_DRIVER_DE').setValue('');
