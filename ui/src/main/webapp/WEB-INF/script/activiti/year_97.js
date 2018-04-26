@@ -391,7 +391,7 @@ function _agree() {
             taskId: taskId,
             idea: '通过',
             parName: ['lcjs', "flow_yj",'shtgtime'],
-            parVal: ['lcjs',spyj,Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 3), 'H:i:s') ],
+            parVal: ['lcjs',spyj,Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s') ],
             processKey :$.url().param("ProcessDefinitionKey"),
             businessKey : $.url().param("V_ORDERGUID"),
             V_STEPCODE : 'lcjs',

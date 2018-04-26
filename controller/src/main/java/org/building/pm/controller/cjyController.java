@@ -2337,17 +2337,21 @@ public class cjyController {
 
 
                 if (V_STEPCODE.equals("sbczsp")) {//最后一步
-                    Calendar c = Calendar.getInstance();
-                    int year = c.get(Calendar.YEAR);
-                    int month = c.get(Calendar.MONTH);
-                    int date = c.get(Calendar.DATE);
-                    int hour = c.get(Calendar.HOUR_OF_DAY);
-                    int minute = c.get(Calendar.MINUTE);
-                    int second = c.get(Calendar.SECOND);
 
-                    String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
+                    java.util.Date d =new java.util.Date();
+
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+                    Calendar ca = Calendar.getInstance();
+
+                    ca.add(Calendar.DATE, 30);
+
+                    d = ca.getTime();
+
+                    String currdate = format.format(d);
+
                     String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
-                    String[] parVal = new String[]{"lcjs", "批量审批通过", time};
+                    String[] parVal = new String[]{"lcjs", "批量审批通过", currdate};
 
                     complresult = activitiController.TaskComplete(taskid, "通过", parName, parVal, ProcessDefinitionKey, V_ORDERGUID, "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
                     if (complresult.get("ret").toString().equals("任务提交成功")) {
