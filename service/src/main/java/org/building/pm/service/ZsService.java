@@ -643,4 +643,228 @@ public class ZsService {
         logger.info("end BASE_AQCS_EQU_LINKDEL");
         return result;
     }
+
+
+
+    //查询精密点检
+    public HashMap PM_06_JMDJ_BY_BUSINESSKEY_SEL(String V_V_BUSINESSKEY) throws SQLException {
+        logger.info("begin PM_06_JMDJ_BY_BUSINESSKEY_SEL ");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_BY_BUSINESSKEY_SEL " + "(:V_V_BUSINESSKEY,:V_CURSOR)}");
+            cstmt.setString("V_V_BUSINESSKEY", V_V_BUSINESSKEY);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_BY_BUSINESSKEY_SEL ");
+        return result;
+    }
+
+
+    //新增精密点检录入信息
+   /* public HashMap PM_06_JMDJ_EDIT (String V_V_GUID,String V_V_BUSINESSKEY,String V_V_EQU_CODE,String V_V_EQU_NAME,String V_V_GNWZ,String V_V_JCFS,String V_V_JCZQ,
+                                   String V_V_ZD,String V_V_DJ,String V_V_TS, String V_V_DL,String V_V_RX, String V_V_CSWZSL,String V_V_CSDSL) throws SQLException {
+        logger.info("begin PM_06_JMDJ_EDIT ");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_EDIT " + "(:V_V_GUID,:V_V_BUSINESSKEY,:V_V_EQU_CODE,:V_V_EQU_NAME,:V_V_GNWZ,:V_V_JCFS,:V_V_JCZQ,:V_V_ZD,:V_V_DJ,:V_V_TS,:V_V_DL,:V_V_RX,:V_V_CSWZSL,:V_V_CSDSL,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_BUSINESSKEY", V_V_BUSINESSKEY);
+            cstmt.setString("V_V_EQU_CODE", V_V_EQU_CODE);
+            cstmt.setString("V_V_EQU_NAME", V_V_EQU_NAME);
+            cstmt.setString("V_V_GNWZ", V_V_GNWZ);
+            cstmt.setString("V_V_JCFS", V_V_JCFS);
+            cstmt.setString("V_V_JCZQ", V_V_JCZQ);
+            cstmt.setString("V_V_ZD", V_V_ZD);
+            cstmt.setString("V_V_DJ", V_V_DJ);
+            cstmt.setString("V_V_TS", V_V_TS);
+            cstmt.setString("V_V_DL", V_V_DL);
+            cstmt.setString("V_V_RX", V_V_RX);
+            cstmt.setString("V_V_CSWZSL", V_V_CSWZSL);
+            cstmt.setString("V_V_CSDSL", V_V_CSDSL);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_EDIT ");
+        return result;
+    }*/
+
+    //查询录入的精密点检信息
+    public HashMap PM_06_JMDJ_BY_KEY_ANDCODE_SEL(String V_V_BUSINESSKEY, String V_V_EQU_CODE) throws SQLException {
+        logger.info("begin PM_06_JMDJ_BY_KEY_ANDCODE_SEL ");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_BY_KEY_ANDCODE_SEL " + "(:V_V_BUSINESSKEY,:V_V_EQU_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_BUSINESSKEY", V_V_BUSINESSKEY);
+            cstmt.setString("V_V_EQU_CODE", V_V_EQU_CODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_BY_KEY_ANDCODE_SEL ");
+        return result;
+    }
+
+
+    //精密点检的删除
+    public HashMap  PM_06_JMDJ_DEL(String V_V_GUID) throws SQLException {
+        logger.info("begin PM_06_JMDJ_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_DEL" + "(:V_V_GUID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_DEL");
+        return result;
+    }
+
+    //获取模板的查询
+    public HashMap PM_06_JMDJ_BY_EQUCODE_SEL(String V_V_EQU_CODE) throws SQLException {
+        logger.info("begin PM_06_JMDJ_BY_EQUCODE_SEL ");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_BY_EQUCODE_SEL " + "(:V_V_EQU_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_EQU_CODE", V_V_EQU_CODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_BY_EQUCODE_SEL ");
+        return result;
+    }
+
+    //新增单元格
+    public HashMap PM_06_JMDJ_EDIT  (String V_V_GUID,String V_V_BUSINESSKEY,String V_V_EQU_CODE,String V_V_COLUMN,String V_V_VALUE) throws SQLException {
+        logger.info("begin PM_06_JMDJ_EDIT  ");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_EDIT  " + "(:V_V_GUID,:V_V_BUSINESSKEY,:V_V_EQU_CODE,:V_V_COLUMN,:V_V_VALUE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_BUSINESSKEY", V_V_BUSINESSKEY);
+            cstmt.setString("V_V_EQU_CODE", V_V_EQU_CODE);
+            cstmt.setString("V_V_COLUMN", V_V_COLUMN);
+            cstmt.setString("V_V_VALUE", V_V_VALUE);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_EDIT  ");
+        return result;
+    }
+
+
+    //获取模板的插入
+    public HashMap PM_06_JMDJ_INS (String V_V_GUID,String V_V_BUSINESSKEY,String V_V_EQU_CODE,String V_V_EQU_NAME,String V_V_GNWZ,String V_V_JCFS,String V_V_JCZQ,
+                                    String V_V_ZD,String V_V_DJ,String V_V_TS, String V_V_DL,String V_V_RX, String V_V_CSWZSL,String V_V_CSDSL) throws SQLException {
+        logger.info("begin PM_06_JMDJ_INS ");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_INS " + "(:V_V_GUID,:V_V_BUSINESSKEY,:V_V_EQU_CODE,:V_V_EQU_NAME,:V_V_GNWZ,:V_V_JCFS,:V_V_JCZQ,:V_V_ZD,:V_V_DJ,:V_V_TS,:V_V_DL,:V_V_RX,:V_V_CSWZSL,:V_V_CSDSL,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_BUSINESSKEY", V_V_BUSINESSKEY);
+            cstmt.setString("V_V_EQU_CODE", V_V_EQU_CODE);
+            cstmt.setString("V_V_EQU_NAME", V_V_EQU_NAME);
+            cstmt.setString("V_V_GNWZ", V_V_GNWZ);
+            cstmt.setString("V_V_JCFS", V_V_JCFS);
+            cstmt.setString("V_V_JCZQ", V_V_JCZQ);
+            cstmt.setString("V_V_ZD", V_V_ZD);
+            cstmt.setString("V_V_DJ", V_V_DJ);
+            cstmt.setString("V_V_TS", V_V_TS);
+            cstmt.setString("V_V_DL", V_V_DL);
+            cstmt.setString("V_V_RX", V_V_RX);
+            cstmt.setString("V_V_CSWZSL", V_V_CSWZSL);
+            cstmt.setString("V_V_CSDSL", V_V_CSDSL);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_INS ");
+        return result;
+    }
 }
+
