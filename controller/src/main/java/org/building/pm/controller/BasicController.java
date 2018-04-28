@@ -781,10 +781,10 @@ public class BasicController {
     * */
     @RequestMapping(value = "/PRO_BASE_POST_TREE", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_BASE_POST_TREE(
+    public List<Map> PRO_BASE_POST_TREE(
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE)
             throws SQLException {
-        Map result = basicService.PRO_BASE_POST_TREE(V_V_DEPTCODE);
+        List<Map> result = basicService.PRO_BASE_POST_TREE(V_V_DEPTCODE);
         return result;
     }
 
