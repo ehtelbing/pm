@@ -689,7 +689,7 @@ public class PM_22Service {
         return result;
     }
 
-    public HashMap PRO_PM_04_PROJECT_DATA_ITEM_V(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_SPECIALTY,
+    public HashMap PRO_PM_04_PROJECT_DATA_ITEM_V(String V_V_YEAR,String V_V_MONTH,String V_V_PERCODE,String V_V_ORGCODE,String V_V_SPECIALTY,
                                                  String V_V_PROJECT_CODE,String V_V_PROJECT_NAME,String V_V_CONTENT,String V_V_BY1,String V_V_BY2) throws SQLException {
 
         logger.info("begin PRO_PM_04_PROJECT_DATA_ITEM_V");
@@ -701,10 +701,11 @@ public class PM_22Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_04_PROJECT_DATA_ITEM_V" + "(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE," +
+            cstmt = conn.prepareCall("{call PRO_PM_04_PROJECT_DATA_ITEM_V" + "(:V_V_YEAR,:V_V_MONTH,:V_V_PERCODE,:V_V_ORGCODE," +
                     ":V_V_SPECIALTY,:V_V_PROJECT_CODE,:V_V_PROJECT_NAME,:V_V_CONTENT,:V_V_BY1,:V_V_BY2,:V_CURSOR)}");
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_SPECIALTY", V_V_SPECIALTY);
             cstmt.setString("V_V_PROJECT_CODE", V_V_PROJECT_CODE);

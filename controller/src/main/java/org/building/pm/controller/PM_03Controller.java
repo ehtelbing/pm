@@ -561,6 +561,7 @@ public class PM_03Controller {
     public Map<String, Object> PRO_PM_04_PROJECT_DATA_ITEM_V(
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
             @RequestParam(value = "V_V_PROJECT_CODE") String V_V_PROJECT_CODE,
@@ -570,7 +571,7 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_BY2") String V_V_BY2,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_04_PROJECT_DATA_ITEM_V(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_SPECIALTY, V_V_PROJECT_CODE, V_V_PROJECT_NAME, V_V_CONTENT,V_V_BY1,V_V_BY2);
+        Map result = pm_03Service.PRO_PM_04_PROJECT_DATA_ITEM_V(V_V_YEAR, V_V_MONTH,V_V_PERCODE, V_V_ORGCODE, V_V_SPECIALTY, V_V_PROJECT_CODE, V_V_PROJECT_NAME, V_V_CONTENT,V_V_BY1,V_V_BY2);
         return result;
     }
     @RequestMapping(value = "/PM_03_PLAN_SEL", method = RequestMethod.POST)

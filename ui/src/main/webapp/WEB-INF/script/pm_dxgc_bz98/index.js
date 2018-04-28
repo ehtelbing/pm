@@ -910,6 +910,7 @@ function QueryGrid(){
             params:{
                 V_V_YEAR:Ext.getCmp('year').getValue(),
                 V_V_MONTH:Ext.getCmp('month').getValue(),
+                V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
                 V_V_ORGCODE:Ext.getCmp('ck').getValue(),
                 V_V_SPECIALTY:Ext.getCmp('zy').getValue(),
                 V_V_PROJECT_CODE:Ext.getCmp('gcbm').getValue(),
@@ -924,6 +925,7 @@ function QueryGrid(){
             params:{
                 V_V_YEAR:'%',
                 V_V_MONTH:'%',
+                V_V_PERCODE:'%',
                 V_V_ORGCODE:'%',
                 V_V_SPECIALTY:'%',
                 V_V_PROJECT_CODE:Ext.getCmp('gcbm').getValue(),

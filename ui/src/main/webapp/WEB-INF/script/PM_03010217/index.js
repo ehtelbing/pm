@@ -1103,6 +1103,7 @@ function QueryGrid(){
         params:{
             V_V_YEAR:Ext.getCmp('year').getValue(),
             V_V_MONTH:"",
+            V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
             V_V_ORGCODE:"",
             V_V_SPECIALTY:"",
             V_V_PROJECT_CODE:"",
