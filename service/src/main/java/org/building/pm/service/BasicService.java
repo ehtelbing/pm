@@ -1413,4 +1413,60 @@ public class BasicService {
         return result;
     }
 
+
+    public HashMap PRO_BASE_POST_SET(String V_V_UPCODE,String V_V_POSTCODE,String V_V_POSTNAME) throws SQLException {
+
+        logger.info("begin PRO_BASE_POST_SET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_POST_SET(:V_V_UPCODE,:V_V_POSTCODE,:V_V_POSTNAME,:V_INFO)}");
+            cstmt.setString("V_V_UPCODE", V_V_UPCODE);
+            cstmt.setString("V_V_POSTCODE", V_V_POSTCODE);
+            cstmt.setString("V_V_POSTNAME", V_V_POSTNAME);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("ret", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_POST_SET");
+        return result;
+    }
+
+
+    public HashMap PRO_BASE_POST_DEL(String V_V_POSTCODE) throws SQLException {
+
+        logger.info("begin PRO_BASE_POST_DEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_POST_DEL(:V_V_POSTCODE,:V_INFO)}");
+            cstmt.setString("V_V_POSTCODE", V_V_POSTCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("ret", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_POST_DEL");
+        return result;
+    }
+
 }

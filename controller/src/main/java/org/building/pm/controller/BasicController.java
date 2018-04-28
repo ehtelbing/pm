@@ -788,6 +788,30 @@ public class BasicController {
         return result;
     }
 
+    /*
+     * 岗位编辑
+     * */
+    @RequestMapping(value = "/PRO_BASE_POST_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_POST_SET(
+            @RequestParam(value = "V_V_UPCODE") String V_V_UPCODE,
+            @RequestParam(value = "V_V_POSTCODE") String V_V_POSTCODE,
+            @RequestParam(value = "V_V_POSTNAME") String V_V_POSTNAME)
+            throws SQLException {
+        Map result = basicService.PRO_BASE_POST_SET(V_V_UPCODE,V_V_POSTCODE,V_V_POSTNAME);
+        return result;
+    }
 
+    /*
+     * 岗位删除
+     * */
+    @RequestMapping(value = "/PRO_BASE_POST_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_POST_DEL(
+            @RequestParam(value = "V_V_POSTCODE") String V_V_POSTCODE)
+            throws SQLException {
+        Map result = basicService.PRO_BASE_POST_DEL(V_V_POSTCODE);
+        return result;
+    }
 
 }
