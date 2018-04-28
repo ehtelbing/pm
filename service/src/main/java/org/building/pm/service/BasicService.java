@@ -1323,7 +1323,94 @@ public class BasicService {
         return result;
     }
 
+    public List<Map>  PRO_BASE_POST_TREE(String V_V_DEPTCDODE) throws SQLException {
 
+        logger.info("begin PRO_BASE_POST_TREE");
 
+        List result = new ArrayList();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_POST_TREE(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCDODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result = CreateTreeData(ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_POST_TREE");
+        return result;
+    }
+
+    public List<Map> CreateTreeData(List list) {
+        List<Map> result = new ArrayList();
+
+        for (int i = 0; i <= list.size(); i++) {
+            Map temp = new HashMap();
+            if (i < list.size()) {
+                Map map = (Map) list.get(i);
+                if (map.get("V_POSTCODE_UP").toString().equals("-1")) {
+                    temp.put("I_POSTID", map.get("I_POSTID").toString());
+                    temp.put("V_POSTCODE", map.get("V_POSTCODE").toString());
+                    temp.put("V_POSTNAME", map.get("V_POSTNAME").toString());
+                    temp.put("V_POSTMEMO", map.get("V_POSTMEMO").toString());
+                    temp.put("V_POSTCODE_UP", map.get("V_POSTCODE_UP").toString());
+                    temp.put("cls", "empty");
+                    if (IfHasMenuChildNode(map.get("V_POSTCODE").toString(), list)) {
+                        temp.put("expanded", true);
+                        temp.put("children", CreateMenuTree(map.get("V_POSTCODE").toString(), list));
+                    } else {
+                        temp.put("expanded", false);
+                        temp.put("leaf", true);
+                    }
+                    result.add(temp);
+                }
+            }
+        }
+        return result;
+    }
+
+    public boolean IfHasMenuChildNode(String upcode, List list) {
+        boolean flag = false;
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            if (upcode.equals(map.get("V_POSTCODE_UP").toString())) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    public List<Map> CreateMenuTree(String upcode, List list) {
+        List result = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            Map temp = new HashMap();
+            if (map.get("V_POSTCODE_UP").toString().equals(upcode)) {
+                temp.put("I_POSTID", map.get("I_POSTID").toString());
+                temp.put("V_POSTCODE", map.get("V_POSTCODE").toString());
+                temp.put("V_POSTNAME", map.get("V_POSTNAME").toString());
+                temp.put("V_POSTMEMO", map.get("V_POSTMEMO").toString());
+                temp.put("V_POSTCODE_UP", map.get("V_POSTCODE_UP").toString());
+                temp.put("cls", "empty");
+                if (IfHasMenuChildNode(map.get("V_POSTCODE").toString(), list)) {
+                    temp.put("expanded", true);
+                    temp.put("children", CreateMenuTree(map.get("V_POSTCODE").toString(), list));
+                } else {
+                    temp.put("expanded", false);
+                    temp.put("leaf", true);
+                }
+                result.add(temp);
+            }
+        }
+        return result;
+    }
 
 }

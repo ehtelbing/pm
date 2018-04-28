@@ -776,5 +776,18 @@ public class BasicController {
         return result;
     }
 
+    /*
+    * 岗位树
+    * */
+    @RequestMapping(value = "/PRO_BASE_POST_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_POST_TREE(
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE)
+            throws SQLException {
+        Map result = basicService.PRO_BASE_POST_TREE(V_V_DEPTCODE);
+        return result;
+    }
+
+
 
 }
