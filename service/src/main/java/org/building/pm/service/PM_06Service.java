@@ -727,4 +727,33 @@ public class PM_06Service {
         return result;
     }
 
+    //精密点检年计划发起查询
+    public HashMap PM_06_JMDJ_YEARPLAN_DATA_SEL(String V_V_YEAR,String V_V_INPERCODE, String V_V_INPERNAME) throws SQLException {
+        logger.info("begin PM_06_JMDJ_YEARPLAN_DATA_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_06_JMDJ_YEARPLAN_DATA_SEL" + "(:V_V_YEAR,:V_V_INPERCODE,:V_V_INPERNAME,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_INPERCODE", V_V_INPERCODE);
+            cstmt.setString("V_V_INPERNAME", V_V_INPERNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_06_JMDJ_YEARPLAN_DATA_SEL");
+        return result;
+    }
+
 }

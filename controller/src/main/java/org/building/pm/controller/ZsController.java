@@ -475,4 +475,181 @@ public class ZsController {
         result.put("success", true);
         return result;
     }
+
+
+    //查询精密点检
+    @RequestMapping(value = "/PM_06_JMDJ_BY_BUSINESSKEY_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_BY_BUSINESSKEY_SEL(
+            @RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY,
+            @RequestParam(value = "start") Integer start,
+            @RequestParam(value = "limit") Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zsService.PM_06_JMDJ_BY_BUSINESSKEY_SEL(V_V_BUSINESSKEY);
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
+    }
+
+
+    //新增精密点检录入信息
+/*
+    @RequestMapping(value = "/PM_06_JMDJ_EDIT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_EDIT (
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY,
+            @RequestParam(value = "V_V_EQU_CODE") String V_V_EQU_CODE,
+            @RequestParam(value = "V_V_EQU_NAME") String V_V_EQU_NAME,
+            @RequestParam(value = "V_V_GNWZ") String V_V_GNWZ,
+            @RequestParam(value = "V_V_JCFS") String V_V_JCFS,
+            @RequestParam(value = "V_V_JCZQ") String V_V_JCZQ,
+            @RequestParam(value = "V_V_ZD") String V_V_ZD,
+            @RequestParam(value = "V_V_DJ") String V_V_DJ,
+            @RequestParam(value = "V_V_TS") String V_V_TS,
+            @RequestParam(value = "V_V_DL") String V_V_DL,
+            @RequestParam(value = "V_V_RX") String V_V_RX,
+            @RequestParam(value = "V_V_CSWZSL") String V_V_CSWZSL,
+            @RequestParam(value = "V_V_CSDSL") String V_V_CSDSL,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        return zsService.PM_06_JMDJ_EDIT(V_V_GUID, V_V_BUSINESSKEY, V_V_EQU_CODE,V_V_EQU_NAME,V_V_GNWZ,V_V_JCFS,V_V_JCZQ,
+                V_V_ZD,V_V_DJ,V_V_TS, V_V_DL,V_V_RX,V_V_CSWZSL,V_V_CSDSL);
+
+    }
+*/
+
+
+    //查询录入的精密点检信息
+    @RequestMapping(value = "/PM_06_JMDJ_BY_KEY_ANDCODE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_BY_KEY_ANDCODE_SEL(
+            @RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY,
+            @RequestParam(value = "V_V_EQU_CODE") String V_V_EQU_CODE,
+            @RequestParam(value = "start") Integer start,
+            @RequestParam(value = "limit") Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zsService.PM_06_JMDJ_BY_KEY_ANDCODE_SEL(V_V_BUSINESSKEY,V_V_EQU_CODE);
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
+    }
+
+    //精密点检的
+    @RequestMapping(value = "/PM_06_JMDJ_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_DEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zsService.PM_06_JMDJ_DEL(V_V_GUID);
+        result.put("INFO", data.get("INFO"));
+        result.put("success", true);
+        return result;
+    }
+
+
+    //获取模板的查询
+    @RequestMapping(value = "/PM_06_JMDJ_BY_EQUCODE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_BY_EQUCODE_SEL(
+            @RequestParam(value = "V_V_EQU_CODE") String V_V_EQU_CODE,
+            @RequestParam(value = "start") Integer start,
+            @RequestParam(value = "limit") Integer limit,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zsService.PM_06_JMDJ_BY_EQUCODE_SEL(V_V_EQU_CODE);
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/PM_06_JMDJ_EDIT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_EDIT  (
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY,
+            @RequestParam(value = "V_V_COLUMN") String V_V_COLUMN,
+            @RequestParam(value = "V_V_EQU_CODE") String V_V_EQU_CODE,
+            @RequestParam(value = "V_V_VALUE") String V_V_VALUE,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        return zsService.PM_06_JMDJ_EDIT (V_V_GUID, V_V_BUSINESSKEY,V_V_EQU_CODE, V_V_COLUMN,V_V_VALUE);
+
+    }
+
+    //获取模板的插入
+    @RequestMapping(value = "/PM_06_JMDJ_INS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_INS (
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY,
+            @RequestParam(value = "V_V_EQU_CODE") String V_V_EQU_CODE,
+            @RequestParam(value = "V_V_EQU_NAME") String V_V_EQU_NAME,
+            @RequestParam(value = "V_V_GNWZ") String V_V_GNWZ,
+            @RequestParam(value = "V_V_JCFS") String V_V_JCFS,
+            @RequestParam(value = "V_V_JCZQ") String V_V_JCZQ,
+            @RequestParam(value = "V_V_ZD") String V_V_ZD,
+            @RequestParam(value = "V_V_DJ") String V_V_DJ,
+            @RequestParam(value = "V_V_TS") String V_V_TS,
+            @RequestParam(value = "V_V_DL") String V_V_DL,
+            @RequestParam(value = "V_V_RX") String V_V_RX,
+            @RequestParam(value = "V_V_CSWZSL") String V_V_CSWZSL,
+            @RequestParam(value = "V_V_CSDSL") String V_V_CSDSL,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        return zsService.PM_06_JMDJ_INS(V_V_GUID, V_V_BUSINESSKEY, V_V_EQU_CODE, V_V_EQU_NAME, V_V_GNWZ, V_V_JCFS, V_V_JCZQ,
+                V_V_ZD, V_V_DJ, V_V_TS, V_V_DL, V_V_RX, V_V_CSWZSL,V_V_CSDSL);
+
+    }
 }

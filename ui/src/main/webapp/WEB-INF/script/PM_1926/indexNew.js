@@ -333,7 +333,7 @@ Ext.onReady(function () {
         columnLines: true,
         border: false,
         //frame: true,
-        //selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
+       // selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '安全措施名称', dataIndex: 'V_AQCS_NAME', style: 'text-align: center;', flex: 1}],
@@ -437,11 +437,9 @@ Ext.onReady(function () {
     var formPanel = Ext.create('Ext.form.Panel', {
         id: 'formPanel',
         border: false,
-        //layout:'vbox',
         frame: true,
         defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 300, style: 'margin:20px 0px 10px 50px'},
-        //defaults: {labelAlign: 'right', autoWidth: true},
-        items: [//{xtype: 'textfield', id: 'AQCS_CODE', fieldLabel: '安全措施编码:', maxLength: 60, allowBlank: false},
+        items: [
             {xtype: 'textfield', id: 'AQCS_NAME', fieldLabel: '安全措施名称:', maxLength: 60, allowBlank: false},
             {xtype: 'textareafield', id: 'AQ_ZYSX', fieldLabel: '安全措施明细:', maxLength: 1000, allowBlank: false},
             {xtype: 'textareafield', id: "AQCS_DETAIL", fieldLabel: '安全措施注意事项', maxLength: 1000, allowBlank: false}
@@ -470,10 +468,9 @@ Ext.onReady(function () {
         border: 'false',
         //baseCls: 'my-panel-no-border',
         //frame:'true',
-        //selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
+       // selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            //  {text: '预案编码', dataIndex: 'V_AQYA_CODE', style: 'text-align: center;', flex: 1},
             {text: '预案名称', dataIndex: 'V_AQYA_NAME', align: 'center', flex: 1},
             {text: '预案详情', dataIndex: 'V_AQYA_DETAIL', align: 'center', flex: 1},
             {
@@ -573,6 +570,7 @@ Ext.onReady(function () {
         store: 'yafjStore',
         columnLines: true,
         border: 'false',
+        //selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '附件名称', dataIndex: 'V_FILENAME', style: 'text-align: center;', flex: 1},
@@ -717,6 +715,7 @@ Ext.onReady(function () {
         store: 'yafjStore',
         columnLines: true,
         border: 'false',
+        //selModel : {selType : 'checkboxmodel', mode : 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '附件名称', dataIndex: 'V_FILENAME', style: 'text-align: center;', flex: 1},
@@ -1668,7 +1667,7 @@ function _editAqcs_YaSave() {//新增和修改的保存
     var flag = form.isValid();//校验数据
     if (!flag) {
         Ext.MessageBox.alert("提示", '请填入必录项');
-        return false;
+        return ;
     }
     Ext.MessageBox.show({
         title: '请确认',
@@ -1708,7 +1707,7 @@ function _deleteAqcs_Ya() {
     var records = Ext.getCmp('gridPanel2').getSelectionModel().getSelection();
     if (records.length == 0) {
         Ext.MessageBox.alert("操作信息", '请选择至少一条数据进行删除！', Ext.MessageBox.WARNING);
-        return false;
+        return ;
     }
     Ext.MessageBox.show({
         title: '请确认',
@@ -1856,7 +1855,7 @@ function _addAqCsZg() {
     Ext.getCmp('WIN_AQCS_CODE').hide();
     if (Ext.getCmp('WIN_AQCS_CODE').getValue() == '') {
         Ext.MessageBox.alert("提示", '请选择相应的安全措施进行添加');
-        return false;
+        return;
     }
     Ext.getCmp('WIN_ZG_GUID').setValue(Ext.data.IdGenerator.get('uuid').generate());
     Ext.getCmp('WIN_ZG_GUID').hide();
@@ -1876,7 +1875,7 @@ function _updateAqCsZg() {
         return false;
     } else if (records.length > 1) {
         Ext.MessageBox.alert("提示", '一次只能修改一条数据！', Ext.MessageBox.WARNING);
-        return;
+        return false;
     }
     Ext.getCmp('WIN_AQCS_CODE').setValue(records[0].data.V_AQCS_CODE);
     Ext.getCmp('WIN_AQCS_CODE').hide();

@@ -1,44 +1,22 @@
 /**
  * Created by Administrator on 17-4-3.
  */
-//-----西面板及其组件
-
-
+var V_NEXT_SETP = '';
+var V_STEPNAME = '';
+var processKey = '';
+//v_personcode:"admin"
+//v_personname2:"超级管理员"
+var PERSONCODE_ = Ext.util.Cookies.get('v_personcode');//发起人编码
+var PERSONNAME_ = Ext.util.Cookies.get('v_personname2')     //发起人名字
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
-    //var codeStore = Ext.create('Ext.data.Store', {
-    //    storeId: 'codeStore',
-    //    autoLoad: true,//true为自动加载
-    //    loading: true,//自动加载时必须为true
-    //    pageSize: 20,
-    //    fields: ['CODE_ID_', 'PARENT_CODE_ID_', 'CATEGORY_', 'CODE_', 'NAME_', 'EXT_ATTR_1_', 'EXT_ATTR_2_', 'EXT_ATTR_3_', 'ORDER_'],
-    //    proxy: {
-    //        url: 'selectCode.do',
-    //        type: 'ajax',
-    //        async: true,//false=同步
-    //        actionMethods: {
-    //            read: 'POST'
-    //        },
-    //        extraParams: {},
-    //        reader: {
-    //            type: 'json',
-    //            root: 'codeList',
-    //            totalProperty: 'total'
-    //        }
-    //    },
-    //    listeners: {
-    //        load: function (store, records, successful, eOpts) {
-    //            _init();//自动加载时必须调用
-    //        }
-    //    }
-    //});
+    //从2013循环开始年到当前年的下一年
+    var dt = new Date();
+    var thisYear = dt.getFullYear();
+    var years = [];
+    for (var i = 2013; i <= thisYear + 1; i++) years.push({displayField: i, valueField: i});
 
-    //var STATUS_CodeStore = Ext.create('Ext.data.Store', {
-    //    storeId: 'STATUS_CodeStore',
-    //    autoLoad: false,
-    //    fields: ['CODE_ID_', 'PARENT_CODE_ID_', 'CATEGORY_', 'CODE_', 'NAME_', 'EXT_ATTR_1_', 'EXT_ATTR_2_', 'EXT_ATTR_3_', 'ORDER_']
-    //});
     var comboStore = Ext.create('Ext.data.Store', {
         storeId: 'comboStore',
         autoLoad: false,
@@ -60,28 +38,66 @@ Ext.onReady(function () {
             }
         }
     });
-    var gridStore = Ext.create('Ext.data.Store', {
-        storeId: 'gridStore',
-        autoLoad: true,//true为自动加载
-        loading: true,//自动加载时必须为true
+    //表格信息加载
+    var yearjmdjStore = Ext.create('Ext.data.Store', {
+        id: 'yearjmdjStore',
         pageSize: 20,
-        fields: ['ASSET0', 'ASSET1', 'ASSET2', 'ASSET3', 'ASSET4'],
-        data: [[' '], [' '], [' '], [' '], [' ']
-        ]
-        //proxy: {
-        //    url: 'selectAssetType.do',
-        //    type: 'ajax',
-        //    async: true,//false=同步
-        //    actionMethods: {
-        //        read: 'POST'
-        //    },
-        //    extraParams: {},
-        //    reader: {
-        //        type: 'json',
-        //        root: 'assetTypeList',
-        //        totalProperty: 'total'
-        //    }
-        //}
+        autoLoad: false,
+        fields: ['I_ID', 'V_GUID', 'V_YEAR', 'V_ORGCODE', 'V_ORGNAME',
+            'V_FLOWTYPECODE', 'V_FLOWTYPENAME', 'V_INPERCODE', 'V_INPERNAME',
+            'V_INDATE', 'V_ORG_JSRCODE', 'V_ORG_JSRNAME', 'V_FLOW_STATUS', 'V_JMDJID'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_06/PM_06_JMDJ_YEARPLAN_DATA_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list',
+                total: 'total'
+            }
+        }
+    });
+
+    var nextSprStore = Ext.create("Ext.data.Store", {
+        autoLoad: true,
+        storeId: 'nextSprStore',
+        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+                V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+                V_V_REPAIRCODE: '',
+                V_V_FLOWTYPE: 'JmDJ',
+                V_V_FLOW_STEP: 'start',
+                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_SPECIALTY: '',
+                V_V_WHERE: ''
+            }
+        },
+        listeners: {
+            load: function (store, records, success, eOpts) {
+                processKey = store.getProxy().getReader().rawData.RET;
+                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+                console.log(processKey);
+                console.log(V_STEPNAME);
+                console.log(V_NEXT_SETP);
+            }
+
+        }
     });
 
 
@@ -107,186 +123,132 @@ Ext.onReady(function () {
         autoScroll: true,
         defaults: {
             labelAlign: 'right',
-            labelWidth: 40,
-            inputWidth: 140,
-            style: 'margin:5px 0px 5px 10px'
+            labelWidth: 80,
+            inputWidth: 100,
+            style: 'margin:5px 0px 5px 0px'
         },
         items: [{
+            id: 'year',
+            store: Ext.create("Ext.data.Store", {
+                fields: ['displayField', 'valueField'],
+                data: years,
+                proxy: {
+                    type: 'memory',
+                    reader: {
+                        type: 'json'
+                    }
+                }
+            }),
             xtype: 'combo',
-            name: 'year',
-            store: comboStore,
-            queryMode: 'local',
-            valueField: '',
-            displayField: '',
-            emptyText: '全部',
-            forceSelection: true,
+            id: 'year_',
             fieldLabel: '年份',
-            style: 'margin:5px 0px 5px 20px'
+            labelWidth: 50,
+            value: new Date().getFullYear(),
+            labelAlign: 'right',
+            editable: false,
+            displayField: 'displayField',
+            valueField: 'valueField'
         }, {
             xtype: 'button',
-            style: 'margin:5px',
-            // icon: imgpath + '/search.png',
+            icon: imgpath + '/search.png',
             width: 60,
             text: '查询',
-            style: 'margin:5px 0px 5px 20px'
-
-            //handler: _selectAsse
+            style: 'margin:5px 0px 5px 15px',
+            handler: _query
         }, {
             xtype: 'button',
             width: 60,
-            text: '发起'
-            //handler: _preInsertAsse
+            text: '发起',
+            style: 'margin:5px 0px 5px 10px',
+            handler: _start
         }]
     });
 
+    var gridPanel = Ext.create('Ext.grid.Panel', {
 
-    //var buttonPanel = Ext.create('Ext.Panel', {
-    //    id: 'buttonPanel',
-    //    defaults: {
-    //        style: 'margin: 2px;'
-    //    },
-    //    items: [{
-    //        xtype: 'button',
-    //        text: '查询'
-    //        //handler: _selectAsse
-    //    }, {
-    //        xtype: 'button',
-    //        text: '发起'
-    //        //handler: _preInsertAsse
-    //    }]
-    //});
-
-
-    var assePanel = Ext.create('Ext.grid.Panel', {
-
-        id: 'assePanel',
-        store: gridStore,
-        //title: '厂矿',
+        id: 'gridPanel',
+        store: yearjmdjStore,
         columnLines: true,
         frame: true,
-        // selModel: {
-        //     selType: 'checkboxmodel',
-        //     mode: 'simple'
-        // },
-        columns: [{
-            text: '厂矿',
-            dataIndex: 'ASSET0',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '厂矿接收人',
-            dataIndex: 'ASSET1',
-            style: 'text-align: center;',
-            flex: 1
-        }, {
-            text: '发起人',
-            dataIndex: 'ASSET2',
-            style: 'text-align: center;',
-            flex: 2
-        }, {
-            text: '发起时间',
-            dataIndex: 'ASSET3',
-            style: 'text-align: center;',
-            flex: 2
-        }, {
-            text: '流程状态',
-            dataIndex: 'ASSET4',
-            style: 'text-align: center;',
-            flex: 2
-        }],
-        viewConfig: {
-            emptyText: '<div style="text-align: center; padding-top: 50px; font: italic bold 20px Microsoft YaHei;"><spring:message code="noData" /></div>',
-            enableTextSelection: true
-        }
-
+        selModel: {selType: 'checkboxmodel', mode: 'simple'},
+        columns: [{xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
+            {text: '厂矿', dataIndex: 'V_ORGNAME', align: 'center', flex: 1},
+            {text: '厂矿接收人', dataIndex: 'V_ORG_JSRNAME', align: 'center', flex: 1},
+            {text: '发起人', dataIndex: 'V_INPERNAME', align: 'center', flex: 2},
+            {
+                text: '发起时间', dataIndex: 'V_INDATE', align: 'center', flex: 2,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    var index = yearjmdjStore.find('V_INDATE', value);
+                    if (index != -1) {
+                        return yearjmdjStore.getAt(index).get('V_INDATE').substring(0, 19);
+                    }
+                    return null;
+                }
+            },
+            {text: '流程状态', dataIndex: 'V_FLOW_STATUS', align: 'center', flex: 2}]
     });
 
     Ext.create('Ext.container.Viewport', {
-        layout: {
-            type: 'border',
-            regionWeights: {
-                west: -1,
-                north: 1,
-                south: 1,
-                east: -1
-            }
-        },
-        defaults: {
-            border: false
-        },
-        items: [{
-            region: 'north',
-            items: [formPanel]
-        }, {
-            region: 'center',
-            layout: 'fit',
-            items: [assePanel]
-        }]
+        layout: {type: 'border', regionWeights: {west: -1, north: 1, south: 1, east: -1}},
+        defaults: {border: false},
+        items: [{region: 'north', items: [formPanel]},
+            {region: 'center', layout: 'fit', items: [gridPanel]}]
     });
-
     _init();
 });
 
 function _init() {
     if (true) {
-
         Ext.getBody().unmask();
     }
 }
 
-//function _init() {
-//    for (var i = 0; i < Ext.data.StoreManager.getCount(); i++) {//检查是否所有自动加载数据全部加载完毕
-//        if (Ext.data.StoreManager.getAt(i).isLoading()) {
-//            return;
-//        }
-//    }
+function _query() {
+    var yearjmdjStore = Ext.data.StoreManager.lookup('yearjmdjStore');
+    yearjmdjStore.proxy.extraParams.V_V_YEAR = Ext.getCmp('year_').getValue();
+    yearjmdjStore.proxy.extraParams.V_V_INPERCODE = PERSONCODE_;
+    yearjmdjStore.proxy.extraParams.V_V_INPERNAME = PERSONNAME_;
+    yearjmdjStore.currentPage = 1;
+    yearjmdjStore.load();
+}
 
-//var codeStore = Ext.data.StoreManager.lookup('codeStore');//组装子代码数据
-//var STATUS_CodeStore = Ext.data.StoreManager.lookup('STATUS_CodeStore');
-//codeStore.filter('CATEGORY_', new RegExp('^STATUS$'));
-//STATUS_CodeStore.add(codeStore.getRange());
-//STATUS_CodeStore.insert(0, {});
-//codeStore.clearFilter();
+function _start() {
+    var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();//获取选中的数据
+    if (records.length == 0) {//判断是否选中数据
+        Ext.Msg.alert("提示", "请选择一条记录！");
+        return false;
+    }
+    var i_err = 0;
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'Activiti/StratProcess',
+            async: false,
+            method: 'post',
+            params: {
+                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), records[i].data.V_ORG_JSRCODE, "请接收!", '', records[i].get('V_JMDJID'), "请接收！", "JmDJ"],
+                processKey: processKey,
+                businessKey: records[i].get('V_GUID'),
+                V_STEPCODE: 'Start',
+                V_STEPNAME: V_STEPNAME,
+                V_IDEA: '请接收！',
+                V_NEXTPER: records[i].data.V_ORG_JSRCODE,
+                V_INPER: Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (response) {
+                if (Ext.decode(response.responseText).ret == 'OK') {
 
-//_selectAsse();//查询加载主表数据
+                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                    Ext.Msg.alert('提示', '该流程发起失败！');
+                }
+            }
+        });
+        i_err++;
+        if (i_err == records.length) {
+            _query();
+        }
+    }
+}
 
-
-//function _selectAsse() {//查询主表数据
-//    var asseStore = Ext.data.StoreManager.lookup('asseStore');
-//    var item;
-//    /*  for (var i = 0; i < Ext.getCmp('formPanel').items.length; i++) {
-//     item = Ext.getCmp('formPanel').items.get(i);
-//     asseStore.proxy.extraParams[item.getName()] = item.getSubmitValue();
-//     }*/
-//    asseStore.proxy.extraParams.ASSET_TYPE_ = ASSET_TYPE_;
-//
-//
-//    asseStore.currentPage = 1;
-//    asseStore.load();
-//}
-
-//function _preInsertAsse() {//新增
-//    returnValue = null;
-//    win = Ext.create('Ext.window.Window', {
-//        title: '<spring:message code="insert" /><spring:message code="ASSE" />',
-//        modal: true,
-//        autoShow: true,
-//        maximized: false,
-//        maximizable: true,
-//        width: 560,
-//        height: 420,
-//        html: '<iframe src="preInsertAsse.do" style="width: 100%; height: 100%;" frameborder="0"></iframe>',
-//        listeners: {
-//            close: function (panel, eOpts) {
-//                if (returnValue != null) {
-//                    var asse = returnValue;
-//                    Ext.data.StoreManager.lookup('asseStore').add(asse);//前台新增数据
-//
-//                    top.banner.Toast.alert('<spring:message code="info" />', '<spring:message code="success" />', 1000);
-//                }
-//            }
-//        }
-//    });
-//}
 
 

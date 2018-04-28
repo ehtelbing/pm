@@ -199,29 +199,29 @@ public class PM_06Controller {
                                                         @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                                         @RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
-                                                      @RequestParam(value = "V_V_CRITERION_ITEM") String V_V_CRITERION_ITEM,
-                                                      @RequestParam(value = "V_V_CRITERION_CONTENT") String V_V_CRITERION_CONTENT,
-                                                      @RequestParam(value = "V_V_CRITERION_CR") String V_V_CRITERION_CR,
-                                                      @RequestParam(value = "V_V_CRITERION_CYCLE") String V_V_CRITERION_CYCLE,
-                                                      @RequestParam(value = "V_V_CRITERION_CYCLETYPE") String V_V_CRITERION_CYCLETYPE,
-                                                      @RequestParam(value = "V_V_EQU_STATE1") String V_V_EQU_STATE1,
-                                                      @RequestParam(value = "V_V_EQU_STATE2") String V_V_EQU_STATE2,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION1") String V_V_CK_FUNCTION1,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION2") String V_V_CK_FUNCTION2,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION3") String V_V_CK_FUNCTION3,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION4") String V_V_CK_FUNCTION4,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION5") String V_V_CK_FUNCTION5,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION6") String V_V_CK_FUNCTION6,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION7") String V_V_CK_FUNCTION7,
-                                                      @RequestParam(value = "V_V_CK_FUNCTION8") String V_V_CK_FUNCTION8,
-                                                      @RequestParam(value = "V_I_ORDER") String V_I_ORDER,
-                                                      @RequestParam(value = "V_I_FLAG") String V_I_FLAG,
-                                                      @RequestParam(value = "V_V_CKTYPE") String V_V_CKTYPE,
-                                                      @RequestParam(value = "V_I_WEIGHT") String V_I_WEIGHT,
-                                                      @RequestParam(value = "V_I_YJ") String V_I_YJ,
-                                                      @RequestParam(value = "V_V_INPER") String V_V_INPER,
-                                                      HttpServletRequest request,
-                                                      HttpServletResponse response) throws Exception {
+                                                        @RequestParam(value = "V_V_CRITERION_ITEM") String V_V_CRITERION_ITEM,
+                                                        @RequestParam(value = "V_V_CRITERION_CONTENT") String V_V_CRITERION_CONTENT,
+                                                        @RequestParam(value = "V_V_CRITERION_CR") String V_V_CRITERION_CR,
+                                                        @RequestParam(value = "V_V_CRITERION_CYCLE") String V_V_CRITERION_CYCLE,
+                                                        @RequestParam(value = "V_V_CRITERION_CYCLETYPE") String V_V_CRITERION_CYCLETYPE,
+                                                        @RequestParam(value = "V_V_EQU_STATE1") String V_V_EQU_STATE1,
+                                                        @RequestParam(value = "V_V_EQU_STATE2") String V_V_EQU_STATE2,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION1") String V_V_CK_FUNCTION1,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION2") String V_V_CK_FUNCTION2,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION3") String V_V_CK_FUNCTION3,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION4") String V_V_CK_FUNCTION4,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION5") String V_V_CK_FUNCTION5,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION6") String V_V_CK_FUNCTION6,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION7") String V_V_CK_FUNCTION7,
+                                                        @RequestParam(value = "V_V_CK_FUNCTION8") String V_V_CK_FUNCTION8,
+                                                        @RequestParam(value = "V_I_ORDER") String V_I_ORDER,
+                                                        @RequestParam(value = "V_I_FLAG") String V_I_FLAG,
+                                                        @RequestParam(value = "V_V_CKTYPE") String V_V_CKTYPE,
+                                                        @RequestParam(value = "V_I_WEIGHT") String V_I_WEIGHT,
+                                                        @RequestParam(value = "V_I_YJ") String V_I_YJ,
+                                                        @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = pm_06Service.PM_06_DJ_CRITERION_SET(V_V_ORGCODE,V_V_DEPTCODE,V_V_CK_EQUTYPECODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_CRITERION_CODE,
@@ -333,8 +333,8 @@ public class PM_06Controller {
                                                            @RequestParam(value = "V_V_PLAN_STATE") String V_V_PLAN_STATE,
                                                            @RequestParam(value = "V_V_PLAN_TIME") String V_V_PLAN_TIME,
                                                            @RequestParam(value = "V_V_PLAN_PER") String V_V_PLAN_PER,
-                                                      HttpServletRequest request,
-                                                      HttpServletResponse response) throws Exception {
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = pm_06Service.PM_06_DJ_CRITERION_DATA_SET(V_V_CRITERION_CODE,V_V_FZ_PER,V_V_PLAN_STATE,V_V_PLAN_TIME,
@@ -419,6 +419,26 @@ public class PM_06Controller {
         String pm_06 = (String) data.get("RET");
 
         result.put("RET", pm_06);
+        result.put("success", true);
+        return result;
+    }
+
+    //精密点检年计划发起查询
+    @RequestMapping(value = "/PM_06_JMDJ_YEARPLAN_DATA_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_06_JMDJ_YEARPLAN_DATA_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_INPERCODE") String V_V_INPERCODE,
+            @RequestParam(value = "V_V_INPERNAME") String V_V_INPERNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = pm_06Service.PM_06_JMDJ_YEARPLAN_DATA_SEL(V_V_YEAR,V_V_INPERCODE,V_V_INPERNAME);
+
+        List<Map<String, Object>> pm_06list = (List) data.get("list");
+
+        result.put("list", pm_06list);
         result.put("success", true);
         return result;
     }
