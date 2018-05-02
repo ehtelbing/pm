@@ -226,6 +226,23 @@ public class BasicController {
         return test;
     }
 
+    @RequestMapping(value = "/PM_1917_JXGX_PER_DATA_SET_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXGX_PER_DATA_SET_N(
+            @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+            @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE,
+            @RequestParam(value = "V_V_TS") String V_V_TS,
+            @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = basicService.PM_1917_JXGX_PER_DATA_SET_N(V_V_JXGX_CODE, V_V_PERCODE_DE, V_V_TS,V_V_PERNUM);
+        test.put("list", result);
+        return test;
+    }
+
     @RequestMapping(value = "/PRO_BASE_DEPTTOSAPWORKCSAT", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_DEPTTOSAPWORKCSAT(
@@ -813,5 +830,16 @@ public class BasicController {
         Map result = basicService.PRO_BASE_POST_DEL(V_V_POSTCODE);
         return result;
     }
+
+    @RequestMapping(value = "/PM_1917_JXGX_PER_DATA_SELALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXGX_PER_DATA_SELALL(
+            @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+            @RequestParam(value = "V_V_WORKNAME") String V_V_WORKNAME)
+            throws SQLException {
+        Map result = basicService.PM_1917_JXGX_PER_DATA_SELALL(V_V_JXGX_CODE,V_V_WORKNAME);
+        return result;
+    }
+
 
 }

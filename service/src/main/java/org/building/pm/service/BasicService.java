@@ -398,6 +398,35 @@ public class BasicService {
         return result;
     }
 
+    public List<Map> PM_1917_JXGX_PER_DATA_SET_N(String V_V_JXGX_CODE,String V_V_PERCODE_DE,String V_V_TS,String V_V_PERNUM) throws SQLException {
+//        logger.info("begin PM_1917_JXGX_PER_DATA_SET");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXGX_PER_DATA_SET_N" + "(:V_V_JXGX_CODE,:V_V_PERCODE_DE,:V_V_TS,:V_V_PERNUM,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_PERCODE_DE", V_V_PERCODE_DE);
+            cstmt.setString("V_V_TS", V_V_TS);
+            cstmt.setString("V_V_PERNUM", V_V_PERNUM);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXGX_PER_DATA_SET_N");
+        return result;
+    }
+
     public HashMap PRO_BASE_DEPTTOSAPWORKCSAT(String V_V_DEPTREPAIRCODE) throws SQLException {
 
         logger.info("begin PRO_BASE_DEPTTOSAPWORKCSAT");
@@ -1466,6 +1495,35 @@ public class BasicService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_POST_DEL");
+        return result;
+    }
+
+
+    public HashMap PM_1917_JXGX_PER_DATA_SELALL(String V_V_JXGX_CODE,String V_V_WORKNAME) throws SQLException {
+
+        logger.info("begin PM_1917_JXGX_PER_DATA_SELALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_1917_JXGX_PER_DATA_SELALL(:V_V_JXGX_CODE,:V_V_WORKNAME,:V_CURSOR)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_WORKNAME", V_V_WORKNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXGX_PER_DATA_SELALL");
         return result;
     }
 

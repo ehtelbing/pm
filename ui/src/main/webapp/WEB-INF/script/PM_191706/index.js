@@ -7,11 +7,11 @@ var selid = "";
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
-    fields: ['V_WORKCODE', 'V_WORKNAME', 'V_WORKTYPE','V_TIME','V_DE','I_ID'],
+    fields: ['V_WORKCODE', 'V_WORKNAME', 'V_WORKTYPE','V_TIME','V_DE','V_PERNUM'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'pm_19/PRO_PM_19_WORKDE_SEL',
+        url: AppUrl + 'basic/PM_1917_JXGX_PER_DATA_SELALL',
         actionMethods: {
             read: 'POST'
         },
@@ -67,7 +67,11 @@ var Layout = {
                 {
                     text: '工时', align: 'center', width: 150, dataIndex: 'V_TIME', renderer: AtEdit, editor: {
                     xtype: 'numberfield'
-                }
+                }},
+                {
+                    text: '人数', align: 'center', width: 150, dataIndex: 'V_PERNUM', renderer: AtNumEdit, editor: {
+                        xtype: 'numberfield'
+                    }
                 }
             ]
         }
@@ -83,11 +87,12 @@ function select(){
         Ext.Ajax.request({
             method: 'POST',
             async: false,
-            url: AppUrl + 'basic/PM_1917_JXGX_PER_DATA_SET',
+            url: AppUrl + 'basic/PM_1917_JXGX_PER_DATA_SET_N',
             params: {
                 V_V_JXGX_CODE: V_V_JXGX_CODE,
                 V_V_PERCODE_DE: seldata[i].data.V_WORKCODE,
-                V_V_TS: seldata[i].data.V_TIME
+                V_V_TS: seldata[i].data.V_TIME,
+                V_V_PERNUM:seldata[i].data.V_PERNUM
             },
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
@@ -113,6 +118,7 @@ function onPageLoaded() {
 function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
+            V_V_JXGX_CODE:V_V_JXGX_CODE,
             V_V_WORKNAME : Ext.getCmp('workname').getValue()
         }
     });
@@ -125,6 +131,11 @@ function renderFont(value, metaData){
 Ext.onReady(onPageLoaded);
 
 function AtEdit(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = 'text-align: right;background-color:yellow';
+    return value;
+}
+
+function AtNumEdit(value, metaData) {
     metaData.style = 'text-align: right;background-color:yellow';
     return value;
 }
