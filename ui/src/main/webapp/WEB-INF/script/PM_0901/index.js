@@ -60,6 +60,7 @@ $(function () {
     });
 
     $("#selZYQ").change(function () {
+        loadRepairList();
         createDD();
     });
 
@@ -119,6 +120,7 @@ function loadZYQ(dwcode) {
             $("#selZYQ").html(result.join(""));
 
             createDD();
+            loadRepairList();
         }
     });
 }
