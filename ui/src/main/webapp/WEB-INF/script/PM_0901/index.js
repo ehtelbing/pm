@@ -64,6 +64,9 @@ $(function () {
         createDD();
     });
 
+    $("#selPlant").change(function () {
+        createDD();
+    });
 
     //WBS编码选择页面
     $("#wbsCode").click(function () {
