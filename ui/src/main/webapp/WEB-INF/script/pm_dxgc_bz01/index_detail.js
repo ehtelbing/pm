@@ -745,6 +745,7 @@ Ext.onReady(function () {
                         xtype: 'combo',
                         width: 260,
                         fieldLabel: '年份',
+                        fieldStyle: 'background-color:#FFFF99;background-image:none;',
                         store: years,
                         style: 'margin:15px 5px 5px 5px',
                         displayField: 'Item1',
@@ -760,6 +761,7 @@ Ext.onReady(function () {
                         xtype: 'combo',
                         width: 260,
                         fieldLabel: '月份',
+                        fieldStyle: 'background-color:#FFFF99;background-image:none;',
                         store: months,
                         style: 'margin:15px 5px 5px 5px',
                         labelAlign: 'right',
@@ -773,6 +775,7 @@ Ext.onReady(function () {
                     {
                         xtype: 'combo',
                         fieldLabel: '厂矿',
+                        fieldStyle: 'background-color:#FFFF99;background-image:none;',
                         style: 'margin:15px 5px 5px 5px',
                         labelWidth: 80,
                         width: 260,
@@ -787,6 +790,7 @@ Ext.onReady(function () {
                     {
                         xtype: 'combo',
                         fieldLabel: '作业区',
+                        fieldStyle: 'background-color:#FFFF99;background-image:none;',
                         style: 'margin:15px 5px 5px 5px',
                         labelWidth: 80,
                         width: 260,
