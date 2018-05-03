@@ -1,4 +1,20 @@
 var EQU_CODE;//选中树就提取设备编码
+var V_NEXT_SETP = '';
+var V_V_SPECIALTY = '';
+var V_STEPCODE = '';
+var V_V_ORGCODE = '';
+var V_V_DEPTCODE = '';
+var ProcessInstanceId = '';
+var V_ORDERGUID = '';
+var V_STEPNAME = '';
+var processKey = '';
+
+if (location.href.split('?')[1] != undefined) {
+    var parameters = Ext.urlDecode(location.href.split('?')[1]);
+    (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
+    (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
+
+}
 Ext.onReady(function () {
     //panel用到的store，写后台的时候再加每个panel用到的对应正确store
     var gridStore = Ext.create('Ext.data.Store', {
@@ -19,6 +35,45 @@ Ext.onReady(function () {
                 root: 'ZZlist',
                 totalProperty: 'total'
             }
+        }
+    });
+
+    var nextSprStore = Ext.create("Ext.data.Store", {
+        autoLoad: true,
+        storeId: 'nextSprStore',
+        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                V_V_ORGCODE:  Ext.util.Cookies.get('v_orgCode'),
+                V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+                V_V_REPAIRCODE: Ext.util.Cookies.get('v_deptcode'),
+                V_V_FLOWTYPE: 'JmDJ',
+                V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_SPECIALTY: V_V_SPECIALTY,
+                V_V_WHERE: '通过'
+            }
+        },
+        listeners: {
+            load: function (store, records, success, eOpts) {
+                processKey = store.getProxy().getReader().rawData.RET;
+                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+
+                Ext.getCmp('nextPer').select(store.first());
+
+            }
+
         }
     });
 
@@ -146,9 +201,25 @@ Ext.onReady(function () {
         frame: true,
         border: false,
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 50, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
         items: [
-            {xtype: 'button', text: '接收', icon: imgpath + '/add.png', handler: _accept},
+            {
+                xtype: 'combo',
+                id: 'nextPer',
+                labelAlign: 'right',
+                fieldLabel: '下一步接收人',
+                editable: false,
+                margin: '5 0 5 5',
+                labelWidth: 80,
+                width: 250,
+                value: '',
+                displayField: 'V_PERSONNAME',
+                valueField: 'V_PERSONCODE',
+                store: nextSprStore,
+                queryMode: 'local'
+            },
+            {id: 'spyj', xtype: 'textfield', fieldLabel: '审批意见', labelWidth: 60, style: ' margin: 5px 0px 0px 5px', labelAlign: 'right'},
+            {xtype: 'button', text: '上报', icon: imgpath + '/add.png', handler: _accept},
             {xtype: 'button', text: '获取模板', icon: imgpath + '/edit.png', width: 80, handler: _getTemplate}
         ]
     });
@@ -159,7 +230,6 @@ Ext.onReady(function () {
         id: 'hqmbPanel',
         store: hqmbStore,
         columnLines: true,
-        //sm:new Ext.grid.CheckboxSelectionModel({singleSelect:true}),
         frame: true,
         autoScroll: true,
         layout: 'fit',
@@ -172,49 +242,49 @@ Ext.onReady(function () {
             {
                 text: '检测内容', dataIndex: '', width: 400,
                 columns: [
-                    {//new Ext.grid.CheckboxSelectionModel({singleSelect:true}),
+                    {
                         text: '振动', dataIndex: 'V_ZD', width: 80,
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_ZD == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_ZD + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_ZD + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }, {
                         text: '电机', dataIndex: 'V_DJ', width: 80,
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_DJ == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DJ + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DJ + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }, {
                         text: '探伤', dataIndex: 'V_TS', width: 80,
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_TS == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_TS + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_TS + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }, {
                         text: '电缆', dataIndex: 'V_DL', width: 80,
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_DL == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DL + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DL + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }, {
                         text: '热像', dataIndex: 'V_RX', width: 80,
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_RX == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_RX + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_RX + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }]
@@ -277,7 +347,6 @@ Ext.onReady(function () {
     //左上设备类型树
     var sblxTree = Ext.create('Ext.tree.Panel', {
         id: 'sblxTree',
-        //title: '设备类型树',
         width: '20%',
         rootVisible: false,
         hideHeaders: true,
@@ -306,7 +375,6 @@ Ext.onReady(function () {
         layout: 'column',
         frame: true,
         autoScroll: true,
-        // style:'margin—top:10px',//尝试更改设备编号与
         defaults: {
             labelAlign: 'right',//文本文字右对齐
             style: 'text-align: center;',
@@ -344,7 +412,7 @@ Ext.onReady(function () {
         rowLines: true,
         columnLines: true,
         plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1,//单元格编辑
+            clicksToEdit: 1,//单击进行单元格编辑
             listeners: {
                 edit: pageFunction.editorJmdj
             }
@@ -374,15 +442,15 @@ Ext.onReady(function () {
             {
                 text: '检测内容', dataIndex: '', flex: 5,
                 columns: [
-                    {//new Ext.grid.CheckboxSelectionModel({singleSelect:true}),
+                    {
                         text: '振动', dataIndex: 'V_ZD', flex: 1,
                         field: {xtype: 'checkbox'},
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_ZD == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_ZD + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_ZD + "\")'/>";
+                                return "<input type='checkbox'/>";
                             }
                         }
                     }, {
@@ -390,9 +458,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_DJ == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DJ + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DJ + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }, {
@@ -400,9 +468,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_TS == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_TS + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_TS + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }, {
@@ -410,9 +478,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_DL == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DL + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_DL + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }, {
@@ -420,9 +488,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_RX == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_RX + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.ORDER_STATUS + "\",\"" + record.data.V_RX + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }]
@@ -438,12 +506,6 @@ Ext.onReady(function () {
             },
             {
                 text: '编辑', dataIndex: 'data_', flex: 1, columns: [
-                /* {
-                 text: '修改', dataIndex: 'data_', flex: 1,
-                 renderer: function (v) {
-                 return "<span style='margin-right:10px'><a href='#' onclick=pageFunction.editorJmdj>修改</a></span>";
-                 }
-                 },*/
                 {
                     text: '删除', dataIndex: 'data_', flex: 1, renderer: function (v) {
                     return "<span style='margin-right:10px'><a href='#' onclick='_deleteJmdj()'>删除</a></span>";
@@ -478,7 +540,6 @@ Ext.onReady(function () {
     var gridPanel2 = Ext.create('Ext.grid.Panel', {
         id: 'gridPanel2',
         store: lrjmdjStore,
-        //sm:new Ext.grid.CheckboxSelectionModel({singleSelect:true}),
         frame: true,
         autoScroll: true,
         rowLines: true,
@@ -519,9 +580,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_ZD == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_ZD + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_ZD + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     },
@@ -531,9 +592,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_DJ == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_DJ + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_DJ + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     },
@@ -543,9 +604,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_TS == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_TS + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_TS + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     },
@@ -555,9 +616,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_DL == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_DL + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_DL + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     },
@@ -567,9 +628,9 @@ Ext.onReady(function () {
                         align: 'center',
                         renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
                             if (record.data.V_RX == 1) {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_RX + "\")' checked='checked' />";
+                                return "<input type='checkbox'  checked='checked' />";
                             } else {
-                                return "<input type='checkbox' name='radio' onchange='RadioChange(\"" + record.data.V_RX + "\")'/>";
+                                return "<input type='checkbox'  />";
                             }
                         }
                     }]
@@ -660,13 +721,99 @@ Ext.onReady(function () {
     });
     _selectDept();
     _selectJmdj();
+    _selectTaskId();
 
 
 });
 
-//接收的函数
-function _accept() {
+function _selectTaskId() {
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetTaskIdFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            businessKey: V_ORDERGUID,
+            userCode: Ext.util.Cookies.get('v_personcode')
 
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            taskId = data.taskId;
+            V_STEPCODE = data.TaskDefinitionKey;
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    })
+}
+
+//上报的函数
+function _accept() {
+    var records = Ext.getCmp('gridPanel1').getSelectionModel().getSelection();//获取选中的数据
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/TaskComplete',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            taskId: taskId,
+            idea: '通过',
+            parName: [V_NEXT_SETP, "flow_yj"],
+            parVal: [Ext.getCmp('nextPer').getValue(), '通过'],
+            processKey: processKey,
+            businessKey: V_ORDERGUID,
+            V_STEPCODE: V_STEPCODE,
+            V_STEPNAME: V_STEPNAME,
+            V_IDEA: '请审批！',
+            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+            V_INPER: Ext.util.Cookies.get('v_personcode')
+        }/*,
+         success: function (response) {
+         var resp = Ext.decode(response.responseText);
+         if (resp.ret == '任务提交成功') {
+         Ext.Ajax.request({
+         url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+         method: 'POST',
+         async: false,
+         params: {
+         'V_V_ORDERID': V_ORDERGUID,
+         'V_V_PROCESS_NAMESPACE': 'MonthPlan',
+         'V_V_PROCESS_CODE': processKey,
+         'V_V_STEPCODE': V_STEPCODE,
+         'V_V_STEPNEXT_CODE': V_NEXT_SETP
+         },
+         success: function (ret) {
+         var resp = Ext.JSON.decode(ret.responseText);
+         if (resp.V_INFO == 'success') {
+         window.opener.QueryTabY();
+         window.opener.QuerySum();
+         window.opener.QueryGrid();
+         window.close();
+         window.opener.OnPageLoad();
+         }
+         }
+         });
+         } else {
+         Ext.MessageBox.alert('提示', '任务提交失败');
+         }
+
+
+         },
+         failure: function (response) {//访问到后台时执行的方法。
+         Ext.MessageBox.show({
+         title: '错误',
+         msg: response.responseText,
+         buttons: Ext.MessageBox.OK,
+         icon: Ext.MessageBox.ERROR
+         })
+         }*/
+
+    })
 }
 
 //树查询
@@ -748,21 +895,18 @@ function _selectDept() {//动态加载子数据集（作业区的数据集）
 //查询厂矿精密点检
 function _selectJmdj() {
     var jmdjStore = Ext.data.StoreManager.lookup('jmdjStore');
-    jmdjStore.proxy.extraParams.V_V_BUSINESSKEY = '1';
+    jmdjStore.proxy.extraParams.V_V_BUSINESSKEY = V_ORDERGUID;
     jmdjStore.currentPage = 1;
     jmdjStore.load();
 }
 
-function RadioChange() {
-
-}
 
 function _selectLrjmdj() {
     //选中树
     var records = Ext.getCmp('sblxTree').getSelectionModel().getSelection();
     EQU_CODE = records[0].data.sid;
     var lrjmdjStore = Ext.data.StoreManager.lookup('lrjmdjStore');
-    lrjmdjStore.proxy.extraParams.V_V_BUSINESSKEY = '1';
+    lrjmdjStore.proxy.extraParams.V_V_BUSINESSKEY = V_ORDERGUID;
     lrjmdjStore.proxy.extraParams.V_V_EQU_CODE = records[0].data.sid;
     lrjmdjStore.currentPage = 1;
     lrjmdjStore.load();
@@ -774,8 +918,6 @@ function _insertKsj() {
         //'V_EQU_NAME':'258'
         'V_GUID': Ext.data.IdGenerator.get('uuid').generate()
     });
-    /* Ext.getCmp('gridPanel2').editingPlugin.startEdit(lrjmdjStore.data.length - 1, 0);*/
-
 }
 
 //删除精密点检
@@ -840,7 +982,7 @@ function _Affirm() {
         async: false,
         params: {
             V_V_GUID: Ext.data.IdGenerator.get('uuid').generate(),
-            V_V_BUSINESSKEY: '1',
+            V_V_BUSINESSKEY: V_ORDERGUID,
             V_V_EQU_CODE: EQU_CODE,
             V_V_EQU_NAME: records[0].data.V_EQU_NAME,
             V_V_GNWZ: records[0].data.V_GNWZ,
@@ -861,9 +1003,6 @@ function _Affirm() {
             Ext.Msg.alert("信息", data.INFO);
             _selectLrjmdj();
             _selectJmdj();
-            // } else {
-            //   Ext.Msg.alert("信息", "失败！");
-            //  }
         }
     });
 }
@@ -885,7 +1024,7 @@ var pageFunction = {
             async: false,
             params: {//根据单元格的guid和对应的字段，给单元格赋值
                 V_V_GUID: e.record.raw.V_GUID,
-                V_V_BUSINESSKEY: '1',
+                V_V_BUSINESSKEY: V_ORDERGUID,
                 V_V_EQU_CODE: EQU_CODE,
                 V_V_COLUMN: e.field,
                 V_V_VALUE: e.value
