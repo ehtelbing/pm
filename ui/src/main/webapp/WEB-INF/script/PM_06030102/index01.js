@@ -54,7 +54,7 @@ Ext.onReady(function () {
                 root: 'list'
             },
             extraParams: {
-                V_V_ORGCODE:  Ext.util.Cookies.get('v_orgCode'),
+                V_V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
                 V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
                 V_V_REPAIRCODE: Ext.util.Cookies.get('v_deptcode'),
                 V_V_FLOWTYPE: 'JmDJ',
@@ -218,7 +218,14 @@ Ext.onReady(function () {
                 store: nextSprStore,
                 queryMode: 'local'
             },
-            {id: 'spyj', xtype: 'textfield', fieldLabel: '审批意见', labelWidth: 60, style: ' margin: 5px 0px 0px 5px', labelAlign: 'right'},
+            {
+                id: 'spyj',
+                xtype: 'textfield',
+                fieldLabel: '审批意见',
+                labelWidth: 60,
+                style: ' margin: 5px 0px 0px 5px',
+                labelAlign: 'right'
+            },
             {xtype: 'button', text: '上报', icon: imgpath + '/add.png', handler: _accept},
             {xtype: 'button', text: '获取模板', icon: imgpath + '/edit.png', width: 80, handler: _getTemplate}
         ]
@@ -772,46 +779,46 @@ function _accept() {
             V_IDEA: '请审批！',
             V_NEXTPER: Ext.getCmp('nextPer').getValue(),
             V_INPER: Ext.util.Cookies.get('v_personcode')
-        }/*,
-         success: function (response) {
-         var resp = Ext.decode(response.responseText);
-         if (resp.ret == '任务提交成功') {
-         Ext.Ajax.request({
-         url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
-         method: 'POST',
-         async: false,
-         params: {
-         'V_V_ORDERID': V_ORDERGUID,
-         'V_V_PROCESS_NAMESPACE': 'MonthPlan',
-         'V_V_PROCESS_CODE': processKey,
-         'V_V_STEPCODE': V_STEPCODE,
-         'V_V_STEPNEXT_CODE': V_NEXT_SETP
-         },
-         success: function (ret) {
-         var resp = Ext.JSON.decode(ret.responseText);
-         if (resp.V_INFO == 'success') {
-         window.opener.QueryTabY();
-         window.opener.QuerySum();
-         window.opener.QueryGrid();
-         window.close();
-         window.opener.OnPageLoad();
-         }
-         }
-         });
-         } else {
-         Ext.MessageBox.alert('提示', '任务提交失败');
-         }
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.ret == '任务提交成功') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'PM_06/PRO_PM_06_ACTIVITI_FLOW_AGREE',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        'V_V_ORDERID': V_ORDERGUID,
+                        'V_V_PROCESS_NAMESPACE': 'JmDJ',
+                        'V_V_PROCESS_CODE': processKey,
+                        'V_V_STEPCODE': V_STEPCODE,
+                        'V_V_STEPNEXT_CODE': V_NEXT_SETP
+                    },
+                    success: function (ret) {
+                        var resp = Ext.JSON.decode(ret.responseText);
+                        if (resp.V_INFO == 'success') {
+                            /*window.opener.QueryTabY();
+                            window.opener.QuerySum();
+                            window.opener.QueryGrid();
+                            window.close();
+                            window.opener.OnPageLoad();*/
+                        }
+                    }
+                });
+            } else {
+                Ext.MessageBox.alert('提示', '任务提交失败');
+            }
 
 
-         },
-         failure: function (response) {//访问到后台时执行的方法。
-         Ext.MessageBox.show({
-         title: '错误',
-         msg: response.responseText,
-         buttons: Ext.MessageBox.OK,
-         icon: Ext.MessageBox.ERROR
-         })
-         }*/
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
 
     })
 }

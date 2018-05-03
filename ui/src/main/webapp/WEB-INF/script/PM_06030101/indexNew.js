@@ -219,7 +219,7 @@ function _start() {
         return false;
     }
     var i_err = 0;
-    for (var i = 0; i < records.length; i++) {
+    /*for (var i = 0; i < records.length; i++) {
         Ext.Ajax.request({
             url: AppUrl + 'Activiti/StratProcess',
             async: false,
@@ -247,6 +247,73 @@ function _start() {
         if (i_err == records.length) {
             _query();
         }
+    }*/
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_06/PRO_PM_06_PLAN_JMDJ_SEND',
+            type: 'ajax',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: records[i].data.V_GUID,
+                V_V_FLOWCODE: records[i].get('V_FLOWTYPECODE'),
+                V_V_PLANTYPE: "JmDJ",
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);//后台返回的值
+                if (resp.V_INFO == '成功') {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'Activiti/StratProcess',
+                        async: false,
+                        method: 'post',
+                        params: {
+                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                            parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), records[i].data.V_ORG_JSRCODE, "请接收!", '', records[i].get('V_JMDJID'), "请接收！", "JmDJ"],
+                            processKey: processKey,
+                            businessKey: records[i].get('V_GUID'),
+                            V_STEPCODE: 'Start',
+                            V_STEPNAME: V_STEPNAME,
+                            V_IDEA: '请接收！',
+                            V_NEXTPER: records[i].data.V_ORG_JSRCODE,
+                            V_INPER: Ext.util.Cookies.get('v_personcode')
+                        },
+                        success: function (response) {
+                            if (Ext.decode(response.responseText).ret == 'OK') {
+
+                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                Ext.Msg.alert('提示', '该流程发起失败！');
+                            }
+                        }
+                    });
+                    i_err++;
+                    if (i_err == records.length) {
+                        _query();
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: resp.V_INFO,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR,
+                        fn: function (btn) {
+                            _query();
+                        }
+                    });
+                }
+            },
+            failure: function (response) {//访问到后台时执行的方法。
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: response.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR,
+                    fn: function (btn) {
+                        _query();
+                    }
+                })
+            }
+        })
     }
 }
 

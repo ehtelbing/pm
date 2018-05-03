@@ -443,4 +443,31 @@ public class PM_06Controller {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_PM_06_PLAN_JMDJ_SEND", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_06_PLAN_JMDJ_SEND(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_FLOWCODE") String V_V_FLOWCODE,
+            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = pm_06Service.PRO_PM_06_PLAN_JMDJ_SEND(V_V_GUID,V_V_FLOWCODE,V_V_PLANTYPE,V_V_PERSONCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_06_ACTIVITI_FLOW_AGREE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_WO_FLOW_AGREE(
+            @RequestParam(value = "V_V_ORDERID") String V_V_ORDERID,
+            @RequestParam(value = "V_V_PROCESS_NAMESPACE") String V_V_PROCESS_NAMESPACE,
+            @RequestParam(value = "V_V_PROCESS_CODE") String V_V_PROCESS_CODE,
+            @RequestParam(value = "V_V_STEPCODE") String V_V_STEPCODE,
+            @RequestParam(value = "V_V_STEPNEXT_CODE") String V_V_STEPNEXT_CODE,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        HashMap result = pm_06Service.PRO_PM_06_ACTIVITI_FLOW_AGREE(V_V_ORDERID, V_V_PROCESS_NAMESPACE, V_V_PROCESS_CODE, V_V_STEPCODE, V_V_STEPNEXT_CODE);
+        return result;
+    }
 }

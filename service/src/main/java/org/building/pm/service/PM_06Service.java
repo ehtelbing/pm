@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -753,6 +754,64 @@ public class PM_06Service {
         }
         logger.debug("result:" + result);
         logger.info("end PM_06_JMDJ_YEARPLAN_DATA_SEL");
+        return result;
+    }
+
+    public Map PRO_PM_06_PLAN_JMDJ_SEND(String V_V_GUID,String V_V_FLOWCODE,
+                                        String  V_V_PLANTYPE,String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin PRO_PM_06_PLAN_JMDJ_SEND");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_06_PLAN_JMDJ_SEND" + "(:V_V_GUID," +
+                    ":V_V_FLOWCODE,:V_V_PLANTYPE,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_FLOWCODE", V_V_FLOWCODE);
+            cstmt.setString("V_V_PLANTYPE", V_V_PLANTYPE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_PLAN_JMDJ_SEND");
+        return result;
+    }
+
+    public HashMap PRO_PM_06_ACTIVITI_FLOW_AGREE(String V_V_ORDERID,String V_V_PROCESS_NAMESPACE,String V_V_PROCESS_CODE,String V_V_STEPCODE,String V_V_STEPNEXT_CODE) throws SQLException {
+        logger.info("begin PRO_PM_06_ACTIVITI_FLOW_AGREE");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_06_ACTIVITI_FLOW_AGREE" + "(:V_V_ORDERID,:V_V_PROCESS_NAMESPACE,:V_V_PROCESS_CODE,:V_V_STEPCODE,:V_V_STEPNEXT_CODE,:V_INFO)}");
+            cstmt.setString("V_V_ORDERID", V_V_ORDERID);
+            cstmt.setString("V_V_PROCESS_NAMESPACE", V_V_PROCESS_NAMESPACE);
+            cstmt.setString("V_V_PROCESS_CODE", V_V_PROCESS_CODE);
+            cstmt.setString("V_V_STEPCODE", V_V_STEPCODE);
+            cstmt.setString("V_V_STEPNEXT_CODE", V_V_STEPNEXT_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_06_ACTIVITI_FLOW_AGREE");
         return result;
     }
 
