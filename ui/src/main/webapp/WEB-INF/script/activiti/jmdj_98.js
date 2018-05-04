@@ -16,27 +16,6 @@ if (location.href.split('?')[1] != undefined) {
 
 }
 Ext.onReady(function () {
-    //panel用到的store，写后台的时候再加每个panel用到的对应正确store
-    var gridStore = Ext.create('Ext.data.Store', {
-        storeId: 'gridStore',
-        autoLoad: false,
-        pageSize: 2,
-        fields: ['data_'],
-        data: [[' '], [' '], [' '], [' '], [' ']],//添加五行空白数据
-        proxy: {
-            url: 'selectZZ.do',
-            type: 'ajax',
-            actionMethods: {
-                read: 'POST'
-            },
-            extraParams: {},
-            reader: {
-                type: 'json',
-                root: 'ZZlist',
-                totalProperty: 'total'
-            }
-        }
-    });
 
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: true,
@@ -239,105 +218,8 @@ Ext.onReady(function () {
                 icon: imgpath + '/cross.png',
                 handler: _reject
             }
-            /*{xtype: 'button', text: '上报', icon: imgpath + '/add.png', handler: _accept},
-             {xtype: 'button', text: '获取模板', icon: imgpath + '/edit.png', width: 80, handler: _getTemplate}*/
         ]
     });
-
-
-    /*//获取模板的表格
-     var hqmbPanel = Ext.create('Ext.grid.Panel', {
-     id: 'hqmbPanel',
-     store: hqmbStore,
-     columnLines: true,
-     frame: true,
-     autoScroll: true,
-     layout: 'fit',
-     selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
-     columns: [{xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-     {text: '设备名称', dataIndex: 'V_EQU_NAME', width: 80},
-     {text: '功能位置', dataIndex: 'V_GNWZ', width: 80},
-     {text: '检测方式', dataIndex: 'V_JCFS', width: 80},
-     {text: '检测周期', dataIndex: 'V_JCZQ', width: 80},
-     {
-     text: '检测内容', dataIndex: '', width: 400,
-     columns: [
-     {
-     text: '振动', dataIndex: 'V_ZD', width: 80,
-     renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
-     if (record.data.V_ZD == 1) {
-     return "<input type='checkbox'  checked='checked' />";
-     } else {
-     return "<input type='checkbox'  />";
-     }
-     }
-     }, {
-     text: '电机', dataIndex: 'V_DJ', width: 80,
-     renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
-     if (record.data.V_DJ == 1) {
-     return "<input type='checkbox'  checked='checked' />";
-     } else {
-     return "<input type='checkbox'  />";
-     }
-     }
-     }, {
-     text: '探伤', dataIndex: 'V_TS', width: 80,
-     renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
-     if (record.data.V_TS == 1) {
-     return "<input type='checkbox'  checked='checked' />";
-     } else {
-     return "<input type='checkbox'  />";
-     }
-     }
-     }, {
-     text: '电缆', dataIndex: 'V_DL', width: 80,
-     renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
-     if (record.data.V_DL == 1) {
-     return "<input type='checkbox'  checked='checked' />";
-     } else {
-     return "<input type='checkbox'  />";
-     }
-     }
-     }, {
-     text: '热像', dataIndex: 'V_RX', width: 80,
-     renderer: function isflage(value, metaData, record, rowIdx, colIdx, store, view) {
-     if (record.data.V_RX == 1) {
-     return "<input type='checkbox'  checked='checked' />";
-     } else {
-     return "<input type='checkbox'  />";
-     }
-     }
-     }]
-     }, {text: '测试位置数量', dataIndex: 'V_CSWZSL', width: 120},
-     {text: '测试点数量', dataIndex: 'V_CSDSL', width: 120}]
-     });*/
-
-    /* //获取模板的弹窗
-     var _hqmbWindow = Ext.create('Ext.window.Window', {
-     id: '_hqmbWindow',
-     width: 830,
-     height: 500,
-     layout: 'border',
-     title: '获取模板',
-     modal: true,//弹出窗口时后面背景不可编辑
-     frame: true,
-     closeAction: 'hide',
-     closable: true,
-     defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:10px 0px 0px 0px'},
-     items: [{region: 'center', layout: 'fit', items: [hqmbPanel]}],
-     buttons: [{
-     xtype: 'button',
-     text: '确认',
-     width: 40,
-     handler: function () {
-     _Affirm();//确认的方法
-     }
-     }, {
-     xtype: 'button', text: '取消', width: 40, handler: function () {
-     Ext.getCmp('_hqmbWindow').hide();
-     }
-     }]
-     });*/
 
     var Panel = Ext.create('Ext.form.Panel', {
         id: 'Panel',
@@ -781,7 +663,7 @@ function _accept() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-    var records = Ext.getCmp('gridPanel1').getSelectionModel().getSelection();//获取选中的数据
+
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -798,17 +680,17 @@ function _accept() {
             V_IDEA: '请审批！',
             V_NEXTPER: Ext.getCmp('nextPer').getValue(),
             V_INPER: Ext.util.Cookies.get('v_personcode')
-        }/*,
+        },
          success: function (response) {
          var resp = Ext.decode(response.responseText);
          if (resp.ret == '任务提交成功') {
          Ext.Ajax.request({
-         url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+         url: AppUrl + 'PM_06/PRO_PM_06_ACTIVITI_FLOW_AGREE',
          method: 'POST',
          async: false,
          params: {
          'V_V_ORDERID': V_ORDERGUID,
-         'V_V_PROCESS_NAMESPACE': 'MonthPlan',
+         'V_V_PROCESS_NAMESPACE': 'JmDJ',
          'V_V_PROCESS_CODE': processKey,
          'V_V_STEPCODE': V_STEPCODE,
          'V_V_STEPNEXT_CODE': V_NEXT_SETP
@@ -819,10 +701,9 @@ function _accept() {
          window.opener.QueryTabY();
          window.opener.QuerySum();
          window.opener.QueryGrid();
-         window.close();
-         window.opener.OnPageLoad();
-         }
-         }
+        // window.close();
+             }
+           }
          });
          } else {
          Ext.MessageBox.alert('提示', '任务提交失败');
@@ -837,7 +718,7 @@ function _accept() {
          buttons: Ext.MessageBox.OK,
          icon: Ext.MessageBox.ERROR
          })
-         }*/
+         }
 
     })
 }
@@ -988,51 +869,6 @@ function _deleteJmdj() {
     });
 }
 
-/*//获取模板的函数
- function _getTemplate() {
- Ext.getCmp('_hqmbWindow').show();
- _selectHqmb();
- }*/
-
-/*function _selectHqmb() {
- var hqmbStore = Ext.data.StoreManager.lookup('hqmbStore');
- hqmbStore.proxy.extraParams.V_V_EQU_CODE = EQU_CODE;
- hqmbStore.currentPage = 1;
- hqmbStore.load();
- }*/
-/*function _Affirm() {
- var records = Ext.getCmp('hqmbPanel').getSelectionModel().getSelection();
- Ext.Ajax.request({
- url: AppUrl + 'zs/PM_06_JMDJ_INS',
- method: 'POST',
- async: false,
- params: {
- V_V_GUID: Ext.data.IdGenerator.get('uuid').generate(),
- V_V_BUSINESSKEY: V_ORDERGUID,
- V_V_EQU_CODE: EQU_CODE,
- V_V_EQU_NAME: records[0].data.V_EQU_NAME,
- V_V_GNWZ: records[0].data.V_GNWZ,
- V_V_JCFS: records[0].data.V_JCFS,
- V_V_JCZQ: records[0].data.V_JCZQ,
- V_V_ZD: records[0].data.V_ZD,
- V_V_DJ: records[0].data.V_DJ,
- V_V_TS: records[0].data.V_TS,
- V_V_DL: records[0].data.V_DL,
- V_V_RX: records[0].data.V_RX,
- V_V_CSWZSL: records[0].data.V_CSWZSL,
- V_V_CSDSL: records[0].data.V_CSDSL
- },
- success: function (resp) {
- var data = Ext.decode(resp.responseText);
- //if (data.INFO == 'SUCCESS') {
- Ext.getCmp('_hqmbWindow').hide();
- Ext.Msg.alert("信息", data.INFO);
- _selectLrjmdj();
- _selectJmdj();
- }
- });
- }*/
-
 var pageFunction = {
     //单元格编辑
     editorJmdj: function (editor, e, eOpts) {
@@ -1110,8 +946,8 @@ function _agree() {
                             window.opener.QueryTabY();
                             window.opener.QuerySum();
                             window.opener.QueryGrid();
-                            window.close();
-                            window.opener.OnPageLoad();
+                            //window.close();
+
                         }
                     }
                 });
@@ -1157,9 +993,7 @@ function _reject() {
             window.opener.QueryTabY();
             window.opener.QuerySum();
             window.opener.QueryGrid();
-            window.close();
-            window.opener.OnPageLoad();
-
+           // window.close();
 
         },
         failure: function (response) {//访问到后台时执行的方法。
