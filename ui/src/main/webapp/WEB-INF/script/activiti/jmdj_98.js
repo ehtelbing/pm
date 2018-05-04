@@ -701,7 +701,7 @@ function _accept() {
          window.opener.QueryTabY();
          window.opener.QuerySum();
          window.opener.QueryGrid();
-        // window.close();
+         window.close();
              }
            }
          });
@@ -946,7 +946,7 @@ function _agree() {
                             window.opener.QueryTabY();
                             window.opener.QuerySum();
                             window.opener.QueryGrid();
-                            //window.close();
+                            window.close();
 
                         }
                     }
@@ -993,7 +993,7 @@ function _reject() {
             window.opener.QueryTabY();
             window.opener.QuerySum();
             window.opener.QueryGrid();
-           // window.close();
+            window.close();
 
         },
         failure: function (response) {//访问到后台时执行的方法。

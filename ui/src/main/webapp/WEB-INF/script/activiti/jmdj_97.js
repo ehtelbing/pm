@@ -289,7 +289,7 @@ function _agree() {
                             window.opener.QueryTabY();
                             window.opener.QuerySum();
                             window.opener.QueryGrid();
-                           // window.close();
+                            window.close();
 
                         }
                     }

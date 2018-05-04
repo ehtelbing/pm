@@ -211,8 +211,6 @@ Ext.onReady(function () {
             {region: 'center', width: '100%', layout: 'fit', items: [gridPanel4]}]
     });
 
-
-    _selectDept();
     _selectJmdj();
     _selectTaskId();
 
@@ -292,7 +290,7 @@ function _agree() {
                             window.opener.QueryTabY();
                             window.opener.QuerySum();
                             window.opener.QueryGrid();
-                           // window.close();
+                            window.close();
                         }
                     }
                 });
@@ -367,15 +365,15 @@ function _reject(){
                             'V_V_PROCESS_NAMESPACE': 'JmDJ',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
-                            'V_V_STEPNEXT_CODE': V_NEXT_SETP
+                            'V_V_STEPNEXT_CODE': 'ckjmdjzgxg'
                         },
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);
                             if (resp.V_INFO == 'success') {
-                                window.opener.QueryTabY();
+                                 window.opener.QueryTabY();
                                  window.opener.QuerySum();
                                  window.opener.QueryGrid();
-                                // window.close();
+                                 window.close();
 
                             }
                         }
