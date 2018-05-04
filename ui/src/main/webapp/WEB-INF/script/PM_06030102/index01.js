@@ -973,6 +973,7 @@ function _deleteJmdj() {
     });
 }
 
+
 //获取模板的函数
 function _getTemplate() {
     if (EQU_CODE == '') {
