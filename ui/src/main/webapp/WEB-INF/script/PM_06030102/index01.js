@@ -1,4 +1,4 @@
-var EQU_CODE;//选中树就提取设备编码
+var EQU_CODE = '';//选中树就提取设备编码
 var V_NEXT_SETP = '';
 var V_V_SPECIALTY = '';
 var V_STEPCODE = '';
@@ -798,10 +798,10 @@ function _accept() {
                         var resp = Ext.JSON.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
                             /*window.opener.QueryTabY();
-                            window.opener.QuerySum();
-                            window.opener.QueryGrid();
-                            window.close();
-                            window.opener.OnPageLoad();*/
+                             window.opener.QuerySum();
+                             window.opener.QueryGrid();
+                             window.close();
+                             window.opener.OnPageLoad();*/
                         }
                     }
                 });
@@ -920,6 +920,10 @@ function _selectLrjmdj() {
 }
 //插入空数据，应该在保存数据的时候调还是在加载树的时候调用
 function _insertKsj() {
+    if (EQU_CODE == '') {
+        Ext.MessageBox.alert("提示", '请先选择一个设备！');
+        return false;
+    }
     var lrjmdjStore = Ext.data.StoreManager.lookup('lrjmdjStore');
     lrjmdjStore.insert(lrjmdjStore.getCount(), {
         //'V_EQU_NAME':'258'
@@ -969,8 +973,13 @@ function _deleteJmdj() {
     });
 }
 
+
 //获取模板的函数
 function _getTemplate() {
+    if (EQU_CODE == '') {
+        Ext.MessageBox.alert("提示", '请先选择一个设备！');
+        return false;
+    }
     Ext.getCmp('_hqmbWindow').show();
     _selectHqmb();
 }
