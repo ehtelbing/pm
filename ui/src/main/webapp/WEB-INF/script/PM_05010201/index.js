@@ -839,6 +839,7 @@ Ext
 
         });
         Ext.data.StoreManager.get('kfSectionStore').on('load', function () {
+            Ext.getStore('kfSectionStore').insert(0, { 'store_id': '0', 'store_desc': '全部' });
             Ext.getCmp('kfSection').select(kfSectionStore.getAt(0));
         });
         Ext.getCmp('selKCSection').on(
