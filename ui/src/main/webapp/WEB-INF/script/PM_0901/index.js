@@ -251,6 +251,9 @@ function loadSPR() {
 
                 $("#selApprover").html(result.join(""));
             }
+
+            $("#selApprover").val($.cookies.get('v_personcode'));
+
         }
     });
 }

@@ -83,7 +83,13 @@ $(function () {
                 V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
 
                 Ext.getCmp('nextSpr2').select(store.first());
+                var list=Ext.getCmp("nextSpr2").getStore().data.items;
+                for(var i=0;i<list.length;i++){
+                    if(list[i].raw.V_PERSONCODE==Ext.util.Cookies.get('v_personcode')){
 
+                        Ext.getCmp("nextSpr2").setValue(Ext.util.Cookies.get('v_personcode'));
+                    }
+                }
             }
 
         }
@@ -1173,6 +1179,7 @@ function _preOrderissued(){
     };
     nextSprStore2.currentPage = 1;
     nextSprStore2.load();
+
     Ext.getCmp('window2').show();
 }
 
