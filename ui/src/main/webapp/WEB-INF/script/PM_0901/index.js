@@ -222,7 +222,6 @@ function loadRepairList() {
     });
 
 }
-
 function loadSPR() {
     $.ajax({//审批人
         url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
