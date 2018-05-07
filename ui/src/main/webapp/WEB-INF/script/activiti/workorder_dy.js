@@ -1478,7 +1478,7 @@ function ConfirmAccept() {
         },
         success: function (response) {
             $.ajax({
-                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_FK',
+                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DY',
                 type: 'post',
                 async: false,
                 data: {
@@ -1512,7 +1512,7 @@ function ConfirmAccept() {
                             success: function (resp) {
                                 var respguid = Ext.decode(resp.responseText);
 
-                                if (respguid.list.length >0) {
+                                /*if (respguid.list.length >0) {
 
                                     for(var i=0;i<respguid.list.length;i++)
                                     {
@@ -1562,7 +1562,7 @@ function ConfirmAccept() {
                                 }else{
 
                                     alert("缺陷日志添加错误");
-                                }
+                                }*/
                             }
                         });
                         window.opener.QueryTab();

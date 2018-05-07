@@ -122,12 +122,23 @@ public class ActivitiController {
         String ret = (String) data.get("RET");
         result.put("RET", ret);
 
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int date = c.get(Calendar.DATE);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
+
+        String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
+
         try {
             for (int i = 0; i < parName.length; i++) {
                 param.put(parName[i].toString(), parVal[i].toString());
             }
 
             param.put("idea", V_IDEA);
+            param.put("shtgtime",time);
 
             ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
                     param);

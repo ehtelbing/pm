@@ -913,6 +913,167 @@ public class WorkOrderService {
         logger.info("end PRO_PM_WORKORDER_FK");
         return result;
     }
+
+    public HashMap PRO_PM_WORKORDER_DY(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORDERGUID,String V_D_FACT_START_DATE,String V_D_FACT_FINISH_DATE,
+                                       String V_I_OTHERHOUR,String V_V_OTHERREASON,String V_V_REPAIRCONTENT,String V_V_REPAIRSIGN,String V_V_REPAIRPERSON,String V_V_TOOL)throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_DY");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_DY(:V_V_PERCODE,:V_V_PERNAME,:V_V_ORDERGUID,:V_D_FACT_START_DATE,:V_D_FACT_FINISH_DATE," +
+                    ":V_I_OTHERHOUR,:V_V_OTHERREASON,:V_V_REPAIRCONTENT,:V_V_REPAIRSIGN,:V_V_REPAIRPERSON,:V_V_TOOL,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_D_FACT_START_DATE", V_D_FACT_START_DATE);
+            cstmt.setString("V_D_FACT_FINISH_DATE", V_D_FACT_FINISH_DATE);
+            cstmt.setString("V_I_OTHERHOUR", V_I_OTHERHOUR);
+            cstmt.setString("V_V_OTHERREASON", V_V_OTHERREASON);
+            cstmt.setString("V_V_REPAIRCONTENT", V_V_REPAIRCONTENT);
+            cstmt.setString("V_V_REPAIRSIGN", V_V_REPAIRSIGN);
+            cstmt.setString("V_V_REPAIRPERSON", V_V_REPAIRPERSON);
+            cstmt.setString("V_V_TOOL", V_V_TOOL);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sss = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_INFO", sss);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_DY");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_DYJS(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORDERGUID,String V_D_FACT_START_DATE,String V_D_FACT_FINISH_DATE,
+                                       String V_I_OTHERHOUR,String V_V_OTHERREASON,String V_V_REPAIRCONTENT,String V_V_REPAIRSIGN,String V_V_REPAIRPERSON,String V_V_TOOL)throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_DYJS");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_DYJS(:V_V_PERCODE,:V_V_PERNAME,:V_V_ORDERGUID,:V_D_FACT_START_DATE,:V_D_FACT_FINISH_DATE," +
+                    ":V_I_OTHERHOUR,:V_V_OTHERREASON,:V_V_REPAIRCONTENT,:V_V_REPAIRSIGN,:V_V_REPAIRPERSON,:V_V_TOOL,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_D_FACT_START_DATE", V_D_FACT_START_DATE);
+            cstmt.setString("V_D_FACT_FINISH_DATE", V_D_FACT_FINISH_DATE);
+            cstmt.setString("V_I_OTHERHOUR", V_I_OTHERHOUR);
+            cstmt.setString("V_V_OTHERREASON", V_V_OTHERREASON);
+            cstmt.setString("V_V_REPAIRCONTENT", V_V_REPAIRCONTENT);
+            cstmt.setString("V_V_REPAIRSIGN", V_V_REPAIRSIGN);
+            cstmt.setString("V_V_REPAIRPERSON", V_V_REPAIRPERSON);
+            cstmt.setString("V_V_TOOL", V_V_TOOL);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sss = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_INFO", sss);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_DYJS");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_JS_N(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORDERGUID,String V_D_FACT_START_DATE,String V_D_FACT_FINISH_DATE,
+                                         String V_I_OTHERHOUR,String V_V_OTHERREASON,String V_V_REPAIRCONTENT,String V_V_REPAIRSIGN,String V_V_REPAIRPERSON,String V_V_TOOL)throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_JS_N");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_JS_N(:V_V_PERCODE,:V_V_PERNAME,:V_V_ORDERGUID,:V_D_FACT_START_DATE,:V_D_FACT_FINISH_DATE," +
+                    ":V_I_OTHERHOUR,:V_V_OTHERREASON,:V_V_REPAIRCONTENT,:V_V_REPAIRSIGN,:V_V_REPAIRPERSON,:V_V_TOOL,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_D_FACT_START_DATE", V_D_FACT_START_DATE);
+            cstmt.setString("V_D_FACT_FINISH_DATE", V_D_FACT_FINISH_DATE);
+            cstmt.setString("V_I_OTHERHOUR", V_I_OTHERHOUR);
+            cstmt.setString("V_V_OTHERREASON", V_V_OTHERREASON);
+            cstmt.setString("V_V_REPAIRCONTENT", V_V_REPAIRCONTENT);
+            cstmt.setString("V_V_REPAIRSIGN", V_V_REPAIRSIGN);
+            cstmt.setString("V_V_REPAIRPERSON", V_V_REPAIRPERSON);
+            cstmt.setString("V_V_TOOL", V_V_TOOL);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sss = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_INFO", sss);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_JS_N");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_JS_F(String V_V_PERCODE,String V_V_PERNAME,String V_V_ORDERGUID,String V_D_FACT_START_DATE,String V_D_FACT_FINISH_DATE,
+                                         String V_I_OTHERHOUR,String V_V_OTHERREASON,String V_V_REPAIRCONTENT,String V_V_REPAIRSIGN,String V_V_REPAIRPERSON,String V_V_TOOL)throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_JS_F");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_JS_N(:V_V_PERCODE,:V_V_PERNAME,:V_V_ORDERGUID,:V_D_FACT_START_DATE,:V_D_FACT_FINISH_DATE," +
+                    ":V_I_OTHERHOUR,:V_V_OTHERREASON,:V_V_REPAIRCONTENT,:V_V_REPAIRSIGN,:V_V_REPAIRPERSON,:V_V_TOOL,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_D_FACT_START_DATE", V_D_FACT_START_DATE);
+            cstmt.setString("V_D_FACT_FINISH_DATE", V_D_FACT_FINISH_DATE);
+            cstmt.setString("V_I_OTHERHOUR", V_I_OTHERHOUR);
+            cstmt.setString("V_V_OTHERREASON", V_V_OTHERREASON);
+            cstmt.setString("V_V_REPAIRCONTENT", V_V_REPAIRCONTENT);
+            cstmt.setString("V_V_REPAIRSIGN", V_V_REPAIRSIGN);
+            cstmt.setString("V_V_REPAIRPERSON", V_V_REPAIRPERSON);
+            cstmt.setString("V_V_TOOL", V_V_TOOL);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sss = (String) cstmt.getObject("V_CURSOR");
+            result.put("V_INFO", sss);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_JS_F");
+        return result;
+    }
+
     public HashMap PRO_PM_WORKORDER_HOURS_VIEW(String V_V_ORDERGUID) throws SQLException {
 
         logger.info("begin PRO_PM_WORKORDER_HOURS_VIEW");

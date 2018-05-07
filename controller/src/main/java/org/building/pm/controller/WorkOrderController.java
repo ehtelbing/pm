@@ -408,6 +408,91 @@ public class WorkOrderController {
                 V_I_OTHERHOUR,V_V_OTHERREASON,V_V_REPAIRCONTENT,V_V_REPAIRSIGN,V_V_REPAIRPERSON,V_V_TOOL);
         return result;
     }
+
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_DY", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_DY(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                   @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                   @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                   @RequestParam(value = "V_D_FACT_START_DATE") String V_D_FACT_START_DATE,
+                                                   @RequestParam(value = "V_D_FACT_FINISH_DATE") String V_D_FACT_FINISH_DATE,
+                                                   @RequestParam(value = "V_I_OTHERHOUR") String V_I_OTHERHOUR,
+                                                   @RequestParam(value = "V_V_OTHERREASON") String V_V_OTHERREASON,
+                                                   @RequestParam(value = "V_V_REPAIRCONTENT") String V_V_REPAIRCONTENT,
+                                                   @RequestParam(value = "V_V_REPAIRSIGN") String V_V_REPAIRSIGN,
+                                                   @RequestParam(value = "V_V_REPAIRPERSON") String V_V_REPAIRPERSON,
+                                                   @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        HashMap result = workOrderService.PRO_PM_WORKORDER_DY(V_V_PERCODE, V_V_PERNAME, V_V_ORDERGUID, V_D_FACT_START_DATE,V_D_FACT_FINISH_DATE,
+                V_I_OTHERHOUR,V_V_OTHERREASON,V_V_REPAIRCONTENT,V_V_REPAIRSIGN,V_V_REPAIRPERSON,V_V_TOOL);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_JS_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_JS_N(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                   @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                   @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                   @RequestParam(value = "V_D_FACT_START_DATE") String V_D_FACT_START_DATE,
+                                                   @RequestParam(value = "V_D_FACT_FINISH_DATE") String V_D_FACT_FINISH_DATE,
+                                                   @RequestParam(value = "V_I_OTHERHOUR") String V_I_OTHERHOUR,
+                                                   @RequestParam(value = "V_V_OTHERREASON") String V_V_OTHERREASON,
+                                                   @RequestParam(value = "V_V_REPAIRCONTENT") String V_V_REPAIRCONTENT,
+                                                   @RequestParam(value = "V_V_REPAIRSIGN") String V_V_REPAIRSIGN,
+                                                   @RequestParam(value = "V_V_REPAIRPERSON") String V_V_REPAIRPERSON,
+                                                   @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        HashMap result = workOrderService.PRO_PM_WORKORDER_JS_N(V_V_PERCODE, V_V_PERNAME, V_V_ORDERGUID, V_D_FACT_START_DATE,V_D_FACT_FINISH_DATE,
+                V_I_OTHERHOUR,V_V_OTHERREASON,V_V_REPAIRCONTENT,V_V_REPAIRSIGN,V_V_REPAIRPERSON,V_V_TOOL);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_JS_F", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_JS_F(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                     @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                     @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                     @RequestParam(value = "V_D_FACT_START_DATE") String V_D_FACT_START_DATE,
+                                                     @RequestParam(value = "V_D_FACT_FINISH_DATE") String V_D_FACT_FINISH_DATE,
+                                                     @RequestParam(value = "V_I_OTHERHOUR") String V_I_OTHERHOUR,
+                                                     @RequestParam(value = "V_V_OTHERREASON") String V_V_OTHERREASON,
+                                                     @RequestParam(value = "V_V_REPAIRCONTENT") String V_V_REPAIRCONTENT,
+                                                     @RequestParam(value = "V_V_REPAIRSIGN") String V_V_REPAIRSIGN,
+                                                     @RequestParam(value = "V_V_REPAIRPERSON") String V_V_REPAIRPERSON,
+                                                     @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        HashMap result = workOrderService.PRO_PM_WORKORDER_JS_F(V_V_PERCODE, V_V_PERNAME, V_V_ORDERGUID, V_D_FACT_START_DATE,V_D_FACT_FINISH_DATE,
+                V_I_OTHERHOUR,V_V_OTHERREASON,V_V_REPAIRCONTENT,V_V_REPAIRSIGN,V_V_REPAIRPERSON,V_V_TOOL);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_DYJS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_DYJS(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                   @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                   @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                   @RequestParam(value = "V_D_FACT_START_DATE") String V_D_FACT_START_DATE,
+                                                   @RequestParam(value = "V_D_FACT_FINISH_DATE") String V_D_FACT_FINISH_DATE,
+                                                   @RequestParam(value = "V_I_OTHERHOUR") String V_I_OTHERHOUR,
+                                                   @RequestParam(value = "V_V_OTHERREASON") String V_V_OTHERREASON,
+                                                   @RequestParam(value = "V_V_REPAIRCONTENT") String V_V_REPAIRCONTENT,
+                                                   @RequestParam(value = "V_V_REPAIRSIGN") String V_V_REPAIRSIGN,
+                                                   @RequestParam(value = "V_V_REPAIRPERSON") String V_V_REPAIRPERSON,
+                                                   @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        HashMap result = workOrderService.PRO_PM_WORKORDER_DYJS(V_V_PERCODE, V_V_PERNAME, V_V_ORDERGUID, V_D_FACT_START_DATE,V_D_FACT_FINISH_DATE,
+                V_I_OTHERHOUR,V_V_OTHERREASON,V_V_REPAIRCONTENT,V_V_REPAIRSIGN,V_V_REPAIRPERSON,V_V_TOOL);
+        return result;
+    }
+
+
+
     @RequestMapping(value = "/PRO_PM_WORKORDER_HOURS_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_HOURS_VIEW(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,

@@ -166,7 +166,7 @@ function OnLogInClick() {
                             resp.list[0].V_WORKCSS);
 
 
-                        location.href = "../../page/home/Index.html?menutype=";
+                        location.href = "../../page/home/Index.html?menutype=DJ";
                     /*} else {
                         msgbox("密码错误！");
                     }*/
@@ -177,7 +177,7 @@ function OnLogInClick() {
             }
         });
     }
-}DJ
+}
 
 function OnPageLoad(){
 

@@ -1278,7 +1278,54 @@ function getPersonReturnValue(retdata) {
 }
 
 function orderissued(){
-    Ext.Ajax.request({
+    $.ajax({
+        url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_JS_F',
+        type: 'post',
+        async: false,
+        data: {
+            V_V_PERCODE: $.cookies.get('v_personcode'),
+            V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+            V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val().split(".")[0],
+            V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val().split(".")[0],
+
+            V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
+            V_V_OTHERREASON: $("#V_OTHERREASON").val(),
+            V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
+            V_V_REPAIRSIGN: $("#V_REPAIRSIGN").val(),
+            V_V_REPAIRPERSON: $("#V_REPAIRPERSON").val(),
+            V_V_TOOL: ' '
+        },
+        dataType: "json",
+        traditional: true,
+        success: function (resp) {
+            if (resp.V_INFO == '成功') {
+                window.returnValue = 'yes';
+                //Ext.example.msg('操作信息', '反馈完成');
+                Ext.Ajax.request({//获取所选缺陷GUID
+                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
+                        V_V_FLAG:'1'
+                    },
+                    success: function (resp) {
+                        var respguid = Ext.decode(resp.responseText);
+
+                    }
+                });
+                window.opener.QueryTab();
+                window.opener.QuerySum();
+                window.opener.QueryGrid();
+                window.close();
+                window.opener.OnPageLoad();
+            } else {
+                Ext.example.msg('操作信息', '操作失败');
+            }
+        }
+    });
+    /*Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_WO_FLOW_AGREE',
         method: 'POST',
         async: false,
@@ -1381,9 +1428,9 @@ function orderissued(){
                             }
 
 
-                            /*window.close();
+                            /!*window.close();
                             window.opener.OnPageLoad();
-                            window.opener.QueryGrid();*/
+                            window.opener.QueryGrid();*!/
                         }else{
                             Ext.MessageBox.alert('提示', '工单接收失败');
                         }
@@ -1395,7 +1442,7 @@ function orderissued(){
                 alert('审批失败');
             }
         }
-    });
+    });*/
 
 
 }
@@ -1570,7 +1617,7 @@ function ConfirmAccept() {
         },
         success: function (response) {
             $.ajax({
-                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_FK',
+                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_JS_N',
                 type: 'post',
                 async: false,
                 data: {
@@ -1604,7 +1651,7 @@ function ConfirmAccept() {
                             success: function (resp) {
                                 var respguid = Ext.decode(resp.responseText);
 
-                                if (respguid.list.length >0) {
+                                /*if (respguid.list.length >0) {
 
                                     for(var i=0;i<respguid.list.length;i++)
                                     {
@@ -1654,7 +1701,7 @@ function ConfirmAccept() {
                                 }else{
 
                                     alert("缺陷日志添加错误");
-                                }
+                                }*/
                             }
                         });
                         window.opener.QueryTab();
