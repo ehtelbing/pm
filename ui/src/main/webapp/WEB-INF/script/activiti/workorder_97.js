@@ -1047,7 +1047,7 @@ function QRYS(){
 				V_INPER: Ext.util.Cookies.get('v_personcode')
 			},
 			success: function (response) {
-				FinBack();
+				//FinBack();
 				$.ajax({
 					url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_EDIT',
 					type: 'post',
@@ -1057,7 +1057,7 @@ function QRYS(){
 						'V_V_PERNAME': Ext.util.Cookies.get("v_personname2"),
 						'V_V_ORDERGUID': $("#V_ORDERGUID").val(),
 						'V_V_SHORT_TXT': $("#V_SHORT_TXT").val(),
-						'V_': $("#V_FUNC_LOC").val(),
+						'V_V_FUNC_LOC': $("#V_FUNC_LOC").val(),
 						'V_V_EQUIP_NO': $("#V_EQUIP_NO").val(),
 						'V_V_EQUIP_NAME': $("#V_EQUIP_NAME").val(),
 						'V_D_FACT_START_DATE': $("#D_FACT_START_DATE").val(),
