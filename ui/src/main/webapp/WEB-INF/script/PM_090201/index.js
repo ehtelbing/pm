@@ -387,6 +387,187 @@ function CreateBill() {
 
 function BillGo() {
     Ext.Ajax.request({
+        url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
+        type: 'post',
+        async: false,
+        params: {
+            V_V_PERNAME: $.cookies.get('v_personcode'),
+            V_V_DEFECT_GUID: $.url().param("V_GUID"),
+            V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+            V_V_EQUCODE: $("#V_EQUCODE").val(),
+            V_V_WORKORDER_TYPE: $("#selType").val(),
+            V_V_DEPTCODEREPARIR: $("#selPlant").val(),
+            V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
+            V_V_WBS: $("#wbsCode").val(),
+            V_V_WBS_TXT: $("#proName").val(),
+            V_D_START_DATE: $("#planStartDate").val(),
+            V_D_FINISH_DATE: $("#planFinDate").val()
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.RET == '成功') {
+                Ext.Ajax.request({
+                    method: 'POST',
+                    async: false,
+                    url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
+                    params: {
+                        V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                        V_V_SEND_STATE: "成功"
+                    },
+                    success: function (response) {
+                        Ext.Ajax.request({
+                            method: 'POST',
+                            async: false,
+                            url: AppUrl + 'mm/SetMat',
+                            params: {
+                                V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                                x_personcode: Ext.util.Cookies.get('v_personcode')
+                            },
+                            success: function (response) {
+                                var resp = Ext.decode(response.responseText);
+                                if (resp.V_CURSOR == '1') {
+                                    Ext.Ajax.request({
+                                        url: AppUrl + 'Activiti/StratProcess',
+                                        async: false,
+                                        method: 'post',
+                                        params: {
+                                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
+                                            parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！","WORK"],
+                                            processKey: processKey,
+                                            businessKey: $("#V_ORDERGUID").val(),
+                                            V_STEPCODE: 'start',
+                                            V_STEPNAME: V_STEPNAME,
+                                            V_IDEA: '请审批！',
+                                            V_NEXTPER: $("#selApprover").val(),
+                                            V_INPER: Ext.util.Cookies.get('v_personcode')
+                                        },
+                                        success: function (response) {
+                                            if (Ext.decode(response.responseText).ret == 'OK') {
+                                                Ext.Ajax.request({//修改关系表状态
+                                                    method: 'POST',
+                                                    async: false,
+                                                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_F',
+                                                    params: {
+                                                        V_V_WORKORDER_GUID: $.url().param("V_GUID")
+                                                    },
+                                                    success: function (response) {
+                                                        var respf = Ext.decode(response.responseText);
+                                                        if (respf.V_INFO == 'success') {
+
+                                                            Ext.Ajax.request({//获取所选缺陷GUID
+                                                                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+                                                                method: 'POST',
+                                                                async: false,
+                                                                params: {
+                                                                    V_V_WORKORDER_GUID: $.url().param("V_GUID"),
+                                                                    V_V_FLAG: '1'
+                                                                },
+                                                                success: function (resp) {
+                                                                    var respguid = Ext.decode(resp.responseText);
+
+                                                                    if (respguid.list.length > 0) {
+
+                                                                        for (var i = 0; i < respguid.list.length; i++) {
+                                                                            Ext.Ajax.request({//保存缺陷详细日志
+                                                                                url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                                                                                method: 'POST',
+                                                                                async: false,
+                                                                                params: {
+                                                                                    V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                                                    V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2') + '工单已下达（' + $("#V_ORDERID").html() + '）',
+                                                                                    V_V_FINISHCODE: '30',
+                                                                                    V_V_KEY: ''//缺陷guid
+
+                                                                                },
+                                                                                success: function (ret) {
+                                                                                    var resp = Ext.decode(ret.responseText);
+                                                                                    if (resp.V_INFO == '成功') {
+                                                                                        //修改缺陷状态
+                                                                                        Ext.Ajax.request({
+                                                                                            url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                                                                            method: 'POST',
+                                                                                            async: false,
+                                                                                            params: {
+                                                                                                V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                                                                V_V_STATECODE: '20',//已下票
+
+                                                                                            },
+                                                                                            success: function (ret) {
+                                                                                                var resp = Ext.decode(ret.responseText);
+                                                                                                if (resp.V_INFO == 'success') {
+
+
+                                                                                                } else {
+                                                                                                    alert("修改缺陷状态失败");
+                                                                                                }
+
+                                                                                            }
+                                                                                        });
+
+                                                                                    } else {
+                                                                                        alert("缺陷日志记录失败");
+                                                                                    }
+
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    } else {
+
+                                                                        alert("缺陷日志添加错误");
+                                                                    }
+                                                                }
+                                                            });
+                                                            Ext.getBody().unmask();//去除页面笼罩
+                                                            alert("工单创建成功：" + $("#V_ORDERID").html());
+                                                            window.close();
+                                                            try {
+                                                                window.opener.addTab();
+                                                                window.opener.queryGrid();
+                                                            } catch (e) {
+                                                                window.opener._selectOverhaulApply('close');
+                                                            }
+
+
+                                                        }
+                                                    }
+                                                });
+                                                /*alert("工单创建成功：" + $("#V_ORDERID").html());
+                                                history.go(0);*/
+                                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                                Ext.Msg.alert('提示', '该流程发起失败！');
+                                                history.go(0);
+                                            }
+                                        }
+                                    });
+                                }
+                                else {
+                                    Ext.Ajax.request({
+                                        method: 'POST',
+                                        async: false,
+                                        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
+                                        params: {
+                                            V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                                            V_V_SEND_STATE: "失败"
+                                        },
+                                        success: function (response) {
+                                            alert("工单创建失败：" + $("#V_ORDERID").html());
+                                            history.go(0);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                    }
+                });
+            } else {
+                alert("工单保存失败！");
+            }
+        }
+    });
+
+/*
+    Ext.Ajax.request({
         url: AppUrl + 'Activiti/StratProcess',
         async: false,
         method: 'post',
@@ -436,7 +617,7 @@ function BillGo() {
                 Ext.Msg.alert('提示', '该流程发起失败！');
             }
         }
-    });
+    });*/
 }
 
 
