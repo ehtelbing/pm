@@ -1369,22 +1369,6 @@ function OrderBooked(){
 
     })
 
-    /*OrderSave();
-    Ext.Ajax.request({
-        method: 'POST',
-        async: false,
-        url: AppUrl + 'zdh/order_booked',
-        params: {
-            V_V_ORDERGUID: V_ORDERGUID
-        },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);
-            if (resp.list[0].V_INFO == 'SUCCESS') {
-                window.close();
-                window.opener.gridquery();
-            }
-        }
-    });*/
 }
 
 function ReturnIsToTask() {
@@ -1421,7 +1405,7 @@ function Receive(){
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: V_V_REPAIRCODE,
         V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP:'gdjs',// $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP:V_STEPCODE,// $.url().param("TaskDefinitionKey"),
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE:''

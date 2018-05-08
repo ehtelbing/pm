@@ -862,7 +862,7 @@ function _selectTaskId() {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-
+            _selectNextPer();
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -882,7 +882,7 @@ function _selectNextPer() {
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: '',
         V_V_FLOWTYPE: 'WeekPlan',
-        V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: V_V_SPECIALTY,
         V_V_WHERE: '通过'
@@ -930,7 +930,7 @@ function _init() {
                     Ext.getCmp('jgminute').setValue(data.list[0].V_STARTTIME.substring(14, 16));
                     Ext.getCmp('jhgshj').setValue(data.list[0].V_HOUR);
                     Ext.getCmp('bz').setValue(data.list[0].V_BZ);
-                    _selectNextPer();
+
                     _selectTaskId();
                     Ext.getBody().unmask();
                 }

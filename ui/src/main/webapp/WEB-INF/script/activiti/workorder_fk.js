@@ -1513,7 +1513,7 @@ function feedBack(){
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: V_V_REPAIRCODE,
         V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP:'gdfk',// $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP:V_STEPCODE,// $.url().param("TaskDefinitionKey"),
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE:''

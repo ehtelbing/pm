@@ -332,7 +332,7 @@ function loadSPR() {
             V_V_DEPTCODE: $("#selZYQ").val(),
             V_V_REPAIRCODE: V_V_REPAIRCODE,
             V_V_FLOWTYPE: 'WORK',
-            V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+            V_V_FLOW_STEP: V_STEPCODE,
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_SPECIALTY: '%',
             V_V_WHERE: '通过'

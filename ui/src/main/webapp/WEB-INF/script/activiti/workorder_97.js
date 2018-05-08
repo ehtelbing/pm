@@ -1700,7 +1700,7 @@ function preDisAgree(){
 		V_V_DEPTCODE: V_V_DEPTCODE,
 		V_V_REPAIRCODE: V_V_DEPTCODEREPARIR,
 		V_V_FLOWTYPE: 'WORK',
-		V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+		V_V_FLOW_STEP: V_STEPCODE,
 		V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
 		V_V_SPECIALTY: '%',
 		V_V_WHERE:'已打印'
@@ -1718,7 +1718,7 @@ function preDisAgreePri(){
 		V_V_DEPTCODE: V_V_DEPTCODE,
 		V_V_REPAIRCODE: V_V_DEPTCODEREPARIR,
 		V_V_FLOWTYPE: 'WORK',
-		V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+		V_V_FLOW_STEP: V_STEPCODE,
 		V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
 		V_V_SPECIALTY: '%',
 		V_V_WHERE:'未打印'

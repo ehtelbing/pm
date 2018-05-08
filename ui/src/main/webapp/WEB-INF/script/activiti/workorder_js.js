@@ -1146,7 +1146,7 @@ function OrderBooked2(){
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: V_V_REPAIRCODE,
         V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE:'预留工单'
@@ -1165,7 +1165,7 @@ function _preOrderissued(){
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: V_V_REPAIRCODE,
         V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE:'已接收'
@@ -1560,7 +1560,7 @@ function feedBack(){
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: V_V_REPAIRCODE,
         V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE:'已反馈'
