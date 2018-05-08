@@ -210,7 +210,7 @@
             // { id: 'x_equtypecode', xtype: 'combo', store: GetEqutype, fieldLabel: '设备类型', labelWidth: 70, displayField: 'V_EQUTYPENAME', valueField: 'V_EQUTYPECODE', queryMode: 'local', baseCls: 'margin-bottom' },
             //  { id: 'x_equcode', xtype: 'combo', store: GetEqucode, fieldLabel: '设备名称', labelWidth: 65, displayField: 'V_EQUNAME', valueField: 'V_EQUCODE', queryMode: 'local', baseCls: 'margin-bottom' },
             {
-                xtype: 'button', text: '查询', width: 60, style: 'margin:5px 0px 5px 20px',
+                xtype: 'button', text: '查询', width: 60, style: 'margin:5px 0px 5px 20px', icon: imgpath + '/search.png',
                 listeners: {
                     click: OnGridQueryButtonClicked
                 }
