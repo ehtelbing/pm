@@ -118,9 +118,20 @@ $(function () {
             load: function (store, records,success,eOpts) {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
 
-                Ext.getCmp('nextSprb').select(Assignee);
+                var list = Ext.getCmp("nextSprb").getStore().data.items;
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i].raw.V_PERSONCODE == Assignee) {
+
+                        Ext.getCmp("nextSprb").setValue(Assignee);
+                        if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+
+                            Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
+                        }
+                    }
+
+                }
 
             }
 

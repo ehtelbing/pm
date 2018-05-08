@@ -205,6 +205,8 @@ function loadSPR() {
 
                 $("#selApprover").html(result.join(""));
             }
+
+            $("#selApprover").val($.cookies.get('v_personcode'));
         }
     });
 }
@@ -477,16 +479,16 @@ function BillGo() {
                     },
                     success: function (response) {
                         Ext.Ajax.request({
-                            method: 'POST',
-                            async: false,
-                            url: AppUrl + 'mm/SetMat',
-                            params: {
-                                V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                                x_personcode: Ext.util.Cookies.get('v_personcode')
-                            },
-                            success: function (response) {
-                                var resp = Ext.decode(response.responseText);
-                                if (resp.V_CURSOR == '1') {
+                         method: 'POST',
+                         async: false,
+                         url: AppUrl + 'mm/SetMat',
+                         params: {
+                         V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                         x_personcode: Ext.util.Cookies.get('v_personcode')
+                         },
+                         success: function (response) {
+                         var resp = Ext.decode(response.responseText);
+                         if (resp.V_CURSOR == '1') {
                                     Ext.Ajax.request({
                                         url: AppUrl + 'Activiti/StratProcess',
                                         async: false,

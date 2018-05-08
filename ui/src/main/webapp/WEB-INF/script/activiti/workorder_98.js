@@ -1196,6 +1196,7 @@ function loadSPR() {
 
                 $("#selApprover").html(result.join(""));
                 $("#selApprover").val(Assignee);
+                $("#selApprover").val($.cookies.get('v_personcode'));
             }
 
             Ext.getBody().unmask();//去除页面笼罩
