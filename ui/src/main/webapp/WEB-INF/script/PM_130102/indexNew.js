@@ -117,22 +117,104 @@
 
     var panel = Ext.create('Ext.form.Panel', {
         id: 'panellow',
-        style: 'margin:5px 0px 2px 2px',
         region: 'north',
         width: '100%',
-
         align: 'center',
-        baseCls: 'my-panel-no-border',
         frame: true,
-        layout: {
-            type: 'column'
-        },
-        defaults: {
-            labelAlign: 'right', labelWidth: 70
-        },
+        layout: 'column',
+        defaults: {labelAlign: 'right', labelWidth: 70, inputWidth: 140, style: 'margin:5px 0px 5px 0px'},
         items: [
             {id: 'x_timelowerlimit', xtype: 'datefield', format: 'Y-m-d', value: sdate, fieldLabel: '起始日期'},
-            {id: 'x_timeupperlimit', xtype: 'datefield', format: 'Y-m-d', value: date, fieldLabel: '终止日期'}
+            {id: 'x_timeupperlimit', xtype: 'datefield', format: 'Y-m-d', value: date, fieldLabel: '终止日期'}, {
+                xtype: 'combo',
+                id: 'V_V_DEPTCODE',
+                store: deptStore,
+                queryMode: 'local',
+                valueField: 'V_DEPTCODE',
+                displayField: 'V_DEPTNAME',
+                forceSelection: true,
+                labelWidth: 80,
+                fieldLabel: '作业区',
+                editable: false,
+                listeners: {
+                    change: function (combo, records) {
+                        Ext.data.StoreManager.lookup('eTypeStore').load({
+                            params: {
+                                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                                V_V_DEPTCODENEXT: Ext.getCmp('V_V_DEPTCODE').getValue()
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'combo',
+                id: 'equtype',
+                store: eTypeStore,
+                queryMode: 'local',
+                valueField: 'V_EQUTYPECODE',
+                displayField: 'V_EQUTYPENAME',
+                labelWidth: 80,
+                forceSelection: true,
+                fieldLabel: '设备类型',
+                editable: false,
+                listeners: {
+                    change: function () {
+                        Ext.data.StoreManager.lookup('equNameStore').load({
+                            params: {
+                                v_v_personcode: Ext.util.Cookies.get('v_personcode'),
+                                v_v_deptcodenext: Ext.getCmp('V_V_DEPTCODE').getValue(),
+                                v_v_equtypecode: Ext.getCmp('equtype').getValue()
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'combo',
+                id: 'equname',
+                store: equNameStore,
+                queryMode: 'local',
+                valueField: 'V_EQUCODE',
+                displayField: 'V_EQUNAME',
+                labelWidth: 80,
+                forceSelection: true,
+                fieldLabel: '设备名称',
+                editable: false,
+                listeners: {
+                    change: function () {
+                        Ext.data.StoreManager.lookup('subequNameStore').load({
+                            params: {
+                                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                                V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+                                V_V_DEPTNEXTCODE: Ext.getCmp('V_V_DEPTCODE').getValue(),
+                                V_V_EQUTYPECODE: Ext.getCmp('equtype').getValue(),
+                                V_V_EQUCODE: Ext.getCmp('equname').getValue()
+                            }
+                        });
+                    }
+                }
+            }
+            , {
+                xtype: 'combo',
+                id: 'subequname',
+                store: subequNameStore,
+                queryMode: 'local',
+                valueField: 'sid',
+                displayField: 'text',
+                labelWidth: 80,
+                forceSelection: true,
+                fieldLabel: '子设备名称',
+                labelAlign: 'right',
+                editable: false
+            },
+            // { id: 'x_deptcode', xtype: 'combo', store: GetPlantname, fieldLabel: '单位名称', labelWidth: 72, displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE', queryMode: 'local', baseCls: 'margin-bottom' },
+            // { id: 'x_equtypecode', xtype: 'combo', store: GetEqutype, fieldLabel: '设备类型', labelWidth: 70, displayField: 'V_EQUTYPENAME', valueField: 'V_EQUTYPECODE', queryMode: 'local', baseCls: 'margin-bottom' },
+            //  { id: 'x_equcode', xtype: 'combo', store: GetEqucode, fieldLabel: '设备名称', labelWidth: 65, displayField: 'V_EQUNAME', valueField: 'V_EQUCODE', queryMode: 'local', baseCls: 'margin-bottom' },
+            {
+                xtype: 'button', text: '查询', width: 60,
+                listeners: {
+                    click: OnGridQueryButtonClicked
+                }
+            }
         ]
     });
     var grid = Ext.create('Ext.grid.Panel', {
@@ -152,14 +234,16 @@
             {text: '润滑点数', dataIndex: 'F_LUBCOUNT', width: 100, align: 'center', width: 100},
             {text: '加油量', dataIndex: 'F_OILAMOUNT', width: 100, align: 'center', width: 100},
             {text: '单位', dataIndex: 'I_UNIT', width: 50, align: 'center', width: 100},
-            {text: '加油时间', width: 160, dataIndex: 'D_OPERATEDATE', align: 'center',
+            {
+                text: '加油时间', width: 160, dataIndex: 'D_OPERATEDATE', align: 'center',
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = store.find('D_OPERATEDATE', value);
                     if (index != -1) {
                         return store.getAt(index).get('D_OPERATEDATE').substring(0, 19);
                     }
                     return null;
-                }},
+                }
+            },
             {text: '加油人员', dataIndex: 'V_OPERATEPERSON', width: 100, align: 'center', width: 100},
             {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 300},
             {text: '类型', align: 'center', width: 100}
@@ -190,108 +274,18 @@
             listeners: {
                 beforeload: BeforeGridStoreLoad
             }
-        },
-        dockedItems: [{
-            xtype: 'panel',
-            frame: true,
-            height: '40px',
-            baseCls: 'my-panel-no-border',
-            style: 'margin:3px 0px 5px 0px',
-            layout: 'hbox',
-            defaults: {labelAlign: 'right'},
-            items: [
-                {
-                    xtype: 'combo',
-                    id: 'V_V_DEPTCODE',
-                    store: deptStore,
-                    queryMode: 'local',
-                    valueField: 'V_DEPTCODE',
-                    displayField: 'V_DEPTNAME',
-                    forceSelection: true,
-                    labelWidth: 80,
-                    fieldLabel: '作业区',
-                    editable: false,
-                    listeners: {
-                        change: function (combo, records) {
-                            Ext.data.StoreManager.lookup('eTypeStore').load({
-                                params: {
-                                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                                    V_V_DEPTCODENEXT: Ext.getCmp('V_V_DEPTCODE').getValue()
-                                }
-                            });
-                        }
-                    }
-                }, {
-                    xtype: 'combo',
-                    id: 'equtype',
-                    store: eTypeStore,
-                    queryMode: 'local',
-                    valueField: 'V_EQUTYPECODE',
-                    displayField: 'V_EQUTYPENAME',
-                    labelWidth: 80,
-                    forceSelection: true,
-                    fieldLabel: '设备类型',
-                    editable: false,
-                    listeners: {
-                        change: function () {
-                            Ext.data.StoreManager.lookup('equNameStore').load({
-                                params: {
-                                    v_v_personcode: Ext.util.Cookies.get('v_personcode'),
-                                    v_v_deptcodenext: Ext.getCmp('V_V_DEPTCODE').getValue(),
-                                    v_v_equtypecode: Ext.getCmp('equtype').getValue()
-                                }
-                            });
-                        }
-                    }
-                },{
-                    xtype: 'combo',
-                    id: 'equname',
-                    store: equNameStore,
-                    queryMode: 'local',
-                    valueField: 'V_EQUCODE',
-                    displayField: 'V_EQUNAME',
-                    labelWidth: 80,
-                    forceSelection: true,
-                    fieldLabel: '设备名称',
-                    editable: false,
-                    listeners: {
-                        change: function () {
-                            Ext.data.StoreManager.lookup('subequNameStore').load({
-                                params: {
-                                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                                    V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
-                                    V_V_DEPTNEXTCODE: Ext.getCmp('V_V_DEPTCODE').getValue(),
-                                    V_V_EQUTYPECODE: Ext.getCmp('equtype').getValue(),
-                                    V_V_EQUCODE: Ext.getCmp('equname').getValue()
-                                }
-                            });
-                        }
-                    }
-                }
-                ,{
-                    xtype: 'combo',
-                    id: 'subequname',
-                    store: subequNameStore,
-                    queryMode: 'local',
-                    valueField: 'sid',
-                    displayField: 'text',
-                    labelWidth: 80,
-                    forceSelection: true,
-                    fieldLabel: '子设备名称',
-                    labelAlign: 'right',
-                    editable: false
-                },
-                // { id: 'x_deptcode', xtype: 'combo', store: GetPlantname, fieldLabel: '单位名称', labelWidth: 72, displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE', queryMode: 'local', baseCls: 'margin-bottom' },
-                // { id: 'x_equtypecode', xtype: 'combo', store: GetEqutype, fieldLabel: '设备类型', labelWidth: 70, displayField: 'V_EQUTYPENAME', valueField: 'V_EQUTYPECODE', queryMode: 'local', baseCls: 'margin-bottom' },
-                //  { id: 'x_equcode', xtype: 'combo', store: GetEqucode, fieldLabel: '设备名称', labelWidth: 65, displayField: 'V_EQUNAME', valueField: 'V_EQUCODE', queryMode: 'local', baseCls: 'margin-bottom' },
-                {
-                    xtype: 'button', text: '查询', width: 60, style: 'margin-left:5px',
-                    listeners: {
-                        click: OnGridQueryButtonClicked
-                    }
-                }
-            ]
-        }]
+        }/*,
+         dockedItems: [{
+         xtype: 'panel',
+         frame: true,
+         height: '40px',
+         baseCls: 'my-panel-no-border',
+         style: 'margin:3px 0px 5px 0px',
+         layout: 'hbox',
+         defaults: {labelAlign: 'right'},
+         items: [
+         ]
+         }]*/
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -317,7 +311,7 @@ function BeforeGridStoreLoad(store) {
     store.proxy.extraParams.X_TIMELOWERLIMIT = Ext.util.Format.date(Ext.getCmp("x_timelowerlimit").getValue(), "Y-m-d");
     store.proxy.extraParams.X_TIMEUPPERLIMIT = Ext.util.Format.date(Ext.getCmp("x_timeupperlimit").getValue(), "Y-m-d");
     store.proxy.extraParams.X_DEPTCODE = Ext.getCmp("V_V_DEPTCODE").getValue();
-    store.proxy.extraParams.X_EQUTYPECODE =Ext.getCmp("equtype").getValue();
+    store.proxy.extraParams.X_EQUTYPECODE = Ext.getCmp("equtype").getValue();
     store.proxy.extraParams.X_EQUCODE = Ext.getCmp("subequname").getValue();
     store.proxy.extraParams.X_LUBRICATIONCODE = '';
 }
