@@ -113,8 +113,19 @@ $(function () {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                 V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+                Ext.getCmp('nextSprb').select(store.first());
+                var list = Ext.getCmp("nextSprb").getStore().data.items;
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i].raw.V_PERSONCODE == Assignee) {
 
-                Ext.getCmp('nextSprb').select(Assignee);
+                        Ext.getCmp("nextSprb").setValue(Assignee);
+                        if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+
+                            Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
+                        }
+                    }
+
+                }
 
             }
 
@@ -1455,7 +1466,7 @@ function Receive(){
         V_V_FLOW_STEP:V_STEPCODE,// $.url().param("TaskDefinitionKey"),
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
-        V_V_WHERE:''
+        V_V_WHERE:'已打印'
 
     };
 
