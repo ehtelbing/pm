@@ -48,9 +48,11 @@ public class MenuService {
             if(rs.getString("V_URL")!=null) {
                 temp.put("src", rs.getString("V_URL").toString());
                 temp.put("flag", rs.getString("V_OTHER").toString());
+                temp.put("type", rs.getString("V_TYPE").toString());
             }else{
                 temp.put("src", "");
                 temp.put("flag", "");
+                temp.put("type","");
             }
             result.add(temp);
         }
@@ -103,6 +105,7 @@ public class MenuService {
             item.put("sid",m.get("id").toString());
             item.put("text", m.get("text").toString());
             item.put("flag", m.get("flag").toString());
+            item.put("type",m.get("type").toString());
             //查询子级
             List<Map> mmm = this.getMenuItems(list, m.get("id").toString());
             if(mmm.size()>0) {
