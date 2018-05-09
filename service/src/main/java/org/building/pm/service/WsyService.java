@@ -5,6 +5,9 @@ import oracle.jdbc.OracleTypes;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -12,31 +15,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 @Service
 public class WsyService {
     private static final Logger logger = Logger.getLogger(WsyService.class.getName());
-
     @Value("#{configProperties['system.copyright']}")
     private String copyright;
 
     private List<HashMap> ResultHash(ResultSet rs) throws SQLException {
-
         List<HashMap> result = new ArrayList<HashMap>();
-
         ResultSetMetaData rsm = rs.getMetaData();
-
         int colNum = 0;
-
         colNum = rsm.getColumnCount();
-
         while (rs.next()) {
             HashMap model = new HashMap();
             for (int i = 1; i <= rsm.getColumnCount(); i++) {
                 if (rsm.getColumnType(i) == 91) {
-                    model.put(rsm.getColumnName(i),
-                            rs.getString(i) == null ? "" : rs.getString(i)
-                                    .split("\\.")[0]);
+                    model.put(rsm.getColumnName(i), rs.getString(i) == null ? "" : rs.getString(i).split("\\.")[0]);
                 } else {
                     if (rsm.getColumnType(i) == 2) {
                         if (rs.getString(i) == null) {
@@ -45,9 +39,7 @@ public class WsyService {
                             model.put(rsm.getColumnName(i), rs.getDouble(i));
                         }
                     } else {
-                        model.put(rsm.getColumnName(i),
-                                rs.getString(i) == null ? "" : rs.getString(i)
-                                        .toString().replaceAll("\\n", ""));
+                        model.put(rsm.getColumnName(i), rs.getString(i) == null ? "" : rs.getString(i).toString().replaceAll("\\n", ""));
                     }
                 }
             }
@@ -191,17 +183,16 @@ public class WsyService {
         return result;
     }
 
-    public HashMap PRO_PM_19_TOOLTYPE_SEL(String V_V_TOOLNAME, String V_V_EQUCODE) throws SQLException {
-        logger.info("begin PRO_PM_19_TOOLTYPE_SEL");
+    public HashMap BASE_GJ_BYGX_SEL(String V_V_JXGX_CODE) throws SQLException {
+        logger.info("begin BASE_GJ_BYGX_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_19_TOOLTYPE_SEL" + "(:V_V_TOOLNAME,:V_V_EQUCODE,:V_CURSOR)}");
-            cstmt.setString("V_V_TOOLNAME", V_V_TOOLNAME);
-            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt = conn.prepareCall("{call BASE_GJ_BYGX_SEL" + "(:V_V_JXGX_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
@@ -212,7 +203,7 @@ public class WsyService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_19_TOOLTYPE_SEL");
+        logger.info("end BASE_GJ_BYGX_SEL");
         return result;
     }
 
@@ -784,7 +775,7 @@ public class WsyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call BASE_JXBZ_BY_GXCODE_INS" + "(:V_V_JXGX_CODE,:V_V_JSYQ_CODE,:V_V_JSYQ_NAME,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call BASE_JXBZ_BY_GXCODE_INS" + "(:V_V_JXGX_CODE,:V_V_JSYQ_CODE,:V_V_JSYQ_NAME,:V_INFO)}");
             cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
             cstmt.setString("V_V_JSYQ_CODE", V_V_JSYQ_CODE);
             cstmt.setString("V_V_JSYQ_NAME", V_V_JSYQ_NAME);
@@ -802,7 +793,7 @@ public class WsyService {
         return result;
     }
 
-    public List<HashMap> PRO_SAP_PM_EQU_TREE(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+    public List<HashMap> PRO_SAP_PM_EQU_TREE(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTNEXTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE) throws SQLException {
         logger.info("begin PRO_SAP_PM_EQU_TREE");
         List<HashMap> menu = new ArrayList<HashMap>();
         Connection conn = null;
@@ -818,8 +809,8 @@ public class WsyService {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
-            menu=GetSapEquChildren(list, "");
+            List<HashMap> list = ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            menu = GetSapEquChildren(list, "");
             conn.commit();
         } catch (SQLException e) {
             logger.error(e);
@@ -831,7 +822,7 @@ public class WsyService {
         return menu;
     }
 
-    private List<HashMap> GetSapEquChildren(List<HashMap> list,String V_EQUCODE){
+    private List<HashMap> GetSapEquChildren(List<HashMap> list, String V_EQUCODE) {
         List<HashMap> menu = new ArrayList<HashMap>();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).get("V_EQUCODEUP").equals(V_EQUCODE)) {
@@ -842,12 +833,543 @@ public class WsyService {
                 temp.put("V_EQUTYPECODE", list.get(i).get("V_EQUTYPECODE"));
                 temp.put("V_EQUSITENAME", list.get(i).get("V_EQUSITENAME"));
                 temp.put("V_EQUSITE", list.get(i).get("V_EQUSITE"));
-                temp.put("parentid","-1");
+                temp.put("parentid", "-1");
                 temp.put("leaf", true);
                 // temp.put("expanded", false);
                 menu.add(temp);
             }
         }
         return menu;
+    }
+
+    public HashMap BASE_JXMX_DATA_EDIT(String V_V_JXMX_CODE, String V_V_JXMX_NAME, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_EQUCODE_CHILD, String V_V_REPAIRMAJOR_CODE, String V_V_BZ, String V_V_HOUR, String V_V_IN_PER, String V_V_IN_DATE, String V_V_MXBB_NUM) throws SQLException {
+        logger.info("begin BASE_JXMX_DATA_EDIT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_JXMX_DATA_EDIT" + "(:V_V_JXMX_CODE, :V_V_JXMX_NAME, :V_V_ORGCODE, :V_V_DEPTCODE, :V_V_EQUTYPECODE, :V_V_EQUCODE, :V_V_EQUCODE_CHILD, :V_V_REPAIRMAJOR_CODE, :V_V_BZ, :V_V_HOUR, :V_V_IN_PER, :V_V_IN_DATE, :V_V_MXBB_NUM, :V_INFO)}");
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.setString("V_V_JXMX_NAME", V_V_JXMX_NAME);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCODE_CHILD", V_V_EQUCODE_CHILD);
+            cstmt.setString("V_V_REPAIRMAJOR_CODE", V_V_REPAIRMAJOR_CODE);
+            cstmt.setString("V_V_BZ", V_V_BZ);
+            cstmt.setString("V_V_HOUR", V_V_HOUR);
+            cstmt.setString("V_V_IN_PER", V_V_IN_PER);
+            cstmt.setString("V_V_IN_DATE", V_V_IN_DATE);
+            cstmt.setString("V_V_MXBB_NUM", V_V_MXBB_NUM);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_JXMX_DATA_EDIT");
+        return result;
+    }
+
+    public HashMap BASE_JXMX_DATA_DEL(String V_V_JXMX_CODE) throws SQLException {
+        logger.info("begin BASE_JXMX_DATA_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_JXMX_DATA_DEL" + "(:V_V_JXMX_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_JXMX_DATA_DEL");
+        return result;
+    }
+
+    public HashMap BASE_GX_GZ_DEL(String V_V_JXGX_CODE, String V_V_PERCODE_DE) throws SQLException {
+        logger.info("begin BASE_GX_GZ_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_GZ_DEL" + "(:V_V_JXGX_CODE, :V_V_PERCODE_DE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_PERCODE_DE", V_V_PERCODE_DE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_GZ_DEL");
+        return result;
+    }
+
+    public HashMap BASE_GX_WL_DEL(String V_V_JXGX_CODE, String V_V_WLCODE) throws SQLException {
+        logger.info("begin BASE_GX_WL_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_WL_DEL" + "(:V_V_JXGX_CODE, :V_V_WLCODE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_WLCODE", V_V_WLCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_WL_DEL");
+        return result;
+    }
+
+    public HashMap BASE_GX_JXBZ_DEL(String V_V_JXGX_CODE, String V_V_JSYQ_CODE) throws SQLException {
+        logger.info("begin BASE_GX_JXBZ_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_JXBZ_DEL" + "(:V_V_JXGX_CODE, :V_V_JSYQ_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JSYQ_CODE", V_V_JSYQ_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_JXBZ_DEL");
+        return result;
+    }
+
+    public HashMap BASE_GX_AQCS_DEL(String V_V_JXGX_CODE, String V_V_AQCS_CODE) throws SQLException {
+        logger.info("begin BASE_GX_AQCS_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_AQCS_DEL" + "(:V_V_JXGX_CODE, :V_V_AQCS_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_AQCS_CODE", V_V_AQCS_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_AQCS_DEL");
+        return result;
+    }
+
+    public HashMap BASE_EXAMINE_CAR_SEL(String V_V_CARCODE, String V_V_CARNAME) throws SQLException {
+        logger.info("begin BASE_EXAMINE_CAR_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_EXAMINE_CAR_SEL" + "(:V_V_CARCODE,:V_V_CARNAME,:V_CURSOR)}");
+            cstmt.setString("V_V_CARCODE", V_V_CARCODE);
+            cstmt.setString("V_V_CARNAME", V_V_CARNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_EXAMINE_CAR_SEL");
+        return result;
+    }
+
+    public HashMap BASE_JXMX_JJ_INS(String V_V_JXGX_CODE, String V_V_JJ_CODE, String V_V_JJ_NAME, String V_V_JJ_TYPE, String V_V_JJ_TS, String V_V_JJ_DE) throws SQLException {
+        logger.info("begin BASE_JXMX_JJ_INS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_JXMX_JJ_INS" + "(:V_V_JXGX_CODE,:V_V_JJ_CODE,:V_V_JJ_NAME,:V_V_JJ_TYPE,:V_V_JJ_TS,:V_V_JJ_DE,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JJ_CODE", V_V_JJ_CODE);
+            cstmt.setString("V_V_JJ_NAME", V_V_JJ_NAME);
+            cstmt.setString("V_V_JJ_TYPE", V_V_JJ_TYPE);
+            cstmt.setString("V_V_JJ_TS", V_V_JJ_TS);
+            cstmt.setString("V_V_JJ_DE", V_V_JJ_DE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_JXMX_JJ_INS");
+        return result;
+    }
+
+    public HashMap BASE_JXMX_GJ_INS(String V_V_JXGX_CODE, String V_V_GJ_CODE, String V_V_GJ_NAME, String V_V_GJ_TYPE) throws SQLException {
+        logger.info("begin BASE_JXMX_GJ_INS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_JXMX_GJ_INS" + "(:V_V_JXGX_CODE,:V_V_GJ_CODE,:V_V_GJ_NAME,:V_V_GJ_TYPE,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_GJ_CODE", V_V_GJ_CODE);
+            cstmt.setString("V_V_GJ_NAME", V_V_GJ_NAME);
+            cstmt.setString("V_V_GJ_TYPE", V_V_GJ_TYPE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_JXMX_GJ_INS");
+        return result;
+    }
+
+    public HashMap BASE_JXMX_WL_INS(String V_V_JXGX_CODE, String V_V_WLCODE, String V_V_KFNAME, String V_V_WLSM, String V_V_GGXH, String V_V_JLDW, String V_V_PRICE, String V_V_USE_NUM) throws SQLException {
+        logger.info("begin BASE_JXMX_WL_INS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_JXMX_WL_INS" + "(:V_V_JXGX_CODE,:V_V_WLCODE,:V_V_KFNAME,:V_V_WLSM,:V_V_GGXH,:V_V_JLDW,:V_V_PRICE,:V_V_USE_NUM,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_WLCODE", V_V_WLCODE);
+            cstmt.setString("V_V_KFNAME", V_V_KFNAME);
+            cstmt.setString("V_V_WLSM", V_V_WLSM);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_JLDW", V_V_JLDW);
+            cstmt.setString("V_V_PRICE", V_V_PRICE);
+            cstmt.setString("V_V_USE_NUM", V_V_USE_NUM);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_JXMX_WL_INS");
+        return result;
+    }
+
+    public HashMap BASE_WORK_TOOL_SEL() throws SQLException {
+        logger.info("begin BASE_WORK_TOOL_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_WORK_TOOL_SEL" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_WORK_TOOL_SEL");
+        return result;
+    }
+
+    public HashMap BASE_GX_JJ_DEL(String V_V_JXGX_CODE, String V_V_JJ_CODE) throws SQLException {
+        logger.info("begin BASE_GX_JJ_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_JJ_DEL" + "(:V_V_JXGX_CODE, :V_V_JJ_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JJ_CODE", V_V_JJ_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_JJ_DEL");
+        return result;
+    }
+
+    public HashMap BASE_GX_GJ_DEL(String V_V_JXGX_CODE, String V_V_GJ_CODE) throws SQLException {
+        logger.info("begin BASE_GX_GJ_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_GJ_DEL" + "(:V_V_JXGX_CODE, :V_V_GJ_CODE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_GJ_CODE", V_V_GJ_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_GJ_DEL");
+        return result;
+    }
+
+    public HashMap BASE_WL_SEL() throws SQLException {
+        logger.info("begin BASE_WL_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_WL_SEL" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_WL_SEL");
+        return result;
+    }
+
+    public HashMap BASE_GX_GZ_UPD(String V_V_JXGX_CODE, String V_V_PERCODE_DE, String V_V_TS, String V_V_DE) throws SQLException {
+        logger.info("begin BASE_GX_GZ_UPD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_GZ_UPD" + "(:V_V_JXGX_CODE, :V_V_PERCODE_DE, :V_V_TS, :V_V_DE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_PERCODE_DE", V_V_PERCODE_DE);
+            cstmt.setString("V_V_TS", V_V_TS);
+            cstmt.setString("V_V_DE", V_V_DE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_GZ_UPD");
+        return result;
+    }
+
+    public HashMap BASE_GX_JJ_UPD(String V_V_JXGX_CODE, String V_V_JJ_CODE, String V_V_JJ_TS, String V_V_JJ_DE) throws SQLException {
+        logger.info("begin BASE_GX_JJ_UPD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_JJ_UPD" + "(:V_V_JXGX_CODE, :V_V_JJ_CODE, :V_V_JJ_TS, :V_V_JJ_DE, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JJ_CODE", V_V_JJ_CODE);
+            cstmt.setString("V_V_JJ_TS", V_V_JJ_TS);
+            cstmt.setString("V_V_JJ_DE", V_V_JJ_DE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_JJ_UPD");
+        return result;
+    }
+
+    public HashMap BASE_GX_GJ_UPD(String V_V_JXGX_CODE, String V_V_TOOLCODE, String V_V_TOOLTYPE, String V_V_TOOLPLACE, String V_V_TOOLINDATE, String V_V_TOOLSTATUS) throws SQLException {
+        logger.info("begin BASE_GX_GJ_UPD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_GJ_UPD" + "(:V_V_JXGX_CODE, :V_V_TOOLCODE, :V_V_TOOLTYPE, :V_V_TOOLPLACE, :V_V_TOOLINDATE, :V_V_TOOLSTATUS, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_TOOLCODE", V_V_TOOLCODE);
+            cstmt.setString("V_V_TOOLTYPE", V_V_TOOLTYPE);
+            cstmt.setString("V_V_TOOLPLACE", V_V_TOOLPLACE);
+            cstmt.setString("V_V_TOOLINDATE", V_V_TOOLINDATE);
+            cstmt.setString("V_V_TOOLSTATUS", V_V_TOOLSTATUS);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_GJ_UPD");
+        return result;
+    }
+
+    public HashMap BASE_GX_WL_UPD(String V_V_JXGX_CODE, String V_V_WLCODE, String V_V_WLSM, String V_V_GGXH, String V_V_JLDW, String V_V_PRICE, String V_V_USE_NUM) throws SQLException {
+        logger.info("begin BASE_GX_WL_UPD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_GX_WL_UPD" + "(:V_V_JXGX_CODE, :V_V_WLCODE, :V_V_WLSM, :V_V_GGXH, :V_V_JLDW, :V_V_PRICE, :V_V_USE_NUM, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_WLCODE", V_V_WLCODE);
+            cstmt.setString("V_V_WLSM", V_V_WLSM);
+            cstmt.setString("V_V_GGXH", V_V_GGXH);
+            cstmt.setString("V_V_JLDW", V_V_JLDW);
+            cstmt.setString("V_V_PRICE", V_V_PRICE);
+            cstmt.setString("V_V_USE_NUM", V_V_USE_NUM);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_GX_WL_UPD");
+        return result;
+    }
+
+    public HashMap BASE_AQCS_SEL(String V_V_AQCS_NAME) throws SQLException {
+        logger.info("begin BASE_AQCS_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_AQCS_SEL" + "(:V_V_AQCS_NAME, :V_CURSOR)}");
+            cstmt.setString("V_V_AQCS_NAME", V_V_AQCS_NAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_AQCS_SEL");
+        return result;
+    }
+
+    public HashMap BASE_JXMX_AQCS_INS(String V_V_JXGX_CODE, String V_V_AQCS_CODE, String V_V_AQCS_NAME) throws SQLException {
+        logger.info("begin BASE_JXMX_AQCS_INS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_JXMX_AQCS_INS" + "(:V_V_JXGX_CODE, :V_V_AQCS_CODE, :V_V_AQCS_NAME, :V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_AQCS_CODE", V_V_AQCS_CODE);
+            cstmt.setString("V_V_AQCS_NAME", V_V_AQCS_NAME);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_JXMX_AQCS_INS");
+        return result;
     }
 }
