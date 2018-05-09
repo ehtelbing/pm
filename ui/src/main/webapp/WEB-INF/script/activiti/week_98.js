@@ -1002,64 +1002,110 @@ function _agree() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
+    //计划停工时间
+    var jhtghour = Ext.getCmp('tghour').getValue();
+    var jhtgminute = Ext.getCmp('tgminute').getValue();
+    //var jhtgTime=Ext.Date.format(Ext.ComponentManager.get("jhtgdate").getValue(), 'Y-m-d')+" "+jhtghour+":"+jhtgminute;
+    var jhtgTime = Ext.getCmp("jhtgsj").getSubmitValue() + " " + jhtghour + ":" + jhtgminute + ":00";
+    //计划竣工时间
+    var jhjghour = Ext.getCmp('jghour').getValue();
+    var jhjgminute = Ext.getCmp('jgminute').getValue();
+    //var jhjgTime=Ext.Date.format(Ext.ComponentManager.get("jhjgdate").getValue(), 'Y-m-d')+" "+jhjghour+":"+jhjgminute;
+    var jhjgTime = Ext.getCmp("jhjgsj").getSubmitValue() + " " + jhjghour + ":" + jhjgminute + ":00";
+
+    //保存
     Ext.Ajax.request({
-        url: AppUrl + 'Activiti/TaskComplete',
-        type: 'ajax',
+        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_NSET',
         method: 'POST',
         params: {
-            taskId: taskId,
-            idea: '通过',
-            parName: [V_NEXT_SETP, "flow_yj"],
-            parVal: [Ext.getCmp('nextPer').getValue(), spyj],
-            processKey: processKey,
-            businessKey: V_ORDERGUID,
-            V_STEPCODE: V_STEPCODE,
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '请审批！',
-            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
+            V_V_INPER: Ext.util.Cookies.get('v_personcode'),               //人员cookies                                    //人员编码
+            V_V_GUID: V_ORDERGUID,                         //季度计划guid                                                      //计划GUID
+            V_V_YEAR: Ext.getCmp('year').getValue(),                        //年份                                            //年份
+            V_V_MONTH: Ext.getCmp('month').getValue(),                     //月份                                           //年份
+            V_V_WEEK: Ext.getCmp('week').getValue(),                      //周                                          //年份
+            V_V_ORGCODE: Ext.getCmp('ck').getValue(),                        //厂矿                                              //厂矿
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),                      //作业区
+            V_V_EQUTYPECODE: Ext.getCmp('sblx').getValue(),                  //设备类型                                              //设备类型编码
+            V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),                     //设备名称
+            V_V_REPAIRMAJOR_CODE: Ext.getCmp('zy').getValue(),              //检修专业
+            V_V_CONTENT: Ext.getCmp('jxnr').getValue(),                     //检修内容
+            V_V_STARTTIME: jhtgTime,                                       //开始时间
+            V_V_ENDTIME: jhjgTime,                                          //结束时间
+            V_V_OTHERPLAN_GUID: '',                                  //检修工序编码
+            V_V_OTHERPLAN_TYPE: '',                                  //检修模型编码
+            V_V_JHMX_GUID: '',                                          //检修标准
+            V_V_HOUR: Ext.getCmp('jhgshj').getValue(),
+            V_V_BZ: Ext.getCmp('bz').getValue(),
+            V_V_DEFECTGUID: ''
         },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);
-            if (resp.ret == '任务提交成功') {
-                Ext.Ajax.request({
-                    url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.V_INFO == '成功') {
+               Ext.Ajax.request({
+                    url: AppUrl + 'Activiti/TaskComplete',
+                    type: 'ajax',
                     method: 'POST',
-                    async: false,
                     params: {
-                        'V_V_ORDERID': V_ORDERGUID,
-                        'V_V_PROCESS_NAMESPACE': 'WeekPlan',
-                        'V_V_PROCESS_CODE': processKey,
-                        'V_V_STEPCODE': V_STEPCODE,
-                        'V_V_STEPNEXT_CODE': V_NEXT_SETP
+                        taskId: taskId,
+                        idea: '通过',
+                        parName: [V_NEXT_SETP, "flow_yj","remark"],
+                        parVal: [Ext.getCmp('nextPer').getValue(), spyj,Ext.getCmp('jxnr').getValue()],
+                        processKey: processKey,
+                        businessKey: V_ORDERGUID,
+                        V_STEPCODE: V_STEPCODE,
+                        V_STEPNAME: V_STEPNAME,
+                        V_IDEA: '请审批！',
+                        V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                        V_INPER: Ext.util.Cookies.get('v_personcode')
                     },
-                    success: function (ret) {
-                        var resp = Ext.JSON.decode(ret.responseText);
-                        if (resp.V_INFO == 'success') {
-                            window.opener.QueryTabW();
-                            window.opener.QuerySum();
-                            window.opener.QueryGrid();
-                            window.close();
-                            window.opener.OnPageLoad();
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp.ret == '任务提交成功') {
+                            Ext.Ajax.request({
+                                url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                                method: 'POST',
+                                async: false,
+                                params: {
+                                    'V_V_ORDERID': V_ORDERGUID,
+                                    'V_V_PROCESS_NAMESPACE': 'WeekPlan',
+                                    'V_V_PROCESS_CODE': processKey,
+                                    'V_V_STEPCODE': V_STEPCODE,
+                                    'V_V_STEPNEXT_CODE': V_NEXT_SETP
+                                },
+                                success: function (ret) {
+                                    var resp = Ext.JSON.decode(ret.responseText);
+                                    if (resp.V_INFO == 'success') {
+                                        window.opener.QueryTabW();
+                                        window.opener.QuerySum();
+                                        window.opener.QueryGrid();
+                                        window.close();
+                                        window.opener.OnPageLoad();
+                                    }
+                                }
+                            });
+                        } else {
+                            Ext.MessageBox.alert('提示', '任务提交失败');
                         }
+
+
+                    },
+                    failure: function (response) {//访问到后台时执行的方法。
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: response.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        })
                     }
-                });
+
+                })
             } else {
-                Ext.MessageBox.alert('提示', '任务提交失败');
+                Ext.Msg.alert('操作信息', resp.V_INFO);
             }
 
-
-        },
-        failure: function (response) {//访问到后台时执行的方法。
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            })
         }
+    });
 
-    })
 }
 
 function _reject() {
