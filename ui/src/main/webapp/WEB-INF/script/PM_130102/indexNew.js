@@ -274,18 +274,7 @@
             listeners: {
                 beforeload: BeforeGridStoreLoad
             }
-        }/*,
-         dockedItems: [{
-         xtype: 'panel',
-         frame: true,
-         height: '40px',
-         baseCls: 'my-panel-no-border',
-         style: 'margin:3px 0px 5px 0px',
-         layout: 'hbox',
-         defaults: {labelAlign: 'right'},
-         items: [
-         ]
-         }]*/
+        }
     });
 
     Ext.create('Ext.container.Viewport', {
