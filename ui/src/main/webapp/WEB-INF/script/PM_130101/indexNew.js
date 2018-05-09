@@ -5,6 +5,8 @@ Ext.onReady(function () {
 
     var dt = new Date();
     date = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    hours_ = dt.getHours() + '时';
+    minutes_ = dt.getMinutes()+'分';
 
     //设备树
     var treeStore = Ext.create('Ext.data.TreeStore', {
@@ -28,6 +30,12 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('v_addorchange').select(store.first());
+                Ext.getCmp('v_addorchange2').select(store.first());
+            }
         }
     });
 
@@ -46,6 +54,12 @@ Ext.onReady(function () {
             reader: {
                 type: 'json',
                 root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('x_lubmode').select(store.first());
+                Ext.getCmp('x_lubmode2').select(store.first());
             }
         }
     });
@@ -95,16 +109,16 @@ Ext.onReady(function () {
 
                                                 Ext.getCmp('v_setname').reset();
                                                 Ext.getCmp('v_lubaddress').reset();
-                                                Ext.getCmp('x_lubmode').reset();
+                                                Ext.data.StoreManager.lookup('droplist_lubmode').load();
                                                 Ext.getCmp('v_lubtrademark').reset();
                                                 Ext.getCmp('f_lubcount').reset();
                                                 Ext.getCmp('f_oilamount').reset();
                                                 Ext.getCmp('i_unit').reset();
-                                                Ext.getCmp('v_addorchange').reset();
+                                                Ext.data.StoreManager.lookup('droplist_lubaddtype').load();
                                                 Ext.getCmp('v_operateperson').reset();
                                                 Ext.getCmp('d_operatedate').reset();
-                                                Ext.getCmp('xiaoshi').reset();
-                                                Ext.getCmp('fenzhong').reset();
+                                                Ext.getCmp('xiaoshi').setValue(hours_);
+                                                Ext.getCmp('fenzhong').setValue(minutes_);
                                                 Ext.getCmp('v_operatereason').reset();
                                             }
                                         }
@@ -127,6 +141,7 @@ Ext.onReady(function () {
                                                 return;
 
                                             }
+
                                             if (selectModel.hasSelection()) {
                                                 var selected = selectModel.getSelection()[0].data;
                                                 Ext.Ajax.request({
@@ -159,9 +174,8 @@ Ext.onReady(function () {
                                                         var D_OPERATEDATE = (resp[0].D_OPERATEDATE).split(".");
 
                                                         D_OPERATEDATE[0] = D_OPERATEDATE[0].replace('-', '/').replace("-", "/");
-                                                        var xiaoshi2 = ((resp[0].D_OPERATEDATE).substring(11,13))+'时';
-                                                        var fenzhong2 = ((resp[0].D_OPERATEDATE).substring(14,16))+'分';
-                                                        alert(xiaoshi2);
+                                                        var xiaoshi2 = ((resp[0].D_OPERATEDATE).substring(11, 13)) + '时';
+                                                        var fenzhong2 = ((resp[0].D_OPERATEDATE).substring(14, 16)) + '分';
 
 
                                                         Ext.getCmp('d_operatedate2').setValue(new Date(D_OPERATEDATE[0]));
@@ -238,14 +252,16 @@ Ext.onReady(function () {
                                     {text: '润滑点数', width: 80, dataIndex: 'F_LUBCOUNT', align: 'center'},
                                     {text: '加油量', width: 80, dataIndex: 'F_OILAMOUNT', align: 'center'},
                                     {text: '单位', width: 80, dataIndex: 'I_UNIT', align: 'center'},
-                                    {text: '加油时间', width: 160, dataIndex: 'D_OPERATEDATE', align: 'center',
+                                    {
+                                        text: '加油时间', width: 160, dataIndex: 'D_OPERATEDATE', align: 'center',
                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                                             var index = store.find('D_OPERATEDATE', value);
                                             if (index != -1) {
                                                 return store.getAt(index).get('D_OPERATEDATE').substring(0, 19);
                                             }
                                             return null;
-                                        }},
+                                        }
+                                    },
                                     {text: '加油人员', width: 80, dataIndex: 'V_OPERATEPERSON', align: 'center'},
                                     {text: '加油原因', width: 150, dataIndex: 'V_OPERATEREASON', align: 'center'},
                                     {text: '类型', width: 100, dataIndex: 'XXX', align: 'center'},
@@ -295,7 +311,7 @@ Ext.onReady(function () {
     };
 
     var windowAdd = Ext.create('Ext.window.Window', {
-        id: 'dialogadd', title: '添加', autoShow: false, height: 350, closeAction: 'hide', width: 550, modal: true,
+        id: 'dialogadd', title: '添加', autoShow: false, height: 360, closeAction: 'hide', width: 580, modal: true,
         layout: {type: 'column', columns: 5},
         defaults: {labelAlign: 'right', labelWidth: 80, width: 230, style: 'margin:12px 0px 0px 0px'},
         items: [
@@ -325,6 +341,7 @@ Ext.onReady(function () {
                 width: 60,
                 style: 'margin:12px 0px 0px 2px',
                 store: [["1", "1"], ["2", "2"], ["3", "3"]],
+                value: '1',
                 displayField: 'name',
                 valueField: 'code'
             },
@@ -340,13 +357,13 @@ Ext.onReady(function () {
                 queryMode: 'local'
             },
             {id: 'v_operateperson', xtype: 'textfield', fieldLabel: '加油人员'},
-            {id: 'd_operatedate', xtype: 'datefield', fieldLabel: '加油时间', value: date, width: 180},
+            {id: 'd_operatedate', xtype: 'datefield', fieldLabel: '加油时间', value: date, width: 200},
             {
-                id: 'xiaoshi', xtype: 'combo', editable: false, width: 60,
+                id: 'xiaoshi', xtype: 'combo', editable: false, width: 65,
                 store: {
                     storeId: 'xiaoshi', fields: ['code', 'text'],
                     data: [
-                        {code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
+                        {code: "item0", text: "00时"},{code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
                             code: "item3",
                             text: "3时"
                         }, {code: "item4", text: "04时"}, {code: "5item", text: "05时"}, {
@@ -369,16 +386,16 @@ Ext.onReady(function () {
                         {code: "item21", text: "21时"}, {code: "item22", text: "22时"}, {
                             code: "item23",
                             text: "23时"
-                        }, {code: "item24", text: "24时"}
+                        }
                     ]
                 }
             },
             {
-                id: 'fenzhong', xtype: 'combo', editable: false, width: 60,
+                id: 'fenzhong', xtype: 'combo', editable: false, width: 65,
                 store: {
-                    storeId: 'xiaoshi', fields: ['code', 'text'],
+                    storeId: 'fenzhong', fields: ['code', 'text'],
                     data: [
-                        {code: "item1", text: "01分"}, {code: "item2", text: "02分"}, {
+                        {code: "item0", text: "00分"}, {code: "item1", text: "01分"}, {code: "item2", text: "02分"}, {
                             code: "item3",
                             text: "03分"
                         }, {code: "item4", text: "04分"}, {code: "5item", text: "05分"}, {
@@ -437,7 +454,7 @@ Ext.onReady(function () {
                         }, {code: "item57", text: "57分"}, {code: "item58", text: "58分"}, {
                             code: "item59",
                             text: "59分"
-                        }, {code: "item60", text: "60分"}
+                        }
                     ]
                 }
             },
@@ -453,7 +470,7 @@ Ext.onReady(function () {
                     Ext.Msg.alert('操作信息', '请输入油脂场所');
                     return false;
                 } else if (Ext.getCmp('f_lubcount').value == '') {
-                    Ext.Msg.alert('操作信息', '请输入润滑指数');
+                    Ext.Msg.alert('操作信息', '请输入润滑点数');
                     return false;
                 } else if (Ext.getCmp('f_oilamount').value == '') {
                     Ext.Msg.alert('操作信息', '请输入加油量');
@@ -531,7 +548,7 @@ Ext.onReady(function () {
     })
 
     var windowEdit = Ext.create('Ext.window.Window', {
-        id: 'dialogedit', title: '修改', autoShow: false, height: 350, closeAction: 'hide', width: 550, modal: true,
+        id: 'dialogedit', title: '修改', autoShow: false, height: 360, closeAction: 'hide', width: 580, modal: true,
         layout: {type: 'column', columns: 5},
         defaults: {labelAlign: 'right', labelWidth: 80, width: 230, style: 'margin:12px 0px 0px 0px'},
         items: [
@@ -554,7 +571,12 @@ Ext.onReady(function () {
                 store: droplist_lubmode,
                 displayField: 'V_BASENAME',
                 valueField: 'V_BASECODE',
-                fieldLabel: '润滑方式'
+                fieldLabel: '润滑方式',
+                listeners: {
+                    select: function (store, field, newValue, oldValue) {
+                        Ext.getCmp('x_lubmode2').select(store.first());
+                    }
+                }
             },
             {id: 'v_lubtrademark2', xtype: 'textfield', fieldLabel: '润滑牌号'},
             {id: 'f_lubcount2', xtype: 'textfield', fieldLabel: '润滑点数'},
@@ -580,15 +602,15 @@ Ext.onReady(function () {
                 queryMode: 'local'
             },
             {id: 'v_operateperson2', xtype: 'textfield', fieldLabel: '加油人员'},
-            {id: 'd_operatedate2', xtype: 'datefield', fieldLabel: '加油时间', width: 180},
+            {id: 'd_operatedate2', xtype: 'datefield', fieldLabel: '加油时间', width: 200},
             {
-                id: 'xiaoshi2', xtype: 'combo', editable: false, width: 60,
+                id: 'xiaoshi2', xtype: 'combo', editable: false, width: 65,
                 store: {
                     storeId: 'xiaoshi', fields: ['code', 'text'],
                     data: [
-                        {code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
+                        {code: "item0", text: "00时"},{code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
                             code: "item3",
-                            text: "03时"
+                            text: "3时"
                         }, {code: "item4", text: "04时"}, {code: "5item", text: "05时"}, {
                             code: "item6",
                             text: "06时"
@@ -609,16 +631,16 @@ Ext.onReady(function () {
                         {code: "item21", text: "21时"}, {code: "item22", text: "22时"}, {
                             code: "item23",
                             text: "23时"
-                        }, {code: "item24", text: "24时"}
+                        }
                     ]
                 }
             },
             {
-                id: 'fenzhong2', xtype: 'combo', editable: false, width: 60,
+                id: 'fenzhong2', xtype: 'combo', editable: false, width: 65,
                 store: {
-                    storeId: 'xiaoshi', fields: ['code', 'text'],
+                    storeId: 'fenzhong2', fields: ['code', 'text'],
                     data: [
-                        {code: "item1", text: "01分"}, {code: "item2", text: "02分"}, {
+                        {code: "item0", text: "00分"}, {code: "item1", text: "01分"}, {code: "item2", text: "02分"}, {
                             code: "item3",
                             text: "03分"
                         }, {code: "item4", text: "04分"}, {code: "5item", text: "05分"}, {
@@ -677,7 +699,7 @@ Ext.onReady(function () {
                         }, {code: "item57", text: "57分"}, {code: "item58", text: "58分"}, {
                             code: "item59",
                             text: "59分"
-                        }, {code: "item60", text: "60分"}
+                        }
                     ]
                 }
             },
