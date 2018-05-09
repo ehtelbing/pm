@@ -8,6 +8,9 @@ $(function () {
 
     QuerySumDb();
     JHselect();
+
+    setInterval("QuerySumDb()",120000);
+    setInterval("_QXNumSelect()",120000);
 });
 
 function QuerySumDb() {
