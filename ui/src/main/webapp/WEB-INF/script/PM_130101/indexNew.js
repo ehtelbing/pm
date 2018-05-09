@@ -5,8 +5,21 @@ Ext.onReady(function () {
 
     var dt = new Date();
     date = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
-    hours_ = dt.getHours() + '时';
-    minutes_ = dt.getMinutes()+'分';
+    hours_ = dt.getHours();
+    minutes_ = dt.getMinutes();
+    if (dt.getHours() < 10) {
+        hours_ = '0' + (dt.getHours());
+    } else {
+        hours_ = dt.getHours();
+    }
+    if (dt.getMinutes() < 10) {
+        minutes_ = '0' + (dt.getMinutes());
+    } else {
+        minutes_ = dt.getMinutes();
+    }
+    get_hours_ = hours_ + '时'
+    get_minutes_ = minutes_ + '分'
+
 
     //设备树
     var treeStore = Ext.create('Ext.data.TreeStore', {
@@ -117,8 +130,8 @@ Ext.onReady(function () {
                                                 Ext.data.StoreManager.lookup('droplist_lubaddtype').load();
                                                 Ext.getCmp('v_operateperson').reset();
                                                 Ext.getCmp('d_operatedate').reset();
-                                                Ext.getCmp('xiaoshi').setValue(hours_);
-                                                Ext.getCmp('fenzhong').setValue(minutes_);
+                                                Ext.getCmp('xiaoshi').setValue(get_hours_);
+                                                Ext.getCmp('fenzhong').setValue(get_minutes_);
                                                 Ext.getCmp('v_operatereason').reset();
                                             }
                                         }
@@ -363,7 +376,7 @@ Ext.onReady(function () {
                 store: {
                     storeId: 'xiaoshi', fields: ['code', 'text'],
                     data: [
-                        {code: "item0", text: "00时"},{code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
+                        {code: "item0", text: "00时"}, {code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
                             code: "item3",
                             text: "3时"
                         }, {code: "item4", text: "04时"}, {code: "5item", text: "05时"}, {
@@ -608,7 +621,7 @@ Ext.onReady(function () {
                 store: {
                     storeId: 'xiaoshi', fields: ['code', 'text'],
                     data: [
-                        {code: "item0", text: "00时"},{code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
+                        {code: "item0", text: "00时"}, {code: "item1", text: "01时"}, {code: "item2", text: "02时"}, {
                             code: "item3",
                             text: "3时"
                         }, {code: "item4", text: "04时"}, {code: "5item", text: "05时"}, {
