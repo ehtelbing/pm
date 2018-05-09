@@ -2401,14 +2401,14 @@ public class hpService {
 
     //PM_03010201,月计划报表，删除
     public Map<String,Object> PM_03_PLAN_MONTH_DEL(String V_V_GUID) throws SQLException {
-        logger.info("begin PM_03_PLAN_MONTH_DEL");
+        logger.info("begin PRO_PM_03_PLAN_MONTH_DEL");
         Map<String,Object> result = new HashMap<String,Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_MONTH_DEL" + "(:V_V_GUID,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_MONTH_DEL" + "(:V_V_GUID,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
@@ -2420,7 +2420,7 @@ public class hpService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PM_03_PLAN_MONTH_DEL");
+        logger.info("end PRO_PM_03_PLAN_MONTH_DEL");
         return result;
     }
 
