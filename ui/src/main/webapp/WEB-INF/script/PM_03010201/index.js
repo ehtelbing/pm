@@ -534,6 +534,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     selType: 'checkboxmodel',
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
         {
             text: '详细',
             dataIndex: 'V_ORDERID',
@@ -569,8 +570,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '录入时间', align: 'center', width: 200, dataIndex: 'V_INDATE',
             renderer: rendererTime/*Ext.util.Format.dateRenderer('Y-m-d H:m:s')*/
-        },
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'}
+        }
     ],
     bbar: ["->",
         {
@@ -934,9 +934,7 @@ function OnButtonUp() {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText).list[0];
                 if (resp.V_INFO != 'Fail') {
-                    if(resp.V_INFO!='success'){
-                        Ext.Msg.alert('提示', resp.V_INFO);
-                    }
+                   
                     Ext.Ajax.request({
                         url: AppUrl + 'Activiti/StratProcess',
                         async: false,
@@ -967,17 +965,6 @@ function OnButtonUp() {
                 } else {
                     Ext.Msg.alert('提示', '上报失败！');
                 }
-            },
-            failure: function (response) {//访问到后台时执行的方法。
-                Ext.MessageBox.show({
-                    title: '错误',
-                    msg: response.responseText,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR,
-                    fn: function (btn) {
-                        query();
-                    }
-                })
             }
         });
     }
