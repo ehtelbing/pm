@@ -141,7 +141,7 @@ function createDD() {
             V_V_SOURCECODE: '%'
         },
         success: function (resp) {
-
+            Ext.getBody().unmask();//去除页面笼罩
             if (resp.list != "" && resp.list != null) {
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
@@ -355,7 +355,7 @@ function loadMatList() {
             } else {
                 $("#TtableM tbody").empty();
             }
-            Ext.getBody().unmask();//去除页面笼罩
+
         }
     });
 }
