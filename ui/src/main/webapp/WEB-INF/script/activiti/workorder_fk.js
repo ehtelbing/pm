@@ -88,10 +88,11 @@ $(function () {
                     if (list[i].raw.V_PERSONCODE == Assignee) {
 
                         Ext.getCmp("nextSpr2").setValue(Assignee);
-                        if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
 
-                            Ext.getCmp("nextSpr2").setValue(Ext.util.Cookies.get('v_personcode'));
-                        }
+                    }
+                    if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+
+                        Ext.getCmp("nextSpr2").setValue(Ext.util.Cookies.get('v_personcode'));
                     }
 
                 }

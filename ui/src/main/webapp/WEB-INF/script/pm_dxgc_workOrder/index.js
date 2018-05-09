@@ -186,6 +186,7 @@ function loadSPR() {
 
                 $("#selApprover").html(result.join(""));
             }
+            $("#selApprover").val($.cookies.get('v_personcode'));
         }
     });
 }
@@ -450,7 +451,7 @@ function BillGo() {
                         V_V_SEND_STATE: "成功"
                     },
                     success: function (response) {
-                        Ext.Ajax.request({
+                        /*Ext.Ajax.request({
                             method: 'POST',
                             async: false,
                             url: AppUrl + 'mm/SetMat',
@@ -460,7 +461,7 @@ function BillGo() {
                             },
                             success: function (response) {
                                 var resp = Ext.decode(response.responseText);
-                                if (resp.V_CURSOR == '1') {
+                                if (resp.V_CURSOR == '1') {*/
                                     Ext.Ajax.request({
                                         url: AppUrl + 'Activiti/StratProcess',
                                         async: false,
@@ -544,7 +545,8 @@ function BillGo() {
                                             }
                                         }
                                     });
-                                }
+
+                                /*}
                                 else {
                                     Ext.Ajax.request({
                                         method: 'POST',
@@ -561,7 +563,7 @@ function BillGo() {
                                     });
                                 }
                             }
-                        });
+                        });*/
 
                     }
                 });

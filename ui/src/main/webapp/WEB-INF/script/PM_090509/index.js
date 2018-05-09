@@ -125,10 +125,11 @@ $(function () {
                     if (list[i].raw.V_PERSONCODE == Assignee) {
 
                         Ext.getCmp("nextSprb").setValue(Assignee);
-                        if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
 
-                            Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
-                        }
+                    }
+                    if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+
+                        Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
                     }
 
                 }
