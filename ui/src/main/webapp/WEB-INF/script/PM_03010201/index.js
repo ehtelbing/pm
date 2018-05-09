@@ -934,7 +934,7 @@ function OnButtonUp() {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText).list[0];
                 if (resp.V_INFO != 'Fail') {
-                   
+
                     Ext.Ajax.request({
                         url: AppUrl + 'Activiti/StratProcess',
                         async: false,
