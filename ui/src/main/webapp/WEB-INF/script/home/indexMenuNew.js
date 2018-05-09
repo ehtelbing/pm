@@ -562,8 +562,13 @@ function handlerMenu(item, e) {
         if (item.src == undefined) {
             Ext.example.msg('提示', '正在建设中');
         } else {
+            if (item.type == 1) {
 
-            if(item.flag==0){
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                var ret = window.open(AppUrlFrame + item.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+
+            } else if (item.flag == 0) {
                 tab = Ext.create('Ext.panel.Panel', {
                     id: item.sid,
                     title: item.text,
@@ -579,7 +584,7 @@ function handlerMenu(item, e) {
                         , '" />'
                     ].join('')
                 });
-            }else{
+            } else {
                 tab = Ext.create('Ext.panel.Panel', {
                     id: item.sid,
                     title: item.text,
