@@ -791,7 +791,7 @@ Ext.onReady(function () {
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
                     V_V_DEPTNEXTCODE: Ext.util.Cookies.get('v_deptcode'),
-                    V_V_EQUTYPECODE: '%',
+                    V_V_EQUTYPECODE: operation.node.parentNode.data.sid,
                     V_V_EQUCODE: operation.node.data.sid
                 },
                 store.proxy.url = AppUrl + 'CarManage/PRO_SAP_PM_CHILDEQU_TREE')
