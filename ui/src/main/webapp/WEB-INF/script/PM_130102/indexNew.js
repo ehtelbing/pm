@@ -113,15 +113,9 @@
     } else {
         month = date.getMonth() + 1;
     }
-    var month2;
-    if (date.getMonth() + 1 < 10) {
-        month2 = '0' + (date.getMonth() + 2);
-    } else {
-        month2 = date.getMonth() + 2;
-    }
-    var sdate = date.getFullYear() + "-" + month + "-01";
-    var ddate = date.getFullYear() + "-" + month2 + "-01";
 
+    var nextDate = new Date(date.getTime() + 24*60*60*1000);
+    var sdate = date.getFullYear() + "-" + month + "-01";
 
     var panel = Ext.create('Ext.form.Panel', {
         id: 'panellow',
@@ -133,7 +127,7 @@
         defaults: {labelAlign: 'right', labelWidth: 70, inputWidth: 140, style: 'margin:5px 0px 5px 0px'},
         items: [
             {id: 'x_timelowerlimit', xtype: 'datefield', format: 'Y-m-d', value: sdate, fieldLabel: '起始日期'},
-            {id: 'x_timeupperlimit', xtype: 'datefield', format: 'Y-m-d', value: ddate, fieldLabel: '终止日期'}, {
+            {id: 'x_timeupperlimit', xtype: 'datefield', format: 'Y-m-d', value: nextDate, fieldLabel: '终止日期'}, {
                 xtype: 'combo',
                 id: 'V_V_DEPTCODE',
                 store: deptStore,
