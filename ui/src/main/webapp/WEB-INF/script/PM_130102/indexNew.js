@@ -113,6 +113,8 @@
     } else {
         month = date.getMonth() + 1;
     }
+
+    var nextDate = new Date(date.getTime() + 24*60*60*1000);
     var sdate = date.getFullYear() + "-" + month + "-01";
 
     var panel = Ext.create('Ext.form.Panel', {
@@ -125,7 +127,7 @@
         defaults: {labelAlign: 'right', labelWidth: 70, inputWidth: 140, style: 'margin:5px 0px 5px 0px'},
         items: [
             {id: 'x_timelowerlimit', xtype: 'datefield', format: 'Y-m-d', value: sdate, fieldLabel: '起始日期'},
-            {id: 'x_timeupperlimit', xtype: 'datefield', format: 'Y-m-d', value: date, fieldLabel: '终止日期'}, {
+            {id: 'x_timeupperlimit', xtype: 'datefield', format: 'Y-m-d', value: nextDate, fieldLabel: '终止日期'}, {
                 xtype: 'combo',
                 id: 'V_V_DEPTCODE',
                 store: deptStore,
@@ -226,8 +228,8 @@
         columns: [
             {xtype: 'rownumberer', width: 30, sortable: false},
             {text: '部门名称', dataIndex: 'V_DEPTNAME', width: 100, align: 'center', width: 100},
-            {text: '设备名称', dataIndex: 'V_EQUTYPENAME', width: 100, align: 'center', width: 100},
-            {text: '装置名称', dataIndex: 'V_EQUNAME', width: 100, align: 'center', width: 100},
+            {text: '设备名称', dataIndex: 'V_EQUNAME', width: 100, align: 'center', width: 100},
+            {text: '装置名称', dataIndex: 'V_SETNAME', width: 100, align: 'center', width: 100},
             {text: '给油脂场所', dataIndex: 'V_LUBADDRESS', width: 100, align: 'center', width: 150},
             {text: '润滑方式', dataIndex: 'V_LUBMODE', width: 100, align: 'center', width: 100},
             {text: '润滑牌号', dataIndex: 'V_LUBTRADEMARK', width: 100, align: 'center', width: 100},
@@ -254,7 +256,7 @@
             autoLoad: true,
             storeId: 'gridStore',
             pageSize: 10,
-            fields: ['I_ID', 'V_LUBRICATIONCODE', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE',
+            fields: ['I_ID', 'V_LUBRICATIONCODE','V_SETNAME' ,'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE',
                 'V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME', 'V_LUBADDRESS', 'V_LUBMODE',
                 'V_LUBTRADEMARK', 'F_LUBCOUNT', 'F_OILAMOUNT', 'V_ADDORCHANGE', 'D_OPERATEDATE',
                 'V_OPERATEPERSON', 'V_OPERATEREASON', 'I_UNIT'],
