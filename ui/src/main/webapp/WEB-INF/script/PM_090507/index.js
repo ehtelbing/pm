@@ -7,6 +7,7 @@ var V_STEPCODE = '';
 var V_PERSONNAME= '';
 var taskId = '';
 var ProcessInstanceId = '';
+var Assignee='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
@@ -99,6 +100,20 @@ function loadPageInfo() {
 
             } else {
             }
+        }
+    });
+
+
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/InstanceState',
+        method: 'POST',
+        async: false,
+        params: {
+            instanceId: ProcessInstanceId
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            Assignee=resp.list[0].Assignee;
         }
     });
 }
@@ -284,19 +299,7 @@ function DisAgree() {
     } else {
         spyj = $("#spyj").val();
     }
-    var Assignee='';
-    Ext.Ajax.request({
-        url: AppUrl + 'Activiti/InstanceState',
-        method: 'POST',
-        async: false,
-        params: {
-            instanceId: ProcessInstanceId
-        },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            Assignee=resp.list[0].Assignee;
-        }
-    });
+
     if(Assignee!=''){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
@@ -407,6 +410,7 @@ function loadSPR() {
                 $("#selApprover").html(result.join(""));
             }
             $("#selApprover").val($.cookies.get('v_personcode'));
+            $("#selApprover").val(Assignee);
             Ext.getBody().unmask();//去除页面笼罩
 
             //createDD();
