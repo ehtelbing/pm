@@ -4814,7 +4814,7 @@ Ext.onReady(function () {
             editable: false,
             width: 300
         }, {
-            xtype: 'displayfield',
+            xtype: 'textfield',
             id: 'WIN_JXMX_CODE',
             fieldLabel: '检修模型编码',
             width: 300,
@@ -6573,6 +6573,8 @@ function _openInsertWindow() {
             Ext.getCmp('WIN_EQUCODE_CHILD').setValue(selectedNode.data.sid);
         }
     }
+    Ext.getCmp('WIN_JXMX_CODE').setValue(Ext.data.IdGenerator.get('uuid').generate());
+    Ext.getCmp('WIN_REPAIRMAJOR_CODE').hide();
     Ext.getCmp('WIN_REPAIRMAJOR_CODE').hide();
     Ext.getCmp('WIN_HOUR').hide();
     Ext.getCmp('WIN_IN_PER').hide();
