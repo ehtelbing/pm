@@ -127,4 +127,31 @@ public class ActivitiService {
         return result;
     }
 
+    public HashMap PRO_WORKORDER_SPARE_GET(String OrderGuid)throws SQLException {
+
+        logger.info("begin PRO_WORKORDER_SPARE_GET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_WORKORDER_SPARE_GET" + "(:V_V_ORDERGUID,:V_CURSOR)}");
+            cstmt.setString("V_V_ORDERGUID", OrderGuid);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_WORKORDER_SPARE_GET");
+        return result;
+    }
+
+
+
 }

@@ -138,7 +138,7 @@ public class ActivitiController {
             }
 
             param.put("idea", V_IDEA);
-            param.put("shtgtime",time);
+            param.put("shtgtime", time);
 
             ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
                     param);
@@ -488,6 +488,16 @@ public class ActivitiController {
                 for (HistoricVariableInstance var : vars) {
                     taskmap.put(var.getVariableName(), var.getValue());
                 }
+
+                if (taskmap.get("flow_type").equals("WORK")) {
+                    HashMap MATERIALNAME=activitiService.PRO_WORKORDER_SPARE_GET(taskmap.get("BusinessKey").toString());
+                    if(MATERIALNAME.size()>0){
+                        List list= (List) MATERIALNAME.get("list");
+                        Map map= (Map) list.get(0);
+                        taskmap.put("MATERIALNAME",map.get("V_MATERIALNAME").toString());
+                    }
+                }
+
                 User user = identityService.createUserQuery()
                         .userId(taskmap.get("originator").toString()).singleResult();
 
@@ -863,8 +873,8 @@ public class ActivitiController {
                 acdata = GetTaskIdFromBusinessId(BusinessKeys[i], V_INPER);
 
                 /*
-                * 获取下一步审批人信息
-                * */
+                 * 获取下一步审批人信息
+                 * */
                 nextPer = hpService.PM_ACTIVITI_PROCESS_PER_SEL(map.get("V_ORGCODE").toString(), map.get("V_DEPTCODE").toString(), "", FlowType, acdata.get("TaskDefinitionKey").toString(), V_INPER, map.get("V_REPAIRMAJOR_CODE").toString(), "通过");
 
 
