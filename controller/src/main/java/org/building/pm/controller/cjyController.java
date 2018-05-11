@@ -2516,6 +2516,15 @@ public class cjyController {
         Map result = cjyService.PRO_PM_WORKORDER_ET_OPERA_SET(V_V_GUID, V_V_FACT_VALUE);
         return result;
     }
+
+    @RequestMapping(value = "/PM_1917_JXMX_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXMX_DATA_DEL(@RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_1917_JXMX_DATA_DEL(V_V_JXMX_CODE);
+        return result;
+    }
 }
 
 

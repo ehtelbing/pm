@@ -15,7 +15,7 @@ $(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     bindDate("planStartDate");
     bindDate("planFinDate");
-
+debugger;
     $("#personCode").html(Ext.util.Cookies.get('v_personname2'));
     NowDate2("createDate");
     NowDate_b("planStartDate");
@@ -409,6 +409,7 @@ function BillGo() {
                         V_V_SEND_STATE: "成功"
                     },
                     success: function (response) {
+
                         Ext.Ajax.request({
                             method: 'POST',
                             async: false,
@@ -445,7 +446,7 @@ function BillGo() {
                                             }
                                         }
                                     });
-                                }
+                               }
                                 else {
                                     Ext.Ajax.request({
                                         method: 'POST',

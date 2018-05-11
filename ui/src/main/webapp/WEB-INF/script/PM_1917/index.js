@@ -449,6 +449,30 @@ function _selectDept(V_V_DEPTCODE) {
 }
 
 function btn_del() {
+    var num=0;
+    var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
+    for(var i=0;i<seldata.length;i++){
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'cjy/PM_1917_JXMX_DATA_DEL',
+            params: {
+                V_V_JXMX_CODE: seldata[i].data.V_MX_CODE,
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if(resp.V_INFO=='success'){
+                    num++;
+                }
+            }
+        });
+    }
+    if(seldata.length==num){
+        alert("删除成功！");
+        query();
+    }else{
+        alert((seldata-num)+"条删除失败");
+    }
 
 }
 

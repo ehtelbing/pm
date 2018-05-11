@@ -4550,4 +4550,29 @@ public class cjyService {
         logger.info("end PRO_PM_WORKORDER_ET_OPERA_SET");
         return result;
     }
+
+    public HashMap PM_1917_JXMX_DATA_DEL(String V_V_JXMX_CODE) throws SQLException {
+        logger.info("begin PM_1917_JXMX_DATA_DEL");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXMX_DATA_DEL" + "(:V_V_JXMX_CODE,:V_INFO)}");
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXMX_DATA_DEL");
+        return result;
+    }
 }
