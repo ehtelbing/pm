@@ -6,7 +6,7 @@ Ext.onReady(function () {
         pageSize: 15,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
-            'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName'
+            'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME'
         ],
         proxy: {
             type: 'ajax',
@@ -65,37 +65,42 @@ Ext.onReady(function () {
                     '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\')">' + '查看流程' + '</a>';
             }
         }, {
-            text : '流程类型',
-            dataIndex : 'ProcessDefinitionName',
-            align : 'center',
-            width : 150
-        },{
-            text : '流程编号',
-            dataIndex : 'flow_code',
-            align : 'center',
-            width : 200
-        },{
-            text : '流程步骤',
-            dataIndex : 'Name',
-            align : 'center',
-            width : 200
-        },{
-            text : '摘要',
-            dataIndex : 'remark',
-            align : 'center',
-            width : 300
-        },{
-            text : '发起人',
-            dataIndex : 'startName',
-            align : 'center',
-            width : 100
-        },{
-            text : '发起时间',
-            dataIndex : 'CreateTime',
-            align : 'center',
-            width : 200,
+            text: '流程类型',
+            dataIndex: 'ProcessDefinitionName',
+            align: 'center',
+            width: 150
+        }, {
+            text: '流程编号',
+            dataIndex: 'flow_code',
+            align: 'center',
+            width: 200
+        }, {
+            text: '流程步骤',
+            dataIndex: 'Name',
+            align: 'center',
+            width: 200
+        }, {
+            text: '摘要',
+            dataIndex: 'remark',
+            align: 'center',
+            width: 300
+        }, {
+            text: '备件消耗',
+            dataIndex: 'MATERIALNAME',
+            align: 'center',
+            width: 100
+        }, {
+            text: '发起人',
+            dataIndex: 'startName',
+            align: 'center',
+            width: 100
+        }, {
+            text: '发起时间',
+            dataIndex: 'CreateTime',
+            align: 'center',
+            width: 200,
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
-                return value.substring(0,10);
+                return value.substring(0, 10);
             }
         }],
         bbar: [{
@@ -143,13 +148,13 @@ Ext.onReady(function () {
     _init();
 });
 function _init(){
-    if(Ext.getCmp('tabid').getValue()=='WORK'){
+    /*if(Ext.getCmp('tabid').getValue()=='WORK'){
         Ext.getCmp("agr").hide();
         Ext.getCmp("dagr").hide();
     }else{
         Ext.getCmp("agr").show();
         Ext.getCmp("dagr").show();
-    }
+    }*/
 
 }
 function QueryTab(){
@@ -392,6 +397,45 @@ function AgreeData(){
             alert("请选择审批数据！");
             return;
         }
+    }else if(Ext.getCmp('tabid').getValue() == 'WORK'){
+        var record = Ext.getCmp('grid').getSelectionModel().getSelection();
+        var num = 0;
+        var fnum=0;
+        if (record.length > 0) {
+            for (var i = 0; i < record.length; i++) {
+                //BusinessKeysData.push(record[i].data.BusinessKey);
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/batchAgreeForWork',
+                    async: false,
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                        V_ORDERGUID: record[i].data.BusinessKey,
+                        ProcessDefinitionKey: record[i].data.ProcessDefinitionKey,
+                        ProcessInstanceId: record[i].data.ProcessInstanceId
+                    },
+                    success: function (response) {
+                        var data = Ext.decode(response.responseText);
+                        if (data.ret == "success") {
+                            num++;
+                        }else if(data.ret == "error"){
+                            fnum++;
+                        }
+                    }
+                });
+            }
+            if ((num+fnum) == record.length) {
+                alert("工单批量审批成功"+ num + "条,无法批量审批"+fnum+"条");
+                QueryGrid();
+            } else {
+                alert("工单批量审批成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
+            }
+        } else {
+            alert("请选择审批数据！");
+            return;
+        }
+
     }
 
 
@@ -476,6 +520,44 @@ function DisAgreeData(){
                         if (data.ret == "success") {
                             num++;
                         }else if(data.ret == "fqr"){
+                            fnum++;
+                        }
+                    }
+                });
+            }
+            if ((num+fnum) == record.length) {
+                alert("月计划批量驳回成功"+ num + "条,无法批量审批"+fnum+"条");
+                QueryGrid();
+            } else {
+                alert("月计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
+            }
+        } else {
+            alert("请选择审批数据！");
+            return;
+        }
+    }else if (Ext.getCmp('tabid').getValue() == 'WORK') {
+        var record = Ext.getCmp('grid').getSelectionModel().getSelection();
+        var num = 0;
+        var fnum=0;
+        if (record.length > 0) {
+            for (var i = 0; i < record.length; i++) {
+                //BusinessKeysData.push(record[i].data.BusinessKey);
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/batchDisAgreeForWork',
+                    async: false,
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                        V_ORDERGUID: record[i].data.BusinessKey,
+                        ProcessDefinitionKey:record[i].data.ProcessDefinitionKey,
+                        ProcessInstanceId: record[i].data.ProcessInstanceId
+                    },
+                    success: function (response) {
+                        var data = Ext.decode(response.responseText);
+                        if (data.ret == "success") {
+                            num++;
+                        }else if(data.ret == "error"){
                             fnum++;
                         }
                     }

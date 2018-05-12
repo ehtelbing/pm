@@ -2525,6 +2525,139 @@ public class cjyController {
         Map result = cjyService.PM_1917_JXMX_DATA_DEL(V_V_JXMX_CODE);
         return result;
     }
+
+    @RequestMapping(value = "/batchAgreeForWork", method = RequestMethod.POST)
+    @ResponseBody
+    public Map batchAgreeForWork(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                  @RequestParam(value = "V_ORDERGUID") String V_ORDERGUID,
+                                  @RequestParam(value = "ProcessDefinitionKey") String ProcessDefinitionKey,
+                                 @RequestParam(value = "ProcessInstanceId") String ProcessInstanceId,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+        Map result = new HashMap();
+        Map stepresult = new HashMap();
+        Map spperresult = new HashMap();
+        Map complresult = new HashMap();
+        Map flowresult = new HashMap();
+        Map stateresult = new HashMap();
+        ActivitiController ActivitiController = new ActivitiController();
+
+        try {
+            stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID, V_V_PERSONCODE);
+            String taskid = stepresult.get("taskId").toString();
+            String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+            String V_STEPNAME=stepresult.get("taskName").toString();
+            if (V_STEPNAME.indexOf("审批")==-1) {//没有审批字样
+                result.put("ret", "error");
+            } else {
+                List<Map<String, Object>> perresult = (List) cjyService.PRO_PM_WORKORDER_GET(V_ORDERGUID).get("list");
+                String V_V_ORGCODE=perresult.get(0).get("V_ORGCODE").toString();
+                String V_V_DEPTCODE=perresult.get(0).get("V_DEPTCODE").toString();
+                String V_V_DEPTCODEREPARIR=perresult.get(0).get("V_DEPTCODEREPARIR").toString();
+
+                stateresult = activitiController.InstanceState(ProcessInstanceId);
+                List<Map<String, Object>> Assigneelist = (List) stateresult.get("list");
+                String Assignee = Assigneelist.get(0).get("Assignee").toString();
+
+                spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR, "WORK", V_STEPCODE, V_V_PERSONCODE, "%", "通过");
+                List<Map<String, Object>> spperresultlist=(List)spperresult.get("list");
+
+                String V_NEXT_SETP = spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
+                String processKey = spperresult.get("RET").toString();
+                String sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
+                for(int i=0;i<spperresultlist.size();i++){
+                    if(spperresultlist.get(i).get("V_PERSONCODE").equals(Assignee)){
+                        sppercode=Assignee;
+                    }
+                    if(spperresultlist.get(i).get("V_PERSONCODE").equals(V_V_PERSONCODE)){
+                        sppercode=V_V_PERSONCODE;
+                    }
+                }
+
+                    String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                    String[] parVal = new String[]{sppercode, "批量审批通过"};
+
+                    complresult = activitiController.TaskComplete(taskid, "通过", parName, parVal, processKey, V_ORDERGUID, V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                if (complresult.get("ret").toString().equals("任务提交成功")) {
+                        flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID, "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
+                        if (flowresult.get("V_INFO").toString().equals("success")) {
+                            result.put("ret", "success");
+                            result.put("nestper", sppercode);
+                        }
+                    } else {
+                        result.put("ret", "任务提交失败");
+                    }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("ret", "任务提交失败");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/batchDisAgreeForWork", method = RequestMethod.POST)
+    @ResponseBody
+    public Map batchDisAgreeForWork(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                     @RequestParam(value = "V_ORDERGUID") String V_ORDERGUID,
+                                     @RequestParam(value = "ProcessDefinitionKey") String ProcessDefinitionKey,
+                                     @RequestParam(value = "ProcessInstanceId") String ProcessInstanceId,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) throws Exception {
+        Map result = new HashMap();
+        Map stepresult = new HashMap();
+        Map spperresult = new HashMap();
+        Map complresult = new HashMap();
+        Map flowresult = new HashMap();
+        Map stateresult = new HashMap();
+        ActivitiController ActivitiController = new ActivitiController();
+
+        try {
+            stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID, V_V_PERSONCODE);
+            String taskid = stepresult.get("taskId").toString();
+            String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+            String V_STEPNAME=stepresult.get("taskName").toString();
+            if (V_STEPNAME.indexOf("审批")==-1) {//没有审批字样
+                result.put("ret", "error");
+            } else {
+                List<Map<String, Object>> perresult = (List) cjyService.PRO_PM_WORKORDER_GET(V_ORDERGUID).get("list");
+                String V_V_ORGCODE=perresult.get(0).get("V_ORGCODE").toString();
+                String V_V_DEPTCODE=perresult.get(0).get("V_DEPTCODE").toString();
+                String V_V_DEPTCODEREPARIR=perresult.get(0).get("V_DEPTCODEREPARIR").toString();
+
+                stateresult = activitiController.InstanceState(ProcessInstanceId);
+                List<Map<String, Object>> Assigneelist = (List) stateresult.get("list");
+                String Assignee = Assigneelist.get(0).get("Assignee").toString();
+
+                spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR, "WORK", V_STEPCODE, V_V_PERSONCODE, "%", "不通过");
+                List<Map<String, Object>> spperresultlist=(List)spperresult.get("list");
+
+                String V_NEXT_SETP = spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
+                String processKey = spperresult.get("RET").toString();
+
+
+                String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                String[] parVal = new String[]{Assignee, "批量审批驳回"};
+
+                complresult = activitiController.TaskComplete(taskid, "不通过", parName, parVal, processKey, V_ORDERGUID, V_STEPCODE, V_STEPNAME, "请审批！", Assignee, V_V_PERSONCODE);
+                if (complresult.get("ret").toString().equals("任务提交成功")) {
+                    flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID, "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
+                    if (flowresult.get("V_INFO").toString().equals("success")) {
+                        result.put("ret", "success");
+                        result.put("Assignee", Assignee);
+                    }
+                } else {
+                    result.put("ret", "任务提交失败");
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("ret", "任务提交失败");
+        }
+        return result;
+    }
+
 }
 
 

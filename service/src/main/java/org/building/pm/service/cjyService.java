@@ -4575,4 +4575,31 @@ public class cjyService {
         logger.info("end PM_1917_JXMX_DATA_DEL");
         return result;
     }
+
+    public HashMap PRO_PM_WORKORDER_GET(String V_V_ORDERGUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_GET");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_GET(:V_V_ORDERGUID,:V_CURSOR)}");
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_ET_DEFAULE");
+        return result;
+    }
 }

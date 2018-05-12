@@ -150,8 +150,8 @@
 }
 #gridview-1020-table{
     border: 1px solid #e0ebf5 ;
-    -webkit-border-horizontal-spacing: 1px;
-    -webkit-border-vertical-spacing: 1px;
+    /*-webkit-border-horizontal-spacing: 1px;
+    -webkit-border-vertical-spacing: 1px;*/
     width: 1000px;
     height: 780px;
 }
