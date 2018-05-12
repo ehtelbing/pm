@@ -436,7 +436,7 @@ public class CarManageService {
         return result;
     }
 
-    public Map BASE_FILE_IMAGE_SEL(String V_V_GUID) throws SQLException {
+    public Map BASE_FILE_IMAGE_SEL(String V_V_GUID,String V_V_FILEGUID) throws SQLException {
         logger.info("begin BASE_FILE_IMAGE_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -444,14 +444,16 @@ public class CarManageService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call BASE_FILE_IMAGE_SEL" + "(:V_V_GUID,:V_NAME,:V_FILE)}");
+            cstmt = conn.prepareCall("{call BASE_FILE_IMAGE_SEL" + "(:V_V_GUID,:V_V_FILEGUID,:V_FILE,:V_CURSOR)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.registerOutParameter("V_NAME", OracleTypes.VARCHAR);
+            cstmt.setString("V_V_FILEGUID", V_V_FILEGUID);
             cstmt.registerOutParameter("V_FILE", OracleTypes.BLOB);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
 
             cstmt.execute();
-            result.put("O_FILENAME", (String) cstmt.getObject("V_NAME"));
+
             result.put("O_FILE", cstmt.getBlob("V_FILE"));
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

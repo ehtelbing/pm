@@ -319,12 +319,13 @@ public class CarManageController {
     @RequestMapping(value = "/BASE_FILE_IMAGE_SEL", method = RequestMethod.GET)
     @ResponseBody
     public Map BASE_FILE_IMAGE_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                   @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
                            HttpServletRequest request,
                            HttpServletResponse response) throws Exception {
-        Map resultTemp= CarManageService.BASE_FILE_IMAGE_SEL(V_V_GUID);
+        Map resultTemp= CarManageService.BASE_FILE_IMAGE_SEL(V_V_GUID,V_V_FILEGUID);
         Map result = new HashMap();
         if(resultTemp.get("O_FILE")!=null) {
-            String fileName = (String) resultTemp.get("O_FILENAME");
+            //String fileName = (String) resultTemp.get("O_FILENAME");
             InputStream fileStream = ((Blob) resultTemp.get("O_FILE")).getBinaryStream();
             BufferedInputStream reader = new BufferedInputStream(fileStream);
             BufferedOutputStream writer = new BufferedOutputStream(response.getOutputStream());
