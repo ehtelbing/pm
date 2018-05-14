@@ -183,6 +183,7 @@ public class ZsController {
         HashMap data = zsService.BASE_FILE_IMAGE_INS(V_V_GUID, V_V_FILENAME, V_V_FILE.getInputStream(), V_V_FILETYPECODE, V_V_PLANT, V_V_DEPT, V_V_TIME, V_V_PERSON, V_V_REMARK);
 
         result.put("INFO",  (String) data.get("INFO"));
+        result.put("FILE_GUID",  (String) data.get("FILE_GUID"));
         result.put("success", true);
         return result;
     }
@@ -652,4 +653,60 @@ public class ZsController {
                 V_V_ZD, V_V_DJ, V_V_TS, V_V_DL, V_V_RX, V_V_CSWZSL,V_V_CSDSL);
 
     }
+
+
+    //查看上传的图片
+    @RequestMapping(value = "/BASE_FILE_IMAGE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_FILE_IMAGE_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                    @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
+                                    HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = zsService.BASE_FILE_IMAGE_SEL(V_V_GUID, V_V_FILEGUID);
+
+        Blob fileblob = (Blob) data.get("V_FILE");
+        InputStream is = fileblob.getBinaryStream();
+
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("UTF-8");
+
+        OutputStream fos = response.getOutputStream();
+        byte[] b = new byte[2048];
+        int length;
+        while ((length = is.read(b)) > 0) {
+            fos.write(b, 0, length);
+        }
+        is.close();
+        fos.close();
+       // result.put("RET", data.get("RET"));
+        result.put("success", true);
+        return result;
+    }
+
+    //查询上传图片的表格
+    @RequestMapping(value = "/BASE_FILE_IMAGE_TABLE", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Map PM_REPAIRT_IMG_TABLE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                    @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
+                                    HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = zsService.BASE_FILE_IMAGE_SEL(V_V_GUID, V_V_FILEGUID);
+
+      /*  Blob fileblob = (Blob) data.get("V_FILE");
+        InputStream is = fileblob.getBinaryStream();
+
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("UTF-8");
+
+        OutputStream fos = response.getOutputStream();
+        byte[] b = new byte[2048];
+        int length;
+        while ((length = is.read(b)) > 0) {
+            fos.write(b, 0, length);
+        }*/
+        result.put("RET", data.get("RET"));
+        result.put("success", true);
+        return result;
+    }
+
 }
