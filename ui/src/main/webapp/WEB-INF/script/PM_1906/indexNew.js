@@ -1,8 +1,75 @@
 var updCarGuid;//传给机具更新的编码
 var updDriverGuid;//传给司机更新的编码
-var insDriverGuid;//传给司机新增的编码
-var ORDERGUID;
+var insDriverGuid;//点击机具获取的guid
+var V_V_FILEGUID='';//图片的guid
+var index = 0;
+var picguidbegin;
+Ext.define('Ext.ux.data.proxy.Ajax', {
+    extend: 'Ext.data.proxy.Ajax',
+    async: true,
+    doRequest: function (operation, callback, scope) {
+        var writer = this.getWriter(),
+            request = this.buildRequest(operation);
+        if (operation.allowWrite()) {
+            request = writer.write(request);
+        }
+        Ext.apply(request, {
+            async: this.async,
+            binary: this.binary,
+            headers: this.headers,
+            timeout: this.timeout,
+            scope: this,
+            callback: this.createRequestCallback(request, operation, callback, scope),
+            method: this.getMethod(request),
+            disableCaching: false
+        });
+        Ext.Ajax.request(request);
+        return request;
+    }
+});
 Ext.onReady(function () {
+
+    //查询图片的数据集
+    var imageStore = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'imageStore',
+        fields: ['V_GUID', 'V_FILEGUID', 'V_FILENAME', 'V_FILEBLOB', 'V_FILETYPECODE', 'V_PLANT',
+            'V_DEPT', 'V_TIME','V_PERSON','V_REMARK'],
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax",{
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zs/BASE_FILE_IMAGE_TABLE',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'RET'
+            },
+            extraParams: {}
+        })
+    });
+
+
+    var jjsytimageStore = Ext.create('Ext.data.Store', { //安全措预案数据集
+        id: 'jjsytimageStore',
+        autoLoad: false,
+        fields: ['V_GUID', 'V_FILENAME', 'V_FILEGUID', 'V_FILEBLOB', 'V_TIME', 'V_PERSON'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'zs/BASE_FILE_CHAKAN_SEL',//存储过程调用
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {//参数
+            },
+            reader: {
+                type: 'json',
+                root: 'list',
+                totalProperty: 'total'
+            }
+        }
+    });
     //厂矿
     var ckStore = Ext.create('Ext.data.Store', {
         id: 'ckStore',
@@ -141,6 +208,7 @@ Ext.onReady(function () {
 
     //机具使用明细
     var carUseDetailStore = Ext.create('Ext.data.Store', {
+
         storeId: 'carUseDetailStore',
         autoLoad: false,
         loading: false,
@@ -365,20 +433,22 @@ Ext.onReady(function () {
         //selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '机具编码', dataIndex: 'V_CARCODE', style: 'text-align: center;', width:100},
-            {text: '机具名称', dataIndex: 'V_CARNAME', style: 'text-align: center;', width:100},
-            {text: '机具类型', dataIndex: 'V_CARTYPE', style: 'text-align: center;', width:100},
-            {text: '机具归属', dataIndex: 'V_CARGUISUO', style: 'text-align: center;', width:100},
-            {text: '机具入厂时间', dataIndex: 'V_CARINDATE', style: 'text-align: center;', width: 150,
+            {text: '机具编码', dataIndex: 'V_CARCODE', style: 'text-align: center;', width: 100},
+            {text: '机具名称', dataIndex: 'V_CARNAME', style: 'text-align: center;', width: 100},
+            {text: '机具类型', dataIndex: 'V_CARTYPE', style: 'text-align: center;', width: 100},
+            {text: '机具归属', dataIndex: 'V_CARGUISUO', style: 'text-align: center;', width: 100},
+            {
+                text: '机具入厂时间', dataIndex: 'V_CARINDATE', style: 'text-align: center;', width: 150,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = carStore.find('V_CARINDATE', value);
                     if (index != -1) {
                         return carStore.getAt(index).get('V_CARINDATE').substring(0, 19);
                     }
                     return null;
-                }},
-            {text: '机具定额', dataIndex: 'V_DE', style: 'text-align: center;', width:100},
-            {text: '机具状态', dataIndex: 'V_FLAG', style: 'text-align: center;', width:100},
+                }
+            },
+            {text: '机具定额', dataIndex: 'V_DE', style: 'text-align: center;', width: 100},
+            {text: '机具状态', dataIndex: 'V_FLAG', style: 'text-align: center;', width: 100},
             {
                 text: '删除', dataIndex: '', style: 'text-align: center;', width: 50,
                 renderer: function (v) {
@@ -392,11 +462,11 @@ Ext.onReady(function () {
             }],
         listeners: {//itemclick监听查询司机详情，机具使用明细，机具维修明细，关联设备，机具报废明细的操作
             itemclick: function (panel, record, item, index, e, eOpts) {
-                _selectDriver(record.get('V_GUID'));
-                _selectCarUseDetail(record.get('V_GUID'));
-                _selectRepairInfo(record.get('V_GUID'));
-                _selectCarDestroy(record.get('V_GUID'));
-                _preViewImage(record.get('V_GUID'));
+                _selectDriver(record.data.V_GUID);
+                _selectCarUseDetail(record.data.V_GUID);
+                _selectRepairInfo(record.data.V_GUID);
+                _selectCarDestroy(record.data.V_GUID);
+                _preViewImage(record.data.V_GUID);
             }
         },
         bbar: [{//汽车数据集的分页
@@ -409,6 +479,158 @@ Ext.onReady(function () {
         }]
     });
 
+    //机具示意图  新增，上一页和下一页的按钮
+    var jjsytButtonPanel = Ext.create('Ext.form.Panel', {
+        id: 'jjsytButtonPanel',
+        frame: false,
+        // border: false,
+        baseCls: 'my-panel-no-border',
+        layout: 'column',
+        defaults: {labelAlign: 'center', labelWidth: 200, inputWidth: 160, style: 'margin:5px 10px 5px 10px'},
+        items: [
+            {
+                xtype: 'button',
+                text: '新增',
+                style: ' margin: 5px 0px 5px 10px',
+                icon: imgpath + '/add.png',
+                handler: _insertImage
+            },
+            {
+                xtype: 'button',
+                text: '上一页',
+                style: ' margin: 5px 0px 5px 10px',
+                icon: imgpath + '/accordion_collapse.png',
+                handler: _last
+            }, {
+                xtype: 'button',
+                text: '下一页',
+                style: ' margin: 5px 0px 5px 10px',
+                icon: imgpath + '/accordion_expand.png',
+                handler: _next
+            }]
+    });
+
+    //图片上传和浏览的相关按钮
+    var insertImageButtonPanel = Ext.create('Ext.form.Panel', {
+        id: 'insertImageButtonPanel',
+        frame: true,
+        border: false,
+        baseCls: 'my-panel-no-border',
+        layout: 'column',
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
+        items: [
+            {
+                xtype: 'filefield',
+                id: 'V_V_FILEBLOBJJSYT',
+                name: 'V_V_FILEBLOB',
+                enctype: "multipart/form-data",
+                buttonText: '浏览'
+            },
+            {xtype: 'button', text: '上传', icon: imgpath + '/edit.png', handler: _upLoadJJSYT},
+            {xtype: 'button', text: '删除', icon: imgpath + '/delete1.png', handler: _deleteJJSYT},
+            {xtype: 'hidden', id: 'V_V_GUIDJJSYT', name: 'V_V_GUID'},
+            {xtype: 'hidden', id: 'V_V_FILENAMEJJSYT', name: 'V_V_FILENAME'},
+            {xtype: 'hidden', id: 'V_V_FILETYPECODEJJSYT', name: 'V_V_FILETYPECODE'},
+            {xtype: 'hidden', id: 'V_V_PLANTJJSYT', name: 'V_V_PLANT'},
+            {xtype: 'hidden', id: 'V_V_DEPTJJSYT', name: 'V_V_DEPT'},
+            {xtype: 'hidden', id: 'V_V_TIMEJJSYT', name: 'V_V_TIME'},
+            {xtype: 'hidden', id: 'V_V_PERSONJJSYT', name: 'V_V_PERSON'},
+            {xtype: 'hidden', id: 'V_V_REMARKJJSYT', name: 'V_V_REMARK'}
+        ]
+    });
+    var insImagePanel = Ext.create("Ext.form.Panel", {
+        id: 'insImagePanel',
+        editable: false,
+        frame: true,
+        border: false,
+        region: 'center',
+        items: [
+            {
+                xtype: 'box',
+                id: 'browseImage',
+                autoEl: {//
+                    width:300 ,
+                    height:300 ,
+                    tag: 'input',
+                    type: 'image',
+                    src: Ext.BLANK_IMAGE_URL,
+                   // style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe; margin-left: 0px;margin-top: 0px;',
+                    id: 'imageBrowse',
+                    name: 'imageBrowse'
+                }
+            }]
+
+    });
+
+    //上传后显示的表格部分
+    var insertImageGridPanel = Ext.create('Ext.grid.Panel', {
+        id: 'insertImageGridPanel',
+        store: 'imageStore',
+        columnLines: true,
+        border: 'false',
+        columns: [
+            {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
+            {text: '图片名称', dataIndex: 'V_FILENAME', style: 'text-align: center;', flex: 1},
+            {
+                text: '上传时间', dataIndex: 'V_TIME', style: 'text-align: center;', width: 230,
+                renderer: function (value) {//渲染
+                    var index = imageStore.find('V_TIME', value);
+                    if (index != -1) {
+                        return imageStore.getAt(index).get('V_TIME').substring(0, 19);
+                    }
+                    return null;
+                }
+            },
+            {text: '上传人', dataIndex: 'V_PERSON', style: 'text-align: center;', flex: 1},
+            {
+                text: '删除', dataIndex: '', style: 'text-align: center;', flex: 1,
+                renderer: function (value, metaData, record) {
+                    return '<a href=javascript:dealWith(\'</a><a href="#" onclick="_deleteJJSYT(\'' + record.data.V_FILEGUID + '\')">' + '删除' + '</a>';
+                }
+            }],
+        bbar: [{
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'imageStore'
+        }]
+    });
+
+    //新增图片弹窗的布局
+    var insertImagePanel = Ext.create('Ext.panel.Panel', {
+        id: 'insertImagePanel',
+        layout: 'border',
+        frame: true,
+        baseCls: 'my-panel-no-border',
+        border: false,
+        items: [
+            {region: 'north', items: [insertImageButtonPanel]},
+            {region: 'center', layout: 'fit', items: [insImagePanel]},
+            {region: 'south', layout: 'fit',height:'40%', items: [insertImageGridPanel]}]
+    });
+
+    //新增图片的弹窗
+    var _insertImageWindow = Ext.create('Ext.window.Window', {
+        id: '_insertImageWindow',
+        width: 800,
+        height: 800,
+        layout: 'border',
+        title: '新增图片',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        items: [
+            {
+                region: 'center',
+                layout: 'fit',
+                border: false,
+                items: [insertImagePanel]
+            }
+        ]
+    });
     var viewImagePanel = Ext.create("Ext.form.Panel", {
         id: 'viewImagePanel',
         editable: false,
@@ -416,12 +638,9 @@ Ext.onReady(function () {
         border: false,
         region: 'center',
         title: '机具示意图',
-        items: [{
-            layout: 'column',
-            defaults: {
-                labelAlign: 'right'
-            },
-            items: [{
+        items: [
+            {region: 'north', items: [jjsytButtonPanel]},
+            {
                 xtype: 'box',
                 id: 'browseImage',
                 autoEl: {//
@@ -436,8 +655,9 @@ Ext.onReady(function () {
                     name: 'imageBrowse'
                 }
             }]
-        }]
+
     });
+
 
     var button1 = Ext.create('Ext.Panel', {
         id: 'button1',
@@ -463,18 +683,20 @@ Ext.onReady(function () {
         frame: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '司机姓名', dataIndex: 'V_DRIVER_NAME', align: 'center',  flex:1},
-            {text: '上岗时间', dataIndex: 'V_WORK_DATE', align: 'center', width: 230,
+            {text: '司机姓名', dataIndex: 'V_DRIVER_NAME', align: 'center', flex: 1},
+            {
+                text: '上岗时间', dataIndex: 'V_WORK_DATE', align: 'center', width: 230,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = driverStore.find('V_WORK_DATE', value);
                     if (index != -1) {
                         return driverStore.getAt(index).get('V_WORK_DATE').substring(0, 19);
                     }
                     return null;
-                }},
-            {text: '司机定额', dataIndex: 'V_DRIVER_DE', align: 'center',  flex:1},
+                }
+            },
+            {text: '司机定额', dataIndex: 'V_DRIVER_DE', align: 'center', flex: 1},
             {
-                text: '出车明细', dataIndex: '', align: 'center', flex:1,
+                text: '出车明细', dataIndex: '', align: 'center', flex: 1,
                 renderer: function (v) {
                     return "<span style='margin-right:10px'><a href='#' onclick='_carUseDetail()'>查看</a></span>";
                 }
@@ -512,21 +734,23 @@ Ext.onReady(function () {
         //selModel: {selType: 'checkboxmodel', mode: 'SIMPLE'},
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '机具编码', dataIndex: 'V_CARCODE', align: 'center', flex:1},
-            {text: '机具名称', dataIndex: 'V_CARNAME', align: 'center', flex:1},
-            {text: '使用开始时间', dataIndex: 'V_BEGIN_TIME', align: 'center', width:230,
+            {text: '机具编码', dataIndex: 'V_CARCODE', align: 'center', flex: 1},
+            {text: '机具名称', dataIndex: 'V_CARNAME', align: 'center', flex: 1},
+            {
+                text: '使用开始时间', dataIndex: 'V_BEGIN_TIME', align: 'center', width: 230,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = carUseDetailStore.find('V_BEGIN_TIME', value);
                     if (index != -1) {
                         return carUseDetailStore.getAt(index).get('V_BEGIN_TIME').substring(0, 19);
                     }
                     return null;
-                }},
-            {text: '使用地点', dataIndex: 'V_PLACE', align: 'center',flex:1},
-            {text: '使用台时(小时)', dataIndex: 'SUB_TIME', align: 'center', width:150},
-            {text: '机具定额', dataIndex: 'V_DE', align: 'center', flex:1},
-            {text: '司机姓名', dataIndex: 'V_DRIVER_NAME',align: 'center', flex:1},
-            {text: '用途', dataIndex: 'V_USE',align: 'center', flex:1}],
+                }
+            },
+            {text: '使用地点', dataIndex: 'V_PLACE', align: 'center', flex: 1},
+            {text: '使用台时(小时)', dataIndex: 'SUB_TIME', align: 'center', width: 150},
+            {text: '机具定额', dataIndex: 'V_DE', align: 'center', flex: 1},
+            {text: '司机姓名', dataIndex: 'V_DRIVER_NAME', align: 'center', flex: 1},
+            {text: '用途', dataIndex: 'V_USE', align: 'center', flex: 1}],
         bbar: [{
             xtype: 'pagingtoolbar',
             dock: 'bottom',
@@ -549,14 +773,16 @@ Ext.onReady(function () {
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
             {text: '机具编码', dataIndex: 'V_CARCODE', align: 'center', flex: 1},
             {text: '机具名称', dataIndex: 'V_CARNAME', align: 'center', flex: 1},
-            {text: '维修时间', dataIndex: 'D_FACT_START_DATE', align: 'center', width:180,
+            {
+                text: '维修时间', dataIndex: 'D_FACT_START_DATE', align: 'center', width: 180,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = repairInfoStore.find('D_FACT_START_DATE', value);
                     if (index != -1) {
                         return repairInfoStore.getAt(index).get('D_FACT_START_DATE').substring(0, 19);
                     }
                     return null;
-                }},
+                }
+            },
             {text: '维修明细', dataIndex: 'V_SHORT_TXT', align: 'center', flex: 1},
             {text: '维修工单号', dataIndex: 'V_ORDERID', align: 'center', flex: 1}],
         listeners: {//itemclick监听查询相关工种，工具，机具，物料
@@ -778,18 +1004,20 @@ Ext.onReady(function () {
         //autoScroll: false,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-            {text: '设备编码', dataIndex: 'V_EQUCODE', align: 'center', width:150},
-            {text: '设备名称', dataIndex: 'V_EQUNAME', align: 'center', width:150},
-            {text: '功能位置', dataIndex: 'V_EQUSITE', align: 'center', width:160},
-            {text: '关联时间', dataIndex: 'V_LINK_TIME', align: 'center', width:180,
+            {text: '设备编码', dataIndex: 'V_EQUCODE', align: 'center', width: 150},
+            {text: '设备名称', dataIndex: 'V_EQUNAME', align: 'center', width: 150},
+            {text: '功能位置', dataIndex: 'V_EQUSITE', align: 'center', width: 160},
+            {
+                text: '关联时间', dataIndex: 'V_LINK_TIME', align: 'center', width: 180,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = sbbgStore.find('V_LINK_TIME', value);
                     if (index != -1) {
                         return sbbgStore.getAt(index).get('V_LINK_TIME').substring(0, 19);
                     }
                     return null;
-                }},
-            {text: '关联人', dataIndex: 'V_LINK_PERSON', align: 'center', width:100},
+                }
+            },
+            {text: '关联人', dataIndex: 'V_LINK_PERSON', align: 'center', width: 100},
             {
                 text: '取消关联', dataIndex: '', style: 'text-align: center;', width: 100,
                 renderer: function (v) {
@@ -893,22 +1121,26 @@ Ext.onReady(function () {
             columnLines: true,
             columns: [
                 {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-                {text: '出车开始时间', dataIndex: 'V_BEGIN_TIME',align: 'center', width: 180,
+                {
+                    text: '出车开始时间', dataIndex: 'V_BEGIN_TIME', align: 'center', width: 180,
                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                         var index = CCDetailStore.find('V_BEGIN_TIME', value);
                         if (index != -1) {
                             return CCDetailStore.getAt(index).get('V_BEGIN_TIME').substring(0, 19);
                         }
                         return null;
-                    }},
-                {text: '出车结束时间', dataIndex: 'V_END_TIME', align: 'center', width: 180,
+                    }
+                },
+                {
+                    text: '出车结束时间', dataIndex: 'V_END_TIME', align: 'center', width: 180,
                     renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                         var index = CCDetailStore.find('V_END_TIME', value);
                         if (index != -1) {
                             return CCDetailStore.getAt(index).get('V_END_TIME').substring(0, 19);
                         }
                         return null;
-                    }},
+                    }
+                },
                 {text: '地点', dataIndex: 'V_PLACE', align: 'center', flex: 1},
                 {text: '用途', dataIndex: 'V_USE', align: 'center', flex: 1},
                 {text: '车辆状态', dataIndex: 'V_STATUS', align: 'center', flex: 1},
@@ -1023,9 +1255,10 @@ Ext.onReady(function () {
         Ext.getCmp('ck').select(store.first());
     });
     _preSelectCarStore();
+    _selectImage();
 });
 
-   insertCarPanel = Ext.create('Ext.form.Panel', {
+insertCarPanel = Ext.create('Ext.form.Panel', {
     id: 'insertCarPanel',
     border: false,
     baseCls: 'my-panel-no-border',
@@ -1071,10 +1304,12 @@ var insertCarWindow = Ext.create('Ext.window.Window', {
     closable: true,
     defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
     items: [
-        { region: 'center',
-    layout: 'fit',
-    border: false,
-    items: [insertCarPanel]}
+        {
+            region: 'center',
+            layout: 'fit',
+            border: false,
+            items: [insertCarPanel]
+        }
     ],
     buttons: [{
         xtype: 'button',
@@ -1180,7 +1415,7 @@ var insertDriverWindow = Ext.create('Ext.window.Window', {
             border: false,
             items: [insertDriverPanel]
         }
-       ],
+    ],
     buttons: [{
         xtype: 'button', text: '保存', width: 40, handler: function () {
             _insertDriverSave();
@@ -1295,7 +1530,7 @@ function _insertCarSave() {
                 }
             }
         });
-    }else{
+    } else {
         Ext.MessageBox.alert("提示", '请填入必录项')
     }
 
@@ -1456,7 +1691,7 @@ function _insertDriverSave() {
                 }
             }
         });
-    }else{
+    } else {
         Ext.MessageBox.alert("提示", '请填入必录项')
     }
 
@@ -1712,9 +1947,21 @@ function _deleteLink() {
 }
 
 function _preViewImage(V_GUID) {
-    var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID;
-    Ext.getCmp("browseImage").getEl().dom.src = url;
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    imageStore.proxy.extraParams = {
+        'V_V_GUID': V_GUID,
+        'V_V_FILEGUID': ''
+    };
+    imageStore.load();
+    index = 0;
+    if (imageStore.getCount() != 0) {//在点击机具表格时查询机具示意图，并判断选中的这一条数据是否有图片的guid，并将图片的guid取出来
+        V_V_FILEGUID = imageStore.getAt(0).get('V_FILEGUID');
+        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID + '&V_V_FILEGUID='+V_V_FILEGUID;
+        Ext.getCmp("browseImage").getEl().dom.src = url;
+        picguidbegin = V_V_FILEGUID;//用于判断是否是当前第一页的全局变量
+    }
 }
+
 
 function _carUseDetail() {//查看的弹出窗口
     var records = Ext.getCmp('driverPanel').getSelectionModel().getSelection();
@@ -1746,6 +1993,7 @@ function _selectJj(V_ORDERGUID) {
     jjStore.currentPage = 1;
     jjStore.load();
 }
+
 function _selectWl(V_ORDERGUID) {
     var wlStore = Ext.data.StoreManager.lookup('wlStore');
     wlStore.proxy.extraParams.V_V_ORDERGUID = V_ORDERGUID;
@@ -1753,4 +2001,177 @@ function _selectWl(V_ORDERGUID) {
     wlStore.load();
 }
 
+//上传机具示意图函数
+function _upLoadJJSYT() {
+
+    var V_V_FILEBLOB = Ext.getCmp('V_V_FILEBLOBJJSYT').getSubmitValue();
+    var V_V_FILENAME = V_V_FILEBLOB;
+    var insertImageButtonPanel = Ext.getCmp('insertImageButtonPanel');
+    Ext.getCmp('V_V_GUIDJJSYT').setValue(insDriverGuid);
+    Ext.getCmp('V_V_FILENAMEJJSYT').setValue(V_V_FILENAME);
+    Ext.getCmp('V_V_FILEBLOBJJSYT').setValue(V_V_FILEBLOB);
+    Ext.getCmp('V_V_FILETYPECODEJJSYT').setValue('JJSYT');
+    Ext.getCmp('V_V_PLANTJJSYT').setValue(Ext.util.Cookies.get('v_orgCode'));
+    Ext.getCmp('V_V_DEPTJJSYT').setValue(Ext.util.Cookies.get('v_deptcode'));
+    Ext.getCmp('V_V_TIMEJJSYT').setValue(Ext.Date.format(new Date(), 'Y-m-d'));
+    Ext.getCmp('V_V_PERSONJJSYT').setValue(Ext.util.Cookies.get('v_personcode'));
+    Ext.getCmp('V_V_REMARKJJSYT').setValue('');
+    insertImageButtonPanel.submit({
+        url: AppUrl + 'zs/BASE_FILE_IMAGE_INS',
+        async: false,
+        waitMsg: '上传中...',
+        method: 'POST',
+        success: function (form, action) {
+            var data = action.result;
+            V_V_FILEGUID=data.FILE_GUID;//图片的guid
+            Ext.Msg.alert("信息", "成功！");
+            _preViewImage1(insDriverGuid,V_V_FILEGUID);
+            _selectImage();
+        },
+        failure: function (resp) {
+            Ext.Msg.alert("信息", "失败！");
+        }
+    });
+
+}
+
+function _preViewImage1(V_GUID,V_V_FILEGUID) {
+    //V_GUID=insDriverGuid;//图片上传成功后，查询图片
+    var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID +'&V_V_FILEGUID='+V_V_FILEGUID;
+    Ext.getCmp("browseImage").getEl().dom.src = url;
+}
+
+//删除机具示意图
+function _deleteJJSYT() {
+    var records = Ext.getCmp('insertImageGridPanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.alert("操作信息", '请选择至少一条数据进行删除！', Ext.MessageBox.WARNING);
+        return false;
+    }
+
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '是否删除',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'zs/BASE_FILE_IMAGE_DEL ',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].data.V_FILEGUID
+                        },
+                        success: function (resp) {
+                            var data = Ext.decode(resp.responseText);
+                            if (data.INFO == 'SUCCESS') {
+                                _selectImage();
+                                Ext.Msg.alert("信息", "成功！");
+                            } else {
+                                Ext.Msg.alert("信息", "失败！");
+                            }
+                        }
+                    });
+                }
+            } else {
+                Ext.MessageBox.hide();
+            }
+        }
+    });
+}
+
+//新增图片的弹窗
+function _insertImage(){
+    var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择机具!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    Ext.getCmp('_insertImageWindow').show();
+}
+
+//查询新增图片
+function _selectImage() {
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    imageStore.proxy.extraParams = {
+        'V_V_GUID': insDriverGuid,
+        'V_V_FILEGUID': V_V_FILEGUID
+    };
+    imageStore.load();
+}
+
+//上一页
+function _last(){
+    var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择机具!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    if (V_V_FILEGUID == picguidbegin) {
+        Ext.Msg.alert('提示信息', '已经是第一张');
+        return;
+
+    } else {
+        if (index == 0) {
+            Ext.Msg.alert('提示信息', '已经到第一张');
+            return;
+        }
+        index--;
+        V_V_FILEGUID = imageStore.getAt(index).get('V_FILEGUID');
+        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID') ;
+
+        Ext.getCmp("browseImage").getEl().dom.src = url;
+
+    }
+}
+
+//下一页
+function _next(){
+
+
+    var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择机具!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+
+    if (imageStore.getCount() <= 1) {
+        Ext.Msg.alert('提示信息', '已经是最后一张');
+        return;
+    } else {
+        if (index == imageStore.getCount() - 1) {
+            Ext.Msg.alert('提示信息', '已经到最后一张');
+            return;
+        }
+        index++;
+        V_V_FILEGUID = imageStore.getAt(index).get('V_FILEGUID');
+        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID') ;
+
+        Ext.getCmp("browseImage").getEl().dom.src = url;
+
+    }
+}
 
