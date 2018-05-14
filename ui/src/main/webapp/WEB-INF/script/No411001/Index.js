@@ -92,43 +92,46 @@ function print() {
 }
 
 function loadTaskGrid() {
-    $
-        .ajax({
-            url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
-            type: 'post',
-            async: false,
-            data: {
-                V_V_ORDERGUID: $("#V_ORDERGUID").val()
-            },
-            dataType : "json",
-            traditional : true,
-            success : function(resp) {
-                if (resp.list != "" && resp.list != null) {
-                    $("#TtableT tbody").empty();
-                    if (resp.list.length < 3) {
-                        $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
-                            "#TtableT tbody");
-                        for ( var i = 0; i < 3 - resp.list.length; i++) {
-                            $("#TtableT tbody")
-                                .append(
-                                "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-                        }
-                    } else {
-                        $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
-                            "#TtableT tbody");
-                        var tool = document.getElementById('V_TOOL');
-                        tool.style.height = 45 * resp.list.length;
-
-                        var tech = document.getElementById('V_TECHNOLOGY');
-                        tech.style.height = 45 * resp.list.length;
-
-                        var safe = document.getElementById('V_SAFE');
-                        safe.style.height = 45 * resp.list.length;
+    $.ajax({
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
+        type: 'post',
+        async: false,
+        data: {
+            V_V_ORDERGUID: $("#V_ORDERGUID").val()
+        },
+        dataType: "json",
+        traditional: true,
+        success: function (resp) {
+            if (resp.list != "" && resp.list != null) {
+                $("#TtableT tbody").empty();
+                if (resp.list.length < 3) {
+                    $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
+                        "#TtableT tbody");
+                    for (var i = 0; i < 3 - resp.list.length; i++) {
+                        $("#TtableT tbody")
+                            .append(
+                            "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
                     }
                 } else {
+                    $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
+                        "#TtableT tbody");
+                    /*var tool = document.getElementById('V_TOOL');
+                     tool.style.height = 45 * resp.list.length;
+
+                     var tech = document.getElementById('V_TECHNOLOGY');
+                     tech.style.height = 45 * resp.list.length;
+
+                     var safe = document.getElementById('V_SAFE');
+                     safe.style.height = 45 * resp.list.length;*/
+                }
+            } else {
+                $("#TtableT tbody").empty();
+                for (var i = 0; i < 3; i++) {
+                    $("#TtableT tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
                 }
             }
-        });
+        }
+    });
 }
 
 function loadMatList() {
