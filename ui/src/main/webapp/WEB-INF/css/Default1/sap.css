@@ -27,7 +27,6 @@
     text-transform: none;
 }
 
-
 .x-btn-default-small {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -43,8 +42,9 @@
     background-image: -o-linear-gradient(top, #4b9cd7, #3955a5 50%, #358ac8 51%, #3955a5);
     background-image: linear-gradient(top, #4b9cd7, #3955a5 50%, #358ac8 51%, #3955a5);
     background: -ms-linear-gradient(top, #ffffff, #f7d30e 50%, #f7d30e 51%, #ffffff);
-    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr=#ffffff,endColorStr=#f7d30e,gradientType=0);
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr=#ffffff, endColorStr=#f7d30e, gradientType=0);
 }
+
 .x-btn-default-small .x-btn-inner {
     font-size: 12px;
     font-weight: bold;
@@ -52,16 +52,18 @@
     color: black;
     padding: 0 5px;
 }
+
 .x-btn-default-small-over {
     border-color: #f7d30e;
     background-image: none;
     background-color: #f7d30e;
     background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4792c8), color-stop(50%, #3386c2), color-stop(51%, #307fb8), color-stop(100%, #3386c2));
-    background-image: -webkit-linear-gradient(top,  #f7d30e, #f7d30e 50%, #f7d30e 51%, #f7d30e);
+    background-image: -webkit-linear-gradient(top, #f7d30e, #f7d30e 50%, #f7d30e 51%, #f7d30e);
     background-image: -moz-linear-gradient(top, #f6f69a, #f6f69a 50%, #307fb8 51%, #3386c2);
     background-image: -o-linear-gradient(top, #4792c8, #3386c2 50%, #307fb8 51%, #3386c2);
     background-image: linear-gradient(top, #4792c8, #3386c2 50%, #307fb8 51%, #3386c2);
 }
+
 .x-panel-header-text-container-default {
     color: black;
     font-size: 13px;
@@ -71,19 +73,23 @@
     padding: 1px 0 0;
     text-transform: none;
 }
+
 .x-panel-header-default {
     background-color: #e0ebf5;
 }
+
 .x-panel-header-default {
     font-size: 13px;
     border: 1px solid #e0ebf5;
 }
+
 .x-panel-body-default {
-    background:#afc5da;
+    background: #afc5da;
     color: black;
     font-size: 13px;
     border: 1px solid #e0ebf5;
 }
+
 .x-tab-bar-default {
     background-color: #e0ebf5;
 }
@@ -103,63 +109,72 @@
     background-color: #4b9cd7;
     box-shadow: 2px 7px 6px #909090;
 }
-.x-tab-default-top:before{
-    content:'';
-    display:block;
-    width:35px;
-    height:50px;
-    position:absolute;
-    transform:skewX(-30deg);
-    background:#4b9cd7;
+
+.x-tab-default-top:before {
+    content: '';
+    display: block;
+    width: 35px;
+    height: 50px;
+    position: absolute;
+    transform: skewX(-30deg);
+    background: #4b9cd7;
     border-left: 1px solid #add2ed;
     left: -15px;
-    top:0;
+    top: 0;
 }
+
 .x-tab-default-over {
     background-color: #add2ed;
 }
-.x-tab-default-over:before{
-    content:'';
-    display:block;
-    width:35px;
-    height:50px;
-    position:absolute;
-    transform:skewX(-30deg);
-    background:#add2ed;
+
+.x-tab-default-over:before {
+    content: '';
+    display: block;
+    width: 35px;
+    height: 50px;
+    position: absolute;
+    transform: skewX(-30deg);
+    background: #add2ed;
     left: -15px;
-    top:0;
+    top: 0;
 }
+
 .x-tab-default-active {
     background-color: #add2ed;
 }
-.x-tab-default-active:before{
-    content:'';
-    display:block;
-    width:35px;
-    height:50px;
-    position:absolute;
-    transform:skewX(-30deg);
-    background:#add2ed;
-    box-shadow:-2px 0 0 #909090;
+
+.x-tab-default-active:before {
+    content: '';
+    display: block;
+    width: 35px;
+    height: 50px;
+    position: absolute;
+    transform: skewX(-30deg);
+    background: #add2ed;
+    box-shadow: -2px 0 0 #909090;
     left: -15px;
-    top:0;
+    top: 0;
 }
+
 #gridview-1020-table {
     table-layout: fixed;
     border-collapse: separate;
 }
-#gridview-1020-table{
-    border: 1px solid #e0ebf5 ;
-    /*-webkit-border-horizontal-spacing: 1px;
-    -webkit-border-vertical-spacing: 1px;*/
-    width: 1000px;
-    height: 780px;
+
+#gridview-1020-table {
+    border: 1px solid #e0ebf5;
+    /*-webkit-border-horizontal-spacing: 1px;*/
+    -webkit-border-vertical-spacing: 1px;
+    /*width: 1000px;
+    height: 780px;*/
 }
-.x-grid-cell-gridcolumn-1036{
+
+.x-grid-cell-gridcolumn-1036 {
     table-layout: fixed;
     height: 39px;
-    border: 1px solid #e0ebf5 ;
+    border: 1px solid #e0ebf5;
 }
+
 .x-grid-with-row-lines .x-grid-table {
     border: 0 solid #e0ebf5;
     width: 1100px;

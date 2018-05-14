@@ -2658,6 +2658,39 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_PM_WORKORDER_SELECT_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_SELECT_VIEW(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                            @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                            @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                            @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
+                                            @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_SELECT_VIEW(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_ORGCODE,V_V_DEPTCODE,V_V_DEPTCODEREPARIR,
+                V_V_STATECODE,V_V_ORDER_TYP,V_V_SHORT_TXT);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_TYP_COUNT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_TYP_COUNTS(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                          @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                          @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                          @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                          @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                          @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                          @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_TYP_COUNT(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
+                V_V_STATECODE, V_V_SHORT_TXT);
+        return result;
+    }
+
 }
 
 

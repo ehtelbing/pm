@@ -4602,4 +4602,73 @@ public class cjyService {
         logger.info("end PRO_PM_WORKORDER_ET_DEFAULE");
         return result;
     }
+
+    public HashMap PRO_PM_WORKORDER_SELECT_VIEW(String  V_D_ENTER_DATE_B,String  V_D_ENTER_DATE_E,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_DEPTCODEREPARIR,
+                                                String V_V_STATECODE,String V_V_ORDER_TYP,String V_V_SHORT_TXT) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_SELECT_VIEW");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SELECT_VIEW(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_DEPTCODEREPARIR," +
+                    ":V_V_STATECODE,:V_V_ORDER_TYP,:V_V_SHORT_TXT,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B", V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E", V_D_ENTER_DATE_E);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODEREPARIR", V_V_DEPTCODEREPARIR);
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+            cstmt.setString("V_V_ORDER_TYP", V_V_ORDER_TYP);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SELECT_VIEW");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_TYP_COUNT(String  V_D_ENTER_DATE_B,String  V_D_ENTER_DATE_E,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_DEPTCODEREPARIR,
+                                              String V_V_STATECODE,String V_V_SHORT_TXT) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_TYP_COUNT");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_TYP_COUNT(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_DEPTCODEREPARIR," +
+                    ":V_V_STATECODE,:V_V_SHORT_TXT,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B", V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E", V_D_ENTER_DATE_E);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODEREPARIR", V_V_DEPTCODEREPARIR);
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_TYP_COUNT");
+        return result;
+    }
 }
