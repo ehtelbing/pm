@@ -268,7 +268,7 @@ public class ZsService {
         try {//
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call BASE_FILE_IMAGE_INS" + "(:V_V_GUID,:V_V_FILENAME,:V_V_FILEBLOB,:V_V_FILETYPECODE,:V_V_PLANT,:V_V_DEPT,:V_V_TIME,:V_V_PERSON,:V_V_REMARK,:V_INFO)}");
+            cstmt = conn.prepareCall("{call BASE_FILE_IMAGE_INS" + "(:V_V_GUID,:V_V_FILENAME,:V_V_FILEBLOB,:V_V_FILETYPECODE,:V_V_PLANT,:V_V_DEPT,:V_V_TIME,:V_V_PERSON,:V_V_REMARK,:O_FILEGUID,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_FILENAME", V_V_FILENAME);
             cstmt.setBlob("V_V_FILEBLOB", V_V_FILE);
@@ -278,10 +278,13 @@ public class ZsService {
             cstmt.setString("V_V_TIME", V_V_TIME);
             cstmt.setString("V_V_PERSON", V_V_PERSON);
             cstmt.setString("V_V_REMARK", V_V_REMARK);
+            cstmt.registerOutParameter("O_FILEGUID", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+
 
             cstmt.execute();
             result.put("INFO", cstmt.getString("V_INFO"));
+            result.put("FILE_GUID", cstmt.getString("O_FILEGUID"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -866,5 +869,41 @@ public class ZsService {
         logger.info("end PM_06_JMDJ_INS ");
         return result;
     }
+
+    //查看上传的图片
+    public HashMap BASE_FILE_IMAGE_SEL(String V_V_GUID, String V_V_FILEGUID) throws SQLException {
+
+        logger.info("begin BASE_FILE_IMAGE_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call BASE_FILE_IMAGE_SEL" + "(:V_V_GUID,:V_V_FILEGUID,:V_FILE,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_FILEGUID", V_V_FILEGUID);
+
+            cstmt.registerOutParameter("V_FILE", OracleTypes.BLOB);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            Blob blob = (Blob) cstmt.getObject("V_FILE");
+
+            result.put("V_FILE", blob);
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_FILE_IMAGE_SEL");
+        return result;
+    }
+
+
 }
 
