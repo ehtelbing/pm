@@ -314,48 +314,30 @@ function AgreeData(){
         var num = 0;
         var fnum=0;
         if (record.length > 0) {
+            var BusinessKeysData=[];
+            var ProcessDefinitionKeyData=[];
             for (var i = 0; i < record.length; i++) {
-                //BusinessKeysData.push(record[i].data.BusinessKey);
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/batchAgreeForWeek',
-                    async: false,
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_ORDERGUID: record[i].data.BusinessKey,
-                        ProcessDefinitionKey: record[i].data.ProcessDefinitionKey
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);
-                        if (data.ret == "success") {
-                            num++;
-                        }else if(data.ret == "fqr"){
-                            fnum++;
-                        }
-                    }
-                });
+                BusinessKeysData.push(record[i].data.BusinessKey);
+                ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
             }
-            if ((num+fnum) == record.length) {
-                alert("周计划批量审批成功"+ num + "条,无法批量审批"+fnum+"条");
-                QueryGrid();
-            } else {
-                alert("周计划批量审批成功" + num + "条,失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
-            }
-            /*Ext.Ajax.request({
-             url: AppUrl + 'Activiti/TaskCompleteList',
-             type: 'ajax',
-             method: 'POST',
-             params: {
-             V_IDEA: "通过",
-             V_INPER:Ext.util.Cookies.get('v_personcode'),
-             FlowType: Ext.getCmp('tabid').getValue(),
-             BusinessKeys:BusinessKeysData
-             },
-             success: function (response) {
-             var data = Ext.decode(response.responseText);
-             }
-             });*/
+
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchAgreeForWeek',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID: BusinessKeysData,
+                    ProcessDefinitionKey: ProcessDefinitionKeyData
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    alert(data.mes);
+                    QueryGrid();
+                }
+            });
+
         } else {
             alert("请选择审批数据！");
             return;
@@ -365,34 +347,29 @@ function AgreeData(){
         var num = 0;
         var fnum=0;
         if (record.length > 0) {
+            var BusinessKeysData=[];
+            var ProcessDefinitionKeyData=[];
             for (var i = 0; i < record.length; i++) {
-                //BusinessKeysData.push(record[i].data.BusinessKey);
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/batchAgreeForMonth',
-                    async: false,
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_ORDERGUID: record[i].data.BusinessKey,
-                        ProcessDefinitionKey: record[i].data.ProcessDefinitionKey
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);
-                        if (data.ret == "success") {
-                            num++;
-                        }else if(data.ret == "fqr"){
-                            fnum++;
-                        }
-                    }
-                });
+                BusinessKeysData.push(record[i].data.BusinessKey);
+                ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
             }
-            if ((num+fnum) == record.length) {
-                alert("月计划批量审批成功"+ num + "条,无法批量审批"+fnum+"条");
-                QueryGrid();
-            } else {
-                alert("月计划批量审批成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
-            }
+
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchAgreeForMonth',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID: BusinessKeysData,
+                    ProcessDefinitionKey: ProcessDefinitionKeyData
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    alert(data.mes);
+                    QueryGrid();
+                }
+            });
         } else {
             alert("请选择审批数据！");
             return;
@@ -402,35 +379,32 @@ function AgreeData(){
         var num = 0;
         var fnum=0;
         if (record.length > 0) {
+            var BusinessKeysData=[];
+            var ProcessDefinitionKeyData=[];
+            var ProcessInstanceIdData=[];
             for (var i = 0; i < record.length; i++) {
-                //BusinessKeysData.push(record[i].data.BusinessKey);
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/batchAgreeForWork',
-                    async: false,
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_ORDERGUID: record[i].data.BusinessKey,
-                        ProcessDefinitionKey: record[i].data.ProcessDefinitionKey,
-                        ProcessInstanceId: record[i].data.ProcessInstanceId
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);
-                        if (data.ret == "success") {
-                            num++;
-                        }else if(data.ret == "error"){
-                            fnum++;
-                        }
-                    }
-                });
+                BusinessKeysData.push(record[i].data.BusinessKey);
+                ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
+                ProcessInstanceIdData.push(record[i].data.ProcessInstanceId);
             }
-            if ((num+fnum) == record.length) {
-                alert("工单批量审批成功"+ num + "条,无法批量审批"+fnum+"条");
-                QueryGrid();
-            } else {
-                alert("工单批量审批成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
-            }
+
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchAgreeForWork',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID: BusinessKeysData,
+                    ProcessDefinitionKey: ProcessDefinitionKeyData,
+                    ProcessInstanceId:ProcessInstanceIdData
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    alert(data.mes);
+                    QueryGrid();
+                }
+            });
         } else {
             alert("请选择审批数据！");
             return;
@@ -450,49 +424,32 @@ function DisAgreeData(){
         var num = 0;
         var fnum=0;
         if (record.length > 0) {
+            var BusinessKeysData=[];
+            var ProcessDefinitionKeyData=[];
+            var ProcessInstanceIdData=[];
             for (var i = 0; i < record.length; i++) {
-                //BusinessKeysData.push(record[i].data.BusinessKey);
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/batchDisAgreeForWeek',
-                    async: false,
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_ORDERGUID: record[i].data.BusinessKey,
-                        ProcessDefinitionKey:record[i].data.ProcessDefinitionKey,
-                        ProcessInstanceId: record[i].data.ProcessInstanceId
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);
-                        if (data.ret == "success") {
-                            num++;
-                        }else if(data.ret == "fqr"){
-                            fnum++;
-                        }
-                    }
-                });
+                BusinessKeysData.push(record[i].data.BusinessKey);
+                ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
+                ProcessInstanceIdData.push(record[i].data.ProcessInstanceId);
             }
-            if ((num+fnum) == record.length) {
-                alert("周计划批量驳回成功"+ num + "条,无法批量审批"+fnum+"条");
-                QueryGrid();
-            } else {
-                alert("周计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
-            }
-            /*Ext.Ajax.request({
-             url: AppUrl + 'Activiti/TaskCompleteList',
-             type: 'ajax',
-             method: 'POST',
-             params: {
-             V_IDEA: "通过",
-             V_INPER:Ext.util.Cookies.get('v_personcode'),
-             FlowType: Ext.getCmp('tabid').getValue(),
-             BusinessKeys:BusinessKeysData
-             },
-             success: function (response) {
-             var data = Ext.decode(response.responseText);
-             }
-             });*/
+
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchDisAgreeForWeek',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID: BusinessKeysData,
+                    ProcessDefinitionKey: ProcessDefinitionKeyData,
+                    ProcessInstanceId:ProcessInstanceIdData
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    alert(data.mes);
+                    QueryGrid();
+                }
+            });
         } else {
             alert("请选择审批数据！");
             return;
@@ -502,35 +459,32 @@ function DisAgreeData(){
         var num = 0;
         var fnum=0;
         if (record.length > 0) {
+            var BusinessKeysData=[];
+            var ProcessDefinitionKeyData=[];
+            var ProcessInstanceIdData=[];
             for (var i = 0; i < record.length; i++) {
-                //BusinessKeysData.push(record[i].data.BusinessKey);
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/batchDisAgreeForMonth',
-                    async: false,
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_ORDERGUID: record[i].data.BusinessKey,
-                        ProcessDefinitionKey:record[i].data.ProcessDefinitionKey,
-                        ProcessInstanceId: record[i].data.ProcessInstanceId
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);
-                        if (data.ret == "success") {
-                            num++;
-                        }else if(data.ret == "fqr"){
-                            fnum++;
-                        }
-                    }
-                });
+                BusinessKeysData.push(record[i].data.BusinessKey);
+                ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
+                ProcessInstanceIdData.push(record[i].data.ProcessInstanceId);
             }
-            if ((num+fnum) == record.length) {
-                alert("月计划批量驳回成功"+ num + "条,无法批量审批"+fnum+"条");
-                QueryGrid();
-            } else {
-                alert("月计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
-            }
+
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchDisAgreeForMonth',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID: BusinessKeysData,
+                    ProcessDefinitionKey: ProcessDefinitionKeyData,
+                    ProcessInstanceId:ProcessInstanceIdData
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    alert(data.mes);
+                    QueryGrid();
+                }
+            });
         } else {
             alert("请选择审批数据！");
             return;
@@ -540,35 +494,32 @@ function DisAgreeData(){
         var num = 0;
         var fnum=0;
         if (record.length > 0) {
+            var BusinessKeysData=[];
+            var ProcessDefinitionKeyData=[];
+            var ProcessInstanceIdData=[];
             for (var i = 0; i < record.length; i++) {
-                //BusinessKeysData.push(record[i].data.BusinessKey);
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/batchDisAgreeForWork',
-                    async: false,
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_ORDERGUID: record[i].data.BusinessKey,
-                        ProcessDefinitionKey:record[i].data.ProcessDefinitionKey,
-                        ProcessInstanceId: record[i].data.ProcessInstanceId
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);
-                        if (data.ret == "success") {
-                            num++;
-                        }else if(data.ret == "error"){
-                            fnum++;
-                        }
-                    }
-                });
+                BusinessKeysData.push(record[i].data.BusinessKey);
+                ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
+                ProcessInstanceIdData.push(record[i].data.ProcessInstanceId);
             }
-            if ((num+fnum) == record.length) {
-                alert("月计划批量驳回成功"+ num + "条,无法批量审批"+fnum+"条");
-                QueryGrid();
-            } else {
-                alert("月计划批量驳回成功" + num + "条，失败" + (record.length - num) + "条,无法批量审批"+fnum+"条");
-            }
+
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchDisAgreeForWork',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID: BusinessKeysData,
+                    ProcessDefinitionKey: ProcessDefinitionKeyData,
+                    ProcessInstanceId:ProcessInstanceIdData
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    alert(data.mes);
+                    QueryGrid();
+                }
+            });
         } else {
             alert("请选择审批数据！");
             return;

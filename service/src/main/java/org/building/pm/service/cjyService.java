@@ -4671,4 +4671,37 @@ public class cjyService {
         logger.info("end PRO_PM_WORKORDER_TYP_COUNT");
         return result;
     }
+
+    public HashMap PRO_AM_SEND_LOG_SET(String  V_V_SERVERNAME,String  V_V_SENDPASSWORD,String V_V_SEND_PERSON,String V_V_RECEIVE_PERSON,String V_V_TYPE,
+                                              String V_I_SEND) throws SQLException {
+
+        logger.info("begin PRO_AM_SEND_LOG_SET");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_AM_SEND_LOG_SET(:V_V_SERVERNAME,:V_V_SENDPASSWORD,:V_V_SEND_PERSON,:V_V_RECEIVE_PERSON,:V_V_TYPE," +
+                    ":V_I_SEND,:V_INFO)}");
+            cstmt.setString("V_V_SERVERNAME", V_V_SERVERNAME);
+            cstmt.setString("V_V_SENDPASSWORD", V_V_SENDPASSWORD);
+            cstmt.setString("V_V_SEND_PERSON", V_V_SEND_PERSON);
+            cstmt.setString("V_V_RECEIVE_PERSON", V_V_RECEIVE_PERSON);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_I_SEND", V_I_SEND);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_AM_SEND_LOG_SET");
+        return result;
+    }
 }

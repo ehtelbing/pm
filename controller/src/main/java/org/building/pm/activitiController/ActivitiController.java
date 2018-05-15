@@ -16,10 +16,12 @@ import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
+import org.building.pm.controller.cjyController;
 import org.building.pm.service.ActivitiService;
 import org.building.pm.service.PM_03Service;
 import org.building.pm.service.hpService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,7 +73,16 @@ public class ActivitiController {
     @Autowired
     private hpService hpService;
 
+    @Autowired
+    private cjyController cjyController;
+    @Value("#{configProperties['infopub.url']}")
+    private String infopuburl;
 
+    @Value("#{configProperties['infopub.username']}")
+    private String infopubusername;
+
+    @Value("#{configProperties['infopub.password']}")
+    private String infopubpassword;
     //部署流程
     @RequestMapping(value = "ModelDeployProcess", method = RequestMethod.POST)
     @ResponseBody
@@ -822,6 +833,63 @@ public class ActivitiController {
                                             @RequestParam(value = "businessKey") String businessKey) throws SQLException {
         Map result = new HashMap();
         Map map = new HashMap();
+        String flowtype="error";
+
+        if(processKey.indexOf("Month")!=-1){
+            flowtype="月计划";
+        }
+        if(processKey.indexOf("Week")!=-1){
+            flowtype="周计划";
+        }
+        if(processKey.indexOf("WorkOrder")!=-1){
+            flowtype="工单";
+        }
+        HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
+
+        for (int i = 0; i < parName.length; i++) {
+            map.put(parName[i], parVal[i]);
+            if (parName[i].equals("flow_yj")) {
+                map.put(taskId, parVal[i]);
+            }
+        }
+
+        try {
+            map.put("idea", idea);
+            taskService.complete(taskId, map);
+            result.put("ret", "任务提交成功");
+            result.put("msg", "OK");
+            String mes=cjyController.MessageSend("1", flowtype, V_NEXTPER);
+            if(mes.equals("fail")){
+                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
+            }else{
+                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
+            }
+
+        } catch (Exception e) {
+            result.put("ret", "任务提交失败");
+            result.put("msg", "Error");
+        }
+
+        return result;
+    }
+
+
+    // 完成任务
+    @RequestMapping(value = "TaskCompletePL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> TaskCompletePL(@RequestParam(value = "taskId") String taskId,
+                                            @RequestParam(value = "idea") String idea,
+                                            @RequestParam(value = "parName") String[] parName,
+                                            @RequestParam(value = "parVal") String[] parVal,
+                                            @RequestParam(value = "V_IDEA") String V_IDEA,
+                                            @RequestParam(value = "V_INPER") String V_INPER,
+                                            @RequestParam(value = "V_NEXTPER") String V_NEXTPER,
+                                            @RequestParam(value = "V_STEPNAME") String V_STEPNAME,
+                                            @RequestParam(value = "V_STEPCODE") String V_STEPCODE,
+                                            @RequestParam(value = "processKey") String processKey,
+                                            @RequestParam(value = "businessKey") String businessKey) throws SQLException {
+        Map result = new HashMap();
+        Map map = new HashMap();
 
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 
@@ -844,7 +912,6 @@ public class ActivitiController {
 
         return result;
     }
-
     /*
      * 批量审批
      * */
