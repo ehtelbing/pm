@@ -326,6 +326,11 @@ Ext.onReady(function() {
     });
 
     Ext.data.StoreManager.lookup('zyqstore').on("load", function() {
+
+        Ext.ComponentManager.get('zyq').store.insert(0, {
+            'V_DEPTCODE' : '%',
+            'V_DEPTNAME' : '全部'
+        });
         Ext.getCmp("zyq").select(Ext.data.StoreManager.lookup('zyqstore').getAt(0));
         Ext.data.StoreManager.lookup('ssblx').load({
             params : {
@@ -509,7 +514,7 @@ function OnClickExcelButton(){
     document.location.href=AppUrl + 'excel/GDCX_EXCEL?V_D_ENTER_DATE_B='+Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d')+
     '&V_D_DEFECTDATE_E='+Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d')+
     '&V_V_ORGCODE='+Ext.ComponentManager.get("ck").getValue()+
-    '&V_V_DEPTCODE='+Ext.ComponentManager.get("zyq").getValue()+
+    '&V_V_DEPTCODE='+encodeURI(Ext.ComponentManager.get("zyq").getValue())+
     '&V_V_DEPTCODEREPARIR='+ ''+
     '&V_V_STATECODE='+encodeURI(Ext.ComponentManager.get("gdzt").getValue())+
     '&V_EQUTYPE_CODE='+encodeURI(Ext.ComponentManager.get("sblx").getValue())+
