@@ -715,7 +715,7 @@ function OnButtonDefectAddClicked() {
     var weekguid=guid();
     //清空表
     Ext.Ajax.request({
-        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_DEFECT_DEL',
+        url: AppUrl + 'cjy/PRO_PM_03_PLAN_DX_DEFECT_DEL',
         method: 'POST',
         async: false,
         params: {
@@ -724,7 +724,7 @@ function OnButtonDefectAddClicked() {
             var resp = Ext.decode(resp.responseText);
             if (resp.V_INFO=='success') {
                 Ext.Ajax.request({//新增空数据
-                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_GUID',
+                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_DX_SET_GUID',
                     method: 'POST',
                     async: false,
                     params: {
@@ -736,12 +736,12 @@ function OnButtonDefectAddClicked() {
                         if (resp.V_INFO=='success') {
                             V_WEEKPLAN_GUID = 0;
                             V_PLANTYPE = 'DEFECT';
-                            var ret = window.open(AppUrl + 'page/PM_03010313/index.html?V_WEEKPLAN_GUID='+weekguid+
+                            var ret = window.open(AppUrl + 'page/PM_03030313/index.html?V_WEEKPLAN_GUID='+weekguid+
                                 "&V_PLANTYPE=" + V_PLANTYPE +
                                 "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
                                 "&YEAR=" + Ext.getCmp("nf").getValue() +
                                 "&MONTH=" + Ext.getCmp("yf").getValue() +
-                                "&WEEK=" + Ext.getCmp("zhou").getValue() +
+                                "&WEEK=0" +
                                 "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
                                 "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
                         } else {
@@ -772,8 +772,8 @@ function OnButtonSelectClicked() {
     var ret = window.open(AppUrl + 'page/PM_1922/index.html?YEAR=' + Ext.getCmp("nf").getValue() +
         "&QUARTER=0" +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
-        "&WEEK=" + Ext.getCmp("zhou").getValue() +
-        "&PLANTYPE=WEEK", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&WEEK=0"  +
+        "&PLANTYPE=DXPlan", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
 }
 //修改
 function OnButtonEditClicked() {

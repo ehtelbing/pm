@@ -2999,6 +2999,49 @@ public class cjyController {
         Map result = cjyService.PRO_PM_03_PLAN_DX_SEND(V_V_GUID,V_V_ORGCODE,V_V_DEPTCODE,V_V_FLOWCODE,V_V_PLANTYPE,V_V_PERSONCODE);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_DX_DEFECT_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_DX_DEFECT_DEL(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_DX_DEFECT_DEL();
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_DX_SET_GUID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_DX_SET_GUID(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_DX_SET_GUID(V_V_GUID, V_V_ORGCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_DX_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_DX_SET(@RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                      @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                      @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                      @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                      @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                      @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                      @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                      @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE,
+                                      @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                      @RequestParam(value = "V_V_STARTTIME") String V_V_STARTTIME,
+                                      @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
+                                      @RequestParam(value = "V_V_HOUR") String V_V_HOUR,
+                                      @RequestParam(value = "V_V_BZ") String V_V_BZ,
+                                      @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_DX_SET(V_V_INPER,V_V_GUID,V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE,
+                V_V_EQUCODE,V_V_REPAIRMAJOR_CODE, V_V_CONTENT, V_V_STARTTIME, V_V_ENDTIME, V_V_HOUR,V_V_BZ,V_V_DEFECTGUID);
+        return result;
+    }
 }
 
 
