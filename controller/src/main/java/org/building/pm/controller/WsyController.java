@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.sql.Blob;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/app/pm/Wsy")
@@ -38,30 +40,6 @@ public class WsyController {
     public HashMap<String, Object> PM_1917_JXGX_DATA_SEL(@RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.PM_1917_JXGX_DATA_SEL(V_V_JXMX_CODE);
         return data;
-    }
-
-    //机具示意图
-    @RequestMapping(value = "/BASE_FILE_IMAGE_SEL", method = RequestMethod.GET)
-    @ResponseBody
-    public HashMap BASE_FILE_IMAGE_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap resultTemp = wsyService.BASE_FILE_IMAGE_SEL(V_V_GUID);
-        HashMap result = new HashMap();
-        if (resultTemp.get("O_FILE") != null) {
-            String fileName = (String) resultTemp.get("O_FILENAME");
-            InputStream fileStream = ((Blob) resultTemp.get("O_FILE")).getBinaryStream();
-            BufferedInputStream reader = new BufferedInputStream(fileStream);
-            BufferedOutputStream writer = new BufferedOutputStream(response.getOutputStream());
-            byte[] bytes = new byte[1024 * 1024];
-            int length = reader.read(bytes);
-            while ((length > 0)) {
-                writer.write(bytes, 0, length);
-                length = reader.read(bytes);
-            }
-            reader.close();
-            writer.close();
-        }
-        result.put("success", true);
-        return result;
     }
 
     @RequestMapping(value = "/PRO_BASE_PERSON_DE_SEL", method = RequestMethod.POST)
@@ -153,33 +131,6 @@ public class WsyController {
     public HashMap<String, Object> BASE_FILE_CHAKAN_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.BASE_FILE_CHAKAN_SEL(V_V_GUID);
         return data;
-    }
-
-    //附件下载
-    @RequestMapping(value = "/downloadAttachment", method = RequestMethod.GET)
-    @ResponseBody
-    public void downloadAttachment(@RequestParam(value = "V_V_GUID") String V_V_GUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.BASE_FILE_IMAGE_SEL(V_V_GUID);
-        String fileName = (String) data.get("O_FILENAME");
-        Blob fileblob = (Blob) data.get("O_FILE");
-        InputStream is = fileblob.getBinaryStream();
-        String agent = (String) request.getHeader("USER-AGENT");
-        if (agent != null && agent.toLowerCase().indexOf("firefox") > 0) {// 兼容火狐中文文件名下载
-            fileName = "=?UTF-8?B?" + (new String(Base64.encodeBase64(fileName.getBytes("UTF-8")))) + "?=";
-        } else {
-            fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
-        }
-        response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-        ServletOutputStream fos = response.getOutputStream();
-        byte[] b = new byte[65535];
-        int length;
-        while ((length = is.read(b)) > 0) {
-            fos.write(b, 0, length);
-        }
-        fos.flush();
-        is.close();
-        fos.close();
     }
 
     @RequestMapping(value = "/BASE_JXBZ_BY_GXCODE_SEL", method = RequestMethod.POST)
@@ -424,6 +375,84 @@ public class WsyController {
     @ResponseBody
     public HashMap<String, Object> BASE_JXMX_AQCS_INS(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE, @RequestParam(value = "V_V_AQCS_CODE") String V_V_AQCS_CODE, @RequestParam(value = "V_V_AQCS_NAME") String V_V_AQCS_NAME, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.BASE_JXMX_AQCS_INS(V_V_JXGX_CODE, V_V_AQCS_CODE, V_V_AQCS_NAME);
+        return data;
+    }
+
+    //附件下载
+    @RequestMapping(value = "/downloadAttachment", method = RequestMethod.GET)
+    @ResponseBody
+    public void downloadAttachment(@RequestParam(value = "V_V_GUID") String V_V_GUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.BASE_FILE_IMAGE_DOWNLOAD(V_V_GUID);
+        String fileName = (String) data.get("O_FILENAME");
+        Blob fileblob = (Blob) data.get("O_FILE");
+        InputStream is = fileblob.getBinaryStream();
+        String agent = (String) request.getHeader("USER-AGENT");
+        if (agent != null && agent.toLowerCase().indexOf("firefox") > 0) {// 兼容火狐中文文件名下载
+            fileName = "=?UTF-8?B?" + (new String(Base64.encodeBase64(fileName.getBytes("UTF-8")))) + "?=";
+        } else {
+            fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+        }
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        ServletOutputStream fos = response.getOutputStream();
+        byte[] b = new byte[65535];
+        int length;
+        while ((length = is.read(b)) > 0) {
+            fos.write(b, 0, length);
+        }
+        fos.flush();
+        is.close();
+        fos.close();
+    }
+
+    // 图片上传
+    @RequestMapping(value = "/BASE_FILE_IMAGE_INS", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> BASE_FILE_IMAGE_INS(@RequestParam(value = "V_V_GUID") String V_V_GUID, @RequestParam(value = "V_V_FILENAME") String V_V_FILENAME, @RequestParam(value = "V_V_FILEBLOB") MultipartFile V_V_FILE, @RequestParam(value = "V_V_FILETYPECODE") String V_V_FILETYPECODE, @RequestParam(value = "V_V_PLANT") String V_V_PLANT, @RequestParam(value = "V_V_DEPT") String V_V_DEPT, @RequestParam(value = "V_V_TIME") String V_V_TIME, @RequestParam(value = "V_V_PERSON") String V_V_PERSON, @RequestParam(value = "V_V_REMARK") String V_V_REMARK, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        HashMap data = wsyService.BASE_FILE_IMAGE_INS(V_V_GUID, V_V_FILENAME, V_V_FILE.getInputStream(), V_V_FILETYPECODE, V_V_PLANT, V_V_DEPT, V_V_TIME, V_V_PERSON, V_V_REMARK);
+        result.put("INFO", (String) data.get("INFO"));
+        result.put("FILE_GUID", (String) data.get("FILE_GUID"));
+        result.put("success", true);
+        return result;
+    }
+
+    // 图片删除
+    @RequestMapping(value = "/BASE_FILE_IMAGE_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> BASE_FILE_IMAGE_DEL(@RequestParam(value = "V_V_GUID") String V_V_GUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.BASE_FILE_IMAGE_DEL(V_V_GUID);
+        return data;
+    }
+
+    // 查询图片
+    @RequestMapping(value = "/BASE_FILE_IMAGE_SEL", method = RequestMethod.GET)
+    @ResponseBody
+    public HashMap BASE_FILE_IMAGE_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID, @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap resultTemp = wsyService.BASE_FILE_IMAGE_SEL(V_V_GUID, V_V_FILEGUID);
+        HashMap result = new HashMap();
+        if (resultTemp.get("O_FILE") != null) {
+            InputStream fileStream = ((Blob) resultTemp.get("O_FILE")).getBinaryStream();
+            BufferedInputStream reader = new BufferedInputStream(fileStream);
+            BufferedOutputStream writer = new BufferedOutputStream(response.getOutputStream());
+            byte[] bytes = new byte[1024 * 1024];
+            int length = reader.read(bytes);
+            while ((length > 0)) {
+                writer.write(bytes, 0, length);
+                length = reader.read(bytes);
+            }
+            reader.close();
+            writer.close();
+        }
+        result.put("success", true);
+        return result;
+    }
+
+    // 查询imageStore
+    @RequestMapping(value = "/BASE_FILE_IMAGE_TABLE", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap BASE_FILE_IMAGE_TABLE(@RequestParam(value = "V_V_GUID") String V_V_GUID, @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.BASE_FILE_IMAGE_SEL(V_V_GUID, V_V_FILEGUID);
         return data;
     }
 }
