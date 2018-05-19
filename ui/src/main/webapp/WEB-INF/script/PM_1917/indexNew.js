@@ -1,7 +1,29 @@
 var win;// 父窗口对象，由子窗口调用
-var ZG_GUID;
+//var ZG_GUID;
+var picguidbegin;
+var V_V_FILEGUID = '';
+var index = 0;
 Ext.onReady(function () {
 
+    // 图片数据集
+    var imageStore = Ext.create('Ext.data.Store', { // 安全措施数据集
+        id: 'imageStore',
+        autoLoad: false,
+        fields: ['V_GUID', 'V_FILEGUID', 'V_FILENAME', 'V_FILETYPECODE', 'V_PLANT', 'V_DEPT', 'V_TIME', 'V_PERSON', 'V_REMARK'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'Wsy/BASE_FILE_IMAGE_TABLE',
+            async: false,
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {},
+        }
+    });
     // 获取整改工单数据集
     var zggdStore = Ext.create('Ext.data.Store', { // 安全措施数据集
         id: 'zggdStore',
@@ -44,10 +66,13 @@ Ext.onReady(function () {
     var statusStore = Ext.create("Ext.data.Store", {
         storeId: 'statusStore',
         fields: ["Name", "Value"],
-        data: [
-            {Name: '失效', Value: '0'},
-            {Name: '生效', Value: '1'}
-        ]
+        data: [{
+            Name: '失效',
+            Value: '0'
+        }, {
+            Name: '生效',
+            Value: '1'
+        }]
     });
     // 获取工具数据集
     var gjStore = Ext.create('Ext.data.Store', { // 安全措施数据集
@@ -874,7 +899,7 @@ Ext.onReady(function () {
             text: '添加',
             icon: imgpath + '/add.png',
             width: 60,
-            handler: _openInsertWindow
+            handler: _openmanageWindow
         }, {
             xtype: 'button',
             text: '修改',
@@ -1025,7 +1050,33 @@ Ext.onReady(function () {
         editable: false,
         frame: true,
         region: 'center',
-        title: '检修模型网络施工图',
+        header: {
+            titlePosition: 10,
+            items: [{
+                xtype: 'tbtext',
+                docked: 'left',
+                text: '检修模型网络施工图',
+                style: 'margin: 0px 0px 0px 10px; color: #FFFFFF; font-weight: bold; font-size: 20px;'
+            }, {
+                xtype: 'button',
+                text: '添加/删除',
+                style: 'margin:0px 0px 0px 20px',
+                icon: imgpath + '/edit.png',
+                handler: _openmanageImageWindow
+            }, {
+                xtype: 'button',
+                text: '上一张',
+                style: 'margin:0px 0px 0px 20px',
+                icon: imgpath + '/accordion_collapse.png',
+                handler: _previousImage
+            }, {
+                xtype: 'button',
+                text: '下一张',
+                style: 'margin:0px 0px 0px 20px',
+                icon: imgpath + '/accordion_expand.png',
+                handler: _nextImage
+            }]
+        },
         items: [{
             layout: 'column',
             defaults: {
@@ -1047,6 +1098,307 @@ Ext.onReady(function () {
             }]
         }]
     });
+    var imageUploadFormPanel = Ext.create("Ext.form.Panel", {
+        id: 'imageUploadFormPanel',
+        frame: true,
+        border: false,
+        baseCls: 'my-panel-no-border',
+        layout: 'column',
+        defaults: {
+            labelAlign: 'right',
+            labelWidth: 100,
+            inputWidth: 140,
+            style: 'margin:5px 0px 5px 10px'
+        },
+        items: [{
+            xtype: 'filefield', //附件框
+            id: 'IMAGE_V_V_FILEBLOB',
+            name: 'V_V_FILEBLOB',
+            regex: /\.([jJ][pP][gG]){1}$|\.([jJ][pP][eE][gG]){1}$|\.([gG][iI][fF]){1}$|\.([pP][nN][gG]){1}$|\.([bB][mM][pP]){1}$/,
+            fieldLabel: '上传图片',
+            allowBlank: false,
+            buttonText: '浏览',
+            listeners: {
+                'render': function () {
+                    var FILEBLOB = Ext.getCmp('IMAGE_V_V_FILEBLOB');
+                    FILEBLOB.on('change', function (field, newValue, oldValue) {//图片预览
+                        var url = 'file:///' + FILEBLOB.getValue();//得到选择的图片路径
+                        var img_reg = /\.([jJ][pP][gG]){1}$|\.([jJ][pP][eE][gG]){1}$|\.([gG][iI][fF]){1}$|\.([pP][nN][gG]){1}$|\.([bB][mM][pP]){1}$/;
+                        if (!img_reg.test(url)) {
+                            Ext.Msg.alert('提示', '请选择图片类型的文件');
+                            imageUploadFormPanel.getForm().reset();
+                            return;
+                        }
+                    }, this);
+                }
+            }
+        }, {
+            xtype: 'button',
+            text: '上传',
+            icon: imgpath + '/edit.png',
+            handler: _uploadImage
+        }, {
+            xtype: 'button',
+            text: '删除',
+            icon: imgpath + '/delete1.png',
+            handler: _deleteImage
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_GUID',
+            name: 'V_V_GUID'
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_FILENAME',
+            name: 'V_V_FILENAME'
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_FILETYPECODE',
+            name: 'V_V_FILETYPECODE'
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_PLANT',
+            name: 'V_V_PLANT'
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_DEPT',
+            name: 'V_V_DEPT'
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_TIME',
+            name: 'V_V_TIME'
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_PERSON',
+            name: 'V_V_PERSON'
+        }, {
+            xtype: 'hidden',
+            id: 'IMAGE_V_V_REMARK',
+            name: 'V_V_REMARK'
+        }]
+
+        /*{
+            xtype: 'box',//  图片框
+            id: 'logPic',
+            border: '10 5 3 10',
+            fieldLabel: "预览照片",
+            width: 300,
+            height: 200,
+            region: 'center',
+            autoShow: true,
+            autoEl: {
+                tag: 'img',
+                src: 'http://localhost:8081/app/pm/Wsy/BASE_FILE_IMAGE_SEL?V_V_GUID=20E4C32B-B3BF-4629-B3E0-4EDABE7A32B4',
+                //下面这句不能删，删除后，图片预览在IE里无效
+                style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);'
+            }
+        }*/
+    });
+    var viewImagePanel = Ext.create("Ext.form.Panel", {
+        id: 'viewImagePanel',
+        editable: false,
+        frame: true,
+        border: false,
+        region: 'center',
+        items: [{
+            xtype: 'box',
+            id: 'browseImage2',
+            autoEl: {
+                width: '100%',
+                height: '100%',
+                tag: 'input',
+                type: 'image',
+                src: Ext.BLANK_IMAGE_URL,
+                style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe; margin-left: 0px;margin-top: 0px;',
+                id: 'imageBrowse2',
+                name: 'imageBrowse2'
+            }
+        }]
+    });
+    var manageImageGridPanel = Ext.create('Ext.grid.Panel', {
+        id: 'manageImageGridPanel',
+        store: imageStore,
+        columnLines: true,
+        border: 'false',
+        columns: [{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
+            align: 'center',
+            sortable: false
+        }, {
+            text: '图片名称',
+            dataIndex: 'V_FILENAME',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '上传时间',
+            dataIndex: 'V_TIME',
+            align: 'center',
+            width: 230,
+            renderer: function (value) {
+                var index = imageStore.find('V_TIME', value);
+                if (index != -1) {
+                    return imageStore.getAt(index).get('V_TIME').substring(0, 19);
+                }
+                return null;
+            }
+        }, {
+            text: '上传人',
+            dataIndex: 'V_PERSON',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '删除',
+            dataIndex: '',
+            align: 'center',
+            flex: 1,
+            renderer: function (value, metaData, record) {
+                return '<a href=javascript:dealWith(\'</a><a href="#" onclick="_deleteImage(\'' + record.data.V_FILEGUID + '\')">' + '删除' + '</a>';
+            }
+        }],
+        bbar: [{
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: imageStore,
+            width: '100%'
+        }],
+        listeners: {
+            itemclick: function (panel, record, item, index, e, eOpts) {
+                _viewImage(record.get('V_GUID'), record.get('V_FILEGUID'));
+            }
+        }
+    });
+    // 新增图片的Panel
+    var managetImagePanel = Ext.create('Ext.panel.Panel', {
+        id: 'managetImagePanel',
+        layout: 'border',
+        frame: true,
+        baseCls: 'my-panel-no-border',
+        border: false,
+        items: [{
+            region: 'north',
+            items: [imageUploadFormPanel]
+        }, {
+            region: 'center',
+            layout: 'fit',
+            items: [viewImagePanel]
+        }, {
+            region: 'south',
+            layout: 'fit',
+            height: '40%',
+            items: [manageImageGridPanel]
+        }]
+    });
+    // 新增图片的window
+    var manageImageWindow = Ext.create('Ext.window.Window', {
+        id: 'manageImageWindow',
+        width: 1200,
+        height: 900,
+        layout: 'border',
+        title: '新增图片',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        items: [{
+            region: 'center',
+            layout: 'fit',
+            border: false,
+            items: [managetImagePanel]
+        }],
+        buttons: [{
+            xtype: 'button',
+            text: '关闭',
+            width: 40,
+            handler: function () {
+                manageImageWindow.close();
+            }
+        }]
+    });
+    //    var fmWindow = Ext.create('Ext.window.Window', {
+    //        id: 'fmWindow',
+    //        modal: true,
+    //        title: "图片上传",
+    //        width: 1280,
+    //        closable: false,
+    //        height: 1500,
+    //        minWidth: 300,
+    //        minHeight: 100,
+    //        layout: "fit",
+    //        plain: true,
+    //        bodyStyle: "padding:5px;",
+    //        buttonAlign: "center",
+    //        imageLock: false,
+    //        items: [imageUpload],
+    //        buttons: [{
+    //            text: "上传",
+    //            handler: function () {
+    //                if (imageUpload.form.isValid()) {
+    //                    imageUpload.getForm().submit({
+    //                        url: './uploadRecFileImg.action',
+    //                        params: {
+    //                            fileaddr: _fileaddr,
+    //                            serverip: _serverip
+    //                        },
+    //                        method: 'POST',
+    //                        success: function (form, action) {
+    //                            if (action.result.msg == '上传成功') {
+    //                                Ext.Msg.alert("提示", "上传成功！设为封面成功");
+    //                                ds_imgfile_view.reload();
+    //                                fmWindow.close();
+    //                            } else if (action.result.msg == '上传失败') {
+    //                                Ext.Msg.alert("提示", "上传失败");
+    //                                ds_imgfile_view.reload();
+    //                            }
+    //                            fmWindow.close();
+    //                        }, failure: function (form, action) {
+    //                            Ext.Msg.alert("Error", action.result.msg);
+    //                        }
+    //                    });
+    //                }
+    //            }
+    //        }, {
+    //            text: "取消", handler: function () {
+    //                fmWindow.close();
+    //            }
+    //        }],
+    //        listeners: {
+    //            beforeclose: function () {
+    //                // 关闭前销毁
+    //                fmWindow.destroy();
+    //            }
+    //        }
+    //    }).show();
+    //    var editImagePanel = Ext.create('Ext.form.Panel', {
+    //        id: 'editImagePanel',
+    //        frame: true,
+    //        border: false,
+    //        baseCls: 'my-panel-no-border',
+    //        layout: 'column',
+    //        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:5px 0px 5px 10px'},
+    //        items: [
+    //            {
+    //                xtype: 'filefield',
+    //                id: 'V_V_FILEBLOB_',
+    //                name: 'V_V_FILEBLOB',
+    //                enctype: "multipart/form-data",
+    //                buttonText: '浏览'
+    //            },
+    //            {xtype: 'button', text: '上传', icon: imgpath + '/edit.png', handler: _upLoadAqCsFj},
+    //            {xtype: 'button', text: '删除', icon: imgpath + '/delete1.png', handler: _deleteAqCsFj},
+    //            {xtype: 'hidden', id: 'V_V_GUID_', name: 'V_V_GUID'},
+    //            {xtype: 'hidden', id: 'V_V_FILENAME_', name: 'V_V_FILENAME'},
+    //            {xtype: 'hidden', id: 'V_V_FILETYPECODE_', name: 'V_V_FILETYPECODE'},
+    //            {xtype: 'hidden', id: 'V_V_PLANT_', name: 'V_V_PLANT'},
+    //            {xtype: 'hidden', id: 'V_V_DEPT_', name: 'V_V_DEPT'},
+    //            {xtype: 'hidden', id: 'V_V_TIME_', name: 'V_V_TIME'},
+    //            {xtype: 'hidden', id: 'V_V_PERSON_', name: 'V_V_PERSON'},
+    //            {xtype: 'hidden', id: 'V_V_REMARK_', name: 'V_V_REMARK'}
+    //        ]
+    //    });
     // 工种按钮组panel
     var gzButtonPanel = Ext.create('Ext.Panel', {
         id: 'gzButtonPanel',
@@ -1393,9 +1745,9 @@ Ext.onReady(function () {
         border: false,
         layout: 'border',
         /*
-         * { type: 'border', regionWeights: {north: 3, east: 1, south: 1, west:
-         * 4} }
-         */
+			 * { type: 'border', regionWeights: {north: 3, east: 1, south: 1, west:
+			 * 4} }
+			 */
         items: [{
             region: 'north',
             layout: 'fit',
@@ -1570,13 +1922,13 @@ Ext.onReady(function () {
             icon: imgpath + '/add.png',
             handler: _openAddaqcsWindow
         }/*, {
-            xtype: 'button',
-            text: '修改',
-            width: 60,
-            style: 'margin:5px 0px 5px 10px',
-            icon: imgpath + '/edit.png',
-            handler: _openEditaqcsWindow
-        }*/, {
+			            xtype: 'button',
+			            text: '修改',
+			            width: 60,
+			            style: 'margin:5px 0px 5px 10px',
+			            icon: imgpath + '/edit.png',
+			            handler: _openEditaqcsWindow
+			        }*/, {
             xtype: 'button',
             text: '删除',
             width: 60,
@@ -1608,15 +1960,15 @@ Ext.onReady(function () {
             dataIndex: 'V_AQCS_BBH',
             align: 'center',
             flex: 1
-        }/*, {
-            text: '删除',
-            dataIndex: '',
-            align: 'center',
-            flex: 0.7,
-            renderer: function (v) {
-                return "<span style='margin-right:10px'><a href='#' onclick='_deleteAqcs()'>删除</a></span>";
-            }
-        }*/],
+        } /*, {
+			            text: '删除',
+			            dataIndex: '',
+			            align: 'center',
+			            flex: 0.7,
+			            renderer: function (v) {
+			                return "<span style='margin-right:10px'><a href='#' onclick='_deleteAqcs()'>删除</a></span>";
+			            }
+			        }*/],
         bbar: [{
             id: 'aqcsPanel1_toolbar',
             xtype: 'pagingtoolbar',
@@ -4938,6 +5290,168 @@ Ext.onReady(function () {
     });
 });
 
+// 打开修改施工图窗口
+function _openmanageImageWindow() {
+    var records = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一个检修模型!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    Ext.getCmp('imageUploadFormPanel').getForm().reset();
+    Ext.getCmp('manageImageWindow').show();
+    Ext.getCmp('manageImageGridPanel').getSelectionModel().select(imageStore.getAt(index));
+    Ext.getCmp('browseImage2').getEl().dom.src = Ext.getCmp('browseImage').getEl().dom.src;
+}
+
+// 上一张图片
+function _previousImage() {
+    var records = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择检修模型!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    if (V_V_FILEGUID == picguidbegin) {
+        Ext.Msg.alert('提示信息', '已经是第一张');
+        return;
+    } else {
+        if (index == 0) {
+            Ext.Msg.alert('提示信息', '已经到第一张');
+            return;
+        }
+        index--;
+        V_V_FILEGUID = imageStore.getAt(index).get('V_FILEGUID');
+        var url = AppUrl + 'Wsy/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID');
+        Ext.getCmp("browseImage").getEl().dom.src = url;
+    }
+}
+
+// 下一张图片
+function _nextImage() {
+    var records = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择检修模型!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    if (imageStore.getCount() <= 1) {
+        Ext.Msg.alert('提示信息', '已经是最后一张');
+        return;
+    } else {
+        if (index == imageStore.getCount() - 1) {
+            Ext.Msg.alert('提示信息', '已经到最后一张');
+            return;
+        }
+        index++;
+        V_V_FILEGUID = imageStore.getAt(index).get('V_FILEGUID');
+        var url = AppUrl + 'Wsy/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID');
+        Ext.getCmp("browseImage").getEl().dom.src = url;
+    }
+}
+
+function _uploadImage() {
+    var FILEBLOB = Ext.getCmp('IMAGE_V_V_FILEBLOB').getSubmitValue();
+    if (FILEBLOB == '') {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '图片未选择!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    var FILENAME = FILEBLOB.substring(FILEBLOB.lastIndexOf('\\') + 1, FILEBLOB.length);
+    var FILETYPE = FILEBLOB.substring(FILEBLOB.lastIndexOf('.') + 1, FILEBLOB.length);
+    var records = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
+    Ext.getCmp('IMAGE_V_V_GUID').setValue(records[0].data.V_MX_CODE);
+    Ext.getCmp('IMAGE_V_V_FILENAME').setValue(FILENAME);
+    Ext.getCmp('IMAGE_V_V_FILETYPECODE').setValue(FILETYPE);
+    Ext.getCmp('IMAGE_V_V_PLANT').setValue(Ext.getCmp('plant').getValue());
+    Ext.getCmp('IMAGE_V_V_DEPT').setValue(Ext.getCmp('dept').getValue());
+    Ext.getCmp('IMAGE_V_V_TIME').setValue(Ext.Date.format(new Date(), 'Y-m-d'));
+    Ext.getCmp('IMAGE_V_V_PERSON').setValue(Ext.util.Cookies.get('v_personcode'));
+    Ext.getCmp('IMAGE_V_V_REMARK').setValue('');
+    Ext.getCmp('imageUploadFormPanel').submit({
+        url: AppUrl + 'Wsy/BASE_FILE_IMAGE_INS',
+        async: false,
+        waitMsg: '上传中...',
+        method: 'POST',
+        success: function (form, action) {
+            var data = action.result;
+            Ext.Msg.alert("信息", "成功！");
+            Ext.getCmp('imageUploadFormPanel').getForm().reset();
+            _viewImage(records[0].data.V_MX_CODE, data.FILE_GUID);
+            _preViewImage(records[0].data.V_MX_CODE);
+        },
+        failure: function (resp) {
+            Ext.Msg.alert("信息", "失败！");
+            Ext.getCmp('imageUploadFormPanel').getForm().reset();
+        }
+    });
+}
+
+// 删除图片
+function _deleteImage() {
+    var records = Ext.getCmp('manageImageGridPanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一条记录!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    Ext.Ajax.request({
+        url: AppUrl + 'Wsy/BASE_FILE_IMAGE_DEL',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            'V_V_GUID': records[0].get('V_FILEGUID')
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);
+            if (data.V_INFO == 'SUCCESS') {
+                Ext.Msg.alert('提示信息', '删除成功');
+                Ext.getCmp('browseImage2').getEl().dom.src = Ext.BLANK_IMAGE_URL;
+                _preViewImage(records[0].data.V_GUID);
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: '删除失败',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+}
+
 // 打开添加工种窗口
 function _openAddgzWindow() {
     var gxRecords = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
@@ -5999,6 +6513,19 @@ function _openAddgdWindow() {
     }
 }
 
+function _openAddgdWindow(maskku) {
+    var gxRecords = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
+    if (gxRecords.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一个检修工序!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+}
+
 // 添加选择的工单
 function _addgd() {
 }
@@ -6146,11 +6673,31 @@ function _querygx(V_MX_CODE) {
 
 // 点击检修模型item显示网络施工图
 function _preViewImage(V_MX_CODE) {
-    Ext.getCmp("browseImage").getEl().dom.src = '';
+    Ext.getCmp('browseImage').getEl().dom.src = Ext.BLANK_IMAGE_URL;
+    var imageStore = Ext.data.StoreManager.lookup('imageStore');
+    imageStore.removeAll();
     if (V_MX_CODE != null) {
-        var url = AppUrl + 'Wsy/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_MX_CODE;
-        Ext.getCmp("browseImage").getEl().dom.src = url;
+        imageStore.load({
+            params: {
+                'V_V_GUID': V_MX_CODE,
+                'V_V_FILEGUID': ''
+            }
+        });
+        index = 0;
+        imageStore.on("load", function () {
+            if (imageStore.getCount() != 0) {
+                V_V_FILEGUID = imageStore.getAt(0).get('V_FILEGUID');
+                var url = AppUrl + 'Wsy/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_MX_CODE + '&V_V_FILEGUID=' + V_V_FILEGUID;
+                Ext.getCmp("browseImage").getEl().dom.src = url;
+                picguidbegin = V_V_FILEGUID;
+            }
+        });
     }
+}
+
+function _viewImage(V_V_GUID, V_V_FILEGUID) {
+    var url = AppUrl + 'Wsy/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_V_GUID + '&V_V_FILEGUID=' + V_V_FILEGUID;
+    Ext.getCmp('browseImage2').getEl().dom.src = url;
 }
 
 // 点击工序item查询工种
@@ -6477,7 +7024,7 @@ function _queryjjxx(V_JJ_CODE) {
 function _select() {
 }
 
-function _insert() {
+function _manage() {
 }
 
 function _update() {
@@ -6543,7 +7090,7 @@ function _openAttachWindow(V_ZG_GUID) {
 }
 
 // 打开新增窗口
-function _openInsertWindow() {
+function _openmanageWindow() {
     var selectedNode = null;
     selectedNode = Ext.getCmp('sblxTreePanel').getSelectionModel().selected.items[0]; // 获取当前节点
     Ext.getCmp('editPanel').getForm().reset();
@@ -6681,7 +7228,7 @@ function _save() {
             V_V_DEPTCODE: Ext.getCmp('WIN_DEPTCODE').getValue(),
             V_V_EQUTYPECODE: Ext.getCmp('WIN_EQUTYPECODE').getValue(),
             V_V_EQUCODE: Ext.getCmp('WIN_EQUCODE').getValue(),
-            V_V_EQUCODE_CHILD: Ext.getCmp('WIN_EQUCODE_CHILD').getValue(),
+            V_V_EQUCODE_CHILD: (Ext.getCmp('WIN_EQUCODE_CHILD').getValue() != null) ? Ext.getCmp('WIN_EQUCODE_CHILD').getValue() : '%',
             V_V_REPAIRMAJOR_CODE: '',
             V_V_BZ: Ext.getCmp('WIN_BZ').getValue(),
             V_V_HOUR: '',
