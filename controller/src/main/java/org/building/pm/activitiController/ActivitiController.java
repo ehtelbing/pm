@@ -13,7 +13,6 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.building.pm.Entity.AssigneeEntity;
 import org.building.pm.controller.cjyController;
 import org.building.pm.service.ActivitiService;
 import org.building.pm.service.PM_03Service;
@@ -985,17 +984,20 @@ public class ActivitiController {
      *
      * @param instanceId 流程实例Id
      * @param activityId 活动Id
-     * @param assignee   激活步骤用户
+     * @param assignees  激活步骤用户
      * @return boolean
      */
     @RequestMapping(value = "activateActivityCancelCurrent", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> activateActivityCancelCurrent(@RequestParam(value = "instanceId") String instanceId,
+    public Map<String, Object> activateActivityCancelCurrent(@RequestParam(value = "businesskey") String businesskey,
+                                                             @RequestParam(value = "flowtype") String flowtype,
+                                                             @RequestParam(value = "instanceId") String instanceId,
                                                              @RequestParam(value = "activityId") String activityId,
-                                                             @RequestParam(value = "assignee") List<AssigneeEntity> assignees) throws SQLException {
+                                                             @RequestParam(value = "flowStep") String flowStep,
+                                                             @RequestParam(value = "assignees") String[] assignees) throws SQLException {
 
         Map map = new HashMap();
-        boolean retsult = activitiService.activateActivityCancelCurrent(instanceId, activityId, assignees);
+        boolean retsult = activitiService.activateActivityCancelCurrent(instanceId, activityId, flowStep, assignees);
         return map;
 
     }

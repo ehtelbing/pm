@@ -20,7 +20,6 @@ import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.log4j.Logger;
-import org.building.pm.Entity.AssigneeEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -179,7 +178,7 @@ public class ActivitiService {
         return result;
     }
 
-    public boolean activateActivityCancelCurrent(String instanceId, String activityId, List<AssigneeEntity> assignees) throws SQLException {
+    public boolean activateActivityCancelCurrent(String instanceId, String activityId,String flowStep,String[] assignees) throws SQLException {
         try {
             Map<String, Object> variables;
             ProcessInstance instance = runtimeService.createProcessInstanceQuery()
@@ -236,10 +235,11 @@ public class ActivitiService {
                 if (!currTask.isSuspended()) {
                     variables = currTask.getProcessVariables();
                     List<String> assigneeList = new ArrayList<>();
-                    for (AssigneeEntity assignee : assignees) {
-                        assigneeList.add(assignee.toString());
+
+                    for (int i=0;i<assignees.length;i++) {
+                        assigneeList.add(assignees[i].toString());
                     }
-                    variables.put("assigneeList", assigneeList);
+                    variables.put(flowStep, assigneeList);
                     taskService.complete(currTask.getId(), variables);
 
                     historyService.deleteHistoricTaskInstance(currTask.getId());
@@ -303,14 +303,14 @@ public class ActivitiService {
         }
     }
 
-    public boolean adjustActivityAssignee(String instanceId, String activityId, List<AssigneeEntity> assignees) {
+    public boolean adjustActivityAssignee(String instanceId, String activityId, String[] assignees) {
         try {
             boolean flag = true;
             List<Task> runTasks = taskService.createTaskQuery()
                     .processInstanceId(instanceId).taskDefinitionKey(activityId).list();
 
-            for (AssigneeEntity assigneeEntity : assignees) {
-                flag = addActivityTask(instanceId, activityId, assigneeEntity);
+            for (int i=0;i<assignees.length;i++) {
+                flag = addActivityTask(instanceId, activityId, assignees[i].toString());
             }
 
             if (flag) {
@@ -333,11 +333,11 @@ public class ActivitiService {
      * @param assignee   指派的用户
      * @return boolean
      */
-    private boolean addActivityTask(String instanceId, final String activityId, final AssigneeEntity assignee) {
+    private boolean addActivityTask(String instanceId, final String activityId, final String assignee) {
         return addActivityTask(instanceId, activityId, assignee, false);
     }
 
-    private boolean addActivityTask(String instanceId, final String activityId, final AssigneeEntity assignee, boolean check) {
+    private boolean addActivityTask(String instanceId, final String activityId, final String assignee, boolean check) {
         try {
             final List<Task> tasks = taskService.createTaskQuery().processInstanceId(instanceId)
                     .taskDefinitionKey(activityId).list();
@@ -409,9 +409,9 @@ public class ActivitiService {
      * @param assignee 用户
      * @return true:已经包含
      */
-    private boolean checkAssignee(List<Task> tasks, AssigneeEntity assignee) {
+    private boolean checkAssignee(List<Task> tasks, String assignee) {
         for (Task task : tasks) {
-            if (assignee.toString().equals(task.getAssignee())) return true;
+            if (assignee.equals(task.getAssignee())) return true;
         }
         return false;
     }
