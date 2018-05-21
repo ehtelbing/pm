@@ -129,7 +129,7 @@ Ext.onReady(function () {
         listeners: {
             'beforeexpand': function (node, eOpts) {
                 //点击父亲节点的菜单会将节点的id通过ajax请求，将到后台
-                this.proxy.extraParams.V_V_DEPTCODE = node.raw.sid;
+                this.proxy.extraParams.V_V_DEPTCODE = node.raw.id;
                 this.proxy.extraParams.V_V_FLAG = 'false';
             }
         }
@@ -154,7 +154,7 @@ Ext.onReady(function () {
         region: 'west',
         layout:'border',
         border:false,
-        width: '10%',
+        width: '16%',
         items:[
             {
                 xtype: 'panel',
@@ -555,7 +555,7 @@ Ext.onReady(function () {
     var centerPanel1= Ext.create('Ext.panel.Panel', {
         region: 'center',
         layout: 'border',
-        width:'35%',
+        width:'19%',
         border: false,
         items: [{
             xtype: 'panel',
@@ -1303,7 +1303,7 @@ Ext.onReady(function () {
             var treeStore = Ext.data.StoreManager.lookup('treeStore');
             treeStore.proxy.extraParams = {
                 V_V_DEPTCODE: Ext.getCmp('plantname').getValue(),
-                V_V_DEPTTYPE:  '[主体作业区]',
+                //V_V_DEPTTYPE:  '[主体作业区]',
                 V_V_FLAG: 'true'
             };
             treeStore.currentPage = 1;

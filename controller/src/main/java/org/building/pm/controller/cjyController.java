@@ -2029,7 +2029,6 @@ public class cjyController {
     @ResponseBody
     public List<Map> selectPersonTreeFromDept(
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-            @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
             @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
             HttpServletRequest request, HttpServletResponse response, HttpSession session)
             throws JsonProcessingException,
@@ -2037,23 +2036,7 @@ public class cjyController {
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> menu = new ArrayList<Map>();
         if (V_V_FLAG.equals("true")) {
-            HashMap data = cjyService.PRO_BASE_DEPT_VIEW(V_V_DEPTCODE, V_V_DEPTTYPE);
-            List<Map<String, Object>> deptList = (List<Map<String, Object>>) data.get("list");
-            Map<String, Object> budgetClass;
-            for (int i = 0; i < deptList.size(); i++) {
-                budgetClass = deptList.get(i);
-                Map temp = new HashMap();
-                temp.put("parentid", budgetClass.get("V_DEPTCODE"));
-                temp.put("sid", budgetClass.get("V_DEPTCODE"));
-                temp.put("text", budgetClass.get("V_DEPTNAME"));
-                temp.put("expanded", false);
-                //result.add(temp);
-                menu.add(temp);
-                //fillChildren(budgetClass);
-
-            }
-
-            result.put("success", true);
+            menu = cjyService.OrgAndWorkspaceTree(V_V_DEPTCODE);
         } else {
             Map data = cjyService.BASE_PERSON_SEL_BYDEPT(V_V_DEPTCODE);
             Map<String, Object> subMatBudgetCat;

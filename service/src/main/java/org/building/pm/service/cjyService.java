@@ -4999,4 +4999,58 @@ public class cjyService {
         logger.info("end PRO_PM_03_PLAN_DX_SET_STATE");
         return result;
     }
+
+    public List<Map> OrgAndWorkspaceTree(String V_V_DEPTCODE) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_TREE");
+        List<Map> menu = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_TREE" + "(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            for(int i = 0; i < list.size(); i++) {
+                if (list.get(i).get("V_DEPTCODE_UP").equals("99")) {
+                    Map temp = new HashMap();
+                    temp.put("parentid","");
+                    temp.put("sid", "");
+                    temp.put("text",list.get(i).get("V_DEPTNAME"));
+                    temp.put("expanded", false);
+                    temp.put("children", GetDeptChildren1(list, V_V_DEPTCODE));
+                    menu.add(temp);
+                }
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_BASE_DEPT_TREE");
+        return menu;
+    }
+    public List<Map> GetDeptChildren1(List<HashMap> list, String V_V_DEPTCODE)throws SQLException{
+        List<Map> menu = new ArrayList<Map>();
+        for(int i = 0; i < list.size(); i++){
+            if (list.get(i).get("V_DEPTCODE_UP").equals(V_V_DEPTCODE)) {
+                Map temp = new HashMap();
+                temp.put("id", list.get(i).get("V_DEPTCODE"));
+                temp.put("text", list.get(i).get("V_DEPTNAME"));
+                temp.put("leaf", false);
+                temp.put("expanded", false);
+                if(GetDeptChildren1(list, list.get(i).get("V_DEPTCODE").toString()).size()>0){
+                    temp.put("children", GetDeptChildren1(list, list.get(i).get("V_DEPTCODE").toString()));
+                }else{
+                    temp.put("leaf", false);
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
 }
