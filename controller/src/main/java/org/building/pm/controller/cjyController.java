@@ -3038,10 +3038,21 @@ public class cjyController {
                                       @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
                                       HttpServletRequest request,
                                       HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_PM_03_PLAN_DX_SET(V_V_INPER,V_V_GUID,V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE,
-                V_V_EQUCODE,V_V_REPAIRMAJOR_CODE, V_V_CONTENT, V_V_STARTTIME, V_V_ENDTIME, V_V_HOUR,V_V_BZ,V_V_DEFECTGUID);
+        Map result = cjyService.PRO_PM_03_PLAN_DX_SET(V_V_INPER, V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE,
+                V_V_EQUCODE, V_V_REPAIRMAJOR_CODE, V_V_CONTENT, V_V_STARTTIME, V_V_ENDTIME, V_V_HOUR, V_V_BZ, V_V_DEFECTGUID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_DX_SET_STATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_DX_SET_STATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                           @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_DX_SET_STATE(V_V_GUID, V_V_STATECODE);
+        return result;
+    }
+
 }
 
 
