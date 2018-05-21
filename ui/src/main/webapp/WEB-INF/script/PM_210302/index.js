@@ -10,9 +10,13 @@ var sh = window.screen.height / 2 - 10;
 var sw = window.screen.width / 2 + 220;
 
 var ProcessInstanceId = '';
+var BusinessKey = '';
+var flowtype = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
-    (parameters.ProcessInstanceId == ProcessInstanceId) ? V_GUID = "" : ProcessInstanceId = parameters.ProcessInstanceId;
+    (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
+    (parameters.BusinessKey == BusinessKey) ? BusinessKey = "" : BusinessKey = parameters.BusinessKey;
+    (parameters.flowtype == flowtype) ? flowtype = "" : flowtype = parameters.flowtype;
 
 }
 
@@ -212,9 +216,12 @@ function _activiti(activityId,assignee){
         type: 'ajax',
         method: 'POST',
         params: {
+            businesskey:BusinessKey,
+            flowtype:flowtype,
             instanceId: ProcessInstanceId,
             activityId: activityId,
-            assignee : assignee
+            flowStep:activityId,
+            assignees : assignee
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);

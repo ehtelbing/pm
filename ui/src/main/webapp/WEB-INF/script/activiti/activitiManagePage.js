@@ -60,7 +60,7 @@ Ext.onReady(function () {
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href=javascript:_dealWith(\'' + record.data.ProcessDefinitionKey + '\',\'' + record.data.TaskDefinitionKey + '\',\''
                     + record.data.BusinessKey + '\',\'' + record.data.ProcessInstanceId + '\')>' + '取消流程' + '</a>&nbsp;&nbsp;&nbsp;' +
-                    '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\')">' + '流程管理' + '</a>';
+                    '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>';
             }
         }, {
             text: '流程类型',
@@ -277,9 +277,9 @@ function QueryGrid(){
     });
 }
 
-function _preViewProcess(ProcessInstanceId) {
+function _preViewProcess(ProcessInstanceId,BusinessKey) {
     var owidth = window.screen.availWidth;
     var oheight =  window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_210302/index.html?ProcessInstanceId='
-        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+        +  ProcessInstanceId+'&BusinessKey='+BusinessKey+'&flowtype='+Ext.ComponentManager.get("tabpanel").getActiveTab().id, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }
