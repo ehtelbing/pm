@@ -119,11 +119,112 @@ Ext.onReady(function () {
         }
     });
 
+    var	form = Ext.create('Ext.form.Panel', {
+        title: '部署流程',
+        width: '100%',
+        height:'100%',
+        bodyPadding: 10,
+        frame: true,
+        defaults:{
+            labelWidth:80
+        },
+        items: [
+            {
+                xtype: 'textfield',
+                name: 'deployName',
+                fieldLabel: '发布名称',
+                allowBlank: false
+            },
+            {
+                xtype: 'filefield',
+                name: 'processFile',
+                id: 'processFile',
+                fieldLabel: '流程文件名',
+                msgTarget: 'side',
+                allowBlank: false,
+                anchor: '100%',
+                buttonText: '选择文件...'
+            }],
+
+        buttons: [{
+            text: '发布',
+            handler: function() {
+                var form = this.up('form').getForm();
+                if(form.isValid()){
+                    form.submit({
+                        url:AppUrl + 'Activiti/ModelDeployProcess',
+                        waitMsg: '请等待...',
+                        success: function(fp, o) {
+
+                        },
+                        failure: function(form, action) {
+                            if(action.result.ret=="部署流程成功"){
+                                Ext.Msg.alert("消息","发布成功");
+                            }
+                        }
+                    });
+                }
+            }
+        }]
+    });
+
+    var startPanel = Ext.create('Ext.Panel', {
+        title:'发起流程',
+        id : 'startPanel',
+        width: '100%',
+        height:'100%',
+        autoScroll: true,
+        frame:true,
+        region:'center',
+        layout:'border',
+        items : [        ]
+    });
+
+    var Panel = Ext.create('Ext.Panel', {
+        title:'流程管理',
+        id : 'Panel',
+        width: '100%',
+        height:'100%',
+        autoScroll: true,
+        frame:true,
+        region:'center',
+        layout:'border',
+        items : [buttonPanel,tabpanel,grid
+        ]
+    });
+
+    var endPanel = Ext.create('Ext.Panel', {
+        title:'放弃流程',
+        id : 'endPanel',
+        width: '100%',
+        height:'100%',
+        autoScroll: true,
+        frame:true,
+        region:'center',
+        layout:'border',
+        items : [        ]
+    });
+
+    var tabpanelW = Ext.create("Ext.tab.Panel", {
+        id: 'tabpanelW',
+        region: 'center',
+        width: '100%',
+        height:'100%',
+        items:[form,startPanel,Panel,endPanel]/*,
+        listeners: {
+            tabchange: function () {
+                Ext.ComponentManager.get("tabid").setValue(Ext.getCmp('tabpanel').getActiveTab().id);
+                QueryGrid();
+            }
+        }*/
+    });
+
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [ buttonPanel,tabpanel,grid]
+        items: [ tabpanelW]
     });
+
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
@@ -179,6 +280,6 @@ function QueryGrid(){
 function _preViewProcess(ProcessInstanceId) {
     var owidth = window.screen.availWidth;
     var oheight =  window.screen.availHeight - 50;
-    window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+    window.open(AppUrl + 'page/PM_210302/index.html?ProcessInstanceId='
         +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }
