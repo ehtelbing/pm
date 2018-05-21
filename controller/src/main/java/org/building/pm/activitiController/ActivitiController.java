@@ -8,14 +8,12 @@ import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.HistoricProcessInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
+import org.building.pm.Entity.AssigneeEntity;
 import org.building.pm.controller.cjyController;
 import org.building.pm.service.ActivitiService;
 import org.building.pm.service.PM_03Service;
@@ -582,6 +580,7 @@ public class ActivitiController {
         return sql;
     }
 
+
     //通过业务Id获得流程实例信息
     @RequestMapping(value = "GetInstanceFromBusinessId", method = RequestMethod.POST)
     @ResponseBody
@@ -625,6 +624,7 @@ public class ActivitiController {
         }
         return result;
     }
+
 
     //通过业务Id获得该流程的最新流程步骤
     @RequestMapping(value = "GetActivitiStepFromBusinessId", method = RequestMethod.POST)
@@ -978,4 +978,26 @@ public class ActivitiController {
         }
         return acdata;
     }
+
+
+    /**
+     * 激活流程活动，放弃当前任务,并向激活步骤添加单一用户
+     *
+     * @param instanceId 流程实例Id
+     * @param activityId 活动Id
+     * @param assignee   激活步骤用户
+     * @return boolean
+     */
+    @RequestMapping(value = "activateActivityCancelCurrent", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> activateActivityCancelCurrent(@RequestParam(value = "instanceId") String instanceId,
+                                                             @RequestParam(value = "activityId") String activityId,
+                                                             @RequestParam(value = "assignee") List<AssigneeEntity> assignees) throws SQLException {
+
+        Map map = new HashMap();
+        boolean retsult = activitiService.activateActivityCancelCurrent(instanceId, activityId, assignees);
+        return map;
+
+    }
+
 }
