@@ -83,6 +83,7 @@ public class ActivitiController {
 
     @Value("#{configProperties['infopub.password']}")
     private String infopubpassword;
+
     //部署流程
     @RequestMapping(value = "ModelDeployProcess", method = RequestMethod.POST)
     @ResponseBody
@@ -398,7 +399,13 @@ public class ActivitiController {
         Map result = new HashMap();
 
         try {
-            int total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).count();
+            int total = 0;
+
+            if (PersonCode.equals("ActivitiManage")) {
+                total = (int) taskService.createTaskQuery().count();
+            } else {
+                total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).count();
+            }
 
             result.put("total", total);
             result.put("msg", "Ok");
@@ -424,13 +431,22 @@ public class ActivitiController {
         for (int i = 0; i < list.size(); i++) {
             Map ret = new HashMap();
             Map map = (Map) list.get(i);
-
+            int total = 0;
             if (FlowCode.equals("")) {
-                int total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                if (PersonCode.equals("ActivitiManage")) {
+                    total = (int) taskService.createTaskQuery().processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                } else {
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                }
+
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
                 ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
             } else {
-                int total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                if (PersonCode.equals("ActivitiManage")) {
+                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                } else {
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                }
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
                 ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
             }
@@ -462,9 +478,21 @@ public class ActivitiController {
         try {
             List<Task> taskList = null;
             if (FlowCode.equals("")) {
-                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                if (PersonCode.equals("ActivitiManage")) {
+                    taskList = taskService.createTaskQuery().processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().processVariableValueEquals("flow_type", FlowType).count();
+                } else {
+                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", FlowType).count();
+                }
             } else {
-                taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                if (PersonCode.equals("ActivitiManage")) {
+                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).count();
+                } else {
+                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).count();
+                }
             }
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -501,11 +529,11 @@ public class ActivitiController {
                 }
 
                 if (taskmap.get("flow_type").equals("WORK")) {
-                    HashMap MATERIALNAME=activitiService.PRO_WORKORDER_SPARE_GET(taskmap.get("BusinessKey").toString());
-                    if(MATERIALNAME.size()>0){
-                        List list= (List) MATERIALNAME.get("list");
-                        Map map= (Map) list.get(0);
-                        taskmap.put("MATERIALNAME",map.get("V_MATERIALNAME").toString());
+                    HashMap MATERIALNAME = activitiService.PRO_WORKORDER_SPARE_GET(taskmap.get("BusinessKey").toString());
+                    if (MATERIALNAME.size() > 0) {
+                        List list = (List) MATERIALNAME.get("list");
+                        Map map = (Map) list.get(0);
+                        taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
                 }
 
@@ -833,16 +861,16 @@ public class ActivitiController {
                                             @RequestParam(value = "businessKey") String businessKey) throws SQLException {
         Map result = new HashMap();
         Map map = new HashMap();
-        String flowtype="error";
+        String flowtype = "error";
 
-        if(processKey.indexOf("Month")!=-1){
-            flowtype="月计划";
+        if (processKey.indexOf("Month") != -1) {
+            flowtype = "月计划";
         }
-        if(processKey.indexOf("Week")!=-1){
-            flowtype="周计划";
+        if (processKey.indexOf("Week") != -1) {
+            flowtype = "周计划";
         }
-        if(processKey.indexOf("WorkOrder")!=-1){
-            flowtype="工单";
+        if (processKey.indexOf("WorkOrder") != -1) {
+            flowtype = "工单";
         }
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 
@@ -858,10 +886,10 @@ public class ActivitiController {
             taskService.complete(taskId, map);
             result.put("ret", "任务提交成功");
             result.put("msg", "OK");
-            String mes=cjyController.MessageSend("1", flowtype, V_NEXTPER);
-            if(mes.equals("fail")){
+            String mes = cjyController.MessageSend("1", flowtype, V_NEXTPER);
+            if (mes.equals("fail")) {
                 cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
-            }else{
+            } else {
                 cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
             }
 
@@ -878,16 +906,16 @@ public class ActivitiController {
     @RequestMapping(value = "TaskCompletePL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> TaskCompletePL(@RequestParam(value = "taskId") String taskId,
-                                            @RequestParam(value = "idea") String idea,
-                                            @RequestParam(value = "parName") String[] parName,
-                                            @RequestParam(value = "parVal") String[] parVal,
-                                            @RequestParam(value = "V_IDEA") String V_IDEA,
-                                            @RequestParam(value = "V_INPER") String V_INPER,
-                                            @RequestParam(value = "V_NEXTPER") String V_NEXTPER,
-                                            @RequestParam(value = "V_STEPNAME") String V_STEPNAME,
-                                            @RequestParam(value = "V_STEPCODE") String V_STEPCODE,
-                                            @RequestParam(value = "processKey") String processKey,
-                                            @RequestParam(value = "businessKey") String businessKey) throws SQLException {
+                                              @RequestParam(value = "idea") String idea,
+                                              @RequestParam(value = "parName") String[] parName,
+                                              @RequestParam(value = "parVal") String[] parVal,
+                                              @RequestParam(value = "V_IDEA") String V_IDEA,
+                                              @RequestParam(value = "V_INPER") String V_INPER,
+                                              @RequestParam(value = "V_NEXTPER") String V_NEXTPER,
+                                              @RequestParam(value = "V_STEPNAME") String V_STEPNAME,
+                                              @RequestParam(value = "V_STEPCODE") String V_STEPCODE,
+                                              @RequestParam(value = "processKey") String processKey,
+                                              @RequestParam(value = "businessKey") String businessKey) throws SQLException {
         Map result = new HashMap();
         Map map = new HashMap();
 
@@ -912,6 +940,7 @@ public class ActivitiController {
 
         return result;
     }
+
     /*
      * 批量审批
      * */
