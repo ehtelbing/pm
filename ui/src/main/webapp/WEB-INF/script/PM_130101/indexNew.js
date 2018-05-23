@@ -17,8 +17,33 @@ Ext.onReady(function () {
     } else {
         minutes_ = dt.getMinutes();
     }
-    get_hours_ = hours_ + '时'
-    get_minutes_ = minutes_ + '分'
+    get_hours_ = hours_ + '时';
+    get_minutes_ = minutes_ + '分';
+
+
+    //加油量数据集
+    var jylStore = Ext.create('Ext.data.Store', {
+        autoLoad: true,
+        storeId: 'jylStore',
+        fields: [
+            'V_BASECODE', 'V_BASENAME'
+        ],
+        proxy: {
+            type: 'ajax',
+            actionMethods: {read: 'POST'},
+            url: AppUrl + 'zs/DROPLIST_FUELQUANTITY',
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('i_unit').select(store.first());
+            }
+        }
+    });
 
 
     //设备树
@@ -128,6 +153,7 @@ Ext.onReady(function () {
                                                 Ext.getCmp('f_oilamount').reset();
                                                 Ext.getCmp('i_unit').reset();
                                                 Ext.data.StoreManager.lookup('droplist_lubaddtype').load();
+                                                Ext.data.StoreManager.lookup('jylStore').load();
                                                 Ext.getCmp('v_operateperson').reset();
                                                 Ext.getCmp('d_operatedate').reset();
                                                 Ext.getCmp('xiaoshi').setValue(get_hours_);
@@ -353,10 +379,9 @@ Ext.onReady(function () {
                 editable: false,
                 width: 60,
                 style: 'margin:12px 0px 0px 2px',
-                store: [["1", "1"], ["2", "2"], ["3", "3"]],
-                value: '1',
-                displayField: 'name',
-                valueField: 'code'
+                store: jylStore,
+                displayField: 'V_BASENAME',
+                valueField: 'V_BASECODE'
             },
 
             {
@@ -600,9 +625,9 @@ Ext.onReady(function () {
                 editable: true,
                 width: 60,
                 style: 'margin:12px 0px 0px 2px',
-                store: [["1", "1"], ["2", "2"], ["3", "3"]],
-                displayField: 'name',
-                valueField: 'code'
+                store: jylStore,//加油量数据集
+                displayField: 'V_BASENAME',
+                valueField: 'V_BASECODE'
             },
             {
                 id: 'v_addorchange2',

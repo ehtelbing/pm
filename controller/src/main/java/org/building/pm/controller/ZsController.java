@@ -692,21 +692,26 @@ public class ZsController {
         Map<String, Object> result = new HashMap<String, Object>();
         HashMap data = zsService.BASE_FILE_IMAGE_SEL(V_V_GUID, V_V_FILEGUID);
 
-      /*  Blob fileblob = (Blob) data.get("V_FILE");
-        InputStream is = fileblob.getBinaryStream();
-
-        response.setContentType("application/octet-stream");
-        response.setCharacterEncoding("UTF-8");
-
-        OutputStream fos = response.getOutputStream();
-        byte[] b = new byte[2048];
-        int length;
-        while ((length = is.read(b)) > 0) {
-            fos.write(b, 0, length);
-        }*/
         result.put("RET", data.get("RET"));
         result.put("success", true);
         return result;
     }
+
+    //加油量下拉框
+    @RequestMapping(value = "/DROPLIST_FUELQUANTITY", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DROPLIST_FUELQUANTITY(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zsService.DROPLIST_FUELQUANTITY();
+        List<Map<String, Object>> zslist = (List) data.get("list");
+        result.put("list", zslist);
+        result.put("success", true);
+        return result;
+    }
+
+
 
 }
