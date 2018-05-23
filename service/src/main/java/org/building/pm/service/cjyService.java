@@ -5053,4 +5053,32 @@ public class cjyService {
         }
         return menu;
     }
+
+    public HashMap PRO_PM_04_PROJECT_DATA_STATIST(String V_D_DATE_B,String V_D_DATE_E) throws SQLException {
+
+        logger.info("begin PRO_PM_04_PROJECT_DATA_STATIST");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_04_PROJECT_DATA_STATIST(:V_D_DATE_B,:V_D_DATE_E,:V_CURSOR)}");
+            cstmt.setString("V_D_DATE_B", V_D_DATE_B);
+            cstmt.setString("V_D_DATE_E", V_D_DATE_E);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_04_PROJECT_DATA_STATIST");
+        return result;
+    }
+
 }

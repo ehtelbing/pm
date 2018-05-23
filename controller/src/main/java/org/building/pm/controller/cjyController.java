@@ -3036,6 +3036,16 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_PM_04_PROJECT_DATA_STATIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_04_PROJECT_DATA_STATIST(@RequestParam(value = "V_D_DATE_B") String V_D_DATE_B,
+                                           @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_04_PROJECT_DATA_STATIST(V_D_DATE_B, V_D_DATE_E);
+        return result;
+    }
+
 }
 
 
