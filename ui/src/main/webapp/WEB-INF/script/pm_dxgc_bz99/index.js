@@ -238,6 +238,9 @@ Ext.onReady(function () {
                         Ext.getCmp('sgyc').setValue(resp.list[0].V_SGYC);
                         Ext.getCmp('aqdc').setValue(resp.list[0].V_AQDC);
 
+                        Ext.getCmp('sgycSJ').setValue(resp.list[0].V_SGYC);
+                        Ext.getCmp('aqdcSJ').setValue(resp.list[0].V_AQDC);
+
                     }
                 });
                 //工单详情表格刷新
