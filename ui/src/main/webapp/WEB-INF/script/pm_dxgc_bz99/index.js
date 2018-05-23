@@ -2287,7 +2287,7 @@ var pageFunction = {
                 Ext.getCmp('wsbmc_tab').setValue(resp.list[0].V_EQUNAME);
                 Ext.getCmp('wjsdw_tab').setValue(resp.list[0].V_BUILD_DEPT);
                 Ext.getCmp('wgcfzr_tab').setValue(resp.list[0].V_BULID_PERSON);
-                Ext.getCmp('wkssj_tab').setValue(new Date(resp.list[0].V_DATE_B));
+                Ext.getCmp('wkssj_tab').setValue(resp.list[0].V_DATE_B);
                 Ext.getCmp('wjssj_tab').setValue(resp.list[0].V_DATE_E);
                 Ext.getCmp('wgcnr_tab').setValue(resp.list[0].V_CONTENT);
 
@@ -2308,7 +2308,7 @@ var pageFunction = {
                 Ext.getCmp('wsbmc_tabSJ').setValue(resp.list[0].V_EQUNAME);
                 Ext.getCmp('wjsdw_tabSJ').setValue(resp.list[0].V_BUILD_DEPT);
                 Ext.getCmp('wgcfzr_tabSJ').setValue(resp.list[0].V_BULID_PERSON);
-                Ext.getCmp('wkssj_tabSJ').setValue(new Date(resp.list[0].V_DATE_B));
+                Ext.getCmp('wkssj_tabSJ').setValue(resp.list[0].V_DATE_B);
                 Ext.getCmp('wjssj_tabSJ').setValue(resp.list[0].V_DATE_E);
                 Ext.getCmp('wgcnr_tabSJ').setValue(resp.list[0].V_CONTENT);
             }
