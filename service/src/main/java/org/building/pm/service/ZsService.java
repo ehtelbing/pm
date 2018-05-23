@@ -905,5 +905,31 @@ public class ZsService {
     }
 
 
+    //加油量下拉框
+    public HashMap DROPLIST_FUELQUANTITY() throws SQLException {
+        logger.info("begin DROPLIST_FUELQUANTITY");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call DROPLIST_FUELQUANTITY" + "(:o_cursor)}");
+            cstmt.registerOutParameter("o_cursor", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("o_cursor")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DROPLIST_FUELQUANTITY");
+        return result;
+    }
+
 }
 
