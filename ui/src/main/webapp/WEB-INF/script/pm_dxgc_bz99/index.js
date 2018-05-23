@@ -1389,13 +1389,13 @@ Ext.onReady(function () {
         items: [
 
             {
-                title: '计划用工',
+                title: '实际用工',
                 layout: 'vbox',
                 frame: true,
                 border: false,
                 items: [jhyggridzSJ]
             }, {
-                title: '计划物料',
+                title: '实际物料',
                 layout: 'vbox',
                 frame: true,
                 border: false,
@@ -1440,13 +1440,13 @@ Ext.onReady(function () {
                 items: [gcxxgridSJ]
             },
             {
-                title: '计划用工',
+                title: '实际用工',
                 layout: 'vbox',
                 frame: true,
                 border: false,
                 items: [jhyggridSJ]
             }, {
-                title: '计划物料',
+                title: '实际物料',
                 layout: 'vbox',
                 frame: true,
                 border: false,
