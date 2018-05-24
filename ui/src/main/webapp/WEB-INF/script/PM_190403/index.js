@@ -2,7 +2,7 @@
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
-    fields: ['V_WORKCODE', 'V_WORKNAME', 'V_WORKTYPE'],
+    fields: ['V_WORKCODE', 'V_WORKNAME', 'V_WORKTYPE','V_DE'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -42,6 +42,10 @@ var Layout = {
                 },
                 {
                     text: '工种类型', align: 'center', width: 150, dataIndex: 'V_WORKTYPE'
+                },
+                {
+                    text: '工种定额', align: 'center', width: 150,
+                    dataIndex: 'V_DE'
                 }
             ]
         }
