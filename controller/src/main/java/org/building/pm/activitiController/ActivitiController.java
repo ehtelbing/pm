@@ -980,7 +980,7 @@ public class ActivitiController {
 
 
     /**
-     * 激活流程活动，放弃当前任务,并向激活步骤添加单一用户
+     * 激活流程活动，放弃当前任务,并向激活步骤
      *
      * @param instanceId 流程实例Id
      * @param activityId 活动Id
@@ -998,6 +998,27 @@ public class ActivitiController {
 
         Map map = new HashMap();
         boolean retsult = activitiService.activateActivityCancelCurrent(instanceId, activityId, flowStep, assignees);
+        return map;
+
+    }
+
+    /**
+     * 获取流程设计中的活动信息
+     *
+     * @param instanceId 流程实例
+     * @return List<ActivityEntity>
+     */
+    @RequestMapping(value = "getActivityList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getActivityList(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
+
+        Map map=new HashMap();
+        List result = activitiService.getActivityList(instanceId);
+
+        map.put("list", result);
+        map.put("ret", "OK");
+        map.put("msg", "成功");
+
         return map;
 
     }

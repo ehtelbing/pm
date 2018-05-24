@@ -20,15 +20,13 @@ import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.log4j.Logger;
+import org.building.pm.Entity.ActivityEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -178,7 +176,7 @@ public class ActivitiService {
         return result;
     }
 
-    public boolean activateActivityCancelCurrent(String instanceId, String activityId,String flowStep,String[] assignees) throws SQLException {
+    public boolean activateActivityCancelCurrent(String instanceId, String activityId, String flowStep, String[] assignees) throws SQLException {
         try {
             Map<String, Object> variables;
             ProcessInstance instance = runtimeService.createProcessInstanceQuery()
@@ -234,12 +232,9 @@ public class ActivitiService {
             for (Task currTask : nextTasks) {
                 if (!currTask.isSuspended()) {
                     variables = currTask.getProcessVariables();
-                    List<String> assigneeList = new ArrayList<>();
-
-                    for (int i=0;i<assignees.length;i++) {
-                        assigneeList.add(assignees[i].toString());
+                    for (int i = 0; i < assignees.length; i++) {
+                        variables.put(flowStep, assignees[i].toString());
                     }
-                    variables.put(flowStep, assigneeList);
                     taskService.complete(currTask.getId(), variables);
 
                     historyService.deleteHistoricTaskInstance(currTask.getId());
@@ -254,7 +249,7 @@ public class ActivitiService {
             pvmTList.clear();
             pvmTransitionList.addAll(oriPvmTransitionList);
             // 调整处理人
-            return adjustActivityAssignee(instance.getId(), runActivity.getId(),assignees);
+            return adjustActivityAssignee(instance.getId(), runActivity.getId(), assignees);
         } catch (Exception e) {
             logger.error(e.getMessage());
             return false;
@@ -309,7 +304,7 @@ public class ActivitiService {
             List<Task> runTasks = taskService.createTaskQuery()
                     .processInstanceId(instanceId).taskDefinitionKey(activityId).list();
 
-            for (int i=0;i<assignees.length;i++) {
+            for (int i = 0; i < assignees.length; i++) {
                 flag = addActivityTask(instanceId, activityId, assignees[i].toString());
             }
 
@@ -348,9 +343,9 @@ public class ActivitiService {
                 }
             }
             if (tasks.size() > 0) {
-                TaskEntity rootTempTask=null;
-                for(Task task:tasks){
-                    if(task.getParentTaskId()==null) {
+                TaskEntity rootTempTask = null;
+                for (Task task : tasks) {
+                    if (task.getParentTaskId() == null) {
                         rootTempTask = (TaskEntity) task;
                         break;
                     }
@@ -411,7 +406,7 @@ public class ActivitiService {
      */
     private boolean checkAssignee(List<Task> tasks, String assignee) {
         for (Task task : tasks) {
-            if (assignee.equals(task.getAssignee())) return true;
+            if (assignee.toString().equals(task.getAssignee())) return true;
         }
         return false;
     }
@@ -434,6 +429,61 @@ public class ActivitiService {
         dest.setExecutionVariables(ori.getVariables());
         dest.setSuspensionState(ori.getSuspensionState());
         dest.setDueDate(ori.getDueDate());
+    }
+
+
+    public List getActivityList(String instanceId) {
+        List list = new ArrayList<>();
+        try {
+            ProcessInstance instance = runtimeService
+                    .createProcessInstanceQuery().processInstanceId(instanceId)
+                    .singleResult();
+            if (instance == null) {
+                logger.error("实例未找到:" + instanceId);
+                return null;
+            }
+            // 取设计的用户节点
+            List<String> activitis = new ArrayList<String>();
+            List<Execution> executionList = runtimeService
+                    .createExecutionQuery().processInstanceId(instanceId)
+                    .list();
+            for (Execution execution : executionList) {
+                ExecutionEntity executionEntity = (ExecutionEntity) runtimeService
+                        .createExecutionQuery().executionId(execution.getId())
+                        .singleResult();
+                if (executionEntity.isActive())
+                    activitis.add(executionEntity.getActivityId());
+            }
+            ProcessDefinitionEntity definition = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
+                    .getDeployedProcessDefinition(instance
+                            .getProcessDefinitionId());
+            List<ActivityImpl> activitiList = definition.getActivities();
+            for (ActivityImpl activityImpl : activitiList) {
+                ActivityEntity item = new ActivityEntity();
+                if (activityImpl.getProperties().get("type") != null
+                        && "userTask".equals(activityImpl.getProperties()
+                        .get("type").toString())) {
+                    item.setId(activityImpl.getId());
+                    item.setName(activityImpl.getProperties().get("name")
+                            .toString());
+                    item.setX(activityImpl.getX());
+                    item.setY(activityImpl.getY());
+                    item.setWidth(activityImpl.getWidth());
+                    item.setHeight(activityImpl.getHeight());
+                    if (activitis.contains(activityImpl.getId())) {
+                        item.setRunning(true);
+                    } else {
+                        item.setRunning(false);
+                    }
+                    list.add(item);
+                }
+            }
+            Collections.sort(list);
+            return list;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        }
     }
 
 }
