@@ -315,9 +315,11 @@ Ext.onReady(function () {
                         for (var i = 0; i < resp.list.length; i++) {
                             jhygs.push({
                                 gz: resp.list[i].V_GZ,
+                                gzc: resp.list[i].V_GZCODE,
                                 rs: resp.list[i].V_NUM,
                                 gs: resp.list[i].V_TIME,
                                 sm: resp.list[i].V_MEMO,
+                                de: resp.list[i].V_DE,
                                 id: resp.list[i].I_ID,
                                 guid: resp.list[i].V_GUID
                             });
@@ -451,7 +453,7 @@ Ext.onReady(function () {
 
     var jhygStore = Ext.create("Ext.data.Store", {
         id: 'jhygStore',
-        fields: ['gz', 'rs', 'gs', 'sm'],
+        fields: ['gz', 'rs', 'gs', 'sm','de','gzc'],
         data: jhygs,
         proxy: {
             type: 'memory',
@@ -495,8 +497,10 @@ Ext.onReady(function () {
         columnLines: true,
         columns: [
             {text: '工种', width: 80, dataIndex: 'gz', align: 'center', renderer: Atleft},
+            {text: '工种编码', width: 80, dataIndex: 'gzc', align: 'center', renderer: Atleft},
             {text: '人数', width: 80, dataIndex: 'rs', align: 'center', renderer: AtRight},
             {text: '工时', width: 80, dataIndex: 'gs', align: 'center', renderer: AtRight},
+            {text: '定额', width: 80, dataIndex: 'de', align: 'center', renderer: AtRight},
             {text: '说明', width: 200, dataIndex: 'sm', align: 'center', renderer: Atleft},
             {text: '操作', width: 100, dataIndex: 'sm', align: 'center', renderer: tabGridFunction.delGz}
         ]
@@ -1091,6 +1095,19 @@ Ext.onReady(function () {
                             xtype: 'textfield',
                             emptyText: '工种',
                             id: 'wgz',
+                            readOnly:true,
+                            style: 'margin:5px 5px 5px 5px',
+                            fieldLabel: '计划用工',
+                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                            labelAlign: 'right',
+                            labelWidth: 80,
+                            width: 180
+                        },
+                        {
+                            xtype: 'textfield',
+                            emptyText: '工种',
+                            id: 'wgzcode',
+                            hidden:true,
                             style: 'margin:5px 5px 5px 5px',
                             fieldLabel: '计划用工',
                             fieldStyle: 'background-color:#FFFF99;background-image:none;',
@@ -1112,6 +1129,17 @@ Ext.onReady(function () {
                             xtype: 'textfield',
                             emptyText: '工时',
                             id: 'wgs',
+                            style: 'margin:5px 5px 5px 5px',
+                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                            labelAlign: 'right',
+                            labelWidth: 10,
+                            width: 60
+                        },
+                        {
+                            xtype: 'textfield',
+                            emptyText: '定额',
+                            id: 'wde',
+                            readOnly:true,
                             style: 'margin:5px 5px 5px 5px',
                             fieldStyle: 'background-color:#FFFF99;background-image:none;',
                             labelAlign: 'right',
@@ -1878,9 +1906,11 @@ var pageFunction = {
     addJHYG: function () {
         jhygs.push({
             gz: Ext.getCmp('wgz').getValue(),
+            gzc: Ext.getCmp('wgzcode').getValue(),
             rs: Ext.getCmp('wrs').getValue(),
             gs: Ext.getCmp('wgs').getValue(),
-            sm: Ext.getCmp('wsm').getValue()
+            sm: Ext.getCmp('wsm').getValue(),
+            de: Ext.getCmp('wde').getValue()
         });
         Ext.data.StoreManager.lookup('jhygStore').loadData(jhygs);
     },
@@ -2110,6 +2140,7 @@ var pageFunction = {
         /*其他面板 数值*/
         Ext.getCmp('wnr_tab').setValue("");
         Ext.getCmp('wgz').setValue("");
+        Ext.getCmp('wgzcode').setValue("");
         Ext.getCmp('wjjbm').setValue("");
         Ext.getCmp('wjjmc').setValue("");
         Ext.getCmp('wwlbm').setValue("");
@@ -2181,9 +2212,11 @@ var tabGridFunction = {
                                     for (var i = 0; i < resp.list.length; i++) {
                                         jhygs.push({
                                             gz: resp.list[i].V_GZ,
+                                            gzc: resp.list[i].V_GZCODE,
                                             rs: resp.list[i].V_NUM,
                                             gs: resp.list[i].V_TIME,
                                             sm: resp.list[i].V_MEMO,
+                                            de: resp.list[i].V_DE,
                                             id: resp.list[i].I_ID,
                                             guid: resp.list[i].V_GUID
                                         });
@@ -2424,7 +2457,9 @@ function zhuxiangadd() {
                             V_V_GZ: jhygs[i].gz,
                             V_V_NUM: jhygs[i].rs,
                             V_V_TIME: jhygs[i].gs,
-                            V_V_MEMO: jhygs[i].sm
+                            V_V_MEMO: jhygs[i].sm,
+                            V_V_CODE: jhygs[i].gzc,
+                            V_V_DE: jhygs[i].de
                         },
                         success: function (resp) {
                             var resp = Ext.decode(resp.responseText);
@@ -2686,6 +2721,8 @@ function zixiangadd() {
 function getReturnValue(obj) {
     if (obj[0].data.V_WORKNAME != undefined) {
         Ext.getCmp('wgz').setValue(obj[0].data.V_WORKNAME);
+        Ext.getCmp('wgzcode').setValue(obj[0].data.V_WORKCODE);
+        Ext.getCmp('wde').setValue(obj[0].data.V_DE);
     }
     if (obj[0].data.V_CARCODE != undefined) {
         Ext.getCmp('wjjbm').setValue(obj[0].data.V_CARCODE);

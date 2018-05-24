@@ -128,7 +128,7 @@ public class lxmService {
         return result;
     }
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_YG_SET(String V_I_ID, String V_V_GUID, String V_V_GZ, String V_V_NUM,String V_V_TIME,String V_V_MEMO) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_YG_SET(String V_I_ID, String V_V_GUID, String V_V_GZ, String V_V_NUM,String V_V_TIME,String V_V_MEMO,String V_V_CODE,String V_V_DE) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_YG_SET");
         HashMap result = new HashMap();
@@ -138,13 +138,15 @@ public class lxmService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_YG_SET" + "(:V_I_ID,:V_V_GUID,:V_V_GZ,:V_V_NUM,:V_V_TIME,:V_V_MEMO,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_YG_SET" + "(:V_I_ID,:V_V_GUID,:V_V_GZ,:V_V_NUM,:V_V_TIME,:V_V_MEMO,:V_V_CODE,:V_V_DE,:V_INFO)}");
             cstmt.setString("V_I_ID", V_I_ID);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_GZ", V_V_GZ);
             cstmt.setString("V_V_NUM", V_V_NUM);
             cstmt.setString("V_V_TIME", V_V_TIME);
             cstmt.setString("V_V_MEMO", V_V_MEMO);
+            cstmt.setString("V_V_CODE", V_V_CODE);
+            cstmt.setString("V_V_DE", V_V_DE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
 

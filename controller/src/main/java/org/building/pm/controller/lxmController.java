@@ -74,11 +74,13 @@ public class lxmController {
             @RequestParam(value = "V_V_NUM") String V_V_NUM,
             @RequestParam(value = "V_V_TIME") String V_V_TIME,
             @RequestParam(value = "V_V_MEMO") String V_V_MEMO,
+            @RequestParam(value = "V_V_CODE") String V_V_CODE,
+            @RequestParam(value = "V_V_DE") String V_V_DE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = mService.PRO_PM_EQUREPAIRPLAN_YG_SET(V_I_ID,V_V_GUID,V_V_GZ,V_V_NUM,V_V_TIME,V_V_MEMO);
+        HashMap data = mService.PRO_PM_EQUREPAIRPLAN_YG_SET(V_I_ID,V_V_GUID,V_V_GZ,V_V_NUM,V_V_TIME,V_V_MEMO,V_V_CODE,V_V_DE);
         String rlist = (String) data.get("V_INFO");
         result.put("v_info", rlist);
         result.put("success", true);
