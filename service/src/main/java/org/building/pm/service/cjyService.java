@@ -5081,4 +5081,136 @@ public class cjyService {
         return result;
     }
 
+    public List<Map> PRO_PM_EQUREPAIRPLAN_TREE_BYTI(String V_V_GUID_FXJH,String V_D_DATE_B,String V_D_DATE_E) throws SQLException {
+
+        logger.info("begin PRO_PM_EQUREPAIRPLAN_TREE_BYTI");
+        List result = new ArrayList();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_EQUREPAIRPLAN_TREE_BYTI(:V_V_GUID_FXJH,:V_D_DATE_B,:V_D_DATE_E,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID_FXJH", V_V_GUID_FXJH);
+            cstmt.setString("V_D_DATE_B", V_D_DATE_B);
+            cstmt.setString("V_D_DATE_E", V_D_DATE_E);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result = CreateTreeData(ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_EQUREPAIRPLAN_TREE_BYTI");
+        return result;
+    }
+
+    public List<Map> CreateTreeData(List list) {
+        List<Map> result = new ArrayList();
+
+        for (int i = 0; i <= list.size(); i++) {
+            Map temp = new HashMap();
+            if (i < list.size()) {
+                Map map = (Map) list.get(i);
+                if (map.get("V_GUID_P").toString().equals("")) {
+                    temp.put("V_GUID", map.get("V_GUID").toString());
+                    temp.put("V_PROJECT_NAME", map.get("V_PROJECT_NAME").toString());
+                    temp.put("V_CONTENT", map.get("V_CONTENT").toString());
+                    temp.put("V_DATE_B", map.get("V_DATE_B").toString());
+                    temp.put("V_DATE_E", map.get("V_DATE_E").toString());
+                    temp.put("V_BULID_PERSON", map.get("V_BULID_PERSON").toString());
+                    temp.put("V_SPECIALTY", map.get("V_SPECIALTY").toString());
+                    temp.put("V_BUILD_DEPT", map.get("V_BUILD_DEPT").toString());
+                    temp.put("V_GUID_FXJH", map.get("V_GUID_FXJH").toString());
+                    temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
+                    temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
+                    temp.put("V_PLAN_MONEY", map.get("V_PLAN_MONEY").toString());
+                    temp.put("V_ROWNUMBER", map.get("V_ROWNUMBER").toString());
+                    temp.put("V_P_ROWNUMBER", map.get("V_P_ROWNUMBER").toString());
+                    temp.put("V_GUID_P","");
+                    temp.put("cls", "empty");
+                    if (IfHasMenuChildNode(map.get("V_GUID").toString(), list)) {
+                        temp.put("expanded", true);
+                        temp.put("children", CreateMenuTree(map.get("V_GUID").toString(), list));
+                    } else {
+                        temp.put("expanded", false);
+                        temp.put("leaf", true);
+                    }
+                    result.add(temp);
+                }
+            } else if (i == list.size()) {
+                temp.put("V_GUID", "");
+                temp.put("V_PROJECT_NAME", "");
+                temp.put("V_CONTENT", "");
+                temp.put("V_DATE_B", "");
+                temp.put("V_DATE_E", "");
+                temp.put("V_BULID_PERSON", "");
+                temp.put("V_SPECIALTY", "");
+                temp.put("V_BUILD_DEPT", "");
+                temp.put("V_GUID_FXJH", "");
+                temp.put("V_PROJECT_CODE_FXJH", "");
+                temp.put("V_PROJECT_CODE_FXJH", "");
+                temp.put("V_PLAN_MONEY", "");
+                temp.put("V_ROWNUMBER", "");
+                temp.put("V_P_ROWNUMBER", "");
+                temp.put("cls", "empty");
+                temp.put("expanded", false);
+                temp.put("leaf", true);
+                temp.put("V_GUID_P","");
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+
+    public List<Map> CreateMenuTree(String upcode, List list) {
+        List result = new ArrayList();
+
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            Map temp = new HashMap();
+            if (map.get("V_GUID_P").toString().equals(upcode)) {
+                temp.put("V_GUID", map.get("V_GUID").toString());
+                temp.put("V_PROJECT_NAME", map.get("V_PROJECT_NAME").toString());
+                temp.put("V_CONTENT", map.get("V_CONTENT").toString());
+                temp.put("V_DATE_B", map.get("V_DATE_B").toString());
+                temp.put("V_DATE_E", map.get("V_DATE_E").toString());
+                temp.put("V_BULID_PERSON", map.get("V_BULID_PERSON").toString());
+                temp.put("V_SPECIALTY", map.get("V_SPECIALTY").toString());
+                temp.put("V_BUILD_DEPT", map.get("V_BUILD_DEPT").toString());
+                temp.put("V_GUID_FXJH", map.get("V_GUID_FXJH").toString());
+                temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
+                temp.put("V_PROJECT_CODE_FXJH", map.get("V_PROJECT_CODE_FXJH").toString());
+                temp.put("V_PLAN_MONEY", map.get("V_PLAN_MONEY").toString());
+                temp.put("V_ROWNUMBER", map.get("V_ROWNUMBER").toString());
+                temp.put("V_P_ROWNUMBER", map.get("V_P_ROWNUMBER").toString());
+                temp.put("V_GUID_P",map.get("V_GUID_P").toString());
+                temp.put("cls", "empty");
+                if (IfHasMenuChildNode(map.get("V_GUID").toString(), list)) {
+                    temp.put("expanded", true);
+                    temp.put("children", CreateMenuTree(map.get("V_GUID").toString(), list));
+                } else {
+                    temp.put("expanded", false);
+                    temp.put("leaf", true);
+                }
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+
+    public boolean IfHasMenuChildNode(String upcode, List list) {
+        boolean flag = false;
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            if (upcode.equals(map.get("V_GUID_P").toString())) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
 }

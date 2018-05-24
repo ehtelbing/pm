@@ -3046,6 +3046,17 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_TREE_BYTI", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PRO_PM_EQUREPAIRPLAN_TREE_BYTI(@RequestParam(value = "V_V_GUID_FXJH") String V_V_GUID_FXJH,
+                                              @RequestParam(value = "V_D_DATE_B") String V_D_DATE_B,
+                                              @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
+                                              HttpServletRequest request,
+                                              HttpServletResponse response) throws Exception {
+        List<Map> result = cjyService.PRO_PM_EQUREPAIRPLAN_TREE_BYTI(V_V_GUID_FXJH,V_D_DATE_B, V_D_DATE_E);
+        return result;
+    }
+
 }
 
 
