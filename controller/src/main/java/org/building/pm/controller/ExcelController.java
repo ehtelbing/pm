@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -2881,7 +2882,6 @@ public class ExcelController {
 
 
         Map<String, Object> data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT, X_TIMEUPPERLIMIT, X_DEPTCODE_s,X_EQUTYPECODE_s,X_EQUCODE_s, X_LUBRICATIONCODE);
-
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();

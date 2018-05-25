@@ -321,10 +321,10 @@ function OnExcelButtonClicked(){
 
 
     document.location.href = AppUrl + 'excel/RHQuery_EXCEL?X_TIMELOWERLIMIT=' +Ext.util.Format.date(Ext.getCmp("x_timelowerlimit").getValue(), "Y-m-d")+
-        '&X_TIMEUPPERLIMIT=' +Ext.util.Format.date(Ext.getCmp("x_timelowerlimit").getValue(), "Y-m-d")+
+        '&X_TIMEUPPERLIMIT=' +Ext.util.Format.date(Ext.getCmp("x_timeupperlimit").getValue(), "Y-m-d")+
         '&X_DEPTCODE=' +X_DEPTCODE+//Ext.getCmp('V_V_DEPTCODE').getValue()=='%'?'0':Ext.getCmp("V_V_DEPTCODE").getValue()+
         '&X_EQUTYPECODE=' +X_EQUTYPECODE+//Ext.getCmp('equtype').getValue()=='%'?'0':Ext.getCmp("equtype").getValue()+
-        '&X_EQUCODE=' +X_EQUTYPECODE+//Ext.getCmp('subequname').getValue()=='%'?'0':Ext.getCmp("subequname").getValue()+
+        '&X_EQUCODE=' +X_EQUCODE+//Ext.getCmp('subequname').getValue()=='%'?'0':Ext.getCmp("subequname").getValue()+
         '&X_LUBRICATIONCODE= ';
 
     /*document.location.href=AppUrl + 'excel/RHQuery_EXCEL?X_TIMELOWERLIMIT='+'2018-05-01'+//Ext.util.Format.date(Ext.getCmp("x_timelowerlimit").getValue(), "Y-m-d")+
