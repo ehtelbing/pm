@@ -6,6 +6,7 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.building.pm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,8 +21,9 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +54,9 @@ public class ExcelController {
 
     @Autowired
     private PM_22Service pm_22Service;
+
+    @Autowired
+    private ZpfService zpfService;
 
     @RequestMapping(value="/upload",method = RequestMethod.POST)
     @ResponseBody
@@ -2856,4 +2861,134 @@ public class ExcelController {
             }
         }
     }
+
+    /*润滑查询导出EXCEL*/
+    @RequestMapping(value = "/RHQuery_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void RHQuery_EXCEL(@RequestParam(value ="X_TIMELOWERLIMIT") Date X_TIMELOWERLIMIT,
+                           @RequestParam(value = "X_TIMEUPPERLIMIT") Date X_TIMEUPPERLIMIT,
+                           @RequestParam(value = "X_DEPTCODE") String X_DEPTCODE,
+                           @RequestParam(value = "X_EQUTYPECODE") String X_EQUTYPECODE,
+                           @RequestParam(value = "X_EQUCODE") String X_EQUCODE,
+                           @RequestParam(value = "X_LUBRICATIONCODE") String X_LUBRICATIONCODE,
+                            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        String X_DEPTCODE_s=X_DEPTCODE.equals("0")?"%":X_DEPTCODE;
+        String X_EQUTYPECODE_s=X_EQUTYPECODE.equals("0")?"%":X_EQUTYPECODE;
+        String X_EQUCODE_s=X_EQUCODE.equals("0")?"%":X_EQUCODE;
+
+
+        Map<String, Object> data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT, X_TIMEUPPERLIMIT, X_DEPTCODE_s,X_EQUTYPECODE_s,X_EQUCODE_s, X_LUBRICATIONCODE);
+
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for(int i=0;i<=1;i++){
+            sheet.setColumnWidth(i,3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("部门名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("装置名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("给油脂场所");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("润滑方式");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("润滑牌号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("润滑点数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("加油量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("加油时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("加油人员");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("加油原因");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_SETNAME") == null ? "" : map.get("V_SETNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_LUBADDRESS") == null ? "" : map.get("V_LUBADDRESS").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_LUBMODE") == null ? "" : map.get("V_LUBMODE").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("V_LUBTRADEMARK") == null ? "" : map.get("V_LUBTRADEMARK").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("F_LUBCOUNT") == null ? "" : map.get("F_LUBCOUNT").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("F_OILAMOUNT") == null ? "" : map.get("F_OILAMOUNT").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("I_UNIT") == null ? "" : map.get("I_UNIT").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("D_OPERATEDATE") == null ? "" : map.get("D_OPERATEDATE").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("V_OPERATEPERSON") == null ? "" : map.get("V_OPERATEPERSON").toString());
+
+                row.createCell((short) 12).setCellValue(map.get("V_OPERATEREASON") == null ? "" : map.get("V_OPERATEREASON").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("润滑查询excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
