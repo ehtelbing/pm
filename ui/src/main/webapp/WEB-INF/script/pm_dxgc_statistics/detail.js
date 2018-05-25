@@ -8,6 +8,8 @@
 
 //初始化参数信息
 var guid = '';
+var D_DATE_B = '';
+var D_DATE_E = '';
 var v_guid = "";//选择指定行的guid
 var V_PROJECT_NAME = '';
 var V_PROJECT_CODE = '';
@@ -16,6 +18,9 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.guid == undefined) ? guid = '' : guid = parameters.guid;
     (parameters.V_PROJECT_NAME == undefined) ? V_PROJECT_NAME = '' : V_PROJECT_NAME = parameters.V_PROJECT_NAME;
     (parameters.V_PROJECT_CODE == undefined) ? V_PROJECT_CODE = '' : V_PROJECT_CODE = parameters.V_PROJECT_CODE;
+
+    (parameters.D_DATE_B == undefined) ? D_DATE_B = '' : D_DATE_B = parameters.D_DATE_B;
+    (parameters.D_DATE_E == undefined) ? D_DATE_E = '' : D_DATE_E = parameters.D_DATE_E;
 }
 
 //初始化定义主表格及甘特图参数
@@ -96,7 +101,7 @@ Ext.onReady(function () {
             'V_GUID_FXJH', 'V_PROJECT_CODE_FXJH', 'V_PROJECT_NAME', 'V_SPECIALTY', 'V_PLAN_MONEY', 'V_GUID_P'],
         proxy: {
             type: 'ajax',
-            url: AppUrl + 'gantt/PRO_PM_EQUREPAIRPLAN_TREE',
+            url: AppUrl + 'cjy/PRO_PM_EQUREPAIRPLAN_TREE_BYTI',
             actionMethods: {
                 read: 'POST'
             },
@@ -105,9 +110,8 @@ Ext.onReady(function () {
             },
             extraParams: {
                 V_V_GUID_FXJH: guid,
-                V_BY1: "",
-                V_BY2: "",
-                V_BY3: ""
+                V_D_DATE_B: D_DATE_B,
+                V_D_DATE_E: D_DATE_E
             }
         },
         listeners: {
@@ -794,13 +798,13 @@ Ext.onReady(function () {
         items: [
 
             {
-                title: '计划用工',
+                title: '实际用工',
                 layout: 'vbox',
                 frame: true,
                 border: false,
                 items: [jhyggridzSJ]
             }, {
-                title: '计划物料',
+                title: '实际物料',
                 layout: 'vbox',
                 frame: true,
                 border: false,
@@ -845,13 +849,13 @@ Ext.onReady(function () {
                 items: [gcxxgridSJ]
             },
             {
-                title: '计划用工',
+                title: '实际用工',
                 layout: 'vbox',
                 frame: true,
                 border: false,
                 items: [jhyggridSJ]
             }, {
-                title: '计划物料',
+                title: '实际物料',
                 layout: 'vbox',
                 frame: true,
                 border: false,
@@ -950,7 +954,7 @@ Ext.onReady(function () {
             items: [southpanel]
         }]
     });
-
+    Ext.getCmp('treegrid').getStore().load();
     Ext.data.StoreManager.lookup('gdxqStore').on('beforeload', function (store) {
         store.proxy.extraParams.V_V_ORDERGUID = v_guid;
     });

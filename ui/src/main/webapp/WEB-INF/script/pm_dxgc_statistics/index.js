@@ -150,7 +150,6 @@ var grid1=Ext.create('Ext.grid.Panel',{
         { text: '物料总金额',width:200,dataIndex:'WLNUM', align: 'center',renderer:AtRight },
         { text: '工种总金额',width:200,dataIndex:'GZNUM', align: 'center',renderer:AtRight },
         { text: '机具总金额',width:200,dataIndex:'JJNUM', align: 'center',renderer:AtRight },
-        //{ text: '工具总金额',width:200,dataIndex:'V_MAJOR_NAME', align: 'center',renderer:AtRight },
         { text: '总计金额',width:200,dataIndex:'HJNNUM', align: 'center',renderer:AtRight }
     ],
     listeners:{
@@ -161,7 +160,9 @@ var grid1=Ext.create('Ext.grid.Panel',{
             var h=screen.availHeight-30;
             var objwin = window.open(AppUrl + 'page/pm_dxgc_statistics/detail.html?guid='+b.data.V_GUID
                 + "&V_PROJECT_NAME=" + b.data.V_PROJECT_NAME
-                + "&V_PROJECT_CODE=" + b.data.V_PROJECT_CODE,"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
+                + "&V_PROJECT_CODE=" + b.data.V_PROJECT_CODE
+                + "&D_DATE_B=" + Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d')
+                + "&D_DATE_E=" + Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),"win","fullscreen=yes,toolbar=1,location=1,directories=1,status=1,menubar=1,scrollbars=1,resizable=1,width=" + w + ",height=" + h + ",top=0,left=0",true);
 
         }
     }

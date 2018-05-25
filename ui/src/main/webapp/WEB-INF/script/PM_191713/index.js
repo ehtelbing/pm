@@ -13,11 +13,13 @@ var V_V_DEPTCODE=null;
 var V_V_EQUTYPE=null;
 var V_V_ORGCODE=null;
 var V_V_EQUCODE=null;
+var V_V_EQUTYPECODE=null;
 if (location.href.split('?')[1] != undefined) {
     V_V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
     V_V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
     V_V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
-    V_V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUCODE;
+    V_V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUCODE
+    V_V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPECODE;
 }
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
@@ -200,7 +202,8 @@ Ext.onReady(function () {
         'V_V_ORGCODE': V_V_ORGCODE,
         'V_V_DEPTCODE': V_V_DEPTCODE,
         'V_V_EQUCODE':  V_V_EQUCODE,
-        'V_V_EQUCHILDCODE': '%'
+        'V_V_EQUCHILDCODE': '%',
+        'V_V_EQUTYPECODE': V_V_EQUTYPECODE
 
     };
     Ext.data.StoreManager.lookup('jsStandardStore').load();
@@ -231,7 +234,8 @@ function _select() {
         'V_V_ORGCODE': V_V_ORGCODE,
         'V_V_DEPTCODE': V_V_DEPTCODE,
         'V_V_EQUCODE': V_V_EQUCODE,
-        'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getValue()
+        'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getValue(),
+        'V_V_EQUTYPECODE':V_V_EQUTYPECODE
 
     };
     Ext.data.StoreManager.lookup('jsStandardStore').load();

@@ -508,6 +508,7 @@ function selectJXTECHNOLOGYBZ() {
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191713/index.html?V_V_DEPTCODE=' + V_DEPTCODE
         +'&V_V_EQUCODE='+V_EQUCODE
+        +'&V_V_EQUTYPECODE='+V_EQUTYPE
         +'&V_V_ORGCODE='+V_ORGCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 function getReturnJSBZ(guid,valued,valueu){

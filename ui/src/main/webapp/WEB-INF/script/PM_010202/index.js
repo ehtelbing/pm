@@ -475,7 +475,8 @@ function _select() {
         'V_V_ORGCODE': Ext.getCmp('V_V_ORGCODE').getValue(),
         'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getValue(),
         'V_V_EQUCODE': Ext.getCmp('V_V_EQUCODE').getValue(),
-        'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getValue()
+        'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE').getValue(),
+        'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUTYPECODE').getValue()
 
     };
     jsStandardStore.load();

@@ -102,7 +102,7 @@ Ext.onReady(function () {
             'V_IMGCODE', 'V_CONTENT', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUCHILDCODE',
             'V_EQUCHILDNAME', 'V_EQUTYPECODE', 'V_VALUE_DOWN', 'V_VALUE_UP'],
         proxy: {
-            url: AppUrl + 'Wsy/PM_REPAIR_JS_STANDARD_SEL',
+            url: AppUrl + 'mwd/PM_REPAIR_JS_STANDARD_SEL',
             type: 'ajax',
             async: true,
             actionMethods: {
@@ -393,7 +393,7 @@ Ext.onReady(function () {
         store: 'treeStore',
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
-                _queryzsbjx(record.get('sid'));
+                _queryzsbjx(record.get('sid'),record.raw.V_EQUTYPECODE);
             }
         }
     });
@@ -919,14 +919,15 @@ function _queryTree() {
 }
 
 //点击设备树item查询子设备检修技术标准
-function _queryzsbjx(sid) {
+function _queryzsbjx(sid,V_EQUTYPECODE) {
     Ext.getCmp('zsbmc').setValue('');
     Ext.data.StoreManager.lookup('zsbjxStore').load({
         params: {
             V_V_ORGCODE: Ext.getCmp('plant').getValue(),
             V_V_DEPTCODE: Ext.getCmp('dept').getValue(),
             V_V_EQUCODE: sid,
-            V_V_EQUCHILDCODE: '%'
+            V_V_EQUCHILDCODE: '%',
+            V_V_EQUTYPECODE: V_EQUTYPECODE
         }
     });
 }
@@ -939,7 +940,8 @@ function _queryzsb() {
             V_V_ORGCODE: Ext.getCmp('plant').getValue(),
             V_V_DEPTCODE: Ext.getCmp('dept').getValue(),
             V_V_EQUCODE: records[0].data.sid,
-            V_V_EQUCHILDCODE: Ext.getCmp('zsbmc').getValue()
+            V_V_EQUCHILDCODE: Ext.getCmp('zsbmc').getValue(),
+            V_V_EQUTYPECODE: Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection()[0].raw.V_EQUTYPECODE
         }
     });
 }

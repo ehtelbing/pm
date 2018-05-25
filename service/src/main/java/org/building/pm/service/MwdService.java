@@ -361,7 +361,7 @@ public class MwdService {
     }
 
     //检修技术标准字典查询
-    public HashMap PM_REPAIR_JS_STANDARD_SEL(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUCODE, String V_V_EQUCHILDCODE) throws SQLException {
+    public HashMap PM_REPAIR_JS_STANDARD_SEL(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUCODE, String V_V_EQUCHILDCODE,String V_V_EQUTYPECODE) throws SQLException {
 
         logger.info("begin PM_REPAIR_JS_STANDARD_SEL");
 
@@ -371,11 +371,12 @@ public class MwdService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_REPAIR_JS_STANDARD_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUCHILDCODE,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_REPAIR_JS_STANDARD_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUCHILDCODE,:V_V_EQUTYPECODE,:V_CURSOR)}");
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.setString("V_V_EQUCHILDCODE", V_V_EQUCHILDCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
