@@ -171,10 +171,11 @@ public class MwdController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
             @RequestParam(value = "V_V_EQUCHILDCODE") String V_V_EQUCHILDCODE,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        return mwdService.PM_REPAIR_JS_STANDARD_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE, V_V_EQUCHILDCODE);
+        return mwdService.PM_REPAIR_JS_STANDARD_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE, V_V_EQUCHILDCODE,V_V_EQUTYPECODE);
     }
 
     @RequestMapping(value = "/PM_REPAIR_JS_STANDARD_GET", method = RequestMethod.POST)
