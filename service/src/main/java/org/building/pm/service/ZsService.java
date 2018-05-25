@@ -914,12 +914,12 @@ public class ZsService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call DROPLIST_FUELQUANTITY" + "(:o_cursor)}");
-            cstmt.registerOutParameter("o_cursor", OracleTypes.CURSOR);
+            cstmt = conn.prepareCall("{call DROPLIST_FUELQUANTITY" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
             result.put("list",
-                    ResultHash((ResultSet) cstmt.getObject("o_cursor")));
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
