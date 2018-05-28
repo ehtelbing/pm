@@ -75,7 +75,11 @@
         listeners: {
             load: function (store, records) {
                 deptLoad = true;
+
                 Ext.getCmp('equname').select(store.first());
+                if(Ext.getCmp('equname').getValue()!="%"){
+                    store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
+                }
                 _init();
             }
         }

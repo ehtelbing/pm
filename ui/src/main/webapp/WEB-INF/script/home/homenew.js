@@ -475,5 +475,11 @@ function toDownloadChrome() {
 function toDownloadLodop() {
     location.href = AppUrl + "/resources/install_lodop32.exe";
 }
+function toDownloadLodop32() {
+    location.href = AppUrl + "/resources/CLodop_Setup_for_Win32NT.exe";
+}
+function toDownloadLodop64() {
+    location.href = AppUrl + "/resources/CLodop_Setup_for_Win64NT_3.037Extend.exe";
+}
 
 
