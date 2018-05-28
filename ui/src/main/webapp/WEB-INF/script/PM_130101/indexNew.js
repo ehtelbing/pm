@@ -869,7 +869,7 @@ function OnClick(view, record, item, index) {
     Ext.getCmp('x_equtypename1').setValue(x_equtypename);
     Ext.getCmp('v_deptcode1').setValue(x_deptcode);
     Ext.getCmp('v_equtypecode1').setValue(x_equtypecode);
-
+/*
     if (record.get('leaf')) {
         globalTree = record;
         X_EQUTYPECODE_ = globalTree.parentNode.parentNode.data.sid;
@@ -877,6 +877,19 @@ function OnClick(view, record, item, index) {
         query();
     } else {
         globalTree = null;
+    }*/
+    if(record.raw.V_EQUTYPECODE==undefined){
+        globalTree = null;
+    }else if (record.get('leaf')) {
+        globalTree = record;
+        X_EQUTYPECODE_ = globalTree.parentNode.parentNode.data.sid;
+        X_EQUCODE_ = globalTree.data.sid;
+        query();
+    }else{
+        globalTree = record;
+        X_EQUTYPECODE_ = record.raw.V_EQUTYPECODE;
+        X_EQUCODE_ = globalTree.data.sid;
+        query();
     }
 }
 
