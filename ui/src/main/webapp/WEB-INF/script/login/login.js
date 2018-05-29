@@ -198,3 +198,8 @@ function OnPageLoad(){
         }
     });
 }
+
+function onTel(){
+    $('#tel1').html("鞍山区域:15241262572");
+    $('#tel2').html("弓长岭区域:15042275569");
+}
