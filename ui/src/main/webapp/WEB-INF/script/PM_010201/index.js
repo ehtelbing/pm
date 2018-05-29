@@ -398,15 +398,23 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 5px 10px',
                 icon: imgpath + '/delete.png',
                 handler: _delete
-            }, {
-                xtype: 'button',
-                text: '上一页',
-                style: ' margin: 5px 0px 5px 200px',
-                icon: imgpath + '/accordion_collapse.png',
-                handler: _last
-            }, {
-                xtype: 'button',
-                text: '下一页',
+            },
+                {
+                    xtype: 'button',
+                    text: '通用',
+                    handler: addTYbtn,
+                    style: ' margin: 5px 0px 5px 10px',
+                    icon: imgpath + '/add.png'
+                },
+                {
+                    xtype: 'button',
+                    text: '上一页',
+                    style: ' margin: 5px 0px 5px 200px',
+                    icon: imgpath + '/accordion_collapse.png',
+                    handler: _last
+                }, {
+                    xtype: 'button',
+                    text: '下一页',
                 style: ' margin: 5px 0px 5px 10px',
                 icon: imgpath + '/accordion_expand.png',
                 handler: _next
@@ -556,7 +564,16 @@ function _update() {
         return;
     }
 
-    window.open(AppUrl + 'page/PM_01020102/index.html?V_V_PLANTCODE=' + records[0].get('V_ORGCODE') + '&V_V_DEPTCODE=' + records[0].get('V_DEPTCODE') + '&V_V_EQUTYPECODE=' + records[0].get('V_EQUTYPECODE') + '&V_V_EQUCODE=' + records[0].get('V_EQUCODE') + '&V_V_GUID=' + records[0].get('V_GUID'), '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
+    var flag='';
+    if(records[0].data.V_EQUCODE=='TY'){
+        flag='TY';
+    }
+    window.open(AppUrl + 'page/PM_01020102/index.html?V_V_PLANTCODE=' + records[0].get('V_ORGCODE') +
+        '&V_V_DEPTCODE=' + records[0].get('V_DEPTCODE') +
+        '&V_V_EQUTYPECODE=' + records[0].get('V_EQUTYPECODE') +
+        '&V_V_EQUCODE=' + records[0].get('V_EQUCODE') +
+        '&V_V_GUID=' + records[0].get('V_GUID')+
+        '&v_flag='+flag, '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
 }
 
 function _preViewImage(V_V_GUID) {
@@ -726,6 +743,38 @@ function _deleteFile(V_V_GUID) {
             });
         }
     });
+
+}
+
+function addTYbtn(){
+    var V_V_PLANTCODE = Ext.getCmp('V_V_ORGCODE').getSubmitValue();
+    var V_V_DEPTCODE = Ext.getCmp('V_V_DEPTCODE').getSubmitValue();
+    var V_V_EQUTYPECODE = Ext.getCmp('V_V_EQUTYPECODE').getSubmitValue();
+    var V_V_EQUCODE = Ext.getCmp('V_V_EQUCODE').getSubmitValue()=="%"?'TY':Ext.getCmp('V_V_EQUCODE').getSubmitValue();
+    var V_V_EQUCHILDCODE = Ext.getCmp('V_V_EQUCHILDCODE').getSubmitValue()=="%"?'TY':Ext.getCmp('V_V_EQUCHILDCODE').getSubmitValue();
+
+
+    if(V_V_DEPTCODE == '%'){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择作业区',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    if(V_V_EQUTYPECODE == '%'){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择设备类型',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    window.open(AppUrl + 'page/PM_01020101/index.html?V_V_PLANTCODE=' + V_V_PLANTCODE +
+        '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUTYPECODE=' + V_V_EQUTYPECODE +
+        '&V_V_EQUCODE=' + V_V_EQUCODE + '&V_V_EQUCHILDCODE=' + V_V_EQUCHILDCODE+ '&v_flag=TY' , '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
 
 }
 

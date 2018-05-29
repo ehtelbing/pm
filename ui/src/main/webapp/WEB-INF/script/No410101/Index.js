@@ -647,7 +647,7 @@ function loadPageInfo() {
                             result.push('        </td>');
                             result.push('        </tr>');
                             result.push('      </table>');
-                            result.push('      <div style="text-align: center; height: 1cm; line-height: 30px;">');
+                            /*result.push('      <div style="text-align: center; height: 1cm; line-height: 30px;">');
                             // result.push('        日期：<span>');
                             // result.push(NowDate());
                             // result.push('        </span>&nbsp; ');
@@ -659,7 +659,7 @@ function loadPageInfo() {
                             result.push('        </span>/总页面：<span>');
                             result.push(argument.length);
                             result.push('        </span>');
-                            result.push('      </div>');
+                            result.push('      </div>');*/
                             result.push('    </div>');
                             result.push('    </div>');
                             if (x + 1 < max || index + 1 <= argument.length) {

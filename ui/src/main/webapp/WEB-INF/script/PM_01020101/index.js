@@ -11,7 +11,7 @@ var V_V_DEPTCODE = '';
 var V_V_EQUTYPECODE = '';
 var V_V_EQUCODE = '';
 var V_V_EQUCHILDCODE = '';
-
+var v_flag = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_V_PLANTCODE == undefined) ? V_V_PLANTCODE = '' : V_V_PLANTCODE = parameters.V_V_PLANTCODE;
@@ -19,6 +19,8 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.V_V_EQUTYPECODE == undefined) ? V_V_EQUTYPECODE = '' : V_V_EQUTYPECODE = parameters.V_V_EQUTYPECODE;
     (parameters.V_V_EQUCODE == undefined) ? V_V_EQUCODE = '' : V_V_EQUCODE = parameters.V_V_EQUCODE;
     (parameters.V_V_EQUCHILDCODE == undefined) ? V_V_EQUCHILDCODE = '' : V_V_EQUCHILDCODE = parameters.V_V_EQUCHILDCODE;
+    (parameters.v_flag == undefined) ? v_flag = '' : v_flag = parameters.v_flag;
+
 }
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
@@ -102,6 +104,7 @@ Ext.onReady(function () {
                     Ext.getCmp('V_V_EQUTYPECODE').setValue(V_V_EQUTYPECODE);
                     sbTypeStoreLoad = true;
                     _init();
+
                 } else {
                     Ext.getCmp('V_V_EQUTYPECODE').select(store.first());
                 }
@@ -132,8 +135,19 @@ Ext.onReady(function () {
                     Ext.getCmp('V_V_EQUCODE').setValue(V_V_EQUCODE);
                     sbNameStoreLoad = true;
                     _init();
+                    if(v_flag=='TY'){
+                        store.insert(0, {V_EQUNAME: '通用', V_EQUCODE: 'TY'});
+                        Ext.getCmp('V_V_EQUCODE').select(store.first());
+                        Ext.getCmp('V_V_EQUCODE').disable();
+                    }
                 } else {
+                    if(v_flag=='TY'){
+                        store.insert(0, {V_EQUNAME: '通用', V_EQUCODE: 'TY'});
+                        Ext.getCmp('V_V_EQUCODE').disable();
+
+                    }
                     Ext.getCmp('V_V_EQUCODE').select(store.last());
+
                 }
             }
         }
@@ -298,7 +312,7 @@ Ext.onReady(function () {
                                     V_V_DEPTCODE: V_V_PLANTCODE,
                                     V_V_DEPTNEXTCODE: V_V_DEPTCODE,
                                     V_V_EQUTYPECODE: V_V_EQUTYPECODE,
-                                    V_V_EQUCODE: V_V_EQUCODE,
+                                    V_V_EQUCODE:  V_V_EQUCODE=='TY'?'%':V_V_EQUCODE,
                                     V_V_EQUNAME: Ext.ComponentManager.get("sbmc").getValue()
                                 }
                             });
@@ -721,7 +735,7 @@ function queryEdu(){
             V_V_DEPTCODE: V_V_PLANTCODE,
             V_V_DEPTNEXTCODE: V_V_DEPTCODE,
             V_V_EQUTYPECODE: V_V_EQUTYPECODE,
-            V_V_EQUCODE: V_V_EQUCODE,
+            V_V_EQUCODE: V_V_EQUCODE=='TY'?'%':V_V_EQUCODE,
             V_V_EQUNAME: Ext.ComponentManager.get("sbmc").getValue()
         }
     });
@@ -836,57 +850,113 @@ function _insertJsStandard() {
         return;
     }
 
-    Ext.Ajax.request({
-        url: AppUrl + 'mwd/PM_REPAIR_JS_STANDARD_EDIT',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            'V_V_FLAG': '-1',
-            'V_V_GUID': V_V_GUID,
-            'V_V_ORGCODE': V_V_PLANTCODE,
-            'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getSubmitValue(),
-            'V_V_EQUCODE': Ext.getCmp('V_V_EQUCODE').getSubmitValue(),
-            'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUTYPECODE').getSubmitValue(),
-            'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE_c').getSubmitValue(),
-            'V_V_BJ_IMG': V_V_GUID,
-            'V_V_PART_NUMBER': Ext.getCmp('V_V_PART_NUMBER').getSubmitValue(),
-            'V_V_PART_NAME': Ext.getCmp('V_V_PART_NAME').getSubmitValue(),
-            'V_V_PART_CODE': Ext.getCmp('V_V_PART_CODE').getSubmitValue(),
-            'V_V_MATERIAL': Ext.getCmp('V_V_MATERIAL').getSubmitValue(),
-            'V_V_IMGSIZE': Ext.getCmp('V_V_IMGSIZE').getSubmitValue(),
-            'V_V_IMGGAP': Ext.getCmp('V_V_IMGGAP').getSubmitValue(),
-            'V_V_VALUE_DOWN': Ext.getCmp('V_V_VALUE_DOWN').getSubmitValue(),
-            'V_V_VALUE_UP': Ext.getCmp('V_V_VALUE_UP').getSubmitValue(),
-            'V_V_REPLACE_CYC': Ext.getCmp('V_V_REPLACE_CYC').getSubmitValue(),
-            'V_V_WEIGHT': Ext.getCmp('V_V_WEIGHT').getSubmitValue(),
-            'V_V_IMGCODE': Ext.getCmp('V_V_IMGCODE').getSubmitValue(),
-            'V_V_CONTENT': Ext.getCmp('V_V_CONTENT').getSubmitValue()
-        },
-        success: function (response) {
-            var data = Ext.decode(response.responseText);
-            if (data.success) {
-                if (data.V_INFO == 'success') {
-                    window.close();
-                    window.opener._select();
+
+    if(v_flag=="TY"){
+        Ext.Ajax.request({
+            url: AppUrl + 'mwd/PM_REPAIR_JS_STANDARD_EDIT',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                'V_V_FLAG': '-1',
+                'V_V_GUID': V_V_GUID,
+                'V_V_ORGCODE': V_V_PLANTCODE,
+                'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getSubmitValue(),
+                'V_V_EQUCODE': 'TY',
+                'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUTYPECODE').getSubmitValue(),
+                'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE_c').getSubmitValue(),
+                'V_V_BJ_IMG': V_V_GUID,
+                'V_V_PART_NUMBER': Ext.getCmp('V_V_PART_NUMBER').getSubmitValue(),
+                'V_V_PART_NAME': Ext.getCmp('V_V_PART_NAME').getSubmitValue(),
+                'V_V_PART_CODE': Ext.getCmp('V_V_PART_CODE').getSubmitValue(),
+                'V_V_MATERIAL': Ext.getCmp('V_V_MATERIAL').getSubmitValue(),
+                'V_V_IMGSIZE': Ext.getCmp('V_V_IMGSIZE').getSubmitValue(),
+                'V_V_IMGGAP': Ext.getCmp('V_V_IMGGAP').getSubmitValue(),
+                'V_V_VALUE_DOWN': Ext.getCmp('V_V_VALUE_DOWN').getSubmitValue(),
+                'V_V_VALUE_UP': Ext.getCmp('V_V_VALUE_UP').getSubmitValue(),
+                'V_V_REPLACE_CYC': Ext.getCmp('V_V_REPLACE_CYC').getSubmitValue(),
+                'V_V_WEIGHT': Ext.getCmp('V_V_WEIGHT').getSubmitValue(),
+                'V_V_IMGCODE': Ext.getCmp('V_V_IMGCODE').getSubmitValue(),
+                'V_V_CONTENT': Ext.getCmp('V_V_CONTENT').getSubmitValue()
+            },
+            success: function (response) {
+                var data = Ext.decode(response.responseText);
+                if (data.success) {
+                    if (data.V_INFO == 'success') {
+                        window.close();
+                        window.opener._select();
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
                 }
-            } else {
+            },
+            failure: function (response) {
                 Ext.MessageBox.show({
                     title: '错误',
-                    msg: data.message,
+                    msg: response.responseText,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
                 });
             }
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
-        }
-    });
+        });
+    }else{
+        Ext.Ajax.request({
+            url: AppUrl + 'mwd/PM_REPAIR_JS_STANDARD_EDIT',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                'V_V_FLAG': '-1',
+                'V_V_GUID': V_V_GUID,
+                'V_V_ORGCODE': V_V_PLANTCODE,
+                'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getSubmitValue(),
+                'V_V_EQUCODE': Ext.getCmp('V_V_EQUCODE').getSubmitValue(),
+                'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUTYPECODE').getSubmitValue(),
+                'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE_c').getSubmitValue(),
+                'V_V_BJ_IMG': V_V_GUID,
+                'V_V_PART_NUMBER': Ext.getCmp('V_V_PART_NUMBER').getSubmitValue(),
+                'V_V_PART_NAME': Ext.getCmp('V_V_PART_NAME').getSubmitValue(),
+                'V_V_PART_CODE': Ext.getCmp('V_V_PART_CODE').getSubmitValue(),
+                'V_V_MATERIAL': Ext.getCmp('V_V_MATERIAL').getSubmitValue(),
+                'V_V_IMGSIZE': Ext.getCmp('V_V_IMGSIZE').getSubmitValue(),
+                'V_V_IMGGAP': Ext.getCmp('V_V_IMGGAP').getSubmitValue(),
+                'V_V_VALUE_DOWN': Ext.getCmp('V_V_VALUE_DOWN').getSubmitValue(),
+                'V_V_VALUE_UP': Ext.getCmp('V_V_VALUE_UP').getSubmitValue(),
+                'V_V_REPLACE_CYC': Ext.getCmp('V_V_REPLACE_CYC').getSubmitValue(),
+                'V_V_WEIGHT': Ext.getCmp('V_V_WEIGHT').getSubmitValue(),
+                'V_V_IMGCODE': Ext.getCmp('V_V_IMGCODE').getSubmitValue(),
+                'V_V_CONTENT': Ext.getCmp('V_V_CONTENT').getSubmitValue()
+            },
+            success: function (response) {
+                var data = Ext.decode(response.responseText);
+                if (data.success) {
+                    if (data.V_INFO == 'success') {
+                        window.close();
+                        window.opener._select();
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            },
+            failure: function (response) {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: response.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        });
+    }
+
 }
 
 function _delete(V_V_FILEGUID, V_V_FILENAME) {

@@ -13,6 +13,12 @@
     <link rel="Stylesheet" href="../../../pm/css/cssloginforie6.css"/>
     <![endif]-->
     <!-- <link rel="stylesheet" href="../../../pm/css/css.css"/>-->
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
+
     <link rel="stylesheet" href="../../../../commons/extjs/resources/css/ext-all.css"/>
     <script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
     <script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
@@ -35,7 +41,11 @@
                     <td class="a_td">
                         <a href="http://10.101.25.148/download/files/Chrome28.exe" class="xiazai_a" target="_blank">推荐浏览器下载</a>
                         <a href="install_lodop.exe" class="printa_a">安装打印控件</a>
-                        <a href="http://10.192.11.253/tel/LXFS_GW.htm" class="lxfs_a" target="_blank">联系方式</a></td>
+                        <!--<a href="http://10.192.11.253/tel/LXFS_GW.htm" class="lxfs_a" target="_blank">联系方式</a></td>-->
+                        <a onclick="onTel()" class="lxfs_a">联系方式</a></td>
+                </tr>
+                <tr>
+                    <td><label id="tel1" style="padding-left: 25px;"></label><br><label id="tel2" style="padding-left: 25px;"></label></td>
                 </tr>
                 <tr>
                     <td><input type="button" class="login_btn" id="btnLogin" onclick="OnLogInClick()" value="登 录" /></td>
