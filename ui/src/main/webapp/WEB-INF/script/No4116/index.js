@@ -327,10 +327,10 @@ Ext.onReady(function() {
 
     Ext.data.StoreManager.lookup('zyqstore').on("load", function() {
 
-        Ext.ComponentManager.get('zyq').store.insert(0, {
+        /*Ext.ComponentManager.get('zyq').store.insert(0, {
             'V_DEPTCODE' : '%',
             'V_DEPTNAME' : '全部'
-        });
+        });*/
         Ext.getCmp("zyq").select(Ext.data.StoreManager.lookup('zyqstore').getAt(0));
         Ext.data.StoreManager.lookup('ssblx').load({
             params : {
