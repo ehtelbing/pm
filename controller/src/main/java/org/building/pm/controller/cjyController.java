@@ -3053,10 +3053,22 @@ public class cjyController {
                                               @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
                                               HttpServletRequest request,
                                               HttpServletResponse response) throws Exception {
-        List<Map> result = cjyService.PRO_PM_EQUREPAIRPLAN_TREE_BYTI(V_V_GUID_FXJH,V_D_DATE_B, V_D_DATE_E);
+        List<Map> result = cjyService.PRO_PM_EQUREPAIRPLAN_TREE_BYTI(V_V_GUID_FXJH, V_D_DATE_B, V_D_DATE_E);
         return result;
     }
 
+    @RequestMapping(value = "PRO_JMDJ_VIEW_DATA_WORD_ITEM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_JMDJ_VIEW_DATA_WORD_ITEM(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                                            @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                                            @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+                                                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                            HttpServletRequest request)throws SQLException {
+        Map<String, Object> result = cjyService.PRO_JMDJ_VIEW_DATA_WORD_ITEM(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGNAME, V_V_DEPTCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
 }
 
 
