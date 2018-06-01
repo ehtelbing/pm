@@ -57,7 +57,10 @@ Ext.onReady(function () {
             {text: '设备名称', width: 200, dataIndex: 'V_EQUIP_NAME', align: 'center', renderer: Atleft},
             {text: '委托人', width: 200, dataIndex: 'V_ENTERED_BY', align: 'center', renderer: Atleft},
             {text: '委托时间', width: 200, dataIndex: 'D_ENTER_DATE', align: 'center', renderer: Atleft},
-            {text: '检修单位', width: 200, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: Atleft}]
+            {text: '检修单位', width: 200, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: Atleft}],
+        listeners: {
+            itemdblclick: itemClick
+        }
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -69,6 +72,13 @@ Ext.onReady(function () {
 function Atleft(value, metaData) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+
+
+function itemClick(s, record, item, index, e, eOpts) {
+    window.parent.append('090901', '检修工单明细', AppUrl + 'page/PM_090901/index.html?V_GUID='
+        + Ext.getStore("gridStore").getAt(index).get("V_ORDERGUID")
+        + '');
 }
 
 function goSetMat(value, metaData, record, rowIdx) {
