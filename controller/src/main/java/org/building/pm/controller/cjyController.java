@@ -5,6 +5,7 @@ import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.activitiController.ActivitiController;
 import org.building.pm.service.cjyService;
 import org.building.pm.webcontroller.AMToMessController;
+import org.building.pm.webcontroller.MMController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -1330,9 +1331,9 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_DEFECT_STATE_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_DEFECT_STATE_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                     @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                     HttpServletRequest request,
-                                                     HttpServletResponse response) throws Exception {
+                                                       @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_DEFECT_STATE_SET(V_V_GUID, V_V_STATECODE);
         return result;
     }
@@ -1340,9 +1341,9 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_SET_STATE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_WEEK_SET_STATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                       @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                       HttpServletRequest request,
-                                                       HttpServletResponse response) throws Exception {
+                                                             @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_03_PLAN_WEEK_SET_STATE(V_V_GUID, V_V_STATECODE);
         return result;
     }
@@ -1350,9 +1351,9 @@ public class cjyController {
     @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_W", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_SET_W(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
-                                                             @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
-                                                             HttpServletRequest request,
-                                                             HttpServletResponse response) throws Exception {
+                                                          @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_DEFECTTOWORKORDER_SET_W(V_V_WORKORDER_GUID, V_V_WEEK_GUID);
         return result;
     }
@@ -1370,9 +1371,9 @@ public class cjyController {
     @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SELBYWORK", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_SELBYWORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
-                                                          @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
-                                                          HttpServletRequest request,
-                                                          HttpServletResponse response) throws Exception {
+                                                              @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                                              HttpServletRequest request,
+                                                              HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYWORK(V_V_WORKORDER_GUID, V_V_FLAG);
         return result;
     }
@@ -1380,9 +1381,9 @@ public class cjyController {
     @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_WD", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_SET_WD(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
-                                                          @RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
-                                                          HttpServletRequest request,
-                                                          HttpServletResponse response) throws Exception {
+                                                           @RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_DEFECTTOWORKORDER_SET_WD(V_V_DEFECT_GUID, V_V_WORKORDER_GUID);
         return result;
     }
@@ -1390,8 +1391,8 @@ public class cjyController {
     @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DELBYWORK", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_DELBYWORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
-                                                          HttpServletRequest request,
-                                                          HttpServletResponse response) throws Exception {
+                                                              HttpServletRequest request,
+                                                              HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_DEFECTTOWORKORDER_DELBYWORK(V_V_WORKORDER_GUID);
         return result;
     }
@@ -1399,10 +1400,10 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_NC", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_DEFECT_NC(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                           @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                          @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
                                                           @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_WORKORDER_DEFECT_NC(V_V_ORGCODE, V_V_PERNAME, V_DEFECT_GUID);
         return result;
     }
@@ -1410,23 +1411,23 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_WORKORDER_DEFECT_PRO", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_DEFECT_PRO(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                          @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
-                                                          @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
+                                                           @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                           @RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
                                                            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-                                                          HttpServletRequest request,
-                                                          HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_PM_WORKORDER_DEFECT_PRO(V_V_ORGCODE, V_V_PERNAME, V_DEFECT_GUID,V_V_PROJECT_GUID);
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_WORKORDER_DEFECT_PRO(V_V_ORGCODE, V_V_PERNAME, V_DEFECT_GUID, V_V_PROJECT_GUID);
         return result;
     }
 
     @RequestMapping(value = "/PM_03_PLAN_PORJECT_WORKORDER", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_03_PLAN_PORJECT_WORKORDER(@RequestParam(value = "V_V_PROJECT_CODE") String V_V_PROJECT_CODE,
-                                                           @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
-                                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
+                                                            @RequestParam(value = "V_V_WEEK_GUID") String V_V_WEEK_GUID,
+                                                            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_03_PLAN_PORJECT_WORKORDER(V_V_PROJECT_CODE, V_V_WEEK_GUID, V_V_ORGCODE, V_V_PERCODE);
         return result;
     }
@@ -1497,7 +1498,7 @@ public class cjyController {
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cjyService.PRO_SAP_EQU_VIEW_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE,V_V_EQUNAME);
+        HashMap data = cjyService.PRO_SAP_EQU_VIEW_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUTYPECODE, V_V_EQUCODE, V_V_EQUNAME);
 
         List<Map<String, Object>> pm_06list = (List) data.get("list");
 
@@ -1512,27 +1513,27 @@ public class cjyController {
                                      @RequestParam(value = "UserPassword") String UserPassword,
                                      @RequestParam(value = "UserIp") String UserIp)
             throws SQLException {
-        Map<String, Object> result = cjyService.login(UserName,UserPassword, UserIp);
+        Map<String, Object> result = cjyService.login(UserName, UserPassword, UserIp);
         return result;
     }
 
     @RequestMapping(value = "/PM_06_DJ_CRITERION_GENERATE_N", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_06_DJ_CRITERION_GENERATE_N(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                           @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
-                                           @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                             @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
+                                             @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                              //@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                              @RequestParam(value = "V_V_STIME") String V_V_STIME,
                                              @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
-                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                           HttpServletRequest request,
-                                           HttpServletResponse response) throws Exception {
+                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cjyService.PM_06_DJ_CRITERION_GENERATE_N(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
+        HashMap data = cjyService.PM_06_DJ_CRITERION_GENERATE_N(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_STIME, V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
@@ -1573,28 +1574,28 @@ public class cjyController {
     @RequestMapping(value = "/PM_06_DJ_CRITERION_BYDEPT", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_06_DJ_CRITERION_BYDEPT(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                             @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
-                                             @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                             @RequestParam(value = "V_V_STIME") String V_V_STIME,
-                                             @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
-                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                             HttpServletRequest request,
-                                             HttpServletResponse response) throws Exception {
+                                         @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
+                                         @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                         @RequestParam(value = "V_V_STIME") String V_V_STIME,
+                                         @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
+                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cjyService.PM_06_DJ_CRITERION_BYDEPT(V_V_ORGCODE,  V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE,V_V_STIME,V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
+        HashMap data = cjyService.PM_06_DJ_CRITERION_BYDEPT(V_V_ORGCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_STIME, V_V_ETIME, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
     @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYROLE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYROLE(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
-                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                         HttpServletRequest request)
+                                                            @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                            HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYROLE(V_V_STATECODE, X_PERSONCODE, V_V_PAGE,
                 V_V_PAGESIZE);
@@ -1631,17 +1632,17 @@ public class cjyController {
                                                              @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                                              @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                              HttpServletRequest request,
-                                                              HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYPRO(V_V_PROJECT_GUID,V_V_FLAG,V_V_PAGE,V_V_PAGESIZE);
+                                                             HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_DEFECTTOWORKORDER_SELBYPRO(V_V_PROJECT_GUID, V_V_FLAG, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "/PM_DEFECTTOWORKORDER_SET_PD", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_SET_PD(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
-                                                        @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) throws Exception {
+                                                           @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_DEFECTTOWORKORDER_SET_PD(V_V_DEFECT_GUID, V_V_PROJECT_GUID);
         return result;
     }
@@ -1649,8 +1650,8 @@ public class cjyController {
     @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DELBYPRO", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_DELBYPRO(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) throws Exception {
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_DEFECTTOWORKORDER_DELBYPRO(V_V_PROJECT_GUID);
         return result;
     }
@@ -1660,18 +1661,18 @@ public class cjyController {
     public Map<String, Object> PM_PROJECT_DX_MX_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
                                                     @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                                     @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                             HttpServletRequest request,
-                                                             HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_SEL(V_V_PROJECT_GUID, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "/PM_PROJECT_DX_MX_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_PROJECT_DX_MX_SET(@RequestParam(value = "V_V_MX_GUID") String V_V_MX_GUID,
-                                                           @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
+                                                    @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_PROJECT_DX_MX_SET(V_V_MX_GUID, V_V_PROJECT_GUID);
         return result;
     }
@@ -1679,8 +1680,8 @@ public class cjyController {
     @RequestMapping(value = "/PM_PROJECT_DX_MX_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_PROJECT_DX_MX_DEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-                                                             HttpServletRequest request,
-                                                             HttpServletResponse response) throws Exception {
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_PROJECT_DX_MX_DEL(V_V_PROJECT_GUID);
         return result;
     }
@@ -1719,14 +1720,14 @@ public class cjyController {
             @RequestParam(value = "V_V_SPR") String V_V_SPR,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        V_V_IP =request.getRemoteAddr();
+        V_V_IP = request.getRemoteAddr();
 
         Map<String, Object> result = new HashMap<String, Object>();
 
 
         HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_SET_NEW(V_V_IP, V_V_PERCODE, V_V_PERNAME, V_V_GUID, V_V_DEPTCODE, V_V_DEPTNAME, V_V_PROJECTNAME, V_V_PLANDATE, V_V_SPECIALTY, V_V_SPECIALTYNAME, V_V_SPECIALTYMANCODE
                 , V_V_SPECIALTYMAN, V_F_MONEYUP, V_F_MONEYBUDGET, V_V_REPAIRDEPTTYPE, V_V_REPAIRDEPTCODE, V_V_REPAIRDEPT, V_V_DEFECT, V_V_MEASURE, V_I_RUSHTO, V_V_PROJECTCODE_GS, V_V_REPAIRDEPT_GS,
-                V_F_MONEY_GS, V_D_INDATE_GS, V_I_YEAR_PLAN, V_I_MONTH_PLAN,V_V_EQUTYPE,V_V_EQUCODE,V_V_SPR);
+                V_F_MONEY_GS, V_D_INDATE_GS, V_I_YEAR_PLAN, V_I_MONTH_PLAN, V_V_EQUTYPE, V_V_EQUCODE, V_V_SPR);
         String pm_06 = (String) data.get("RET");
 
         result.put("RET", pm_06);
@@ -1737,9 +1738,9 @@ public class cjyController {
     @RequestMapping(value = "/PM_DEFECTTOWORKORDER_DELBYPD", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECTTOWORKORDER_DELBYPD(@RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
-                                                           @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
+                                                            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_DEFECTTOWORKORDER_DELBYPD(V_V_DEFECT_GUID, V_V_PROJECT_GUID);
         return result;
     }
@@ -1747,9 +1748,9 @@ public class cjyController {
     @RequestMapping(value = "/PM_PROJECT_DX_MX_DEL_BYPM", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_PROJECT_DX_MX_DEL_BYPM(@RequestParam(value = "V_V_MX_GUID") String V_V_MX_GUID,
-                                                    @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-                                                    HttpServletRequest request,
-                                                    HttpServletResponse response) throws Exception {
+                                                         @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_PROJECT_DX_MX_DEL_BYPM(V_V_MX_GUID, V_V_PROJECT_GUID);
         return result;
     }
@@ -1759,9 +1760,9 @@ public class cjyController {
     public Map<String, Object> PM_PROJECT_DX_MX_RG_SEL(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
                                                        @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                    HttpServletRequest request,
-                                                    HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_RG_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_PROJECT_DX_MX_RG_SEL(V_V_PROJECT_GUID, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -1772,7 +1773,7 @@ public class cjyController {
                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                        HttpServletRequest request,
                                                        HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_JJ_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
+        Map result = cjyService.PM_PROJECT_DX_MX_JJ_SEL(V_V_PROJECT_GUID, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -1783,7 +1784,7 @@ public class cjyController {
                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                        HttpServletRequest request,
                                                        HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_BJ_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
+        Map result = cjyService.PM_PROJECT_DX_MX_BJ_SEL(V_V_PROJECT_GUID, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -1794,18 +1795,18 @@ public class cjyController {
                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                                                        HttpServletRequest request,
                                                        HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_PROJECT_DX_MX_GJ_SEL(V_V_PROJECT_GUID,V_V_PAGE,V_V_PAGESIZE);
+        Map result = cjyService.PM_PROJECT_DX_MX_GJ_SEL(V_V_PROJECT_GUID, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYEQU", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYEQU(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
-                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                         HttpServletRequest request)
+                                                           @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                           HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYEQU(V_V_STATECODE, X_PERSONCODE, V_V_EQUCODE, V_V_PAGE,
                 V_V_PAGESIZE);
@@ -1815,12 +1816,12 @@ public class cjyController {
     @RequestMapping(value = "/PRO_SAP_EQU_TYPE_TXVAL_SEL_P", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_SAP_EQU_TYPE_TXVAL_SEL_P(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                             @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                             HttpServletRequest request,
-                                             HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_SAP_EQU_TYPE_TXVAL_SEL_P(V_V_EQUCODE, V_V_EQUTYPECODE,V_V_PAGE,V_V_PAGESIZE);
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_SAP_EQU_TYPE_TXVAL_SEL_P(V_V_EQUCODE, V_V_EQUTYPECODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -1829,63 +1830,63 @@ public class cjyController {
     public Map PRO_SAP_EQU_BOM_VIEW_P(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                    HttpServletRequest request,
-                                    HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_SAP_EQU_BOM_VIEW_P(V_V_EQUCODE,V_V_PAGE,V_V_PAGESIZE);
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_SAP_EQU_BOM_VIEW_P(V_V_EQUCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "/PRO_PM_DEFECT_VIEW_P", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_DEFECT_VIEW_P(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
-                                  @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
-                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                  @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
-                                  @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                  @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                  @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
-                                  @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                    @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                    @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                    @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                    @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                    @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                    @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+                                    @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
                                     @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                     @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) throws Exception {
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_DEFECT_VIEW_P(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE, V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE,
-                V_V_SOURCECODE, V_V_DEFECTLIST,V_V_PAGE,V_V_PAGESIZE);
+                V_V_SOURCECODE, V_V_DEFECTLIST, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "/PRO_SAP_WORKORDER_SELECT_P", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_SAP_WORKORDER_SELECT_P(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
-                                        @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
-                                        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                        @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
-                                        @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                        @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
-                                        @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
-                                        @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
-                                        @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
-                                        @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
-                                        @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
+                                          @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                          @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                          @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                          @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                          @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                          @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                          @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                          @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
+                                          @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                          @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
+                                          @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                        HttpServletRequest request,
-                                        HttpServletResponse response) throws Exception {
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_SAP_WORKORDER_SELECT_P(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
-                V_V_STATECODE, V_EQUTYPE_CODE, V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT, V_V_BJ_TXT, V_V_ORDER_TYP,V_V_PAGE,V_V_PAGESIZE);
+                V_V_STATECODE, V_EQUTYPE_CODE, V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT, V_V_BJ_TXT, V_V_ORDER_TYP, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
     @RequestMapping(value = "/PRO_RUN_EQU_BJ_ALERT_ALL_P", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_RUN_EQU_BJ_ALERT_ALL_P(@RequestParam(value = "A_EQUID") String A_EQUID,
-                                        @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                          @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                        HttpServletRequest request,
-                                        HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_RUN_EQU_BJ_ALERT_ALL_P(A_EQUID, A_CYCLE_ID,V_V_PAGE,V_V_PAGESIZE);
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_RUN_EQU_BJ_ALERT_ALL_P(A_EQUID, A_CYCLE_ID, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -1954,7 +1955,7 @@ public class cjyController {
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_TRE_GET_Z( V_V_GUID_FXJH,V_BY1, V_BY2, V_BY3);
+        HashMap data = cjyService.PRO_PM_EQUREPAIRPLAN_TRE_GET_Z(V_V_GUID_FXJH, V_BY1, V_BY2, V_BY3);
         List<Map<String, Object>> lxmlist = (List) data.get("list");
         result.put("list", lxmlist);
         result.put("success", true);
@@ -1972,8 +1973,8 @@ public class cjyController {
     @RequestMapping(value = "/BASE_PERSON_SEL_BYDEPT", method = RequestMethod.POST)
     @ResponseBody
     public Map BASE_PERSON_SEL_BYDEPT(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                          HttpServletRequest request,
-                                          HttpServletResponse response) throws Exception {
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
         Map result = cjyService.BASE_PERSON_SEL_BYDEPT(V_V_DEPTCODE);
         return result;
     }
@@ -1981,8 +1982,8 @@ public class cjyController {
     @RequestMapping(value = "/PRO_BASE_PERSON_GET_BYDEPT", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_PERSON_GET_BYDEPT(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                      HttpServletRequest request,
-                                      HttpServletResponse response) throws Exception {
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_BASE_PERSON_GET_BYDEPT(V_V_PERSONCODE);
         return result;
     }
@@ -1990,8 +1991,8 @@ public class cjyController {
     @RequestMapping(value = "/PRO_BASE_POST_GET_BYPER", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_POST_GET_BYPER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                          HttpServletRequest request,
-                                          HttpServletResponse response) throws Exception {
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_BASE_POST_GET_BYPER(V_V_PERSONCODE);
         return result;
     }
@@ -1999,9 +2000,9 @@ public class cjyController {
     @RequestMapping(value = "/PRO_BASE_SPECIALTY_TREE_CHECK", method = RequestMethod.POST)
     @ResponseBody
     public List<HashMap> PRO_BASE_SPECIALTY_TREE_CHECK(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) throws Exception {
+                                                       @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
         List<HashMap> result = cjyService.PRO_BASE_SPECIALTY_TREE_CHECK(V_V_PERSONCODE, V_V_DEPTCODE);
         return result;
     }
@@ -2009,8 +2010,8 @@ public class cjyController {
     @RequestMapping(value = "/PRO_BASE_CRAFTTOPER_GETBYPER", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_CRAFTTOPER_GETBYPER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) throws Exception {
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_BASE_CRAFTTOPER_GETBYPER(V_V_PERSONCODE);
         return result;
     }
@@ -2019,9 +2020,9 @@ public class cjyController {
     @ResponseBody
     public Map PM_03_PLAN_CHOOSE_SEL_NEW(@RequestParam(value = "V_V_GUID") String V_V_GUID,
                                          @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
-                                            HttpServletRequest request,
-                                            HttpServletResponse response) throws Exception {
-        Map result = cjyService.PM_03_PLAN_CHOOSE_SEL_NEW(V_V_GUID,V_V_PLANTYPE);
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_03_PLAN_CHOOSE_SEL_NEW(V_V_GUID, V_V_PLANTYPE);
         return result;
     }
 
@@ -2118,8 +2119,8 @@ public class cjyController {
         return result;
     }
 
-    public static Map groupList(List<String> arrayList){
-        Map<String,Integer> map=new HashMap<String,Integer>();
+    public static Map groupList(List<String> arrayList) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
         try {
 
             /*for(int i=0;i<arrayList.size();i++){
@@ -2138,13 +2139,13 @@ public class cjyController {
             }*/
 
 
-            for(String str:arrayList){
-                Integer count=map.get(str);
-                if(count==null){
-                    count=0;
+            for (String str : arrayList) {
+                Integer count = map.get(str);
+                if (count == null) {
+                    count = 0;
                 }
                 count++;
-                map.put(str,count);
+                map.put(str, count);
 
             }
         } catch (Exception e) {
@@ -2153,6 +2154,7 @@ public class cjyController {
         return map;
 
     }
+
     @RequestMapping(value = "/batchAgreeForWeek", method = RequestMethod.POST)
     @ResponseBody
     public Map batchAgreeForWeek(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
@@ -2161,10 +2163,10 @@ public class cjyController {
                                  HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         Map result = new HashMap();
-        int sucNum=0;
-        int fqrNum=0;
-        int faiNum=0;
-        List<String> nexperList=new ArrayList<String>();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
             HashMap perresult = new HashMap();
@@ -2258,22 +2260,22 @@ public class cjyController {
 
         }
 
-        Map groupPer=groupList(nexperList);//
+        Map groupPer = groupList(nexperList);//
         Iterator<String> iter = groupPer.keySet().iterator();
-        while(iter.hasNext()){
-            String per=iter.next();
+        while (iter.hasNext()) {
+            String per = iter.next();
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes=MessageSend(dbnum,"周计划",per);
-            if(mes.equals("fail")){
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"周计划","-1");
-            }else{
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"周计划","0");
+            String mes = MessageSend(dbnum, "周计划", per);
+            if (mes.equals("fail")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
+            } else {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
             }
         }
 
-        result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批"+fqrNum+"条");
+        result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
 
@@ -2286,16 +2288,16 @@ public class cjyController {
                                     HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
         Map result = new HashMap();
-        int sucNum=0;
-        int fqrNum=0;
-        int faiNum=0;
-        List<String> nexperList=new ArrayList<String>();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stateresult = new HashMap();
             Map stepresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
-            ActivitiController ActivitiController = new ActivitiController();
+            ActivitiController activitiController = new ActivitiController();
 
             String taskid = "";
             String V_STEPCODE = "";
@@ -2335,22 +2337,22 @@ public class cjyController {
             }
         }
 
-        Map groupPer=groupList(nexperList);//
+        Map groupPer = groupList(nexperList);//
         Iterator<String> iter = groupPer.keySet().iterator();
-        while(iter.hasNext()){
-            String per=iter.next();
+        while (iter.hasNext()) {
+            String per = iter.next();
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes=MessageSend(dbnum,"周计划",per);
-            if(mes.equals("fail")){
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"周计划","-1");
-            }else{
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"周计划","0");
+            String mes = MessageSend(dbnum, "周计划", per);
+            if (mes.equals("fail")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
+            } else {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
             }
         }
 
-        result.put("mes", "周计划批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回"+fqrNum+"条");
+        result.put("mes", "周计划批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回" + fqrNum + "条");
         return result;
     }
 
@@ -2374,15 +2376,15 @@ public class cjyController {
     @RequestMapping(value = "/batchAgreeForMonth", method = RequestMethod.POST)
     @ResponseBody
     public Map batchAgreeForMonth(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                 @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
-                                 @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                  @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                  @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
         Map result = new HashMap();
-        int sucNum=0;
-        int fqrNum=0;
-        int faiNum=0;
-        List<String> nexperList=new ArrayList<String>();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
             HashMap perresult = new HashMap();
@@ -2469,38 +2471,38 @@ public class cjyController {
                 faiNum++;
             }
         }
-        Map groupPer=groupList(nexperList);//
+        Map groupPer = groupList(nexperList);//
         Iterator<String> iter = groupPer.keySet().iterator();
-        while(iter.hasNext()){
-            String per=iter.next();
+        while (iter.hasNext()) {
+            String per = iter.next();
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes=MessageSend(dbnum,"月计划",per);
-            if(mes.equals("fail")){
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"月计划","-1");
-            }else{
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"月计划","0");
+            String mes = MessageSend(dbnum, "月计划", per);
+            if (mes.equals("fail")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
+            } else {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
             }
         }
 
-        result.put("mes", "月计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批"+fqrNum+"条");
+        result.put("mes", "月计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
 
     @RequestMapping(value = "/batchDisAgreeForMonth", method = RequestMethod.POST)
     @ResponseBody
     public Map batchDisAgreeForMonth(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                     @RequestParam(value = "V_ORDERGUID") String[]  V_ORDERGUID,
-                                     @RequestParam(value = "ProcessDefinitionKey") String[]  ProcessDefinitionKey,
-                                     @RequestParam(value = "ProcessInstanceId") String[]  ProcessInstanceId,
+                                     @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                     @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                     @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
                                      HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
         Map result = new HashMap();
-        int sucNum=0;
-        int fqrNum=0;
-        int faiNum=0;
-        List<String> nexperList=new ArrayList<String>();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stateresult = new HashMap();
             Map stepresult = new HashMap();
@@ -2551,30 +2553,30 @@ public class cjyController {
                 faiNum++;
             }
         }
-        Map groupPer=groupList(nexperList);//
+        Map groupPer = groupList(nexperList);//
         Iterator<String> iter = groupPer.keySet().iterator();
-        while(iter.hasNext()){
-            String per=iter.next();
+        while (iter.hasNext()) {
+            String per = iter.next();
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes=MessageSend(dbnum,"月计划",per);
-            if(mes.equals("fail")){
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"月计划","-1");
-            }else{
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"月计划","0");
+            String mes = MessageSend(dbnum, "月计划", per);
+            if (mes.equals("fail")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
+            } else {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
             }
         }
 
-        result.put("mes", "月计划批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回"+fqrNum+"条");
+        result.put("mes", "月计划批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回" + fqrNum + "条");
         return result;
     }
 
     @RequestMapping(value = "/PRO_PM_1917_JXGX_PER_DATA_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_1917_JXGX_PER_DATA_VIEW(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
-                                         HttpServletRequest request,
-                                         HttpServletResponse response) throws Exception {
+                                              HttpServletRequest request,
+                                              HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_1917_JXGX_PER_DATA_VIEW(V_V_JXGX_CODE);
         return result;
     }
@@ -2582,8 +2584,8 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_1917_JXGX_JJ_DATA_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_1917_JXGX_JJ_DATA_VIEW(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
-                                              HttpServletRequest request,
-                                              HttpServletResponse response) throws Exception {
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_1917_JXGX_JJ_DATA_VIEW(V_V_JXGX_CODE);
         return result;
     }
@@ -2600,8 +2602,8 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_1917_JXGX_JSYQ_DATA_V", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_1917_JXGX_JSYQ_DATA_V(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
-                                             HttpServletRequest request,
-                                             HttpServletResponse response) throws Exception {
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_1917_JXGX_JSYQ_DATA_V(V_V_JXGX_CODE);
         return result;
     }
@@ -2614,11 +2616,12 @@ public class cjyController {
         Map result = cjyService.PRO_PM_1917_JXGX_AQCS_DATA_V(V_V_JXGX_CODE);
         return result;
     }
+
     @RequestMapping(value = "/PM_091104Tree", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> PM_091104Tree(@RequestParam(value = "ORDER_ID") String ORDER_ID,
-                                    @RequestParam(value = "WORK_ID") String WORK_ID,
-                                    @RequestParam(value = "DEPARTCODE") String DEPARTCODE)
+                                   @RequestParam(value = "WORK_ID") String WORK_ID,
+                                   @RequestParam(value = "DEPARTCODE") String DEPARTCODE)
             throws SQLException {
         List<Map> result = cjyService.PM_091104Tree(ORDER_ID, WORK_ID, DEPARTCODE);
         return result;
@@ -2630,18 +2633,18 @@ public class cjyController {
                                        @RequestParam(value = "V_V_EQUSITE") String V_V_EQUSITE,
                                        @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
                                        @RequestParam(value = "V_V_CBZX") String V_V_CBZX,
-                                            HttpServletRequest request,
-                                            HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_SAP_PM_EQU_P_UPDATE(V_V_EQUCODE,V_V_EQUSITE,V_V_EQUTYPECODE,V_V_CBZX);
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_SAP_PM_EQU_P_UPDATE(V_V_EQUCODE, V_V_EQUSITE, V_V_EQUTYPECODE, V_V_CBZX);
         return result;
     }
 
     @RequestMapping(value = "/PRO_PM_WORKORDER_ET_OPERA_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_ET_OPERA_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                       @RequestParam(value = "V_V_FACT_VALUE") String V_V_FACT_VALUE,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) throws Exception {
+                                             @RequestParam(value = "V_V_FACT_VALUE") String V_V_FACT_VALUE,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_WORKORDER_ET_OPERA_SET(V_V_GUID, V_V_FACT_VALUE);
         return result;
     }
@@ -2649,8 +2652,8 @@ public class cjyController {
     @RequestMapping(value = "/PM_1917_JXMX_DATA_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_1917_JXMX_DATA_DEL(@RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE,
-                                             HttpServletRequest request,
-                                             HttpServletResponse response) throws Exception {
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_1917_JXMX_DATA_DEL(V_V_JXMX_CODE);
         return result;
     }
@@ -2658,23 +2661,23 @@ public class cjyController {
     @RequestMapping(value = "/batchAgreeForWork", method = RequestMethod.POST)
     @ResponseBody
     public Map batchAgreeForWork(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                  @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
-                                  @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                 @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                 @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
                                  @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         Map result = new HashMap();
-        int sucNum=0;
-        int fqrNum=0;
-        int faiNum=0;
-        List<String> nexperList=new ArrayList<String>();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
             Map spperresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
             Map stateresult = new HashMap();
-            ActivitiController ActivitiController = new ActivitiController();
+            ActivitiController activitiController = new ActivitiController();
 
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
@@ -2714,6 +2717,18 @@ public class cjyController {
                     complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
                     if (complresult.get("ret").toString().equals("任务提交成功")) {
                         flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
+
+                        /*
+                        * 如果下一步是不是审批步骤，向物资接口传递工单信息
+                        * */
+                        if (V_NEXT_SETP.indexOf("sp") != -1) {
+                            MMController mmController = new MMController();
+                            mmController.PsetMat(V_ORDERGUID[i], Assignee);
+                        }
+                        /*
+                        * 传递完成
+                        * */
+
                         if (flowresult.get("V_INFO").toString().equals("success")) {
                             sucNum++;
                             nexperList.add(sppercode);
@@ -2729,45 +2744,45 @@ public class cjyController {
                 faiNum++;
             }
         }
-        Map groupPer=groupList(nexperList);//
+        Map groupPer = groupList(nexperList);//
         Iterator<String> iter = groupPer.keySet().iterator();
-        while(iter.hasNext()){
-            String per=iter.next();
+        while (iter.hasNext()) {
+            String per = iter.next();
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes=MessageSend(dbnum,"工单",per);
-            if(mes.equals("fail")){
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"工单","-1");
-            }else{
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"工单","0");
+            String mes = MessageSend(dbnum, "工单", per);
+            if (mes.equals("fail")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "-1");
+            } else {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "0");
             }
         }
 
-        result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批"+fqrNum+"条");
+        result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
 
     @RequestMapping(value = "/batchDisAgreeForWork", method = RequestMethod.POST)
     @ResponseBody
     public Map batchDisAgreeForWork(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                     @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
-                                     @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
-                                     @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
-                                     HttpServletRequest request,
-                                     HttpServletResponse response) throws Exception {
+                                    @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                    @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                    @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
         Map result = new HashMap();
-        int sucNum=0;
-        int fqrNum=0;
-        int faiNum=0;
-        List<String> nexperList=new ArrayList<String>();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
             Map spperresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
             Map stateresult = new HashMap();
-            ActivitiController ActivitiController = new ActivitiController();
+            ActivitiController activitiController = new ActivitiController();
 
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
@@ -2814,22 +2829,22 @@ public class cjyController {
                 faiNum++;
             }
         }
-        Map groupPer=groupList(nexperList);//
+        Map groupPer = groupList(nexperList);//
         Iterator<String> iter = groupPer.keySet().iterator();
-        while(iter.hasNext()){
-            String per=iter.next();
+        while (iter.hasNext()) {
+            String per = iter.next();
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes=MessageSend(dbnum,"工单",per);
-            if(mes.equals("fail")){
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"工单","-1");
-            }else{
-                PRO_AM_SEND_LOG_SET(infopuburl,infopubusername,infopubpassword,per,"工单","0");
+            String mes = MessageSend(dbnum, "工单", per);
+            if (mes.equals("fail")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "-1");
+            } else {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "0");
             }
         }
 
-        result.put("mes", "工单批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回"+fqrNum+"条");
+        result.put("mes", "工单批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回" + fqrNum + "条");
         return result;
     }
 
@@ -2845,22 +2860,22 @@ public class cjyController {
                                             @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
                                             HttpServletRequest request,
                                             HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_PM_WORKORDER_SELECT_VIEW(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_ORGCODE,V_V_DEPTCODE,V_V_DEPTCODEREPARIR,
-                V_V_STATECODE,V_V_ORDER_TYP,V_V_SHORT_TXT);
+        Map result = cjyService.PRO_PM_WORKORDER_SELECT_VIEW(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
+                V_V_STATECODE, V_V_ORDER_TYP, V_V_SHORT_TXT);
         return result;
     }
 
     @RequestMapping(value = "/PRO_PM_WORKORDER_TYP_COUNT", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_TYP_COUNTS(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
-                                          @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
-                                          @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                          @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                          @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
-                                          @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                          @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
-                                          HttpServletRequest request,
-                                          HttpServletResponse response) throws Exception {
+                                           @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                           @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                           @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                           @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_WORKORDER_TYP_COUNT(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
                 V_V_STATECODE, V_V_SHORT_TXT);
         return result;
@@ -2873,20 +2888,20 @@ public class cjyController {
                               @RequestParam(value = "nexPer") String nexPer) throws Exception {
 
         String messtxt = "PM系统待办提醒";
-        String MSG ="<SendMessage><AM_Name>"+nexPer+"</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>"+messtxt+"</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
-        String loginurl="http://10.101.25.134/pm/app/pm/page/login/login.html";
+        String MSG = "<SendMessage><AM_Name>" + nexPer + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
+        String loginurl = "http://10.101.25.134/pm/app/pm/page/login/login.html";
 
         String strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
         strContent += "<HR size='1' style='color: 52658C;'>";
         strContent += "待办任务提醒：<UL>";
-        strContent += "<li>您有：" + dbnum + " 条"+flowType+"待办</li>";
-        strContent += "</UL><a href=" + loginurl +">请点击这里进行办理</a></BODY></HTML>";
+        strContent += "<li>您有：" + dbnum + " 条" + flowType + "待办</li>";
+        strContent += "</UL><a href=" + loginurl + ">请点击这里进行办理</a></BODY></HTML>";
 
         AMToMessController amtomessifcheck = new AMToMessController();
         String result = "";
         try {
 
-            result = amtomessifcheck.AMToMess(MSG, strContent, infopuburl,infopubusername,infopubpassword);
+            result = amtomessifcheck.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
         } catch (Exception e) {
             e.printStackTrace();
             return "fail";
@@ -2897,11 +2912,11 @@ public class cjyController {
     @RequestMapping(value = "/PRO_AM_SEND_LOG_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_AM_SEND_LOG_SET(@RequestParam(value = "V_V_SERVERNAME") String V_V_SERVERNAME,
-                                           @RequestParam(value = "V_V_SENDPASSWORD") String V_V_SENDPASSWORD,
-                                           @RequestParam(value = "V_V_SEND_PERSON") String V_V_SEND_PERSON,
-                                           @RequestParam(value = "V_V_RECEIVE_PERSON") String V_V_RECEIVE_PERSON,
-                                           @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
-                                           @RequestParam(value = "V_I_SEND") String V_I_SEND) throws Exception {
+                                   @RequestParam(value = "V_V_SENDPASSWORD") String V_V_SENDPASSWORD,
+                                   @RequestParam(value = "V_V_SEND_PERSON") String V_V_SEND_PERSON,
+                                   @RequestParam(value = "V_V_RECEIVE_PERSON") String V_V_RECEIVE_PERSON,
+                                   @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                   @RequestParam(value = "V_I_SEND") String V_I_SEND) throws Exception {
         Map result = cjyService.PRO_AM_SEND_LOG_SET(V_V_SERVERNAME, V_V_SENDPASSWORD, V_V_SEND_PERSON, V_V_RECEIVE_PERSON, V_V_TYPE,
                 V_I_SEND);
         return result;
@@ -2964,8 +2979,8 @@ public class cjyController {
                                       @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
                                       HttpServletRequest request,
                                       HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_PM_03_PLAN_DX_NSET(V_V_INPER,V_V_GUID,V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE,
-                 V_V_EQUCODE,V_V_REPAIRMAJOR_CODE, V_V_CONTENT, V_V_STARTTIME, V_V_ENDTIME, V_V_HOUR,V_V_BZ,V_V_DEFECTGUID);
+        Map result = cjyService.PRO_PM_03_PLAN_DX_NSET(V_V_INPER, V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE,
+                V_V_EQUCODE, V_V_REPAIRMAJOR_CODE, V_V_CONTENT, V_V_STARTTIME, V_V_ENDTIME, V_V_HOUR, V_V_BZ, V_V_DEFECTGUID);
         return result;
     }
 
@@ -2977,9 +2992,9 @@ public class cjyController {
                                       @RequestParam(value = "V_V_FLOWCODE") String V_V_FLOWCODE,
                                       @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
                                       @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                     HttpServletRequest request,
-                                     HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_PM_03_PLAN_DX_SEND(V_V_GUID,V_V_ORGCODE,V_V_DEPTCODE,V_V_FLOWCODE,V_V_PLANTYPE,V_V_PERSONCODE);
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_PM_03_PLAN_DX_SEND(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
         return result;
     }
 
@@ -2995,9 +3010,9 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_03_PLAN_DX_SET_GUID", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_DX_SET_GUID(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                            HttpServletRequest request,
-                                                            HttpServletResponse response) throws Exception {
+                                                          @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_03_PLAN_DX_SET_GUID(V_V_GUID, V_V_ORGCODE);
         return result;
     }
@@ -3005,22 +3020,22 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_03_PLAN_DX_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_DX_SET(@RequestParam(value = "V_V_INPER") String V_V_INPER,
-                                      @RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                      @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
-                                      @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
-                                      @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                      @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                      @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
-                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                      @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE,
-                                      @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-                                      @RequestParam(value = "V_V_STARTTIME") String V_V_STARTTIME,
-                                      @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
-                                      @RequestParam(value = "V_V_HOUR") String V_V_HOUR,
-                                      @RequestParam(value = "V_V_BZ") String V_V_BZ,
-                                      @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
-                                      HttpServletRequest request,
-                                      HttpServletResponse response) throws Exception {
+                                     @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                     @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                     @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                     @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                     @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                     @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                     @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                     @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE,
+                                     @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                     @RequestParam(value = "V_V_STARTTIME") String V_V_STARTTIME,
+                                     @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
+                                     @RequestParam(value = "V_V_HOUR") String V_V_HOUR,
+                                     @RequestParam(value = "V_V_BZ") String V_V_BZ,
+                                     @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_03_PLAN_DX_SET(V_V_INPER, V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPECODE,
                 V_V_EQUCODE, V_V_REPAIRMAJOR_CODE, V_V_CONTENT, V_V_STARTTIME, V_V_ENDTIME, V_V_HOUR, V_V_BZ, V_V_DEFECTGUID);
         return result;
@@ -3039,9 +3054,9 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_04_PROJECT_DATA_STATIST", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_04_PROJECT_DATA_STATIST(@RequestParam(value = "V_D_DATE_B") String V_D_DATE_B,
-                                           @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
-                                           HttpServletRequest request,
-                                           HttpServletResponse response) throws Exception {
+                                              @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
+                                              HttpServletRequest request,
+                                              HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_04_PROJECT_DATA_STATIST(V_D_DATE_B, V_D_DATE_E);
         return result;
     }
@@ -3049,10 +3064,10 @@ public class cjyController {
     @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_TREE_BYTI", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> PRO_PM_EQUREPAIRPLAN_TREE_BYTI(@RequestParam(value = "V_V_GUID_FXJH") String V_V_GUID_FXJH,
-                                              @RequestParam(value = "V_D_DATE_B") String V_D_DATE_B,
-                                              @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
-                                              HttpServletRequest request,
-                                              HttpServletResponse response) throws Exception {
+                                                    @RequestParam(value = "V_D_DATE_B") String V_D_DATE_B,
+                                                    @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
         List<Map> result = cjyService.PRO_PM_EQUREPAIRPLAN_TREE_BYTI(V_V_GUID_FXJH, V_D_DATE_B, V_D_DATE_E);
         return result;
     }
@@ -3065,7 +3080,7 @@ public class cjyController {
                                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                            HttpServletRequest request)throws SQLException {
+                                                            HttpServletRequest request) throws SQLException {
         Map<String, Object> result = cjyService.PRO_JMDJ_VIEW_DATA_WORD_ITEM(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGNAME, V_V_DEPTCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }

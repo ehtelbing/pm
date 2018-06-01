@@ -136,7 +136,7 @@ function loadPageInfo() {
                     traditional : true,
                     success : function(resp) {
                         orderID = resp[0].list[0].V_ORDERID;
-                        //$("#yesprint").empty();
+                        $("#yesprint").empty();
                         for (var x = 0; x < max; x++) {
                             result.push('   <div id="'+index.toString()+x.toString()+'">');
                             result.push('    <div style="height: 18cm;">');
@@ -647,19 +647,19 @@ function loadPageInfo() {
                             result.push('        </td>');
                             result.push('        </tr>');
                             result.push('      </table>');
-                            /*result.push('      <div style="text-align: center; height: 1cm; line-height: 30px;">');
+                            result.push('      <div style="text-align: center; height: 1cm; line-height: 30px;">');
                             // result.push('        日期：<span>');
                             // result.push(NowDate());
                             // result.push('        </span>&nbsp; ');
                             // result.push('        时间：<span>');
                             // result.push(NowTime());
                             // result.push('        </span>&nbsp;');
-                            result.push('        当前页面：<span>');
-                            result.push(index+1);
-                            result.push('        </span>/总页面：<span>');
-                            result.push(argument.length);
-                            result.push('        </span>');
-                            result.push('      </div>');*/
+                            //result.push('        当前页面：<span>');
+                            //result.push(index+1);
+                            //result.push('        </span>/总页面：<span>');
+                            //result.push(argument.length);
+                            //esult.push('        </span>');
+                            result.push('      </div>');
                             result.push('    </div>');
                             result.push('    </div>');
                             if (x + 1 < max || index + 1 <= argument.length) {

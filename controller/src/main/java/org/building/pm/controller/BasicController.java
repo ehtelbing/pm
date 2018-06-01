@@ -238,7 +238,7 @@ public class BasicController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = basicService.PM_1917_JXGX_PER_DATA_SET_N(V_V_JXGX_CODE, V_V_PERCODE_DE, V_V_TS,V_V_PERNUM);
+        result = basicService.PM_1917_JXGX_PER_DATA_SET_N(V_V_JXGX_CODE, V_V_PERCODE_DE, V_V_TS, V_V_PERNUM);
         test.put("list", result);
         return test;
     }
@@ -794,8 +794,8 @@ public class BasicController {
     }
 
     /*
-    * 岗位树
-    * */
+     * 岗位树
+     * */
     @RequestMapping(value = "/PRO_BASE_POST_TREE", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> PRO_BASE_POST_TREE(
@@ -815,7 +815,7 @@ public class BasicController {
             @RequestParam(value = "V_V_POSTCODE") String V_V_POSTCODE,
             @RequestParam(value = "V_V_POSTNAME") String V_V_POSTNAME)
             throws SQLException {
-        Map result = basicService.PRO_BASE_POST_SET(V_V_UPCODE,V_V_POSTCODE,V_V_POSTNAME);
+        Map result = basicService.PRO_BASE_POST_SET(V_V_UPCODE, V_V_POSTCODE, V_V_POSTNAME);
         return result;
     }
 
@@ -837,9 +837,20 @@ public class BasicController {
             @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
             @RequestParam(value = "V_V_WORKNAME") String V_V_WORKNAME)
             throws SQLException {
-        Map result = basicService.PM_1917_JXGX_PER_DATA_SELALL(V_V_JXGX_CODE,V_V_WORKNAME);
+        Map result = basicService.PM_1917_JXGX_PER_DATA_SELALL(V_V_JXGX_CODE, V_V_WORKNAME);
         return result;
     }
 
+    /*
+     * 根据工单号查询工单信息
+     * */
+    @RequestMapping(value = "/PRO_PM_WORKORDER_GETBYID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_GETBYID(
+            @RequestParam(value = "V_V_ORDERID") String V_V_ORDERID)
+            throws SQLException {
+        Map result = basicService.PRO_PM_WORKORDER_GETBYID(V_V_ORDERID);
+        return result;
+    }
 
 }

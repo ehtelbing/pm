@@ -45,8 +45,8 @@ public class MMController {
     private String MMSapurl;
 
     /*
-        * 物料实际数量
-        * */
+     * 物料实际数量
+     * */
     @RequestMapping(value = "GetBillMaterialByOrder", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> GetBillMaterialByOrder(@RequestParam(value = "V_V_ORDERID") String V_V_ORDERID,
@@ -55,7 +55,7 @@ public class MMController {
             throws SQLException {
         Map result = new HashMap();
         try {
-         //   Client client = new Client(new URL("http://10.101.2.22/MaterialManage/WebService_SB/WS_EquipService.asmx?WSDL"));
+            //   Client client = new Client(new URL("http://10.101.2.22/MaterialManage/WebService_SB/WS_EquipService.asmx?WSDL"));
             Client client = new Client(new URL(MMEquurl));
 
             Object[] results = client.invoke("getBillMaterialByOrder", new Object[]{V_V_ORDERID});
@@ -85,7 +85,7 @@ public class MMController {
 
             String ret = webPCService.PRO_PM_WORKORDER_SPARE_UPDATE(V_V_ORDERGUID);
 
-            String V_V_log = "服务日志־"+MMEquurl;
+            String V_V_log = "服务日志־" + MMEquurl;
 
 
             Date currentTime = new Date();
@@ -104,8 +104,8 @@ public class MMController {
     }
 
     /*
- * 获取当前作业区物资库房
- * */
+     * 获取当前作业区物资库房
+     * */
     @RequestMapping(value = "GetStoreList", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> GetStoreList(@RequestParam(value = "SAP_PLANTCODE") String SAP_PLANTCODE,
@@ -135,7 +135,7 @@ public class MMController {
                 m.put("store_desc", store_desc);
                 list.add(m);
             }
-            String V_V_log = "服务日志־"+MMEquurl;
+            String V_V_log = "服务日志־" + MMEquurl;
 
             Date currentTime = new Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
@@ -155,8 +155,8 @@ public class MMController {
     }
 
     /*
-    *物资库房接口
-    * */
+     *物资库房接口
+     * */
     @RequestMapping(value = "/GetDepartKC_storeid", method = RequestMethod.POST)
     @ResponseBody
     public Map GetDepartKC_storeid(@RequestParam(value = "number") Integer number,
@@ -176,7 +176,7 @@ public class MMController {
 
             Object[] results = client.invoke("GetDepartKC_storeid",
                     new Object[]{number, code, name, sap_plantcode,
-                            sap_departcode, storeplace,i_from_id});
+                            sap_departcode, storeplace, i_from_id});
 
 
             Document doc = DocumentHelper.parseText(results[0].toString());
@@ -266,7 +266,7 @@ public class MMController {
                 java.util.Date currentTime = new java.util.Date();
                 SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
                 String titleNameTime = Format.format(currentTime);
-                webPCService.PRO_LOG_WEB_SET("服务日志:"+MMXlurl, null, titleNameTime, "WS_MMToXL", x_personcode);
+                webPCService.PRO_LOG_WEB_SET("服务日志:" + MMXlurl, null, titleNameTime, "WS_MMToXL", x_personcode);
             }
             test.put("list", list);
         } catch (MalformedURLException e) {
@@ -311,7 +311,46 @@ public class MMController {
             java.util.Date currentTime = new java.util.Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
-            webPCService.PRO_LOG_WEB_SET("服务日志:"+MMSapurl, null, titleNameTime, "WS_MMToXL", x_personcode);
+            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMSapurl, null, titleNameTime, "WS_MMToXL", x_personcode);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return test;
+    }
+
+    public Map PsetMat(String V_V_ORDERGUID, String x_personcode) throws Exception {
+        Map test = new HashMap();
+        List<Map> result = null;
+        String resJson;
+        try {
+            Client client = new Client(new URL(MMSapurl));
+
+            System.out.println("=====================输出WebService信息 Stsrt===========================");
+
+            System.out.print("传入参数V_V_ORDERGUID : " + V_V_ORDERGUID);
+
+            String xml = this.xmlData(V_V_ORDERGUID);
+
+            Object[] results = client.invoke("WriteData", new Object[]{"", "NAPM_WORKORDER", xml});
+
+            resJson = results[0].toString();
+            if (resJson == null) {
+                resJson = "-1";
+            }
+            test.put("V_CURSOR", resJson);
+
+            System.out.println("返回信息状态 : " + results[0].toString());
+
+            System.out.println("=====================输出WebService信息 End===========================");
+
+            //日志  ----   日志内容 - 日志报文 - 时间 - 日志类型 - 人员编码
+            java.util.Date currentTime = new java.util.Date();
+            SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
+            String titleNameTime = Format.format(currentTime);
+            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMSapurl, null, titleNameTime, "WS_MMToXL", x_personcode);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -340,10 +379,10 @@ public class MMController {
         //4
 
 
-        Map map= flist.get(0);
+        Map map = flist.get(0);
 
-        List listfirst= (List) map.get("list");
-        Map fmap= (Map) listfirst.get(0);
+        List listfirst = (List) map.get("list");
+        Map fmap = (Map) listfirst.get(0);
         String ORDERID = fmap.get("V_ORDERID").toString();  //底部留用
 
         Fields.addElement("ORDERID").setText(fmap.get("V_ORDERID") == null ? "" : fmap.get("V_ORDERID").toString());
@@ -353,8 +392,8 @@ public class MMController {
         Fields.addElement("EQUIP_NO").setText(fmap.get("V_EQUIP_NO") == null ? "" : fmap.get("V_EQUIP_NO").toString());
         Fields.addElement("EQUIP_NAME").setText(fmap.get("V_EQUIP_NAME") == null ? "" : fmap.get("V_EQUIP_NAME").toString());
 
-        Fields.addElement("PLANT").setText(fmap.get("V_PLANT") == null ? "" :fmap.get("V_PLANT").toString());
-        Fields.addElement("IWERK").setText(fmap.get("V_IWERK") == null ? "" :fmap.get("V_IWERK").toString());
+        Fields.addElement("PLANT").setText(fmap.get("V_PLANT") == null ? "" : fmap.get("V_PLANT").toString());
+        Fields.addElement("IWERK").setText(fmap.get("V_IWERK") == null ? "" : fmap.get("V_IWERK").toString());
         Fields.addElement("START_DATE").setText(fmap.get("D_START_DATE").toString() == "" ? "" : toFormat(fmap.get("D_START_DATE").toString()));
         Fields.addElement("FINISH_DATE").setText(fmap.get("D_FINISH_DATE").toString() == "" ? "" : toFormat(fmap.get("D_FINISH_DATE").toString()));
         Fields.addElement("ACT_TYPE").setText(fmap.get("V_ACT_TYPE") == null ? "" : fmap.get("V_ACT_TYPE").toString());
@@ -378,12 +417,12 @@ public class MMController {
 
         List<Map> listsecond = zdhService.PRO_PM_WORKORDER_ET_OPERATIONS1(V_V_ORDERGUID);
 
-        Map smap= listsecond.get(0);
+        Map smap = listsecond.get(0);
 
-        List slrst= (List) smap.get("list");
+        List slrst = (List) smap.get("list");
 
         for (int i = 0; i < slrst.size(); i++) {
-            Map srmap= (Map) slrst.get(i);
+            Map srmap = (Map) slrst.get(i);
 
             Element ET_OPERATIONS = Fields.addElement("ET_OPERATIONS"); //添加子节点
 
@@ -409,13 +448,13 @@ public class MMController {
         System.out.print("---------------------------物料信息开始----------------------------");
         System.out.println("第三段长度 : " + listthird.size());
 
-        Map tmap= listthird.get(0);
+        Map tmap = listthird.get(0);
 
-        List tlrst= (List) tmap.get("list");
+        List tlrst = (List) tmap.get("list");
 
         for (int i = 0; i < tlrst.size(); i++) {
 
-            Map trmap= (Map) tlrst.get(i);
+            Map trmap = (Map) tlrst.get(i);
 
             Element Materials = Fields.addElement("Materials"); //添加子节点
 
@@ -514,7 +553,7 @@ public class MMController {
             java.util.Date currentTime = new java.util.Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
-            webPCService.PRO_LOG_WEB_SET("服务日志:"+MMEquurl, null, titleNameTime, "WS_MMToXL", x_personcode);
+            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl, null, titleNameTime, "WS_MMToXL", x_personcode);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             test.put("V_CURSOR", "Fail");
@@ -525,6 +564,5 @@ public class MMController {
 
         return test;
     }
-
 
 }

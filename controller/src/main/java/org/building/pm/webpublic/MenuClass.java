@@ -4,7 +4,6 @@ package org.building.pm.webpublic;
  * Created by zjh on 2017/4/20.
  */
 public class MenuClass {
-    //ÒÆ¶¯¶ËµÇÂ¼²Ëµ¥
     private String I_MENUID;
     private String V_MENUCODE;
     private String V_MENUNAME;

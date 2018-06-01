@@ -4,7 +4,6 @@ package org.building.pm.webpublic;
  * Created by zjh on 2017/3/9.
  */
 public class EquInfClass {
-    // 设备信息
     private String PlantCode;
     private String PlantName;
     private String DeptCode;
@@ -13,13 +12,12 @@ public class EquInfClass {
     private String EquName;
     private String EquType;
     private String EquInf;
-    private String Equ_Latitude;// 纬度
-    private String Equ_Longitude;// 经度
+    private String Equ_Latitude;
+    private String Equ_Longitude;
     private String EquPlace;
     private String EquStatus;
     private String EquTime;
     private String EquGuid;
-    // 点检信息
     private String V_DJ_TYPE;
     private String V_DJ_TIME;
     private String V_DJ_USERCODE;
@@ -27,11 +25,9 @@ public class EquInfClass {
     private String V_DJ_JB;
     private String V_DJ_BZ;
 
-    // 工单信息
     private String Ordertype_Code;
     private String Ordertype_Name;
 
-    // 工单查询
     private String I_ORDER_ID;
     private String V_PLANT_NAME;
     private String V_DEPT_NAME;
@@ -44,7 +40,7 @@ public class EquInfClass {
     private String V_END_TIME;
     private String V_REMARK;
 
-    // 返回信息
+    // 锟斤拷锟斤拷锟斤拷息
     private String Msg;
 
     public String getPlantCode() {

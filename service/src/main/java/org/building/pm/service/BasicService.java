@@ -1527,4 +1527,32 @@ public class BasicService {
         return result;
     }
 
+
+    public HashMap PRO_PM_WORKORDER_GETBYID(String V_V_ORDERID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_GETBYID");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_GETBYID(:V_V_ORDERID,:V_CURSOR)}");
+            cstmt.setString("V_V_ORDERID", V_V_ORDERID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_GETBYID");
+        return result;
+    }
+
 }
