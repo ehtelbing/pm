@@ -489,6 +489,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
         },
         {
             xtype: 'button',
+            text: '从缺陷添加',
+            margin: '5 0 5 5',
+            icon: imgpath + '/add.png',
+            handler: OnButtonDefectAddClicked
+        },
+        {
+            xtype: 'button',
             text: '模型选择',
             margin: '5 0 5 5',
             icon: imgpath + '/add.png',
@@ -521,6 +528,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 5',
             icon: imgpath + '/accordion_collapse.png',
             handler: OnButtonUp
+        },
+        {
+            xtype: 'button',
+            text: '生成工单',
+            margin: '5 0 5 5',
+            icon: imgpath + '/accordion_collapse.png',
+            handler: createWorkorder
         }
     ]
 });
@@ -1028,4 +1042,152 @@ function _preViewProcess(businessKey)
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 
+}
+//缺陷添加
+function OnButtonDefectAddClicked() {
+    var weekguid=guid();
+    //清空表
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_DEFECT_DEL',
+        method: 'POST',
+        async: false,
+        params: {
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO=='success') {
+                Ext.Ajax.request({//新增空数据
+                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_GUID',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID:weekguid,
+                        V_V_ORGCODE: Ext.getCmp("jhck").getValue()
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        if (resp.V_INFO=='success') {
+                            V_WEEKPLAN_GUID = 0;
+                            V_PLANTYPE = 'DEFECT';
+                            var ret = window.open(AppUrl + 'page/PM_03010218/index.html?V_WEEKPLAN_GUID='+weekguid+
+                                "&V_PLANTYPE=" + V_PLANTYPE +
+                                "&YEAR=" + Ext.getCmp("nf").getValue() +
+                                "&MONTH=" + Ext.getCmp("yf").getValue() +
+                                "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+                                "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+                        } else {
+                            alert("初始数据保存失败");
+                        }
+                    }
+                });
+            } else {
+                alert("数据清理错误");
+            }
+        }
+    });
+
+
+}
+function createWorkorder() {
+    var record = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
+    if (record.length == 0) {
+        alert('请至少选择一条记录');
+        return;
+    }
+
+    var V_GUIDList = '';
+    for (var i = 0; i < record.length; i++) {
+        if(record[i].data.V_STATENAME!='审批完成'&&record[i].data.V_STATENAME!='已下票'){
+            alert("该计划状态无法生成工单");
+            return;
+        }
+        if (i == 0) {
+            V_GUIDList = record[i].data.V_GUID;
+        } else {
+            V_GUIDList += ',' + record[i].data.V_GUID;
+        }
+    }
+
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_03_PLAN_CREATE_WORKORDERMON',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID: V_GUIDList
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.v_info == "SUCCESS") {
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PM_03_PLAN_M_CREATE_WORKORDER',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: V_GUIDList,
+                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        var V_V_ORDERGUID = resp.V_V_ORDERGUID;
+                        var V_V_SOURCECODE = resp.V_V_SOURCECODE;
+                        var V_V_EQUTYPE = resp.V_V_EQUTYPE;
+                            Ext.Ajax.request({
+                                url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
+                                type: 'post',
+                                async: false,
+                                params: {
+                                    V_V_IP: GetIP().ip,
+                                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                                    V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
+                                    V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
+                                    V_V_GUID: ''
+                                },
+                                success: function (response) {
+                                    var resp = Ext.decode(response.responseText);
+                                    if (resp.v_info == "success") {
+                                        for (var i = 0; i < record.length; i++) {//录入关系表
+                                            Ext.Ajax.request({//
+                                                method: 'POST',
+                                                async: false,
+                                                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_W',
+                                                params: {
+                                                    V_V_WORKORDER_GUID: V_V_ORDERGUID,
+                                                    V_V_WEEK_GUID: record[i].data.V_GUID
+                                                },
+                                                success: function (response) {
+                                                    var respm = Ext.decode(response.responseText);
+                                                    if(respm.V_INFO=='success'){
+
+                                                    }else{
+                                                        alert("关系数据保存错误,工单生成失败");
+                                                        return;
+                                                    }
+
+                                                }
+                                            });
+
+                                        }
+                                        window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
+                                            "", "dialogHeight:700px;dialogWidth:1100px");
+                                    }
+                                }
+                            });
+
+                    }
+                });
+            } else {
+                alert(resp.v_info);
+            }
+
+        }
+    });
+
+
+}
+function guid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }

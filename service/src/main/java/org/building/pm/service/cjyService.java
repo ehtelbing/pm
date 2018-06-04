@@ -5248,6 +5248,66 @@ public class cjyService {
         logger.info("end PRO_JMDJ_VIEW_DATA_WORD_ITEM");
         return result;
     }
+    public HashMap PM_03_PLAN_CREATE_WORKORDERMON(String V_V_GUID) throws SQLException {
 
+        logger.info("begin PM_03_PLAN_CREATE_WORKORDERMON");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            // conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_CREATE_WORKORDERMON" + "(:V_V_GUID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("V_INFO",
+                    (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_CREATE_WORKORDERMON");
+        return result;
+    }
+
+    public HashMap PM_03_PLAN_M_CREATE_WORKORDER(String V_V_GUID,String V_V_PERCODE) throws SQLException {
+
+        logger.info("begin PM_03_PLAN_M_CREATE_WORKORDER");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_M_CREATE_WORKORDER" + "(:V_V_GUID,:V_V_PERCODE,:V_INFO,:V_V_ORDERGUID,:V_V_SOURCECODE,:V_V_EQUTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_ORDERGUID", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_SOURCECODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_EQUTYPE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+            result.put("V_V_ORDERGUID", cstmt.getString("V_V_ORDERGUID"));
+            result.put("V_V_SOURCECODE", cstmt.getString("V_V_SOURCECODE"));
+            result.put("V_V_EQUTYPE", cstmt.getString("V_V_EQUTYPE"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_M_CREATE_WORKORDER");
+        return result;
+    }
 
 }
