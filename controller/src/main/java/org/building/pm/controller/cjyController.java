@@ -55,6 +55,9 @@ public class cjyController {
     @Value("#{configProperties['infopub.password']}")
     private String infopubpassword;
 
+    @Value("#{configProperties['pmlogin']}")
+    private String pmlogin;
+
     @RequestMapping(value = "/PRO_RUN_BJ_ALL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_RUN_BJ_ALL(@RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
@@ -2889,7 +2892,7 @@ public class cjyController {
 
         String messtxt = "PM系统待办提醒";
         String MSG = "<SendMessage><AM_Name>" + nexPer + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
-        String loginurl = "http://10.101.25.134/pm/app/pm/page/login/login.html";
+        String loginurl = pmlogin;
 
         String strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
         strContent += "<HR size='1' style='color: 52658C;'>";
