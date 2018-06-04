@@ -3,6 +3,7 @@ package org.building.pm.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.activitiController.ActivitiController;
+import org.building.pm.service.BasicService;
 import org.building.pm.service.cjyService;
 import org.building.pm.webcontroller.AMToMessController;
 import org.building.pm.webcontroller.MMController;
@@ -44,6 +45,9 @@ public class cjyController {
     private ActivitiController activitiController;
 
     @Autowired
+    private BasicService basicService;
+
+    @Autowired
     private ZdhController zdhController;
 
     @Value("#{configProperties['infopub.url']}")
@@ -54,6 +58,9 @@ public class cjyController {
 
     @Value("#{configProperties['infopub.password']}")
     private String infopubpassword;
+
+    @Value("#{configProperties['pmlogin']}")
+    private String pmlogin;
 
     @RequestMapping(value = "/PRO_RUN_BJ_ALL", method = RequestMethod.POST)
     @ResponseBody
@@ -2270,7 +2277,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "周计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
-            } else {
+            } else if (mes.equals("true"))  {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
             }
         }
@@ -2347,7 +2354,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "周计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
-            } else {
+            } else if (mes.equals("true"))  {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
             }
         }
@@ -2481,7 +2488,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "月计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
-            } else {
+            } else if (mes.equals("true"))  {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
             }
         }
@@ -2563,7 +2570,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "月计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
-            } else {
+            } else if (mes.equals("true"))  {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
             }
         }
@@ -2719,15 +2726,15 @@ public class cjyController {
                         flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
 
                         /*
-                        * 如果下一步是不是审批步骤，向物资接口传递工单信息
-                        * */
+                         * 如果下一步是不是审批步骤，向物资接口传递工单信息
+                         * */
                         if (V_NEXT_SETP.indexOf("sp") != -1) {
                             MMController mmController = new MMController();
                             mmController.PsetMat(V_ORDERGUID[i], Assignee);
                         }
                         /*
-                        * 传递完成
-                        * */
+                         * 传递完成
+                         * */
 
                         if (flowresult.get("V_INFO").toString().equals("success")) {
                             sucNum++;
@@ -2754,7 +2761,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "工单", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "-1");
-            } else {
+            } else if (mes.equals("true"))  {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "0");
             }
         }
@@ -2817,7 +2824,6 @@ public class cjyController {
                         if (flowresult.get("V_INFO").toString().equals("success")) {
                             sucNum++;
                             nexperList.add(Assignee);
-                            //result.put("Assignee", Assignee);
                         }
                     } else {
                         faiNum++;
@@ -2839,7 +2845,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "工单", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "-1");
-            } else {
+            } else if (mes.equals("true")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "0");
             }
         }
@@ -2887,24 +2893,29 @@ public class cjyController {
                               @RequestParam(value = "flowType") String flowType,
                               @RequestParam(value = "nexPer") String nexPer) throws Exception {
 
-        String messtxt = "PM系统待办提醒";
-        String MSG = "<SendMessage><AM_Name>" + nexPer + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
-        String loginurl = "http://10.101.25.134/pm/app/pm/page/login/login.html";
-
-        String strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
-        strContent += "<HR size='1' style='color: 52658C;'>";
-        strContent += "待办任务提醒：<UL>";
-        strContent += "<li>您有：" + dbnum + " 条" + flowType + "待办</li>";
-        strContent += "</UL><a href=" + loginurl + ">请点击这里进行办理</a></BODY></HTML>";
-
-        AMToMessController amtomessifcheck = new AMToMessController();
+        String jstcode = basicService.BASE_PRO_JST_CODESEL(nexPer);
         String result = "";
-        try {
+        if (jstcode.equals("")) {
+            result = "noperson";
+        } else {
+            String messtxt = "PM系统待办提醒";
+            String MSG = "<SendMessage><AM_Name>" + nexPer + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
+            String loginurl = pmlogin;
 
-            result = amtomessifcheck.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "fail";
+            String strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
+            strContent += "<HR size='1' style='color: 52658C;'>";
+            strContent += "待办任务提醒：<UL>";
+            strContent += "<li>您有：" + dbnum + " 条" + flowType + "待办</li>";
+            strContent += "</UL><a href='" + loginurl + "' target='_blank' >请点击这里进行办理</a></BODY></HTML>";
+
+            AMToMessController amtomessifcheck = new AMToMessController();
+
+            try {
+                result = amtomessifcheck.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
+            } catch (Exception e) {
+                e.printStackTrace();
+                result = "fail";
+            }
         }
         return result;
     }

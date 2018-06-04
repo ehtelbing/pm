@@ -73,7 +73,7 @@ public class BasicService {
         Map<String, Object> result = new HashMap<String, Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
-        try{
+        try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PRO_BASE_PERSONROLE_VIEW_NEW(:V_V_DEPTCODE,:V_CURSOR)}");
@@ -92,8 +92,8 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PRO_BASE_PERSONROLE_SET_NEW(String V_V_ROLECODE,String V_V_ROLENAME,String V_V_ROLEMEMO,
-                                                 String V_V_ROLETYPE,Double V_I_ORDERID,String V_V_DEPTCODE) throws SQLException {
+    public List<Map> PRO_BASE_PERSONROLE_SET_NEW(String V_V_ROLECODE, String V_V_ROLENAME, String V_V_ROLEMEMO,
+                                                 String V_V_ROLETYPE, Double V_I_ORDERID, String V_V_DEPTCODE) throws SQLException {
 //        logger.info("begin PRO_BASE_PERSONROLE_SET_NEW");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -126,7 +126,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PRO_BASE_PERSONROLE_DEL_NEW(String V_V_ROLECODE,String V_V_DEPTCODE) throws SQLException {
+    public List<Map> PRO_BASE_PERSONROLE_DEL_NEW(String V_V_ROLECODE, String V_V_DEPTCODE) throws SQLException {
 //        logger.info("begin PRO_BASE_PERSONROLE_DEL_NEW");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -154,7 +154,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PRO_BASE_ROLETOMENU_SET(String V_V_ROLECODE,String V_V_MENUCODE,String V_V_DEPTCODE) throws SQLException {
+    public List<Map> PRO_BASE_ROLETOMENU_SET(String V_V_ROLECODE, String V_V_MENUCODE, String V_V_DEPTCODE) throws SQLException {
 //        logger.info("begin PRO_BASE_ROLETOMENU_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -181,7 +181,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PRO_BASE_ROLETOMENU_DEL(String V_V_ROLECODE,String V_V_MENUCODE,String V_V_DEPTCODE) throws SQLException {
+    public List<Map> PRO_BASE_ROLETOMENU_DEL(String V_V_ROLECODE, String V_V_MENUCODE, String V_V_DEPTCODE) throws SQLException {
 //        logger.info("begin PRO_BASE_ROLETOMENU_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -236,8 +236,8 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PM_1917_JXMX_DATA_SEL(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPE,
-                                         String V_V_EQUCODE,String V_V_EQUCHILD_CODE,String V_V_JXMX_NAME,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public HashMap PM_1917_JXMX_DATA_SEL(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE,
+                                         String V_V_EQUCODE, String V_V_EQUCHILD_CODE, String V_V_JXMX_NAME, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_1917_JXMX_DATA_SEL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -262,7 +262,7 @@ public class BasicService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total",cstmt.getObject("V_V_SNUM"));
+            result.put("total", cstmt.getObject("V_V_SNUM"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -274,9 +274,9 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PM_1917_JXMX_DATA_SET(String V_V_JXMX_CODE,String V_V_JXMX_NAME,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                           String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_EQUCODE_CHILD,String V_V_REPAIRMAJOR_CODE,
-                                           String V_V_BZ,String V_V_HOUR,String V_V_IN_PER,String V_V_IN_DATE) throws SQLException {
+    public List<Map> PM_1917_JXMX_DATA_SET(String V_V_JXMX_CODE, String V_V_JXMX_NAME, String V_V_ORGCODE, String V_V_DEPTCODE,
+                                           String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_EQUCODE_CHILD, String V_V_REPAIRMAJOR_CODE,
+                                           String V_V_BZ, String V_V_HOUR, String V_V_IN_PER, String V_V_IN_DATE) throws SQLException {
 //        logger.info("begin PM_1917_JXMX_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -302,7 +302,7 @@ public class BasicService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
-            sledata.put("V_INFO",  cstmt.getObject("V_INFO"));
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
             result.add(sledata);
         } catch (SQLException e) {
             logger.error(e);
@@ -315,7 +315,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PM_1917_JXMX_JJ_CHANGE(String V_V_JXGX_CODE,String V_V_JJCODE,String V_V_TS) throws SQLException {
+    public List<Map> PM_1917_JXMX_JJ_CHANGE(String V_V_JXGX_CODE, String V_V_JJCODE, String V_V_TS) throws SQLException {
 //        logger.info("begin PM_1917_JXMX_JJ_CHANGE");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -343,7 +343,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PM_1917_JXGX_GJ_DATA_SET(String V_V_JXGX_CODE,String V_V_GJ_CODE) throws SQLException {
+    public List<Map> PM_1917_JXGX_GJ_DATA_SET(String V_V_JXGX_CODE, String V_V_GJ_CODE) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_GJ_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -370,7 +370,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PM_1917_JXGX_PER_DATA_SET(String V_V_JXGX_CODE,String V_V_PERCODE_DE,String V_V_TS) throws SQLException {
+    public List<Map> PM_1917_JXGX_PER_DATA_SET(String V_V_JXGX_CODE, String V_V_PERCODE_DE, String V_V_TS) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_PER_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -398,7 +398,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PM_1917_JXGX_PER_DATA_SET_N(String V_V_JXGX_CODE,String V_V_PERCODE_DE,String V_V_TS,String V_V_PERNUM) throws SQLException {
+    public List<Map> PM_1917_JXGX_PER_DATA_SET_N(String V_V_JXGX_CODE, String V_V_PERCODE_DE, String V_V_TS, String V_V_PERNUM) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_PER_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -455,7 +455,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PM_1917_JXGX_AQCS_DATA_SET(String V_V_JXGX_CODE,String V_V_AQCS_CODE ) throws SQLException {
+    public List<Map> PM_1917_JXGX_AQCS_DATA_SET(String V_V_JXGX_CODE, String V_V_AQCS_CODE) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_AQCS_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -482,7 +482,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map> PM_1917_JXGX_JSYQ_DATA_SET(String V_V_JXGX_CODE,String V_V_JSYQ_CODE ) throws SQLException {
+    public List<Map> PM_1917_JXGX_JSYQ_DATA_SET(String V_V_JXGX_CODE, String V_V_JSYQ_CODE) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_JSYQ_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -509,8 +509,8 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PRO_SAP_EQU_VIEW(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,
-                                    String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+    public HashMap PRO_SAP_EQU_VIEW(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTNEXTCODE,
+                                    String V_V_EQUTYPECODE, String V_V_EQUCODE) throws SQLException {
 
         logger.info("begin PRO_SAP_EQU_VIEW");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -543,7 +543,7 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PRO_BASE_SPECIALTY_DEPT_SPECIN(String V_V_PERSONCODE,String V_V_DEPTNEXTCODE) throws SQLException {
+    public HashMap PRO_BASE_SPECIALTY_DEPT_SPECIN(String V_V_PERSONCODE, String V_V_DEPTNEXTCODE) throws SQLException {
 
         logger.info("begin PRO_BASE_SPECIALTY_DEPT_SPECIN");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -604,9 +604,8 @@ public class BasicService {
     }
 
 
-
     //��ѯ״̬����
-    public List<Map> PM_03_FLOWCODE_SEL(String V_V_PLANTYPE,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERSONCODE) throws SQLException {
+    public List<Map> PM_03_FLOWCODE_SEL(String V_V_PLANTYPE, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_PERSONCODE) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_JSYQ_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -636,12 +635,9 @@ public class BasicService {
     }
 
 
-
-
-
     //��ѯ״̬����
-    public List<Map> PRO_PM_03_PLAN_YEAR_SET(String V_V_INPER,String V_V_YEARPLAN_GUID,String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_REPAIRMAJOR_CODE,
-                                             String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_FLOWCODE,String V_V_JXGX_CODE,String V_V_JXMX_CODE,String V_V_JXBZ_CODE,String V_V_REPAIRDEPT_CODE
+    public List<Map> PRO_PM_03_PLAN_YEAR_SET(String V_V_INPER, String V_V_YEARPLAN_GUID, String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE,
+                                             String V_V_CONTENT, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_FLOWCODE, String V_V_JXGX_CODE, String V_V_JXMX_CODE, String V_V_JXBZ_CODE, String V_V_REPAIRDEPT_CODE
     ) throws SQLException {
 //        logger.info("begin PM_1917_JXGX_JSYQ_DATA_SET");
         List<Map> result = new ArrayList<Map>();
@@ -684,11 +680,12 @@ public class BasicService {
         logger.info("end PRO_PM_03_PLAN_YEAR_SET");
         return result;
     }
+
     //月检修计划保存
-    public Map PRO_PM_03_PLAN_MONTH_SET(String V_V_INPER,String V_V_GUID,String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,
-                                        String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_REPAIRMAJOR_CODE,String V_V_CONTENT,
-                                        String V_V_STARTTIME,String V_V_ENDTIME,String V_V_OTHERPLAN_GUID,String V_V_OTHERPLAN_TYPE,String V_V_JHMX_GUID,
-                                        String V_V_HOUR,String V_V_BZ) throws SQLException {
+    public Map PRO_PM_03_PLAN_MONTH_SET(String V_V_INPER, String V_V_GUID, String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE,
+                                        String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE, String V_V_CONTENT,
+                                        String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE, String V_V_JHMX_GUID,
+                                        String V_V_HOUR, String V_V_BZ) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_MONTH_SET");
         Map result = new HashMap();
         Connection conn = null;
@@ -720,7 +717,7 @@ public class BasicService {
             cstmt.setString("V_V_BZ", V_V_BZ);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_INFO",  cstmt.getObject("V_INFO"));
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -731,10 +728,11 @@ public class BasicService {
         logger.info("end PRO_PM_03_PLAN_MONTH_SET");
         return result;
     }
+
     //季度检修计划保存
-    public Map PRO_PM_03_PLAN_QUARTER_SET(String V_V_INPER,String V_V_QUARTERPLAN_GUID,String V_V_YEAR,String V_V_QUARTER,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_REPAIRMAJOR_CODE,
-                                          String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_FLOWCODE,String V_V_JXGX_CODE,String V_V_JXMX_CODE,String V_V_JXBZ_CODE,String V_V_REPAIRDEPT_CODE,
-                                          String V_V_YEARPLAN_CODE,String V_V_HOUR,String V_V_BZ) throws SQLException {
+    public Map PRO_PM_03_PLAN_QUARTER_SET(String V_V_INPER, String V_V_QUARTERPLAN_GUID, String V_V_YEAR, String V_V_QUARTER, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE,
+                                          String V_V_CONTENT, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_FLOWCODE, String V_V_JXGX_CODE, String V_V_JXMX_CODE, String V_V_JXBZ_CODE, String V_V_REPAIRDEPT_CODE,
+                                          String V_V_YEARPLAN_CODE, String V_V_HOUR, String V_V_BZ) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_QUARTER_SET");
         Map result = new HashMap();
         Connection conn = null;
@@ -767,7 +765,7 @@ public class BasicService {
             cstmt.setString("V_V_BZ", V_V_BZ);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_INFO",(String) cstmt.getObject("V_INFO"));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -778,13 +776,14 @@ public class BasicService {
         logger.info("end PRO_PM_03_PLAN_QUARTER_SET");
         return result;
     }
+
     //周检修计划保存
-    public Map PRO_PM_03_PLAN_WEEK_SET(String V_V_INPER,String V_V_GUID,String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,
-                                       String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_REPAIRMAJOR_CODE,
-                                       String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_OTHERPLAN_GUID,String V_V_OTHERPLAN_TYPE,
-                                       String V_V_JHMX_GUID,String V_V_HOUR,String V_V_BZ,String V_V_DEFECTGUID) throws SQLException {
+    public Map PRO_PM_03_PLAN_WEEK_SET(String V_V_INPER, String V_V_GUID, String V_V_YEAR, String V_V_MONTH, String V_V_WEEK,
+                                       String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE,
+                                       String V_V_CONTENT, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE,
+                                       String V_V_JHMX_GUID, String V_V_HOUR, String V_V_BZ, String V_V_DEFECTGUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_SET");
-        Map result = new HashMap<String,Object>();
+        Map result = new HashMap<String, Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -829,7 +828,7 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PRO_FLOW_TYPE_PERNUM_SEL(String V_V_PERCODE,String V_D_BEGINTIME,String V_D_ENDTIME) throws SQLException {
+    public HashMap PRO_FLOW_TYPE_PERNUM_SEL(String V_V_PERCODE, String V_D_BEGINTIME, String V_D_ENDTIME) throws SQLException {
         logger.info("begin PRO_FLOW_TYPE_PERNUM_SEL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
@@ -860,7 +859,7 @@ public class BasicService {
     }
 
 
-    public HashMap PRO_WO_FLOW_DATA_SEL(String V_V_PERCODE,String V_D_BEGINTIME,String V_D_ENDTIME,String V_V_GDH,String V_V_FLOWTYPE,Integer V_I_PAGE,Integer V_I_PAGENUMBER) throws SQLException {
+    public HashMap PRO_WO_FLOW_DATA_SEL(String V_V_PERCODE, String V_D_BEGINTIME, String V_D_ENDTIME, String V_V_GDH, String V_V_FLOWTYPE, Integer V_I_PAGE, Integer V_I_PAGENUMBER) throws SQLException {
         logger.info("begin PRO_WO_FLOW_DATA_SEL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
@@ -897,7 +896,8 @@ public class BasicService {
         logger.info("end PRO_WO_FLOW_DATA_SEL");
         return result;
     }
-    public Map PM_1917_JXGX_WL_DATA_SET(String V_V_JXGX_CODE,String V_V_KFNAME,String V_V_WLCODE,String V_V_WLSM,String V_V_GGXH,String V_V_JLDW,String V_V_PRICE,String V_V_NUM) throws SQLException {
+
+    public Map PM_1917_JXGX_WL_DATA_SET(String V_V_JXGX_CODE, String V_V_KFNAME, String V_V_WLCODE, String V_V_WLSM, String V_V_GGXH, String V_V_JLDW, String V_V_PRICE, String V_V_NUM) throws SQLException {
         logger.info("begin PM_1917_JXGX_WL_DATA_SET");
         Map result = new HashMap();
         Connection conn = null;
@@ -916,7 +916,7 @@ public class BasicService {
             cstmt.setString("V_V_NUM", V_V_NUM);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_INFO",  cstmt.getObject("V_INFO"));
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -928,7 +928,7 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PRO_WO_FLOW_DATA_DETAIL_SEL(String V_V_ORDERID,String V_V_DEPTCODE) throws SQLException {
+    public HashMap PRO_WO_FLOW_DATA_DETAIL_SEL(String V_V_ORDERID, String V_V_DEPTCODE) throws SQLException {
         logger.info("begin PRO_WO_FLOW_DATA_DETAIL_SEL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
@@ -944,7 +944,7 @@ public class BasicService {
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("V_INFO",  cstmt.getObject("V_INFO"));
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
             result.put("list",
                     ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
@@ -958,7 +958,7 @@ public class BasicService {
         return result;
     }
 
-    public Map PRO_HOME_FLOW_NUM_SEL(String V_V_PERCODE,String V_D_STARTDATE,String V_D_ENDDTTE) throws SQLException {
+    public Map PRO_HOME_FLOW_NUM_SEL(String V_V_PERCODE, String V_D_STARTDATE, String V_D_ENDDTTE) throws SQLException {
         logger.info("begin PRO_HOME_FLOW_NUM_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -974,7 +974,8 @@ public class BasicService {
             cstmt.registerOutParameter("V_YB_NUM", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_DB_NUM", (String) cstmt.getObject("V_DB_NUM"));
-            result.put("V_YB_NUM", (String) cstmt.getObject("V_YB_NUM"));;
+            result.put("V_YB_NUM", (String) cstmt.getObject("V_YB_NUM"));
+            ;
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -986,7 +987,7 @@ public class BasicService {
         return result;
     }
 
-    public Map PM_PRO_DB_PERSONNUM_SEL(String V_V_SDATE,String V_V_EDATE,String V_V_PERSON) throws SQLException {
+    public Map PM_PRO_DB_PERSONNUM_SEL(String V_V_SDATE, String V_V_EDATE, String V_V_PERSON) throws SQLException {
         logger.info("begin PM_PRO_DB_PERSONNUM_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -1002,7 +1003,8 @@ public class BasicService {
             cstmt.registerOutParameter("V_YBNUM", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_DBNUM", (String) cstmt.getObject("V_DBNUM"));
-            result.put("V_YBNUM", (String) cstmt.getObject("V_YBNUM"));;
+            result.put("V_YBNUM", (String) cstmt.getObject("V_YBNUM"));
+            ;
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1014,7 +1016,7 @@ public class BasicService {
         return result;
     }
 
-    public Map PM_PRO_DEFECT_PERSONNUM_SEL(String V_V_SDATE,String V_V_EDATE,String V_V_PERSON) throws SQLException {
+    public Map PM_PRO_DEFECT_PERSONNUM_SEL(String V_V_SDATE, String V_V_EDATE, String V_V_PERSON) throws SQLException {
         logger.info("begin PM_PRO_DEFECT_PERSONNUM_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -1048,7 +1050,7 @@ public class BasicService {
         return result;
     }
 
-    public Map PM_PRO_PLAN_PERSONNUM_SEL(String V_V_SDATE,String V_V_EDATE,String V_V_PERSON) throws SQLException {
+    public Map PM_PRO_PLAN_PERSONNUM_SEL(String V_V_SDATE, String V_V_EDATE, String V_V_PERSON) throws SQLException {
         logger.info("begin PM_PRO_PLAN_PERSONNUM_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -1080,7 +1082,7 @@ public class BasicService {
         return result;
     }
 
-    public Map PM_PRO_WORKORDER_PERSONNUM_SEL(String V_V_SDATE,String V_V_EDATE,String V_V_PERSON) throws SQLException {
+    public Map PM_PRO_WORKORDER_PERSONNUM_SEL(String V_V_SDATE, String V_V_EDATE, String V_V_PERSON) throws SQLException {
         logger.info("begin PM_PRO_WORKORDER_PERSONNUM_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -1165,7 +1167,7 @@ public class BasicService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 
-            result.put("total",cstmt.getObject("V_V_SNUM"));
+            result.put("total", cstmt.getObject("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -1234,7 +1236,7 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PRO_BASE_NEW_MENU_SEL(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE,String V_V_HOME_MENU) throws SQLException {
+    public HashMap PRO_BASE_NEW_MENU_SEL(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE, String V_V_HOME_MENU) throws SQLException {
 
         logger.info("begin PRO_BASE_NEW_MENU_SEL");
 
@@ -1264,7 +1266,7 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PM_06_DJ_CRITERION_SETBYGW(String V_V_DEPTCODE,String V_V_CRITERION_CODE,String V_V_POSTCODE,String V_V_PLAN_STATE,String V_V_PLAN_TIME,String V_V_PLAN_PER,String V_V_DJ_TYPE) throws SQLException {
+    public HashMap PM_06_DJ_CRITERION_SETBYGW(String V_V_DEPTCODE, String V_V_CRITERION_CODE, String V_V_POSTCODE, String V_V_PLAN_STATE, String V_V_PLAN_TIME, String V_V_PLAN_PER, String V_V_DJ_TYPE) throws SQLException {
 
         logger.info("begin PM_06_DJ_CRITERION_SETBYGW");
 
@@ -1296,7 +1298,7 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PRO_PM_06_CK_TYPE_VIEW(String V_V_CKTYPE ) throws SQLException {
+    public HashMap PRO_PM_06_CK_TYPE_VIEW(String V_V_CKTYPE) throws SQLException {
 
         logger.info("begin PRO_PM_06_CK_TYPE_VIEW");
 
@@ -1323,7 +1325,7 @@ public class BasicService {
         return result;
     }
 
-    public HashMap PM_06_DJ_DATA_SEL_ALL(String V_V_CRITERION_CODE,String V_V_STIME,String V_V_ETIME ) throws SQLException {
+    public HashMap PM_06_DJ_DATA_SEL_ALL(String V_V_CRITERION_CODE, String V_V_STIME, String V_V_ETIME) throws SQLException {
 
         logger.info("begin PM_06_DJ_DATA_SEL_ALL");
 
@@ -1352,7 +1354,7 @@ public class BasicService {
         return result;
     }
 
-    public List<Map>  PRO_BASE_POST_TREE(String V_V_DEPTCDODE) throws SQLException {
+    public List<Map> PRO_BASE_POST_TREE(String V_V_DEPTCDODE) throws SQLException {
 
         logger.info("begin PRO_BASE_POST_TREE");
 
@@ -1443,7 +1445,7 @@ public class BasicService {
     }
 
 
-    public HashMap PRO_BASE_POST_SET(String V_V_UPCODE,String V_V_POSTCODE,String V_V_POSTNAME) throws SQLException {
+    public HashMap PRO_BASE_POST_SET(String V_V_UPCODE, String V_V_POSTCODE, String V_V_POSTNAME) throws SQLException {
 
         logger.info("begin PRO_BASE_POST_SET");
 
@@ -1499,7 +1501,7 @@ public class BasicService {
     }
 
 
-    public HashMap PM_1917_JXGX_PER_DATA_SELALL(String V_V_JXGX_CODE,String V_V_WORKNAME) throws SQLException {
+    public HashMap PM_1917_JXGX_PER_DATA_SELALL(String V_V_JXGX_CODE, String V_V_WORKNAME) throws SQLException {
 
         logger.info("begin PM_1917_JXGX_PER_DATA_SELALL");
 
@@ -1552,6 +1554,32 @@ public class BasicService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_WORKORDER_GETBYID");
+        return result;
+    }
+
+    public String BASE_PRO_JST_CODESEL(String percode) throws SQLException {
+
+        logger.info("begin BASE_PRO_JST_CODESEL");
+
+        String result = "";
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call BASE_PRO_JST_CODESEL(:V_V_PERCODE,:V_INFO)}");
+            cstmt.setString("V_V_PERCODE", percode);
+            cstmt.registerOutParameter("V_V_PERCODE", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result = cstmt.getObject("V_INFO").toString();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_PRO_JST_CODESEL");
         return result;
     }
 

@@ -67,9 +67,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.building.jdbc</groupId>
-            <artifactId>oracle</artifactId>
-            <version>7</version>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
         </dependency>
 
         <dependency>
