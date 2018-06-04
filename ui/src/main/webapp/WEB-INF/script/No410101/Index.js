@@ -354,7 +354,7 @@ function loadPageInfo() {
                             result.push('                    <td width="70" align="center" valign="top" class="border_r_b">');
                             result.push('                        班组<br />');
                             result.push('                    </td>');
-                            result.push('                    <td  width="460"  align="center" valign="top" class="border_r_b">');
+                            result.push('                    <td  width="400"  align="center" valign="top" class="border_r_b">');
                             result.push('                        工序内容<br />');
                             result.push('                    </td>');
                             result.push('                    <td width="40" align="center" class="border_r_b">');
@@ -379,10 +379,10 @@ function loadPageInfo() {
                             result.push('                        实际<br />');
                             result.push('                        人数');
                             result.push('                    </td>');
-                            result.push('                    <td width="80" align="center" valign="top" class="border_r_b">');
+                            result.push('                    <td width="60" align="center" valign="top" class="border_r_b">');
                             result.push('                        机具<br />');
                             result.push('                    </td>');
-                            result.push('                    <td width="80" align="center" valign="top" class="border_r_b">');
+                            result.push('                    <td width="60" align="center" valign="top" class="border_r_b">');
                             result.push('                        工具<br />');
                             result.push('                    </td>');
                             result.push('                    <td width="100" align="center" valign="top" class="border_r_b">');
