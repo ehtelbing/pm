@@ -71,6 +71,11 @@
 
         <!--新加maven-->
 
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version>
+        </dependency>
 
         <dependency>
             <groupId>commons-beanutils</groupId>

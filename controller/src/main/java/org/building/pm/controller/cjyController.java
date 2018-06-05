@@ -45,10 +45,13 @@ public class cjyController {
     private ActivitiController activitiController;
 
     @Autowired
-    private BasicService basicService;
+    private AMToMessController amToMessController;
 
     @Autowired
-    private ZdhController zdhController;
+    private MMController mmController;
+
+    @Autowired
+    private BasicService basicService;
 
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
@@ -2180,8 +2183,6 @@ public class cjyController {
             Map spperresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
-            ActivitiController ActivitiController = new ActivitiController();
-
 
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
@@ -2304,8 +2305,6 @@ public class cjyController {
             Map stepresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
-            ActivitiController activitiController = new ActivitiController();
-
             String taskid = "";
             String V_STEPCODE = "";
             try {
@@ -2398,8 +2397,6 @@ public class cjyController {
             Map spperresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
-            ActivitiController ActivitiController = new ActivitiController();
-
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
                 String taskid = stepresult.get("taskId").toString();
@@ -2517,8 +2514,6 @@ public class cjyController {
             Map spperresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
-            ActivitiController ActivitiController = new ActivitiController();
-
             String taskid = "";
             String V_STEPCODE = "";
             try {
@@ -2684,8 +2679,6 @@ public class cjyController {
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
             Map stateresult = new HashMap();
-            ActivitiController activitiController = new ActivitiController();
-
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
                 String taskid = stepresult.get("taskId").toString();
@@ -2729,8 +2722,7 @@ public class cjyController {
                          * 如果下一步是不是审批步骤，向物资接口传递工单信息
                          * */
                         if (V_NEXT_SETP.indexOf("sp") != -1) {
-                            MMController mmController = new MMController();
-                            mmController.PsetMat(V_ORDERGUID[i], Assignee);
+                            mmController.SetMat(V_ORDERGUID[i], Assignee,request,response);
                         }
                         /*
                          * 传递完成
@@ -2789,8 +2781,6 @@ public class cjyController {
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
             Map stateresult = new HashMap();
-            ActivitiController activitiController = new ActivitiController();
-
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
                 String taskid = stepresult.get("taskId").toString();
@@ -2908,10 +2898,9 @@ public class cjyController {
             strContent += "<li>您有：" + dbnum + " 条" + flowType + "待办</li>";
             strContent += "</UL><a href='" + loginurl + "' target='_blank' >请点击这里进行办理</a></BODY></HTML>";
 
-            AMToMessController amtomessifcheck = new AMToMessController();
 
             try {
-                result = amtomessifcheck.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
+                result = amToMessController.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
             } catch (Exception e) {
                 e.printStackTrace();
                 result = "fail";

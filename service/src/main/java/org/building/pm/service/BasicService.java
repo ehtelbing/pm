@@ -134,12 +134,12 @@ public class BasicService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_PERSONROLE_DEL_NEW" + "(:V_V_ROLECODE,:V_V_DEPTCODE,:RET)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSONROLE_DEL_NEW" + "(:V_V_ROLECODE,:V_V_DEPTCODE,:V_RET)}");
             cstmt.setString("V_V_ROLECODE", V_V_ROLECODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_RET", OracleTypes.VARCHAR);
             cstmt.execute();
-            String sss = (String) cstmt.getObject("RET");
+            String sss = (String) cstmt.getObject("V_RET");
             Map sledata = new HashMap();
             sledata.put("V_INFO", sss);
             result.add(sledata);

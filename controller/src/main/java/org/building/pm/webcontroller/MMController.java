@@ -321,45 +321,6 @@ public class MMController {
         return test;
     }
 
-    public Map PsetMat(String V_V_ORDERGUID, String x_personcode) throws Exception {
-        Map test = new HashMap();
-        List<Map> result = null;
-        String resJson;
-        try {
-            Client client = new Client(new URL(MMSapurl));
-
-            System.out.println("=====================输出WebService信息 Stsrt===========================");
-
-            System.out.print("传入参数V_V_ORDERGUID : " + V_V_ORDERGUID);
-
-            String xml = this.xmlData(V_V_ORDERGUID);
-
-            Object[] results = client.invoke("WriteData", new Object[]{"", "NAPM_WORKORDER", xml});
-
-            resJson = results[0].toString();
-            if (resJson == null) {
-                resJson = "-1";
-            }
-            test.put("V_CURSOR", resJson);
-
-            System.out.println("返回信息状态 : " + results[0].toString());
-
-            System.out.println("=====================输出WebService信息 End===========================");
-
-            //日志  ----   日志内容 - 日志报文 - 时间 - 日志类型 - 人员编码
-            java.util.Date currentTime = new java.util.Date();
-            SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
-            String titleNameTime = Format.format(currentTime);
-            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMSapurl, null, titleNameTime, "WS_MMToXL", x_personcode);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return test;
-    }
-
     private String xmlData(String V_V_ORDERGUID) throws ParseException, SQLException {
 
         List<Map> flist = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
