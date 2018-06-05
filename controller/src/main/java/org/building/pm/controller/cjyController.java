@@ -3084,6 +3084,47 @@ public class cjyController {
         Map<String, Object> result = cjyService.PRO_JMDJ_VIEW_DATA_WORD_ITEM(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGNAME, V_V_DEPTCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
+
+    @RequestMapping(value = "/PM_03_PLAN_CREATE_WORKORDERMON", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_CREATE_WORKORDERMON(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PM_03_PLAN_CREATE_WORKORDERMON(V_V_GUID);
+        String rlist = (String) data.get("V_INFO");
+        result.put("v_info", rlist);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_03_PLAN_M_CREATE_WORKORDER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_M_CREATE_WORKORDER(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cjyService.PM_03_PLAN_M_CREATE_WORKORDER(V_V_GUID,V_V_PERCODE);
+
+        List<Map<String, Object>> rlist = (List) data.get("list");
+        String v_info = (String) data.get("V_INFO");
+        String V_V_ORDERGUID=data.get("V_V_ORDERGUID").toString();
+        String V_V_SOURCECODE=data.get("V_V_SOURCECODE").toString();
+        String V_V_EQUTYPE=data.get("V_V_EQUTYPE").toString();
+        result.put("list", rlist);
+        result.put("v_info", v_info);
+        result.put("V_V_ORDERGUID", V_V_ORDERGUID);
+        result.put("V_V_SOURCECODE", V_V_SOURCECODE);
+        result.put("V_V_EQUTYPE", V_V_EQUTYPE);
+        result.put("success", true);
+        return result;
+    }
+
 }
 
 

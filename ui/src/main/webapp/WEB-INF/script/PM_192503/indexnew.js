@@ -968,7 +968,7 @@ Ext.onReady(function () {
                 xtype: 'combo',
                 fieldLabel: '作业区',
                 labelWidth: 80,
-                store: splantname,
+                store: zyqstore,
                 editable: false,
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
