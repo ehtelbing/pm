@@ -101,7 +101,24 @@ Ext.onReady(function () {
             }
         }
     });
-
+    var gridZZMCStore = Ext.create('Ext.data.Store', {
+        id: 'gridZZMCStore',
+        autoLoad: true,
+        fields: ['V_ZZMCCODE', 'V_ZZMCNAME'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'cjy/PRO_BASE_ZZMC_VIEW',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
     var panel = {
         xtype: "panel", region: "center", width: '100%', layout: {"type": "border"},
         items: [
@@ -357,7 +374,13 @@ Ext.onReady(function () {
             {id: 'v_deptcode', xtype: 'hiddenfield', fieldLabel: '部门编码', hideLabel: true},
             {id: 'x_equcode', xtype: 'hiddenfield', fieldLabel: '设备类型编码', hideLabel: true},
             {id: 'x_equname', xtype: 'textfield', fieldStyle: 'background:#e7e7e7', fieldLabel: '设备位置', readOnly: true},
-            {id: 'v_setname', xtype: 'textfield', fieldLabel: '装置名称'},
+            {id: 'v_setname', xtype: 'textfield', fieldLabel: '装置名称'},{
+                xtype : 'button',
+                text : '+',
+                handler : selectZZMC,
+                width : 25,
+                margin:'10px 10px 0px 10px'
+            },
             {id: 'v_lubaddress', xtype: 'textfield', fieldLabel: '给油脂场所'},
             {
                 id: 'x_lubmode',
@@ -601,6 +624,13 @@ Ext.onReady(function () {
                 readOnly: true
             },
             {id: 'v_setname2', xtype: 'textfield', fieldLabel: '装置名称'},
+            {
+                xtype : 'button',
+                text : '+',
+                handler : selectZZMC,
+                width : 25,
+                margin:'10px 10px 0px 10px'
+            },
             {id: 'v_lubaddress2', xtype: 'textfield', fieldLabel: '给油脂场所'},
             {
                 id: 'x_lubmode2',
@@ -790,6 +820,49 @@ Ext.onReady(function () {
         }]
     })
 
+
+    var gridPanelZZMC = Ext.create('Ext.panel.Panel', {
+        region: 'center',
+        layout: 'border',
+        items: [{
+            xtype: 'gridpanel',
+            id: 'gridZZMC',
+            region: 'center',
+            store: 'gridZZMCStore',
+            columnLines: true,
+            multiSelect: true,
+            autoScroll: true,
+            columns: [
+                { text: '装置名称', width: 90, align: 'center', dataIndex: 'V_ZZMCNAME' }
+            ]
+        }]
+    });
+    var window = Ext.create('Ext.window.Window', {
+        id: 'windowZZMC',
+        title: '装置名称选择',
+        autoShow: false,
+        height: 360,
+        closeAction: 'hide',
+        width: 180,
+        modal: true,
+        layout:'border',
+        items: [gridPanelZZMC],
+        buttons: [{
+            text: '选择',
+            handler: function () {
+                var zzmc=Ext.getCmp('gridZZMC').getSelectionModel().getSelection()[0].raw.V_ZZMCNAME;
+                Ext.getCmp('v_setname').setValue(zzmc);
+                Ext.getCmp('v_setname2').setValue(zzmc);
+                Ext.getCmp('windowZZMC').hide();
+
+            }
+        }, {
+            text: '取消',
+            handler: function () {
+                Ext.getCmp('windowZZMC').hide();
+            }
+        }]
+    })
     Ext.create('Ext.container.Viewport', {
         split: true, autoScroll: true,
         layout: 'border',
@@ -893,7 +966,9 @@ function OnClick(view, record, item, index) {
     }
 }
 
-
+function selectZZMC(){
+    Ext.getCmp('windowZZMC').show()
+}
 
 
 

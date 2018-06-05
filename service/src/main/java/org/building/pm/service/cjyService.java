@@ -5310,4 +5310,29 @@ public class cjyService {
         return result;
     }
 
+    public HashMap PRO_BASE_ZZMC_VIEW() throws SQLException {
+
+        logger.info("begin PRO_BASE_ZZMC_VIEW");
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_ZZMC_VIEW(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_ZZMC_VIEW");
+        return result;
+    }
+
 }

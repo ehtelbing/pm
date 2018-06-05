@@ -2722,7 +2722,7 @@ public class cjyController {
                          * 如果下一步是不是审批步骤，向物资接口传递工单信息
                          * */
                         if (V_NEXT_SETP.indexOf("sp") != -1) {
-                            mmController.SetMat(V_ORDERGUID[i], Assignee,request,response);
+                            mmController.SetMat(V_ORDERGUID[i], Assignee, request, response);
                         }
                         /*
                          * 传递完成
@@ -3122,6 +3122,14 @@ public class cjyController {
         result.put("V_V_SOURCECODE", V_V_SOURCECODE);
         result.put("V_V_EQUTYPE", V_V_EQUTYPE);
         result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_ZZMC_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_ZZMC_VIEW(HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_BASE_ZZMC_VIEW();
         return result;
     }
 
