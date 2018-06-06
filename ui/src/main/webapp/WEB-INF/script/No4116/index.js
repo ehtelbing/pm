@@ -1,5 +1,6 @@
 var tabtool=true;
 var querytool=true;
+var selectID = [];
 Ext.onReady(function() {
 
     var gridStore = Ext.create('Ext.data.Store', {
@@ -161,6 +162,7 @@ Ext.onReady(function() {
                 {id : 'selmatDesc',xtype : 'textfield', width : 158,emptyText : '按使用物料模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}},
                 { xtype : 'button',text : '导出excel',icon : '../../images/gif/grid.png',width : 85, listeners : { click : OnClickExcelButton}},
+            { xtype : 'button',text : '批量打印',width : 85, listeners : { click : OnButtonCreateBillClicked}},
                 { xtype : 'hidden',id : 'tabid'}]
         });
 
@@ -172,6 +174,7 @@ Ext.onReady(function() {
         width : '100%',
         store : gridStore,
         autoScroll : true,
+        selType : 'checkboxmodel',
         style : ' margin: 5px 0px 5px 5px',
         columns : [ {
             xtype : 'rownumberer',
@@ -610,5 +613,26 @@ function itemClick(s, record, item, index, e, eOpts) {
             + Ext.getStore("gridStore").getAt(index).get("V_ORDERGUID"),
             "", "dialogHeight:700px;dialogWidth:1100px");
     }
+
+}
+
+function OnButtonCreateBillClicked() {
+
+    var selectModel = Ext.getCmp("grid").getSelectionModel();
+    var id = Ext.getCmp('grid').getSelectionModel().getSelection().length;
+    if (id == 0) {
+        Ext.example.msg('操作信息', '{0}', '请选择数据打印工单');
+        return;
+    } else {
+        var selectedRecord = Ext.getCmp("grid").getSelectionModel()
+            .getSelection();
+        selectID = [];
+        for(var i=0;i<selectedRecord.length;i++){
+            selectID.push(selectedRecord[i].data.V_ORDERGUID);
+        }
+        window.open(AppUrl + "page/No410101/Index.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+
+    }
+
 
 }

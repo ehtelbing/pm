@@ -96,7 +96,6 @@ function loadPageInfo() {
         argument.push(items);
     });
 
-
     // var argument = ['DE65E7CB-E179-BF1F-E040-007F01002C6A'];
     $("#yesprint").empty();
     $.each(argument, function (index, item) {
@@ -136,7 +135,7 @@ function loadPageInfo() {
                     traditional : true,
                     success : function(resp) {
                         orderID = resp[0].list[0].V_ORDERID;
-                        $("#yesprint").empty();
+                        //$("#yesprint").empty();
                         for (var x = 0; x < max; x++) {
                             result.push('   <div id="'+index.toString()+x.toString()+'">');
                             result.push('    <div style="height: 18cm;">');
