@@ -336,6 +336,8 @@ function loadOrder(){
                // V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
                 //loadTeam(resp.list[0].V_WXTEAM);
+                planDate("D_FACT_START_DATE","D_START_DATE");
+                planDate("D_FACT_FINISH_DATE","D_FINISH_DATE");
             }
         }
     });
@@ -834,6 +836,21 @@ function NowDate_e(id) {
     var sen = d.getSeconds().toString();
     //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00" ;
+
+    //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
+    $("#" + id + "").val(s);
+}
+
+function planDate(id,jhid) {
+    var d, s;
+    d = new Date($("#"+jhid+"").html());
+    var year = d.getFullYear().toString();
+    var month = (d.getMonth() + 1).toString();
+    var date = d.getDate().toString();
+    var hou = d.getHours().toString();
+    var min = d.getMinutes().toString();
+    var sen = d.getSeconds().toString();
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
 
     //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
