@@ -336,6 +336,7 @@ function loadOrder(){
                // V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
                 //loadTeam(resp.list[0].V_WXTEAM);
+
                 planDate("D_FACT_START_DATE","D_START_DATE");
                 planDate("D_FACT_FINISH_DATE","D_FINISH_DATE");
             }
