@@ -320,21 +320,29 @@ Ext.onReady(function () {
                 width: 230,
                 listeners: {
                     render: function (p) {
-                        // Append the Panel to the click handler's argument list.
-                        p.getEl().on('click', function (p) {
-                            Ext.getCmp('windowEqu').show();
-                            Ext.data.StoreManager.lookup('ChiEquStore').load({
-                                params: {
-                                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                                    V_V_DEPTCODE: V_V_PLANTCODE,
-                                    V_V_DEPTNEXTCODE: V_V_DEPTCODE,
-                                    V_V_EQUTYPECODE: V_V_EQUTYPECODE,
-                                    V_V_EQUCODE: V_V_EQUCODE=='TY'?'%':V_V_EQUCODE,
-                                    V_V_EQUNAME: Ext.ComponentManager.get("sbmc").getValue()
-                                }
+                        if (v_flag == 'TY') {
+
+                            Ext.getCmp('V_V_EQUCHILDCODE').setValue("通用");
+                            Ext.getCmp('V_V_EQUCHILDCODE_c').setValue("TY");
+                            Ext.getCmp('V_V_EQUCHILDCODE').disable();
+
+                        } else {
+                            // Append the Panel to the click handler's argument list.
+                            p.getEl().on('click', function (p) {
+                                Ext.getCmp('windowEqu').show();
+                                Ext.data.StoreManager.lookup('ChiEquStore').load({
+                                    params: {
+                                        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                                        V_V_DEPTCODE: V_V_PLANTCODE,
+                                        V_V_DEPTNEXTCODE: V_V_DEPTCODE,
+                                        V_V_EQUTYPECODE: V_V_EQUTYPECODE,
+                                        V_V_EQUCODE: V_V_EQUCODE == 'TY' ? '%' : V_V_EQUCODE,
+                                        V_V_EQUNAME: Ext.ComponentManager.get("sbmc").getValue()
+                                    }
+                                });
+                                //处理点击事件代码
                             });
-                            //处理点击事件代码
-                        });
+                        }
                     }
                 }
             },
@@ -762,6 +770,14 @@ function _init() {
         Ext.getCmp('V_V_IMGCODE').setValue(jsStandardGet[0].V_IMGCODE);
         Ext.getCmp('V_V_CONTENT').setValue(jsStandardGet[0].V_CONTENT);
 
+
+        if (v_flag == 'TY') {
+
+            Ext.getCmp('V_V_EQUCHILDCODE').setValue("通用");
+            Ext.getCmp('V_V_EQUCHILDCODE_c').setValue("TY");
+            Ext.getCmp('V_V_EQUCHILDCODE').disable();
+
+        }
         _selectImage();
         BOOLEAN = false;
 
