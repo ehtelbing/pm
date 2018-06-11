@@ -165,35 +165,35 @@ public class TreeService {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                if (IfHasMenuChildNode(RoleCode, V_SYSTYPE, rs.getString("V_MENUCODE").toString(),DEPTCODE)) {
-                    Map temp = new HashMap();
-                    temp.put("id", rs.getString("V_MENUCODE").toString());
-                    temp.put("text", rs.getString("V_MENUNAME").toString());
-                    temp.put("title", rs.getString("V_MENUNAME").toString());
-                    temp.put("cls", "empty");
-                    if (V_MENUCODE_UP.equals("-1")) {
-                        temp.put("expanded", true);
+                while (rs.next()) {
+                    if (IfHasMenuChildNode(RoleCode, V_SYSTYPE, rs.getString("V_MENUCODE").toString(),DEPTCODE)) {
+                        Map temp = new HashMap();
+                        temp.put("id", rs.getString("V_MENUCODE").toString());
+                        temp.put("text", rs.getString("V_MENUNAME").toString());
+                        temp.put("title", rs.getString("V_MENUNAME").toString());
+                        temp.put("cls", "empty");
+                        if (V_MENUCODE_UP.equals("-1")) {
+                            temp.put("expanded", true);
+                        } else {
+                            temp.put("expanded", false);
+                        }
+                        temp.put("children", CreateMenuTree(RoleCode, V_SYSTYPE, rs.getString("V_MENUCODE").toString(),DEPTCODE));
+                        result.add(temp);
                     } else {
-                        temp.put("expanded", false);
-                    }
-                    temp.put("children", CreateMenuTree(RoleCode, V_SYSTYPE, rs.getString("V_MENUCODE").toString(),DEPTCODE));
-                    result.add(temp);
-                } else {
-                    Map temp = new HashMap();
+                        Map temp = new HashMap();
 
-                    temp.put("id", rs.getString("V_MENUCODE").toString());
-                    temp.put("text", rs.getString("V_MENUNAME").toString());
-                    temp.put("title", rs.getString("V_MENUNAME").toString());
-                    temp.put("cls", "empty");
-                    temp.put("leaf", true);
-                    temp.put("src", rs.getString("V_URL"));
-                    if (!V_MENUCODE_UP.equals("-1")) {
-                        temp.put("href", rs.getString("V_URL"));
+                        temp.put("id", rs.getString("V_MENUCODE").toString());
+                        temp.put("text", rs.getString("V_MENUNAME").toString());
+                        temp.put("title", rs.getString("V_MENUNAME").toString());
+                        temp.put("cls", "empty");
+                        temp.put("leaf", true);
+                        temp.put("src", rs.getString("V_URL"));
+                        if (!V_MENUCODE_UP.equals("-1")) {
+                            temp.put("href", rs.getString("V_URL"));
+                        }
+                        temp.put("hrefTarget", "Workspace");
+                        result.add(temp);
                     }
-                    temp.put("hrefTarget", "Workspace");
-                    result.add(temp);
-                }
             }
 
         } catch (SQLException e) {

@@ -153,14 +153,14 @@ public class ActivitiService {
 
     public HashMap PRO_WORKORDER_SPARE_GET(String OrderGuid) throws SQLException {
 
-        logger.info("begin PRO_WORKORDER_SPARE_GET");
+        logger.info("begin PRO_PM_WORKORDER_SPARE_VIEW");
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_WORKORDER_SPARE_GET" + "(:V_V_ORDERGUID,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_VIEW" + "(:V_V_ORDERGUID,:V_CURSOR)}");
             cstmt.setString("V_V_ORDERGUID", OrderGuid);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
@@ -172,7 +172,7 @@ public class ActivitiService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_WORKORDER_SPARE_GET");
+        logger.info("end PRO_PM_WORKORDER_SPARE_VIEW");
         return result;
     }
 
@@ -485,5 +485,106 @@ public class ActivitiService {
             return null;
         }
     }
+
+    public HashMap getProcessAndOrgdept(String businesskey, String flowtype) throws SQLException {
+
+        logger.info("begin ACTIVITI_MANAGE.getProcessAndOrgdept");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call ACTIVITI_MANAGE.getProcessAndOrgdept" + "(:V_V_BUSINESSKEY,:V_V_ACTIVITI_TYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_BUSINESSKEY", businesskey);
+            cstmt.setString("V_V_ACTIVITI_TYPE", flowtype);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end ACTIVITI_MANAGE.getProcessAndOrgdept");
+        return result;
+    }
+
+    public List<Map> PRO_BASE_DEPT_TREE(String deptcode) throws SQLException {
+
+        logger.info("begin PRO_BASE_DEPT_TREE");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_TREE" + "(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", deptcode);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            List list = ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+
+            for (int i = 0; i < list.size(); i++) {
+                Map map = (Map) list.get(i);
+
+                Map temp = new HashMap();
+                if (map.get("V_DEPTCODE").toString().equals(deptcode)) {
+                    temp.put("parentid", map.get("V_DEPTCODE_UP").toString());
+                    temp.put("sid", map.get("V_DEPTCODE").toString());
+                    temp.put("text", map.get("V_DEPTNAME").toString());
+                    temp.put("expanded", false);
+                    temp.put("finishflag",false);
+                    temp.put("children", createOrgChildTree(list,  map.get("V_DEPTCODE").toString()));
+                    result.add(temp);
+                }
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_TREE");
+        return result;
+    }
+
+    public List createOrgChildTree(List list, String upcode) {
+        List result = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            Map temp = new HashMap();
+            if (map.get("V_DEPTCODE_UP").toString().equals(upcode)) {
+                temp.put("parentid", map.get("V_DEPTCODE_UP").toString());
+                temp.put("sid", map.get("V_DEPTCODE").toString());
+                temp.put("text", map.get("V_DEPTNAME").toString());
+                temp.put("leaf", false);
+                temp.put("expanded", false);
+                if (IfHasDeptChildNode(list, map.get("V_DEPTCODE").toString())) {
+                    temp.put("children", createOrgChildTree(list, map.get("V_DEPTCODE").toString()));
+                    temp.put("finishflag",false);
+                }else{
+                    temp.put("finishflag",true);
+                }
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+
+    private Boolean IfHasDeptChildNode(List<Map> list, String code) {
+        for (int i = 0; i < list.size(); i++) {
+            if (code.equals(list.get(i).get("V_DEPTCODE").toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

@@ -575,7 +575,6 @@ public class ActivitiController {
                 + " P " + "WHERE T.PROC_DEF_ID_ = P.ID_ "
                 + "AND T.ASSIGNEE_ =  #{assignee} " + categorySQL
                 + "ORDER BY T.CREATE_TIME_ DESC";
-        System.out.println("我是SQL语句22222222222222222222 = " + sql);
         return sql;
     }
 
@@ -1022,5 +1021,30 @@ public class ActivitiController {
         return map;
 
     }
+
+    /*
+    * 根据流程BUSINESSKEY，流程类型，获取流程processkey
+    * */
+
+    @RequestMapping(value = "getProcessAndOrgdept", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getProcessAndOrgdept(@RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY,@RequestParam(value = "V_V_ACTIVITI_TYPE") String V_V_ACTIVITI_TYPE) throws SQLException {
+
+        Map result = activitiService.getProcessAndOrgdept(V_V_BUSINESSKEY,V_V_ACTIVITI_TYPE);
+        return result;
+    }
+
+    /*
+     * 根据父节点查询子组织机构树
+     * */
+
+    @RequestMapping(value = "PRO_BASE_DEPT_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public  List<Map> PRO_BASE_DEPT_TREE(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE) throws SQLException {
+
+        List<Map> result = activitiService.PRO_BASE_DEPT_TREE(V_V_DEPTCODE);
+        return result;
+    }
+
 
 }

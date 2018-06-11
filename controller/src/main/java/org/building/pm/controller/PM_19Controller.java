@@ -1265,7 +1265,7 @@ public class PM_19Controller {
     }
     @RequestMapping(value = "/OrgAndWorkspaceTreeCheck", method = RequestMethod.POST)
     @ResponseBody
-    public List<Map> PRO_BASE_DEPT_TREE(@RequestParam(value = "V_V_DEPTCODE_UP") String V_V_DEPTCODE_UP,
+    public List<Map> OrgAndWorkspaceTreeCheck(@RequestParam(value = "V_V_DEPTCODE_UP") String V_V_DEPTCODE_UP,
                                         @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
                                         HttpServletRequest request,
                                         HttpServletResponse response) throws Exception {
