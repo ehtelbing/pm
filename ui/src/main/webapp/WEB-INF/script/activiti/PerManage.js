@@ -100,7 +100,7 @@ Ext.onReady(function () {
                                 success: function (response) {
                                     var resp = Ext.decode(response.responseText);
 
-                                    if(resp.msg=="success"){
+                                    if(resp.msg=="Success"){
                                         QueryGrid();
                                     }
                                 }
