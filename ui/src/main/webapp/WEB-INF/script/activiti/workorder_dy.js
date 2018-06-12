@@ -1651,3 +1651,8 @@ function ConfirmAccept() {
     })
 
 }
+function print() {
+    selectID.push(V_ORDERGUID);
+    window.open(AppUrl + "page/No410101/Index.html", selectID,
+        "dialogHeight:700px;dialogWidth:1100px");
+}
