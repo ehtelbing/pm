@@ -1,54 +1,138 @@
 var OrgCode = '';
 var BusinessKey = '';
-var activityId = '';
+var ActivitiId = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     OrgCode = parameters.OrgCode == null ? '' : parameters.OrgCode;
     BusinessKey = parameters.BusinessKey == null ? '' : parameters.BusinessKey;
-    activityId = parameters.activityId == null ? '' : parameters.activityId;
+    ActivitiId = parameters.ActivitiId == null ? '' : parameters.ActivitiId;
 }
 Ext.onReady(function () {
 
     Ext.QuickTips.init();
-
-    var treeStore= Ext.create("Ext.data.TreeStore", {
-        storeId : 'treeStore',
-        autoLoad : false,
-        fields: ['sid', 'text', 'parentid', 'craftcode', 'craftname','expanded','leaf','finishflag']
+    var gridStore = Ext.create('Ext.data.Store', {
+        fields: ['ActivityId',
+            'ActivityName',
+            'ActivityType',
+            'Assignee',
+            'AssigneeName',
+            'EndTime',
+            'Id',
+            'StartTime',
+            'post'],
+        autoLoad: false,
+        id: 'gridStore',
+        proxy: {
+            type: 'ajax',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            url: AppUrl + 'cjy/getNextPerson'
+        }
+    });
+    var treeStore = Ext.create('Ext.data.TreeStore', {
+        storeId: 'treeStore',
+        autoLoad: false,
+        fields: ['sid', 'text', 'parentid', 'craftcode', 'craftname'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'cjy/selectPersonTreeFromDept',
+            extraParams: {
+                V_V_DEPTCODE : '',
+                V_V_DEPTTYPE : '',
+                V_V_FLAG : ''
+            },
+            reader: {
+                type: 'json',
+                root: 'children'
+            },
+            root: {
+                text: 'root',
+                expanded: true
+            }
+        },
+        listeners: {
+            'beforeexpand': function (node, eOpts) {
+                //点击父亲节点的菜单会将节点的id通过ajax请求，将到后台
+                this.proxy.extraParams.V_V_DEPTCODE = node.raw.id;
+                this.proxy.extraParams.V_V_FLAG = 'false';
+            }
+        }
     });
 
-    var treepanel=Ext.create('Ext.tree.Panel',{
-        id:'tree',
-        region:'west',
-        width:'50%',
-        store:treeStore,
-        rootVisible:false,
-        autoScroll: true,
-        listeners:{
-            itemdblclick:TreeChecked
+    var tree = Ext.create('Ext.tree.Panel', {
+        id: 'tree',
+        width: '35%',
+        store: treeStore,
+        region: 'west',
+        animate: true,//开启动画效果
+        rootVisible: false,
+        hideHeaders: true,//是否隐藏表头,默认为false
+        frame:true,
+        columns: [{
+            xtype: 'treecolumn',
+            dataIndex: 'text',
+            flex: 1
+        }],
+        listeners: {
+            itemclick: function (view, node) {
+                if (node.data.leaf == true) {
+                    Ext.Msg.confirm("警告", "是否替换为" + node.data.text,
+                        function (button) {
+                            if (button != "yes") {
+                                return;
+                            }
+                            Ext.Ajax.request({
+                                url: AppUrl + 'cjy/setNextPerson',
+                                type: 'ajax',
+                                method: 'POST',
+                                params: {
+                                    businessKey:BusinessKey,
+                                    ActivitiId: ActivitiId,
+                                    newperson: node.data.sid
+                                },
+                                success: function (response) {
+                                    var resp = Ext.decode(response.responseText);
+
+                                    if(resp.msg=="success"){
+                                        QueryGrid();
+                                    }
+                                }
+                            });
+
+                        });
+                }
+
+            }
         }
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
         region:'center',
-        width: '100%',
+        width: '50%',
         height:'50%',
+        store: gridStore,
+        frame:true,
         columnLines: true,
         columns: [{
             text: '人员编码',
-            dataIndex: 'id',
+            dataIndex: 'Assignee',
             width: 200,
             align: 'center',
             renderer: AddLeft
         }, {
             text: '人员名称',
-            dataIndex: 'name',
+            dataIndex: 'AssigneeName',
             width: 200,
             align: 'center',
             renderer: AddLeft
         },{
             text: '岗位名称',
-            dataIndex: 'name',
+            dataIndex: 'post',
             width: 200,
             align: 'center',
             renderer: AddLeft
@@ -58,41 +142,38 @@ Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
         id : "id",
         layout: 'border',
-        items: [treepanel, grid]
+        items: [tree, grid]
     });
 
 
 
     QueryTree();
+
+    QueryGrid();
 });
 
 
 //树查询
 function QueryTree(){
 
-    Ext.getCmp('tree').store.setProxy({
-        type : 'ajax',
-        actionMethods : {
-            read : 'POST'
-        },
-        url : AppUrl + 'Activiti/PRO_BASE_DEPT_TREE',
-        reader : {
-            type : 'json'
-        async : false,
-        },
-        root : {
-            expanded : true
-        },
-        extraParams : {
-            V_V_DEPTCODE :OrgCode
-        }
-    });
-    Ext.getCmp('tree').store.load();
+    var treeStore = Ext.data.StoreManager.lookup('treeStore');
+    treeStore.proxy.extraParams = {
+        V_V_DEPTCODE: OrgCode,
+        V_V_FLAG: 'true'
+    };
+    treeStore.currentPage = 1;
+    treeStore.load();
+
 
 }
 
 function QueryGrid(){
-
+    var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    gridStore.proxy.extraParams = {
+        businessKey: BusinessKey,
+        ActivitiId:ActivitiId
+    };
+    gridStore.load();
 }
 
 function TreeChecked(){

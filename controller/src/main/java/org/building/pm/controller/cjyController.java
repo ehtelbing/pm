@@ -1,6 +1,7 @@
 package org.building.pm.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.activiti.engine.TaskService;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.activitiController.ActivitiController;
 import org.building.pm.service.BasicService;
@@ -43,6 +44,9 @@ public class cjyController {
 
     @Autowired
     private ActivitiController activitiController;
+
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private AMToMessController amToMessController;
@@ -3132,6 +3136,66 @@ public class cjyController {
         Map result = cjyService.PRO_BASE_ZZMC_VIEW();
         return result;
     }
+
+    @RequestMapping(value = "/getNextPerson", method = RequestMethod.POST)
+    @ResponseBody
+    public Map getNextPerson(@RequestParam(value = "businessKey") String businessKey,
+                             @RequestParam(value = "ActivitiId") String ActivitiId,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
+
+
+        List<Map> resList = new ArrayList<>();
+        Map result = new HashMap();
+        Map data = activitiController.GetActivitiStepFromBusinessId(businessKey);//GetInstanceFromBusinessId
+        Map map = (Map) data.get("list");
+        String percode = map.get("Assignee").toString();
+        List<Map<String, Object>> postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
+        String post = "";
+        for (int j = 0; j < postlist.size(); j++) {
+            if (j == 0) {
+                post = postlist.get(j).get("V_POSTNAME").toString();
+            } else {
+                post += "," + postlist.get(j).get("V_POSTNAME").toString();
+            }
+
+        }
+
+        map.put("post", post);
+        resList.add(map);
+
+
+
+        result.put("list", resList);
+        return result;
+    }
+
+
+    @RequestMapping(value = "/setNextPerson", method = RequestMethod.POST)
+    @ResponseBody
+    public Map setNextPerson(@RequestParam(value = "businessKey") String businessKey,
+                             @RequestParam(value = "ActivitiId") String ActivitiId,
+                             @RequestParam(value = "newperson") String newperson,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
+
+
+        List<Map> resList = new ArrayList<>();
+        Map result = new HashMap();
+        Map data = activitiController.GetActivitiStepFromBusinessId(businessKey);//GetInstanceFromBusinessId
+        Map map = (Map) data.get("list");
+        String oldpercode = map.get("Assignee").toString();
+        Map task=activitiController.GetTaskIdFromBusinessId(businessKey,oldpercode);
+        String taskId=task.get("taskId").toString();
+        taskService.setVariable(taskId,ActivitiId,newperson);
+        Map mapt=new HashMap();
+        mapt.put(ActivitiId,"admin");
+        taskService.setVariables(taskId,mapt);
+        result.put("msg","success");
+        return result;
+    }
+
+
 
 }
 
