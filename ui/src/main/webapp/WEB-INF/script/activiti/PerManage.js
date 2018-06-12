@@ -86,6 +86,8 @@ Ext.onReady(function () {
                             if (button != "yes") {
                                 return;
                             }
+                            var nper=[];
+                            nper.push( node.data.sid);
                             Ext.Ajax.request({
                                 url: AppUrl + 'cjy/setNextPerson',
                                 type: 'ajax',
@@ -93,7 +95,7 @@ Ext.onReady(function () {
                                 params: {
                                     businessKey:BusinessKey,
                                     ActivitiId: ActivitiId,
-                                    newperson: node.data.sid
+                                    newperson: nper
                                 },
                                 success: function (response) {
                                     var resp = Ext.decode(response.responseText);

@@ -2,8 +2,10 @@ package org.building.pm.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.activitiController.ActivitiController;
+import org.building.pm.service.ActivitiService;
 import org.building.pm.service.BasicService;
 import org.building.pm.service.cjyService;
 import org.building.pm.webcontroller.AMToMessController;
@@ -44,6 +46,9 @@ public class cjyController {
 
     @Autowired
     private ActivitiController activitiController;
+
+    @Autowired
+    private ActivitiService activitiService;
 
     @Autowired
     private TaskService taskService;
@@ -2282,7 +2287,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "周计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
-            } else if (mes.equals("true"))  {
+            } else if (mes.equals("true")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
             }
         }
@@ -2357,7 +2362,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "周计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
-            } else if (mes.equals("true"))  {
+            } else if (mes.equals("true")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
             }
         }
@@ -2489,7 +2494,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "月计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
-            } else if (mes.equals("true"))  {
+            } else if (mes.equals("true")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
             }
         }
@@ -2569,7 +2574,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "月计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
-            } else if (mes.equals("true"))  {
+            } else if (mes.equals("true")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
             }
         }
@@ -2757,7 +2762,7 @@ public class cjyController {
             String mes = MessageSend(dbnum, "工单", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "-1");
-            } else if (mes.equals("true"))  {
+            } else if (mes.equals("true")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "0");
             }
         }
@@ -3113,13 +3118,13 @@ public class cjyController {
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cjyService.PM_03_PLAN_M_CREATE_WORKORDER(V_V_GUID,V_V_PERCODE);
+        HashMap data = cjyService.PM_03_PLAN_M_CREATE_WORKORDER(V_V_GUID, V_V_PERCODE);
 
         List<Map<String, Object>> rlist = (List) data.get("list");
         String v_info = (String) data.get("V_INFO");
-        String V_V_ORDERGUID=data.get("V_V_ORDERGUID").toString();
-        String V_V_SOURCECODE=data.get("V_V_SOURCECODE").toString();
-        String V_V_EQUTYPE=data.get("V_V_EQUTYPE").toString();
+        String V_V_ORDERGUID = data.get("V_V_ORDERGUID").toString();
+        String V_V_SOURCECODE = data.get("V_V_SOURCECODE").toString();
+        String V_V_EQUTYPE = data.get("V_V_EQUTYPE").toString();
         result.put("list", rlist);
         result.put("v_info", v_info);
         result.put("V_V_ORDERGUID", V_V_ORDERGUID);
@@ -3165,7 +3170,6 @@ public class cjyController {
         resList.add(map);
 
 
-
         result.put("list", resList);
         return result;
     }
@@ -3175,26 +3179,37 @@ public class cjyController {
     @ResponseBody
     public Map setNextPerson(@RequestParam(value = "businessKey") String businessKey,
                              @RequestParam(value = "ActivitiId") String ActivitiId,
-                             @RequestParam(value = "newperson") String newperson,
+                             @RequestParam(value = "newperson") String[] newperson,
                              HttpServletRequest request,
                              HttpServletResponse response) throws Exception {
 
 
         List<Map> resList = new ArrayList<>();
         Map result = new HashMap();
+
         Map data = activitiController.GetActivitiStepFromBusinessId(businessKey);//GetInstanceFromBusinessId
+
         Map map = (Map) data.get("list");
+
         String oldpercode = map.get("Assignee").toString();
-        Map task=activitiController.GetTaskIdFromBusinessId(businessKey,oldpercode);
-        String taskId=task.get("taskId").toString();
-        taskService.setVariable(taskId,ActivitiId,newperson);
-        Map mapt=new HashMap();
-        mapt.put(ActivitiId,"admin");
-        taskService.setVariables(taskId,mapt);
-        result.put("msg","success");
+
+        List<Task> runTasks = taskService.createTaskQuery()
+                .processInstanceId(data.get("InstanceId").toString())
+                .taskDefinitionKey(ActivitiId).list();
+
+        if (runTasks.size() == newperson.length) {
+            int i = 0;
+            for (Task runTask : runTasks) {
+                runTask.setAssignee(newperson[i].toString());
+                taskService.saveTask(runTask);
+                i++;
+            }
+            result.put("msg", "Success");
+        } else {
+            result.put("msg", "用户数量与任务数量不一致");
+        }
         return result;
     }
-
 
 
 }
