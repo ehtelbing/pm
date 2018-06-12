@@ -526,10 +526,9 @@ public class ActivitiController {
                 }
 
                 if (taskmap.get("flow_type").equals("WORK")) {
-                    HashMap MATERIALNAME = activitiService.PRO_WORKORDER_SPARE_GET(taskmap.get("BusinessKey").toString());
+                    List<Map> MATERIALNAME = (List)activitiService.PRO_WORKORDER_SPARE_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (MATERIALNAME.size() > 0) {
-                        List list = (List) MATERIALNAME.get("list");
-                        Map map = (Map) list.get(0);
+                        Map map = (Map) MATERIALNAME.get(0);
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
                 }
