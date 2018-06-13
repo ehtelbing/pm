@@ -129,7 +129,7 @@ Ext.onReady(function () {
         id: 'carStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 15,
         fields: ['V_GUID', 'V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_CARINDATE', 'V_DE', 'V_FLAG'],
         proxy: {
             url: AppUrl + 'CarManage/BASE_EXAMINE_CAR_SEL',
@@ -166,7 +166,7 @@ Ext.onReady(function () {
         storeId: 'driverStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 15,
         fields: ['V_GUID', 'V_CAR_GUID', 'V_DRIVER_NAME', 'V_WORK_DATE', 'V_DRIVER_DE'],
         proxy: {
             url: AppUrl + 'CarManage/BASE_DRIVER_SEL',
@@ -1460,12 +1460,17 @@ var updateDriverWindow = Ext.create('Ext.window.Window', {
 });
 
 function _preSelectCarStore() {//查询机具的方法
-    Ext.data.StoreManager.lookup('carStore').load({
+    /*Ext.data.StoreManager.lookup('carStore').load({
         params: {
             V_V_CARCODE: Ext.getCmp('CAR_CODE_').getValue(),
             V_V_CARNAME: Ext.getCmp('CAR_NAME_').getValue()
         }
-    });
+    });*/
+    var carStore = Ext.data.StoreManager.lookup('carStore');
+    carStore.proxy.extraParams.V_V_CARCODE = Ext.getCmp('CAR_CODE_').getValue();
+    carStore.proxy.extraParams.V_V_CARNAME = Ext.getCmp('CAR_NAME_').getValue();
+    carStore.currentPage = 1;
+    carStore.load();
 }
 
 function _insertCar() {
