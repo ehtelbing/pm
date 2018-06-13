@@ -259,7 +259,7 @@
             },
             {text: '加油人员', dataIndex: 'V_OPERATEPERSON', width: 100, align: 'center', width: 100},
             {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 300},
-            {text: '类型', align: 'center', width: 100}
+            {text: '类型', dataIndex:'V_ADDORCHANGE',align: 'center', width: 100}
 
 
         ],
