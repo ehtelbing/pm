@@ -147,7 +147,7 @@ function AddLeft(value) {
 
 /*
 * 激活流程步骤
-*
+**/
 function _activiti(activityId) {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/activateActivityCancelCurrent',
@@ -165,7 +165,7 @@ function _activiti(activityId) {
             var resp = Ext.decode(response.responseText);
         }
     })
-}*/
+}
 
 /*
 * 根据businesskey查询流程信息
