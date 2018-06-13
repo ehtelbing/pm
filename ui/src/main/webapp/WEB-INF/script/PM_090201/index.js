@@ -6,11 +6,15 @@ var processKey = '';
 var V_NEXT_SETP = '';
 var V_STEPNAME = '';
 var V_STEPCODE = '';
+var D_BE_SJ = '';
+var D_EN_SJ = '';
 if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
     url_guid = Ext.urlDecode(location.href.split('?')[1]).url_guid;
     V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPECODE;
     V_SOURCECODE = Ext.urlDecode(location.href.split('?')[1]).V_SOURCECODE;
+    D_BE_SJ = Ext.urlDecode(location.href.split('?')[1]).D_BE_SJ;
+    D_EN_SJ = Ext.urlDecode(location.href.split('?')[1]).D_EN_SJ;
 }
 
 $(function () {
@@ -959,7 +963,11 @@ function GetModel() {//获取模型
 
 function NowDate_b(id) {
     var d, s;
-    d = new Date();
+    if(D_BE_SJ!=""&&D_BE_SJ!=undefined){
+        d = new Date(D_BE_SJ);
+    }else{
+        d = new Date();
+    }
     var year = d.getFullYear().toString();
     var month = (d.getMonth() + 1).toString();
     var date = d.getDate().toString();
@@ -971,7 +979,11 @@ function NowDate_b(id) {
 }
 function NowDate_e(id) {
     var d, s;
-    d = new Date();
+    if(D_EN_SJ!=""&&D_EN_SJ!=undefined){
+        d = new Date(D_EN_SJ);
+    }else{
+        d = new Date();
+    }
     var year = d.getFullYear().toString();
     var month = (d.getMonth() + 1).toString();
     var date = d.getDate().toString();

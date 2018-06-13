@@ -91,7 +91,8 @@ Ext.onReady(function () {
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE'],
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE',
+        'D_BE_SJ','D_EN_SJ'],
 
         proxy: {
             type: 'ajax',
@@ -588,6 +589,8 @@ function createWorkorder(){
         Ext.Msg.alert('操作提示','请选择一条数据！');
         return false;
     }
+    var D_BE_SJ=seldata[0].data.D_BE_SJ;
+    var D_EN_SJ=seldata[0].data.D_EN_SJ;
     var V_GUIDList = '';
     for (var j = 0; j < seldata.length; j++) {
         if(seldata[0].data.V_EQUNAME!=seldata[j].data.V_EQUNAME){
@@ -622,8 +625,11 @@ function createWorkorder(){
                 var owidth = window.document.body.offsetWidth - 500;
                 var oheight = window.document.body.offsetHeight - 500;
 
-                var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
-                    + V_ORDERGUID + '&V_EQUTYPECODE='+V_EQUTYPECODE+"&V_SOURCECODE="+V_SOURCECODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID=' + V_ORDERGUID +
+                    '&V_EQUTYPECODE='+V_EQUTYPECODE+
+                    "&V_SOURCECODE="+V_SOURCECODE+
+                    "&D_BE_SJ="+D_BE_SJ+
+                    "&D_EN_SJ="+D_EN_SJ, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             }else{
                 alert('创建工单失败');
