@@ -112,6 +112,7 @@ Ext.onReady(function () {
                 read: 'POST'
             },
             extraParams: {
+                V_ZZMC:''
             },
             reader: {
                 type: 'json',
@@ -837,16 +838,28 @@ Ext.onReady(function () {
             ]
         }]
     });
+    var PanelZZMC = Ext.create('Ext.panel.Panel', {
+        region: 'north',
+        layout: 'hbox',
+        items: [{id: 'zzmc', xtype: 'textfield', fieldLabel: '装置名称',width:200,labelWidth: 80,
+            margin:'10px 10px 10px 10px'},
+            {
+                xtype : 'button',
+                text : '查询',
+                handler : queryZZMC,
+                margin:'10px 10px 10px 10px'
+            },]
+    });
     var window = Ext.create('Ext.window.Window', {
         id: 'windowZZMC',
         title: '装置名称选择',
         autoShow: false,
         height: 360,
         closeAction: 'hide',
-        width: 180,
+        width: 380,
         modal: true,
         layout:'border',
-        items: [gridPanelZZMC],
+        items: [ PanelZZMC,gridPanelZZMC],
         buttons: [{
             text: '选择',
             handler: function () {
@@ -970,6 +983,12 @@ function selectZZMC(){
     Ext.getCmp('windowZZMC').show()
 }
 
-
+function queryZZMC(){
+    Ext.data.StoreManager.lookup('gridZZMCStore').load({
+        params : {
+            V_ZZMC:Ext.getCmp("zzmc").getValue()
+        }
+    });
+}
 
 

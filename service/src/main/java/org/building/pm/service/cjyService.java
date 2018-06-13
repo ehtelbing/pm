@@ -5310,7 +5310,7 @@ public class cjyService {
         return result;
     }
 
-    public HashMap PRO_BASE_ZZMC_VIEW() throws SQLException {
+    public HashMap PRO_BASE_ZZMC_VIEW(String V_ZZMC) throws SQLException {
 
         logger.info("begin PRO_BASE_ZZMC_VIEW");
         HashMap result = new HashMap();
@@ -5320,7 +5320,8 @@ public class cjyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_BASE_ZZMC_VIEW(:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_ZZMC_VIEW(:V_ZZMC,:V_CURSOR)}");
+            cstmt.setString("V_ZZMC", V_ZZMC);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));

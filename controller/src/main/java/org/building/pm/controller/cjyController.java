@@ -3136,9 +3136,10 @@ public class cjyController {
 
     @RequestMapping(value = "/PRO_BASE_ZZMC_VIEW", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_BASE_ZZMC_VIEW(HttpServletRequest request,
+    public Map PRO_BASE_ZZMC_VIEW(@RequestParam(value = "V_ZZMC") String V_ZZMC,
+                                  HttpServletRequest request,
                                   HttpServletResponse response) throws Exception {
-        Map result = cjyService.PRO_BASE_ZZMC_VIEW();
+        Map result = cjyService.PRO_BASE_ZZMC_VIEW(V_ZZMC);
         return result;
     }
 
