@@ -289,10 +289,16 @@ function OnclickUpdateButtonLoad() {
                 params: {
                     V_I_ID : selectModel.getSelection()[i].data.I_ID
                 }, success: function (response) {
-                    Ext.getCmp('selWorkCenter').select(Ext.JSON.decode(response.responseText).list[0].V_WORK_CENTER);
-                    Ext.getCmp('workContent').setValue(Ext.JSON.decode(response.responseText).list[0].V_DESCRIPTION);
-                    Ext.getCmp('actualTime').setValue(Ext.JSON.decode(response.responseText).list[0].I_WORK_ACTIVITY);
-                    Ext.getCmp('actualPeople').setValue(Ext.JSON.decode(response.responseText).list[0].I_DURATION_NORMAL);
+                    var resp = Ext.JSON.decode(response.responseText);
+                    Ext.getCmp('selWorkCenter').select(resp.list[0].V_WORK_CENTER);
+                    Ext.getCmp('workContent').setValue(resp.list[0].V_DESCRIPTION);
+                    Ext.getCmp('actualTime').setValue(resp.list[0].I_WORK_ACTIVITY);
+                    Ext.getCmp('actualPeople').setValue(resp.list[0].I_DURATION_NORMAL);
+
+                    Ext.getCmp('jxtechnology').setValue(resp.list[0].V_JXBZ_VALUE_DOWN+'~'+resp.list[0].V_JXBZ_VALUE_UP);
+                    Ext.getCmp('jxtechnologybzd').setValue(resp.list[0].V_JXBZ_VALUE_DOWN);
+                    Ext.getCmp('jxtechnologybzu').setValue(resp.list[0].V_JXBZ_VALUE_UP);
+                    Ext.getCmp('jxtecbzguid').setValue(resp.list[0].V_JXBZ);
                 }
             });
 
@@ -476,7 +482,7 @@ function getReturnJXSAFE(data){
 function selectPerson(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart='+V_DEPTREPAIRCODE+'&classcode='+V_TEAMCODE+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 function getPersonReturnValue(data){
     var sname = [];

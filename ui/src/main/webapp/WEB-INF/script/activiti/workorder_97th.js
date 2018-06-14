@@ -1515,6 +1515,10 @@ function OnClickJJButton() {
 		+ '', '41070101',
 		'dialogHeight:500px;dialogWidth:800px');
 	loadTaskGrid();
+
+	/*var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val()
+		+  '&V_DEPTREPAIRCODE=' + $("#V_DEPTCODE").html() +  '&V_TEAMCODE=' + V_TEAMCODE +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+*/
 }
 //生成模型
 function CreateModel() {
