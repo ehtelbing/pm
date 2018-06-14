@@ -477,12 +477,12 @@ function loadPageInfo() {
 				$("#V_WORKSHOPSIGN").html(resp.list[0].V_WORKSHOPSIGN);
 				$("#V_DEPTSIGN").val(resp.list[0].V_DEPTSIGN);
 
-				$("#I_OTHERHOUR").val(resp.list[0].I_OTHERHOUR);
-				$("#V_OTHERREASON").val(resp.list[0].V_OTHERREASON);
-				$("#V_REPAIRCONTENT").val(resp.list[0].V_REPAIRCONTENT);
+				$("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
+				$("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
+				$("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
 
-				$("#V_REPAIRSIGN").val(resp.list[0].V_REPAIRSIGN);
-				$("#V_REPAIRPERSON").val(resp.list[0].V_REPAIRPERSON);
+				$("#V_REPAIRSIGN").html(resp.list[0].V_REPAIRSIGN);
+				$("#V_REPAIRPERSON").html(resp.list[0].V_REPAIRPERSON);
 
 			} else { }
 		}
@@ -1615,7 +1615,7 @@ function NowDate_e(id) {
 }
 function NowDate2(id) {
 	var d, s;
-	d = new Date();
+	d = new Date($("#D_FACT_FINISH_DATE").val());
 	var year = d.getFullYear().toString();
 	var month = (d.getMonth() + 1).toString();
 	var date = d.getDate().toString();
@@ -1624,8 +1624,9 @@ function NowDate2(id) {
 	var sen = d.getSeconds().toString();
 	// s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " +
 	// dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-	s = year + "-" + dateFomate(month) + "-" + dateFomate(date) +" "+hou+":"+min+":"+sen;
+	//s = year + "-" + dateFomate(month) + "-" + dateFomate(date) +" "+hou+":"+min+":"+sen;
 	// try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
+	s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00" ;
 	$("#" + id + "").val(s);
 }
 
