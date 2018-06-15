@@ -317,10 +317,12 @@ function OnclickUpdateButtonLoad() {
                     Ext.getCmp('jxsafe').setValue(resp.list[0].V_AQSC_NAME);
                 }
             });
-            Ext.getCmp('personSel').setValue(selectModel.getSelection()[0].data.V_PER_LIST);
+            //Ext.getCmp('personSel').setValue(selectModel.getSelection()[0].data.V_PER_LIST);
             Ext.getCmp('banzu').setValue(selectModel.getSelection()[0].data.CLASSNAME);
+
             flag = 0;
             Ext.getCmp('dialog').show();
+            getPersonSel();
         }
     };
 }
@@ -398,7 +400,7 @@ Ext.onReady(function () {
     workCenterStore.on('load', function () {
         Ext.getCmp('selWorkCenter').select(Ext.data.StoreManager.get('workCenterStore').getAt(0));
     });
-
+    getPersonSel();
     Ext.getCmp('dialog').on("close",function(){
         if(flag == 1){
             Ext.Ajax.request({
@@ -416,6 +418,41 @@ Ext.onReady(function () {
     });
 });
 
+function getPersonSel(){
+    var retdata=[];
+    Ext.Ajax.request({
+        method: 'POST',
+        async: false,
+        url: AppUrl + 'cjy/PM_1917_JXGX_PER_DATA_SELBYG',
+        params: {
+            V_V_ORDERGUID: V_ORDERGUID
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            for (var i = 0; i < resp.list.length; i++) {
+                if (i == 0) {
+                    retdata.push(resp.list[i].V_PERNAME);
+                }
+                else {
+                    var tem = 0;
+                    for (var j = 0; j < retdata.length; j++) {
+                        if (retdata[j] != resp.list[i].V_PERNAME) {
+                            tem++
+                        }
+                    }
+                    if (tem == retdata.length) {
+                        retdata.push(resp.list[i].V_PERNAME);
+                    }
+
+                }
+            }
+
+        }
+    });
+
+    Ext.getCmp('personSel').setValue(retdata.toString());
+    Ext.getCmp('actualPeople').setValue(retdata.length);
+}
 function guid() {
     function S4() {
         return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
@@ -484,11 +521,12 @@ function selectPerson(){
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
+
 function getPersonReturnValue(data){
     var sname = [];
     for(var i=0;i<data.length;i++){
-        sname.push(data[i].data.V_PERSONNAME);
-        arr.push(data[i].data.V_PERSONCODE);
+        sname.push(data[i]);
+       // arr.push(data[i].data.V_PERSONCODE);
     }
     Ext.getCmp('personSel').setValue(sname.toString());
     Ext.getCmp('actualPeople').setValue(data.length);

@@ -17,12 +17,43 @@ Ext.onReady(function () {
             'V_EDIT_GUID',
             'V_WORKNAME',
             'V_PERSONNAME',
-            'V_DE'
+            'V_DE',
+            'V_WORKTYPE'
         ],
         proxy : {
             type : 'ajax',
             async : false,
             url : AppUrl + 'cjy/PRO_BASE_CRAFTTOPER_GETBYPER',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list'
+            }
+        }
+    });
+
+    var gridSelStore = Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        id: 'gridSelStore',
+        fields: ['I_ID',
+            'V_DE',
+            'V_JXGX_CODE',
+            'V_PERCODE',
+            'V_PERCODE_DE',
+            'V_PERNAME',
+            'V_PERNAME_DE',
+            'V_PERNUM',
+            'V_PERTYPE_DE',
+            'V_TIME',
+            'V_TS',
+            'V_WORKTYPE'
+        ],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'cjy/PM_1917_JXGX_PER_DATA_SELBYG',
             actionMethods : {
                 read : 'POST'
             },
@@ -78,43 +109,17 @@ Ext.onReady(function () {
         }],
         listeners: {
             itemclick: function (view, node) {
-                QueryGrid(node.data.sid);
+                if(node.data.leaf==true){
+                    QueryGrid(node.data.sid);
+                    QuerySelGrid();
+                }
+
             }
         }
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
         title:'人员选择',
-        region:'north',
-        width: '100%',
-        height:'50%',
-        store: gridStore,
-        frame:true,
-        autoScroll: true,
-        columnLines: true,
-        columns: [{
-            text: '人员名称',
-            dataIndex: 'V_PERSONNAME',
-            align: 'center',
-            flex: 1
-        }, {
-            text: '工种名称',
-            dataIndex: 'V_WORKNAME',
-            align: 'center',
-            flex: 1
-        }, {
-            text: '工种台时',
-            align: 'center',
-            dataIndex: 'V_TS',
-            renderer: AtEdit,
-            value:1,
-            editor: {
-                xtype: 'numberfield'
-            }
-        }]
-    });
-    var SelGrid = Ext.create('Ext.grid.Panel', {
-        title:'已选择',
         region:'center',
         width: '100%',
         height:'50%',
@@ -128,17 +133,66 @@ Ext.onReady(function () {
             align: 'center',
             flex: 1
         }, {
+            text: '工种编码',
+            dataIndex: 'V_CRAFTCODE',
+            align: 'center',
+            flex: 1
+        }, {
             text: '工种名称',
             dataIndex: 'V_WORKNAME',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '工种定额',
+            dataIndex: 'V_DE',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '工种等级',
+            dataIndex: 'V_WORKTYPE',
+            align: 'center',
+            flex: 1
+        }],
+        listeners : {
+            itemclick : griditemclick
+        }
+    });
+    var SelGrid = Ext.create('Ext.grid.Panel', {
+        id:'SelGrid',
+        title:'已选择',
+        region:'south',
+        width: '100%',
+        height:'50%',
+        store: gridSelStore,
+        frame:true,
+        autoScroll: true,
+        columnLines: true,
+        plugins: [Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 1})],
+        columns: [{
+            text: '人员名称',
+            dataIndex: 'V_PERNAME',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '工种名称',
+            dataIndex: 'V_PERNAME_DE',
             align: 'center',
             flex: 1
         }, {
             text: '工种台时',
             align: 'center',
             dataIndex: 'V_TS',
-            value:1,
+            renderer: AtEdit,
+            flex: 1,
             editor: {
                 xtype: 'numberfield'
+            }
+        },{
+            text: '操作',
+            flex: 1,
+            align: 'center',
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                return '<a href=javascript:_delete(\''  + record.data.V_PERCODE_DE + '\')>' + '删除' + '</a>';
             }
         }]
     });
@@ -150,7 +204,13 @@ Ext.onReady(function () {
         border:false,
         frame:true,
         width: '50%',
-        items:[grid,SelGrid]
+        items:[   {
+            xtype : 'panel', border : false, region : 'north', layout : 'column', frame: true,
+            defaults: { style: { margin: '5px 0px 5px 10px'}, labelAlign: 'right'},
+            items: [
+                { xtype: 'button', text: '确认', handler: select,  icon: imgpath + '/saved.png', style: { margin: ' 5px 0 5px 10px'}},
+            ]
+        },grid,SelGrid]
 
     });
     Ext.create('Ext.container.Viewport', {
@@ -162,7 +222,7 @@ Ext.onReady(function () {
 
 
     QueryTree();
-
+    QuerySelGrid();
 });
 
 
@@ -187,6 +247,14 @@ function QueryGrid(personcode){
         }
     });
 }
+
+function QuerySelGrid(){
+    Ext.data.StoreManager.lookup('gridSelStore').load({
+        params: {
+            V_V_ORDERGUID : V_ORDERGUID
+        }
+    });
+}
 function AtEdit(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = 'text-align: right;background-color:yellow';
     return value;
@@ -194,4 +262,93 @@ function AtEdit(value, metaData, record, rowIndex, colIndex, store) {
 function AddLeft(value) {
     return '<div style="text-align:left;" data-qtip="' + value
         + '" >' + value + '</div>';
+}
+function griditemclick(s, record, item, index, e, eOpts){
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_1917_JXGX_PER_DATA_SET_G',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID : V_ORDERGUID,
+            V_V_PERCODE_DE : record.data.V_CRAFTCODE,
+            V_V_PERNAME_DE : record.data.V_WORKNAME,
+            V_V_TS :  '1',
+            V_V_DE :  record.data.V_DE,
+            V_V_PERTYPE_ED :  record.data.V_WORKTYPE,
+            V_V_PERCODE :  record.data.V_PERSONCODE,
+            V_V_PERNAME :  record.data.V_PERSONNAME
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+
+            if(resp.V_INFO=='SUCCESS'){
+                QuerySelGrid();
+            }else{
+                alert("操作失败！");
+            }
+        }
+    });
+}
+function select(){
+
+    var gridSel = Ext.data.StoreManager.lookup('gridSelStore');
+    var records = gridSel.data.items;
+    var retdata = [];
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'cjy/PM_1917_JXGX_PER_DATA_SET_G',
+            params: {
+                V_V_GUID: V_ORDERGUID,
+                V_V_PERCODE_DE: records[i].data.V_PERCODE_DE,
+                V_V_PERNAME_DE: records[i].data.V_PERNAME_DE,
+                V_V_TS: records[i].data.V_TS,
+                V_V_DE: records[i].data.V_DE,
+                V_V_PERTYPE_ED: records[i].data.V_WORKTYPE,
+                V_V_PERCODE: records[i].data.V_PERCODE,
+                V_V_PERNAME: records[i].data.V_PERNAME,
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if (i == 0) {
+                    retdata.push(records[i].data.V_PERNAME);
+                }
+                else {
+                    var tem = 0;
+                    for (var j = 0; j < retdata.length; j++) {
+                        if (retdata[j] != records[i].data.V_PERNAME) {
+                            tem++
+                        }
+                    }
+                    if (tem == retdata.length) {
+                        retdata.push(records[i].data.V_PERNAME);
+                    }
+
+                }
+            }
+        });
+    }
+    window.opener.getPersonReturnValue(retdata);
+    window.close();
+}
+function _delete(V_PERCODE_DE){
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_1917_JXGX_PER_DATA_DEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID : V_ORDERGUID,
+            V_V_PERCODE_DE : V_PERCODE_DE
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+
+            if(resp.V_INFO=='Success'){
+                QuerySelGrid();
+            }else{
+                alert("操作失败！");
+            }
+        }
+    });
 }
