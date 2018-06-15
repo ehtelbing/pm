@@ -3213,6 +3213,40 @@ public class cjyController {
     }
 
 
+    @RequestMapping(value = "/PM_1917_JXGX_PER_DATA_SELBYG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXGX_PER_DATA_SELBYG(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_1917_JXGX_PER_DATA_SELBYG(V_V_ORDERGUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_1917_JXGX_PER_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXGX_PER_DATA_DEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                           @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_1917_JXGX_PER_DATA_DEL(V_V_GUID, V_V_PERCODE_DE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_1917_JXGX_PER_DATA_SET_G", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXGX_PER_DATA_SET_G(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                           @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE,
+                                           @RequestParam(value = "V_V_PERNAME_DE") String V_V_PERNAME_DE,
+                                           @RequestParam(value = "V_V_TS") String V_V_TS,
+                                           @RequestParam(value = "V_V_DE") String V_V_DE,
+                                           @RequestParam(value = "V_V_PERTYPE_ED") String V_V_PERTYPE_ED,
+                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                           @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_1917_JXGX_PER_DATA_SET_G(V_V_GUID, V_V_PERCODE_DE, V_V_PERNAME_DE, V_V_TS, V_V_DE, V_V_PERTYPE_ED, V_V_PERCODE, V_V_PERNAME);
+        return result;
+    }
 }
 
 
