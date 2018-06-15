@@ -996,6 +996,7 @@ public class ActivitiController {
 
         Map map = new HashMap();
         boolean retsult = activitiService.activateActivityCancelCurrent(instanceId, activityId, flowStep, assignees);
+        map.put("flag",retsult);
         return map;
 
     }

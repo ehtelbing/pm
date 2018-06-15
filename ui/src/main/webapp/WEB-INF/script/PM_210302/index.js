@@ -1,7 +1,7 @@
 var ProcessInstanceId = '';
 var BusinessKey = '';
 var flowtype = '';
-var msg=[];
+var msg = [];
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
@@ -33,9 +33,9 @@ Ext.onReady(function () {
     var gridPanel = Ext.create('Ext.grid.Panel', {
         id: 'gridPanel',
         store: gridStore,
-        region:'north',
+        region: 'north',
         width: '100%',
-        height:'50%',
+        height: '50%',
         columnLines: true,
         columns: [{
             text: '流程步骤编码',
@@ -72,22 +72,23 @@ Ext.onReady(function () {
             align: 'center',
             renderer: function (value, metaData, record) {
                 if (record.data.running) {
-                    return '<a href=javascript:_activiti(\'' + record.data.id + '\')>' + '放弃' + '</a>&nbsp;&nbsp;' +
-                        '<a href=javascript:perManage(\'' + record.data.id + '\')>' + '审批人' + '</a>';
+                    // '<a href=javascript:_activiti(\'' + record.data.id + '\')>' + '放弃' + '</a>&nbsp;&nbsp;' +
+                    return '<a href=javascript:perManage(\'' + record.data.id + '\')>' + '审批人' + '</a>';
 
                 } else {
-                    return '<a href=javascript:_activiti(\'' + record.data.id + '\')>' + '激活' + '</a>';
+                    return '<a href=javascript:_activiti(\'' + record.data.id + '\',\''
+                        + record.data.Assignee + '\')>' + '激活' + '</a>';
                 }
             }
         }]
     });
 
-    var imgPanel=Ext.create('Ext.panel.Panel',{
+    var imgPanel = Ext.create('Ext.panel.Panel', {
         id: 'imgPanel',
-        width:'100%',
+        width: '100%',
         region: 'center',
-        frame:true,
-        html:'<iframe src="" id="browseImage" width="100%" height="100%"></iframe>'
+        frame: true,
+        html: '<iframe src="" id="browseImage" width="100%" height="100%"></iframe>'
     });
 
 
@@ -101,7 +102,7 @@ Ext.onReady(function () {
                 east: -1
             }
         },
-        items: [gridPanel,imgPanel]
+        items: [gridPanel, imgPanel]
     });
 
     _select();
@@ -118,25 +119,25 @@ function _select() {
     _preViewImage();
 }
 
-function queryProcessCode(){
-    msg=[];
+function queryProcessCode() {
+    msg = [];
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/getProcessAndOrgdept',
         type: 'ajax',
         method: 'POST',
         params: {
             V_V_BUSINESSKEY: BusinessKey,
-            V_V_ACTIVITI_TYPE:flowtype
+            V_V_ACTIVITI_TYPE: flowtype
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            msg=resp.list;
+            msg = resp.list;
         }
     })
 }
 
 function _preViewImage() {
-    Ext.fly('browseImage').dom.src =AppUrl + 'Activiti/DisplayChart?InstanceId=' + ProcessInstanceId;
+    Ext.fly('browseImage').dom.src = AppUrl + 'Activiti/DisplayChart?InstanceId=' + ProcessInstanceId;
 }
 
 
@@ -148,7 +149,7 @@ function AddLeft(value) {
 /*
 * 激活流程步骤
 **/
-function _activiti(activityId) {
+function _activiti(activityId, assignee) {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/activateActivityCancelCurrent',
         type: 'ajax',
@@ -159,10 +160,13 @@ function _activiti(activityId) {
             instanceId: ProcessInstanceId,
             activityId: activityId,
             flowStep: activityId,
-            assignees: assignee
+            assignees: assignee=="undefined" ? "lcjs" : assignee
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
+            if( resp.flag){
+                _select();
+            }
         }
     })
 }
@@ -170,7 +174,7 @@ function _activiti(activityId) {
 /*
 * 根据businesskey查询流程信息
 * */
-function getActivitiMsg(){
+function getActivitiMsg() {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
         type: 'ajax',
@@ -184,9 +188,9 @@ function getActivitiMsg(){
     })
 }
 
-function perManage(activityId){
+function perManage(activityId) {
     var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
+    var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/activiti/PerManage.html?OrgCode='
-        +  msg[0].V_ORGCODE+'&BusinessKey='+BusinessKey+'&ActivitiId='+activityId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+        + msg[0].V_ORGCODE + '&BusinessKey=' + BusinessKey + '&ActivitiId=' + activityId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }

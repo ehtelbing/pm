@@ -58,9 +58,9 @@ Ext.onReady(function () {
             width: 155,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href=javascript:_dealWith(\'' + record.data.ProcessDefinitionKey + '\',\'' + record.data.TaskDefinitionKey + '\',\''
-                    + record.data.BusinessKey + '\',\'' + record.data.ProcessInstanceId + '\')>' + '取消流程' + '</a>&nbsp;&nbsp;&nbsp;' +
-                    '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>';
+                //'<a href=javascript:_dealWith(\'' + record.data.ProcessDefinitionKey + '\',\'' + record.data.TaskDefinitionKey + '\',\''
+                //+ record.data.BusinessKey + '\',\'' + record.data.ProcessInstanceId + '\')>' + '取消流程' + '</a>&nbsp;&nbsp;&nbsp;' +
+                return  '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>';
             }
         }, {
             text: '流程类型',
