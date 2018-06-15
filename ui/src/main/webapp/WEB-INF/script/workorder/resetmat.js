@@ -82,17 +82,17 @@ function itemClick(s, record, item, index, e, eOpts) {
 }
 
 function goSetMat(value, metaData, record, rowIdx) {
-    return '<a href="javascript:setmat(\'' + value + '\',\'' + record.data.V_PERSONNAME + '\')"><img src= "' + imgpath + '/saved.png"></a>';
+    return '<a href="javascript:setmat(\'' + record.data. V_ORDERGUID+ '\',\'' + record.data.V_PERSONNAME + '\')"><img src= "' + imgpath + '/saved.png"></a>';
 }
 
-function setmat(orderid, percode) {
+function setmat(orderguid, percode) {
     Ext.Ajax.request({
         url: AppUrl + 'mm/SetMat',
         type: 'ajax',
         method: 'POST',
         async: false,
         params: {
-            V_V_ORDERGUID: orderid,
+            V_V_ORDERGUID: orderguid,
             x_personcode: percode
         }, success: function (response) {
             var resp = Ext.decode(response.responseText);
