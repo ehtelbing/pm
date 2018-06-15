@@ -230,6 +230,7 @@ Ext.onReady(function () {
 
                 Ext.getCmp('page').store.currentPage = 1;
                 Ext.data.StoreManager.lookup('gridStore').load();
+                addTab();
             }
         }, {
             xtype: 'hidden',
@@ -427,7 +428,7 @@ Ext.onReady(function () {
                     params: {
                         V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
                         V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-                        V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
+                        V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue()=='%'?Ext.getCmp('ck').getValue():Ext.ComponentManager.get("zyq").getValue(),
                         V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
                         V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
                         V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
@@ -566,6 +567,7 @@ function itemclick(s, record, item, index, e, eOpts) {
 }
 
 function addTab() {
+    Ext.getCmp('tabpanel').removeAll();
     Ext.Ajax.request({
         url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_COUNT',
         // url : '/NO2102/PRO_PM_DEFECT_SOURCE_COUNT',
@@ -574,7 +576,7 @@ function addTab() {
         params: {
             V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
             V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-            V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
+            V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue()=='%'?Ext.getCmp('ck').getValue():Ext.ComponentManager.get("zyq").getValue(),
             V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
             V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
             V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
