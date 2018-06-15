@@ -88,13 +88,14 @@ function goSetMat(value, metaData, record, rowIdx) {
 function setmat(orderid, percode) {
     Ext.Ajax.request({
         url: AppUrl + 'mm/SetMat',
-        type: 'post',
+        type: 'ajax',
+        method: 'POST',
         async: false,
-        data: {
+        params: {
             V_V_ORDERGUID: orderid,
             x_personcode: percode
-        }, success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
+        }, success: function (response) {
+            var resp = Ext.decode(response.responseText);
             if (resp.V_CURSOR == '1') {
                 alert('发送成功');
             } else {
