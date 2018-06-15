@@ -14,7 +14,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'base/PRO_PM_WORKORDER_GETBYID',
+            url: AppUrl + 'basic/PRO_PM_WORKORDER_GETBYID',
             actionMethods: {
                 read: 'POST'
             },
