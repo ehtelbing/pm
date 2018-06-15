@@ -12,7 +12,7 @@ var gridStore = Ext.create('Ext.data.Store', {
     id: 'gridStore',
     autoLoad: true,
     fields: ['V_ACTIVITY', 'V_WORK_CENTER', 'V_DESCRIPTION', 'I_WORK_ACTIVITY', 'I_DURATION_NORMAL', 'I_ID',
-    'V_JJ_NAME','V_GJ_NAME','V_JSQY_NAME','V_AQSC_NAME','V_GUID','CLASSNAME','V_PER_LIST'],
+    'V_JJ_NAME','V_GJ_NAME','V_JSQY_NAME','V_AQSC_NAME','V_GUID','CLASSNAME','V_PER_LIST','I_ACTUAL_TIME','I_NUMBER_OF_PEOPLE'],
     proxy: {
         type: 'ajax',
         url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
@@ -69,6 +69,8 @@ var gridPanel = Ext.create('Ext.panel.Panel', {
             { text: '工序内容', width:365, align: 'center', dataIndex: 'V_DESCRIPTION' },
             { text: '额定时间', width: 80, align: 'center', dataIndex: 'I_WORK_ACTIVITY' },
             { text: '额定人数', width: 80, align: 'center', dataIndex: 'I_DURATION_NORMAL' },
+            { text: '实际时间', width: 80, align: 'center', dataIndex: 'I_ACTUAL_TIME' },
+            { text: '实际人数', width: 80, align: 'center', dataIndex: 'I_NUMBER_OF_PEOPLE' },
             { text: '机具', width: 80, align: 'center', dataIndex: 'V_JJ_NAME' },
             { text: '工具', width: 80, align: 'center', dataIndex: 'V_GJ_NAME' },
             { text: '技术要求', width: 80, align: 'center', dataIndex: 'V_JSQY_NAME'},
@@ -112,7 +114,9 @@ var windowLayout = {
         xtype: 'textareafield', fieldLabel: '工序内容:', labelAlign: 'right', grow: true, id: 'workContent', allowBlank: false, width: 400, height: 100,colspan : 2
 
     }, {
-        xtype: 'numberfield', fieldLabel: '额定时间:', labelAlign: 'right', id: 'actualTime', value: 1, minValue: 1, width: 400,colspan : 2
+        xtype: 'numberfield', fieldLabel: '实际时间:', labelAlign: 'right', id: 'actualTime', value: 1, minValue: 1, width: 400,colspan : 2
+    },{
+        xtype: 'numberfield', fieldLabel: '额定时间:', hidden:true,labelAlign: 'right', id: 'activiTime', value: 1, minValue: 1, width: 400,colspan : 2
     }, {
         xtype: 'textfield', fieldLabel: '班组', labelAlign: 'right', id: 'banzu',  width: 400,colspan : 2
     },{
@@ -129,7 +133,7 @@ var windowLayout = {
         margin:'0px 0px 0px -7px'
     }, {
         xtype: 'numberfield',
-        fieldLabel: '额定人数:',
+        fieldLabel: '实际人数:',
         labelAlign: 'right',
         id: 'actualPeople',
         value:'0',
@@ -138,6 +142,17 @@ var windowLayout = {
         readOnly:true,
         colspan : 2
     }, {
+        xtype: 'numberfield',
+        fieldLabel: '额定人数:',
+        labelAlign: 'right',
+        hidden:true,
+        id: 'duraPeople',
+        value:'0',
+        minValue: 1,
+        width: 400,
+        readOnly:true,
+        colspan : 2
+    },{
         xtype: 'textfield',
         id : 'jxcar',
         fieldLabel: '检修机具',
@@ -210,6 +225,7 @@ function OnclickAddButtonLoad() {
     Ext.getCmp('jxgxbm').setValue(guid());
     Ext.getCmp('workContent').setValue('');
     Ext.getCmp('actualTime').setValue('1');
+    Ext.getCmp('activiTime').setValue('1');
     //Ext.getCmp('actualPeople').setValue('2');
 
     Ext.getCmp('jxcar').setValue('');
@@ -229,11 +245,11 @@ function OnClickSaveButton() {
             V_I_ID :  I_ID,
             V_V_ORDERGUID:V_ORDERGUID,
             V_V_DESCRIPTION:Ext.getCmp('workContent').getValue(),
-            V_I_WORK_ACTIVITY:Ext.getCmp('actualTime').getValue(),
-            V_I_DURATION_NORMAL:Ext.getCmp('actualPeople').getValue(),
+            V_I_WORK_ACTIVITY:Ext.getCmp('activiTime').getValue(),
+            V_I_DURATION_NORMAL:Ext.getCmp('duraPeople').getValue(),
             V_V_WORK_CENTER:Ext.getCmp('selWorkCenter').getValue(),
-            V_I_ACTUAL_TIME:'0',
-            V_I_NUMBER_OF_PEOPLE: '0',
+            V_I_ACTUAL_TIME:Ext.getCmp('actualTime').getValue(),
+            V_I_NUMBER_OF_PEOPLE: Ext.getCmp('actualPeople').getValue(),
             V_V_ID:'',
             V_V_GUID: Ext.getCmp('jxgxbm').getValue()
         }, success: function (response) {
@@ -292,8 +308,10 @@ function OnclickUpdateButtonLoad() {
                     var resp = Ext.JSON.decode(response.responseText);
                     Ext.getCmp('selWorkCenter').select(resp.list[0].V_WORK_CENTER);
                     Ext.getCmp('workContent').setValue(resp.list[0].V_DESCRIPTION);
-                    Ext.getCmp('actualTime').setValue(resp.list[0].I_WORK_ACTIVITY);
-                    Ext.getCmp('actualPeople').setValue(resp.list[0].I_DURATION_NORMAL);
+                    Ext.getCmp('activiTime').setValue(resp.list[0].I_WORK_ACTIVITY);
+                    Ext.getCmp('actualTime').setValue(resp.list[0].I_ACTUAL_TIME);
+                    Ext.getCmp('duraPeople').setValue(resp.list[0].I_DURATION_NORMAL);
+                    Ext.getCmp('actualPeople').setValue(resp.list[0].I_NUMBER_OF_PEOPLE);
 
                     Ext.getCmp('jxtechnology').setValue(resp.list[0].V_JXBZ_VALUE_DOWN+'~'+resp.list[0].V_JXBZ_VALUE_UP);
                     Ext.getCmp('jxtechnologybzd').setValue(resp.list[0].V_JXBZ_VALUE_DOWN);
@@ -449,7 +467,6 @@ function getPersonSel(){
 
         }
     });
-
     Ext.getCmp('personSel').setValue(retdata.toString());
     Ext.getCmp('actualPeople').setValue(retdata.length);
 }
@@ -522,7 +539,7 @@ function selectPerson(){
     var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
-function getPersonReturnValue(data){
+function getPersonReturnValue(data,ts){
     var sname = [];
     for(var i=0;i<data.length;i++){
         sname.push(data[i]);
@@ -530,6 +547,8 @@ function getPersonReturnValue(data){
     }
     Ext.getCmp('personSel').setValue(sname.toString());
     Ext.getCmp('actualPeople').setValue(data.length);
+    Ext.getCmp('actualTime').setValue(ts);
+
 }
 function selectGJJJ(){
     var owidth = window.document.body.offsetWidth - 200;

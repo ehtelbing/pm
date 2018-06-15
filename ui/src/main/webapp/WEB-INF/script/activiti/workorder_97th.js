@@ -9,6 +9,7 @@ var taskId = '';
 var GXlength=0;
 var ifYS=0;
 var winheight;
+var V_TEAMCODE = null;
 $(function () {
 
 	var nextSprStore = Ext.create("Ext.data.Store", {
@@ -519,6 +520,23 @@ function loadTaskGrid() {
 				for (var i = 0; i < 3; i++) {
 					$("#TtableT tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
 				}
+			}
+		}
+	});
+}
+function loadOrder(){
+	Ext.Ajax.request({
+		url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',
+		method: 'POST',
+		async: false,
+		params: {
+			V_V_ORDERGUID:  $.url().param("V_ORDERGUID")
+		},
+		success: function (ret) {
+			var resp = Ext.JSON.decode(ret.responseText);
+			if (resp.list != "" && resp.list != null) {
+
+				V_TEAMCODE = resp.list[0].V_WXTEAM;
 			}
 		}
 	});
@@ -1509,16 +1527,18 @@ function OnBtnHistoryClicked(){
 	}
 }
 function OnClickJJButton() {
-	window.open(AppUrl+'page/PM_070204/index.html?V_ORDERGUID='
+	/*window.open(AppUrl+'page/PM_070204/index.html?V_ORDERGUID='
 		+ $("#V_ORDERGUID").val()
 		+ '&V_DEPTREPAIRCODE=' + $("#V_DEPTCODE").html()
 		+ '', '41070101',
-		'dialogHeight:500px;dialogWidth:800px');
-	loadTaskGrid();
+		'dialogHeight:500px;dialogWidth:800px');*/
 
-	/*var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val()
+	var owidth = window.document.body.offsetWidth-200;
+	var oheight = window.document.body.offsetHeight-100 ;
+	var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val()
 		+  '&V_DEPTREPAIRCODE=' + $("#V_DEPTCODE").html() +  '&V_TEAMCODE=' + V_TEAMCODE +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-*/
+
+	loadTaskGrid();
 }
 //生成模型
 function CreateModel() {

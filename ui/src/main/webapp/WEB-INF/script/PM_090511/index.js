@@ -290,7 +290,8 @@ function griditemclick(s, record, item, index, e, eOpts){
     });
 }
 function select(){
-
+    var jjts=0;
+    var gzts=0;
     var gridSel = Ext.data.StoreManager.lookup('gridSelStore');
     var records = gridSel.data.items;
     var retdata = [];
@@ -311,6 +312,7 @@ function select(){
             },
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
+                gzts+=parseInt(records[i].data.V_TS);
                 if (i == 0) {
                     retdata.push(records[i].data.V_PERNAME);
                 }
@@ -329,7 +331,24 @@ function select(){
             }
         });
     }
-    window.opener.getPersonReturnValue(retdata);
+
+    Ext.Ajax.request({
+        method: 'POST',
+        async: false,
+        url: AppUrl + 'pm_19/PRO_PM_19_CARDE_GXSEL',
+        params: {
+            V_V_JXGX_CODE: V_V_JXGX_CODE
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+
+            for (var i = 0; i < resp.list.length; i++) {
+                jjts+=parseInt(resp.list[i].V_JJ_TS);
+            }
+
+        }
+    });
+    window.opener.getPersonReturnValue(retdata,gzts+jjts);
     window.close();
 }
 function _delete(V_PERCODE_DE){
