@@ -14,7 +14,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'base/PRO_PM_WORKORDER_GETBYID',
+            url: AppUrl + 'basic/PRO_PM_WORKORDER_GETBYID',
             actionMethods: {
                 read: 'POST'
             },
@@ -82,18 +82,20 @@ function itemClick(s, record, item, index, e, eOpts) {
 }
 
 function goSetMat(value, metaData, record, rowIdx) {
-    return '<a href="javascript:onDownload(\'' + value + '\',\'' + record.data.V_PERSONNAME + '\')"><img src= "' + imgpath + '/saved.png"></a>';
+    return '<a href="javascript:setmat(\'' + record.data. V_ORDERGUID+ '\',\'' + record.data.V_PERSONNAME + '\')"><img src= "' + imgpath + '/saved.png"></a>';
 }
 
-function setmat(orderid, percode) {
-    $.ajax({
+function setmat(orderguid, percode) {
+    Ext.Ajax.request({
         url: AppUrl + 'mm/SetMat',
-        type: 'post',
+        type: 'ajax',
+        method: 'POST',
         async: false,
-        data: {
-            V_V_ORDERGUID: orderid,
+        params: {
+            V_V_ORDERGUID: orderguid,
             x_personcode: percode
-        }, success: function (resp) {
+        }, success: function (response) {
+            var resp = Ext.decode(response.responseText);
             if (resp.V_CURSOR == '1') {
                 alert('发送成功');
             } else {
