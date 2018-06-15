@@ -82,7 +82,7 @@ function itemClick(s, record, item, index, e, eOpts) {
 }
 
 function goSetMat(value, metaData, record, rowIdx) {
-    return '<a href="javascript:onDownload(\'' + value + '\',\'' + record.data.V_PERSONNAME + '\')"><img src= "' + imgpath + '/saved.png"></a>';
+    return '<a href="javascript:setmat(\'' + value + '\',\'' + record.data.V_PERSONNAME + '\')"><img src= "' + imgpath + '/saved.png"></a>';
 }
 
 function setmat(orderid, percode) {
