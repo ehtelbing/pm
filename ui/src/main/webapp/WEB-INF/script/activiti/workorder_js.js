@@ -1598,7 +1598,7 @@ function ConfirmAccept() {
 
     //var test = new Array(wuliaochaxunlist);
     //console.log(test);
-    if(wuliaochaxunlist.length==0){
+   /* if(wuliaochaxunlist.length==0){
 
     }else{
         for (var i = 0; i < wuliaochaxunlist.length; i++) {
@@ -1608,7 +1608,7 @@ function ConfirmAccept() {
                 return;
             }
         }
-    }
+    }*/
 
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
