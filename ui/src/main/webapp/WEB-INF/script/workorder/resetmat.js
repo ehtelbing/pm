@@ -86,7 +86,7 @@ function goSetMat(value, metaData, record, rowIdx) {
 }
 
 function setmat(orderid, percode) {
-    $.ajax({
+    Ext.Ajax.request({
         url: AppUrl + 'mm/SetMat',
         type: 'post',
         async: false,
@@ -94,6 +94,7 @@ function setmat(orderid, percode) {
             V_V_ORDERGUID: orderid,
             x_personcode: percode
         }, success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
             if (resp.V_CURSOR == '1') {
                 alert('发送成功');
             } else {
