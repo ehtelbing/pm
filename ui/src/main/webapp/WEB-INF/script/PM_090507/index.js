@@ -225,7 +225,7 @@ function Agree() {
     } else {
         spyj = $("#spyj").val();
     }
-    if(V_NEXT_SETP.indexOf("sp")==-1) {//下一步没有审批字样
+    if(V_NEXT_SETP.indexOf("sp")==-1&&V_STEPCODE.indexOf("sp")!=-1) {//下一步没有审批字样,当前步骤是审批
         Ext.Ajax.request({
             url: AppUrl + 'mm/SetMat',
             type: 'post',

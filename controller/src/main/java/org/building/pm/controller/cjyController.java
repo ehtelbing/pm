@@ -2728,9 +2728,9 @@ public class cjyController {
                         flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
 
                         /*
-                         * 如果下一步是不是审批步骤，向物资接口传递工单信息
+                         * 如果下一步是不是审批步骤，当前步骤是审批，向物资接口传递工单信息
                          * */
-                        if (V_NEXT_SETP.indexOf("sp") != -1) {
+                        if (V_NEXT_SETP.indexOf("sp") == -1&&V_STEPCODE.indexOf("sp")!=-1) {
                             mmController.SetMat(V_ORDERGUID[i], Assignee, request, response);
                         }
                         /*
