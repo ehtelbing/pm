@@ -1046,5 +1046,18 @@ public class ActivitiController {
         return result;
     }
 
+    /*
+    * 取消流程实例
+    * */
+
+    @RequestMapping(value = "DeleteProcessInstance", method = RequestMethod.POST)
+    @ResponseBody
+    public  Map DeleteProcessInstance(@RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY) throws SQLException {
+
+        Map result=activitiService.DeleteProcessInstance(V_V_BUSINESSKEY);
+        return result;
+    }
+
+
 
 }

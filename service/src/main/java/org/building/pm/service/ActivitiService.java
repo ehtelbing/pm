@@ -6,6 +6,8 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.RuntimeServiceImpl;
 import org.activiti.engine.impl.interceptor.Command;
@@ -537,8 +539,8 @@ public class ActivitiService {
                     temp.put("sid", map.get("V_DEPTCODE").toString());
                     temp.put("text", map.get("V_DEPTNAME").toString());
                     temp.put("expanded", false);
-                    temp.put("finishflag",false);
-                    temp.put("children", createOrgChildTree(list,  map.get("V_DEPTCODE").toString()));
+                    temp.put("finishflag", false);
+                    temp.put("children", createOrgChildTree(list, map.get("V_DEPTCODE").toString()));
                     result.add(temp);
                 }
             }
@@ -567,9 +569,9 @@ public class ActivitiService {
                 temp.put("expanded", false);
                 if (IfHasDeptChildNode(list, map.get("V_DEPTCODE").toString())) {
                     temp.put("children", createOrgChildTree(list, map.get("V_DEPTCODE").toString()));
-                    temp.put("finishflag",false);
-                }else{
-                    temp.put("finishflag",true);
+                    temp.put("finishflag", false);
+                } else {
+                    temp.put("finishflag", true);
                 }
                 result.add(temp);
             }
@@ -586,5 +588,41 @@ public class ActivitiService {
         return false;
     }
 
+    public Map DeleteProcessInstance(String businesskey) {
+
+        Map result = new HashMap();
+
+        try {
+            HistoricProcessInstance instance = historyService
+                    .createHistoricProcessInstanceQuery()
+                    .processInstanceBusinessKey(businesskey).listPage(0, 1)
+                    .get(0);
+
+            ProcessInstance processInstance = runtimeService
+                    .createProcessInstanceQuery().processInstanceId(instance.getId())
+                    .singleResult();
+
+            if (processInstance == null) {
+                logger.error("实例未找到:" + instance.getId());
+                result.put("msg", "未找到流程实例");
+            } else {
+                List<HistoricTaskInstance> historyTasks = historyService
+                        .createHistoricTaskInstanceQuery()
+                        .processInstanceId(instance.getId()).list();
+
+                for (HistoricTaskInstance historicTaskInstance : historyTasks) {
+                    historyService.deleteHistoricTaskInstance(historicTaskInstance
+                            .getId());
+                }
+
+                runtimeService.deleteProcessInstance(instance.getId(), null);
+                result.put("msg", "删除成功");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return result;
+    }
 
 }
