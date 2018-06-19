@@ -5428,4 +5428,66 @@ public class cjyService {
         logger.info("end PM_1917_JXGX_PER_DATA_SET_G");
         return result;
     }
+
+    public HashMap PM_ACTIVITI_STEP_LOG_SET(String V_V_BUSINESS_GUID, String V_V_PROCESS_GUID, String V_STEPCODE, String V_STEPNAME, String V_IDEA, String V_NEXTPER, String V_INPER) throws SQLException {
+
+        logger.info("begin PM_ACTIVITI_STEP_LOG_SET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_ACTIVITI_STEP_LOG_SET" + "(:V_V_BUSINESS_GUID,:V_V_PROCESS_GUID,:V_STEPCODE,:V_STEPNAME,:V_IDEA,:V_NEXTPER,:V_INPER,:V_INFO)}");
+            cstmt.setString("V_V_BUSINESS_GUID", V_V_BUSINESS_GUID);
+            cstmt.setString("V_V_PROCESS_GUID", V_V_PROCESS_GUID);
+            cstmt.setString("V_STEPCODE", V_STEPCODE);
+            cstmt.setString("V_STEPNAME", V_STEPNAME);
+            cstmt.setString("V_IDEA", V_IDEA);
+            cstmt.setString("V_NEXTPER", V_NEXTPER);
+            cstmt.setString("V_INPER", V_INPER);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_ACTIVITI_PROCESS_SET");
+        return result;
+    }
+
+    public HashMap PRO_ACTIVITI_DELETE(String V_V_BusinessKey,String V_V_FlowType) throws SQLException {
+
+        logger.info("begin PRO_ACTIVITI_DELETE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            // conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_ACTIVITI_DELETE" + "(:V_V_BusinessKey,:V_V_FlowType,:V_INFO)}");
+            cstmt.setString("V_V_BusinessKey", V_V_BusinessKey);
+            cstmt.setString("V_V_FlowType", V_V_FlowType);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            result.put("V_INFO",
+                    (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_ACTIVITI_DELETE");
+        return result;
+    }
 }

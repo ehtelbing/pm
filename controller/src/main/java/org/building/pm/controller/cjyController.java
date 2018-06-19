@@ -3247,6 +3247,32 @@ public class cjyController {
         Map result = cjyService.PM_1917_JXGX_PER_DATA_SET_G(V_V_GUID, V_V_PERCODE_DE, V_V_PERNAME_DE, V_V_TS, V_V_DE, V_V_PERTYPE_ED, V_V_PERCODE, V_V_PERNAME);
         return result;
     }
+
+    @RequestMapping(value = "/PM_ACTIVITI_STEP_LOG_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_ACTIVITI_STEP_LOG_SET(@RequestParam(value = "V_V_BUSINESS_GUID") String V_V_BUSINESS_GUID,
+                                           @RequestParam(value = "V_V_PROCESS_GUID") String V_V_PROCESS_GUID,
+                                           @RequestParam(value = "V_V_STEPCODE") String V_V_STEPCODE,
+                                           @RequestParam(value = "V_V_STEPNAME") String V_V_STEPNAME,
+                                           @RequestParam(value = "V_V_IDEA") String V_V_IDEA,
+                                           @RequestParam(value = "V_V_NEXTPER") String V_V_NEXTPER,
+                                           @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map result = cjyService.PM_ACTIVITI_STEP_LOG_SET(V_V_BUSINESS_GUID, V_V_PROCESS_GUID, V_V_STEPCODE, V_V_STEPNAME, V_V_IDEA, V_V_NEXTPER, V_V_INPER);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_ACTIVITI_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_ACTIVITI_DELETE(@RequestParam(value = "V_V_BusinessKey") String V_V_BusinessKey,
+                                         @RequestParam(value = "V_V_FlowType") String V_V_FlowType,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
+        Map result = cjyService.PRO_ACTIVITI_DELETE(V_V_BusinessKey, V_V_FlowType);
+        return result;
+    }
+
 }
 
 

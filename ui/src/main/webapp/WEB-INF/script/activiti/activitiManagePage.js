@@ -43,9 +43,9 @@ Ext.onReady(function () {
         id:'grid',
         frame : true,
         columnLines : true,
-        selModel: {
+        /*selModel: {
             selType: 'checkboxmodel'
-        },
+        },*/
         region:'center',
         columns : [ {
             xtype : 'rownumberer',
@@ -58,9 +58,8 @@ Ext.onReady(function () {
             width: 155,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                //'<a href=javascript:_dealWith(\'' + record.data.ProcessDefinitionKey + '\',\'' + record.data.TaskDefinitionKey + '\',\''
-                //+ record.data.BusinessKey + '\',\'' + record.data.ProcessInstanceId + '\')>' + '取消流程' + '</a>&nbsp;&nbsp;&nbsp;' +
-                return  '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>';
+                return  '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>' +
+                    '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.BusinessKey + '\',\'' + record.data.ProcessDefinitionKey + '\',\'' + record.raw.flow_type + '\')">' + '删除流程' + '</a>';
             }
         }, {
             text: '流程类型',
@@ -282,4 +281,60 @@ function _preViewProcess(ProcessInstanceId,BusinessKey) {
     var oheight =  window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_210302/index.html?ProcessInstanceId='
         +  ProcessInstanceId+'&BusinessKey='+BusinessKey+'&flowtype='+Ext.ComponentManager.get("tabpanel").getActiveTab().id, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+function _cancelFlow(BusinessKey,ProcessDefinitionKey,flow_type) {
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/DeleteProcessInstance',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            V_V_BUSINESSKEY: BusinessKey
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.msg == "删除成功") {
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PRO_ACTIVITI_DELETE',
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        V_V_BusinessKey: BusinessKey,
+                        V_V_FlowType: flow_type
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp.V_INFO == 'success') {
+                            Ext.Ajax.request({
+                                url: AppUrl + 'cjy/PM_ACTIVITI_STEP_LOG_SET',
+                                type: 'ajax',
+                                method: 'POST',
+                                params: {
+                                    V_V_BUSINESS_GUID: BusinessKey,
+                                    V_V_PROCESS_GUID: ProcessDefinitionKey,
+                                    V_V_STEPCODE: '',
+                                    V_V_STEPNAME: '',
+                                    V_V_IDEA: '删除流程',
+                                    V_V_NEXTPER: '',
+                                    V_V_INPER: Ext.util.Cookies.get('v_personcode')
+                                },
+                                success: function (response) {
+                                    var resp = Ext.decode(response.responseText);
+                                    if (resp.RET == 'success') {
+                                        alert("删除成功");
+                                        QueryGrid();
+                                    } else {
+                                        alert("记录日志失败");
+                                    }
+                                }
+                            });
+                        } else {
+                            alert('删除数据失败');
+                        }
+                    }
+                });
+            } else {
+                alert('删除失败');
+            }
+        }
+    });
 }
