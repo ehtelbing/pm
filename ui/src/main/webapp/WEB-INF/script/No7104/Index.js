@@ -21,7 +21,7 @@ Ext
 				proxy : {
 					type : 'ajax',
 					async : false,
-					url: AppUrl + 'No4120/PRO_BASE_DEPT_VIEW_ROLE',
+					url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
 					actionMethods : {
 						read : 'POST'
 					},
@@ -30,10 +30,10 @@ Ext
 						root : 'list'
 					},
 					extraParams : {
-						V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
-						V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
-						V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_deptcode'),
-						V_V_DEPTTYPE:'[基层单位]'
+						'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+						'V_V_DEPTCODE':  Ext.util.Cookies.get('v_orgCode'),
+						'V_V_DEPTCODENEXT': Ext.util.Cookies.get('v_deptcode'),
+						'V_V_DEPTTYPE': '基层单位'
 					}
 				}
 			});
@@ -45,7 +45,7 @@ Ext
 			proxy : {
 				type : 'ajax',
 				async : false,
-				url: AppUrl + 'No4120/PRO_PM_REPAIRDEPT_TODEPT',
+				url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
 				actionMethods : {
 					read : 'POST'
 				},
@@ -476,14 +476,17 @@ Ext
 				Ext.data.StoreManager.lookup('selSectionstore').load(
 					{
 						params : {
-							V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-							V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+							'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+							'V_V_DEPTCODE':   Ext.getCmp("selPlant").getValue(),
+							'V_V_DEPTCODENEXT':  Ext.util.Cookies.get('v_deptcode'),
+							'V_V_DEPTTYPE':'[主体作业区]'
 						}
 					});
 			});
 		Ext.data.StoreManager.lookup('selSectionstore').on(
 			"load",
 			function() {
+				Ext.data.StoreManager.lookup('selSectionstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
 				Ext.getCmp("selSection").select(
 					Ext.data.StoreManager.lookup('selSectionstore')
 						.getAt(0));
@@ -531,7 +534,11 @@ function btnbc() {
 				var resp = Ext.JSON.decode(ret.responseText);
 				if(resp.RET=="Success"){
 					Ext.example.msg('操作信息', '操作成功');
-
+					Ext.data.StoreManager.lookup('gridStore').load({
+						params : {
+							A_EQU_ID: Ext.ComponentManager.get('equcode').getValue()
+						}
+					});
 				}else {
 					Ext.Msg.alert('操作信息', '操作失败');
 				}
