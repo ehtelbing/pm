@@ -2862,7 +2862,7 @@ public class cjyService {
     public Map PRO_PM_03_PLAN_WEEK_NSET(String V_V_INPER,String V_V_GUID,String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,
                                        String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_REPAIRMAJOR_CODE,
                                        String V_V_CONTENT,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_OTHERPLAN_GUID,String V_V_OTHERPLAN_TYPE,
-                                       String V_V_JHMX_GUID,String V_V_HOUR,String V_V_BZ,String V_V_DEFECTGUID) throws SQLException {
+                                       String V_V_JHMX_GUID,String V_V_HOUR,String V_V_BZ,String V_V_DEFECTGUID,String V_V_MAIN_DEFECT,String V_V_EXPECT_AGE,String V_V_REPAIR_PER) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_NSET");
         Map result = new HashMap<String,Object>();
         Connection conn = null;
@@ -2872,7 +2872,7 @@ public class cjyService {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_NSET" + "(:V_V_INPER,:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_V_DEPTCODE," +
                     ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
-                    ":V_V_OTHERPLAN_GUID,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_DEFECTGUID,:V_INFO)}");
+                    ":V_V_OTHERPLAN_GUID,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_DEFECTGUID,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER,:V_INFO)}");
             cstmt.setString("V_V_INPER", V_V_INPER);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_YEAR", V_V_YEAR);
@@ -2895,6 +2895,9 @@ public class cjyService {
             cstmt.setString("V_V_HOUR", V_V_HOUR);
             cstmt.setString("V_V_BZ", V_V_BZ);
             cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
+            cstmt.setString("V_V_MAIN_DEFECT", V_V_MAIN_DEFECT);
+            cstmt.setString("V_V_EXPECT_AGE", V_V_EXPECT_AGE);
+            cstmt.setString("V_V_REPAIR_PER", V_V_REPAIR_PER);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));

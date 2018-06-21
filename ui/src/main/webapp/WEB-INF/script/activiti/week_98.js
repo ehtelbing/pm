@@ -473,7 +473,50 @@ Ext.onReady(function () {
                     fieldLabel: '发起时间',
                     labelWidth: 90
                 }]
+            },{
+                layout: 'hbox',
+                defaults: {labelAlign: 'right'},
+                frame: true,
+                border: false,
+                baseCls: 'my-panel-no-border',
+                items: [
+
+                    {
+                        xtype: 'numberfield',
+                        id: 'expectage',
+                        fieldLabel: '预计寿命',
+                        labelAlign: 'right',
+                        labelWidth: 90,
+                        width: 250,
+                        value: 0
+                    },{
+                        xtype: 'numberfield',
+                        id: 'repairper',
+                        fieldLabel: '维修人数',
+                        labelAlign: 'right',
+                        labelWidth: 90,
+                        width: 250,
+                        value: 0
+                    }
+                ]
             }, {
+                    layout: 'hbox',
+                    defaults: {labelAlign: 'right'},
+                    frame: true,
+                    border: false,
+                    baseCls: 'my-panel-no-border',
+                    items: [
+
+                        {
+                            xtype: 'textfield',
+                            id: 'maindefect',
+                            fieldLabel: '主要缺陷',
+                            labelAlign: 'right',
+                            labelWidth: 90,
+                            width: 250
+                        }
+                    ]
+                }, {
                 layout: 'column',
                 items: [{
                     xtype: 'textarea',
@@ -931,6 +974,9 @@ function _init() {
                     Ext.getCmp('jhgshj').setValue(data.list[0].V_HOUR);
                     Ext.getCmp('bz').setValue(data.list[0].V_BZ);
 
+                    Ext.getCmp('maindefect').setValue(data.list[0].V_MAIN_DEFECT);  //主要缺陷
+                    Ext.getCmp('expectage').setValue(data.list[0].V_EXPECT_AGE);  //预计寿命
+                    Ext.getCmp('repairper').setValue(data.list[0].V_REPAIR_PER);  //维修人数
                     _selectTaskId();
                     Ext.getBody().unmask();
                 }
@@ -1036,7 +1082,10 @@ function _agree() {
             V_V_JHMX_GUID: '',                                          //检修标准
             V_V_HOUR: Ext.getCmp('jhgshj').getValue(),
             V_V_BZ: Ext.getCmp('bz').getValue(),
-            V_V_DEFECTGUID: ''
+            V_V_DEFECTGUID: '',
+            V_V_MAIN_DEFECT: Ext.getCmp('maindefect').getValue(),//主要缺陷
+            V_V_EXPECT_AGE: Ext.getCmp('expectage').getValue(),//预计寿命
+            V_V_REPAIR_PER: Ext.getCmp('repairper').getValue()//维修人数
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

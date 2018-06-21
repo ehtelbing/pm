@@ -262,7 +262,10 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_JXGX_CODE',
         'V_MONTHPLAN_CODE',
         'V_WEEKID',
-        'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME'],
+        'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
+        'V_MAIN_DEFECT',
+        'V_EXPECT_AGE',
+        'V_REPAIR_PER'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -571,6 +574,10 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         },
         {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
         {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
+
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
         {
             text: '录入时间',
             align: 'center',
