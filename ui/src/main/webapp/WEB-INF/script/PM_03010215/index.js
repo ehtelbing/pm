@@ -242,7 +242,10 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_STATUSNAME',
         'V_FLOWNAME',
         'V_INPERNAME',
-        'V_STATENAME'],
+        'V_STATENAME',
+        'V_MAIN_DEFECT',
+        'V_EXPECT_AGE',
+        'V_REPAIR_PER'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -451,6 +454,15 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     handler: function () {
                         query();
                     }
+                }, {
+                    xtype: 'button',
+                    text: '导出excel',
+                    style: ' margin: 5px 0px 5px 5px',
+                    icon: imgpath + '/excel.gif',
+                    width: 100,
+                    listeners: {
+                        click: OnClickExcelButton
+                    }
                 }
             ]
         }
@@ -498,6 +510,9 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '计划工期（小时）', align: 'center', width: 110, dataIndex: 'V_HOUR'},
 
         {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
         {
             text: '录入时间', align: 'center', width: 200, dataIndex: 'V_INDATE',
             renderer: rendererTime
@@ -728,5 +743,23 @@ function _preViewProcess(businessKey)
     var oheight =  window.screen.availHeight - 50;
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+
+}
+
+function OnClickExcelButton() {
+
+    var V_V_STATE = Ext.getCmp('state').getValue() == '%' ? '0' : Ext.getCmp('state').getValue();
+    document.location.href = AppUrl + 'excel/YJHCX_EXCEL?V_V_YEAR=' + Ext.getCmp('nf').getValue()
+        + '&V_V_MONTH=' + Ext.getCmp('yf').getValue()
+        + '&V_V_ORGCODE=' + Ext.getCmp('jhck').getValue()
+        + '&V_V_DEPTCODE=' + Ext.getCmp('jhzyq').getValue()
+        + '&V_V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
+        + '&V_V_EQUCODE=' + Ext.getCmp('sbmc').getValue()
+        + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
+        + '&V_V_CONTENT=' + Ext.getCmp('content').getValue()
+        + '&V_V_STATECODE=' + V_V_STATE
+        + '&V_V_PEROCDE=' + Ext.util.Cookies.get('v_personcode')
+        + '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
+        + '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize;
 
 }

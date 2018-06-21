@@ -217,7 +217,10 @@ var gridStore = Ext.create('Ext.data.Store', {
 		'V_JXMX_CODE',
 		'V_JXGX_CODE',
 		'V_MONTHPLAN_CODE',
-		'V_STATUSNAME','V_GUID','V_STATENAME','V_INPERNAME','V_FLOWNAME'],
+		'V_STATUSNAME','V_GUID','V_STATENAME','V_INPERNAME','V_FLOWNAME',
+		'V_MAIN_DEFECT',
+		'V_EXPECT_AGE',
+		'V_REPAIR_PER'],
 	proxy : {
 		type : 'ajax',
 		async : false,
@@ -369,6 +372,9 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
 		{text: '计划竣工日期', align: 'center', width: 150,dataIndex: 'V_ENDTIME',renderer:rendererTime},
 		{text: '计划工期（小时）', align: 'center', width: 150,dataIndex: 'V_HOUR'},
 		{text: '录入人', align: 'center', width: 100,dataIndex: 'V_INPERNAME'},
+		{text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
+		{text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
+		{text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
 		{text: '录入时间', align: 'center', width: 100,dataIndex: 'V_INDATE',renderer: rendererTime}/*,
 		{text: '流程步骤', align: 'center', width: 100, dataIndex: 'V_FLOWNAME'},*/
 	],
@@ -577,18 +583,22 @@ function OnClickExcelButton() {
 	 parVal, proName, returnStr, returnStrType, returnStrName,
 	 cursorName, "title", "周计划查询");*/
 
+	var V_V_ZY = Ext.getCmp('zy').getValue() == '%' ? '0' : Ext.getCmp('zy').getValue();
+	var V_V_EQUTYPE = Ext.getCmp('sblx').getValue() == '%' ? '0' : Ext.getCmp('sblx').getValue();
+	var V_V_EQUCODE = Ext.getCmp('sbmc').getValue() == '%' ? '0' : Ext.getCmp('sbmc').getValue();
+	var V_V_STATE = Ext.getCmp('state').getValue() == '%' ? '0' : Ext.getCmp('state').getValue();
 	document.location.href = AppUrl + 'excel/ZSCBSP_EXCEL?V_V_YEAR=' + Ext.getCmp('nf').getValue()
 		+ '&V_V_MONTH=' + Ext.getCmp('yf').getValue()
 		+ '&V_V_WEEK=' + Ext.getCmp('zhou').getValue()
-		+ '&V_V_ORGCODE='+ Ext.getCmp('jhck').getValue()
+		+ '&V_V_ORGCODE=' + Ext.getCmp('jhck').getValue()
 		+ '&V_V_DEPTCODE=' + Ext.getCmp('jhzyq').getValue()
-		+ '&V_V_ZY=' + Ext.getCmp('zy').getValue()
-		+ '&V_V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
-		+ '&V_V_EQUCODE=' + Ext.getCmp('sbmc').getValue()
+		+ '&V_V_ZY=' + V_V_ZY
+		+ '&V_V_EQUTYPE=' + V_V_EQUTYPE
+		+ '&V_V_EQUCODE=' + V_V_EQUCODE
 		+ '&V_V_CONTENT=' + Ext.getCmp('content').getValue()
-		+ '&V_V_STATE=' +'',
-	+ '&V_V_PAGE=' +Ext.getCmp('page').store.currentPage
-	+ '&V_V_PAGESIZE=' +Ext.getCmp('page').store.pageSize;
+		+ '&V_V_STATE=' + V_V_STATE
+		+ '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
+		+ '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize;
 }
 
 

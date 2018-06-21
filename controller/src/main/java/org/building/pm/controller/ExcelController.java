@@ -896,6 +896,7 @@ public class ExcelController {
 
         List list = new ArrayList();
 
+
         Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_MONTH_VIEW(V_V_INPER, V_V_YEAR, V_V_MONTH, V_V_ORGCODE,V_V_DEPTCODE,V_V_REPAIRMAJOR_CODE,V_V_PLANTYPE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -1016,8 +1017,13 @@ public class ExcelController {
 
         List list = new ArrayList();
 
+        String V_V_ZY2=V_V_ZY.equals("0")?"%":V_V_ZY;
+        String V_V_EQUTYPE2=V_V_EQUTYPE.equals("0")?"%":V_V_EQUTYPE;
+        String V_V_EQUCODE2=V_V_EQUCODE.equals("0")?"%":V_V_EQUCODE;
+        String V_V_STATE2=V_V_STATE.equals("0")?"%":V_V_STATE;
+
         Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_WEEK_VIEW(V_V_YEAR, V_V_MONTH,V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
-                V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PAGE, V_V_PAGESIZE);
+                V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_STATE2, V_V_PAGE, V_V_PAGESIZE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -1077,10 +1083,22 @@ public class ExcelController {
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 12);
-        cell.setCellValue("录入时间");
+        cell.setCellValue("主要缺陷");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 13);
+        cell.setCellValue("预计寿命");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 14);
+        cell.setCellValue("维修人数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 15);
+        cell.setCellValue("录入时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 16);
         cell.setCellValue("流程步骤");
         cell.setCellStyle(style);
 
@@ -1114,9 +1132,15 @@ public class ExcelController {
 
                 row.createCell((short) 11).setCellValue(map.get("V_INPERNAME") == null ? "" : map.get("V_INPERNAME").toString());
 
-                row.createCell((short) 12).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
+                row.createCell((short) 12).setCellValue(map.get("V_MAIN_DEFECT") == null ? "" : map.get("V_MAIN_DEFECT").toString());
 
-                row.createCell((short) 13).setCellValue(map.get("V_FLOWNAME") == null ? "" : map.get("V_FLOWNAME").toString());
+                row.createCell((short) 13).setCellValue(map.get("V_EXPECT_AGE") == null ? "" : map.get("V_EXPECT_AGE").toString());
+
+                row.createCell((short) 14).setCellValue(map.get("V_REPAIR_PER") == null ? "" : map.get("V_REPAIR_PER").toString());
+
+                row.createCell((short) 15).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
+
+                row.createCell((short) 16).setCellValue(map.get("V_FLOWNAME") == null ? "" : map.get("V_FLOWNAME").toString());
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
@@ -2991,4 +3015,148 @@ public class ExcelController {
         }
     }
 
+
+    /*月计划查询导出EXCEL*/
+    @RequestMapping(value = "/YJHCX_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void YJHCX_EXCEL(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                            @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
+                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        String V_V_STATECODE2 = V_V_STATECODE.equals("0") ? "%" : V_V_STATECODE;
+
+        Map<String, Object> data = pm_03Service.PM_03_MONTH_PLAN_SEL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY,
+                V_V_CONTENT, V_V_STATECODE2, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("计划状态");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("车间名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("检修内容");
+        cell.setCellStyle(style);
+
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("计划停机日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("计划竣工日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("计划工期（小时）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("主要缺陷");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("预计寿命");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
+        cell.setCellValue("维修人数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 14);
+        cell.setCellValue("录入时间");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_REPAIRMAJOR_CODE") == null ? "" : map.get("V_REPAIRMAJOR_CODE").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("V_CONTENT") == null ? "" : map.get("V_CONTENT").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("V_STARTTIME") == null ? "" : map.get("V_STARTTIME").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("V_ENDTIME") == null ? "" : map.get("V_ENDTIME").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_HOUR") == null ? "" : map.get("V_HOUR").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_INPERNAME") == null ? "" : map.get("V_INPERNAME").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("V_MAIN_DEFECT") == null ? "" : map.get("V_MAIN_DEFECT").toString());
+
+                row.createCell((short) 12).setCellValue(map.get("V_EXPECT_AGE") == null ? "" : map.get("V_EXPECT_AGE").toString());
+
+                row.createCell((short) 13).setCellValue(map.get("V_REPAIR_PER") == null ? "" : map.get("V_REPAIR_PER").toString());
+
+                row.createCell((short) 14).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("月检修计划excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
