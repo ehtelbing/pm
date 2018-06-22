@@ -103,7 +103,7 @@ function loadPageInfo() {
 
         var max = 0;
         var cur_material_index = 0;
-        var cur_max_material = 20;
+        var cur_max_material = 10;
         var cur_max_operation = 0;
         var max_operation = 0;
 
@@ -350,10 +350,10 @@ function loadPageInfo() {
                             result.push('                        工序<br />');
                             result.push('                        编号');
                             result.push('                    </td>');
-                            result.push('                    <td width="70" align="center" valign="top" class="border_r_b">');
+                            result.push('                    <td width="135" align="center" valign="top" class="border_r_b">');
                             result.push('                        班组<br />');
                             result.push('                    </td>');
-                            result.push('                    <td  width="400"  align="center" valign="top" class="border_r_b">');
+                            result.push('                    <td  width="260"  align="center" valign="top" class="border_r_b">');
                             result.push('                        工序内容<br />');
                             result.push('                    </td>');
                             result.push('                    <td width="40" align="center" class="border_r_b">');
@@ -381,13 +381,13 @@ function loadPageInfo() {
                             result.push('                    <td width="60" align="center" valign="top" class="border_r_b">');
                             result.push('                        机具<br />');
                             result.push('                    </td>');
-                            result.push('                    <td width="60" align="center" valign="top" class="border_r_b">');
+                            result.push('                    <td width="90" align="center" valign="top" class="border_r_b">');
                             result.push('                        工具<br />');
                             result.push('                    </td>');
                             result.push('                    <td width="100" align="center" valign="top" class="border_r_b">');
                             result.push('                        工艺技术要求<br />');
                             result.push('                    </td>');
-                            result.push('                    <td width="100" align="center" valign="top" class="border_b">');
+                            result.push('                    <td width="125" align="center" valign="top" class="border_b">');
                             result.push('                        安全措施要求<br />');
                             result.push('                    </td>');
                             result.push('                </tr>');
@@ -486,16 +486,16 @@ function loadPageInfo() {
                             result.push('                    <td width="440" align="center" class="border_r_b">');
                             result.push('                        物料描述');
                             result.push('                    </td>');
-                            result.push('                    <td width="30" align="center" class="border_r_b">');
+                            result.push('                    <td width="35" align="center" class="border_r_b">');
                             result.push('                        单位');
                             result.push('                    </td>');
-                            result.push('                    <td width="70" align="center" class="border_r_b">');
+                            result.push('                    <td width="75" align="center" class="border_r_b">');
                             result.push('                        计划数量');
                             result.push('                    </td>');
                             result.push('                    <td width="100" align="center" class="border_r_b">');
                             result.push('                        计划总金额');
                             result.push('                    </td>');
-                            result.push('                    <td width="70" align="center" class="border_r_b">');
+                            result.push('                    <td width="75" align="center" class="border_r_b">');
                             result.push('                        实际数量');
                             result.push('                    </td>');
                             result.push('                    <td width="100" align="center" class="border_r_b">');
@@ -665,7 +665,7 @@ function loadPageInfo() {
                                 idGroup.push(index.toString()+x.toString());
                             }
 
-                            cur_max_material = 20;
+                            cur_max_material = 10;
                             cur_max_operation = 0;
 
                             $("#yesprint").append(result.join(""));
