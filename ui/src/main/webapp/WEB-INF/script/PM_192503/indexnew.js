@@ -613,8 +613,7 @@ Ext.onReady(function () {
 */
                         //if (id == '0' || id > 1) {
                         if (treepercode == '') {
-                            Ext.Msg.alert('操作信息',
-                                '只能选择一条数据修改');
+                            Ext.Msg.alert('操作信息','只能选择一条数据修改');
                             return false;
                         } else {
 
@@ -674,9 +673,7 @@ Ext.onReady(function () {
                             .getSelection().length;
                         if (id == '0') {*/
                         if (treepercode == '') {
-                            Ext.example.msg('操作信息',
-                                '{0}',
-                                '请选择数据进行删除');
+                            Ext.Msg.alert('操作信息','请选择一条数据进行删除');
                             return;
                         } else {
                             Ext.Msg
@@ -1320,7 +1317,17 @@ Ext.onReady(function () {
 
 
     Ext.getCmp("tree1").on('itemclick', function (view, node) {
-        Ext.ComponentManager.get("tree1hidden").setValue(node.data.parentid);
+        if(node.raw.leaf==true){
+            Ext.ComponentManager.get("tree1hidden").setValue(node.data.parentid);
+        }else{
+            if(node.data.parentId!='root'&&node.data.parentId!=undefined){
+                Ext.ComponentManager.get("tree1hidden").setValue(node.data.id);
+            }else{
+                Ext.ComponentManager.get("tree1hidden").setValue("");
+            }
+
+        }
+
         treepercode=node.data.sid;
         /*gridStore.load({
             params: {
@@ -1418,7 +1425,8 @@ Ext.onReady(function () {
                             });*/
                         window.close();
                         loadPerson(Ext.ComponentManager.get("rybm").getValue());
-                        loadTree();
+                        //loadTree();
+                        Ext.getCmp('tree1').store.reload();
 
                     }
                 });
@@ -1620,6 +1628,7 @@ function roleitemclick(s, record, item, index, e, eOpts) {
                         },
                         success: function () {
                             loadRoleSelGrid(treepercode);
+                            Ext.getCmp('perrole').setValue(record.data.V_ROLENAME);
                         }
                     });
             }
@@ -1661,6 +1670,7 @@ function _delRole(V_V_PERSONCODE){
                         },
                         success: function () {
                             loadRoleSelGrid(treepercode);
+                            Ext.getCmp('perrole').setValue('');
                         }
                     });
             }
@@ -1710,6 +1720,7 @@ function classitemclick(s, record, item, index, e, eOpts) {
                 },
                 success: function () {
                     loadClassSelGrid(treepercode);
+                    Ext.getCmp('perclass').setValue(record.data.V_SAP_WORKNAME);
                 }
             });
         }
@@ -1750,6 +1761,7 @@ function _delClass(V_V_PERSONCODE){
                         },
                         success: function () {
                             loadClassSelGrid(treepercode);
+                            Ext.getCmp('perclass').setValue('');
                         }
                     });
             }
