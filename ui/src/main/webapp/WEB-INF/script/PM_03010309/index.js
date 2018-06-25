@@ -187,7 +187,7 @@ var stateStore = Ext.create('Ext.data.Store', {
 //页面表格信息加载
 var gridStore = Ext.create('Ext.data.Store', {
 	id : 'gridStore',
-	pageSize : 5,
+	pageSize : 15,
 	autoLoad : false,
 	fields :['I_ID',
 		'V_WEEKPLAN_GUID',
