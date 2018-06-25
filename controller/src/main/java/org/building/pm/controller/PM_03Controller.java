@@ -402,12 +402,11 @@ public class PM_03Controller {
                                                         HttpServletRequest request,
                                                         HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = pm_03Service.PRO_PM_03_PLAN_WEEK_VIEW( V_V_YEAR, V_V_MONTH,V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
+
+
+        HashMap data =  pm_03Service.PRO_PM_03_PLAN_WEEK_VIEW( V_V_YEAR, V_V_MONTH,V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
                 V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PAGE, V_V_PAGESIZE);
-        List<Map<String, Object>> pm_06list = (List) data.get("list");
-        result.put("list", pm_06list);
-        result.put("success", true);
-        return result;
+        return data;
     }
     //PM_03010301,周计划报表，选择计划查询
     @RequestMapping(value = "/PM_03_WEEK_PLAN_SEL", method = RequestMethod.POST)

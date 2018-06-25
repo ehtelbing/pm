@@ -187,7 +187,7 @@ var stateStore = Ext.create('Ext.data.Store', {
 //页面表格信息加载
 var gridStore = Ext.create('Ext.data.Store', {
 	id : 'gridStore',
-	pageSize : 15,
+	pageSize : 5,
 	autoLoad : false,
 	fields :['I_ID',
 		'V_WEEKPLAN_GUID',
@@ -287,7 +287,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
 					fieldLabel: '设备名称',
 					editable: false,
 					labelAlign: 'right',
-					margin: '5 0 0 5',labelWidth:80,width:230,
+					margin: '5 0 0 5',labelWidth:80,width:280,
 					value: '',
 					displayField: 'V_EQUNAME',
 					valueField: 'V_EQUCODE',
@@ -501,6 +501,23 @@ Ext.onReady(function () {
 		Ext.getCmp('zks').setValue(getWeekStartDate());
 		Ext.getCmp('zjs').setValue(getWeekEndDate());
 		//Querytime();
+	});
+
+	Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+		store.proxy.extraParams = {
+			V_V_YEAR:Ext.getCmp('nf').getValue(),
+			V_V_MONTH:Ext.getCmp('yf').getValue(),
+			V_V_WEEK:Ext.getCmp('zhou').getValue(),
+			V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
+			V_V_DEPTCODE:Ext.getCmp('jhzyq').getValue(),
+			V_V_ZY:Ext.getCmp('zy').getValue(),
+			V_V_EQUTYPE:Ext.getCmp('sblx').getValue(),
+			V_V_EQUCODE:Ext.getCmp('sbmc').getValue(),
+			V_V_CONTENT:Ext.getCmp('content').getValue(),
+			V_V_STATE:Ext.getCmp('state').getValue(),
+			V_V_PAGE: Ext.getCmp('page').store.currentPage,
+			V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+		}
 	});
 });
 
