@@ -180,7 +180,7 @@ var operateWindowPanel = Ext.create('Ext.panel.Panel', {
 
 var operateWindow = Ext.create('Ext.window.Window', {
 	width : 450,
-	height : 150,
+	height : 200,
 	layout : 'fit',
 	id : 'operateWindow',
 	closeAction : 'hide',
