@@ -114,8 +114,8 @@ Ext.onReady(function () {
             width: 40,
             align: 'center'
         },{
-            text: '设备名称',
-            dataIndex: 'V_EQUNAME',
+            text: '零件名称',
+            dataIndex: 'V_PART_NAME',
             align: 'center',
             renderer: atleft,
             width: 200

@@ -104,9 +104,19 @@ Ext.onReady(function () {
                     Ext.getCmp('V_V_EQUTYPECODE').setValue(V_V_EQUTYPECODE);
                     sbTypeStoreLoad = true;
                     _init();
-
+                    if(v_flag=='TY'){
+                        store.insert(0, {V_EQUTYPENAME: '通用', V_EQUTYPECODE: 'TY'});
+                        Ext.getCmp('V_V_EQUTYPECODE').select(store.first());
+                        Ext.getCmp('V_V_EQUTYPECODE').disable();
+                    }
                 } else {
-                    Ext.getCmp('V_V_EQUTYPECODE').select(store.first());
+                    if(v_flag=='TY'){
+                        store.insert(0, {V_EQUTYPENAME: '通用', V_EQUTYPECODE: 'TY'});
+                        Ext.getCmp('V_V_EQUTYPECODE').disable();
+
+                    }
+                    Ext.getCmp('V_V_EQUTYPECODE').select(store.last());
+
                 }
             }
         }
@@ -870,7 +880,7 @@ function _insertJsStandard() {
                 'V_V_ORGCODE': V_V_PLANTCODE,
                 'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getSubmitValue(),
                 'V_V_EQUCODE': 'TY',
-                'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUTYPECODE').getSubmitValue(),
+                'V_V_EQUTYPECODE':'TY',
                 'V_V_EQUCHILDCODE': Ext.getCmp('V_V_EQUCHILDCODE_c').getSubmitValue(),
                 'V_V_BJ_IMG': V_V_GUID,
                 'V_V_PART_NUMBER': Ext.getCmp('V_V_PART_NUMBER').getSubmitValue(),
