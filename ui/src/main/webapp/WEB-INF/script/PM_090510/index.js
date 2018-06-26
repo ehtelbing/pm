@@ -3,10 +3,20 @@ var I_ID = -1;
 var flag = "";
 var arr = [];
 var V_ORDERGUID = null;
+var V_DEPTREPAIRCODE = '';
+var V_EQUCODE = '';
+var V_ORGCODE = '';
+var V_DEPTCODE = '';
+var V_EQUTYPE = '';
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_TEAMCODE = Ext.urlDecode(location.href.split('?')[1]).V_TEAMCODE;
     V_DEPTREPAIRCODE= Ext.urlDecode(location.href.split('?')[1]).V_DEPTREPAIRCODE;
+    V_EQUCODE= Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+    V_ORGCODE= Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
+    V_DEPTCODE= Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
+    V_EQUTYPE= Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPE;
+
 }
 var gridStore = Ext.create('Ext.data.Store', {
     id: 'gridStore',
@@ -184,6 +194,24 @@ var windowLayout = {
         readOnly : true,
         width: 365
     },{
+        xtype: 'textfield',
+        id: 'jxtechnologybzd',
+        hidden:true,
+        fieldLabel: '检修技术标准下',
+        readOnly: true
+    }, {
+        xtype: 'textfield',
+        id: 'jxtechnologybzu',
+        hidden:true,
+        fieldLabel: '检修技术标准上',
+        readOnly: true
+    },{
+        xtype: 'textfield',
+        id: 'jxtecbzguid',
+        hidden:true,
+        fieldLabel: '检修技术标准guid',
+        readOnly: true
+    },{
         xtype : 'button',
         text : '+',
         handler : selectJXTECHNOLOGY,
@@ -239,7 +267,7 @@ function OnclickAddButtonLoad() {
 
 function OnClickSaveButton() {
     Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_SET',
+        url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_SET_NEW',
         method: 'POST',
         params: {
             V_I_ID :  I_ID,
@@ -251,7 +279,10 @@ function OnClickSaveButton() {
             V_I_ACTUAL_TIME:Ext.getCmp('actualTime').getValue(),
             V_I_NUMBER_OF_PEOPLE: Ext.getCmp('actualPeople').getValue(),
             V_V_ID:'',
-            V_V_GUID: Ext.getCmp('jxgxbm').getValue()
+            V_V_GUID: Ext.getCmp('jxgxbm').getValue(),
+            V_V_JXBZ:Ext.getCmp('jxtecbzguid').getValue(),
+            V_V_JXBZ_VALUE_DOWN:Ext.getCmp('jxtechnologybzd').getValue(),
+            V_V_JXBZ_VALUE_UP:Ext.getCmp('jxtechnologybzu').getValue()
         }, success: function (response) {
             Ext.getCmp('dialog').hide();
             I_ID = -1;
@@ -506,9 +537,16 @@ function getReturnJXTOOL(data){
 }
 
 function selectJXTECHNOLOGY(){
-    var owidth = window.document.body.offsetWidth - 200;
+    /*var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_191708/index.html?V_V_JXGX_CODE='+ Ext.getCmp('jxgxbm').getValue() , '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+*/
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_191713/index.html?V_V_DEPTCODE=' + V_DEPTCODE
+        +'&V_V_EQUCODE='+V_EQUCODE
+        +'&V_V_EQUTYPECODE='+V_EQUTYPE
+        +'&V_V_ORGCODE='+V_ORGCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 
 function getReturnJXTECHNOLOGY(data){
@@ -557,4 +595,12 @@ function selectGJJJ(){
 }
 function getReturnGJJJ(data){
     Ext.getCmp('jxcar').setValue(data.toString());
+}
+function getReturnJSBZ(guid,valued,valueu){
+    Ext.getCmp('jxtechnology').setValue(valued+'~'+valueu);
+    Ext.getCmp('jxtechnologybzd').setValue(valued);
+    Ext.getCmp('jxtechnologybzu').setValue(valueu);
+    Ext.getCmp('jxtecbzguid').setValue(guid);
+
+
 }

@@ -1533,10 +1533,37 @@ function OnClickJJButton() {
 		+ '', '41070101',
 		'dialogHeight:500px;dialogWidth:800px');*/
 
-	var owidth = window.document.body.offsetWidth-200;
+	/*var owidth = window.document.body.offsetWidth-200;
 	var oheight = window.document.body.offsetHeight-100 ;
 	var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val()
 		+  '&V_DEPTREPAIRCODE=' + $("#V_DEPTCODE").html() +  '&V_TEAMCODE=' + V_TEAMCODE +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+	loadTaskGrid();*/
+
+	var V_EQUTYPE='';
+	Ext.Ajax.request({
+		url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_GET',
+		method: 'POST',
+		async: false,
+		params: {
+			V_V_EQUCODE: $('#V_EQUIP_NO').html()
+		},
+		success: function (resp) {
+			var resp = Ext.decode(resp.responseText);
+			if (resp.list.length != 0) {
+				V_EQUTYPE=resp.list[0].V_EQUTYPECODE;//设备类型编码
+			}
+		}
+	});
+	var owidth = window.document.body.offsetWidth-200;
+	var oheight = window.document.body.offsetHeight-100 ;
+	var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val()
+		+ '&V_DEPTREPAIRCODE=' + V_V_DEPTCODEREPARIR
+		+ '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
+		+ '&V_V_ORGCODE=' + V_V_ORGCODE
+		+ '&V_V_DEPTCODE=' + V_V_DEPTCODE
+		+ '&V_EQUTYPE=' + V_EQUTYPE
+		+ '&V_TEAMCODE=' + V_TEAMCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 	loadTaskGrid();
 }
