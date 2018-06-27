@@ -121,9 +121,9 @@ Ext.onReady(function () {
             width: 200
         },{
             text: '装置名称',
-            dataIndex: 'V_PART_NAME',
+            dataIndex: 'V_EQUCHILDNAME',
             align: 'center',
-            renderer: atleft,
+            renderer: atEc,
             width: 200
         }, {
             text: '允许值（下）',
@@ -255,6 +255,16 @@ function _selectJS(){
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+
+function atEc(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    if(value==''){
+        return '<div data-qtip="通用" >通用</div>';
+    }else{
+        return '<div data-qtip="' + value + '" >' + value + '</div>';
+    }
+
 }
 
 function atright(value, metaData, record, rowIndex, colIndex, store) {
