@@ -33,7 +33,7 @@ var selPlantstore = Ext.create('Ext.data.Store',
 		proxy : {
 			type : 'ajax',
 			async : false,
-			url: AppUrl + 'No4120/PRO_BASE_DEPT_VIEW_ROLE',
+			url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
 			actionMethods : {
 				read : 'POST'
 			},
@@ -42,10 +42,10 @@ var selPlantstore = Ext.create('Ext.data.Store',
 				root : 'list'
 			},
 			extraParams : {
-				V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
-				V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
-				V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_deptcode'),
-				V_V_DEPTTYPE:'[基层单位]'
+				'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+				'V_V_DEPTCODE':  Ext.util.Cookies.get('v_orgCode'),
+				'V_V_DEPTCODENEXT': Ext.util.Cookies.get('v_deptcode'),
+				'V_V_DEPTTYPE': '基层单位'
 			}
 		}
 	});
@@ -57,7 +57,7 @@ var selSectionstore = Ext.create('Ext.data.Store', {
 	proxy : {
 		type : 'ajax',
 		async : false,
-		url: AppUrl + 'No4120/PRO_PM_REPAIRDEPT_TODEPT',
+		url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
 		actionMethods : {
 			read : 'POST'
 		},
@@ -197,6 +197,7 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
 			displayField : 'SITE_DESC',
 			valueField : 'SITE_ID',
 			labelWidth : 100,
+			width:550,
 			style : ' margin: 5px 0px 5px 10px',
 			labelAlign : 'right'
 		}, {
@@ -442,8 +443,10 @@ function onPageLoaded() {
 			Ext.data.StoreManager.lookup('selSectionstore').load(
 				{
 					params : {
-						V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-						V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+						'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+						'V_V_DEPTCODE':   Ext.getCmp("selPlant").getValue(),
+						'V_V_DEPTCODENEXT':  Ext.util.Cookies.get('v_deptcode'),
+						'V_V_DEPTTYPE':'[主体作业区]'
 					}
 				});
 		});
@@ -462,8 +465,10 @@ function onPageLoaded() {
 			Ext.data.StoreManager.lookup('selSectionstore').load(
 				{
 					params : {
-						V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-						V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+						'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+						'V_V_DEPTCODE':   Ext.getCmp("selPlant").getValue(),
+						'V_V_DEPTCODENEXT':  Ext.util.Cookies.get('v_deptcode'),
+						'V_V_DEPTTYPE':'[主体作业区]'
 					}
 				});
 		});
