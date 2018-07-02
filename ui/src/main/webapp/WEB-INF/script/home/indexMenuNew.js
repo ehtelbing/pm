@@ -596,7 +596,7 @@ function handlerMenu(item, e) {
                         , item.sid
                         , '" frameborder="0" width="100%" height="100%" src="'
                         , ''
-                        , item.src
+                        , item.src+"?v_mancode="+Ext.util.Cookies.get('v_personcode')
                         , '" />'
                     ].join('')
                 });

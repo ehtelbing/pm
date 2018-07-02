@@ -362,8 +362,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
 				return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
 			}
 		},
-		{text: '厂矿', align: 'center', width: 100,dataIndex: 'V_DEPTNAME'},
-		{text: '车间名称', align: 'center', width: 100,dataIndex: 'V_ORGNAME'},
+		{text: '厂矿', align: 'center', width: 100,dataIndex: 'V_ORGNAME'},
+		{text: '车间名称', align: 'center', width: 100,dataIndex: 'V_DEPTNAME'},
 		{text: '专业', align: 'center', width: 100,dataIndex: 'V_REPAIRMAJOR_CODE'},
 		{text: '设备名称', align: 'center', width: 100,dataIndex: 'V_EQUNAME'},
 		{xtype: 'linebreakcolumn',text: '计划内容', align: 'center', width: 280,dataIndex: 'V_CONTENT'},

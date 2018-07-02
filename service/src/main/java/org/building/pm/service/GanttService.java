@@ -110,7 +110,7 @@ public class GanttService {
                     temp.put("V_PLAN_MONEY", map.get("V_PLAN_MONEY").toString());
                     temp.put("V_ROWNUMBER", map.get("V_ROWNUMBER").toString());
                     temp.put("V_P_ROWNUMBER", map.get("V_P_ROWNUMBER").toString());
-                    temp.put("V_GUID_P","");
+                    temp.put("V_GUID_P", "");
                     temp.put("cls", "empty");
                     if (IfHasMenuChildNode(map.get("V_GUID").toString(), list)) {
                         temp.put("expanded", true);
@@ -139,7 +139,7 @@ public class GanttService {
                 temp.put("cls", "empty");
                 temp.put("expanded", false);
                 temp.put("leaf", true);
-                temp.put("V_GUID_P","");
+                temp.put("V_GUID_P", "");
                 result.add(temp);
             }
         }
@@ -168,7 +168,7 @@ public class GanttService {
                 temp.put("V_PLAN_MONEY", map.get("V_PLAN_MONEY").toString());
                 temp.put("V_ROWNUMBER", map.get("V_ROWNUMBER").toString());
                 temp.put("V_P_ROWNUMBER", map.get("V_P_ROWNUMBER").toString());
-                temp.put("V_GUID_P",map.get("V_GUID_P").toString());
+                temp.put("V_GUID_P", map.get("V_GUID_P").toString());
                 temp.put("cls", "empty");
                 if (IfHasMenuChildNode(map.get("V_GUID").toString(), list)) {
                     temp.put("expanded", true);
@@ -194,7 +194,7 @@ public class GanttService {
         return flag;
     }
 
-    public HashMap PM_EQUREPAIRPLAN_TREE_INSERT(String V_V_PERCODE,String  V_V_PERNAME, String V_V_GUID, String V_V_GUID_FXJH,String V_V_ROWNUMBER,String V_V_COLUMN,String V_V_VALUE) throws SQLException {
+    public HashMap PM_EQUREPAIRPLAN_TREE_INSERT(String V_V_PERCODE, String V_V_PERNAME, String V_V_GUID, String V_V_GUID_FXJH, String V_V_ROWNUMBER, String V_V_COLUMN, String V_V_VALUE) throws SQLException {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -220,6 +220,65 @@ public class GanttService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_EQUREPAIRPLAN_TREE");
+        return result;
+    }
+
+    public List<Map> weekPlanSelTree(String v_v_year, String v_v_month, String v_v_week, String v_v_orgcode, String v_v_deptcode) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_WEEK_GAUNTT");
+
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_GAUNTT(:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", v_v_year);
+            cstmt.setString("V_V_MONTH", v_v_month);
+            cstmt.setString("V_V_WEEK", v_v_week);
+            cstmt.setString("V_V_ORGCODE", v_v_orgcode);
+            cstmt.setString("V_V_DEPTCODE", v_v_deptcode);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            List list = ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+
+            for (int i = 0; i < list.size(); i++) {
+                Map temp = new HashMap();
+                Map map = (Map) list.get(i);
+                temp.put("V_GUID", map.get("V_GUID").toString());
+                temp.put("V_WEEKID", map.get("V_WEEKID").toString());
+                temp.put("V_YEAR", map.get("V_YEAR").toString());
+                temp.put("V_MONTH", map.get("V_MONTH").toString());
+                temp.put("V_WEEK", map.get("V_WEEK").toString());
+                temp.put("V_ORGCODE", map.get("V_ORGCODE").toString());
+                temp.put("V_ORGNAME", map.get("V_ORGNAME").toString());
+                temp.put("V_DEPTCODE", map.get("V_DEPTCODE").toString());
+                temp.put("V_DEPTNAME", map.get("V_DEPTNAME").toString());
+                temp.put("V_EQUTYPECODE", map.get("V_EQUTYPECODE").toString());
+                temp.put("V_EQUCODE", map.get("V_EQUCODE").toString());
+                temp.put("V_EQUNAME", map.get("V_EQUNAME").toString());
+                temp.put("V_CONTENT", map.get("V_CONTENT").toString());
+                temp.put("V_ENDTIME", map.get("V_ENDTIME").toString());
+                temp.put("V_STARTTIME", map.get("V_STARTTIME").toString());
+                temp.put("V_FLOWNAME", map.get("V_FLOWNAME").toString());
+                temp.put("V_STATENAME", map.get("V_STATENAME").toString());
+                temp.put("V_MAIN_DEFECT", map.get("V_MAIN_DEFECT").toString());
+                temp.put("V_EXPECT_AGE", map.get("V_EXPECT_AGE").toString());
+                temp.put("V_REPAIR_PER", map.get("V_REPAIR_PER").toString());
+                temp.put("expanded", false);
+                temp.put("leaf", true);
+                result.add(temp);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_GAUNTT");
         return result;
     }
 }

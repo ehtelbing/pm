@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +79,22 @@ public class GanttController {
         HashMap result = ganttService.PM_EQUREPAIRPLAN_TREE_INSERT(V_V_PERCODE, V_V_PERNAME, V_V_GUID, V_V_GUID_FXJH,V_V_ROWNUMBER,V_V_COLUMN,V_V_VALUE);
 
 
+        return result;
+    }
+
+    /*
+     * 周计划树形表格
+     * */
+    @RequestMapping(value = "weekPlanSelTree", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> weekPlanSelTree(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                               @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                               @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+                                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               HttpServletRequest request)
+            throws SQLException {
+        List<Map> result = ganttService.weekPlanSelTree(V_V_YEAR, V_V_MONTH,V_V_WEEK,V_V_ORGCODE,V_V_DEPTCODE);
         return result;
     }
 }
