@@ -3279,6 +3279,18 @@ public class cjyController {
         return result;
     }
 
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_GAUNTT_RUN", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PRO_PM_03_PLAN_WEEK_GAUNTT_RUN(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                     @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                     @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+                                     @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                     @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                     HttpServletRequest request)
+            throws SQLException {
+        List<Map> result = cjyService.PRO_PM_03_PLAN_WEEK_GAUNTT_RUN(V_V_YEAR, V_V_MONTH,V_V_WEEK,V_V_ORGCODE,V_V_DEPTCODE);
+        return result;
+    }
 }
 
 
