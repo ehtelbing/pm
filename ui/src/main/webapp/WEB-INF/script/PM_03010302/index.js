@@ -395,6 +395,20 @@ Ext.onReady(function () {
             }
         });
     });
+
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            V_V_INPER: Ext.util.Cookies.get('v_personcode'),
+            V_V_YEAR: Ext.getCmp('nf').getValue(),
+            V_V_MONTH: Ext.getCmp('yf').getValue(),
+            V_V_WEEK: Ext.getCmp('zhou').getValue(),
+            V_V_ORGCODE: Ext.getCmp('jhck').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('jhzyq').getValue(),
+            V_V_REPAIRMAJOR_CODE: '%',
+            V_V_PLANTYPE: 'WEEK'
+        }
+    });
+
 });
 //第几周
 function getWeekOfMonth() {

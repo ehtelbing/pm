@@ -2,9 +2,9 @@
 //var date=new Date(addDate(new Date('2017-12-24'),7));//当前月7天后
 var V_WEEKPLAN_GUID = '';
 var V_WEEKPLAN_TYPE = '';
-var processKey ='';
-var V_STEPNAME ='';
-var V_NEXT_SETP ='';
+var processKey = '';
+var V_STEPNAME = '';
+var V_NEXT_SETP = '';
 //年份
 var years = [];
 var url_guid = '';
@@ -18,7 +18,7 @@ if (location.href.split('?')[1] != undefined) {
 for (var i = date.getFullYear() - 4; i <= date.getFullYear() + 1; i++) {
     years.push({displayField: i, valueField: i});
 }
-var flowtype="";
+var flowtype = "";
 var yearStore = Ext.create("Ext.data.Store", {
     storeId: 'yearStore',
     fields: ['displayField', 'valueField'],
@@ -83,8 +83,8 @@ Ext.define('Ext.grid.column.LineBreakColumn', {
 var nextSprStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'nextSprStore',
-    fields: ['V_PERSONCODE', 'V_PERSONNAME','V_V_NEXT_SETP','V_V_FLOW_STEPNAME'],
-    proxy:{
+    fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
+    proxy: {
         type: 'ajax',
         async: false,
         url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -95,14 +95,13 @@ var nextSprStore = Ext.create("Ext.data.Store", {
             type: 'json',
             root: 'list'
         },
-        extraParams: {
-        }
+        extraParams: {}
     },
     listeners: {
-        load: function (store, records,success,eOpts) {
+        load: function (store, records, success, eOpts) {
             processKey = store.getProxy().getReader().rawData.RET;
             V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-            V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+            V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
 
             Ext.getCmp('nextPer').select(store.first());
 
@@ -280,6 +279,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         }
     }
 });
+
 //grid显示
 function query() {
     Ext.data.StoreManager.lookup('gridStore').load({
@@ -301,6 +301,7 @@ function query() {
 
     _selectNextSprStore();
 }
+
 var northPanel = Ext.create('Ext.form.Panel', {
     region: 'north',
     frame: true,
@@ -682,12 +683,12 @@ Ext.onReady(function () {
 
     //设备类型加载监听
     Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
-        Ext.data.StoreManager.lookup('sblxStore').insert(0,{V_EQUTYPENAME:'全部',V_EQUTYPECODE:'%'});
+        Ext.data.StoreManager.lookup('sblxStore').insert(0, {V_EQUTYPENAME: '全部', V_EQUTYPECODE: '%'});
         Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
     });
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
-        Ext.data.StoreManager.lookup('sbmcStore').insert(0,{V_EQUNAME:'全部',V_EQUCODE:'%'});
+        Ext.data.StoreManager.lookup('sbmcStore').insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
         query();
     });
@@ -731,9 +732,27 @@ Ext.onReady(function () {
 
     // _selectNextSprStore();
 
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            V_V_YEAR: Ext.getCmp('nf').getValue(),
+            V_V_MONTH: Ext.getCmp('yf').getValue(),
+            V_V_WEEK: Ext.getCmp('zhou').getValue(),
+            V_V_ORGCODE: Ext.getCmp('jhck').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('jhzyq').getValue(),
+            V_V_ZY: Ext.getCmp('zy').getValue(),
+            V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
+            V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
+            V_V_CONTENT: Ext.getCmp('content').getValue(),
+            V_V_STATE: Ext.getCmp('state').getValue(),
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        }
+    });
+
+
 });
 
-function _selectNextSprStore(){
+function _selectNextSprStore() {
     var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
     nextSprStore.proxy.extraParams = {
         V_V_ORGCODE: Ext.getCmp('jhck').getValue(),
@@ -743,12 +762,13 @@ function _selectNextSprStore(){
         V_V_FLOW_STEP: 'start',
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: Ext.getCmp('zy').getValue(),
-        V_V_WHERE:''
+        V_V_WHERE: ''
 
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
 }
+
 //第几周
 /*function getWeekOfMonth(string) {//周日为起始
     var date = new Date(string);
@@ -756,26 +776,27 @@ function _selectNextSprStore(){
     var d = date.getDate();//日期
     return Math.ceil((d + 6 - w) / 7);//向上取整
 };*/
+
 //第几周
 function getWeekOfMonth() {//周一为起始
-    var w = date.getDay()==0?7:date.getDay();//星期
+    var w = date.getDay() == 0 ? 7 : date.getDay();//星期
     var d = date.getDate();//日期
 
-    var week= Math.ceil((d + 7 - w) / 7);//向上取整
+    var week = Math.ceil((d + 7 - w) / 7);//向上取整
 
-    if(week==getWeeks()){//为最后周
-        if(date.getMonth() + 1==12){//为最后月，月份年份均变化
-            Ext.getCmp('nf').select(date.getFullYear()+1);
+    if (week == getWeeks()) {//为最后周
+        if (date.getMonth() + 1 == 12) {//为最后月，月份年份均变化
+            Ext.getCmp('nf').select(date.getFullYear() + 1);
             Ext.getCmp('yf').select(1);
-        }else{//月份变化
+        } else {//月份变化
             Ext.getCmp('nf').select(date.getFullYear());
             Ext.getCmp('yf').select(date.getMonth() + 2);
         }
         return 1;
-    }else{
+    } else {
         Ext.getCmp('nf').select(date.getFullYear());
         Ext.getCmp('yf').select(date.getMonth() + 1);
-        return week+1;
+        return week + 1;
     }
 
 };
@@ -787,18 +808,19 @@ function getWeekOfMonth() {//周一为起始
 //    return d.getFullYear()+'-'+m+'-'+d.getDate();
 //}
 //当前月有几周
-function getWeeks(){
-    var str=date;
-    var year=str.getFullYear();
-    var month=str.getMonth()+1;
-    var lastday=new Date(year, month,0);
+function getWeeks() {
+    var str = date;
+    var year = str.getFullYear();
+    var month = str.getMonth() + 1;
+    var lastday = new Date(year, month, 0);
 
-    var w = lastday.getDay()==0?7:lastday.getDay();//星期
+    var w = lastday.getDay() == 0 ? 7 : lastday.getDay();//星期
     var d = lastday.getDate();//日期
 
     return Math.ceil((d + 7 - w) / 7);//向上取整
 
 }
+
 function Querytime() {
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PRO_PM_PLAN_LOCKING_DATE_GET',
@@ -822,33 +844,33 @@ function Querytime() {
         }
     });
 }
+
 //缺陷添加
 function OnButtonDefectAddClicked() {
-    var weekguid=guid();
+    var weekguid = guid();
     //清空表
     Ext.Ajax.request({
         url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_DEFECT_DEL',
         method: 'POST',
         async: false,
-        params: {
-        },
+        params: {},
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
-            if (resp.V_INFO=='success') {
+            if (resp.V_INFO == 'success') {
                 Ext.Ajax.request({//新增空数据
                     url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_GUID',
                     method: 'POST',
                     async: false,
                     params: {
-                        V_V_GUID:weekguid,
+                        V_V_GUID: weekguid,
                         V_V_ORGCODE: Ext.getCmp("jhck").getValue()
                     },
                     success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
-                        if (resp.V_INFO=='success') {
+                        if (resp.V_INFO == 'success') {
                             V_WEEKPLAN_GUID = 0;
                             V_PLANTYPE = 'DEFECT';
-                            var ret = window.open(AppUrl + 'page/PM_03010313/index.html?V_WEEKPLAN_GUID='+weekguid+
+                            var ret = window.open(AppUrl + 'page/PM_03010313/index.html?V_WEEKPLAN_GUID=' + weekguid +
                                 "&V_PLANTYPE=" + V_PLANTYPE +
                                 "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
                                 "&YEAR=" + Ext.getCmp("nf").getValue() +
@@ -869,6 +891,7 @@ function OnButtonDefectAddClicked() {
 
 
 }
+
 //手工添加
 function OnButtonPlanAddClicked() {
     V_WEEKPLAN_GUID = 0;
@@ -881,6 +904,7 @@ function OnButtonPlanAddClicked() {
         "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
         "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
+
 function OnButtonSelectClicked() {
     var ret = window.open(AppUrl + 'page/PM_1922/index.html?YEAR=' + Ext.getCmp("nf").getValue() +
         "&QUARTER=0" +
@@ -888,6 +912,7 @@ function OnButtonSelectClicked() {
         "&WEEK=" + Ext.getCmp("zhou").getValue() +
         "&PLANTYPE=WEEK", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
 }
+
 //修改
 function OnButtonEditClicked() {
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
@@ -963,6 +988,7 @@ function OnButtonDelete() {
         }
     });
 }
+
 //上传
 function OnButtonUp() {
     var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
@@ -1001,25 +1027,25 @@ function OnButtonUp() {
 
                 if (resp.V_INFO == '成功') {
                     Ext.Ajax.request({
-                        url :AppUrl + 'Activiti/StratProcess',
-                        async:false,
-                        method : 'post',
-                        params : {
-                            parName : ["originator","flow_businesskey",V_NEXT_SETP,"idea","remark","flow_code","flow_yj","flow_type"],
-                            parVal : [Ext.util.Cookies.get('v_personcode'),records[i].get('V_GUID'),Ext.getCmp('nextPer').getValue(),"请审批!",records[i].get('V_CONTENT'),records[i].get('V_WEEKID'),"请审批！","WeekPlan"],
-                            processKey :processKey,
-                            businessKey : records[i].get('V_GUID'),
-                            V_STEPCODE : 'Start',
-                            V_STEPNAME : V_STEPNAME,
-                            V_IDEA : '请审批！',
-                            V_NEXTPER : Ext.getCmp('nextPer').getValue(),
-                            V_INPER : Ext.util.Cookies.get('v_personcode')
+                        url: AppUrl + 'Activiti/StratProcess',
+                        async: false,
+                        method: 'post',
+                        params: {
+                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                            parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
+                            processKey: processKey,
+                            businessKey: records[i].get('V_GUID'),
+                            V_STEPCODE: 'Start',
+                            V_STEPNAME: V_STEPNAME,
+                            V_IDEA: '请审批！',
+                            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                            V_INPER: Ext.util.Cookies.get('v_personcode')
                         },
-                        success : function(response) {
+                        success: function (response) {
                             if (Ext.decode(response.responseText).ret == 'OK') {
 
                             } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                Ext.Msg.alert('提示','该流程发起失败！');
+                                Ext.Msg.alert('提示', '该流程发起失败！');
                             }
                         }
                     });
@@ -1178,6 +1204,7 @@ function getWeekStartDate() {
     }
     return nian + "-" + (yue + 1) + "-" + hao;
 }
+
 //本周结束时间
 function getWeekEndDate() {
     var year = Ext.getCmp('nf').getValue();
@@ -1215,7 +1242,7 @@ function createWorkorder() {
 
     var V_GUIDList = '';
     for (var i = 0; i < record.length; i++) {
-        if(record[i].data.V_STATENAME!='审批完成'&&record[i].data.V_STATENAME!='已下票'){
+        if (record[i].data.V_STATENAME != '审批完成' && record[i].data.V_STATENAME != '已下票') {
             alert("该计划状态无法生成工单");
             return;
         }
@@ -1275,9 +1302,9 @@ function createWorkorder() {
                                                 },
                                                 success: function (response) {
                                                     var respm = Ext.decode(response.responseText);
-                                                    if(respm.V_INFO=='success'){
+                                                    if (respm.V_INFO == 'success') {
 
-                                                    }else{
+                                                    } else {
                                                         alert("关系数据保存错误,工单生成失败");
                                                         return;
                                                     }
@@ -1314,10 +1341,9 @@ function guid() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
-function _preViewProcess(businessKey)
-{
+function _preViewProcess(businessKey) {
 
-    var ProcessInstanceId='';
+    var ProcessInstanceId = '';
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
         type: 'ajax',
@@ -1328,8 +1354,8 @@ function _preViewProcess(businessKey)
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
-            if(data.msg == 'Ok'){
-                ProcessInstanceId=data.InstanceId;
+            if (data.msg == 'Ok') {
+                ProcessInstanceId = data.InstanceId;
             }
 
 
@@ -1345,8 +1371,8 @@ function _preViewProcess(businessKey)
     })
 
     var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
+    var oheight = window.screen.availHeight - 50;
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
-        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+        + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
