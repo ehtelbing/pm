@@ -28,49 +28,6 @@ var endtime3='';
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
 var month = today.getMonth() + 1;
 
-//年份
-var years=[];
-for (var i =date.getFullYear()-4; i <=date.getFullYear()+1; i++){
-    years.push({ displayField: i, valueField: i });
-}
-var yearStore=Ext.create("Ext.data.Store", {
-    storeId: 'yearStore',
-    fields: ['displayField','valueField'],
-    data: years,
-    proxy: {
-        type: 'memory',
-        reader: {type: 'json'}
-    }
-});
-//月份
-var months=[];
-for (var i =1; i <=12; i++){
-    months.push({ displayField: i, valueField: i });
-}
-var monthStore=Ext.create("Ext.data.Store", {
-    storeId: 'monthStore',
-    fields: ['displayField','valueField'],
-    data: months,
-    proxy: {
-        type: 'memory',
-        reader: {type: 'json'}
-    }
-});
-//周
-var weeks=[];
-for (var i =1; i <=6; i++){
-    weeks.push({ displayField: i, valueField: i });
-}
-
-var weekStore=Ext.create("Ext.data.Store", {
-    storeId: 'weekStore',
-    fields: ['displayField','valueField'],
-    data: weeks,
-    proxy: {
-        type: 'memory',
-        reader: {type: 'json'}
-    }
-});
 
 Ext.onReady(function () {
 
@@ -149,9 +106,8 @@ Ext.onReady(function () {
         layout: 'column',
         defaults: {labelAlign: 'right'},
         items: [
-            {xtype: 'combo',id:'nf',fieldLabel: '年份',editable: false, margin: '5 0 0 5',labelWidth:80,width:230,displayField: 'displayField',valueField: 'valueField',store:yearStore,queryMode: 'local',value:new Date().getFullYear()},
-            {xtype: 'combo',id:'yf',fieldLabel: '月份',editable: false, margin: '5 0 0 5',labelWidth:80,width:230,displayField: 'displayField',valueField: 'valueField',store:monthStore,queryMode: 'local',value:new Date().getMonth()+1},
-            {xtype: 'combo',id:'zhou',fieldLabel: '周',editable: false,  margin: '5 0 0 5',labelWidth:80,width:230,displayField: 'displayField',valueField: 'valueField',store:weekStore,queryMode: 'local',value:getWeekOfMonth()},
+            {xtype: 'datefield',id: 'sdate',format: 'Y-m-d',value: new Date(),fieldLabel: '开始时间',editable : false, margin: '5 0 0 5',labelWidth: 80, width: 200},
+            {xtype: 'datefield',id: 'edate',format: 'Y-m-d',value: new Date(),fieldLabel: '结束时间',editable : false, margin: '5 0 0 5',labelWidth: 80, width: 200},
             {xtype: 'combo',id:'jhck',fieldLabel: '计划厂矿',editable: false, margin: '5 0 0 5',labelWidth:80,width:230, displayField: 'V_DEPTNAME',valueField: 'V_DEPTCODE',store: jhckStore,queryMode: 'local'},
             {xtype: 'combo',id:'jhzyq',fieldLabel: '作业区',editable: false,  margin: '5 0 0 5',labelWidth:80,width:230, displayField: 'V_DEPTNAME',valueField: 'V_DEPTCODE',store: jhzyqStore,queryMode: 'local'},
             {xtype: 'button', text: '查询', margin: '5 0 5 5',icon:imgpath + '/search.png',handler:function(){QuertBtn(); }  }
@@ -171,7 +127,7 @@ Ext.onReady(function () {
         rowLines: true,
         columnLines: true,
         columns: [{xtype: 'rownumberer', width: 50,  sortable: false,text:'序号'},
-              {text: '月计划信息',
+              {text: '周检修计划信息',
                 columns: [{xtype: 'treecolumn', text: '设备名称', dataIndex: 'V_EQUNAME', width: 180, align: 'center', renderer: AtleftN},
                     {text: '计划内容', dataIndex: 'V_CONTENT', width: 260, align: 'center', renderer: AtLeft},
                     {text: '参与人数', dataIndex: 'V_REPAIR_PER', width: 120, align: 'center', renderer: AtLeft}]}]
@@ -189,7 +145,7 @@ Ext.onReady(function () {
 
     var gantt=Ext.create('Ext.panel.Panel',{
         region:'center',
-        title:'计划',
+        title:'周检修计划',
         layout:'border',
         width: '100%',
         frame:true,
@@ -197,7 +153,7 @@ Ext.onReady(function () {
     });
     var gantt2=Ext.create('Ext.panel.Panel',{
         region:'center',
-        title:'写实',
+        title:'周检修写实',
         layout:'border',
         width: '100%',
         frame:true,
@@ -217,7 +173,7 @@ Ext.onReady(function () {
         rowLines: true,
         columnLines: true,
         columns: [{xtype: 'rownumberer', width: 50,  sortable: false,text:'序号'},
-            {text: '月计划信息',
+            {text: '周检修生产',
                 columns: [{xtype: 'treecolumn', text: '设备名称', dataIndex: 'V_EQUNAME', width: 180, align: 'center', renderer: AtleftN},
                     {text: '计划内容', dataIndex: 'V_CONTENT', width: 260, align: 'center', renderer: AtLeft},
                     {text: '参与人数', dataIndex: 'V_REPAIR_PER', width: 120, align: 'center', renderer: AtLeft}]}]
@@ -234,7 +190,7 @@ Ext.onReady(function () {
     });
     var gantt3=Ext.create('Ext.panel.Panel',{
         region:'center',
-        title:'生产',
+        title:'周检修生产',
         layout:'border',
         width: '100%',
         frame:true,
@@ -245,14 +201,12 @@ Ext.onReady(function () {
         region:'center',
         frame:true,
         width:'100%',
-        items:[gantt,gantt2,gantt3/*{title:'计划',id:'plan'},
-         {title:'写实',id:'fact'},
-         {title:'生产',id:'produce'}*/]
+        items:[gantt,gantt2,gantt3]
     });
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [northPanel,tabPanel/*,gantt*/]
+        items: [northPanel,tabPanel]
     });
 
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
@@ -302,9 +256,8 @@ function QueryData(){
         },
         url: AppUrl + 'gantt/weekPlanSelTree',
         extraParams: {
-            V_V_YEAR:Ext.getCmp('nf').getValue(),
-            V_V_MONTH:Ext.getCmp('yf').getValue(),
-            V_V_WEEK:Ext.getCmp('zhou').getValue(),
+            V_V_SDATE: Ext.Date.format(Ext.getCmp('sdate').getValue(), 'Y/m/d'),
+            V_V_EDATE: Ext.Date.format(Ext.getCmp('edate').getValue(), 'Y/m/d'),
             V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
             V_V_DEPTCODE:Ext.getCmp('jhzyq').getValue()
         }
@@ -327,9 +280,8 @@ function QueryData3(){
         },
         url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_GAUNTT_RUN',
         extraParams: {
-            V_V_YEAR:Ext.getCmp('nf').getValue(),
-            V_V_MONTH:Ext.getCmp('yf').getValue(),
-            V_V_WEEK:Ext.getCmp('zhou').getValue(),
+            V_V_SDATE: Ext.Date.format(Ext.getCmp('sdate').getValue(), 'Y/m/d'),
+            V_V_EDATE: Ext.Date.format(Ext.getCmp('edate').getValue(), 'Y/m/d'),
             V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
             V_V_DEPTCODE:Ext.getCmp('jhzyq').getValue()
         }
@@ -346,9 +298,8 @@ function loadGantt3(){
         method: 'POST',
         async: false,
         params: {
-            V_V_YEAR:Ext.getCmp('nf').getValue(),
-            V_V_MONTH:Ext.getCmp('yf').getValue(),
-            V_V_WEEK:Ext.getCmp('zhou').getValue(),
+            V_V_SDATE: Ext.Date.format(Ext.getCmp('sdate').getValue(), 'Y/m/d'),
+            V_V_EDATE: Ext.Date.format(Ext.getCmp('edate').getValue(), 'Y/m/d'),
             V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
             V_V_DEPTCODE:Ext.getCmp('jhzyq').getValue()
         },
@@ -485,9 +436,8 @@ function loadGantt(){
         method: 'POST',
         async: false,
         params: {
-            V_V_YEAR:Ext.getCmp('nf').getValue(),
-            V_V_MONTH:Ext.getCmp('yf').getValue(),
-            V_V_WEEK:Ext.getCmp('zhou').getValue(),
+            V_V_SDATE: Ext.Date.format(Ext.getCmp('sdate').getValue(), 'Y/m/d'),
+            V_V_EDATE: Ext.Date.format(Ext.getCmp('edate').getValue(), 'Y/m/d'),
             V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
             V_V_DEPTCODE:Ext.getCmp('jhzyq').getValue()
         },

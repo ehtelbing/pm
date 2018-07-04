@@ -223,7 +223,7 @@ public class GanttService {
         return result;
     }
 
-    public List<Map> weekPlanSelTree(String v_v_year, String v_v_month, String v_v_week, String v_v_orgcode, String v_v_deptcode) throws SQLException {
+    public List<Map> weekPlanSelTree(String v_v_sdate, String v_v_edate,  String v_v_orgcode, String v_v_deptcode) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_GAUNTT");
 
         List<Map> result = new ArrayList<Map>();
@@ -232,10 +232,9 @@ public class GanttService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_GAUNTT(:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_V_DEPTCODE,:V_CURSOR)}");
-            cstmt.setString("V_V_YEAR", v_v_year);
-            cstmt.setString("V_V_MONTH", v_v_month);
-            cstmt.setString("V_V_WEEK", v_v_week);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_GAUNTT(:V_V_SDATE,:V_V_EDATE,:V_V_ORGCODE,:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_SDATE", v_v_sdate);
+            cstmt.setString("V_V_EDATE", v_v_edate);
             cstmt.setString("V_V_ORGCODE", v_v_orgcode);
             cstmt.setString("V_V_DEPTCODE", v_v_deptcode);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
@@ -248,9 +247,6 @@ public class GanttService {
                 Map map = (Map) list.get(i);
                 temp.put("V_GUID", map.get("V_GUID").toString());
                 temp.put("V_WEEKID", map.get("V_WEEKID").toString());
-                temp.put("V_YEAR", map.get("V_YEAR").toString());
-                temp.put("V_MONTH", map.get("V_MONTH").toString());
-                temp.put("V_WEEK", map.get("V_WEEK").toString());
                 temp.put("V_ORGCODE", map.get("V_ORGCODE").toString());
                 temp.put("V_ORGNAME", map.get("V_ORGNAME").toString());
                 temp.put("V_DEPTCODE", map.get("V_DEPTCODE").toString());

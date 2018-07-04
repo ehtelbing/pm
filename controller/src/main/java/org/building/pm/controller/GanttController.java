@@ -87,14 +87,13 @@ public class GanttController {
      * */
     @RequestMapping(value = "weekPlanSelTree", method = RequestMethod.POST)
     @ResponseBody
-    public List<Map> weekPlanSelTree(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
-                                               @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
-                                               @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+    public List<Map> weekPlanSelTree(@RequestParam(value = "V_V_SDATE") String V_V_SDATE,
+                                               @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
                                                @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
                                                @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                                HttpServletRequest request)
             throws SQLException {
-        List<Map> result = ganttService.weekPlanSelTree(V_V_YEAR, V_V_MONTH,V_V_WEEK,V_V_ORGCODE,V_V_DEPTCODE);
+        List<Map> result = ganttService.weekPlanSelTree(V_V_SDATE, V_V_EDATE,V_V_ORGCODE,V_V_DEPTCODE);
         return result;
     }
 }
