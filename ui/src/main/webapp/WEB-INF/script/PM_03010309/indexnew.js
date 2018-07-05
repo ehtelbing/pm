@@ -2,26 +2,36 @@ var date=new Date();
 
 var cmItems = [];
 var ganttdata = [];
+var cmItems2 = [];
+var ganttdata2 = [];
 var cmItems3 = [];
 var ganttdata3 = [];
 
 var vStart = '';
 var vEnd = '';
+var vStart2 = '';
+var vEnd2 = '';
 var vStart3 = '';
 var vEnd3 = '';
 
 var vsMonth = '';
 var veMonth = '';
+var vsMonth2 = '';
+var veMonth2 = '';
 var vsMonth3 = '';
 var veMonth3 = '';
 
 var vsDate = '';
 var veDate = '';
+var vsDate2 = '';
+var veDate2 = '';
 var vsDate3 = '';
 var veDate3 = '';
 
 var  starttime='';
 var endtime='';
+var  starttime2='';
+var endtime2='';
 var  starttime3='';
 var endtime3='';
 
@@ -87,6 +97,16 @@ Ext.onReady(function () {
         fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
             'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME']
     });
+    var treeStore2 = Ext.create('Ext.data.TreeStore', {
+        storeId: 'treeStore2',
+        autoLoad: false,
+        root: {
+            expanded: true,
+            text: "My Root"
+        },
+        fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+            'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME','V_EQUIP_NAME']
+    });
     var treeStore3 = Ext.create('Ext.data.TreeStore', {
         storeId: 'treeStore3',
         autoLoad: false,
@@ -151,13 +171,41 @@ Ext.onReady(function () {
         frame:true,
         items:[treegrid,ganttpanel]
     });
+    var treegrid2 = Ext.create('Ext.tree.Panel', {
+        id: 'treegrid2',
+        store: treeStore2,
+        region: 'west',
+        width: '36%',
+        height: '100%',
+        useArrows: true,
+        rootVisible: false,
+        multiSelect: true,
+        singleExpand: true,
+        rowLines: true,
+        columnLines: true,
+        columns: [{xtype: 'rownumberer', width: 50,  sortable: false,text:'序号'},
+            {text: '周检修生产',
+                columns: [{xtype: 'treecolumn', text: '设备名称', dataIndex: 'V_EQUIP_NAME', width: 180, align: 'center', renderer: AtleftN},
+                    {text: '计划内容', dataIndex: 'V_CONTENT', width: 260, align: 'center', renderer: AtLeft},
+                    {text: '参与人数', dataIndex: 'V_REPAIR_PER', width: 120, align: 'center', renderer: AtLeft}]}]
+    });
+
+    //甘特图 面板定义
+    var ganttpanel2 = Ext.create('Ext.panel.Panel', {
+        id: 'ganttpanel2',
+        width: "64%",
+        height: "100%",
+        region: 'center',
+        layout: 'border',
+        items: []
+    });
     var gantt2=Ext.create('Ext.panel.Panel',{
         region:'center',
         title:'周检修写实',
         layout:'border',
         width: '100%',
         frame:true,
-        items:[]
+        items:[treegrid2,ganttpanel2]
     });
 
     var treegrid3 = Ext.create('Ext.tree.Panel', {
@@ -240,6 +288,7 @@ Ext.onReady(function () {
 });
 function QuertBtn(){
     QueryData();
+    QueryData2();
     QueryData3();
 }
 function QueryData(){
@@ -265,7 +314,147 @@ function QueryData(){
     Ext.getCmp('treegrid').store.load();
     loadGantt();
 }
+function QueryData2(){
 
+    Ext.getCmp('ganttpanel2').removeAll();
+
+    Ext.getCmp('treegrid2').store.setProxy({
+        type: 'ajax',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json'
+        },
+        url: AppUrl + 'cjy/PRO_WEEKPLAN_WORKORDER_GAUNTT',
+        extraParams: {
+            V_V_SDATE: Ext.Date.format(Ext.getCmp('sdate').getValue(), 'Y/m/d'),
+            V_V_EDATE: Ext.Date.format(Ext.getCmp('edate').getValue(), 'Y/m/d'),
+            V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
+            V_V_DEPTCODE:Ext.getCmp('jhzyq').getValue()
+        }
+    });
+    Ext.getCmp('treegrid2').store.load();
+    loadGantt2();
+}
+function loadGantt2(){
+
+    ganttdata2 = [];
+
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PRO_WEEKPLAN_WORKORDER_GAUNTT',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_SDATE: Ext.Date.format(Ext.getCmp('sdate').getValue(), 'Y/m/d'),
+            V_V_EDATE: Ext.Date.format(Ext.getCmp('edate').getValue(), 'Y/m/d'),
+            V_V_ORGCODE:Ext.getCmp('jhck').getValue(),
+            V_V_DEPTCODE:Ext.getCmp('jhzyq').getValue()
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            ganttdata2 = resp;
+            if (ganttdata2.length > 0) {
+                createGantt2();
+            }
+        }
+    });
+}
+function createGantt2(){
+
+    cmItems2 = [];
+
+    for (var i = 0; i < ganttdata2.length; i++) {
+        if (i == 0) {
+            starttime2 = new Date(ganttdata2[i].V_STARTTIME.split(" ")[0]+" 00:00:00");
+            endtime2 = new Date(ganttdata2[i].V_ENDTIME.split(" ")[0]+" 23:59:59");
+        } else {
+            if(starttime2>new Date(ganttdata2[i].V_STARTTIME)){
+                starttime2=new Date(ganttdata2[i].V_STARTTIME.split(" ")[0]+" 00:00:00");
+            }
+            if(endtime2<new Date(ganttdata2[i].V_ENDTIME)){
+                endtime2=new Date(ganttdata2[i].V_ENDTIME.split(" ")[0]+" 23:59:59");
+            }
+        }
+    }
+
+    vStart2 = starttime2;
+    vEnd2 = endtime2;
+
+    vsMonth2=vStart2.getMonth()+1;
+    veMonth2=vEnd2.getMonth()+1;
+
+    vsDate2=vStart2.getDate();
+    veDate2=vEnd2.getDate();
+
+    var dateItems = [];
+
+    for(var i=0;i<24;i++){
+        dateItems.push({
+            text: i,
+            width: 40
+        });
+    }
+
+    if(vsMonth2==veMonth2){
+
+        for(var i=vsDate2;i<=veDate2;i++){
+            cmItems2.push({
+                text:vsMonth2+ '月'+i+"日",
+                columns: dateItems
+            });
+        }
+
+    }else{
+
+        var lastDay=Ext.Date.getLastDateOfMonth(vStart2);
+
+        for(var i=vsDate;i<=lastDay.getDate();i++){
+            cmItems2.push({
+                text:vsMonth2+ '月'+i+"日",
+                columns: dateItems
+            });
+        }
+
+        for(var i=1;i<=veDate2;i++){
+            cmItems2.push({
+                text:veMonth2+ '月'+i+"日",
+                columns: dateItems
+            });
+        }
+
+    }
+
+    cmItems2.push({
+        text: '',
+        width: 0,
+        dataIndex: 'MYCOLOR',
+        renderer: pageFunction.IndexShow2
+    });
+
+    var ganttStore2 = Ext.create("Ext.data.Store", {
+        storeId: 'ganttStore2',
+        fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+            'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME', 'MYCOLOR','V_GUID','V_WEEKID','V_EQUIP_NAME'],
+        data: ganttdata3,
+        proxy: {
+            type: 'memory',
+            reader: {
+                type: 'json'
+            }
+        }
+    });
+
+    var ganttgrid2 = Ext.create('Ext.grid.Panel', {
+        id: 'ganttgrid2',
+        region:'center',
+        store: ganttStore2,
+        columnLines: true,
+        columns: cmItems2
+    });
+
+    Ext.getCmp('ganttpanel2').add(ganttgrid2);
+}
 function QueryData3(){
 
     Ext.getCmp('ganttpanel3').removeAll();
@@ -289,6 +478,7 @@ function QueryData3(){
     Ext.getCmp('treegrid3').store.load();
     loadGantt3();
 }
+
 function loadGantt3(){
 
     ganttdata3 = [];
@@ -577,23 +767,61 @@ var pageFunction = {
         return gtt;
 
     },
+    /**构造显示结构2*/
+    IndexShow2: function (value, metaData, record) {
+        var stime2 = [];
+        var etime2 = [];
+        stime2 = record.data.V_STARTTIME.split(',');
+        etime2 = record.data.V_ENDTIME.split(',');
 
+        var gtt='';
+        for (var i = 0; i < stime2.length; i++) {
+
+            var stimei=stime2[i];
+            var etimei=etime2[i];
+            var startd = new Date(stimei.split(".0")[0].replace(/-/g, "/"));
+            var endd = new Date(etimei.split(".0")[0].replace(/-/g, "/"));
+
+            var vleft = ((startd.getTime() - vStart2.getTime()) / (3600 * 1000)) * 40;
+            var vwidth = ((endd.getTime() - startd.getTime()) / (3600 * 1000)) * 40;
+
+            /*gtt += '<div style="left:' + vleft.toString() + 'px;height:26px;width:' + vwidth.toString()
+             + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div class="sch-event-inner" >'
+             + record.data.V_CONTENT + '</div></div>'
+             +'<div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
+             + stime.split('.0')[0] + '<br>' + '结束时间：' + etime[i].split('.0')[0] + '<br>' + '主要缺陷：' + record.data.V_MAIN_DEFECT + '<br>'
+             + '预计寿命：' + record.data.V_EXPECT_AGE + '<br>' + '维修人数：' + record.data.V_REPAIR_PER + '<br>';*/
+            gtt += '<div style="left:' + vleft.toString() + 'px;height:26px;width:' + vwidth.toString()
+                + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + i + '\')" onmouseout="a2(\'' + i + '\')"><div class="sch-event-inner" >'
+                + record.data.V_CONTENT + '</div></div>'
+                +'<div class="lxm"  id="' + i + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
+                + stimei + '<br>' + '结束时间：' + etimei + '<br>' + '主要缺陷：' + record.data.V_MAIN_DEFECT + '<br>'
+                + '预计寿命：' + record.data.V_EXPECT_AGE + '<br>' + '维修人数：' + record.data.V_REPAIR_PER + '<br>';
+
+
+            var cont = record.data.V_CONTENT.split(',');
+            var contt = '内容：';
+            for (var j = 0; j < cont.length; j++) {
+                if (j == 0) {
+                    contt = contt + cont[j] + '<br>';
+                } else {
+                    contt = contt + cont[j] + '<br>';
+                }
+            }
+
+            gtt = gtt + contt + '</div>';
+        }
+
+        return gtt;
+
+    },
     /**构造显示结构3*/
     IndexShow3: function (value, metaData, record) {
         var stime3 = [];
         var etime3 = [];
         stime3 = record.data.V_STARTTIME.split(',');
         etime3 = record.data.V_ENDTIME.split(',');
-       /* var gtt = '<div style="left:30px;height:26px;width:150px;background:red;"class="sch-event" onmouseover="a1(1)"><div  class="sch-event-inner" >'
-            + 'content</div></div>'
-            + '<div class="lxm" id="1" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
-            + 'stime' + '<br>' + '结束时间etime：' + '<br>' + '主要缺陷：V_MAIN_DEFECT' + '<br>'
-            + '预计寿命：V_EXPECT_AGE' + '<br>' + '维修人数：V_REPAIR_PER' + '<br>' + '</div>'
-            + '<div style="left:190px;height:26px;width:50px;background:red;"class="sch-event" onmouseover="a1(1)"><div  class="sch-event-inner" >'
-            + 'content</div></div>'
-            + '<div class="lxm" id="1" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
-            + 'stime' + '<br>' + '结束时间etime：' + '<br>' + '主要缺陷：V_MAIN_DEFECT' + '<br>'
-            + '预计寿命：V_EXPECT_AGE' + '<br>' + '维修人数：V_REPAIR_PER' + '<br>' + '</div>';*/
+
         var gtt='';
         for (var i = 0; i < stime3.length; i++) {
 
