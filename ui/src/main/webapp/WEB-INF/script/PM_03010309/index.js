@@ -351,7 +351,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
 	columnLines: true,
 	selType:'checkboxmodel',
 	columns:[
-		{text: '序2号', align: 'center', width: 50, xtype: 'rownumberer'},
+		{text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
 		{text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
 		{
 			text: '详细',
