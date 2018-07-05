@@ -59,7 +59,7 @@ Ext.onReady(function () {
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return  '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>' +
-                    '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.BusinessKey + '\',\'' + record.data.ProcessDefinitionKey + '\',\'' + record.raw.flow_type + '\')">' + '删除流程' + '</a>';
+                    '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.BusinessKey + '\',\'' + record.data.ProcessDefinitionKey + '\',\'' + record.raw.flow_type + '\',\'' + record.data.ProcessInstanceId + '\')">' + '删除流程' + '</a>';
             }
         }, {
             text: '流程类型',
@@ -282,13 +282,13 @@ function _preViewProcess(ProcessInstanceId,BusinessKey) {
     window.open(AppUrl + 'page/PM_210302/index.html?ProcessInstanceId='
         +  ProcessInstanceId+'&BusinessKey='+BusinessKey+'&flowtype='+Ext.ComponentManager.get("tabpanel").getActiveTab().id, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }
-function _cancelFlow(BusinessKey,ProcessDefinitionKey,flow_type) {
+function _cancelFlow(BusinessKey,ProcessDefinitionKey,flow_type,instanceId) {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/DeleteProcessInstance',
         type: 'ajax',
         method: 'POST',
         params: {
-            V_V_BUSINESSKEY: BusinessKey
+            instanceId: instanceId
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
