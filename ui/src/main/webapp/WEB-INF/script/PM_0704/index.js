@@ -383,7 +383,13 @@ Ext.onReady(function() {
     });
     ckstore.on("load", function() {
         Ext.getCmp("ck").select(ckstore.getAt(0));
-
+        Ext.ComponentManager.get('zyq').getStore().removeAll();
+        zyqstore.load({
+            params : {
+                IS_V_DEPTCODE: Ext.getCmp('ck').getValue(),
+                IS_V_DEPTTYPE: '[主体作业区]'
+            }
+        });
     });
     Ext.ComponentManager.get("ck").on("change", function() {
         Ext.ComponentManager.get('zyq').getStore().removeAll();
