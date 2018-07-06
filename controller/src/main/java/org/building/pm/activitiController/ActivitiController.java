@@ -490,7 +490,7 @@ public class ActivitiController {
                 }
             } else {
                 if (PersonCode.equals("ActivitiManage")) {
-                    taskList = taskService.createTaskQuery().processVariableValueLike("FlowCode", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_businesskey", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).count();
                 } else {
                     taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);

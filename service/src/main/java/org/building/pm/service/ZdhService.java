@@ -70,10 +70,8 @@ public class ZdhService {
 
 
         logger.info("begin PRO_BASE_DEPT_VIEW");
-//        logger.debug("params:V_V_PERSONCODE:" + V_V_PERSONCODE + "params:V_V_DEPTCODE:" + V_V_DEPTCODE+ "params:V_V_DEPTCODENEXT:" + V_V_DEPTCODENEXT+ "params:V_V_DEPTTYPE:" + V_V_DEPTTYPE);
 
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {

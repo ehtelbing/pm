@@ -42,8 +42,7 @@ Ext.onReady(function() {
         proxy : {
             type : 'ajax',
             async : false,
-            url: AppUrl + 'zdh/plant_sel',
-            // url: 'PRO_BASE_DEPT_VIEW_ROLE',
+            url: AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
             actionMethods : {
                 read : 'POST'
             },
