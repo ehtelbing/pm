@@ -375,7 +375,6 @@ Ext.onReady(function() {
         }]
 
     })
-
     Ext.create('Ext.container.Viewport', {
         id : "id",
         layout : 'border',
