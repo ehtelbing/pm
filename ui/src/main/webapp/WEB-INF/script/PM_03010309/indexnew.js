@@ -509,14 +509,33 @@ function createGantt3(){
 
     for (var i = 0; i < ganttdata3.length; i++) {
         if (i == 0) {
-            starttime3 = new Date(ganttdata3[i].V_STARTTIME.split(" ")[0]+" 00:00:00");
-            endtime3 = new Date(ganttdata3[i].V_ENDTIME.split(" ")[0]+" 23:59:59");
-        } else {
-            if(starttime3>new Date(ganttdata3[i].V_STARTTIME)){
-                starttime3=new Date(ganttdata3[i].V_STARTTIME.split(" ")[0]+" 00:00:00");
+            var temstarttime3 = ganttdata3[i].V_STARTTIME.split(',');
+            var temendtime3 = ganttdata3[i].V_ENDTIME.split(',');
+            for (var j = 0; j < temstarttime3.length; j++) {
+                if (j == 0) {
+                    starttime3 = new Date(temstarttime3[j].split(" ")[0] + " 00:00:00");
+                    endtime3 = new Date(temendtime3[j].split(" ")[0] + " 23:59:59");
+                } else {
+                    if (starttime3 > new Date(temstarttime3[j])) {
+                        starttime3 = new Date(temstarttime3[j].split(" ")[0] + " 00:00:00");
+                    }
+                    if (endtime3 < new Date(temendtime3[j])) {
+                        endtime3 = new Date(temendtime3[j].split(" ")[0] + " 23:59:59");
+                    }
+                }
             }
-            if(endtime3<new Date(ganttdata3[i].V_ENDTIME)){
-                endtime3=new Date(ganttdata3[i].V_ENDTIME.split(" ")[0]+" 23:59:59");
+        } else {
+            var temstarttime3 = ganttdata3[i].V_STARTTIME.split(',');
+            var temendtime3 = ganttdata3[i].V_ENDTIME.split(',');
+            for (var j = 0; j < temstarttime3.length; j++) {
+
+                if (starttime3 > new Date(temstarttime3[j])) {
+                    starttime3 = new Date(temstarttime3[j].split(" ")[0] + " 00:00:00");
+                }
+                if (endtime3 < new Date(temendtime3[j])) {
+                    endtime3 = new Date(temendtime3[j].split(" ")[0] + " 23:59:59");
+                }
+
             }
         }
     }
@@ -544,7 +563,8 @@ function createGantt3(){
         for(var i=vsDate3;i<=veDate3;i++){
             cmItems3.push({
                 text:vsMonth3+ '月'+i+"日",
-                columns: dateItems
+                columns: dateItems,
+                renderer: changeColor
             });
         }
 
@@ -555,14 +575,16 @@ function createGantt3(){
         for(var i=vsDate;i<=lastDay.getDate();i++){
             cmItems3.push({
                 text:vsMonth3+ '月'+i+"日",
-                columns: dateItems
+                columns: dateItems,
+                renderer: changeColor
             });
         }
 
         for(var i=1;i<=veDate3;i++){
             cmItems3.push({
                 text:veMonth3+ '月'+i+"日",
-                columns: dateItems
+                columns: dateItems,
+                renderer: changeColor
             });
         }
 
@@ -593,6 +615,7 @@ function createGantt3(){
         region:'center',
         store: ganttStore3,
         columnLines: true,
+        viewConfig:{getRowClass:changeRowClass},
         columns: cmItems3
     });
 
@@ -830,8 +853,8 @@ var pageFunction = {
             var startd = new Date(stimei.split(".0")[0].replace(/-/g, "/"));
             var endd = new Date(etimei.split(".0")[0].replace(/-/g, "/"));
 
-            var vleft = ((startd.getTime() - vStart3.getTime()) / (3600 * 1000)) * 40;
-            var vwidth = ((endd.getTime() - startd.getTime()) / (3600 * 1000)) * 40;
+            var vleft = 0;vleft=((startd.getTime() - vStart3.getTime()) / (3600 * 1000)) * 40;
+            var vwidth = 0;vwidth=((endd.getTime() - startd.getTime()) / (3600 * 1000)) * 40;
 
             /*gtt += '<div style="left:' + vleft.toString() + 'px;height:26px;width:' + vwidth.toString()
                 + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div class="sch-event-inner" >'
@@ -952,5 +975,13 @@ function a2(id) {
 
 }
 
+function changeColor(value, metaData, record, rowIndex, colIndex, store) {
 
+        metaData.style = "color:#00FF00";
+        return value;
 
+};
+
+function changeRowClass(record, rowIndex, rowParams, store){
+        return "x-grid-record-green";
+}
