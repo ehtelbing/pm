@@ -588,34 +588,30 @@ public class ActivitiService {
         return false;
     }
 
-    public Map DeleteProcessInstance(String businesskey) {
+    public Map DeleteProcessInstance(String instanceId) {
 
         Map result = new HashMap();
 
         try {
-            HistoricProcessInstance instance = historyService
-                    .createHistoricProcessInstanceQuery()
-                    .processInstanceBusinessKey(businesskey).listPage(0, 1)
-                    .get(0);
 
             ProcessInstance processInstance = runtimeService
-                    .createProcessInstanceQuery().processInstanceId(instance.getId())
+                    .createProcessInstanceQuery().processInstanceId(instanceId)
                     .singleResult();
 
             if (processInstance == null) {
-                logger.error("实例未找到:" + instance.getId());
+                logger.error("实例未找到:" + instanceId);
                 result.put("msg", "未找到流程实例");
             } else {
                 List<HistoricTaskInstance> historyTasks = historyService
                         .createHistoricTaskInstanceQuery()
-                        .processInstanceId(instance.getId()).list();
+                        .processInstanceId(instanceId).list();
 
                 for (HistoricTaskInstance historicTaskInstance : historyTasks) {
                     historyService.deleteHistoricTaskInstance(historicTaskInstance
                             .getId());
                 }
 
-                runtimeService.deleteProcessInstance(instance.getId(), null);
+                runtimeService.deleteProcessInstance(instanceId, null);
                 result.put("msg", "删除成功");
             }
         } catch (Exception e) {

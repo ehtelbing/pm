@@ -59,7 +59,7 @@ Ext.onReady(function () {
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return  '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>' +
-                    '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.BusinessKey + '\',\'' + record.data.ProcessDefinitionKey + '\',\'' + record.raw.flow_type + '\',\'' + record.data.ProcessInstanceId + '\')">' + '删除流程' + '</a>';
+                    '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.ProcessInstanceId + '\')">' + '删除流程' + '</a>';
             }
         }, {
             text: '流程类型',
@@ -282,7 +282,7 @@ function _preViewProcess(ProcessInstanceId,BusinessKey) {
     window.open(AppUrl + 'page/PM_210302/index.html?ProcessInstanceId='
         +  ProcessInstanceId+'&BusinessKey='+BusinessKey+'&flowtype='+Ext.ComponentManager.get("tabpanel").getActiveTab().id, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }
-function _cancelFlow(BusinessKey,ProcessDefinitionKey,flow_type,instanceId) {
+function _cancelFlow(instanceId) {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/DeleteProcessInstance',
         type: 'ajax',
@@ -293,7 +293,8 @@ function _cancelFlow(BusinessKey,ProcessDefinitionKey,flow_type,instanceId) {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.msg == "删除成功") {
-                Ext.Ajax.request({
+                QueryGrid();
+                /*Ext.Ajax.request({
                     url: AppUrl + 'cjy/PRO_ACTIVITI_DELETE',
                     type: 'ajax',
                     method: 'POST',
@@ -331,7 +332,7 @@ function _cancelFlow(BusinessKey,ProcessDefinitionKey,flow_type,instanceId) {
                             alert('删除数据失败');
                         }
                     }
-                });
+                });*/
             } else {
                 alert('删除失败');
             }

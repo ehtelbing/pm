@@ -125,43 +125,49 @@ public class ActivitiController {
         Map result = new HashMap();
         Map param = new HashMap();
 
+        int num = (int) taskService.createTaskQuery().processVariableValueLike("flow_businesskey", businessKey).count();
 
-        HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
+        if(num==0){
+            HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 
-        String ret = (String) data.get("RET");
-        result.put("RET", ret);
+            String ret = (String) data.get("RET");
+            result.put("RET", ret);
 
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int date = c.get(Calendar.DATE);
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        int second = c.get(Calendar.SECOND);
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int date = c.get(Calendar.DATE);
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            int second = c.get(Calendar.SECOND);
 
-        String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
+            String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
 
-        try {
-            for (int i = 0; i < parName.length; i++) {
-                param.put(parName[i].toString(), parVal[i].toString());
+            try {
+                for (int i = 0; i < parName.length; i++) {
+                    param.put(parName[i].toString(), parVal[i].toString());
+                }
+
+                param.put("idea", V_IDEA);
+                param.put("shtgtime", time);
+
+                ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
+                        param);
+
+                result.put("id", processInstance.getId());
+                result.put("InstanceId", processInstance.getProcessInstanceId());
+                result.put("BusinessKey", processInstance.getBusinessKey());
+                result.put("ProcessId", processInstance.getProcessDefinitionId());
+                result.put("ret", "OK");
+                result.put("msg", "流程发起成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("ret", "ERROR");
+                result.put("msg", "流程发起失败");
             }
-
-            param.put("idea", V_IDEA);
-            param.put("shtgtime", time);
-
-            ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
-                    param);
-
-            result.put("id", processInstance.getId());
-            result.put("InstanceId", processInstance.getProcessInstanceId());
-            result.put("BusinessKey", processInstance.getBusinessKey());
-            result.put("ProcessId", processInstance.getProcessDefinitionId());
-            result.put("ret", "OK");
-            result.put("msg", "流程发起成功");
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else{
             result.put("ret", "ERROR");
-            result.put("msg", "流程发起失败");
+            result.put("msg", "流程发起失败,流程businesskey重复");
         }
 
         return result;
@@ -484,7 +490,7 @@ public class ActivitiController {
                 }
             } else {
                 if (PersonCode.equals("ActivitiManage")) {
-                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
+                    taskList = taskService.createTaskQuery().processVariableValueLike("FlowCode", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).count();
                 } else {
                     taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", FlowType).orderByTaskCreateTime().desc().listPage(start, limit);
@@ -1052,9 +1058,9 @@ public class ActivitiController {
 
     @RequestMapping(value = "DeleteProcessInstance", method = RequestMethod.POST)
     @ResponseBody
-    public  Map DeleteProcessInstance(@RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY) throws SQLException {
+    public  Map DeleteProcessInstance(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
 
-        Map result=activitiService.DeleteProcessInstance(V_V_BUSINESSKEY);
+        Map result=activitiService.DeleteProcessInstance(instanceId);
         return result;
     }
 
