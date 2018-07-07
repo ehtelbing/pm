@@ -614,7 +614,7 @@ function createGantt3(){
         id: 'ganttgrid3',
         region:'center',
         store: ganttStore3,
-        columnLines: true,
+        //columnLines: true,
         viewConfig:{getRowClass:changeRowClass},
         columns: cmItems3
     });
