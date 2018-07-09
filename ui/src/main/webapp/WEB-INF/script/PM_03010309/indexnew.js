@@ -773,7 +773,7 @@ var pageFunction = {
         var vleft=((startd.getTime() - vStart.getTime()) / (3600 * 1000))* 40;
         var vwidth=((endd.getTime() - startd.getTime()) / (3600 * 1000)) * 40 ;
 
-        var gtt = '<div style="left:' + vleft.toString() + 'px;height:26px;width:' + vwidth.toString() + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div class="sch-event-inner" >' + record.data.V_CONTENT + '</div></div>' +
+        var gtt = '<div style="left:' + vleft.toString() + 'px;height:22px;width:' + vwidth.toString() + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div class="sch-event-inner" >' + record.data.V_CONTENT + '</div></div>' +
             '<div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + stime.split('.0')[0] + '<br>' + '结束时间：' + etime.split('.0')[0] + '<br>'+ '主要缺陷：' + record.data.V_MAIN_DEFECT + '<br>'+ '预计寿命：' + record.data.V_EXPECT_AGE + '<br>'+ '维修人数：' + record.data.V_REPAIR_PER + '<br>';
 
         var cont = record.data.V_CONTENT.split(',');
@@ -814,7 +814,7 @@ var pageFunction = {
              +'<div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
              + stime.split('.0')[0] + '<br>' + '结束时间：' + etime[i].split('.0')[0] + '<br>' + '主要缺陷：' + record.data.V_MAIN_DEFECT + '<br>'
              + '预计寿命：' + record.data.V_EXPECT_AGE + '<br>' + '维修人数：' + record.data.V_REPAIR_PER + '<br>';*/
-            gtt += '<div style="left:' + vleft.toString() + 'px;height:26px;width:' + vwidth.toString()
+            gtt += '<div style="left:' + vleft.toString() + 'px;height:22px;width:' + vwidth.toString()
                 + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + i + '\')" onmouseout="a2(\'' + i + '\')"><div class="sch-event-inner" >'
                 + record.data.V_CONTENT + '</div></div>'
                 +'<div class="lxm"  id="' + i + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
@@ -862,7 +862,7 @@ var pageFunction = {
                 +'<div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
                 + stime.split('.0')[0] + '<br>' + '结束时间：' + etime[i].split('.0')[0] + '<br>' + '主要缺陷：' + record.data.V_MAIN_DEFECT + '<br>'
                 + '预计寿命：' + record.data.V_EXPECT_AGE + '<br>' + '维修人数：' + record.data.V_REPAIR_PER + '<br>';*/
-            gtt += '<div style="left:' + vleft.toString() + 'px;height:26px;width:' + vwidth.toString()
+            gtt += '<div style="left:' + vleft.toString() + 'px;height:22px;width:' + vwidth.toString()
                 + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + i + '\')" onmouseout="a2(\'' + i + '\')"><div class="sch-event-inner" >'
                 + record.data.V_CONTENT + '</div></div>'
                 +'<div class="lxm"  id="' + i + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：'
