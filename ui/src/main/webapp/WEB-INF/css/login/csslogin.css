@@ -19,10 +19,11 @@ body{ margin:0;}
 .sel_text{width:180px; height:25px; border:0px; margin-top:7px; }
 .sel_btn{width:80px; height:25px; border:0px; margin-top:7px; background:#39F; color:#fff; margin-left:1px;}
 .top_div2{width:100%; height:80px;background-color: #2e3d5f; font-size:12px;}
-.top_div2 ul{width:480px; color:#fff; margin:0px 10px 0px 0px; padding:0px; float:right;}
+.top_div2 ul{width:670px; color:#fff; margin:0px 10px 0px 0px; padding:0px; float:right;}
 .top_div2 ul li{float:left; list-style-type:none; width:90px; height:80px; line-height:90px; text-align:center;}
 .top_div2 ul li a{text-decoration:none; font-size:14px; color:#021372;}
 .dj_icon{margin-top:6px; background:url(dj_icon.png) no-repeat center 5px;}
 .zx_icon{margin-top:6px; background:url(zx_icon.png) no-repeat center 5px;}
 .tc_icon{margin-top:6px; background:url(tc_icon.png) no-repeat center 5px;}
+.sc_icon{margin-top:6px; background:url(sc_icon.png) no-repeat center 5px;}
 
