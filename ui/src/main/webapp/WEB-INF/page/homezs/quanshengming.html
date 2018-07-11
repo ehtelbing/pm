@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>设备智慧管控平台</title>
+<link rel="icon" href="img/favicon.ico" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name=viewport content="width=device-width, initial-scale=1" />
+<link href="dist/semantic.min.css" rel="stylesheet" />
+<link href="css/main.css" rel="stylesheet" />
+<link href="plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="img/favicon.ico" />
+<script src="js/echarts.min.js"></script>
+</head>
+
+<body>
+<div id="contextWrap"> 
+  <!--sidebar-->
+  <div class="ui sidebar vertical left menu overlay  borderless visible sidemenu inverted blue" style="-webkit-transition-duration: 0.1s; transition-duration: 0.1s;" data-color="grey"> <a class="item logo" href="index.html"> <img src="img/logo.png" alt="stagblogo" /><img src="img/thumblogo.png" alt="stagblogo" class="displaynone" /> </a>
+    <div class="ui accordion inverted"> <!--<a class="title item active"> <i class="ion-speedometer titleIcon icon"></i> Dashboard <i class="dropdown icon"></i> </a>-->
+      <div class="content active"> <a class="item" href="quexian.html"> 数量统计 </a> <a class="item active" href="quanshengming.html"> 备件全生命周期统计 </a> <a class="item" href="daxiu.html"> 大修统计 </a> <a class="item" href="gongdan.html"> 检修工单统计 </a>  </div>
+    </div>
+    <div class="ui dropdown item displaynone scrolling"> <span>Dashboard</span> <i class="ion-speedometer icon"></i>
+      <div class="menu">
+       </div>
+    </div>
+  </div>
+  </a> 
+  <!--sidebar-->
+  
+  <div class="pusher"> 
+    <!--navbar-->
+    <div class="navslide navwrap">
+      <div class="ui menu icon borderless grid" data-color="inverted white">
+                    <a class="item labeled openbtn">
+                        <i class="ion-navicon-round big icon"></i>
+                    </a>
+                    
+                    <div class="item ui colhidden">
+                        <div class="ui icon input">
+                            <h2>设备智慧管控平台</h2>
+                        </div>
+                    </div>
+                    <div class="right menu colhidden">
+
+                        
+                        
+                        <div class="ui dropdown item">
+                            <img class="ui mini circular image" src="img/avatar/people/enid.png" alt="label-image" />
+                            <div class="menu">
+                                <a class="item" href="#">管理员</a>
+                                <a class="item" href="#">注销</a>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+    </div>
+    <!--navbar--> 
+    <!--maincontent-->
+    <div class="mainWrap navslide">
+
+       <div class="sixteen wide column">
+	 <div class="ui red segment"><h3 class="ui red header">备件全生命周期统计</h3></div>
+       </div>
+
+      <div class="ui equal width left aligned padded grid stackable">
+
+	 
+
+        
+        
+        
+        
+        <div class="stretched row">
+          <div class="sixteen wide tablet four wide computer column">
+            <div class="ui segments">
+              <div class="ui segment">
+                <h5 class="ui header"> <a href="quanshengming_detail.html">齐大山铁矿(点击查看详细)</a> </h5>
+              </div>
+              <div class="ui segment left aligned">
+
+
+                  <div id="main" style="height:300px;"></div>
+                  <script type="text/javascript">
+                      // 基于准备好的dom，初始化echarts实例
+                      var myChart = echarts.init(document.getElementById('main'));
+
+
+                      var option = {
+		 
+    title : {
+        text: ''
+    },
+    tooltip : {
+        trigger: 'axis',
+		backgroundColor:'rgba(0,0,0,0.9)',
+    },
+    legend: {
+        data:['数量','金额']
+    },
+    
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'数量',
+            type:'bar',
+            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+			itemStyle:{
+                normal:{
+                    color:'#ec5845'
+                }
+
+            }
+
+
+        },
+        {
+            name:'金额',
+            type:'bar',
+            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+			itemStyle:{
+                normal:{
+                    color:'#46d185'
+                }
+
+            }
+
+        }
+    ]
+};
+
+                      // 使用刚指定的配置项和数据显示图表。
+                      myChart.setOption(option);
+
+                      
+                  </script>
+
+				
+                
+              </div>
+            </div>
+          </div>
+          <div class="sixteen wide tablet four wide computer column">
+            <div class="ui segments">
+              <div class="ui segment">
+                <h5 class="ui header"> 齐大山选矿厂 </h5>
+              </div>
+              <div class="ui segment left aligned">
+
+                  <div id="main2" style="height:300px;"></div>
+                  <script type="text/javascript">
+                      // 基于准备好的dom，初始化echarts实例
+                      var myChart2 = echarts.init(document.getElementById('main2'));
+
+
+                      var option = {
+		 
+    title : {
+        text: ''
+    },
+    tooltip : {
+        trigger: 'axis',
+		backgroundColor:'rgba(0,0,0,0.9)',
+    },
+    legend: {
+        data:['数量','金额']
+    },
+    
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'数量',
+            type:'bar',
+            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+			itemStyle:{
+                normal:{
+                    color:'#ec5845'
+                }
+
+            }
+
+
+        },
+        {
+            name:'金额',
+            type:'bar',
+            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+			itemStyle:{
+                normal:{
+                    color:'#46d185'
+                }
+
+            }
+
+        }
+    ]
+};
+
+                      // 使用刚指定的配置项和数据显示图表。
+                      myChart2.setOption(option);
+
+                      
+                  </script>
+
+                
+              </div>
+            </div>
+          </div>
+		  <div class="sixteen wide tablet four wide computer column">
+            <div class="ui segments">
+              <div class="ui segment">
+                <h5 class="ui header"> 大孤山球团厂 </h5>
+              </div>
+              <div class="ui segment left aligned">
+
+                  <div id="main3" style="height:300px;"></div>
+                  <script type="text/javascript">
+                      // 基于准备好的dom，初始化echarts实例
+                      var myChart3 = echarts.init(document.getElementById('main3'));
+
+
+                      var option = {
+		 
+    title : {
+        text: ''
+    },
+    tooltip : {
+        trigger: 'axis',
+		backgroundColor:'rgba(0,0,0,0.9)',
+    },
+    legend: {
+        data:['数量','金额']
+    },
+    
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'数量',
+            type:'bar',
+            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+			itemStyle:{
+                normal:{
+                    color:'#ec5845'
+                }
+
+            }
+
+
+        },
+        {
+            name:'金额',
+            type:'bar',
+            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+			itemStyle:{
+                normal:{
+                    color:'#46d185'
+                }
+
+            }
+
+        }
+    ]
+};
+
+                      // 使用刚指定的配置项和数据显示图表。
+                      myChart3.setOption(option);
+
+                      
+                  </script>
+                
+              </div>
+            </div>
+          </div>
+		  <div class="sixteen wide tablet four wide computer column">
+            <div class="ui segments">
+              <div class="ui segment">
+                <h5 class="ui header"> 鞍千矿业 </h5>
+              </div>
+              <div class="ui segment left aligned">
+                
+                <div id="main4" style="height:300px;"></div>
+				<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart4 = echarts.init(document.getElementById('main4'));
+
+
+        // 指定图表的配置项和数据
+        var option = {
+		 
+    title : {
+        text: ''
+    },
+    tooltip : {
+        trigger: 'axis',
+		backgroundColor:'rgba(0,0,0,0.9)',
+    },
+    legend: {
+        data:['数量','金额']
+    },
+    
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'数量',
+            type:'bar',
+            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+			itemStyle:{
+                normal:{
+                    color:'#ec5845'
+                }
+
+            }
+
+
+        },
+        {
+            name:'金额',
+            type:'bar',
+            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+			itemStyle:{
+                normal:{
+                    color:'#46d185'
+                }
+
+            }
+
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart4.setOption(option);
+		
+		window.onresize = function () {
+		myChart.resize();
+		myChart2.resize();
+		myChart3.resize();
+		myChart4.resize();
+};
+    </script>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+    <!--maincontent--> 
+  </div>
+</div>
+<!--jquery-->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <!--jquery-->
+    <!--semantic-->
+    <script src="dist/semantic.min.js"></script>
+    <!--semantic-->
+    <script src="plugins/nicescrool/jquery.nicescroll.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

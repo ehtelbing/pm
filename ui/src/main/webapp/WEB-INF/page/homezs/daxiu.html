@@ -1,0 +1,366 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>设备智慧管控平台</title>
+<link rel="icon" href="img/favicon.ico" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name=viewport content="width=device-width, initial-scale=1" />
+<link href="dist/semantic.min.css" rel="stylesheet" />
+<link href="css/main.css" rel="stylesheet" />
+<link href="plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="img/favicon.ico" />
+<script src="js/echarts.min.js"></script>
+</head>
+
+<body>
+<div id="contextWrap"> 
+  <!--sidebar-->
+  <div class="ui sidebar vertical left menu overlay  borderless visible sidemenu inverted blue" style="-webkit-transition-duration: 0.1s; transition-duration: 0.1s;" data-color="grey"> <a class="item logo" href="index.html"> <img src="img/logo.png" alt="stagblogo" /><img src="img/thumblogo.png" alt="stagblogo" class="displaynone" /> </a>
+    <div class="ui accordion inverted"> <!--<a class="title item active"> <i class="ion-speedometer titleIcon icon"></i> Dashboard <i class="dropdown icon"></i> </a>-->
+      <div class="content active"> <a class="item" href="quexian.html"> 缺陷统计 </a> <a class="item" href="quanshengming.html"> 备件全生命周期统计 </a> <a class="item active" href="daxiu.html"> 大修统计 </a> <a class="item" href="gongdan.html"> 检修工单统计 </a>  </div>
+    </div>
+    <div class="ui dropdown item displaynone scrolling"> <span>Dashboard</span> <i class="ion-speedometer icon"></i>
+      <div class="menu">
+       </div>
+    </div>
+  </div>
+  </a> 
+  <!--sidebar-->
+  
+  <div class="pusher"> 
+    <!--navbar-->
+    <div class="navslide navwrap">
+      <div class="ui menu icon borderless grid" data-color="inverted white">
+                    <a class="item labeled openbtn">
+                        <i class="ion-navicon-round big icon"></i>
+                    </a>
+                    
+                    <div class="item ui colhidden">
+                        <div class="ui icon input">
+                            <h2>设备智慧管控平台</h2>
+                        </div>
+                    </div>
+                    <div class="right menu colhidden">
+
+                        
+                        
+                        <div class="ui dropdown item">
+                            <img class="ui mini circular image" src="img/avatar/people/enid.png" alt="label-image" />
+                            <div class="menu">
+                                <a class="item" href="#">管理员</a>
+                                <a class="item" href="#">注销</a>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+    </div>
+    <!--navbar--> 
+    <!--maincontent-->
+    <div class="mainWrap navslide">
+<div class="sixteen wide column">
+	 <div class="ui red segment"><h3 class="ui red header">大修统计</h3></div>
+       </div>
+      <div class="ui equal width left aligned padded grid stackable">
+
+<div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <h5 class="ui header">
+                                    选择月份
+                                </h5>
+                            </div>
+                            <div class="ui segment">
+                                
+                                    <div class="inline fields">
+                                        <div class="ui dropdown selection" tabindex="0">
+                                                    <select name="gender">
+                                                        <option value="">当前月份</option>
+                                                        <option value="1">1月</option>
+                                                        <option value="2">2月</option>
+                                                    </select><i class="dropdown icon"></i><div class="default text">当前月份</div>
+													<div class="menu" tabindex="-1">
+													<div class="item" data-value="1">1月</div>
+													<div class="item" data-value="2">2月</div>
+													</div>
+                                                </div>
+                                        <button class="ui primary button saving"><i class="search icon"></i>查询</button>
+                                    </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        
+        <div class="stretched row">
+          <div class="sixteen wide tablet sixteen wide computer column">
+            <div class="ui segments">
+              <div class="ui segment">
+                <h5 class="ui header"> 可视化 </h5>
+              </div>
+              <div class="ui segment left aligned">
+                
+                <div id="main" style="height:500px;"></div>
+                  <script type="text/javascript">
+                      // 基于准备好的dom，初始化echarts实例
+                      var myChart = echarts.init(document.getElementById('main'));
+
+
+                      // 指定图表的配置项和数据
+                      var option = {
+    color: ['#da251d', '#e77817', '#f8c300', '#68b920', '#3bb3c2', '#0093dd', '#667ab3'],
+    tooltip: {
+        show: true,
+        trigger: 'item',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        formatter: function(v) {
+            return '<div >'
+                 + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + v.color + '"></span>' + v.seriesName + '<br/>'
+                 + '    <span class="chainTextTitle">开始时间：' + v.data.tooltip.startTime + '</span><br>'
+                 + '    <span class="chainTextTitle">结束时间：' + v.data.tooltip.endTime + '</span><br>'
+                 + '</div>';
+        },
+    },
+    legend: {
+        x: 'center',
+        y: 'bottom',
+        show: true,
+        textStyle: {
+            color: '#858585',
+        },
+        data: ["阶段1", "阶段2", "阶段3", "阶段4"]
+    },
+    grid: {
+        borderWidth: 0
+    },
+    xAxis:{
+            type: 'time',
+            position: 'top',
+            axisLine: {
+                show: false
+            },
+            axisLabel: {
+                show: true,
+                textStyle: {
+                    color: '#858585',
+                    fontSize: 14,
+                },
+            },
+            splitLine: {
+            },
+            max: 1508925966000,
+            min: 1508925636000
+    },
+    yAxis:[
+        {
+            type: 'category',
+            axisTick: {
+                show: true,
+                lineStyle: {
+                    color: '#858585',
+                    width: 2
+                }
+            },
+            axisLabel: {
+                show: true,
+                textStyle: {
+                    color: '#404d5b',
+                    fontSize: 14,
+                },
+            },
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#858585',
+                },
+            },
+            data: ["阶段1", "阶段2", "阶段3", "阶段4"]
+        },
+        {
+            type: 'category',
+            axisTick: {
+                show: true,
+                lineStyle: {
+                    color: '#858585',
+                    width: 2
+                }
+            },
+            axisLabel: {
+                show: true,
+                textStyle: {
+                    color: '#404d5b',
+                    fontSize: 14,
+                },
+            },
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: '#858585',
+                },
+            },
+            data: ["", "", "", "", "", "", ""]
+        },
+    ],
+    series: [
+        {
+            type: 'bar',
+            stack: 1,
+            name: '阶段4',
+            markLine: {
+                symbol: 'none',
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            type: 'solid',
+                            width: 8,
+                        },
+                    },
+                    emphasis: {
+                        lineStyle: {
+                            width: 15,
+                        }
+                    }
+                },
+                data: [
+                    [
+                        {xAxis: 1508925789000, yAxis: "阶段4", tooltip: 
+                            {
+                                endTime: '2017-10-25 18:03:42',
+                                eventName:"阶段4",
+                                sip:"53.53.53.2",
+                                startTime: '2017-10-25 18:03:09'
+                            }
+                        },
+                        {xAxis: 1508925822000, yAxis: "阶段4"}
+                    ]
+                ]
+            }
+        },
+        {
+            type: 'bar',
+            stack: 1,
+            name: "阶段3",
+            markLine: {
+                symbol: 'none',
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            type: 'solid',
+                            width: 8,
+                        },
+                    },
+                    emphasis: {
+                        lineStyle: {
+                            width: 15,
+                        }
+                    }
+                },
+                data: [
+                    [
+                        {xAxis: 1508925720000, yAxis: "阶段3", tooltip: 
+                            {
+                                endTime: '2017-10-25 18:03:19',
+                                eventName:"阶段3",
+                                sip:"53.53.53.2",
+                                startTime: '2017-10-25 18:02:00'
+                            }
+                        },
+                        {xAxis: 1508925799000, yAxis: "阶段3"}
+                    ]
+                ]
+            }
+        },
+        {
+            type: 'bar',
+            stack: 1,
+            name: "阶段2",
+            markLine: {
+                symbol: 'none',
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            type: 'solid',
+                            width: 8,
+                        },
+                    },
+                    emphasis: {
+                        lineStyle: {
+                            width: 15,
+                        }
+                    }
+                },
+                data: []
+            }
+        },
+        {
+            type: 'bar',
+            stack: 1,
+            name: '阶段1',
+            markLine: {
+                symbol: 'none',
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            type: 'solid',
+                            width: 8,
+                        },
+                    },
+                    emphasis: {
+                        lineStyle: {
+                            width: 15,
+                        }
+                    }
+                },
+                data: [
+                    [
+                        {xAxis: 1508925696000, yAxis: "阶段1", tooltip: 
+                            {
+                                endTime: '2017-10-25 18:05:06',
+                                eventName:"阶段1",
+                                sip:"53.53.53.2",
+                                startTime: '2017-10-25 18:01:36'
+                            }
+                        },
+                        {xAxis: 1508925906000, yAxis: "阶段1"}
+                    ]
+                ]
+            }
+        }
+    ]
+};
+                      // 使用刚指定的配置项和数据显示图表。
+                      myChart.setOption(option);
+
+                      window.onresize = function () {
+                          myChart.resize();
+                      };
+                  </script>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!--maincontent--> 
+  </div>
+</div>
+<!--jquery-->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <!--jquery-->
+    <!--semantic-->
+    <script src="dist/semantic.min.js"></script>
+    <!--semantic-->
+    <script src="plugins/nicescrool/jquery.nicescroll.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

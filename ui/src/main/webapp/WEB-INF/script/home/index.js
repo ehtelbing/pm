@@ -28,6 +28,7 @@ var container = Ext.create('Ext.tab.Panel', {
         closeOthersTabsText: '关闭其他'
     })
 });
+
 function append(item, title, link) {
     var container = Ext.getCmp('container');
     var closable = arguments[3] === undefined ? true : false;
@@ -80,7 +81,52 @@ function _AssembleAccordions(data) {
                             var htmlStr = '';
                             if (model.childNodes.length != 0) {
                             } else {
-                                //自动化设备管理
+                                if (model.raw.type == 1) {
+
+                                    var owidth = window.document.body.offsetWidth;
+                                    var oheight = window.document.body.offsetHeight;
+                                    window.open(AppUrlFrame + model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+
+                                } else {
+                                    if (model.raw.other == 0) {
+                                        htmlStr = [
+                                                '<iframe id="Workspace'
+                                                , item.sid
+                                                , '" name="Workspace'
+                                                , item.sid
+                                                , '" frameborder="0" width="100%" height="100%" src="'
+                                                , AppUrlFrame+ model.raw.src
+                                                , '" />'
+                                            ].join('')
+                                    } else {
+                                        htmlStr = [
+                                                '<iframe id="Workspace'
+                                                , item.sid
+                                                , '" name="Workspace'
+                                                , item.sid
+                                                , '" frameborder="0" width="100%" height="100%" src="'
+                                                , ''
+                                                , + model.raw.src + "?v_mancode=" + Ext.util.Cookies.get('v_personcode')
+                                                , '" />'
+                                            ].join('');
+                                    }
+                                    if (model.raw.leaf) {
+                                        var tab = container.items.map[model.raw.id];
+                                        if (tab === undefined) {
+                                            tab = Ext.create('Ext.panel.Panel', {
+                                                id: model.raw.id,
+                                                title: model.raw.text,
+                                                closable: true,
+                                                html: htmlStr
+                                            });
+                                            container.add(tab);
+                                            container.setActiveTab(tab);
+                                        } else {
+                                            container.setActiveTab(tab);
+                                        }
+                                    }
+                                }
+                                /*//自动化设备管理
                                 htmlStr = [
                                     '<iframe id="Workspace',
                                     model.raw.id,
@@ -88,23 +134,9 @@ function _AssembleAccordions(data) {
                                     model.raw.id,
                                     '" frameborder="0" width="100%" height="100%" src="'
                                     + _geturl(model.raw.src, APP)
-                                    + '" />'].join('');
+                                    + '" />'].join('');*/
                             }
-                            if (model.raw.leaf) {
-                                var tab = container.items.map[model.raw.id];
-                                if (tab === undefined) {
-                                    tab = Ext.create('Ext.panel.Panel', {
-                                        id: model.raw.id,
-                                        title: model.raw.text,
-                                        closable: true,
-                                        html: htmlStr
-                                    });
-                                    container.add(tab);
-                                    container.setActiveTab(tab);
-                                } else {
-                                    container.setActiveTab(tab);
-                                }
-                            }
+
                         }
                     }
                 })]
@@ -114,6 +146,7 @@ function _AssembleAccordions(data) {
         return array;
     }
 }
+
 function _geturl(s_src, s_app) {
     s_app = s_app + "/app/pm";
     var s_url = '';
@@ -122,6 +155,7 @@ function _geturl(s_src, s_app) {
     s_url = s_url + s_src;
     return s_url;
 }
+
 function _CreateHeader() {
     return Ext.create('Ext.panel.Panel', {
         region: 'north',
@@ -160,7 +194,7 @@ function _CreateSidebar(accordions) {
                 layout: 'column',
                 height: 180,
                 border: false,
-                collapsed:true,
+                collapsed: true,
                 collapsible: true,
                 items: [
                     {
@@ -230,10 +264,6 @@ function OnPageLoaded() {
         //url : AppUrl + 'tree/NewMenuTree',
         url: AppUrl + 'tree/PRO_BASE_NEW_MENU_SEL',
         params: {
-            /*RoleCode : Ext.util.Cookies.get('v_rolecode'),
-             DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
-             MENUTYPE:menutype*/
-
             IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
             IS_V_SYSTYPE: '1',
             V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
@@ -294,6 +324,7 @@ function HomePage() {
     }
 
 }
+
 function GETDDDL() {
     // 转小神探单点登陆地址PRO_BASE_PERSON_DDDL_GETURL
     $.ajax({
@@ -368,6 +399,7 @@ function OnKeypress(e) {
 function ClearText() {
     $('#kjcl').val('');
 }
+
 function isAutoApp(menuId) {
     if (menuId.substring(0, 4) == 'Auto') {
         return true;

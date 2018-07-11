@@ -448,43 +448,6 @@ function _CreateViewport(header, sidebar, workplace) {
     return object;
 }
 
-/*function OnPageLoaded() {
-    if (Ext.util.Cookies.get('v_rolecode') == null) {
-        location.href = AppUrl + 'page/login/login' + ".html";
-    }
-    Ext.getBody().mask('<p>设备管理系统</p><p>系统加载中...</p>');
-    var Accordions;
-    append('Index', '首页', AppUrl + "page/home/home" + ".html", false);
-    var header = _CreateHeader();
-    Ext.Ajax.request({
-        //url : AppUrl + 'tree/NewMenuTree',
-        url: AppUrl + 'tree/PRO_BASE_NEW_MENU_SEL',
-        params: {
-            /!*RoleCode : Ext.util.Cookies.get('v_rolecode'),
-             DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
-             MENUTYPE:menutype*!/
-
-            IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
-            IS_V_SYSTYPE: '1',
-            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
-            V_V_HOME_MENU: menutype
-        },
-        method: 'post',
-        sync: true,
-        success: function (response) {
-            var result = Ext.decode(response.responseText);
-            var Accordions = _AssembleAccordions(result); // tree
-            var sidebar = _CreateSidebar(Accordions);
-            _CreateViewport(header, sidebar, container);
-            Ext.getBody().unmask();
-            GETDDDL();
-        }
-    });
-    if (menucode != "" && menucode != null) {
-        window.parent.append(menucode, menuname, APP + v_url);
-    }
-}*/
-
 function OnPageLoaded() {
     if (Ext.util.Cookies.get('v_rolecode') == null) {
         location.href = AppUrl + 'page/login/login' + ".html";

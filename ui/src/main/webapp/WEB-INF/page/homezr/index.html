@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>车间主任个人工作平台</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/data_text.css">
+    <link rel="stylesheet" href="css/foundation-datepicker.css">
+    <script src="js/echarts.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<!--header开始-->
+<div class="header">
+    <div class="header_logo fl">
+        <a href="#"><img src="img/header_logo.png" alt=""></a>
+    </div>
+    <div class="header_nav fl">
+       
+    </div>
+    <div class="header_myself fr">
+        <p>用户：管理员</p>
+        <a href="#" data-toggle="modal" data-target=".bs-example-modal-sm">注销 &nbsp;<span class="caret"></span></a>
+    </div>
+</div>
+<!--header结束-->
+
+<!--content开始-->
+<div class="data_content">
+    <div class="data_time">
+        <img src="img/data_time.png" alt="" class="fl">
+        <input type="text"  value="" id="demo-1" style="background: #04425f;width: 80px;" placeholder="选择日期">
+    </div>
+    
+
+    <div class="data_main">
+        <div class="main_left fl">
+            <div class="left_1">
+                <div class="main_title">
+                    <img src="img/title_4.png" alt="">
+                    生产
+                </div>
+                <div id="main1" style="width:100%;height: 280px;"></div>
+
+                <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('main1'));
+// Generate data
+var category = [];
+var dottedBase = +new Date();
+var lineData = [];
+var barData = [];
+
+for (var i = 0; i < 20; i++) {
+    var date = new Date(dottedBase += 1000 * 3600 * 24);
+    category.push([
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
+    ].join('-'));
+    var b = Math.random() * 200;
+    var d = Math.random() * 200;
+    barData.push(b)
+    lineData.push(d + b);
+}
+
+                    var option = {
+    backgroundColor: '',
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow',
+            label: {
+                show: true,
+                backgroundColor: '#333'
+            }
+        }
+    },
+    legend: {
+        data: ['line', 'bar'],
+        textStyle: {
+            color: '#ccc'
+        }
+    },
+    xAxis: {
+        data: category,
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    yAxis: {
+        splitLine: {show: false},
+        axisLine: {
+            lineStyle: {
+                color: '#ccc'
+            }
+        }
+    },
+    series: [{
+        name: 'line',
+        type: 'line',
+        smooth: true,
+        showAllSymbol: true,
+        symbol: 'emptyCircle',
+        symbolSize: 15,
+        data: lineData
+    }, {
+        name: 'bar',
+        type: 'bar',
+        barWidth: 10,
+        itemStyle: {
+            normal: {
+                barBorderRadius: 5,
+                color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        {offset: 0, color: '#14c8d4'},
+                        {offset: 1, color: '#43eec6'}
+                    ]
+                )
+            }
+        },
+        data: barData
+    }, {
+        name: 'line',
+        type: 'bar',
+        barGap: '-100%',
+        barWidth: 10,
+        itemStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        {offset: 0, color: 'rgba(20,200,212,0.5)'},
+                        {offset: 0.2, color: 'rgba(20,200,212,0.2)'},
+                        {offset: 1, color: 'rgba(20,200,212,0)'}
+                    ]
+                )
+            }
+        },
+        z: -12,
+        data: lineData
+    }, {
+        name: 'dotted',
+        type: 'pictorialBar',
+        symbol: 'rect',
+        itemStyle: {
+            normal: {
+                color: '#0f375f'
+            }
+        },
+        symbolRepeat: true,
+        symbolSize: [12, 4],
+        symbolMargin: 1,
+        z: -10,
+        data: lineData
+    }]
+};
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+
+                    
+                </script>
+
+            </div>
+            <div class="left_2">
+                <div class="main_title">
+                    <img src="img/title_2.png" alt="">
+                    质计
+                </div>
+                <div id="main2" style="width:100%;height: 280px;"></div>
+            </div>
+        </div>
+        <div class="main_center fl">
+            <div class="center_text">
+                <div class="main_title">
+                    <img src="img/title_3.png" alt="">
+                    车间成本
+                </div>
+                <div id="main" style="height:600px;"></div>
+                  <script type="text/javascript">
+                      // 基于准备好的dom，初始化echarts实例
+                      var myChart = echarts.init(document.getElementById('main'));
+
+
+                      var option = {
+		 
+    title : {
+        text: ''
+    },
+    tooltip : {
+        trigger: 'axis',
+		backgroundColor:'rgba(0,0,0,0.9)',
+    },
+    legend: {
+        data:['数量','金额']
+    },
+    
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+            axisLabel: {
+            show: true,
+            textStyle: {
+                color: "#fff",
+            }
+        },
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            axisLabel: {
+            show: true,
+            textStyle: {
+                color: "#fff",
+            }
+        },
+        }
+    ],
+    series : [
+        {
+            name:'数量',
+            type:'bar',
+            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+            
+			itemStyle:{
+                normal:{
+                    color:'#ec5845'
+                }
+
+            }
+
+
+        },
+        {
+            name:'金额',
+            type:'bar',
+            data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+			itemStyle:{
+                normal:{
+                    color:'#fff'
+                }
+
+            }
+
+        }
+    ]
+};
+
+                      // 使用刚指定的配置项和数据显示图表。
+                      myChart.setOption(option);
+
+                      
+                  </script>
+            </div>
+        </div>
+        <div class="main_right fr">
+            <div class="right_1">
+                <div class="main_title">
+                    <img src="img/title_4.png" alt="">
+                    物资
+                </div>
+                
+                <div id="chart_3" class="echart" style="width:100%;height: 280px;"></div>
+            </div>
+            <div class="right_2">
+                <div class="main_title">
+                    <img src="img/title_5.png" alt="">
+                    检修
+                </div>
+                <div id="chart_4" class="echart fl" style="width:80%;height: 230px;"></div>
+               
+            </div>
+        </div>
+    </div>
+    <div class="data_bottom">
+        <div class="bottom_1 fl">
+            <div class="main_title">
+                <img src="img/title_6.png" alt="">
+                绩效考核排名前5位
+            </div>
+            <div class="main_table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>姓名</th>
+                        <th>积分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="bottom_center fl">
+            <div class="bottom_2 fl">
+                <div class="main_title">
+                    <img src="img/title_6.png" alt="">
+                    绩效考核排名前5位
+                </div>
+                <div class="main_table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>姓名</th>
+                            <th>积分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottom_3 fl">
+                <div class="main_title">
+                    <img src="img/title_6.png" alt="">
+                    绩效考核排名前5位
+                </div>
+                <div class="main_table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>姓名</th>
+                            <th>积分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>姓名</td>
+                            <td>134.2</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="bottom_4 fr">
+            <div class="main_title">
+                <img src="img/title_5.png" alt="">
+                绩效考核排名前5位
+            </div>
+            <div class="main_table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>姓名</th>
+                        <th>积分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>姓名</td>
+                        <td>134.2</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<!--content结束-->
+
+
+<!--注销模态框  开始-->
+<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">注销</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认退出该系统吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--注销模态框  结束-->
+
+
+
+
+</body>
+<script src="js/jquery-2.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/echarts.min.js"></script>
+<script src="js/echart.js"></script>
+<script src="js/china.js"></script>
+<script src="js/foundation-datepicker.js"></script>
+<script src="js/foundation-datepicker.zh-CN.js"></script>
+<script>
+    $('#demo-1').fdatepicker();
+
+    var nowTemp = new Date();
+    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+    var checkin = $('#dpd1').fdatepicker({
+        onRender: function (date) {
+            return date.valueOf() < now.valueOf() ? 'disabled' : '';
+        }
+    }).on('changeDate', function (ev) {
+        if (ev.date.valueOf() > checkout.date.valueOf()) {
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate() + 1);
+            checkout.update(newDate);
+        }
+        checkin.hide();
+        $('#dpd2')[0].focus();
+    }).data('datepicker');
+    var checkout = $('#dpd2').fdatepicker({
+        onRender: function (date) {
+            return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+        }
+    }).on('changeDate', function (ev) {
+        checkout.hide();
+    }).data('datepicker');
+</script>
+</html>

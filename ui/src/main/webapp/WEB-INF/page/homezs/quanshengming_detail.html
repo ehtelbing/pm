@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>设备智慧管控平台</title>
+<link rel="icon" href="img/favicon.ico" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name=viewport content="width=device-width, initial-scale=1" />
+<link href="dist/semantic.min.css" rel="stylesheet" />
+<link href="css/main.css" rel="stylesheet" />
+<link href="plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="img/favicon.ico" />
+<script src="js/echarts.min.js"></script>
+</head>
+
+<body>
+<div id="contextWrap"> 
+  <!--sidebar-->
+  <div class="ui sidebar vertical left menu overlay  borderless visible sidemenu inverted blue" style="-webkit-transition-duration: 0.1s; transition-duration: 0.1s;" data-color="grey"> <a class="item logo" href="index.html"> <img src="img/logo.png" alt="stagblogo" /><img src="img/thumblogo.png" alt="stagblogo" class="displaynone" /> </a>
+    <div class="ui accordion inverted"> <!--<a class="title item active"> <i class="ion-speedometer titleIcon icon"></i> Dashboard <i class="dropdown icon"></i> </a>-->
+      <div class="content active"> <a class="item active" href="quexian.html"> 缺陷统计 </a> <a class="item" href="quanshengming.html"> 备件全生命周期统计 </a> <a class="item" href="daxiu.html"> 大修统计 </a> <a class="item" href="gongdan.html"> 检修工单统计 </a>  </div>
+    </div>
+    <div class="ui dropdown item displaynone scrolling"> <span>Dashboard</span> <i class="ion-speedometer icon"></i>
+      <div class="menu">
+       </div>
+    </div>
+  </div>
+  </a> 
+  <!--sidebar-->
+  
+  <div class="pusher"> 
+    <!--navbar-->
+    <div class="navslide navwrap">
+      <div class="ui menu icon borderless grid" data-color="inverted white">
+                    <a class="item labeled openbtn">
+                        <i class="ion-navicon-round big icon"></i>
+                    </a>
+                    
+                    <div class="item ui colhidden">
+                        <div class="ui icon input">
+                            <h2>设备智慧管控平台</h2>
+                        </div>
+                    </div>
+                    <div class="right menu colhidden">
+
+                        
+                        
+                        <div class="ui dropdown item">
+                            <img class="ui mini circular image" src="img/avatar/people/enid.png" alt="label-image" />
+                            <div class="menu">
+                                <a class="item" href="#">管理员</a>
+                                <a class="item" href="#">注销</a>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+    </div>
+    <!--navbar--> 
+    <!--maincontent-->
+    <div class="mainWrap navslide">
+<div class="sixteen wide column">
+	 <div class="ui red segment"><h3 class="ui red header">齐大山铁矿</h3></div>
+       </div>
+      <div class="ui equal width left aligned padded grid stackable">
+
+<div class="row">
+                    <div class="sixteen wide column">
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <h5 class="ui header">
+                                    选择月份
+                                </h5>
+                            </div>
+                            <div class="ui segment">
+                                
+                                    <div class="inline fields">
+                                        <div class="ui dropdown selection" tabindex="0">
+                                                    <select name="gender">
+                                                        <option value="">当前月份</option>
+                                                        <option value="1">1月</option>
+                                                        <option value="2">2月</option>
+                                                    </select><i class="dropdown icon"></i><div class="default text">当前月份</div>
+													<div class="menu" tabindex="-1">
+													<div class="item" data-value="1">1月</div>
+													<div class="item" data-value="2">2月</div>
+													</div>
+                                                </div>
+                                        <button class="ui primary button saving"><i class="search icon"></i>查询</button>
+                                    </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        
+        <div class="stretched row">
+          <div class="sixteen wide tablet ten wide computer column">
+            <div class="ui segments">
+              <div class="ui segment">
+                <h5 class="ui header"> 可视化 </h5>
+              </div>
+              <div class="ui segment left aligned">
+                
+                <div id="main" style="height:500px;"></div>
+                  <script type="text/javascript">
+                      // 基于准备好的dom，初始化echarts实例
+                      var myChart = echarts.init(document.getElementById('main'));
+
+
+                      // 指定图表的配置项和数据
+                      var option = {
+
+                          title : {
+                              text: ''
+                          },
+                          tooltip : {
+                              trigger: 'axis',
+							  backgroundColor:'rgba(0,0,0,0.9)',
+                          },
+
+                          calculable : true,
+                          xAxis : [
+                              {
+                                  type : 'category',
+                                  data : ['计划中','合同执行中','供销公司库房','厂矿车间库房','检修工单领料单','在用中','报废']
+                              }
+                          ],
+                          yAxis : [
+                              {
+                                  type : 'value'
+                              }
+                          ],
+                          series : [
+                              
+                              {
+                                  type:'bar',
+                                  barWidth: 30,
+                                  barGap: '-100%',
+                                  data:[30, 64, 100, 60, 30, 60, 110],
+                                  itemStyle: {
+                                      normal: {
+                                          barBorderRadius: 0,
+                                          color: new echarts.graphic.LinearGradient(
+                                              0, 0, 0, 1,
+                                              [
+                                                  {offset: 0, color: '#956FD4'},
+                                                  {offset: 1, color: '#3EACE5'}
+                                              ]
+                                          )
+                                      }
+                                  },
+
+                              }
+                          ]
+                      };
+
+                      // 使用刚指定的配置项和数据显示图表。
+                      myChart.setOption(option);
+
+                      window.onresize = function () {
+                          myChart.resize();
+                      };
+                  </script>
+                
+              </div>
+            </div>
+          </div>
+          <div class="sixteen wide tablet six wide computer column">
+            <div class="ui segments">
+              <div class="ui segment">
+                <h5 class="ui header"> 备件全生命周期统计统计 </h5>
+              </div>
+              <div class="ui segment">
+                <table class="ui very basic aligned  celled table">
+                  
+                  <tbody>
+                    <tr>
+                      <td><h4 class="ui image header"> 
+                          <div class="content"> 计划中
+                            
+                          </div>
+                        </h4></td>
+                      <td> 22 </td>
+                    </tr>
+                    <tr>
+                      <td><h4 class="ui image header"> 
+                          <div class="content">合同执行中 
+                            
+                          </div>
+                        </h4></td>
+                      <td> 15 </td>
+                    </tr>
+                    <tr>
+                      <td><h4 class="ui image header"> 
+                          <div class="content"> 供销公司库房
+                            
+                          </div>
+                        </h4></td>
+                      <td> 12 </td>
+                    </tr>
+                    <tr>
+                      <td><h4 class="ui image header"> 
+                          <div class="content"> 厂矿车间库房
+                            
+                          </div>
+                        </h4></td>
+                      <td> 11 </td>
+                    </tr>
+                    
+                    <tr>
+                      <td><h4 class="ui image header"> 
+                          <div class="content"> 检修工单领料单
+                            
+                          </div>
+                        </h4></td>
+                      <td> 11 </td>
+                    </tr>
+                    <tr>
+                      <td><h4 class="ui image header"> 
+                          <div class="content"> 在用中
+                            
+                          </div>
+                        </h4></td>
+                      <td> <div class="ui ribbon red label">11</div> </td>
+                    </tr>
+                    <tr>
+                      <td><h4 class="ui image header"> 
+                          <div class="content"> 报废
+                            
+                          </div>
+                        </h4></td>
+                      <td> <div class="ui ribbon red label">21</div> </td>
+                    </tr>
+                    
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--maincontent--> 
+  </div>
+</div>
+<!--jquery-->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <!--jquery-->
+    <!--semantic-->
+    <script src="dist/semantic.min.js"></script>
+    <!--semantic-->
+    <script src="plugins/nicescrool/jquery.nicescroll.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

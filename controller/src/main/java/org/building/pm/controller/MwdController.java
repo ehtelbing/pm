@@ -1139,8 +1139,9 @@ public class MwdController {
                                                      HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
+        String filename = V_V_FILE.getOriginalFilename();
 
-        HashMap data = mwdService.PM_REPAIRT_IMG_INSERT(V_V_GUID, V_V_FILEGUID, V_V_FILENAME, V_V_FILETYPE, V_V_FILE.getInputStream(), V_V_INPER);
+        HashMap data = mwdService.PM_REPAIRT_IMG_INSERT(V_V_GUID, V_V_FILEGUID, filename, V_V_FILETYPE, V_V_FILE.getInputStream(), V_V_INPER);
 
         String RET = (String) data.get("RET");
 
