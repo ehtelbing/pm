@@ -23,21 +23,21 @@
 	<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
 
 	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
-	<script type="text/javascript" src="../../../pm/script/home/index.js"></script>     <!--tree菜单-->
+	<!--<script type="text/javascript" src="../../../pm/script/home/index.js"></script> -->    <!--tree菜单-->
 	<!--<script type="text/javascript" src="../../../pm/script/home/indexMenu.js"></script>--> <!--menu菜单-->
-	<!--<script type="text/javascript" src="../../../pm/script/home/indexMenuNew.js"></script>	-->	   <!--menu菜单新样式-->
+	<script type="text/javascript" src="../../../pm/script/home/indexMenuNew.js"></script>		   <!--menu菜单新样式-->
 
 </head>
 <body style="margin:0px; padding:0px;">
 <div id="HeaderPanel">
 	<div class="top_div2">
-		<img src="../../../pm/css/login/top_title2017.png" style="margin-top:5px;" />
 		<ul>
 			<li style="width:300px;line-height:60px;"><div class="top_form">
 				<input style="border:1px solid #ccc" type="text" id="kjcl" class="sel_text" value="请输入工单号" onclick="javascript:ClearText()" onkeypress="OnKeypress(event)">
 				<input type="button" id="GoPage" value="查 询" onclick="javascript:GoPage()" class="sel_btn"></div></li>
-			<a onclick="Return()" style="cursor: pointer" target="_blank"><li class="dj_icon">返 回</li></a>
-			<!--<a onclick="LogOut()" style="cursor: pointer" target="_blank"><li class="zx_icon">注 销</li></a>-->
+			<a onclick="InsertFavoriteMenu()" style="cursor: pointer" target="_blank" ><li class="sc_icon">添加收藏</li></a>
+			<a onclick="Return()" style="cursor: pointer" target="_blank" ><li class="dj_icon">返 回</li></a>
+			<a onclick="LogOut()" style="cursor: pointer" target="_blank"><li class="zx_icon">注 销</li></a>
 			<a onclick="LogOut()" style="cursor: pointer" target="_blank"><li class="tc_icon">退 出</li></a>
 		</ul>
 	</div>
