@@ -875,7 +875,7 @@ function BackClicked() {
                 Ext.ComponentManager.get('tabpanel').removeAll();
                 addTab();
                 Ext.Ajax.request({
-                    url : APP + '/SetMatService',
+                    url : APP + 'mm/SetMatService',
                     type : 'post',
                     async : false,
                     data : {

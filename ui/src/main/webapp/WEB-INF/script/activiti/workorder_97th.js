@@ -666,7 +666,7 @@ function comboConfirm(){
 							//xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 							Ext.Msg.alert('提示', '验收工单成功');
 							$.ajax({
-								url: APP + '/SetMatService',
+								url: APP +  'mm/SetMatService',
 								type: 'post',
 								async: false,
 								data: {

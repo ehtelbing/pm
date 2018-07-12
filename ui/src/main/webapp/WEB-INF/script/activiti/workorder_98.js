@@ -500,7 +500,7 @@ function ConfirmAcceptWebService() {
     });
 
     $.ajax({
-        url: APP + '/SetMatService',
+        url: APP + 'mm/SetMatService',
         type: 'post',
         async: false,
         data: {

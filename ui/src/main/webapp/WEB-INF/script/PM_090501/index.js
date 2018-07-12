@@ -244,7 +244,7 @@ function GetBillMatByOrder(){
 
 function fun_SetMatservice(V_V_ORDERGUID) {
      $.ajax({
-	                	url : APP + '/SetMatService',
+	                	url : APP +  'mm/SetMatService',
 	                	type:'post',
 	                	async:false,
 	                	data:{

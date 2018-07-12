@@ -8,13 +8,13 @@ var taskId = '';
 var V_V_ORGCODE = '';
 var V_V_DEPTCODE = '';
 var V_V_REPAIRCODE = '';
-var V_STEPCODE = '';
+var V_STEPCODE ='';
 var processKey = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
-var wuliaochaxunlist = [];
+var wuliaochaxunlist=[];
 var ProcessInstanceId = '';
-var Assignee = '';
+var Assignee='';
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_DBGUID = Ext.urlDecode(location.href.split('?')[1]).V_DBGUID;
@@ -23,11 +23,12 @@ if (location.href.split('?')[1] != undefined) {
 }
 var selectID = [];
 $(function () {
+
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStore',
-        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
-        proxy: {
+        fields: ['V_PERSONCODE', 'V_PERSONNAME','V_V_NEXT_SETP','V_V_FLOW_STEPNAME'],
+        proxy:{
             type: 'ajax',
             async: false,
             url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -38,23 +39,29 @@ $(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {}
+            extraParams: {
+            }
         },
         listeners: {
-            load: function (store, records, success, eOpts) {
+
+            load: function (store, records,success,eOpts) {
                 var list = [];
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+                V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+
                 Ext.getCmp('nextSpr').select(store.first());
+
             }
+
         }
     });
+
     var nextSprStore2 = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStore2',
-        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
-        proxy: {
+        fields: ['V_PERSONCODE', 'V_PERSONNAME','V_V_NEXT_SETP','V_V_FLOW_STEPNAME'],
+        proxy:{
             type: 'ajax',
             async: false,
             url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -65,22 +72,28 @@ $(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {}
+            extraParams: {
+            }
         },
         listeners: {
-            load: function (store, records, success, eOpts) {
+
+            load: function (store, records,success,eOpts) {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+                V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+
                 Ext.getCmp('nextSpr2').select(store.first());
+
             }
+
         }
     });
+
     var nextSprStoreb = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStoreb',
-        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
-        proxy: {
+        fields: ['V_PERSONCODE', 'V_PERSONNAME','V_V_NEXT_SETP','V_V_FLOW_STEPNAME'],
+        proxy:{
             type: 'ajax',
             async: false,
             url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -91,26 +104,35 @@ $(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {}
+            extraParams: {
+            }
         },
         listeners: {
-            load: function (store, records, success, eOpts) {
+
+            load: function (store, records,success,eOpts) {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+                V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
                 Ext.getCmp('nextSprb').select(store.first());
                 var list = Ext.getCmp("nextSprb").getStore().data.items;
                 for (var i = 0; i < list.length; i++) {
                     if (list[i].raw.V_PERSONCODE == Assignee) {
+
                         Ext.getCmp("nextSprb").setValue(Assignee);
+
                     }
                     if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+
                         Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
                     }
+
                 }
+
             }
+
         }
     });
+
     var addInputPanel = Ext.create('Ext.form.Panel', {
         id: 'addInputPanel',
         region: 'center',
@@ -124,7 +146,7 @@ $(function () {
                 xtype: 'panel',
                 region: 'center',
                 layout: 'column',
-                border: false,
+                border:false,
                 frame: true,
                 baseCls: 'my-panel-no-border',
                 items: [{
@@ -141,16 +163,18 @@ $(function () {
                     style: ' margin: 5px 0px 0px 0px',
                     labelAlign: 'right',
                     width: 250
-                }, {
-                    xtype: 'button',
-                    text: '确定',
+                },{
+                    xtype : 'button',
+                    text : '确定',
                     icon: imgpath + '/saved.png',
                     style: ' margin: 5px 0px 0px 15px',
-                    handler: _reserveWorkOrder
-                }]
+                    handler : _reserveWorkOrder
+                }  ]
             }
         ]
     });
+
+
     var window1 = Ext.create('Ext.window.Window', {
         id: 'window1',
         width: 370,
@@ -164,6 +188,7 @@ $(function () {
         closable: true,
         items: [addInputPanel]
     });
+
     var addInputPanelb = Ext.create('Ext.form.Panel', {
         id: 'addInputPanelb',
         region: 'center',
@@ -177,7 +202,7 @@ $(function () {
                 xtype: 'panel',
                 region: 'center',
                 layout: 'column',
-                border: false,
+                border:false,
                 frame: true,
                 baseCls: 'my-panel-no-border',
                 items: [{
@@ -194,13 +219,13 @@ $(function () {
                     style: ' margin: 5px 0px 0px 0px',
                     labelAlign: 'right',
                     width: 250
-                }, {
-                    xtype: 'button',
-                    text: '确定',
+                },{
+                    xtype : 'button',
+                    text : '确定',
                     icon: imgpath + '/saved.png',
                     style: ' margin: 5px 0px 0px 15px',
-                    handler: ConfirmAccept
-                }]
+                    handler : ConfirmAccept
+                }  ]
             }
         ]
     });
@@ -219,14 +244,22 @@ $(function () {
     });
     bindDate("D_FACT_START_DATE");
     bindDate("D_FACT_FINISH_DATE");
+
     NowDate_b("D_FACT_START_DATE");
     NowDate_e("D_FACT_FINISH_DATE");
+
     loadOrder();
+
     //loadTeam();
+
     loadTaskGrid();
+
     loadMatList();
+
     loadOther();
+
     getTaskId();
+
     getAssignee();
     $("#btnTask").click(function () {
 
@@ -234,7 +267,8 @@ $(function () {
         var oheight = window.document.body.offsetHeight-100 ;
         var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_DEPTREPAIRCODE=' + V_DEPTREPAIRCODE +  '&V_TEAMCODE=' + V_TEAMCODE +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 */
-        var V_EQUTYPE = '';
+
+        var V_EQUTYPE='';
         Ext.Ajax.request({
             url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_GET',
             method: 'POST',
@@ -245,23 +279,25 @@ $(function () {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.list.length != 0) {
-                    V_EQUTYPE = resp.list[0].V_EQUTYPECODE;//设备类型编码
+                    V_EQUTYPE=resp.list[0].V_EQUTYPECODE;//设备类型编码
                 }
             }
         });
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + 'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID
-                + '&V_DEPTREPAIRCODE=' + V_V_REPAIRCODE
-                + '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
-                + '&V_V_ORGCODE=' + V_V_ORGCODE
-                + '&V_V_DEPTCODE=' + V_V_DEPTCODE
-                + '&V_EQUTYPE=' + V_EQUTYPE
-                + '&V_TEAMCODE=' + V_TEAMCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        var owidth = window.document.body.offsetWidth-200;
+        var oheight = window.document.body.offsetHeight-100 ;
+        var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID
+            + '&V_DEPTREPAIRCODE=' + V_V_REPAIRCODE
+            + '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
+            + '&V_V_ORGCODE=' + V_V_ORGCODE
+            + '&V_V_DEPTCODE=' + V_V_DEPTCODE
+            + '&V_EQUTYPE=' + V_EQUTYPE
+            + '&V_TEAMCODE=' + V_TEAMCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
+
     $("#btnGS").click(function () {
         ReturnIsToTask();
     });
+
     /*$("#btnonPrint").click(function () {
         selectID.push(V_ORDERGUID);
         window.open(AppUrl + "page/No410101/Index.html", selectID,
@@ -271,9 +307,10 @@ $(function () {
     Ext.data.StoreManager.lookup('workCenterStore').on('load', function () {
         Ext.getCmp('addgzzx').select(Ext.data.StoreManager.lookup('workCenterStore').getAt(0));
     });
-});
 
-function getAssignee() {
+
+});
+function getAssignee(){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/InstanceState',
         method: 'POST',
@@ -283,18 +320,17 @@ function getAssignee() {
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee = resp.list[0].Assignee;
+            Assignee=resp.list[0].Assignee;
         }
     });
 }
-
-function loadOrder() {
+function loadOrder(){
     Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',
         method: 'POST',
         async: false,
         params: {
-            V_V_ORDERGUID: V_ORDERGUID
+            V_V_ORDERGUID:  V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -319,19 +355,23 @@ function loadOrder() {
                 $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
                 $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
                 $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
+
                 $("#V_WBS").html(resp.list[0].V_WBS);
                 $("#V_WBS_TXT").html(resp.list[0].V_WBS_TXT);
-                // V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
+
+               // V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
                 //loadTeam(resp.list[0].V_WXTEAM);
-                planDate("D_FACT_START_DATE", "D_START_DATE");
-                planDate("D_FACT_FINISH_DATE", "D_FINISH_DATE");
+
+                planDate("D_FACT_START_DATE","D_START_DATE");
+                planDate("D_FACT_FINISH_DATE","D_FINISH_DATE");
             }
         }
     });
 }
 
-function loadTeam(wxteam) {
+function loadTeam(wxteam){
+
     Ext.Ajax.request({
         method: 'POST',
         async: false,
@@ -341,37 +381,40 @@ function loadTeam(wxteam) {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            for (var i = 0; i < resp.list.length; i++) {
+            for(var i=0;i<resp.list.length;i++){
                 $("#V_TEAM").html(resp.list[0].V_CLASS_NAME);
                 break;
             }
+
         }
     });
+
     Ext.Ajax.request({
         method: 'POST',
         async: false,
         url: AppUrl + 'zdh/teamdetail_sel',
         params: {
             IN_CLASSCODE: wxteam,
-            IN_ORDERGUID: V_ORDERGUID
+            IN_ORDERGUID : V_ORDERGUID
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            for (var i = 0; i < resp.list.length; i++) {
-                if (i == 0) {
-                    if (resp.list[i].V_ROLECODE == "11") {
-                        $("#V_TEAMPERSON").html(resp.list[i].V_PERSONNAME + "（班长）");
+
+            for(var i=0;i<resp.list.length;i++){
+                if(i==0){
+                    if(resp.list[i].V_ROLECODE == "11"){
+                        $("#V_TEAMPERSON").html(resp.list[i].V_PERSONNAME+"（班长）");
                     }
-                    else {
+                    else{
                         $("#V_TEAMPERSON").html(resp.list[i].V_PERSONNAME);
                     }
                 }
-                else {
-                    if (resp.list[i].V_ROLECODE == "11") {
-                        $("#V_TEAMPERSON").append("," + resp.list[i].V_PERSONNAME + "（班长）");
+                else{
+                    if(resp.list[i].V_ROLECODE == "11"){
+                        $("#V_TEAMPERSON").append(","+resp.list[i].V_PERSONNAME+"（班长）");
                     }
-                    else {
-                        $("#V_TEAMPERSON").append("," + resp.list[i].V_PERSONNAME);
+                    else{
+                        $("#V_TEAMPERSON").append(","+resp.list[i].V_PERSONNAME);
                     }
                 }
             }
@@ -379,7 +422,9 @@ function loadTeam(wxteam) {
     });
 }
 
-function getEquipReturnValue(ret) {
+
+
+function getEquipReturnValue(ret){
     var str = [];
     str = ret.split('^');
     $("#V_EQUIP_NAME").val(str[1]);
@@ -410,9 +455,9 @@ function CreateOrderGUID() {
         method: 'POST',
         async: false,
         params: {
-            V_V_PERCODE: $.cookies.get('v_personcode'),
+            V_V_PERCODE:  $.cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
-            V_V_ORGCODE: $("#V_ORGNAME").val(),
+            V_V_ORGCODE:   $("#V_ORGNAME").val(),
             V_V_DEPTCODE: $("#V_DEPTNAME").val()
         },
         success: function (ret) {
@@ -467,6 +512,7 @@ function loadDeptList() {
     });
 }
 
+
 function loadRepairList() {
     Ext.Ajax.request({
         url: AppUrl + 'zdh/fixdept_sel',
@@ -490,16 +536,17 @@ function loadRepairList() {
  */
 function loadTaskGrid() {
     Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
+        url : AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
         //url: "/No410701/PRO_PM_WORKORDER_ET_OPERATIONS",
         type: 'post',
         async: false,
         params: {
-            V_V_ORDERGUID: V_ORDERGUID
+               V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             if (resp.list != "" && resp.list != null) {
+
                 $("#TtableT tbody").empty();
                 if (resp.list.length < 3) {
                     $("#TtableTaskTemplate").tmpl(resp.list).appendTo("#TtableT tbody");
@@ -521,52 +568,48 @@ function loadTaskGrid() {
 
 function OpenEditMat() {
     Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+        url : AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
         type: "post",
         async: false,
         params: {
-            V_V_ORDERGUID: V_ORDERGUID
+            V_V_ORDERGUID : V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            var owidth = window.document.body.offsetWidth - 200;
-            var oheight = window.document.body.offsetHeight - 100;
-            var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-            loadMatList();
+                var owidth = window.document.body.offsetWidth-200;
+                var oheight = window.document.body.offsetHeight-100 ;
+                var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                loadMatList();
         }
     });
 }
 
 $('#btnGJJJ').live('click', function () {
-    var ret = window.showModalDialog(AppUrl + '/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
+    var ret = window.showModalDialog(AppUrl+'/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
 });
 
 function loadMatList() {
     Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+        url : AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
         params: {
-            V_V_ORDERGUID: V_ORDERGUID
+              V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             if (resp.list != null && resp.list != "") {
                 $("#TtableM tbody").empty();
-                $.each(resp.list, function (index, item) {
-                    item["sid"] = index + 1;
-                });
+                $.each(resp.list, function (index, item) { item["sid"] = index + 1; });
                 wuliaochaxunlist = resp.list;
                 $("#TtableMTemplate").tmpl(resp.list).appendTo("#TtableM tbody");
-            } else {
-                $("#TtableM tbody").empty();
-            }
+            } else { $("#TtableM tbody").empty(); }
         }
     });
 }
 
-function loadOther() {
+function loadOther(){
     Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SEL',
+        url : AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SEL',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID
@@ -585,15 +628,15 @@ function loadOther() {
     });
 }
 
-function orderAccept() {
+function orderAccept(){
     OrderSave();
     orderaccept1();
 }
 
-function orderaccept1() {
-    var flag = 1;
+function orderaccept1(){
+    var flag=1;
     Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+        url : AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID
@@ -603,17 +646,17 @@ function orderaccept1() {
             if (resp.list == null || resp.list == "") {
                 accept();
             }
-            else {
-                var temp = 0;
+            else{
+                var temp=0;
                 var number = 0;
-                for (var i = 0; i < resp.list.length; i++) {
+                for(var i=0;i<resp.list.length;i++){
                     Ext.Ajax.request({
-                        url: AppUrl + 'zdh/WX_INF_FILE_SEL',
+                        url : AppUrl + 'zdh/WX_INF_FILE_SEL',
                         type: 'post',
                         params: {
-                            V_V_ORDERGUID: V_ORDERGUID,
-                            V_V_MATERIALGUID: resp.list[i].V_MATERIALCODE,
-                            V_V_FILENAME: '%'
+                            V_V_ORDERGUID : V_ORDERGUID,
+                            V_V_MATERIALGUID : resp.list[i].V_MATERIALCODE,
+                            V_V_FILENAME : '%'
                         },
                         success: function (ret) {
                             number++;
@@ -621,11 +664,11 @@ function orderaccept1() {
                             if (resp1.list != null && resp1.list != "") {
                                 temp++;
                             }
-                            if (number == i) {
-                                if (temp == i) {
+                            if(number == i){
+                                if(temp == i){
                                     accept();
                                 }
-                                else {
+                                else{
                                     alert("每个物料需要上传至少一张图片,请检查您上传的文件!");
                                 }
                             }
@@ -637,7 +680,7 @@ function orderaccept1() {
     });
 }
 
-function accept() {
+function accept(){
     Ext.Ajax.request({
         method: 'POST',
         async: false,
@@ -661,14 +704,14 @@ function accept() {
 
 function OrderSave() {
     Ext.Ajax.request({
-        url: AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SAVE',
+        url : AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SAVE',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID,
-            D_DATE_ACP: "",
+            D_DATE_ACP:  "",
             D_DATE_OVERDUE: $("#I_OTHERHOUR").val(),
             V_REASON_OVERDUE: $("#V_OTHERREASON").val(),
-            V_FIX_EXPLAIN: $("#V_REPAIRCONTENT").val()
+            V_FIX_EXPLAIN:  $("#V_REPAIRCONTENT").val()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -677,25 +720,26 @@ function OrderSave() {
 }
 
 var fjgridStore = Ext.create('Ext.data.Store',
-        {
-            id: 'fjgridStore',
-            autoLoad: true,
-            fields: ['V_MATERIALCODE', 'V_MATERIALNAME'],
-            proxy: {
-                type: 'ajax',
-                url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
-                actionMethods: {
-                    read: 'POST'
-                },
-                reader: {
-                    type: 'json',
-                    root: 'list'
-                },
-                extraParams: {
-                    V_V_ORDERGUID: V_ORDERGUID
-                }
+    {
+        id: 'fjgridStore',
+        autoLoad: true,
+        fields: ['V_MATERIALCODE', 'V_MATERIALNAME'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                V_V_ORDERGUID: V_ORDERGUID
             }
-        });
+        }
+    });
+
 var fjgrid = Ext.create('Ext.grid.Panel', {
     id: 'fjgrid',
     flex: 1,
@@ -730,62 +774,63 @@ var fjgrid = Ext.create('Ext.grid.Panel', {
             text: '附件查询',
             width: 80,
             align: 'center',
-            renderer: function () {
+            renderer : function () {
                 return "<img src=" + imgpath + "/add.png>"
             },
             listeners: {
                 "click": fileadd
             }
         }]
+
 });
+
 var fjwindow = Ext.create('Ext.window.Window', {
-    id: 'fjwindow',
-    width: 460,
-    height: 300,
-    layout: 'border',
-    title: '附件查询',
-    modal: true,//弹出窗口时后面背景不可编辑
-    frame: true,
-    closeAction: 'hide',
-    closable: true,
-    items: [fjgrid],
-    buttons: [{
-        xtype: 'button',
-        text: '取消',
-        width: 40,
-        handler: function () {
+    id : 'fjwindow',
+    width : 460,
+    height : 300,
+    layout : 'border',
+    title : '附件查询',
+    modal : true,//弹出窗口时后面背景不可编辑
+    frame : true,
+    closeAction : 'hide',
+    closable : true,
+    items : [fjgrid],
+    buttons : [{
+        xtype : 'button',
+        text : '取消',
+        width : 40,
+        handler : function() {
             Ext.getCmp('fjwindow').hide();
-        }
-    }]
+        }}]
 });
 
 function OrderFile() {
     Ext.data.StoreManager.lookup('fjgridStore').load({
-        params: {
-            V_V_ORDERGUID: V_ORDERGUID
+        params : {
+            V_V_ORDERGUID : V_ORDERGUID
         }
     });
     Ext.getCmp('fjwindow').show();
 }
 
 function OrderFile1(V_MATERIALGUID) {
-    var owidth = window.document.body.offsetWidth - 200;
-    var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID + '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var owidth = window.document.body.offsetWidth-200;
+    var oheight = window.document.body.offsetHeight-100 ;
+    var ret = window.open(AppUrl+'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
 }
 
-function fileadd() {
+function fileadd(){
     var seldata = Ext.getCmp('fjgrid').getSelectionModel().getSelection();
-    var owidth = window.document.body.offsetWidth - 200;
-    var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID + '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var owidth = window.document.body.offsetWidth-200;
+    var oheight = window.document.body.offsetHeight-100 ;
+    var ret = window.open(AppUrl+'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
 }
 
 function GetModel() {
-    if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) {
-        alert("请先选择设备!");
-    } else {
-        var ret = window.showModalDialog(AppUrl + '/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE=' + $('#V_DEPTNAMEREPARIR').val() + '', '', 'dialogHeight:500px;dialogWidth:800px');
+    if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) { alert("请先选择设备!"); } else {
+        var ret = window.showModalDialog(AppUrl+'/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE='+ $('#V_DEPTNAMEREPARIR').val() + '','', 'dialogHeight:500px;dialogWidth:800px');
         //loadTaskGrid();
         //loadToolAndTxtList();
         //loadMatList();
@@ -802,11 +847,11 @@ function NowDate_b(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00";
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00" ;
+
     //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
-
 function NowDate_e(id) {
     var d, s;
     d = new Date();
@@ -817,14 +862,15 @@ function NowDate_e(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00";
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00" ;
+
     //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
 
-function planDate(id, jhid) {
+function planDate(id,jhid) {
     var d, s;
-    d = new Date($("#" + jhid + "").html());
+    d = new Date($("#"+jhid+"").html());
     var year = d.getFullYear().toString();
     var month = (d.getMonth() + 1).toString();
     var date = d.getDate().toString();
@@ -832,10 +878,10 @@ function planDate(id, jhid) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
+
     //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
-
 function NowDate2(id) {
     var d, s;
     d = new Date();
@@ -846,15 +892,15 @@ function NowDate2(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date);
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) ;
     // try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").html(s);
 }
 
-function dateFomate(val) {
-    if (parseInt(val) <= 9) {
-        return "0" + val;
-    } else {
+function dateFomate(val){
+    if(parseInt(val) <=9){
+        return "0"+val;
+    }else{
         return val;
     }
 }
@@ -871,11 +917,11 @@ function bindDate(fid) {
         dateFormat: 'yy-mm-dd',
         timeFormat: 'hh:mm:ss',
         stepMinute: 30,
-        controlType: 'select'
+        controlType:'select'
     });
 }
 
-var agridStore = Ext.create('Ext.data.Store', {
+var agridStore = Ext.create('Ext.data.Store',{
     autoLoad: false,
     storeId: 'agridStore',
     fields: ['V_PERSONCODE', 'V_PERSONNAME'],
@@ -886,6 +932,7 @@ var agridStore = Ext.create('Ext.data.Store', {
         }
     }
 });
+
 var agrid = Ext.create('Ext.grid.Panel', {
     id: 'agrid',
     region: 'center',
@@ -952,6 +999,7 @@ var agrid = Ext.create('Ext.grid.Panel', {
         }]
     }]
 });
+
 var awindow = Ext.create('Ext.window.Window', {
     id: 'awindow',
     width: 600,
@@ -980,15 +1028,14 @@ var awindow = Ext.create('Ext.window.Window', {
     }]
 });
 
-function OrderPerson() {
+function OrderPerson(){
     windowquery();
     Ext.getCmp('awindow').show();
 }
-
-function orderonPrint() {
+function orderonPrint(){
     selectID.push(V_ORDERGUID);
     window.open(AppUrl + "page/No410101/Index.html", selectID,
-            "dialogHeight:700px;dialogWidth:1100px");
+        "dialogHeight:700px;dialogWidth:1100px");
 }
 
 function windowquery() {
@@ -1032,9 +1079,10 @@ function todel(view, item, colIndex, rowIndex, e) {
 }
 
 function p_query() {
+
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart=' + V_DEPTREPAIRCODE + '&classcode=' + V_TEAMCODE + '&V_ORDERGUID=' + V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart='+V_DEPTREPAIRCODE+'&classcode='+V_TEAMCODE+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function saved_btn() {
@@ -1056,11 +1104,12 @@ function saved_btn() {
             IN_CLASSNAME: Ext.getCmp('addmzmc').getValue(),
             IN_WORKCODE: Ext.getCmp('addgzzx').getValue(),
             IN_PERSONCODE: arr.toString(),
-            IN_ORDERGUID: V_ORDERGUID
+            IN_ORDERGUID : V_ORDERGUID
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp[0] == 'SUCCESS') {
+
             }
         }
     });
@@ -1068,7 +1117,7 @@ function saved_btn() {
     //loadTeam(V_TEAMCODE);
 }
 
-function OrderBooked() {
+function OrderBooked(){
     OrderSave();
     Ext.Ajax.request({
         method: 'POST',
@@ -1090,7 +1139,8 @@ function OrderBooked() {
     });
 }
 
-function activitiOrderissued() {
+
+function activitiOrderissued(){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -1100,16 +1150,17 @@ function activitiOrderissued() {
             idea: '已打印',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [Ext.getCmp('nextSpr2').getValue(), '已打印'],
-            processKey: processKey,
-            businessKey: $.url().param("V_ORDERGUID"),
-            V_STEPCODE: V_STEPCODE,
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '已打印',
-            V_NEXTPER: Ext.getCmp('nextSpr2').getValue(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
+            processKey :processKey,
+            businessKey : $.url().param("V_ORDERGUID"),
+            V_STEPCODE : V_STEPCODE,
+            V_STEPNAME : V_STEPNAME,
+            V_IDEA : '已打印',
+            V_NEXTPER : Ext.getCmp('nextSpr2').getValue(),
+            V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             Ext.getCmp('window2').hide();
+
             orderissued();
         },
         failure: function (response) {//访问到后台时执行的方法。
@@ -1120,10 +1171,13 @@ function activitiOrderissued() {
                 icon: Ext.MessageBox.ERROR
             })
         }
+
     })
+
+
 }
 
-function _reserveWorkOrder() {
+function _reserveWorkOrder(){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -1133,13 +1187,13 @@ function _reserveWorkOrder() {
             idea: '预留工单',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [Ext.getCmp('nextSpr').getValue(), '请审批'],
-            processKey: processKey,
-            businessKey: $.url().param("V_ORDERGUID"),
-            V_STEPCODE: V_STEPCODE,
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '预留工单',
-            V_NEXTPER: Ext.getCmp('nextSpr').getValue(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
+            processKey :processKey,
+            businessKey : $.url().param("V_ORDERGUID"),
+            V_STEPCODE : V_STEPCODE,
+            V_STEPNAME : V_STEPNAME,
+            V_IDEA : '预留工单',
+            V_NEXTPER : Ext.getCmp('nextSpr').getValue(),
+            V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             Ext.Ajax.request({
@@ -1148,7 +1202,7 @@ function _reserveWorkOrder() {
                 url: AppUrl + 'hp/PRO_WX_ORDER_BOOKED',
                 params: {
                     V_V_ORDERGUID: V_ORDERGUID,
-                    V_V_YQTIME: $("#I_OTHERHOUR").val(),
+                    V_V_YQTIME:$("#I_OTHERHOUR").val(),
                     V_V_YQYY: $("#V_OTHERREASON").val()
                 },
                 success: function (response) {
@@ -1171,7 +1225,10 @@ function _reserveWorkOrder() {
                 icon: Ext.MessageBox.ERROR
             })
         }
+
     })
+
+
 }
 
 function getPersonReturnValue(retdata) {
@@ -1184,7 +1241,7 @@ function getPersonReturnValue(retdata) {
     }
 }
 
-function orderissued() {
+function orderissued(){
     $.ajax({
         url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DY',
         type: 'post',
@@ -1195,6 +1252,7 @@ function orderissued() {
             V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
             V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val().split(".")[0],
             V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val().split(".")[0],
+
             V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
             V_V_OTHERREASON: $("#V_OTHERREASON").val(),
             V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
@@ -1214,10 +1272,11 @@ function orderissued() {
                     async: false,
                     params: {
                         V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
-                        V_V_FLAG: '1'
+                        V_V_FLAG:'1'
                     },
                     success: function (resp) {
                         var respguid = Ext.decode(resp.responseText);
+
                     }
                 });
                 window.opener.QueryTab();
@@ -1348,15 +1407,17 @@ function orderissued() {
             }
         }
     });*/
-}
 
-function closeWin() {
+
+}
+function closeWin(){
     window.close();
     window.opener.OnPageLoad();
     window.opener.QueryGrid();
 }
 
-function getTaskId() {
+function getTaskId()
+{
     $.ajax({//获取taskId
         url: AppUrl + 'Activiti/GetTaskIdFromBusinessId',
         type: 'post',
@@ -1370,9 +1431,10 @@ function getTaskId() {
             V_STEPCODE = resp.TaskDefinitionKey;
         }
     });
-}
 
-function OrderBooked() {
+
+}
+function OrderBooked(){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -1382,13 +1444,13 @@ function OrderBooked() {
             idea: '预留工单',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [$("#selApprover").val(), '请审批'],
-            processKey: processKey,
-            businessKey: $.url().param("V_ORDERGUID"),
-            V_STEPCODE: V_STEPCODE,
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '请审批！',
-            V_NEXTPER: $("#selApprover").val(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
+            processKey :processKey,
+            businessKey : $.url().param("V_ORDERGUID"),
+            V_STEPCODE : V_STEPCODE,
+            V_STEPNAME : V_STEPNAME,
+            V_IDEA : '请审批！',
+            V_NEXTPER : $("#selApprover").val(),
+            V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             window.opener.QueryTab();
@@ -1396,6 +1458,8 @@ function OrderBooked() {
             window.opener.QueryGrid();
             window.close();
             window.opener.OnPageLoad();
+
+
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1405,7 +1469,9 @@ function OrderBooked() {
                 icon: Ext.MessageBox.ERROR
             })
         }
+
     })
+
 }
 
 function ReturnIsToTask() {
@@ -1416,7 +1482,7 @@ function ReturnIsToTask() {
         type: 'post',
         async: false,
         data: {
-            V_V_ORDERGUID: $.url().param("V_ORDERGUID")
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
         },
         dataType: "json",
         traditional: true,
@@ -1425,42 +1491,47 @@ function ReturnIsToTask() {
                 alert("请先添加工序");
             } else {
                 var ret = window.open(AppUrl
-                        + 'page/No41020102/Index.html?V_ORDERGUID='
-                        + $.url().param("V_ORDERGUID") + '&V_DEPTCODEREPARIR='
-                        + V_V_REPAIRCODE + '', '',
-                        'dialogHeight:500px;dialogWidth:800px');
+                    + 'page/No41020102/Index.html?V_ORDERGUID='
+                    + $.url().param("V_ORDERGUID") + '&V_DEPTCODEREPARIR='
+                    + V_V_REPAIRCODE + '', '',
+                    'dialogHeight:500px;dialogWidth:800px');
                 loadTaskGrid();
             }
         }
     });
 }
 
-function Receive() {
+function Receive(){
     var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
     nextSprStoreb.proxy.extraParams = {
         V_V_ORGCODE: V_V_ORGCODE,
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: V_V_REPAIRCODE,
         V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP: V_STEPCODE,// $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP:V_STEPCODE,// $.url().param("TaskDefinitionKey"),
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
-        V_V_WHERE: '已打印'
+        V_V_WHERE:'已打印'
+
     };
+
     nextSprStoreb.currentPage = 1;
     nextSprStoreb.load();
     Ext.getCmp('windowb').show();
 }
-
 function ConfirmAccept() {
+
+
     if ($("#D_FACT_START_DATE").val() == "") {
         Ext.MessageBox.alert('提示', '请输入实际开始时间');
         return;
     }
+
     if ($("#D_FACT_FINISH_DATE").val() == "") {
         Ext.MessageBox.alert('提示', '请输入实际结束时间');
         return;
     }
+
     //var test = new Array(wuliaochaxunlist);
     //console.log(test);
     /*if(wuliaochaxunlist.length==0){
@@ -1474,6 +1545,7 @@ function ConfirmAccept() {
             }
         }
     }*/
+
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -1483,13 +1555,13 @@ function ConfirmAccept() {
             idea: '已打印',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [Ext.getCmp('nextSprb').getValue(), '已打印'],
-            processKey: processKey,
-            businessKey: $.url().param("V_ORDERGUID"),
-            V_STEPCODE: V_STEPCODE,
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '请审批！',
-            V_NEXTPER: Ext.getCmp('nextSpr').getValue(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
+            processKey :processKey,
+            businessKey : $.url().param("V_ORDERGUID"),
+            V_STEPCODE : V_STEPCODE,
+            V_STEPNAME : V_STEPNAME,
+            V_IDEA : '请审批！',
+            V_NEXTPER : Ext.getCmp('nextSpr').getValue(),
+            V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             $.ajax({
@@ -1502,6 +1574,7 @@ function ConfirmAccept() {
                     V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
                     V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val().split(".")[0],
                     V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val().split(".")[0],
+
                     V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
                     V_V_OTHERREASON: $("#V_OTHERREASON").val(),
                     V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
@@ -1521,10 +1594,11 @@ function ConfirmAccept() {
                             async: false,
                             params: {
                                 V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
-                                V_V_FLAG: '1'
+                                V_V_FLAG:'1'
                             },
                             success: function (resp) {
                                 var respguid = Ext.decode(resp.responseText);
+
                                 /*if (respguid.list.length >0) {
 
                                     for(var i=0;i<respguid.list.length;i++)
@@ -1588,6 +1662,8 @@ function ConfirmAccept() {
                     }
                 }
             });
+
+
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1597,612 +1673,12 @@ function ConfirmAccept() {
                 icon: Ext.MessageBox.ERROR
             })
         }
+
     })
+
 }
-
-//function print() {
-//    selectID.push(V_ORDERGUID);
-//    window.open(AppUrl + "page/No410101/Index.html", selectID,
-//        "dialogHeight:700px;dialogWidth:1100px");
-//}
-function DefaultPrintSettings() {
-    try {
-        LODOP = getLodop(document.getElementById('LODOP'), document.getElementById('LODOP_EM'));
-        LODOP.SET_LICENSES("鞍山市新安杰系统集成有限公司", "559677661718684777294958093190", "", "");
-// var strBodyStyle = "<style>" +
-// document.getElementById("stylePrint").innerHTML + "</style>";
-// var strFormHtml = strBodyStyle + "<body>" + $("#yesprint").html() +
-// "</body>";
-        LODOP.PRINT_INIT("gongdan");
-//        var strBodyStyle = "<style> " +
-//                " body, td, th { " +
-//                "    font-size: 10pt;  letter-spacing:0.1mm; " +
-//                "} " +
-//                ".outbox {  border: 1.5pt solid #000;}  " +
-//                ".border_r_b {" +
-//                "     border-right-width: 1.5pt;" +
-//                "     border-bottom-width: 1.5pt;" +
-//                "     border-right-style: solid;" +
-//                "     border-bottom-style: solid;" +
-//                "     border-right-color: #000;" +
-//                "     border-bottom-color: #000;" +
-//                "}" +
-//                " .border_r {" +
-//                "     border-right-width: 1.5pt;" +
-//                "     border-right-style: solid;" +
-//                "     border-right-color: #000;" +
-//                " }" +
-//                " .border_b {" +
-//                "   border-bottom-width: 1.5pt;" +
-//                "   border-bottom-style: solid;" +
-//                "   border-bottom-color: #000;" +
-//                " }" +
-//                " .Ttable td {" +
-//                "     height: 4.5mm;" +
-//                " }" +
-//                " .PageNext {" +
-//                "     page-break-after: always;" +
-//                " }</style>";
-        LODOP.SET_PRINT_PAGESIZE(2, 2100, 2970, 'A4 横向');
-        // var strBodyStyle = "<style> " + document.getElementById("stylePrint").innerHTML + "</style>";
-//        for (var i = 0; i < idGroup.length; i++) {
-//            var strFormHtml = strBodyStyle + $("#" + idGroup[i]).html();
-//            LODOP.ADD_PRINT_HTML("30", "15", "100%", "100%", strFormHtml);
-//            //LODOP.ADD_PRINT_HTML("3%","4.5%","0","90%" ,strFormHtml);
-//            LODOP.NewPage();
-//        }
-    }
-    catch (e) {
-        $("#exception").show();
-    }
-}
-
-
-
-
-var orderGUID = [];
-
-function Print() {
-    try {
-        for (var i = 0; i < orderGUID.length; i++) {
-            DefaultPrintSettings();
-            LODOP.ADD_PRINT_HTML("30", "15", "100%", "100%", $("#" + tablediv[i]).html());
-            LODOP.PRINT();
-        }
-        DefaultPrintSettings();
-        LODOP.PRINT();
-    } catch (e) {
-        $("#exception").show();
-    }
-}
-
-function Preview() {
-    try {
-        for (var i = 0; i < orderGUID.length; i++) {
-            DefaultPrintSettings();
-            LODOP.ADD_PRINT_HTML("30", "15", "100%", "100%", $("#" + tablediv[i]).html());
-        }
-        LODOP.PREVIEW();
-    } catch (e) {
-        $("#exception").show();
-    }
-}
-
-
-
-function loadPage(i) {
-    document.write("<div id=tablediv" + i + " style=\"padding-bottom: 10px;margin-left:20px;\">\n" +
-            "    <table class=\"Tabel_p\">\n" +
-            "        <tr>\n" +
-            "            <td style=\"width: 570px; padding: 0px; vertical-align:top; height:130px\">\n" +
-            "                <table class=\"Tabel_pl\" style=\"border: 0px\">\n" +
-            "                    <tr>\n" +
-            "                        <td colspan=\"4\"\n" +
-            "                            style=\"border-bottom: 1px solid #000; border-top: 0px; border-left: 0px; border-right: 0px; width: 100%; background-color: #F4F5F7\">\n" +
-            "                            ①基本信息栏\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            工厂单位：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"V_ORGNAME\"></label>\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            工单类型：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left\">\n" +
-            "                            <label id=\"V_ORDER_TYP_TXT\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            作业区：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"V_DEPTNAME\"></label>\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            工 单 号：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left\">\n" +
-            "                            <label id=\"V_ORDERID\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            设备名称：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"V_EQUIP_NAME\"></label>\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            检修单位：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 1px solid #000; border-right: 0px; text-align: left\">\n" +
-            "                            <label id=\"V_DEPTNAMEREPARIR\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            设备编号：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"V_EQUIP_NO\"></label>\n" +
-            "                        </td>\n" +
-            "                        <td rowspan=\"2\"\n" +
-            "                            style=\"border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            工单描述：\n" +
-            "                        </td>\n" +
-            "                        <td rowspan=\"2\" style=\"border-bottom: 0; border-right: 0px; text-align: left\">\n" +
-            "                            <label id=\"V_SHORT_TXT\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td style=\"border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            功能位置：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"V_FUNC_LOC\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                </table>\n" +
-            "            </td>\n" +
-            "            <td style=\"width: 450px;\">\n" +
-            "                <table class=\"Tabel_pl\" style=\"border: 0px\">\n" +
-            "                    <tr>\n" +
-            "                        <td colspan=\"4\"\n" +
-            "                            style=\"border-bottom: 1px solid #000; border-top: 0px; border-left: 0px; border-right: 0px; background-color: #F4F5F7\">\n" +
-            "                            ②任务信息栏\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            创建人：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"V_ENTERED_BY\">\n" +
-            "                            </label>\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            创建日期：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left\">\n" +
-            "                            <label id=\"D_ENTER_DATE\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            WBS编码：\n" +
-            "                        </td>\n" +
-            "                        <td colspan=\"3\"\n" +
-            "                            style=\"border-bottom: 1px solid #000; border-right: 0px; text-align: left\">\n" +
-            "                            <label id=\"V_WBS\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            项目名称：\n" +
-            "                        </td>\n" +
-            "                        <td colspan=\"3\"\n" +
-            "                            style=\"border-bottom: 1px solid #000; border-right: 0px; text-align: left\">\n" +
-            "                            <label id=\"V_WBS_TXT\"></label>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            计划开始时间：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"D_START_DATE\"></label>\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            实际开始时间：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 1px solid #000; border-right: 0px;\">\n" +
-            "                            <input type=\"text\" id=\"D_FACT_START_DATE\"\n" +
-            "                                   style=\"background-color: #FFFF99; width: 130px; height:35px;\"/>\n" +
-            "                            <!--<label type=\"text\" id=\"D_FACT_START_DATE\" style=\"width: 130px; height:35px; \" ></label>-->\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td style=\"border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            计划完成时间：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left\">\n" +
-            "                            <label id=\"D_FINISH_DATE\"></label>\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            实际完成时间：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0; border-right: 0px;\">\n" +
-            "                            <input type=\"text\" id=\"D_FACT_FINISH_DATE\"\n" +
-            "                                   style=\"background-color: #FFFF99; width: 130px; height:35px;\"/>\n" +
-            "                            <!--<label type=\"text\" id=\"D_FACT_FINISH_DATE\" style=\"width: 95%; height:35px;\"></label>-->\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                </table>\n" +
-            "            </td>\n" +
-            "        </tr>\n" +
-            "        <tr>\n" +
-            "            <td colspan=\"3\" style=\"text-align: left; background-color: #F4F5F7\">\n" +
-            "                ③任务细节\n" +
-            "                <!--<input type=\"button\" id=\"btnTask\" class=\"btnprint\" value=\"人员与工时查看\" onclick=\"ViewTask()\" />-->\n" +
-            "                <input type=\"button\" class=\"btnprint\" id=\"btnGS\" value=\"人员与工时填写\"/>\n" +
-            "                <input type=\"button\" id=\"btnTask\" class=\"btnprint\" value=\"编辑任务\"/>\n" +
-            "            </td>\n" +
-            "        </tr>\n" +
-            "        <tr>\n" +
-            "            <td colspan=\"3\">\n" +
-            "                <table class=\"Tabel_pl\" style=\"border: 0px\">\n" +
-            "                    <tr>\n" +
-            "                        <td style=\"border: 0px; width: 666px\">\n" +
-            "                            <table class=\"Tabel_pl\" style=\"border: 0px\" id=\"TtableT\">\n" +
-            "                                <thead>\n" +
-            "                                <tr>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-left: 0px; border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        工序编号\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        工作中心\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        工序内容\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        定额时间\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        定额人数\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        实际时间\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        实际人数\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        机具\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        工具\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        技术要求\n" +
-            "                                    </td>\n" +
-            "                                    <td\n" +
-            "                                            style=\"border-bottom: 1px; border-top: 0px;border-right: 0px; width: 9%; background-color: #BFDFFF\">\n" +
-            "                                        安全措施\n" +
-            "                                    </td>\n" +
-            "                                </tr>\n" +
-            "                                </thead>\n" +
-            "                                <tbody>\n" +
-            "                                <tr>\n" +
-            "                                    <td style=\"border-left: 0px; border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                </tr>\n" +
-            "                                <tr>\n" +
-            "                                    <td style=\"border-left: 0px; border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                </tr>\n" +
-            "                                <tr>\n" +
-            "                                    <td style=\"border-left: 0px; border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                    <td style=\"border-bottom: 0px;\">\n" +
-            "                                    </td>\n" +
-            "                                </tr>\n" +
-            "                                </tbody>\n" +
-            "                            </table>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                </table>\n" +
-            "            </td>\n" +
-            "        </tr>\n" +
-            "        <tr>\n" +
-            "            <td colspan=\"3\" style=\"text-align: left; background-color: #F4F5F7\">\n" +
-            "                ④物料信息\n" +
-            "                <!--<input type=\"button\" class=\"btnprint\" onclick=\"ViewLook();\"\n" +
-            "                value=\"物料信息查看\" />-->\n" +
-            "                <input type=\"button\" class=\"btnprint\" onclick=\"OpenEditMat();\"\n" +
-            "                       value=\"编辑物料信息\"/>\n" +
-            "            </td>\n" +
-            "\n" +
-            "        </tr>\n" +
-            "        <tr>\n" +
-            "            <td style=\"border: 0px\" colspan=\"3\">\n" +
-            "                <table class=\"Tabel_pl\" style=\"border: 0px\" id=\"TtableM\">\n" +
-            "                    <thead>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-left: 0px; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            序号\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            工序\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            物料编码\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            物料描述\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            单位\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            计划数量\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            计划总金额\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            实际数量\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF\">\n" +
-            "                            实际总金额\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 10%; border-top: 0px; border-bottom: 0px; border-right: 0px; background-color: #BFDFFF\">\n" +
-            "                            备注\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    </thead>\n" +
-            "                    <tbody>\n" +
-            "                    <tr>\n" +
-            "                        <td style=\"border-left: 0px; border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px\">\n" +
-            "                        </td>\n" +
-            "                        <td style=\"border-bottom: 0px; border-right: 0px\">\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    </tbody>\n" +
-            "                </table>\n" +
-            "            </td>\n" +
-            "        </tr>\n" +
-            "        <tr>\n" +
-            "            <td colspan=\"3\" style=\"text-align: left; background-color: #F4F5F7\">\n" +
-            "                ⑤验收栏\n" +
-            "            </td>\n" +
-            "        </tr>\n" +
-            "        <tr>\n" +
-            "            <td colspan=\"3\" style=\"width: 100%; border: 0px\">\n" +
-            "                <table class=\"Tabel_pl\" style=\"border: 0px\">\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-left: 0px; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            验收日期：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\"\n" +
-            "                                id=\"D_DATE_ACP\">\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            提前、逾期时间：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\">\n" +
-            "                            <input type=\"text\" id=\"I_OTHERHOUR\"\n" +
-            "                                   style=\"width: 98%; height:20px; background-color: #FFFF99;\"/></td>\n" +
-            "\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            逾期原因：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left;\">\n" +
-            "                            <input type=\"text\" id=\"V_OTHERREASON\"\n" +
-            "                                   style=\"width: 98%; height:20px; background-color: #FFFF99;\"/></td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            检修方说明：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">\n" +
-            "                            <input type=\"text\" id=\"V_REPAIRCONTENT\"\n" +
-            "                                   style=\"width: 98%; height:20px; background-color: #FFFF99;\"/>\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            检修方签字：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">\n" +
-            "                            <input type=\"text\" id=\"V_REPAIRSIGN\"\n" +
-            "                                   style=\"background-color: #FFFF99; width:100%; height:25px;\"/>\n" +
-            "                        </td>\n" +
-            "\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            检修人员：\n" +
-            "                        </td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\">\n" +
-            "                            <input type=\"text\" id=\"V_REPAIRPERSON\"\n" +
-            "                                   style=\"background-color: #FFFF99; width:100%; height:25px;\"/>\n" +
-            "                        </td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            岗位签字：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"\n" +
-            "                            id=\"V_POSTMANSIGN\"></td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            点检员验收意见：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"\n" +
-            "                            id=\"V_CHECKMANCONTENT\"></td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            点检员签字：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\"\n" +
-            "                            id=\"V_CHECKMANSIGN\"></td>\n" +
-            "                    </tr>\n" +
-            "                    <tr>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            作业区验收：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"\n" +
-            "                            id=\"V_WORKSHOPCONTENT\"></td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            库管员签字：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"\n" +
-            "                            id=\"V_WORKSHOPSIGN\"></td>\n" +
-            "                        <td\n" +
-            "                                style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">\n" +
-            "                            部门签字：\n" +
-            "                        </td>\n" +
-            "                        <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\"\n" +
-            "                            id=\"V_DEPTSIGN\"></td>\n" +
-            "                    </tr>\n" +
-            "                </table>\n" +
-            "            </td>\n" +
-            "        </tr>\n" +
-            "    </table>\n" +
-            "</div>")
-}
-
-function loadAllPage() {
-    for (var i = 0; i < orderGUID.length; i++) {
-        loadPage(i);
-    }
+function print() {
+    selectID.push(V_ORDERGUID);
+    window.open(AppUrl + "page/No410101/Index.html", selectID,
+        "dialogHeight:700px;dialogWidth:1100px");
 }
