@@ -763,7 +763,7 @@ function addTYbtn(){
         });
         return;
     }
-    /*if(V_V_EQUTYPECODE == '%'){
+    if(V_V_EQUTYPECODE == '%' || V_V_EQUTYPECODE=='TY'){
         Ext.MessageBox.show({
             title: '提示',
             msg: '请选择设备类型',
@@ -771,7 +771,7 @@ function addTYbtn(){
             icon: Ext.MessageBox.WARNING
         });
         return;
-    }*/
+    }
     window.open(AppUrl + 'page/PM_01020101/index.html?V_V_PLANTCODE=' + V_V_PLANTCODE +
         '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUTYPECODE=' + V_V_EQUTYPECODE +
         '&V_V_EQUCODE=' + V_V_EQUCODE + '&V_V_EQUCHILDCODE=' + V_V_EQUCHILDCODE+ '&v_flag=TY' , '_blank', 'width=900,height=700,resizable=yes,scrollbars=yes');
