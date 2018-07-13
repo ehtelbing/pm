@@ -1,9 +1,11 @@
 var V_V_JXGX_CODE = '';
 var V_ORDERGUID = '';
+var V_DEPTCODE='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     V_V_JXGX_CODE = parameters.V_V_JXGX_CODE == null ? '' : parameters.V_V_JXGX_CODE;
     V_ORDERGUID = parameters.V_ORDERGUID == null ? '' : parameters.V_ORDERGUID;
+    V_DEPTCODE = parameters.redept == null ? '' : parameters.redept;
 }
 Ext.onReady(function () {
 
@@ -71,7 +73,7 @@ Ext.onReady(function () {
             type: 'ajax',
             url: AppUrl + 'cjy/selectPersonTreeFromDept',
             extraParams: {
-                V_V_DEPTCODE : '',
+                V_V_DEPTCODE :'',
                 V_V_DEPTTYPE : '',
                 V_V_FLAG : ''
             },
@@ -231,7 +233,7 @@ function QueryTree(){
 
     var treeStore = Ext.data.StoreManager.lookup('treeStore');
     treeStore.proxy.extraParams = {
-        V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+        V_V_DEPTCODE: V_DEPTCODE,
         V_V_FLAG: 'true'
     };
     treeStore.currentPage = 1;

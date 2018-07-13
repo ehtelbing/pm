@@ -124,11 +124,11 @@ var windowLayout = {
         xtype: 'textareafield', fieldLabel: '工序内容:', labelAlign: 'right', grow: true, id: 'workContent', allowBlank: false, width: 400, height: 100,colspan : 2
 
     }, {
-        xtype: 'numberfield', fieldLabel: '实际时间:', labelAlign: 'right', id: 'actualTime', value: 1, minValue: 1, width: 400,colspan : 2
+        xtype: 'numberfield', fieldLabel: '实际时间:', labelAlign: 'right', id: 'actualTime', value: 1, minValue: 0, width: 400,colspan : 2
     },{
         xtype: 'numberfield', fieldLabel: '额定时间:', hidden:true,labelAlign: 'right', id: 'activiTime', value: 1, minValue: 1, width: 400,colspan : 2
     }, {
-        xtype: 'textfield', fieldLabel: '班组', labelAlign: 'right', id: 'banzu',  width: 400,colspan : 2
+        xtype: 'textfield', fieldLabel: '班组', labelAlign: 'right', id: 'banzu',  width: 400,colspan : 2,hidden:true
     },{
         xtype: 'textfield',
         id : 'personSel',
@@ -574,7 +574,7 @@ function getReturnJXSAFE(data){
 function selectPerson(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID+'&redept='+Ext.getCmp('selWorkCenter').valueModels[0].raw.V_DEPTCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function getPersonReturnValue(data,ts){

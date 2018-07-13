@@ -1,4 +1,3 @@
-
 //初始化参数信息
 var type = '';//新增 or 编辑
 var genre = 1;//主项 or 子项
@@ -10,7 +9,9 @@ var rownumber = null;
 var guid = '';
 var V_PROJECT_NAME = '';
 var V_PROJECT_CODE = '';
-var V_MAJOR_CODE='';
+var V_MAJOR_CODE = '';
+
+
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.guid == undefined) ? guid = '' : guid = parameters.guid;
@@ -121,7 +122,7 @@ var zyStore = Ext.create("Ext.data.Store", {
 var zynrs = [];
 var zynrStore = Ext.create("Ext.data.Store", {
     id: 'zynrStore',
-    fields: ['nr'],
+    fields: ['nr', 'id', 'guid'],
     data: zynrs,
     proxy: {
         type: 'memory',
@@ -188,7 +189,7 @@ var jhygZStore = Ext.create("Ext.data.Store", {
 
 var jhwlZStore = Ext.create("Ext.data.Store", {
     id: 'jhwlZStore',
-    fields: ['V_WL_CODE','V_WL_NAME', 'V_JLDW', 'V_GGXH', 'V_DJ', 'V_NUM'],
+    fields: ['V_WL_CODE', 'V_WL_NAME', 'V_JLDW', 'V_GGXH', 'V_DJ', 'V_NUM'],
     data: jhwlZ,
     proxy: {
         type: 'memory',
@@ -199,7 +200,7 @@ var jhwlZStore = Ext.create("Ext.data.Store", {
 });
 var jjpbZStore = Ext.create("Ext.data.Store", {
     id: 'jjpbZStore',
-    fields: ['V_JJ_CODE','V_JJ_NAME', 'V_JLDW', 'V_V_JLDWNUM'],
+    fields: ['V_JJ_CODE', 'V_JJ_NAME', 'V_JLDW', 'V_V_JLDWNUM'],
     data: jjpbZ,
     proxy: {
         type: 'memory',
@@ -232,7 +233,7 @@ Ext.onReady(function () {
             text: "My Root"
         },
         fields: ['V_BUILD_DEPT', 'V_BULID_PERSON', 'V_CONTENT', 'V_DATE_B', 'V_DATE_E', 'V_GUID',
-            'V_GUID_FXJH', 'V_PROJECT_CODE_FXJH', 'V_PROJECT_NAME', 'V_SPECIALTY', 'V_PLAN_MONEY', 'V_GUID_P','V_ROWNUMBER','V_P_ROWNUMBER'],
+            'V_GUID_FXJH', 'V_PROJECT_CODE_FXJH', 'V_PROJECT_NAME', 'V_SPECIALTY', 'V_PLAN_MONEY', 'V_GUID_P', 'V_ROWNUMBER', 'V_P_ROWNUMBER'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'gantt/PRO_PM_EQUREPAIRPLAN_TREE',
@@ -276,18 +277,18 @@ Ext.onReady(function () {
                 dataIndex: 'V_PROJECT_NAME',
                 width: 180,
                 field: {xtype: 'textfield'},
-                align: 'center',renderer:Atleft
+                align: 'center', renderer: Atleft
             },
 
             {
                 text: '工程总费用',
                 dataIndex: 'V_PLAN_MONEY',
                 width: 120,
-                field: {xtype: 'numberfield',minValue:0},
-                align: 'center',renderer:AtRight
+                field: {xtype: 'numberfield', minValue: 0},
+                align: 'center', renderer: AtRight
             },
-            {text: '工程开始时间', dataIndex: 'V_DATE_B', width: 160, align: 'center',renderer:Atleft},
-            {text: '工程结束时间', dataIndex: 'V_DATE_E', width: 160,  align: 'center',renderer:Atleft}],
+            {text: '工程开始时间', dataIndex: 'V_DATE_B', width: 160, align: 'center', renderer: Atleft},
+            {text: '工程结束时间', dataIndex: 'V_DATE_E', width: 160, align: 'center', renderer: Atleft}],
         listeners: {
             'itemclick': function (a, b, c) {
                 jhygs = [];
@@ -385,7 +386,7 @@ Ext.onReady(function () {
                     },
                     success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
-                        if(resp.list.length>0){
+                        if (resp.list.length > 0) {
                             Ext.getCmp('sgyc_tab').setValue(resp.list[0].V_SGYC);
                             Ext.getCmp('aqdc_tab').setValue(resp.list[0].V_AQDC);
                         }
@@ -415,7 +416,6 @@ Ext.onReady(function () {
                     }
                 });
                 Ext.data.StoreManager.lookup('gdxqStore').load();
-
 
 
                 pageFunction.loadGdxqTab(b.data.V_GUID);
@@ -453,7 +453,7 @@ Ext.onReady(function () {
 
     var jhygStore = Ext.create("Ext.data.Store", {
         id: 'jhygStore',
-        fields: ['gz', 'rs', 'gs', 'sm','de','gzc'],
+        fields: ['gz', 'rs', 'gs', 'sm', 'de', 'gzc'],
         data: jhygs,
         proxy: {
             type: 'memory',
@@ -633,8 +633,8 @@ Ext.onReady(function () {
         ]
     });
     var panel1 = Ext.create('Ext.panel.Panel', {
-        title:'<h1 style="font-size:22px !important;">'+V_PROJECT_NAME+'</h1>',
-        titleAlign:'center',
+        title: '<h1 style="font-size:22px !important;">' + V_PROJECT_NAME + '</h1>',
+        titleAlign: 'center',
         frame: true,
         layout: 'column',
         bodyPadding: 5,
@@ -665,7 +665,7 @@ Ext.onReady(function () {
             labelWidth: 35,
             labelAlign: 'right'
         },
-        items: [treegrid,ganttpanel]
+        items: [treegrid, ganttpanel]
     });
 
     var gcxxgrid = Ext.create('Ext.panel.Panel', {
@@ -687,8 +687,8 @@ Ext.onReady(function () {
                 }
             ]
         },
-           {
-                xtype: 'panel', layout: 'column', baseCls: 'my-panel-noborder', width:'100%',//frame: true,
+            {
+                xtype: 'panel', layout: 'column', baseCls: 'my-panel-noborder', width: '100%',//frame: true,
                 items: [
                     {
                         xtype: 'textfield',
@@ -700,7 +700,7 @@ Ext.onReady(function () {
                         fieldStyle: 'background-color:#e0e0e0;background-image:none;',
                         width: 260,
                         style: 'margin:15px 5px 5px 5px'
-                    } ,
+                    },
                     {
                         xtype: 'textfield',
                         id: 'fxjhmc_tab',
@@ -825,7 +825,7 @@ Ext.onReady(function () {
                         fieldStyle: 'background-color:#FFFF99;background-image:none;',
                         width: 260,
                         style: 'margin:15px 5px 5px 5px'
-                    } ,
+                    },
                     {
                         xtype: 'textfield',
                         id: 'wys_tab',
@@ -927,7 +927,7 @@ Ext.onReady(function () {
                         fieldStyle: 'background-color:#FFFF99;background-image:none;',
                         width: 260,
                         style: 'margin:15px 5px 5px 5px'
-                    } ,
+                    },
                     {
                         xtype: 'textfield',
                         id: 'wgcfzr_tab',
@@ -1023,8 +1023,8 @@ Ext.onReady(function () {
     });
     var rtabpanel = Ext.create('Ext.tab.Panel', {
         id: 'rtabpanel',
-        title:'总工程详情',
-        region:'center',
+        title: '总工程详情',
+        region: 'center',
         width: '50%',
         autoScroll: true,
         height: window.innerHeight / 2 - 35,
@@ -1068,8 +1068,8 @@ Ext.onReady(function () {
 
     var ltabpanel = Ext.create('Ext.tab.Panel', {
         id: 'ltabpanel',
-        title:'子工程详情',
-        region:'west',
+        title: '子工程详情',
+        region: 'west',
         width: '50%',
         //autoScroll: true,
         height: window.innerHeight / 2 - 35,
@@ -1090,75 +1090,85 @@ Ext.onReady(function () {
                 border: false,
                 items: [
                     {
-                        xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',   items: [
-                        {
-                            xtype: 'textfield',
-                            emptyText: '工种',
-                            id: 'wgz',
-                            readOnly:true,
-                            style: 'margin:5px 5px 5px 5px',
-                            fieldLabel: '计划用工',
-                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            width: 180
-                        },
-                        {
-                            xtype: 'textfield',
-                            emptyText: '工种',
-                            id: 'wgzcode',
-                            hidden:true,
-                            style: 'margin:5px 5px 5px 5px',
-                            fieldLabel: '计划用工',
-                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            width: 180
-                        },
-                        {
-                            xtype: 'textfield',
-                            emptyText: '人数',
-                            id: 'wrs',
-                            style: 'margin:5px 5px 5px 5px',
-                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
-                            labelAlign: 'right',
-                            labelWidth: 10,
-                            width: 60
-                        },
-                        {
-                            xtype: 'textfield',
-                            emptyText: '工时',
-                            id: 'wgs',
-                            style: 'margin:5px 5px 5px 5px',
-                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
-                            labelAlign: 'right',
-                            labelWidth: 10,
-                            width: 60
-                        },
-                        {
-                            xtype: 'textfield',
-                            emptyText: '定额',
-                            id: 'wde',
-                            readOnly:true,
-                            style: 'margin:5px 5px 5px 5px',
-                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
-                            labelAlign: 'right',
-                            labelWidth: 10,
-                            width: 60
-                        },
-                        {
-                            xtype: 'textfield',
-                            emptyText: '说明',
-                            id: 'wsm',
-                            style: 'margin:5px 5px 5px 5px',
-                            fieldStyle: 'background-color:#FFFF99;background-image:none;',
-                            labelAlign: 'right',
-                            labelWidth: 10,
-                            width: 160
-                        },
-                        {xtype: 'button', text: '添加', style: 'margin:5px 5px 5px 5px', handler: pageFunction.addJHYG},
-                        {xtype: 'button', text: '工种选择', style: 'margin:5px 5px 5px 5px', handler: pageFunction.getGZ}
-                    ]
+                        xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', items: [
+                            {
+                                xtype: 'textfield',
+                                emptyText: '工种',
+                                id: 'wgz',
+                                readOnly: true,
+                                style: 'margin:5px 5px 5px 5px',
+                                fieldLabel: '计划用工',
+                                fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                                labelAlign: 'right',
+                                labelWidth: 80,
+                                width: 180
+                            },
+                            {
+                                xtype: 'textfield',
+                                emptyText: '工种',
+                                id: 'wgzcode',
+                                hidden: true,
+                                style: 'margin:5px 5px 5px 5px',
+                                fieldLabel: '计划用工',
+                                fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                                labelAlign: 'right',
+                                labelWidth: 80,
+                                width: 180
+                            },
+                            {
+                                xtype: 'textfield',
+                                emptyText: '人数',
+                                id: 'wrs',
+                                style: 'margin:5px 5px 5px 5px',
+                                fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                                labelAlign: 'right',
+                                labelWidth: 10,
+                                width: 60
+                            },
+                            {
+                                xtype: 'textfield',
+                                emptyText: '工时',
+                                id: 'wgs',
+                                style: 'margin:5px 5px 5px 5px',
+                                fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                                labelAlign: 'right',
+                                labelWidth: 10,
+                                width: 60
+                            },
+                            {
+                                xtype: 'textfield',
+                                emptyText: '定额',
+                                id: 'wde',
+                                readOnly: true,
+                                style: 'margin:5px 5px 5px 5px',
+                                fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                                labelAlign: 'right',
+                                labelWidth: 10,
+                                width: 60
+                            },
+                            {
+                                xtype: 'textfield',
+                                emptyText: '说明',
+                                id: 'wsm',
+                                style: 'margin:5px 5px 5px 5px',
+                                fieldStyle: 'background-color:#FFFF99;background-image:none;',
+                                labelAlign: 'right',
+                                labelWidth: 10,
+                                width: 160
+                            },
+                            {
+                                xtype: 'button',
+                                text: '添加',
+                                style: 'margin:5px 5px 5px 5px',
+                                handler: pageFunction.addJHYG
+                            },
+                            {
+                                xtype: 'button',
+                                text: '工种选择',
+                                style: 'margin:5px 5px 5px 5px',
+                                handler: pageFunction.getGZ
+                            }
+                        ]
                     }
 
                     , jhyggrid]
@@ -1242,7 +1252,7 @@ Ext.onReady(function () {
                 frame: true,
                 border: false,
                 items: [{
-                    xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder',  items: [
+                    xtype: 'panel', layout: 'hbox', baseCls: 'my-panel-noborder', items: [
                         {
                             xtype: 'textfield',
                             emptyText: '机具编码',
@@ -1299,7 +1309,7 @@ Ext.onReady(function () {
                         xtype: 'textarea',
                         id: 'sgyc_tab',
                         editable: false,
-                      //  readOnly: true,
+                        //  readOnly: true,
                         style: 'margin:5px 5px 5px 5px',
                         fieldLabel: '事故预测',
                         labelAlign: 'right',
@@ -1311,7 +1321,7 @@ Ext.onReady(function () {
                         xtype: 'textarea',
                         id: 'aqdc_tab',
                         editable: false,
-                       // readOnly: true,
+                        // readOnly: true,
                         style: 'margin:5px 5px 5px 5px',
                         fieldLabel: '安全对策',
                         labelAlign: 'right',
@@ -1335,7 +1345,7 @@ Ext.onReady(function () {
     var tabpanel = Ext.create('Ext.panel.Panel', {
         frame: true,
         layout: 'border',
-        region:'center',
+        region: 'center',
         bodyPadding: 5,
         id: 'tabpanel',
         width: '100%',
@@ -1366,21 +1376,21 @@ Ext.onReady(function () {
             }*/
         },
         items: [
-           {
-            region: 'north',
-            border: false,
-            items: [panel1]
-           } , {
-            region: 'center',
-            layout: 'fit',
-            border: false,
-            items: [panelMain]
-           }, {
-            region: 'south',
-            layout: 'fit',
-            border: false,
-            items: [southpanel]
-        }]
+            {
+                region: 'north',
+                border: false,
+                items: [panel1]
+            }, {
+                region: 'center',
+                layout: 'fit',
+                border: false,
+                items: [panelMain]
+            }, {
+                region: 'south',
+                layout: 'fit',
+                border: false,
+                items: [southpanel]
+            }]
     });
 
     Ext.getCmp('wck_tab').on('change', function () {
@@ -1517,15 +1527,15 @@ var pageFunction = {
 
         for (var i = 0; i < ganttdata.length; i++) {
             if (i == 0) {
-                starttime = new Date(ganttdata[0].V_DATE_B.replace(/-/g,"/"));
-                endtime =   new Date(ganttdata[0].V_DATE_E.replace(/-/g,"/"));
+                starttime = new Date(ganttdata[0].V_DATE_B.replace(/-/g, "/"));
+                endtime = new Date(ganttdata[0].V_DATE_E.replace(/-/g, "/"));
             } else {
 
-                if (new Date(ganttdata[i].V_DATE_B.replace(/-/g,"/")) < starttime) {
-                    starttime = new Date(ganttdata[i].V_DATE_B.replace(/-/g,"/"));
+                if (new Date(ganttdata[i].V_DATE_B.replace(/-/g, "/")) < starttime) {
+                    starttime = new Date(ganttdata[i].V_DATE_B.replace(/-/g, "/"));
                 }
-                if (new Date(ganttdata[i].V_DATE_E.replace(/-/g,"/")) > endtime) {
-                    endtime =   new Date(ganttdata[i].V_DATE_E.replace(/-/g,"/"));
+                if (new Date(ganttdata[i].V_DATE_E.replace(/-/g, "/")) > endtime) {
+                    endtime = new Date(ganttdata[i].V_DATE_E.replace(/-/g, "/"));
                 }
             }
         }
@@ -1591,7 +1601,7 @@ var pageFunction = {
         var ganttgrid = Ext.create('Ext.grid.Panel', {
             id: 'ganttgrid',
             store: ganttStore,
-            height:400,
+            height: 400,
             columnLines: true,
             columns: cmItems
         });
@@ -1626,7 +1636,7 @@ var pageFunction = {
         var state = '主项';
         if (e.originalValue == e.value) return;
 
-        if(e.record.raw.V_GUID_P != '') state = '子项';
+        if (e.record.raw.V_GUID_P != '') state = '子项';
         Ext.Ajax.request({
             url: AppUrl + 'hp/PRO_PM_EQUREPAIRPLAN_SELMAX',
             type: 'ajax',
@@ -1718,8 +1728,8 @@ var pageFunction = {
     },
     /**构造显示结构*/
     IndexShow: function (value, metaData, record) {
-        var startd = new Date(record.data.V_DATE_B.replace(/-/g,"/"));
-        var endd = new Date(record.data.V_DATE_E.replace(/-/g,"/"));
+        var startd = new Date(record.data.V_DATE_B.replace(/-/g, "/"));
+        var endd = new Date(record.data.V_DATE_E.replace(/-/g, "/"));
 
         if (startd < vStart) {
             startd = new Date(vStart);
@@ -1848,7 +1858,7 @@ var pageFunction = {
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
-                if(resp.list.length>0){
+                if (resp.list.length > 0) {
                     Ext.getCmp('fxjhbm_tab').setValue(resp.list[0].V_PROJECT_CODE_FXJH);
                     Ext.getCmp('fxjhmc_tab').setValue(resp.list[0].V_PROJECT_NAME_FXJH);
                     Ext.getCmp('sjgcbm_tab').setValue(resp.list[0].V_PROJECT_CODE_P);
@@ -1866,12 +1876,12 @@ var pageFunction = {
                     Ext.getCmp('wjsdw_tab').setValue(resp.list[0].V_BUILD_DEPT);
                     Ext.getCmp('wgcfzr_tab').setValue(resp.list[0].V_BULID_PERSON);
 
-                    if(resp.list[0].V_DATE_B!=null && resp.list[0].V_DATE_B!=""){
+                    if (resp.list[0].V_DATE_B != null && resp.list[0].V_DATE_B != "") {
                         Ext.getCmp('wksrq_tab').setValue(resp.list[0].V_DATE_B.split(" ")[0]);
                         Ext.getCmp('wkssj_tab').setValue(resp.list[0].V_DATE_B.split(" ")[1]);
                     }
 
-                    if(resp.list[0].V_DATE_E!=null && resp.list[0].V_DATE_E!="") {
+                    if (resp.list[0].V_DATE_E != null && resp.list[0].V_DATE_E != "") {
                         Ext.getCmp('wjsrq_tab').setValue(resp.list[0].V_DATE_E.split(" ")[0]);
                         Ext.getCmp('wjssj_tab').setValue(resp.list[0].V_DATE_E.split(" ")[1]);
                     }
@@ -1895,10 +1905,55 @@ var pageFunction = {
      * 基础信息tab 页面 添加主要修理内容 动作事件按钮
      */
     addZYNR: function () {
-        zynrs.push({
+        if(v_guid==''){
+            alert("请选择子项目！")
+            return ;
+        }
+
+        Ext.Ajax.request({
+            url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_NR_SET',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                V_I_ID: '-1',
+                V_V_GUID: v_guid,
+                V_V_MEMO: Ext.getCmp('wnr_tab').getValue()
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if(resp.v_info=='success'){
+                    Ext.Ajax.request({
+                        url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_NR_VIEW',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: v_guid
+                        },
+                        success: function (resp) {
+                            var resp = Ext.decode(resp.responseText);
+                            zynrs = [];
+                            for (var i = 0; i < resp.list.length; i++) {
+                                zynrs.push({
+                                    nr: resp.list[i].V_MEMO,
+                                    id: resp.list[i].I_ID,
+                                    guid: resp.list[i].V_GUID
+                                });
+                            }
+                            Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
+                        }
+                    });
+                }
+
+            }
+        });
+        /*zynrs.push({
+            //nr: Ext.getCmp('wnr_tab').getValue()
+            id: '-1',
+            guid: v_guid,
             nr: Ext.getCmp('wnr_tab').getValue()
         });
-        Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);
+        Ext.data.StoreManager.lookup('zynrStore').insert(Ext.data.StoreManager.lookup('zynrStore').data.length,{nr:Ext.getCmp('wnr_tab').getValue()})
+        Ext.data.StoreManager.lookup('zynrStore').loadData(zynrs);*/
     },
     /**
      * 计划用工添加 按钮事件
@@ -2374,7 +2429,6 @@ function OnBtnDel() {
 }
 
 
-
 function zhuxiangadd() {
     var groupguid = '';
     var ygguid = '';
@@ -2706,7 +2760,7 @@ function zixiangadd() {
                     });
                 }
                 alert('保存成功');
-                rownumber=null;
+                rownumber = null;
                 location.reload();
                 //重新加载 grid 以及 gantt 图
                 //window.opener.loadGantt(fxjhguid);
@@ -2714,9 +2768,11 @@ function zixiangadd() {
         }
     });
 }
+
 /*
  各种弹出页面 父窗口选择相应值后   回调 函数
  */
+
 //人工 机具 物料等
 function getReturnValue(obj) {
     if (obj[0].data.V_WORKNAME != undefined) {
@@ -2737,6 +2793,7 @@ function getReturnValue(obj) {
         Ext.getCmp('wsl').setValue(obj[0].data.ABLECOUNT);
     }
 }
+
 //设备选择 页面回调
 function getEquipReturnValue(ret) {
     var str = ret.split('^');
@@ -2745,14 +2802,11 @@ function getEquipReturnValue(ret) {
 }
 
 
-
-
-
-
 function Delete4(value, metaData, record, rowIdx) {
     metaData.style = 'text-align: center';
     return '<a href=javascript:OnBtnRemove4(\'' + rowIdx + '\');>删除</a>';
 }
+
 function OnBtnRemove4(idx) {
     var data = [];
     if (type == 'add') {
@@ -2809,6 +2863,7 @@ function Atleft(value, metaData) {
     metaData.style = 'text-align: left';
     return value;
 }
+
 function AtRight(value, metaData) {
     metaData.style = 'text-align: right';
     return value;
@@ -2825,6 +2880,7 @@ function a1(id) {
     }
 
 }
+
 function a2(id) {
     document.getElementById(id).style.display = 'none';
 
