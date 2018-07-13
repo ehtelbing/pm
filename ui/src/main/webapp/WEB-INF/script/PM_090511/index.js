@@ -194,7 +194,7 @@ Ext.onReady(function () {
             flex: 1,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href=javascript:_delete(\''  + record.data.V_PERCODE_DE + '\')>' + '删除' + '</a>';
+                return '<a href=javascript:_delete(\''  + record.data.V_PERCODE + '\')>' + '删除' + '</a>';
             }
         }]
     });
@@ -225,6 +225,13 @@ Ext.onReady(function () {
 
     QueryTree();
     QuerySelGrid();
+
+
+    Ext.data.StoreManager.lookup('gridStore').on('load',function(){
+        if(Ext.data.StoreManager.lookup('gridStore').data.length==1){
+            SavePer();
+        }
+    });
 });
 
 
@@ -291,6 +298,34 @@ function griditemclick(s, record, item, index, e, eOpts){
         }
     });
 }
+
+function SavePer(){
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PM_1917_JXGX_PER_DATA_SET_G',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID : V_ORDERGUID,
+            V_V_PERCODE_DE : Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_CRAFTCODE,
+            V_V_PERNAME_DE : Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_WORKNAME,
+            V_V_TS :  '1',
+            V_V_DE :  Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_DE,
+            V_V_PERTYPE_ED :  Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_WORKTYPE,
+            V_V_PERCODE :  Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_PERSONCODE,
+            V_V_PERNAME :  Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_PERSONNAME
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+
+            if(resp.V_INFO=='SUCCESS'){
+                QuerySelGrid();
+            }else{
+                alert("操作失败！");
+            }
+        }
+    });
+}
+
 function select(){
     var jjts=0;
     var gzts=0;
