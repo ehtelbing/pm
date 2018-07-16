@@ -870,7 +870,6 @@ function InsertFavoriteMenu() {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            console.log(resp.RET);
             if (resp.RET == 'Success') {
                 Ext.getCmp("favoriteTreePanel").getStore().reload();
                 Ext.Msg.alert('操作信息', '添加收藏成功');

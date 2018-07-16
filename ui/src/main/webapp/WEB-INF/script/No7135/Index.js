@@ -146,11 +146,11 @@ var addwindow = Ext.create('Ext.window.Window', {
 
 var searchpanel = Ext.create('Ext.form.Panel', {
 	id : 'searchpanel',
+	style : 'margin:5px 0px 2px 2px',
 	region : 'north',
 	layout : 'column',
 	width : '100%',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
+	baseCls : 'my-panel-no-border',
 	items : [{ id: 'searchequipcode',
 		xtype: 'textfield',
 		fieldLabel:'备件编码',
@@ -250,8 +250,7 @@ var panel = Ext.create('Ext.form.Panel', {
 	region : 'north',
 	layout : 'vbox',
 	width : '100%',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
+	baseCls : 'my-panel-no-border',
 	items : [{
 		xtype : 'panel',
 		region : 'north',
@@ -402,7 +401,6 @@ Ext.onReady(function() {
 
 // 查询
 function beforeload_wgridStore(store){
-	//pg_run7134_GETBJLIST
 	store.proxy.extraParams.a_mat_no = Ext.getCmp('equipcode').getValue();
 	store.proxy.extraParams.a_mat_desc = Ext.getCmp('equipname').getValue();
 }
@@ -410,7 +408,6 @@ function wquery() {
 	Ext.data.StoreManager.lookup('wgridStore').load();
 }
 function beforeload_egridStore(store){
-	//PG_RUN7134_GETSITELIST
 	store.proxy.extraParams.a_mat_no = materialcode;
 }
 // 查询
@@ -420,7 +417,6 @@ function equery() {
 	Ext.data.StoreManager.lookup('egridStore').load();
 }
 function beforeload_searchgridStore(store){
-	//pg_run7134_getmatlist
 	store.proxy.extraParams.a_mat_no = Ext.getCmp('searchequipcode').getValue();
 	store.proxy.extraParams.a_mat_desc = Ext.getCmp('searchequipname').getValue();
 }
@@ -438,26 +434,7 @@ function RenderFontLeft(value, metaData) {
 //导出excel
 function OnButtonExportClicked() {
 	document.location.href=AppUrl + 'cjy/No7134EXCEL?a_mat_no='+Ext.getCmp('equipcode').getValue()+
-		'&a_mat_desc='+Ext.getCmp('equipname').getValue();
-	/*var tableName = ["备件编码", "备件名称", "计量单位", "计划价" ];
-	var tableKey = [ 'MATERIALCODE', 'MATERIALNAME', 'UNIT', 'F_PRICE' ];
-
-	var parName = [ 'A_MAT_NO', 'A_MAT_DESC' ];
-	var parType = [ 's', 's', 's', 's' ];
-	var parVal = [ excelCS(Ext.getCmp('equipcode').getValue()),
-		excelCS(Ext.getCmp('equipname').getValue())];
-	var proName = 'pg_run7134.GETBJLIST';
-	var ExcelName = '重点备件字典设置';
-
-	var cursorName = 'ret';
-	var returnStr = [ 'null' ];
-	var returnStrName = [ 'null' ];
-	var returnStrType = [ 'null' ];
-
-
-	submitData("ModelExcelTotal", tableName, tableKey, parName, parType,
-		parVal, proName, returnStr, returnStrType, returnStrName,
-		cursorName, "title", "重点备件字典设置");*/
+	'&a_mat_desc='+Ext.getCmp('equipname').getValue();
 
 }
 
@@ -478,31 +455,7 @@ function onBtnAdd(){
 	addwindow.show();
 }
 
-function onBtnDel(){
-	var seldata = Ext.getCmp('wgrid').getSelectionModel().getSelection();
-	if (seldata.length == 0) {
-		alert('请至少选择一条数据进行删除！');
-		return false;
-	}
-	for ( var i = 0; i < seldata.length; i++){
-		Ext.Ajax.request({
-			url: APP + '/ModelChange',
-			method: 'POST',
-			params: {
-				parName: ['A_MAT_NO'],
-				parType: ['s'],
-				parVal: [seldata[i].data.MATERIALCODE],
-				proName: 'pg_run7134.deletebj',
-				returnStr: ['ret_msg','ret'],
-				returnStrType: ['s','s']
-			},
-			success: function (resp) {
 
-			}
-		});
-	}
-	wquery();
-}
 
 function look(){
 	return '<div><a href="javascript:equery()">查看</a></div> '

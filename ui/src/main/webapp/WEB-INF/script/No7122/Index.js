@@ -22,8 +22,6 @@ var gridStore = Ext.create('Ext.data.Store', {
 
 var queryPanel = Ext.create('Ext.panel.Panel', {
 	id : 'queryPanel',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
 	width : '100%',
 	region : 'north',
 	frame : true,
@@ -32,7 +30,6 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
 		id : 'descQuery',
 		xtype : 'textfield',
 		fieldLabel : '描述',
-		style : ' margin: 5px 0px 0px 10px',
 		labelWidth : 55
 	}, {
 		xtype : 'button',
@@ -48,51 +45,49 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
 
 var buttonPanel = Ext.create('Ext.panel.Panel', {
 	id : 'buttonPanel',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
 	width : '100%',
 	region : 'north',
 	frame : true,
 	layout : 'column',
 	items : [
-		{
-			id : 'insert',
-			xtype : 'button',
-			text : '新增',
-			icon : imgpath + '/add.png',
-			width : 80,
-			style : ' margin: 5px 0px 5px 10px',
-			listeners : {
-				click : function() {
-					Ext.getCmp('operateWindow').show();
-					Ext.getCmp('operateWindow').setTitle('新增');
-					Ext.ComponentManager.get('equId').setReadOnly(false);
-					Ext.ComponentManager.get('status').select(
-						statusStore.getAt(1));
-					Ext.ComponentManager.get('operateType').setValue(
-						'create');
+			{
+				id : 'insert',
+				xtype : 'button',
+				text : '新增',
+				icon : imgpath + '/add.png',
+				width : 80,
+				style : ' margin: 5px 0px 5px 10px',
+				listeners : {
+					click : function() {
+						Ext.getCmp('operateWindow').show();
+						Ext.getCmp('operateWindow').setTitle('新增');
+						Ext.ComponentManager.get('equId').setReadOnly(false);
+						Ext.ComponentManager.get('status').select(
+								statusStore.getAt(1));
+						Ext.ComponentManager.get('operateType').setValue(
+								'create');
+					}
 				}
-			}
-		},
-		{
-			id : 'delete',
-			xtype : 'button',
-			text : '删除',
-			width : 80,
-			style : ' margin: 5px 0px 5px 10px',
-			icon : imgpath + '/delete1.png',
-			handler : function() {
-				var selection = Ext.getCmp('grid').getSelectionModel()
-					.getSelection();
-				var length = selection.length;
-				if (length == 0) {
-					Ext.example.msg('操作信息', '请选择记录进行删除');
-					return;
-				} else {
-					deleteUrl();
+			},
+			{
+				id : 'delete',
+				xtype : 'button',
+				text : '删除',
+				width : 80,
+				style : ' margin: 5px 0px 5px 10px',
+				icon : imgpath + '/delete1.png',
+				handler : function() {
+					var selection = Ext.getCmp('grid').getSelectionModel()
+							.getSelection();
+					var length = selection.length;
+					if (length == 0) {
+						Ext.example.msg('操作信息', '请选择记录进行删除');
+						return;
+					} else {
+						deleteUrl();
+					}
 				}
-			}
-		} ]
+			} ]
 });
 
 var grid = Ext.create('Ext.grid.Panel', {
@@ -115,8 +110,8 @@ var grid = Ext.create('Ext.grid.Panel', {
 		dataIndex : 'ID',
 		align : 'center',
 		editor : {
-			xtype : 'textfield'
-		},
+													xtype : 'textfield'
+												},
 		renderer : atleft
 	},{
 		text : '描述',
@@ -180,7 +175,7 @@ var operateWindowPanel = Ext.create('Ext.panel.Panel', {
 
 var operateWindow = Ext.create('Ext.window.Window', {
 	width : 450,
-	height : 200,
+	height : 150,
 	layout : 'fit',
 	id : 'operateWindow',
 	closeAction : 'hide',
@@ -232,15 +227,15 @@ function query() {
 function create() {
 	Ext.Ajax.request({
 		url: AppUrl + 'cjy/pro_run7122_addvgurl',
-		async: false,
-		method: 'POST',
-		params: {
+		method : 'POST',
+		async : false,
+		params : {
 			V_VG_DESC: Ext.getCmp('desc').getValue(),
 			V_URL: Ext.getCmp('url').getValue()
 		},
-		success: function (ret) {
-			var resp = Ext.JSON.decode(ret.responseText);
-			if (resp.OUT_RESULT == 'success') {
+		success : function(resp) {
+			resp = Ext.decode(resp.responseText);
+			if (resp[0] == 'success') {
 				Ext.example.msg('操作信息', '操作成功');
 				Ext.getCmp('operateWindow').hide();
 				query();
@@ -249,6 +244,7 @@ function create() {
 			}
 		}
 	});
+
 }
 
 function deleteUrl() {
@@ -258,16 +254,15 @@ function deleteUrl() {
 	for ( var index = 0; index < length; index++) {
 		Ext.Ajax.request({
 			url: AppUrl + 'cjy/pro_run7122_deletevgurl',
-			async: false,
-			method: 'POST',
-			params: {
+			method : 'POST',
+			async : false,
+			params : {
 				V_ID: selection[index].data.ID
 			},
-			success: function (ret) {
-				var resp = Ext.JSON.decode(ret.responseText);
-				if (resp.OUT_RESULT == 'success') {
+			success : function(resp) {
+				resp = Ext.decode(resp.responseText);
+				if (resp[0] == 'success') {
 					successNum++;
-				} else {
 				}
 			}
 		});
@@ -279,7 +274,7 @@ function deleteUrl() {
 		Ext.example.msg('操作信息', '操作失败');
 	} else {
 		Ext.example.msg('操作信息', '成功' + successNum + '条，失败'
-			+ (length - successNum) + '条');
+				+ (length - successNum) + '条');
 	}
 }
 

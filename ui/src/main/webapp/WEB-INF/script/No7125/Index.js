@@ -1,29 +1,28 @@
 ﻿/** ****************变量及数据集******************* */
 var CREATE_WINDOW_TITLE = '新增设置';
-var selPlantstore = Ext.create('Ext.data.Store',
-	{
-		autoLoad : true,
-		storeId : 'selPlantstore',
-		fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-		proxy : {
-			type : 'ajax',
-			async : false,
-			url: AppUrl + 'No4120/PRO_BASE_DEPT_VIEW_ROLE',
-			actionMethods : {
-				read : 'POST'
-			},
-			reader : {
-				type : 'json',
-				root : 'list'
-			},
-			extraParams : {
-				V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
-				V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
-				V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_deptcode'),
-				V_V_DEPTTYPE:'[基层单位]'
-			}
+var selPlantstore = Ext.create('Ext.data.Store', {
+	autoLoad : true,
+	storeId : 'selPlantstore',
+	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+	proxy : {
+		type : 'ajax',
+		async : false,
+		url: AppUrl + 'No4120/PRO_BASE_DEPT_VIEW_ROLE',
+		actionMethods : {
+			read : 'POST'
+		},
+		reader : {
+			type : 'json',
+			root : 'list'
+		},
+		extraParams : {
+			V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+			V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
+			V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_deptcode'),
+			V_V_DEPTTYPE:'[基层单位]'
 		}
-	});
+	}
+});
 
 var selSectionstore = Ext.create('Ext.data.Store', {
 	autoLoad : false,
@@ -67,8 +66,6 @@ var gridStore = Ext.create('Ext.data.Store', {
 
 var queryPanel = Ext.create('Ext.panel.Panel', {
 	id : 'queryPanel',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
 	width : '100%',
 	region : 'north',
 	frame : true,
@@ -85,20 +82,19 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
 		labelWidth : 70,
 		style : ' margin: 5px 0px 0px 10px',
 		labelAlign : 'right'
-	},
-		{
-			xtype : 'combo',
-			id : "selSection",
-			store : selSectionstore,
-			editable : false,
-			queryMode : 'local',
-			fieldLabel : '作业区',
-			displayField : 'V_DEPTNAME',
-			valueField : 'V_DEPTCODE',
-			labelWidth : 60,
-			style : ' margin: 5px 0px 5px 10px',
-			labelAlign : 'right'
-		}, {
+	}, {
+		xtype : 'combo',
+		id : "selSection",
+		store : selSectionstore,
+		editable : false,
+		queryMode : 'local',
+		fieldLabel : '作业区',
+		displayField : 'V_DEPTNAME',
+		valueField : 'V_DEPTCODE',
+		labelWidth : 60,
+		style : ' margin: 5px 0px 5px 10px',
+		labelAlign : 'right'
+	}, {
 		xtype : 'button',
 		text : '查询',
 		icon : imgpath + '/search.png',
@@ -112,8 +108,6 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
 
 var buttonPanel = Ext.create('Ext.panel.Panel', {
 	id : 'buttonPanel',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
 	width : '100%',
 	region : 'north',
 	frame : true,
@@ -274,53 +268,52 @@ function onPageLoaded() {
 	// 显示整体布局
 	Ext.create('Ext.container.Viewport', Layout);
 
-	Ext.data.StoreManager.lookup('selPlantstore').on(
-		"load",
-		function() {
-			Ext.getCmp("selPlant").select(
-				Ext.data.StoreManager.lookup('selPlantstore')
-					.getAt(0));
+	Ext.data.StoreManager.lookup('selPlantstore')
+			.on(
+					"load",
+					function() {
+						Ext.getCmp("selPlant").select(
+								Ext.data.StoreManager.lookup('selPlantstore')
+										.getAt(0));
 
-			Ext.data.StoreManager.lookup('selSectionstore').load(
-				{
-					params : {
-						V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-						V_PERSONCODE:Ext.getCmp('selPlant').getValue()
-					}
-				});
-		});
+						Ext.data.StoreManager.lookup('selSectionstore').load(
+								{
+									params : {
+										V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+										V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+									}
+								});
+					});
 	Ext.data.StoreManager.lookup('selSectionstore').on(
-		"load",
-		function() {
-			Ext.getCmp("selSection").select(
-				Ext.data.StoreManager.lookup('selSectionstore')
-					.getAt(0));
+			"load",
+			function() {
+				Ext.getCmp("selSection").select(
+						Ext.data.StoreManager.lookup('selSectionstore')
+								.getAt(0));
+				// 刷新
+				query();
+			});
+	Ext.getCmp('selPlant').on("change", function() {
+		Ext.data.StoreManager.lookup('selSectionstore').removeAll();
+		Ext.data.StoreManager.lookup('selSectionstore').load({
+			params : {
+				V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+				V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+			}
 		});
-	Ext.getCmp('selPlant').on(
-		"change",
-		function() {
-			Ext.data.StoreManager.lookup('selSectionstore')
-				.removeAll();
-			Ext.data.StoreManager.lookup('selSectionstore').load(
-				{
-					params : {
-						V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-						V_PERSONCODE:Ext.getCmp('selPlant').getValue()
-					}
-				});
-		});
+	});
 
 };
 
 function query() {
 
 	Ext.data.StoreManager.lookup('gridStore').load(
-		{
-			params : {
-				V_PLANTCODE:Ext.getCmp('selPlant').getValue(),
-				V_DEPARTCODE:Ext.getCmp('selSection').getValue()
-			}
-		});
+			{
+				params : {
+					V_PLANTCODE:Ext.getCmp('selPlant').getValue(),
+					V_DEPARTCODE:Ext.getCmp('selSection').getValue()
+				}
+			});
 
 }
 
@@ -347,19 +340,18 @@ function saveClick() {
 function create() {
 	Ext.Ajax.request({
 		url: AppUrl + 'cjy/pro_run7125_addequvg',
-		async: false,
-		method: 'POST',
-		params: {
+		method : 'POST',
+		params : {
 			V_EQU_ID: Ext.getCmp('equId').getValue(),
 			V_VG_ID:Ext.getCmp('vgId').getValue()
 		},
-		success: function (ret) {
-			var resp = Ext.JSON.decode(ret.responseText);
-			if (resp.ret == 'Success') {
+		success : function(resp) {
+			resp = Ext.decode(resp.responseText);
+			if (resp[0] == 'success') {
 				Ext.example.msg('操作信息', '操作成功');
 				Ext.getCmp('operateWindow').hide();
 				query();
-			} else if (resp.ret.indexOf('ORA-02291') != -1) {
+			} else if (resp[0].indexOf('ORA-02291') != -1) {
 				Ext.example.msg('操作信息', '设备编码或VG图ID不存在');
 			} else {
 				Ext.example.msg('操作信息', '操作失败');
@@ -371,18 +363,16 @@ function create() {
 function deleteRecord(equId, vgId) {
 	Ext.Ajax.request({
 		url: AppUrl + 'cjy/pro_run7125_delequvg',
-		async: false,
-		method: 'POST',
-		params: {
+		async : false,
+		method : 'POST',
+		params : {
 			V_EQU_ID: equId,
-	        V_VG_ID:vgId
+			V_VG_ID:vgId
 		},
-		success: function (ret) {
-			var resp = Ext.JSON.decode(ret.responseText);
-			if (resp.OUT_RESULT == 'success') {
+		success : function(resp) {
+			resp = Ext.decode(resp.responseText);
+			if (resp[0] == 'success') {
 				query();
-			} else {
-				Ext.example.msg('操作信息', '操作失败');
 			}
 		}
 	});
@@ -398,7 +388,7 @@ function checkSize(item, size) {
 
 function deleteRender(value, metaData, record, rowIndex, colIndex, store) {
 	return '<a href="javascript:deleteRecord(\'' + record.data.EQU_ID + '\',\''
-		+ record.data.VG_ID + '\')">删除</a>';
+			+ record.data.VG_ID + '\')">删除</a>';
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {

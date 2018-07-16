@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,8 @@ import java.util.Map;
 public class KxyController {
     @Autowired
     private KxyService kxyService;
+
+
 
     @RequestMapping(value = "/userFavoriteMenu", method = RequestMethod.POST)
     @ResponseBody
@@ -52,6 +56,14 @@ public class KxyController {
         return data;
     }
 
+    @RequestMapping(value = "/insertFavoriteMenuList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertFavoriteMenuList(@RequestParam(value = "A_USERID") String A_USERID, @RequestParam(value = "MENUID_LIST") List<String> MENUID_LIST, HttpServletRequest request, HttpServletResponse response) throws SQLException {
+
+        return kxyService.insertFavoriteMenuList(A_USERID, MENUID_LIST);
+
+    }
+
     @RequestMapping(value = "/deleteFavoriteMenu", method = RequestMethod.POST)
     @ResponseBody
     public HashMap<String, Object> deleteFavoriteMenu(@RequestParam(value = "A_USERID") String A_USERID, @RequestParam(value = "A_MENUID") String A_MENUID, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -76,6 +88,45 @@ public class KxyController {
         result.put("list", list);
         result.put("success", true);
         return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_NEW_MENU_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_NEW_MENU_SEL(
+            @RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
+            @RequestParam(value = "IS_V_SYSTYPE") String IS_V_SYSTYPE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU)
+            throws SQLException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> deptList = (List<Map<String, Object>>)(kxyService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE, V_V_DEPTCODE, V_V_HOME_MENU).get("list"));
+        List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
+        Map<String, Object> dept;
+        for (int i = 0; i < deptList.size(); i++) {
+            dept = deptList.get(i);
+            if ("-1".equals(dept.get("V_MENUCODE_UP"))) {
+                children.add(dept);
+                fillChildDept(dept, deptList);
+            }
+        }
+        result.put("deptList", deptList);
+        result.put("children", children);
+
+        return result;
+    }
+
+    private void fillChildDept(Map<String, Object> dept, List<Map<String, Object>> deptList) {
+        List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
+
+        Map<String, Object> childDept;
+        for (int i = 0; i < deptList.size(); i++) {
+            childDept = deptList.get(i);
+            if (dept.get("V_MENUCODE").equals(childDept.get("V_MENUCODE_UP"))) {
+                children.add(childDept);
+                fillChildDept(childDept, deptList);
+            }
+        }
+        dept.put("children", children);
     }
 
 

@@ -25,30 +25,29 @@ var statusStore = Ext.create('Ext.data.Store', {
 	}
 });
 
-var selPlantstore = Ext.create('Ext.data.Store',
-	{
-		autoLoad : true,
-		storeId : 'selPlantstore',
-		fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-		proxy : {
-			type : 'ajax',
-			async : false,
-			url: AppUrl + 'No4120/PRO_BASE_DEPT_VIEW_ROLE',
-			actionMethods : {
-				read : 'POST'
-			},
-			reader : {
-				type : 'json',
-				root : 'list'
-			},
-			extraParams : {
-				V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
-				V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
-				V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_deptcode'),
-				V_V_DEPTTYPE:'[基层单位]'
-			}
+var selPlantstore = Ext.create('Ext.data.Store', {
+	autoLoad : true,
+	storeId : 'selPlantstore',
+	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+	proxy : {
+		type : 'ajax',
+		async : false,
+		url: AppUrl + 'No4120/PRO_BASE_DEPT_VIEW_ROLE',
+		actionMethods : {
+			read : 'POST'
+		},
+		reader : {
+			type : 'json',
+			root : 'list'
+		},
+		extraParams : {
+			V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+			V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
+			V_V_DEPTCODENEXT:Ext.util.Cookies.get('v_deptcode'),
+			V_V_DEPTTYPE:'[基层单位]'
 		}
-	});
+	}
+});
 
 var selSectionstore = Ext.create('Ext.data.Store', {
 	autoLoad : false,
@@ -67,12 +66,13 @@ var selSectionstore = Ext.create('Ext.data.Store', {
 		}
 	}
 });
+
 var gridStore = Ext.create('Ext.data.Store', {
 	id : 'gridStore',
 	pageSize : 15,
 	autoLoad : false,
 	fields : [ 'EQU_ID', 'EQU_DESC', 'USERID', 'USERNAME', 'PP_CODE', 'STATUS',
-		'PLANTCODE', 'DEPARTCODE' ],
+			'PLANTCODE', 'DEPARTCODE' ],
 	proxy : {
 		type : 'ajax',
 		async : false,
@@ -92,8 +92,6 @@ var gridStore = Ext.create('Ext.data.Store', {
 
 var queryPanel = Ext.create('Ext.panel.Panel', {
 	id : 'queryPanel',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
 	width : '100%',
 	region : 'north',
 	frame : true,
@@ -104,26 +102,25 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
 		store : selPlantstore,
 		editable : false,
 		queryMode : 'local',
-		fieldLabel : '计划厂矿',
+		fieldLabel : '厂矿',
 		displayField : 'V_DEPTNAME',
 		valueField : 'V_DEPTCODE',
 		labelWidth : 70,
 		style : ' margin: 5px 0px 0px 10px',
 		labelAlign : 'right'
-	},
-		{
-			xtype : 'combo',
-			id : "selSection",
-			store : selSectionstore,
-			editable : false,
-			queryMode : 'local',
-			fieldLabel : '作业区',
-			displayField : 'V_DEPTNAME',
-			valueField : 'V_DEPTCODE',
-			labelWidth : 60,
-			style : ' margin: 5px 0px 5px 10px',
-			labelAlign : 'right'
-		},{
+	}, {
+		xtype : 'combo',
+		id : "selSection",
+		store : selSectionstore,
+		editable : false,
+		queryMode : 'local',
+		fieldLabel : '作业区',
+		displayField : 'V_DEPTNAME',
+		valueField : 'V_DEPTCODE',
+		labelWidth : 60,
+		style : ' margin: 5px 0px 5px 10px',
+		labelAlign : 'right'
+	}, {
 		xtype : 'hidden',
 		id : 'nowDevice_Id'
 	}, {
@@ -142,76 +139,74 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
 });
 
 var buttonPanel = Ext.create('Ext.panel.Panel',
-	{
-		id : 'buttonPanel',
-		style: 'background-color:#FFFFFF',
-		baseCls: 'my-panel-no-border',
-		width : '100%',
-		region : 'north',
-		frame : true,
-		layout : 'column',
-		items : [
-			{
-				id : 'insert',
-				xtype : 'button',
-				text : '新增',
-				icon : imgpath + '/add.png',
-				width : 80,
-				style : ' margin: 5px 0px 5px 10px',
-				listeners : {
-					click : function() {
-						Ext.getCmp('operateWindow').show();
-						Ext.getCmp('operateWindow').setTitle('新增');
-						Ext.ComponentManager.get('equId').setReadOnly(
-							false);
-						Ext.ComponentManager.get('status').select(
-							statusStore.getAt(1));
-						Ext.ComponentManager.get('operateType')
-							.setValue('create');
-					}
-				}
-			},
-			{
-				id : 'modify',
-				xtype : 'button',
-				text : '修改',
-				icon : imgpath + '/edit.png',
-				width : 80,
-				style : ' margin: 5px 0px 0px 10px',
-				listeners : {
-					click : function() {
-						var selection = Ext.getCmp('grid')
-							.getSelectionModel().getSelection();
-						var length = selection.length;
-						if (length != 1) {
-							Ext.example.msg('操作信息', '请选择一条数据修改');
-							return;
-						} else {
-							Ext.getCmp('operateWindow').show();
-
-							var selectedRecord = selection[0].data;
-							Ext.getCmp('equId').setValue(
-								selectedRecord.EQU_ID);
-							Ext.getCmp('equName').setValue(
-								selectedRecord.EQU_DESC);
-							Ext.getCmp('userId').setValue(
-								selectedRecord.USERID);
-							Ext.getCmp('userName').setValue(
-								selectedRecord.USERNAME);
-							Ext.getCmp('sysCode').setValue(
-								selectedRecord.PP_CODE);
-							Ext.getCmp('status').setValue(
-								selectedRecord.STATUS);
+		{
+			id : 'buttonPanel',
+			width : '100%',
+			region : 'north',
+			frame : true,
+			layout : 'column',
+			items : [
+					{
+						id : 'insert',
+						xtype : 'button',
+						text : '新增',
+						icon : imgpath + '/add.png',
+						width : 80,
+						style : ' margin: 5px 0px 5px 10px',
+						listeners : {
+							click : function() {
+								Ext.getCmp('operateWindow').show();
+								Ext.getCmp('operateWindow').setTitle('新增');
+								Ext.ComponentManager.get('equId').setReadOnly(
+										false);
+								Ext.ComponentManager.get('status').select(
+										statusStore.getAt(1));
+								Ext.ComponentManager.get('operateType')
+										.setValue('create');
+							}
 						}
-						Ext.ComponentManager.get('equId').setReadOnly(
-							true);
-						Ext.ComponentManager.get('operateType')
-							.setValue('modify');
-						Ext.getCmp('operateWindow').setTitle('修改');
-					}
-				}
-			} ]
-	});
+					},
+					{
+						id : 'modify',
+						xtype : 'button',
+						text : '修改',
+						icon : imgpath + '/edit.png',
+						width : 80,
+						style : ' margin: 5px 0px 0px 10px',
+						listeners : {
+							click : function() {
+								var selection = Ext.getCmp('grid')
+										.getSelectionModel().getSelection();
+								var length = selection.length;
+								if (length != 1) {
+									Ext.example.msg('操作信息', '请选择一条数据修改');
+									return;
+								} else {
+									Ext.getCmp('operateWindow').show();
+
+									var selectedRecord = selection[0].data;
+									Ext.getCmp('equId').setValue(
+											selectedRecord.EQU_ID);
+									Ext.getCmp('equName').setValue(
+											selectedRecord.EQU_DESC);
+									Ext.getCmp('userId').setValue(
+											selectedRecord.USERID);
+									Ext.getCmp('userName').setValue(
+											selectedRecord.USERNAME);
+									Ext.getCmp('sysCode').setValue(
+											selectedRecord.PP_CODE);
+									Ext.getCmp('status').setValue(
+											selectedRecord.STATUS);
+								}
+								Ext.ComponentManager.get('equId').setReadOnly(
+										true);
+								Ext.ComponentManager.get('operateType')
+										.setValue('modify');
+								Ext.getCmp('operateWindow').setTitle('修改');
+							}
+						}
+					} ]
+		});
 
 var grid = Ext.create('Ext.grid.Panel', {
 	id : 'grid',
@@ -408,56 +403,55 @@ function onPageLoaded() {
 	// 显示整体布局
 	Ext.create('Ext.container.Viewport', Layout);
 
-	Ext.data.StoreManager.lookup('selPlantstore').on(
-		"load",
-		function() {
-			Ext.getCmp("selPlant").select(
-				Ext.data.StoreManager.lookup('selPlantstore')
-					.getAt(0));
+	Ext.data.StoreManager.lookup('selPlantstore')
+			.on(
+					"load",
+					function() {
+						Ext.getCmp("selPlant").select(
+								Ext.data.StoreManager.lookup('selPlantstore')
+										.getAt(0));
 
-			Ext.data.StoreManager.lookup('selSectionstore').load(
-				{
-					params : {
-						V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-						V_PERSONCODE:Ext.getCmp('selPlant').getValue()
-					}
-				});
-		});
+						Ext.data.StoreManager.lookup('selSectionstore').load(
+								{
+									params : {
+										V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+										V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+									}
+								});
+					});
 	Ext.data.StoreManager.lookup('selSectionstore').on(
-		"load",
-		function() {
-			Ext.getCmp("selSection").select(
-				Ext.data.StoreManager.lookup('selSectionstore')
-					.getAt(0));
+			"load",
+			function() {
+				Ext.getCmp("selSection").select(
+						Ext.data.StoreManager.lookup('selSectionstore')
+								.getAt(0));
+				// 刷新数据
+				query();
+			});
+	Ext.getCmp('selPlant').on("change", function() {
+		Ext.data.StoreManager.lookup('selSectionstore').removeAll();
+		Ext.data.StoreManager.lookup('selSectionstore').load({
+			params : {
+				V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+				V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+			}
 		});
-	Ext.getCmp('selPlant').on(
-		"change",
-		function() {
-			Ext.data.StoreManager.lookup('selSectionstore')
-				.removeAll();
-			Ext.data.StoreManager.lookup('selSectionstore').load(
-				{
-					params : {
-						V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-						V_PERSONCODE:Ext.getCmp('selPlant').getValue()
-					}
-				});
-		});
+	});
 
 };
 
 function query() {
 	if (Ext.getCmp('selPlant').getValue() != ''
-		&& Ext.getCmp('selPlant').getValue() != null
-		&& Ext.getCmp('selSection').getValue() != ''
-		&& Ext.getCmp('selSection').getValue() != null) {
+			&& Ext.getCmp('selPlant').getValue() != null
+			&& Ext.getCmp('selSection').getValue() != ''
+			&& Ext.getCmp('selSection').getValue() != null) {
 		Ext.data.StoreManager.lookup('gridStore').load(
-			{
-				params : {
-					v_departcode:Ext.getCmp('selSection').getValue(),
-					v_plantcode:Ext.getCmp('selPlant').getValue()
-				}
-			});
+				{
+					params : {
+						v_departcode:Ext.getCmp('selSection').getValue(),
+						v_plantcode:Ext.getCmp('selPlant').getValue()
+					}
+				});
 	} else {
 		Ext.example.msg('操作信息', QueryCheckAlertMsg);
 	}
@@ -480,19 +474,17 @@ function saveClick() {
 function create() {
 	Ext.Ajax.request({
 		url: AppUrl + 'cjy/pro_run7121_getequlist',
-		async: false,
-		method: 'POST',
-		params: {
-			V_EQU_ID: Ext.getCmp('equId').getValue(),
+		method : 'POST',
+		params : {
+			V_EQU_ID: Ext.getCmp('equId').getValue()
 		},
-		success: function (ret) {
-			var resp = Ext.JSON.decode(ret.responseText);
-			if(resp.OUT_RESULT!='1'){
+		success : function(resp) {
+			resp = Ext.decode(resp.responseText);
+			if (resp[0] != "1") {
 				Ext.Ajax.request({
 					url: AppUrl + 'cjy/pro_run7121_addequ',
-					async: false,
-					method: 'POST',
-					params: {
+					method : 'POST',
+					params : {
 						V_EQU_ID: Ext.getCmp('equId').getValue(),
 						V_EQU_DESC: Ext.getCmp('equName').getValue(),
 						V_DEPARTCODE: Ext.getCmp('selSection').getValue(),
@@ -502,9 +494,9 @@ function create() {
 						V_STATUS: Ext.getCmp('status').getValue(),
 						V_PP_CODE: Ext.getCmp('sysCode').getValue()
 					},
-					success: function (ret) {
-						var resp = Ext.JSON.decode(ret.responseText);
-						if (resp.OUT_RESULT == 'success') {
+					success : function(resp) {
+						resp = Ext.decode(resp.responseText);
+						if (resp[0] == 'success') {
 							Ext.example.msg('操作信息', '操作成功');
 							Ext.getCmp('operateWindow').hide();
 							query();
@@ -524,9 +516,8 @@ function create() {
 function modify() {
 	Ext.Ajax.request({
 		url: AppUrl + 'cjy/pro_run7121_updateequ',
-		async: false,
-		method: 'POST',
-		params: {
+		method : 'POST',
+		params : {
 			V_EQU_ID: Ext.getCmp('equId').getValue(),
 			V_EQU_DESC: Ext.getCmp('equName').getValue(),
 			V_USERID: Ext.getCmp('userId').getValue(),
@@ -534,9 +525,9 @@ function modify() {
 			V_STATUS: Ext.getCmp('status').getValue(),
 			V_PP_CODE: Ext.getCmp('sysCode').getValue()
 		},
-		success: function (ret) {
-			var resp = Ext.JSON.decode(ret.responseText);
-			if (resp.OUT_RESULT == 'success') {
+		success : function(resp) {
+			resp = Ext.decode(resp.responseText);
+			if (resp[0] == 'success') {
 				Ext.example.msg('操作信息', '操作成功');
 				Ext.getCmp('operateWindow').hide();
 				query();
@@ -591,8 +582,8 @@ function changeStatus(code, status) {
 
 function changeStatusRender(value, metaData, record, rowIndex, colIndex, store) {
 	return '<a href="javascript:changeStatus(\'' + record.data.EQU_ID + '\',\''
-		+ record.data.STATUS + '\')">' + (value == '0' ? "停用" : "启用")
-		+ '</a>';
+			+ record.data.STATUS + '\')">' + (value == '0' ? "停用" : "启用")
+			+ '</a>';
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {

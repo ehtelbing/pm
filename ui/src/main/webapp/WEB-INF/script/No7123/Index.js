@@ -25,30 +25,29 @@ var statusStore = Ext.create('Ext.data.Store', {
 	}
 });
 
-var selPlantstore = Ext.create('Ext.data.Store',
-	{
-		autoLoad : true,
-		storeId : 'selPlantstore',
-		fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-		proxy : {
-			type : 'ajax',
-			async : false,
-			url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-			actionMethods : {
-				read : 'POST'
-			},
-			reader : {
-				type : 'json',
-				root : 'list'
-			},
-			extraParams : {
-				'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-				'V_V_DEPTCODE':  Ext.util.Cookies.get('v_orgCode'),
-				'V_V_DEPTCODENEXT': Ext.util.Cookies.get('v_deptcode'),
-				'V_V_DEPTTYPE': '基层单位'
-			}
+var selPlantstore = Ext.create('Ext.data.Store', {
+	autoLoad : true,
+	storeId : 'selPlantstore',
+	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+	proxy : {
+		type : 'ajax',
+		async : false,
+		url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+		actionMethods : {
+			read : 'POST'
+		},
+		reader : {
+			type : 'json',
+			root : 'list'
+		},
+		extraParams : {
+			'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+			'V_V_DEPTCODE':  Ext.util.Cookies.get('v_orgCode'),
+			'V_V_DEPTCODENEXT': Ext.util.Cookies.get('v_deptcode'),
+			'V_V_DEPTTYPE': '基层单位'
 		}
-	});
+	}
+});
 
 var selSectionstore = Ext.create('Ext.data.Store', {
 	autoLoad : false,
@@ -67,7 +66,6 @@ var selSectionstore = Ext.create('Ext.data.Store', {
 		}
 	}
 });
-
 
 var selSiteStore = Ext.create('Ext.data.Store', {
 	autoLoad : false,
@@ -111,185 +109,163 @@ var gridStore = Ext.create('Ext.data.Store', {
 
 var queryPanel = Ext.create('Ext.panel.Panel', {
 	id : 'queryPanel',
-	style: 'background-color:#FFFFFF',
-	baseCls: 'my-panel-no-border',
 	width : '100%',
 	region : 'north',
 	frame : true,
 	layout : 'column',
 	items : [
-		{
-			xtype : 'combo',
-			id : "selPlant",
-			store : selPlantstore,
-			editable : false,
-			queryMode : 'local',
-			fieldLabel : '厂矿',
-			displayField : 'V_DEPTNAME',
-			valueField : 'V_DEPTCODE',
-			labelWidth : 70,
-			style : ' margin: 5px 0px 0px 10px',
-			labelAlign : 'right'
-		},
-		{
-			xtype : 'combo',
-			id : "selSection",
-			store : selSectionstore,
-			editable : false,
-			queryMode : 'local',
-			fieldLabel : '作业区',
-			displayField : 'V_DEPTNAME',
-			valueField : 'V_DEPTCODE',
-			labelWidth : 60,
-			style : ' margin: 5px 0px 5px 10px',
-			labelAlign : 'right'
-		},
-		{
-			id : 'xzsb',
-			xtype : 'textfield',
-			fieldLabel : '选择设备',
-			readOnly : true,
-			labelWidth : 60,
-			style : ' margin: 5px 0px 5px 10px',
-			listeners : {
-				click : {
-					element : 'el',
-					fn : function() {
-						if(Ext.getCmp('selSection').getValue()=='%'){
-							alert("请选择作业区");
-						}else{
-							var owidth = window.document.body.offsetWidth-200;
-							var oheight = window.document.body.offsetHeight-100 ;
-							var ret = window.open(AppUrl+'page/PM_090101/index.html?V_DEPTCODE=' + Ext.ComponentManager.get('selSection').getValue() , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-						}
-
-					}
-				}
-				/*focus : function() {
-					var ret = window.showModalDialog(AppUrl
-						+ '/No410601/Index.html?DEPTCODE='
-						+ Ext.ComponentManager.get('selSection')
-							.getValue() + '', '',
-						'dialogHeight:500px;dialogWidth:800px');
-					if (ret != "" && ret != null && ret != undefined) {
-						var str = [];
-						str = ret.split('^');
-						Ext.ComponentManager.get('xzsb').setValue(str[1]);
-						Ext.ComponentManager.get('equcode')
-							.setValue(str[0]);
-						Ext.data.StoreManager.lookup('selSiteStore').load({
-							params : {
-								A_EQU_ID:str[0]
-							}
-						});
-					} else {
-					}
-					Ext.ComponentManager.get('selPlant').focus(false, 0);
-				}*/
-			}
-		}, {
-			xtype : 'combo',
-			id : "selSite",
-			store : selSiteStore,
-			editable : false,
-			queryMode : 'local',
-			fieldLabel : '备件安装位置',
-			displayField : 'SITE_DESC',
-			valueField : 'SITE_ID',
-			labelWidth : 100,
-			width:550,
-			style : ' margin: 5px 0px 5px 10px',
-			labelAlign : 'right'
-		}, {
-			xtype : 'hidden',
-			id : 'equcode'
-		}, {
-			xtype : 'hidden',
-			id : 'nowDevice_Site'
-		}, {
-			xtype : 'button',
-			text : '查询',
-			icon : imgpath + '/search.png',
-			width : 80,
-			style : ' margin: 5px 0px 0px 10px',
-			handler : function() {
-				if (Ext.ComponentManager.get('xzsb').getValue() == "") {
-					Ext.example.msg('操作信息', '{0}', '请点击选择设备进行查询');
-				} else {
-					query();
-				}
-			}
-		} ]
-});
-
-var buttonPanel = Ext.create('Ext.panel.Panel',
-	{
-		id : 'buttonPanel',
-		style: 'background-color:#FFFFFF',
-		baseCls: 'my-panel-no-border',
-		width : '100%',
-		region : 'north',
-		frame : true,
-		layout : 'column',
-		items : [
 			{
-				id : 'insert',
-				xtype : 'button',
-				text : '新增',
-				icon : imgpath + '/add.png',
-				width : 80,
-				style : ' margin: 5px 0px 5px 10px',
-				listeners : {
-					click : function() {
-						var site = Ext.getCmp('selSite').getValue();
-						if (site == "" || site == null) {
-							Ext.example.msg('操作信息', '请选择备件安装位置');
-						} else {
-							Ext.getCmp('operateWindow').show();
-							Ext.getCmp('operateWindow').setTitle('新增');
-							Ext.ComponentManager.get('status').select(
-								statusStore.getAt(1));
-							Ext.ComponentManager.get('operateType')
-								.setValue('create');
-						}
-					}
-				}
+				xtype : 'combo',
+				id : "selPlant",
+				store : selPlantstore,
+				editable : false,
+				queryMode : 'local',
+				fieldLabel : '厂矿',
+				displayField : 'V_DEPTNAME',
+				valueField : 'V_DEPTCODE',
+				labelWidth : 70,
+				style : ' margin: 5px 0px 0px 10px',
+				labelAlign : 'right'
 			},
 			{
-				id : 'modify',
+				xtype : 'combo',
+				id : "selSection",
+				store : selSectionstore,
+				editable : false,
+				queryMode : 'local',
+				fieldLabel : '作业区',
+				displayField : 'V_DEPTNAME',
+				valueField : 'V_DEPTCODE',
+				labelWidth : 60,
+				style : ' margin: 5px 0px 5px 10px',
+				labelAlign : 'right'
+			},
+			{
+				id : 'xzsb',
+				xtype : 'textfield',
+				fieldLabel : '选择设备',
+				readOnly : true,
+				labelWidth : 60,
+				style : ' margin: 5px 0px 5px 10px',
+				listeners : {
+					focus : function() {
+						var ret = window.open(AppUrl+'page/PM_090101/index.html?V_DEPTCODE=' + Ext.ComponentManager.get('selSection').getValue() , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+						if (ret != "" && ret != null && ret != undefined) {
+							var str = [];
+							str = ret.split('^');
+							Ext.ComponentManager.get('xzsb').setValue(str[1]);
+							Ext.ComponentManager.get('equcode')
+									.setValue(str[0]);
+							Ext.data.StoreManager.lookup('selSiteStore').load({
+								params : {
+									A_EQU_ID:str[0]
+								}
+							});
+						} else {
+						}
+						Ext.ComponentManager.get('selPlant').focus(false, 0);
+					}
+				}
+			}, {
+				xtype : 'combo',
+				id : "selSite",
+				store : selSiteStore,
+				editable : false,
+				queryMode : 'local',
+				fieldLabel : '备件安装位置',
+				displayField : 'SITE_DESC',
+				valueField : 'SITE_ID',
+				labelWidth : 100,
+				style : ' margin: 5px 0px 5px 10px',
+				labelAlign : 'right'
+			}, {
+				xtype : 'hidden',
+				id : 'equcode'
+			}, {
+				xtype : 'hidden',
+				id : 'nowDevice_Site'
+			}, {
 				xtype : 'button',
-				text : '修改',
-				icon : imgpath + '/edit.png',
+				text : '查询',
+				icon : imgpath + '/search.png',
 				width : 80,
 				style : ' margin: 5px 0px 0px 10px',
-				listeners : {
-					click : function() {
-						var selection = Ext.getCmp('grid')
-							.getSelectionModel().getSelection();
-						var length = selection.length;
-						if (length != 1) {
-							Ext.example.msg('操作信息', '请选择一条数据修改');
-							return;
-						} else {
-							Ext.getCmp('operateWindow').show();
-
-							var selectedRecord = selection[0].data;
-							Ext.getCmp('tagId').setValue(
-								selectedRecord.TAG_ID);
-							Ext.getCmp('tagDesc').setValue(
-								selectedRecord.TAG_DESC);
-							Ext.getCmp('tagUnit').setValue(
-								selectedRecord.TAG_UNIT);
-							Ext.getCmp('status').setValue(
-								selectedRecord.STATUS);
-						}
-						Ext.ComponentManager.get('operateType')
-							.setValue('modify');
-						Ext.getCmp('operateWindow').setTitle('修改');
+				handler : function() {
+					if (Ext.ComponentManager.get('xzsb').getValue() == "") {
+						Ext.example.msg('操作信息', '{0}', '请点击选择设备进行查询');
+					} else {
+						query();
 					}
 				}
 			} ]
-	});
+});
+
+var buttonPanel = Ext.create('Ext.panel.Panel',
+		{
+			id : 'buttonPanel',
+			width : '100%',
+			region : 'north',
+			frame : true,
+			layout : 'column',
+			items : [
+					{
+						id : 'insert',
+						xtype : 'button',
+						text : '新增',
+						icon : imgpath + '/add.png',
+						width : 80,
+						style : ' margin: 5px 0px 5px 10px',
+						listeners : {
+							click : function() {
+								var site = Ext.getCmp('selSite').getValue();
+								if (site == "" || site == null) {
+									Ext.example.msg('操作信息', '请选择备件安装位置');
+								} else {
+									Ext.getCmp('operateWindow').show();
+									Ext.getCmp('operateWindow').setTitle('新增');
+									Ext.ComponentManager.get('status').select(
+											statusStore.getAt(1));
+									Ext.ComponentManager.get('operateType')
+											.setValue('create');
+								}
+							}
+						}
+					},
+					{
+						id : 'modify',
+						xtype : 'button',
+						text : '修改',
+						icon : imgpath + '/edit.png',
+						width : 80,
+						style : ' margin: 5px 0px 0px 10px',
+						listeners : {
+							click : function() {
+								var selection = Ext.getCmp('grid')
+										.getSelectionModel().getSelection();
+								var length = selection.length;
+								if (length != 1) {
+									Ext.example.msg('操作信息', '请选择一条数据修改');
+									return;
+								} else {
+									Ext.getCmp('operateWindow').show();
+
+									var selectedRecord = selection[0].data;
+									Ext.getCmp('tagId').setValue(
+											selectedRecord.TAG_ID);
+									Ext.getCmp('tagDesc').setValue(
+											selectedRecord.TAG_DESC);
+									Ext.getCmp('tagUnit').setValue(
+											selectedRecord.TAG_UNIT);
+									Ext.getCmp('status').setValue(
+											selectedRecord.STATUS);
+								}
+								Ext.ComponentManager.get('operateType')
+										.setValue('modify');
+								Ext.getCmp('operateWindow').setTitle('修改');
+							}
+						}
+					} ]
+		});
 
 var grid = Ext.create('Ext.grid.Panel', {
 	id : 'grid',
@@ -433,66 +409,52 @@ function onPageLoaded() {
 	// 显示整体布局
 	Ext.create('Ext.container.Viewport', Layout);
 
-	Ext.data.StoreManager.lookup('selPlantstore').on(
-		"load",
-		function() {
-			Ext.getCmp("selPlant").select(
-				Ext.data.StoreManager.lookup('selPlantstore')
-					.getAt(0));
+	Ext.data.StoreManager.lookup('selPlantstore')
+			.on(
+					"load",
+					function() {
+						Ext.getCmp("selPlant").select(
+								Ext.data.StoreManager.lookup('selPlantstore')
+										.getAt(0));
 
-			Ext.data.StoreManager.lookup('selSectionstore').load(
-				{
-					params : {
-						'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-						'V_V_DEPTCODE':   Ext.getCmp("selPlant").getValue(),
-						'V_V_DEPTCODENEXT':  Ext.util.Cookies.get('v_deptcode'),
-						'V_V_DEPTTYPE':'[主体作业区]'
-					}
-				});
-		});
+						Ext.data.StoreManager.lookup('selSectionstore').load(
+								{
+									params : {
+										'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+										'V_V_DEPTCODE':   Ext.getCmp("selPlant").getValue(),
+										'V_V_DEPTCODENEXT':  Ext.util.Cookies.get('v_deptcode'),
+										'V_V_DEPTTYPE':'[主体作业区]'
+									}
+								});
+					});
 	Ext.data.StoreManager.lookup('selSectionstore').on(
-		"load",
-		function() {
-			Ext.getCmp("selSection").select(
-				Ext.data.StoreManager.lookup('selSectionstore')
-					.getAt(0));
+			"load",
+			function() {
+				Ext.getCmp("selSection").select(
+						Ext.data.StoreManager.lookup('selSectionstore')
+								.getAt(0));
+			});
+	Ext.getCmp('selPlant').on("change", function() {
+		Ext.data.StoreManager.lookup('selSectionstore').removeAll();
+		Ext.data.StoreManager.lookup('selSectionstore').load({
+			params : {
+				'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+				'V_V_DEPTCODE':   Ext.getCmp("selPlant").getValue(),
+				'V_V_DEPTCODENEXT':  Ext.util.Cookies.get('v_deptcode'),
+				'V_V_DEPTTYPE':'[主体作业区]'
+			}
 		});
-	Ext.getCmp('selPlant').on(
-		"change",
-		function() {
-			Ext.data.StoreManager.lookup('selSectionstore')
-				.removeAll();
-			Ext.data.StoreManager.lookup('selSectionstore').load(
-				{
-					params : {
-						'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-						'V_V_DEPTCODE':   Ext.getCmp("selPlant").getValue(),
-						'V_V_DEPTCODENEXT':  Ext.util.Cookies.get('v_deptcode'),
-						'V_V_DEPTTYPE':'[主体作业区]'
-					}
-				});
-		});
+	});
 
 	Ext.data.StoreManager.lookup('selSiteStore').on(
-		"load",
-		function() {
-			Ext.getCmp("selSite").select(
-				Ext.data.StoreManager.lookup('selSiteStore').getAt(0));
-		});
+			"load",
+			function() {
+				Ext.getCmp("selSite").select(
+						Ext.data.StoreManager.lookup('selSiteStore').getAt(0));
+			});
 
 };
-function getEquipReturnValue(ret){
-	var str =ret.split('^');
 
-	Ext.ComponentManager.get('xzsb').setValue(str[1]);
-	Ext.ComponentManager.get('equcode')
-		.setValue(str[0]);
-	Ext.data.StoreManager.lookup('selSiteStore').load({
-		params : {
-			A_EQU_ID:str[0]
-		}
-	});
-}
 function query() {
 
 	Ext.data.StoreManager.lookup('gridStore').load({
@@ -527,27 +489,27 @@ function create() {
 		Ext.example.msg('操作信息', '指标计量单位不能超过8个字符');
 		// Ext.getCmp('tagUnit').setValue(unit.substring(0, 8));
 	} else {
-		Ext.Ajax.request({
-			url: AppUrl + 'cjy/pro_run7123_addst',
-			async: false,
-			method: 'POST',
-			params: {
-				V_SITE_ID: Ext.getCmp('selSite').getValue(),
-				V_TAG_DESC: Ext.getCmp('tagDesc').getValue(),
-				V_TAG_UNIT:Ext.getCmp('tagUnit').getValue(),
-				V_STATUS: Ext.getCmp('status').getValue()
-			},
-			success: function (ret) {
-				var resp = Ext.JSON.decode(ret.responseText);
-				if(resp.OUT_RESULT=="success"){
-					Ext.example.msg('操作信息', '操作成功');
-					Ext.getCmp('operateWindow').hide();
-					query();
-				}else {
-					Ext.example.msg('操作信息', '操作失败');
-				}
-			}
-		});
+		Ext.Ajax
+				.request({
+				url: AppUrl + 'cjy/pro_run7123_addst',
+					method : 'POST',
+					params : {
+						V_SITE_ID: Ext.getCmp('selSite').getValue(),
+						V_TAG_DESC: Ext.getCmp('tagDesc').getValue(),
+						V_TAG_UNIT:Ext.getCmp('tagUnit').getValue(),
+						V_STATUS: Ext.getCmp('status').getValue()
+					},
+					success : function(resp) {
+						resp = Ext.decode(resp.responseText);
+						if (resp[0] == 'success') {
+							Ext.example.msg('操作信息', '操作成功');
+							Ext.getCmp('operateWindow').hide();
+							query();
+						} else {
+							Ext.example.msg('操作信息', '操作失败');
+						}
+					}
+				});
 	}
 }
 
@@ -563,22 +525,21 @@ function modify() {
 	} else {
 		Ext.Ajax.request({
 			url: AppUrl + 'cjy/pro_run7123_updatest',
-			async: false,
-			method: 'POST',
-			params: {
+			method : 'POST',
+			params : {
 				V_TAG_ID: Ext.getCmp('tagId').getValue(),
 				V_SITE_ID: Ext.getCmp('selSite').getValue(),
 				V_TAG_DESC: Ext.getCmp('tagDesc').getValue(),
 				V_TAG_UNIT:Ext.getCmp('tagUnit').getValue(),
 				V_STATUS: Ext.getCmp('status').getValue()
 			},
-			success: function (ret) {
-				var resp = Ext.JSON.decode(ret.responseText);
-				if(resp.OUT_RESULT=="success"){
+			success : function(resp) {
+				resp = Ext.decode(resp.responseText);
+				if (resp[0] == 'success') {
 					Ext.example.msg('操作信息', '操作成功');
 					Ext.getCmp('operateWindow').hide();
 					query();
-				}else {
+				} else {
 					Ext.example.msg('操作信息', '操作失败');
 				}
 			}
@@ -643,8 +604,8 @@ function checkDescSize(desc) {
 
 function changeStatusRender(value, metaData, record, rowIndex, colIndex, store) {
 	return '<a href="javascript:changeStatus(\'' + record.data.TAG_ID + '\',\''
-		+ record.data.STATUS + '\')">' + (value == '0' ? "停用" : "启用")
-		+ '</a>';
+			+ record.data.STATUS + '\')">' + (value == '0' ? "停用" : "启用")
+			+ '</a>';
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {

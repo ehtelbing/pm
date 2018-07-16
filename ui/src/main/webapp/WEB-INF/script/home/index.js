@@ -10,6 +10,9 @@ var menucode = "";
 var menuname = "";
 var v_url = "";
 var menutype = "";
+var win;//父窗口对象，由子窗口调用
+var returnValue;//父窗口对象，由子窗口调用
+var USERID = Ext.util.Cookies.get('v_personcode');
 if (location.href.split('?')[1] != undefined) {
     if (Ext.urlDecode(location.href.split('?')[1]) != null) {
         menucode = Ext.urlDecode(location.href.split('?')[1]).v_menucode;
@@ -18,6 +21,29 @@ if (location.href.split('?')[1] != undefined) {
         menutype = Ext.urlDecode(location.href.split('?')[1]).menutype;
     }
 }
+
+var userFavoriteMenuStore = Ext.create('Ext.data.TreeStore', {
+    storeId: 'userFavoriteMenuStore',
+    autoLoad: true,
+    pageSize: -1,
+    fields: ['MENU_ID', 'V_MENUNAME', 'leaf', 'URL'],
+    proxy: {
+        url: AppUrl + 'Kxy/userFavoriteMenu',
+        type: 'ajax',
+        actionMethods: {
+            read: 'POST'
+        },
+        async: true,
+        extraParams: {
+            A_USERID: Ext.util.Cookies.get('v_personcode')
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+
 var container = Ext.create('Ext.tab.Panel', {
     id: 'container',
     region: 'center',
@@ -82,7 +108,6 @@ function _AssembleAccordions(data) {
                             if (model.childNodes.length != 0) {
                             } else {
                                 if (model.raw.type == 1) {
-
                                     var owidth = window.document.body.offsetWidth;
                                     var oheight = window.document.body.offsetHeight;
                                     window.open(AppUrlFrame + model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
@@ -169,6 +194,59 @@ function _CreateHeader() {
     });
 }
 
+var favoriteTreePanel = new Ext.create('Ext.tree.Panel', {
+    id: 'favoriteTreePanel',
+    baseCls: 'my-panel-no-border',
+    store: userFavoriteMenuStore,
+    frame: true,
+    rootVisible: false,
+    hideHeaders: true,
+    columns: [{
+        xtype: 'treecolumn',
+        dataIndex: 'V_MENUNAME',
+        flex: 1
+    }],
+    listeners: {
+        'itemclick': function (view, record, item, index) {
+            if (record.data.leaf) {
+                //append(record.data.MENU_ID, record.data.V_MENUNAME, record.data.URL)//标签页
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                window.open(record.data.URL, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');//弹窗
+            }
+        },
+        'itemcontextmenu': function (that, record, item, index, e, eOpts) {
+            e.preventDefault();
+            Ext.create('Ext.menu.Menu', {
+                autoDestroy: true,
+                width: 100,
+                margin: '0 0 10 0',
+                items: [{
+                    sid: record.data.MENU_ID,
+                    text: '设置/取消首页'
+                }, {
+                    sid: record.data.MENU_ID,
+                    text: '移出收藏'
+                }, '-', {
+                    text: '取消'
+                }],
+                listeners: {
+                    click: function (menu, item, e, eOpts) {
+                        if (item.text == '设置/取消首页') {
+                            _setHomeMenu(item.sid);
+
+                        } else if (item.text == '移出收藏') {
+                            _deleteFavoriteMenu(item.sid);
+                        }
+
+                    }
+                }
+            }).showAt(e.getXY());
+        }
+    }
+});
+
+
 function _CreateSidebar(accordions) {
     return Ext.create('Ext.panel.Panel', {
         region: 'west',
@@ -185,7 +263,18 @@ function _CreateSidebar(accordions) {
             layout: 'accordion',
             items: accordions,
             region: 'center'
-        }),
+        }),{
+            xtype: 'panel',
+            title: '收藏',
+            titleAlign: 'left',
+            region: 'north',
+            layout: 'fit',
+            height: 300,
+            border: false,
+            collapsed: true,
+            collapsible: true,
+            items: [favoriteTreePanel]
+        },
             {
                 xtype: 'panel',
                 title: '个人信息',
@@ -257,11 +346,9 @@ function OnPageLoaded() {
         location.href = AppUrl + 'page/login/login' + ".html";
     }
     Ext.getBody().mask('<p>设备管理系统</p><p>系统加载中...</p>');
-    var Accordions;
     append('Index', '首页', AppUrl + "page/home/home" + ".html", false);
     var header = _CreateHeader();
     Ext.Ajax.request({
-        //url : AppUrl + 'tree/NewMenuTree',
         url: AppUrl + 'tree/PRO_BASE_NEW_MENU_SEL',
         params: {
             IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
@@ -277,6 +364,7 @@ function OnPageLoaded() {
             var sidebar = _CreateSidebar(Accordions);
             _CreateViewport(header, sidebar, container);
             Ext.getBody().unmask();
+            _getHomeMenu();
             GETDDDL();
         }
     });
@@ -406,3 +494,136 @@ function isAutoApp(menuId) {
     }
     return false;
 }
+
+function _setHomeMenu(MENUID) {
+
+    Ext.Ajax.request({
+        url: AppUrl + 'Kxy/setHomeMenu',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            'A_USERID': USERID,
+            'A_MENUID': MENUID
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.RET == 'Success') {
+                _getHomeMenu();
+                Ext.Msg.alert('操作信息', '设置首页成功');
+            } else {
+                Ext.Msg.alert('操作信息', '设置首页失败');
+            }
+        }
+    });
+}
+
+function _getHomeMenu() {
+
+    Ext.Ajax.request({
+        url: AppUrl + 'Kxy/getHomeMenu',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            'A_USERID': USERID
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.success) {
+                for (var i = 0; i < resp.list.length; i++) {
+                    append(resp.list[i].I_MENUID, resp.list[i].V_MENUNAME, resp.list[i].URL);
+                }
+            } else {
+                Ext.Msg.alert('操作信息', '获取首页失败');
+            }
+        }
+    });
+}
+function _userFavoriteMenu() {
+    //树查询
+    var userFavoriteMenuStore = Ext.data.StoreManager.lookup('userFavoriteMenuStore');
+    userFavoriteMenuStore.proxy.extraParams = {
+        A_USERID: Ext.util.Cookies.get('v_personcode')
+    };
+    userFavoriteMenuStore.currentPage = 1;
+    userFavoriteMenuStore.load();
+
+}
+
+function _deleteFavoriteMenu(MENUID) {//删除收藏
+
+    Ext.Ajax.request({
+        url: AppUrl + 'Kxy/deleteFavoriteMenu',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            'A_USERID': USERID,
+            'A_MENUID': MENUID
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.RET == 'Success') {
+                var records = Ext.getCmp('favoriteTreePanel').getSelectionModel().getSelection();
+                records[0].remove();
+                Ext.Msg.alert('操作信息', '移除收藏成功');
+            } else {
+                Ext.Msg.alert('操作信息', '移除收藏失败');
+            }
+        }
+    });
+}
+
+function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将不会显示在选择列表中
+    returnValue = null;
+    win = Ext.create('Ext.window.Window', {
+        title: '添加收藏',
+        modal: true,
+        autoShow: true,
+        maximized: false,
+        maximizable: true,
+        width: 560,
+        height: 420,
+        html: '<iframe src="' + 'http://localhost:8081/pm/app/pm/page/home/favorite.html?menutype=' +menutype +'", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
+        listeners: {
+            close: function (panel, eOpts) {
+                if (returnValue != null) {
+                    var FavoriteMenu = returnValue;//获得待收藏页面的代码
+                    var MENUID_LIST = new Array();
+                    for (var i = 0; i < FavoriteMenu.length; i++) {
+                        MENUID_LIST.push(FavoriteMenu[i].data.V_MENUCODE);
+                    }
+                    Ext.Ajax.request({
+                        url: AppUrl + 'Kxy/insertFavoriteMenuList',
+                        type: 'ajax',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            'A_USERID': USERID,
+                            'MENUID_LIST': MENUID_LIST
+                        },
+                        success: function (response) {
+                            var resp = Ext.decode(response.responseText);
+                            if (resp.success) {
+                                Ext.getCmp("favoriteTreePanel").getStore().reload();
+                                Ext.Msg.alert('操作信息', '添加收藏成功');
+                            } else {
+                                Ext.Msg.alert('操作信息', '添加收藏失败');
+                            }
+                        },
+                        failure: function (response) {
+                            Ext.MessageBox.show({
+                                title: '错误',
+                                msg: response.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    });
+}
+
