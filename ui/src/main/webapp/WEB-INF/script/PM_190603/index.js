@@ -1,4 +1,7 @@
-
+var Equcode ='%';
+if (location.href.split('?')[1] != undefined) {
+    Equcode = Ext.urlDecode(location.href.split('?')[1]).Equcode==""?"%":Ext.urlDecode(location.href.split('?')[1]).Equcode;
+}
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
@@ -115,7 +118,8 @@ function onPageLoaded() {
 function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
-            V_V_CARNAME : Ext.getCmp('carname').getValue()
+            V_V_CARNAME : Ext.getCmp('carname').getValue(),
+            V_V_EQUCODE:Equcode
         }
     });
 }

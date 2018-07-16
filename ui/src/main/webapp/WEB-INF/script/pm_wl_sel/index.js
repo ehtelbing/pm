@@ -25,7 +25,7 @@ var KCSectionStore = Ext.create('Ext.data.Store', {
     fields: ['V_DEPTNAME', 'V_DEPTCODE', 'V_SAP_DEPT', 'V_SAP_JHGC', 'V_SAP_WORK'],
     proxy: {
         type: 'ajax',
-        url: AppUrl + 'zdh/plant_sel',
+        url: AppUrl + 'lxm/PRO_BASE_DEPT_VIEW_PER',
         actionMethods: {
             read: 'POST'
         },
@@ -200,18 +200,17 @@ var Layout = {
 
 function onPageLoaded() {
     Ext.create('Ext.container.Viewport', Layout);
-    Ext.data.StoreManager.get('KCPlantStore').on('load',function () {
-            Ext.getCmp('selKCPlant').select(Ext.data.StoreManager.get('KCPlantStore').getAt(0));
-        Ext.data.StoreManager.get('KCSectionStore').load(
-            {
+    Ext.data.StoreManager.get('KCPlantStore').on('load', function () {
+        Ext.getCmp('selKCPlant').select(Ext.data.StoreManager.get('KCPlantStore').getAt(0));
+        Ext.data.StoreManager.get('KCSectionStore').load({
                 params: {
-                    IS_V_DEPTCODE: Ext.getCmp('selKCPlant').getValue(),
-                    IS_V_DEPTTYPE: "[主体作业区]"
-                }});
-        });
-    Ext.data.StoreManager.get('kfSectionStore').on('load', function () {
-        Ext.getCmp('kfSection').select(kfSectionStore.getAt(0));
+                    V_DEPTCODE: Ext.util.Cookies.get("v_orgCode"),
+                    V_DEPTTYPE: "[主体作业区]",
+                    V_V_PERSON: Ext.util.Cookies.get("v_personcode")
+                }
+            });
     });
+
     Ext.data.StoreManager.get('KCSectionStore').on('load', function () {
         Ext.getCmp('selKCSection').select(KCSectionStore.getAt(0));
         Ext.data.StoreManager.lookup('kfSectionStore').load(
@@ -223,26 +222,33 @@ function onPageLoaded() {
                 }
             });
     });
-    Ext.getCmp('selKCPlant').on('change',
-        function () {
+
+    Ext.data.StoreManager.get('kfSectionStore').on('load', function () {
+        Ext.getCmp('kfSection').select(kfSectionStore.getAt(0));
+    });
+
+    Ext.getCmp('selKCPlant').on('select',function () {
             Ext.data.StoreManager.get('KCSectionStore').load(
                 {
                     params: {
-                        IS_V_DEPTCODE: Ext.getCmp('selKCPlant').getValue(),
-                        IS_V_DEPTTYPE: "[主体作业区]"
+                        V_DEPTCODE: Ext.util.Cookies.get("v_orgCode"),
+                        V_DEPTTYPE: "[主体作业区]",
+                        V_V_PERSON:Ext.util.Cookies.get("v_personcode")
                     }
                 });
-            Ext.data.StoreManager.lookup('kfSectionStore').load(
-                {
-                    params: {
-                        SAP_PLANTCODE: Ext.getCmp('selKCPlant').valueModels[0].data.V_SAP_JHGC,
-                        SAP_DEPARTCODE: Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
-                        V_V_PERCODE: Ext.util.Cookies.get("v_personcode")
-                    }
-                });
-        });
-    queryGrid();
 
+        });
+
+    Ext.getCmp('selKCSection').on('select',function(){
+        Ext.data.StoreManager.lookup('kfSectionStore').load(
+            {
+                params: {
+                    SAP_PLANTCODE: Ext.getCmp('selKCPlant').valueModels[0].data.V_SAP_JHGC,
+                    SAP_DEPARTCODE: Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
+                    V_V_PERCODE: Ext.util.Cookies.get("v_personcode")
+                }
+            });
+    });
 }
 
 function queryGrid(){

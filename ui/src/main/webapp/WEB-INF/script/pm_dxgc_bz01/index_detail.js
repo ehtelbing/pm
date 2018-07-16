@@ -2017,7 +2017,7 @@ var pageFunction = {
     getJJ: function () {
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
-        window.open(AppUrl + 'page/PM_190603/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        window.open(AppUrl + 'page/PM_190603/index.html?Equcode='+Ext.getCmp('wsbbm_tab').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     },
     /**
      * 保存 信息 ..你懂的
