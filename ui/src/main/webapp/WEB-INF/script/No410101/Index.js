@@ -107,15 +107,15 @@ $(function () {
 
 function loadPage() {
     var idGroup = [];
-//    $.each(window.opener.selectID, function (index, items) {
-//        idGroup.push(items);
-//    });
+    $.each(window.opener.selectID, function (index, items) {
+        idGroup.push(items);
+    });
     var orderInfoStore = Ext.data.StoreManager.lookup('orderInfoStore');
     var taskStore = Ext.data.StoreManager.lookup('taskStore');
     var taskStoreTemp = Ext.data.StoreManager.lookup('taskStoreTemp');
     var materialStore = Ext.data.StoreManager.lookup('materialStore');
     var materialStoreTemp = Ext.data.StoreManager.lookup('materialStoreTemp');
-    idGroup = ['14905266-CA06-47E4-9DCE-2F77326750B6', '858E6473-72B0-4F17-BB93-6FBEF9F43144'];
+//    idGroup = ['14905266-CA06-47E4-9DCE-2F77326750B6', '858E6473-72B0-4F17-BB93-6FBEF9F43144'];
     for (var orderIndex = 0; orderIndex < idGroup.length; orderIndex++) {
         orderInfoStore.load({
             params: {
