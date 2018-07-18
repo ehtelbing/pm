@@ -621,4 +621,19 @@ public class ActivitiService {
         return result;
     }
 
+
+    public Map ActivateProcessInstance(String instanceId) {
+
+        Map result = new HashMap();
+
+        try {
+            runtimeService.activateProcessInstanceById(instanceId);
+            result.put("msg", "激活成功！");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return result;
+    }
+
 }

@@ -1053,7 +1053,7 @@ public class ActivitiController {
     }
 
     /*
-    * 取消流程实例
+    * 挂起流程实例
     * */
 
     @RequestMapping(value = "DeleteProcessInstance", method = RequestMethod.POST)
@@ -1064,6 +1064,16 @@ public class ActivitiController {
         return result;
     }
 
+    /*
+     * 激活流程实例
+     * */
 
+    @RequestMapping(value = "ActivateProcessInstance", method = RequestMethod.POST)
+    @ResponseBody
+    public  Map ActivateProcessInstance(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
+
+        Map result=activitiService.ActivateProcessInstance(instanceId);
+        return result;
+    }
 
 }
