@@ -1,4 +1,4 @@
-﻿﻿var LODOP = "";
+﻿﻿var LODOP = getLodop(document.getElementById('LODOP'),document.getElementById('LODOP_EM'));
 var selectID = [];
 var page = 1;
 Ext.define('Ext.ux.data.proxy.Ajax', {
@@ -137,8 +137,9 @@ function loadPage() {
             if (!activityList.includes(materialStore.getAt(i).get('V_ACTIVITY'))) {
                 activityList.push(materialStore.getAt(i).get('V_ACTIVITY'));
             }
+            var filterValue;
             if (materialStore.getCount() === 0 || i === materialStore.getCount() - 1) {
-                let filterValue = Ext.isArray(activityList) ? new RegExp('^(?:' + Ext.Array.map(activityList, function (value) {
+                filterValue = Ext.isArray(activityList) ? new RegExp('^(?:' + Ext.Array.map(activityList, function (value) {
                     return Ext.escapeRe(value)
                 }).join('|') + ')$') : activityList;
                 taskStore.filter('V_ACTIVITY', filterValue);
@@ -150,7 +151,7 @@ function loadPage() {
                 page++;
                 activityList = [];
             } else if (activityList.length === 5 || materialStoreTemp.getCount() === 8) {
-                let filterValue = Ext.isArray(activityList) ? new RegExp('^(?:' + Ext.Array.map(activityList, function (value) {
+                filterValue = Ext.isArray(activityList) ? new RegExp('^(?:' + Ext.Array.map(activityList, function (value) {
                     return Ext.escapeRe(value)
                 }).join('|') + ')$') : activityList;
                 taskStore.filter('V_ACTIVITY', filterValue);
@@ -167,8 +168,8 @@ function loadPage() {
 }
 
 function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
-    let record = orderInfoStore.getAt(0).raw.list[0];
-    let s1 = "<div style=\"margin: 15px 0px 15px 0px\" id=page" + page + ">\n" +
+    var record = orderInfoStore.getAt(0).raw.list[0];
+    var s1 = "<div style=\"margin: 15px 0px 15px 0px\" id=page" + page + ">\n" +
             "<table class=\"Tabel_p\">\n" +
             "    <tr>\n" +
             "        <td style=\"width: 570px; padding: 0px; vertical-align:top; height:130px\">\n" +
@@ -240,7 +241,7 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
             "            </table>\n" +
             "        </td>\n" +
             "    </tr>";
-    let s2 = "<tr>\n" +
+    var s2 = "<tr>\n" +
             "        <td colspan=\"3\" style=\"text-align: left; background-color: #F4F5F7\">③任务细节</td>\n" +
             "    </tr>\n" +
             "    <tr>\n" +
@@ -265,8 +266,8 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
             "                            </tr>\n" +
             "                            </thead>\n" +
             "                            <tbody>";
-    for (let i = 0; i < taskStoreTemp.getCount(); i++) {
-        let record = taskStoreTemp.getAt(i);
+    for (var i = 0; i < taskStoreTemp.getCount(); i++) {
+        var record = taskStoreTemp.getAt(i);
         s2 = s2 + "<tr>\n" +
                 "<td style=\"border-left: 0px; border-bottom: 0px;\">" + record.get("V_ACTIVITY") + "</td>\n" +
                 "<td style=\"border-bottom: 0px;\">" + record.get("V_WORK_CENTER") + "</td>\n" +
@@ -282,7 +283,7 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
                 "</tr>";
     }
     if (taskStoreTemp.getCount() < 5) {
-        for (let i = 0; i < 5 - taskStoreTemp.getCount(); i++) {
+        for (var i = 0; i < 5 - taskStoreTemp.getCount(); i++) {
             s2 = s2 + "<tr>\n" +
                     "<td style=\"border-left: 0px; border-bottom: 0px;\"></td>\n" +
                     "<td style=\"border-bottom: 0px;\"></td>\n" +
@@ -305,7 +306,7 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
             "</table>\n" +
             "</td>\n" +
             "</tr>";
-    let s3 = "<tr>\n" +
+    var s3 = "<tr>\n" +
             "        <td colspan=\"3\" style=\"text-align: left; background-color: #F4F5F7\">④物料信息</td>\n" +
             "\t</tr>\n" +
             "    <tr>\n" +
@@ -326,8 +327,8 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
             "                </tr>\n" +
             "                </thead>\n" +
             "                <tbody>";
-    for (let i = 0; i < materialStoreTemp.getCount(); i++) {
-        let record = materialStoreTemp.getAt(i);
+    for (var i = 0; i < materialStoreTemp.getCount(); i++) {
+        var record = materialStoreTemp.getAt(i);
         s3 = s3 + "<tr>\n" +
                 "<td style=\"border-left: 0px; border-bottom: 0px\">" + (i + 1) + "</td>\n" +
                 "<td style=\"border-bottom: 0px\">" + record.get("V_ACTIVITY") + "</td>\n" +
@@ -342,7 +343,7 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
                 "</tr>";
     }
     if (materialStoreTemp.getCount() < 8) {
-        for (let i = 0; i < 8 - materialStoreTemp.getCount(); i++) {
+        for (var i = 0; i < 8 - materialStoreTemp.getCount(); i++) {
             s3 = s3 + "<tr>\n" +
                     "<td style=\"border-left: 0px; border-bottom: 0px\"></td>\n" +
                     "<td style=\"border-bottom: 0px\"></td>\n" +
@@ -361,7 +362,7 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
             "            </table>\n" +
             "        </td>\n" +
             "    </tr>";
-    let s4 = "<tr>\n" +
+    var s4 = "<tr>\n" +
             "        <td colspan=\"3\" style=\"text-align: left; background-color: #F4F5F7\">⑤验收栏</td>\n" +
             "    </tr>\n" +
             "    <tr>\n" +
@@ -423,7 +424,7 @@ function Print() {
     try {
         MoreAcceptBill();
         DefaultPrintSettings();
-        for (let i = 1; i <= page; i++) {
+        for (var i = 1; i <= page; i++) {
             LODOP.ADD_PRINT_HTML("30", "15", "100%", "100%", $("#page" + i).html());
             LODOP.PRINT();
         }
@@ -442,29 +443,29 @@ function Preview() {
 }
 
 function NowDate() {
-    let s, d = "";
+    var s, d = "";
     d = new Date();
     //d.setDate(nowDay);
-    let year = d.getFullYear().toString();
-    let month = (d.getMonth() + 1).toString();
-    let date = (d.getDate()).toString();
+    var year = d.getFullYear().toString();
+    var month = (d.getMonth() + 1).toString();
+    var date = (d.getDate()).toString();
     s = year + "-" + month + "-" + date;
     return s;
 }
 
 function NowTime() {
-    let s, d = "";
+    var s, d = "";
     d = new Date();
-    let year = d.getHours();
-    let month = d.getMinutes();
-    let date = d.getSeconds();
+    var year = d.getHours();
+    var month = d.getMinutes();
+    var date = d.getSeconds();
     s = year + ":" + month + ":" + date;
     return s;
 }
 
 function descBill(content) {
-    let temp = [];
-    for (let i = 0; i < content.length; i++) {
+    var temp = [];
+    for (var i = 0; i < content.length; i++) {
         if (i < 30) {
             temp.push(content.charAt(i));
             if (i % 10 == 0 && i != 0) {
@@ -479,8 +480,8 @@ function descBilldesc(content) {
     if (content == '' || content == undefined || content == null) {
         return '';
     } else {
-        let temp = [];
-        for (let i = 0; i < content.length; i++) {
+        var temp = [];
+        for (var i = 0; i < content.length; i++) {
             if (i < 40) {
                 temp.push(content.charAt(i));
             }
@@ -490,8 +491,8 @@ function descBilldesc(content) {
 }
 
 function subDesc(content, count) {
-    let temp = [];
-    for (let i = 0; i < content.length; i++) {
+    var temp = [];
+    for (var i = 0; i < content.length; i++) {
         temp.push(content.charAt(i));
         if (i != 0 && i % count == 0) {
             temp.push("<br/>");
@@ -509,8 +510,8 @@ function rowspan(x, max_operation) {
 }
 
 function MoreAcceptBill() {
-    let argument = window.opener.selectID;
-    for (let i = 0; i < argument.length; i++) {
+    var argument = window.opener.selectID;
+    for (var i = 0; i < argument.length; i++) {
         Ext.Ajax.request({
             url: AppUrl + 'No4120/PRO_PM_WORKORDER_JS_REPAIRDEPT',
             method: 'post',
