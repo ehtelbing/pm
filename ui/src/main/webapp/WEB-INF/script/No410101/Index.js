@@ -1,4 +1,4 @@
-﻿var LODOP = "";
+﻿﻿var LODOP = "";
 var selectID = [];
 var page = 1;
 Ext.define('Ext.ux.data.proxy.Ajax', {
@@ -87,12 +87,12 @@ Ext.onReady(function () {
             },
             extraParams: {
 //                V_V_ORDERGUID: V_ORDERGUID
-            },
-            sortInfo: {
-                field: 'V_ACTIVITY',
-                direction: 'ASC'
             }
-        })
+        }),
+        sorters: [{
+            property: 'V_ACTIVITY',
+            direction: 'ASC'
+        }]
     });
     var materialStoreTemp = Ext.create('Ext.data.Store', {
         storeId: 'materialStoreTemp',
