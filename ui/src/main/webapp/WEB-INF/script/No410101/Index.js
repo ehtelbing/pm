@@ -1,4 +1,4 @@
-﻿﻿//var LODOP = getLodop(document.getElementById('LODOP_OB'), document.getElementById('LODOP_EM'));
+﻿//﻿var LODOP = getLodop(document.getElementById('LODOP'), document.getElementById('LODOP_EM'));
 var LODOP = getLodop();
 var selectID = [];
 var page = 1;
@@ -107,15 +107,15 @@ $(function () {
 
 function loadPage() {
     var idGroup = [];
-//    $.each(window.opener.selectID, function (index, items) {
-//        idGroup.push(items);
-//    });
+    $.each(window.opener.selectID, function (index, items) {
+        idGroup.push(items);
+    });
     var orderInfoStore = Ext.data.StoreManager.lookup('orderInfoStore');
     var taskStore = Ext.data.StoreManager.lookup('taskStore');
     var taskStoreTemp = Ext.data.StoreManager.lookup('taskStoreTemp');
     var materialStore = Ext.data.StoreManager.lookup('materialStore');
     var materialStoreTemp = Ext.data.StoreManager.lookup('materialStoreTemp');
-    idGroup = ['14905266-CA06-47E4-9DCE-2F77326750B6', '858E6473-72B0-4F17-BB93-6FBEF9F43144'];
+//    idGroup = ['14905266-CA06-47E4-9DCE-2F77326750B6', '858E6473-72B0-4F17-BB93-6FBEF9F43144'];
     for (var orderIndex = 0; orderIndex < idGroup.length; orderIndex++) {
         orderInfoStore.load({
             params: {
@@ -135,13 +135,13 @@ function loadPage() {
         var activityList = [];
         for (var i = 0; i < materialStore.getCount(); i++) {
             materialStoreTemp.add(materialStore.getAt(i));
-            if (-1 == activityList.indexOf(materialStore.getAt(i).get('V_ACTIVITY'))) {
+            if (activityList.indexOf(materialStore.getAt(i).get('V_ACTIVITY')) == -1) {
                 activityList.push(materialStore.getAt(i).get('V_ACTIVITY'));
             }
             var filterValue;
             if (materialStore.getCount() === 0 || i === materialStore.getCount() - 1) {
                 filterValue = Ext.isArray(activityList) ? new RegExp('^(?:' + Ext.Array.map(activityList, function (value) {
-                    return Ext.escapeRe(value);
+                    return Ext.escapeRe(value)
                 }).join('|') + ')$') : activityList;
                 taskStore.filter('V_ACTIVITY', filterValue);
                 taskStoreTemp.add(taskStore.getRange());
@@ -370,37 +370,102 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
             "        <td colspan=\"3\" style=\"width: 100%; border: 0px\">\n" +
             "            <table class=\"Tabel_pl\" style=\"border: 0px\">\n" +
             "                <tr>\n" +
-            "                    <td style=\"width: 11%; border-left: 0px; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">验收日期：</td>\n" +
-            "                    <td style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\">" + record.D_DATE_ACP + "</td>" +
-            "                    <td style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">提前、逾期时间：</td>\n" +
-            "\t\t\t\t\t<td style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\">" + record.I_OTHERHOUR + "</td>\n" +
-            "\t\t\t\t\t<td style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">逾期原因：</td>\n" +
-            "                    <td style=\"width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_OTHERREASON + "</td>\n" +
-            "                </tr>\n" +
-            "                <tr>\n" +
-            "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修方说明：</td>\n" +
-            "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_REPAIRCONTENT + "</td>\n" +
-            "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修方签字：</td>\n" +
-            "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_REPAIRSIGN + "</td>\n" +
-            "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修人员：</td>\n" +
-            "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_REPAIRPERSON + "</td>\n" +
-            "                </tr>\n" +
-            "                <tr>\n" +
-            "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">岗位签字：</td>\n" +
-            "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_POSTMANSIGN + "</td>\n" +
-            "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">点检员验收意见：</td>\n" +
-            "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_CHECKMANCONTENT + "</td>\n" +
-            "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">点检员签字：</td>\n" +
-            "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_CHECKMANSIGN + "</td>\n" +
-            "                </tr>\n" +
-            "                <tr>\n" +
-            "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">作业区验收：</td>\n" +
-            "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_WORKSHOPCONTENT + "</td>\n" +
-            "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">库管员签字：</td>\n" +
-            "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_WORKSHOPSIGN + "</td>\n" +
-            "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">部门签字：</td>\n" +
-            "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_DEPTSIGN + "</td>\n" +
-            "                </tr>\n" +
+            "                    <td style=\"width: 11%; border-left: 0px; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">验收日期：</td>\n";
+    if (record.D_DATE_ACP == null) {
+        s4 = s4 + "                    <td style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\"></td>" +
+                "                    <td style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">提前、逾期时间：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\">" + record.D_DATE_ACP + "</td>" +
+                "                    <td style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">提前、逾期时间：</td>\n";
+    }
+    if (record.I_OTHERHOUR == null) {
+        s4 = s4 + "\t\t\t\t\t<td style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\"></td>\n" +
+                "\t\t\t\t\t<td style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">逾期原因：</td>\n";
+    } else {
+        s4 = s4 + "\t\t\t\t\t<td style=\"width: 22%; border-top: 0px; border-bottom: 0px; text-align: left;\">" + record.V_OTHERREASON + "</td>\n" +
+                "\t\t\t\t\t<td style=\"width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">逾期原因：</td>\n";
+    }
+    if (record.V_OTHERREASON == null) {
+        s4 = s4 + "                    <td style=\"width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left;\"></td>\n" +
+                "                </tr>\n" +
+                "                <tr>\n" +
+                "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修方说明：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_OTHERREASON + "</td>\n" +
+                "                </tr>\n" +
+                "                <tr>\n" +
+                "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修方说明：</td>\n";
+    }
+    if (record.V_REPAIRCONTENT == null) {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"></td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修方签字：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_REPAIRCONTENT + "</td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修方签字：</td>\n";
+    }
+    if (record.V_REPAIRSIGN == null) {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"></td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修人员：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_REPAIRSIGN + "</td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">检修人员：</td>\n";
+    }
+    if (record.V_REPAIRPERSON == null) {
+        s4 = s4 + "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\"></td>\n" +
+                "                </tr>\n" +
+                "                <tr>\n" +
+                "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">岗位签字：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_REPAIRPERSON + "</td>\n" +
+                "                </tr>\n" +
+                "                <tr>\n" +
+                "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">岗位签字：</td>\n";
+    }
+    if (record.V_POSTMANSIGN == null) {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"></td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">点检员验收意见：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_POSTMANSIGN + "</td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">点检员验收意见：</td>\n";
+    }
+    if (record.V_CHECKMANCONTENT == null) {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"></td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">点检员签字：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_CHECKMANCONTENT + "</td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">点检员签字：</td>\n";
+    }
+    if (record.V_CHECKMANSIGN == null) {
+        s4 = s4 + "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\"></td>\n" +
+                "                </tr>\n" +
+                "                <tr>\n" +
+                "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">作业区验收：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_CHECKMANSIGN + "</td>\n" +
+                "                </tr>\n" +
+                "                <tr>\n" +
+                "                    <td style=\"width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">作业区验收：</td>\n";
+    }
+    if (record.V_WORKSHOPCONTENT == null) {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"></td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">库管员签字：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_WORKSHOPCONTENT + "</td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">库管员签字：</td>\n";
+    }
+    if (record.V_WORKSHOPSIGN == null) {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\"></td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">部门签字：</td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 22%; border-bottom: 0px; text-align: left;\">" + record.V_WORKSHOPSIGN + "</td>\n" +
+                "                    <td style=\"width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF\">部门签字：</td>\n";
+    }
+    if (record.V_DEPTSIGN == null) {
+        s4 = s4 + "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\"></td>\n";
+    } else {
+        s4 = s4 + "                    <td style=\"width: 23%; border-bottom: 0px; border-right: 0px; text-align: left;\">" + record.V_DEPTSIGN + "</td>\n";
+    }
+    s4 = s4 + "                </tr>\n" +
             "            </table>\n" +
             "        </td>\n" +
             "    </tr>\n" +
@@ -411,7 +476,7 @@ function createPage(orderInfoStore, taskStoreTemp, materialStoreTemp, page) {
 
 function DefaultPrintSettings() {
     try {
-//        LODOP = getLodop(document.getElementById('LODOP_OB'), document.getElementById('LODOP_EM'));
+        LODOP = getLodop(document.getElementById('LODOP'), document.getElementById('LODOP_EM'));
         LODOP.SET_LICENSES("鞍山市新安杰系统集成有限公司", "559677661718684777294958093190", "", "");
         LODOP.PRINT_INIT("gongdan");
         LODOP.SET_PRINT_PAGESIZE(2, 2100, 2970, 'A4 横向');
