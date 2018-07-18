@@ -192,5 +192,5 @@ function GetBillMatByOrder(){
 function print() {
     selectID = [];
     selectID.push($("#V_ORDERGUID").val());
-    window.open(AppUrl + "page/No410101/Index.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+    window.open(AppUrl + "page/No410101/indexn.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
 }
