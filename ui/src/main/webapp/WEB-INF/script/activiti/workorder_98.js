@@ -932,7 +932,7 @@ function print() {
 
 
     selectID.push($("#V_ORDERGUID").val());
-    window.open(AppUrl + "page/No410101/Index.html", selectID,
+    window.open(AppUrl + "page/No410101/indexn.html", selectID,
         "dialogHeight:700px;dialogWidth:1100px");
 }
 $("#I_OTHERHOUR").live(
