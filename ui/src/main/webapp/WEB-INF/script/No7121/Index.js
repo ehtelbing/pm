@@ -403,8 +403,7 @@ function onPageLoaded() {
 	// 显示整体布局
 	Ext.create('Ext.container.Viewport', Layout);
 
-	Ext.data.StoreManager.lookup('selPlantstore')
-			.on(
+	Ext.data.StoreManager.lookup('selPlantstore').on(
 					"load",
 					function() {
 						Ext.getCmp("selPlant").select(
@@ -438,7 +437,7 @@ function onPageLoaded() {
 		});
 	});
 
-};
+}
 
 function query() {
 	if (Ext.getCmp('selPlant').getValue() != ''
@@ -494,14 +493,15 @@ function create() {
 						V_STATUS: Ext.getCmp('status').getValue(),
 						V_PP_CODE: Ext.getCmp('sysCode').getValue()
 					},
-					success : function(resp) {
-						resp = Ext.decode(resp.responseText);
-						if (resp[0] == 'success') {
+					success : function(response) {
+						resp = Ext.decode(response.responseText);
+						if (resp.OUT_RESULT == 'success') {
 							Ext.example.msg('操作信息', '操作成功');
 							Ext.getCmp('operateWindow').hide();
 							query();
 						} else {
 							Ext.example.msg('操作信息', '操作失败');
+							Ext.getCmp('operateWindow').hide();
 						}
 					}
 				});
@@ -510,7 +510,6 @@ function create() {
 			}
 		}
 	});
-
 }
 
 function modify() {
@@ -525,21 +524,21 @@ function modify() {
 			V_STATUS: Ext.getCmp('status').getValue(),
 			V_PP_CODE: Ext.getCmp('sysCode').getValue()
 		},
-		success : function(resp) {
-			resp = Ext.decode(resp.responseText);
-			if (resp[0] == 'success') {
+		success : function(response) {
+			resp = Ext.decode(response.responseText);
+			if (resp.OUT_RESULT == 'success') {
 				Ext.example.msg('操作信息', '操作成功');
 				Ext.getCmp('operateWindow').hide();
 				query();
 			} else {
 				Ext.example.msg('操作信息', '操作失败');
+				Ext.getCmp('operateWindow').hide();
 			}
 		}
 	});
 }
 
 function changeStatus(code, status) {
-	var proName = '';
 	if (status == '1') {
 		Ext.Ajax.request({
 			url: AppUrl + 'cjy/pro_run7121_stop',
@@ -581,9 +580,7 @@ function changeStatus(code, status) {
 }
 
 function changeStatusRender(value, metaData, record, rowIndex, colIndex, store) {
-	return '<a href="javascript:changeStatus(\'' + record.data.EQU_ID + '\',\''
-			+ record.data.STATUS + '\')">' + (value == '0' ? "停用" : "启用")
-			+ '</a>';
+	return '<a href="javascript:changeStatus(\'' + record.data.EQU_ID + '\',\'' + record.data.STATUS + '\')">' + (value == '0' ? "停用" : "启用") + '</a>';
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {

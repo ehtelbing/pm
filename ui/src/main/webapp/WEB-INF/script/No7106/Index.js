@@ -131,26 +131,6 @@
 												var oheight = window.document.body.offsetHeight-100 ;
 												var ret = window.open(AppUrl+'page/PM_090101/index.html?V_DEPTCODE=' + Ext.getCmp('selSection').getValue() , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 											}
-											/*if (returnValue != ""
-												&& returnValue != null) {
-												returnValue = returnValue
-													.split("^");
-												Ext
-													.getCmp(
-													'nowDevice')
-													.setValue(
-													returnValue[1]);
-												Ext
-													.getCmp(
-													'nowDevice_Id')
-													.setValue(
-													returnValue[0]);
-												Ext
-													.getCmp(
-													'nowDevice_Site')
-													.setValue(
-													returnValue[2]);
-											}*/
 										}
 									}
 								}
@@ -194,12 +174,6 @@
 								labelWidth : 60,
 								style : ' margin: 5px 0px 5px 10px'
 							},
-							// { xtype: 'textfield', id:
-							// 'seltext', fieldLabel:
-							// '检修内容', labelAlign:
-							// 'right', width: 300,
-							// style: ' margin: 5px 0px
-							// 0px 5px' },
 							{
 								xtype : 'button',
 								text : '查询',
@@ -272,7 +246,7 @@
 											'操作信息',
 											'请填写当前设备'))
 								}
-							}, ]
+							} ]
 
 					},
 					{

@@ -271,7 +271,6 @@ var panel = Ext.create('Ext.form.Panel', {
 		items : [{
 			xtype : 'button',
 			text : '查询',
-			//icon : imgpath + '/search.png',
 			width : 100,
 			handler : wquery,
 			style : {
@@ -486,8 +485,14 @@ function onBtnDel(){
 			params: {
 				a_mat_no: seldata[i].data.MATERIALCODE
 			},
-			success: function (resp) {
-
+			success : function(response) {
+				resp = Ext.decode(response.responseText);
+				if (resp.ret == 'Success') {
+					Ext.example.msg('操作信息', '操作成功');
+					wquery();
+				} else {
+					Ext.example.msg('操作信息', '操作失败');
+				}
 			}
 		});
 	}
@@ -518,8 +523,14 @@ function onBtnSave(){
 			a_unit: Ext.getCmp('jldw').getValue(),
 			a_price: Ext.getCmp('jhj').getValue()
 		},
-		success: function (resp) {
-
+		success : function(response) {
+			resp = Ext.decode(response.responseText);
+			if (resp.ret == 'Success') {
+				Ext.example.msg('操作信息', '操作成功');
+				wquery();
+			} else {
+				Ext.example.msg('操作信息', '操作失败');
+			}
 		}
 	});
 

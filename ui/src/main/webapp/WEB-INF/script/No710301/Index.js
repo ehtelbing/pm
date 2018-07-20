@@ -68,7 +68,7 @@ Ext
 						},{
 							xtype : 'button',
 							text : '查询',
-							icon : '../../Themes/gif/search.png',
+							icon : imgpath + '/search.png',
 							width : 60,
 							margin : '0px 0px 0px 10px',
 							listeners : {
@@ -124,9 +124,9 @@ Ext
 				if (Ext.getCmp('matCode').getValue() == '') {
 					Ext.MessageBox.alert('操作信息', '物料编码不能为空');
 				} else {
-					gridStore.proxy.extraParams.x_code = Ext.getCmp('matCode')
+					gridStore.proxy.extraParams.a_mat_no = Ext.getCmp('matCode')
 							.getValue();
-					gridStore.proxy.extraParams.x_name = Ext.getCmp('matDesc')
+					gridStore.proxy.extraParams.a_mat_desc = Ext.getCmp('matDesc')
 							.getValue();
 					gridStore.proxy.extraParams.x_type = Ext.getCmp('selType')
 							.getValue();
@@ -145,7 +145,6 @@ Ext
 						+ price + '^' + matgon ;
 				window.returnValue = threeParams;
 				window.close();
-//				window.parent.OnClickMatCodeText(threeParams);
 			}
 
 		

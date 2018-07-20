@@ -13,10 +13,10 @@ Ext.onReady(function() {
          success: function (response) {
        	  var resp = Ext.JSON.decode(response.responseText);
        	   init(resp);
-       	  //Ext.ComponentManager.get('vgopen').setSrc(resp);
          }
 		  
      });
+
 	 var panel = Ext.create('Ext.panel.Panel', {
 	        layout: {
 	            type: 'column'
@@ -30,7 +30,7 @@ Ext.onReady(function() {
 		items : [panel]
 	});
    
-})
+});
    function init(resp) {
 		vg1.Run(APP+"/resources/VG/qxexlcf.xml");
 	}

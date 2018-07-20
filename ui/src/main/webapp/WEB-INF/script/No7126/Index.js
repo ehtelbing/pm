@@ -301,7 +301,7 @@ function onPageLoaded() {
 						Ext.data.StoreManager.lookup('selSectionstore').load(
 								{
 									params : {
-										V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+										V_REPAIRDEPTCODE:'99060301',//Ext.util.Cookies.get('v_deptcode'),
 										V_PERSONCODE:Ext.getCmp('selPlant').getValue()
 									}
 								});
@@ -317,13 +317,13 @@ function onPageLoaded() {
 		Ext.data.StoreManager.lookup('selSectionstore').removeAll();
 		Ext.data.StoreManager.lookup('selSectionstore').load({
 			params : {
-				V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+				V_REPAIRDEPTCODE:'99060301',//Ext.util.Cookies.get('v_deptcode'),
 				V_PERSONCODE:Ext.getCmp('selPlant').getValue()
 			}
 		});
 	});
 
-};
+}
 
 function query() {
 
@@ -364,16 +364,18 @@ function create() {
 			V_SITE_ID: Ext.getCmp('siteId').getValue(),
 			V_VG_ID:Ext.getCmp('vgId').getValue()
 		},
-		success : function(resp) {
-			resp = Ext.decode(resp.responseText);
-			if (resp[0] == 'success') {
+		success : function(response) {
+			var resp = Ext.decode(response.responseText);
+			if (resp.ret == 'Success') {
 				Ext.example.msg('操作信息', '操作成功');
 				Ext.getCmp('operateWindow').hide();
 				query();
-			} else if (resp[0].indexOf('ORA-02291') != -1) {
+			} else if (resp.ret.indexOf('ORA-02291') != -1) {
 				Ext.example.msg('操作信息', '备件安装位置ID或VG图ID不存在');
+				Ext.getCmp('operateWindow').hide();
 			} else {
 				Ext.example.msg('操作信息', '操作失败');
+				Ext.getCmp('operateWindow').hide();
 			}
 		}
 	});
@@ -388,9 +390,9 @@ function deleteRecord(siteId, vgId) {
 			V_SITE_ID: siteId,
 			V_VG_ID:vgId
 		},
-		success : function(resp) {
-			resp = Ext.decode(resp.responseText);
-			if (resp[0] == 'success') {
+		success : function(response) {
+			var resp = Ext.decode(response.responseText);
+			if (resp.OUT_RESULT == 'success') {
 				query();
 			}
 		}
@@ -403,6 +405,12 @@ function checkSize(item, size) {
 		flag = false;
 	}
 	return flag;
+}
+
+function getEquipReturnValue(ret) {
+	var str = ret.split('^');
+	Ext.getCmp('xzsb').setValue(str[1]);
+	Ext.getCmp('equcode').setValue(str[0]);
 }
 
 function deleteRender(value, metaData, record, rowIndex, colIndex, store) {

@@ -268,8 +268,7 @@ function onPageLoaded() {
 	// 显示整体布局
 	Ext.create('Ext.container.Viewport', Layout);
 
-	Ext.data.StoreManager.lookup('selPlantstore')
-			.on(
+	Ext.data.StoreManager.lookup('selPlantstore').on(
 					"load",
 					function() {
 						Ext.getCmp("selPlant").select(
@@ -302,8 +301,7 @@ function onPageLoaded() {
 			}
 		});
 	});
-
-};
+}
 
 function query() {
 
@@ -345,16 +343,18 @@ function create() {
 			V_EQU_ID: Ext.getCmp('equId').getValue(),
 			V_VG_ID:Ext.getCmp('vgId').getValue()
 		},
-		success : function(resp) {
-			resp = Ext.decode(resp.responseText);
-			if (resp[0] == 'success') {
+		success : function(response) {
+			var resp = Ext.decode(response.responseText);
+			if (resp.ret == 'Success') {
 				Ext.example.msg('操作信息', '操作成功');
 				Ext.getCmp('operateWindow').hide();
 				query();
-			} else if (resp[0].indexOf('ORA-02291') != -1) {
+			} else if (resp.ret.indexOf('ORA-02291') != -1) {
 				Ext.example.msg('操作信息', '设备编码或VG图ID不存在');
+				Ext.getCmp('operateWindow').hide();
 			} else {
 				Ext.example.msg('操作信息', '操作失败');
+				Ext.getCmp('operateWindow').hide();
 			}
 		}
 	});
@@ -371,7 +371,7 @@ function deleteRecord(equId, vgId) {
 		},
 		success : function(resp) {
 			resp = Ext.decode(resp.responseText);
-			if (resp[0] == 'success') {
+			if (resp.OUT_RESULT == 'success') {
 				query();
 			}
 		}

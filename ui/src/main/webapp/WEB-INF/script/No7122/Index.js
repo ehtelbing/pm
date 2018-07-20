@@ -214,7 +214,7 @@ function onPageLoaded() {
 	// 刷新
 	query();
 
-};
+}
 
 function query() {
 	Ext.data.StoreManager.lookup('gridStore').load({
@@ -233,14 +233,15 @@ function create() {
 			V_VG_DESC: Ext.getCmp('desc').getValue(),
 			V_URL: Ext.getCmp('url').getValue()
 		},
-		success : function(resp) {
-			resp = Ext.decode(resp.responseText);
-			if (resp[0] == 'success') {
+		success : function(response) {
+			var resp = Ext.decode(response.responseText);
+			if (resp.OUT_RESULT == 'success') {
 				Ext.example.msg('操作信息', '操作成功');
 				Ext.getCmp('operateWindow').hide();
 				query();
 			} else {
 				Ext.example.msg('操作信息', '操作失败');
+				Ext.getCmp('operateWindow').hide();
 			}
 		}
 	});
@@ -259,9 +260,9 @@ function deleteUrl() {
 			params : {
 				V_ID: selection[index].data.ID
 			},
-			success : function(resp) {
-				resp = Ext.decode(resp.responseText);
-				if (resp[0] == 'success') {
+			success : function(response) {
+				var resp = Ext.decode(response.responseText);
+				if (resp.OUT_RESULT == 'success') {
 					successNum++;
 				}
 			}

@@ -74,7 +74,6 @@ Ext.onReady(function() {
 				tpl : '<a style="cursor:pointer;text-decoration:underline; color:#00F">删除</a>',
 				id : 'delete'
 			}
-
 		],
 		store : gridStore,
 		autoScroll : true
@@ -104,8 +103,6 @@ Ext.onReady(function() {
 					text : '添加物料',
 					icon : imgpath + '/add.png',
 					handler : function() {
-						//Ext.getCmp('V_SUPPLY_CODE').setValue("");
-
 						Ext.getCmp('dialog').show();
 					}
 				},
@@ -138,7 +135,6 @@ Ext.onReady(function() {
 			fieldLabel : '物料号'
 		}
 		],
-
 		buttons : [ {
 			text : '保 存',
 			handler : btnbc,
@@ -151,6 +147,7 @@ Ext.onReady(function() {
 			}
 		} ]
 	});
+
 	Ext.create('Ext.container.Viewport', {
 		layout : 'border',
 		items : [ queryPanel, grid ]
@@ -168,7 +165,6 @@ Ext.onReady(function() {
 		del(Ext.getCmp("supplierCode").getValue(),
 			gridStore.getAt(c).get("MATERIALCODE"));
 	});
-
 
 	function del(V_SUPPLY_CODE,V_MATERIALCODE){
 		Ext.Ajax.request({
@@ -189,9 +185,8 @@ Ext.onReady(function() {
 				}
 			}
 		});
-
 	}
-})
+});
 
 function btnbc() {
 
@@ -226,13 +221,11 @@ function btnbc() {
 }
 
 function query(){
-
 	Ext.data.StoreManager.get('gridStore').load({
 		params : {
 			V_SUPPLY_CODE:Ext.ComponentManager.get('supplierCode').getValue()
 		}
 	});
-
 }
 
 

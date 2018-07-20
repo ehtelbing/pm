@@ -327,7 +327,6 @@ function btnbc() {
 				V_SUPPLY_DESC: Ext.ComponentManager.get('V_SUPPLY_DESC').getValue(),// 简介
 				V_SUPPLY_RENAGE: Ext.ComponentManager.get('V_SUPPLY_RENAGE').getValue(),// 主营业务
 				V_SUPPLY_MANAGER: Ext.ComponentManager.get('V_SUPPLY_MANAGER').getValue(),// 企业法人
-
 				V_LINK_PERSON: Ext.ComponentManager.get('V_LINK_PERSON').getValue(),// 联系人
 				V_LINK_TYPE: Ext.ComponentManager.get('V_LINK_TYPE').getValue(),// 联系方式
 				V_LINK_PHONECODE: Ext.ComponentManager.get('V_LINK_PHONECODE').getValue(),// 联系电话
@@ -335,19 +334,20 @@ function btnbc() {
 			},
 			success : function(response) {
 				var resp = Ext.JSON.decode(response.responseText);
-				
-				if(resp[0]==""){
+				if(resp.OUT_RESULT==null){
 				   Ext.example.msg('操作信息','{0}','添加成功');
 				   Ext.ComponentManager.get('dialog').hide();
 				   query();
 				}else{
 				   Ext.example.msg('操作信息','{0}','添加失败 - 已存在相应 - 供应商编码');
+					Ext.ComponentManager.get('dialog').hide();
 				}
 			}
 
 		});
 		}else{
 		     Ext.example.msg('操作信息','{0}','《供应商编码》与《供应商名称》 - 不能为空');
+			Ext.ComponentManager.get('dialog').hide();
 		}
 	} else {// 修改
                                                      
@@ -360,7 +360,6 @@ function btnbc() {
 				V_SUPPLY_DESC: Ext.ComponentManager.get('V_SUPPLY_DESC').getValue(),// 简介
 				V_SUPPLY_RENAGE: Ext.ComponentManager.get('V_SUPPLY_RENAGE').getValue(),// 主营业务
 				V_SUPPLY_MANAGER: Ext.ComponentManager.get('V_SUPPLY_MANAGER').getValue(),// 企业法人
-
 				V_LINK_PERSON: Ext.ComponentManager.get('V_LINK_PERSON').getValue(),// 联系人
 				V_LINK_TYPE: Ext.ComponentManager.get('V_LINK_TYPE').getValue(),// 联系方式
 				V_LINK_PHONECODE: Ext.ComponentManager.get('V_LINK_PHONECODE').getValue(),// 联系电话
@@ -368,13 +367,15 @@ function btnbc() {
 			},
 			success : function(response) {
 				var resp = Ext.JSON.decode(response.responseText);
-				if(resp[0]==""){
+				if(resp.OUT_RESULT==null){
 				   Ext.example.msg('操作信息','{0}','更新成功');
 				   Ext.ComponentManager.get('dialog').hide();
 				   query();
+				}else {
+					Ext.example.msg('操作信息', '{0}', '添加失败 - 已存在相应 - 供应商编码');
+					Ext.ComponentManager.get('dialog').hide();
 				}
 			}
-
 		});
 	}
 	
