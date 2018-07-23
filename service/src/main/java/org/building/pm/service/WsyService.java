@@ -1459,4 +1459,345 @@ public class WsyService {
         logger.info("end BASE_FILE_IMAGE_SEL");
         return result;
     }
+
+    public HashMap PRO_PM_BASEDIC_LIST(final String IS_V_BASETYPE) throws SQLException {
+        logger.info("begin PRO_PM_BASEDIC_LIST");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_BASEDIC_LIST" + "(:IS_V_BASETYPE,:V_CURSOR)}");
+            cstmt.setString("IS_V_BASETYPE", IS_V_BASETYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_BASEDIC_LIST");
+        return result;
+    }
+
+    public HashMap PM_REALINFOTL_QUERY() throws SQLException {
+        logger.info("begin PM_REALINFOTL_QUERY");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_REALINFOTL_QUERY" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_REALINFOTL_QUERY");
+        return result;
+    }
+
+    public HashMap PRO_BASE_DEPT_VIEW(final String IS_V_DEPTCODE, final String IS_V_DEPTTYPE) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_VIEW" + "(:IS_V_DEPTCODE,:IS_V_DEPTTYPE,:V_CURSOR)}");
+            cstmt.setString("IS_V_DEPTCODE", IS_V_DEPTCODE);
+            cstmt.setString("IS_V_DEPTTYPE", IS_V_DEPTTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_VIEW");
+        return result;
+    }
+
+    public HashMap PRO_PP_INFORMATION_SET(final String V_I_ID, final String V_V_DEPT, final String V_V_INFORMATION, final String V_D_DATE, final String V_V_PERSONCODE, final String V_V_PERSONNAME, final String V_V_TYPE, final String V_V_CLASS, final String V_V_CLASSTYPE, final String V_V_NOTIFICATION) throws SQLException {
+        logger.info("begin PRO_PP_INFORMATION_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_SET" + "(:V_I_ID,:V_V_DEPT,:V_V_INFORMATION,:V_D_DATE,:V_V_PERSONCODE,:V_V_PERSONNAME,:V_V_TYPE,:V_V_CLASS,:V_V_CLASSTYPE,:V_V_NOTIFICATION,:V_INFO)}");
+            cstmt.setInt("V_I_ID", Integer.parseInt(V_I_ID));
+            cstmt.setString("V_V_DEPT", V_V_DEPT);
+            cstmt.setString("V_V_INFORMATION", V_V_INFORMATION);
+            if (V_D_DATE.equals("")) {
+                cstmt.setDate(V_D_DATE, null);
+            } else {
+                Timestamp time = Timestamp.valueOf(V_D_DATE);
+                cstmt.setTimestamp(V_D_DATE, time);
+            }
+//            cstmt.setDate("V_D_DATE", V_D_DATE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_PERSONNAME", V_V_PERSONNAME);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_V_CLASS", V_V_CLASS);
+            cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
+            cstmt.setString("V_V_NOTIFICATION", V_V_NOTIFICATION);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+//            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PP_INFORMATION_SET");
+        return result;
+    }
+
+    public HashMap PM_REALINFOTL_EDIT(final String V_V_CODE, final String V_V_CONTENT) throws SQLException {
+        logger.info("begin PM_REALINFOTL_EDIT");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_REALINFOTL_EDIT" + "(:V_V_CODE,:V_V_CONTENT,:V_INFO)}");
+            cstmt.setString("V_V_CODE", V_V_CODE);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+//            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_REALINFOTL_EDIT");
+        return result;
+    }
+
+    public HashMap PM_REALINFOTL_DEL(final String V_ID) throws SQLException {
+        logger.info("begin PM_REALINFOTL_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_REALINFOTL_DEL" + "(:V_ID,:V_CURSOR)}");
+            cstmt.setString("V_ID", V_ID);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+//            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_REALINFOTL_DEL");
+        return result;
+    }
+
+    public HashMap PRO_BASE_DEPT_VIEW_DEPTTYPE(final String V_V_DEPTCODE, final String V_V_DEPTTYPE, final String V_V_PERSON) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_VIEW_DEPTTYPE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_VIEW_DEPTTYPE" + "(:V_V_DEPTCODE,:V_V_DEPTTYPE,:V_V_PERSON,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
+            cstmt.setString("V_V_PERSON", V_V_PERSON);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_VIEW_DEPTTYPE");
+        return result;
+    }
+
+    public HashMap PRO_PP_INFORMATION_LIST(final String V_V_PERSONCODE, final String V_V_DEPT, final String V_V_TYPE, final String V_V_CLASSTYPE, final String V_D_FROMDATE, final String V_D_TODATE) throws SQLException {
+        logger.info("begin PRO_PP_INFORMATION_LIST");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_LIST" + "(:V_V_PERSONCODE,:V_V_DEPT,:V_V_TYPE,:V_V_CLASSTYPE,:V_D_FROMDATE,:V_D_TODATE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPT", V_V_DEPT);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
+            if (V_D_FROMDATE.equals("")) {
+                cstmt.setDate(V_D_FROMDATE, null);
+            } else {
+                cstmt.setDate(V_D_FROMDATE, java.sql.Date.valueOf(V_D_FROMDATE));
+            }
+            if (V_D_TODATE.equals("")) {
+                cstmt.setDate(V_D_TODATE, null);
+            } else {
+                cstmt.setDate(V_D_TODATE, java.sql.Date.valueOf(V_D_TODATE));
+            }
+//            cstmt.setString("V_D_FROMDATE", V_D_FROMDATE);
+//            cstmt.setString("V_D_TODATE", V_D_TODATE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PP_INFORMATION_LIST");
+        return result;
+    }
+
+    public HashMap PRO_PM_DEFECT_STATE_VIEW() throws SQLException {
+        logger.info("begin PRO_PM_DEFECT_STATE_VIEW");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_STATE_VIEW" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_STATE_VIEW");
+        return result;
+    }
+
+    public HashMap PRO_PP_INFORMATION_WITHD_LIST3(final String V_V_PERSONCODE, final String V_V_DEPT, final String V_V_TYPE, final String V_V_CLASSTYPE, final String V_V_TYPE_STATE, final String V_D_FROMDATE, final String V_D_TODATE) throws SQLException {
+        logger.info("begin PRO_PP_INFORMATION_WITHD_LIST3");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_WITHD_LIST3" + "(:V_V_PERSONCODE,:V_V_DEPT,:V_V_TYPE,:V_V_CLASSTYPE,:V_V_TYPE_STATE,:V_D_FROMDATE,:V_D_TODATE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPT", V_V_DEPT);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
+            cstmt.setString("V_V_TYPE_STATE", V_V_TYPE_STATE);
+            if (V_D_FROMDATE.equals("")) {
+                cstmt.setDate(V_D_FROMDATE, null);
+            } else {
+                cstmt.setDate(V_D_FROMDATE, java.sql.Date.valueOf(V_D_FROMDATE));
+            }
+            if (V_D_TODATE.equals("")) {
+                cstmt.setDate(V_D_TODATE, null);
+            } else {
+                cstmt.setDate(V_D_TODATE, java.sql.Date.valueOf(V_D_TODATE));
+            }
+//            cstmt.setString("V_D_FROMDATE", V_D_FROMDATE);
+//            cstmt.setString("V_D_TODATE", V_D_TODATE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PP_INFORMATION_WITHD_LIST3");
+        return result;
+    }
+
+    public HashMap PRO_PP_INFORMATION_WITHD_LIST2(final String V_V_PERSONCODE, final String V_V_DEPT, final String V_V_TYPE, final String V_V_CLASSTYPE, final String V_D_FROMDATE, final String V_D_TODATE) throws SQLException {
+        logger.info("begin PRO_PP_INFORMATION_WITHD_LIST2");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_WITHD_LIST2" + "(:V_V_PERSONCODE,:V_V_DEPT,:V_V_TYPE,:V_V_CLASSTYPE,:V_D_FROMDATE,:V_D_TODATE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPT", V_V_DEPT);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
+            if (V_D_FROMDATE.equals("")) {
+                cstmt.setDate(V_D_FROMDATE, null);
+            } else {
+                cstmt.setDate(V_D_FROMDATE, java.sql.Date.valueOf(V_D_FROMDATE));
+            }
+            if (V_D_TODATE.equals("")) {
+                cstmt.setDate(V_D_TODATE, null);
+            } else {
+                cstmt.setDate(V_D_TODATE, java.sql.Date.valueOf(V_D_TODATE));
+            }
+//            cstmt.setString("V_D_FROMDATE", V_D_FROMDATE);
+//            cstmt.setString("V_D_TODATE", V_D_TODATE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PP_INFORMATION_WITHD_LIST2");
+        return result;
+    }
 }
