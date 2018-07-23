@@ -237,7 +237,7 @@ var windowLayout = {
 
 
 function OnclickAddButtonLoad() {
-    Ext.Ajax.request({
+   /* Ext.Ajax.request({
         method: 'POST',
         async: false,
         url: AppUrl + 'zdh/teamedit_sel',
@@ -248,7 +248,7 @@ function OnclickAddButtonLoad() {
             var resp = Ext.decode(response.responseText);
             Ext.getCmp('banzu').setValue(resp.list[0].V_CLASS_NAME);
         }
-    });
+    });*/
     I_ID = '-1';
     Ext.getCmp('jxgxbm').setValue(guid());
     Ext.getCmp('workContent').setValue('');
@@ -574,7 +574,7 @@ function getReturnJXSAFE(data){
 function selectPerson(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID+'&redept='+Ext.getCmp('selWorkCenter').valueModels[0].raw.V_DEPTCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID+'&redept='+Ext.getCmp('selWorkCenter').valueModels[0].raw.V_SAP_WORK, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function getPersonReturnValue(data,ts){
@@ -585,7 +585,7 @@ function getPersonReturnValue(data,ts){
     }
     Ext.getCmp('personSel').setValue(sname.toString());
     Ext.getCmp('actualPeople').setValue(data.length);
-    Ext.getCmp('actualTime').setValue(ts);
+    //Ext.getCmp('actualTime').setValue(ts);
 
 }
 function selectGJJJ(){

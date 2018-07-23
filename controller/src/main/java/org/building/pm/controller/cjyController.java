@@ -5,8 +5,9 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.activitiController.ActivitiController;
-import org.building.pm.service.ActivitiService;
 import org.building.pm.service.BasicService;
+import org.building.pm.service.WorkOrderService;
+import org.building.pm.service.ZdhService;
 import org.building.pm.service.cjyService;
 import org.building.pm.webcontroller.AMToMessController;
 import org.building.pm.webcontroller.MMController;
@@ -48,7 +49,10 @@ public class cjyController {
     private ActivitiController activitiController;
 
     @Autowired
-    private ActivitiService activitiService;
+    private WorkOrderService workOrderService;
+
+    @Autowired
+    private ZdhService zdhService;
 
     @Autowired
     private TaskService taskService;
@@ -2087,6 +2091,40 @@ public class cjyController {
         return menu;
     }
 
+    @RequestMapping(value = "selRepairPer")
+    @ResponseBody
+    public List<Map> selRepairPer(
+            @RequestParam(value = "V_V_SAP_WORK") String V_V_SAP_WORK,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG)
+            throws SQLException {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> menu = new ArrayList<Map>();
+        if (V_V_FLAG.equals("true")) {
+            menu = cjyService.SelDeptTreeToClass(V_V_SAP_WORK);
+        } else {
+            Map data = cjyService.BASE_PERSON_SEL_BYDEPT(V_V_SAP_WORK);
+            Map<String, Object> subMatBudgetCat;
+            List<Map<String, Object>> personTreeList = (List<Map<String, Object>>) data.get("list");
+
+            for (int i = 0; i < personTreeList.size(); i++) {
+                subMatBudgetCat = personTreeList.get(i);
+                Map temp = new HashMap();
+                temp.put("parentid", V_V_SAP_WORK);
+                temp.put("sid", subMatBudgetCat.get("V_PERSONCODE"));
+                temp.put("text", subMatBudgetCat.get("V_PERSONNAME"));
+                temp.put("leaf", true);
+                menu.add(temp);
+                //children.add(subMatBudgetCat);
+            }
+
+            result.put("children", menu);
+            result.put("success", true);
+        }
+
+
+        return menu;
+    }
+
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_GET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_WEEK_GET(
@@ -2699,7 +2737,7 @@ public class cjyController {
                 String taskid = stepresult.get("taskId").toString();
                 String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
                 String V_STEPNAME = stepresult.get("taskName").toString();
-                if (V_STEPNAME.indexOf("审批") == -1) {//没有审批字样
+                if (V_STEPNAME.indexOf("审批") == -1 && V_STEPNAME.indexOf("工单打印") == -1) {//没有审批字样
                     fqrNum++;
                 } else {
                     List<Map<String, Object>> perresult = (List) cjyService.PRO_PM_WORKORDER_GET(V_ORDERGUID[i]).get("list");
@@ -2725,28 +2763,41 @@ public class cjyController {
                             sppercode = V_V_PERSONCODE;
                         }
                     }
+                    if (V_STEPNAME.indexOf("审批") != -1) {
+                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                        String[] parVal = new String[]{sppercode, "批量审批通过"};
 
-                    String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
-                    String[] parVal = new String[]{sppercode, "批量审批通过"};
+                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                    } else if (V_STEPNAME.indexOf("工单打印") != -1) {
+                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                        String[] parVal = new String[]{sppercode, "批量打印"};
 
-                    complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                        complresult = activitiController.TaskCompletePL(taskid, "已打印", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请接收！", sppercode, V_V_PERSONCODE);
+                    }
+
                     if (complresult.get("ret").toString().equals("任务提交成功")) {
-                        flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
 
+                        if (V_STEPNAME.indexOf("审批") != -1) {
+                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
+                        } else if (V_STEPNAME.indexOf("工单打印") != -1) {
+                            flowresult = zdhService.PRO_WX_WORKORDER_GET(V_ORDERGUID[i]);
+                            List orderList= (List) flowresult.get("list");
+                            Map orderMap= (Map) orderList.get(0);
+                            flowresult = workOrderService.PRO_PM_WORKORDER_DY(V_V_PERSONCODE, orderMap.get("V_PERSONNAME").toString(),V_ORDERGUID[i],orderMap.get("D_START_DATE").toString(),orderMap.get("D_FINISH_DATE").toString(),"","","","","","");
+                        }
                         /*
                          * 如果下一步是不是审批步骤，当前步骤是审批，向物资接口传递工单信息
                          * */
-                        if (V_NEXT_SETP.indexOf("sp") == -1&&V_STEPCODE.indexOf("sp")!=-1) {
+                        if (V_NEXT_SETP.indexOf("sp") == -1 && V_STEPCODE.indexOf("sp") != -1) {
                             mmController.SetMat(V_ORDERGUID[i], Assignee, request, response);
                         }
                         /*
                          * 传递完成
                          * */
 
-                        if (flowresult.get("V_INFO").toString().equals("success")) {
+                        if (flowresult.get("V_INFO").toString().equals("success")||flowresult.get("V_INFO").toString().equals("成功")) {
                             sucNum++;
                             nexperList.add(sppercode);
-                            //result.put("nestper", sppercode);
                         }
                     } else {
                         faiNum++;
@@ -3222,8 +3273,8 @@ public class cjyController {
     @RequestMapping(value = "/PM_1917_JXGX_PER_DATA_SELBYG", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_1917_JXGX_PER_DATA_SELBYG(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) throws Exception {
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_1917_JXGX_PER_DATA_SELBYG(V_V_ORDERGUID);
         return result;
     }
@@ -3231,9 +3282,9 @@ public class cjyController {
     @RequestMapping(value = "/PM_1917_JXGX_PER_DATA_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_1917_JXGX_PER_DATA_DEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                           @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE,
-                                           HttpServletRequest request,
-                                           HttpServletResponse response) throws Exception {
+                                         @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_1917_JXGX_PER_DATA_DEL(V_V_GUID, V_V_PERCODE_DE);
         return result;
     }
@@ -3257,14 +3308,14 @@ public class cjyController {
     @RequestMapping(value = "/PM_ACTIVITI_STEP_LOG_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_ACTIVITI_STEP_LOG_SET(@RequestParam(value = "V_V_BUSINESS_GUID") String V_V_BUSINESS_GUID,
-                                           @RequestParam(value = "V_V_PROCESS_GUID") String V_V_PROCESS_GUID,
-                                           @RequestParam(value = "V_V_STEPCODE") String V_V_STEPCODE,
-                                           @RequestParam(value = "V_V_STEPNAME") String V_V_STEPNAME,
-                                           @RequestParam(value = "V_V_IDEA") String V_V_IDEA,
-                                           @RequestParam(value = "V_V_NEXTPER") String V_V_NEXTPER,
-                                           @RequestParam(value = "V_V_INPER") String V_V_INPER,
-                                           HttpServletRequest request,
-                                           HttpServletResponse response) throws Exception {
+                                        @RequestParam(value = "V_V_PROCESS_GUID") String V_V_PROCESS_GUID,
+                                        @RequestParam(value = "V_V_STEPCODE") String V_V_STEPCODE,
+                                        @RequestParam(value = "V_V_STEPNAME") String V_V_STEPNAME,
+                                        @RequestParam(value = "V_V_IDEA") String V_V_IDEA,
+                                        @RequestParam(value = "V_V_NEXTPER") String V_V_NEXTPER,
+                                        @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) throws Exception {
         Map result = cjyService.PM_ACTIVITI_STEP_LOG_SET(V_V_BUSINESS_GUID, V_V_PROCESS_GUID, V_V_STEPCODE, V_V_STEPNAME, V_V_IDEA, V_V_NEXTPER, V_V_INPER);
         return result;
     }
@@ -3272,9 +3323,9 @@ public class cjyController {
     @RequestMapping(value = "/PRO_ACTIVITI_DELETE", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_ACTIVITI_DELETE(@RequestParam(value = "V_V_BusinessKey") String V_V_BusinessKey,
-                                         @RequestParam(value = "V_V_FlowType") String V_V_FlowType,
-                                         HttpServletRequest request,
-                                         HttpServletResponse response) throws Exception {
+                                   @RequestParam(value = "V_V_FlowType") String V_V_FlowType,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_ACTIVITI_DELETE(V_V_BusinessKey, V_V_FlowType);
         return result;
     }
@@ -3282,22 +3333,22 @@ public class cjyController {
     @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_GAUNTT_RUN", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> PRO_PM_03_PLAN_WEEK_GAUNTT_RUN(@RequestParam(value = "V_V_SDATE") String V_V_SDATE,
-                                     @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
-                                     @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                     @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                     HttpServletRequest request)
+                                                    @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
+                                                    @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                    @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                    HttpServletRequest request)
             throws SQLException {
-        List<Map> result = cjyService.PRO_PM_03_PLAN_WEEK_GAUNTT_RUN(V_V_SDATE, V_V_EDATE,V_V_ORGCODE,V_V_DEPTCODE);
+        List<Map> result = cjyService.PRO_PM_03_PLAN_WEEK_GAUNTT_RUN(V_V_SDATE, V_V_EDATE, V_V_ORGCODE, V_V_DEPTCODE);
         return result;
     }
 
     @RequestMapping(value = "PRO_WEEKPLAN_WORKORDER_GAUNTT", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> PRO_WEEKPLAN_WORKORDER_GAUNTT(@RequestParam(value = "V_V_SDATE") String V_V_SDATE,
-                                                    @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
-                                                    @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                    @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                    HttpServletRequest request)
+                                                   @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
+                                                   @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                   @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                   HttpServletRequest request)
             throws SQLException {
         List<Map> result = cjyService.PRO_WEEKPLAN_WORKORDER_GAUNTT(V_V_SDATE, V_V_EDATE, V_V_ORGCODE, V_V_DEPTCODE);
         return result;

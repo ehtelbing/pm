@@ -5026,7 +5026,7 @@ public class cjyService {
                     temp.put("expanded", false);
                     if (flagChildren(list, V_V_DEPTCODE)) {
                         temp.put("children", GetDeptChildren1(list, V_V_DEPTCODE));
-                    }else{
+                    } else {
                         temp.put("leaf", false);
                     }
                     menu.add(temp);
@@ -5053,6 +5053,66 @@ public class cjyService {
         logger.info("end PRO_BASE_DEPT_TREE");
         return menu;
     }
+
+    public List<Map> SelDeptTreeToClass(String V_V_SAP_WORK) throws SQLException {
+        logger.info("begin PRO_SELDEPTTREE_TO_CLASS");
+        List<Map> menu = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SELDEPTTREE_TO_CLASS" + "(:V_V_CLASSCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_CLASSCODE", V_V_SAP_WORK);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list = ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            for (int i = 0; i < list.size(); i++) {
+                Map temp = new HashMap();
+                if (list.get(i).get("V_SAP_WORK").equals(V_V_SAP_WORK)) {
+                    temp.put("parentid", "");
+                    temp.put("id", list.get(i).get("V_SAP_WORK"));
+                    temp.put("text", list.get(i).get("V_SAP_WORKNAME"));
+                    temp.put("expanded", false);
+                    temp.put("leaf", false);
+                    menu.add(temp);
+                }
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_SELDEPTTREE_TO_CLASS");
+        return menu;
+    }
+
+    public Map SelPerByClass(String V_V_SAP_WORK) throws SQLException {
+        logger.info("begin PRO_SELPERBY_CLASS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_SELPERBY_CLASS" + "(:V_V_CLASSCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_CLASSCODE", V_V_SAP_WORK);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_PERSON_SEL_BYDEPT");
+        return result;
+    }
+
 
     public List<Map> GetDeptChildren1(List<HashMap> list, String V_V_DEPTCODE) throws SQLException {
         List<Map> menu = new ArrayList<Map>();

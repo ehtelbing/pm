@@ -71,10 +71,9 @@ Ext.onReady(function () {
         fields: ['sid', 'text', 'parentid', 'craftcode', 'craftname'],
         proxy: {
             type: 'ajax',
-            url: AppUrl + 'cjy/selectPersonTreeFromDept',
+            url: AppUrl + 'cjy/selRepairPer',
             extraParams: {
-                V_V_DEPTCODE :'',
-                V_V_DEPTTYPE : '',
+                V_V_SAP_WORK :'',
                 V_V_FLAG : ''
             },
             reader: {
@@ -240,7 +239,7 @@ function QueryTree(){
 
     var treeStore = Ext.data.StoreManager.lookup('treeStore');
     treeStore.proxy.extraParams = {
-        V_V_DEPTCODE: V_DEPTCODE,
+        V_V_SAP_WORK: V_DEPTCODE,
         V_V_FLAG: 'true'
     };
     treeStore.currentPage = 1;
