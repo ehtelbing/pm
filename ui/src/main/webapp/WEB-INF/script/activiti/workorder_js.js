@@ -414,6 +414,8 @@ function loadOrder(){
                // V_DEPTREPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
                 //loadTeam(resp.list[0].V_WXTEAM);
+
+                GetBillMatByOrder();
             }
         }
     });
@@ -1771,3 +1773,20 @@ function print() {
     window.open(AppUrl + "page/No410101/indexn.html", selectID,
         "dialogHeight:700px;dialogWidth:1100px");
 }
+
+function GetBillMatByOrder(){
+    Ext.Ajax.request({
+        url: AppUrl + 'mm/WS_EquipGetBillMaterialByOrderService',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+            V_V_ORDERID: $("#V_ORDERID").html(),
+            x_personcode : Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+
+        }
+    });
+}
+

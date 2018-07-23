@@ -365,6 +365,8 @@ function loadOrder(){
 
                 planDate("D_FACT_START_DATE","D_START_DATE");
                 planDate("D_FACT_FINISH_DATE","D_FINISH_DATE");
+
+                GetBillMatByOrder();
             }
         }
     });
@@ -1682,3 +1684,20 @@ function print() {
     window.open(AppUrl + "page/No410101/indexn.html", selectID,
         "dialogHeight:700px;dialogWidth:1100px");
 }
+
+function GetBillMatByOrder(){
+    Ext.Ajax.request({
+        url: AppUrl + 'mm/WS_EquipGetBillMaterialByOrderService',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_ORDERGUID: V_ORDERGUID,
+            V_V_ORDERID: $("#V_ORDERID").html(),
+            x_personcode : Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+
+        }
+    });
+}
+
