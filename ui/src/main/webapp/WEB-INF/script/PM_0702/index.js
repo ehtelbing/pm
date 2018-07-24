@@ -238,46 +238,6 @@ Ext.onReady(function () {
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
             store: 'gridStore'
-        }, {
-            xtype: 'label',
-            text: '已计划',
-            style: ' margin: 0px 0px 0px 10px;color:#FFCC00'
-        }, {
-            xtype: 'label',
-            text: '已接收',
-            style: ' margin: 0px 0px 0px 10px;color:#009933'
-        }, {
-            xtype: 'label',
-            text: '已反馈',
-            style: ' margin: 0px 0px 0px 10px;color:#6666FF'
-        }, {
-            xtype: 'label',
-            text: '已验收',
-            style: ' margin: 0px 0px 0px 10px;color:#333300'
-        }, {
-            xtype: 'label',
-            text: '遗留缺陷',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '工单驳回',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '未处理',
-            style: ' margin: 0px 0px 0px 10px;color:#FF0000'
-        }, {
-            xtype: 'label',
-            text: '已下票',
-            style: ' margin: 0px 0px 0px 10px;color:#FF33CC'
-        }, {
-            xtype: 'label',
-            text: '已消缺',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '手工消缺',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
         }]
     });
 
