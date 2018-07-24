@@ -2102,7 +2102,7 @@ public class cjyController {
         if (V_V_FLAG.equals("true")) {
             menu = cjyService.SelDeptTreeToClass(V_V_SAP_WORK);
         } else {
-            Map data = cjyService.BASE_PERSON_SEL_BYDEPT(V_V_SAP_WORK);
+            Map data = cjyService.SelPerByClass(V_V_SAP_WORK);
             Map<String, Object> subMatBudgetCat;
             List<Map<String, Object>> personTreeList = (List<Map<String, Object>>) data.get("list");
 
