@@ -1018,7 +1018,7 @@ function Receive(){
         V_V_FLOW_STEP:V_STEPCODE,// $.url().param("TaskDefinitionKey"),
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
-        V_V_WHERE:'已打印'
+        V_V_WHERE:'已接收'
 
     };
 
@@ -1045,9 +1045,9 @@ function ConfirmAccept() {
         method: 'POST',
         params: {
             taskId: taskId,
-            idea: '已打印',
+            idea: '已接收',
             parName: [V_NEXT_SETP, "flow_yj"],
-            parVal: [Ext.getCmp('nextSprb').getValue(), '已打印'],
+            parVal: [Ext.getCmp('nextSprb').getValue(), '已接收'],
             processKey :processKey,
             businessKey : $.url().param("V_ORDERGUID"),
             V_STEPCODE : V_STEPCODE,
@@ -1058,7 +1058,7 @@ function ConfirmAccept() {
         },
         success: function (response) {
             $.ajax({
-                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DY',
+                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DYJS',
                 type: 'post',
                 async: false,
                 data: {

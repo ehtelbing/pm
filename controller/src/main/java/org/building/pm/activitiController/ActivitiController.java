@@ -14,9 +14,8 @@ import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.building.pm.controller.cjyController;
-import org.building.pm.service.ActivitiService;
-import org.building.pm.service.PM_03Service;
-import org.building.pm.service.hpService;
+import org.building.pm.service.*;
+import org.building.pm.webcontroller.AMToMessController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -71,6 +70,12 @@ public class ActivitiController {
     private hpService hpService;
 
     @Autowired
+    private AMToMessController amToMessController;
+
+    @Autowired
+    private BasicService basicService;
+
+    @Autowired
     private cjyController cjyController;
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
@@ -80,6 +85,9 @@ public class ActivitiController {
 
     @Value("#{configProperties['infopub.password']}")
     private String infopubpassword;
+
+    @Value("#{configProperties['pmlogin']}")
+    private String pmlogin;
 
     //部署流程
     @RequestMapping(value = "ModelDeployProcess", method = RequestMethod.POST)
@@ -153,6 +161,29 @@ public class ActivitiController {
 
                 ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
                         param);
+
+                String jstcode = basicService.BASE_PRO_JST_CODESEL(V_NEXTPER);
+
+                if(!jstcode.equals("")){
+                    String messtxt = "PM系统待办提醒";
+                    String MSG = "<SendMessage><AM_Name>" + jstcode + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
+                    String loginurl = pmlogin+"?v_mancode="+V_NEXTPER+"&v_type=newangel";
+
+                    String strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
+                    strContent += "<HR size='1' style='color: 52658C;'>";
+                    strContent += "待办任务提醒：<UL>";
+                    strContent += "<li>您有：1 条待办</li>";
+                    strContent += "</UL><a href='" + loginurl + "' target='_blank' >请点击这里进行办理</a></BODY></HTML>";
+
+
+                    try {
+                        String    sendResult = amToMessController.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
+                        result.put("sendAm",sendResult);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        result.put("sendAm","Fail");
+                    }
+                }
 
                 result.put("id", processInstance.getId());
                 result.put("InstanceId", processInstance.getProcessInstanceId());
@@ -890,10 +921,10 @@ public class ActivitiController {
             result.put("ret", "任务提交成功");
             result.put("msg", "OK");
             String mes = cjyController.MessageSend("1", flowtype, V_NEXTPER);
-            if (mes.equals("fail")) {
-                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
-            } else {
+            if (mes.equals("true")) {
                 cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
+            } else {
+                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
             }
 
         } catch (Exception e) {

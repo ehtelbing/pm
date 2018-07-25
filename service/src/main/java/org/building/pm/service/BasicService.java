@@ -1575,7 +1575,7 @@ public class BasicService {
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call BASE_PRO_JST_CODESEL(:V_V_PERCODE,:V_INFO)}");
             cstmt.setString("V_V_PERCODE", percode);
-            cstmt.registerOutParameter("V_V_PERCODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result = cstmt.getObject("V_INFO").toString();
         } catch (SQLException e) {

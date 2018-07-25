@@ -22,52 +22,93 @@ function Login() {
                         LoginType: Ext.urlDecode(location.href.split('?')[1]).v_type
                     }, success: function (respon) {
                         var resp = Ext.decode(respon.responseText);
-                        var iiiii = resp.list;
-                        debugger;
-                        if (resp.list != "") {
+                        if (resp.list.length>0) {
+
+                            Ext.util.Cookies.set("v_class_code",
+                                encodeURI(resp.list[0].V_CLASS_CODE));
+
 
                             Ext.util.Cookies.set("v_orgname",
                                 encodeURI(resp.list[0].V_ORGNAME));
+
+
                             Ext.util.Cookies.set("v_rolename",
                                 encodeURI(resp.list[0].V_ROLENAME));
+
+
                             Ext.util.Cookies.set("v_loginname",
                                 encodeURI(resp.list[0].V_LOGINNAME));
+
+
                             Ext.util.Cookies.set("v_deptname",
                                 encodeURI(resp.list[0].V_DEPTNAME));
+
+
                             Ext.util.Cookies.set("v_rolecode",
                                 resp.list[0].V_ROLECODE);
+
+
                             Ext.util.Cookies.set("v_personcode",
                                 resp.list[0].I_PERSONID);
+
+
                             Ext.util.Cookies.set("v_postname",
                                 encodeURI(resp.list[0].V_POSTNAME));
+
+
                             Ext.util.Cookies.set("v_depttypecode",
                                 encodeURI(resp.list[0].V_DEPTTYPE));
+
+
                             Ext.util.Cookies.set("v_postcode",
                                 resp.list[0].V_POSTCODE);
+
+
                             Ext.util.Cookies.set("v_password",
                                 resp.list[0].V_PASSWORD);
+
+
                             Ext.util.Cookies.set("v_orgCode",
                                 resp.list[0].V_ORGCODE);
+
+
                             Ext.util.Cookies.set("v_personname2",
                                 resp.list[0].V_PERSONNAME);
+
+
                             Ext.util.Cookies.set("v_personname",
                                 encodeURI(resp.list[0].V_PERSONNAME));
+
+
                             Ext.util.Cookies.set("v_deptcode",
                                 resp.list[0].V_DEPTCODE);
+
+
                             Ext.util.Cookies.set("v_deptfullname",
                                 encodeURI(resp.list[0].V_DEPTFULLNAME));
+
+
                             Ext.util.Cookies.set("v_deptsmallname",
                                 encodeURI(resp.list[0].V_DEPTSMALLNAME));
 
 
                             Ext.util.Cookies.set("v_orgname2",
                                 resp.list[0].V_ORGNAME);
+
+
                             Ext.util.Cookies.set("v_deptname2",
                                 resp.list[0].V_DEPTNAME);
+
+
                             Ext.util.Cookies.set("v_personname2",
                                 resp.list[0].V_PERSONNAME);
+
+
                             Ext.util.Cookies.set('v_workcss',
                                 resp.list[0].V_WORKCSS);
+
+
+                            location.href = "../../page/home/Index.html";
                         } else {
                             msgbox("不存在此用户！");
                         }
@@ -202,7 +243,7 @@ function OnLogInClick() {
                         resp.list[0].V_WORKCSS);
 
 
-                    location.href = "../../page/home/Index.html?menutype=DJ";
+                    location.href = "../../page/home/Index.html";
                     /*} else {
                         msgbox("密码错误！");
                     }*/

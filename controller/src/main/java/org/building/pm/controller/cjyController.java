@@ -2955,8 +2955,8 @@ public class cjyController {
             result = "noperson";
         } else {
             String messtxt = "PM系统待办提醒";
-            String MSG = "<SendMessage><AM_Name>" + nexPer + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
-            String loginurl = pmlogin;
+            String MSG = "<SendMessage><AM_Name>" + jstcode + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
+            String loginurl = pmlogin+"?v_mancode="+nexPer+"&v_type=newangel";
 
             String strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
             strContent += "<HR size='1' style='color: 52658C;'>";
