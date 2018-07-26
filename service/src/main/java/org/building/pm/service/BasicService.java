@@ -1577,7 +1577,11 @@ public class BasicService {
             cstmt.setString("V_V_PERCODE", percode);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result = cstmt.getObject("V_INFO").toString();
+            if (cstmt.getObject("V_INFO")==null){
+                result="";
+            }else{
+                result = cstmt.getObject("V_INFO").toString();
+            }
         } catch (SQLException e) {
             logger.error(e);
         } finally {
