@@ -261,7 +261,7 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('                        <span>');
-                            result.push(resp.list[0].V_FUNC_LOC);
+                            result.push(resp.list[0].V_EQUSITENAME);
                             result.push('</span>');
                             result.push('</td>');
                             result.push('                    <td align="center" class="border_r_b">');
