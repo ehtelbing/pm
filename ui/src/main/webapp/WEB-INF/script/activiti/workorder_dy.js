@@ -74,7 +74,6 @@ $(function () {
         layout: 'vbox',
         frame: true,
         border: false,
-        //title : '流程管理',
         baseCls: 'my-panel-no-border',
         items: [
             {
@@ -138,12 +137,6 @@ $(function () {
 
     getAssignee();
     $("#btnTask").click(function () {
-
-        /*var owidth = window.document.body.offsetWidth-200;
-        var oheight = window.document.body.offsetHeight-100 ;
-        var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_DEPTREPAIRCODE=' + V_DEPTREPAIRCODE +  '&V_TEAMCODE=' + V_TEAMCODE +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-*/
-
         var V_EQUTYPE='';
         Ext.Ajax.request({
             url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_GET',
@@ -161,7 +154,7 @@ $(function () {
         });
         var owidth = window.document.body.offsetWidth-200;
         var oheight = window.document.body.offsetHeight-100 ;
-        var ret = window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID
+        window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID
             + '&V_DEPTREPAIRCODE=' + V_V_REPAIRCODE
             + '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
             + '&V_V_ORGCODE=' + V_V_ORGCODE
@@ -337,7 +330,7 @@ function OpenEditMat() {
 }
 
 $('#btnGJJJ').live('click', function () {
-    var ret = window.showModalDialog(AppUrl+'/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
+   window.showModalDialog(AppUrl+'/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
 });
 
 function loadMatList() {
@@ -567,7 +560,7 @@ function OrderFile() {
 function OrderFile1(V_MATERIALGUID) {
     var owidth = window.document.body.offsetWidth-200;
     var oheight = window.document.body.offsetHeight-100 ;
-    var ret = window.open(AppUrl+'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+     window.open(AppUrl+'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }
 
@@ -575,16 +568,14 @@ function fileadd(){
     var seldata = Ext.getCmp('fjgrid').getSelectionModel().getSelection();
     var owidth = window.document.body.offsetWidth-200;
     var oheight = window.document.body.offsetHeight-100 ;
-    var ret = window.open(AppUrl+'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    window.open(AppUrl+'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }
 
 function GetModel() {
     if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) { alert("请先选择设备!"); } else {
-        var ret = window.showModalDialog(AppUrl+'/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE='+ $('#V_DEPTNAMEREPARIR').val() + '','', 'dialogHeight:500px;dialogWidth:800px');
-        //loadTaskGrid();
-        //loadToolAndTxtList();
-        //loadMatList();
+        window.showModalDialog(AppUrl+'/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE='+ $('#V_DEPTNAMEREPARIR').val() + '','', 'dialogHeight:500px;dialogWidth:800px');
+
     }
 }
 
@@ -597,10 +588,8 @@ function NowDate_b(id) {
     var hou = d.getHours().toString();
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
-    //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00" ;
 
-    //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
 function NowDate_e(id) {
@@ -612,10 +601,8 @@ function NowDate_e(id) {
     var hou = d.getHours().toString();
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
-    //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00" ;
 
-    //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
 
@@ -630,7 +617,6 @@ function planDate(id,jhid) {
     var sen = d.getSeconds().toString();
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
 
-    //try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").val(s);
 }
 function NowDate2(id) {
@@ -642,9 +628,7 @@ function NowDate2(id) {
     var hou = d.getHours().toString();
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
-    //s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) ;
-    // try { $("#" + id + "").html(s); } catch (e) { $("#" + id + "").val(s); }
     $("#" + id + "").html(s);
 }
 
@@ -1015,7 +999,7 @@ function Receive(){
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: V_V_REPAIRCODE,
         V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP:V_STEPCODE,// $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP:V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE:'已打印'

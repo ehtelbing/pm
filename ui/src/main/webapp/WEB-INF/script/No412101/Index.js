@@ -206,37 +206,31 @@ function onClickSave() {
             V_V_PERCODE: $.cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
             V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-            V_V_SHORT_TXT: $("#V_SHORT_TXT").val(),
-            V_V_FUNC_LOC: V_FUNC_LOC,//$("#V_FUNC_LOC").html(),
-
+            V_V_SHORT_TXT: $("#V_SHORT_TXT").html(),
+            V_V_FUNC_LOC: $("#V_FUNC_LOC").val(),
             V_V_EQUIP_NO: $("#V_EQUIP_NO").html(),
             V_V_EQUIP_NAME: $("#V_EQUIP_NAME").html(),
             V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val(),
             V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val(),
-            V_V_WBS: '',
+            V_V_WBS:$("#V_WBS").html(),
 
-            V_V_WBS_TXT: '',
-            V_V_DEPTCODEREPARIR: $("#selPlant").val(),
-            V_V_TOOL: ' ',
-
+            V_V_WBS_TXT:$("#V_WBS_TXT").html(),
+            V_V_DEPTCODEREPARIR: $("#V_DEPTNAMEREPARIR").html(),//$("#selPlant").val(),
+            V_V_TOOL:'',
             V_V_TECHNOLOGY: ' ',
             V_V_SAFE: ' ',
-
             V_D_DATE_ACP: $("#D_DATE_ACP").val(),
             V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
             V_V_OTHERREASON: $("#V_OTHERREASON").val(),
             V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
             V_V_REPAIRSIGN: $("#V_REPAIRSIGN").val(),
-
-
             V_V_REPAIRPERSON: $("#V_REPAIRPERSON").val(),
-            V_V_POSTMANSIGN: $("#V_POSTMANSIGN").html(),
-            V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").html(),
-            V_V_CHECKMANSIGN: $("#V_CHECKMANSIGN").html(),
-            V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").html(),
-
+            V_V_POSTMANSIGN: $("#V_POSTMANSIGN").val(),
+            V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
+            V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
+            V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
             V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").html(),
-            V_V_DEPTSIGN: $("#V_DEPTSIGN").html()
+            V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
 
         },
         dataType: "json",
@@ -756,36 +750,31 @@ function print() {
             V_V_PERCODE: $.cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
             V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-            V_V_SHORT_TXT: $("#V_SHORT_TXT").val(),
-            V_V_FUNC_LOC: V_FUNC_LOC,//$("#V_FUNC_LOC").html(),
-
+            V_V_SHORT_TXT: $("#V_SHORT_TXT").html(),
+            V_V_FUNC_LOC: $("#V_FUNC_LOC").val(),
             V_V_EQUIP_NO: $("#V_EQUIP_NO").html(),
             V_V_EQUIP_NAME: $("#V_EQUIP_NAME").html(),
             V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val(),
             V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val(),
-            V_V_WBS: '',
+            V_V_WBS:$("#V_WBS").html(),
 
-            V_V_WBS_TXT: '',
-            V_V_DEPTCODEREPARIR: $("#selPlant").val(),
-            V_V_TOOL: ' ',
-            V_V_TECHNOLOGY: $("#tech").html(),
-            V_V_SAFE: $("#safe").html(),
-
+            V_V_WBS_TXT:$("#V_WBS_TXT").html(),
+            V_V_DEPTCODEREPARIR: $("#V_DEPTNAMEREPARIR").html(),//$("#selPlant").val(),
+            V_V_TOOL:'',
+            V_V_TECHNOLOGY: ' ',
+            V_V_SAFE: ' ',
             V_D_DATE_ACP: $("#D_DATE_ACP").val(),
             V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
             V_V_OTHERREASON: $("#V_OTHERREASON").val(),
             V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
             V_V_REPAIRSIGN: $("#V_REPAIRSIGN").val(),
-
-
             V_V_REPAIRPERSON: $("#V_REPAIRPERSON").val(),
-            V_V_POSTMANSIGN: $("#V_POSTMANSIGN").html(),
-            V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").html(),
-            V_V_CHECKMANSIGN: $("#V_CHECKMANSIGN").html(),
-            V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").html(),
-
+            V_V_POSTMANSIGN: $("#V_POSTMANSIGN").val(),
+            V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
+            V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
+            V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
             V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").html(),
-            V_V_DEPTSIGN: $("#V_DEPTSIGN").html()
+            V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
 
         },
         dataType: "json",
