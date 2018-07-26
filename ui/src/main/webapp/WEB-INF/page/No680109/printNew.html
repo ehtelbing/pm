@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<head>
+    <title></title>
+    <style type="text/css" id="stylePrint">
+        html {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            font-size: 12px;
+            FONT-FAMILY: "宋体";
+            padding: 0px;
+            width: 860px;
+            margin: 0px;
+            overflow-x: hidden;
+        }
+
+        td, th {
+            font-size: 12px;
+            FONT-FAMILY: "宋体";
+        }
+
+        #main {
+            width: 860px
+        }
+
+        #yesprint {
+            width: 860px
+        }
+
+        .divs {
+            font-size: 24px;
+            text-align: center;
+            width: 1050px;
+        }
+
+        .Ttable {
+            width: 1050px;
+            border-collapse: collapse;
+            border: 2px solid #000;
+        }
+
+        .Ttable td {
+            border: 1px solid #000;
+            height: 22px;
+            font-size: 12px;
+            padding: 0px;
+        }
+    </style>
+    <script type="text/javascript" src="../../script/No680109/LodopFuncs.js"></script>
+    <object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width="0" height="0">
+        <embed id="LODOP_EM" type="application/x-print-lodop" width="0" height="0"
+               pluginspage="install_lodop.exe"></embed>
+    </object>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+    <script type="text/javascript" src="../../../pm/script/No680109/printNew.js"></script>
+
+</head>
+<body style="overflow-x:hidden;">
+<div class="noprint">
+    <div id="print">
+        <input class="btn" onclick="Print()" type="button" value="打印" name="Button"/>
+        <input class="btn" onclick="Preview()" type="button" value="打印预览" name="Button"/>
+        <font style="display:none" id="exception" color='#FF00FF'>打印控件未安装!点击这里<input type='button' onclick='btnAnZhuang()' value='执行安装'/>,安装后重新进入。</font>
+    </div>
+</div>
+<div id="yesprint" class="yesprint">
+</div>
+</body>
+</html>
