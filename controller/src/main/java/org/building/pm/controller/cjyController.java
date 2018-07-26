@@ -2328,7 +2328,7 @@ public class cjyController {
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes = MessageSend(dbnum, "周计划", per);
+            String mes = amToMessController.MessageSend(dbnum, "周计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
             } else if (mes.equals("true")) {
@@ -2403,7 +2403,7 @@ public class cjyController {
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes = MessageSend(dbnum, "周计划", per);
+            String mes = amToMessController.MessageSend(dbnum, "周计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
             } else if (mes.equals("true")) {
@@ -2535,7 +2535,7 @@ public class cjyController {
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes = MessageSend(dbnum, "月计划", per);
+            String mes = amToMessController.MessageSend(dbnum, "月计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
             } else if (mes.equals("true")) {
@@ -2615,7 +2615,7 @@ public class cjyController {
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes = MessageSend(dbnum, "月计划", per);
+            String mes = amToMessController.MessageSend(dbnum, "月计划", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
             } else if (mes.equals("true")) {
@@ -2816,7 +2816,7 @@ public class cjyController {
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes = MessageSend(dbnum, "工单", per);
+            String mes = amToMessController.MessageSend(dbnum, "工单", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "-1");
             } else if (mes.equals("true")) {
@@ -2898,7 +2898,7 @@ public class cjyController {
             String dbnum = groupPer.get(per).toString();
             //System.out.println(key+" "+value);
             //发送即时通
-            String mes = MessageSend(dbnum, "工单", per);
+            String mes = amToMessController.MessageSend(dbnum, "工单", per);
             if (mes.equals("fail")) {
                 PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "工单", "-1");
             } else if (mes.equals("true")) {
@@ -2943,7 +2943,7 @@ public class cjyController {
         return result;
     }
 
-    @RequestMapping(value = "/MessageSend", method = RequestMethod.POST)
+   /* @RequestMapping(value = "/MessageSend", method = RequestMethod.POST)
     @ResponseBody
     public String MessageSend(@RequestParam(value = "dbnum") String dbnum,
                               @RequestParam(value = "flowType") String flowType,
@@ -2973,7 +2973,7 @@ public class cjyController {
             }
         }
         return result;
-    }
+    }*/
 
     @RequestMapping(value = "/PRO_AM_SEND_LOG_SET", method = RequestMethod.POST)
     @ResponseBody

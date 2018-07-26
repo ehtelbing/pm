@@ -920,7 +920,7 @@ public class ActivitiController {
             taskService.complete(taskId, map);
             result.put("ret", "任务提交成功");
             result.put("msg", "OK");
-            String mes = cjyController.MessageSend("1", flowtype, V_NEXTPER);
+            String mes = amToMessController.MessageSend("1", flowtype, V_NEXTPER);
             if (mes.equals("true")) {
                 cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
             } else {
