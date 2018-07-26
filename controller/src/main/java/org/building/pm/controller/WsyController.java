@@ -536,6 +536,27 @@ public class WsyController {
         return data;
     }
 
+    @RequestMapping(value = "/PRO_PP_INFORMATION_LIST_PER", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_PP_INFORMATION_LIST_PER(@RequestParam(value = "V_D_DATE") String V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PRO_PP_INFORMATION_LIST_PER(V_D_DATE, V_V_PERSONCODE, V_V_TYPE, V_V_CLASSTYPE);
+        return data;
+    }
+
+    @RequestMapping(value = "/PRO_PP_INFORMATION_WITHDW_LIST", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_PP_INFORMATION_WITHDW_LIST(
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            @RequestParam(value = "V_V_DEPT") String V_V_DEPT,
+            @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+            @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE,
+            @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE,
+            @RequestParam(value = "V_D_TODATE") String V_D_TODATE,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PRO_PP_INFORMATION_WITHDW_LIST(V_V_PERSONCODE, V_V_DEPT, V_V_TYPE, V_V_CLASSTYPE, V_D_FROMDATE, V_D_TODATE);
+        return data;
+    }
+
     @RequestMapping(value = "PRO_PP_INFORMATION_LIST_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void PRO_PP_INFORMATION_LIST_EXCEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_DEPT") String V_V_DEPT, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE, @RequestParam(value = "V_D_TODATE") String V_D_TODATE, HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
@@ -604,7 +625,7 @@ public class WsyController {
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-                String fileName = new String("123123123123.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                String fileName = new String("信息查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
                 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
                 OutputStream out = response.getOutputStream();
                 wb.write(out);
@@ -678,7 +699,7 @@ public class WsyController {
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-                String fileName = new String("123123123123.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                String fileName = new String("信息缺陷作业票查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
                 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
                 OutputStream out = response.getOutputStream();
                 wb.write(out);
@@ -752,7 +773,7 @@ public class WsyController {
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-                String fileName = new String("123123123123.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                String fileName = new String("信息缺陷作业票查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
                 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
                 OutputStream out = response.getOutputStream();
                 wb.write(out);

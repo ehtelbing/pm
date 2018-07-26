@@ -192,6 +192,8 @@
             style: ' margin-left: 10px',
             icon: imgpath + '/printer.png',
             handler: function () {
+//                alert(Ext.ComponentManager.get('begintime').getRawValue());
+//                alert(Ext.ComponentManager.get('endtime').getRawValue());
                 var s = [], sum = [];
                 for (var i = 0; i < Ext.getStore('gridStore').data.length; i++) {
                     s.push(Ext.getStore('gridStore').data.items[i].raw.I_ID);
@@ -209,7 +211,7 @@
                 var bb = Ext.ComponentManager.get('bb').getValue() == '%' ? 'ALL' : Ext.getCmp('bb').getValue();
                 var begintime = Ext.ComponentManager.get('begintime').getRawValue();
                 var endtime = Ext.ComponentManager.get('endtime').getRawValue();
-                window.showModalDialog(AppUrl + "/No680109/printNew.html?bmmc=" + bmmc + "&lx=" + lx + "&bb=" + bb + "&begintime=" + begintime + "&endtime=" + endtime, sum, "dialogHeight:600px;dialogWidth:900px");
+                window.open(AppUrl + "/No680109/printNew.html?bmmc=" + bmmc + "&lx=" + lx + "&bb=" + bb + "&begintime=" + begintime + "&endtime=" + endtime, "", "dialogHeight:700px;dialogWidth:1100px");
             }
         }]
     });
