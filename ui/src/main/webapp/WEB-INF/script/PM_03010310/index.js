@@ -198,518 +198,524 @@ var sbmcStore = Ext.create('Ext.data.Store', {
     }
 });
 
-var editPanel = Ext.create('Ext.form.Panel', {
-    id: 'editPanel',
-    region: 'center',
-    layout: 'border',
-    frame: true,
-    border: false,
-    baseCls: 'my-panel-no-border',
-    items: [
-        {
-            xtype: 'panel',
-            layout: 'vbox',
-            region: 'center',
-            defaults: {labelAlign: 'right'},
-            frame: true,
-            border: false, /*baseCls: 'my-panel-no-border',*/
-            margin: '0 0 0 0',
-            autoScroll: true,
-            items: [
-                {
-                    layout: 'column',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-                        {
-                            xtype: 'button',
-                            text: '计划选择',
-                            margin: '10 0 10 90',
-                            icon: imgpath + '/add.png',
-                            handler: jhSelect
-                        },
-                        /*{xtype: 'button', text: '模型选择', margin: '10 0 10 10',icon:imgpath + '/add.png', handler:mxSelect},*/
-                        {
-                            xtype: 'button',
-                            text: '保存',
-                            icon: imgpath + '/saved.png',
-                            width: 60,
-                            margin: '10px 20px 0px 20px',
-                            handler: OnButtonSaveClick
-                        },
-                        {
-                            xtype: 'button',
-                            text: '关闭',
-                            icon: imgpath + '/cross.png',
-                            width: 60,
-                            margin: '10px 20px 0px 0px',
-                            handler: OnButtonCancelClick
-                        }
-                    ]
-                },
-                {
-                    layout: 'column',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-                        {
-                            xtype: 'combo',
-                            id: 'year',
-                            fieldLabel: '年份',
-                            editable: false,
-                            margin: '10 0 5 5',
-                            labelWidth: 80,
-                            width: 280,
-                            displayField: 'displayField',
-                            valueField: 'valueField',
-                            value: '',
-                            store: yearStore,
-                            queryMode: 'local'
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'month',
-                            fieldLabel: '月份',
-                            editable: false,
-                            margin: '10 0 5 5',
-                            labelWidth: 55,
-                            width: 255,
-                            displayField: 'displayField',
-                            valueField: 'valueField',
-                            value: '',
-                            store: monthStore,
-                            queryMode: 'local'
-                        }
-                    ]
-                },
-                {
-                    layout: 'column',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-                        {
-                            xtype: 'combo',
-                            id: 'week',
-                            fieldLabel: '周',
-                            editable: false,
-                            margin: '10 0 5 5',
-                            labelWidth: 80,
-                            width: 280,
-                            displayField: 'displayField',
-                            valueField: 'valueField',
-                            value: '',
-                            store: weekStore,
-                            queryMode: 'local'
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'ck',
-                            fieldLabel: '计划厂矿',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 55,
-                            width: 255,
-                            value: '',
-                            displayField: 'V_DEPTNAME',
-                            valueField: 'V_DEPTCODE',
-                            store: ckStore,
-                            queryMode: 'local'
-                        }
-                    ]
-                },
-                {
-                    layout: 'column',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-                        {
-                            xtype: 'combo',
-                            id: 'zyq',
-                            fieldLabel: '作业区',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 80,
-                            width: 280,
-                            value: '',
-                            displayField: 'V_DEPTNAME',
-                            valueField: 'V_DEPTCODE',
-                            store: zyqStore,
-                            queryMode: 'local'
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'zy',
-                            fieldLabel: '专业',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 55,
-                            width: 255,
-                            value: '',
-                            displayField: 'V_BASENAME',
-                            valueField: 'V_SPECIALTYCODE',
-                            store: zyStore,
-                            queryMode: 'local'
-                        }
-                    ]
-                },
-                {
-                    layout: 'column',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-                        {
-                            xtype: 'combo',
-                            id: 'sblx',
-                            fieldLabel: '设备类型',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 80,
-                            width: 280,
-                            value: '',
-                            displayField: 'V_EQUTYPENAME',
-                            valueField: 'V_EQUTYPECODE',
-                            store: sblxStore,
-                            queryMode: 'local'
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'sbmc',
-                            fieldLabel: '设备名称',
-                            editable: false,
-                            labelAlign: 'right',
-                            margin: '5 0 5 5',
-                            labelWidth: 55,
-                            width: 255,
-                            value: '',
-                            displayField: 'V_EQUNAME',
-                            valueField: 'V_EQUCODE',
-                            store: sbmcStore,
-                            queryMode: 'local'
-                        }
-                    ]
-                }, {
-                    layout: 'hbox',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-
-                        {
-                            xtype: 'numberfield',
-                            id: 'expectage',
-                            fieldLabel: '预计寿命',
-                            labelAlign: 'right',
-                            margin: '5 0 5 5',
-                            labelWidth: 80,
-                            width: 280,
-                            value: 0
-                        },{
-                            xtype: 'numberfield',
-                            id: 'repairper',
-                            fieldLabel: '维修人数',
-                            labelAlign: 'right',
-                            margin: '5 0 5 5',
-                            labelWidth: 55,
-                            width: 255,
-                            value: 0
-                        }
-                    ]
-                },
-                {
-                    layout: 'hbox',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-
-                        {
-                            xtype: 'textfield',
-                            id: 'maindefect',
-                            fieldLabel: '主要缺陷',
-                            labelAlign: 'right',
-                            margin: '5 0 5 5',
-                            labelWidth: 80,
-                            width: 280
-                        }
-                    ]
-                },
-                {
-                    xtype: 'textarea',
-                    id: 'jxnr',
-                    fieldLabel: '检修内容',
-                    labelAlign: 'right',
-                    margin: '5 0 5 5',
-                    labelWidth: 80,
-                    width: 540,
-                    value: ''
-                },
-                {
-                    layout: 'column',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-                        {
-                            xtype: 'datefield',
-                            id: 'jhtgdate',
-                            format: 'Y-m-d',
-                            fieldLabel: '计划停工时间',
-                            editable: false,
-                            labelAlign: 'right',
-                            margin: '5 0 5 5',
-                            labelWidth: 80,
-                            width: 280,
-                            value: '',
-                            listeners: {
-                                select: function () {
-                                    Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
-                                    _gongshiheji();
-                                }
+Ext.onReady(function () {
+    var editPanel = Ext.create('Ext.form.Panel', {
+        id: 'editPanel',
+        region: 'center',
+        layout: 'border',
+        frame: true,
+        border: false,
+        //width: '100%',
+        baseCls: 'my-panel-no-border',
+        items: [
+            {
+                xtype: 'panel',
+                layout: 'vbox',
+                region: 'center',
+                defaults: {labelAlign: 'right'},
+                frame: true,
+                border: false,
+                autoScroll: true,
+                items: [
+                    {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'button',
+                                text: '计划选择',
+                                margin: '10px 0px 0px 90px',
+                                icon: imgpath + '/add.png',
+                                handler: jhSelect
+                            },
+                            {
+                                xtype: 'button',
+                                text: '保存',
+                                icon: imgpath + '/saved.png',
+                                margin: '10px 0px 0px 10px',
+                                handler: OnButtonSaveClick
+                            },
+                            {
+                                xtype: 'button',
+                                text: '关闭',
+                                icon: imgpath + '/cross.png',
+                                margin: '10px 0px 0px 10px',
+                                handler: OnButtonCancelClick
                             }
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'jhtghour',
-                            fieldLabel: '小时',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 55,
-                            width: 137,
-                            value: '',
-                            displayField: 'displayField',
-                            valueField: 'valueField',
-                            store: hourStore,
-                            queryMode: 'local',
-                            listeners: {
-                                select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
-                                    var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
-                                    var date22 = new Date(date2);
+                        ]
+                    },
+                    {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'combo',
+                                id: 'year',
+                                fieldLabel: '年份',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                displayField: 'displayField',
+                                valueField: 'valueField',
+                                value: '',
+                                store: yearStore,
+                                queryMode: 'local'
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'month',
+                                fieldLabel: '月份',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 70,
+                                width: 255,
+                                displayField: 'displayField',
+                                valueField: 'valueField',
+                                value: '',
+                                store: monthStore,
+                                queryMode: 'local'
+                            }
+                        ]
+                    },
+                    {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'combo',
+                                id: 'week',
+                                fieldLabel: '周',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                displayField: 'displayField',
+                                valueField: 'valueField',
+                                value: '',
+                                store: weekStore,
+                                queryMode: 'local'
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'ck',
+                                fieldLabel: '计划厂矿',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 70,
+                                width: 255,
+                                value: '',
+                                displayField: 'V_DEPTNAME',
+                                valueField: 'V_DEPTCODE',
+                                store: ckStore,
+                                queryMode: 'local'
+                            }
+                        ]
+                    },
+                    {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'combo',
+                                id: 'zyq',
+                                fieldLabel: '作业区',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                value: '',
+                                displayField: 'V_DEPTNAME',
+                                valueField: 'V_DEPTCODE',
+                                store: zyqStore,
+                                queryMode: 'local'
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'zy',
+                                fieldLabel: '专业',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 70,
+                                width: 255,
+                                value: '',
+                                displayField: 'V_BASENAME',
+                                valueField: 'V_SPECIALTYCODE',
+                                store: zyStore,
+                                queryMode: 'local'
+                            }
+                        ]
+                    },
+                    {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'combo',
+                                id: 'sblx',
+                                fieldLabel: '设备类型',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                value: '',
+                                displayField: 'V_EQUTYPENAME',
+                                valueField: 'V_EQUTYPECODE',
+                                store: sblxStore,
+                                queryMode: 'local'
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'sbmc',
+                                fieldLabel: '设备名称',
+                                editable: false,
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 70,
+                                width: 255,
+                                value: '',
+                                displayField: 'V_EQUNAME',
+                                valueField: 'V_EQUCODE',
+                                store: sbmcStore,
+                                queryMode: 'local'
+                            }
+                        ]
+                    }, {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
 
-
-                                    var gongshicha = date22.getTime() - date11.getTime();
-                                    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                                    if(gongshicha2 >= 0)
-                                    {
+                            {
+                                xtype: 'numberfield',
+                                id: 'expectage',
+                                fieldLabel: '预计寿命',
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                value: 0
+                            }, {
+                                xtype: 'numberfield',
+                                id: 'repairper',
+                                fieldLabel: '维修人数',
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 70,
+                                width: 255,
+                                value: 0
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'textfield',
+                        id: 'maindefect',
+                        fieldLabel: '主要缺陷',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 80,
+                        width: 280
+                    },
+                    {
+                        xtype: 'textarea',
+                        id: 'jxnr',
+                        fieldLabel: '检修内容',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 80,
+                        width: 540,
+                        value: ''
+                    },
+                    {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'datefield',
+                                id: 'jhtgdate',
+                                format: 'Y-m-d',
+                                fieldLabel: '计划停工时间',
+                                editable: false,
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                value: '',
+                                listeners: {
+                                    select: function () {
+                                        Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
                                         _gongshiheji();
-                                    }/*else{
-                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                        function callBack(id) {
-                                            Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                            Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                            Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhgshj').setValue(0);
-                                            return ;
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'jhtghour',
+                                fieldLabel: '小时',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 55,
+                                width: 137,
+                                value: '',
+                                displayField: 'displayField',
+                                valueField: 'valueField',
+                                store: hourStore,
+                                queryMode: 'local',
+                                listeners: {
+                                    select: function (field, newValue, oldValue) {
+                                        var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                        var date11 = new Date(date1);
+                                        var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                        var date22 = new Date(date2);
 
+
+                                        var gongshicha = date22.getTime() - date11.getTime();
+                                        var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
+                                        if (gongshicha2 >= 0) {
+                                            _gongshiheji();
                                         }
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'jhtgminute',
+                                fieldLabel: '分钟',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 30,
+                                width: 112,
+                                value: '',
+                                displayField: 'displayField',
+                                valueField: 'valueField',
+                                store: minuteStore,
+                                queryMode: 'local',
+                                listeners: {
+                                    select: function (field, newValue, oldValue) {
+                                        var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                        var date11 = new Date(date1);
+                                        var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                        var date22 = new Date(date2);
 
-                                    }*/
+
+                                        var gongshicha = date22.getTime() - date11.getTime();
+                                        var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
+                                        if (gongshicha2 >= 0) {
+                                            _gongshiheji();
+                                        }
+                                    }
                                 }
                             }
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'jhtgminute',
-                            fieldLabel: '分钟',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 30,
-                            width: 112,
-                            value: '',
-                            displayField: 'displayField',
-                            valueField: 'valueField',
-                            store: minuteStore,
-                            queryMode: 'local',
-                            listeners: {
-                                select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
-                                    var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
-                                    var date22 = new Date(date2);
-
-
-                                    var gongshicha = date22.getTime() - date11.getTime();
-                                    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                                    if(gongshicha2 >= 0)
-                                    {
+                        ]
+                    },
+                    {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'datefield',
+                                id: 'jhjgdate',
+                                format: 'Y-m-d',
+                                fieldLabel: '计划竣工时间',
+                                editable: false,
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                value: '',
+                                listeners: {
+                                    select: function () {
                                         _gongshiheji();
-                                    }/*else{
-                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                        function callBack(id) {
-                                            Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                            Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                            Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhgshj').setValue(0);
-                                            return ;
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'jhjghour',
+                                fieldLabel: '小时',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 55,
+                                width: 137,
+                                value: '0',
+                                displayField: 'displayField',
+                                valueField: 'valueField',
+                                store: hourStore,
+                                queryMode: 'local',
+                                listeners: {
+                                    select: function (field, newValue, oldValue) {
+                                        var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                        var date11 = new Date(date1);
+                                        var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                        var date22 = new Date(date2);
 
+
+                                        var gongshicha = date22.getTime() - date11.getTime();
+                                        var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
+                                        if (gongshicha2 >= 0) {
+                                            _gongshiheji();
                                         }
-
-                                    }*/
+                                    }
                                 }
-                            }
-                        }
-                    ]
-                },
-                {
-                    layout: 'column',
-                    defaults: {labelAlign: 'right'},
-                    frame: true,
-                    border: false,
-                    baseCls: 'my-panel-no-border',
-                    items: [
-                        {
-                            xtype: 'datefield',
-                            id: 'jhjgdate',
-                            format: 'Y-m-d',
-                            fieldLabel: '计划竣工时间',
-                            editable: false,
-                            labelAlign: 'right',
-                            margin: '5 0 5 5',
-                            labelWidth: 80,
-                            width: 280,
-                            value: '',
-                            listeners : {
-                                select: function () {
-                                    //Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
-                                    _gongshiheji();
-                                }
-                            }
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'jhjghour',
-                            fieldLabel: '小时',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 55,
-                            width: 137,
-                            value: '0',
-                            displayField: 'displayField',
-                            valueField: 'valueField',
-                            store: hourStore,
-                            queryMode: 'local',
-                            listeners: {
-                                select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
-                                    var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
-                                    var date22 = new Date(date2);
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'jhjgminute',
+                                fieldLabel: '分钟',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 30,
+                                width: 112,
+                                value: '0',
+                                displayField: 'displayField',
+                                valueField: 'valueField',
+                                store: minuteStore,
+                                queryMode: 'local',
+                                listeners: {
+                                    select: function (field, newValue, oldValue) {
+                                        var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                        var date11 = new Date(date1);
+                                        var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                        var date22 = new Date(date2);
 
 
-                                    var gongshicha = date22.getTime() - date11.getTime();
-                                    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                                    if(gongshicha2 >= 0)
-                                    {
-                                        _gongshiheji();
-                                    }/*else{
-                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                        function callBack(id) {
-                                            Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                            Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                            Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhgshj').setValue(0);
-                                            return ;
-
+                                        var gongshicha = date22.getTime() - date11.getTime();
+                                        var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
+                                        if (gongshicha2 >= 0) {
+                                            _gongshiheji();
                                         }
-
-                                    }*/
+                                    }
                                 }
                             }
-                        },
-                        {
-                            xtype: 'combo',
-                            id: 'jhjgminute',
-                            fieldLabel: '分钟',
-                            editable: false,
-                            margin: '5 0 5 5',
-                            labelWidth: 30,
-                            width: 112,
-                            value: '0',
-                            displayField: 'displayField',
-                            valueField: 'valueField',
-                            store: minuteStore,
-                            queryMode: 'local',
-                            listeners: {
-                                select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
-                                    var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
-                                    var date22 = new Date(date2);
+                        ]
+                    },
+                    {
+                        xtype: 'textfield',
+                        id: 'jhgshj',
+                        fieldLabel: '计划工时合计',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 80,
+                        width: 280,
+                        value: '0'
+                    },
+                    {
+                        xtype: 'textarea',
+                        id: 'bz',
+                        fieldLabel: '备注',
+                        margin: '5 0 10 5',
+                        labelWidth: 80,
+                        width: 540,
+                        height: 80,
+                        value: ''
+                    }
+                ]
+            }
+        ]
+    });
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        items: [editPanel]
+    });
+    pageLoadInfo();
+    if (V_WEEKPLAN_GUID == '0') {
+        V_JXGX_CODE = guid();
+    } else {
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.list.length == 1) {
+                    V_JXGX_CODE = resp.list[0].V_JXGX_CODE;      //检修工序编码
+                    V_JXMX_CODE = resp.list[0].V_JXMX_CODE;      //检修模型编码
+                    var V_FLOWCODE = resp.list[0].V_FLOWCODE;        //流动编码
+                    var V_MONTHPLAN_CODE = resp.list[0].V_MONTHPLAN_CODE; //月计划编码
+                    var V_DEFECTPLAN_CODE = resp.list[0].V_DEFECTPLAN_CODE;//缺陷计划编码
+                    var V_MONTH_PLANNAME = resp.list[0].V_MONTH_PLANNAME;        //月计划名称
+                    var V_DEFECT_PLANNAME = resp.list[0].V_DEFECT_PLANNAME;   //缺陷计划名称
+                    var V_HOUR = resp.list[0].V_HOUR;
+                    var V_BZ = resp.list[0].V_BZ;
+                    V_YEAR = resp.list[0].V_YEAR;                 //年
+                    V_MONTH = resp.list[0].V_MONTH;              //月
+                    V_WEEK = resp.list[0].V_WEEK;                //季度
+                    V_ORGCODE = resp.list[0].V_ORGCODE;          //厂矿编码
+                    V_DEPTCODE = resp.list[0].V_DEPTCODE;        //作业区编码
+                    var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;        //专业编码
+                    var V_EQUTYPECODE = resp.list[0].V_EQUTYPECODE;        //设备类型编码
+                    var V_EQUCODE = resp.list[0].V_EQUCODE;        //设备名称编码
+                    var V_CONTENT = resp.list[0].V_CONTENT;        //检修内容
+                    var V_JXMX_NAME = resp.list[0].V_MX_NAME;      //检修模型名称
+                    var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
+                    var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
+                    var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
+                    var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
+                    var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
+                    var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
+                    var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
+                    var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
 
+                    Ext.getCmp('year').select(V_YEAR); //年
+                    Ext.getCmp('month').select(V_MONTH);  //月
+                    Ext.getCmp('week').select(V_WEEK);  //周
+                    Ext.getCmp('ck').select(V_ORGCODE);  //厂矿编码
+                    Ext.getCmp('zyq').select(V_DEPTCODE);  //作业区编码
+                    Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
+                    Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
+                    Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
+                    Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+                    Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
+                    Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
+                    Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
+                    Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
+                    Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
+                    Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+                    Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
+                    Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
 
-                                    var gongshicha = date22.getTime() - date11.getTime();
-                                    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                                    if(gongshicha2 >= 0)
-                                    {
-                                        _gongshiheji();
-                                    }/*else{
-                                        Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                        function callBack(id) {
-                                            Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                            Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                            Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                            Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                            Ext.getCmp('jhgshj').setValue(0);
-                                            return ;
-
-                                        }
-
-                                    }*/
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    xtype: 'textfield',
-                    id: 'jhgshj',
-                    fieldLabel: '计划工时合计',
-                    labelAlign: 'right',
-                    margin: '5 0 5 5',
-                    labelWidth: 80,
-                    width: 280,
-                    value: '0'
-                },
-                {
-                    xtype: 'textarea',
-                    id: 'bz',
-                    fieldLabel: '备注',
-                    margin: '5 0 10 5',
-                    labelWidth: 80,
-                    width: 540,
-                    height: 80,
-                    value: ''
+                    Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);  //主要缺陷
+                    Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
+                    Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
+                    if (V_MONTHPLAN_CODE != '') {
+                        V_PLANTYPE = 'PLAN';
+                    } else if (V_DEFECTPLAN_CODE != '') {
+                        V_PLANTYPE = 'DEFECT';
+                    }
                 }
-            ]
-        }
-    ]
-
+            }
+        });
+    }
+    Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+    //Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
 });
+
 function pageLoadInfo() {
     if (V_WEEKPLAN_GUID == '0') {
         if (YEAR == null || YEAR == '') {
@@ -851,86 +857,7 @@ function pageLoadInfo() {
         Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
     }
 }
-Ext.onReady(function () {
-    Ext.create('Ext.container.Viewport', {
-        layout: 'border',
-        items: [editPanel]
-    });
-    pageLoadInfo();
-    if (V_WEEKPLAN_GUID == '0') {
-        V_JXGX_CODE = guid();
-    } else {
-        Ext.Ajax.request({
-            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText);
-                if (resp.list.length == 1) {
-                    V_JXGX_CODE = resp.list[0].V_JXGX_CODE;      //检修工序编码
-                    V_JXMX_CODE = resp.list[0].V_JXMX_CODE;      //检修模型编码
-                    var V_FLOWCODE = resp.list[0].V_FLOWCODE;        //流动编码
-                    var V_MONTHPLAN_CODE = resp.list[0].V_MONTHPLAN_CODE; //月计划编码
-                    var V_DEFECTPLAN_CODE = resp.list[0].V_DEFECTPLAN_CODE;//缺陷计划编码
-                    var V_MONTH_PLANNAME = resp.list[0].V_MONTH_PLANNAME;        //月计划名称
-                    var V_DEFECT_PLANNAME = resp.list[0].V_DEFECT_PLANNAME;   //缺陷计划名称
-                    var V_HOUR = resp.list[0].V_HOUR;
-                    var V_BZ = resp.list[0].V_BZ;
-                    V_YEAR = resp.list[0].V_YEAR;                 //年
-                    V_MONTH = resp.list[0].V_MONTH;              //月
-                    V_WEEK = resp.list[0].V_WEEK;                //季度
-                    V_ORGCODE = resp.list[0].V_ORGCODE;          //厂矿编码
-                    V_DEPTCODE = resp.list[0].V_DEPTCODE;        //作业区编码
-                    var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;        //专业编码
-                    var V_EQUTYPECODE = resp.list[0].V_EQUTYPECODE;        //设备类型编码
-                    var V_EQUCODE = resp.list[0].V_EQUCODE;        //设备名称编码
-                    var V_CONTENT = resp.list[0].V_CONTENT;        //检修内容
-                    var V_JXMX_NAME = resp.list[0].V_MX_NAME;      //检修模型名称
-                    var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
-                    var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
-                    var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
-                    var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
-                    var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
-                    var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
-                    var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
-                    var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
 
-                    Ext.getCmp('year').select(V_YEAR); //年
-                    Ext.getCmp('month').select(V_MONTH);  //月
-                    Ext.getCmp('week').select(V_WEEK);  //周
-                    Ext.getCmp('ck').select(V_ORGCODE);  //厂矿编码
-                    Ext.getCmp('zyq').select(V_DEPTCODE);  //作业区编码
-                    Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
-                    Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
-                    Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
-                    Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
-                    Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
-                    Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
-                    Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
-                    Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
-                    Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
-                    Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
-                    Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
-                    Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
-
-                    Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);  //主要缺陷
-                    Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
-                    Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
-                    if (V_MONTHPLAN_CODE != '') {
-                        V_PLANTYPE = 'PLAN';
-                    } else if (V_DEFECTPLAN_CODE != '') {
-                        V_PLANTYPE = 'DEFECT';
-                    }
-                }
-            }
-        });
-    }
-    Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
-    //Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
-});
 //第几周
 function getWeekOfMonth() {
     var date = new Date();
@@ -957,15 +884,15 @@ function jhSelect() {
     + '&V_V_JXNR=' + Ext.getCmp('jxnr').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 /*function mxSelect() {
-    var owidth = window.document.body.offsetWidth - 200;
-    var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_03010312/index.html?V_ORGCODE=' + Ext.getCmp('ck').getValue()
-    + '&V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
-    + '&V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
-    + '&V_EQUCODE=' + Ext.getCmp('sbmc').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-}*/
+ var owidth = window.document.body.offsetWidth - 200;
+ var oheight = window.document.body.offsetHeight - 100;
+ var ret = window.open(AppUrl + 'page/PM_03010312/index.html?V_ORGCODE=' + Ext.getCmp('ck').getValue()
+ + '&V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
+ + '&V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
+ + '&V_EQUCODE=' + Ext.getCmp('sbmc').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+ }*/
 function getReturnJHXZ(retdata, type) {
-    if(type=='MONTH'){
+    if (type == 'MONTH') {
         Ext.Ajax.request({
             url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
             method: 'POST',
@@ -1018,7 +945,7 @@ function getReturnJHXZ(retdata, type) {
 
             }
         });
-    }else{
+    } else {
         Ext.Ajax.request({
             url: AppUrl + 'cjy/PM_03_PLAN_CHOOSE_SEL_NEW',
             method: 'POST',
@@ -1075,35 +1002,35 @@ function getReturnJHXZ(retdata, type) {
 
 }
 /*function getReturnMXXZ(retdata) {
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PM_03_JXMX_DATA_MXCODE_SEL',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_MX_CODE: retdata
-        },
-        success: function (ret) {
-            var resp = Ext.decode(ret.responseText);
-            var V_ORGCODE = resp.list[0].V_ORGCODE;
-            var V_DEPTCODE = resp.list[0].V_DEPTCODE;
-            var V_EQUTYPE = resp.list[0].V_EQUTYPE;
-            var V_EQUCODE = resp.list[0].V_EQUCODE;
-            var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;
-            var V_HOUR = resp.list[0].V_HOUR;
-            var V_CONTENT = resp.list[0].V_JXGX_NR;
-            var V_BZ = resp.list[0].V_BZ;
+ Ext.Ajax.request({
+ url: AppUrl + 'PM_03/PM_03_JXMX_DATA_MXCODE_SEL',
+ method: 'POST',
+ async: false,
+ params: {
+ V_V_MX_CODE: retdata
+ },
+ success: function (ret) {
+ var resp = Ext.decode(ret.responseText);
+ var V_ORGCODE = resp.list[0].V_ORGCODE;
+ var V_DEPTCODE = resp.list[0].V_DEPTCODE;
+ var V_EQUTYPE = resp.list[0].V_EQUTYPE;
+ var V_EQUCODE = resp.list[0].V_EQUCODE;
+ var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;
+ var V_HOUR = resp.list[0].V_HOUR;
+ var V_CONTENT = resp.list[0].V_JXGX_NR;
+ var V_BZ = resp.list[0].V_BZ;
 
-            Ext.getCmp('ck').select(V_ORGCODE);  //厂矿编码
-            Ext.getCmp('zyq').select(V_DEPTCODE);  //作业区编码
-            Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
-            Ext.getCmp('sblx').select(V_EQUTYPE);  //设备类型编码
-            Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
-            Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
-            Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
-            Ext.getCmp('bz').setValue(V_BZ);  //备注
-        }
-    });
-}*/
+ Ext.getCmp('ck').select(V_ORGCODE);  //厂矿编码
+ Ext.getCmp('zyq').select(V_DEPTCODE);  //作业区编码
+ Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
+ Ext.getCmp('sblx').select(V_EQUTYPE);  //设备类型编码
+ Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
+ Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+ Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
+ Ext.getCmp('bz').setValue(V_BZ);  //备注
+ }
+ });
+ }*/
 function OnButtonSaveClick() {
     //获取流动编码
     /*var V_FLOWCODE="";
