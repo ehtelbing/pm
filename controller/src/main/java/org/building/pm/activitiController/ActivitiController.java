@@ -1107,4 +1107,26 @@ public class ActivitiController {
         return result;
     }
 
+    /*
+     * 修改流程变量
+     * */
+
+    @RequestMapping(value = "ChangeVariables", method = RequestMethod.POST)
+    @ResponseBody
+    public  Map ChangeVariables(@RequestParam(value = "instanceId") String instanceId,
+                                @RequestParam(value = "code") String code,
+                                @RequestParam(value = "value") String value) throws SQLException {
+        Map result=new HashMap();
+        try {
+            Task task = taskService.createTaskQuery().processInstanceId(instanceId).singleResult();
+            Map<String, Object> variables = new HashMap<>();
+            variables.put(code, value);
+            taskService.setVariables(task.getId(), variables);
+            result.put("msg","success");
+        }catch (Exception e){
+            result.put("msg","fail");
+        }
+        return result;
+    }
+
 }
