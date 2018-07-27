@@ -482,9 +482,11 @@ public class WsyController {
 
     @RequestMapping(value = "/PRO_PP_INFORMATION_SET", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PRO_PP_INFORMATION_SET(@RequestParam(value = "V_I_ID") String V_I_ID, @RequestParam(value = "V_V_DEPT") String V_V_DEPT, @RequestParam(value = "V_V_INFORMATION") String V_V_INFORMATION, @RequestParam(value = "V_D_DATE") String V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_PERSONNAME") String V_V_PERSONNAME, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASS") String V_V_CLASS, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_V_NOTIFICATION") String V_V_NOTIFICATION, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.PRO_PP_INFORMATION_SET(V_I_ID, V_V_DEPT, V_V_INFORMATION, V_D_DATE, V_V_PERSONCODE, V_V_PERSONNAME, V_V_TYPE, V_V_CLASS, V_V_CLASSTYPE, V_V_NOTIFICATION);
-        return data;
+    public HashMap PRO_PP_INFORMATION_SET(@RequestParam(value = "V_I_ID") String V_I_ID, @RequestParam(value = "V_V_DEPT") String[] V_V_DEPT, @RequestParam(value = "V_V_INFORMATION") String V_V_INFORMATION, @RequestParam(value = "V_D_DATE") String V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_PERSONNAME") String V_V_PERSONNAME, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASS") String V_V_CLASS, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_V_NOTIFICATION") String V_V_NOTIFICATION, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        for (int i = 0; i < V_V_DEPT.length; i++) {
+            wsyService.PRO_PP_INFORMATION_SET(V_I_ID, V_V_DEPT[i], V_V_INFORMATION, V_D_DATE, V_V_PERSONCODE, V_V_PERSONNAME, V_V_TYPE, V_V_CLASS, V_V_CLASSTYPE, V_V_NOTIFICATION);
+        }
+        return null;
     }
 
     @RequestMapping(value = "/PM_REALINFOTL_EDIT", method = RequestMethod.POST)
@@ -496,9 +498,21 @@ public class WsyController {
 
     @RequestMapping(value = "/PM_REALINFOTL_DEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PM_REALINFOTL_DEL(@RequestParam(value = "V_ID") String V_ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.PM_REALINFOTL_DEL(V_ID);
-        return data;
+    public HashMap PM_REALINFOTL_DEL(@RequestParam(value = "V_ID") String[] V_ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Integer sum = 0;
+        for (int i = 0; i < V_ID.length; i++) {
+            HashMap data = wsyService.PM_REALINFOTL_DEL(V_ID[i]);
+            if (data.get("V_CURSOR") != "成功") {
+                sum = sum + 1;
+            }
+        }
+        HashMap result = new HashMap();
+        if (sum == 0) {
+            result.put("V_CURSOR", "成功");
+        } else {
+            result.put("V_CURSOR", "失败");
+        }
+        return result;
     }
 
     @RequestMapping(value = "/PRO_BASE_DEPT_VIEW_DEPTTYPE", method = RequestMethod.POST)

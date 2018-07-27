@@ -250,7 +250,8 @@ var Layout = {
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: '所属部门',
-                                    value: Ext.util.Cookies.get('v_deptname2'),
+                                    value: 'sbvdgtr',
+//                                    value: Ext.util.Cookies.get('v_deptname2'),
                                     readOnly: true,
                                     editable: false,
                                     id: 'ssbm'
@@ -284,7 +285,8 @@ var Layout = {
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: '录入人',
-                                    value: Ext.util.Cookies.get('v_personname2'),
+                                    value: 'dvstbvsadrg',
+//                                    value: Ext.util.Cookies.get('v_personname2'),
                                     readOnly: true,
                                     editable: false,
                                     id: 'llr'
@@ -304,7 +306,8 @@ var Layout = {
                                     id: 'xxnr'
                                 },
                                 {
-                                    xtype: 'button', text: '添加', style: {margin: '0px 5px 5px 105px'}, handler: addModel},
+                                    xtype: 'button', text: '添加', style: {margin: '0px 5px 5px 105px'}, handler: addModel
+                                },
                                 {
                                     xtype: 'button',
                                     text: '选择',
@@ -315,7 +318,8 @@ var Layout = {
                                     xtype: 'button',
                                     text: '删除',
                                     style: {margin: '0px 5px 5px 10px'},
-                                    handler: delModel},
+                                    handler: delModel
+                                },
                                 {
                                     xtype: 'panel',
                                     region: 'north',
@@ -424,12 +428,18 @@ function newGuid() {
     return guid;
 }
 
+function zhuce2() {
+    alert(Ext.getCmp('xgbm').getChecked()[0].inputValue);
+}
+
 function zhuce() {
     var asd = Ext.getCmp('xgbm').getChecked();
     var str = '';
+    var bmList = [];
     if (asd.length != 0) {
         for (var i = 0; i < asd.length; i++) {
             str += asd[i].inputValue + '|';
+            bmList.push(asd[i].inputValue);
         }
         str = str.substring(0, str.length - 1);
     }
@@ -455,9 +465,12 @@ function zhuce() {
             method: 'POST',
             params: {
                 V_I_ID: '',
-                V_V_DEPT: str,
+//                V_V_DEPT: str,
+                V_V_DEPT: bmList,
                 V_V_INFORMATION: Ext.getCmp('xxnr').getValue(),
                 V_D_DATE: Ext.Date.format(Ext.getCmp('nowtime').getValue(), 'Y-m-d') + ' ' + aHour + ':' + aMinute + ':' + '01',
+//                V_V_PERSONCODE: '3333333',
+//                V_V_PERSONNAME: '1111111',
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                 V_V_PERSONNAME: Ext.util.Cookies.get('v_personname2'),
                 V_V_TYPE: Ext.getCmp('lx').getValue(),
@@ -569,9 +582,10 @@ function addModel() {
 
 function delModel() {
     var selLength = Ext.getCmp('gridPanel').getSelectionModel().getSelection().length;
-    var selID = "";
+    var selID = [];
     for (i = 0; i < selLength; i++) {
-        selID = selID + Ext.getCmp('gridPanel').getSelectionModel().getSelection()[i].data.ID + ",";
+        selID.push(Ext.getCmp('gridPanel').getSelectionModel().getSelection()[i].data.ID);
+//        selID = selID + Ext.getCmp('gridPanel').getSelectionModel().getSelection()[i].data.ID + ",";
     }
     Ext.Ajax.request({
 //        url: AppUrl + '/FRH001',
