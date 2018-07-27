@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,14 @@ public class WsyService {
     private static final Logger logger = Logger.getLogger(WsyService.class.getName());
     @Value("#{configProperties['system.copyright']}")
     private String copyright;
+//    private String getNum19() {
+//        String numStr = "";
+//        String trandStr = String.valueOf((Math.random() * 9 + 1) * 1000000);
+//        String dataStr = new SimpleDateFormat("yyyyMMddHHMMSS").format(new java.util.Date());
+//        numStr = trandStr.toString().substring(0, 4);
+//        numStr = numStr + dataStr;
+//        return numStr;
+//    }
 
     private List<HashMap> ResultHash(ResultSet rs) throws SQLException {
         List<HashMap> result = new ArrayList<HashMap>();
@@ -1542,7 +1551,8 @@ public class WsyService {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_SET" + "(:V_I_ID,:V_V_DEPT,:V_V_INFORMATION,:V_D_DATE,:V_V_PERSONCODE,:V_V_PERSONNAME,:V_V_TYPE,:V_V_CLASS,:V_V_CLASSTYPE,:V_V_NOTIFICATION)}");
             if (V_I_ID.equals("") || V_I_ID.equals("0")) {
-                cstmt.setInt("V_I_ID", Integer.parseInt(java.util.UUID.randomUUID().toString()));
+                cstmt.setInt("V_I_ID", OracleTypes.NULL);
+//                cstmt.setInt("V_I_ID", Integer.parseInt(getNum19()));
             } else {
                 cstmt.setInt("V_I_ID", Integer.parseInt(V_I_ID));
 //                cstmt.setInt("V_I_ID", 1231234444);
