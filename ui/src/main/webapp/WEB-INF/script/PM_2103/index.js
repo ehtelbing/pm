@@ -3,7 +3,7 @@ Ext.onReady(function () {
 
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 15,
+        pageSize: 30,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME'
