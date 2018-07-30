@@ -865,4 +865,16 @@ public class BasicController {
         return result;
     }
 
+    /*
+     * 根据即时通账号查询人员信息
+     * */
+    @RequestMapping(value = "/BASE_PERSEL_BYJST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_PERSEL_BYJST(
+            @RequestParam(value = "V_V_JSTCODE") String V_V_JSTCODE)
+            throws SQLException {
+        Map result = basicService.BASE_PERSEL_BYJST(V_V_JSTCODE);
+        return result;
+    }
+
 }

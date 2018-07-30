@@ -38,6 +38,17 @@ var endtime3='';
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
 var month = today.getMonth() + 1;
 
+var usercode='';
+
+if (location.href.split('?')[1] != undefined) {
+    usercode = Ext.urlDecode(location.href.split('?')[1]).usercode;
+}
+
+if(usercode!=''){
+    OnPageMMLogin();
+}
+
+
 
 Ext.onReady(function () {
 

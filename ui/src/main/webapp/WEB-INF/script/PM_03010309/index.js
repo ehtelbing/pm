@@ -1,6 +1,18 @@
 var date=new Date();
 var V_WEEKPLAN_GUID='';
 var V_WEEKPLAN_TYPE='';
+
+var usercode='';
+
+if (location.href.split('?')[1] != undefined) {
+    usercode = Ext.urlDecode(location.href.split('?')[1]).usercode;
+}
+
+if(usercode!=''){
+    OnPageMMLogin();
+}
+
+
 //年份
 var years=[];
 for (var i =date.getFullYear()-4; i <=date.getFullYear()+1; i++){

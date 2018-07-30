@@ -784,7 +784,7 @@ public class BasicService {
     public Map PRO_PM_03_PLAN_WEEK_SET(String V_V_INPER, String V_V_GUID, String V_V_YEAR, String V_V_MONTH, String V_V_WEEK,
                                        String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE,
                                        String V_V_CONTENT, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE,
-                                       String V_V_JHMX_GUID, String V_V_HOUR, String V_V_BZ, String V_V_DEFECTGUID,String V_V_MAIN_DEFECT,String V_V_EXPECT_AGE,String V_V_REPAIR_PER) throws SQLException {
+                                       String V_V_JHMX_GUID, String V_V_HOUR, String V_V_BZ, String V_V_DEFECTGUID, String V_V_MAIN_DEFECT, String V_V_EXPECT_AGE, String V_V_REPAIR_PER) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_SET");
         Map result = new HashMap<String, Object>();
         Connection conn = null;
@@ -1577,9 +1577,9 @@ public class BasicService {
             cstmt.setString("V_V_PERCODE", percode);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            if (cstmt.getObject("V_INFO")==null){
-                result="";
-            }else{
+            if (cstmt.getObject("V_INFO") == null) {
+                result = "";
+            } else {
                 result = cstmt.getObject("V_INFO").toString();
             }
         } catch (SQLException e) {
@@ -1592,5 +1592,33 @@ public class BasicService {
         logger.info("end BASE_PRO_JST_CODESEL");
         return result;
     }
+
+    public Map BASE_PERSEL_BYJST(String V_V_JSTCODE) throws SQLException {
+
+        logger.info("begin BASE_PERSEL_BYJST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call BASE_PERSEL_BYJST(:V_V_JSTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_JSTCODE", V_V_JSTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_PRO_JST_CODESEL");
+        return result;
+    }
+
 
 }
