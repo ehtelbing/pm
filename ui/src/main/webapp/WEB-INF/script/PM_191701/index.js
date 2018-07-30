@@ -775,8 +775,8 @@ function selectJXTECHNOLOGYBZ() {
         +'&V_V_EQUTYPE='+V_EQUTYPE
         +'&V_V_ORGCODE='+V_ORGCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
-function getReturnJSBZ(guid,valued,valueu){
-    Ext.getCmp('jxtechnologybz').setValue(valued+'~'+valueu);
+function getReturnJSBZ(guid,name,valued,valueu){
+    Ext.getCmp('jxtechnologybz').setValue(name+'('+valued+'~'+valueu+')');
     Ext.getCmp('jxtechnologybzd').setValue(valued);
     Ext.getCmp('jxtechnologybzu').setValue(valueu);
     Ext.getCmp('jxtecbzguid').setValue(guid);

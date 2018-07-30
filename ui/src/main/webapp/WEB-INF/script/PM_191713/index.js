@@ -46,33 +46,6 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-    //Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-
-    /*var sbNameStore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'sbNameStore',
-        fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'qx/PRO_PM_07_DEPTEQU_PER_DROP',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
-        },
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('V_V_EQUCODE').select(store.first());
-                sbNameStoreLoad = true;
-                _init();
-            }
-        }
-    });*/
 
     var jsStandardStore = Ext.create('Ext.data.Store', {
         id: 'jsStandardStore',
@@ -152,19 +125,7 @@ Ext.onReady(function () {
             region: 'north',
             layout: 'column',
             baseCls: 'my-panel-no-border',
-            items: [/*{
-                xtype: 'combo',
-                id: 'V_V_EQUCODE',
-                store: sbNameStore,
-                fieldLabel: '设备名称',
-                style: ' margin: 5px 0px 5px 10px',
-                labelWidth: 70,
-                labelAlign: 'right',
-                editable: false,
-                queryMode: 'local',
-                displayField: 'V_EQUNAME',
-                valueField: 'V_EQUCODE'
-            },*/{
+            items: [{
                 xtype: 'textfield',
                 id: 'V_V_EQUCHILDCODE',
                 fieldLabel: '装置名称',
@@ -217,17 +178,6 @@ function _init() {
 
 }
 
-/*function _selectEquName() {
-    var sbNameStore = Ext.data.StoreManager.lookup('sbNameStore');
-    sbNameStore.proxy.extraParams = {
-        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-        'V_V_DEPTCODENEXT': V_V_DEPTCODE,
-        'V_V_EQUTYPECODE': V_V_EQUTYPE
-
-    };
-    Ext.data.StoreManager.lookup('sbNameStore').load();
-}*/
-
 function _select() {
     var jsStandardStore = Ext.data.StoreManager.lookup('jsStandardStore');
     jsStandardStore.proxy.extraParams = {
@@ -247,7 +197,7 @@ function _selectJS(){
   if(seldata.length!=1){
       alert("请选择一条数据");
   }else{
-      window.opener.getReturnJSBZ(seldata[0].data.V_GUID,seldata[0].data.V_VALUE_DOWN,seldata[0].data.V_VALUE_UP);
+      window.opener.getReturnJSBZ(seldata[0].data.V_GUID,seldata[0].data.V_PART_NAME,seldata[0].data.V_VALUE_DOWN,seldata[0].data.V_VALUE_UP);
       window.close();
   }
 }

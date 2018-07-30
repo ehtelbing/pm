@@ -596,8 +596,8 @@ function selectGJJJ(){
 function getReturnGJJJ(data){
     Ext.getCmp('jxcar').setValue(data.toString());
 }
-function getReturnJSBZ(guid,valued,valueu){
-    Ext.getCmp('jxtechnology').setValue(valued+'~'+valueu);
+function getReturnJSBZ(guid,name,valued,valueu){
+    Ext.getCmp('jxtechnology').setValue(name+'('+valued+'~'+valueu+')');
     Ext.getCmp('jxtechnologybzd').setValue(valued);
     Ext.getCmp('jxtechnologybzu').setValue(valueu);
     Ext.getCmp('jxtecbzguid').setValue(guid);

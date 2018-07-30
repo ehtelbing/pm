@@ -1,9 +1,10 @@
+var tabpage='';
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 30,
+        pageSize: 50,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME'
@@ -120,9 +121,11 @@ Ext.onReady(function () {
         region: 'north',
         listeners: {
             tabchange: function () {
+                tabpage=Ext.getCmp('tabpanel').getActiveTab().id;
                 Ext.ComponentManager.get("tabid").setValue(Ext.getCmp('tabpanel').getActiveTab().id);
-                QueryGrid();
-                _init();
+                QuerySum();
+                QueryGrid()
+                /*  _init();*/
             }
         }
     });
@@ -136,7 +139,7 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             PersonCode : Ext.util.Cookies.get('v_personcode'),
-            FlowType :Ext.getCmp('tabid').getValue(),
+            FlowType :tabpage,//Ext.getCmp('tabid').getValue(),
             FlowCode : Ext.getCmp('lxbh').getValue(),
             Page :  Ext.getCmp('page').store.currentPage,
             PageSize :  Ext.getCmp('page').store.pageSize
@@ -145,18 +148,9 @@ Ext.onReady(function () {
 
     QueryTab();
     QuerySum();
-    _init();
 });
-function _init(){
-    /*if(Ext.getCmp('tabid').getValue()=='WORK'){
-        Ext.getCmp("agr").hide();
-        Ext.getCmp("dagr").hide();
-    }else{
-        Ext.getCmp("agr").show();
-        Ext.getCmp("dagr").show();
-    }*/
 
-}
+
 function QueryTab(){
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
@@ -176,7 +170,7 @@ function QueryTab(){
                         title: resp.list[i].name
                     });
                 }
-                Ext.ComponentManager.get("tabpanel").setActiveTab(0);
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage==''?'WORK':tabpage);
             }
         }
     });
@@ -201,7 +195,7 @@ function QueryTabW(){
                         title: resp.list[i].name
                     });
                 }
-                Ext.ComponentManager.get("tabpanel").setActiveTab(2);
+                Ext.ComponentManager.get("tabpanel").setActiveTab("WeekPlan");
             }
         }
     });
@@ -226,7 +220,7 @@ function QueryTabY(){
                         title: resp.list[i].name
                     });
                 }
-                Ext.ComponentManager.get("tabpanel").setActiveTab(1);
+                Ext.ComponentManager.get("tabpanel").setActiveTab("MonthPlan");
             }
         }
     });
@@ -251,10 +245,11 @@ function QuerySum(){
 }
 
 function QueryGrid(){
-    Ext.getCmp('page').store.currentPage = 1;
+
+    //Ext.getCmp('page').store.currentPage = 1;
     Ext.data.StoreManager.lookup("gridStore").load({
         PersonCode : Ext.util.Cookies.get('v_personcode'),
-        FlowType : Ext.getCmp('tabid').getValue(),
+        FlowType : tabpage,//Ext.getCmp('tabid').getValue(),
         FlowCode : Ext.getCmp('lxbh').getValue(),
         Page :  Ext.getCmp('page').store.currentPage,
         PageSize :  Ext.getCmp('page').store.pageSize
@@ -367,6 +362,7 @@ function AgreeData(){
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
                     alert(data.mes);
+                    QuerySum();
                     QueryGrid();
                 }
             });
@@ -402,6 +398,7 @@ function AgreeData(){
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
                     alert(data.mes);
+                    QuerySum();
                     QueryGrid();
                 }
             });
@@ -447,6 +444,7 @@ function DisAgreeData(){
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
                     alert(data.mes);
+                    QuerySum();
                     QueryGrid();
                 }
             });
@@ -482,6 +480,7 @@ function DisAgreeData(){
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
                     alert(data.mes);
+                    QuerySum();
                     QueryGrid();
                 }
             });
@@ -517,6 +516,7 @@ function DisAgreeData(){
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
                     alert(data.mes);
+                    QuerySum();
                     QueryGrid();
                 }
             });
