@@ -135,7 +135,7 @@ public class ActivitiController {
 
         int num = (int) taskService.createTaskQuery().processVariableValueLike("flow_businesskey", businessKey).count();
 
-        if(num==0){
+        if (num == 0) {
             HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 
             String ret = (String) data.get("RET");
@@ -164,10 +164,10 @@ public class ActivitiController {
 
                 String jstcode = basicService.BASE_PRO_JST_CODESEL(V_NEXTPER);
 
-                if(!jstcode.equals("")){
+                if (!jstcode.equals("")) {
                     String messtxt = "PM系统待办提醒";
                     String MSG = "<SendMessage><AM_Name>" + jstcode + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>PM系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
-                    String loginurl = pmlogin+"?v_mancode="+V_NEXTPER+"&v_type=newangel";
+                    String loginurl = pmlogin + "?v_mancode=" + V_NEXTPER + "&v_type=newangel";
 
                     String strContent = "<HTML><BODY bgColor='#ffffff' style='font-family:Verdana,新宋体;font-size: 12px;'>";
                     strContent += "<HR size='1' style='color: 52658C;'>";
@@ -177,11 +177,11 @@ public class ActivitiController {
 
 
                     try {
-                        String    sendResult = amToMessController.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
-                        result.put("sendAm",sendResult);
+                        String sendResult = amToMessController.AMToMess(MSG, strContent, infopuburl, infopubusername, infopubpassword);
+                        result.put("sendAm", sendResult);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        result.put("sendAm","Fail");
+                        result.put("sendAm", "Fail");
                     }
                 }
 
@@ -196,7 +196,7 @@ public class ActivitiController {
                 result.put("ret", "ERROR");
                 result.put("msg", "流程发起失败");
             }
-        }else{
+        } else {
             result.put("ret", "ERROR");
             result.put("msg", "流程发起失败,流程businesskey重复");
         }
@@ -563,7 +563,7 @@ public class ActivitiController {
                 }
 
                 if (taskmap.get("flow_type").equals("WORK")) {
-                    List<Map> MATERIALNAME = (List)activitiService.PRO_WORKORDER_SPARE_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    List<Map> MATERIALNAME = (List) activitiService.PRO_WORKORDER_SPARE_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (MATERIALNAME.size() > 0) {
                         Map map = (Map) MATERIALNAME.get(0);
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
@@ -1033,7 +1033,7 @@ public class ActivitiController {
 
         Map map = new HashMap();
         boolean retsult = activitiService.activateActivityCancelCurrent(instanceId, activityId, flowStep, assignees);
-        map.put("flag",retsult);
+        map.put("flag", retsult);
         return map;
 
     }
@@ -1048,7 +1048,7 @@ public class ActivitiController {
     @ResponseBody
     public Map<String, Object> getActivityList(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
 
-        Map map=new HashMap();
+        Map map = new HashMap();
         List result = activitiService.getActivityList(instanceId);
 
         map.put("list", result);
@@ -1060,14 +1060,14 @@ public class ActivitiController {
     }
 
     /*
-    * 根据流程BUSINESSKEY，流程类型，获取流程processkey
-    * */
+     * 根据流程BUSINESSKEY，流程类型，获取流程processkey
+     * */
 
     @RequestMapping(value = "getProcessAndOrgdept", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> getProcessAndOrgdept(@RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY,@RequestParam(value = "V_V_ACTIVITI_TYPE") String V_V_ACTIVITI_TYPE) throws SQLException {
+    public Map<String, Object> getProcessAndOrgdept(@RequestParam(value = "V_V_BUSINESSKEY") String V_V_BUSINESSKEY, @RequestParam(value = "V_V_ACTIVITI_TYPE") String V_V_ACTIVITI_TYPE) throws SQLException {
 
-        Map result = activitiService.getProcessAndOrgdept(V_V_BUSINESSKEY,V_V_ACTIVITI_TYPE);
+        Map result = activitiService.getProcessAndOrgdept(V_V_BUSINESSKEY, V_V_ACTIVITI_TYPE);
         return result;
     }
 
@@ -1077,21 +1077,21 @@ public class ActivitiController {
 
     @RequestMapping(value = "PRO_BASE_DEPT_TREE", method = RequestMethod.POST)
     @ResponseBody
-    public  List<Map> PRO_BASE_DEPT_TREE(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE) throws SQLException {
+    public List<Map> PRO_BASE_DEPT_TREE(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE) throws SQLException {
 
         List<Map> result = activitiService.PRO_BASE_DEPT_TREE(V_V_DEPTCODE);
         return result;
     }
 
     /*
-    * 挂起流程实例
-    * */
+     * 挂起流程实例
+     * */
 
     @RequestMapping(value = "DeleteProcessInstance", method = RequestMethod.POST)
     @ResponseBody
-    public  Map DeleteProcessInstance(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
+    public Map DeleteProcessInstance(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
 
-        Map result=activitiService.DeleteProcessInstance(instanceId);
+        Map result = activitiService.DeleteProcessInstance(instanceId);
         return result;
     }
 
@@ -1101,9 +1101,9 @@ public class ActivitiController {
 
     @RequestMapping(value = "ActivateProcessInstance", method = RequestMethod.POST)
     @ResponseBody
-    public  Map ActivateProcessInstance(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
+    public Map ActivateProcessInstance(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
 
-        Map result=activitiService.ActivateProcessInstance(instanceId);
+        Map result = activitiService.ActivateProcessInstance(instanceId);
         return result;
     }
 
@@ -1113,18 +1113,54 @@ public class ActivitiController {
 
     @RequestMapping(value = "ChangeVariables", method = RequestMethod.POST)
     @ResponseBody
-    public  Map ChangeVariables(@RequestParam(value = "instanceId") String instanceId,
-                                @RequestParam(value = "code") String code,
-                                @RequestParam(value = "value") String value) throws SQLException {
-        Map result=new HashMap();
+    public Map ChangeVariables(@RequestParam(value = "instanceId") String instanceId,
+                               @RequestParam(value = "code") String code,
+                               @RequestParam(value = "value") String value) throws SQLException {
+        Map result = new HashMap();
         try {
             Task task = taskService.createTaskQuery().processInstanceId(instanceId).singleResult();
             Map<String, Object> variables = new HashMap<>();
             variables.put(code, value);
             taskService.setVariables(task.getId(), variables);
-            result.put("msg","success");
-        }catch (Exception e){
-            result.put("msg","fail");
+            result.put("msg", "success");
+        } catch (Exception e) {
+            result.put("msg", "fail");
+        }
+        return result;
+    }
+
+    /*
+     * 获取流程变量
+     * */
+
+    @RequestMapping(value = "GetVariables", method = RequestMethod.POST)
+    @ResponseBody
+    public List GetVariables(@RequestParam(value = "processInstanceId") String processInstanceId) throws SQLException {
+        List result = new ArrayList();
+        try {
+            Task task = taskService.createTaskQuery()
+                    .processInstanceId(processInstanceId)
+                    .singleResult();
+
+            // BusinessKey
+            ProcessInstance instance = runtimeService
+                    .createProcessInstanceQuery()
+                    .processInstanceId(task.getProcessInstanceId())
+                    .singleResult();
+
+            // ProcessVariables
+            List<HistoricVariableInstance> vars = historyService
+                    .createHistoricVariableInstanceQuery()
+                    .processInstanceId(instance.getId()).list();
+            for (HistoricVariableInstance var : vars) {
+                Map map = new HashMap();
+                map.put("code", var.getVariableName());
+                map.put("value", var.getValue());
+                result.add(map);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }
