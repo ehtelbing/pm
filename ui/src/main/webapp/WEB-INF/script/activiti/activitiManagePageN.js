@@ -3,7 +3,7 @@ Ext.onReady(function () {
 
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 15,
+        pageSize: 100,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME'
@@ -43,9 +43,6 @@ Ext.onReady(function () {
         id:'grid',
         frame : true,
         columnLines : true,
-        /*selModel: {
-            selType: 'checkboxmodel'
-        },*/
         region:'center',
         columns : [ {
             xtype : 'rownumberer',
@@ -57,7 +54,7 @@ Ext.onReady(function () {
             dataIndex: 'V_ORDERID',
             width: 155,
             align: 'center',
-            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+            renderer: function (value, metaData, record) {
                 return  '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>' +
                     '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.ProcessInstanceId + '\')">' + '删除流程' + '</a>';
             }
@@ -91,7 +88,7 @@ Ext.onReady(function () {
             dataIndex: 'CreateTime',
             align: 'center',
             width: 200,
-            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+            renderer: function (value) {
                 return value.substring(0, 10);
             }
         }],
@@ -209,13 +206,7 @@ Ext.onReady(function () {
         region: 'center',
         width: '100%',
         height:'100%',
-        items:[form,startPanel,Panel,endPanel]/*,
-        listeners: {
-            tabchange: function () {
-                Ext.ComponentManager.get("tabid").setValue(Ext.getCmp('tabpanel').getActiveTab().id);
-                QueryGrid();
-            }
-        }*/
+        items:[form,startPanel,Panel,endPanel]
     });
 
 
@@ -294,45 +285,6 @@ function _cancelFlow(instanceId) {
             var resp = Ext.decode(response.responseText);
             if (resp.msg == "删除成功") {
                 QueryGrid();
-                /*Ext.Ajax.request({
-                    url: AppUrl + 'cjy/PRO_ACTIVITI_DELETE',
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_BusinessKey: BusinessKey,
-                        V_V_FlowType: flow_type
-                    },
-                    success: function (response) {
-                        var resp = Ext.decode(response.responseText);
-                        if (resp.V_INFO == 'success') {
-                            Ext.Ajax.request({
-                                url: AppUrl + 'cjy/PM_ACTIVITI_STEP_LOG_SET',
-                                type: 'ajax',
-                                method: 'POST',
-                                params: {
-                                    V_V_BUSINESS_GUID: BusinessKey,
-                                    V_V_PROCESS_GUID: ProcessDefinitionKey,
-                                    V_V_STEPCODE: '',
-                                    V_V_STEPNAME: '',
-                                    V_V_IDEA: '删除流程',
-                                    V_V_NEXTPER: '',
-                                    V_V_INPER: Ext.util.Cookies.get('v_personcode')
-                                },
-                                success: function (response) {
-                                    var resp = Ext.decode(response.responseText);
-                                    if (resp.RET == 'success') {
-                                        alert("删除成功");
-                                        QueryGrid();
-                                    } else {
-                                        alert("记录日志失败");
-                                    }
-                                }
-                            });
-                        } else {
-                            alert('删除数据失败');
-                        }
-                    }
-                });*/
             } else {
                 alert('删除失败');
             }
