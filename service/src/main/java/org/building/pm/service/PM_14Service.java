@@ -1219,10 +1219,9 @@ public class PM_14Service {
 
     public HashMap PM_14_FAULT_ITEM_DATA_SET(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE,
                                              String V_V_EQUCHILD_CODE, String V_V_FAULT_GUID, String V_V_FAULT_TYPE, String V_V_FAULT_YY,
-                                             String V_V_FAULT_XX, String V_V_JJBF, String V_V_FAULT_LEVEL,
-                                             String V_V_FINDTIME, String V_V_FILE_GUID, String V_V_INTIME,
+                                             String V_V_FINDTIME, String V_V_FAULT_XX, String V_V_FAULT_LEVEL,
+                                             String V_V_JJBF, String V_V_FILE_GUID, String V_V_INTIME,
                                              String V_V_PERCODE, String V_V_IP) throws SQLException {
-
         logger.info("begin PM_14_FAULT_ITEM_DATA_SET");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
 
@@ -1246,10 +1245,10 @@ public class PM_14Service {
             cstmt.setString("V_V_FAULT_GUID", V_V_FAULT_GUID);
             cstmt.setString("V_V_FAULT_TYPE", V_V_FAULT_TYPE);
             cstmt.setString("V_V_FAULT_YY", V_V_FAULT_YY);
+            cstmt.setString("V_V_FINDTIME", V_V_FINDTIME);
             cstmt.setString("V_V_FAULT_XX", V_V_FAULT_XX);
             cstmt.setString("V_V_JJBF", V_V_JJBF);
             cstmt.setString("V_V_FAULT_LEVEL", V_V_FAULT_LEVEL);
-            cstmt.setString("V_V_FINDTIME", V_V_FINDTIME);
             cstmt.setString("V_V_FILE_GUID", V_V_FILE_GUID);
             cstmt.setString("V_V_INTIME", V_V_INTIME);
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
