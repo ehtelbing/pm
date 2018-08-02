@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -16,6 +17,7 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -160,5 +162,33 @@ public class OldRepairController {
                 e.printStackTrace();
             }
         }
+    }
+
+    //获取待修旧件库存
+    @RequestMapping(value = "/getWaitMendKcTable", method = RequestMethod.POST)
+    @ResponseBody
+    public Map getWaitMendKcTable(
+            @RequestParam(value = "v_sap_plantcode") String v_sap_plantcode,
+            @RequestParam(value = "v_sap_departcode") String v_sap_departcode,
+            @RequestParam(value = "v_storeid") String v_storeid,
+            @RequestParam(value = "v_mat_no") String v_mat_no,
+            @RequestParam(value = "v_mat_desc") String v_mat_desc,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return oldRepairService.getWaitMendKcTable(v_sap_plantcode, v_sap_departcode, v_storeid, v_mat_no, v_mat_desc);
+    }
+
+
+    //获取待维修库房列表
+    @RequestMapping(value = "/getJunkWaitMendStoreList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map getJunkWaitMendStoreList(
+            @RequestParam(value = "v_sap_plantcode") String v_sap_plantcode,
+            @RequestParam(value = "v_sap_departcode") String v_sap_departcode,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return oldRepairService.getJunkWaitMendStoreList(v_sap_plantcode, v_sap_departcode);
     }
 }
