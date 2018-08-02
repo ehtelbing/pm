@@ -138,4 +138,65 @@ public class OldRepairService {
         logger.info("end outputMendForOrder");
         return result;
     }
+
+    public HashMap getWaitMendKcTable(String v_sap_plantcode, String v_sap_departcode,
+                                      String v_storeid,String v_mat_no,String v_mat_desc) throws SQLException {
+
+        logger.info("begin getWaitMendKcTable");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = nammDataSource.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call pg_mm_junk_interface.getWaitMendKcTable" + "(:v_sap_plantcode,:v_sap_departcode," +
+                    ":v_storeid,:v_mat_no,:v_mat_desc,:ret)}");
+            cstmt.setString("v_sap_plantcode", v_sap_plantcode);
+            cstmt.setString("v_sap_departcode", v_sap_departcode);
+            cstmt.setString("v_storeid", v_storeid);
+            cstmt.setString("v_mat_no", v_mat_no);
+            cstmt.setString("v_mat_desc", v_mat_desc);
+            cstmt.registerOutParameter("ret", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("ret")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end getWaitMendKcTable");
+        return result;
+    }
+
+   /* public HashMap getJunkWaitMendStoreList(String v_sap_plantcode, String v_sap_departcode) throws SQLException {
+
+        logger.info("begin getJunkWaitMendStoreList");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = nammDataSource.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call pg_mm_junk_interface.getJunkWaitMendStoreList" + "(:v_sap_plantcode,:v_sap_departcode,:ret)}");
+            cstmt.setString("v_sap_plantcode", v_sap_plantcode);
+            cstmt.setString("v_sap_departcode", v_sap_departcode);
+            cstmt.registerOutParameter("ret", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("ret")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end getJunkWaitMendStoreList");
+        return result;
+    }*/
 }
