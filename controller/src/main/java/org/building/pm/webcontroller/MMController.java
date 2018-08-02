@@ -223,6 +223,66 @@ public class MMController {
         return test;
     }
 
+
+    /*
+     *物资库房接口
+     * */
+    @RequestMapping(value = "/GetMatTable", method = RequestMethod.POST)
+    @ResponseBody
+    public Map GetMatTable(@RequestParam(value = "code") String code,
+                           @RequestParam(value = "name") String name,
+                           @RequestParam(value = "x_personcode") String x_personcode) throws Exception {
+        Map test = new HashMap();
+        List<Map> result = null;
+        try {
+            Client client = new Client(new URL(MMEquurl));
+
+            Object[] results = client.invoke("GetMatTable",
+                    new Object[]{code, name});
+
+
+            Document doc = DocumentHelper.parseText(results[0].toString());
+
+            Element rootElt = doc.getRootElement(); // 获取根节点
+            Iterator iter = rootElt.elementIterator("Material"); // 获取二级节点
+            List<Map> list = new ArrayList<Map>();
+
+            while (iter.hasNext()) {
+
+                Element recordEle = (Element) iter.next(); // 输出下一行
+
+                Map M = new HashMap();
+
+                M.put("mat_no",
+                        recordEle.elementTextTrim("mat_no"));
+                M.put("mat_desc",
+                        recordEle.elementTextTrim("mat_desc"));
+                M.put("unit", recordEle.elementTextTrim("unit"));
+                M.put("ltext", recordEle.elementTextTrim("ltext"));
+
+                M.put("plan_price", recordEle.elementTextTrim("plan_price"));
+                M.put("days", recordEle.elementTextTrim("days"));
+
+                list.add(M);
+            }
+
+            // 日志 ---- 日志内容 - 日志报文 - 时间 - 日志类型 - 人员编码
+            java.util.Date currentTime = new java.util.Date();
+            SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
+            String titleNameTime = Format.format(currentTime);
+
+            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl,
+                    null, titleNameTime, "WS_Equip", x_personcode);
+            test.put("list", list);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return test;
+    }
+
     /*
      *
      * */

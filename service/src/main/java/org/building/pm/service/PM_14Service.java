@@ -1223,8 +1223,6 @@ public class PM_14Service {
                                              String V_V_JJBF, String V_V_FILE_GUID, String V_V_INTIME,
                                              String V_V_PERCODE, String V_V_IP) throws SQLException {
         logger.info("begin PM_14_FAULT_ITEM_DATA_SET");
-//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
-
 
         HashMap result = new HashMap();
         Connection conn = null;
