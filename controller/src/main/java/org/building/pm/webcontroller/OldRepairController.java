@@ -191,4 +191,18 @@ public class OldRepairController {
 
         return oldRepairService.getJunkWaitMendStoreList(v_sap_plantcode, v_sap_departcode);
     }
+
+    //维修工单出库
+    @RequestMapping(value = "/outputMendForOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public Map outputMendForOrder(
+            @RequestParam(value = "v_userid") String v_userid,
+            @RequestParam(value = "v_kcid") String v_kcid,
+            @RequestParam(value = "f_mend_amount") int f_mend_amount,
+            @RequestParam(value = "v_orderid") String v_orderid,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        return oldRepairService.outputMendForOrder(v_userid, v_kcid, f_mend_amount, v_orderid);
+    }
 }

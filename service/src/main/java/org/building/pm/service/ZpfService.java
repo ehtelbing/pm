@@ -880,4 +880,104 @@ public class ZpfService {
         logger.info("end pro_dellubrecord");
         return result;
     }
+
+    public HashMap PRO_PM_WORKORDER_OLD_NC(String V_V_PLANTCODE, String V_V_DEPARTCODE, String V_V_MATERIALCODE,
+                                      String V_V_MATERIALNAME, String V_V_AMOUNT, String V_V_SOURCECODE) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_OLD_NC");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_OLD_NC" + "(:V_V_PLANTCODE,:V_V_DEPARTCODE,:V_V_MATERIALCODE,:V_V_MATERIALNAME,:V_V_AMOUNT,:V_V_SOURCECODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PLANTCODE", V_V_PLANTCODE);
+            cstmt.setString("V_V_DEPARTCODE", V_V_DEPARTCODE);
+            cstmt.setString("V_V_MATERIALCODE", V_V_MATERIALCODE);
+            cstmt.setString("V_V_MATERIALNAME", V_V_MATERIALNAME);
+            cstmt.setString("V_V_AMOUNT", V_V_AMOUNT);
+            cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_OLD_NC");
+        return result;
+    }
+
+    public HashMap PM_WORKORDER_OLD_UPD(String V_V_PERCODE , String V_V_ORDERGUID, String V_V_SHORT_TXT, String
+            V_D_START_DATE, String V_D_FINISH_DATE, String V_V_WBS, String V_V_WBS_TXT, String V_V_DEPTCODEREPARIR,
+                                         String V_V_TOOL, String V_V_TECHNOLOGY, String V_V_SAFE) throws SQLException {
+        logger.info("begin PM_WORKORDER_OLD_UPD");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_WORKORDER_OLD_UPD" + "(:V_V_PERCODE," +
+                    ":V_V_ORDERGUID,:V_V_SHORT_TXT,:V_D_START_DATE,:V_D_FINISH_DATE,:V_V_WBS,:V_V_WBS_TXT,:V_V_DEPTCODEREPARIR," +
+                    ":V_V_TOOL,:V_V_TECHNOLOGY,:V_V_SAFE,:V_INFO)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.setString("V_D_START_DATE", V_D_START_DATE);
+            cstmt.setString("V_D_FINISH_DATE", V_D_FINISH_DATE);
+            cstmt.setString("V_V_WBS", V_V_WBS);
+            cstmt.setString("V_V_WBS_TXT", V_V_WBS_TXT);
+            cstmt.setString("V_V_DEPTCODEREPARIR", V_V_DEPTCODEREPARIR);
+            cstmt.setString("V_V_TOOL", V_V_TOOL);
+            cstmt.setString("V_V_TECHNOLOGY", V_V_TECHNOLOGY);
+            cstmt.setString("V_V_SAFE", V_V_SAFE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_WORKORDER_OLD_UPD");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_OLD_HI_SEL(String V_BEGINTIME, String V_ENDTIME,
+                                           String V_MAT_NO, String V_MAT_DESC, String V_V_SOURCECODE) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_OLD_HI_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_OLD_HI_SEL" + "(:V_BEGINTIME,:V_ENDTIME,:V_MAT_NO,:V_MAT_DESC,:V_V_SOURCECODE,:V_CURSOR)}");
+            cstmt.setString("V_BEGINTIME", V_BEGINTIME);
+            cstmt.setString("V_ENDTIME", V_ENDTIME);
+            cstmt.setString("V_MAT_NO", V_MAT_NO);
+            cstmt.setString("V_MAT_DESC", V_MAT_DESC);
+            cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_OLD_HI_SEL");
+        return result;
+    }
 }

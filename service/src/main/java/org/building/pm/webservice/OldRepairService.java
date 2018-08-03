@@ -172,22 +172,23 @@ public class OldRepairService {
         return result;
     }
 
-   /* public HashMap getJunkWaitMendStoreList(String v_sap_plantcode, String v_sap_departcode) throws SQLException {
-
-        logger.info("begin getJunkWaitMendStoreList");
-
-        HashMap result = new HashMap();
+    public Map outputMendForOrder(String v_userid, String v_kcid,int f_mend_amount,String v_orderid) throws SQLException{
+        logger.info("begin outputMendForOrder");
+        Map<String, Object> result = new HashMap<String, Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = nammDataSource.getConnection();
-            conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call pg_mm_junk_interface.getJunkWaitMendStoreList" + "(:v_sap_plantcode,:v_sap_departcode,:ret)}");
-            cstmt.setString("v_sap_plantcode", v_sap_plantcode);
-            cstmt.setString("v_sap_departcode", v_sap_departcode);
-            cstmt.registerOutParameter("ret", OracleTypes.CURSOR);
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PG_MM_JUNK_INTERFACE.outputMendForOrder(:v_userid,:v_kcid,:f_mend_amount,:v_orderid,:ret_id,:ret_msg,:ret)}");
+            cstmt.setString("v_userid", v_userid);
+            cstmt.setString("v_kcid", v_kcid);
+            cstmt.setInt("f_mend_amount", f_mend_amount);
+            cstmt.setString("v_orderid", v_orderid);
+            cstmt.registerOutParameter("ret_id", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("ret_msg", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("ret", OracleTypes.VARCHAR);
             cstmt.execute();
-
             result.put("list", ResultHash((ResultSet) cstmt.getObject("ret")));
         } catch (SQLException e) {
             logger.error(e);
@@ -195,8 +196,7 @@ public class OldRepairService {
             cstmt.close();
             conn.close();
         }
-        logger.debug("result:" + result);
-        logger.info("end getJunkWaitMendStoreList");
+        logger.info("end outputMendForOrder");
         return result;
-    }*/
+    }
 }

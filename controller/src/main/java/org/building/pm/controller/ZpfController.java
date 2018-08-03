@@ -561,5 +561,75 @@ public class ZpfController {
 
         return zpfService.pro_dellubrecord(x_lubricationcode);
     }
+
+    //将旧件写入工单表
+    @RequestMapping(value = "/PRO_PM_WORKORDER_OLD_NC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_OLD_NC(
+            @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+            @RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
+            @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
+            @RequestParam(value = "V_V_MATERIALNAME") String V_V_MATERIALNAME,
+            @RequestParam(value = "V_V_AMOUNT") String V_V_AMOUNT,
+            @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zpfService.PRO_PM_WORKORDER_OLD_NC(V_V_PLANTCODE,V_V_DEPARTCODE,V_V_MATERIALCODE,V_V_MATERIALNAME,V_V_AMOUNT,V_V_SOURCECODE);
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    //生成工单（将工单网页内容更新到工单表）
+    @RequestMapping(value = "/PM_WORKORDER_OLD_UPD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_WORKORDER_OLD_UPD(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                     @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                     @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                     @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                                     @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                                     @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                                     @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+                                                     @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                                     @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                     @RequestParam(value = "V_V_TECHNOLOGY") String V_V_TECHNOLOGY,
+                                                     @RequestParam(value = "V_V_SAFE") String V_V_SAFE,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zpfService.PM_WORKORDER_OLD_UPD(V_V_PERCODE, V_V_ORDERGUID, V_V_SHORT_TXT,
+                V_D_START_DATE, V_D_FINISH_DATE, V_V_WBS, V_V_WBS_TXT, V_V_DEPTCODEREPARIR, V_V_TOOL, V_V_TECHNOLOGY, V_V_SAFE);
+
+        String ret = (String) data.get("RET");
+
+        result.put("RET", ret);
+        result.put("success", true);
+        return result;
+    }
+
+
+    //修旧历史查询
+    @RequestMapping(value = "/PRO_PM_WORKORDER_OLD_HI_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_OLD_HI_SEL(
+            @RequestParam(value = "V_BEGINTIME") String V_BEGINTIME,
+            @RequestParam(value = "V_ENDTIME") String V_ENDTIME,
+            @RequestParam(value = "V_MAT_NO") String V_MAT_NO,
+            @RequestParam(value = "V_MAT_DESC") String V_MAT_DESC,
+            @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zpfService.PRO_PM_WORKORDER_OLD_HI_SEL(V_BEGINTIME, V_ENDTIME, V_MAT_NO, V_MAT_DESC, V_V_SOURCECODE);
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
 }
 
