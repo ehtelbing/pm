@@ -31,7 +31,7 @@ import java.util.*;
 @RequestMapping("/app/pm/mm")
 public class MMController {
     @Autowired
-    private MMService webPCService;
+    private MMService mmService;
     @Autowired
     private ZdhService zdhService;
 
@@ -79,11 +79,11 @@ public class MMController {
                 String price = recordEle.elementTextTrim("price");
                 String f_number = recordEle.elementTextTrim("f_number");
                 String BillType = recordEle.elementTextTrim("BillType");
-                String setret = webPCService.PRO_PM_WORKORDER_SPARE_MM_SET(V_V_ORDERGUID, V_V_ORDERID, billcode, vch_sparepart_code, vch_sparepart_name, vch_type,
+                String setret = mmService.PRO_PM_WORKORDER_SPARE_MM_SET(V_V_ORDERGUID, V_V_ORDERID, billcode, vch_sparepart_code, vch_sparepart_name, vch_type,
                         vch_unit, price, f_number, BillType);
             }
 
-            String ret = webPCService.PRO_PM_WORKORDER_SPARE_UPDATE(V_V_ORDERGUID);
+            String ret = mmService.PRO_PM_WORKORDER_SPARE_UPDATE(V_V_ORDERGUID);
 
             String V_V_log = "服务日志־" + MMEquurl;
 
@@ -91,7 +91,7 @@ public class MMController {
             Date currentTime = new Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
-            webPCService.PRO_LOG_WEB_SET(V_V_log, null, titleNameTime, "WS_Equip", V_V_PERCODE);
+            mmService.PRO_LOG_WEB_SET(V_V_log, null, titleNameTime, "WS_Equip", V_V_PERCODE);
             result.put("ret", "Success");
         } catch (MalformedURLException e) {
             result.put("ret", "Fail");
@@ -140,7 +140,7 @@ public class MMController {
             Date currentTime = new Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
-            webPCService.PRO_LOG_WEB_SET(V_V_log, null, titleNameTime, "WS_Equip", V_V_PERCODE);
+            mmService.PRO_LOG_WEB_SET(V_V_log, null, titleNameTime, "WS_Equip", V_V_PERCODE);
             result.put("ret", "Success");
             result.put("list", list);
 
@@ -211,7 +211,7 @@ public class MMController {
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
 
-            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl,
+            mmService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl,
                     null, titleNameTime, "WS_Equip", x_personcode);
             test.put("list", list);
 
@@ -271,7 +271,7 @@ public class MMController {
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
 
-            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl,
+            mmService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl,
                     null, titleNameTime, "WS_Equip", x_personcode);
             test.put("list", list);
 
@@ -326,7 +326,7 @@ public class MMController {
                 java.util.Date currentTime = new java.util.Date();
                 SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
                 String titleNameTime = Format.format(currentTime);
-                webPCService.PRO_LOG_WEB_SET("服务日志:" + MMXlurl, null, titleNameTime, "WS_MMToXL", x_personcode);
+                mmService.PRO_LOG_WEB_SET("服务日志:" + MMXlurl, null, titleNameTime, "WS_MMToXL", x_personcode);
             }
             test.put("list", list);
         } catch (MalformedURLException e) {
@@ -371,7 +371,7 @@ public class MMController {
             java.util.Date currentTime = new java.util.Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
-            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMSapurl, null, titleNameTime, "WS_MMToXL", x_personcode);
+            mmService.PRO_LOG_WEB_SET("服务日志:" + MMSapurl, null, titleNameTime, "WS_MMToXL", x_personcode);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -574,7 +574,7 @@ public class MMController {
             java.util.Date currentTime = new java.util.Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
-            webPCService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl, null, titleNameTime, "WS_MMToXL", x_personcode);
+            mmService.PRO_LOG_WEB_SET("服务日志:" + MMEquurl, null, titleNameTime, "WS_MMToXL", x_personcode);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             test.put("V_CURSOR", "Fail");
@@ -584,6 +584,38 @@ public class MMController {
         }
 
         return test;
+    }
+
+    /*
+     * 预装件工单验收
+     * */
+
+    @RequestMapping(value = "/WS_EquipService", method = RequestMethod.POST)
+    @ResponseBody
+    public Map WS_EquipService(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                               @RequestParam(value = "x_personcode") String x_personcode) throws Exception {
+
+        Map result = new HashMap();
+
+        List<String> str = mmService.PRO_PM_WORKORDER_YS_YZJ(V_V_ORDERGUID);
+
+        String ff = str.get(str.size() - 1);
+        if (str.get(str.size() - 1).equals("1")) {
+
+            //调用webService
+            Client client = new Client(new URL(MMEquurl));
+
+            String billcode = str.get(0);
+            String sap_departcode = str.get(1);
+            String materialcode = str.get(2);
+            String materialname = str.get(3);
+            String vch_type = str.get(4);
+            String unit = str.get(5);
+            Double Amount = Double.parseDouble(str.get(6).toString());
+            Object[] results = client.invoke("PreloadMatInput", new Object[]{billcode, sap_departcode, materialcode, materialname, vch_type, unit, Amount});
+            result.put("msg", results[0].toString());
+        }
+        return result;
     }
 
 }

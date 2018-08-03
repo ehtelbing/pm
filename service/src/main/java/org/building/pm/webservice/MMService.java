@@ -30,7 +30,7 @@ public class MMService {
 
     public String PRO_PM_WORKORDER_SPARE_MM_SET(String v_V_ORDERGUID, String v_V_ORDERID, String billcode, String vch_sparepart_code, String vch_sparepart_name, String vch_type, String vch_unit, String price, String f_number, String billType) throws SQLException {
         logger.info("begin PRO_PM_WORKORDER_SPARE_MM_SET");
-        String ret="";
+        String ret = "";
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -49,7 +49,7 @@ public class MMService {
             cstmt.setString("V_BILLTYPE", billType);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-             ret = (String) cstmt.getObject("V_CURSOR");
+            ret = (String) cstmt.getObject("V_CURSOR");
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -106,5 +106,53 @@ public class MMService {
         }
         logger.info("end PRO_LOG_WEB_SET");
     }
+
+    public List<String> PRO_PM_WORKORDER_YS_YZJ(String V_V_ORDERGUID) throws SQLException {
+//        logger.info("begin PRO_PM_WORKORDER_YS_YZJ");
+        List<String> result = new ArrayList<String>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_YS_YZJ" + "(:V_V_ORDERGUID,:V_BILLCODE," +
+                    ":V_SAP_DEPARTCODE,:V_MATERIALCODE,:V_MATERIALNAME,:V_VCH_TYPE,:V_UNIT,:V_AMOUNT,:V_CURSOR)}");
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.registerOutParameter("V_BILLCODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_SAP_DEPARTCODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_MATERIALCODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_MATERIALNAME", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_VCH_TYPE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_UNIT", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_AMOUNT", OracleTypes.DOUBLE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String V_BILLCODE = (String) cstmt.getObject("V_BILLCODE");
+            String V_SAP_DEPARTCODE = (String) cstmt.getObject("V_SAP_DEPARTCODE");
+            String V_MATERIALCODE = (String) cstmt.getObject("V_MATERIALCODE");
+            String V_MATERIALNAME = (String) cstmt.getObject("V_MATERIALNAME");
+            String V_VCH_TYPE = (String) cstmt.getObject("V_VCH_TYPE");
+            String V_UNIT = (String) cstmt.getObject("V_UNIT");
+            String V_AMOUNT = (String) cstmt.getObject("V_AMOUNT");
+            String V_CURSOR = (String) cstmt.getObject("V_CURSOR");
+            result.add(0, V_BILLCODE);
+            result.add(1, V_SAP_DEPARTCODE);
+            result.add(2, V_MATERIALCODE);
+            result.add(3, V_MATERIALNAME);
+            result.add(4, V_VCH_TYPE);
+            result.add(5, V_UNIT);
+            result.add(6, V_AMOUNT);
+            result.add(7, V_CURSOR);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_YS_YZJ");
+        return result;
+    }
+
 
 }

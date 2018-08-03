@@ -572,55 +572,18 @@ function Querytime() {
 
 function OnClickExcelButton() {
 
-	/*var tableName = ["序号","计划状态", "厂矿", "车间名称", "专业", "设备名称",
-	 "计划内容", "检修模型", "计划停机日期", "计划竣工日期", "计划工期（小时）", "录入人", "录入时间", "流程步骤"];
-	 var tableKey = ['V_STATENAME', 'V_DEPTNAME',
-	 'V_ORGNAME', 'V_REPAIRMAJOR_CODE', 'V_EQUNAME', 'V_CONTENT',
-	 'V_EQUTYPENAME', 'V_STARTTIME', 'V_ENDTIME', 'V_HOUR', 'V_INPERNAME', 'V_INDATE', 'V_FLOWNAME'];
-
-
-	 var parName = ['V_V_YEAR','V_V_MONTH','V_V_WEEK','V_V_ORGCODE','V_V_DEPTCODE',
-	 'V_V_ZY','V_V_EQUTYPE','V_V_EQUCODE','V_V_CONTENT','V_V_STATE',
-	 'V_V_PAGE','V_V_PAGESIZE'];
-	 var parType = ['s', 's', 's', 's', 's',
-	 's', 's', 's', 's', 's',
-	 's', 's'];
-	 var parVal = [
-
-	 Ext.getCmp('nf').getValue(),
-	 Ext.getCmp('yf').getValue(),
-	 Ext.getCmp('zhou').getValue(),
-	 Ext.getCmp('jhck').getValue(),
-	 Ext.getCmp('jhzyq').getValue(),
-	 Ext.getCmp('zy').getValue(),
-	 Ext.getCmp('sblx').getValue(),
-	 Ext.getCmp('sbmc').getValue(),
-	 Ext.getCmp('content').getValue(),
-	 '%',
-	 Ext.getCmp('page').store.currentPage,
-	 Ext.getCmp('page').store.pageSize
-	 ];
-
-	 var proName = 'PRO_PM_03_PLAN_WEEK_VIEW';
-	 var ExcelName = '周计划查询';
-	 var cursorName = 'V_CURSOR';
-	 var returnStr = ['null'];
-	 var returnStrName = ['null'];
-	 var returnStrType = ['null'];
-
-	 submitData(AppUrl + "excel/ZSCBSP_EXCEL", tableName, tableKey, parName, parType,
-	 parVal, proName, returnStr, returnStrType, returnStrName,
-	 cursorName, "title", "周计划查询");*/
-
 	var V_V_ZY = Ext.getCmp('zy').getValue() == '%' ? '0' : Ext.getCmp('zy').getValue();
 	var V_V_EQUTYPE = Ext.getCmp('sblx').getValue() == '%' ? '0' : Ext.getCmp('sblx').getValue();
 	var V_V_EQUCODE = Ext.getCmp('sbmc').getValue() == '%' ? '0' : Ext.getCmp('sbmc').getValue();
 	var V_V_STATE = Ext.getCmp('state').getValue() == '%' ? '0' : Ext.getCmp('state').getValue();
+	var V_V_V_ORGCODE = Ext.getCmp('jhck').getValue() == '%' ? '0' : Ext.getCmp('jhck').getValue();
+	var V_V_V_DEPTCODE = Ext.getCmp('jhzyq').getValue() == '%' ? '0' : Ext.getCmp('jhzyq').getValue();
+
 	document.location.href = AppUrl + 'excel/ZSCBSP_EXCEL?V_V_YEAR=' + Ext.getCmp('nf').getValue()
 		+ '&V_V_MONTH=' + Ext.getCmp('yf').getValue()
 		+ '&V_V_WEEK=' + Ext.getCmp('zhou').getValue()
-		+ '&V_V_ORGCODE=' + Ext.getCmp('jhck').getValue()
-		+ '&V_V_DEPTCODE=' + Ext.getCmp('jhzyq').getValue()
+		+ '&V_V_ORGCODE=' + V_V_V_ORGCODE
+		+ '&V_V_DEPTCODE=' +V_V_V_DEPTCODE
 		+ '&V_V_ZY=' + V_V_ZY
 		+ '&V_V_EQUTYPE=' + V_V_EQUTYPE
 		+ '&V_V_EQUCODE=' + V_V_EQUCODE

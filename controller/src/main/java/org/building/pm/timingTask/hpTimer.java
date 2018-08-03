@@ -84,7 +84,7 @@ public class hpTimer {
 
                         String v_v_timer_guid= String.valueOf(UUID.randomUUID());
 
-                        hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_CRITERION_CODE"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                     //   hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_CRITERION_CODE"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                     }
                 }
 
@@ -99,7 +99,7 @@ public class hpTimer {
                     String v_v_timer_guid= String.valueOf(UUID.randomUUID());
 
 
-                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                   // hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
             } else if (timetype.equals("周")) {
@@ -113,7 +113,7 @@ public class hpTimer {
 
                     String v_v_timer_guid= String.valueOf(UUID.randomUUID());
 
-                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                   // hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
             } else if (timetype.equals("月")) {
@@ -163,7 +163,7 @@ public class hpTimer {
 
                     String v_v_timer_guid= String.valueOf(UUID.randomUUID());
 
-                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                   // hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
                 }
 
             } else if (timetype.equals("年")) {
@@ -191,7 +191,7 @@ public class hpTimer {
 
                     String v_v_timer_guid= String.valueOf(UUID.randomUUID());
 
-                    hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
+                   // hpService.PM_06_DJ_DATA_TIMER_SET((String) dataList.get(i).get("V_GUID"), v_v_timer_guid, (String) dataList.get(i).get("V_FZ_PER"), (String) dataList.get(i).get("V_DJ_TYPE"), format.format(timeer));
 
                 }
 
