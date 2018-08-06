@@ -1521,7 +1521,7 @@ function ConfirmAccept() {
             V_STEPCODE: V_STEPCODE,
             V_STEPNAME: V_STEPNAME,
             V_IDEA: '已反馈',
-            V_NEXTPER: Ext.getCmp('nextSpr').getValue(),
+            V_NEXTPER: Ext.getCmp('nextSprb').getValue(),
             V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {

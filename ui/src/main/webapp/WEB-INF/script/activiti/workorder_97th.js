@@ -10,6 +10,7 @@ var GXlength=0;
 var ifYS=0;
 var winheight;
 var V_TEAMCODE = null;
+var V_V_ORDER_TYP='';
 $(function () {
 
 	var nextSprStore = Ext.create("Ext.data.Store", {
@@ -365,7 +366,7 @@ function ReturnIsToTask() {
 			} else {
 				var owidth = window.document.body.offsetWidth - 200;
 				var oheight = window.document.body.offsetHeight - 100;
-				var ret = window.open(AppUrl +'page/PM_091104/index.html?V_ORDERGUID='+ $("#V_ORDERGUID").val()+'&V_DEPTCODEREPARIR='+$("#V_DEPTCODEREPARIR").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+				var ret = window.open(AppUrl +'page/PM_091104/index.html?V_ORDERGUID='+ $("#V_ORDERGUID").val()+'&V_DEPTCODEREPARIR='+V_V_DEPTCODEREPARIR, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 				loadTaskGrid();
 			}
 		}
@@ -402,6 +403,7 @@ function loadPageInfo() {
 				V_V_ORGCODE = resp.list[0].V_ORGCODE;
 				V_V_DEPTCODE = resp.list[0].V_DEPTCODE;
 				V_V_DEPTCODEREPARIR = resp.list[0].V_DEPTCODEREPARIR;
+                V_V_ORDER_TYP = resp.list[0].V_ORDER_TYP;
 				$("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
 				$("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
 				$("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
@@ -619,7 +621,7 @@ function comboConfirm(){
                             V_V_WBS:$("#V_WBS").html(),
 
                             V_V_WBS_TXT:$("#V_WBS_TXT").html(),
-							V_V_DEPTCODEREPARIR: $("#V_DEPTNAMEREPARIR").html(),//$("#selPlant").val(),
+							V_V_DEPTCODEREPARIR: V_V_DEPTCODEREPARIR,//$("#selPlant").val(),
 							V_V_TOOL: '',
 							V_V_TECHNOLOGY: ' ',
 							V_V_SAFE: ' ',
@@ -667,11 +669,12 @@ function comboConfirm(){
 							//xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
 							Ext.Msg.alert('提示', '验收工单成功');
 							$.ajax({
-								url: APP +  'mm/SetMatService',
+								url: APP +  'mm/SetMat',
 								type: 'post',
 								async: false,
 								data: {
-									V_V_ORDERGUID: $.url().param("V_ORDERGUID")
+                                    V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                                    x_personcode: $.cookies.get('v_personcode')
 								},
 								success: function (resp) {
 									Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
@@ -1084,7 +1087,7 @@ function QRYS(){
                         V_V_WBS:$("#V_WBS").html(),
 
                         V_V_WBS_TXT:$("#V_WBS_TXT").html(),
-						V_V_DEPTCODEREPARIR: $("#V_DEPTNAMEREPARIR").html(),//$("#selPlant").val(),
+						V_V_DEPTCODEREPARIR: V_V_DEPTCODEREPARIR,//$("#selPlant").val(),
 						V_V_TOOL: '',
 						V_V_TECHNOLOGY: ' ',
 						V_V_SAFE: ' ',
@@ -1104,7 +1107,19 @@ function QRYS(){
 					dataType: "json",
 					traditional: true,
 					success: function (resp) {
+                        if (V_V_ORDER_TYP == 'AK07') {
+                            Ext.Ajax.request({
+                                method: 'POST',
+                                async: false,
+                                url: AppUrl + 'mm/WS_EquipService',
+                                params: {
+                                    V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                                    x_personcode: Ext.util.Cookies.get('v_personcode')
+                                }, success: function (resp){
 
+                                }
+                            });
+                        }
 					}
 				});
 				$.ajax({
@@ -1306,7 +1321,7 @@ function ConfirmAccept() {
                         V_V_WBS:$("#V_WBS").html(),
 
                         V_V_WBS_TXT:$("#V_WBS_TXT").html(),
-                        V_V_DEPTCODEREPARIR: $("#V_DEPTNAMEREPARIR").html(),//$("#selPlant").val(),
+                        V_V_DEPTCODEREPARIR: V_V_DEPTCODEREPARIR,//$("#selPlant").val(),
                         V_V_TOOL:'',
                         V_V_TECHNOLOGY: ' ',
                         V_V_SAFE: ' ',
@@ -1415,7 +1430,7 @@ function print() {
             V_V_WBS:$("#V_WBS").html(),
 
             V_V_WBS_TXT:$("#V_WBS_TXT").html(),
-            V_V_DEPTCODEREPARIR: $("#V_DEPTNAMEREPARIR").html(),//$("#selPlant").val(),
+            V_V_DEPTCODEREPARIR: V_V_DEPTCODEREPARIR,//$("#selPlant").val(),
             V_V_TOOL: '',
             V_V_TECHNOLOGY: ' ',
             V_V_SAFE: ' ',
@@ -1474,7 +1489,7 @@ function onClickSave(){
 			V_V_WBS:$("#V_WBS").html(),
 
 			V_V_WBS_TXT:$("#V_WBS_TXT").html(),
-			V_V_DEPTCODEREPARIR:$("#selPlant").html(),
+			V_V_DEPTCODEREPARIR:V_V_DEPTCODEREPARIR,
 			V_V_TOOL:' ',
 
 			V_V_TECHNOLOGY:' ',

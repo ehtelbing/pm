@@ -124,7 +124,7 @@ public class MMService {
             cstmt.registerOutParameter("V_MATERIALNAME", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_VCH_TYPE", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_UNIT", OracleTypes.VARCHAR);
-            cstmt.registerOutParameter("V_AMOUNT", OracleTypes.DOUBLE);
+            cstmt.registerOutParameter("V_AMOUNT", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
             String V_BILLCODE = (String) cstmt.getObject("V_BILLCODE");

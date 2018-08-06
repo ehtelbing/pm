@@ -23,7 +23,7 @@ $(function () {
         var oheight = window.document.body.offsetHeight - 100;
         var ret = window.open(AppUrl + 'page/PM_070204/index.html?V_ORDERGUID='
             + $("#V_ORDERGUID").val()
-            + '&V_DEPTREPAIRCODE=' + $("#V_DEPTCODEREPARIR").val()
+            + '&V_DEPTREPAIRCODE=' + $("#V_DEPTNAMEREPARI").val()
             + '&V_EQUCODE=' + $("#V_EQUIP_NO").val()
             + '&V_V_ORGCODE=' + $("#V_ORGCODE").val()
             + '&V_V_DEPTCODE=' + $("#V_DEPTCODE").val() +
@@ -342,7 +342,7 @@ function CreateBill() {
             },
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
-                if (resp.RET == '成功') {
+                if (resp.list == '成功') {
                     if (V_NEXT_SETP.indexOf("sp") == -1) {//下一步没有审批字样
                         Ext.Ajax.request({
                             method: 'POST',
