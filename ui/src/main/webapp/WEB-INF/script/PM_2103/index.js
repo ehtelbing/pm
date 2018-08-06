@@ -1,7 +1,6 @@
 var tabpage='';
-Ext.onReady(function () {
-    Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
+Ext.onReady(function () {
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         pageSize: 50,
@@ -124,8 +123,7 @@ Ext.onReady(function () {
                 tabpage=Ext.getCmp('tabpanel').getActiveTab().id;
                 Ext.ComponentManager.get("tabid").setValue(Ext.getCmp('tabpanel').getActiveTab().id);
                 QuerySum();
-                QueryGrid()
-                /*  _init();*/
+                QueryGrid();
             }
         }
     });
@@ -145,7 +143,6 @@ Ext.onReady(function () {
             PageSize :  Ext.getCmp('page').store.pageSize
         }
     });
-
     QueryTab();
     QuerySum();
 });
@@ -174,7 +171,6 @@ function QueryTab(){
             }
         }
     });
-    Ext.getBody().unmask();
 }
 function QueryTabW(){
     Ext.ComponentManager.get("tabpanel").removeAll();
@@ -199,8 +195,9 @@ function QueryTabW(){
             }
         }
     });
-    Ext.getBody().unmask();
 }
+
+
 function QueryTabY(){
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
@@ -224,8 +221,8 @@ function QueryTabY(){
             }
         }
     });
-    Ext.getBody().unmask();
 }
+
 function QuerySum(){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskListSum',
@@ -245,8 +242,6 @@ function QuerySum(){
 }
 
 function QueryGrid(){
-
-    //Ext.getCmp('page').store.currentPage = 1;
     Ext.data.StoreManager.lookup("gridStore").load({
         PersonCode : Ext.util.Cookies.get('v_personcode'),
         FlowType : tabpage,//Ext.getCmp('tabid').getValue(),
