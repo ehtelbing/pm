@@ -108,10 +108,15 @@ function _AssembleAccordions(data) {
                             if (model.childNodes.length != 0) {
                             } else {
                                 if (model.raw.type == 2) {
-                                    var owidth = window.document.body.offsetWidth;
-                                    var oheight = window.document.body.offsetHeight;
-                                    window.open(AppUrlFrame + model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-
+                                    if(model.raw.other==0){
+                                        var owidth = window.document.body.offsetWidth;
+                                        var oheight = window.document.body.offsetHeight;
+                                        window.open(AppUrlFrame + model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+                                    }else{
+                                        var owidth = window.document.body.offsetWidth;
+                                        var oheight = window.document.body.offsetHeight;
+                                        window.open( model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+                                    }
                                 } else {
                                     if (model.raw.other == 0) {
                                         htmlStr = [

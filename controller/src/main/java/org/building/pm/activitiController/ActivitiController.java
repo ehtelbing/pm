@@ -1090,8 +1090,13 @@ public class ActivitiController {
     @RequestMapping(value = "DeleteProcessInstance", method = RequestMethod.POST)
     @ResponseBody
     public Map DeleteProcessInstance(@RequestParam(value = "instanceId") String instanceId) throws SQLException {
-
-        Map result = activitiService.DeleteProcessInstance(instanceId);
+        Map result = new HashMap();
+        try {
+            runtimeService.suspendProcessInstanceById(instanceId);
+            result.put("msg", "删除成功");
+        } catch (Exception e) {
+            result.put("msg", "删除失败");
+        }
         return result;
     }
 

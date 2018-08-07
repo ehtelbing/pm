@@ -588,6 +588,7 @@ public class ActivitiService {
         return false;
     }
 
+    /*删除流程
     public Map DeleteProcessInstance(String instanceId) {
 
         Map result = new HashMap();
@@ -619,7 +620,7 @@ public class ActivitiService {
         }
 
         return result;
-    }
+    }*/
 
 
     public Map ActivateProcessInstance(String instanceId) {

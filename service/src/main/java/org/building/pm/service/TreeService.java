@@ -856,7 +856,7 @@ public class TreeService {
                         temp.put("text", item.get("V_MENUNAME").toString());
                         temp.put("title", item.get("V_MENUNAME").toString());
                         temp.put("pid", item.get("V_MENUCODE_UP").toString());
-                        temp.put("type", item.get("V_SYSTYPE").toString());
+                        temp.put("type", item.get("V_TYPE").toString());
                         temp.put("flag", item.get("V_FLAG").toString());
                         temp.put("other", item.get("V_OTHER").toString());
                         temp.put("cls", "empty");
@@ -897,7 +897,7 @@ public class TreeService {
                 temp.put("text", item.get("V_MENUNAME").toString());
                 temp.put("title", item.get("V_MENUNAME").toString());
                 temp.put("pid", item.get("V_MENUCODE_UP").toString());
-                temp.put("type", item.get("V_SYSTYPE").toString());
+                temp.put("type", item.get("V_TYPE").toString());
                 temp.put("flag", item.get("V_FLAG").toString());
                 temp.put("other", item.get("V_OTHER").toString());
                 temp.put("cls", "empty");
