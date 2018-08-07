@@ -631,5 +631,21 @@ public class ZpfController {
         result.put("success", true);
         return result;
     }
+
+    //周计划工单查询
+    @RequestMapping(value = "/PRO_PM_PLAN_WEEK_WORKORDER_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_PLAN_WEEK_WORKORDER_GET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = zpfService.PRO_PM_PLAN_WEEK_WORKORDER_GET(V_V_GUID);
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
 }
 

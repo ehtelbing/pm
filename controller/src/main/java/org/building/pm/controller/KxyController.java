@@ -129,5 +129,19 @@ public class KxyController {
         dept.put("children", children);
     }
 
+    @RequestMapping(value = "/userInfor", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap userInfor(@RequestParam(value = "A_USERCODE") String A_USERCODE,
+                             @RequestParam(value = "A_WORK_CENTER") String A_WORK_CENTER) throws Exception {
+        HashMap result = kxyService.userInfor(A_USERCODE, A_WORK_CENTER);
+        return result;
+    }
+
+    @RequestMapping(value = "/selWorkCenter", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap selWorkCenter(@RequestParam(value = "A_USERID") String A_USERID) throws Exception {
+        HashMap result = kxyService.selWorkCenter(A_USERID);
+        return result;
+    }
 
 }
