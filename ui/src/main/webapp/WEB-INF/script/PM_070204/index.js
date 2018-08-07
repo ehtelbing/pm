@@ -326,7 +326,7 @@ function OnclickAddButtonLoad() {
         success: function (response) {
             var data = Ext.JSON.decode(response.responseText);
             if(data.list.length==0){
-                Ext.getCmp('selWorkCenter').setValue('');
+                Ext.getCmp('selWorkCenter').setValue('60130401');
             }else{
                 console.log(data.list[0]);
                 Ext.getCmp('selWorkCenter').setValue(data.list[0].WORKCENTER);
