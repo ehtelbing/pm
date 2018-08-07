@@ -1549,34 +1549,20 @@ public class WsyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_SET" + "(:V_I_ID,:V_V_DEPT,:V_V_INFORMATION,:V_D_DATE,:V_V_PERSONCODE,:V_V_PERSONNAME,:V_V_TYPE,:V_V_CLASS,:V_V_CLASSTYPE,:V_V_NOTIFICATION)}");
-            if (V_I_ID.equals("") || V_I_ID.equals("0")) {
-                cstmt.setInt("V_I_ID", OracleTypes.NULL);
-//                cstmt.setInt("V_I_ID", Integer.parseInt(getNum19()));
-            } else {
-                cstmt.setInt("V_I_ID", Integer.parseInt(V_I_ID));
-//                cstmt.setInt("V_I_ID", 1231234444);
-            }
+            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_SET" + "(:V_V_I_ID,:V_V_DEPT,:V_V_INFORMATION,:V_V_D_DATE,:V_V_PERSONCODE,:V_V_PERSONNAME,:V_V_TYPE,:V_V_CLASS,:V_V_CLASSTYPE,:V_V_NOTIFICATION,:V_INFO)}");
+            cstmt.setString("V_V_I_ID", V_I_ID);
             cstmt.setString("V_V_DEPT", V_V_DEPT);
             cstmt.setString("V_V_INFORMATION", V_V_INFORMATION);
-            if (V_D_DATE.equals("")) {
-                cstmt.setDate("V_D_DATE", null);
-            } else {
-                Timestamp time = Timestamp.valueOf(V_D_DATE);
-                cstmt.setTimestamp("V_D_DATE", time);
-            }
-//            cstmt.setDate("V_D_DATE", V_D_DATE);
+            cstmt.setString("V_V_D_DATE", V_D_DATE);
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_PERSONNAME", V_V_PERSONNAME);
             cstmt.setString("V_V_TYPE", V_V_TYPE);
             cstmt.setString("V_V_CLASS", V_V_CLASS);
             cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
             cstmt.setString("V_V_NOTIFICATION", V_V_NOTIFICATION);
-//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-//            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-//            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("V_INFO", "success");
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
             result.put("V_INFO", "fail");

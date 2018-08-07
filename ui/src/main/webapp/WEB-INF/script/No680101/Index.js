@@ -15,11 +15,6 @@
         },
         extraParams: {
             IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASSTYPE'
-//            parName: ['IS_V_BASETYPE'],
-//            parType: ['s'],
-//            parVal: ['PM_DIARYDATA/V_CLASSTYPE'],
-//            proName: 'PRO_PM_BASEDIC_LIST',
-//            cursorName: 'V_CURSOR'
         }
     }
 });
@@ -40,11 +35,6 @@ var lxStore = Ext.create("Ext.data.Store", {
         },
         extraParams: {
             IS_V_BASETYPE: 'PP_INFORMATION/V_TYPE'
-//            parName: ['IS_V_BASETYPE'],
-//            parType: ['s'],
-//            parVal: ['PP_INFORMATION/V_TYPE'],
-//            proName: 'PRO_PM_BASEDIC_LIST',
-//            cursorName: 'V_CURSOR'
         }
     }
 });
@@ -65,11 +55,6 @@ var bzStore = Ext.create("Ext.data.Store", {
         },
         extraParams: {
             IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASS'
-//            parName: ['IS_V_BASETYPE'],
-//            parType: ['s'],
-//            parVal: ['PM_DIARYDATA/V_CLASS'],
-//            proName: 'PRO_PM_BASEDIC_LIST',
-//            cursorName: 'V_CURSOR'
         }
     }
 });
@@ -81,7 +66,6 @@ var gridStore = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-//        url: AppUrl + '/FRH010',
         url: AppUrl + 'Wsy/PM_REALINFOTL_QUERY',
         actionMethods: {
             read: 'POST'
@@ -250,8 +234,7 @@ var Layout = {
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: '所属部门',
-                                    value: 'sbvdgtr',
-//                                    value: Ext.util.Cookies.get('v_deptname2'),
+                                    value:  Ext.util.Cookies.get('v_deptname2'),
                                     readOnly: true,
                                     editable: false,
                                     id: 'ssbm'
@@ -285,8 +268,7 @@ var Layout = {
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: '录入人',
-                                    value: 'dvstbvsadrg',
-//                                    value: Ext.util.Cookies.get('v_personname2'),
+                                    value: Ext.util.Cookies.get('v_personname2'),
                                     readOnly: true,
                                     editable: false,
                                     id: 'llr'
@@ -370,36 +352,33 @@ function onPageLoaded() {
 
 function getXgbm() {
     Ext.Ajax.request({
-//        url: AppUrl + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_BASE_DEPT_VIEW',
         type: 'ajax',
         async: false,
         method: 'POST',
         params: {
-            IS_V_DEPTCODE: '%',
+            IS_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
             IS_V_DEPTTYPE: '[信息接收]'
-//            parName: ['IS_V_DEPTCODE', 'S_V_DEPTTYPE'],
-//            parType: ['s', 's'],
-//            parVal: ['%', '[信息接收]'],
-//            proName: 'pro_base_dept_view',
-//            cursorName: 'v_cursor'
         },
         success: function (response) {
             var list = Ext.decode(response.responseText).list;
             var asd = [];
             for (var i = 0; i < list.length; i++) {
-                if (list[i].V_DEPTCODE === Ext.util.Cookies.get('v_deptcode')) {
-                    asd.push({
-                        boxLabel: list[i].V_DEPTNAME,
-                        name: 'xgbm',
-                        checked: true,
-                        inputValue: list[i].V_DEPTCODE,
-                        width: 150
-                    });
+                if(list[i].V_DEPTCODE!="%"){
+                    if (list[i].V_DEPTCODE === Ext.util.Cookies.get('v_deptcode')) {
+                        asd.push({
+                            boxLabel: list[i].V_DEPTNAME,
+                            name: 'xgbm',
+                            checked: true,
+                            inputValue: list[i].V_DEPTCODE,
+                            width: 150
+                        });
+                    }
+                    else {
+                        asd.push({boxLabel: list[i].V_DEPTNAME, name: 'xgbm', inputValue: list[i].V_DEPTCODE, width: 150});
+                    }
                 }
-                else {
-                    asd.push({boxLabel: list[i].V_DEPTNAME, name: 'xgbm', inputValue: list[i].V_DEPTCODE, width: 150});
-                }
+
             }
             Ext.getCmp('xgbmPanel').removeAll();
             Ext.getCmp('xgbmPanel').add({
@@ -414,22 +393,6 @@ function getXgbm() {
             });
         }
     });
-}
-
-function newGuid() {
-    var guid = "";
-    for (var i = 1; i <= 32; i++) {
-        var n = Math.floor(Math.random() * 16.0).toString(16);
-        guid += n;
-        if ((i == 8) || (i == 12) || (i == 16) || (i == 20)) {
-            guid += "-";
-        }
-    }
-    return guid;
-}
-
-function zhuce2() {
-    alert(Ext.getCmp('xgbm').getChecked()[0].inputValue);
 }
 
 function zhuce() {
@@ -465,33 +428,15 @@ function zhuce() {
             method: 'POST',
             params: {
                 V_I_ID: '',
-//                V_V_DEPT: str,
                 V_V_DEPT: bmList,
                 V_V_INFORMATION: Ext.getCmp('xxnr').getValue(),
                 V_D_DATE: Ext.Date.format(Ext.getCmp('nowtime').getValue(), 'Y-m-d') + ' ' + aHour + ':' + aMinute + ':' + '01',
-//                V_V_PERSONCODE: '3333333',
-//                V_V_PERSONNAME: '1111111',
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                 V_V_PERSONNAME: Ext.util.Cookies.get('v_personname2'),
                 V_V_TYPE: Ext.getCmp('lx').getValue(),
                 V_V_CLASS: Ext.getCmp('bz').getValue(),
                 V_V_CLASSTYPE: Ext.getCmp('bx').getValue(),
                 V_V_NOTIFICATION: Ext.getCmp('zdtz').getValue() ? 'Y' : 'N'
-//                parName: ['v_i_id', 'v_v_dept', 'v_v_information', 'v_d_date', 'v_v_personcode', 'v_v_personname', 'v_v_type', 'v_v_class', 'v_v_classtype', 'v_v_notification'],
-//                parType: ['i', 's', 's', 'dt', 's', 's', 's', 's', 's', 's'],
-//                parVal: [
-//                    '',
-//                    str,
-//                    Ext.getCmp('xxnr').getValue(),
-//                    Ext.Date.format(Ext.getCmp('nowtime').getValue(), 'Y-m-d') + ' ' + aHour + ':' + aMinute + ':' + '01',
-//                    Ext.util.Cookies.get('v_personcode'),
-//                    Ext.util.Cookies.get('v_personname2'),
-//                    Ext.getCmp('lx').getValue(),
-//                    Ext.getCmp('bz').getValue(),
-//                    Ext.getCmp('bx').getValue(),
-//                    Ext.getCmp('zdtz').getValue() ? 'Y' : 'N'
-//                ],
-//                proName: 'pro_pp_information_set'
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
@@ -563,9 +508,6 @@ function addModel() {
         params: {
             V_V_CODE: '-1',
             V_V_CONTENT: Ext.getCmp('xxnr').getValue()
-//            parName: ['V_V_CODE', 'V_V_CONTENT'],
-//            parType: ['s', 's'],
-//            parVal: ['-1', Ext.getCmp('xxnr').getValue()]
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
@@ -585,19 +527,14 @@ function delModel() {
     var selID = [];
     for (i = 0; i < selLength; i++) {
         selID.push(Ext.getCmp('gridPanel').getSelectionModel().getSelection()[i].data.ID);
-//        selID = selID + Ext.getCmp('gridPanel').getSelectionModel().getSelection()[i].data.ID + ",";
     }
     Ext.Ajax.request({
-//        url: AppUrl + '/FRH001',
         url: AppUrl + 'Wsy/PM_REALINFOTL_DEL',
         type: 'ajax',
         async: false,
         method: 'POST',
         params: {
             V_ID: selID
-//            parName: ['V_ID'],
-//            parType: ['s'],
-//            parVal: [selID]
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
