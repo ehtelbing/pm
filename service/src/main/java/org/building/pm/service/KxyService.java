@@ -256,31 +256,56 @@ public class KxyService {
         return result;
     }
 
+    public HashMap userInfor(String A_USERCODE,String A_WORK_CENTER) throws SQLException {
 
-/*    public List<Map<String, Object>> PRO_BASE_NEW_MENU_SEL(final String IS_V_ROLECODE, final String IS_V_SYSTYPE, final String V_V_DEPTCODE,final String V_V_HOME_MENU) {
-        return jdbcTemplate.execute(new CallableStatementCreator() {
-            @Override
-            public CallableStatement createCallableStatement(Connection con)
-                    throws SQLException {
-                String sql = "{call PRO_BASE_NEW_MENU_SEL(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}";
-                CallableStatement statement = con.prepareCall(sql);
-                statement.setString("IS_V_ROLECODE", IS_V_ROLECODE);
-                statement.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
-                statement.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-                statement.setString("V_V_HOME_MENU", V_V_HOME_MENU);
-                statement.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-                return statement;
-            }
-        }, new CallableStatementCallback<List<Map<String, Object>>>() {
-            @Override
-            public List<Map<String, Object>> doInCallableStatement(CallableStatement cs)
-                    throws SQLException, DataAccessException {
-                cs.execute();
+        logger.info("begin BASE_USER_LOG");
 
-                return ResultHash1((ResultSet) cs.getObject("V_CURSOR"));
-            }
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call BASE_USER_LOG(:A_USERCODE,:A_WORK_CENTER,:RET)}");
+            cstmt.setString("A_USERCODE", A_USERCODE);
+            cstmt.setString("A_WORK_CENTER", A_WORK_CENTER);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_USER_LOG");
+        return result;
+    }
 
-        });
-    }*/
+    public HashMap selWorkCenter(String A_USERID) throws SQLException {
+        logger.info("begin BASE_USER_LOG_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call BASE_USER_LOG_SEL" + "(:A_USERID,:V_CURSOR)}");
+            cstmt.setString("A_USERID", A_USERID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_USER_LOG_SEL");
+        return result;
+    }
+
 
 }
