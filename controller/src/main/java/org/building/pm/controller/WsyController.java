@@ -483,9 +483,7 @@ public class WsyController {
     @RequestMapping(value = "/PRO_PP_INFORMATION_SET", method = RequestMethod.POST)
     @ResponseBody
     public HashMap PRO_PP_INFORMATION_SET(@RequestParam(value = "V_I_ID") String V_I_ID, @RequestParam(value = "V_V_DEPT") String[] V_V_DEPT, @RequestParam(value = "V_V_INFORMATION") String V_V_INFORMATION, @RequestParam(value = "V_D_DATE") String V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_PERSONNAME") String V_V_PERSONNAME, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASS") String V_V_CLASS, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_V_NOTIFICATION") String V_V_NOTIFICATION, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         HashMap data = new HashMap();
-
         for (int i = 0; i < V_V_DEPT.length; i++) {
             data = wsyService.PRO_PP_INFORMATION_SET(V_I_ID, V_V_DEPT[i], V_V_INFORMATION, V_D_DATE, V_V_PERSONCODE, V_V_PERSONNAME, V_V_TYPE, V_V_CLASS, V_V_CLASSTYPE, V_V_NOTIFICATION);
         }
@@ -800,5 +798,12 @@ public class WsyController {
                 e.printStackTrace();
             }
         }
+    }
+
+    @RequestMapping(value = "/PRO_PP_INFORMATION_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_PP_INFORMATION_GET(@RequestParam(value = "V_I_ID") String V_I_ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PRO_PP_INFORMATION_GET(V_I_ID);
+        return data;
     }
 }
