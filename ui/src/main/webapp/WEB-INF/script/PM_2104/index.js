@@ -1,4 +1,4 @@
-var V_GUID = "" ;
+var V_GUID = "";
 var V_V_GUID_COPY = '';
 var initLoad = true;
 
@@ -34,8 +34,8 @@ Ext.onReady(function () {
         pageSize: 15,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
-            'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey'
-            ,'endTime','startName'],
+            'Name', 'flow_code', 'ProcessDefinitionName', 'ProcessInstanceId', 'TaskDefinitionKey', 'ProcessDefinitionKey', 'BusinessKey'
+            , 'endTime', 'startName'],
 
         proxy: {
             type: 'ajax',
@@ -54,12 +54,12 @@ Ext.onReady(function () {
 
     var editPanel = Ext.create('Ext.form.Panel', {
         id: 'editPanel',
-        region: 'center',
+        // region: 'center',
         layout: 'column',
         frame: true,
         border: false,
-        baseCls: 'my-panel-no-border',
-        defaults : {
+        //baseCls: 'my-panel-no-border',
+        defaults: {
             labelAlign: 'right',
             style: ' margin: 5px 0px 5px 0px'
         },
@@ -69,12 +69,12 @@ Ext.onReady(function () {
                 xtype: 'datefield',
                 editable: false,
                 format: 'Y/m/d',
-                value:  Ext.util.Format.date(new Date(), "Y-m-") + "01",
+                value: Ext.util.Format.date(new Date(), "Y-m-") + "01",
                 fieldLabel: '起始日期',
-                labelWidth: 100,
+                labelWidth: 70,
                 width: 250,
                 baseCls: 'margin-bottom'
-            },{
+            }, {
                 id: 'endTime',
                 xtype: 'datefield',
                 editable: false,
@@ -84,25 +84,25 @@ Ext.onReady(function () {
                 labelWidth: 100,
                 width: 250,
                 baseCls: 'margin-bottom'
-            },{
-                xtype : 'button',
-                text : '查询',
+            }, {
+                xtype: 'button',
+                text: '查询',
                 style: ' margin: 5px 0px 5px 20px',
                 icon: imgpath + '/search.png',
-                handler : _select
+                handler: _select
             }
         ]
     });
 
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
-        id : 'overhaulApplyPanel',
-        store : gridStore,
-        frame : true,
-        columnLines : true,
-        columns : [ {
-            xtype : 'rownumberer',
-            text : '序号',
-            width : 40,
+        id: 'overhaulApplyPanel',
+        store: gridStore,
+        frame: true,
+        columnLines: true,
+        columns: [{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
             align: 'center'
         }, {
             text: '操作',
@@ -113,36 +113,37 @@ Ext.onReady(function () {
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\')">' + '查看流程' + '</a>';
             }
         }, {
-            text : '流程类型',
-            dataIndex : 'ProcessDefinitionName',
-            align : 'center',
-            width : 150
-        },{
-            text : '流程编号',
-            dataIndex : 'flow_code',
-            align : 'center',
-            width : 200
-        },{
-            text : '流程步骤',
-            dataIndex : 'Name',
-            align : 'center',
-            width : 200
-        },{
-            text : '摘要',
-            dataIndex : 'remark',
-            align : 'center',
-            width : 300
-        },{
-            text : '发起人',
-            dataIndex : 'startName',
-            align : 'center',
-            width : 100
-        },{
-            text : '办结时间',
-            dataIndex : 'endTime',
-            align : 'center',
-            width : 200
-        }],
+            text: '流程类型',
+            dataIndex: 'ProcessDefinitionName',
+            align: 'center',
+            width: 150
+        }, {
+            text: '流程编号',
+            dataIndex: 'flow_code',
+            align: 'center',
+            width: 200
+        }, {
+            text: '流程步骤',
+            dataIndex: 'Name',
+            align: 'center',
+            width: 200
+        }, {
+            text: '摘要',
+            dataIndex: 'remark',
+            align: 'center',
+            width: 300
+        }, {
+            text: '发起人',
+            dataIndex: 'startName',
+            align: 'center',
+            width: 100
+        }, {
+            text: '办结时间',
+            dataIndex: 'endTime',
+            align: 'center',
+            width: 200
+        }
+        ],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -157,51 +158,40 @@ Ext.onReady(function () {
 
 
     Ext.create('Ext.container.Viewport', {
-        layout : {
-            type : 'border',
-            regionWeights : {
-                west : -1,
-                north : 1,
-                south : 1,
-                east : -1
-            }
-        },
-        items : [  {
-            region : 'north',
-            border : false,
-            items : [ editPanel ]
+        layout: 'border',
+        baseCls: 'my-panel-no-border',
+        items: [{
+            region: 'north',
+            items: [editPanel]
         }, {
-            region : 'center',
-            layout : 'fit',
-            border : false,
-            items : [ overhaulApplyPanel ]
-        } ]
+            region: 'center',
+            layout: 'fit',
+            items: [overhaulApplyPanel]
+        }]
     });
 
     Ext.data.StoreManager.lookup('gridStore').load({
-        params:{
-            PersonCode:  Ext.util.Cookies.get('v_personcode'),
-            beginTime:Ext.getCmp('beginTime').getSubmitValue(),
+        params: {
+            PersonCode: Ext.util.Cookies.get('v_personcode'),
+            beginTime: Ext.getCmp('beginTime').getSubmitValue(),
             endTime: Ext.getCmp('endTime').getSubmitValue()
         }
-    })
+    });
 
-   /* Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
-        store.proxy.extraParams = {
-            PersonCode:  Ext.util.Cookies.get('v_personcode'),
-            beginTime:Ext.getCmp('beginTime').getSubmitValue(),
-            endTime: Ext.getCmp('endTime').getSubmitValue()
-        }
-    });*/
+    /* Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+     store.proxy.extraParams = {
+     PersonCode:  Ext.util.Cookies.get('v_personcode'),
+     beginTime:Ext.getCmp('beginTime').getSubmitValue(),
+     endTime: Ext.getCmp('endTime').getSubmitValue()
+     }
+     });*/
 
     _init()
-})
+});
 
-function _init()
-{
+function _init() {
 
-    if(initLoad)
-    {
+    if (initLoad) {
         initLoad = false;
         _select()
         Ext.getBody().unmask();//去除页面笼罩
@@ -211,11 +201,10 @@ function _init()
 }
 
 
-
 function _select() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
-        PersonCode:  Ext.util.Cookies.get('v_personcode'),
+        PersonCode: Ext.util.Cookies.get('v_personcode'),
         beginTime: Ext.getCmp('beginTime').getSubmitValue(),
         endTime: Ext.getCmp('endTime').getSubmitValue()
     };
@@ -223,11 +212,10 @@ function _select() {
     gridStore.load();
 }
 
-function _preViewProcess(ProcessInstanceId)
-{
+function _preViewProcess(ProcessInstanceId) {
     var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
+    var oheight = window.screen.availHeight - 50;
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
-    +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+    + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
