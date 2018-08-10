@@ -2,8 +2,8 @@
 var I_ID = -1;
 var flag = "";
 var V_ORDERGUID = null;
-var A_USERID=Ext.util.Cookies.get('v_personcode');
-var A_USERNAME=Ext.util.Cookies.get('v_personname2');
+var A_USERID = Ext.util.Cookies.get('v_personcode');
+var A_USERNAME = Ext.util.Cookies.get('v_personname2');
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
 }
@@ -325,11 +325,10 @@ function OnclickAddButtonLoad() {
         },
         success: function (response) {
             var data = Ext.JSON.decode(response.responseText);
-            if(data.list.length==0){
-                Ext.getCmp('selWorkCenter').setValue('60130401');
-            }else{
-                console.log(data.list[0]);
+            if (data.list != null && data.list.length!=0) {
                 Ext.getCmp('selWorkCenter').setValue(data.list[0].WORKCENTER);
+            } else {
+                Ext.getCmp('selWorkCenter').select(Ext.data.StoreManager.lookup('workCenterStore').first())
             }
         }
     });
