@@ -9,6 +9,7 @@ if (location.href.split('?')[1] != undefined) {
 }
 
 var selid = "";
+Ext.onReady(function(){
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
@@ -114,10 +115,11 @@ var gridXXStore2 = Ext.create("Ext.data.Store", {
         }
     }
 });
-
-
-var Layout = {
+var editPanel = Ext.create('Ext.form.Panel', {
+    id: 'editPanel',
+    region: 'center',
     layout: 'border',
+    baseCls: 'my-panel-no-border',
     items: [
         {
             xtype: 'panel',
@@ -128,7 +130,7 @@ var Layout = {
             //height:'5%',
             defaults: {style: {margin: '5px 0px 5px 10px'}, labelAlign: 'right'},
             items: [
-                {xtype: 'textfield', fieldLabel: '车辆名称', labelWidth: 90, id: 'carname'},
+                {xtype: 'textfield', fieldLabel: '车辆名称', labelWidth: 60, id: 'carname'},
                 {
                     xtype: 'button',
                     text: '查询',
@@ -232,7 +234,7 @@ var Layout = {
             ]
         }
     ]
-};
+});
 
 
 
@@ -332,7 +334,7 @@ var window = Ext.create('Ext.window.Window', {
     }, {
         xtype: 'panel',
         layout: 'column',
-        frame: true,
+        //frame: true,
         baseCls: 'mu-panel-no-border',
         items: [{
             id: 'dhtime',
@@ -440,8 +442,16 @@ var window = Ext.create('Ext.window.Window', {
     }]
 });
 
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        items: [editPanel]
+    });
+    onPageLoaded();
+
+});
+
 function onPageLoaded() {
-    Ext.create('Ext.container.Viewport', Layout);
+
     queryGrid();
 
     QueryXXGrid();
@@ -539,7 +549,7 @@ function renderFont(value, metaData) {
     metaData.style = 'text-align: left';
     return value;
 }
-Ext.onReady(onPageLoaded);
+
 
 function AtEdit(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = 'text-align: right;background-color:yellow';
