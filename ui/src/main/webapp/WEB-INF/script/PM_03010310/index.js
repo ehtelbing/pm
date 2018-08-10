@@ -203,9 +203,6 @@ Ext.onReady(function () {
         id: 'editPanel',
         region: 'center',
         layout: 'border',
-        frame: true,
-        border: false,
-        //width: '100%',
         baseCls: 'my-panel-no-border',
         items: [
             {
@@ -214,14 +211,13 @@ Ext.onReady(function () {
                 region: 'center',
                 defaults: {labelAlign: 'right'},
                 frame: true,
-                border: false,
                 autoScroll: true,
                 items: [
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
                             {
@@ -250,8 +246,8 @@ Ext.onReady(function () {
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
                             {
@@ -287,8 +283,8 @@ Ext.onReady(function () {
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
                             {
@@ -324,8 +320,8 @@ Ext.onReady(function () {
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
                             {
@@ -361,8 +357,8 @@ Ext.onReady(function () {
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
                             {
@@ -398,8 +394,8 @@ Ext.onReady(function () {
                     }, {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
 
@@ -446,8 +442,8 @@ Ext.onReady(function () {
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
                             {
@@ -531,8 +527,8 @@ Ext.onReady(function () {
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
-                        frame: true,
-                        border: false,
+                        //frame: false,
+                        //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
                             {
