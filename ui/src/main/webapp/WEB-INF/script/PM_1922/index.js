@@ -391,7 +391,10 @@ Ext.onReady(function () {
         closeAction: 'hide',
         closable: true,
         items: [{
-            layout: 'hbox', defaults: {labelAlign: 'right'}, frame: true, border: false, baseCls: 'my-panel-no-border',
+            layout: 'hbox', defaults: {labelAlign: 'right'},
+            //frame: true,
+            border: false,
+            baseCls: 'my-panel-no-border',
             items: [
                 {
                     xtype: 'datefield',
@@ -525,7 +528,7 @@ Ext.onReady(function () {
             {
                 layout: 'hbox',
                 defaults: {labelAlign: 'right'},
-                frame: true,
+                //frame: true,
                 border: false,
                 baseCls: 'my-panel-no-border',
                 items: [
