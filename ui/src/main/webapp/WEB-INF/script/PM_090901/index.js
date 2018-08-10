@@ -106,7 +106,7 @@ function loadTaskGrid() {
                             .append(
                             "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
                     }
-                } else {
+                } /*else {
                     $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
                         "#TtableT tbody");
                     var tool = document.getElementById('V_TOOL');
@@ -117,9 +117,9 @@ function loadTaskGrid() {
 
                     var safe = document.getElementById('V_SAFE');
                     safe.style.height = 45 * resp.list.length;
-                }
-            } else {
-            }
+                }*/
+            } /*else {
+            }*/
         }
     });
 }

@@ -746,11 +746,8 @@ Ext.onReady(function () {
         columnLines: true,
         width: '70%',
         store: gridPostStore,
-        //selType: 'checkboxmodel',
         autoScroll: true,
-        columns: [// {xtype : 'rownumberer',text :
-            // '序号',width : 50,align :
-            // 'center'},
+        columns: [
             {
                 text: '岗位编码',
                 dataIndex: 'V_POSTCODE',

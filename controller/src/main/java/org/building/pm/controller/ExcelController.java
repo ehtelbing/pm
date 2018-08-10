@@ -1024,8 +1024,8 @@ public class ExcelController {
         String V_V_EQUCODE2=V_V_EQUCODE.equals("0")?"%":V_V_EQUCODE;
         String V_V_STATE2=V_V_STATE.equals("0")?"%":V_V_STATE;
 
-        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_WEEK_VIEW(V_V_YEAR, V_V_MONTH,V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
-                V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_STATE2, V_V_PAGE, V_V_PAGESIZE);
+        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_WEEK_EXCEL(V_V_YEAR, V_V_MONTH,V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
+                V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_STATE2);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();

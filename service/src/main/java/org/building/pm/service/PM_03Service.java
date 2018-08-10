@@ -717,6 +717,43 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_WEEK_VIEW");
         return result;
     }
+
+    public HashMap PRO_PM_03_PLAN_WEEK_EXCEL(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,String V_V_ORGCODE,String V_V_DEPTCODE,
+                                            String V_V_ZY,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_CONTENT,String V_V_STATE) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_WEEK_EXCEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_EXCEL(:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                    ":V_V_ZY,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_CONTENT,:V_V_STATE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_WEEK", V_V_WEEK);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_ZY", V_V_ZY);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setString("V_V_STATE", V_V_STATE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_EXCEL");
+        return result;
+    }
     //PM_03010301,周检修计划,选择计划查询
     public HashMap PM_03_WEEK_PLAN_SEL(String V_V_PLAN_NAME,String V_V_TYPE,String V_V_ORGCODE) throws SQLException {
         logger.info("begin PM_03_WEEK_PLAN_SEL");
