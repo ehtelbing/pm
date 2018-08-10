@@ -4,73 +4,146 @@ if (location.href.split('?')[1] != undefined) {
     V_V_JXGX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_V_JXGX_CODE;
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
 }
-
-var gridStore = Ext.create("Ext.data.Store", {
-    autoLoad: false,
-    storeId: 'gridStore',
-    fields: ['V_AQCS_CODE', 'V_AQCS_NAME','V_EQUCODE','V_EQUNAME','V_EQUSITE'],
-    proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'pm_19/PRO_PM_19_AQCS_SEL',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
+Ext.onReady(function() {
+    var gridStore = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'gridStore',
+        fields: ['V_AQCS_CODE', 'V_AQCS_NAME', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'pm_19/PRO_PM_19_AQCS_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
         }
-    }
-});
+    });
 
-var Layout = {
-    layout : 'border',
-    items : [
-        {
-            xtype : 'panel', border : false, region : 'north', layout : 'column', frame: true,
-            defaults: { style: { margin: '5px 0px 5px 10px'}, labelAlign: 'right'},
-            items: [
-                {xtype: 'textfield', fieldLabel: '安全措施名称', labelWidth: 100, id: 'aqcsname' },
-                { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '选择', handler: function () {
-                    var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
-                    if (seldata.length == 0) {
-                        alert('请选择一条数据！');
-                    }else{
-                        /*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
-                            if(button == 'yes'){*/
-                                select();
+    var editPanel = Ext.create('Ext.form.Panel', {
+        id: 'editPanel',
+        region: 'center',
+        layout: 'border',
+        baseCls: 'my-panel-no-border',
+        items: [
+            {
+                xtype: 'panel',
+                border: false,
+                region: 'north',
+                layout: 'column',
+                frame: true,
+                defaults: {style: {margin: '5px 0px 5px 10px'}, labelAlign: 'right'},
+                items: [
+                    {xtype: 'textfield', fieldLabel: '安全措施名称', labelWidth: 100, id: 'aqcsname'},
+                    {
+                        xtype: 'button',
+                        text: '查询',
+                        handler: queryGrid,
+                        icon: imgpath + '/search.png',
+                        style: {margin: ' 5px 0 5px 10px'}
+                    },
+                    {
+                        xtype: 'button', text: '选择', handler: function () {
+                        var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+                        if (seldata.length == 0) {
+                            alert('请选择一条数据！');
+                        } else {
+                            /*Ext.Msg.confirm("提示", "确定要选择？", function (button) {
+                             if(button == 'yes'){*/
+                            select();
                             /*}
-                        })*/
+                             })*/
+                        }
+                    }, icon: imgpath + '/add.png', style: {margin: ' 5px 0 5px 10px'}
+                    },
+                ]
+            },
+            {
+                xtype: 'gridpanel', region: 'center', columnLines: true, id: 'grid', store: 'gridStore',
+                selType: 'checkboxmodel',
+                columns: [
+                    {
+                        xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
+                    },
+                    {
+                        text: '安全措施编码', align: 'center', width: 150, dataIndex: 'V_AQCS_CODE'
+                    },
+                    {
+                        text: '安全措施名称', align: 'center', width: 150, dataIndex: 'V_AQCS_NAME'
+                    },
+                    {
+                        text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE'
+                    },
+                    {
+                        text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME'
+                    },
+                    {
+                        text: '功能位置', align: 'center', width: 150, dataIndex: 'V_EQUSITE'
                     }
-                },  icon: imgpath + '/add.png', style: { margin: ' 5px 0 5px 10px'}},
-            ]
-        },
-        { xtype: 'gridpanel', region: 'center',  columnLines: true, id: 'grid', store: 'gridStore',
-            selType : 'checkboxmodel',
-            columns: [
-                { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
-                },
-                {
-                    text: '安全措施编码', align: 'center', width: 150, dataIndex: 'V_AQCS_CODE'
-                },
-                {
-                    text: '安全措施名称', align: 'center', width: 150, dataIndex: 'V_AQCS_NAME'
-                },
-                {
-                    text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE'
-                },
-                {
-                    text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME'
-                },
-                {
-                    text: '功能位置', align: 'center', width: 150, dataIndex: 'V_EQUSITE'
-                }
-            ]
-        }
-    ]
-};
+                ]
+            }
+        ]
+    });
 
+
+    var window = Ext.create('Ext.window.Window', {
+        id : 'window',
+        width : 320,
+        height : 250,
+        layout : 'vbox',
+        title : '编辑',
+        modal : true,//弹出窗口时后面背景不可编辑
+        frame : true,
+        closeAction : 'hide',
+        closable : true,
+        items : [{
+            xtype : 'textfield',
+            id : 'wintoolcode',
+            fieldLabel : '工具编码',
+            labelAlign : 'right',
+            width : '300',
+            margin : '30px 0 0 0px'
+        },{
+            xtype : 'textfield',
+            id : 'wintoolname',
+            fieldLabel : '工具名称',
+            labelAlign : 'right',
+            width : '300',
+            margin : '20px 0 0 0px'
+        },{
+            xtype : 'textfield',
+            id : 'wintooltype',
+            fieldLabel : '工具类型',
+            labelAlign : 'right',
+            width : '300',
+            margin : '20px 0 0 0px'
+        }],
+        buttons : [{
+            xtype : 'button',
+            text : '保存',
+            width : 40,
+            handler : function() {
+                save();
+            }},{
+            xtype : 'button',
+            text : '取消',
+            width : 40,
+            handler : function() {
+                Ext.getCmp('window').hide();
+            }}]
+    });
+
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        items: [editPanel]
+    });
+
+    queryGrid();
+})
+;
 function select(){
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
 
@@ -100,58 +173,7 @@ function select(){
     window.close();
 }
 
-var window = Ext.create('Ext.window.Window', {
-    id : 'window',
-    width : 320,
-    height : 250,
-    layout : 'vbox',
-    title : '编辑',
-    modal : true,//弹出窗口时后面背景不可编辑
-    frame : true,
-    closeAction : 'hide',
-    closable : true,
-    items : [{
-        xtype : 'textfield',
-        id : 'wintoolcode',
-        fieldLabel : '工具编码',
-        labelAlign : 'right',
-        width : '300',
-        margin : '30px 0 0 0px'
-    },{
-        xtype : 'textfield',
-        id : 'wintoolname',
-        fieldLabel : '工具名称',
-        labelAlign : 'right',
-        width : '300',
-        margin : '20px 0 0 0px'
-    },{
-        xtype : 'textfield',
-        id : 'wintooltype',
-        fieldLabel : '工具类型',
-        labelAlign : 'right',
-        width : '300',
-        margin : '20px 0 0 0px'
-    }],
-    buttons : [{
-        xtype : 'button',
-        text : '保存',
-        width : 40,
-        handler : function() {
-            save();
-        }},{
-        xtype : 'button',
-        text : '取消',
-        width : 40,
-        handler : function() {
-            Ext.getCmp('window').hide();
-        }}]
-});
 
-
-function onPageLoaded() {
-    Ext.create('Ext.container.Viewport', Layout);
-    queryGrid();
-}
 
 function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
@@ -230,4 +252,3 @@ function renderFont(value, metaData){
     metaData.style = 'text-align: left';
     return value;
 }
-Ext.onReady(onPageLoaded);
