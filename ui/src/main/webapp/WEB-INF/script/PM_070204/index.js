@@ -435,6 +435,7 @@ function OnclickUpdateButtonLoad() {
                 params: {
                     V_I_ID: selectModel.getSelection()[i].data.I_ID
                 }, success: function (response) {
+                    _userInfor(A_USERID, Ext.getCmp('selWorkCenter').getValue());
                     var resp = Ext.JSON.decode(response.responseText);
                     Ext.getCmp('selWorkCenter').select(resp.list[0].V_WORK_CENTER);
                     Ext.getCmp('workContent').setValue(resp.list[0].V_DESCRIPTION);
