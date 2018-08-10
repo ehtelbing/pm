@@ -246,7 +246,6 @@ Ext.onReady(function () {
         autoscroll: true,
         //bodyStyle : 'overflow-x:hidden; overflow-y:auto',
         //title: '删除年计划',
-        region: 'center',
         //width: '100%',
         columns: [
             {
@@ -276,6 +275,7 @@ Ext.onReady(function () {
 
     var panel2 = Ext.create('Ext.Panel', {
         id: 'panel2',
+        frame: true,
         layout: 'column',
         defaults: {
             style: 'margin:2px',
@@ -334,10 +334,8 @@ Ext.onReady(function () {
 
     var panel3 = Ext.create('Ext.form.FormPanel', {
         id: 'panel3',
-        //title : '<fmt:message key="inputPanel" />',
         header: false,
         frame: true,
-        baseCls: 'my-panel-no-border',
         border: false,
         layout: 'vbox',
         defaults: {
@@ -351,7 +349,7 @@ Ext.onReady(function () {
             region: 'center',
             layout: 'column',
             border: false,
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'ck',
@@ -389,7 +387,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+           // frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'sqtime',
@@ -422,7 +420,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'xmname',
@@ -441,7 +439,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'zy',
@@ -478,7 +476,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 xtype: 'textfield',
@@ -528,7 +526,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'gczgs',
@@ -561,7 +559,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'sfww',
@@ -599,7 +597,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'sftsqiangxiu',
@@ -622,7 +620,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 region: 'center',
@@ -636,7 +634,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'qxsmjfy',
@@ -655,7 +653,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'cqfa',
@@ -693,6 +691,7 @@ Ext.onReady(function () {
         border: false,
         items: [{
             region: 'west',
+            layout: 'fit',
             border: false,
             items: [panel3]
         }, {
