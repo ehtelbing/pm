@@ -1,6 +1,4 @@
 ﻿
-var win;
-var returnValue;
 var Index = "";
 var sidebar = [];
 var body = [];
@@ -40,7 +38,7 @@ Ext.onReady(function () {
 			}
 		},
 		listeners: {
-			load: function (store) {
+			load: function () {
 				setTimeout('_expandFavorite()', 200);
 			}
 		}
@@ -133,6 +131,12 @@ function _selectFavorite() {
 
 function _returnFavorite(){
 	var records = Ext.getCmp('favoritePanel').getSelectionModel().getSelection();
+
+	if (records.length == 0) {
+		Ext.Msg.alert('提示', '请选择页面');
+		return;
+	}
+
 	for (var i = 0; i < records.length; i++) {
 		if (records[i].data.children.length != 0) {
 			Ext.Msg.alert('提示', '请选择具体页面');

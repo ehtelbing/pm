@@ -513,7 +513,7 @@ function _setHomeMenu(MENUID) {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            if (resp.RET == 'Success') {
+            if (resp.RET != null && resp.RET == 'Success') {
                 _getHomeMenu();
                 Ext.Msg.alert('操作信息', '设置首页成功');
             } else {
@@ -569,7 +569,7 @@ function _deleteFavoriteMenu(MENUID) {//删除收藏
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            if (resp.RET == 'Success') {
+            if (resp.RET != null && resp.RET == 'Success') {
                 var records = Ext.getCmp('favoriteTreePanel').getSelectionModel().getSelection();
                 records[0].remove();
                 Ext.Msg.alert('操作信息', '移除收藏成功');
@@ -590,7 +590,7 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
         maximizable: true,
         width: 560,
         height: 420,
-        html: '<iframe src="' + 'http://localhost:8081/pm/app/pm/page/home/favorite.html?menutype=' +menutype +'", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
+        html: '<iframe src="' + AppUrl + 'page/home/favorite.html?menutype=' +menutype +'", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
         listeners: {
             close: function (panel, eOpts) {
                 if (returnValue != null) {
