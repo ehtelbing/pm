@@ -303,7 +303,7 @@ Ext.onReady(function () {
         header : false,
         frame : true,
         layout : 'vbox',
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         defaults : {
             labelAlign : 'right',
             labelWidth : 100,
@@ -315,7 +315,7 @@ Ext.onReady(function () {
             region: 'center',
             layout: 'column',
             border:false,
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'ck',
@@ -353,7 +353,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [ {
                 id: 'sqtime',
@@ -386,7 +386,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [ {
                 id: 'xmname',
@@ -405,7 +405,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'zy',
@@ -442,7 +442,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [  {
                 xtype: 'textfield',
@@ -492,7 +492,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [ {
                 id: 'gczgs',
@@ -525,7 +525,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [  {
                 id: 'sfww',
@@ -563,7 +563,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [  {
                 id: 'sftsqiangxiu',
@@ -586,7 +586,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [ {
                 region : 'center',
@@ -600,7 +600,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [ {
                 id: 'qxsmjfy',
@@ -619,7 +619,7 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-no-border',
             items: [  {
                 id: 'cqfa',
@@ -658,7 +658,7 @@ Ext.onReady(function () {
         border : false,
         items : [ {
             region : 'west',
-            border : false,
+            layout : 'fit',
             items : [ panel3 ]
         }, {
             region : 'center',
@@ -669,16 +669,7 @@ Ext.onReady(function () {
     });
 
     Ext.create('Ext.container.Viewport', {
-        id: "viewport",
-        layout : {
-            type : 'border',
-            regionWeights : {
-                west : -1,
-                north : 1,
-                south : 1,
-                east : -1
-            }
-        },
+        layout : 'border',
         items : [ {
             region : 'north',
             border : false,
