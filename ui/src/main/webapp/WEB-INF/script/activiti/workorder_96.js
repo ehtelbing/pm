@@ -4,7 +4,7 @@ var V_DEPTCODE = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var V_STEPCODE = '';
-var V_PERSONNAME= '';
+var V_PERSONNAME = '';
 var taskId = '';
 $(function () {
     // Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
@@ -14,9 +14,8 @@ $(function () {
     //GetBillMatByOrder();
     loadMatList();
     loadSPR();
-
-
 });
+
 function loadPageInfo() {
     $.ajax({
         url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_GET',
@@ -29,7 +28,7 @@ function loadPageInfo() {
         traditional: true,
         success: function (resp) {
             if (resp.list != "" && resp.list != null) {
-                V_PERSONNAME = resp.list[0].V_PERSONNAME
+                V_PERSONNAME = resp.list[0].V_PERSONNAME;
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
                 $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
@@ -97,7 +96,6 @@ function loadPageInfo() {
         }
     });
 }
-
 
 function loadTaskGrid() {
     $.ajax({
@@ -189,17 +187,11 @@ function GetBillMatByOrder() {
             x_personcode: Ext.util.Cookies.get('v_personcode')
         },
         success: function (resp) {
-
         }
     });
 }
 
 function Agree() {
-    console.log(taskId);
-    console.log(V_NEXT_SETP);
-    console.log(processKey);
-    console.log(V_STEPCODE);
-    console.log(V_STEPNAME);
     var spyj = '';
     if ($("#spyj").val() == '' || $("#spyj").val() == null) {
         spyj = '审批通过';
@@ -214,14 +206,14 @@ function Agree() {
             taskId: taskId,
             idea: '未打印',
             parName: [V_NEXT_SETP, "flow_yj"],
-            parVal: [$("#selApprover").val(),$("#yqbz").val()],
-            processKey :processKey,
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : V_STEPCODE,
-            V_STEPNAME : V_STEPNAME,
-            V_IDEA : '未打印',
-            V_NEXTPER : $("#selApprover").val(),
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            parVal: [$("#selApprover").val(), $("#yqbz").val()],
+            processKey: processKey,
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: V_STEPCODE,
+            V_STEPNAME: V_STEPNAME,
+            V_IDEA: '未打印',
+            V_NEXTPER: $("#selApprover").val(),
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             Ext.Ajax.request({
@@ -240,7 +232,6 @@ function Agree() {
                     }
                 }
             });
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -250,14 +241,10 @@ function Agree() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
 }
 
 function DisAgree() {
-
     var spyj = '';
     if ($("#spyj").val() == '' || $("#spyj").val() == null) {
         spyj = '审批驳回';
@@ -274,19 +261,17 @@ function DisAgree() {
             idea: '不通过',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [$("#selApprover").val(), spyj],
-            processKey :processKey,
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : 'end',
-            V_STEPNAME : '',
-            V_IDEA : '不通过',
-            V_NEXTPER :'',
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            processKey: processKey,
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: 'end',
+            V_STEPNAME: '',
+            V_IDEA: '不通过',
+            V_NEXTPER: '',
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             window.close();
             window.opener.OnPageLoad();
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -296,14 +281,10 @@ function DisAgree() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
 }
 
 function loadSPR() {
-
     $.ajax({//审批人
         url: AppUrl + 'Activiti/GetTaskIdFromBusinessId',
         type: 'post',
@@ -317,7 +298,6 @@ function loadSPR() {
             V_STEPCODE = resp.TaskDefinitionKey;
         }
     });
-
 
     $.ajax({//审批人
         url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -346,9 +326,7 @@ function loadSPR() {
 
                 $("#selApprover").html(result.join(""));
             }
-
             //Ext.getBody().unmask();//去除页面笼罩
-
             //createDD();
         }
     });

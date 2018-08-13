@@ -43,7 +43,6 @@ $(function () {
             }
         },
         listeners: {
-
             load: function (store, records,success,eOpts) {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
@@ -52,19 +51,14 @@ $(function () {
                 var list = Ext.getCmp("nextSprb").getStore().data.items;
                 for (var i = 0; i < list.length; i++) {
                     if (list[i].raw.V_PERSONCODE == Assignee) {
-
                         Ext.getCmp("nextSprb").setValue(Assignee);
-
                     }
                     if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
 
                         Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
                     }
-
                 }
-
             }
-
         }
     });
 
@@ -106,6 +100,7 @@ $(function () {
             }
         ]
     });
+
     var windowb = Ext.create('Ext.window.Window', {
         id: 'windowb',
         width: 370,
@@ -167,13 +162,11 @@ $(function () {
         ReturnIsToTask();
     });
 
-
     Ext.data.StoreManager.lookup('workCenterStore').on('load', function () {
         Ext.getCmp('addgzzx').select(Ext.data.StoreManager.lookup('workCenterStore').getAt(0));
     });
-
-
 });
+
 function getAssignee(){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/InstanceState',
@@ -188,6 +181,7 @@ function getAssignee(){
         }
     });
 }
+
 function loadOrder(){
     Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',
@@ -219,7 +213,6 @@ function loadOrder(){
                 $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
                 $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
                 $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
-
                 $("#V_WBS").html(resp.list[0].V_WBS);
                 $("#V_WBS_TXT").html(resp.list[0].V_WBS_TXT);
 
@@ -525,7 +518,6 @@ var fjgrid = Ext.create('Ext.grid.Panel', {
                 "click": fileadd
             }
         }]
-
 });
 
 var fjwindow = Ext.create('Ext.window.Window', {
@@ -561,7 +553,6 @@ function OrderFile1(V_MATERIALGUID) {
     var owidth = window.document.body.offsetWidth-200;
     var oheight = window.document.body.offsetHeight-100 ;
      window.open(AppUrl+'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-
 }
 
 function fileadd(){
@@ -569,13 +560,11 @@ function fileadd(){
     var owidth = window.document.body.offsetWidth-200;
     var oheight = window.document.body.offsetHeight-100 ;
     window.open(AppUrl+'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-
 }
 
 function GetModel() {
     if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) { alert("请先选择设备!"); } else {
         window.showModalDialog(AppUrl+'/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE='+ $('#V_DEPTNAMEREPARIR').val() + '','', 'dialogHeight:500px;dialogWidth:800px');
-
     }
 }
 
@@ -589,9 +578,9 @@ function NowDate_b(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00" ;
-
     $("#" + id + "").val(s);
 }
+
 function NowDate_e(id) {
     var d, s;
     d = new Date();
@@ -602,7 +591,6 @@ function NowDate_e(id) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00" ;
-
     $("#" + id + "").val(s);
 }
 
@@ -616,9 +604,9 @@ function planDate(id,jhid) {
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " " + dateFomate(hou) + ":" + dateFomate(min) + ":" + dateFomate(sen);
-
     $("#" + id + "").val(s);
 }
+
 function NowDate2(id) {
     var d, s;
     d = new Date();
@@ -735,7 +723,6 @@ var agrid = Ext.create('Ext.grid.Panel', {
     }]
 });
 
-
 function orderonPrint(){
     selectID.push(V_ORDERGUID);
     window.open(AppUrl + "page/No410101/indexn.html", selectID,
@@ -783,7 +770,6 @@ function todel(view, item, colIndex, rowIndex, e) {
 }
 
 function p_query() {
-
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart='+V_DEPTREPAIRCODE+'&classcode='+V_TEAMCODE+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
@@ -813,7 +799,6 @@ function saved_btn() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp[0] == 'SUCCESS') {
-
             }
         }
     });
@@ -863,7 +848,6 @@ function orderissued(){
             V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
             V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val().split(".")[0],
             V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val().split(".")[0],
-
             V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
             V_V_OTHERREASON: $("#V_OTHERREASON").val(),
             V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
@@ -887,7 +871,6 @@ function orderissued(){
                     },
                     success: function (resp) {
                         var respguid = Ext.decode(resp.responseText);
-
                     }
                 });
                 window.opener.QueryTab();
@@ -900,16 +883,15 @@ function orderissued(){
             }
         }
     });
-
 }
+
 function closeWin(){
     window.close();
     window.opener.OnPageLoad();
     window.opener.QueryGrid();
 }
 
-function getTaskId()
-{
+function getTaskId() {
     $.ajax({//获取taskId
         url: AppUrl + 'Activiti/GetTaskIdFromBusinessId',
         type: 'post',
@@ -923,9 +905,8 @@ function getTaskId()
             V_STEPCODE = resp.TaskDefinitionKey;
         }
     });
-
-
 }
+
 function OrderBooked(){
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
@@ -950,8 +931,6 @@ function OrderBooked(){
             window.opener.QueryGrid();
             window.close();
             window.opener.OnPageLoad();
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -961,19 +940,16 @@ function OrderBooked(){
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
 }
 
 function ReturnIsToTask() {
-
     $.ajax({
         url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
         type: 'post',
         async: false,
         data: {
-            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID")
         },
         dataType: "json",
         traditional: true,
@@ -1003,16 +979,13 @@ function Receive(){
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE:'已打印'
-
     };
-
     nextSprStoreb.currentPage = 1;
     nextSprStoreb.load();
     Ext.getCmp('windowb').show();
 }
+
 function ConfirmAccept() {
-
-
     if ($("#D_FACT_START_DATE").val() == "") {
         Ext.MessageBox.alert('提示', '请输入实际开始时间');
         return;
@@ -1075,7 +1048,6 @@ function ConfirmAccept() {
                             },
                             success: function (resp) {
                                 var respguid = Ext.decode(resp.responseText);
-
                             }
                         });
                         window.opener.QueryTab();
@@ -1088,8 +1060,6 @@ function ConfirmAccept() {
                     }
                 }
             });
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1099,10 +1069,9 @@ function ConfirmAccept() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
 }
+
 function print() {
     selectID.push(V_ORDERGUID);
     window.open(AppUrl + "page/No410101/indexn.html", selectID,
@@ -1120,7 +1089,6 @@ function GetBillMatByOrder(){
             x_personcode : Ext.util.Cookies.get('v_personcode')
         },
         success: function (resp) {
-
         }
     });
 }

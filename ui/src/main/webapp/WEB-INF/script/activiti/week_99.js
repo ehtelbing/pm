@@ -17,7 +17,6 @@ if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
     (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
-
 }
 
 var orgLoad = false;
@@ -44,7 +43,6 @@ Ext.onReady(function () {
             extraParams: {}
         },
         listeners: {
-
             load: function (store, records, success, eOpts) {
                 var list = [];
                 if(store.getAt(0) !=null){
@@ -54,10 +52,7 @@ Ext.onReady(function () {
 
                     Ext.getCmp('nextPer').select(store.first());
                 }
-
-
             }
-
         }
     });
 
@@ -287,7 +282,7 @@ Ext.onReady(function () {
             style: ' margin: 5px 20px 0px 0px',
             icon: imgpath + '/cross.png',
             handler: _reject
-        },]
+        }]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -323,7 +318,6 @@ function _selectTaskId() {
         params: {
             businessKey: V_ORDERGUID,
             userCode: Ext.util.Cookies.get('v_personcode')
-
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
@@ -353,21 +347,18 @@ function _selectNextPer() {
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: V_V_SPECIALTY,
         V_V_WHERE: '通过'
-
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
 }
 
 function _init() {
-
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
         type: 'ajax',
         method: 'POST',
         params: {
             'V_V_WEEKPLAN_GUID': V_ORDERGUID
-
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
@@ -407,7 +398,6 @@ function _init() {
             });
         }
     });
-
 }
 
 function _agree() {
@@ -462,8 +452,6 @@ function _agree() {
             } else {
                 Ext.MessageBox.alert('提示', '任务提交失败');
             }
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -473,7 +461,6 @@ function _agree() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
 }
 
@@ -553,15 +540,11 @@ function _reject() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
     }else{
         alert("发起人信息错误，无法驳回");
     }
-
 }
-
-
 
 function _close() {
     window.close();

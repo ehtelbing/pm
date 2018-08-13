@@ -23,7 +23,6 @@ if (location.href.split('?')[1] != undefined) {
 }
 var selectID = [];
 $(function () {
-
     var nextSprStore2 = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStore2',
@@ -42,7 +41,6 @@ $(function () {
             extraParams: {}
         },
         listeners: {
-
             load: function (store, records, success, eOpts) {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
@@ -52,22 +50,15 @@ $(function () {
                 var list = Ext.getCmp("nextSpr2").getStore().data.items;
                 for (var i = 0; i < list.length; i++) {
                     if (list[i].raw.V_PERSONCODE == Assignee) {
-
                         Ext.getCmp("nextSpr2").setValue(Assignee);
-
                     }
                     if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
-
                         Ext.getCmp("nextSpr2").setValue(Ext.util.Cookies.get('v_personcode'));
                     }
-
                 }
-
             }
-
         }
     });
-
 
     var addInputPanel2 = Ext.create('Ext.form.Panel', {
         id: 'addInputPanel2',
@@ -108,7 +99,6 @@ $(function () {
             }
         ]
     });
-
 
     var window2 = Ext.create('Ext.window.Window', {
         id: 'window2',
@@ -339,7 +329,6 @@ function loadOther() {
     });
 }
 
-
 function accept() {
     Ext.Ajax.request({
         method: 'POST',
@@ -441,7 +430,6 @@ var fjgrid = Ext.create('Ext.grid.Panel', {
                 "click": fileadd
             }
         }]
-
 });
 
 var fjwindow = Ext.create('Ext.window.Window', {
@@ -583,7 +571,6 @@ var agridStore = Ext.create('Ext.data.Store', {
     }
 });
 
-
 function orderonPrint() {
     selectID.push(V_ORDERGUID);
     window.open(AppUrl + "page/No410101/indexn.html", selectID,
@@ -595,7 +582,6 @@ function todel(view, item, colIndex, rowIndex, e) {
 }
 
 function _preOrderissued() {
-
     var nextSprStore2 = Ext.data.StoreManager.lookup('nextSprStore2');
     nextSprStore2.proxy.extraParams = {
         V_V_ORGCODE: V_V_ORGCODE,
@@ -606,7 +592,6 @@ function _preOrderissued() {
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
         V_V_WHERE: '已反馈'
-
     };
     nextSprStore2.currentPage = 1;
     nextSprStore2.load();
@@ -633,7 +618,6 @@ function activitiOrderissued() {
         },
         success: function (response) {
             Ext.getCmp('window2').hide();
-
             orderissued();
         },
         failure: function (response) {//访问到后台时执行的方法。
@@ -644,10 +628,8 @@ function activitiOrderissued() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
 }
-
 
 function getPersonReturnValue(retdata) {
     if (retdata != undefined) {
@@ -670,7 +652,6 @@ function orderissued() {
             V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
             V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val().split(".")[0],
             V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val().split(".")[0],
-
             V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
             V_V_OTHERREASON: $("#V_OTHERREASON").val(),
             V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
@@ -693,7 +674,6 @@ function orderissued() {
                     },
                     success: function (resp) {
                         var respguid = Ext.decode(resp.responseText);
-
                     }
                 });
                 window.opener.QueryTab();
@@ -706,7 +686,6 @@ function orderissued() {
             }
         }
     });
-
 }
 
 function GetBillMatByOrder() {
@@ -720,11 +699,9 @@ function GetBillMatByOrder() {
             x_personcode: Ext.util.Cookies.get('v_personcode')
         },
         success: function (resp) {
-
         }
     });
 }
-
 
 function closeWin() {
     window.close();
@@ -748,15 +725,13 @@ function getTaskId() {
     });
 }
 
-
 function ReturnIsToTask() {
-
     $.ajax({
         url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
         type: 'post',
         async: false,
         data: {
-            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID")
         },
         dataType: "json",
         traditional: true,
@@ -776,8 +751,6 @@ function ReturnIsToTask() {
 }
 
 function ConfirmAccept() {
-
-
     if ($("#D_FACT_START_DATE").val() == "") {
         Ext.MessageBox.alert('提示', '请输入实际开始时间');
         return;
@@ -851,8 +824,6 @@ function ConfirmAccept() {
                     }
                 }
             });
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -862,7 +833,5 @@ function ConfirmAccept() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
 }

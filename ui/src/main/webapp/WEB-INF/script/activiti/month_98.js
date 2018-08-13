@@ -882,8 +882,8 @@ function _selectTaskId() {
 }
 
 function _selectNextPer() {
-    var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
-    nextSprStore.proxy.extraParams = {
+    var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore')
+    .proxy.extraParams = {
         V_V_ORGCODE: V_V_ORGCODE,
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: '',
@@ -912,11 +912,11 @@ function _init() {
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
-                if (data.list != null) {
+                if (data.list != null && data.list.length != 0) {
                     V_V_ORGCODE = data.list[0].V_ORGCODE;
                     V_V_DEPTCODE = data.list[0].V_DEPTCODE;
                     V_V_SPECIALTY = data.list[0].V_REPAIRMAJOR_CODE;
-                    V_PERSONNAME = data.list[0].V_INPER
+                    V_PERSONNAME = data.list[0].V_INPER;
                     Ext.getCmp('year').setValue(data.list[0].V_YEAR);
                     Ext.getCmp('month').setValue(data.list[0].V_MONTH);
                     Ext.getCmp('ck').setValue(data.list[0].V_ORGCODE);
@@ -952,7 +952,7 @@ function _init() {
                     icon: Ext.MessageBox.ERROR
                 });
             }
-        })
+        });
 
         //Ext.getBody().unmask();
     }

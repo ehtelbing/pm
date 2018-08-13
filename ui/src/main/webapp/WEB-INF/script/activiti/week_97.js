@@ -10,7 +10,7 @@ var V_V_SPECIALTY = '';
 var V_PERSONCODE = '';
 var taskId = '';
 var V_STEPCODE = '';
-var V_PERSONNAME ='';
+var V_PERSONNAME = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
@@ -40,7 +40,6 @@ Ext.onReady(function () {
             extraParams: {}
         },
         listeners: {
-
             load: function (store, records, success, eOpts) {
                 var list = [];
                 processKey = store.getProxy().getReader().rawData.RET;
@@ -48,9 +47,7 @@ Ext.onReady(function () {
                 V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
 
                 Ext.getCmp('nextPer').select(store.first());
-
             }
-
         }
     });
 
@@ -104,7 +101,7 @@ Ext.onReady(function () {
                     fieldLabel: '周',
                     readOnly: true,
                     labelWidth: 90
-                },{
+                }, {
                     id: 'ck',
                     readOnly: true,
                     allowBlank: false,
@@ -124,7 +121,7 @@ Ext.onReady(function () {
                     fieldLabel: '作业区',
                     allowBlank: false,
                     labelWidth: 90
-                },{
+                }, {
                     id: 'zy',
                     readOnly: true,
                     allowBlank: false,
@@ -145,7 +142,7 @@ Ext.onReady(function () {
                     fieldLabel: '设备类型',
                     allowBlank: false,
                     labelWidth: 90
-                },{
+                }, {
                     id: 'sbmc',
                     allowBlank: false,
                     fieldLabel: '设备名称',
@@ -164,7 +161,7 @@ Ext.onReady(function () {
                     allowBlank: false,
                     fieldLabel: '发起人',
                     labelWidth: 90
-                },{
+                }, {
                     id: 'fqsj',
                     allowBlank: false,
                     fieldLabel: '发起时间',
@@ -243,7 +240,7 @@ Ext.onReady(function () {
         style: 'margin-bottom:1px',
         frame: true,
         baseCls: 'my-panel-no-border',
-        items: [ {
+        items: [{
             id: 'spyj',
             xtype: 'textfield',
             fieldLabel: '审批意见',
@@ -301,7 +298,6 @@ function _selectTaskId() {
         params: {
             businessKey: V_ORDERGUID,
             userCode: Ext.util.Cookies.get('v_personcode')
-
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
@@ -327,25 +323,22 @@ function _selectNextPer() {
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: '',
         V_V_FLOWTYPE: 'WeekPlan',
-        V_V_FLOW_STEP:V_STEPCODE,
+        V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: V_V_SPECIALTY,
         V_V_WHERE: ''
-
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
 }
 
 function _init() {
-
     Ext.Ajax.request({
         url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
         type: 'ajax',
         method: 'POST',
         params: {
             'V_V_WEEKPLAN_GUID': V_ORDERGUID
-
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
@@ -385,7 +378,6 @@ function _init() {
             });
         }
     });
-
 }
 
 function _agree() {
@@ -395,7 +387,6 @@ function _agree() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -403,15 +394,15 @@ function _agree() {
         params: {
             taskId: taskId,
             idea: '通过',
-            parName: ['lcjs', "flow_yj",'shtgtime'],
-            parVal: ['lcjs', spyj,Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s') ],
-            processKey :$.url().param("ProcessDefinitionKey"),
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : 'lcjs',
-            V_STEPNAME : '流程结束',
-            V_IDEA : '通过',
-            V_NEXTPER : 'lcjs',
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            parName: ['lcjs', "flow_yj", 'shtgtime'],
+            parVal: ['lcjs', spyj, Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s')],
+            processKey: $.url().param("ProcessDefinitionKey"),
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: 'lcjs',
+            V_STEPNAME: '流程结束',
+            V_IDEA: '通过',
+            V_NEXTPER: 'lcjs',
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
@@ -427,17 +418,15 @@ function _agree() {
                     },
                     success: function (response) {
                         var data = Ext.decode(response.responseText);
-                        if(data.V_INFO=='success'){
+                        if (data.V_INFO == 'success') {
                             window.opener.QueryTabW();
                             window.opener.QuerySum();
                             window.opener.QueryGrid();
                             window.close();
                             window.opener.OnPageLoad();
-                        }else{
+                        } else {
                             alert("周计划状态修改失败");
                         }
-
-
                     },
                     failure: function (response) {
                         Ext.MessageBox.show({
@@ -448,10 +437,7 @@ function _agree() {
                         });
                     }
                 });
-
             }
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -461,11 +447,7 @@ function _agree() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
-
 }
 
 function _reject() {
@@ -531,11 +513,8 @@ function _reject() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
 }
-
-
 
 function _close() {
     window.close();

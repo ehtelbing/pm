@@ -54,10 +54,7 @@ Ext.onReady(function () {
 
                     Ext.getCmp('nextPer').select(store.first());
                 }
-
-
             }
-
         }
     });
 
@@ -355,7 +352,7 @@ function _init() {
         type: 'ajax',
         method: 'POST',
         params: {
-            'V_V_GUID': V_ORDERGUID
+            'V_V_GUID': '2AAF6ACD-A1CF-408B-8EF0-208AE24866FE'//V_ORDERGUID
 
         },
         success: function (response) {
@@ -541,10 +538,7 @@ function _reject() {
     }else{
         alert("发起人信息错误，无法驳回");
     }
-
 }
-
-
 
 function _close() {
     window.close();

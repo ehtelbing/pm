@@ -48,9 +48,7 @@ Ext.onReady(function () {
                 V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
 
                 Ext.getCmp('nextPer').select(store.first());
-
             }
-
         }
     });
 
@@ -278,7 +276,6 @@ Ext.onReady(function () {
             items: [inputPanel]
         }]
     });
-
     _init();
 });
 
@@ -290,13 +287,11 @@ function _selectTaskId() {
         params: {
             businessKey: V_ORDERGUID,
             userCode: Ext.util.Cookies.get('v_personcode')
-
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -320,14 +315,12 @@ function _selectNextPer() {
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: V_V_SPECIALTY,
         V_V_WHERE: ''
-
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
 }
 
 function _init() {
-
     Ext.Ajax.request({
         url: AppUrl + 'hp/PRO_PM_03_PLAN_YEAR_GET',
         type: 'ajax',
@@ -372,7 +365,6 @@ function _init() {
             });
         }
     });
-
 }
 
 function _agree() {
@@ -406,8 +398,6 @@ function _agree() {
                 window.close();
                 window.opener.OnPageLoad();
             }
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -417,11 +407,7 @@ function _agree() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
-
 }
 
 function _reject() {
@@ -431,7 +417,6 @@ function _reject() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -467,7 +452,6 @@ function _reject() {
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
-
                             window.close();
                             window.opener.OnPageLoad();
                         }
@@ -485,11 +469,8 @@ function _reject() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
 }
-
-
 
 function _close() {
     window.close();

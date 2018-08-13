@@ -951,7 +951,7 @@ Ext.onReady(function () {
      });*/
 
     _init();
-})
+});
 
 function _init() {
     if (ckstoreload && zyqstoreload && zystoreload && fzload) {
@@ -1005,7 +1005,6 @@ function _init() {
         /*Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID1 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID2 +".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/"+ V_GUID+"/thumb_"+V_PICGUID3 +".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='###'>删除</a></span> </td > <td align='center'> <span><a href='###'>删除</a></span></td> <td align='center'> <span><a href='####'>删除</a></span></td> <td></td> </tr> </table> </div>"
          );*/
 
-
         var gridStore = Ext.data.StoreManager.lookup('gridStore');
         gridStore.proxy.extraParams = {
             V_V_IP: "",
@@ -1045,7 +1044,6 @@ function _init() {
 
         imagestore.load();
 
-
         index01 = imagestore.getCount() - 1;
         index02 = imagestore.getCount() - 2;
         index03 = imagestore.getCount() - 3;
@@ -1080,15 +1078,10 @@ function _init() {
         //alert(2.0);
 
         _selectTaskId();
-
         fzload = false;
 
         Ext.getBody().unmask();
-
-
     }
-
-
 }
 
 function _selectTaskId() {
@@ -1099,13 +1092,11 @@ function _selectTaskId() {
         params: {
             businessKey: V_ORDERGUID,
             userCode: Ext.util.Cookies.get('v_personcode')
-
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -1128,7 +1119,6 @@ function queryGrid() {
         V_D_INDATE_E: Ext.getCmp("endtime").getSubmitValue(),
         V_V_SPECIALTY: Ext.getCmp('zy').getValue(),
         V_V_DEFECT: Ext.getCmp('qxcontent').getValue()
-
     };
     //flowDicListStore.currentPage = 1;
     gridStore.load();
@@ -1144,7 +1134,6 @@ function _ck_zyqload() {
     };
     //matGroupSecondStore.currentPage = 1;
     zyqstore.load();
-
 }
 
 function _ck_zyfzrload() {
@@ -1156,7 +1145,6 @@ function _ck_zyfzrload() {
     };
     //matGroupSecondStore.currentPage = 1;
     zyfzrenstore.load();
-
 }
 
 function _ck_zyqfzrload() {
@@ -1168,7 +1156,6 @@ function _ck_zyqfzrload() {
     };
     //matGroupSecondStore.currentPage = 1;
     zyfzrenstore.load();
-
 }
 
 function zyq_jxdwload() {
@@ -1178,7 +1165,6 @@ function zyq_jxdwload() {
     };
     //matGroupSecondStore.currentPage = 1;
     jxdwstore.load();
-
 }
 
 function _jhyear() {
@@ -1227,8 +1213,6 @@ function _upLoad() {
             Ext.Msg.alert('提示信息', '上传失败');
         }
     });
-
-
 }
 
 function _preViewImage() {
@@ -1249,19 +1233,18 @@ function _preViewImage() {
     if (imagestore.getCount() == 2) {
         V_PICGUID1 = imagestore.getAt(1).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(0).get('V_PICGUID');
-
     }
     if (imagestore.getCount() >= 3) {
         V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
         V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-
     }
     picguidbegin = V_PICGUID1;
 
     Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
     );
 }
+
 function _last() {
     index01++;
     index02++;
@@ -1273,7 +1256,6 @@ function _last() {
         index02--;
         index03--;
         return;
-
     } else {
         V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
@@ -1284,9 +1266,7 @@ function _last() {
         Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
         );
         PICGUID1 = "";
-
     }
-
 }
 
 function _next() {
@@ -1323,11 +1303,7 @@ function _next() {
         Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete1()'>删除</a></span> </td > <td align='center'> <span><a href='javascript:void(0);' onclick='_delete2()'>删除</a></span></td> <td align='center'> <span><a href='javascript:void(0);' onclick='_delete3()'>删除</a></span></td> <td></td> </tr> </table> </div>"
         );
         // PICGUID1 = V_PICGUID3;
-
-
     }
-
-
 }
 
 /*function _next1()
@@ -1399,7 +1375,6 @@ function _delete1() {
                                 icon: Ext.MessageBox.ERROR
                             })
                         }
-
                     })
                 }
             }
@@ -1452,7 +1427,6 @@ function _delete2() {
                                 icon: Ext.MessageBox.ERROR
                             })
                         }
-
                     })
                 }
             }
@@ -1505,7 +1479,6 @@ function _delete3() {
                                 icon: Ext.MessageBox.ERROR
                             })
                         }
-
                     })
                 }
             }
@@ -1602,9 +1575,7 @@ function zssave() {
                     icon: Ext.MessageBox.ERROR
                 })
             }
-
         })
-
     }
 
     if (Ext.getCmp('sfww').getValue() == 0 || Ext.getCmp('sfww').getValue() == '否') {
@@ -1661,12 +1632,9 @@ function zssave() {
                     icon: Ext.MessageBox.ERROR
                 })
             }
-
         })
-
     }
     saveload = true;
-
 }
 
 function _validate(obj) {
@@ -1679,7 +1647,6 @@ function _validate(obj) {
     return valid;
 }
 
-
 function save() {
     var spyj = '';
     if (Ext.getCmp('yj').getValue() == '' || Ext.getCmp('yj').getValue() == null) {
@@ -1687,7 +1654,6 @@ function save() {
     } else {
         spyj = Ext.getCmp('yj').getValue();
     }
-
     if (!saveload) {
         Ext.MessageBox.show({
             title: '提示',
@@ -1757,15 +1723,10 @@ function save() {
                             icon: Ext.MessageBox.ERROR
                         })
                     }
-
                 })
-
-
             } else {
                 Ext.MessageBox.alert('提示', '任务提交失败');
             }
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1775,10 +1736,7 @@ function save() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
 }
 
 function _qxsp() {
@@ -1826,7 +1784,6 @@ function _qxsp() {
                     V_V_NEXTSPR: Ext.getCmp('sp').getValue(),
                     V_V_SP: '同意',
                     V_V_YJ: Ext.getCmp('yj').getValue()
-
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);//后台返回的值
@@ -1850,10 +1807,7 @@ function _qxsp() {
                         icon: Ext.MessageBox.ERROR
                     })
                 }
-
             })
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1863,9 +1817,7 @@ function _qxsp() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
 }
 
 function _close() {

@@ -5,7 +5,7 @@ var V_NEXT_SETP = '';
 var V_STEPNAME = '';
 var taskId = '';
 var V_STEPCODE = '';
-var V_V_REPAIRCODE ='';
+var V_V_REPAIRCODE = '';
 var flag = '';
 if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
@@ -28,8 +28,6 @@ $(function () {
     loadRepairList();
     loadTaskGrid();
     loadMatList();
-
-
 
     $("#V_EQUNAME").click(function () {
         var owidth = window.document.body.offsetWidth - 200;
@@ -60,7 +58,6 @@ $(function () {
         createDD();
     });
 
-
     //WBS编码选择页面
     $("#wbsCode").click(function () {
         var owidth = window.document.body.offsetWidth - 200;
@@ -68,7 +65,6 @@ $(function () {
         var ret = window.open(AppUrl + 'page/PM_04/index.html?V_ORGCODE=' + $("#V_ORGCODE").val() + '&V_DEPTCODE=' + $("#V_DEPTCODE").val() +
         '&V_EQUTYPECODE=' + V_EQUTYPECODE + '&V_EQUCODE=' + $("#V_EQUCODE").val() + '&wbsCode=' + $("#wbsCode").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
-
 });
 
 function loadPageInfo() {
@@ -98,8 +94,6 @@ function loadPageInfo() {
                 $("#planStartDate").val(resp.list[0].D_START_DATE);
                 $("#planFinDate").val(resp.list[0].D_FINISH_DATE);
                 $("#createDate").html(resp.list[0].D_ENTER_DATE.substring(0, 10));
-
-
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
                 $("#V_EQUIP_NAME").html(resp.list[0].V_EQUIP_NAME);
                 $("#V_EQUIP_NO").html(resp.list[0].V_EQUIP_NO);
@@ -111,12 +105,9 @@ function loadPageInfo() {
                 $("#V_DEPTNAMEREPARIR").html(resp.list[0].V_DEPTNAMEREPARIR);
                 V_DEPTCODEREPARIR = resp.list[0].V_DEPTCODEREPARIR;
                 $("#V_ORDER_TYP_TXT").html(resp.list[0].V_ORDER_TYP_TXT);
-
                 $("#D_START_DATE").html(resp.list[0].D_START_DATE);
                 $("#D_FINISH_DATE").html(resp.list[0].D_FINISH_DATE);
-
                 $("#V_SHORT_TXT").html(resp.list[0].V_SHORT_TXT);
-
                 $("#V_ENTERED_BY").html(resp.list[0].V_ENTERED_BY);
                 var s1, st1;
                 if (resp.list[0].D_ENTER_DATE != '') {
@@ -184,11 +175,8 @@ function loadDEPT() {//工厂单位
             $("#selDW").html(result.join(""));
 
             loadZYQ($("#selDW").val());
-
         }
     });
-
-
 }
 
 function loadZYQ(dwcode) {
@@ -302,11 +290,9 @@ function loadRepairList() {
                         .appendTo("#selPlant");
                 }
             });
-
             loadSPR();
         }
     });
-
 }
 
 function loadSPR() {
@@ -336,7 +322,6 @@ function loadSPR() {
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_SPECIALTY: '%',
             V_V_WHERE: '通过'
-
         },
         success: function (resp) {
             $("#selApprover").empty();
@@ -351,8 +336,6 @@ function loadSPR() {
 
                 $("#selApprover").html(result.join(""));
             }
-
-
             //createDD();
         }
     });
@@ -435,7 +418,7 @@ function OpenGJJJ() {
         + $("#V_ORDERGUID").val() + '', '41070103',
         'dialogHeight:500px;dialogWidth:800px');
     loadToolList();
-};
+}
 
 function loadMatList() {
     Ext.Ajax.request({
@@ -536,6 +519,7 @@ function NowDate_e(id) {
     s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00";
     $("#" + id + "").val(s);
 }
+
 function NowDate2(id) {
     var d, s;
     d = new Date();
@@ -587,7 +571,6 @@ function getReturnWBS(data) {
     $("#proName").val(data[3]);
 }
 
-
 function Submit() {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
@@ -598,13 +581,13 @@ function Submit() {
             idea: '通过',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [$("#selApprover").val(), '请审批'],
-            processKey :processKey,
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : V_STEPCODE,
-            V_STEPNAME : V_STEPNAME,
-            V_IDEA : '请审批！',
-            V_NEXTPER : $("#selApprover").val(),
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            processKey: processKey,
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: V_STEPCODE,
+            V_STEPNAME: V_STEPNAME,
+            V_IDEA: '请审批！',
+            V_NEXTPER: $("#selApprover").val(),
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             window.opener.QueryTab();
@@ -612,8 +595,6 @@ function Submit() {
             window.opener.QueryGrid();
             window.close();
             window.opener.OnPageLoad();
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -623,10 +604,7 @@ function Submit() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
 }
 
 function toVoid() {
@@ -635,7 +613,7 @@ function toVoid() {
         type: 'ajax',
         method: 'POST',
         params: {
-            V_V_ORDERGUID:  $.url().param("V_ORDERGUID")
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID")
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值
@@ -645,11 +623,11 @@ function toVoid() {
                     type: 'ajax',
                     method: 'POST',
                     params: {
-                        V_V_ORDERGUID:  $.url().param("V_ORDERGUID"),
-                        x_personcode : Ext.util.Cookies.get('v_personcode')
+                        V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                        x_personcode: Ext.util.Cookies.get('v_personcode')
                     },
                     success: function (response) {
-                       // var data = Ext.decode(response.responseText);//后台返回的值
+                        // var data = Ext.decode(response.responseText);//后台返回的值
                         Ext.Ajax.request({
                             url: AppUrl + 'Activiti/TaskComplete',
                             type: 'ajax',
@@ -659,13 +637,13 @@ function toVoid() {
                                 idea: '不通过',
                                 parName: [V_NEXT_SETP, "flow_yj"],
                                 parVal: [$("#selApprover").val(), '作废'],
-                                processKey :processKey,
-                                businessKey : $.url().param("V_ORDERGUID"),
-                                V_STEPCODE : 'end',
-                                V_STEPNAME : '',
-                                V_IDEA : '作废',
-                                V_NEXTPER : '',
-                                V_INPER : Ext.util.Cookies.get('v_personcode')
+                                processKey: processKey,
+                                businessKey: $.url().param("V_ORDERGUID"),
+                                V_STEPCODE: 'end',
+                                V_STEPNAME: '',
+                                V_IDEA: '作废',
+                                V_NEXTPER: '',
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
                             },
                             success: function (response) {
                                 window.opener.QueryTab();
@@ -673,8 +651,6 @@ function toVoid() {
                                 window.opener.QueryGrid();
                                 window.close();
                                 window.opener.OnPageLoad();
-
-
                             },
                             failure: function (response) {//访问到后台时执行的方法。
                                 Ext.MessageBox.show({
@@ -684,9 +660,7 @@ function toVoid() {
                                     icon: Ext.MessageBox.ERROR
                                 })
                             }
-
                         })
-
                     },
                     failure: function (response) {//访问到后台时执行的方法。
                         Ext.MessageBox.show({
@@ -696,11 +670,7 @@ function toVoid() {
                             icon: Ext.MessageBox.ERROR
                         })
                     }
-
                 })
-
-
-
             } else {
                 Ext.MessageBox.show({
                     title: '错误',
@@ -718,10 +688,5 @@ function toVoid() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
-
-
 }

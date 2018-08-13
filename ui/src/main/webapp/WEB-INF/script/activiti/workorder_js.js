@@ -1442,7 +1442,7 @@ function ReturnIsToTask() {
         type: 'post',
         async: false,
         data: {
-            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+            V_V_ORDERGUID: $.url().param("V_ORDERGUID")
         },
         dataType: "json",
         traditional: true,

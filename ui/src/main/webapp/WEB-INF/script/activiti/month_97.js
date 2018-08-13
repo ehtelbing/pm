@@ -340,11 +340,10 @@ function _init() {
         method: 'POST',
         params: {
             'V_V_MONTHPLAN_GUID': V_ORDERGUID
-
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
-            if (data.list != null) {
+            if (data.list != null && data.list.length != 0) {
                 V_V_ORGCODE = data.list[0].V_ORGCODE;
                 V_V_DEPTCODE = data.list[0].V_DEPTCODE;
                 V_V_SPECIALTY = data.list[0].V_REPAIRMAJOR_CODE;
@@ -518,8 +517,6 @@ function _reject() {
 
     })
 }
-
-
 
 function _close() {
     window.close();

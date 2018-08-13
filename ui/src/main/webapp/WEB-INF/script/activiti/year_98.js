@@ -55,9 +55,7 @@ for (var k = 0; k <= 59; k++) {
     }
     minutes.push({displayField: k, valueField: k});
 }
-
 //var V_V_GUID = Ext.data.IdGenerator.get('uuid').generate();
-
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
@@ -82,6 +80,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
         return request;
     }
 });
+
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
     var dt = new Date();
@@ -98,6 +97,7 @@ Ext.onReady(function () {
             reader: {type: 'json'}
         }
     });
+
     var sblxStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'sblxStore',
@@ -122,6 +122,7 @@ Ext.onReady(function () {
             }
         }
     });
+
     var sbmcStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'sbmcStore',
@@ -286,13 +287,9 @@ Ext.onReady(function () {
                     processKey = store.getProxy().getReader().rawData.RET;
                     V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                     V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
-
                     Ext.getCmp('nextPer').select(store.first());
                 }
-
-
             }
-
         }
     });
 
@@ -474,8 +471,6 @@ Ext.onReady(function () {
                             var date11 = new Date(date1);
                             var date2 = Ext.getCmp('jhjgsj').getSubmitValue() + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
                             var date22 = new Date(date2);
-
-
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
                             if(gongshicha2 >= 0)
@@ -492,9 +487,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
                                     return ;
-
                                 }
-
                             }
                         }
                     }
@@ -518,8 +511,6 @@ Ext.onReady(function () {
                             var date11 = new Date(date1);
                             var date2 = Ext.getCmp('jhjgsj').getSubmitValue() + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
                             var date22 = new Date(date2);
-
-
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
                             if(gongshicha2 >= 0)
@@ -536,9 +527,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
                                     return ;
-
                                 }
-
                             }
                         }
                     }
@@ -562,8 +551,6 @@ Ext.onReady(function () {
                             var date11 = new Date(date1);
                             var date2 = Ext.getCmp('jhjgsj').getSubmitValue() + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
                             var date22 = new Date(date2);
-
-
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
                             if(gongshicha2 >= 0)
@@ -580,9 +567,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
                                     return ;
-
                                 }
-
                             }
                         }
                     }
@@ -606,8 +591,6 @@ Ext.onReady(function () {
                             var date11 = new Date(date1);
                             var date2 = Ext.getCmp('jhjgsj').getSubmitValue() + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
                             var date22 = new Date(date2);
-
-
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
                             if(gongshicha2 >= 0)
@@ -624,9 +607,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
                                     return ;
-
                                 }
-
                             }
                         }
                     }
@@ -649,8 +630,6 @@ Ext.onReady(function () {
                             var date11 = new Date(date1);
                             var date2 = Ext.getCmp('jhjgsj').getSubmitValue() + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
                             var date22 = new Date(date2);
-
-
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
                             if(gongshicha2 >= 0)
@@ -667,9 +646,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
                                     return ;
-
                                 }
-
                             }
                         }
                     }
@@ -692,8 +669,6 @@ Ext.onReady(function () {
                             var date11 = new Date(date1);
                             var date2 = Ext.getCmp('jhjgsj').getSubmitValue() + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
                             var date22 = new Date(date2);
-
-
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
                             if(gongshicha2 >= 0)
@@ -710,9 +685,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
                                     return ;
-
                                 }
-
                             }
                         }
                     }
@@ -815,7 +788,6 @@ Ext.onReady(function () {
             items: [inputPanel]
         }]
     });
-
     _init();
 });
 
@@ -827,13 +799,11 @@ function _selectTaskId() {
         params: {
             businessKey: V_ORDERGUID,
             userCode: Ext.util.Cookies.get('v_personcode')
-
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -857,7 +827,6 @@ function _selectNextPer() {
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: V_V_SPECIALTY,
         V_V_WHERE: '通过'
-
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
@@ -873,7 +842,6 @@ function _init() {
             method: 'POST',
             params: {
                 'V_V_GUID': V_ORDERGUID
-
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
@@ -912,8 +880,7 @@ function _init() {
                     icon: Ext.MessageBox.ERROR
                 });
             }
-        })
-
+        });
         //Ext.getBody().unmask();
     }
 
@@ -961,12 +928,9 @@ function _init() {
             });
         }
     });*/
-
 }
 
 function _agree() {
-
-
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批通过';
@@ -981,7 +945,6 @@ function _agree() {
 
     if (Ext.getCmp('jhgshj').getValue() < 0) {
         Ext.MessageBox.alert('提示', '竣工时间必须大于停工时间');
-
         return;
     }
 
@@ -1004,7 +967,6 @@ function _agree() {
             V_V_BZ: Ext.getCmp('bz').getValue(),
             V_V_INPER: Ext.util.Cookies.get('v_personcode'),
             V_V_JHMX_GUID: ""
-
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值
@@ -1043,7 +1005,6 @@ function _agree() {
                                 success: function (ret) {
                                     var resp = Ext.JSON.decode(ret.responseText);
                                     if (resp.V_INFO == 'success') {
-
                                         window.close();
                                         window.opener.OnPageLoad();
                                     }
@@ -1052,8 +1013,6 @@ function _agree() {
                         } else {
                             Ext.MessageBox.alert('提示', '任务提交失败');
                         }
-
-
                     },
                     failure: function (response) {//访问到后台时执行的方法。
                         Ext.MessageBox.show({
@@ -1063,10 +1022,7 @@ function _agree() {
                             icon: Ext.MessageBox.ERROR
                         })
                     }
-
                 })
-
-
             } else {
                 Ext.MessageBox.show({
                     title: '错误',
@@ -1084,9 +1040,7 @@ function _agree() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
 }
 
 function _reject() {
@@ -1110,8 +1064,6 @@ function _reject() {
         success: function (response) {
             window.close();
             window.opener.OnPageLoad();
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1121,11 +1073,8 @@ function _reject() {
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
 }
-
-
 
 function _close() {
     window.close();
@@ -1141,9 +1090,7 @@ function _ck_zyqload() {
     };
     //matGroupSecondStore.currentPage = 1;
     zyqStore.load();
-
 }
-
 
 function _zyq_zy() {
     var zyStore = Ext.data.StoreManager.lookup('zyStore');
@@ -1174,8 +1121,6 @@ function _zyq_sbmc() {
     };
     //matGroupSecondStore.currentPage = 1;
     sbmcStore.load();
-
-
 }
 
 function _gongshiheji() {
@@ -1183,10 +1128,7 @@ function _gongshiheji() {
     var date11 = new Date(date1);
     var date2 = Ext.getCmp('jhjgsj').getSubmitValue() + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
     var date22 = new Date(date2);
-
-
     var gongshicha = date22.getTime() - date11.getTime();
     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
     Ext.getCmp('jhgshj').setValue(gongshicha2);
-
 }

@@ -11,22 +11,20 @@ mingtian.setDate(mingtian.getDate() + 1);
 var Year = [];
 for (var i = today.getFullYear() - 1; i <= today.getFullYear() + 3; i++)Year.push({displayField: i, valueField: i});
 var months = [];
-for (var i = 1; i <= 12; i++) {
-    if (i < 10) {
-        months.push({displayField: ("0" + "" + i), valueField: i});
+for (var j = 1; j <= 12; j++) {
+    if (j < 10) {
+        months.push({displayField: ("0" + "" + j), valueField: j});
     } else {
-        months.push({displayField: i, valueField: i});
+        months.push({displayField: j, valueField: j});
     }
-
 }
-var V_GUID ="123132";
-var V_PICGUID1 ="232312";
-var V_PICGUID2 ="2222";
-var V_PICGUID3 ="123312";
+
+var V_GUID = "123132";
+var V_PICGUID1 = "232312";
+var V_PICGUID2 = "2222";
+var V_PICGUID3 = "123312";
 var ProcessInstanceId = '';
 var V_ORDERGUID = "";
-
-
 
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
@@ -34,7 +32,6 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
     (parameters.ProcessInstanceId == undefined) ? ProcessInstanceId = '' : ProcessInstanceId = parameters.ProcessInstanceId;
     V_GUID = V_ORDERGUID;
-
 }
 
 var ckstoreload = false;
@@ -47,7 +44,6 @@ var index03 = 0;
 //var picguidbegin = V_PICGUID1;
 var picguidbegin = "";
 var saveload = false;
-
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
@@ -157,8 +153,7 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {
-            }
+            extraParams: {}
         },
         listeners: {
             load: function (store, records) {
@@ -166,7 +161,6 @@ Ext.onReady(function () {
             }
         }
     });
-
 
     var filegridPanel = Ext.create("Ext.panel.Panel", {
         id: 'filegridPanel',
@@ -176,7 +170,6 @@ Ext.onReady(function () {
         html: "<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'>  </td > <td align='center'> </td> <td align='center'> </td> <td></td> </tr> </table> </div>",//width: 400,
         style: ' margin: 5px 0px 0px 0px',
         columnLines: true
-
     });
 
     var filegridPanel2 = Ext.create("Ext.grid.Panel", {
@@ -223,7 +216,7 @@ Ext.onReady(function () {
         autoscroll: true,
         //bodyStyle : 'overflow-x:hidden; overflow-y:auto',
         //title: '删除年计划',
-        region: 'center',
+        //region: 'center',
         //width: '100%',
         columns: [
             {
@@ -247,42 +240,41 @@ Ext.onReady(function () {
                 dataIndex: 'EndTime',
                 align: 'center'
             }
-
         ]
     });
 
     var panel2 = Ext.create('Ext.Panel', {
-        id : 'panel2',
+        id: 'panel2',
         layout: 'column',
-        defaults : {
-            style : 'margin:2px',
+        defaults: {
+            style: 'margin:2px',
             xtype: 'button'
         },
-        items : [{
+        items: [{
             xtype: 'textfield',
-            id:'yj',
+            id: 'yj',
             editable: false,
             fieldLabel: '意见:',
-            fieldStyle:'background-color: #FFEBCD; background-image: none;',
+            fieldStyle: 'background-color: #FFEBCD; background-image: none;',
             labelWidth: 30,
             queryMode: 'local',
             style: ' margin: 5px 0px 0px 0px',
             labelAlign: 'right',
             width: 200
             //readOnly : true,
-        },{
+        }, {
             xtype: 'button',
             text: '确认通过',
             icon: imgpath + '/saved.png',
             handler: _tongyi,
             style: 'margin: 5px 5px 5px 5px'
-        },{
+        }, {
             xtype: 'button',
             text: '驳回',
             icon: imgpath + '/cross.png',
             handler: _butongyi,
             style: 'margin: 5px 5px 5px 5px'
-        },{
+        }, {
             xtype: 'button',
             text: '打印预览',
             icon: imgpath + '/preview.png',
@@ -294,28 +286,28 @@ Ext.onReady(function () {
             icon: imgpath + '/cross.png',
             handler: _close,
             style: 'margin: 5px 5px 5px 5px'
-        } ]
+        }]
     });
 
     var panel3 = Ext.create('Ext.form.FormPanel', {
-        id : 'panel3',
+        id: 'panel3',
         //title : '<fmt:message key="inputPanel" />',
-        header : false,
-        frame : true,
-        layout : 'vbox',
-        //baseCls: 'my-panel-no-border',
-        defaults : {
-            labelAlign : 'right',
-            labelWidth : 100,
-            inputWidth : 140,
-            margin : '2,0,0,0'
+        header: false,
+        frame: true,
+        //layout: 'vbox',
+        baseCls: 'my-panel-no-border',
+        defaults: {
+            labelAlign: 'right',
+            labelWidth: 100,
+            inputWidth: 140,
+            margin: '2,0,0,0'
         },
-        items : [ {
+        items: [{
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            border:false,
-            //frame: true,
+            border: false,
+            frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'ck',
@@ -327,7 +319,7 @@ Ext.onReady(function () {
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
                 queryMode: 'local',
-                readOnly : true,
+                readOnly: true,
                 //baseCls: 'margin-bottom',
                 style: ' margin: 5px 0px 0px 0px',
                 labelAlign: 'right',
@@ -337,7 +329,7 @@ Ext.onReady(function () {
                 xtype: 'textfield',
                 //store: zyqstore,
                 fieldLabel: '作业区',
-                readOnly : true,
+                readOnly: true,
                 editable: false,
                 labelWidth: 100,
                 displayField: 'V_DEPTNAME',
@@ -353,14 +345,14 @@ Ext.onReady(function () {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [ {
+            items: [{
                 id: 'sqtime',
                 //store:timeStore,
                 xtype: 'textfield',
                 fieldLabel: '申请日期',
-                readOnly : true,
+                readOnly: true,
                 // format: 'Y-m-d',
                 labelWidth: 100,
                 queryMode: 'local',
@@ -374,25 +366,25 @@ Ext.onReady(function () {
                 id: 'xmcode',
                 xtype: 'textfield',
                 fieldLabel: '项目编号',
-                readOnly : true,
+                readOnly: true,
                 labelWidth: 100,
                 queryMode: 'local',
                 //baseCls: 'margin-bottom',
                 style: ' margin: 5px 0px 0px 0px',
                 width: 250,
                 labelAlign: 'right'
-            }  ]
-        },{
+            }]
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [ {
+            items: [{
                 id: 'xmname',
                 xtype: 'textfield',
                 fieldLabel: '项目名称',
-                readOnly : true,
+                readOnly: true,
                 editable: false,
                 labelWidth: 100,
                 queryMode: 'local',
@@ -400,19 +392,19 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px 0px',
                 width: 500,
                 labelAlign: 'right'
-            } ]
-        },{
+            }]
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 id: 'zy',
                 xtype: 'textfield',
                 //store: zystore,
                 fieldLabel: '专业',
-                readOnly : true,
+                readOnly: true,
                 editable: false,
                 labelWidth: 100,
                 displayField: 'V_MAJOR_NAME',
@@ -425,7 +417,7 @@ Ext.onReady(function () {
             }, {
                 id: 'zyfzren',
                 xtype: 'textfield',
-                readOnly : true,
+                readOnly: true,
                 //store: zyfzrenstore,
                 fieldLabel: '设备室专业负责人',
                 editable: false,
@@ -437,18 +429,18 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px 0px',
                 width: 250,
                 labelAlign: 'right'
-            } ]
-        },{
+            }]
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [  {
+            items: [{
                 xtype: 'textfield',
                 id: 'year',
                 fieldLabel: '计划施工日期:',
-                readOnly : true,
+                readOnly: true,
                 editable: false,
                 style: ' margin: 5px 0px 0px 0px',
                 labelWidth: 100,
@@ -463,7 +455,7 @@ Ext.onReady(function () {
                 xtype: 'textfield',
                 id: 'jhyear',
                 fieldLabel: '计划年月:',
-                readOnly : true,
+                readOnly: true,
                 editable: false,
                 style: ' margin: 5px 0px 0px 0px',
                 labelWidth: 100,
@@ -478,7 +470,7 @@ Ext.onReady(function () {
                 xtype: 'textfield',
                 id: 'jhmonth',
                 editable: false,
-                readOnly : true,
+                readOnly: true,
                 style: ' margin: 5px 0px 0px 10px',
                 //labelWidth: 40,
                 width: 80,
@@ -487,17 +479,17 @@ Ext.onReady(function () {
                 // value: today.getMonth()+1,
                 // store: monthStore,
                 queryMode: 'local'
-            } ]
-        },{
+            }]
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [ {
+            items: [{
                 id: 'gczgs',
                 xtype: 'textfield',
-                readOnly : true,
+                readOnly: true,
                 fieldLabel: '工程总概算(万元)',
                 editable: false,
                 labelWidth: 100,
@@ -510,7 +502,7 @@ Ext.onReady(function () {
             }, {
                 id: 'gczys',
                 xtype: 'textfield',
-                readOnly : true,
+                readOnly: true,
                 fieldLabel: '工程总预算(万元)',
                 editable: false,
                 labelWidth: 100,
@@ -520,17 +512,17 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px 0px',
                 width: 250,
                 labelAlign: 'right'
-            } ]
-        },{
+            }]
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [  {
+            items: [{
                 id: 'sfww',
                 xtype: 'textfield',
-                readOnly : true,
+                readOnly: true,
                 //store: sfwaiweiStore,
                 fieldLabel: '是否外委',
                 editable: false,
@@ -547,7 +539,7 @@ Ext.onReady(function () {
                 id: 'jxdw',
                 xtype: 'textfield',
                 //store: jxdwstore,
-                readOnly : true,
+                readOnly: true,
                 fieldLabel: '检修单位',
                 editable: false,
                 labelWidth: 100,
@@ -559,15 +551,15 @@ Ext.onReady(function () {
                 width: 250,
                 labelAlign: 'right'
             }]
-        },{
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [  {
+            items: [{
                 id: 'sftsqiangxiu',
-                readOnly : true,
+                readOnly: true,
                 xtype: 'textfield',
                 //store: sftsqiangxiuStore,
                 fieldLabel: '是否特殊抢修 ',
@@ -582,32 +574,32 @@ Ext.onReady(function () {
                 width: 250,
                 labelAlign: 'right'
             }]
-        },{
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [ {
-                region : 'center',
-                layout : 'fit',
+            items: [{
+                region: 'center',
+                layout: 'fit',
                 // height: 80,
                 // width:580,
-                border : false,
-                items : [ filegridPanel ]
+                border: false,
+                items: [filegridPanel]
             }]
-        },{
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [ {
+            items: [{
                 id: 'qxsmjfy',
                 xtype: 'textarea',
                 fieldLabel: '缺陷说明及费用 ',
                 editable: false,
-                readOnly : true,
+                readOnly: true,
                 labelWidth: 100,
                 queryMode: 'local',
                 //baseCls: 'margin-bottom',
@@ -615,17 +607,17 @@ Ext.onReady(function () {
                 width: 500,
                 labelAlign: 'right'
             }]
-        },{
+        }, {
             xtype: 'panel',
             region: 'center',
             layout: 'column',
-            //frame: true,
+            frame: true,
             baseCls: 'my-panel-no-border',
-            items: [  {
+            items: [{
                 id: 'cqfa',
                 xtype: 'textarea',
                 fieldLabel: '采取方案 ',
-                readOnly : true,
+                readOnly: true,
                 editable: false,
                 labelWidth: 100,
                 queryMode: 'local',
@@ -651,37 +643,45 @@ Ext.onReady(function () {
          }*/]
     });
 
-
     var rightPanel = Ext.create('Ext.Panel', {
-        id : 'rightPanel',
-        layout : 'border',
-        border : false,
-        items : [ {
-            region : 'west',
-            layout : 'fit',
-            items : [ panel3 ]
+        id: 'rightPanel',
+        layout: 'border',
+        border: false,
+        items: [{
+            region: 'west',
+            border: false,
+            width: '30%',
+            items: [panel3]
         }, {
-            region : 'center',
-            layout : 'fit',
-            border : false,
-            items : [ grid ]
-        } ]
+            region: 'center',
+            layout: 'fit',
+            border: false,
+            items: [grid]
+        }]
     });
 
     Ext.create('Ext.container.Viewport', {
-        layout : 'border',
-        items : [ {
-            region : 'north',
-            border : false,
-            items : [ panel2]
+        id: "viewport",
+        layout: {
+            type: 'border',
+            regionWeights: {
+                west: -1,
+                north: 1,
+                south: 1,
+                east: -1
+            }
+        },
+        items: [{
+            region: 'north',
+            border: false,
+            items: [panel2]
         }, {
-            region : 'center',
-            layout : 'fit',
-            border : false,
-            items : [ rightPanel ]
-        } ]
+            region: 'center',
+            layout: 'fit',
+            border: false,
+            items: [rightPanel]
+        }]
     });
-
 
     /* Ext.create('Ext.Viewport', {
      layout: 'border',
@@ -705,20 +705,16 @@ Ext.onReady(function () {
      );
 
      });*/
-
     _init();
-})
+});
 
 function _init() {
-
-    //console.log(V_GUID);
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
         V_V_IP: "",
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
         V_V_GUID: V_GUID
-
     };
     //matGroupThirdStore.currentPage = 1;
 
@@ -749,29 +745,24 @@ function _init() {
 
     imagestore.load();
 
-
     index01 = imagestore.getCount() - 1;
     index02 = imagestore.getCount() - 2;
     index03 = imagestore.getCount() - 3;
 
-    if(imagestore.getCount()==1){
+    if (imagestore.getCount() == 1) {
         V_PICGUID1 = imagestore.getAt(0).get('V_PICGUID');
         picguidbegin = V_PICGUID1;
     }
-    if(imagestore.getCount()==2){
+    if (imagestore.getCount() == 2) {
         V_PICGUID1 = imagestore.getAt(1).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(0).get('V_PICGUID');
-
     }
-    if(imagestore.getCount()>=3)
-    {
+    if (imagestore.getCount() >= 3) {
         V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
         V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-
     }
     picguidbegin = V_PICGUID1;
-    //alert(1.8);
 
     Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'>  </td > <td align='center'> </td> <td align='center'> </td> <td></td> </tr> </table> </div>"
     );
@@ -782,12 +773,7 @@ function _init() {
     };
     spqzstore.currentPage = 1;
     spqzstore.load();
-    //alert(2.0);
     _selectTaskId();
-
-
-
-
 }
 
 function _selectTaskId() {
@@ -798,14 +784,12 @@ function _selectTaskId() {
         params: {
             businessKey: V_ORDERGUID,
             userCode: Ext.util.Cookies.get('v_personcode')
-
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
             Ext.getBody().unmask();//去除页面笼罩
-
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -823,11 +807,7 @@ function _preViewImage() {
     imagestore.proxy.extraParams = {
         V_V_GUID: V_GUID
     };
-    //matGroupSecondStore.currentPage = 1;
     imagestore.load();
-    //console.log(imagestore)
-    //console.log("imagestore.getCount()" + imagestore.getCount())
-
     index01 = imagestore.getCount() - 1;
     index02 = imagestore.getCount() - 2;
     index03 = imagestore.getCount() - 3;
@@ -838,37 +818,27 @@ function _preViewImage() {
     if (imagestore.getCount() == 2) {
         V_PICGUID1 = imagestore.getAt(1).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(0).get('V_PICGUID');
-
     }
     if (imagestore.getCount() >= 3) {
         V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
         V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-
     }
-
-
-    //console.log("index01=" + index01);
-    //console.log("index02=" + index02);
-    //console.log("index03=" + index03);
-
     Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'>  </td > <td align='center'> </td> <td align='center'> </td> <td></td> </tr> </table> </div>"
     );
 }
+
 function _last() {
     index01++;
     index02++;
     index03++;
     var imagestore = Ext.data.StoreManager.lookup('imagestore');
-    //console.log(V_PICGUID1);
-    //console.log(picguidbegin);
     if (V_PICGUID1 == picguidbegin) {
         Ext.Msg.alert('提示信息', '已经是第一张');
         index01--;
         index02--;
         index03--;
         return;
-
     } else {
         V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
@@ -879,9 +849,7 @@ function _last() {
         Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'>  </td > <td align='center'> </td> <td align='center'> </td> <td></td> </tr> </table> </div>"
         );
         PICGUID1 = "";
-
     }
-
 }
 
 function _next() {
@@ -903,11 +871,6 @@ function _next() {
         V_PICGUID1 = imagestore.getAt(index01).get('V_PICGUID');
         V_PICGUID2 = imagestore.getAt(index02).get('V_PICGUID');
         V_PICGUID3 = imagestore.getAt(index03).get('V_PICGUID');
-        // console.log("V_PICGUID1=" + V_PICGUID1);
-        // console.log("V_PICGUID2=" + V_PICGUID2);
-        //console.log("V_PICGUID3=" + V_PICGUID3);
-
-
         /* if(V_PICGUID3 == PICGUID1)
          {
          Ext.Msg.alert('提示信息', '已经是最后一张');
@@ -918,11 +881,7 @@ function _next() {
         Ext.getCmp('filegridPanel').body.update("<div id = 'yulan'> <table border='0' width='100' height='50'><tr> <td> <input type='button' value='<<' onclick = '_last()'/> </td><td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID1 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID2 + ".jpg' width='120px' height='100px' /> </td> <td> <img src='../../images/pm_dxgc_wwjx/" + V_GUID + "/thumb_" + V_PICGUID3 + ".jpg' width='120px' height='100px' /> </td> <td> <input type='button' value='>>' onclick='_next()' /> </td> </tr> <tr> <td></td> <td align='center'>  </td > <td align='center'> </td> <td align='center'> </td> <td></td> </tr> </table> </div>"
         );
         // PICGUID1 = V_PICGUID3;
-
-
     }
-
-
 }
 
 /*function _next1()
@@ -950,7 +909,6 @@ function _next() {
  }*/
 
 
-
 function _validate(obj) {
     var valid = true;
     for (var i = 0; i < obj.items.length; i++) {
@@ -961,9 +919,6 @@ function _validate(obj) {
     return valid;
 }
 
-
-
-
 function _close() {
     window.close();
 }
@@ -971,12 +926,9 @@ function _close() {
 function _printPreview() {
     //var records = Ext.getCmp('formPanel').getSelectionModel().getSelection();
     // var target = _target();
-
-
-
     if (_initPlugin()) {
         // window.showModalDialog('viewPrint' + target + '.do?FORM_ID_=' + records[0].get('FORM_ID_') + '&action=print&processInstanceId=' + records[0].get('PROCESS_INSTANCE_ID_') + '&random=' + Math.random(), window, 'resizable=yes; dialogWidth=0px; dialogHeight=0px');
-        window.showModalDialog(AppUrl + "/page/PM_22010401/index.html?action=printPreview&V_GUID="+ V_GUID +"&V_PICGUID1="+ V_PICGUID1 +"&V_PICGUID2="+ V_PICGUID2 +"&V_PICGUID3="+ V_PICGUID3 +"&random="+Math.random(), "", "dialogHeight:900px;dialogWidth:1100px");
+        window.showModalDialog(AppUrl + "/page/PM_22010401/index.html?action=printPreview&V_GUID=" + V_GUID + "&V_PICGUID1=" + V_PICGUID1 + "&V_PICGUID2=" + V_PICGUID2 + "&V_PICGUID3=" + V_PICGUID3 + "&random=" + Math.random(), "", "dialogHeight:900px;dialogWidth:1100px");
         // var ret = window.open(AppUrl + 'page/PM_140801/index.html?random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
     }
 
@@ -990,8 +942,6 @@ function _printPreview() {
 function _initPlugin() {
     try {
         LODOP = document.getElementById('LODOP');
-        //console.log(LODOP)
-
         LODOP.SET_LICENSES("鞍山市新安杰系统集成有限公司", "559677661718684777294958093190", "", "");
         LODOP.SET_PRINT_PAGESIZE(2, 0, 0, "A4");
         LODOP.SET_SHOW_MODE('LANDSCAPE_DEFROTATED', 1);
@@ -1009,15 +959,13 @@ function _printInstall() {
     location.href = "../../resources/install_lodop32.exe";
 }
 
-function _tongyi()
-{
+function _tongyi() {
     var spyj = '';
     if (Ext.getCmp('yj').getValue() == '' || Ext.getCmp('yj').getValue() == null) {
         spyj = '通过';
     } else {
         spyj = Ext.getCmp('yj').getValue();
     }
-
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -1025,70 +973,65 @@ function _tongyi()
         params: {
             taskId: taskId,
             idea: '通过',
-            parName: ['lcjs', "flow_yj",'shtgtime'],
-            parVal: ['lcjs',spyj,Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s') ],
-            processKey :$.url().param("ProcessDefinitionKey"),
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : 'lcjs',
-            V_STEPNAME : '流程结束',
-            V_IDEA : '通过',
-            V_NEXTPER : 'lcjs',
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            parName: ['lcjs', "flow_yj", 'shtgtime'],
+            parVal: ['lcjs', spyj, Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s')],
+            processKey: $.url().param("ProcessDefinitionKey"),
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: 'lcjs',
+            V_STEPNAME: '流程结束',
+            V_IDEA: '通过',
+            V_NEXTPER: 'lcjs',
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.ret == '任务提交成功') {
                 /*var gridStore = Ext.data.StoreManager.lookup('gridStore');
-                Ext.Ajax.request({
-                    url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_SP',
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_IP :"",
-                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_V_PERNAME:Ext.util.Cookies.get('v_personname2'),
-                        V_V_ORGCODE : gridStore.getAt(0).get('V_ORGCODE'),
-                        V_V_DEPTCODE : gridStore.getAt(0).get('V_DEPTCODE'),
-                        V_V_GUID: V_GUID,
-                        V_V_FLAG :'审批中',
-                        V_V_NEXTSPR : Ext.getCmp('sp').getValue(),
-                        V_V_SP : '同意',
-                        V_V_YJ : Ext.getCmp('yj').getValue()
+                 Ext.Ajax.request({
+                 url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_SP',
+                 type: 'ajax',
+                 method: 'POST',
+                 params: {
+                 V_V_IP :"",
+                 V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                 V_V_PERNAME:Ext.util.Cookies.get('v_personname2'),
+                 V_V_ORGCODE : gridStore.getAt(0).get('V_ORGCODE'),
+                 V_V_DEPTCODE : gridStore.getAt(0).get('V_DEPTCODE'),
+                 V_V_GUID: V_GUID,
+                 V_V_FLAG :'审批中',
+                 V_V_NEXTSPR : Ext.getCmp('sp').getValue(),
+                 V_V_SP : '同意',
+                 V_V_YJ : Ext.getCmp('yj').getValue()
 
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);//后台返回的值
-                        if (data.success) {//成功，会传回true
-                            //alert(1);
+                 },
+                 success: function (response) {
+                 var data = Ext.decode(response.responseText);//后台返回的值
+                 if (data.success) {//成功，会传回true
+                 //alert(1);
 
 
-                        } else {
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: data.message,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            });
-                        }
-                    },
-                    failure: function (response) {//访问到后台时执行的方法。
-                        Ext.MessageBox.show({
-                            title: '错误',
-                            msg: response.responseText,
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.ERROR
-                        })
-                    }
+                 } else {
+                 Ext.MessageBox.show({
+                 title: '错误',
+                 msg: data.message,
+                 buttons: Ext.MessageBox.OK,
+                 icon: Ext.MessageBox.ERROR
+                 });
+                 }
+                 },
+                 failure: function (response) {//访问到后台时执行的方法。
+                 Ext.MessageBox.show({
+                 title: '错误',
+                 msg: response.responseText,
+                 buttons: Ext.MessageBox.OK,
+                 icon: Ext.MessageBox.ERROR
+                 })
+                 }
 
-                })*/
+                 })*/
                 window.close();
                 window.opener.OnPageLoad();
-
-
-
             }
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1098,21 +1041,17 @@ function _tongyi()
                 icon: Ext.MessageBox.ERROR
             })
         }
-
     })
-
-
 }
 
-function _butongyi()
-{
+function _butongyi() {
     var spyj = '';
     if (Ext.getCmp('yj').getValue() == '' || Ext.getCmp('yj').getValue() == null) {
         spyj = '审批驳回';
     } else {
         spyj = Ext.getCmp('yj').getValue();
     }
-    var Assignee='';
+    var Assignee = '';
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/InstanceState',
         method: 'POST',
@@ -1122,100 +1061,90 @@ function _butongyi()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee=resp.list[0].Assignee;
+            Assignee = resp.list[0].Assignee;
         }
     });
-    if(Assignee!=''){
-    Ext.Ajax.request({
-        url: AppUrl + 'Activiti/TaskComplete',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            taskId: taskId,
-            idea: '不通过',
-            parName: ['fqrxg', "flow_yj"],
-            parVal: [V_PERSONCODE, spyj],
-            processKey: $.url().param("ProcessDefinitionKey"),
-            businessKey: V_ORDERGUID,
-            V_STEPCODE: 'fqrxg',
-            V_STEPNAME: '发起人修改',
-            V_IDEA: '不通过',
-            V_NEXTPER: V_PERSONCODE,
-            V_INPER: Ext.util.Cookies.get('v_personcode')
-        },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);
-            if (resp.ret == '任务提交成功') {
-                var gridStore = Ext.data.StoreManager.lookup('gridStore');
-                Ext.Ajax.request({
-                    url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_SPNO',
-                    type: 'ajax',
-                    method: 'POST',
-                    params: {
-                        V_V_IP :"",
-                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                        V_V_PERNAME:Ext.util.Cookies.get('v_personname2'),
-                        V_V_ORGCODE : gridStore.getAt(0).get('V_ORGCODE'),
-                        V_V_DEPTCODE : gridStore.getAt(0).get('V_DEPTCODE'),
-                        V_V_GUID: V_GUID,
-                        V_V_FLAG :'审批驳回',
-                        V_V_NEXTSPR :V_PERSONCODE,
-                        V_V_SP : '不同意',
-                        V_V_YJ : Ext.getCmp('yj').getValue()
-
-                    },
-                    success: function (response) {
-                        var data = Ext.decode(response.responseText);//后台返回的值
-                        if (data.success) {//成功，会传回true
-                            window.close();
-                            window.opener.OnPageLoad();
-
-                        } else {
+    if (Assignee != '') {
+        Ext.Ajax.request({
+            url: AppUrl + 'Activiti/TaskComplete',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                taskId: taskId,
+                idea: '不通过',
+                parName: ['fqrxg', "flow_yj"],
+                parVal: [V_PERSONCODE, spyj],
+                processKey: $.url().param("ProcessDefinitionKey"),
+                businessKey: V_ORDERGUID,
+                V_STEPCODE: 'fqrxg',
+                V_STEPNAME: '发起人修改',
+                V_IDEA: '不通过',
+                V_NEXTPER: V_PERSONCODE,
+                V_INPER: Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if (resp.ret == '任务提交成功') {
+                    var gridStore = Ext.data.StoreManager.lookup('gridStore');
+                    Ext.Ajax.request({
+                        url: AppUrl + 'PM_22/PRO_PM_EQUREPAIRPLAN_SPNO',
+                        type: 'ajax',
+                        method: 'POST',
+                        params: {
+                            V_V_IP: "",
+                            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                            V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
+                            V_V_ORGCODE: gridStore.getAt(0).get('V_ORGCODE'),
+                            V_V_DEPTCODE: gridStore.getAt(0).get('V_DEPTCODE'),
+                            V_V_GUID: V_GUID,
+                            V_V_FLAG: '审批驳回',
+                            V_V_NEXTSPR: V_PERSONCODE,
+                            V_V_SP: '不同意',
+                            V_V_YJ: Ext.getCmp('yj').getValue()
+                        },
+                        success: function (response) {
+                            var data = Ext.decode(response.responseText);//后台返回的值
+                            if (data.success) {//成功，会传回true
+                                window.close();
+                                window.opener.OnPageLoad();
+                            } else {
+                                Ext.MessageBox.show({
+                                    title: '错误',
+                                    msg: data.message,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR
+                                });
+                            }
+                        },
+                        failure: function (response) {//访问到后台时执行的方法。
                             Ext.MessageBox.show({
                                 title: '错误',
-                                msg: data.message,
+                                msg: response.responseText,
                                 buttons: Ext.MessageBox.OK,
                                 icon: Ext.MessageBox.ERROR
-                            });
+                            })
                         }
-                    },
-                    failure: function (response) {//访问到后台时执行的方法。
-                        Ext.MessageBox.show({
-                            title: '错误',
-                            msg: response.responseText,
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.ERROR
-                        })
-                    }
-
+                    })
+                } else {
+                    Ext.MessageBox.alert('提示', '任务提交失败');
+                }
+            },
+            failure: function (response) {//访问到后台时执行的方法。
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: response.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
                 })
-
-
-            } else {
-                Ext.MessageBox.alert('提示', '任务提交失败');
             }
-        },
-        failure: function (response) {//访问到后台时执行的方法。
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            })
-        }
-
-    })
-    }else{
+        })
+    } else {
         alert("发起人信息错误，无法驳回");
     }
-
-
 }
 
-function _spupdate()
-{
-    var owidth = window.document.body.offsetWidth ;
-    var oheight = window.document.body.offsetHeight ;
-    window.open(AppUrl + 'page/PM_22010103/index.html?V_GUID=' + V_GUID  + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
-
+function _spupdate() {
+    var owidth = window.document.body.offsetWidth;
+    var oheight = window.document.body.offsetHeight;
+    window.open(AppUrl + 'page/PM_22010103/index.html?V_GUID=' + V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
 }
