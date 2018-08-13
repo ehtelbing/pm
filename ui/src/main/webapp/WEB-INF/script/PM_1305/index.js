@@ -215,7 +215,7 @@ Ext.onReady(function () {
         layout: 'column',
         frame: true,
         border: false,
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         items: [
             {
                 xtype: 'combo',
