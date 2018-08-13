@@ -1,4 +1,9 @@
-﻿Ext.onReady(function () {
+﻿var printStore = Ext.create('Ext.data.Store', {
+    id: 'printStore',
+    autoLoad: false,
+    fields: ['V_INFORMATION', 'MTYPE', 'V_STATE', 'I_ID', 'D_DATE', 'V_EQUIP', 'V_TYPE', 'V_CLASSTYPE', 'V_PERSON', 'YS']
+});
+Ext.onReady(function () {
     var bmmcstore = Ext.create('Ext.data.Store', {
         autoLoad: true,
         storeId: 'bmmcstore',
@@ -6,7 +11,6 @@
         proxy: {
             type: 'ajax',
             async: false,
-//            url: APP + '/ModelSelect',
             url: AppUrl + 'Wsy/PRO_BASE_DEPT_VIEW_DEPTTYPE',
             actionMethods: {
                 read: 'POST'
@@ -19,11 +23,6 @@
                 V_V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
                 V_V_DEPTTYPE: '[主体作业区]',
                 V_V_PERSON: Ext.util.Cookies.get('v_personcode')
-//                parName: ['v_v_deptcode', 'v_v_depttype', 'v_v_person'],
-//                parType: ['s', 's', 's'],
-//                parVal: [Ext.util.Cookies.get('v_deptcode'), '[主体作业区]', Ext.util.Cookies.get('v_personcode')],
-//                proName: 'pro_base_dept_view_depttype',
-//                cursorName: 'v_cursor'
             }
         }
     });
@@ -34,7 +33,6 @@
         proxy: {
             type: 'ajax',
             async: false,
-//            url: APP + '/ModelSelect',
             url: AppUrl + 'Wsy/PRO_PM_DEFECT_STATE_VIEW',
             actionMethods: {
                 read: 'POST'
@@ -43,10 +41,7 @@
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {
-//                proName: 'PRO_PM_DEFECT_STATE_VIEW',
-//                cursorName: 'V_CURSOR'
-            }
+            extraParams: {}
         }
     });
     var lxstore = Ext.create('Ext.data.Store', {
@@ -56,7 +51,6 @@
         proxy: {
             type: 'ajax',
             async: false,
-//            url: APP + '/ModelSelect',
             url: AppUrl + 'Wsy/PRO_PM_BASEDIC_LIST',
             actionMethods: {
                 read: 'POST'
@@ -74,7 +68,6 @@
         proxy: {
             type: 'ajax',
             async: false,
-//            url: APP + '/ModelSelect',
             url: AppUrl + 'Wsy/PRO_PM_BASEDIC_LIST',
             actionMethods: {
                 read: 'POST'
@@ -192,24 +185,25 @@
             style: ' margin-left: 10px',
             icon: imgpath + '/printer.png',
             handler: function () {
-                var s = [], sum = [];
-                for (var i = 0; i < Ext.getStore('gridStore').data.length; i++) {
-                    s.push(Ext.getStore('gridStore').data.items[i].raw.I_ID);
-                }
-                for (j = 0; j < s.length; j++) {
-                    if (document.getElementById(s[j]).checked == true) {
-                        sum.push(s[j]);
+//                var ID_list = [];
+                printStore.removeAll();
+                var gridStore = Ext.getStore('gridStore');
+                for (var i = 0; i < gridStore.getCount(); i++) {
+                    if (document.getElementById(gridStore.getAt(i).get('I_ID')).checked) {
+//                        ID_list.push(Ext.getStore('gridStore').getAt(i).get('I_ID'));
+                        printStore.add(gridStore.getAt(i));
                     }
                 }
-                if (sum.length == 0) {
-                    return false;
+                if (printStore.getCount() > 0) {
+                    window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue() + "&endtime=" + Ext.getCmp('endtime').getRawValue(), "打印", "dialogHeight:700px;dialogWidth:1100px");
+                } else {
+                    Ext.MessageBox.show({
+                        title: '提示',
+                        msg: '没有要打印的内容',
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.WARNING
+                    });
                 }
-                var bmmc = Ext.ComponentManager.get('bmmc').getValue() == '%' ? 'ALL' : Ext.getCmp('bmmc').getValue();
-                var lx = Ext.ComponentManager.get('lx').getValue() == '%' ? 'ALL' : Ext.getCmp('lx').getValue();
-                var bb = Ext.ComponentManager.get('bb').getValue() == '%' ? 'ALL' : Ext.getCmp('bb').getValue();
-                var begintime = Ext.ComponentManager.get('begintime').getRawValue();
-                var endtime = Ext.ComponentManager.get('endtime').getRawValue();
-                window.open(AppUrl + "page/No680109/printNew.html?bmmc=" + bmmc + "&lx=" + lx + "&bb=" + bb + "&begintime=" + begintime + "&endtime=" + endtime, "", "dialogHeight:700px;dialogWidth:1100px");
             }
         }]
     });
@@ -238,6 +232,11 @@
             xtype: 'rownumberer',
             width: 30,
             sortable: false
+        }, {
+            text: 'ID',
+            dataIndex: 'I_ID',
+            width: 150,
+            renderer: left
         }, {
             text: '日期时间',
             dataIndex: 'D_DATE',
@@ -319,20 +318,17 @@
         lxstore.load({
             params: {
                 IS_V_BASETYPE: 'PP_INFORMATION/V_TYPE'
-
-
-//                parName: ['IS_V_BASETYPE'],
-//                parType: ['s'],
-//                parVal: ['PP_INFORMATION/V_TYPE'],
-//                proName: 'PRO_PM_BASEDIC_LIST',
-//                cursorName: 'V_CURSOR'
             }
         });
         Ext.data.StoreManager.lookup('bmmcstore').insert(0, {
             V_DEPTNAME: '--全部--',
             V_DEPTCODE: '%'
         });
-        Ext.ComponentManager.get('bmmc').select(Ext.util.Cookies.get('v_deptcode'));
+        if (Ext.ComponentManager.get('bmmc').findRecordByValue(Ext.util.Cookies.get('v_deptcode')) == false) {
+            Ext.ComponentManager.get('bmmc').select(bmmcstore.getAt(0));
+        } else {
+            Ext.ComponentManager.get('bmmc').select(Ext.util.Cookies.get('v_deptcode'));
+        }
     });
     lxstore.on("load", function () {
         Ext.data.StoreManager.lookup('lxstore').insert(0, {
@@ -347,12 +343,6 @@
         bbstore.load({
             params: {
                 IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASSTYPE'
-
-//                parName: ['IS_V_BASETYPE'],
-//                parType: ['s'],
-//                parVal: ['PM_DIARYDATA/V_CLASSTYPE'],
-//                proName: 'PRO_PM_BASEDIC_LIST',
-//                cursorName: 'V_CURSOR'
             }
         });
         sqxzt.load();
@@ -366,15 +356,14 @@
             V_BASECODE: '%'
         });
         Ext.ComponentManager.get('bb').select(bbstore.getAt(0));
-        // query();
     });
-    /*	gridStore.on("load", function() {
-            Ext.ComponentManager.get('sum').setValue(
-                    '数量：' + Ext.getStore('gridStore').data.items.length);
-        });*/
+    gridStore.on("load", function () {
+        Ext.ComponentManager.get('sum').setValue(
+                '数量：' + Ext.getStore('gridStore').data.items.length);
+    });
     Ext.getCmp('lx').on("change", function () {
         if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
-            Ext.getCmp('qxstrue').show()
+            Ext.getCmp('qxstrue').show();
         } else {
             Ext.getCmp('qxstrue').hide();
         }
@@ -384,30 +373,8 @@
 function OnButtonExcelClicked() {
     if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
         document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST3_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_V_TYPE_STATE=' + encodeURI(Ext.ComponentManager.get('qxstrue').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
-//        var tableName = ["日期时间", "设备名称", "内容", "上报人", "状态", "类型", "班型"];
-//        var tableKey = ['D_DATE', 'V_EQUIP', 'V_INFORMATION', 'V_PERSON', 'V_STATE', 'V_TYPE', 'V_CLASSTYPE'];
-//        var parName = ['V_V_PERSONCODE', 'V_V_DEPT', 'V_V_TYPE', 'V_V_CLASSTYPE', 'V_V_TYPE_STATE ', 'V_D_FROMDATE', 'V_D_TODATE'];
-//        var parType = ['s', 's', 's', 's', 's', 'dt', 'dt'];
-//        var parVal = [Ext.util.Cookies.get('v_personcode'), Ext.ComponentManager.get('bmmc').getValue(), Ext.ComponentManager.get('lx').getValue(), Ext.ComponentManager.get('bb').getValue(), Ext.ComponentManager.get('qxstrue').getValue(), Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'), Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')];
-//        var proName = 'PRO_PP_INFORMATION_WITHD_LIST3';
-//        var cursorName = 'v_cursor';
-//        var returnStr = ['null'];
-//        var returnStrName = ['null'];
-//        var returnStrType = ['null'];
-//        submitData("ModelExcelTotal", tableName, tableKey, parName, parType, parVal, proName, returnStr, returnStrType, returnStrName, cursorName, "title", "信息缺陷作业票查询");
     } else {
         document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
-//        var tableName = ["日期时间", "设备名称", "内容", "上报人", "状态", "类型", "班型"];
-//        var tableKey = ['D_DATE', 'V_EQUIP', 'V_INFORMATION', 'V_PERSON', 'V_STATE', 'V_TYPE', 'V_CLASSTYPE'];
-//        var parName = ['V_V_PERSONCODE', 'v_v_dept', 'v_v_type', 'v_v_classtype', 'v_d_fromdate', 'v_d_todate'];
-//        var parType = ['s', 's', 's', 's', 'dt', 'dt'];
-//        var parVal = [Ext.util.Cookies.get('v_personcode'), Ext.ComponentManager.get('bmmc').getValue(), Ext.ComponentManager.get('lx').getValue(), Ext.ComponentManager.get('bb').getValue(), Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'), Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')];
-//        var proName = 'PRO_PP_INFORMATION_WITHD_LIST2';
-//        var cursorName = 'v_cursor';
-//        var returnStr = ['null'];
-//        var returnStrName = ['null'];
-//        var returnStrType = ['null'];
-//        submitData("ModelExcelTotal", tableName, tableKey, parName, parType, parVal, proName, returnStr, returnStrType, returnStrName, cursorName, "title", "信息缺陷作业票查询");
     }
 }
 
@@ -426,11 +393,6 @@ function queryStore() {
                 V_V_TYPE_STATE: Ext.ComponentManager.get('qxstrue').getValue(),
                 V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'),
                 V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')
-//                parName: [],
-//                parType: ['s', 's', 's', 's', 's', 'dt', 'dt'],
-//                parVal: [],
-//                proName: 'PRO_PP_INFORMATION_WITHD_LIST3',
-//                cursorName: 'v_cursor'
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
@@ -451,11 +413,6 @@ function queryStore() {
                 V_V_CLASSTYPE: Ext.ComponentManager.get('bb').getValue(),
                 V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'),
                 V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')
-//                parName: ['V_V_PERSONCODE', 'v_v_dept', 'v_v_type', 'v_v_classtype', 'v_d_fromdate', 'v_d_todate'],
-//                parType: ['s', 's', 's', 's', 'dt', 'dt'],
-//                parVal: [Ext.util.Cookies.get('v_personcode'), Ext.ComponentManager.get('bmmc').getValue(), Ext.ComponentManager.get('lx').getValue(), Ext.ComponentManager.get('bb').getValue(), Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'), Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')],
-//                proName: 'PRO_PP_INFORMATION_WITHD_LIST2',
-//                cursorName: 'v_cursor'
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);

@@ -1624,10 +1624,8 @@ public class WsyService {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PM_REALINFOTL_DEL" + "(:V_ID,:V_CURSOR)}");
             cstmt.setString("V_ID", V_ID);
-//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-//            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
             result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);

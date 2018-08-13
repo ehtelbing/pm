@@ -7,7 +7,6 @@ var bxStore = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-        //        url: APP + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_PM_BASEDIC_LIST',
         actionMethods: {
             read: 'POST'
@@ -19,15 +18,6 @@ var bxStore = Ext.create("Ext.data.Store", {
         extraParams: {
             IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASSTYPE'
         }
-        //        extraParams: {
-        //            parName: ['IS_V_BASETYPE'],
-        //            parType: ['s'],
-        //            parVal: [
-        //                'PM_DIARYDATA/V_CLASSTYPE'
-        //            ],
-        //            proName: 'PRO_PM_BASEDIC_LIST',
-        //            cursorName: 'V_CURSOR'
-        //        }
     }
 });
 var lxStore = Ext.create("Ext.data.Store", {
@@ -49,15 +39,6 @@ var lxStore = Ext.create("Ext.data.Store", {
         extraParams: {
             IS_V_BASETYPE: 'PP_INFORMATION/V_TYPE'
         }
-        //        extraParams: {
-        //            parName: ['IS_V_BASETYPE'],
-        //            parType: ['s'],
-        //            parVal: [
-        //                'PP_INFORMATION/V_TYPE'
-        //            ],
-        //            proName: 'PRO_PM_BASEDIC_LIST',
-        //            cursorName: 'V_CURSOR'
-        //        }
     }
 });
 var bzStore = Ext.create("Ext.data.Store", {
@@ -67,7 +48,6 @@ var bzStore = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-        //        url: APP + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_PM_BASEDIC_LIST',
         actionMethods: {
             read: 'POST'
@@ -79,15 +59,6 @@ var bzStore = Ext.create("Ext.data.Store", {
         extraParams: {
             IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASS'
         }
-        //        extraParams: {
-        //            parName: ['IS_V_BASETYPE'],
-        //            parType: ['s'],
-        //            parVal: [
-        //                'PM_DIARYDATA/V_CLASS'
-        //            ],
-        //            proName: 'PRO_PM_BASEDIC_LIST',
-        //            cursorName: 'V_CURSOR'
-        //        }
     }
 });
 var wpanel = Ext.create('Ext.panel.Panel', {
@@ -255,8 +226,6 @@ function onPageLoaded() {
         items: [wpanel, cpanel]
     });
     Ext.data.StoreManager.lookup('lxStore').on('load', function () {
-        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
-        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
     });
     getXgbm();
     if (location.href.split('?')[1] != undefined) {
@@ -267,27 +236,16 @@ function onPageLoaded() {
 
 function getInformation() {
     Ext.Ajax.request({
-//        url: APP + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_PP_INFORMATION_GET',
         type: 'ajax',
         async: false,
         method: 'POST',
         params: {
             V_I_ID: urlCode.planID
-//            V_I_ID: '1231234444'
-//            parName: ['v_i_id'],
-//            parType: ['i'],
-//            parVal: [urlCode.planID],
-//            proName: 'pro_pp_information_get',
-//            cursorName: 'v_cursor'
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
             var resp = data.list[0];
-//            alert(resp.D_DATE);
-//            var dates = resp.D_DATE.split(' ');
-//            stime = dates[1];
-//            Ext.getCmp('nowtime').setValue(dates[0]);
             Ext.getCmp('nowtime').setValue(resp.D_DATE);
             Ext.getCmp('bx').select(resp.V_CLASS);
             Ext.getCmp('bz').select(resp.V_CLASSTYPE);
@@ -310,29 +268,13 @@ function getInformation() {
 
 function getXgbm() {
     Ext.Ajax.request({
-//        url: APP + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_BASE_DEPT_VIEW',
         type: 'ajax',
         async: false,
         method: 'POST',
         params: {
-//            parName: ['v_v_deptcode', 'v_v_depttype', 'v_v_person'],
-//            parType: ['s', 's', 's'],
-//            parVal: [
-//                Ext.util.Cookies.get('v_deptcode'),
-//                '[信息接收]',
-//                Ext.util.Cookies.get('v_personcode')
-//            ],
-//            proName: 'pro_base_dept_view_depttype',
-//            proName: 'pro_base_dept_view',
-//            cursorName: 'v_cursor'
             IS_V_DEPTCODE: '%',
             IS_V_DEPTTYPE: '[信息接收]'
-//            parName: ['IS_V_DEPTCODE', 'S_V_DEPTTYPE'],
-//            parType: ['s', 's'],
-//            parVal: ['%', '[信息接收]'],
-//            proName: 'pro_base_dept_view',
-//            cursorName: 'v_cursor'
         },
         success: function (response) {
             var list = Ext.decode(response.responseText).list;
@@ -369,30 +311,6 @@ function getXgbm() {
                 items: asd,
                 style: {margin: '10px 10px 10px 20px'}
             });
-//            var data = Ext.decode(response.responseText);
-//            var resp = data.list;
-//            var asd = [];
-//            for (var i = 0; i < resp.length; i++) {
-//                asd.push({
-//                    boxLabel: resp[i].V_DEPTNAME,
-//                    name: 'xgbm',
-//                    inputValue: resp[i].V_DEPTCODE,
-//                    width: 95
-//                });
-//            }
-//            Ext.getCmp('xgbmPanel').removeAll();
-//            Ext.getCmp('xgbmPanel').add({
-//                xtype: 'checkboxgroup',
-//                fieldLabel: '相关部门',
-//                labelAlign: 'top',
-//                labelWidth: 60,
-//                id: 'xgbm',
-//                columns: 2,
-//                items: asd,
-//                style: {
-//                    margin: '10px 10px 10px 10px'
-//                }
-//            });
         }
     });
 }
@@ -422,14 +340,12 @@ function zhuce() {
     }
     if (asd.length != 0) {
         Ext.Ajax.request({
-//            url: APP + '/ModelChange',
             url: AppUrl + 'Wsy/PRO_PP_INFORMATION_SET',
             type: 'ajax',
             async: false,
             method: 'POST',
             params: {
                 V_I_ID: urlCode.planID,
-//                V_I_ID: '123123',
                 V_V_DEPT: deptList,
                 V_V_INFORMATION: Ext.getCmp('xxnr').getValue(),
                 V_D_DATE: Ext.getCmp('nowtime').getValue(),
@@ -440,20 +356,14 @@ function zhuce() {
                 V_V_CLASSTYPE: Ext.getCmp('bx').getValue(),
                 V_V_NOTIFICATION: Ext.getCmp('zdtz').getValue() ? 'Y' : 'N'
             },
-//            params: {
-//                parName: ['v_i_id', 'v_v_dept', 'v_v_information', 'v_d_date', 'v_v_personcode', 'v_v_personname', 'v_v_type', 'v_v_class', 'v_v_classtype', 'v_v_notification'],
-//                parType: ['i', 's', 's', 'dt', 's', 's', 's', 's', 's', 's'],
-//                parVal: [urlCode.planID, str, Ext.getCmp('xxnr').getValue(), Ext.getCmp('nowtime').getValue() + ' ' + stime, Ext.util.Cookies.get('v_personcode'), Ext.util.Cookies.get('v_personname2'), Ext.getCmp('lx').getValue(), Ext.getCmp('bx').getValue(), Ext.getCmp('bz').getValue(), Ext.getCmp('zdtz').getValue() ? 'Y' : 'N'],
-//                proName: 'pro_pp_information_set'
-//            },
             success: function (response) {
                 //                resp = Ext.decode(resp.responseText);
                 var data = Ext.decode(response.responseText);
                 if (data.V_INFO == 'Success') {
                     Ext.Msg.alert('操作信息', '操作成功');
                     Ext.getCmp('xxnr').setValue('');
-                    window.returnValue = 'Success';
                     window.close();
+                    window.opener.reLoad();
                 }
             }
         });

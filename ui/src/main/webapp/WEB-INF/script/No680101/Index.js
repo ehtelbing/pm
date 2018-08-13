@@ -234,7 +234,7 @@ var Layout = {
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: '所属部门',
-                                    value:  Ext.util.Cookies.get('v_deptname2'),
+                                    value: Ext.util.Cookies.get('v_deptname2'),
                                     readOnly: true,
                                     editable: false,
                                     id: 'ssbm'
@@ -339,8 +339,8 @@ function onPageLoaded() {
         Ext.getCmp('bx').select(Ext.data.StoreManager.lookup('bxStore').getAt(0));
     });
     Ext.data.StoreManager.lookup('lxStore').on('load', function () {
-        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
-        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
+//        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
+//        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
         Ext.getCmp('lx').select(Ext.data.StoreManager.lookup('lxStore').getAt(0));
     });
     Ext.data.StoreManager.lookup('bzStore').on('load', function () {
@@ -364,7 +364,7 @@ function getXgbm() {
             var list = Ext.decode(response.responseText).list;
             var asd = [];
             for (var i = 0; i < list.length; i++) {
-                if(list[i].V_DEPTCODE!="%"){
+                if (list[i].V_DEPTCODE != "%") {
                     if (list[i].V_DEPTCODE === Ext.util.Cookies.get('v_deptcode')) {
                         asd.push({
                             boxLabel: list[i].V_DEPTNAME,
@@ -375,10 +375,14 @@ function getXgbm() {
                         });
                     }
                     else {
-                        asd.push({boxLabel: list[i].V_DEPTNAME, name: 'xgbm', inputValue: list[i].V_DEPTCODE, width: 150});
+                        asd.push({
+                            boxLabel: list[i].V_DEPTNAME,
+                            name: 'xgbm',
+                            inputValue: list[i].V_DEPTCODE,
+                            width: 150
+                        });
                     }
                 }
-
             }
             Ext.getCmp('xgbmPanel').removeAll();
             Ext.getCmp('xgbmPanel').add({
@@ -524,9 +528,9 @@ function addModel() {
 
 function delModel() {
     var selLength = Ext.getCmp('gridPanel').getSelectionModel().getSelection().length;
-    var selID = [];
+    var selID = "";
     for (i = 0; i < selLength; i++) {
-        selID.push(Ext.getCmp('gridPanel').getSelectionModel().getSelection()[i].data.ID);
+        selID = selID + Ext.getCmp('gridPanel').getSelectionModel().getSelection()[i].data.ID + ",";
     }
     Ext.Ajax.request({
         url: AppUrl + 'Wsy/PM_REALINFOTL_DEL',
@@ -548,3 +552,4 @@ function delModel() {
         }
     });
 }
+

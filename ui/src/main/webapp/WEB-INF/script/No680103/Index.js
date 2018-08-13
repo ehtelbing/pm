@@ -5,7 +5,6 @@
     proxy: {
         type: 'ajax',
         async: false,
-//        url: APP + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_PM_BASEDIC_LIST',
         actionMethods: {
             read: 'POST'
@@ -16,11 +15,6 @@
         },
         extraParams: {
             IS_V_BASETYPE: 'PP_INFORMATION/V_TYPE'
-//            parName: ['IS_V_BASETYPE'],
-//            parType: ['s'],
-//            parVal: ['PP_INFORMATION/V_TYPE'],
-//            proName: 'PRO_PM_BASEDIC_LIST',
-//            cursorName: 'V_CURSOR'
         }
     }
 });
@@ -31,7 +25,6 @@ var bxStore = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-//        url: APP + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_PM_BASEDIC_LIST',
         actionMethods: {
             read: 'POST'
@@ -42,11 +35,6 @@ var bxStore = Ext.create("Ext.data.Store", {
         },
         extraParams: {
             IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASS'
-//            parName: ['IS_V_BASETYPE'],
-//            parType: ['s'],
-//            parVal: ['PM_DIARYDATA/V_CLASS'],
-//            proName: 'PRO_PM_BASEDIC_LIST',
-//            cursorName: 'V_CURSOR'
         }
     }
 });
@@ -58,7 +46,6 @@ var gridStore = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-//        url: APP + '/ModelSelect',
         url: AppUrl + 'Wsy/PRO_PP_INFORMATION_LIST_PER',
         actionMethods: {
             read: 'POST'
@@ -69,7 +56,6 @@ var gridStore = Ext.create("Ext.data.Store", {
         }
     },
     listeners: {
-//        beforeload: OnGridStoreBeforeLoad
     }
 });
 var Layout = {
@@ -247,10 +233,11 @@ function onPageLoaded() {
 
 function ModifyARecord(grid, rowIndex, colIndex) {
     var aid = grid.getStore().getAt(rowIndex).data.I_ID;
-    var asd = window.open(AppUrl + "/page/No680104/Index.html?planID=" + aid, '', 'height=500px,width=700px,top=100px,left=100px,resizable=yes');
-    if (asd == 'Success') {
-        queryGrid();
-    }
+    window.open(AppUrl + "page/No680104/Index.html?planID=" + aid, '', 'height=500px,width=700px,top=100px,left=100px,resizable=yes');
+}
+
+function reLoad() {
+    queryGrid();
 }
 
 function queryGrid() {
@@ -260,11 +247,6 @@ function queryGrid() {
             V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_TYPE: Ext.getCmp('lx').getValue(),
             V_V_CLASSTYPE: Ext.getCmp('bx').getValue()
-//            parName: ['v_d_date', 'v_v_personcode', 'v_v_type', 'v_v_classtype'],
-//            parType: ['da', 's', 's', 's'],
-//            parVal: [Ext.Date.format(Ext.getCmp('adate').getValue(), 'Y-m-d'), Ext.util.Cookies.get('v_personcode'), Ext.getCmp('lx').getValue(), Ext.getCmp('bx').getValue()],
-//            proName: 'pro_pp_information_list_per',
-//            cursorName: 'v_cursor'
         }
     });
 }
@@ -307,25 +289,8 @@ function renderMoney(value, metaData) {
     }
 }
 
-//function OnGridStoreBeforeLoad(store) {
-//    store.proxy.extraParams.parName = ['v_d_date', 'v_v_personcode', 'v_v_type', 'v_v_classtype'];
-//    store.proxy.extraParams.parType = ['da', 's', 's', 's'];
-//    store.proxy.extraParams.parVal = [Ext.Date.format(Ext.getCmp('adate').getValue(), 'Y-m-d'), Ext.util.Cookies.get('v_personcode'), Ext.getCmp('lx').getValue(), Ext.getCmp('bx').getValue()], store.proxy.extraParams.proName = 'pro_pp_information_list_per', store.proxy.extraParams.cursorName = 'v_cursor'
-//}
 function OnButtonExcelClicked() {
-    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_LIST_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bx').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d'));
-//    window.open('PRO_PP_INFORMATION_LIST_EXCEL.do?V_V_PERSONCODE=' + encodeURI(encodeURI(Ext.util.Cookies.get('v_personcode'))) + '&V_V_DEPT=' + encodeURI(encodeURI(Ext.getCmp('bmmc').getValue())) + '&V_V_TYPE=' + encodeURI(encodeURI(Ext.getCmp('lx').getValue())) + '&V_V_CLASSTYPE=' + encodeURI(encodeURI(Ext.getCmp('bx').getValue())) + '&V_D_FROMDATE=' + encodeURI(encodeURI(Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d'))) + '&V_D_TODATE=' + encodeURI(encodeURI(Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d'))), '_blank', 'width=40,height=30,resizable=yes,scrollbars=yes');
-//    var tableName = ["日期", "班型", "班组", "录入人", "内容", "信息类型", "所属部门"];
-//    var tableKey = ['D_DATE', 'V_CLASS', 'V_CLASSTYPE', 'V_PERSONNAME', 'V_INFORMATION', 'V_TYPE', 'V_DEPT'];
-//    var parName = ['v_v_dept', 'v_v_type', 'v_v_classtype', 'v_d_fromdate', 'v_d_todate'];
-//    var parType = ['s', 's', 's', 'da', 'da'];
-//    var parVal = [Ext.getCmp('bmmc').getValue(), Ext.getCmp('lx').getValue(), Ext.getCmp('bx').getValue(), Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d'), Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d')];
-//    var proName = 'pro_pp_information_list';
-//    var cursorName = 'v_cursor';
-//    var returnStr = ['null'];
-//    var returnStrName = ['null'];
-//    var returnStrType = ['null'];
-//    submitData("ModelExcelTotal", tableName, tableKey, parName, parType, parVal, proName, returnStr, returnStrType, returnStrName, cursorName, "title", "信息查询");
+    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_LIST_PER_EXCEL?V_D_DATE=' + encodeURI(Ext.Date.format(Ext.getCmp('adate').getValue(), 'Y-m-d')) + '&V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bx').getValue());
 }
 
 Ext.onReady(onPageLoaded);

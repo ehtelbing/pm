@@ -499,21 +499,9 @@ public class WsyController {
 
     @RequestMapping(value = "/PM_REALINFOTL_DEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PM_REALINFOTL_DEL(@RequestParam(value = "V_ID") String[] V_ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Integer sum = 0;
-        for (int i = 0; i < V_ID.length; i++) {
-            HashMap data = wsyService.PM_REALINFOTL_DEL(V_ID[i]);
-            if (data.get("V_CURSOR") != "成功") {
-                sum = sum + 1;
-            }
-        }
-        HashMap result = new HashMap();
-        if (sum == 0) {
-            result.put("V_CURSOR", "成功");
-        } else {
-            result.put("V_CURSOR", "失败");
-        }
-        return result;
+    public HashMap PM_REALINFOTL_DEL(@RequestParam(value = "V_ID") String V_ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PM_REALINFOTL_DEL(V_ID);
+        return data;
     }
 
     @RequestMapping(value = "/PRO_BASE_DEPT_VIEW_DEPTTYPE", method = RequestMethod.POST)
@@ -785,6 +773,80 @@ public class WsyController {
                 row.createCell((short) 4).setCellValue(map.get("V_STATE") == null ? "" : map.get("V_STATE").toString());
                 row.createCell((short) 5).setCellValue(map.get("V_TYPE") == null ? "" : map.get("V_TYPE").toString());
                 row.createCell((short) 6).setCellValue(map.get("V_CLASSTYPE") == null ? "" : map.get("V_CLASSTYPE").toString());
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("信息缺陷作业票查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();// 操作结束，关闭文件
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "PRO_PP_INFORMATION_LIST_PER_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void PRO_PP_INFORMATION_LIST_PER_EXCEL(@RequestParam(value = "V_D_DATE") String V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, HttpServletRequest request, HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+        List list;
+        HashMap data = wsyService.PRO_PP_INFORMATION_LIST_PER(V_D_DATE, V_V_PERSONCODE, V_V_TYPE, V_V_CLASSTYPE);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 6; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();// 生成一个样式
+        // 背景色
+        style.setFillForegroundColor(HSSFColor.GREEN.index);//设置图案颜色
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);//设置图案样式
+        style.setFillBackgroundColor(HSSFColor.GREEN.index);//设置图案背景色
+        //字体
+        HSSFFont font = wb.createFont();// 生成一个字体
+        font.setFontHeightInPoints((short) 10);//设置字号
+        font.setColor(HSSFColor.WHITE.index);//设置字体颜色
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        font.setFontName("宋体");//设置字体名称
+        style.setFont(font);// 把字体 应用到当前样式
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 设置这些样式,水平居中
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 0);
+        cell.setCellValue("日期");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 1);
+        cell.setCellValue("班型");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 2);
+        cell.setCellValue("班组");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 3);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 4);
+        cell.setCellValue("内容");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 5);
+        cell.setCellValue("信息类型");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 6);
+        cell.setCellValue("所属部门");
+        cell.setCellStyle(style);
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                HashMap map = (HashMap) list.get(i);
+                row.createCell((short) 0).setCellValue(map.get("D_DATE") == null ? "" : map.get("D_DATE").toString());
+                row.createCell((short) 1).setCellValue(map.get("V_CLASSTYPE") == null ? "" : map.get("V_CLASSTYPE").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_CLASS") == null ? "" : map.get("V_CLASS").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_PERSONNAME") == null ? "" : map.get("V_PERSONNAME").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_INFORMATION") == null ? "" : map.get("V_INFORMATION").toString());
+                row.createCell((short) 5).setCellValue(map.get("V_TYPE") == null ? "" : map.get("V_TYPE").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_DEPT") == null ? "" : map.get("V_DEPT").toString());
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
