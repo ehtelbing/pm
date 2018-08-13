@@ -240,7 +240,7 @@ Ext.onReady(function () {
         }, {
             layout: 'column',
             defaults: {labelAlign: 'right'},
-            frame: true,
+            //frame: true,
             border: false,
             baseCls: 'my-panel-no-border',
             items: [{
