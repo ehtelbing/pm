@@ -307,5 +307,32 @@ public class KxyService {
         return result;
     }
 
+    public HashMap insertSysPorperty(String V_V_PORP_NAME,String V_V_PORP_VALUE,String V_V_PLANT) throws SQLException {
+        logger.info("begin PRO_PM_SYS_PORPERTY_ADD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_SYS_PORPERTY_ADD" + "(:A_USERID,:V_V_PORP_VALUE,:V_V_PLANT,:RET)}");
+            cstmt.setString("V_V_PORP_NAME", V_V_PORP_NAME);
+            cstmt.setString("V_V_PORP_VALUE", V_V_PORP_VALUE);
+            cstmt.setString("V_V_PLANT", V_V_PLANT);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_SYS_PORPERTY_ADD");
+        return result;
+    }
+
+
 
 }

@@ -144,4 +144,11 @@ public class KxyController {
         return result;
     }
 
+    @RequestMapping(value = "/insertSysPorperty", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> insertSysPorperty(@RequestParam(value = "V_V_PORP_NAME") String V_V_PORP_NAME, @RequestParam(value = "V_V_PORP_VALUE") String V_V_PORP_VALUE, @RequestParam(value = "V_V_PLANT") String V_V_PLANT, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = kxyService.insertSysPorperty(V_V_PORP_NAME, V_V_PORP_VALUE, V_V_PLANT);
+        return data;
+    }
+
 }

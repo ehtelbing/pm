@@ -13,6 +13,7 @@ var menutype = "";
 var win;//父窗口对象，由子窗口调用
 var returnValue;//父窗口对象，由子窗口调用
 var USERID = Ext.util.Cookies.get('v_personcode');
+var PORP_VALUE = APP.substring(0,APP.length-3);
 if (location.href.split('?')[1] != undefined) {
     if (Ext.urlDecode(location.href.split('?')[1]) != null) {
         menucode = Ext.urlDecode(location.href.split('?')[1]).v_menucode;
@@ -21,6 +22,20 @@ if (location.href.split('?')[1] != undefined) {
         menutype = Ext.urlDecode(location.href.split('?')[1]).menutype;
     }
 }
+
+Ext.Ajax.request({
+    url: AppUrl + 'Kxy/insertSysPorperty',
+    type: 'ajax',
+    method: 'POST',
+    async: false,
+    params: {
+        'V_V_PORP_NAME': 'sys-url-prefix',
+        'V_V_PORP_VALUE': PORP_VALUE,
+        'V_V_PLANT': 'all'
+    },
+    success: function (response) {
+    }
+});
 
 var userFavoriteMenuStore = Ext.create('Ext.data.TreeStore', {
     storeId: 'userFavoriteMenuStore',
@@ -415,7 +430,6 @@ function HomePage() {
         Ext.example.msg('操作信息', '无授权');
         return;
     }
-
 }
 
 function GETDDDL() {
@@ -631,4 +645,10 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
         }
     });
 }
+
+
+
+
+
+
 
