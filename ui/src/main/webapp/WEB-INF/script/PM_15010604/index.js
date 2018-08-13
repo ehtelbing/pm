@@ -100,7 +100,7 @@ Ext.onReady(function () {
     var northPanel = Ext.create("Ext.panel.Panel", {
         region: 'north',
         frame: true,
-        baseCls: 'my-panel-noborder',
+        //baseCls: 'my-panel-noborder',
         layout: 'vbox',
         width: '100%',
         style: 'margin:5px 0px 5px 5px',
