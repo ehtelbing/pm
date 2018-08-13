@@ -116,7 +116,7 @@ Ext.onReady(function () {
         layout: {
             type: 'vbox'
         },
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         frame:true,
         items: [
             {
