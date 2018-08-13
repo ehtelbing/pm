@@ -111,7 +111,7 @@ Ext.onReady(function () {
         layout: 'column',
         frame: true,
         border: false,
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         items: [
             {
                 xtype: 'combo',
@@ -123,7 +123,7 @@ Ext.onReady(function () {
                 fieldLabel: '选择年份',
                 displayField: 'displayField',
                 valueField: 'valueField',
-                labelWidth: 100,
+                labelWidth: 60,
                 style: ' margin: 5px 0px 0px 0px',
                 labelAlign: 'right',
                 width: 180
@@ -161,14 +161,11 @@ Ext.onReady(function () {
 
     var buttonPanel = Ext.create('Ext.Panel', {
         id : 'buttonPanel',
-        defaults : {
-            style : 'margin:2px',
-            width : 70
-        },
         items : [ {
             xtype : 'button',
             text : '复制',
             icon:  imgpath + '/add.png',
+            style: ' margin: 5px 0px 5px 10px',
             handler : function () {
                 _copy();
             }
