@@ -273,7 +273,7 @@ Ext
 				window.SUPPLY_CODE = gridStore.getAt(c).get("SUPPLY_CODE");
 				window.SUPPLY_NAME = gridStore.getAt(c).get("SUPPLY_NAME");
 
-				window.open(AppUrl+"page/No712401/Index.html?SUPPLY_CODE="+ gridStore.getAt(c).get("SUPPLY_CODE")+"&SUPPLY_NAME="+gridStore.getAt(c).get("SUPPLY_NAME"),window, "dialogWidth:800px;dialogHeight:420px");
+				window.open(AppUrl+"page/No712401/Index.html?SUPPLY_CODE="+ gridStore.getAt(c).get("SUPPLY_CODE")+"&SUPPLY_NAME="+gridStore.getAt(c).get("SUPPLY_NAME"), '', 'height=' + '600px' + ',width=' + '1000px' + ',top=10px,left=10px,resizable=yes');
 			});
 			
 			Ext.getCmp('update').on('click',function(a,b,c,d,e,f){

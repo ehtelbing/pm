@@ -59,17 +59,16 @@
 			});
 			var month = new Date().getMonth() + 1;
 
-			var panel = Ext
-					.create(
-							'Ext.panel.Panel',
+			var panel = Ext.create('Ext.panel.Panel',
 							{
 								id : 'panellow',
 								width : '100%',
 								region : 'north',
 								frame : true,
-								layout : 'vbox',
+								height:'10%',
+								//layout : 'vbox',
 								border:false,
-								//baseCls : 'my-panel-no-border',
+								baseCls : 'my-panel-no-border',
 								items : [{
 											xtype : 'panel',
 											width : '100%',
@@ -187,7 +186,7 @@
 															} else
 																(Ext.Msg.alert('操作信息', '请填写当前设备'))
 														}
-													}, ]
+													} ]
 
 										},
 										{
@@ -196,7 +195,6 @@
 											width : '100%',
 											border : false,
 											frame : true,
-											border:false,
 											baseCls : 'my-panel-no-border',
 											items : [
 													{
@@ -229,6 +227,7 @@
 			var grid = Ext.create('Ext.grid.Panel', {
 				id : 'grid',
 				region : 'center',
+				layout: 'fit',
 				columnLines : true,
 				width : '100%',
 				store : {
@@ -257,7 +256,7 @@
 				},
 				autoScroll : true,
 				selType : 'checkboxmodel',
-				height : 400,
+				//height : '50%',
 				columns : [
 
 				{
@@ -354,10 +353,19 @@
 
 			Ext.create('Ext.container.Viewport', {
 				id : "id",
-				layout : 'border',
+				layout: {
+					type: 'border',
+					regionWeights: {
+						west: -1,
+						north: 1,
+						south: 1,
+						east: -1
+					}
+				},
 				items : [ panel, grid ]
 			});
 		});
+
 
 function OnButtonDeleteClicked() {
 	var length = Ext.getCmp('grid').getSelectionModel().getSelection().length;
@@ -410,6 +418,7 @@ function OnAddButtonClicked() {
 					'A_INSRTPERSON':Ext.util.Cookies.get('v_personcode')
 				},
 				success : function(resp) {
+					console.log(resp);
 					resp = Ext.decode(resp.responseText);
 					if (resp.RET== 'Success') {
 						Ext.Msg.alert('操作信息', '录入成功');

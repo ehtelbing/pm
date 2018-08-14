@@ -400,7 +400,7 @@ function _selectList() {
 
 //修改工单
 function _checkDetail(APPLY_ID) {
-    var returnVal = window.showModalDialog(AppUrl + 'page/PM_1501040201/index.html?APPLY_ID=' + APPLY_ID, window, "dialogWidth=800px;dialogHeight=550px");
+    var returnVal = window.open(AppUrl + 'page/PM_1501040201/index.html?APPLY_ID=' + APPLY_ID, window, "dialogWidth=800px;dialogHeight=550px");
     if (returnVal != null) {
         _selectList();
     }

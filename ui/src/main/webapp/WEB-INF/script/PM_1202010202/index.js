@@ -209,7 +209,7 @@ var rrwidow = Ext.create('Ext.window.Window', {
 					title : '填写检查内容',
 					height : 300,
 					width : 400,
-					layout : 'vbox',
+					//layout : 'vbox',
 					closeAction : 'hide',
 					autoShow : false,
 					modal : true,

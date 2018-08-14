@@ -57,7 +57,7 @@ Ext.onReady(function () {
             async: false,
             url: AppUrl + 'ml/PRO_DJ401_APPLYMES',
             actionMethods: {
-                read: 'POST',
+                read: 'POST'
             },
             reader: {
                 type: 'json',
@@ -634,12 +634,12 @@ function _init() {
     }
 
 
-};
+}
 
 //选择电机
 function _selectDJ() {
     Ext.getCmp('selectWindow').show();
-};
+}
 
 //保存工单
 function _save() {
@@ -722,7 +722,7 @@ function _save() {
                 if (data.RET=="Success") {//成功，会传回true
                     //Ext.data.StoreManager.lookup('fdwlStore').remove();//把这条数据，从页面数据集中移除，现实动态更新页面
                     window.returnValue = "success";
-                    window.close();
+                    //window.close();
 
                 } else {
                     Ext.MessageBox.show({
@@ -744,7 +744,7 @@ function _save() {
 
         })
     }
-};
+}
 
 
 //删除附带物料
@@ -784,15 +784,15 @@ function _delete(ID) {
 }
 
 function _Detail() {
-    var str = window.showModalDialog(AppUrl + 'page/PM_1501020201/index.html?djcode=' + Ext.getCmp('DJ_UQ_CODE').getValue(), '', "dialogHeight:350px;dialogWidth:900px;minimize:yes;maximize:yes;");
-};
+    var str = window.open(AppUrl + 'page/PM_1501020201/index.html?djcode=' + Ext.getCmp('DJ_UQ_CODE').getValue(), '', "dialogHeight:350px;dialogWidth:900px;minimize:yes;maximize:yes;");
+}
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
-};
+}
 
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
     return value;
-};
+}

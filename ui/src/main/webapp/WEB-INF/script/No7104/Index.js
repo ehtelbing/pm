@@ -184,18 +184,6 @@ Ext.onReady(function () {
                         listeners: {
                             focus: function () {
                                 var ret = window.open(AppUrl + 'page/PM_090101/index.html?V_DEPTCODE=' + Ext.getCmp('zyq').getValue(), '', 'height=' + '600px' + ',width=' + '1000px' + ',top=10px,left=10px,resizable=yes');
-                                if (ret != "" && ret != null && ret != undefined) {
-                                    var str = [];
-                                    str = ret.split('^');
-                                    Ext.ComponentManager
-                                        .get('xzsb')
-                                        .setValue(
-                                        str[1]);
-                                    Ext.ComponentManager
-                                        .get('xzsb_Id')
-                                        .setValue(
-                                        str[0]);
-                                }
                                 Ext.ComponentManager.get('plant').focus(false, 0);
                             }
                         }

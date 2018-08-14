@@ -329,14 +329,14 @@ Ext.onReady(function () {
 
     _init();
 
-})
+});
 //初始化
 function _init() {
 
     if (ckStoreLoad&&deptStoreLoad) {
         Ext.getBody().unmask();//去除页面笼罩
     }
-};
+}
 
 //查询作业区
 function _selectDeptName() {
@@ -347,7 +347,7 @@ function _selectDeptName() {
 
     };
     deptStore.load();
-};
+}
 
 //查询工单列表
 function _selectList() {
@@ -363,7 +363,7 @@ function _selectList() {
         USERCODE_IN: USERCODE_IN
     };
     applylistStore.load();
-};
+}
 
 //提交工单列表
 function _submitList() {
@@ -428,25 +428,25 @@ function _submitList() {
             }
         }
     })
-};
+}
 
 //录入工单
 function _insert() {
-    var returnVal = window.showModalDialog(AppUrl + 'page/PM_1501040101/index.html?PLANTCODE='+Ext.getCmp('ckname').getValue()+'&PLANTNAME='+Ext.getCmp('ckname').getDisplayValue()+'&DEPTNAME='+Ext.getCmp('deptname').getDisplayValue()+'&DEPTCODE='+ Ext.getCmp('deptname').getValue()+'&confirm_flag_in=1', window, "dialogWidth=1200px;dialogHeight=550px");
+    var returnVal = window.open(AppUrl + 'page/PM_1501040101/index.html?PLANTCODE='+Ext.getCmp('ckname').getValue()+'&PLANTNAME='+Ext.getCmp('ckname').getDisplayValue()+'&DEPTNAME='+Ext.getCmp('deptname').getDisplayValue()+'&DEPTCODE='+ Ext.getCmp('deptname').getValue()+'&confirm_flag_in=1', window, "dialogWidth=1200px;dialogHeight=550px");
     //?ORGCODE='+ORGCODE+',&ORGNAME='+ORGNAME+',&DEPTNAME='+DEPTNAME+',&DEPTCODE='+DEPTCODE+',&PRESONNAME='+PRESONNAME+',&PERSONCODE='+PERSONCODE
     if (returnVal != null) {
         Ext.Msg.alert('操作信息', '保存成功！');//提示信息
         _selectList();
     }
-};
+}
 
 //修改工单
 function _updateList(APPLY_ID) {
-    var returnVal = window.showModalDialog(AppUrl + 'page/PM_1501040102/index.html?apply_id=' + APPLY_ID, window, "dialogWidth=1200px;dialogHeight=550px");
+    var returnVal = window.open(AppUrl + 'page/PM_1501040102/index.html?apply_id=' + APPLY_ID, window, "dialogWidth=1200px;dialogHeight=550px");
     if (returnVal != null) {
         _selectList();
     }
-};
+}
 
 //删除工单
 function _deleteList(APPLY_ID) {
@@ -485,22 +485,22 @@ function _deleteList(APPLY_ID) {
 
     })
 
-};
+}
 function rendererTime(value, metaData) {
     metaData.style = "text-align:left";
      return '<div data-qtip="' + value.substring(0, 10) + '" >' + value.substring(0, 10) + '</div>';
    // return '<div data-qtip="' + value.split('.0')[0] + '" >' + value.split('.0')[0] + '</div>';
-};
+}
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
-};
+}
 
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
     return value;
-};
+}
 
 
 //导出Excel

@@ -308,7 +308,7 @@ function _submitList() {
 
 //录入工单
 function _insert() {
-    var returnVal = window.showModalDialog(AppUrl + 'page/PM_1501040101/index.html?PLANTCODE=' + ORGCODE + '&PLANTNAME=' + ORGNAME + '&DEPTNAME=' + DEPTNAME + '&DEPTCODE=' + DEPTCODE + '&confirm_flag_in=0', window, "dialogWidth=1100px;dialogHeight=650px");
+    var returnVal = window.open(AppUrl + 'page/PM_1501040101/index.html?PLANTCODE=' + ORGCODE + '&PLANTNAME=' + ORGNAME + '&DEPTNAME=' + DEPTNAME + '&DEPTCODE=' + DEPTCODE + '&confirm_flag_in=0', window, "dialogWidth=1100px;dialogHeight=650px");
 
     if (returnVal != null) {
         Ext.Msg.alert('操作信息', '保存成功！');//提示信息
@@ -318,7 +318,7 @@ function _insert() {
 
 //修改工单
 function _updateList(APPLY_ID) {
-    var returnVal = window.showModalDialog(AppUrl + 'page/PM_1501040102/index.html?apply_id=' + APPLY_ID, window, "dialogWidth=1100px;dialogHeight=650px");
+    var returnVal = window.open(AppUrl + 'page/PM_1501040102/index.html?apply_id=' + APPLY_ID, window, "dialogWidth=1100px;dialogHeight=650px");
     if (returnVal != null) {
         _selectList();
     }

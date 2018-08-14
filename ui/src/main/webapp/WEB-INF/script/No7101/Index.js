@@ -204,11 +204,8 @@ Ext
                                         '请选择一条数据查看');
                                     return;
                                 } else {
-                                    var selectedRecord = Ext
-                                        .getCmp("grid")
-                                        .getSelectionModel()
-                                        .getSelection()[0].data;
-                                    window.open(AppUrl + 'page/No7102/Index.html?V_MPCODE=' + selectedRecord.BJ_ID, "dialogWidth=650px;dialogHeight=400px");
+                                    var selectedRecord = Ext.getCmp("grid").getSelectionModel().getSelection()[0].data;
+                                    window.open(AppUrl + 'page/No7102/Index.html?V_MPCODE=' + selectedRecord.BJ_ID, '', 'height=' + '600px' + ',width=' + '1000px' + ',top=10px,left=10px,resizable=yes');
                                 }
                             }
                         }
@@ -231,16 +228,8 @@ Ext
                                         '请选择一条数据查看');
                                     return;
                                 } else {
-                                    var selectedRecord = Ext
-                                        .getCmp("grid")
-                                        .getSelectionModel()
-                                        .getSelection()[0].data;
-                                    window
-                                        .open(
-                                        AppUrl
-                                        + 'page/No7103/Index.html?V_MPCODE='
-                                        + selectedRecord.BJ_ID,
-                                        "dialogWidth=650px;dialogHeight=400px");
+                                    var selectedRecord = Ext.getCmp("grid").getSelectionModel().getSelection()[0].data;
+                                    window.open(AppUrl + 'page/No7103/Index.html?V_MPCODE=' + selectedRecord.BJ_ID, '', 'height=' + '600px' + ',width=' + '1000px' + ',top=10px,left=10px,resizable=yes');
                                 }
                             }
                         }
