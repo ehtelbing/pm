@@ -1,470 +1,474 @@
-var slecode;
-var gridStore = Ext.create('Ext.data.Store', {
-    id: 'gridStore',
-    pageSize: 100,
-    autoLoad: false,
-    fields: ['V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO','V_CHECKMANSIGN',
-        'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME','V_DEPTCODEREPARIR',
-        'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE', 'V_STATECODE', 'V_WXTEAM',
-        'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WX_STATENAME'],
 
-    proxy: {
-        type: 'ajax',
-        async: false,
-        //url: AppUrl + 'zdh/workorder_sel',
-        url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        }
-    }
-});
-var grid = Ext.create('Ext.grid.Panel', {
-    xtype: 'gridpanel',
-    id: 'grid',
-    region: 'center',
-    columnLines: true,
-    width: '100%',
-    store: gridStore,
-    autoScroll: true,
-    style: ' margin: 0px 0px 0px 0px',
-    columns: [{
-        xtype: 'rownumberer',
-        width: 30,
-        sortable: false
-    }, {
-        text: '工单GUID(隐藏)',
-        dataIndex: 'V_ORDERGUID',
-        align: 'center',
-        hidden: true
-    }, {
-        text: '工单号',
-        dataIndex: 'V_ORDERID',
-        width: 150,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '工单描述',
-        dataIndex: 'V_SHORT_TXT',
-        width: 300,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '设备编号（隐藏）',
-        dataIndex: 'V_EQUIP_NO',
-        align: 'center',
-        hidden: true
-    }, {
-        text: '设备名称',
-        dataIndex: 'V_EQUIP_NAME',
-        width: 130,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '设备位置',
-        dataIndex: 'V_EQUSITENAME',
-        width: 220,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '备件消耗',
-        dataIndex: 'V_SPARE',
-        width: 300,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '委托单位',
-        dataIndex: 'V_DEPTNAME',
-        width: 65,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '委托人',
-        dataIndex: 'V_CHECKMANSIGN',
-        width: 60,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '委托时间',
-        dataIndex: 'D_ENTER_DATE',
-        width: 140,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '检修单位',
-        dataIndex: 'V_DEPTNAMEREPARIR',
-        width: 150,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '工单类型描述',
-        dataIndex: 'V_ORDER_TYP_TXT',
-        width: 100,
-        align: 'center',
-        renderer: left
-    }, {
-        text: '工单状态',
-        dataIndex: 'WX_STATENAME',
-        width: 100,
-        align: 'center',
-        renderer: left
-    }],
-    listeners: {
-        itemdblclick: itemClick
-    },
-    bbar: [{
-        xtype: 'pagingtoolbar',
-        dock: 'bottom',
-        id: 'page',
-        displayInfo: true,
-        displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-        emptyMsg: '没有记录',
-        store: 'gridStore'
-    }]
-});
+Ext.onReady(function () {
 
-var agridStore = Ext.create('Ext.data.Store', {
-    autoLoad: false,
-    storeId: 'agridStore',
-    fields: ['V_PERSONCODE', 'V_PERSONNAME'],
-    proxy: {
-        type: 'memory',
-        render: {
-            type: 'json'
-        }
-    }
-});
+    Ext.QuickTips.init();
+    var slecode;
+    var gridStore = Ext.create('Ext.data.Store', {
+        id: 'gridStore',
+        pageSize: 100,
+        autoLoad: false,
+        fields: ['V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO','V_CHECKMANSIGN',
+            'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME','V_DEPTCODEREPARIR',
+            'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE', 'V_STATECODE', 'V_WXTEAM',
+            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME', 'WX_STATENAME'],
 
-var workCenterStore = Ext.create('Ext.data.Store', {
-    id: 'workCenterStore',
-    autoLoad: false,
-    fields: ['V_SAP_WORKNAME', 'V_SAP_WORK'],
-    proxy: {
-        type: 'ajax',
-        url: AppUrl + 'zdh/workCenter_sel',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
+        proxy: {
+            type: 'ajax',
+            async: false,
+            //url: AppUrl + 'zdh/workorder_sel',
+            url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
         }
-    }
-});
-
-var agrid = Ext.create("Ext.grid.Panel", {
-    xtype: 'gridpanel',
-    id: 'agrid',
-    region: 'center',
-    columnLines: true,
-    width: '100%',
-    store: agridStore,
-    autoScroll: true,
-    height: '100%',
-    columns: [{
-        text: '人员编号 ',
-        dataIndex: 'V_PERSONCODE',
-        align: 'center',
-        width: '45%'
-    }, {
-        text: '人员名称',
-        dataIndex: 'V_PERSONNAME',
-        align: 'center',
-        labelAlign: 'right',
-        width: '45%'
-    }, {
-        align: 'center',
-        width: '10%',
-        text: '删除',
-        xtype: 'templatecolumn',
-        tpl: '<a style="cursor:pointer"><img src="'
-        + imgpath + '/delete1.png"></a>',
-        listeners: {
-            "click": todel
-        }
-    }],
-    dockedItems: [{
-        xtype: 'panel',
-        layout: 'column',
-        frame: true,
-        baseCls: 'my-panel-noborder',
+    });
+    var grid = Ext.create('Ext.grid.Panel', {
+        xtype: 'gridpanel',
+        id: 'grid',
+        region: 'center',
+        columnLines: true,
         width: '100%',
-        items: [{
-            xtype: 'textfield', //输入框
-            id: 'addmzmc',
-            fieldLabel: '班组名称',
-            labelWidth: 80,
-            labelAlign: 'right',
-            style: ' margin: 5px 0px 5px 0px',
-            emptyText: '请输入班组名称'
+        store: gridStore,
+        autoScroll: true,
+        style: ' margin: 0px 0px 0px 0px',
+        columns: [{
+            xtype: 'rownumberer',
+            width: 30,
+            sortable: false
         }, {
-            xtype: 'combo',
-            id: 'addgzzx',
-            store: 'workCenterStore',
+            text: '工单GUID(隐藏)',
+            dataIndex: 'V_ORDERGUID',
+            align: 'center',
+            hidden: true
+        }, {
+            text: '工单号',
+            dataIndex: 'V_ORDERID',
+            width: 150,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '工单描述',
+            dataIndex: 'V_SHORT_TXT',
+            width: 300,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '设备编号（隐藏）',
+            dataIndex: 'V_EQUIP_NO',
+            align: 'center',
+            hidden: true
+        }, {
+            text: '设备名称',
+            dataIndex: 'V_EQUIP_NAME',
+            width: 130,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '设备位置',
+            dataIndex: 'V_EQUSITENAME',
+            width: 220,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '备件消耗',
+            dataIndex: 'V_SPARE',
+            width: 300,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '委托单位',
+            dataIndex: 'V_DEPTNAME',
+            width: 65,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '委托人',
+            dataIndex: 'V_CHECKMANSIGN',
+            width: 60,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '委托时间',
+            dataIndex: 'D_ENTER_DATE',
+            width: 140,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '检修单位',
+            dataIndex: 'V_DEPTNAMEREPARIR',
+            width: 150,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '工单类型描述',
+            dataIndex: 'V_ORDER_TYP_TXT',
+            width: 100,
+            align: 'center',
+            renderer: left
+        }, {
+            text: '工单状态',
+            dataIndex: 'WX_STATENAME',
+            width: 100,
+            align: 'center',
+            renderer: left
+        }],
+        listeners: {
+            itemdblclick: itemClick
+        },
+        bbar: [{
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            id: 'page',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridStore'
+        }]
+    });
+
+    var agridStore = Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'agridStore',
+        fields: ['V_PERSONCODE', 'V_PERSONNAME'],
+        proxy: {
+            type: 'memory',
+            render: {
+                type: 'json'
+            }
+        }
+    });
+
+    var workCenterStore = Ext.create('Ext.data.Store', {
+        id: 'workCenterStore',
+        autoLoad: false,
+        fields: ['V_SAP_WORKNAME', 'V_SAP_WORK'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'zdh/workCenter_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+
+    var agrid = Ext.create("Ext.grid.Panel", {
+        xtype: 'gridpanel',
+        id: 'agrid',
+        region: 'center',
+        columnLines: true,
+        width: '100%',
+        store: agridStore,
+        autoScroll: true,
+        height: '100%',
+        columns: [{
+            text: '人员编号 ',
+            dataIndex: 'V_PERSONCODE',
+            align: 'center',
+            width: '45%'
+        }, {
+            text: '人员名称',
+            dataIndex: 'V_PERSONNAME',
+            align: 'center',
             labelAlign: 'right',
-            fieldLabel: '工作中心 ',
-            editable: false,
-            labelWidth: 80,
-            style: ' margin: 5px 0px 5px 0px',
-            queryMode: 'local',
-            valueField: 'V_SAP_WORK',
-            displayField: 'V_SAP_WORKNAME'
+            width: '45%'
+        }, {
+            align: 'center',
+            width: '10%',
+            text: '删除',
+            xtype: 'templatecolumn',
+            tpl: '<a style="cursor:pointer"><img src="'
+            + imgpath + '/delete1.png"></a>',
+            listeners: {
+                "click": todel
+            }
+        }],
+        dockedItems: [{
+            xtype: 'panel',
+            layout: 'column',
+            frame: true,
+            baseCls: 'my-panel-noborder',
+            width: '100%',
+            items: [{
+                xtype: 'textfield', //输入框
+                id: 'addmzmc',
+                fieldLabel: '班组名称',
+                labelWidth: 80,
+                labelAlign: 'right',
+                style: ' margin: 5px 0px 5px 0px',
+                emptyText: '请输入班组名称'
+            }, {
+                xtype: 'combo',
+                id: 'addgzzx',
+                store: 'workCenterStore',
+                labelAlign: 'right',
+                fieldLabel: '工作中心 ',
+                editable: false,
+                labelWidth: 80,
+                style: ' margin: 5px 0px 5px 0px',
+                queryMode: 'local',
+                valueField: 'V_SAP_WORK',
+                displayField: 'V_SAP_WORKNAME'
+            }, {
+                xtype: 'button',
+                text: '人员查找',
+                icon: imgpath + '/search.png',
+                width: 90,
+                handler: p_query,
+                style: ' margin: 5px 0px 5px 10px'
+            }]
+        }]
+    });
+
+    var window = Ext.create('Ext.window.Window', {
+        id: 'window',
+        width: 600,
+        height: 400,
+        layout: 'border',
+        title: '班组选择',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        items: [agrid],
+        buttons: [{
+            xtype: 'button',
+            text: '确定',
+            width: 40,
+            handler: function () {
+                saved_btn();
+            }
         }, {
             xtype: 'button',
-            text: '人员查找',
-            icon: imgpath + '/search.png',
-            width: 90,
-            handler: p_query,
-            style: ' margin: 5px 0px 5px 10px'
+            text: '取消',
+            width: 40,
+            handler: function () {
+                Ext.getCmp('window').hide();
+            }
         }]
-    }]
-});
+    });
 
-var window = Ext.create('Ext.window.Window', {
-    id: 'window',
-    width: 600,
-    height: 400,
-    layout: 'border',
-    title: '班组选择',
-    modal: true,//弹出窗口时后面背景不可编辑
-    frame: true,
-    closeAction: 'hide',
-    closable: true,
-    items: [agrid],
-    buttons: [{
-        xtype: 'button',
-        text: '确定',
-        width: 40,
-        handler: function () {
-            saved_btn();
-        }
-    }, {
-        xtype: 'button',
-        text: '取消',
-        width: 40,
-        handler: function () {
-            Ext.getCmp('window').hide();
-        }
-    }]
-});
-
-var ckstore = Ext.create("Ext.data.Store", {
-    autoLoad: true,
-    storeId: 'ckstore',
-    fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-    proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'zdh/plant_sel',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        },
-        extraParams: {
-            IS_V_DEPTCODE: "",
-            IS_V_DEPTTYPE: '[基层单位]'
-        }
-    }
-});
-
-var zyqstore = Ext.create("Ext.data.Store", {
-    autoLoad: false,
-    storeId: 'zyqstore',
-    fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-    proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'zdh/plant_sel',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        }
-    }
-});
-
-var sgdzt = Ext.create("Ext.data.Store", {
-    autoLoad: true,
-    storeId: 'sgdzt',
-    fields: ['V_STATECODE', 'V_STATENAME'],
-    proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'zdh/workorderstate_sel',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        },
-        extraParams: {}
-    }
-});
-
-var ssblx = Ext.create('Ext.data.Store', {
-    autoLoad: false,
-    storeId: 'ssblx',
-    fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
-    proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'zdh/equiptype_sel',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        }
-    }
-});
-
-var ssbmc = Ext.create('Ext.data.Store', {
-    autoLoad: false,
-    storeId: 'ssbmc',
-    fields: ['V_EQUCODE', 'V_EQUNAME'],
-    proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'zdh/equipname_sel',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        }
-    }
-});
-
-
-var panel = Ext.create('Ext.form.Panel', {
-    id: 'panellow',
-    region: 'north',
-    defaults: {
-        style: 'margin:5px 0px 5px 5px',
-        labelAlign: 'right'
-    },
-    frame:true,
-    layout: 'column',
-    items: [{
-        id: 'begintime',
-        xtype: 'datefield',
-        editable: false,
-        format: 'Y/m/d',
-        value: new Date(new Date().getFullYear() + '/'
-        + (new Date().getMonth() + 1) + '/' + 1),
-        fieldLabel: '时间段选择',
-        labelWidth: 100,
-        baseCls: 'margin-bottom'
-    }, {
-        id: 'endtime',
-        xtype: 'datefield',
-        editable: false,
-        format: 'Y/m/d',
-        value: new Date(),
-        fieldLabel: '至',
-        labelWidth:100
-    }, {
-        id: 'ck',
-        xtype: 'combo',
-        store: ckstore,
-        editable: false,
-        fieldLabel: '厂矿',
-        labelWidth: 100,
-        displayField: 'V_DEPTNAME',
-        valueField: 'V_DEPTCODE',
-        queryMode: 'local',
-        baseCls: 'margin-bottom',
-        listeners: {
-            change: function () {
-                Ext.data.StoreManager.lookup('zyqstore').load({
-                    params: {
-                        IS_V_DEPTCODE: Ext.getCmp('ck').getValue(),
-                        IS_V_DEPTTYPE: '[主体作业区]'
-                    }
-                });
+    var ckstore = Ext.create("Ext.data.Store", {
+        autoLoad: true,
+        storeId: 'ckstore',
+        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zdh/plant_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                IS_V_DEPTCODE: "",
+                IS_V_DEPTTYPE: '[基层单位]'
             }
         }
-    }, {
-        id: 'zyq',
-        xtype: 'combo',
-        store: zyqstore,
-        editable: false,
-        fieldLabel: '作业区',
-        labelWidth: 100,
-        displayField: 'V_DEPTNAME',
-        valueField: 'V_DEPTCODE',
-        queryMode: 'local',
-        baseCls: 'margin-bottom',
-        listeners: {
-            change: function () {
-                Ext.data.StoreManager.lookup('ssblx').load({
-                    params: {
-                        V_V_DEPTCODENEXT: Ext.getCmp("zyq").getValue()
-                    }
-                });
+    });
+
+    var zyqstore = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'zyqstore',
+        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zdh/plant_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
             }
         }
-    }, {
-        id: 'gdzt',
-        xtype: 'combo',
-        store: sgdzt,
-        editable: false,
-        fieldLabel: '工单状态',
-        labelWidth: 100,
-        displayField: 'V_STATENAME',
-        valueField: 'V_STATECODE',
-        queryMode: 'local',
-        baseCls: 'margin-bottom'
-    }, {
-        id: 'sblx',
-        xtype: 'combo',
-        store: ssblx,
-        editable: false,
-        fieldLabel: '设备类型',
-        labelWidth: 100,
-        displayField: 'V_EQUTYPENAME',
-        valueField: 'V_EQUTYPECODE',
-        queryMode: 'local',
-        baseCls: 'margin-bottom',
-        listeners: {
-            change: function () {
-                Ext.data.StoreManager.lookup('ssbmc').load({
-                    params: {
-                        V_V_DEPTCODENEXT: Ext.getCmp("zyq").getValue(),
-                        V_V_EQUTYPECODE: Ext.getCmp("sblx").getValue()
-                    }
-                });
+    });
+
+    var sgdzt = Ext.create("Ext.data.Store", {
+        autoLoad: true,
+        storeId: 'sgdzt',
+        fields: ['V_STATECODE', 'V_STATENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zdh/workorderstate_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {}
+        }
+    });
+
+    var ssblx = Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'ssblx',
+        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zdh/equiptype_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
             }
         }
-    }, {
-        id: 'sbmc',
-        xtype: 'combo',
-        store: ssbmc,
-        editable: false,
-        fieldLabel: '设备名称',
-        labelWidth: 100,
-        displayField: 'V_EQUNAME',
-        valueField: 'V_EQUCODE',
-        queryMode: 'local',
-        baseCls: 'margin-bottom'
-    }, {
-        id: 'selshortTxt',
-        xtype: 'textfield',
-        width: 158,
-        emptyText: '工单描述模糊搜索',
-        margin:'5px 0px 5px 110px'
-    },{
+    });
+
+    var ssbmc = Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'ssbmc',
+        fields: ['V_EQUCODE', 'V_EQUNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zdh/equipname_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+
+
+    var panel = Ext.create('Ext.form.Panel', {
+        id: 'panellow',
+        region: 'north',
+        defaults: {
+            style: 'margin:5px 0px 5px 5px',
+            labelAlign: 'right'
+        },
+        frame:true,
+        layout: 'column',
+        items: [{
+            id: 'begintime',
+            xtype: 'datefield',
+            editable: false,
+            format: 'Y/m/d',
+            value: new Date(new Date().getFullYear() + '/'
+            + (new Date().getMonth() + 1) + '/' + 1),
+            fieldLabel: '时间段选择',
+            labelWidth: 100,
+            baseCls: 'margin-bottom'
+        }, {
+            id: 'endtime',
+            xtype: 'datefield',
+            editable: false,
+            format: 'Y/m/d',
+            value: new Date(),
+            fieldLabel: '至',
+            labelWidth:100
+        }, {
+            id: 'ck',
+            xtype: 'combo',
+            store: ckstore,
+            editable: false,
+            fieldLabel: '厂矿',
+            labelWidth: 100,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local',
+            baseCls: 'margin-bottom',
+            listeners: {
+                change: function () {
+                    Ext.data.StoreManager.lookup('zyqstore').load({
+                        params: {
+                            IS_V_DEPTCODE: Ext.getCmp('ck').getValue(),
+                            IS_V_DEPTTYPE: '[主体作业区]'
+                        }
+                    });
+                }
+            }
+        }, {
+            id: 'zyq',
+            xtype: 'combo',
+            store: zyqstore,
+            editable: false,
+            fieldLabel: '作业区',
+            labelWidth: 100,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local',
+            baseCls: 'margin-bottom',
+            listeners: {
+                change: function () {
+                    Ext.data.StoreManager.lookup('ssblx').load({
+                        params: {
+                            V_V_DEPTCODENEXT: Ext.getCmp("zyq").getValue()
+                        }
+                    });
+                }
+            }
+        }, {
+            id: 'gdzt',
+            xtype: 'combo',
+            store: sgdzt,
+            editable: false,
+            fieldLabel: '工单状态',
+            labelWidth: 100,
+            displayField: 'V_STATENAME',
+            valueField: 'V_STATECODE',
+            queryMode: 'local',
+            baseCls: 'margin-bottom'
+        }, {
+            id: 'sblx',
+            xtype: 'combo',
+            store: ssblx,
+            editable: false,
+            fieldLabel: '设备类型',
+            labelWidth: 100,
+            displayField: 'V_EQUTYPENAME',
+            valueField: 'V_EQUTYPECODE',
+            queryMode: 'local',
+            baseCls: 'margin-bottom',
+            listeners: {
+                change: function () {
+                    Ext.data.StoreManager.lookup('ssbmc').load({
+                        params: {
+                            V_V_DEPTCODENEXT: Ext.getCmp("zyq").getValue(),
+                            V_V_EQUTYPECODE: Ext.getCmp("sblx").getValue()
+                        }
+                    });
+                }
+            }
+        }, {
+            id: 'sbmc',
+            xtype: 'combo',
+            store: ssbmc,
+            editable: false,
+            fieldLabel: '设备名称',
+            labelWidth: 100,
+            displayField: 'V_EQUNAME',
+            valueField: 'V_EQUCODE',
+            queryMode: 'local',
+            baseCls: 'margin-bottom'
+        }, {
+            id: 'selshortTxt',
+            xtype: 'textfield',
+            width: 158,
+            emptyText: '工单描述模糊搜索',
+            margin:'5px 0px 5px 110px'
+        },{
             id: 'query',
             xtype: 'button',
             icon: imgpath + '/search.png',
@@ -530,10 +534,8 @@ var panel = Ext.create('Ext.form.Panel', {
                 click: orderbooked
             }
         }]
-});
-Ext.onReady(function () {
+    });
 
-    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         id: "id",
         layout: 'border',
