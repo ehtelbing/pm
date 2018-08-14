@@ -6,7 +6,7 @@ Ext.onReady(function () {
         pageSize: 100,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
-            'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME'
+            'Name', 'flow_code', 'ProcessDefinitionName', 'ProcessInstanceId', 'TaskDefinitionKey', 'ProcessDefinitionKey', 'BusinessKey', 'startName', 'MATERIALNAME'
         ],
         proxy: {
             type: 'ajax',
@@ -25,29 +25,29 @@ Ext.onReady(function () {
 
 
     var buttonPanel = Ext.create('Ext.Panel', {
-        id : 'buttonPanel',
-        frame:true,
-        region:'north',
-        defaults : {
+        id: 'buttonPanel',
+        frame: true,
+        region: 'north',
+        defaults: {
             style: ' margin: 5px 0px 5px 10px'
         },
-        layout:'column',
-        items : [{ xtype:'textfield',id:'lxbh',fieldLabel: '流程编号',labelWidth: 70,labelAlign: 'right'},
-            { xtype: 'hidden',id: 'tabid'},
-            {xtype: 'button',text: '查询', width : 70,icon: imgpath + '/search.png',handler:QueryGrid}
+        layout: 'column',
+        items: [{xtype: 'textfield', id: 'lxbh', fieldLabel: '流程编号', labelWidth: 70, labelAlign: 'right'},
+            {xtype: 'hidden', id: 'tabid'},
+            {xtype: 'button', text: '查询', width: 70, icon: imgpath + '/search.png', handler: QueryGrid}
         ]
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
-        store : gridStore,
-        id:'grid',
-        frame : true,
-        columnLines : true,
-        region:'center',
-        columns : [ {
-            xtype : 'rownumberer',
-            text : '序号',
-            width : 40,
+        store: gridStore,
+        id: 'grid',
+        frame: true,
+        columnLines: true,
+        region: 'center',
+        columns: [{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
             align: 'center'
         }, {
             text: '操作',
@@ -55,8 +55,8 @@ Ext.onReady(function () {
             width: 155,
             align: 'center',
             renderer: function (value, metaData, record) {
-                return  '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>' +
-                    '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.ProcessInstanceId + '\')">' + '删除流程' + '</a>';
+                return '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\')">' + '流程管理' + '</a>' +
+                    '&nbsp;&nbsp;&nbsp;<a href="#" onclick="_cancelFlow(\'' + record.data.ProcessInstanceId + '\',\'' + record.data.BusinessKey + '\',\'' + record.data.flow_type + '\',\'' + record.data.ProcessDefinitionKey + '\',\'' + record.data.flow_code + '\')">' + '删除流程' + '</a>';
             }
         }, {
             text: '流程类型',
@@ -78,7 +78,7 @@ Ext.onReady(function () {
             dataIndex: 'remark',
             align: 'center',
             width: 300
-        },  {
+        }, {
             text: '发起人',
             dataIndex: 'startName',
             align: 'center',
@@ -115,14 +115,14 @@ Ext.onReady(function () {
         }
     });
 
-    var	form = Ext.create('Ext.form.Panel', {
+    var form = Ext.create('Ext.form.Panel', {
         title: '部署流程',
         width: '100%',
-        height:'100%',
+        height: '100%',
         bodyPadding: 10,
         frame: true,
-        defaults:{
-            labelWidth:80
+        defaults: {
+            labelWidth: 80
         },
         items: [
             {
@@ -144,18 +144,18 @@ Ext.onReady(function () {
 
         buttons: [{
             text: '发布',
-            handler: function() {
+            handler: function () {
                 var form = this.up('form').getForm();
-                if(form.isValid()){
+                if (form.isValid()) {
                     form.submit({
-                        url:AppUrl + 'Activiti/ModelDeployProcess',
+                        url: AppUrl + 'Activiti/ModelDeployProcess',
                         waitMsg: '请等待...',
-                        success: function(fp, o) {
+                        success: function (fp, o) {
 
                         },
-                        failure: function(form, action) {
-                            if(action.result.ret=="部署流程成功"){
-                                Ext.Msg.alert("消息","发布成功");
+                        failure: function (form, action) {
+                            if (action.result.ret == "部署流程成功") {
+                                Ext.Msg.alert("消息", "发布成功");
                             }
                         }
                     });
@@ -165,86 +165,86 @@ Ext.onReady(function () {
     });
 
     var startPanel = Ext.create('Ext.Panel', {
-        title:'发起流程',
-        id : 'startPanel',
+        title: '发起流程',
+        id: 'startPanel',
         width: '100%',
-        height:'100%',
+        height: '100%',
         autoScroll: true,
-        frame:true,
-        region:'center',
-        layout:'border',
-        items : [        ]
+        frame: true,
+        region: 'center',
+        layout: 'border',
+        items: []
     });
 
     var Panel = Ext.create('Ext.Panel', {
-        title:'流程管理',
-        id : 'Panel',
+        title: '流程管理',
+        id: 'Panel',
         width: '100%',
-        height:'100%',
+        height: '100%',
         autoScroll: true,
-        frame:true,
-        region:'center',
-        layout:'border',
-        items : [buttonPanel,tabpanel,grid
+        frame: true,
+        region: 'center',
+        layout: 'border',
+        items: [buttonPanel, tabpanel, grid
         ]
     });
 
     var endPanel = Ext.create('Ext.Panel', {
-        title:'放弃流程',
-        id : 'endPanel',
+        title: '放弃流程',
+        id: 'endPanel',
         width: '100%',
-        height:'100%',
+        height: '100%',
         autoScroll: true,
-        frame:true,
-        region:'center',
-        layout:'border',
-        items : [        ]
+        frame: true,
+        region: 'center',
+        layout: 'border',
+        items: []
     });
 
     var tabpanelW = Ext.create("Ext.tab.Panel", {
         id: 'tabpanelW',
         region: 'center',
         width: '100%',
-        height:'100%',
-        items:[form,startPanel,Panel,endPanel]
+        height: '100%',
+        items: [form, startPanel, Panel, endPanel]
     });
 
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [ tabpanelW]
+        items: [tabpanelW]
     });
 
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
-            PersonCode :'ActivitiManage',
-            FlowType :Ext.getCmp('tabid').getValue(),
-            FlowCode : Ext.getCmp('lxbh').getValue(),
-            Page :  Ext.getCmp('page').store.currentPage,
-            PageSize :  Ext.getCmp('page').store.pageSize
+            PersonCode: 'ActivitiManage',
+            FlowType: Ext.getCmp('tabid').getValue(),
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            Page: Ext.getCmp('page').store.currentPage,
+            PageSize: Ext.getCmp('page').store.pageSize
         }
     });
 
     QueryTab();
 });
 
-function QueryTab(){
+function QueryTab() {
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskTypeNum',
         type: 'ajax',
         method: 'POST',
         params: {
-            PersonCode:'ActivitiManage',
-            FlowCode:Ext.getCmp('lxbh').getValue()
+            PersonCode: 'ActivitiManage',
+            FlowCode: Ext.getCmp('lxbh').getValue()
         },
         success: function (response) {
-            var resp=Ext.decode(response.responseText);
-            if(resp.list.length>0){
-                for(var i=0;i<resp.list.length;i++){
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.ComponentManager.get("tabpanel").add({
-                        id : resp.list[i].code,
+                        id: resp.list[i].code,
                         title: resp.list[i].name
                     });
                 }
@@ -256,35 +256,60 @@ function QueryTab(){
 }
 
 
-function QueryGrid(){
+function QueryGrid() {
     Ext.getCmp('page').store.currentPage = 1;
     Ext.data.StoreManager.lookup("gridStore").load({
-        PersonCode :'ActivitiManage',
-        FlowType : Ext.getCmp('tabid').getValue(),
-        FlowCode : Ext.getCmp('lxbh').getValue(),
-        Page :  Ext.getCmp('page').store.currentPage,
-        PageSize :  Ext.getCmp('page').store.pageSize
+        PersonCode: 'ActivitiManage',
+        FlowType: Ext.getCmp('tabid').getValue(),
+        FlowCode: Ext.getCmp('lxbh').getValue(),
+        Page: Ext.getCmp('page').store.currentPage,
+        PageSize: Ext.getCmp('page').store.pageSize
     });
 }
 
-function _preViewProcess(ProcessInstanceId,BusinessKey) {
+function _preViewProcess(ProcessInstanceId, BusinessKey) {
     var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
+    var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_210302/index.html?ProcessInstanceId='
-        +  ProcessInstanceId+'&BusinessKey='+BusinessKey+'&flowtype='+Ext.ComponentManager.get("tabpanel").getActiveTab().id, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+        + ProcessInstanceId + '&BusinessKey=' + BusinessKey + '&flowtype=' + Ext.ComponentManager.get("tabpanel").getActiveTab().id, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
-function _cancelFlow(instanceId) {
+
+function _cancelFlow(instanceId, BusinessKey, flow_type,ProcessDefinitionKey,flowid) {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/DeleteProcessInstance',
         type: 'ajax',
         method: 'POST',
         params: {
-            instanceId: instanceId
+            instanceId: instanceId,
+            businesskey: BusinessKey,
+            flow_type: flow_type,
+            percode: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.msg == "删除成功") {
-                QueryGrid();
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PM_ACTIVITI_STEP_LOG_SET',
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        V_V_BUSINESS_GUID: BusinessKey,
+                        V_V_PROCESS_GUID: ProcessDefinitionKey,
+                        V_V_STEPCODE: '',
+                        V_V_STEPNAME: '',
+                        V_V_IDEA: '删除流程:'+flowid,
+                        V_V_NEXTPER: '',
+                        V_V_INPER: Ext.util.Cookies.get('v_personcode')
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp.RET == 'success') {
+                            QueryGrid();
+                        } else {
+                            alert("记录日志失败");
+                        }
+                    }
+                });
             } else {
                 alert('删除失败');
             }

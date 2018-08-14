@@ -258,31 +258,8 @@ Ext.onReady(function () {
     var gridPostStore=Ext.create('Ext.data.Store',{
         id : 'gridPostStore',
         autoLoad : false,
-        fields: ['V_POSTCODE',
-            'V_PERSONCODE',
-            'D_DATE_EDITTIME',
-            'V_EDIT_GUID',
-            'I_PERSONID',
-            'V_PERSONNAME',
-            'V_LOGINNAME',
-            'V_PASSWORD',
-            'V_DEPTCODE',
-            'V_ROLECODE',
-            'I_ORDERID',
-            'V_CLASSCODE',
-            'V_PERSONCODE',
-            'V_TELEPHONE',
-            'D_DATE_EDITTIME',
-            'V_EDIT_GUID',
-            'V_CLASS_CODE',
-            'I_POSTID',
-            'V_POSTCODE',
-            'V_POSTNAME',
-            'V_POSTMEMO',
-            'V_DEPTCODE',
-            'V_POSTCODE_UP',
-            'D_DATE_EDITTIME',
-            'V_EDIT_GUID'],
+        fields: ['V_POSTCODE','V_POSTNAME','V_POSTMEMO',
+            'V_DEPTCODE','V_DEPTNAME','V_PERSONNAME','V_PERSONCODE', 'V_CLASS_CODE'],
         proxy : {
             type : 'ajax',
             async : false,
@@ -759,6 +736,11 @@ Ext.onReady(function () {
                 align: 'center',
                 flex: 1
             }, {
+                text: '作业区',
+                dataIndex: 'V_DEPTNAME',
+                align: 'center',
+                flex: 1
+            },{
                 text: '删除',
                 align: 'center',
                 flex: 1,
@@ -1561,6 +1543,7 @@ function postTreeitemclick(view, node){
             + 'zdh/PRO_BASE_POSTTOPERSON_SET',
             method: 'POST',
             params: {
+                V_V_ORGCODE:Ext.getCmp('plantname').getValue(),
                 V_V_POSTCODE:node.data.id,
                 V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
                 V_V_TYPE :  true
@@ -1579,8 +1562,9 @@ function _delPost(V_V_POSTCODE){
             + 'zdh/PRO_BASE_POSTTOPERSON_SET',
             method: 'POST',
             params: {
+                V_V_ORGCODE:Ext.getCmp('plantname').getValue(),
                 V_V_POSTCODE:V_V_POSTCODE,
-                V_V_PERSONCODE: treepercode,//Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_PERSONCODE,
+                V_V_PERSONCODE: treepercode,
                 V_V_TYPE :  false
             },
             success: function () {

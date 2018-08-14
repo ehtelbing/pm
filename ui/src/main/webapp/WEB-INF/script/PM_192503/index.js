@@ -741,6 +741,7 @@ Ext.onReady(function () {
                                     + 'zdh/PRO_BASE_POSTTOPERSON_SET',
                                     method: 'POST',
                                     params: {
+                                        V_V_ORGCODE:Ext.getCmp('plantname').getValue(),
                                         V_V_POSTCODE:Ext.data.StoreManager.get('store2').tree.root.childNodes[i].data.id,
                                         V_V_PERSONCODE: Ext.ComponentManager.get("rybm").getValue(),
                                         V_V_TYPE :  Ext.data.StoreManager.get('store2').tree.root.childNodes[i].data.checked

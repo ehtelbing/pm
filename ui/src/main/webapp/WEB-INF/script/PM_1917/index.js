@@ -192,7 +192,7 @@ Ext.onReady(function () {
     var gridStore = Ext.create('Ext.data.Store', {
         storeId: 'gridStore',
         autoLoad: false,
-        pageSize: 15,
+        pageSize: 30,
         fields: ['I_ID',
             'V_MX_CODE',
             'V_MX_NAME',
@@ -383,16 +383,12 @@ Ext.onReady(function () {
             text: '序号',
             width: 40,
             align: 'center'
-        }, /*{
-            text: '检修模型编码',
-            dataIndex: 'V_MX_CODE',
-            align: 'center',
-            width: 150
-        },*/ {
+        },  {
             text: '检修模型名称',
             dataIndex: 'V_MX_NAME',
             align: 'center',
-            width: 150
+            width: 260,
+            renderer:atleft
         }, {
             text: '工序名称',
             align: 'center',
@@ -402,7 +398,8 @@ Ext.onReady(function () {
             text: '备注',
             dataIndex: 'V_BZ',
             align: 'center',
-            width: 150
+            width: 260,
+            renderer:atleft
         }],
         bbar: ['->', {
             xtype: 'pagingtoolbar',
@@ -555,8 +552,16 @@ function detail(a, value, metaData) {//
     return '<a href="javascript:ondetail(\'' + metaData.data.V_GX_CODE + '\',\'' + metaData.data.V_EQUCODE + '\',\'' + metaData.data.V_EQUTYPE + '\')">详情</a>';
 }
 
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return value;
+}
+
+
+
 function ondetail(a,b,c) {
+    var deptcode=Ext.getCmp('V_V_DEPTCODE').getValue()=="%"?"all":Ext.getCmp('V_V_DEPTCODE').getValue()
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_191701/index.html?V_MX_CODE=' + a+'&V_EQUCODE='+b+'&V_EQUTYPE='+c+'&V_ORGCODE='+Ext.getCmp('V_V_ORGCODE').getValue()+'&V_DEPTCODE='+Ext.getCmp('V_V_DEPTCODE').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_191701/index.html?V_MX_CODE=' + a+'&V_EQUCODE='+b+'&V_EQUTYPE='+c+'&V_ORGCODE='+Ext.getCmp('V_V_ORGCODE').getValue()+'&V_DEPTCODE='+deptcode, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }

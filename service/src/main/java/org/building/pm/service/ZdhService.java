@@ -1647,16 +1647,16 @@ public class ZdhService {
         return result;
     }
 
-    public List<Map> PRO_BASE_POSTTOPERSON_SET(String V_V_POSTCODE,String V_V_PERSONCODE,String V_V_TYPE) throws SQLException {
-//        logger.info("begin PRO_PM_WORKORDER_ET_DEL");
+    public List<Map> PRO_BASE_POSTTOPERSON_SET(String V_V_ORGCODE,String V_V_POSTCODE,String V_V_PERSONCODE,String V_V_TYPE) throws SQLException {
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_POSTTOPERSON_SET" + "(:V_V_POSTCODE,:V_V_PERSONCODE," +
+            cstmt = conn.prepareCall("{call PRO_BASE_POSTTOPERSON_SET" + "(:V_V_ORGCODE,:V_V_POSTCODE,:V_V_PERSONCODE," +
                     ":V_V_TYPE)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_POSTCODE", V_V_POSTCODE);
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_TYPE", V_V_TYPE);

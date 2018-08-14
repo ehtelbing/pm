@@ -115,42 +115,7 @@ public class PM_14Controller {
         return result;
     }
 
-    //PM_14Controller 保存方法
 
-   /* @RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_SET", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> PM_14_FAULT_ITEM_DATA_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                         @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                         @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                         @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
-                                                         @RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
-                                                         @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
-                                                         @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
-                                                         @RequestParam(value = "V_V_FINDTIME") String V_V_FINDTIME,
-                                                         @RequestParam(value = "V_V_FAULT_XX") String V_V_FAULT_XX,
-                                                         @RequestParam(value = "V_V_JJBF") String V_V_JJBF,
-                                                         @RequestParam(value = "V_V_FAULT_LEVEL") String V_V_FAULT_LEVEL,
-                                                         @RequestParam(value = "V_V_FILE_GUID") String V_V_FILE_GUID,
-                                                         @RequestParam(value = "V_V_INTIME") String V_V_INTIME,
-                                                         @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-                                                         @RequestParam(value = "V_V_IP") String V_V_IP,
-                                                         HttpServletRequest request,
-                                                         HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        HashMap data = pm_14Service.PM_14_FAULT_ITEM_DATA_SET(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
-                V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX, V_V_FAULT_LEVEL,V_V_JJBF,
-                V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP);
-
-        String pm_06 = (String) data.get("RET");
-
-        result.put("RET", pm_06);
-        result.put("success", true);
-        return result;
-    }*/
-    //pm_1407zsbmc
     @RequestMapping(value = "/PRO_SAP_EQU_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_SAP_EQU_VIEW(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
@@ -346,61 +311,6 @@ public class PM_14Controller {
         result.put("success", true);
         return result;
     }
-
-    /*@RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_SET", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> PM_14_FAULT_ITEM_DATA_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                           @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                           @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
-                                                           @RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
-                                                           @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
-                                                           @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
-                                                           @RequestParam(value = "V_V_FAULT_XX") String V_V_FAULT_XX,
-                                                           @RequestParam(value = "V_V_JJBF") String V_V_JJBF,
-                                                           @RequestParam(value = "V_V_FAULT_LEVEL") String V_V_FAULT_LEVEL,
-                                                           @RequestParam(value = "V_V_PER_CLASS") String V_V_PER_CLASS,
-                                                           @RequestParam(value = "V_V_JJ") String V_V_JJ,
-                                                           @RequestParam(value = "V_V_WL") String V_V_WL,
-                                                           @RequestParam(value = "V_V_PART") String V_V_PART,
-                                                           @RequestParam(value = "V_V_MATERIAL") String V_V_MATERIAL,
-                                                           @RequestParam(value = "V_V_TIME") String V_V_TIME,
-                                                           @RequestParam(value = "V_V_FILE_GUID") String V_V_FILE_GUID,
-                                                           @RequestParam(value = "V_V_INTIME") String V_V_INTIME,
-                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-                                                           @RequestParam(value = "V_V_IP") String V_V_IP,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        HashMap data = pm_14Service.PM_14_FAULT_ITEM_DATA_SET(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
-                V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FAULT_XX, V_V_JJBF, V_V_FAULT_LEVEL,
-                V_V_PER_CLASS,V_V_JJ,V_V_WL,V_V_PART,V_V_MATERIAL,V_V_TIME,V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP);
-
-        String pm_06 = (String) data.get("RET");
-
-        result.put("RET", pm_06);
-        result.put("success", true);
-        return result;
-    }*/
-
-    /*@RequestMapping(value = "/PRO_BASE_FILE_DEL", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> PRO_BASE_FILE_DEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                          HttpServletRequest request,
-                                                          HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        HashMap data = pm_14Service.PRO_BASE_FILE_DEL( V_V_GUID);
-
-        String pm_06 = (String) data.get("RET");
-
-        result.put("RET", pm_06);
-        result.put("success", true);
-        return result;
-    }*/
 
     @RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_SET1", method = RequestMethod.POST)
     @ResponseBody

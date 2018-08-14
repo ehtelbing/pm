@@ -193,7 +193,6 @@ function loadPageInfo() {
                             }
                             result.push(st1[0]);
                             result.push('</span>');
-                            // result.push('                    &nbsp;');
                             result.push('                    </td>');
                             result.push('                </tr>');
                             result.push('                <tr>');
@@ -348,7 +347,22 @@ function loadPageInfo() {
                                         result.push(respTask.list[i].I_NUMBER_OF_PEOPLE==""?"&nbsp;":respTask.list[i].I_NUMBER_OF_PEOPLE);
                                         result.push('&nbsp;</td>');
 
-                                        if(i%20==0){
+                                        result.push('                <td width="90" class="border_r_b" align="left">');
+                                        result.push(respTask.list[i].V_DESCRIPTION==""?"&nbsp;":descBilldescN(respTask.list[i].V_JJ_NAME));
+                                        result.push('&nbsp;</td>');
+
+                                        result.push('                <td width="90" class="border_r_b" align="left">');
+                                        result.push(respTask.list[i].V_DESCRIPTION==""?"&nbsp;":descBilldescN(respTask.list[i].V_GJ_NAME));
+                                        result.push('&nbsp;</td>');
+
+                                        result.push('                <td width="90" class="border_r_b" align="left">');
+                                        result.push(respTask.list[i].V_DESCRIPTION==""?"&nbsp;":descBilldescN(respTask.list[i].V_JSQY_NAME));
+                                        result.push('&nbsp;</td>');
+
+                                        result.push('                <td width="90" class="border_r_b" align="left">');
+                                        result.push(respTask.list[i].V_DESCRIPTION==""?"&nbsp;":descBilldescN(respTask.list[i].V_AQSC_NAME));
+                                        result.push('&nbsp;</td>');
+                                        /*if(i%20==0){
                                             result.push('                <td width="90" align="center" class="border_r_b" valign="top" rowspan="'+(max_operation - x*20)+'">');
                                             result.push(respTask.list[i].V_JJ_NAME==""?"&nbsp;":subDesc(respTask.list[i].V_JJ_NAME,4));
                                             result.push('&nbsp;</td>');
@@ -370,7 +384,7 @@ function loadPageInfo() {
                                             result.push('                <td width="90" align="center" class="border_b" valign="top" rowspan="'+(max_operation - x*20)+'">');
                                             result.push(respTask.list[i].V_AQSC_NAME==""?"&nbsp;":subDesc(respTask.list[i].V_AQSC_NAME,7));
                                             result.push('&nbsp;</td>');
-                                        }
+                                        }*/
 
                                         result.push('            </tr>');
                                     }
@@ -559,13 +573,6 @@ function loadPageInfo() {
                             result.push('        </td>');
                             result.push('        </tr>');
                             result.push('      </table>');
-                       /*     result.push('      <div style="text-align: center; height: 1cm; line-height: 30px;">');
-                            result.push('        当前页面：<span>');
-                            result.push(x + 1);
-                            result.push('        </span>/总页面：<span>');
-                            result.push(max);
-                            result.push('        </span>');
-                            result.push('      </div>');*/
                             result.push('    </div>');
                             result.push('    </div>');
                             if (x + 1 < max || index + 1 <= argument.length) {
@@ -665,7 +672,18 @@ function descBill(content){
 function descBilldesc(content){
     var temp = [];
     for(var i=0;i<content.length;i++){
-        if(i<40){
+        if(i<20){
+            temp.push(content.charAt(i));
+        }
+    }
+
+    return temp.join("");
+}
+
+function descBilldescN(content){
+    var temp = [];
+    for(var i=0;i<content.length;i++){
+        if(i<14){
             temp.push(content.charAt(i));
         }
     }

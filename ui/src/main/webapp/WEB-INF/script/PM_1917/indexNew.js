@@ -888,7 +888,7 @@ Ext.onReady(function () {
             fieldLabel: '作业区',
             emptyText: '全部',
             editable: false,
-            labelWidth: 40,
+            labelWidth: 60,
             listeners: {
                 change: function (combo, records) {
                     _queryTree();
@@ -896,19 +896,19 @@ Ext.onReady(function () {
             }
         }, {
             xtype: 'button',
-            text: '添加',
+            text: '添加模型',
             icon: imgpath + '/add.png',
             width: 60,
             handler: _openmanageWindow
         }, {
             xtype: 'button',
-            text: '修改',
+            text: '修改模型',
             icon: imgpath + '/edit.png',
             width: 60,
             handler: _openUpdateWindow
         }, {
             xtype: 'button',
-            text: '删除',
+            text: '删除模型',
             icon: imgpath + '/delete1.png',
             width: 60,
             handler: _deleteJXMX
@@ -962,8 +962,8 @@ Ext.onReady(function () {
         }],
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
-                _preViewImage(record.get('V_MX_CODE'));
-                _querygx(record.get('V_MX_CODE'));
+                _preViewImage(record.get('V_GX_CODE'));
+                _querygx(record.get('V_GX_CODE'));
             }
         },
         bbar: ['->', {
@@ -990,11 +990,6 @@ Ext.onReady(function () {
             text: '序号',
             width: 40,
             sortable: false
-        }, {
-            text: '检修模型名称',
-            dataIndex: 'V_MX_NAME',
-            style: 'text-align: center;',
-            flex: 1
         }, {
             text: '工序名称',
             dataIndex: 'V_JXGX_NAME',
@@ -1812,7 +1807,7 @@ Ext.onReady(function () {
             flex: 1
         }, {
             text: '物料名称',
-            dataIndex: 'V_KFNAME',
+            dataIndex: 'V_WLSM',
             align: 'center',
             flex: 1
         }, {

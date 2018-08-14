@@ -874,6 +874,7 @@ public class ZdhController {
     @RequestMapping(value = "/PRO_BASE_POSTTOPERSON_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_POSTTOPERSON_SET(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_POSTCODE") String V_V_POSTCODE,
             @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
             @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
@@ -882,7 +883,7 @@ public class ZdhController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_BASE_POSTTOPERSON_SET(V_V_POSTCODE,V_V_PERSONCODE,V_V_TYPE);
+        result = zdhService.PRO_BASE_POSTTOPERSON_SET(V_V_ORGCODE,V_V_POSTCODE,V_V_PERSONCODE,V_V_TYPE);
         test.put("list", result);
         return test;
     }

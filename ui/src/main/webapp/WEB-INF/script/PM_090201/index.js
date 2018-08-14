@@ -8,6 +8,7 @@ var V_STEPNAME = '';
 var V_STEPCODE = '';
 var D_BE_SJ = '';
 var D_EN_SJ = '';
+var Defectguid='';
 if (location.href.split('?')[1] != undefined) {
     V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
     url_guid = Ext.urlDecode(location.href.split('?')[1]).url_guid;
@@ -217,6 +218,7 @@ function loadPageInfo() {
                 $("#safe").val(resp.list[0].V_SAFE);
                 $("#wbsCode").val(resp.list[0].V_WBS);
                 $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
+                Defectguid=resp.list[0].V_DEFECTGUID;
 
 
             } else {
@@ -396,7 +398,7 @@ function BillGo() {
         async: false,
         params: {
             V_V_PERNAME: $.cookies.get('v_personcode'),
-            V_V_DEFECT_GUID: $.url().param("V_GUID"),
+            V_V_DEFECT_GUID:Defectguid,
             V_V_ORDERGUID: $("#V_ORDERGUID").val(),
             V_V_EQUCODE: $("#V_EQUCODE").val(),
             V_V_WORKORDER_TYPE: $("#selType").val(),

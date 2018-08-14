@@ -1093,15 +1093,15 @@ public class ActivitiController {
         Map result = new HashMap();
         try {
             /*
-            * 挂起流程
-            * */
+             * 挂起流程
+             * */
             runtimeService.suspendProcessInstanceById(instanceId);
-
             /*
-            * 删除流程
-            * */
-            // runtimeService.deleteProcessInstance(instanceId, null);
-            result.put("msg", "删除成功");
+             * 删除流程
+             * */
+            //result = activitiService.DeleteProcessInstance(instanceId);
+
+
         } catch (Exception e) {
             result.put("msg", "删除失败");
         }
