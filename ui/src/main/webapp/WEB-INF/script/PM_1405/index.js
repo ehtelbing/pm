@@ -346,13 +346,16 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records) {
-                if (initadd) {
+                // if (initadd) {
+                //
+                // } else {
+                //     Ext.getCmp('V_EQUNAME1').select(store.last());
+                // }
 
-                } else {
-                    Ext.getCmp('V_EQUNAME1').select(store.last());
-                }
-
-
+                store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
+                Ext.getCmp('SUB_V_EQUNAME').select(store.first());
+                zsbnameload = true;
+                _init();
             }
         }
     });
@@ -431,14 +434,14 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records) {
-                /*if (initadd) {
+                if (initadd) {
 
                  } else {
                  Ext.getCmp('SUB_V_EQUNAME1').select(store.first());
-                 }*/
+                 }
 
-                store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
-                Ext.getCmp('SUB_V_EQUNAME1').select(store.first());
+                // store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
+                // Ext.getCmp('SUB_V_EQUNAME1').select(store.first());
 
             }
         }
@@ -1847,6 +1850,11 @@ function _seltctFault() {
 }
 
 function _addFault() {
+
+    if(Ext.getCmp('V_V_DEPTCODE').getValue()=='%'){
+        alert("请选择作业区！")
+        return;
+    }
     Ext.getCmp("addFaultWindow").show();
     //Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     V_V_GUID = Ext.data.IdGenerator.get('uuid').generate();
@@ -1864,6 +1872,7 @@ function _addFault() {
         Ext.getCmp('V_V_EQUTYPE1').setValue(Ext.getCmp('V_V_EQUTYPE').getValue());//给设备类型设置默认值
     }
     if ((Ext.getCmp('V_EQUNAME').getValue()) == '%') {
+      //  Ext.getCmp('V_EQUNAME1').select(Ext.data.StoreManager.lookup('equNameStore1').getAt(0).get('V_EQUCODE'));
         Ext.getCmp('V_EQUNAME1').select(Ext.data.StoreManager.lookup('equNameStore1').getAt(1).get('V_EQUCODE'));
     } else {
         Ext.getCmp('V_EQUNAME1').setValue(Ext.getCmp('V_EQUNAME').getValue());//给设备类型设置默认值

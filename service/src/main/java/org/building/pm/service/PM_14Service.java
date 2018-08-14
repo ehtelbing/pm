@@ -453,61 +453,61 @@ public class PM_14Service {
         return result;
     }
 
-    public HashMap PM_14_FAULT_ITEM_DATA_SET(String V_V_GUID,String  V_V_ORGCODE,String  V_V_DEPTCODE,String  V_V_EQUTYPE,String  V_V_EQUCODE,
-                                             String V_V_EQUCHILD_CODE,String  V_V_FAULT_GUID,String  V_V_FAULT_TYPE,String  V_V_FAULT_YY,
-                                             String V_V_FAULT_XX,String  V_V_JJBF, String V_V_FAULT_LEVEL, String V_V_PER_CLASS,String V_V_JJ,
-                                             String V_V_WL,String V_V_PART,String V_V_MATERIAL,String V_V_TIME,String V_V_FILE_GUID,String V_V_INTIME,
-                                             String V_V_PERCODE,String V_V_IP) throws SQLException {
-
-        logger.info("begin PM_14_FAULT_ITEM_DATA_SET");
-//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
-
-
-        HashMap result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_SET" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE," +
-                    ":V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_GUID,:V_V_FAULT_TYPE,:V_V_FAULT_YY," +
-                    ":V_V_FAULT_XX,:V_V_JJBF,:V_V_FAULT_LEVEL,:V_V_PER_CLASS,:V_V_JJ,:V_V_WL,:V_V_PART,:V_V_MATERIAL," +
-                    ":V_V_TIME,:V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_INFO)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
-            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
-            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
-            cstmt.setString("V_V_EQUCHILD_CODE", V_V_EQUCHILD_CODE);
-            cstmt.setString("V_V_FAULT_GUID", V_V_FAULT_GUID);
-            cstmt.setString("V_V_FAULT_TYPE", V_V_FAULT_TYPE);
-            cstmt.setString("V_V_FAULT_YY", V_V_FAULT_YY);
-            cstmt.setString("V_V_FAULT_XX", V_V_FAULT_XX);
-            cstmt.setString("V_V_JJBF", V_V_JJBF);
-            cstmt.setString("V_V_FAULT_LEVEL", V_V_FAULT_LEVEL);
-            cstmt.setString("V_V_PER_CLASS", V_V_PER_CLASS);
-            cstmt.setString("V_V_JJ", V_V_JJ);
-            cstmt.setString("V_V_WL", V_V_WL);
-            cstmt.setString("V_V_PART", V_V_PART);
-            cstmt.setString("V_V_MATERIAL", V_V_MATERIAL);
-            cstmt.setString("V_V_TIME", V_V_TIME);
-            cstmt.setString("V_V_FILE_GUID", V_V_FILE_GUID);
-            cstmt.setString("V_V_INTIME", V_V_INTIME);
-            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
-            cstmt.setString("V_V_IP", V_V_IP);
-            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
-            cstmt.execute();
-            result.put("RET", cstmt.getString("V_INFO"));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PM_14_FAULT_ITEM_DATA_SET");
-        return result;
-    }
+//    public HashMap PM_14_FAULT_ITEM_DATA_SET(String V_V_GUID,String  V_V_ORGCODE,String  V_V_DEPTCODE,String  V_V_EQUTYPE,String  V_V_EQUCODE,
+//                                             String V_V_EQUCHILD_CODE,String  V_V_FAULT_GUID,String  V_V_FAULT_TYPE,String  V_V_FAULT_YY,
+//                                             String V_V_FAULT_XX,String  V_V_JJBF, String V_V_FAULT_LEVEL, String V_V_PER_CLASS,String V_V_JJ,
+//                                             String V_V_WL,String V_V_PART,String V_V_MATERIAL,String V_V_TIME,String V_V_FILE_GUID,String V_V_INTIME,
+//                                             String V_V_PERCODE,String V_V_IP) throws SQLException {
+//
+//        logger.info("begin PM_14_FAULT_ITEM_DATA_SET");
+////      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+//
+//
+//        HashMap result = new HashMap();
+//        Connection conn = null;
+//        CallableStatement cstmt = null;
+//        try {
+//            conn = dataSources.getConnection();
+//            conn.setAutoCommit(true);
+//            cstmt = conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_SET" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE," +
+//                    ":V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_GUID,:V_V_FAULT_TYPE,:V_V_FAULT_YY," +
+//                    ":V_V_FAULT_XX,:V_V_JJBF,:V_V_FAULT_LEVEL,:V_V_PER_CLASS,:V_V_JJ,:V_V_WL,:V_V_PART,:V_V_MATERIAL," +
+//                    ":V_V_TIME,:V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_INFO)}");
+//            cstmt.setString("V_V_GUID", V_V_GUID);
+//            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+//            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+//            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+//            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+//            cstmt.setString("V_V_EQUCHILD_CODE", V_V_EQUCHILD_CODE);
+//            cstmt.setString("V_V_FAULT_GUID", V_V_FAULT_GUID);
+//            cstmt.setString("V_V_FAULT_TYPE", V_V_FAULT_TYPE);
+//            cstmt.setString("V_V_FAULT_YY", V_V_FAULT_YY);
+//            cstmt.setString("V_V_FAULT_XX", V_V_FAULT_XX);
+//            cstmt.setString("V_V_JJBF", V_V_JJBF);
+//            cstmt.setString("V_V_FAULT_LEVEL", V_V_FAULT_LEVEL);
+//            cstmt.setString("V_V_PER_CLASS", V_V_PER_CLASS);
+//            cstmt.setString("V_V_JJ", V_V_JJ);
+//            cstmt.setString("V_V_WL", V_V_WL);
+//            cstmt.setString("V_V_PART", V_V_PART);
+//            cstmt.setString("V_V_MATERIAL", V_V_MATERIAL);
+//            cstmt.setString("V_V_TIME", V_V_TIME);
+//            cstmt.setString("V_V_FILE_GUID", V_V_FILE_GUID);
+//            cstmt.setString("V_V_INTIME", V_V_INTIME);
+//            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+//            cstmt.setString("V_V_IP", V_V_IP);
+//            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+//            cstmt.execute();
+//            result.put("RET", cstmt.getString("V_INFO"));
+//        } catch (SQLException e) {
+//            logger.error(e);
+//        } finally {
+//            cstmt.close();
+//            conn.close();
+//        }
+//        logger.debug("result:" + result);
+//        logger.info("end PM_14_FAULT_ITEM_DATA_SET");
+//        return result;
+//    }
 
     public HashMap PRO_BASE_FILE_DEL(String  V_V_GUID) throws SQLException {
 
@@ -1219,8 +1219,8 @@ public class PM_14Service {
 
     public HashMap PM_14_FAULT_ITEM_DATA_SET(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE,
                                              String V_V_EQUCHILD_CODE, String V_V_FAULT_GUID, String V_V_FAULT_TYPE, String V_V_FAULT_YY,
-                                             String V_V_FINDTIME, String V_V_FAULT_XX, String V_V_FAULT_LEVEL,
-                                             String V_V_JJBF, String V_V_FILE_GUID, String V_V_INTIME,
+                                             String V_V_FINDTIME, String V_V_FAULT_XX,
+                                             String V_V_JJBF,String V_V_FAULT_LEVEL, String V_V_FILE_GUID, String V_V_INTIME,
                                              String V_V_PERCODE, String V_V_IP) throws SQLException {
         logger.info("begin PM_14_FAULT_ITEM_DATA_SET");
 

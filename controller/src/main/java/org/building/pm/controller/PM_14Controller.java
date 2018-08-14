@@ -580,7 +580,7 @@ public class PM_14Controller {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = pm_14Service.PM_14_FAULT_ITEM_DATA_SET(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
-                V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX, V_V_FAULT_LEVEL,V_V_JJBF,
+                V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX,V_V_JJBF, V_V_FAULT_LEVEL,
                 V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP);
 
         String pm_06 = (String) data.get("RET");

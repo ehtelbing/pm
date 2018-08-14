@@ -6,7 +6,8 @@ Ext.onReady(function () {
         pageSize: 50,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
-            'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME'
+            'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME',
+            'EQUNAME','PLANSTART','PLANEND'
         ],
         proxy: {
             type: 'ajax',
@@ -102,7 +103,23 @@ Ext.onReady(function () {
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                 return value.substring(0, 10);
             }
-        }],
+            },{
+            text: '设备名称',
+            dataIndex: 'EQUNAME',
+            align: 'center',
+            width: 200
+        },{
+            text: '开始时间',
+            dataIndex: 'PLANSTART',
+            align: 'center',
+            width: 200
+        },{
+            text: '结束时间',
+            dataIndex: 'PLANEND',
+            align: 'center',
+            width: 200
+        }
+        ],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',

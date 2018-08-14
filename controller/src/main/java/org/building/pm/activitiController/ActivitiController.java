@@ -76,6 +76,8 @@ public class ActivitiController {
     private BasicService basicService;
 
     @Autowired
+    private WorkOrderService workOrderService;
+    @Autowired
     private cjyController cjyController;
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
@@ -568,8 +570,34 @@ public class ActivitiController {
                         Map map = (Map) MATERIALNAME.get(0);
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
+                    //--------
                 }
 
+                //---add 3 columns on work
+                    List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    if(equIp_name.size()>0){
+                        Map equmap=(Map) equIp_name.get(0);
+                        taskmap.put("EQUNAME",equmap.get("V_EQUIP_NAME").toString());
+                        taskmap.put("PLANSTART",equmap.get("D_START_DATE").toString());
+                        taskmap.put("PLANEND",equmap.get("D_FINISH_DATE").toString());
+                    }   //---add 3 columns on NONTH
+                    else  if(taskmap.get("flow_type").equals("MonthPlan")) {
+                        equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");
+                        if(equIp_name.size()>0){
+                            Map equmap=(Map) equIp_name.get(0);
+                            taskmap.put("EQUNAME",equmap.get("V_EQUNAME").toString());
+                            taskmap.put("PLANSTART",equmap.get("V_STARTTIME").toString());
+                            taskmap.put("PLANEND",equmap.get("V_ENDTIME").toString());}
+                    }//---add 3 columns on week
+                    else  if(taskmap.get("flow_type").equals("WeekPlan")) {
+                        equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_WEEK_GET(taskmap.get("BusinessKey").toString()).get("list");
+                        if(equIp_name.size()>0){
+                            Map equmap=(Map) equIp_name.get(0);
+                            taskmap.put("EQUNAME",equmap.get("V_EQUNAME").toString());
+                            taskmap.put("PLANSTART",equmap.get("V_STARTTIME").toString());
+                            taskmap.put("PLANEND",equmap.get("V_ENDTIME").toString());}
+
+                    }
                 User user = identityService.createUserQuery()
                         .userId(taskmap.get("originator").toString()).singleResult();
 
@@ -583,8 +611,7 @@ public class ActivitiController {
             result.put("list", resultlist);
             result.put("total", total);
             result.put("count", result.size());
-            result.put("msg", "Ok");
-        } catch (Exception e) {
+            } catch (Exception e) {
             e.printStackTrace();
             result.put("msg", "Error");
         }
@@ -1093,15 +1120,15 @@ public class ActivitiController {
         Map result = new HashMap();
         try {
             /*
-             * 挂起流程
-             * */
+            * 挂起流程
+            * */
             runtimeService.suspendProcessInstanceById(instanceId);
+
             /*
-             * 删除流程
-             * */
-            //result = activitiService.DeleteProcessInstance(instanceId);
-
-
+            * 删除流程
+            * */
+            // runtimeService.deleteProcessInstance(instanceId, null);
+            result.put("msg", "删除成功");
         } catch (Exception e) {
             result.put("msg", "删除失败");
         }
