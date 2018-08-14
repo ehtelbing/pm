@@ -305,8 +305,6 @@ Ext.onReady(function () {
         id: 'mendMemberPanel',
         store: mendMemberStore,
         // title: '<div align="center"> 检修单位人员</div>',
-        width: '100%',
-        region: 'sourth',
         border: true,
         columnLines: true,
         columns: [{
@@ -359,31 +357,19 @@ Ext.onReady(function () {
         width: 400,
         height: 300,
         modal: true,
-        plain: true,
         closable: true,
-        closeAction: 'close',
+        closeAction: 'hide',
         model: true,
-        layout: 'border',
+        //layout: 'border',
         frame: true,
         items: [{
-            region: 'north',
-            border: false,
-            items: [Ext.create('Ext.panel.Panel', {
-                region: 'north',
-                layout: 'column',
-                baseCls: 'my-panel-no-border',
-                frame: true,
-                items: [{
                     xtype: 'button',
                     text: '新增',
                     style: ' margin: 5px 0px 5px 10px',
                     icon: imgpath + '/add.png',
                     handler: _showInsertMember
-                }]
-            })]
         }, {
             region: 'center',
-            layout: 'fit',
             border: false,
             items: [mendMemberPanel]
         }]
