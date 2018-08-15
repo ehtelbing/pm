@@ -91,10 +91,11 @@ public class KxyController {
             @RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
             @RequestParam(value = "IS_V_SYSTYPE") String IS_V_SYSTYPE,
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-            @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU)
+            @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU,
+            @RequestParam(value = "V_V_USERID") String V_V_USERID)
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map<String, Object>> deptList = (List<Map<String, Object>>) (kxyService.PRO_BASE_MENU_FAVORITE(IS_V_ROLECODE, IS_V_SYSTYPE, V_V_DEPTCODE, V_V_HOME_MENU).get("list"));
+        List<Map<String, Object>> deptList = (List<Map<String, Object>>) (kxyService.PRO_BASE_MENU_FAVORITE(IS_V_ROLECODE, IS_V_SYSTYPE, V_V_DEPTCODE, V_V_HOME_MENU, V_V_USERID).get("list"));
         List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
         Map<String, Object> dept;
         if (deptList != null) {
