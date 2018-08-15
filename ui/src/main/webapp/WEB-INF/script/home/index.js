@@ -528,9 +528,9 @@ function _setHomeMenu(MENUID) {
             var resp = Ext.decode(response.responseText);
             if (resp.RET != null && resp.RET == 'Success') {
                 _getHomeMenu();
-                Ext.Msg.alert('操作信息', '设置首页成功');
+                Ext.Msg.alert('操作信息', '设置/取消首页成功');
             } else {
-                Ext.Msg.alert('操作信息', '设置首页失败');
+                Ext.Msg.alert('操作信息', '设置/取消首页失败');
             }
         }
     });
