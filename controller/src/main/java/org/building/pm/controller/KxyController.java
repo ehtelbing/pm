@@ -14,10 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -27,7 +24,6 @@ public class KxyController {
     private KxyService kxyService;
 
 
-
     @RequestMapping(value = "/userFavoriteMenu", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> userFavoriteMenu(@RequestParam(value = "A_USERID") String A_USERID, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -35,15 +31,15 @@ public class KxyController {
         Map<String, Object> result = new HashMap<String, Object>();
         HashMap data = kxyService.userFavoriteMenu(A_USERID);
         List<Map<String, Object>> list = (List) data.get("list");
-
-        if (list.size() > 0) {
-            Map<String, Object> userMenu;
-            for (int i = 0; i < list.size(); i++) {
-                userMenu = list.get(i);
-                userMenu.put("leaf", true);
+        if (list != null) {
+            if (list.size() > 0) {
+                Map<String, Object> userMenu;
+                for (int i = 0; i < list.size(); i++) {
+                    userMenu = list.get(i);
+                    userMenu.put("leaf", true);
+                }
             }
         }
-
         result.put("list", list);
         result.put("success", true);
         return result;
@@ -81,7 +77,6 @@ public class KxyController {
     @RequestMapping(value = "/getHomeMenu", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getHomeMenu(@RequestParam(value = "A_USERID") String A_USERID, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap operator = new HashMap<String, Object>();
         Map<String, Object> result = new HashMap<String, Object>();
         HashMap data = kxyService.getHomeMenu(A_USERID);
         List<Map<String, Object>> list = (List) data.get("list");
@@ -90,7 +85,7 @@ public class KxyController {
         return result;
     }
 
-    @RequestMapping(value = "/PRO_BASE_NEW_MENU_SEL", method = RequestMethod.POST)
+    @RequestMapping(value = "/PRO_BASE_MENU_FAVORITE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_NEW_MENU_SEL(
             @RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
@@ -99,19 +94,20 @@ public class KxyController {
             @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU)
             throws SQLException {
         Map<String, Object> result = new HashMap<String, Object>();
-        List<Map<String, Object>> deptList = (List<Map<String, Object>>)(kxyService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE, V_V_DEPTCODE, V_V_HOME_MENU).get("list"));
+        List<Map<String, Object>> deptList = (List<Map<String, Object>>) (kxyService.PRO_BASE_MENU_FAVORITE(IS_V_ROLECODE, IS_V_SYSTYPE, V_V_DEPTCODE, V_V_HOME_MENU).get("list"));
         List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
         Map<String, Object> dept;
-        for (int i = 0; i < deptList.size(); i++) {
-            dept = deptList.get(i);
-            if ("-1".equals(dept.get("V_MENUCODE_UP"))) {
-                children.add(dept);
-                fillChildDept(dept, deptList);
+        if (deptList != null) {
+            for (int i = 0; i < deptList.size(); i++) {
+                dept = deptList.get(i);
+                if ("-1".equals(dept.get("V_MENUCODE_UP"))) {
+                    children.add(dept);
+                    fillChildDept(dept, deptList);
+                }
             }
         }
         result.put("deptList", deptList);
         result.put("children", children);
-
         return result;
     }
 

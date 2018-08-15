@@ -24,7 +24,7 @@ Ext.onReady(function () {
 		pageSize: -1,
 		fields: ['I_MENUID', 'V_MENUCODE', 'V_MENUNAME', 'V_MENUCODE_UP', 'V_URL', 'V_ICOURL', 'V_SYSTYPE', 'I_ORDERID', 'V_ROLECODE', 'V_ROLENAME', 'V_FLAG', 'V_HOME_MENU', 'V_DEPTCODE', 'V_OTHER'],
 		proxy: {
-			url: AppUrl +'Kxy/PRO_BASE_NEW_MENU_SEL',
+			url: AppUrl +'Kxy/PRO_BASE_MENU_FAVORITE',
 			type: 'ajax',
 			async: true,
 			actionMethods: {

@@ -515,7 +515,6 @@ function isAutoApp(menuId) {
 }
 
 function _setHomeMenu(MENUID) {
-
     Ext.Ajax.request({
         url: AppUrl + 'Kxy/setHomeMenu',
         type: 'ajax',
@@ -538,7 +537,6 @@ function _setHomeMenu(MENUID) {
 }
 
 function _getHomeMenu() {
-
     Ext.Ajax.request({
         url: AppUrl + 'Kxy/getHomeMenu',
         type: 'ajax',
@@ -550,8 +548,10 @@ function _getHomeMenu() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.success) {
-                for (var i = 0; i < resp.list.length; i++) {
-                    append(resp.list[i].I_MENUID, resp.list[i].V_MENUNAME, resp.list[i].URL);
+                if(resp.list != null) {
+                    for (var i = 0; i < resp.list.length; i++) {
+                        append(resp.list[i].I_MENUID, resp.list[i].V_MENUNAME, resp.list[i].URL);
+                    }
                 }
             } else {
                 Ext.Msg.alert('操作信息', '获取首页失败');
@@ -559,19 +559,8 @@ function _getHomeMenu() {
         }
     });
 }
-function _userFavoriteMenu() {
-    //树查询
-    var userFavoriteMenuStore = Ext.data.StoreManager.lookup('userFavoriteMenuStore');
-    userFavoriteMenuStore.proxy.extraParams = {
-        A_USERID: Ext.util.Cookies.get('v_personcode')
-    };
-    userFavoriteMenuStore.currentPage = 1;
-    userFavoriteMenuStore.load();
-
-}
 
 function _deleteFavoriteMenu(MENUID) {//删除收藏
-
     Ext.Ajax.request({
         url: AppUrl + 'Kxy/deleteFavoriteMenu',
         type: 'ajax',
@@ -610,9 +599,9 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
                 if (returnValue != null) {
                     var FavoriteMenu = returnValue;//获得待收藏页面的代码
                     var MENUID_LIST = new Array();
-                    for (var i = 0; i < FavoriteMenu.length; i++) {
-                        MENUID_LIST.push(FavoriteMenu[i].data.V_MENUCODE);
-                    }
+                        for (var i = 0; i < FavoriteMenu.length; i++) {
+                            MENUID_LIST.push(FavoriteMenu[i].data.V_MENUCODE);
+                        }
                     Ext.Ajax.request({
                         url: AppUrl + 'Kxy/insertFavoriteMenuList',
                         type: 'ajax',
