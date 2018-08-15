@@ -114,7 +114,7 @@ var Layout = {
             fieldLabel: '类型',
             labelWidth: 60,
             id: 'lx',
-            store: 'lxStore',
+            store: lxStore,
             editable: false,
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',

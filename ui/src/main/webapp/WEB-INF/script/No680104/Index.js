@@ -247,8 +247,8 @@ function getInformation() {
             var data = Ext.decode(response.responseText);
             var resp = data.list[0];
             Ext.getCmp('nowtime').setValue(resp.D_DATE);
-            Ext.getCmp('bx').select(resp.V_CLASS);
-            Ext.getCmp('bz').select(resp.V_CLASSTYPE);
+            Ext.getCmp('bx').select(resp.V_CLASSTYPE);
+            Ext.getCmp('bz').select(resp.V_CLASS);
             Ext.getCmp('lx').select(resp.V_TYPE);
             Ext.getCmp('xxnr').setValue(resp.V_INFORMATION);
             Ext.getCmp('zdtz').setValue(resp.V_NOTIFICATION == 'Y' ? true : false);
@@ -289,8 +289,7 @@ function getXgbm() {
                             inputValue: list[i].V_DEPTCODE,
                             width: 150
                         });
-                    }
-                    else {
+                    } else {
                         asd.push({
                             boxLabel: list[i].V_DEPTNAME,
                             name: 'xgbm',
@@ -302,13 +301,38 @@ function getXgbm() {
             }
             Ext.getCmp('xgbmPanel').removeAll();
             Ext.getCmp('xgbmPanel').add({
-                xtype: 'checkboxgroup',
+                xtype: 'radiogroup',
                 fieldLabel: '相关部门',
                 labelAlign: 'top',
                 labelWidth: 60,
                 id: 'xgbm',
+                singleSelect: true,
                 columns: Math.round((list.length) / Math.round((list.length) / 1)),
                 items: asd,
+                change: function (ChkGrp) {
+                    var asd = Ext.getCmp('xgbm').items.items;
+                    for (var i = 0; i < asd.length; i++) {
+                        if (asd[i].checked == false) {
+                            asd[i].setValue(true);
+                        } else {
+                            asd[i].setValue(false);
+                        }
+                    }
+                    if (ChkGrp.items.items[index].checked) {
+                        for (var i = 0; i < ChkGrp.items.length; i++) {
+                            if (i != index) {
+                                if (ChkGrp.items.items[i].checked) {
+                                    var id = ChkGrp.items.itemAt(i).id;
+                                    ChkGrp.setValue(id, false);
+                                }
+                            }
+                        }
+                    }
+                },
+                /*listeners: {
+                    beforeChange: function () {
+                    }
+                },*/
                 style: {margin: '10px 10px 10px 20px'}
             });
         }
@@ -345,10 +369,10 @@ function zhuce() {
             async: false,
             method: 'POST',
             params: {
-                V_I_ID: urlCode.planID,
+                V_V_I_ID: urlCode.planID,
                 V_V_DEPT: deptList,
                 V_V_INFORMATION: Ext.getCmp('xxnr').getValue(),
-                V_D_DATE: Ext.getCmp('nowtime').getValue(),
+                V_V_D_DATE: Ext.getCmp('nowtime').getValue(),
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                 V_V_PERSONNAME: Ext.util.Cookies.get('v_personname2'),
                 V_V_TYPE: Ext.getCmp('lx').getValue(),

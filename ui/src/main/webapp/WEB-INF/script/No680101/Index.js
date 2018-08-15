@@ -431,10 +431,10 @@ function zhuce() {
             async: false,
             method: 'POST',
             params: {
-                V_I_ID: '',
+                V_V_I_ID: '',
                 V_V_DEPT: bmList,
                 V_V_INFORMATION: Ext.getCmp('xxnr').getValue(),
-                V_D_DATE: Ext.Date.format(Ext.getCmp('nowtime').getValue(), 'Y-m-d') + ' ' + aHour + ':' + aMinute + ':' + '01',
+                V_V_D_DATE: Ext.Date.format(Ext.getCmp('nowtime').getValue(), 'Y-m-d') + ' ' + aHour + ':' + aMinute + ':' + '01',
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                 V_V_PERSONNAME: Ext.util.Cookies.get('v_personname2'),
                 V_V_TYPE: Ext.getCmp('lx').getValue(),

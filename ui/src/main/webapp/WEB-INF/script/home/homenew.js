@@ -1,11 +1,11 @@
 var noticeStore = Ext.create("Ext.data.Store", {
     autoLoad: true,
     storeId: 'noticeStore',
-    fields: [],
+    fields: ['ID', 'TITLE', 'CONTENT', 'PERSONNAME', 'UPLOADTIME', 'DISPLAY'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + '',//需要存储过程！
+        url: AppUrl + 'Wsy/PM_HOME_NOTICE_SEL',//需要存储过程！
         actionMethods: {
             read: 'POST'
         },
@@ -13,36 +13,25 @@ var noticeStore = Ext.create("Ext.data.Store", {
             type: 'json',
             root: 'list'
         },
-        extraParams: {}
+        extraParams: {
+            V_DISPLAY: '1'
+        }
     },
     listeners: {
-        load: function (store) {
-//            notice();调用通知列表
+        load: function () {
+            notice();
         }
     }
 });
 $(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-//    notice();
     _AgencySelect();
     _QXNumSelect();
     QuerySumDb();
     JHselect();
     setInterval("QuerySumDb()", 120000);
     setInterval("_QXNumSelect()", 120000);
-    setInterval("noticeUp('.notice ul','-35px',500)", 2000);
 });
-
-//通过数据库返回数据生成通知列表
-function notice() {
-    var s1 = '<ul>\n';
-    for (var i = 0; i < noticeStore.length; i++) {
-        var record = noticeStore.getAt(i).get();
-        s1 = s1 + '<li><a href=' + record.data.aaa + '><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.data.bbb + '<i>' + record.data.ccc + '</i></a></li>\n';
-    }
-    s1 = s1 + '</ul>';
-    $("#notice").append(s1);
-}
 
 function QuerySumDb() {
     Ext.Ajax.request({
@@ -76,7 +65,7 @@ function getWeekOfMonth() {//周一为起始
     var d = new Date().getDate();//日期
     var week = Math.ceil((d + 7 - w) / 7);//向上取整
     return week;
-};
+}
 
 function JHselect() {
     $.ajax({
@@ -477,3 +466,26 @@ function noticeUp(obj, top, time) {
     })
 }
 
+function notice() {
+    var s1 = '<ul>\n';
+    for (var i = 0; i < noticeStore.getCount(); i++) {
+        var record = noticeStore.getAt(i);
+        s1 = s1 + '<li><a href="#" onclick="downloadFile(\'' + record.get('ID') + '\')"><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></a></li>\n';
+    }
+    s1 = s1 + '</ul>';
+    $("#notice").append(s1);
+    var myar = setInterval("noticeUp('.notice ul','-35px',500)", 2000);
+    $("#notice").hover(function () {
+        clearInterval(myar);
+    }, function () {
+        myar = setInterval("noticeUp('.notice ul','-35px',500)", 2000)
+    });
+}
+
+function downloadFile(ID) {
+    document.location.href = AppUrl + 'Wsy/PM_HOME_NOTICE_DOWNLOAD?V_ID=' + encodeURI(ID);
+}
+
+function _uploadImageWindow() {
+    window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height=250px,width=700px,top=100px,left=100px,resizable=yes');
+}

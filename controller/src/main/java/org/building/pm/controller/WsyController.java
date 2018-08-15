@@ -482,12 +482,23 @@ public class WsyController {
 
     @RequestMapping(value = "/PRO_PP_INFORMATION_SET", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PRO_PP_INFORMATION_SET(@RequestParam(value = "V_I_ID") String V_I_ID, @RequestParam(value = "V_V_DEPT") String[] V_V_DEPT, @RequestParam(value = "V_V_INFORMATION") String V_V_INFORMATION, @RequestParam(value = "V_D_DATE") String V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_PERSONNAME") String V_V_PERSONNAME, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASS") String V_V_CLASS, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_V_NOTIFICATION") String V_V_NOTIFICATION, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = new HashMap();
+    public HashMap PRO_PP_INFORMATION_SET(@RequestParam(value = "V_V_I_ID") String V_V_I_ID, @RequestParam(value = "V_V_DEPT") String[] V_V_DEPT, @RequestParam(value = "V_V_INFORMATION") String V_V_INFORMATION, @RequestParam(value = "V_V_D_DATE") String V_V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_PERSONNAME") String V_V_PERSONNAME, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASS") String V_V_CLASS, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_V_NOTIFICATION") String V_V_NOTIFICATION, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data;
+        int sum = 0;
         for (int i = 0; i < V_V_DEPT.length; i++) {
-            data = wsyService.PRO_PP_INFORMATION_SET(V_I_ID, V_V_DEPT[i], V_V_INFORMATION, V_D_DATE, V_V_PERSONCODE, V_V_PERSONNAME, V_V_TYPE, V_V_CLASS, V_V_CLASSTYPE, V_V_NOTIFICATION);
+            data = wsyService.PRO_PP_INFORMATION_SET(V_V_I_ID, V_V_DEPT[i], V_V_INFORMATION, V_V_D_DATE, V_V_PERSONCODE, V_V_PERSONNAME, V_V_TYPE, V_V_CLASS, V_V_CLASSTYPE, V_V_NOTIFICATION);
+            if (!"success".equals(data.get("V_INFO"))) {
+                sum = sum + 1;
+                System.out.println(data.get("V_INFO"));
+            }
         }
-        return data;
+        HashMap result = new HashMap();
+        if (sum == 0) {
+            result.put("V_INFO", "Success");
+        } else {
+            result.put("V_INFO", "Fail");
+        }
+        return result;
     }
 
     @RequestMapping(value = "/PM_REALINFOTL_EDIT", method = RequestMethod.POST)
@@ -850,7 +861,7 @@ public class WsyController {
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-                String fileName = new String("信息缺陷作业票查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                String fileName = new String("信息查询.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
                 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
                 OutputStream out = response.getOutputStream();
                 wb.write(out);
@@ -867,5 +878,51 @@ public class WsyController {
     public HashMap PRO_PP_INFORMATION_GET(@RequestParam(value = "V_I_ID") String V_I_ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.PRO_PP_INFORMATION_GET(V_I_ID);
         return data;
+    }
+
+    // 首页公告查询
+    @RequestMapping(value = "/PM_HOME_NOTICE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PM_HOME_NOTICE_SEL(@RequestParam(value = "V_DISPLAY") String V_DISPLAY, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PM_HOME_NOTICE_SEL(V_DISPLAY);
+        return data;
+    }
+
+    // 首页公告上传
+    @RequestMapping(value = "/PM_HOME_NOTICE_INS", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap<String, Object> PM_HOME_NOTICE_INS(@RequestParam(value = "V_ID") String V_ID, @RequestParam(value = "V_FILENAME") String V_FILENAME, @RequestParam(value = "V_FILETYPE") String V_FILETYPE, @RequestParam(value = "V_PERSONNAME") String V_PERSONNAME, @RequestParam(value = "V_TITLE") String V_TITLE, @RequestParam(value = "V_CONTENT") String V_CONTENT, @RequestParam(value = "V_DISPLAY") String V_DISPLAY, @RequestParam(value = "V_FILEBLOB") MultipartFile V_FILEBLOB, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap<String, Object> result = new HashMap();
+        HashMap data = wsyService.PM_HOME_NOTICE_INS(V_ID, V_FILENAME, V_FILETYPE, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY, V_FILEBLOB.getInputStream());
+        result.put("V_INFO", (String) data.get("V_INFO"));
+        result.put("success", true);
+        return result;
+    }
+
+    // 首页公告附件下载
+    @RequestMapping(value = "/PM_HOME_NOTICE_DOWNLOAD", method = RequestMethod.GET)
+    @ResponseBody
+    public void PM_HOME_NOTICE_DOWNLOAD(@RequestParam(value = "V_ID") String V_ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PM_HOME_NOTICE_DOWNLOAD(V_ID);
+        String fileName = (String) data.get("O_FILENAME");
+        Blob fileblob = (Blob) data.get("O_FILE");
+        InputStream is = fileblob.getBinaryStream();
+        String agent = (String) request.getHeader("USER-AGENT");
+        if (agent != null && agent.toLowerCase().indexOf("firefox") > 0) {// 兼容火狐中文文件名下载
+            fileName = "=?UTF-8?B?" + (new String(Base64.encodeBase64(fileName.getBytes("UTF-8")))) + "?=";
+        } else {
+            fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+        }
+        response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        ServletOutputStream fos = response.getOutputStream();
+        byte[] b = new byte[65535];
+        int length;
+        while ((length = is.read(b)) > 0) {
+            fos.write(b, 0, length);
+        }
+        fos.flush();
+        is.close();
+        fos.close();
     }
 }

@@ -229,7 +229,7 @@ public class KxyService {
         return result;
     }
 
-    public HashMap PRO_BASE_NEW_MENU_SEL(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE,String V_V_HOME_MENU) throws SQLException {
+    public HashMap PRO_BASE_MENU_FAVORITE(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE,String V_V_HOME_MENU,String V_V_USERID) throws SQLException {
         logger.info("begin PRO_BASE_NEW_MENU_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -237,11 +237,12 @@ public class KxyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_MENU_FAVORITE" + "(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_MENU_FAVORITE" + "(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_V_USERID,:V_CURSOR)}");
             cstmt.setString("IS_V_ROLECODE", IS_V_ROLECODE);
             cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_HOME_MENU", V_V_HOME_MENU);
+            cstmt.setString("V_V_USERID", V_V_USERID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
@@ -252,7 +253,7 @@ public class KxyService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_BASE_NEW_MENU_SEL");
+        logger.info("end PRO_BASE_MENU_FAVORITE");
         return result;
     }
 
@@ -315,7 +316,7 @@ public class KxyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_SYS_PORPERTY_ADD" + "(:A_USERID,:V_V_PORP_VALUE,:V_V_PLANT,:RET)}");
+            cstmt = conn.prepareCall("{call PRO_PM_SYS_PORPERTY_ADD" + "(:V_V_PORP_NAME,:V_V_PORP_VALUE,:V_V_PLANT,:RET)}");
             cstmt.setString("V_V_PORP_NAME", V_V_PORP_NAME);
             cstmt.setString("V_V_PORP_VALUE", V_V_PORP_VALUE);
             cstmt.setString("V_V_PLANT", V_V_PLANT);

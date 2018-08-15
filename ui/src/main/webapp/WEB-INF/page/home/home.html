@@ -5,6 +5,21 @@
     <title>个人中心</title>
     <link href="../../css/home/Style/Main.css" rel="stylesheet" type="text/css"/>
     <style>
+        a:link {
+            text-decoration: none;
+            color: #1a0dab;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #1a0dab;
+        }
+
+        a:visited {
+            text-decoration: none;
+            color: #660099
+        }
+
         img {
             border: 0px;
             vertical-align: middle;
@@ -18,6 +33,10 @@
             cursor: pointer;
             background: url("../../images/gif/buttonbackground3.png") no-repeat left top;
             color: #FFF;
+        }
+
+        .popWindow {
+            background-color: blue;
         }
 
         img, span {
@@ -146,20 +165,20 @@
             <h2>最新公告</h2>
             <div id="notice" class="notice">
                 <!--这里是测试用，死值，现在没有存储过程，动态绑定在homenew.js里的notice方法-->
-            <ul>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span> <img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>公司对学习宣传贯彻6666666666鞍钢首次党代会...<i>2017-10-09</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>公司一举荣获全666666666666国TnPM管理十二项...<i>2017-09-29</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量测定两6666666666项6新国标接轨...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-                <li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>
-            </ul>
-                </div>
+                <!--<ul>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span>      </span> <img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>公司对学习宣传贯彻6666666666鞍钢首次党代会...<span>&nbsp;&nbsp;&nbsp;2017-10-09</span></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>公司一举荣获全666666666666国TnPM管理十二项...<i>2017-09-29</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量测定两6666666666项6新国标接轨...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--<li><a href="../../../pm/page/PM_1917/indexNew.html"><span></span><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>铁矿石硅硫含量336666666666333336633333333...<i>2017-09-19</i></a></li>-->
+                <!--</ul>-->
+            </div>
             <h2>快捷方式</h2>
             <ul class="imlist">
                 <li><img src="../../css/home/images/c03.jpg" onclick="toYearPlan()" alt="" title="大修计划" width="70"
@@ -191,6 +210,12 @@
                          title="快捷工单">
 
                     <div><span onclick="toOrderCreate()">快捷工单</span></div>
+                </li>
+                <li><img src="../../css/home/images/c01.jpg" onclick="_uploadImageWindow()" width="70" height="70"
+                         alt=""
+                         title="上传公告">
+
+                    <div><span onclick="toOrderCreate()">上传公告</span></div>
                 </li>
             </ul>
             <div class="clare"></div>

@@ -1541,7 +1541,7 @@ public class WsyService {
         return result;
     }
 
-    public HashMap PRO_PP_INFORMATION_SET(final String V_I_ID, final String V_V_DEPT, final String V_V_INFORMATION, final String V_D_DATE, final String V_V_PERSONCODE, final String V_V_PERSONNAME, final String V_V_TYPE, final String V_V_CLASS, final String V_V_CLASSTYPE, final String V_V_NOTIFICATION) throws SQLException {
+    public HashMap PRO_PP_INFORMATION_SET(final String V_V_I_ID, final String V_V_DEPT, final String V_V_INFORMATION, final String V_V_D_DATE, final String V_V_PERSONCODE, final String V_V_PERSONNAME, final String V_V_TYPE, final String V_V_CLASS, final String V_V_CLASSTYPE, final String V_V_NOTIFICATION) throws SQLException {
         logger.info("begin PRO_PP_INFORMATION_SET");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1549,34 +1549,33 @@ public class WsyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_SET" + "(:V_V_I_ID,:V_V_DEPT,:V_V_INFORMATION,:V_V_D_DATE,:V_V_PERSONCODE,:V_V_PERSONNAME,:V_V_TYPE,:V_V_CLASS,:V_V_CLASSTYPE,:V_V_NOTIFICATION)}");
-            //            cstmt.setString("V_V_I_ID", V_I_ID);
-            if (V_I_ID.equals("") || V_I_ID.equals("0")) {
-                cstmt.setInt("V_I_ID", OracleTypes.NULL);
-            } else {
-                cstmt.setInt("V_I_ID", Integer.parseInt(V_I_ID));
-            }
+            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_SET" + "(:V_V_I_ID,:V_V_DEPT,:V_V_INFORMATION,:V_V_D_DATE,:V_V_PERSONCODE,:V_V_PERSONNAME,:V_V_TYPE,:V_V_CLASS,:V_V_CLASSTYPE,:V_V_NOTIFICATION,:V_INFO)}");
+            cstmt.setString("V_V_I_ID", V_V_I_ID);
+//            if (V_I_ID.equals("") || V_I_ID.equals("0")) {
+//                cstmt.setInt("V_I_ID", OracleTypes.NULL);
+//            } else {
+//                cstmt.setInt("V_I_ID", Integer.parseInt(V_I_ID));
+//            }
             cstmt.setString("V_V_DEPT", V_V_DEPT);
             cstmt.setString("V_V_INFORMATION", V_V_INFORMATION);
-//            cstmt.setString("V_D_DATE", V_D_DATE);
-            if (V_D_DATE.equals("")) {
-                cstmt.setDate("V_D_DATE", null);
-            } else {
-                Timestamp time = Timestamp.valueOf(V_D_DATE);
-                cstmt.setTimestamp("V_D_DATE", time);
-            }
+            cstmt.setString("V_V_D_DATE", V_V_D_DATE);
+//            if (V_D_DATE.equals("")) {
+//                cstmt.setDate("V_D_DATE", null);
+//            } else {
+//                Timestamp time = Timestamp.valueOf(V_D_DATE);
+//                cstmt.setTimestamp("V_D_DATE", time);
+//            }
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_PERSONNAME", V_V_PERSONNAME);
             cstmt.setString("V_V_TYPE", V_V_TYPE);
             cstmt.setString("V_V_CLASS", V_V_CLASS);
             cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
             cstmt.setString("V_V_NOTIFICATION", V_V_NOTIFICATION);
-//            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_INFO", "Success");
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
-            result.put("V_INFO", "Fail");
             System.out.println(e);
         } finally {
             cstmt.close();
@@ -1911,6 +1910,90 @@ public class WsyService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PP_INFORMATION_GET");
+        return result;
+    }
+
+    // 首页公告查询
+    public HashMap PM_HOME_NOTICE_SEL(String V_DISPLAY) throws SQLException {
+        logger.info("begin PM_HOME_NOTICE_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_HOME_NOTICE_SEL" + "(:V_DISPLAY,:V_CURSOR)}");
+            cstmt.setString("V_DISPLAY", V_DISPLAY);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_HOME_NOTICE_SEL");
+        return result;
+    }
+
+    // 首页公告上传
+    public HashMap PM_HOME_NOTICE_INS(String V_ID, String V_FILENAME, String V_FILETYPE, String V_PERSONNAME, String V_TITLE, String V_CONTENT, String V_DISPLAY, InputStream V_FILEBLOB) throws SQLException {
+        logger.info("begin PM_HOME_NOTICE_INS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_HOME_NOTICE_INS" + "(:V_ID,:V_FILENAME,:V_FILETYPE,:V_PERSONNAME,:V_TITLE,:V_CONTENT,:V_DISPLAY,:V_FILEBLOB,:V_INFO)}");
+            cstmt.setString("V_ID", V_ID);
+            cstmt.setString("V_FILENAME", V_FILENAME);
+            cstmt.setString("V_FILETYPE", V_FILETYPE);
+            cstmt.setString("V_PERSONNAME", V_PERSONNAME);
+            cstmt.setString("V_TITLE", V_TITLE);
+            cstmt.setString("V_CONTENT", V_CONTENT);
+            cstmt.setString("V_DISPLAY", V_DISPLAY);
+            cstmt.setBlob("V_FILEBLOB", V_FILEBLOB);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_HOME_NOTICE_INS");
+        return result;
+    }
+
+    // 首页公告附件下载
+    public HashMap PM_HOME_NOTICE_DOWNLOAD(String V_ID) throws SQLException {
+        logger.info("begin PM_HOME_NOTICE_DOWNLOAD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_HOME_NOTICE_DOWNLOAD" + "(:V_ID, :V_NAME, :V_FILE)}");
+            cstmt.setString("V_ID", V_ID);
+            cstmt.registerOutParameter("V_NAME", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_FILE", OracleTypes.BLOB);
+            cstmt.execute();
+            result.put("O_FILENAME", (String) cstmt.getObject("V_NAME"));
+            result.put("O_FILE", (Blob) cstmt.getBlob("V_FILE"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_HOME_NOTICE_DOWNLOAD");
         return result;
     }
 }
