@@ -47,7 +47,7 @@ function DefaultPrintSettings() {
 
         for(var i=0 ;i< idGroup.length;i++){
             var strFormHtml = strBodyStyle + $("#"+idGroup[i]).html() ;
-            LODOP.ADD_PRINT_HTML("30","15","100%","100%" ,strFormHtml);
+            LODOP.ADD_PRINT_HTML("30","15","100%","95%" ,strFormHtml);
             LODOP.NewPage();
         }
 
