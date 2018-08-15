@@ -394,7 +394,6 @@ function _select() {
         'A_MATERIALNAME': A_MATERIALNAME,
         'A_ETALON': A_ETALON,
         'A_LCODESC': A_LCODESC
-
     };
     matStore.load();
 }

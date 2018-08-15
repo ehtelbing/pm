@@ -664,6 +664,7 @@ function _seekStock() {
             'A_ETALON': Ext.getCmp('etalon').getValue()
         }
     })
+
 }
 
 function LookMorexzdj(value, metaData, record, rowIdx, colIdx, store, view) {

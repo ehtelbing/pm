@@ -259,6 +259,7 @@ public class CarManageService {
         return result;
     }
 
+
     public HashMap BASE_DRIVER_UPD(String V_V_GUID,String V_V_DRIVER_NAME, String V_V_WORK_DATE,String  V_V_DRIVER_DE) throws SQLException {
         logger.info("begin BASE_DRIVER_UPD");
         HashMap result = new HashMap();

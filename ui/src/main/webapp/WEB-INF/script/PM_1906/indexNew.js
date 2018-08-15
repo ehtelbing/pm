@@ -1674,7 +1674,6 @@ function _insertDriver() {
     Ext.getCmp('INS_DRIVER_NAME').setValue('');
     Ext.getCmp('INS_WORK_DATE').setValue('');
     Ext.getCmp('INS_DRIVER_DE').setValue('');
-
     Ext.getCmp('insertDriverWindow').show();
 }
 
