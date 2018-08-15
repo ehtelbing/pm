@@ -289,9 +289,9 @@ function _CreateSidebar(accordions) {
             titleAlign: 'left',
             region: 'north',
             layout: 'fit',
-            height: 300,
+            height: 260,
             border: false,
-            collapsed: true,
+            //collapsed: true,
             collapsible: true,
             items: [favoriteTreePanel]
         },
@@ -385,7 +385,7 @@ function OnPageLoaded() {
             _CreateViewport(header, sidebar, container);
             Ext.getBody().unmask();
             _getHomeMenu();
-            GETDDDL();
+            //GETDDDL();
         }
     });
     if (menucode != "" && menucode != null) {
@@ -432,7 +432,7 @@ function HomePage() {
     }
 }
 
-function GETDDDL() {
+/*function GETDDDL() {
     // 转小神探单点登陆地址PRO_BASE_PERSON_DDDL_GETURL
     $.ajax({
         url: AppUrl + 'info/login_xst',
@@ -458,7 +458,7 @@ function GETDDDL() {
             }
         }
     });
-}
+}*/
 
 /*
  * 通过工单号处理工单
