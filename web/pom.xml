@@ -72,12 +72,6 @@
             <version>11.2.0.3</version>
         </dependency>
 
-       <!-- <dependency>
-            <groupId>org.building.jdbc</groupId>
-            <artifactId>oracle</artifactId>
-            <version>ojdbc8-12c</version>
-        </dependency>-->
-
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
