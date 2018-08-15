@@ -34,7 +34,7 @@ var bxStore = Ext.create("Ext.data.Store", {
             root: 'list'
         },
         extraParams: {
-            IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASS'
+            IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASSTYPE'
         }
     }
 });
@@ -55,8 +55,7 @@ var gridStore = Ext.create("Ext.data.Store", {
             root: 'list'
         }
     },
-    listeners: {
-    }
+    listeners: {}
 });
 var Layout = {
     layout: 'border',
@@ -90,7 +89,7 @@ var Layout = {
             fieldLabel: '类型',
             labelWidth: 30,
             id: 'lx',
-            store: 'lxStore',
+            store: lxStore,
             editable: false,
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
@@ -164,7 +163,7 @@ var Layout = {
             text: '班型',
             align: 'center',
             width: 110,
-            dataIndex: 'V_CLASS',
+            dataIndex: 'V_CLASSTYPE',
             summaryType: 'count',
             summaryRenderer: function (value, metadata) {
                 metadata.style = 'font-weight: bold;';
@@ -174,7 +173,7 @@ var Layout = {
             text: '班组',
             align: 'center',
             width: 110,
-            dataIndex: 'V_CLASSTYPE'
+            dataIndex: 'V_CLASS'
         }, {
             text: '录入人',
             align: 'center',
@@ -213,8 +212,8 @@ var Layout = {
 function onPageLoaded() {
     Ext.create('Ext.container.Viewport', Layout);
     Ext.data.StoreManager.lookup('lxStore').on('load', function () {
-        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
-        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
+//        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
+//        Ext.data.StoreManager.lookup('lxStore').removeAt((Ext.data.StoreManager.lookup('lxStore').data.items.length) - 1);
         Ext.data.StoreManager.lookup('lxStore').insert(0, {
             V_BASENAME: '--全部--',
             V_BASECODE: '%'
