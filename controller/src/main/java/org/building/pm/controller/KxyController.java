@@ -99,31 +99,41 @@ public class KxyController {
         List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
         Map<String, Object> dept;
         if (deptList != null) {
-            for (int i = 0; i < deptList.size(); i++) {
-                dept = deptList.get(i);
-                if ("-1".equals(dept.get("V_MENUCODE_UP"))) {
-                    children.add(dept);
-                    fillChildDept(dept, deptList);
+
+                for (int i = 0; i < deptList.size(); i++) {
+                    dept = deptList.get(i);
+                    if ("-1".equals(dept.get("V_MENUCODE_UP"))) {
+                        children.add(dept);
+                        if (fillChildDept(dept, deptList).size() <= 0) {
+                            dept.put("leaf", true);
+                        } else {
+                            fillChildDept(dept, deptList);
+                        }
+                    }
                 }
-            }
+
         }
         result.put("deptList", deptList);
         result.put("children", children);
         return result;
     }
 
-    private void fillChildDept(Map<String, Object> dept, List<Map<String, Object>> deptList) {
+    private List<Map<String, Object>> fillChildDept(Map<String, Object> dept, List<Map<String, Object>> deptList) {
         List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
-
         Map<String, Object> childDept;
         for (int i = 0; i < deptList.size(); i++) {
             childDept = deptList.get(i);
             if (dept.get("V_MENUCODE").equals(childDept.get("V_MENUCODE_UP"))) {
                 children.add(childDept);
-                fillChildDept(childDept, deptList);
+                if (fillChildDept(childDept, deptList).size() == 0) {
+                    childDept.put("leaf", true);
+                } else {
+                    fillChildDept(childDept, deptList);
+                }
             }
         }
         dept.put("children", children);
+        return children;
     }
 
     @RequestMapping(value = "/userInfor", method = RequestMethod.POST)
