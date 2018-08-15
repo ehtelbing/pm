@@ -121,7 +121,7 @@ function loadPageInfo() {
                         orderID = resp.list[0].V_ORDERID;
                         for (var x = 0; x < max; x++) {
                             result.push('   <div id="'+index.toString()+x.toString()+'">');
-                            result.push('    <div style="height: 17.5cm;">');
+                            result.push('    <div style="height: 17cm;">');
                             result.push('      <table class="outbox" width="1000"  border="0" align="left" cellpadding="0" cellspacing="0">');
                             result.push('        <tr>');
                             result.push('        <td valign="top">');
@@ -329,7 +329,7 @@ function loadPageInfo() {
                                         result.push(respTask.list[i].V_ACTIVITY==""?"&nbsp;":respTask.list[i].V_ACTIVITY);
                                         result.push('</td>');
                                         result.push('                <td class="border_r_b" align="center">');
-                                        result.push(respTask.list[i].V_WORK_CENTER==""?"&nbsp;":respTask.list[i].V_WORK_CENTER);
+                                        result.push(respTask.list[i].V_WORK_CENTER==""?"&nbsp;":descBilldescN(respTask.list[i].V_WORK_CENTER));
                                         result.push('</td>');
                                         result.push('                <td class="border_r_b" align="left">');
                                         result.push(respTask.list[i].V_DESCRIPTION==""?"&nbsp;":descBilldesc(respTask.list[i].V_DESCRIPTION));

@@ -179,30 +179,30 @@ Ext.onReady(function () {
             text: '查询',
             style: ' margin: 5px 0px 0px 10px',
             icon: imgpath + '/search.png',
-            listeners: {click: OnButtonQueryClicked}
+            listeners: {click: OnButtonQuery}
         },{
                 xtype: 'button',
                 text: '新增工程项目',
                 icon: imgpath + '/add.png',
-                listeners: {click: OnButtonAddClicked}
+                listeners: {click: OnButtonAdd}
             },
             {
                 xtype: 'button',
                 text: '修改工程项目',
                 icon: imgpath + '/add.png',
-                listeners: {click: OnButtonSelectClicked}
+                listeners: {click: OnButtonEdit}
             },
             {
                 xtype: 'button',
                 text: '删除工程项目',
                 icon: imgpath + '/edit.png',
-                listeners: {click: OnButtonEditClicked}
+                listeners: {click: OnButtonDel}
             },
             {
                 xtype: 'button',
                 text: '导出',
                 icon: imgpath + '/accordion_collapse.png',
-                listeners: {click: OnButtonUpClicked}
+                listeners: {click: OnButtonOut}
             }
         ]
     });
@@ -271,3 +271,14 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
+
+
+function OnButtonQuery (){}
+
+function OnButtonAdd(){}
+
+function OnButtonEdit(){}
+
+function OnButtonDel(){}
+
+function OnButtonOut(){}
