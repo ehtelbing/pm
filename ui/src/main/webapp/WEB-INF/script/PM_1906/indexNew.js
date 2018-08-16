@@ -1,7 +1,7 @@
 var updCarGuid;//传给机具更新的编码
 var updDriverGuid;//传给司机更新的编码
 var insDriverGuid;//点击机具获取的guid
-var V_V_FILEGUID='';//图片的guid
+var V_V_FILEGUID = '';//图片的guid
 var index = 0;
 var picguidbegin;
 Ext.define('Ext.ux.data.proxy.Ajax', {
@@ -34,8 +34,8 @@ Ext.onReady(function () {
         autoLoad: false,
         storeId: 'imageStore',
         fields: ['V_GUID', 'V_FILEGUID', 'V_FILENAME', 'V_FILEBLOB', 'V_FILETYPECODE', 'V_PLANT',
-            'V_DEPT', 'V_TIME','V_PERSON','V_REMARK'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax",{
+            'V_DEPT', 'V_TIME', 'V_PERSON', 'V_REMARK'],
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
             url: AppUrl + 'zs/BASE_FILE_IMAGE_TABLE',
@@ -484,7 +484,7 @@ Ext.onReady(function () {
         id: 'jjsytButtonPanel',
         frame: false,
         // border: false,
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         layout: 'column',
         defaults: {labelAlign: 'center', labelWidth: 200, inputWidth: 160, style: 'margin:5px 10px 5px 10px'},
         items: [
@@ -515,7 +515,7 @@ Ext.onReady(function () {
         id: 'insertImageButtonPanel',
         frame: true,
         border: false,
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         layout: 'column',
         defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:5px 0px 5px 10px'},
         items: [
@@ -549,12 +549,12 @@ Ext.onReady(function () {
                 xtype: 'box',
                 id: 'browseImage',
                 autoEl: {//
-                    width:300 ,
-                    height:300 ,
+                    width: 300,
+                    height: 300,
                     tag: 'input',
                     type: 'image',
                     src: Ext.BLANK_IMAGE_URL,
-                   // style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe; margin-left: 0px;margin-top: 0px;',
+                    // style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe; margin-left: 0px;margin-top: 0px;',
                     id: 'imageBrowse',
                     name: 'imageBrowse'
                 }
@@ -603,12 +603,12 @@ Ext.onReady(function () {
         id: 'insertImagePanel',
         layout: 'border',
         frame: true,
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         border: false,
         items: [
             {region: 'north', items: [insertImageButtonPanel]},
             {region: 'center', layout: 'fit', items: [insImagePanel]},
-            {region: 'south', layout: 'fit',height:'40%', items: [insertImageGridPanel]}]
+            {region: 'south', layout: 'fit', height: '40%', items: [insertImageGridPanel]}]
     });
 
     //新增图片的弹窗
@@ -1107,55 +1107,67 @@ Ext.onReady(function () {
         }]
     });
 
+    var chakancar1 = Ext.create("Ext.grid.Panel", {
+        id: 'chakancar1',
+        store: CCDetailStore,
+        columnLines: true,
+        //border: false,
+        // frame: true,
+        columns: [
+            {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
+            {
+                text: '出车开始时间', dataIndex: 'V_BEGIN_TIME', align: 'center', width: 180,
+             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+             var index = CCDetailStore.find('V_BEGIN_TIME', value);
+             if (index != -1) {
+             return CCDetailStore.getAt(index).get('V_BEGIN_TIME').substring(0, 19);
+             }
+             return null;
+             }
+            },
+            {
+                text: '出车结束时间', dataIndex: 'V_END_TIME', align: 'center', width: 180,
+             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+             var index = CCDetailStore.find('V_END_TIME', value);
+             if (index != -1) {
+             return CCDetailStore.getAt(index).get('V_END_TIME').substring(0, 19);
+             }
+             return null;
+             }
+            },
+            {text: '地点', dataIndex: 'V_PLACE', align: 'center', flex: 1},
+            {text: '用途', dataIndex: 'V_USE', align: 'center', flex: 1},
+            {text: '车辆状态', dataIndex: 'V_STATUS', align: 'center', flex: 1},
+            {text: '使用台时', dataIndex: 'V_USE_TIME', align: 'center', flex: 1}
+        ],
+        bbar: [{
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: CCDetailStore,
+            width: '100%'
+        }]
+    });
+
     var chakancar = Ext.create('Ext.window.Window', {
         id: 'chakancar',
         width: 850,
         height: 500,
         title: '出车明细',
-        modal: true,//弹出窗口时后面背景不可编辑
-        closeAction: 'hide',
-        layout: 'fit',
+        modal: true,
+        //plain: true,
         closable: true,
-        items: [Ext.create("Ext.grid.Panel", {
-            store: 'CCDetailStore',
-            columnLines: true,
-            columns: [
-                {xtype: 'rownumberer', text: '序号', width: 40, sortable: false},
-                {
-                    text: '出车开始时间', dataIndex: 'V_BEGIN_TIME', align: 'center', width: 180,
-                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
-                        var index = CCDetailStore.find('V_BEGIN_TIME', value);
-                        if (index != -1) {
-                            return CCDetailStore.getAt(index).get('V_BEGIN_TIME').substring(0, 19);
-                        }
-                        return null;
-                    }
-                },
-                {
-                    text: '出车结束时间', dataIndex: 'V_END_TIME', align: 'center', width: 180,
-                    renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
-                        var index = CCDetailStore.find('V_END_TIME', value);
-                        if (index != -1) {
-                            return CCDetailStore.getAt(index).get('V_END_TIME').substring(0, 19);
-                        }
-                        return null;
-                    }
-                },
-                {text: '地点', dataIndex: 'V_PLACE', align: 'center', flex: 1},
-                {text: '用途', dataIndex: 'V_USE', align: 'center', flex: 1},
-                {text: '车辆状态', dataIndex: 'V_STATUS', align: 'center', flex: 1},
-                {text: '使用台时', dataIndex: 'V_USE_TIME', align: 'center', flex: 1}
-            ],
-            bbar: [{
-                xtype: 'pagingtoolbar',
-                dock: 'bottom',
-                displayInfo: true,
-                displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-                emptyMsg: '没有记录',
-                store: 'CCDetailStore',
-                width: '100%'
-            }]
-        })]
+        closeAction: 'hide',
+        layout: 'border',
+        frame: true,
+        items: [{
+            region: 'center',
+            layout: 'fit',
+            border: false,
+            items: [chakancar1]
+        }]
     });
 
 
@@ -1197,6 +1209,205 @@ Ext.onReady(function () {
             layout: 'fit',
             border: false,
             items: [viewImagePanel]
+        }]
+    });
+
+    insertCarPanel = Ext.create('Ext.form.Panel', {
+        id: 'insertCarPanel',
+        border: false,
+        //baseCls: 'my-panel-no-border',
+        frame: true,
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+        items: [
+            {xtype: 'textfield', id: 'WIN_CAR_CODE_', fieldLabel: '机具编码', allowBlank: false},
+            {xtype: 'textfield', id: 'WIN_CAR_NAME_', fieldLabel: '机具名称', allowBlank: false},
+            {xtype: 'textfield', id: 'WIN_CAR_TYPE_', fieldLabel: '机具类型', allowBlank: false},
+            {xtype: 'textfield', id: 'WIN_GS_', fieldLabel: '机具归属', allowBlank: false},
+            {
+                xtype: 'combo',
+                id: 'WIN_FLAG_',
+                fieldLabel: '机具状态',
+                displayField: 'displayField',
+                valueField: 'valueField',
+                store: [['在用', '在用'], ['停用', '停用']],
+                queryMode: 'local',
+                value: '在用',
+                editable: false,
+                allowBlank: false
+            }, {
+                xtype: 'datefield',//日期录入
+                id: 'WIN_CAR_INDATE_',
+                format: 'Y-m-d H:i:s',
+                submitFormat: 'Y-m-d H:i:s',
+                allowBlank: false,
+                fieldLabel: '机具入厂时间'
+            },
+            {xtype: 'textfield', id: 'WIN_DE_', fieldLabel: '机具定额', allowBlank: false}
+        ]
+    });
+
+    var insertCarWindow = Ext.create('Ext.window.Window', {
+        id: 'insertCarWindow',
+        width: 330,
+        height: 400,
+        layout: 'border',
+        title: '编辑',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        items: [
+            {
+                region: 'center',
+                layout: 'fit',
+                border: false,
+                items: [insertCarPanel]
+            }
+        ],
+        buttons: [{
+            xtype: 'button',
+            text: '保存',
+            width: 40,
+            handler: function () {
+                _insertCarSave();
+            }
+        }, {
+            xtype: 'button', text: '取消', width: 40, handler: function () {
+                Ext.getCmp('insertCarWindow').hide();
+            }
+        }]
+    });
+
+
+    var updateCarWindow = Ext.create('Ext.window.Window', {//修改机具的窗口
+        id: 'updateCarWindow',
+        width: 330,
+        height: 400,
+        //layout: 'vbox',
+        title: '编辑',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+        items: [
+            {xtype: 'textfield', id: 'WIN2_CAR_CODE_', fieldLabel: '机具编码'},
+            {xtype: 'textfield', id: 'WIN2_CAR_NAME_', fieldLabel: '机具名称'},
+            {xtype: 'textfield', id: 'WIN2_CAR_TYPE_', fieldLabel: '机具类型'},
+            {xtype: 'textfield', id: 'WIN2_GS_', fieldLabel: '机具归属'},
+            {
+                xtype: 'combo',
+                id: 'WIN2_FLAG_',
+                fieldLabel: '机具状态',
+                displayField: 'displayField',
+                valueField: 'valueField',
+                store: [['在用', '在用'], ['停用', '停用']],
+                queryMode: 'local',
+                value: '在用',
+                editable: false
+
+            }, {
+                xtype: 'datefield',//日期录入
+                id: 'WIN2_CAR_INDATE_',
+                format: 'Y-m-d H:i:s',
+                submitFormat: 'Y-m-d H:i:s',
+                fieldLabel: '机具入厂时间'
+            },
+            {xtype: 'numberfield', id: 'WIN2_DE_', fieldLabel: '机具定额'}],
+        buttons: [{
+            xtype: 'button',
+            text: '保存',
+            width: 40,
+            handler: function () {
+                _updateCarSave();
+            }
+        }, {
+            xtype: 'button', text: '取消', width: 40, handler: function () {
+                Ext.getCmp('updateCarWindow').hide();
+            }
+        }]
+    });
+
+    var insertDriverPanel = Ext.create('Ext.form.Panel', {
+        id: 'insertDriverPanel',
+        border: false,
+        //baseCls: 'my-panel-no-border',
+        frame: true,
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+        items: [
+            {xtype: 'textfield', id: 'INS_DRIVER_GUID', fieldLabel: '司机编码', allowBlank: false},
+            {xtype: 'textfield', id: 'INS_CAR_GUID', fieldLabel: '机具编码', allowBlank: false},
+            {xtype: 'textfield', id: 'INS_DRIVER_NAME', fieldLabel: '司机姓名', allowBlank: false},
+            {
+                xtype: 'datefield',
+                id: 'INS_WORK_DATE',
+                fieldLabel: '上岗时间',
+                format: 'Y-m-d H:i:s',
+                submitFormat: 'Y-m-d H:i:s'
+                , allowBlank: false
+            },
+            {xtype: 'textfield', id: 'INS_DRIVER_DE', fieldLabel: '司机定额', allowBlank: false}
+        ]
+    });
+
+    var insertDriverWindow = Ext.create('Ext.window.Window', {
+        id: 'insertDriverWindow',
+        width: 300,
+        height: 200,
+        title: '编辑',
+        modal: true,
+        plain: true,
+        closable: true,
+        closeAction: 'hide',
+        layout: 'border',
+        frame: true,
+        //defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
+        items: [
+            {
+                region: 'center',
+                layout: 'fit',
+                border: false,
+                items: [insertDriverPanel]
+            }
+        ],
+        buttons: [{
+            text: '保存', width: 40, handler: _insertDriverSave
+        }, {
+            text: '取消', width: 40, handler: function () {
+                Ext.getCmp('insertDriverWindow').hide();
+            }
+        }]
+    });
+
+    var updateDriverWindow = Ext.create('Ext.window.Window', {
+        id: 'updateDriverWindow',
+        width: 300,
+        height: 200,
+        //layout: 'vbox',
+        title: '编辑',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:10px 0px 0px 0px'},
+        items: [
+            {xtype: 'textfield', id: 'UPD_DRIVER_NAME', fieldLabel: '司机姓名'},
+            {
+                xtype: 'datefield',
+                id: 'UPD_WORK_DATE',
+                fieldLabel: '上岗时间',
+                format: 'Y-m-d H:i:s',
+                submitFormat: 'Y-m-d H:i:s'
+            },
+            {xtype: 'textfield', id: 'UPD_DRIVER_DE', fieldLabel: '司机定额'}],
+        buttons: [{
+            xtype: 'button', text: '保存', width: 40, handler: function () {
+                _updateDriverSave();
+            }
+        }, {
+            xtype: 'button', text: '取消', width: 40, handler: function () {
+                Ext.getCmp('updateDriverWindow').hide();
+            }
         }]
     });
 
@@ -1258,214 +1469,14 @@ Ext.onReady(function () {
     _selectImage();
 });
 
-insertCarPanel = Ext.create('Ext.form.Panel', {
-    id: 'insertCarPanel',
-    border: false,
-    baseCls: 'my-panel-no-border',
-    frame: true,
-    defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
-    items: [
-        {xtype: 'textfield', id: 'WIN_CAR_CODE_', fieldLabel: '机具编码', allowBlank: false},
-        {xtype: 'textfield', id: 'WIN_CAR_NAME_', fieldLabel: '机具名称', allowBlank: false},
-        {xtype: 'textfield', id: 'WIN_CAR_TYPE_', fieldLabel: '机具类型', allowBlank: false},
-        {xtype: 'textfield', id: 'WIN_GS_', fieldLabel: '机具归属', allowBlank: false},
-        {
-            xtype: 'combo',
-            id: 'WIN_FLAG_',
-            fieldLabel: '机具状态',
-            displayField: 'displayField',
-            valueField: 'valueField',
-            store: [['在用', '在用'], ['停用', '停用']],
-            queryMode: 'local',
-            value: '在用',
-            editable: false,
-            allowBlank: false
-        }, {
-            xtype: 'datefield',//日期录入
-            id: 'WIN_CAR_INDATE_',
-            format: 'Y-m-d H:i:s',
-            submitFormat: 'Y-m-d H:i:s',
-            allowBlank: false,
-            fieldLabel: '机具入厂时间'
-        },
-        {xtype: 'textfield', id: 'WIN_DE_', fieldLabel: '机具定额', allowBlank: false}
-    ]
-});
-
-var insertCarWindow = Ext.create('Ext.window.Window', {
-    id: 'insertCarWindow',
-    width: 330,
-    height: 400,
-    layout: 'vbox',
-    title: '编辑',
-    modal: true,//弹出窗口时后面背景不可编辑
-    frame: true,
-    closeAction: 'hide',
-    closable: true,
-    defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
-    items: [
-        {
-            region: 'center',
-            layout: 'fit',
-            border: false,
-            items: [insertCarPanel]
-        }
-    ],
-    buttons: [{
-        xtype: 'button',
-        text: '保存',
-        width: 40,
-        handler: function () {
-            _insertCarSave();
-        }
-    }, {
-        xtype: 'button', text: '取消', width: 40, handler: function () {
-            Ext.getCmp('insertCarWindow').hide();
-        }
-    }]
-});
-
-
-var updateCarWindow = Ext.create('Ext.window.Window', {//修改机具的窗口
-    id: 'updateCarWindow',
-    width: 330,
-    height: 400,
-    layout: 'vbox',
-    title: '编辑',
-    modal: true,//弹出窗口时后面背景不可编辑
-    frame: true,
-    closeAction: 'hide',
-    closable: true,
-    defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
-    items: [
-        {xtype: 'textfield', id: 'WIN2_CAR_CODE_', fieldLabel: '机具编码'},
-        {xtype: 'textfield', id: 'WIN2_CAR_NAME_', fieldLabel: '机具名称'},
-        {xtype: 'textfield', id: 'WIN2_CAR_TYPE_', fieldLabel: '机具类型'},
-        {xtype: 'textfield', id: 'WIN2_GS_', fieldLabel: '机具归属'},
-        {
-            xtype: 'combo',
-            id: 'WIN2_FLAG_',
-            fieldLabel: '机具状态',
-            displayField: 'displayField',
-            valueField: 'valueField',
-            store: [['在用', '在用'], ['停用', '停用']],
-            queryMode: 'local',
-            value: '在用',
-            editable: false
-
-        }, {
-            xtype: 'datefield',//日期录入
-            id: 'WIN2_CAR_INDATE_',
-            format: 'Y-m-d H:i:s',
-            submitFormat: 'Y-m-d H:i:s',
-            fieldLabel: '机具入厂时间'
-        },
-        {xtype: 'numberfield', id: 'WIN2_DE_', fieldLabel: '机具定额'}],
-    buttons: [{
-        xtype: 'button',
-        text: '保存',
-        width: 40,
-        handler: function () {
-            _updateCarSave();
-        }
-    }, {
-        xtype: 'button', text: '取消', width: 40, handler: function () {
-            Ext.getCmp('updateCarWindow').hide();
-        }
-    }]
-});
-
-var insertDriverPanel = Ext.create('Ext.form.Panel', {
-    id: 'insertDriverPanel',
-    border: false,
-    baseCls: 'my-panel-no-border',
-    frame: true,
-    defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
-    items: [
-        {xtype: 'textfield', id: 'INS_DRIVER_GUID', fieldLabel: '司机编码', allowBlank: false},
-        {xtype: 'textfield', id: 'INS_CAR_GUID', fieldLabel: '机具编码', allowBlank: false},
-        {xtype: 'textfield', id: 'INS_DRIVER_NAME', fieldLabel: '司机姓名', allowBlank: false},
-        {
-            xtype: 'datefield',
-            id: 'INS_WORK_DATE',
-            fieldLabel: '上岗时间',
-            format: 'Y-m-d H:i:s',
-            submitFormat: 'Y-m-d H:i:s'
-            , allowBlank: false
-        },
-        {xtype: 'textfield', id: 'INS_DRIVER_DE', fieldLabel: '司机定额', allowBlank: false}
-    ]
-});
-
-var insertDriverWindow = Ext.create('Ext.window.Window', {
-    id: 'insertDriverWindow',
-    width: 300,
-    height: 200,
-    layout: 'vbox',
-    title: '编辑',
-    modal: true,//弹出窗口时后面背景不可编辑
-    frame: true,
-    closeAction: 'hide',
-    closable: true,
-    defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 140, style: 'margin:10px 0px 0px 0px'},
-    items: [
-        {
-            region: 'center',
-            layout: 'fit',
-            border: false,
-            items: [insertDriverPanel]
-        }
-    ],
-    buttons: [{
-        xtype: 'button', text: '保存', width: 40, handler: function () {
-            _insertDriverSave();
-        }
-    }, {
-        xtype: 'button', text: '取消', width: 40, handler: function () {
-            Ext.getCmp('insertDriverWindow').hide();
-        }
-    }]
-});
-
-var updateDriverWindow = Ext.create('Ext.window.Window', {
-    id: 'updateDriverWindow',
-    width: 300,
-    height: 200,
-    layout: 'vbox',
-    title: '编辑',
-    modal: true,//弹出窗口时后面背景不可编辑
-    frame: true,
-    closeAction: 'hide',
-    closable: true,
-    defaults: {labelAlign: 'right', labelWidth: 100, inputWidth: 160, style: 'margin:10px 0px 0px 0px'},
-    items: [
-        {xtype: 'textfield', id: 'UPD_DRIVER_NAME', fieldLabel: '司机姓名'},
-        {
-            xtype: 'datefield',
-            id: 'UPD_WORK_DATE',
-            fieldLabel: '上岗时间',
-            format: 'Y-m-d H:i:s',
-            submitFormat: 'Y-m-d H:i:s'
-        },
-        {xtype: 'textfield', id: 'UPD_DRIVER_DE', fieldLabel: '司机定额'}],
-    buttons: [{
-        xtype: 'button', text: '保存', width: 40, handler: function () {
-            _updateDriverSave();
-        }
-    }, {
-        xtype: 'button', text: '取消', width: 40, handler: function () {
-            Ext.getCmp('updateDriverWindow').hide();
-        }
-    }]
-});
 
 function _preSelectCarStore() {//查询机具的方法
     /*Ext.data.StoreManager.lookup('carStore').load({
-        params: {
-            V_V_CARCODE: Ext.getCmp('CAR_CODE_').getValue(),
-            V_V_CARNAME: Ext.getCmp('CAR_NAME_').getValue()
-        }
-    });*/
+     params: {
+     V_V_CARCODE: Ext.getCmp('CAR_CODE_').getValue(),
+     V_V_CARNAME: Ext.getCmp('CAR_NAME_').getValue()
+     }
+     });*/
     var carStore = Ext.data.StoreManager.lookup('carStore');
     carStore.proxy.extraParams.V_V_CARCODE = Ext.getCmp('CAR_CODE_').getValue();
     carStore.proxy.extraParams.V_V_CARNAME = Ext.getCmp('CAR_NAME_').getValue();
@@ -1588,7 +1599,7 @@ function _deleteCar() {
     var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
-        Ext.MessageBox.alert("操作信息", '请选择一条数据进行修改！', Ext.MessageBox.WARNING);
+        Ext.MessageBox.alert("操作信息", '请选择一条数据！', Ext.MessageBox.WARNING);
         return;
     }
     Ext.MessageBox.show({
@@ -1663,7 +1674,6 @@ function _insertDriver() {
     Ext.getCmp('INS_DRIVER_NAME').setValue('');
     Ext.getCmp('INS_WORK_DATE').setValue('');
     Ext.getCmp('INS_DRIVER_DE').setValue('');
-
     Ext.getCmp('insertDriverWindow').show();
 }
 
@@ -1961,22 +1971,22 @@ function _preViewImage(V_GUID) {
     index = 0;
     if (imageStore.getCount() != 0) {//在点击机具表格时查询机具示意图，并判断选中的这一条数据是否有图片的guid，并将图片的guid取出来
         V_V_FILEGUID = imageStore.getAt(0).get('V_FILEGUID');
-        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID + '&V_V_FILEGUID='+V_V_FILEGUID;
+        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID + '&V_V_FILEGUID=' + V_V_FILEGUID;
         Ext.getCmp("browseImage").getEl().dom.src = url;
         picguidbegin = V_V_FILEGUID;//用于判断是否是当前第一页的全局变量
     }
 }
 
-
 function _carUseDetail() {//查看的弹出窗口
+    Ext.getCmp('chakancar').show();
+
     var records = Ext.getCmp('driverPanel').getSelectionModel().getSelection();
     var CCDetailStore = Ext.data.StoreManager.lookup('CCDetailStore');
     CCDetailStore.proxy.extraParams.V_V_GUID = records[0].data.V_GUID;
     CCDetailStore.currentPage = 1;
     CCDetailStore.load();
-    Ext.getCmp('chakancar').show();
-
 }
+
 function _selectGz(V_ORDERGUID) {
     Ext.getCmp('tab2').setActiveTab(1);
     var gzStore = Ext.data.StoreManager.lookup('gzStore');
@@ -1985,6 +1995,7 @@ function _selectGz(V_ORDERGUID) {
     gzStore.load();
 
 }
+
 function _selectGj(V_ORDERGUID) {
     var gjStore = Ext.data.StoreManager.lookup('gjStore');
     gjStore.proxy.extraParams.V_V_ORDERGUID = V_ORDERGUID;
@@ -2028,9 +2039,9 @@ function _upLoadJJSYT() {
         method: 'POST',
         success: function (form, action) {
             var data = action.result;
-            V_V_FILEGUID=data.FILE_GUID;//图片的guid
+            V_V_FILEGUID = data.FILE_GUID;//图片的guid
             Ext.Msg.alert("信息", "成功！");
-            _preViewImage1(insDriverGuid,V_V_FILEGUID);
+            _preViewImage1(insDriverGuid, V_V_FILEGUID);
             _selectImage();
         },
         failure: function (resp) {
@@ -2040,9 +2051,9 @@ function _upLoadJJSYT() {
 
 }
 
-function _preViewImage1(V_GUID,V_V_FILEGUID) {
+function _preViewImage1(V_GUID, V_V_FILEGUID) {
     //V_GUID=insDriverGuid;//图片上传成功后，查询图片
-    var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID +'&V_V_FILEGUID='+V_V_FILEGUID;
+    var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + V_GUID + '&V_V_FILEGUID=' + V_V_FILEGUID;
     Ext.getCmp("browseImage").getEl().dom.src = url;
 }
 
@@ -2088,7 +2099,7 @@ function _deleteJJSYT() {
 }
 
 //新增图片的弹窗
-function _insertImage(){
+function _insertImage() {
     var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
@@ -2114,7 +2125,7 @@ function _selectImage() {
 }
 
 //上一页
-function _last(){
+function _last() {
     var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
@@ -2138,7 +2149,7 @@ function _last(){
         }
         index--;
         V_V_FILEGUID = imageStore.getAt(index).get('V_FILEGUID');
-        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID') ;
+        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID');
 
         Ext.getCmp("browseImage").getEl().dom.src = url;
 
@@ -2146,7 +2157,7 @@ function _last(){
 }
 
 //下一页
-function _next(){
+function _next() {
 
 
     var records = Ext.getCmp('carPanel').getSelectionModel().getSelection();
@@ -2173,7 +2184,7 @@ function _next(){
         }
         index++;
         V_V_FILEGUID = imageStore.getAt(index).get('V_FILEGUID');
-        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID') ;
+        var url = AppUrl + 'CarManage/BASE_FILE_IMAGE_SEL?V_V_GUID=' + imageStore.getAt(index).get('V_GUID') + '&V_V_FILEGUID=' + imageStore.getAt(index).get('V_FILEGUID');
 
         Ext.getCmp("browseImage").getEl().dom.src = url;
 

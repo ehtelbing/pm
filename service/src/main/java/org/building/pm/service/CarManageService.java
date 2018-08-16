@@ -230,7 +230,7 @@ public class CarManageService {
         return result;
     }
 
-    public HashMap BASE_DRIVER_INS(String V_V_CAR_GUID,String V_V_DRIVER_NAME, String V_V_WORK_DATE,String  V_V_DRIVER_DE) throws SQLException {
+    public HashMap BASE_DRIVER_INS(String V_V_DRIVER_GUID,String V_V_CAR_GUID,String V_V_DRIVER_NAME, String V_V_WORK_DATE,String  V_V_DRIVER_DE) throws SQLException {
         logger.info("begin BASE_DRIVER_INS");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -238,7 +238,8 @@ public class CarManageService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call BASE_DRIVER_INS" + "(:V_V_CAR_GUID,:V_V_DRIVER_NAME,:V_V_WORK_DATE,:V_V_DRIVER_DE,:V_INFO)}");
+            cstmt = conn.prepareCall("{call BASE_DRIVER_INS" + "(:V_V_DRIVER_GUID,:V_V_CAR_GUID,:V_V_DRIVER_NAME,:V_V_WORK_DATE,:V_V_DRIVER_DE,:V_INFO)}");
+            cstmt.setString("V_V_DRIVER_GUID", V_V_DRIVER_GUID);
             cstmt.setString("V_V_CAR_GUID", V_V_CAR_GUID);
             cstmt.setString("V_V_DRIVER_NAME", V_V_DRIVER_NAME);
             cstmt.setString("V_V_WORK_DATE", V_V_WORK_DATE);
@@ -257,6 +258,7 @@ public class CarManageService {
         logger.info("end BASE_DRIVER_INS");
         return result;
     }
+
 
     public HashMap BASE_DRIVER_UPD(String V_V_GUID,String V_V_DRIVER_NAME, String V_V_WORK_DATE,String  V_V_DRIVER_DE) throws SQLException {
         logger.info("begin BASE_DRIVER_UPD");

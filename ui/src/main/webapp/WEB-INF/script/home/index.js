@@ -13,7 +13,7 @@ var menutype = "";
 var win;//父窗口对象，由子窗口调用
 var returnValue;//父窗口对象，由子窗口调用
 var USERID = Ext.util.Cookies.get('v_personcode');
-var PORP_VALUE = APP.substring(0,APP.length-3);
+var PORP_VALUE = APP.substring(0, APP.length - 3);
 if (location.href.split('?')[1] != undefined) {
     if (Ext.urlDecode(location.href.split('?')[1]) != null) {
         menucode = Ext.urlDecode(location.href.split('?')[1]).v_menucode;
@@ -123,37 +123,37 @@ function _AssembleAccordions(data) {
                             if (model.childNodes.length != 0) {
                             } else {
                                 if (model.raw.type == 2) {
-                                    if(model.raw.other==0){
+                                    if (model.raw.other == 0) {
                                         var owidth = window.document.body.offsetWidth;
                                         var oheight = window.document.body.offsetHeight;
                                         window.open(AppUrlFrame + model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-                                    }else{
+                                    } else {
                                         var owidth = window.document.body.offsetWidth;
                                         var oheight = window.document.body.offsetHeight;
-                                        window.open( model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+                                        window.open(model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
                                     }
                                 } else {
                                     if (model.raw.other == 0) {
                                         htmlStr = [
-                                                '<iframe id="Workspace'
-                                                , item.sid
-                                                , '" name="Workspace'
-                                                , item.sid
-                                                , '" frameborder="0" width="100%" height="100%" src="'
-                                                , AppUrlFrame+ model.raw.src
-                                                , '" />'
-                                            ].join('')
+                                            '<iframe id="Workspace'
+                                            , item.sid
+                                            , '" name="Workspace'
+                                            , item.sid
+                                            , '" frameborder="0" width="100%" height="100%" src="'
+                                            , AppUrlFrame + model.raw.src
+                                            , '" />'
+                                        ].join('')
                                     } else {
                                         htmlStr = [
-                                                '<iframe id="Workspace'
-                                                , item.sid
-                                                , '" name="Workspace'
-                                                , item.sid
-                                                , '" frameborder="0" width="100%" height="100%" src="'
-                                                , ''
-                                                , + model.raw.src + "?v_mancode=" + Ext.util.Cookies.get('v_personcode')
-                                                , '" />'
-                                            ].join('');
+                                            '<iframe id="Workspace'
+                                            , item.sid
+                                            , '" name="Workspace'
+                                            , item.sid
+                                            , '" frameborder="0" width="100%" height="100%" src="'
+                                            , ''
+                                            , +model.raw.src + "?v_mancode=" + Ext.util.Cookies.get('v_personcode')
+                                            , '" />'
+                                        ].join('');
                                     }
                                     if (model.raw.leaf) {
                                         var tab = container.items.map[model.raw.id];
@@ -172,14 +172,14 @@ function _AssembleAccordions(data) {
                                     }
                                 }
                                 /*//自动化设备管理
-                                htmlStr = [
-                                    '<iframe id="Workspace',
-                                    model.raw.id,
-                                    '" name="Workspace',
-                                    model.raw.id,
-                                    '" frameborder="0" width="100%" height="100%" src="'
-                                    + _geturl(model.raw.src, APP)
-                                    + '" />'].join('');*/
+                                 htmlStr = [
+                                 '<iframe id="Workspace',
+                                 model.raw.id,
+                                 '" name="Workspace',
+                                 model.raw.id,
+                                 '" frameborder="0" width="100%" height="100%" src="'
+                                 + _geturl(model.raw.src, APP)
+                                 + '" />'].join('');*/
                             }
 
                         }
@@ -283,7 +283,8 @@ function _CreateSidebar(accordions) {
             layout: 'accordion',
             items: accordions,
             region: 'center'
-        }),{
+        }), {
+            id: 'favorite',
             xtype: 'panel',
             title: '收藏',
             titleAlign: 'left',
@@ -383,9 +384,13 @@ function OnPageLoaded() {
             var Accordions = _AssembleAccordions(result); // tree
             var sidebar = _CreateSidebar(Accordions);
             _CreateViewport(header, sidebar, container);
+            Ext.ComponentManager.get('favorite').collapse();
             Ext.getBody().unmask();
             _getHomeMenu();
             //GETDDDL();
+
+
+
         }
     });
     if (menucode != "" && menucode != null) {
@@ -433,32 +438,32 @@ function HomePage() {
 }
 
 /*function GETDDDL() {
-    // 转小神探单点登陆地址PRO_BASE_PERSON_DDDL_GETURL
-    $.ajax({
-        url: AppUrl + 'info/login_xst',
-        type: 'post',
-        async: false,
-        data: {
-            V_V_LOGINNAME: Ext.util.Cookies.get('v_personcode'),
-            V_V_TYPE: 'AAAdibAAyAAAASNXST'
-        },
-        traditional: true,
-        success: function (resp) {
-            if (resp == '无授权') {
-                // Ext.example.msg('操作信息', resp[0]);
-                document.getElementById("sy_a").href = "#";
-            } else {
-                if (resp != '') {
-                    // window.open(resp[0]) ;//打开网址
-                    document.getElementById("sy_a").href = resp;
-                } else {
-                    // Ext.example.msg('操作信息', '无授权');
-                    document.getElementById("sy_a").href = "#";
-                }
-            }
-        }
-    });
-}*/
+ // 转小神探单点登陆地址PRO_BASE_PERSON_DDDL_GETURL
+ $.ajax({
+ url: AppUrl + 'info/login_xst',
+ type: 'post',
+ async: false,
+ data: {
+ V_V_LOGINNAME: Ext.util.Cookies.get('v_personcode'),
+ V_V_TYPE: 'AAAdibAAyAAAASNXST'
+ },
+ traditional: true,
+ success: function (resp) {
+ if (resp == '无授权') {
+ // Ext.example.msg('操作信息', resp[0]);
+ document.getElementById("sy_a").href = "#";
+ } else {
+ if (resp != '') {
+ // window.open(resp[0]) ;//打开网址
+ document.getElementById("sy_a").href = resp;
+ } else {
+ // Ext.example.msg('操作信息', '无授权');
+ document.getElementById("sy_a").href = "#";
+ }
+ }
+ }
+ });
+ }*/
 
 /*
  * 通过工单号处理工单
@@ -548,7 +553,7 @@ function _getHomeMenu() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.success) {
-                if(resp.list != null) {
+                if (resp.list != null) {
                     for (var i = 0; i < resp.list.length; i++) {
                         append(resp.list[i].I_MENUID, resp.list[i].V_MENUNAME, resp.list[i].URL);
                     }
@@ -593,15 +598,15 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
         maximizable: true,
         width: 560,
         height: 420,
-        html: '<iframe src="' + AppUrl + 'page/home/favorite.html?menutype=' +menutype +'", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
+        html: '<iframe src="' + AppUrl + 'page/home/favorite.html?menutype=' + menutype + '", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
         listeners: {
             close: function (panel, eOpts) {
                 if (returnValue != null) {
                     var FavoriteMenu = returnValue;//获得待收藏页面的代码
                     var MENUID_LIST = new Array();
-                        for (var i = 0; i < FavoriteMenu.length; i++) {
-                            MENUID_LIST.push(FavoriteMenu[i].data.V_MENUCODE);
-                        }
+                    for (var i = 0; i < FavoriteMenu.length; i++) {
+                        MENUID_LIST.push(FavoriteMenu[i].data.V_MENUCODE);
+                    }
                     Ext.Ajax.request({
                         url: AppUrl + 'Kxy/insertFavoriteMenuList',
                         type: 'ajax',

@@ -158,7 +158,7 @@ Ext.onReady(function () {
         items: [{
             xtype: 'panel',
             region: 'north',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
@@ -206,7 +206,7 @@ Ext.onReady(function () {
         }, {
             xtype: 'panel',
             region: 'center',
-            frame: true,
+            //frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
@@ -664,6 +664,7 @@ function _seekStock() {
             'A_ETALON': Ext.getCmp('etalon').getValue()
         }
     })
+
 }
 
 function LookMorexzdj(value, metaData, record, rowIdx, colIdx, store, view) {

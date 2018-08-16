@@ -155,6 +155,7 @@ public class CarManageController {
     @RequestMapping(value = "/BASE_DRIVER_INS", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> BASE_DRIVER_INS(
+            @RequestParam(value = "V_V_DRIVER_GUID") String V_V_DRIVER_GUID,
             @RequestParam(value = "V_V_CAR_GUID") String V_V_CAR_GUID,
             @RequestParam(value = "V_V_DRIVER_NAME") String V_V_DRIVER_NAME,
             @RequestParam(value = "V_V_WORK_DATE") String V_V_WORK_DATE,
@@ -163,7 +164,7 @@ public class CarManageController {
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = CarManageService.BASE_DRIVER_INS(V_V_CAR_GUID,V_V_DRIVER_NAME, V_V_WORK_DATE, V_V_DRIVER_DE);
+        HashMap data = CarManageService.BASE_DRIVER_INS(V_V_DRIVER_GUID,V_V_CAR_GUID,V_V_DRIVER_NAME, V_V_WORK_DATE, V_V_DRIVER_DE);
         result.put("INFO", data.get("INFO"));
         result.put("success", true);
         return result;
