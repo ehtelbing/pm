@@ -191,8 +191,13 @@ function pageLoadInfo(){
 	});
 	//缺陷类型
 	Ext.data.StoreManager.lookup('qxlxStore').on('load', function () {
+        Ext.ComponentManager.get("qxzt").store.insert(0,{
+            'V_SOURCECODE':'%',
+            'V_SOURCENAME':'全部'
+        });
 		Ext.getCmp("qxlx").select(Ext.data.StoreManager.lookup('qxlxStore').getAt(0));
 	});
+
 }
 Ext.onReady(function () {
 	Ext.create('Ext.container.Viewport', {

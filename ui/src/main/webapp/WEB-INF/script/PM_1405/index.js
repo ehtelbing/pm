@@ -128,7 +128,7 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                orgLoad2 = true
+                orgLoad2 = true;
 
                 if (init) {
                     //Ext.getCmp('V_V_ORGCODE2').select(store.first());
@@ -1039,7 +1039,7 @@ Ext.onReady(function () {
                 editable: false,
                 format: 'Y-m-d',
                 // submitFormat: 'yyyy-mm-dd',
-                value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                value: Ext.getCmp("begintime").getSubmitValue(),//new Date(new Date().getFullYear(), new Date().getMonth(), 1),
                 fieldLabel: '发现时间',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
@@ -1865,7 +1865,7 @@ function _addFault() {
     equFaultLoad1 = false;
     Ext.getCmp('V_V_ORGCODE1').setValue(Ext.getCmp('V_V_ORGCODE').getValue());
     Ext.getCmp('V_V_DEPTCODE1').setValue(Ext.getCmp('V_V_DEPTCODE').getValue());
-
+    Ext.getCmp('begintime1').setValue(Ext.getCmp('begintime').getValue());
     if ((Ext.getCmp('V_V_EQUTYPE').getValue()) == '%') {
         Ext.getCmp('V_V_EQUTYPE1').select(Ext.data.StoreManager.lookup('eTypeStore1').getAt(0).get('V_EQUTYPECODE'));
     } else {
