@@ -24,33 +24,61 @@ public class PM_03Controller {
     @Autowired
     private PM_03Service pm_03Service;
 
-    @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_SET", method = RequestMethod.POST)
+    //大修年计划编制
+    @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_CREATE", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_YEAR_SET(
-            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-            @RequestParam(value = "V_V_CODE_YEAR") String V_V_CODE_YEAR,
-            @RequestParam(value = "V_I_YEAR") String V_I_YEAR,
-            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-            @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
-            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
-            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-            @RequestParam(value = "V_V_REPAIRMAJOR") String V_V_REPAIRMAJOR,
-            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-            @RequestParam(value = "V_D_DATETIME_B") String V_D_DATETIME_B,
-            @RequestParam(value = "V_D_DATETIME_E") String V_D_DATETIME_E,
-            @RequestParam(value = "V_STATUSCODE") String V_STATUSCODE,
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
-            @RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        Map test = new HashMap();
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_INPER") String V_V_INPER) throws Exception {
 
-        List<Map> result = null;
-        result = pm_03Service.PRO_PM_03_PLAN_YEAR_SET(V_V_PERSONCODE, V_V_CODE_YEAR,V_I_YEAR,V_V_DEPTCODE,V_V_DEPTNEXTCODE,
-                V_V_EQUTYPECODE,V_V_EQUCODE,V_V_REPAIRMAJOR,V_V_CONTENT,V_D_DATETIME_B,V_D_DATETIME_E,V_STATUSCODE,V_V_GUID,
-                V_V_JXMX_CODE);
-        test.put("list", result);
-        return test;
+        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_CREATE(V_V_GUID, V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_INPER);
+        return result;
+    }
+
+    //年计划工程项目查询
+    @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_PROJECT_SEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_SEL(V_V_GUID);
+        return result;
+    }
+
+    //大修设备添加
+    @RequestMapping(value = "/PM_03_PLAN_YEAR_EQU_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_EQU_SET(
+            @RequestParam(value = "V_V_PLANGUID") String V_V_PLANGUID,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_YEAR_EQU_SET(V_V_PLANGUID,V_V_EQUTYPECODE,V_V_EQUCODE);
+        return result;
+    }
+
+    //大修已选设备查询
+    @RequestMapping(value = "/PM_03_PLAN_YEAR_EQU_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_EQU_SEL(
+            @RequestParam(value = "V_V_PLANGUID") String V_V_PLANGUID) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_YEAR_EQU_SEL(V_V_PLANGUID);
+        return result;
+    }
+
+    //大修删除已选中设备
+    @RequestMapping(value = "/PM_03_PLAN_YEAR_EQU_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_EQU_DEL(
+            @RequestParam(value = "V_V_PLANGUID") String V_V_PLANGUID,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_YEAR_EQU_DEL(V_V_PLANGUID,V_V_EQUCODE);
+        return result;
     }
 
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_SELECT", method = RequestMethod.POST)
@@ -78,7 +106,7 @@ public class PM_03Controller {
                                                             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_DJY_VIEW(V_V_INPER,V_V_YEAR,V_V_ORGCODE,V_V_DEPTCODE);
+        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_DJY_VIEW(V_V_INPER, V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE);
 
         List<Map<String, Object>> pm_06list = (List) data.get("list");
 
@@ -93,7 +121,7 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map<String,Object> result = pm_03Service.PRO_PM_03_PLAN_YEAR_DEL(V_V_GUID);
+        Map<String, Object> result = pm_03Service.PRO_PM_03_PLAN_YEAR_DEL(V_V_GUID);
         return result;
     }
 
@@ -108,10 +136,9 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SEND(V_V_GUID,V_V_ORGCODE,V_V_DEPTCODE,V_V_FLOWCODE,V_V_PLANTYPE,V_V_PERSONCODE);
+        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SEND(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
         return result;
     }
-
 
 
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_VIEW", method = RequestMethod.POST)
@@ -126,7 +153,7 @@ public class PM_03Controller {
                                                         HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_INPER,V_V_YEAR,V_V_ORGCODE,V_V_DEPTCODE,V_V_REPAIRMAJOR_CODE,V_V_PLANTYPE);
+        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_INPER, V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRMAJOR_CODE, V_V_PLANTYPE);
 
         List<Map<String, Object>> pm_06list = (List) data.get("list");
 
@@ -134,8 +161,6 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
-
-
 
 
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_VIEW1", method = RequestMethod.POST)
@@ -149,7 +174,7 @@ public class PM_03Controller {
                                                          HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW1(V_V_YEAR,V_V_ORGCODE,V_V_DEPTCODE,V_V_REPAIRMAJOR_CODE,V_V_FLOWCODE);
+        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW1(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRMAJOR_CODE, V_V_FLOWCODE);
 
         List<Map<String, Object>> pm_06list = (List) data.get("list");
 
@@ -215,6 +240,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010201,月计划报表，选择计划查询
     @RequestMapping(value = "/PM_03_MONTH_PLAN_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -233,9 +259,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PM_03_MONTH_PLAN_SEL(V_V_YEAR,V_V_MONTH,V_V_ORGCODE,V_V_DEPTCODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_ZY,V_V_CONTENT,V_V_STATECODE,V_V_PEROCDE,V_V_PAGE,V_V_PAGESIZE);
+        Map result = pm_03Service.PM_03_MONTH_PLAN_SEL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
+
     //PM_03010201,月计划报表,表格信息加载
     @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_VIEW", method = RequestMethod.POST)
     @ResponseBody
@@ -258,6 +285,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010201,月计划报表,修改时信息绑定
     @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_GET", method = RequestMethod.POST)
     @ResponseBody
@@ -275,6 +303,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010201,月计划报表，删除
     @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_DEL", method = RequestMethod.POST)
     @ResponseBody
@@ -282,9 +311,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map<String,Object> result = pm_03Service.PRO_PM_03_PLAN_MONTH_DEL(V_V_GUID);
+        Map<String, Object> result = pm_03Service.PRO_PM_03_PLAN_MONTH_DEL(V_V_GUID);
         return result;
     }
+
     //PM_03010201,月计划报表，上传
     @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_SEND", method = RequestMethod.POST)
     @ResponseBody
@@ -304,6 +334,7 @@ public class PM_03Controller {
         test.put("list", result);
         return test;
     }
+
     //PM_03010201,季度计划报表，选择计划查询
     @RequestMapping(value = "/PM_03_QUARTER_PLAN_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -321,6 +352,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010101,季度计划报表,表格信息加载
     @RequestMapping(value = "/PRO_PM_03_PLAN_QUARTER_VIEW", method = RequestMethod.POST)
     @ResponseBody
@@ -340,6 +372,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010101,季度检修计划,修改时信息绑定
     @RequestMapping(value = "/PRO_PM_03_PLAN_QUARTER_GET", method = RequestMethod.POST)
     @ResponseBody
@@ -357,6 +390,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010101,季度检修计划，删除
     @RequestMapping(value = "/PRO_PM_03_PLAN_QUARTER_DEL", method = RequestMethod.POST)
     @ResponseBody
@@ -364,9 +398,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map<String,Object> result = pm_03Service.PRO_PM_03_PLAN_QUARTER_DEL(V_V_GUID);
+        Map<String, Object> result = pm_03Service.PRO_PM_03_PLAN_QUARTER_DEL(V_V_GUID);
         return result;
     }
+
     //PM_03010101,季度检修计划，上传
     @RequestMapping(value = "/PRO_PM_03_PLAN_QUARTER_SEND", method = RequestMethod.POST)
     @ResponseBody
@@ -380,10 +415,11 @@ public class PM_03Controller {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        Map<String,Object> result = pm_03Service.PRO_PM_03_PLAN_QUARTER_SEND(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
+        Map<String, Object> result = pm_03Service.PRO_PM_03_PLAN_QUARTER_SEND(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
 
         return result;
     }
+
     //PM_03010101,季度计划报表,表格信息加载
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_VIEW", method = RequestMethod.POST)
     @ResponseBody
@@ -404,10 +440,11 @@ public class PM_03Controller {
         Map<String, Object> result = new HashMap<String, Object>();
 
 
-        HashMap data =  pm_03Service.PRO_PM_03_PLAN_WEEK_VIEW( V_V_YEAR, V_V_MONTH,V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
+        HashMap data = pm_03Service.PRO_PM_03_PLAN_WEEK_VIEW(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
                 V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
+
     //PM_03010301,周计划报表，选择计划查询
     @RequestMapping(value = "/PM_03_WEEK_PLAN_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -418,7 +455,7 @@ public class PM_03Controller {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = pm_03Service.PM_03_WEEK_PLAN_SEL(V_V_PLAN_NAME,V_V_TYPE,V_V_ORGCODE);
+        HashMap data = pm_03Service.PM_03_WEEK_PLAN_SEL(V_V_PLAN_NAME, V_V_TYPE, V_V_ORGCODE);
 
         List<Map<String, Object>> pm_03list = (List) data.get("list");
 
@@ -426,6 +463,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010301,周检修计划，删除
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_DEL", method = RequestMethod.POST)
     @ResponseBody
@@ -433,9 +471,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map<String,Object> result = pm_03Service.PRO_PM_03_PLAN_WEEK_DEL(V_V_GUID);
+        Map<String, Object> result = pm_03Service.PRO_PM_03_PLAN_WEEK_DEL(V_V_GUID);
         return result;
     }
+
     //PM_03010301,周检修计划,修改时信息绑定
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_GET", method = RequestMethod.POST)
     @ResponseBody
@@ -453,6 +492,7 @@ public class PM_03Controller {
         result.put("success", true);
         return result;
     }
+
     //PM_03010301,周检修计划，上传
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_SEND", method = RequestMethod.POST)
     @ResponseBody
@@ -472,6 +512,7 @@ public class PM_03Controller {
         test.put("list", result);
         return test;
     }
+
     @RequestMapping(value = "/PM_03_MONTH_PLAN_PLANCODE_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_03_MONTH_PLAN_PLANCODE_SEL(
@@ -481,6 +522,7 @@ public class PM_03Controller {
         Map result = pm_03Service.PM_03_MONTH_PLAN_PLANCODE_SEL(V_V_PLANCODEE);
         return result;
     }
+
     @RequestMapping(value = "/PM_03_JXMX_DATA_MXCODE_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_03_JXMX_DATA_MXCODE_SEL(
@@ -490,6 +532,7 @@ public class PM_03Controller {
         Map result = pm_03Service.PM_03_JXMX_DATA_MXCODE_SEL(V_V_MX_CODE);
         return result;
     }
+
     @RequestMapping(value = "/PM_03_WEEK_PLAN_GET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_03_WEEK_PLAN_GET(
@@ -500,6 +543,7 @@ public class PM_03Controller {
         Map result = pm_03Service.PM_03_WEEK_PLAN_GET(V_V_PLANCODE, V_V_TYPE);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_03_PLAN_QUARTER_VIEW1", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_QUARTER_VIEW1(
@@ -512,9 +556,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_03_PLAN_QUARTER_VIEW1(V_V_YEAR, V_V_QUARTER,V_V_ORGCODE,V_V_DEPTCODE,V_V_REPAIRMAJOR_CODE,V_V_FLOWCODE,V_V_CONTENT);
+        Map result = pm_03Service.PRO_PM_03_PLAN_QUARTER_VIEW1(V_V_YEAR, V_V_QUARTER, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRMAJOR_CODE, V_V_FLOWCODE, V_V_CONTENT);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_PLAN_LOCKING_Q_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_PLAN_LOCKING_Q_VIEW(
@@ -528,6 +573,7 @@ public class PM_03Controller {
         Map result = pm_03Service.PRO_PM_PLAN_LOCKING_Q_VIEW(V_V_YEAR, V_V_QUARTER, V_V_ORGCODE, V_V_DEPTCODE, V_V_CONTENT);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_PLAN_LOCKING_DATE_GET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_PLAN_LOCKING_DATE_GET(
@@ -537,9 +583,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_GET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM,V_V_TYPE);
+        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_GET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM, V_V_TYPE);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_PLAN_LOCKING_DATE_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_PLAN_LOCKING_DATE_SET(
@@ -549,12 +596,13 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
             @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
             @RequestParam(value = "V_I_LOCK") Integer V_I_LOCK,
-            @RequestParam(value = "V_D_DATE_S")String V_D_DATE_S,
+            @RequestParam(value = "V_D_DATE_S") String V_D_DATE_S,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_SET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM,V_V_TYPE,V_D_DATE_E,V_I_LOCK,V_D_DATE_S);
+        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_SET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM, V_V_TYPE, V_D_DATE_E, V_I_LOCK, V_D_DATE_S);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_04_PROJECT_DATA_ITEM_V", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_04_PROJECT_DATA_ITEM_V(
@@ -570,9 +618,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_BY2") String V_V_BY2,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_04_PROJECT_DATA_ITEM_V(V_V_YEAR, V_V_MONTH,V_V_PERCODE, V_V_ORGCODE, V_V_SPECIALTY, V_V_PROJECT_CODE, V_V_PROJECT_NAME, V_V_CONTENT,V_V_BY1,V_V_BY2);
+        Map result = pm_03Service.PRO_PM_04_PROJECT_DATA_ITEM_V(V_V_YEAR, V_V_MONTH, V_V_PERCODE, V_V_ORGCODE, V_V_SPECIALTY, V_V_PROJECT_CODE, V_V_PROJECT_NAME, V_V_CONTENT, V_V_BY1, V_V_BY2);
         return result;
     }
+
     @RequestMapping(value = "/PM_03_PLAN_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_03_PLAN_SEL(
@@ -593,9 +642,9 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PM_03_PLAN_SEL( V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_PLANTYPE,V_V_ORGCODE,
+        Map result = pm_03Service.PM_03_PLAN_SEL(V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_PLANTYPE, V_V_ORGCODE,
                 V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT,
-                V_V_PEROCDE,V_V_PAGE,V_V_PAGESIZE);
+                V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -641,20 +690,22 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PM_03_PLAN_CHOOSE_SEL(V_V_GUID,V_V_PLANTYPE);
+        Map result = pm_03Service.PM_03_PLAN_CHOOSE_SEL(V_V_GUID, V_V_PLANTYPE);
         return result;
     }
+
     @RequestMapping(value = "/PRO_BASE_DEPT_VIEW_ROLE_PLAN", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_DEPT_VIEW_ROLE_PLAN(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                                       @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                       @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
-                                                       @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
-                                                       HttpServletRequest request,
-                                                       HttpServletResponse response) throws Exception {
+                                                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                            @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                                            @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
         Map result = pm_03Service.PRO_BASE_DEPT_VIEW_ROLE_PLAN(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_DEPTTYPE);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_PLAN_LOCKING_M_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_PLAN_LOCKING_M_VIEW(
@@ -665,9 +716,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_M_VIEW(V_I_YEAR, V_I_MONTH, V_V_DEPTCODE,V_V_DEPTNEXTCODE, V_V_CONTENT);
+        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_M_VIEW(V_I_YEAR, V_I_MONTH, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_CONTENT);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_PLAN_LOCKING_W_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_PLAN_LOCKING_W_VIEW(

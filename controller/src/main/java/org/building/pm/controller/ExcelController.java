@@ -1011,14 +1011,12 @@ public class ExcelController {
                              @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                              @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
                              @RequestParam(value = "V_V_STATE") String V_V_STATE,
-                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+                             HttpServletResponse response) throws  SQLException {
 
         List list = new ArrayList();
 
-        String V_V_DEPTCODE2=V_V_ZY.equals("0")?"%":V_V_DEPTCODE;
-        String V_V_ORGCODE2=V_V_ZY.equals("0")?"%":V_V_ORGCODE;
+        String V_V_DEPTCODE2=V_V_DEPTCODE.equals("0")?"%":V_V_DEPTCODE;
+        String V_V_ORGCODE2=V_V_ORGCODE.equals("0")?"%":V_V_ORGCODE;
         String V_V_ZY2=V_V_ZY.equals("0")?"%":V_V_ZY;
         String V_V_EQUTYPE2=V_V_EQUTYPE.equals("0")?"%":V_V_EQUTYPE;
         String V_V_EQUCODE2=V_V_EQUCODE.equals("0")?"%":V_V_EQUCODE;

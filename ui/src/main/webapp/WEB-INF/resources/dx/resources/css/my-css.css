@@ -1,0 +1,82 @@
+.float_left{display: block; float: left;}
+.form_red label{color:#f00;} .form_red input{border:1px solid #f00; background: #ff6;}
+.xxjl_btn{width:22px; height:22px; background: url("../icons/calculator_edit.png") no-repeat 2px 2px; border:1px solid #ebebeb;}/*详细记录*/
+.xxjl_btn:hover{width:22px; height:22px; background: url("../icons/calculator_edit.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.add_btn22{width:22px; height:22px; background: url("../icons/image_add.png") no-repeat 2px 2px; border:1px solid #ebebeb;}/*详细记录*/
+.add_btn22:hover{width:22px; height:22px; background: url("../icons/image_add.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.del_btn22{width:22px; height:22px; background: url("../icons/image_delete.png") no-repeat 2px 2px; border:1px solid #ebebeb;}/*详细记录*/
+.del_btn22:hover{width:22px; height:22px; background: url("../icons/image_delete.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.sx_btn{width:22px; height:22px; background: url("../icons/arrow_refresh.png") no-repeat 2px 2px; border:1px solid #ebebeb;}  /*刷新*/
+.sx_btn:hover{width:22px; height:22px; background: url("../icons/arrow_refresh.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.search_btn{width:22px; height:22px; background: url("../icons/page_white_magnify.png") no-repeat 2px 2px; border:1px solid #ebebeb;}  /*查询*/
+.search_btn:hover{width:22px; height:22px; background: url("../icons/page_white_magnify.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.czcxtj_btn{width:22px; height:22px; background: url("../icons/arrow_redo.png") no-repeat 2px 2px; border:1px solid #ebebeb;}  /*重置查询条件*/
+.czcxtj_btn:hover{width:22px; height:22px; background: url("../icons/arrow_redo.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.sy_btn{width:22px; height:22px; background: url("../icons/arrow_up.png") no-repeat 2px 2px; border:1px solid #ebebeb;}  /*上移*/
+.sy_btn:hover{width:22px; height:22px; background: url("../icons/arrow_up.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.xy_btn{width:22px; height:22px; background: url("../icons/arrow_down.png") no-repeat 2px 2px; border:1px solid #ebebeb;}  /*下移*/
+.xy_btn:hover{width:22px; height:22px; background: url("../icons/arrow_down.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.gybg_btn{width:22px; height:22px; background: url("../icons/application_side_tree.png") no-repeat 2px 2px; border:1px solid #ebebeb;}  /*关于表格*/
+.gybg_btn:hover{width:22px; height:22px; background: url("../icons/application_side_tree.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.dkcxmb_btn{width:22px; height:22px; background: url("../icons/application_form_magnify.png") no-repeat 2px 2px; border:1px solid #ebebeb;}  /*打开查询面板*/
+.dkcxmb_btn:hover{width:22px; height:22px; background: url("../icons/application_form_magnify.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc;}
+.add_btn{width:80px; height:22px; background: url("../icons/image_add.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*添加新属性*/
+.add_btn:hover{width:80px; height:22px; background: url("../icons/image_add.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.edit_btn{width:80px; height:22px; background: url("../icons/image_edit.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*修改属性*/
+.edit_btn:hover{width:80px; height:22px; background: url("../icons/image_edit.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.Reopening_btn{width:80px; height:22px; background: url("../icons/arrow_switch.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*重新启用属性*/
+.Reopening_btn:hover{width:80px; height:22px; background: url("../icons/arrow_switch.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+
+
+.Establish_btn{width:55px; height:22px; background: url("../icons/application_form_add.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*创建*/
+.Establish_btn:hover{width:55px; height:22px; background: url("../icons/application_form_add.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.Establish_btn95{width:95px; height:22px; background: url("../icons/application_form_add.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*创建静态值域*/
+.Establish_btn95:hover{width:95px; height:22px; background: url("../icons/application_form_add.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.modify_btn{width:55px; height:22px; background: url("../icons/image_edit.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*修改*/
+.modify_btn:hover{width:55px; height:22px; background: url("../icons/image_edit.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+
+.del_btn{width:80px; height:22px; background: url("../icons/image_delete.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*删除属性*/
+.del_btn:hover{width:80px; height:22px; background: url("../icons/image_delete.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.del_btn55{width:55px; height:22px; background: url("../icons/image_delete.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*删除*/
+.del_btn55:hover{width:55px; height:22px; background: url("../icons/image_delete.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.Decline_btn{width:55px; height:22px; background: url("../icons/decline.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*禁用*/
+.Decline_btn:hover{width:55px; height:22px; background: url("../icons/decline.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.add_btn1{width:95px; height:22px; background: url("../icons/image_add.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*添加复合成份*/
+.add_btn1:hover{width:95px; height:22px; background: url("../icons/image_add.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+
+.check_btn{width:95px; height:22px; background: url("../icons/computer_magnify.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*查看依赖属性*/
+.check_btn:hover{width:95px; height:22px; background: url("../icons/computer_magnify.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.edit_btn1{width:95px; height:22px; background: url("../icons/image_edit.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*修改复合成份*/
+.edit_btn1:hover{width:95px; height:22px; background: url("../icons/image_edit.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.del_btn1{width:95px; height:22px; background: url("../icons/image_delete.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*删除复合成份*/
+.del_btn1:hover{width:95px; height:22px; background: url("../icons/image_delete.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.save_btn{width:80px; height:22px; background: url("../icons/script_save.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*保存配置*/
+.save_btn:hover{width:80px; height:22px; background: url("../icons/script_save.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.pzdfgs_btn{width:95px; height:22px; background: url("../icons/computer_key.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;} /*配置成分公式*/
+.pzdfgs_btn:hover{width:95px; height:22px; background: url("../icons/computer_key.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.ExportExcel_btn{width:95px; height:22px; background: url("../icons/report_go.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;} /*导出数据到Excel*/
+.ExportExcel_btn:hover{width:95px; height:22px; background: url("../icons/report_go.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+
+.Disable_btn{width:55px; height:22px; background: url("../icons/computer_error.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*禁用*/
+.Disable_btn:hover{width:55px; height:22px; background: url("../icons/computer_error.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+.SUsing_btn{width:55px; height:22px; background: url("../icons/computer_key.png") no-repeat 2px 2px; border:1px solid #ebebeb; padding-left: 20px; line-height: 21px;}  /*启用*/
+.SUsing_btn:hover{width:55px; height:22px; background: url("../icons/computer_key.png") no-repeat 3px 3px #e8e8e8; border:1px solid #ccc; padding-left: 21px; line-height: 23px;}
+
+.kc_ul{margin:0px; padding:0px;}
+.kc_ul li{width:200px; height:64px; list-style:none; margin:30px 0px 0px 15px;}
+.kc_ul li span{display:block; float:left; width:120px; height:90px; line-height:90px; text-align:right; padding-right:10px;}
+.kc_ul li img{width:80px; height:80px; float:right;}
+
+.if_top{width:1700px; height:70px; background:#f2f2f2; border-bottom:4px solid #d4d4d4}
+.if_top span{display:block; float:left; width:86px; text-align:center; height:70px; line-height:70px; font-size:16px;}
+.cl_div{width:1700px; height:195px; border-bottom:1px solid #06F}
+.cl_div ul{margin:0px; padding:0px;}
+.cl_div ul li{float:left; width:90px; position:relative; height:90px; list-style:none;}
+.cl_div ul li img{position:absolute; display:block; z-index:1 }
+.cl_div ul li span{position:absolute; z-index:2; display:block;  background:#d3d3d3; border:1px solid #333; color:#f00; text-align:center; width:25px; height:25px; line-height:25px; border-radius:30px; }
+.big img{width:75px; height:75px; top:14px; left:7px; right:auto;}
+.big span{margin:35px 0px 0px 30px}
+.sbig img{width:55px; height:55px; top:34px; left:17px; right:auto;}
+.sbig span{margin:50px 0px 0px 31px}
+.small img{width:40px; height:40px; top:49px; left:25px; right:auto;}
+.small span{margin:56px 0px 0px 31px}

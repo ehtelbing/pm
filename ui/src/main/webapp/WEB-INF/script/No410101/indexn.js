@@ -37,7 +37,7 @@ function DefaultPrintSettings() {
             "   border-bottom-color: #000;"+
             " }"+
             " .Ttable td {"+
-            "     height: 4.5mm;"+
+            "     height: 4mm;"+
             " }"+
             " .PageNext {"+
             "     page-break-after: always;"+
@@ -162,7 +162,7 @@ function loadPageInfo() {
                             result.push('                    <td align="center" class="border_r_b">');
                             result.push('                        工厂单位');
                             result.push('                    </td>');
-                            result.push('                    <td width="250" class="border_r_b">');
+                            result.push('                    <td width="220" class="border_r_b">');
                             result.push('                        <span>');
                             result.push(resp.list[0].V_ORGNAME);
                             result.push('                        </span>');
@@ -171,7 +171,7 @@ function loadPageInfo() {
                             result.push('                    <td align="center" class="border_r_b">');
                             result.push('                        创建人');
                             result.push('                    </td>');
-                            result.push('                    <td width="80" align="center" class="border_r_b">');
+                            result.push('                    <td width="100" align="center" class="border_r_b">');
                             result.push('                        <span>');
                             result.push(resp.list[0].V_ENTERED_BY);
                             result.push('</span>');
