@@ -1,3 +1,6 @@
+/**
+ * Created by Administrator on 2018/8/16 0016.
+ */
 var V_GUID = null;
 var V_EQUTYPECODE = null;
 var processKey = '';
@@ -31,6 +34,7 @@ $(function () {
     $("#V_EQUNAME").click(function () {
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
+
         var ret = window.open(AppUrl + 'page/PM_090101/index.html?V_DEPTCODE=' + $("#selZYQ").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
 
@@ -249,9 +253,21 @@ function loadSPR() {
                 V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
 
                 $("#selApprover").html(result.join(""));
+                // $("#selApprover").html(result.join(""));
+
+            }else{
+                $("#selApprover").html("");
+                // $("#selApprover").val($.cookies.get('v_personcode'));
+                // alert("下一步审批人不能为空，请重新选择");
             }
 
-            $("#selApprover").val($.cookies.get('v_personcode'));
+            // if($("#selApprover").val()==null ||$("#selApprover").val()==""){
+            //   null;
+            // }
+            // else {
+            //     $("#selApprover").val($.cookies.get('v_personcode'));
+            // }
+
 
         }
     });
@@ -406,7 +422,7 @@ function BillGo() {
                     url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
                     params: {
                         V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                        V_V_SEND_STATE: "成功"
+                        V_V_SEND_STATE: "成功.0"
                     },
                     success: function (response) {
 
@@ -467,31 +483,31 @@ function BillGo() {
                             });
                         }else{
 
-                                        Ext.Ajax.request({
-                                            url: AppUrl + 'Activiti/StratProcess',
-                                            async: false,
-                                            method: 'post',
-                                            params: {
-                                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                                parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
-                                                processKey: processKey,
-                                                businessKey: $("#V_ORDERGUID").val(),
-                                                V_STEPCODE: 'start',
-                                                V_STEPNAME: V_STEPNAME,
-                                                V_IDEA: '请审批！',
-                                                V_NEXTPER: $("#selApprover").val(),
-                                                V_INPER: Ext.util.Cookies.get('v_personcode')
-                                            },
-                                            success: function (response) {
-                                                if (Ext.decode(response.responseText).ret == 'OK') {
-                                                    alert("工单创建成功：" + $("#V_ORDERID").html());
-                                                    history.go(0);
-                                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                                    Ext.Msg.alert('提示', '该流程发起失败！');
-                                                    history.go(0);
-                                                }
-                                            }
-                                        });
+                            Ext.Ajax.request({
+                                url: AppUrl + 'Activiti/StratProcess',
+                                async: false,
+                                method: 'post',
+                                params: {
+                                    parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                    parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
+                                    processKey: processKey,
+                                    businessKey: $("#V_ORDERGUID").val(),
+                                    V_STEPCODE: 'start',
+                                    V_STEPNAME: V_STEPNAME,
+                                    V_IDEA: '请审批！',
+                                    V_NEXTPER: $("#selApprover").val(),
+                                    V_INPER: Ext.util.Cookies.get('v_personcode')
+                                },
+                                success: function (response) {
+                                    if (Ext.decode(response.responseText).ret == 'OK') {
+                                        alert("工单创建成功：" + $("#V_ORDERID").html());
+                                        history.go(0);
+                                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                        Ext.Msg.alert('提示', '该流程发起失败！');
+                                        history.go(0);
+                                    }
+                                }
+                            });
 
                         }
 
@@ -503,7 +519,7 @@ function BillGo() {
             }
         }
     });
-    
+
 }
 
 function GetModel() {//获取模型

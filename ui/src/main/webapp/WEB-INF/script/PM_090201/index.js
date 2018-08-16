@@ -1,3 +1,6 @@
+/**
+ * Created by Administrator on 2018/8/16 0016.
+ */
 var V_GUID = null;
 var url_guid = null;
 var V_EQUTYPECODE = null;
@@ -154,6 +157,7 @@ $(function () {
         //'&V_EQUTYPECODE='+V_EQUTYPECODE+'&V_EQUCODE='+$("#V_EQUCODE").val()+'&V_EQUNAME='+$("#V_EQUNAME").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
+
         var ret = window.open(AppUrl + 'page/PM_090101/index.html?V_DEPTCODE=' + $("#V_DEPTCODE").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
 
@@ -274,8 +278,44 @@ function loadRepairList() {
 
         }
     });
+}
 
+function loadSPR() {
+    $.ajax({//审批人
+        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+        type: 'post',
+        async: false,
+        data: {
+            V_V_ORGCODE: $("#V_ORGCODE").val(),
+            V_V_DEPTCODE: $("#V_DEPTCODE").val(),
+            V_V_REPAIRCODE: $("#selPlant").val(),
+            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOW_STEP: 'start',
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE: ''
+        },
+        success: function (resp) {
+            $("#selApprover").empty();
+            var result = [];
+            if (resp.list != null) {
+                $.each(resp.list, function (index, item) {
+                    result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
+                });
+                processKey = resp.RET;
+                V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
 
+                $("#selApprover").html(result.join(""));
+            }else{
+                $("#selApprover").html("");
+            }
+
+           //  $("#selApprover").val($.cookies.get('v_personcode'));
+
+            //createDD();
+        }
+    });
 }
 
 /**
@@ -692,58 +732,58 @@ function BillGo() {
         }
     });
 
-/*
-    Ext.Ajax.request({
-        url: AppUrl + 'Activiti/StratProcess',
-        async: false,
-        method: 'post',
-        params: {
-            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
-            parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！","WORK"],
-            processKey: processKey,
-            businessKey: $("#V_ORDERGUID").val(),
-            V_STEPCODE: 'start',
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '请审批！',
-            V_NEXTPER: $("#selApprover").val(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
-        },
-        success: function (response) {
-            if (Ext.decode(response.responseText).ret == 'OK') {
-                Ext.Ajax.request({
-                    url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
-                    type: 'post',
-                    async: false,
-                    params: {
-                        V_V_PERNAME: $.cookies.get('v_personcode'),
-                        V_V_DEFECT_GUID: $.url().param("V_GUID"),
-                        V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-                        V_V_EQUCODE: $("#V_EQUCODE").val(),
-                        V_V_WORKORDER_TYPE: $("#selType").val(),
-                        V_V_DEPTCODEREPARIR: $("#selPlant").val(),
-                        V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
-                        V_V_WBS: $("#wbsCode").val(),
-                        V_V_WBS_TXT: $("#proName").val(),
-                        V_D_START_DATE: $("#planStartDate").val(),
-                        V_D_FINISH_DATE: $("#planFinDate").val()
-                    },
-                    success: function (response) {
-                        var resp = Ext.decode(response.responseText);
-                        if (resp.RET == '成功') {
-                            orderissued();
+    /*
+     Ext.Ajax.request({
+     url: AppUrl + 'Activiti/StratProcess',
+     async: false,
+     method: 'post',
+     params: {
+     parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
+     parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！","WORK"],
+     processKey: processKey,
+     businessKey: $("#V_ORDERGUID").val(),
+     V_STEPCODE: 'start',
+     V_STEPNAME: V_STEPNAME,
+     V_IDEA: '请审批！',
+     V_NEXTPER: $("#selApprover").val(),
+     V_INPER: Ext.util.Cookies.get('v_personcode')
+     },
+     success: function (response) {
+     if (Ext.decode(response.responseText).ret == 'OK') {
+     Ext.Ajax.request({
+     url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DEFECT_SAVE',
+     type: 'post',
+     async: false,
+     params: {
+     V_V_PERNAME: $.cookies.get('v_personcode'),
+     V_V_DEFECT_GUID: $.url().param("V_GUID"),
+     V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+     V_V_EQUCODE: $("#V_EQUCODE").val(),
+     V_V_WORKORDER_TYPE: $("#selType").val(),
+     V_V_DEPTCODEREPARIR: $("#selPlant").val(),
+     V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
+     V_V_WBS: $("#wbsCode").val(),
+     V_V_WBS_TXT: $("#proName").val(),
+     V_D_START_DATE: $("#planStartDate").val(),
+     V_D_FINISH_DATE: $("#planFinDate").val()
+     },
+     success: function (response) {
+     var resp = Ext.decode(response.responseText);
+     if (resp.RET == '成功') {
+     orderissued();
 
-                        } else {
-                            alert("失败");
-                        }
-                    }
-                });
+     } else {
+     alert("失败");
+     }
+     }
+     });
 
 
-            } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                Ext.Msg.alert('提示', '该流程发起失败！');
-            }
-        }
-    });*/
+     } else if (Ext.decode(response.responseText).error == 'ERROR') {
+     Ext.Msg.alert('提示', '该流程发起失败！');
+     }
+     }
+     });*/
 }
 
 
@@ -1057,38 +1097,3 @@ function getEquipReturnValue(ret) {
     $("#V_EQUSITE").val(str[3]);
 }
 
-
-function loadSPR() {
-    $.ajax({//审批人
-        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
-        type: 'post',
-        async: false,
-        data: {
-            V_V_ORGCODE: $("#V_ORGCODE").val(),
-            V_V_DEPTCODE: $("#V_DEPTCODE").val(),
-            V_V_REPAIRCODE: $("#selPlant").val(),
-            V_V_FLOWTYPE: 'WORK',
-            V_V_FLOW_STEP: 'start',
-            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_SPECIALTY: '%',
-            V_V_WHERE: ''
-        },
-        success: function (resp) {
-            $("#selApprover").empty();
-            var result = [];
-            if (resp.list != null) {
-                $.each(resp.list, function (index, item) {
-                    result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
-                });
-                processKey = resp.RET;
-                V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
-                V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
-
-                $("#selApprover").html(result.join(""));
-            }
-            $("#selApprover").val($.cookies.get('v_personcode'));
-
-            //createDD();
-        }
-    });
-}

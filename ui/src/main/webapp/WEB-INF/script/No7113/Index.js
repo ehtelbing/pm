@@ -559,7 +559,7 @@ var panel = Ext.create('Ext.panel.Panel', {
 			displayField : 'EQU_DESC',
 			valueField : 'EQU_ID',
 			labelWidth : 70,
-			width : 200,
+			width : 260,
 			style : ' margin: 5px 0px 5px 10px',
 			labelAlign : 'right'
 		}, {

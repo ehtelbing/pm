@@ -274,7 +274,18 @@ Ext.onReady(function () {
 
     _init()
     // _selectOverhaulApply();
-})
+
+    sqxzt.on('load',function(){
+        Ext.ComponentManager.get("qxzt").store.insert(0,{
+            'V_SOURCECODE':'%',
+            'V_SOURCENAME':'全部'
+        })
+    });
+    Ext.getCmp('qxzt').select(sqxzt.getAt(0));
+
+
+
+});
 
 function _init() {
     if(zyStoreload)
