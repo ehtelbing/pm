@@ -105,7 +105,6 @@ Ext.onReady(function () {
         items: [{
             xtype: 'panel',
             region: 'north',
-            frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
@@ -142,7 +141,6 @@ Ext.onReady(function () {
         }, {
             xtype: 'panel',
             region: 'center',
-            frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
@@ -194,7 +192,6 @@ Ext.onReady(function () {
         }, {
             xtype: 'panel',
             region: 'west',
-            frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
