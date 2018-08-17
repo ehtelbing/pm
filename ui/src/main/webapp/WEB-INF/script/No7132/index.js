@@ -299,16 +299,14 @@ Ext.onReady(function () {
         store: bjTotalStore,
         width: '100%',
         region: 'sourth',
-        width: window.screen.width - 200,
-        height: window.screen.height / 3 - 80,
         border: false,
         columnLines: true,
-        columns: [/*{
+        columns: [{
          xtype: 'rownumberer',
          text: '序号',
          width: 40,
          align: 'center'
-         }, */{
+         }, {
             text: '部门名称',
             dataIndex: 'V_DEPTNAME',
             align: 'center',
@@ -352,12 +350,12 @@ Ext.onReady(function () {
         region: 'sourth',
         border: false,
         columnLines: true,
-        columns: [/*{
+        columns: [{
          xtype: 'rownumberer',
          text: '序号',
          width: 40,
          align: 'center'
-         }, */{
+         }, {
             text: '工单号',
             dataIndex: 'V_ORDERID',
             align: 'center',
@@ -409,7 +407,7 @@ Ext.onReady(function () {
             text: '工单描述',
             dataIndex: 'V_SHORT_TXT',
             align: 'center',
-            width: 120,
+            width: 360,
             renderer: atleft
         }, {
             text: '所属设备',
@@ -448,11 +446,11 @@ Ext.onReady(function () {
             items: [tablePanel]
         }, {
             region: 'north',
-            // layout: '',
+            height:'40%',
             border: false,
             items: [traceTotalGridPanel]
         }, {
-            region: 'north',
+            region: 'center',
             layout: 'fit',
             border: false,
             items: [traceDetailGridPanel]
