@@ -106,7 +106,7 @@ Ext.onReady(function () {
         style: 'margin:5px 0px 5px 5px',
         items: [{
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             width: "100%",
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
@@ -150,7 +150,7 @@ Ext.onReady(function () {
             }]
         }, {
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             layout: 'hbox',
             width: "100%",
             baseCls: 'my-panel-noborder',
@@ -186,7 +186,7 @@ Ext.onReady(function () {
             }]
         }, {
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             layout: 'hbox',
             width: "100%",
             baseCls: 'my-panel-noborder',

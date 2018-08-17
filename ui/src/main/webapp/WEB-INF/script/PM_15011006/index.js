@@ -86,7 +86,7 @@ Ext.onReady(function () {
         width: '100%',
         items: [{
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             width: "100%",
             baseCls: 'my-panel-noborder',
             layout: 'column',
@@ -138,7 +138,7 @@ Ext.onReady(function () {
             }]
         }, {
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             layout: 'hbox',
             width: "100%",
             baseCls: 'my-panel-noborder',

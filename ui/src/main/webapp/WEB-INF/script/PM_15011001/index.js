@@ -196,7 +196,7 @@ Ext.onReady(function () {
         width: '100%',
         items: [{
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             width: "100%",
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
@@ -241,7 +241,7 @@ Ext.onReady(function () {
             }]
         }, {
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             layout: 'hbox',
             width: "100%",
             baseCls: 'my-panel-noborder',
@@ -269,7 +269,7 @@ Ext.onReady(function () {
             }]
         }, {
             xtype: 'panel',
-            frame: true,
+            //frame: true,
             layout: 'hbox',
             width: "100%",
             baseCls: 'my-panel-noborder',
@@ -727,7 +727,7 @@ Ext.onReady(function () {
         closable: false,
         items: [{// 子面板一
             xtype: 'panel',
-            frame: true,// 渲染
+            //frame: true,// 渲染
             width: '100%',
             baseCls: 'my-panel-no-border',
             layout: 'hbox',
@@ -750,7 +750,7 @@ Ext.onReady(function () {
             }]
         }, {// 子面板二
             xtype: 'panel',
-            frame: true,// 渲染
+            //frame: true,// 渲染
             width: '100%',
             baseCls: 'my-panel-no-border',
             layout: 'hbox',
@@ -773,7 +773,7 @@ Ext.onReady(function () {
             }]
         }, {// 子面板三
             xtype: 'panel',
-            frame: true,// 渲染
+            //frame: true,// 渲染
             width: '100%',
             baseCls: 'my-panel-no-border',
             layout: 'hbox',
@@ -798,7 +798,7 @@ Ext.onReady(function () {
             }]
         }, {// 子面板四
             xtype: 'panel',
-            frame: true,// 渲染
+            //frame: true,// 渲染
             width: '100%',
             baseCls: 'my-panel-no-border',
             layout: 'hbox',
@@ -821,7 +821,7 @@ Ext.onReady(function () {
             }]
         }, {// 子面板五
             xtype: 'panel',
-            frame: true,// 渲染
+            //frame: true,// 渲染
             width: '100%',
             baseCls: 'my-panel-no-border',
             layout: 'hbox',
