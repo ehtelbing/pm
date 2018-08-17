@@ -134,14 +134,10 @@ Ext.onReady(function () {
     });
 
     var inputPanel = Ext.create('Ext.panel.Panel', {
-        titleAlign: 'left',
         region: 'north',
         layout: 'vbox',
         frame: true,
         items: [{
-            xtype: 'panel',
-            region: 'north',
-            frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
@@ -176,9 +172,6 @@ Ext.onReady(function () {
                 labelWidth: 80
             }]
         }, {
-            xtype: 'panel',
-            region: 'center',
-            frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
@@ -213,9 +206,6 @@ Ext.onReady(function () {
                     labelWidth: 80
                 }]
         }, {
-            xtype: 'panel',
-            region: 'west',
-            frame: true,
             baseCls: 'my-panel-noborder',
             layout: 'hbox',
             items: [{
@@ -256,9 +246,7 @@ Ext.onReady(function () {
 
     var grid1 = Ext.create('Ext.grid.Panel', {
         id: 'grid1',
-        region: 'center',
         columnLines: true,
-        width: '100%',
         autoScroll: true,
         title: '申请单位费用统计',
         store: gridStore1,
@@ -296,9 +284,7 @@ Ext.onReady(function () {
 
     var grid2 = Ext.create('Ext.grid.Panel', {
         id: 'grid2',
-        region: 'center',
         columnLines: true,
-        width: '100%',
         features: [{
             ftype: 'summary'
         }],
@@ -336,12 +322,10 @@ Ext.onReady(function () {
 
     var grid3 = Ext.create('Ext.grid.Panel', {
         id: 'grid3',
-        region: 'center',
         columnLines: true,
         features: [{
             ftype: 'summary'
         }],
-        width: '100%',
         autoScroll: true,
         title: '按工单统计',
         store: gridStore3,
@@ -498,30 +482,9 @@ Ext.onReady(function () {
         }
     });
 
-    var topPanel = Ext.create('Ext.panel.Panel', {
-        region: 'center',
-        layout: 'border',
-        frame: true,
-        autoScroll: true,
-        items: [inputPanel, tab]
-    });
-
     Ext.create('Ext.container.Viewport', {
-        layout: {
-            type: 'border',
-            regionWeights: {
-                west: -1,
-                north: 1,
-                south: 1,
-                east: -1
-            }
-        },
-        items: [{
-            region: 'center',
-            layout: 'fit',
-            border: false,
-            items: [topPanel]
-        }]
+        layout: 'border',
+        items: [inputPanel, tab]
     });
 
 });
