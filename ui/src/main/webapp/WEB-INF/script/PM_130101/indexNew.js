@@ -531,10 +531,10 @@ Ext.onReady(function () {
                 } else if (Ext.getCmp('v_lubaddress').value == '') {
                     Ext.Msg.alert('操作信息', '请输入油脂场所');
                     return false;
-                } else if (Ext.getCmp('f_lubcount').value == '') {
+                } /*else if (Ext.getCmp('f_lubcount').value == '') {
                     Ext.Msg.alert('操作信息', '请输入润滑点数');
                     return false;
-                } else if (Ext.getCmp('f_oilamount').value == '') {
+                }*/ else if (Ext.getCmp('f_oilamount').value == '') {
                     Ext.Msg.alert('操作信息', '请输入加油量');
                     return false;
                 } else if (Ext.getCmp('i_unit').getValue() == null) {
@@ -560,7 +560,7 @@ Ext.onReady(function () {
                             x_lubaddress: Ext.getCmp('v_lubaddress').value,
                             x_lubmode: Ext.getCmp('x_lubmode').value,
                             x_lubtrademark: Ext.getCmp('v_lubtrademark').value,
-                            x_lubcount: Ext.getCmp('f_lubcount').value,
+                            x_lubcount: Ext.getCmp('f_lubcount').value==''?'0':Ext.getCmp('f_lubcount').value,
                             x_oilamount: Ext.getCmp('f_oilamount').value,
                             x_addorchange: Ext.getCmp('v_addorchange').value,
                             x_operatedate: time,
