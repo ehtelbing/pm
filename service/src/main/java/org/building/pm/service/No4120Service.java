@@ -321,7 +321,6 @@ public class No4120Service {
         return result;
     }
 
-
     public HashMap DELETE_PRELOADWARE(String X_MODELNUMBER) throws SQLException {
 
         logger.info("begin DELETE_PRELOADWARE");
@@ -349,6 +348,34 @@ public class No4120Service {
         logger.info("end DELETE_PRELOADWARE");
         return result;
     }
+
+//    public HashMap DELETE_PRELOADWARE(String X_MODELNUMBER) throws SQLException {
+//
+//        logger.info("begin DELETE_PRELOADWARE");
+////      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+//
+//        HashMap result = new HashMap();
+//        Connection conn = null;
+//        CallableStatement cstmt = null;
+//        try {
+//            conn = dataSources.getConnection();
+//            conn.setAutoCommit(false);
+//            cstmt = conn.prepareCall("{call DELETE_PRELOADWARE" + "(:X_MODELNUMBER,:V_INFO)}");
+//            cstmt.setString("X_MODELNUMBER", X_MODELNUMBER);
+//            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+//            cstmt.execute();
+//
+//            result.put("list",(String)cstmt.getObject("V_INFO"));
+//        } catch (SQLException e) {
+//            logger.error(e);
+//        } finally {
+//            cstmt.close();
+//            conn.close();
+//        }
+//        logger.debug("result:" + result);
+//        logger.info("end DELETE_PRELOADWARE");
+//        return result;
+//    }
 
     public HashMap ADD_PRELOADWARE(String X_MODELNUMBER,String X_MODELNAME,String X_UNIT,String X_TYPE,String X_SETSITE,
                                    String X_MEMO,String X_DRAWING,String X_EQUTYPECODE,String X_DEPTCODE,String X_SPAREPARTS,

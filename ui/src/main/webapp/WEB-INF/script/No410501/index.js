@@ -252,22 +252,23 @@ Ext.onReady(function () {
         document.location.href = "../../page/No410502/Index.html";
     });
 
-
+    var wlwindow=Ext.create('Ext.window.Window', {
+        id:'wlwindow',
+        title: '物料主数据',
+        height: 600,
+        width: 800,
+        layout: 'fit',
+        closeAction:'hide',
+        items: {
+            html: '<iframe frameborder="0" width="100%" height="100%"  src="'
+            + AppUrl
+            + 'page/No410501/window.html?V_ORDERGUID=E3A2FE4E-8CB5-2E35-E040-007F01004429'
+            + '" scrolling="yes"></iframe>'
+        }
+    });
     Ext.getCmp("addGridWin").on("click", function () {
 
-        Ext.create('Ext.window.Window', {
-
-            title: '物料主数据',
-            height: 600,
-            width: 800,
-            layout: 'fit',
-            items: {
-                html: '<iframe frameborder="0" width="100%" height="100%"  src="'
-                + AppUrl
-                + 'page/No410501/window.html?V_ORDERGUID=E3A2FE4E-8CB5-2E35-E040-007F01004429'
-                + '" scrolling="yes"></iframe>'
-            }
-        }).show();
+       Ext.getCmp('wlwindow').show();
 
     });
 
@@ -323,9 +324,11 @@ function returnData(data, data2, data3, data4, data5) {
 
     store.insert(store.count() + 1, data);
 
-
     Ext.ComponentMgr.get("grid").getView().refresh(); //刷新行号
 
 
 }
 
+function closframe(){
+    Ext.getCmp('wlwindow').close();  //update-time:2018-08-17
+}

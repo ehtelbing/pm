@@ -182,18 +182,23 @@ Ext.onReady(function () {
                     X_MODELNUMBER:Ext.getCmp("x_modelnumber").getValue()
                 },
                 success: function (resp) {
-                    Ext.Msg.alert("消息","删除成功");
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.list == "success") {
+                        Ext.Msg.alert("消息","删除成功");
+                        window.location.reload();
+                       // location.href = APP + "/page/No4105/Index.html";
+                    } else {
+                       null;
 
-                    location.href = APP + "/page/No4105/Index.html";
-
-                }
+                    }
+                  }
             });
         }else{
 
             Ext.Msg.alert("消息","请选择备件,再进行删除");
 
         }
-    })
+    });
 
     //点击加号加载
 
@@ -205,7 +210,7 @@ Ext.onReady(function () {
                 },
                 store.proxy.url = AppUrl + 'tree/QUERY_DEPT_EQUTYPE_PRELOADWARE_tree')
         }
-    })
+    });
 
     Ext.getCmp("add").on("click", function () {
 
@@ -220,10 +225,10 @@ Ext.onReady(function () {
 
             Ext.Msg.alert("消息", "请选择设备类型");
         }
-    })
+    });
 
 
-})
+});
 
 function QueryTree(){
     Ext.getCmp('tree').store.setProxy({

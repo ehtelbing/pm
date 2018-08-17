@@ -112,8 +112,9 @@ Ext.onReady(function () {
             record.data.plan_price,
             record.data.ltext
         );
+        window.parent.closframe();
     });
-    Ext.getCmp("selType").select(Ext.getCmp("selType").getStore().getAt(0));
+   // Ext.getCmp("selType").select(Ext.getCmp("selType").getStore().getAt(0));
 });
 
 function QuerySap(){

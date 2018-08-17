@@ -177,19 +177,27 @@ public class No4120Controller {
         return result;
     }
 
+//    @RequestMapping(value = "/DELETE_PRELOADWARE", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> DELETE_PRELOADWARE(@RequestParam(value = "X_MODELNUMBER") String X_MODELNUMBER,
+//                                                   HttpServletRequest request,
+//                                                   HttpServletResponse response) throws Exception {
+//        Map<String, Object> result = new HashMap<String, Object>();
+//
+//        HashMap data = no4120Service.DELETE_PRELOADWARE(X_MODELNUMBER);
+//
+//        List<Map<String, Object>> no4120list = (List) data.get("list");
+//
+//        result.put("list", no4120list);
+//        result.put("success", true);
+//        return result;
+//    }
+
     @RequestMapping(value = "/DELETE_PRELOADWARE", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> DELETE_PRELOADWARE(@RequestParam(value = "X_MODELNUMBER") String X_MODELNUMBER,
-                                                   HttpServletRequest request,
-                                                   HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        HashMap data = no4120Service.DELETE_PRELOADWARE(X_MODELNUMBER);
-
-        List<Map<String, Object>> no4120list = (List) data.get("list");
-
-        result.put("list", no4120list);
-        result.put("success", true);
+    public Map<String, Object> DELETE_PRELOADWARE(@RequestParam(value = "X_MODELNUMBER") String X_MODELNUMBER
+                                                  ) throws Exception {
+        Map<String, Object> result =no4120Service.DELETE_PRELOADWARE(X_MODELNUMBER);
         return result;
     }
 
