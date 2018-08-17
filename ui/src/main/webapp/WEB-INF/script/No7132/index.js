@@ -345,8 +345,6 @@ Ext.onReady(function () {
         title: '备件跟踪使用明细',
         store: bjDetailStore,
         width: '100%',
-        width: window.screen.width - 200,
-        height: window.screen.height / 3 - 40,
         region: 'sourth',
         border: false,
         columnLines: true,
@@ -455,7 +453,6 @@ Ext.onReady(function () {
             border: false,
             items: [traceDetailGridPanel]
         }]
-
     });
 
     _init();
