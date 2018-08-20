@@ -1,4 +1,5 @@
 ﻿//作业区
+var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var depart = '';
 if (location.href.split('?')[1] != undefined) {
 	depart = Ext.urlDecode(location.href.split('?')[1]).depart;
@@ -68,7 +69,7 @@ var gzpalceStore = Ext.create('Ext.data.Store', {
 	proxy : {
 		type : 'ajax',
 		async : false,
-		url: AppUrl + 'No4120/PRO_PM_REPAIRDEPT_TODEPT',
+		url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
 		actionMethods : {
 			read : 'POST'
 		},
@@ -77,8 +78,12 @@ var gzpalceStore = Ext.create('Ext.data.Store', {
 			root : 'list'
 		},
 		extraParams : {
-			V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-			V_PERSONCODE:Ext.util.Cookies.get('v_orgCode')
+            V_V_PERSONCODE: V_V_PERSONCODE,
+            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_DEPTCODENEXT: Ext.util.Cookies.get('v_deptcode'),
+            V_V_DEPTTYPE: '[主体作业区]'
+			// V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+			// V_PERSONCODE:Ext.util.Cookies.get('v_orgCode')
 		}
 	}
 });
@@ -536,19 +541,19 @@ var panel = Ext.create('Ext.panel.Panel', {
 		layout : 'column',
 		frame : true,
 		items : [ {
-			xtype : 'combo',
-			id : "zyq",
-			store : gzpalceStore,
-			editable : false,
-			readOnly : true,
-			queryMode : 'local',
-			fieldLabel : '作业区',
-			displayField : 'V_DEPTNAME',
-			valueField : 'V_DEPTCODE',
-			labelWidth : 70,
-			width : 200,
-			style : ' margin: 5px 0px 5px 10px',
-			labelAlign : 'right'
+            xtype : 'combo',
+            id : "zyq",
+            store : Ext.data.StoreManager.lookup('gzpalceStore'),
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '作业区',
+            displayField : 'V_DEPTNAME',
+            valueField : 'V_DEPTCODE',
+            labelWidth : 70,
+            width : 200,
+            style : 'margin: 5px 0px 5px 10px;',
+            labelAlign : 'right',
+            matchFieldWidth:false
 		}, {
 			xtype : 'combo',
 			id : "selEqu",
@@ -559,10 +564,11 @@ var panel = Ext.create('Ext.panel.Panel', {
 			displayField : 'EQU_DESC',
 			valueField : 'EQU_ID',
 			labelWidth : 70,
-			width : 260,
-			style : ' margin: 5px 0px 5px 10px',
-			labelAlign : 'right'
-		}, {
+			width : 200,
+			style : 'margin: 5px 0px 5px 10px;',
+			labelAlign : 'right',
+            matchFieldWidth:false
+        }, {
 			xtype : 'button',
 			text : '设备查询',
 			width : 80,
@@ -797,35 +803,57 @@ Ext.onReady(function() {
 		layout : 'border',
 		items : [ panel, grid ]
 	});
-	Ext.data.StoreManager.lookup('gzpalceStore').on('load',function() {
-		if (depart == '') {
-			Ext.getCmp('zyq').select(
-				Ext.data.StoreManager.lookup(
-					'gzpalceStore').getAt(0));
-		} else {
-			Ext.getCmp('zyq').select(depart);
-		}
-		// 默认当前登录用户工作区
-		var storeLength = Ext.data.StoreManager
-			.lookup('gzpalceStore').data.length;
-		for ( var index = 0; index < storeLength; index++) {
-			var storeItemData = Ext.data.StoreManager
-				.lookup('gzpalceStore').data.items[index].data;
-			if (storeItemData.V_DEPTCODE == Ext.util.Cookies
-					.get('v_deptcode')) {
-				Ext.getCmp("zyq").setValue(
-					Ext.util.Cookies
-						.get('v_deptcode'));
-				break;
-			}
-		}
-		Ext.data.StoreManager.lookup('sbxzStore').load({
+	// Ext.data.StoreManager.lookup('gzpalceStore').on('load',function() {
+	// 	if (depart == '') {
+	// 		Ext.getCmp('zyq').select(
+	// 			Ext.data.StoreManager.lookup(
+	// 				'gzpalceStore').getAt(0));
+	// 	} else {
+	// 		Ext.getCmp('zyq').select(depart);
+	// 	}
+	// 	// 默认当前登录用户工作区
+	// 	var storeLength = Ext.data.StoreManager
+	// 		.lookup('gzpalceStore').data.length;
+	// 	for ( var index = 0; index < storeLength; index++) {
+	// 		var storeItemData = Ext.data.StoreManager
+	// 			.lookup('gzpalceStore').data.items[index].data;
+	// 		if (storeItemData.V_DEPTCODE == Ext.util.Cookies
+	// 				.get('v_deptcode')) {
+	// 			Ext.getCmp("zyq").setValue(
+	// 				Ext.util.Cookies
+	// 					.get('v_deptcode'));
+	// 			break;
+	// 		}
+	// 	}
+//--------------------------update
+       gzpalceStore.load({
+     //   Ext.data.StoreManager.lookup('gzpalceStore').on('load',function() {
+            params: {
+                V_V_PERSONCODE: V_V_PERSONCODE,
+                V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+                V_V_DEPTCODENEXT: Ext.util.Cookies.get('v_deptcode'),
+                V_V_DEPTTYPE: '[主体作业区]'
+            }
+        });
+    Ext.getCmp('zyq').setValue(gzpalceStore.getAt(0));
+        // });
+    Ext.data.StoreManager.lookup('sbxzStore').load({
+        params : {
+            v_v_plantcode:Ext.util.Cookies.get('v_orgCode'),
+            v_v_deptcode:Ext.getCmp('zyq').getValue()
+        }
+    });
+
+     Ext.ComponentManager.get("zyq").on("change", function () {
+           Ext.ComponentManager.get('selEqu').getStore().removeAll();
+            Ext.data.StoreManager.lookup('sbxzStore').load({
 			params : {
 				v_v_plantcode:Ext.util.Cookies.get('v_orgCode'),
 				v_v_deptcode:Ext.getCmp('zyq').getValue()
 			}
 		});
 	});
+     //----------------------------end update
 	sbxzStore.on('load', function(me) {
 		if(equid==''){
 			Ext.getCmp('selEqu').select(me.first());
@@ -852,6 +880,7 @@ Ext.onReady(function() {
 		Ext.getCmp('supply').select(supplyStore.getAt(0));
 	});
 	Ext.data.StoreManager.lookup('equBarStore').on("load", onEquBarLoad);
+
 
 
 });
