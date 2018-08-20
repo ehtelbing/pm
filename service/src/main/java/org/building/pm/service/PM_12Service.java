@@ -2014,8 +2014,8 @@ public class PM_12Service {
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_PLANTCODE", V_V_PLANTCODE);
             cstmt.setString("V_V_ID", V_V_ID);
-            cstmt.setString("V_V_BTIME", V_V_BTIME);
-            cstmt.setString("V_V_ETIME", V_V_ETIME);
+            cstmt.setDate("V_V_BTIME", Date.valueOf(V_V_BTIME));
+            cstmt.setDate("V_V_ETIME", Date.valueOf(V_V_ETIME));
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
