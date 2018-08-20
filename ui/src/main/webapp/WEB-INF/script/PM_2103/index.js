@@ -1,5 +1,5 @@
 var tabpage='';
-
+var tabturn='';
 Ext.onReady(function () {
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -184,7 +184,12 @@ function QueryTab(){
                         title: resp.list[i].name
                     });
                 }
-                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage==''?'WORK':tabpage);
+                if(tabturn==''){
+                    Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage==''?'WORK':tabpage);
+                }else{
+                    Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage=tabturn);
+                }
+
             }
         }
     });
@@ -276,6 +281,7 @@ function _preViewProcess(ProcessInstanceId) {
 }
 
 function _dealWith(ProcessDefinitionKey,TaskDefinitionKey,BusinessKey,ProcessInstanceId) {
+    tabturn=tabpage
     Ext.Ajax.request({
         url: AppUrl + 'hp/PM_EQU_REPAIR_FLOW_MENU_SEL',
         type: 'ajax',
