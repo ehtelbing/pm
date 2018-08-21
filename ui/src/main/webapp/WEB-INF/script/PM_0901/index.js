@@ -249,12 +249,23 @@ function loadSPR() {
             var result = [];
             if (resp.list != null) {
                 $.each(resp.list, function (index, item) {
-                    result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
+                        result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
                 });
+
                 processKey = resp.RET;
                 V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
                 V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
 
+                // for (j=0;j<result.length;j++){
+                //     if(result[j].value==$.cookies.get('v_personcode')){
+                //         var t=result[j].value;
+                //         result[j]=result[0];
+                //         result[0]=t;
+                //     }
+                // }
+                // for (var k in result){
+                //     if(k=$.cookies.get('v_personcode'))
+                // }
                 $("#selApprover").html(result.join(""));
                 // $("#selApprover").html(result.join(""));
 
@@ -263,7 +274,7 @@ function loadSPR() {
                 // $("#selApprover").val($.cookies.get('v_personcode'));
                 // alert("下一步审批人不能为空，请重新选择");
             }
-
+             $("#selApprover").val($.cookies.get('v_personcode'));
             // if($("#selApprover").val()==null ||$("#selApprover").val()==""){
             //   null;
             // }
