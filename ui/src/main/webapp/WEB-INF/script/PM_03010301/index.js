@@ -397,7 +397,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             valueField: 'V_DEPTCODE',
             store: jhzyqStore,
             queryMode: 'local'
-        }, ,
+        },
         {
             xtype: 'combo',
             id: 'sblx',
@@ -564,14 +564,26 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             width: 150,
             dataIndex: 'V_STARTTIME',
-            renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')
+            renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
+                var str = value.toString().substring(0,10);
+                var date=new Date(str);
+                return Ext.Date.format(date,'Y/m/d h:i:s');
+              //  return new Date(Date.parse(str.replace(/-/g,"/")));
+            }
+            //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
         {
             text: '计划竣工日期',
             align: 'center',
             width: 150,
             dataIndex: 'V_ENDTIME',
-            renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')
+            renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
+                var str = value.toString().substring(0,10);
+                var date=new Date(str);
+                return Ext.Date.format(date,'Y/m/d h:i:s');
+                //  return new Date(Date.parse(str.replace(/-/g,"/")));
+            }
+            //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
         {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
         {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
@@ -584,7 +596,13 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             width: 150,
             dataIndex: 'V_INDATE',
-            renderer: Ext.util.Format.dateRenderer('Y-m-d H:m:s')
+            renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
+                var str = value.toString().substring(0,10);
+                var date=new Date(str);
+                return Ext.Date.format(date,'Y/m/d h:i:s');
+                //  return new Date(Date.parse(str.replace(/-/g,"/")));
+            }
+            //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         }/*,
         {text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME'},*/
     ],
