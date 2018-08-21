@@ -361,24 +361,24 @@ Ext.onReady(function () {
         Ext.ComponentManager.get('sum').setValue(
                 '数量：' + Ext.getStore('gridStore').data.items.length);
     });
-    Ext.getCmp('lx').on("change", function () {
-        if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
-            Ext.getCmp('qxstrue').show();
-            Ext.getCmp('bb').setHideTrigger(true);
-            Ext.getCmp('bb').setReadOnly(true);
-            Ext.getCmp('bb').setValue('%');
-        } else if (Ext.ComponentManager.get("lx").getRawValue() == '工单') {
-            Ext.getCmp('qxstrue').hide();
-            Ext.getCmp('bb').setHideTrigger(true);
-            Ext.getCmp('bb').setReadOnly(true);
-            Ext.getCmp('bb').setValue('%');
-        } else {
-            Ext.getCmp('qxstrue').hide();
-            Ext.getCmp('bb').setHideTrigger(false);
-            Ext.getCmp('bb').setReadOnly(false);
-            Ext.getCmp('bb').setValue('%');
-        }
-    });
+//    Ext.getCmp('lx').on("change", function () {
+//        if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
+//            Ext.getCmp('qxstrue').show();
+//            Ext.getCmp('bb').setHideTrigger(true);
+//            Ext.getCmp('bb').setReadOnly(true);
+//            Ext.getCmp('bb').setValue('%');
+//        } else if (Ext.ComponentManager.get("lx").getRawValue() == '工单') {
+//            Ext.getCmp('qxstrue').hide();
+//            Ext.getCmp('bb').setHideTrigger(true);
+//            Ext.getCmp('bb').setReadOnly(true);
+//            Ext.getCmp('bb').setValue('%');
+//        } else {
+//            Ext.getCmp('qxstrue').hide();
+//            Ext.getCmp('bb').setHideTrigger(false);
+//            Ext.getCmp('bb').setReadOnly(false);
+//            Ext.getCmp('bb').setValue('%');
+//        }
+//    });
 });
 
 function OnButtonExcelClicked() {
