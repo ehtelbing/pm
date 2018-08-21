@@ -78,7 +78,7 @@ var creatpanel = Ext.create('Ext.form.Panel', {
 	style : 'margin:5px 0px 2px 2px',
 	region : 'north',
 	width : '100%',
-	//baseCls : 'my-panel-no-border',
+	frame : true,
 	defaults : {
 		// style : 'margin:5px 0px 5px 10px',
 		labelAlign : 'right'
@@ -90,7 +90,6 @@ var creatpanel = Ext.create('Ext.form.Panel', {
 			{
 				xtype : 'panel',
 				layout : 'column',
-				frame : true,
 				baseCls : 'my-panel-noborder',
 				width : '100%',
 				items : [
@@ -136,7 +135,6 @@ var creatpanel = Ext.create('Ext.form.Panel', {
 			}, {
 				xtype : 'panel',
 				layout : 'column',
-				frame : true,
 				baseCls : 'my-panel-noborder',
 				width : '100%',
 				items : [{
@@ -181,7 +179,6 @@ var creatpanel = Ext.create('Ext.form.Panel', {
 			} , {
 				xtype : 'panel',
 				layout : 'column',
-				frame : true,
 				baseCls : 'my-panel-noborder',
 				width : '100%',
 				items : [ 

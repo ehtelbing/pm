@@ -85,9 +85,8 @@ var creatpanel1 = Ext.create('Ext.panel.Panel', {
 	style : 'margin:5px 0px 2px 2px',
 	region : 'north',
 	width : '100%',
-	//baseCls : 'my-panel-no-border',
+	frame : true,
 	defaults : {
-		// style : 'margin:5px 0px 5px 10px',
 		labelAlign : 'right'
 	},
 	layout : {
@@ -98,7 +97,6 @@ var creatpanel1 = Ext.create('Ext.panel.Panel', {
 		region : 'center',
 		layout : 'column',
 		width : '100%',
-		frame : true,
 		border:false,
 		baseCls : 'my-panel-no-border',
 		items : [ {
@@ -147,13 +145,12 @@ var creatpanel1 = Ext.create('Ext.panel.Panel', {
 			style : {
 				margin : '5px 0px 10px 40px'
 			}
-		}, ]
+		} ]
 	}, {
 		xtype : 'panel',
 		region : 'center',
 		layout : 'column',
 		width : '100%',
-		frame : true,
 		border:false,
 		baseCls : 'my-panel-no-border',
 		items : [ {

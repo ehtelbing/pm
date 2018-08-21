@@ -1,167 +1,168 @@
-﻿//厂矿
-var ckStore = Ext.create('Ext.data.Store', {
-	autoLoad : false,
-	storeId : 'ckStore',
-	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
+﻿Ext.onReady(function() {
+	//厂矿
+	var ckStore = Ext.create('Ext.data.Store', {
+		autoLoad : false,
+		storeId : 'ckStore',
+		fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+		proxy : {
+			type : 'ajax',
+			async : false,
+			url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
+			actionMethods : {
+				read : 'POST'
+			},
+			reader : {
+				type : 'json',
+				root : 'list'
+			}
 		}
-	}
-});
+	});
 //作业区
-var zyqStore = Ext.create('Ext.data.Store', {
-	autoLoad : false,
-	storeId : 'zyqStore',
-	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
+	var zyqStore = Ext.create('Ext.data.Store', {
+		autoLoad : false,
+		storeId : 'zyqStore',
+		fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+		proxy : {
+			type : 'ajax',
+			async : false,
+			url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
+			actionMethods : {
+				read : 'POST'
+			},
+			reader : {
+				type : 'json',
+				root : 'list'
+			}
 		}
-	}
-});
+	});
 //设备选择STORE
-var sbxzStore = Ext.create('Ext.data.Store', {
-	autoLoad : false,
-	storeId : 'sbxzStore',
-	fields : [ 'EQU_DESC', 'EQU_ID' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url : AppUrl + 'PM_12/PRO_RUN7111_EQULIST',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
+	var sbxzStore = Ext.create('Ext.data.Store', {
+		autoLoad : false,
+		storeId : 'sbxzStore',
+		fields : [ 'EQU_DESC', 'EQU_ID' ],
+		proxy : {
+			type : 'ajax',
+			async : false,
+			url : AppUrl + 'PM_12/PRO_RUN7111_EQULIST',
+			actionMethods : {
+				read : 'POST'
+			},
+			reader : {
+				type : 'json',
+				root : 'list'
+			}
 		}
-	}
-});
+	});
 
 // 位置
-var siteStore = Ext.create('Ext.data.Store', {
-	autoLoad : false,
-	storeId : 'siteStore',
-	fields : [ 'SITE_ID', 'SITE_DESC' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url : AppUrl + 'PM_12/PRO_RUN_SITE_ALL',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
+	var siteStore = Ext.create('Ext.data.Store', {
+		autoLoad : false,
+		storeId : 'siteStore',
+		fields : [ 'SITE_ID', 'SITE_DESC' ],
+		proxy : {
+			type : 'ajax',
+			async : false,
+			url : AppUrl + 'PM_12/PRO_RUN_SITE_ALL',
+			actionMethods : {
+				read : 'POST'
+			},
+			reader : {
+				type : 'json',
+				root : 'list'
+			}
 		}
-	}
-});
+	});
 //周期
-var cycletypeStore = Ext.create('Ext.data.Store', {
-	autoLoad : true,
-	storeId : 'cycletypeStore',
-	fields : [ 'CYCLE_ID', 'CYCLE_DESC' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url : AppUrl + 'PM_12/PRO_RUN_CYCLE_ABLE',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
-		},
-		extraParams : {
-			parVal : []
+	var cycletypeStore = Ext.create('Ext.data.Store', {
+		autoLoad : true,
+		storeId : 'cycletypeStore',
+		fields : [ 'CYCLE_ID', 'CYCLE_DESC' ],
+		proxy : {
+			type : 'ajax',
+			async : false,
+			url : AppUrl + 'PM_12/PRO_RUN_CYCLE_ABLE',
+			actionMethods : {
+				read : 'POST'
+			},
+			reader : {
+				type : 'json',
+				root : 'list'
+			},
+			extraParams : {
+				parVal : []
+			}
 		}
-	}
-});
-var chartStore = Ext.create('Ext.data.Store', {
-	autoLoad : false,
-	storeId : 'chartStore',
-	fields : [ 'SUPPLY_NAME', 'AVG_WORK_TIEM' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url : AppUrl + 'PM_12/PRO_RUN7131_SUPPLYBJAVG',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
+	});
+	var chartStore = Ext.create('Ext.data.Store', {
+		autoLoad : false,
+		storeId : 'chartStore',
+		fields : [ 'SUPPLY_NAME', 'AVG_WORK_TIEM' ],
+		proxy : {
+			type : 'ajax',
+			async : false,
+			url : AppUrl + 'PM_12/PRO_RUN7131_SUPPLYBJAVG',
+			actionMethods : {
+				read : 'POST'
+			},
+			reader : {
+				type : 'json',
+				root : 'list'
+			}
 		}
-	}
-});
-var chart = Ext.create('Ext.chart.Chart', {
-	width : 500,
-	height : 300,
-	region : 'center',
-	style: 'background:#FFFFFF; padding:10px;',
-	margin : '10 10 10 10',
-	store : chartStore,
-	axes : [ {
-		title : '平均作业量',
-		type : 'Numeric',
-		position : 'left',
-		fields : ['AVG_WORK_TIEM'],
-		minimum: 0
-	}, {
-		title : '供应商',
-		type : 'Category',
-		position : 'bottom',
-		fields : ['SUPPLY_NAME']
-	} ],
-	series : [ {
-		type: 'column',
-	    axis: 'left',
-	    highlight:true,
-	    tips:{
-	    	trackMouse:true,
-	    	width:140,
-	    	height:28,
-	    	renderer:function(storeItem,item){
-	    		this.setTitle(storeItem.get('SUPPLY_NAME')+':'+storeItem.get('AVG_WORK_TIEM'));
-	    	}
-	    },
-		xField : 'SUPPLY_NAME',
-		yField : 'AVG_WORK_TIEM'
-	} ]
-});
-var creatpanel = Ext.create('Ext.form.Panel', {
-	id : 'creatpanel',
-	style : 'margin:5px 2px 2px 2px',
-	region : 'north',
-	width : '100%',
-	//baseCls : 'my-panel-no-border',
-	defaults : {
-		// style : 'margin:5px 0px 5px 10px',
-		labelAlign : 'right'
-	},
-	layout : {
-		type : 'vbox'
-	},
-	items : [
+	});
+	var chart = Ext.create('Ext.chart.Chart', {
+		width : 500,
+		height : 300,
+		region : 'center',
+		style: 'background:#FFFFFF; padding:10px;',
+		margin : '10 10 10 10',
+		store : chartStore,
+		axes : [ {
+			title : '平均作业量',
+			type : 'Numeric',
+			position : 'left',
+			fields : ['AVG_WORK_TIEM'],
+			minimum: 0
+		}, {
+			title : '供应商',
+			type : 'Category',
+			position : 'bottom',
+			fields : ['SUPPLY_NAME']
+		} ],
+		series : [ {
+			type: 'column',
+			axis: 'left',
+			highlight:true,
+			tips:{
+				trackMouse:true,
+				width:140,
+				height:28,
+				renderer:function(storeItem,item){
+					this.setTitle(storeItem.get('SUPPLY_NAME')+':'+storeItem.get('AVG_WORK_TIEM'));
+				}
+			},
+			xField : 'SUPPLY_NAME',
+			yField : 'AVG_WORK_TIEM'
+		} ]
+	});
+	var creatpanel = Ext.create('Ext.form.Panel', {
+		id : 'creatpanel',
+		style : 'margin:5px 2px 2px 2px',
+		region : 'north',
+		width : '100%',
+		frame : true,
+		//baseCls : 'my-panel-no-border',
+		defaults : {
+			// style : 'margin:5px 0px 5px 10px',
+			labelAlign : 'right'
+		},
+		layout : {
+			type : 'vbox'
+		},
+		items : [
 			{
 				xtype : 'panel',
 				layout : 'column',
-				frame : true,
 				baseCls : 'my-panel-noborder',
 				width : '100%',
 				items : [ {
@@ -205,7 +206,6 @@ var creatpanel = Ext.create('Ext.form.Panel', {
 			{
 				xtype : 'panel',
 				layout : 'column',
-				frame : true,
 				baseCls : 'my-panel-noborder',
 				width : '100%',
 				items : [{
@@ -221,28 +221,28 @@ var creatpanel = Ext.create('Ext.form.Panel', {
 					style : 'margin:5px 0px 5px 5px',
 					labelAlign : 'right'
 				},{
-							xtype : 'combo',
-							labelWidth : 80,
-							id : 'cycletype',
-							store : cycletypeStore,
-							editable : false,
-							queryMode : 'local',
-							fieldLabel : '周期类型',
-							displayField : 'CYCLE_DESC',
-							valueField : 'CYCLE_ID',
-							style : ' margin: 5px 0px 0px 5px',
-							labelAlign : 'right'
-						}, {
-							xtype : 'button',
-							text : '查询',
-							icon : imgpath + '/search.png',
-							width : 80,
-							handler : query,
-							style : ' margin: 5px 0px 0px 30px'
-						}]
+					xtype : 'combo',
+					labelWidth : 80,
+					id : 'cycletype',
+					store : cycletypeStore,
+					editable : false,
+					queryMode : 'local',
+					fieldLabel : '周期类型',
+					displayField : 'CYCLE_DESC',
+					valueField : 'CYCLE_ID',
+					style : ' margin: 5px 0px 0px 5px',
+					labelAlign : 'right'
+				}, {
+					xtype : 'button',
+					text : '查询',
+					icon : imgpath + '/search.png',
+					width : 80,
+					handler : query,
+					style : ' margin: 5px 0px 0px 30px'
+				}]
 			} ]
-});
-Ext.onReady(function() {
+	});
+
 	Ext.create('Ext.container.Viewport', {
 		id : "id",
 		layout : 'border',

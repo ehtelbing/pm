@@ -336,6 +336,7 @@ function RenderFontLeft(value, metaData) {
 function findcode(a, record, item, index, e, eOpts) {
 	imgid = record.raw.LOGID;
 }
+
 function OnButtonExportClicked() {
 	document.location.href=AppUrl + 'excel/BJXXCX_EXCEL?V_V_DEPARTCODE='+encodeURI(Ext.getCmp('zyq').getValue())+
 	'&V_V_PLANTCODE='+encodeURI(Ext.util.Cookies.get('v_orgCode'))+
