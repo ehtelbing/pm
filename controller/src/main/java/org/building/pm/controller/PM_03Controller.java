@@ -56,7 +56,7 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE) throws Exception {
 
-        Map result = pm_03Service.PM_03_PLAN_YEAR_EQU_SET(V_V_PLANGUID,V_V_EQUTYPECODE,V_V_EQUCODE);
+        Map result = pm_03Service.PM_03_PLAN_YEAR_EQU_SET(V_V_PLANGUID, V_V_EQUTYPECODE, V_V_EQUCODE);
         return result;
     }
 
@@ -77,7 +77,53 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_PLANGUID") String V_V_PLANGUID,
             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE) throws Exception {
 
-        Map result = pm_03Service.PM_03_PLAN_YEAR_EQU_DEL(V_V_PLANGUID,V_V_EQUCODE);
+        Map result = pm_03Service.PM_03_PLAN_YEAR_EQU_DEL(V_V_PLANGUID, V_V_EQUCODE);
+        return result;
+    }
+
+    //根据作业区，设备编码查询缺陷
+    @RequestMapping(value = "/PRO_PM_DEFECT_DEPT_SEL_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_DEFECT_DEPT_SEL_ALL(
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE) throws Exception {
+
+        Map result = pm_03Service.PRO_PM_DEFECT_DEPT_SEL_ALL(V_V_DEPTCODE, V_V_EQUCODE, V_V_STATECODE);
+        return result;
+    }
+
+    //根据项目编号查询设备
+    @RequestMapping(value = "/PM_03_PROJECT_DEFECT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PROJECT_DEFECT_SEL(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID) throws Exception {
+
+        Map result = pm_03Service.PM_03_PROJECT_DEFECT_SEL(V_V_PROJECT_GUID);
+        return result;
+    }
+
+    //大修删除缺陷
+    @RequestMapping(value = "/PM_03_PLAN_YEAR_DEFECT_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_DEFECT_DEL(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+            @RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_YEAR_DEFECT_DEL(V_V_PROJECT_GUID,V_V_DEFECT_GUID);
+        return result;
+    }
+
+    //查询选中设备的检修模型
+    @RequestMapping(value = "/PM_1917_JXMX_SELBY_MOREEQU", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXMX_SELBY_MOREEQU(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE) throws Exception {
+
+        Map result = pm_03Service.PM_1917_JXMX_SELBY_MOREEQU(V_V_ORGCODE,V_V_DEPTCODE,V_V_EQUTYPE,V_V_EQUCODE);
         return result;
     }
 

@@ -1122,12 +1122,12 @@ public class ActivitiController {
             /*
             * 挂起流程
             * */
-            runtimeService.suspendProcessInstanceById(instanceId);
+            //runtimeService.suspendProcessInstanceById(instanceId);
 
             /*
             * 删除流程
             * */
-            // runtimeService.deleteProcessInstance(instanceId, null);
+            runtimeService.deleteProcessInstance(instanceId, null);
             result.put("msg", "删除成功");
         } catch (Exception e) {
             result.put("msg", "删除失败");

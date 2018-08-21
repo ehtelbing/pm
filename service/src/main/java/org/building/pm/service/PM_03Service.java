@@ -168,7 +168,103 @@ public class PM_03Service {
         return result;
     }
 
+    public Map PRO_PM_DEFECT_DEPT_SEL_ALL(String V_V_DEPTCODE,String V_V_EQUCODE,String V_V_STATECODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_DEPT_SEL_ALL" + "(:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_STATECODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_DEPT_SEL_ALL");
+        return result;
+    }
 
+    public Map PM_03_PROJECT_DEFECT_SEL(String V_V_PROJECT_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PROJECT_DEFECT_SEL" + "(:V_V_PROJECT_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PROJECT_DEFECT_SEL");
+        return result;
+    }
+
+    public Map PM_1917_JXMX_SELBY_MOREEQU(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EUQTYPE,String V_V_EQUCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXMX_SELBY_MOREEQU" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EUQTYPE,:V_V_EQUCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EUQTYPE", V_V_EUQTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXMX_SELBY_MOREEQU");
+        return result;
+    }
+
+    public Map PM_03_PLAN_YEAR_DEFECT_DEL(String V_V_PROJECT_GUID,String V_V_DEFECT_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_YEAR_DEFECT_DEL" + "(:V_V_PROJECT_GUID,:V_V_DEFECT_GUID,:V_INFO)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.setString("V_V_DEFECT_GUID", V_V_DEFECT_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_YEAR_DEFECT_DEL");
+        return result;
+    }
 
     public Map PRO_PM_03_PLAN_PROJECT_SEL(String V_V_GUID) throws SQLException {
         Map result = new HashMap();

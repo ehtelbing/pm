@@ -3,15 +3,18 @@ if(Ext.urlDecode(location.href.split('?')[1])!=null){
     Guid=Ext.urlDecode(location.href.split('?')[1]).guid==null?"":Ext.urlDecode(location.href.split('?')[1]).guid;
 }
 
-var cgridStore= Ext.create('Ext.data.Store', {
+var gridStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
-    storeId: 'cgridStore',
-    fields: ['V_PLANGUID','V_EQUTYPECODE','V_EQUTYPENAME','V_EQUCODE',
-        'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE'],
+    storeId: 'gridStore',
+    fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE', 'V_SOURCENAME', 'V_SOURCETABLE', 'V_SOURCEREMARK', 'V_SOURCEID',
+        'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME',
+        'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_IDEA', 'V_STATECODE',
+        'V_STATENAME', 'V_STATECOLOR', 'V_GUID', 'V_EQUSITE1', 'D_DATE_EDITTIME', 'V_EDIT_GUID', 'V_SOURCE_GRADE', 'V_EQUCHILDCODE',
+        'V_INPERCODE', 'V_INPERNAME', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_FLAG'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_03/PM_03_PLAN_YEAR_EQU_SEL',
+        url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
         actionMethods: {
             read: 'POST'
         },
@@ -25,8 +28,8 @@ var cgridStore= Ext.create('Ext.data.Store', {
 /*左上tab下面布局*/
 var centerPanel = Ext.create('Ext.grid.Panel', {
     region: "center",
-    id:'cgrid',
-    store:cgridStore,
+    id:'grid',
+    store:gridStore,
     split: true,
     width:'100%',
     margin:'0px',
@@ -35,10 +38,11 @@ var centerPanel = Ext.create('Ext.grid.Panel', {
     border: true,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-        {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITE', align: 'center',renderer:atleft},
-        {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
+        {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft},
+        {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
+        {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atleft},
+        {text: '删除',width: 120,  align: 'center',renderer:DelDefect}
     ]
 });
 
@@ -65,9 +69,9 @@ Ext.onReady(function () {
 //加载添加页面
 function QueryPageLoad(){
 
-    Ext.data.StoreManager.lookup('cgridStore').load({
+    Ext.data.StoreManager.lookup('gridStore').load({
         params:{
-            V_V_PLANGUID:Guid
+            V_V_PROJECT_GUID:Guid
         }
     })
 
@@ -79,29 +83,27 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 
-//删除选中设备
-function DelEqu(value, metaData, record) {
-    return '<a href="#" onclick="_deleteEqu(\'' + record.data.V_EQUCODE + '\')">' + '删除' + '</a>';
+//删除缺陷
+function DelDefect(value, metaData, record){
+    return '<a href="#" onclick="_deleteDefect(\'' + record.data.V_GUID + '\')">' + '删除' + '</a>';
 }
 
-function _deleteEqu(equcode){
-
+function _deleteDefect(DefectGuid){
     Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_EQU_DEL',
+        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_DEFECT_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_PLANGUID:Guid,
-            V_V_EQUCODE:equcode
+            V_V_PROJECT_GUID:Guid,
+            V_V_DEFECT_GUID:DefectGuid
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
-            if(resp.V_INFO=='成功'){
+            if(resp.V_INFO=='SUCCESS'){
                 QueryPageLoad();
             }else{
                 alert("删除失败");
             }
         }
     });
-
 }

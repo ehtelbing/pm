@@ -130,7 +130,7 @@ function loadPageInfo() {
                             result.push('                    <td colspan="2" class="border_r_b">');
                             result.push('                        <b>① 基本信息栏</b>');
                             result.push('                    </td>');
-                            result.push('                    <td width="250" rowspan="6" align="center" class="border_r_b">');
+                            result.push('                    <td width="220" rowspan="6" align="center" class="border_r_b">');
 
                             result.push('      <table  border="0" align="center" cellpadding="0" cellspacing="0">');
                             result.push(' <tr><td></td><td></td></tr><tr>');
@@ -159,10 +159,10 @@ function loadPageInfo() {
                             result.push('                    </td>');
                             result.push('                </tr>');
                             result.push('                <tr>');
-                            result.push('                    <td align="center" class="border_r_b">');
+                            result.push('                    <td width="100" align="center" class="border_r_b">');
                             result.push('                        工厂单位');
                             result.push('                    </td>');
-                            result.push('                    <td width="220" class="border_r_b">');
+                            result.push('                    <td width="140" class="border_r_b">');
                             result.push('                        <span>');
                             result.push(resp.list[0].V_ORGNAME);
                             result.push('                        </span>');
@@ -171,15 +171,15 @@ function loadPageInfo() {
                             result.push('                    <td align="center" class="border_r_b">');
                             result.push('                        创建人');
                             result.push('                    </td>');
-                            result.push('                    <td width="100" align="center" class="border_r_b">');
+                            result.push('                    <td width="60" align="center" class="border_r_b">');
                             result.push('                        <span>');
                             result.push(resp.list[0].V_ENTERED_BY);
                             result.push('</span>');
                             result.push('</td>');
-                            result.push('                    <td width="80" align="center" class="border_r_b">');
+                            result.push('                    <td width="70" align="center" class="border_r_b">');
                             result.push('                        创建日期');
                             result.push('                    </td>');
-                            result.push('                    <td width="140" align="center" class="border_b">');
+                            result.push('                    <td width="100" align="center" class="border_b">');
                             result.push('                        <span>');
                             var s1, st1;
                             if(resp.list[0].D_ENTER_DATE!=''){
@@ -197,7 +197,7 @@ function loadPageInfo() {
                             result.push('                </tr>');
                             result.push('                <tr>');
                             result.push('                    <td align="center" class="border_r_b">');
-                            result.push('                        作 业 区');
+                            result.push('                        作业区');
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b">');
                             result.push('                        <span>');

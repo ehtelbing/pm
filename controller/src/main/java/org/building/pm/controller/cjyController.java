@@ -3353,6 +3353,14 @@ public class cjyController {
         List<Map> result = cjyService.PRO_WEEKPLAN_WORKORDER_GAUNTT(V_V_SDATE, V_V_EDATE, V_V_ORGCODE, V_V_DEPTCODE);
         return result;
     }
+
+    @RequestMapping(value = "PRO_PM_WORKORDER_SELBYDEFECT", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PRO_PM_WORKORDER_SELBYDEFECT(@RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID)
+            throws SQLException {
+        HashMap result = cjyService.PRO_PM_WORKORDER_SELBYDEFECT(V_DEFECT_GUID);
+        return result;
+    }
 }
 
 

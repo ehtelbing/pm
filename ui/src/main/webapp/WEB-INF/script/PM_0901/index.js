@@ -20,7 +20,7 @@ $(function () {
     bindDate("planFinDate");
 
     $("#personCode").html(Ext.util.Cookies.get('v_personname2'));
-  //  NowDate2("createDate");
+    //  NowDate2("createDate");
     NowDate_b("planStartDate");
     NowDate_e("planFinDate");
 
@@ -150,10 +150,10 @@ function createDD() {
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
                 $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME)
-                var data=new Date(resp.list[0].D_ENTER_DATE);
+                var data = new Date(resp.list[0].D_ENTER_DATE);
 
-                $("#createDate").html(Ext.Date.format(data,"Y-m-d"));
-              //  $("#createDate").html(resp.list[0].D_ENTER_DATE);//update 2018-08+25
+                $("#createDate").html(Ext.Date.format(data, "Y-m-d"));
+                //  $("#createDate").html(resp.list[0].D_ENTER_DATE);//update 2018-08+25
                 $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
                 $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
                 $("#V_EQUSITE").val(resp.list[0].V_FUNC_LOC);
@@ -229,6 +229,7 @@ function loadRepairList() {
     });
 
 }
+
 function loadSPR() {
     $.ajax({//审批人
         url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -249,32 +250,37 @@ function loadSPR() {
             var result = [];
             if (resp.list != null) {
                 $.each(resp.list, function (index, item) {
+                    if (item.V_PERSONCODE == $.cookies.get('v_personcode')) {
+                        result.push("<option value=\"" + item.V_PERSONCODE + "\" selected=\"selected\">" + item.V_PERSONNAME + "</option>");
+                    } else {
                         result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
+                    }
+
                 });
 
                 processKey = resp.RET;
                 V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
                 V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
 
-                // for (j=0;j<result.length;j++){
-                //     if(result[j].value==$.cookies.get('v_personcode')){
-                //         var t=result[j].value;
-                //         result[j]=result[0];
-                //         result[0]=t;
-                //     }
-                // }
+                /* for (j=0;j<result.length;j++){
+                    if(result[j].value==$.cookies.get('v_personcode')){
+                        var t=result[j].value;
+                        result[j]=result[0];
+                        result[0]=t;
+                    }
+                }*/
                 // for (var k in result){
                 //     if(k=$.cookies.get('v_personcode'))
                 // }
                 $("#selApprover").html(result.join(""));
                 // $("#selApprover").html(result.join(""));
 
-            }else{
+            } else {
                 $("#selApprover").html("");
                 // $("#selApprover").val($.cookies.get('v_personcode'));
                 // alert("下一步审批人不能为空，请重新选择");
             }
-             $("#selApprover").val($.cookies.get('v_personcode'));
+            // $("#selApprover").val($.cookies.get('v_personcode'));
             // if($("#selApprover").val()==null ||$("#selApprover").val()==""){
             //   null;
             // }
@@ -440,7 +446,7 @@ function BillGo() {
                     },
                     success: function (response) {
 
-                        if(V_NEXT_SETP.indexOf("sp")==-1){//下一步没有审批字样
+                        if (V_NEXT_SETP.indexOf("sp") == -1) {//下一步没有审批字样
                             Ext.Ajax.request({
                                 method: 'POST',
                                 async: false,
@@ -495,7 +501,7 @@ function BillGo() {
                                     }
                                 }
                             });
-                        }else{
+                        } else {
 
                             Ext.Ajax.request({
                                 url: AppUrl + 'Activiti/StratProcess',
