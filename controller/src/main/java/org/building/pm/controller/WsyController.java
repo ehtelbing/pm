@@ -883,8 +883,8 @@ public class WsyController {
     // 首页公告查询
     @RequestMapping(value = "/PM_HOME_NOTICE_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PM_HOME_NOTICE_SEL(@RequestParam(value = "V_DISPLAY") String V_DISPLAY, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.PM_HOME_NOTICE_SEL(V_DISPLAY);
+    public HashMap PM_HOME_NOTICE_SEL(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PM_HOME_NOTICE_SEL();
         return data;
     }
 

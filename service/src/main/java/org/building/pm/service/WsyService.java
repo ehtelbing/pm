@@ -1914,7 +1914,7 @@ public class WsyService {
     }
 
     // 首页公告查询
-    public HashMap PM_HOME_NOTICE_SEL(String V_DISPLAY) throws SQLException {
+    public HashMap PM_HOME_NOTICE_SEL() throws SQLException {
         logger.info("begin PM_HOME_NOTICE_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1922,8 +1922,7 @@ public class WsyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_HOME_NOTICE_SEL" + "(:V_DISPLAY,:V_CURSOR)}");
-            cstmt.setString("V_DISPLAY", V_DISPLAY);
+            cstmt = conn.prepareCall("{call PM_HOME_NOTICE_SEL" + "(:V_CURSOR)}");
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
