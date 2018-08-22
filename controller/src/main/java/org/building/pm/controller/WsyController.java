@@ -889,12 +889,19 @@ public class WsyController {
     }
 
     // 首页公告上传
-    @RequestMapping(value = "/PM_HOME_NOTICE_INS", method = RequestMethod.POST)
+    @RequestMapping(value = "/PM_HOME_NOTICE_INS_UPDATE", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> PM_HOME_NOTICE_INS(@RequestParam(value = "V_ID") String V_ID, @RequestParam(value = "V_FILENAME") String V_FILENAME, @RequestParam(value = "V_FILETYPE") String V_FILETYPE, @RequestParam(value = "V_PERSONNAME") String V_PERSONNAME, @RequestParam(value = "V_TITLE") String V_TITLE, @RequestParam(value = "V_CONTENT") String V_CONTENT, @RequestParam(value = "V_DISPLAY") String V_DISPLAY, @RequestParam(value = "V_FILEBLOB") MultipartFile V_FILEBLOB, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public HashMap<String, Object> PM_HOME_NOTICE_INS(@RequestParam(value = "FLAG") String FLAG, @RequestParam(value = "V_ID") String V_ID, @RequestParam(value = "V_FILENAME") String V_FILENAME, @RequestParam(value = "V_FILETYPE") String V_FILETYPE, @RequestParam(value = "V_PERSONNAME") String V_PERSONNAME, @RequestParam(value = "V_TITLE") String V_TITLE, @RequestParam(value = "V_CONTENT") String V_CONTENT, @RequestParam(value = "V_DISPLAY") String V_DISPLAY, @RequestParam(value = "V_FILEBLOB") MultipartFile V_FILEBLOB, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap<String, Object> result = new HashMap();
-        HashMap data = wsyService.PM_HOME_NOTICE_INS(V_ID, V_FILENAME, V_FILETYPE, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY, V_FILEBLOB.getInputStream());
-        result.put("V_INFO", (String) data.get("V_INFO"));
+        if ("EDIT".equals(FLAG) && V_FILEBLOB.isEmpty()) {
+            HashMap data = wsyService.PM_HOME_NOTICE_INS2(V_ID, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY);
+            result.put("V_INFO", (String) data.get("V_INFO"));
+            System.out.println("edit");
+        } else {
+            HashMap data = wsyService.PM_HOME_NOTICE_INS(V_ID, V_FILENAME, V_FILETYPE, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY, V_FILEBLOB.getInputStream());
+            result.put("V_INFO", (String) data.get("V_INFO"));
+            System.out.println("insert");
+        }
         result.put("success", true);
         return result;
     }
@@ -924,5 +931,26 @@ public class WsyController {
         fos.flush();
         is.close();
         fos.close();
+    }
+
+    // 首页公告删除
+    @RequestMapping(value = "/PM_HOME_NOTICE_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public HashMap PM_HOME_NOTICE_DEL(@RequestParam(value = "idList") String[] idList, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int sum = 0;
+        for (int i = 0; i < idList.length; i++) {
+            HashMap data = wsyService.PM_HOME_NOTICE_DEL(idList[i]);
+            if (!"SUCCESS".equals(data.get("V_INFO"))) {
+                sum = sum + 1;
+                System.out.println(data.get("V_INFO"));
+            }
+        }
+        HashMap result = new HashMap();
+        if (sum == 0) {
+            result.put("V_INFO", "SUCCESS");
+        } else {
+            result.put("V_INFO", "Fail");
+        }
+        return result;
     }
 }

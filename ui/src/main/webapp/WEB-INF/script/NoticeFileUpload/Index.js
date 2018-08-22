@@ -11,92 +11,259 @@
             name: '不显示'
         }]
     });
+    var noticeStore = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'noticeStore',
+        fields: ['ID', 'TITLE', 'CONTENT', 'PERSONNAME', 'UPLOADTIME', 'DISPLAY', 'FILENAME', 'FILETYPE'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'Wsy/PM_HOME_NOTICE_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {}
+        },
+        listeners: {
+            load: function () {
+            }
+        }
+    });
+    var buttonPanel = Ext.create('Ext.Panel', {
+        id: 'buttonPanel',
+        frame: true,
+        region: 'north',
+        border: false,
+        layout: 'column',
+        items: [{
+            xtype: 'button',
+            text: '新增公告',
+            width: 100,
+            style: 'margin:5px 0px 5px 10px',
+            icon: imgpath + '/add.png',
+            handler: _openAddWindow
+        }, {
+            xtype: 'button',
+            text: '删除公告',
+            width: 100,
+            style: 'margin:5px 0px 5px 10px',
+            icon: imgpath + '/delete.png',
+            handler: _deleteNotice
+        }]
+    });
     var imageUploadFormPanel = Ext.create('Ext.form.Panel', {
         id: 'imageUploadFormPanel',
         frame: true,
         border: false,
         baseCls: 'my-panel-no-border',
-        layout: 'column',
-        defaults: {
-            labelAlign: 'right',
-            labelWidth: 100,
-            inputWidth: 140,
-            style: 'margin:5px 0px 5px 10px'
-        },
+//        layout: 'column',
+        region: 'north',
         items: [{
-            xtype: 'combo',
-            id: 'V_DISPLAY',
-            name: 'V_DISPLAY',
-            store: displayStore,
-            fieldLabel: '是否显示',
-            displayField: 'name',
-            valueField: 'code',
-            queryMode: 'local',
-            allowBlank: false,
-            forceSelection: true
+            layout: 'column',
+            border: false,
+            baseCls: 'my-panel-no-border',
+            frame: true,
+            defaults: {
+                labelAlign: 'right',
+                labelWidth: 90,
+                margin: '15px 5px 5px 5px'
+            },
+            items: [{
+                xtype: 'combo',
+                id: 'V_DISPLAY',
+                name: 'V_DISPLAY',
+                store: displayStore,
+                fieldLabel: '是否显示',
+                displayField: 'name',
+                valueField: 'code',
+                queryMode: 'local',
+                allowBlank: false,
+                forceSelection: true,
+                width: 170
+            }, {
+                xtype: 'textfield',
+                id: 'V_TITLE',
+                name: 'V_TITLE',
+                fieldLabel: '公告标题',
+                width: 400,
+                allowBlank: false
+            }]
         }, {
-            xtype: 'textfield',
-            id: 'V_TITLE',
-            name: 'V_TITLE',
-            fieldLabel: '公告标题'
+            layout: 'column',
+            border: false,
+            baseCls: 'my-panel-no-border',
+            frame: true,
+            defaults: {
+                labelAlign: 'right',
+                labelWidth: 90,
+                width: 300,
+                margin: '5px 5px 5px 5px'
+            },
+            items: [{
+                xtype: 'textarea',
+                id: 'V_CONTENT',
+                name: 'V_CONTENT',
+                fieldLabel: '公告内容',
+                width: 580,
+                allowBlank: false
+            }, {
+                xtype: 'hidden',
+                id: 'FLAG',
+                name: 'FLAG'
+            }, {
+                xtype: 'hidden',
+                id: 'V_ID',
+                name: 'V_ID'
+            }, {
+                xtype: 'hidden',
+                id: 'V_PERSONNAME',
+                name: 'V_PERSONNAME'
+            }, {
+                xtype: 'hidden',
+                id: 'V_FILENAME',
+                name: 'V_FILENAME'
+            }, {
+                xtype: 'hidden',
+                id: 'V_FILETYPE',
+                name: 'V_FILETYPE'
+            }]
         }, {
-            xtype: 'textarea',
-            id: 'V_CONTENT',
-            name: 'V_CONTENT',
-            fieldLabel: '公告内容'
-        }, {
-            xtype: 'filefield', //附件框
-            id: 'V_FILEBLOB',
-            name: 'V_FILEBLOB',
-            regex: /\.([jJ][pP][gG]){1}$|\.([jJ][pP][eE][gG]){1}$|\.([gG][iI][fF]){1}$|\.([pP][nN][gG]){1}$|\.([bB][mM][pP]){1}$/,
-            fieldLabel: '上传图片',
-            allowBlank: false,
-            buttonText: '浏览',
-            listeners: {
-                renderer: function () {
-                    var FILEBLOB = Ext.getCmp('V_FILEBLOB');
-                    FILEBLOB.on('change', function (field, newValue, oldValue) {//图片预览
-                        var url = 'file:///' + FILEBLOB.getValue();//得到选择的图片路径
-                        var img_reg = /\.([jJ][pP][gG]){1}$|\.([jJ][pP][eE][gG]){1}$|\.([gG][iI][fF]){1}$|\.([pP][nN][gG]){1}$|\.([bB][mM][pP]){1}$/;
-                        if (!img_reg.test(url)) {
-                            Ext.Msg.alert('提示', '请选择图片类型的文件');
-                            Ext.getCmp('V_FILEBLOB').setValue('');
-                            return;
-                        }
-                    }, this);
-                }
+            layout: 'column',
+            border: false,
+            baseCls: 'my-panel-no-border',
+            frame: true,
+            defaults: {
+                labelAlign: 'right',
+                labelWidth: 90,
+                width: 300,
+                margin: '5px 5px 5px 5px'
+            },
+            items: [{
+                xtype: 'filefield', //附件框
+                id: 'V_FILEBLOB',
+                name: 'V_FILEBLOB',
+                fieldLabel: '上传附件',
+                width: 510,
+//                allowBlank: false,
+                buttonText: '浏览'
+            }, {
+                xtype: 'button',
+                id: 'DELETEFILEBUTTON',
+                text: '删除附件',
+                width: 60,
+                margin: '5px 5px 5px 0px',
+                handler: _deleteFile
+            }]
+        }]
+    });
+    var imageUploadWindow = Ext.create('Ext.window.Window', {
+        id: 'imageUploadWindow',
+        width: 650,
+        height: 250,
+        layout: 'fit',
+        title: '新增公告',
+        modal: true,
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        items: [imageUploadFormPanel],
+        buttons: [{
+            xtype: 'button',
+            text: '保存',
+            width: 40,
+            handler: function () {
+                _uploadImage();
             }
         }, {
             xtype: 'button',
-            text: '上传',
-            icon: imgpath + '/edit.png',
-            handler: _uploadImage
+            text: '关闭',
+            width: 40,
+            handler: function () {
+                imageUploadWindow.close();
+            }
+        }]
+    });
+    var noticePanel = Ext.create('Ext.grid.Panel', {
+        id: 'noticePanel',
+        style: 'text-align: center;',
+        region: 'center',
+        title: '已上传公告',
+        layout: 'fit',
+        border: false,
+//        height: 250,
+        store: noticeStore,
+        columnLines: true,
+        defaults: {
+            labelAlign: 'right',
+            labelWidth: 80,
+            width: 60,
+            style: 'text-align: left;'
+        },
+        selModel: {
+            selType: 'checkboxmodel'
+//            mode: 'SIMPLE'
+        },
+        columns: [{
+            text: '公告标题',
+            dataIndex: 'TITLE',
+            flex: 1
         }, {
-            xtype: 'hidden',
-            id: 'V_ID',
-            name: 'V_ID'
+            text: '公告内容',
+            dataIndex: 'CONTENT',
+            flex: 2
         }, {
-            xtype: 'hidden',
-            id: 'V_PERSONNAME',
-            name: 'V_PERSONNAME'
+            text: '上传人',
+            dataIndex: 'PERSONNAME',
+            flex: 1
         }, {
-            xtype: 'hidden',
-            id: 'V_FILENAME',
-            name: 'V_FILENAME'
+            text: '上传时间',
+            dataIndex: 'UPLOADTIME',
+            flex: 1
         }, {
-            xtype: 'hidden',
-            id: 'V_FILETYPE',
-            name: 'V_FILETYPE'
-        } /*, {
-                xtype: 'hidden',
-                id: 'V_UPLOADTIME',
-                name: 'V_UPLOADTIME'
-            }*/]
+            text: '是否显示',
+            dataIndex: 'DISPLAY',
+            renderer: state,
+            flex: 0.3
+        }, {
+            text: '附件名',
+            dataIndex: 'FILENAME',
+            flex: 1
+        }, {
+            text: '下载附件',
+            align: 'center',
+            flex: 0.3,
+            renderer: function (value, metaData, record) {
+                if (record.data.FILENAME != '' && record.data.FILENAME != null) {
+                    return '<a href=javascript:dealWith(\'</a><a href="#" onclick="_downloadFile(\'' + record.data.ID + '\')">' + '下载附件' + '</a>';
+                }
+            }
+        }, {
+            text: '编辑内容',
+            align: 'center',
+            flex: 0.3,
+            renderer: function (value, metaData, record) {
+                return '<a href=javascript:dealWith(\'</a><a href="#" onclick="_openEditWindow(\'' + record.data.ID + '\')">' + '编辑内容' + '</a>';
+            }
+        }],
+        bbar: [{
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: noticeStore,
+            width: '100%'
+        }]
     });
     Ext.getCmp('V_DISPLAY').select(displayStore.getAt(0));
+    noticeStore.load();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [imageUploadFormPanel]
+        items: [buttonPanel, noticePanel]
     });
 });
 var Hours = [];
@@ -142,23 +309,109 @@ var MinuteStore = Ext.create("Ext.data.Store", {
     }
 });
 
-function _uploadImage() {
-    var FILEBLOB = Ext.getCmp('V_FILEBLOB').getSubmitValue();
-    if ('' == FILEBLOB) {
+function _downloadFile(ID) {
+    document.location.href = AppUrl + 'Wsy/PM_HOME_NOTICE_DOWNLOAD?V_ID=' + encodeURI(ID);
+}
+
+function _openAddWindow() {
+    Ext.getCmp('imageUploadFormPanel').getForm().reset();
+    Ext.getCmp('V_DISPLAY').select(Ext.getStore('displayStore').getAt(0));
+    Ext.getCmp('V_ID').setValue(Ext.data.IdGenerator.get('uuid').generate());
+    Ext.getCmp('FLAG').setValue('INSERT');
+    Ext.getCmp("DELETEFILEBUTTON").setVisible(false);
+    Ext.getCmp('imageUploadWindow').show();
+}
+
+function _openEditWindow(ID) {
+    var record = Ext.getStore('noticeStore').getAt(Ext.getStore('noticeStore').find('ID', ID));
+    Ext.getCmp('imageUploadFormPanel').getForm().reset();
+    Ext.getCmp('FLAG').setValue('EDIT');
+    Ext.getCmp("DELETEFILEBUTTON").setVisible(true);
+    Ext.getCmp('V_ID').setValue(ID);
+    Ext.getCmp('V_TITLE').setValue(record.get('TITLE'));
+    Ext.getCmp('V_CONTENT').setValue(record.get('CONTENT'));
+    Ext.getCmp('V_DISPLAY').setValue(record.get('DISPLAY'));
+    Ext.getCmp('V_FILEBLOB').setRawValue(record.get('FILENAME'));
+    Ext.getCmp('imageUploadWindow').show();
+//    Ext.getCmp('formPanel').getForm().findField('V_FILEBLOB').applyEmptyText(record.CONTENT_NAME_);
+//    Ext.getCmp('V_FILEBLOB').applyEmptyText(record.get('FILENAME'));
+//    alert(record.get('FILENAME'));
+}
+
+function _deleteFile() {
+    Ext.getCmp('FLAG').setValue('UPDATE');
+    Ext.getCmp('V_FILEBLOB').reset();
+}
+
+function _deleteNotice() {
+    var record = Ext.getCmp('noticePanel').getSelectionModel().getSelection();
+//    alert(noticePanel);
+//    record[i].data.V_DEPTCODE
+    if (record.length < 1) {
         Ext.MessageBox.show({
             title: '提示',
-            msg: '附件未选择!',
+            msg: '请选择一条数据!',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
         return;
     }
-    Ext.getCmp('V_ID').setValue(Ext.data.IdGenerator.get('uuid').generate());
+    var idList = [];
+    for (var i = 0; i < record.length; i++) {
+        idList.push(record[i].data.ID);
+    }
+    Ext.Ajax.request({
+        url: AppUrl + 'Wsy/PM_HOME_NOTICE_DEL',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            idList: idList
+        },
+        success: function (response) {
+            var data = Ext.decode(response.responseText);
+            if (data.V_INFO == 'SUCCESS') {
+                Ext.Msg.alert('操作信息', '操作成功');
+                Ext.getStore('noticeStore').load();
+                window.opener.reLoad();
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+}
+
+function state(a) {
+    if (a == '1') {
+        return '是';
+    }
+    else {
+        return '否';
+    }
+}
+
+function _uploadImage() {
+    var FILEBLOB = Ext.getCmp('V_FILEBLOB').getSubmitValue();
+//    if ('' == FILEBLOB) {
+//        Ext.MessageBox.show({
+//            title: '提示',
+//            msg: '附件未选择!',
+//            buttons: Ext.MessageBox.OK,
+//            icon: Ext.MessageBox.WARNING
+//        });
+//        return;
+//    }
     Ext.getCmp('V_FILENAME').setValue(FILEBLOB.substring(FILEBLOB.lastIndexOf('\\') + 1, FILEBLOB.length));
     Ext.getCmp('V_FILETYPE').setValue(FILEBLOB.substring(FILEBLOB.lastIndexOf('.') + 1, FILEBLOB.length));
     Ext.getCmp('V_PERSONNAME').setValue(Ext.util.Cookies.get('v_personname2'));
     Ext.getCmp('imageUploadFormPanel').submit({
-        url: AppUrl + 'Wsy/PM_HOME_NOTICE_INS',
+        url: AppUrl + 'Wsy/PM_HOME_NOTICE_INS_UPDATE',
         async: false,
         waitMsg: '上传中...',
         method: 'POST',
@@ -166,7 +419,10 @@ function _uploadImage() {
             if ('SUCCESS' == action.result.V_INFO) {
                 Ext.Msg.alert('操作信息', '操作成功');
 //                self.opener.location.reload();
-                window.opener.reLoad();
+//                window.opener.reLoad();
+                Ext.getStore('noticeStore').load();
+                Ext.getCmp('imageUploadWindow').close();
+//                alert('123123');
 //                window.opener.location.href = window.opener.location.href;
             } else {
                 Ext.MessageBox.show({
@@ -181,7 +437,7 @@ function _uploadImage() {
         failure: function (form, action) {
             Ext.MessageBox.show({
                 title: '操作信息',
-                msg: '失败！',
+                msg: '错误！',
                 buttons: Ext.MessageBox.OK,
                 icon: Ext.MessageBox.ERROR
             });

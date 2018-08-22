@@ -1969,6 +1969,35 @@ public class WsyService {
         return result;
     }
 
+    // 首页公告上传2
+    public HashMap PM_HOME_NOTICE_INS2(String V_ID, String V_PERSONNAME, String V_TITLE, String V_CONTENT, String V_DISPLAY) throws SQLException {
+        logger.info("begin PM_HOME_NOTICE_INS2");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_HOME_NOTICE_INS2" + "(:V_ID,:V_PERSONNAME,:V_TITLE,:V_CONTENT,:V_DISPLAY,:V_INFO)}");
+            cstmt.setString("V_ID", V_ID);
+            cstmt.setString("V_PERSONNAME", V_PERSONNAME);
+            cstmt.setString("V_TITLE", V_TITLE);
+            cstmt.setString("V_CONTENT", V_CONTENT);
+            cstmt.setString("V_DISPLAY", V_DISPLAY);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_HOME_NOTICE_INS2");
+        return result;
+    }
+
     // 首页公告附件下载
     public HashMap PM_HOME_NOTICE_DOWNLOAD(String V_ID) throws SQLException {
         logger.info("begin PM_HOME_NOTICE_DOWNLOAD");
@@ -1993,6 +2022,31 @@ public class WsyService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_HOME_NOTICE_DOWNLOAD");
+        return result;
+    }
+
+    // 首页公告删除
+    public HashMap PM_HOME_NOTICE_DEL(String V_ID) throws SQLException {
+        logger.info("begin PM_HOME_NOTICE_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_HOME_NOTICE_DEL" + "(:V_ID,:V_INFO)}");
+            cstmt.setString("V_ID", V_ID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_HOME_NOTICE_DEL");
         return result;
     }
 }

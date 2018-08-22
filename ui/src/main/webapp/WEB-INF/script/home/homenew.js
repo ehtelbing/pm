@@ -1,7 +1,7 @@
 var noticeStore = Ext.create("Ext.data.Store", {
     autoLoad: true,
     storeId: 'noticeStore',
-    fields: ['ID', 'TITLE', 'CONTENT', 'PERSONNAME', 'UPLOADTIME', 'DISPLAY'],
+    fields: ['ID', 'TITLE', 'CONTENT', 'PERSONNAME', 'UPLOADTIME', 'DISPLAY', 'FILENAME', 'FILETYPE'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -13,9 +13,7 @@ var noticeStore = Ext.create("Ext.data.Store", {
             type: 'json',
             root: 'list'
         },
-        extraParams: {
-            V_DISPLAY: '1'
-        }
+        extraParams: {}
     },
     listeners: {
         load: function () {
@@ -25,6 +23,9 @@ var noticeStore = Ext.create("Ext.data.Store", {
 });
 $(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
+    if (Ext.util.Cookies.get('v_personcode') != 'admin') {
+        document.getElementById("uploadNoticeLink").style.display = "none";
+    }
     _AgencySelect();
     _QXNumSelect();
     QuerySumDb();
@@ -468,9 +469,14 @@ function noticeUp(obj, top, time) {
 
 function notice() {
     var s1 = '<ul>\n';
+    noticeStore.filter('DISPLAY', '1');
     for (var i = 0; i < noticeStore.getCount(); i++) {
         var record = noticeStore.getAt(i);
-        s1 = s1 + '<li><a href="#" onclick="downloadFile(\'' + record.get('ID') + '\')"><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></a></li>\n';
+        if (record.get('FILENAME') != null && record.get('FILENAME') != '') {
+            s1 = s1 + '<li><a href="#" onclick="downloadFile(\'' + record.get('ID') + '\')"><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></a></li>\n';
+        } else {
+            s1 = s1 + '<li><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></li>\n';
+        }
     }
     s1 = s1 + '</ul>';
     $("#notice").append(s1);
@@ -487,5 +493,6 @@ function downloadFile(ID) {
 }
 
 function _uploadImageWindow() {
-    window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height=250px,width=700px,top=100px,left=100px,resizable=yes');
+//    window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height=' + (screen.height - 100) + ',width=' + (screen.width - 100));
+    window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height = 768, width = 1366');
 }
