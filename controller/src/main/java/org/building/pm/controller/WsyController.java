@@ -20,6 +20,7 @@ import java.net.URLDecoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +48,23 @@ public class WsyController {
 
     @RequestMapping(value = "/PRO_BASE_PERSON_DE_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> PRO_BASE_PERSON_DE_SEL(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public HashMap<String, Object> PRO_BASE_PERSON_DE_SEL(@RequestParam(value = "start") Integer start,
+                                                          @RequestParam(value = "limit") Integer limit, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.PRO_BASE_PERSON_DE_SEL();
-        return data;
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
     }
 
     @RequestMapping(value = "/PRO_PM_19_TOOL_BYCODE_SEL", method = RequestMethod.POST)
@@ -285,9 +300,23 @@ public class WsyController {
 
     @RequestMapping(value = "/BASE_EXAMINE_CAR_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> BASE_EXAMINE_CAR_SEL(@RequestParam(value = "V_V_CARCODE") String V_V_CARCODE, @RequestParam(value = "V_V_CARNAME") String V_V_CARNAME, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public HashMap<String, Object> BASE_EXAMINE_CAR_SEL(@RequestParam(value = "V_V_CARCODE") String V_V_CARCODE, @RequestParam(value = "V_V_CARNAME") String V_V_CARNAME, @RequestParam(value = "start") Integer start,
+                                                        @RequestParam(value = "limit") Integer limit, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.BASE_EXAMINE_CAR_SEL(V_V_CARCODE, V_V_CARNAME);
-        return data;
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
     }
 
     @RequestMapping(value = "/BASE_JXMX_JJ_INS", method = RequestMethod.POST)
@@ -313,9 +342,24 @@ public class WsyController {
 
     @RequestMapping(value = "/BASE_WORK_TOOL_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> BASE_WORK_TOOL_SEL() throws Exception {
+    public HashMap<String, Object> BASE_WORK_TOOL_SEL(@RequestParam(value = "start") Integer start,
+                                                      @RequestParam(value = "limit") Integer limit, HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
         HashMap data = wsyService.BASE_WORK_TOOL_SEL();
-        return data;
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
     }
 
     @RequestMapping(value = "/BASE_GX_JJ_DEL", method = RequestMethod.POST)
@@ -334,9 +378,24 @@ public class WsyController {
 
     @RequestMapping(value = "/BASE_WL_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> BASE_WL_SEL() throws Exception {
+    public HashMap<String, Object> BASE_WL_SEL(@RequestParam(value = "start") Integer start,
+                                               @RequestParam(value = "limit") Integer limit, HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
         HashMap data = wsyService.BASE_WL_SEL();
-        return data;
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
     }
 
     @RequestMapping(value = "/BASE_GX_GZ_UPD", method = RequestMethod.POST)
@@ -369,9 +428,24 @@ public class WsyController {
 
     @RequestMapping(value = "/BASE_AQCS_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> BASE_AQCS_SEL(@RequestParam(value = "V_V_AQCS_NAME") String V_V_AQCS_NAME) throws Exception {
+    public HashMap<String, Object> BASE_AQCS_SEL(@RequestParam(value = "V_V_AQCS_NAME") String V_V_AQCS_NAME, @RequestParam(value = "start") Integer start,
+                                                 @RequestParam(value = "limit") Integer limit, HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
         HashMap data = wsyService.BASE_AQCS_SEL(V_V_AQCS_NAME);
-        return data;
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> list = (List) data.get("list");
+        int total = list.size();
+        if (limit != null) {
+            int endPage = (start + limit) >= total ? total : (start + limit);
+            pageList = list.subList(start, endPage);
+        } else {
+            pageList = list;
+        }
+        result.put("total", total);
+        result.put("list", pageList);
+        result.put("success", true);
+        return result;
     }
 
     @RequestMapping(value = "/BASE_JXMX_AQCS_INS", method = RequestMethod.POST)

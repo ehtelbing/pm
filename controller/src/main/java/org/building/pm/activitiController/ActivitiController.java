@@ -595,8 +595,8 @@ public class ActivitiController {
                             Map equmap=(Map) equIp_name.get(0);
                             taskmap.put("EQUNAME",equmap.get("V_EQUNAME").toString());
                             taskmap.put("PLANSTART",equmap.get("V_STARTTIME").toString());
-                            taskmap.put("PLANEND",equmap.get("V_ENDTIME").toString());}
-
+                            taskmap.put("PLANEND",equmap.get("V_ENDTIME").toString());
+                            taskmap.put("PLANHOUR",equmap.get("V_HOUR").toString());}
                     }
                 User user = identityService.createUserQuery()
                         .userId(taskmap.get("originator").toString()).singleResult();
@@ -1122,12 +1122,12 @@ public class ActivitiController {
             /*
             * 挂起流程
             * */
-            //runtimeService.suspendProcessInstanceById(instanceId);
+            runtimeService.suspendProcessInstanceById(instanceId);
 
             /*
             * 删除流程
             * */
-            runtimeService.deleteProcessInstance(instanceId, null);
+//            runtimeService.deleteProcessInstance(instanceId, null);
             result.put("msg", "删除成功");
         } catch (Exception e) {
             result.put("msg", "删除失败");
