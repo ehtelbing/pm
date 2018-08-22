@@ -9,7 +9,7 @@ var V_V_DEPTCODE = '';
 var V_V_SPECIALTY = '';
 var taskId = '';
 var V_STEPCODE = '';
-var V_PERSONNAME ='';
+var V_PERSONNAME = '';
 var ckStoreLoad = false;
 var zyqStoreLoad = false;
 var sblxStoreLoad = false;
@@ -25,7 +25,7 @@ if (location.href.split('?')[1] != undefined) {
 var orgLoad = false;
 var equTypeLoad = false;
 var today = new Date();
-var month = today.getMonth()+1;
+var month = today.getMonth() + 1;
 var YEAR = today.getFullYear();
 var months = [];
 var hours = [];
@@ -40,7 +40,7 @@ for (var i = 1; i <= 12; i++) {
 }
 
 for (var j = 0; j <= 23; j++) {
-    if (j< 10) {
+    if (j < 10) {
         j = '0' + j;
     } else {
         j = '' + j;
@@ -48,7 +48,7 @@ for (var j = 0; j <= 23; j++) {
     hours.push({displayField: j, valueField: j});
 }
 for (var k = 0; k <= 59; k++) {
-    if (k< 10) {
+    if (k < 10) {
         k = '0' + k;
     } else {
         k = '' + k;
@@ -172,7 +172,7 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 Ext.getCmp('ck').select(store.first());
-                ckStoreLoad  = true;
+                ckStoreLoad = true;
                 _init();
             }
         }
@@ -275,14 +275,13 @@ Ext.onReady(function () {
             reader: {
                 type: 'json',
                 root: 'list'
-            },
-            extraParams: {}
+            }
         },
         listeners: {
 
             load: function (store, records, success, eOpts) {
                 var list = [];
-                if(store.getAt(0) != null){
+                if (store.getAt(0) != null) {
                     processKey = store.getProxy().getReader().rawData.RET;
                     V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                     V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
@@ -337,7 +336,7 @@ Ext.onReady(function () {
                     store: monthStore,
                     allowBlank: false,
                     labelWidth: 90,
-                    value:month
+                    value: month
                 }]
             }, {
                 layout: 'column',
@@ -438,20 +437,20 @@ Ext.onReady(function () {
                         margin: '5 0 5 5',
                         labelWidth: 90
                     }]
-            },  {
+            }, {
                 layout: 'column',
                 defaults: {
                     labelAlign: 'right',
                     width: 250
                 },
-                items: [ {
+                items: [{
                     xtype: 'numberfield',
                     id: 'expectage',
                     fieldLabel: '预计寿命',
                     margin: '5 0 5 5',
                     labelWidth: 90,
                     value: 0
-                },{
+                }, {
                     xtype: 'numberfield',
                     id: 'repairper',
                     fieldLabel: '维修人数',
@@ -459,7 +458,7 @@ Ext.onReady(function () {
                     labelWidth: 90,
                     value: 0
                 }]
-            },{
+            }, {
                 layout: 'column',
                 defaults: {
                     xtype: 'textfield',
@@ -467,14 +466,14 @@ Ext.onReady(function () {
                     width: 250,
                     readOnly: true
                 },
-                items: [ {
+                items: [{
                     id: 'fqr',
                     xtype: 'textfield',
                     allowBlank: false,
                     fieldLabel: '发起人',
-                    readOnly : true,
+                    readOnly: true,
                     labelWidth: 90
-                },{
+                }, {
                     id: 'fqsj',
                     allowBlank: false,
                     fieldLabel: '发起时间',
@@ -513,11 +512,11 @@ Ext.onReady(function () {
 
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                            if(gongshicha2 >= 0)
-                            {
+                            if (gongshicha2 >= 0) {
                                 _gongshiheji();
-                            }else{
+                            } else {
                                 Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+
                                 function callBack(id) {
                                     Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                     Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -526,7 +525,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
-                                    return ;
+                                    return;
 
                                 }
 
@@ -557,11 +556,11 @@ Ext.onReady(function () {
 
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                            if(gongshicha2 >= 0)
-                            {
+                            if (gongshicha2 >= 0) {
                                 _gongshiheji();
-                            }else{
+                            } else {
                                 Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+
                                 function callBack(id) {
                                     Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                     Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -570,7 +569,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
-                                    return ;
+                                    return;
 
                                 }
 
@@ -601,11 +600,11 @@ Ext.onReady(function () {
 
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                            if(gongshicha2 >= 0)
-                            {
+                            if (gongshicha2 >= 0) {
                                 _gongshiheji();
-                            }else{
+                            } else {
                                 Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+
                                 function callBack(id) {
                                     Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                     Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -614,7 +613,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
-                                    return ;
+                                    return;
 
                                 }
 
@@ -645,11 +644,11 @@ Ext.onReady(function () {
 
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                            if(gongshicha2 >= 0)
-                            {
+                            if (gongshicha2 >= 0) {
                                 _gongshiheji();
-                            }else{
+                            } else {
                                 Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+
                                 function callBack(id) {
                                     Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                     Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -658,7 +657,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
-                                    return ;
+                                    return;
 
                                 }
 
@@ -688,11 +687,11 @@ Ext.onReady(function () {
 
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                            if(gongshicha2 >= 0)
-                            {
+                            if (gongshicha2 >= 0) {
                                 _gongshiheji();
-                            }else{
+                            } else {
                                 Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+
                                 function callBack(id) {
                                     Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                     Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -701,7 +700,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
-                                    return ;
+                                    return;
 
                                 }
 
@@ -731,11 +730,11 @@ Ext.onReady(function () {
 
                             var gongshicha = date22.getTime() - date11.getTime();
                             var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                            if(gongshicha2 >= 0)
-                            {
+                            if (gongshicha2 >= 0) {
                                 _gongshiheji();
-                            }else{
+                            } else {
                                 Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
+
                                 function callBack(id) {
                                     Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
                                     Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -744,7 +743,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
                                     Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
                                     Ext.getCmp('jhgshj').setValue(0);
-                                    return ;
+                                    return;
 
                                 }
 
@@ -882,25 +881,23 @@ function _selectTaskId() {
 }
 
 function _selectNextPer() {
-    var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore')
-    .proxy.extraParams = {
+    Ext.data.StoreManager.lookup('nextSprStore').proxy.extraParams = {
         V_V_ORGCODE: V_V_ORGCODE,
         V_V_DEPTCODE: V_V_DEPTCODE,
         V_V_REPAIRCODE: '',
         V_V_FLOWTYPE: 'MonthPlan',
-        V_V_FLOW_STEP:V_STEPCODE,
+        V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: V_V_SPECIALTY,
         V_V_WHERE: '通过'
 
     };
-    nextSprStore.currentPage = 1;
-    nextSprStore.load();
+    Ext.data.StoreManager.lookup('nextSprStore').load();
 }
 
 function _init() {
 
-    if(ckStoreLoad && zyqStoreLoad && sblxStoreLoad && zyStoreLoad && sbmcStoreLoad && initLoad){
+    if (ckStoreLoad && zyqStoreLoad && sblxStoreLoad && zyStoreLoad && sbmcStoreLoad && initLoad) {
         initLoad = false;
         Ext.Ajax.request({
             url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_GET',
@@ -939,7 +936,7 @@ function _init() {
                     Ext.getCmp('maindefect').setValue(data.list[0].V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('expectage').setValue(data.list[0].V_EXPECT_AGE);  //预计寿命
                     Ext.getCmp('repairper').setValue(data.list[0].V_REPAIR_PER);  //维修人数
-                   // _selectNextPer();
+                    // _selectNextPer();
                     _selectTaskId();
                     Ext.getBody().unmask();
                 }
@@ -1054,8 +1051,8 @@ function _agree() {
                     params: {
                         taskId: taskId,
                         idea: '通过',
-                        parName: [V_NEXT_SETP, "flow_yj","remark"],
-                        parVal: [Ext.getCmp('nextPer').getValue(), spyj,Ext.getCmp('jxnr').getValue()],
+                        parName: [V_NEXT_SETP, "flow_yj", "remark"],
+                        parVal: [Ext.getCmp('nextPer').getValue(), spyj, Ext.getCmp('jxnr').getValue()],
                         processKey: processKey,
                         businessKey: V_ORDERGUID,
                         V_STEPCODE: V_STEPCODE,
@@ -1123,15 +1120,15 @@ function _reject() {
         params: {
             taskId: taskId,
             idea: '不通过',
-            parName: [ "flow_yj"],
-            parVal: [ '驳回' ],
-            processKey :processKey,
-            businessKey : V_ORDERGUID,
-            V_STEPCODE : 'end',
-            V_STEPNAME : '驳回',
-            V_IDEA : '驳回',
-            V_NEXTPER : '',
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            parName: ["flow_yj"],
+            parVal: ['驳回'],
+            processKey: processKey,
+            businessKey: V_ORDERGUID,
+            V_STEPCODE: 'end',
+            V_STEPNAME: '驳回',
+            V_IDEA: '驳回',
+            V_NEXTPER: '',
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             window.opener.QueryTabY();
@@ -1153,7 +1150,6 @@ function _reject() {
 
     })
 }
-
 
 
 function _close() {
