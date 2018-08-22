@@ -7,7 +7,7 @@ Ext.onReady(function () {
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME',
-            'EQUNAME','PLANSTART','PLANEND'
+            'EQUNAME','PLANSTART','PLANEND','PLANHOUR'
         ],
         proxy: {
             type: 'ajax',
@@ -118,7 +118,12 @@ Ext.onReady(function () {
             dataIndex: 'PLANEND',
             align: 'center',
             width: 200
-        }
+        },
+            {text: '计划工期（h)',
+        dataIndex: 'PLANHOUR',
+        align: 'center',
+        width: 100
+            }
         ],
         bbar: [{
             id: 'page',

@@ -565,11 +565,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width: 150,
             dataIndex: 'V_STARTTIME',
             renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
-                var str = value.toString().substring(0,10);
-                var date=new Date(str);
-                return Ext.Date.format(date,'Y/m/d h:i:s');
-              //  return new Date(Date.parse(str.replace(/-/g,"/")));
-            }
+                metaData.style="text-align:center;";
+            return value; }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
         {
@@ -578,11 +575,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width: 150,
             dataIndex: 'V_ENDTIME',
             renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
-                var str = value.toString().substring(0,10);
-                var date=new Date(str);
-                return Ext.Date.format(date,'Y/m/d h:i:s');
-                //  return new Date(Date.parse(str.replace(/-/g,"/")));
-            }
+                metaData.style="text-align:center;";
+                return value; }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
         {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
@@ -597,11 +591,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width: 150,
             dataIndex: 'V_INDATE',
             renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
-                var str = value.toString().substring(0,10);
-                var date=new Date(str);
-                return Ext.Date.format(date,'Y/m/d h:i:s');
-                //  return new Date(Date.parse(str.replace(/-/g,"/")));
-            }
+                metaData.style="text-align:center;";
+                return value; }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         }/*,
         {text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME'},*/
