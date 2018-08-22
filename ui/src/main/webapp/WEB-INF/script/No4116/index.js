@@ -376,12 +376,12 @@ Ext.onReady(function() {
     });
 
     Ext.data.StoreManager.lookup('sdjy').on('load', function() {
-        /*Ext.ComponentManager.get('djy').store.insert(0, {
-            'V_PERSONCODE' : '%',
-            'V_PERSONNAME' : '全部'
-        });*/
-        Ext.getCmp('djy').select(Ext.data.StoreManager.lookup('sdjy').getAt(0));
-
+        // Ext.ComponentManager.get("sdjy").store.insert(0,{
+        //     'V_PERSONCODE':'%',
+        //     'V_PERSONNAME':'全部'
+        // });
+        var lan=Ext.getStore('sdjy').data.length-1;
+        Ext.getCmp('djy').select(Ext.data.StoreManager.lookup('sdjy').getAt(lan));
         Ext.data.StoreManager.lookup('sgdzt').load({});
     });
 
