@@ -373,7 +373,7 @@ function _deleteNotice() {
             if (data.V_INFO == 'SUCCESS') {
                 Ext.Msg.alert('操作信息', '操作成功');
                 Ext.getStore('noticeStore').load();
-                window.opener.reLoad();
+                window.opener.location.reload();
             }
         },
         failure: function (response) {
@@ -422,6 +422,7 @@ function _uploadImage() {
 //                window.opener.reLoad();
                 Ext.getStore('noticeStore').load();
                 Ext.getCmp('imageUploadWindow').close();
+                window.opener.location.reload();
 //                alert('123123');
 //                window.opener.location.href = window.opener.location.href;
             } else {
