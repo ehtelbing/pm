@@ -287,7 +287,7 @@ function _CreateSidebar(accordions) {
             id: 'favorite',
             xtype: 'panel',
             title: '收藏',
-            titleAlign: 'left',
+            titleAlign: 'center',
             region: 'north',
             layout: 'fit',
             height: 260,
@@ -388,9 +388,6 @@ function OnPageLoaded() {
             Ext.getBody().unmask();
             _getHomeMenu();
             //GETDDDL();
-
-
-
         }
     });
     if (menucode != "" && menucode != null) {
