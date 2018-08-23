@@ -527,6 +527,7 @@ function loadSPR(v_where) {
     Ext.data.StoreManager.lookup('PerSel').on('load', function () {
         // var num = 0;
         var samenum="";
+        var fqnum="";
         if (Ext.data.StoreManager.lookup('PerSel').data.length > 0) {
             // for (var i = 0; i < Ext.data.StoreManager.lookup('PerSel').data.length; i++) {
             //     if (Ext.data.StoreManager.lookup('PerSel').data.items[i].data.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
@@ -534,20 +535,23 @@ function loadSPR(v_where) {
             //     }
             // }
             for(var j=0;j<Ext.data.StoreManager.lookup('PerSel').data.length;j++){
-                if(Ext.data.StoreManager.lookup('PerSel').getAt(0).data.V_PERSONCODE==Ext.util.Cookies.get('v_personcode')){
+
+                if(Ext.data.StoreManager.lookup('PerSel').getAt(j).data.V_PERSONCODE==V_PERSONNAME){
+                    fqnum=j; break;
+                }else  if(Ext.data.StoreManager.lookup('PerSel').getAt(j).data.V_PERSONCODE==Ext.util.Cookies.get('v_personcode')){
                     samenum=j;
                 }
             }
-            // if (num > 0) {
+            // if (num > 0) {  V_PERSONNAME
             //     Ext.getCmp('selApprover').select(Ext.util.Cookies.get('v_personcode'));
             // } else {
             //     Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(0));
             // }
-            if(samenum!=""){
-                Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(samenum));
-            }else {
-                Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(0));
-            }
+            if(fqnum!=""){Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(fqnum)); }
+            else if(samenum!=""){ Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(samenum)); }
+                else{  Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(0)); }
+
+
             processKey = Ext.data.StoreManager.lookup('PerSel').proxy.reader.rawData.RET;
             V_STEPNAME = Ext.data.StoreManager.lookup('PerSel').proxy.reader.rawData.list[0].V_V_FLOW_STEPNAME;
             V_NEXT_SETP =Ext.data.StoreManager.lookup('PerSel').proxy.reader.rawData.list[0].V_V_NEXT_SETP;
