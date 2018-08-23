@@ -42,7 +42,7 @@ var windows = Ext.create('Ext.window.Window', {
         xtype: 'panel',
         frame: true,
         width: 300,
-        height: 200,
+        height: 120,
         layout: 'hbox',
         items: [{
             xtype: 'combobox',
@@ -53,7 +53,8 @@ var windows = Ext.create('Ext.window.Window', {
             labelWidth: 80,
             store: PerSel,
             valueField: 'V_PERSONCODE',
-            displayField: 'V_PERSONNAME'
+            displayField: 'V_PERSONNAME',
+            style:'margin:10px 5px 10px 5px'
         }],
         buttonAlign: 'center',
         buttons: [
@@ -524,18 +525,32 @@ function loadSPR(v_where) {
     });
 
     Ext.data.StoreManager.lookup('PerSel').on('load', function () {
-        var num = 0;
+        // var num = 0;
+        var samenum="";
         if (Ext.data.StoreManager.lookup('PerSel').data.length > 0) {
-            for (var i = 0; i < Ext.data.StoreManager.lookup('PerSel').data.length; i++) {
-                if (Ext.data.StoreManager.lookup('PerSel').data.items[i].data.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
-                    num++;
+            // for (var i = 0; i < Ext.data.StoreManager.lookup('PerSel').data.length; i++) {
+            //     if (Ext.data.StoreManager.lookup('PerSel').data.items[i].data.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+            //         num++;
+            //     }
+            // }
+            for(var j=0;j<Ext.data.StoreManager.lookup('PerSel').data.length;j++){
+                if(Ext.data.StoreManager.lookup('PerSel').getAt(0).data.V_PERSONCODE==Ext.util.Cookies.get('v_personcode')){
+                    samenum=j;
                 }
             }
-            if (num > 0) {
-                Ext.getCmp('selApprover').select(Ext.util.Cookies.get('v_personcode'));
-            } else {
+            // if (num > 0) {
+            //     Ext.getCmp('selApprover').select(Ext.util.Cookies.get('v_personcode'));
+            // } else {
+            //     Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(0));
+            // }
+            if(samenum!=""){
+                Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(samenum));
+            }else {
                 Ext.getCmp('selApprover').select(Ext.data.StoreManager.lookup('PerSel').getAt(0));
             }
+            processKey = Ext.data.StoreManager.lookup('PerSel').proxy.reader.rawData.RET;
+            V_STEPNAME = Ext.data.StoreManager.lookup('PerSel').proxy.reader.rawData.list[0].V_V_FLOW_STEPNAME;
+            V_NEXT_SETP =Ext.data.StoreManager.lookup('PerSel').proxy.reader.rawData.list[0].V_V_NEXT_SETP;
         }
 
     });
