@@ -473,9 +473,9 @@ function notice() {
     for (var i = 0; i < noticeStore.getCount(); i++) {
         var record = noticeStore.getAt(i);
         if (record.get('FILENAME') != null && record.get('FILENAME') != '') {
-            s1 = s1 + '<li><a href="#" onclick="downloadFile(\'' + record.get('ID') + '\')"><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></a></li>\n';
+            s1 = s1 + '<li><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/><a href="#" onclick="downloadFile(\'' + record.get('ID') + '\')">[附件]</a>' + record.get('TITLE') + '<span style="cursor:text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></li>\n';
         } else {
-            s1 = s1 + '<li><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></li>\n';
+            s1 = s1 + '<li><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span style="cursor:text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></li>\n';
         }
     }
     s1 = s1 + '</ul>';
