@@ -127,6 +127,41 @@ public class PM_03Controller {
         return result;
     }
 
+    //大修添加检修模型
+    @RequestMapping(value = "/PM_03_PLAN_YEAR_MODEL_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_MODEL_SET(
+            @RequestParam(value = "V_V_PORJECTGUID") String V_V_PORJECTGUID,
+            @RequestParam(value = "V_V_MODELGUID") String V_V_MODELGUID,
+            @RequestParam(value = "V_V_MODELNAME") String V_V_MODELNAME,
+            @RequestParam(value = "V_V_BBH") String V_V_BBH,
+            @RequestParam(value = "V_V_BZ") String V_V_BZ) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_YEAR_MODEL_SET(V_V_PORJECTGUID,V_V_MODELGUID,V_V_MODELNAME,V_V_BBH,V_V_BZ);
+        return result;
+    }
+
+    //大修删除检修模型
+    @RequestMapping(value = "/PM_03_PLAN_YEAR_MODEL_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_MODEL_DEL(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+            @RequestParam(value = "V_V_MODEL_GUID") String V_V_MODEL_GUID) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_YEAR_MODEL_DEL(V_V_PROJECT_GUID,V_V_MODEL_GUID);
+        return result;
+    }
+
+    //查询大修已选择的检修模型
+
+    @RequestMapping(value = "/PM_03_PLAN_YEAR_MODEL_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_MODEL_SEL(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_YEAR_MODEL_SEL(V_V_PROJECT_GUID);
+        return result;
+    }
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_SELECT", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_YEAR_SELECT(

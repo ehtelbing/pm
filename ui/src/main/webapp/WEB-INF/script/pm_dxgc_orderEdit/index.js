@@ -226,9 +226,9 @@ function loadPageInfo() {
                 $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
                 $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
-                var data=new Date(resp.list[0].D_ENTER_DATE);
+                //var data=new Date(resp.list[0].D_ENTER_DATE);
 
-                $("#createDate").html(Ext.Date.format(data,"yyyy-MM-dd"));
+                $("#createDate").html(resp.list[0].D_ENTER_DATE.split(' ')[0]);
                 // $("#createDate").html(resp.list[0].D_ENTER_DATE);
                 $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
                 $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);

@@ -242,6 +242,80 @@ public class PM_03Service {
         return result;
     }
 
+    public Map PM_03_PLAN_YEAR_MODEL_SEL(String V_V_PROJECT_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_YEAR_MODEL_SEL" + "(:V_V_PROJECT_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_YEAR_MODEL_SEL");
+        return result;
+    }
+
+    public Map PM_03_PLAN_YEAR_MODEL_SET(String V_V_PORJECTGUID,String V_V_MODELGUID,String V_V_MODELNAME,String V_V_BBH,String V_V_BZ) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_YEAR_MODEL_SET" + "(:V_V_PORJECTGUID,:V_V_MODELGUID,:V_V_MODELNAME,:V_V_BBH,:V_V_BZ,:V_INFO)}");
+            cstmt.setString("V_V_PORJECTGUID", V_V_PORJECTGUID);
+            cstmt.setString("V_V_MODELGUID", V_V_MODELGUID);
+            cstmt.setString("V_V_MODELNAME", V_V_MODELNAME);
+            cstmt.setString("V_V_BBH", V_V_BBH);
+            cstmt.setString("V_V_BZ", V_V_BZ);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_YEAR_MODEL_SET");
+        return result;
+    }
+
+    public Map PM_03_PLAN_YEAR_MODEL_DEL(String V_V_PROJECT_GUID,String V_V_MODEL_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_YEAR_MODEL_DEL" + "(:V_V_PROJECT_GUID,:V_V_MODEL_GUID,:V_INFO)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.setString("V_V_MODEL_GUID", V_V_MODEL_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_YEAR_MODEL_DEL");
+        return result;
+    }
+
     public Map PM_03_PLAN_YEAR_DEFECT_DEL(String V_V_PROJECT_GUID,String V_V_DEFECT_GUID) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
