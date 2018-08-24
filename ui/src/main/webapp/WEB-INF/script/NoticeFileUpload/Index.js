@@ -410,7 +410,7 @@ function _uploadImage() {
     Ext.getCmp('V_FILENAME').setValue(FILEBLOB.substring(FILEBLOB.lastIndexOf('\\') + 1, FILEBLOB.length));
     Ext.getCmp('V_FILETYPE').setValue(FILEBLOB.substring(FILEBLOB.lastIndexOf('.') + 1, FILEBLOB.length));
     Ext.getCmp('V_PERSONNAME').setValue(Ext.util.Cookies.get('v_personname2'));
-    Ext.getCmp('imageUploadFormPanel').submit({
+    Ext.getCmp('imageUploadFormPanel').getForm().submit({
         url: AppUrl + 'Wsy/PM_HOME_NOTICE_INS_UPDATE',
         async: false,
         waitMsg: '上传中...',

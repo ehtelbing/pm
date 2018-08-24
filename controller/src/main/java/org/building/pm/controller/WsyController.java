@@ -5,6 +5,10 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.building.pm.service.WsyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +20,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLDecoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -965,19 +968,24 @@ public class WsyController {
     // 首页公告上传
     @RequestMapping(value = "/PM_HOME_NOTICE_INS_UPDATE", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> PM_HOME_NOTICE_INS(@RequestParam(value = "FLAG") String FLAG, @RequestParam(value = "V_ID") String V_ID, @RequestParam(value = "V_FILENAME") String V_FILENAME, @RequestParam(value = "V_FILETYPE") String V_FILETYPE, @RequestParam(value = "V_PERSONNAME") String V_PERSONNAME, @RequestParam(value = "V_TITLE") String V_TITLE, @RequestParam(value = "V_CONTENT") String V_CONTENT, @RequestParam(value = "V_DISPLAY") String V_DISPLAY, @RequestParam(value = "V_FILEBLOB") MultipartFile V_FILEBLOB, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap<String, Object> result = new HashMap();
+    public ResponseEntity<String> PM_HOME_NOTICE_INS(@RequestParam(value = "FLAG") String FLAG, @RequestParam(value = "V_ID") String V_ID, @RequestParam(value = "V_FILENAME") String V_FILENAME, @RequestParam(value = "V_FILETYPE") String V_FILETYPE, @RequestParam(value = "V_PERSONNAME") String V_PERSONNAME, @RequestParam(value = "V_TITLE") String V_TITLE, @RequestParam(value = "V_CONTENT") String V_CONTENT, @RequestParam(value = "V_DISPLAY") String V_DISPLAY, @RequestParam(value = "V_FILEBLOB") MultipartFile V_FILEBLOB, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_HTML);
+        HashMap data;
+//        HashMap<String, Object> result = new HashMap();
         if ("EDIT".equals(FLAG) && V_FILEBLOB.isEmpty()) {
-            HashMap data = wsyService.PM_HOME_NOTICE_INS2(V_ID, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY);
-            result.put("V_INFO", (String) data.get("V_INFO"));
+            data = wsyService.PM_HOME_NOTICE_INS2(V_ID, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY);
+//            result.put("V_INFO", (String) data.get("V_INFO"));
             System.out.println("edit");
         } else {
-            HashMap data = wsyService.PM_HOME_NOTICE_INS(V_ID, V_FILENAME, V_FILETYPE, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY, V_FILEBLOB.getInputStream());
-            result.put("V_INFO", (String) data.get("V_INFO"));
+            data = wsyService.PM_HOME_NOTICE_INS(V_ID, V_FILENAME, V_FILETYPE, V_PERSONNAME, V_TITLE, V_CONTENT, V_DISPLAY, V_FILEBLOB.getInputStream());
+//            result.put("V_INFO", (String) data.get("V_INFO"));
             System.out.println("insert");
         }
-        result.put("success", true);
-        return result;
+//        result.put("success", true);
+        String json = "{\"success\":true,\"V_INFO\":\"" + (String) data.get("V_INFO") + "\"}";
+        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+//        return result;
     }
 
     // 首页公告附件下载
