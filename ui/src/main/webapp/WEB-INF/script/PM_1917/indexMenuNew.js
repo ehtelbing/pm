@@ -870,7 +870,7 @@ Ext.onReady(function () {
             fieldLabel: '厂矿',
             emptyText: '全部',
             editable: false,
-            labelWidth: 40,
+            labelWidth: 70,
             listeners: {
                 change: function (combo, records) {
                     _selectDept();
@@ -887,7 +887,7 @@ Ext.onReady(function () {
             fieldLabel: '作业区',
             emptyText: '全部',
             editable: false,
-            labelWidth: 40,
+            labelWidth: 70,
             listeners: {
                 change: function (combo, records) {
                     _queryTree();
@@ -932,7 +932,7 @@ Ext.onReady(function () {
         }, {
             xtype: 'button',
             text: '查看详细',
-            icon: imgpath + '/delete1.png',
+            icon: imgpath + '/search.png',
             width: 100,
             handler: _procedualDetail
         }]
@@ -948,7 +948,6 @@ Ext.onReady(function () {
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
                 _queryjxmx();
-                //_queryzsbjx(record.get('sid'), record.raw.V_EQUTYPECODE);
             }
         }
     });
@@ -962,6 +961,10 @@ Ext.onReady(function () {
         border: false,
         forceFit: true,
         region: 'north',
+        selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SIMPLE'//多选
+        },
         height: '50%',
         columns: [{
             xtype: 'rownumberer',
@@ -986,7 +989,6 @@ Ext.onReady(function () {
         }],
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
-                //_preViewImage(record.get('V_MX_CODE'));
                 _querygx(record.get('V_MX_CODE'));
                 pageFunction.QueryGanttData();
             }
@@ -1010,6 +1012,10 @@ Ext.onReady(function () {
         border: false,
         title: '检修工序',
         frame: true,
+        selModel: {
+            selType: 'checkboxmodel',
+            mode: 'SIMPLE'//多选
+        },
         region: 'center',
         columns: [{
             xtype: 'rownumberer',
@@ -1487,7 +1493,7 @@ Ext.onReady(function () {
             fieldLabel: '检修工序名称',
             width: 340
         }, {
-            xtype: 'textfield',
+            xtype: 'textareafield',
             id: 'jxgxcontent',
             colspan: 2,
             fieldLabel: '检修工序内容',
@@ -1521,7 +1527,7 @@ Ext.onReady(function () {
     var procedureButtonWin = Ext.create('Ext.window.Window', {
         id: 'procedureButtonWin',
         width: 450,
-        height: 250,
+        height: 350,
         title: '工序',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,
@@ -1585,7 +1591,7 @@ function _queryjxmx() {
     var records = Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection();
     var jxmxStore = Ext.data.StoreManager.lookup('jxmxStore');
     jxmxStore.removeAll();
-    if (records.length != 0) {
+    if (records.length != 0 && records[0].raw.V_EQUTYPECODE != null) {
         jxmxStore.load({
             params: {
                 V_V_ORGCODE: Ext.getCmp('plant').getValue(),
@@ -1598,8 +1604,20 @@ function _queryjxmx() {
                 V_V_PAGESIZE: Ext.getCmp('jxmxPanel_toolbar').store.pageSize
             }
         });
+    }else if(records.length != 0 && records[0].raw.V_EQUTYPECODE == null){
+        jxmxStore.load({
+            params: {
+                V_V_ORGCODE: Ext.getCmp('plant').getValue(),
+                V_V_DEPTCODE: Ext.getCmp('dept').getValue(),
+                V_V_EQUTYPE: records[0].get('sid'),
+                V_V_EQUCODE: '%',
+                V_V_EQUCHILD_CODE: '%',
+                V_V_JXMX_NAME: '%',
+                V_V_PAGE: Ext.getCmp('jxmxPanel_toolbar').store.currentPage,
+                V_V_PAGESIZE: Ext.getCmp('jxmxPanel_toolbar').store.pageSize
+            }
+        });
     }
-    //_preViewImage(null);
     _querygx(null);
 }
 
@@ -1659,13 +1677,6 @@ function _querygx(V_MX_CODE) {
             }
         });
     }
-    /*_querygz();
-     _queryjj(null);
-     _querygj(null);
-     _queryaqcs();
-     _queryjxjsbz();
-     _querylsgd(null);
-     _querywl();*/
 }
 
 
@@ -1693,37 +1704,50 @@ function _deleteJXMX() {
         });
         return;
     }
-    Ext.Ajax.request({
-        url: AppUrl + 'Wsy/BASE_JXMX_DATA_DEL',
-        type: 'ajax',
-        method: 'POST',
-        async: false,
-        params: {
-            'V_V_JXMX_CODE': records[0].get('V_MX_CODE')
-        },
-        success: function (response) {
-            var data = Ext.decode(response.responseText);
-            if (data.V_INFO != null && data.V_INFO == 'SUCCESS') {
-                Ext.Msg.alert('提示信息', '删除成功');
-            } else {
-                Ext.MessageBox.show({
-                    title: '错误',
-                    msg: '删除失败',
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                });
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '删除',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'Wsy/BASE_JXMX_DATA_DEL',
+                        type: 'ajax',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            'V_V_JXMX_CODE': records[i].get('V_MX_CODE')
+                        },
+                        success: function (response) {
+                            var data = Ext.decode(response.responseText);
+                            if (data.V_INFO != null && data.V_INFO == 'SUCCESS') {
+                                Ext.Msg.alert('提示信息', '删除成功');
+                            } else {
+                                Ext.MessageBox.show({
+                                    title: '错误',
+                                    msg: '删除失败',
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR
+                                });
+                            }
+                        },
+                        failure: function (response) {
+                            Ext.MessageBox.show({
+                                title: '错误',
+                                msg: response.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+                        }
+                    });
+                }
+                _queryjxmx();
             }
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
         }
     });
-    _queryjxmx();
+
 }
 
 function _addProcedureWindow() {//新增工序
@@ -1772,21 +1796,33 @@ function _deleteProcedure() {//删除工序
         alert('请至少选择一条数据进行删除！');
         return false;
     }//对所选进行排查，至少选择一个
-    for (var i = 0; i < jxgxPanel.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_DEL',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_JXGX_CODE: jxgxPanel[i].data.V_JXGX_CODE
-            },
-            success: function (ret) {
-                var resp = Ext.JSON.decode(ret.responseText);
+    Ext.MessageBox.show({
+        title: '请确认',
+        msg: '删除',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                for (var i = 0; i < jxgxPanel.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_DEL',
+                        method: 'POST',
+                        async: true,
+                        params: {
+                            V_V_JXGX_CODE: jxgxPanel[i].data.V_JXGX_CODE
+                        },
+                        success: function (ret) {
+                            var resp = Ext.JSON.decode(ret.responseText);
+
+                        }
+                    });
+                }
+                _querygx(jxmxPanel[0].data.V_MX_CODE);
+                pageFunction.QueryGanttData();
             }
-        });
-    }
-    _querygx(jxmxPanel[0].data.V_MX_CODE);
-    pageFunction.QueryGanttData();
+        }
+    });
+
 }
 
 function _open() {
@@ -1992,10 +2028,30 @@ function _downloadAttach(V_GUID) {// 导出
 
 function _procedualDetail() {
     var jxmxPanel = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
+    if (jxmxPanel.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一个模型!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
     var records = Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一个设备类型!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
     var owidth = window.document.body.offsetWidth;
     var oheight = window.document.body.offsetHeight;
-    window.open(AppUrl + 'page/PM_1917/indexDetailNew.html?V_JXMX_CODE=' + jxmxPanel[0].data.V_MX_CODE + '&V_V_ORGCODE=' + Ext.getCmp('plant').getValue() + '&V_V_DEPTCODE=' + Ext.getCmp('dept').getValue() + '&V_V_EQUCODE=' + records[0].data.sid + '&V_V_EQUTYPECODE=' + Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection()[0].raw.V_EQUTYPECODE, '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    if (jxmxPanel[0].data.V_MX_CODE != null && records[0].data.sid != null) {
+        window.open(AppUrl + 'page/PM_1917/indexDetailNew.html?V_JXMX_CODE=' + jxmxPanel[0].data.V_MX_CODE + '&V_V_ORGCODE=' + Ext.getCmp('plant').getValue() + '&V_V_DEPTCODE=' + Ext.getCmp('dept').getValue() + '&V_V_EQUCODE=' + records[0].data.sid + '&V_V_EQUTYPECODE=' + Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection()[0].raw.V_EQUTYPECODE, '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    }
 }
 
 function guid() {
@@ -2015,7 +2071,8 @@ var pageFunction = {
         var endtime = '';
         var dateItems = [];
         var vzm = '';
-        vzm = 'color:#CCCCCC';
+        cmItems = [];
+        vzm = 'color:#000000';
 
         for (var i = 0; i < ganttdata.length; i++) {
             if (ganttdata[0].V_PERTIME != null) {
@@ -2036,11 +2093,12 @@ var pageFunction = {
                 }
             }
         }
+        //console.log(endtime);
         cmItems.push({
             text: '小时',
             columns: dateItems
         });
-        for (var j = 0; j <= 100; j++) {
+        for (var j = 1; j <= parseInt(endtime); j++) {
             dateItems.push({
                 text: j,
                 style: vzm,

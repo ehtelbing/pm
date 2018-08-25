@@ -566,7 +566,7 @@ Ext.onReady(function () {
     // 子设备检修技术标准store
     var zsbjxStore = Ext.create('Ext.data.Store', {
         storeId: 'zsbjxStore',
-        autoLoad: false,
+        autoLoad: true,
         loading: false,
         //pageSize: -1,
         fields: ['V_GUID', 'V_PART_NUMBER', 'V_PART_NAME', 'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE_UP', 'V_VALUE_DOWN', 'V_REPLACE_CYC', 'V_WEIGHT', 'V_IMGCODE', 'V_CONTENT'],
@@ -577,7 +577,13 @@ Ext.onReady(function () {
             actionMethods: {
                 read: 'POST'
             },
-            extraParams: {},
+            extraParams: {
+                V_V_ORGCODE: V_V_ORGCODE,
+                V_V_DEPTCODE: V_V_DEPTCODE,
+                V_V_EQUCODE: V_V_EQUCODE,
+                V_V_EQUCHILDCODE: '%',
+                V_V_EQUTYPECODE: V_V_EQUTYPECODE
+            },
             reader: {
                 type: 'json',
                 root: 'list',
@@ -1578,6 +1584,13 @@ Ext.onReady(function () {
         layout: 'column',
         items: [{
             xtype: 'button',
+            text: '选择并添加',
+            width: 100,
+            style: 'margin:5px 0px 5px 10px',
+            icon: imgpath + '/add.png',
+            handler: _openAddjsbzWindow
+        },{
+            xtype: 'button',
             text: '删除',
             width: 60,
             style: 'margin:5px 0px 5px 10px',
@@ -1591,6 +1604,7 @@ Ext.onReady(function () {
         columnLines: true,
         region: 'center',
         frame: true,
+        //layout:'fit',
         store: jxjsbzStore,
         autoScroll: true,
         columns: [{
@@ -1687,8 +1701,7 @@ Ext.onReady(function () {
     var jxjsbzPanel = Ext.create('Ext.Panel', {
         id: 'jxjsbzPanel',
         baseCls: 'my-panel-no-border',
-        region: 'north',
-        height: '50%',
+        title:'技术要求',
         frame: true,
         layout: 'border',
         items: [jxjsbzButton, jxjsbzPanel1]
@@ -1776,7 +1789,8 @@ Ext.onReady(function () {
                             icon: Ext.MessageBox.ERROR
                         });
                     }
-                    _queryjxjsbz();
+                    //_queryjxjsbz();
+                    _queryzsb();
                 }
             }
         }]
@@ -2286,7 +2300,7 @@ Ext.onReady(function () {
                 west: 1
             }
         },
-        items: [jxjsbzPanel, zsbjxPanel, tab3]
+        items: [jxjsbzPanel]
     });
     // 维修信息按钮组panel
     var wxxxButtonPanel = Ext.create('Ext.Panel', {
@@ -2585,7 +2599,7 @@ Ext.onReady(function () {
     var tab = Ext.create('Ext.tab.Panel', {
         id: 'tab',
         frame: true,
-        items: [gzPanel, jjPanel, gjPanel, wlPanel, aqcsPanel, jsyqPanel/*, tab4*/]
+        items: [gzPanel, jjPanel, gjPanel, wlPanel, aqcsPanel, jxjsbzPanel/*, tab4*/]
     });
     // 缺陷生命周期弹窗
     var window = Ext.create('Ext.window.Window', {
@@ -2728,6 +2742,30 @@ Ext.onReady(function () {
             }
         }
     });
+
+    // 添加技术标准store
+    var addjsbzStore = Ext.create('Ext.data.Store', {
+        storeId: 'addjsbzStore',
+        autoLoad: true,
+        loading: false,
+        pageSize: 20,
+        fields: ['V_TOOLCODE', 'V_TOOLNAME', 'V_TOOLTYPE', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_TOOLPLACE', 'V_TOOLINDATE', 'V_TOOLSTATUS'],
+        proxy: {
+            url: AppUrl + 'Wsy/BASE_WORK_TOOL_SEL',
+            type: 'ajax',
+            async: true,
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'list',
+                totalProperty: 'total'
+            }
+        }
+    });
+
     // 添加物料store
     var addwlStore = Ext.create('Ext.data.Store', {
         storeId: 'addwlStore',
@@ -3691,6 +3729,35 @@ Ext.onReady(function () {
             }
         }
     });
+
+    var addjsbzWindow = Ext.create('Ext.window.Window', {
+        id: 'addjsbzWindow',
+        width: 1280,
+        height: 720,
+        layout: 'border',
+        title: '所有技术标准',
+        modal: true,
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        items: [zsbjxPanel1],
+        buttons: [{
+            xtype: 'button',
+            text: '添加',
+            width: 40,
+            handler: function () {
+                _addjsbz();
+            }
+        }, {
+            xtype: 'button',
+            text: '关闭',
+            width: 40,
+            handler: function () {
+                addjsbzWindow.close();
+            }
+        }]
+    });
+
     // 修改物料gridPanel
     var editwlPanel = Ext.create('Ext.form.Panel', {
         id: 'editwlPanel',
@@ -4224,7 +4291,7 @@ Ext.onReady(function () {
     _querylsgd();
     _querywl();*/
     _querygx(V_JXMX_CODE);
-    _queryzsbjx();
+    //_queryzsbjx();
     pageFunction.QueryGanttData();
 });
 
@@ -4305,6 +4372,8 @@ function _addgz() {
     }
     if (sum == gzRecords.length) {
         Ext.Msg.alert('提示信息', '添加成功');
+        var addgzStore = Ext.data.StoreManager.lookup('addgzStore');
+        addgzStore.load();
     } else {
         Ext.MessageBox.show({
             title: '错误',
@@ -4526,6 +4595,8 @@ function _addjj() {
     }
     if (sum == jjrecords.length) {
         Ext.Msg.alert('提示信息', '添加成功');
+        var addjjStore = Ext.data.StoreManager.lookup('addjjStore');
+        addjjStore.load();
     } else {
         Ext.MessageBox.show({
             title: '错误',
@@ -4726,6 +4797,8 @@ function _addgj() {
     }
     if (sum == gjRecords.length) {
         Ext.Msg.alert('提示信息', '添加成功');
+        var addgjStore = Ext.data.StoreManager.lookup('addgjStore');
+        addgjStore.load();
     } else {
         Ext.MessageBox.show({
             title: '错误',
@@ -4881,6 +4954,67 @@ function _openAddwlWindow() {
     Ext.getCmp('addwlWindow').show();
 }
 
+// 添加技术标准
+function _addjsbz() {
+    var records = Ext.getCmp('zsbjxPanel1').getSelectionModel().getSelection();
+    var jxgxPanel = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.Msg.alert('操作信息', '请选择一条零件记录');
+        return;
+    }else if(jxgxPanel.length == 0){
+        Ext.Msg.alert('操作信息', '请选择一条工序');
+        return;
+    }else {
+        var V_JXGX_CODE ='';
+        if(jxgxPanel[0].data.V_JXGX_CODE != null){
+            V_JXGX_CODE=jxgxPanel[0].data.V_JXGX_CODE;
+        }
+        var sum = 0;
+        for (var i = 0; i < records.length; i++) {
+            Ext.Ajax.request({
+                url: AppUrl + 'Wsy/BASE_JXBZ_BY_GXCODE_INS',
+                type: 'ajax',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_JXGX_CODE: V_JXGX_CODE,
+                    V_V_JSYQ_CODE: records[i].data.V_GUID,
+                    V_V_JSYQ_NAME: records[i].data.V_PART_NAME
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    if (data.V_INFO == 'SUCCESS') {
+                        sum++;
+                    }
+                },
+                failure: function (response) {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: response.responseText,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            });
+        }
+        if (sum == records.length) {
+            Ext.Msg.alert('提示信息', '添加成功');
+            var zsbjxStore = Ext.data.StoreManager.lookup('zsbjxStore');
+            zsbjxStore.load();
+        } else {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: records.length - sum + '条添加失败',
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+        //_queryjxjsbz();
+        //_queryzsb();
+        Ext.getCmp('addwlWindow').close();
+    }
+}
+
 // 添加选择的物料
 function _addwl() {
     var wlRecords = Ext.getCmp('addwlPanel').getSelectionModel().getSelection();
@@ -4930,6 +5064,8 @@ function _addwl() {
     }
     if (sum == wlRecords.length) {
         Ext.Msg.alert('提示信息', '添加成功');
+        var addwlStore = Ext.data.StoreManager.lookup('addwlStore');
+        addwlStore.load();
     } else {
         Ext.MessageBox.show({
             title: '错误',
@@ -5128,6 +5264,8 @@ function _addaqcs() {
     }
     if (sum == aqcsRecords.length) {
         Ext.Msg.alert('提示信息', '添加成功');
+        var addaqcsStore = Ext.data.StoreManager.lookup('addaqcsStore');
+        addaqcsStore.load();
     } else {
         Ext.MessageBox.show({
             title: '错误',
@@ -5289,9 +5427,24 @@ function _openAddgdWindow() {
     Ext.getCmp('addwlWindow').show();
 }
 
-// 添加选择的工单
-function _addgd() {
+// 打开添加技术标准窗口
+function _openAddjsbzWindow() {
+    var records = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一个工序!',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
+    Ext.getCmp('addjsbzWindow').show();
 }
+
+/*// 添加选择的工单
+function _addgd() {
+}*/
 
 // 打开修改工单窗口
 function _openEditgdWindow() {
@@ -5910,7 +6063,8 @@ var pageFunction = {
         var endtime = '';
         var dateItems = [];
         var vzm = '';
-        vzm = 'color:#CCCCCC';
+        cmItems = [];
+        vzm = 'color:#000000';
 
         for (var i = 0; i < ganttdata.length; i++) {
             if (ganttdata[0].V_PERTIME != null) {
@@ -5935,7 +6089,7 @@ var pageFunction = {
             text: '小时',
             columns: dateItems
         });
-        for (var j = 0; j <= 100; j++) {
+        for (var j = 1; j <= parseInt(endtime); j++) {
             dateItems.push({
                 text: j,
                 style: vzm,
