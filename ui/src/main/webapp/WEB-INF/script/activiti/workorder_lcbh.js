@@ -343,9 +343,11 @@ function Agree() {
                                         if (resp.V_INFO == 'success') {
                                             window.opener.QueryTab();
                                             window.opener.QuerySum();
-                                            window.opener.QueryGrid();
+                                          //  window.opener.QueryGrid();
+                                            window.parent.QueryGrid();
                                             window.close();
                                             window.opener.OnPageLoad();
+
                                         }
                                     }
                                 });
@@ -405,6 +407,7 @@ function Agree() {
                                 window.opener.QueryTab();
                                 window.opener.QuerySum();
                                 window.opener.QueryGrid();
+                             //   window.parent.QueryGrid();
                                 window.close();
                                 window.opener.OnPageLoad();
                             }
@@ -442,14 +445,17 @@ function DisAgree() {
             params: {
                 taskId: taskId,
                 idea: '不通过',
-                parName: ['fqrxg', "flow_yj"],
-                parVal: [Assignee, spyj],
+               // parName: ['fqrxg', "flow_yj"],
+                parName:[V_NEXT_SETP,'flow_yj'],
+            //   parVal: [Assignee, spyj],
+                parVal: [Ext.getCmp('selApprover').getValue(), spyj],
                 processKey: processKey,
                 businessKey: $.url().param("V_ORDERGUID"),
                 V_STEPCODE: V_STEPCODE,
                 V_STEPNAME: V_STEPNAME,
                 V_IDEA: '不通过',
-                V_NEXTPER: Assignee,
+              //  V_NEXTPER: Assignee,
+                V_NEXTPER: Ext.getCmp('selApprover').getValue(),
                 V_INPER: Ext.util.Cookies.get('v_personcode')
             },
             success: function (response) {
@@ -465,7 +471,8 @@ function DisAgree() {
                             'V_V_PROCESS_NAMESPACE': 'WORK',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
-                            'V_V_STEPNEXT_CODE': 'fqrxg'
+                          //  'V_V_STEPNEXT_CODE': 'fqrxg'
+                            'V_V_STEPNEXT_CODE': V_NEXT_SETP
                         },
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);

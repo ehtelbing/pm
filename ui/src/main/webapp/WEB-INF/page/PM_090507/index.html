@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="../../../pm/script/jquery-ui-timepicker-addon.js"></script>
 
 	<script type="text/javascript" src="../../../pm/script/PM_090507/index.js"></script>
+	<!--<script type="text/javascript" src="../../../pm/script/PM_090507/index_1.js"></script>-->
 	<style type="text/css">
 		.Tabel_p {
 			width: 1024px;
@@ -83,13 +84,15 @@
 
 <div style="padding-bottom: 10px">
 	<label style="padding-left:20px;">审批意见：</label><input class="text"  type="text" id="spyj" style="width:250px"/>
+	<!--//update start-->
 	<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下一步审批人: </span>
 	&nbsp;
 	<select id="selApprover"  style="background-color: #FFFF99; width:150px; "></select>
 	&nbsp;&nbsp;&nbsp;
+	<!--//update-end-->
 
-	<input type="button" value="同意" id="btnAgree" class="btnprint" onclick="Agree();" />
-	<input type="button" value="驳回" id="btnDisAgree" class="btnprint" onclick="DisAgree();" />
+	<input type="button" value="同意" id="btnAgree" class="btnprint" onclick="AgreeShowPer();" />
+	<input type="button" value="驳回" id="btnDisAgree" class="btnprint" onclick="DisAgreeShowPer();" />
 	&nbsp;&nbsp;&nbsp;
 </div>
 <table class="Tabel_p">

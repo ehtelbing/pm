@@ -550,3 +550,6 @@ function DisAgreeData(){
     }
 
 }
+function OnPageLoad(){
+    window.location.reload();
+}
