@@ -20,7 +20,7 @@ $(function () {
     bindDate("planFinDate");
 
     $("#personCode").html(Ext.util.Cookies.get('v_personname2'));
-    NowDate2("createDate");
+  //  NowDate2("createDate");
     NowDate_b("planStartDate");
     NowDate_e("planFinDate");
 
@@ -149,8 +149,11 @@ function createDD() {
             if (resp.list != "" && resp.list != null) {
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
-                $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
+                $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME)
+                var data=new Date(resp.list[0].D_ENTER_DATE);
 
+                $("#createDate").html(Ext.Date.format(data,"Y-m-d"));
+              //  $("#createDate").html(resp.list[0].D_ENTER_DATE);//update 2018-08+25
                 $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
                 $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
                 $("#V_EQUSITE").val(resp.list[0].V_FUNC_LOC);
