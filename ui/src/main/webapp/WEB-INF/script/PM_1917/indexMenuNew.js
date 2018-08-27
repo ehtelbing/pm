@@ -962,8 +962,8 @@ Ext.onReady(function () {
         forceFit: true,
         region: 'north',
         selModel: {
-            selType: 'checkboxmodel',
-            mode: 'SIMPLE'//多选
+            selType: 'checkboxmodel'/*,
+            mode: 'SIMPLE'//多选*/
         },
         height: '50%',
         columns: [{
