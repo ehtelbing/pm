@@ -835,7 +835,11 @@ Ext.onReady(function() {
                 V_V_DEPTTYPE: '[主体作业区]'
             }
         });
-    Ext.getCmp('zyq').setValue(gzpalceStore.getAt(0));
+    //Ext.getCmp('zyq').setValue(gzpalceStore.getAt(0));
+    gzpalceStore.on('load',function(){
+        Ext.getCmp('zyq').select(gzpalceStore.getAt(0));
+	});
+
         // });
     Ext.data.StoreManager.lookup('sbxzStore').load({
         params : {
