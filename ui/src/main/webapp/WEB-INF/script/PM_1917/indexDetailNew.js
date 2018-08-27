@@ -5009,10 +5009,10 @@ function _addjsbz() {
                 icon: Ext.MessageBox.ERROR
             });
         }
-        //_queryjxjsbz();
-        //_queryzsb();
-        Ext.getCmp('addwlWindow').close();
+        _queryjxjsbz();
+        Ext.getCmp('addjsbzWindow').close();
     }
+
 }
 
 // 添加选择的物料
