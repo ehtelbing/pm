@@ -282,16 +282,19 @@ var northPanel = Ext.create('Ext.form.Panel', {
     region: 'north',
     frame: true,
     width: '100%',
-    layout: 'vbox',
+    // layout: 'vbox',
+     layout: 'column',
     items: [
-        {
-            xtype: 'panel',
-            layout: 'hbox',
-            defaults: {labelAlign: 'right'},
-            frame: true,
-            border: false,
-            baseCls: 'my-panel-no-border',
-            items: [
+        //----注释时间2018-08-28
+        // {
+        //     xtype: 'panel',
+        //     layout: 'hbox',
+        //     defaults: {labelAlign: 'right'},
+        //     frame: true,
+        //     border: false,
+        //     baseCls: 'my-panel-no-border',
+        //     items: [
+        //-----end
                 {
                     xtype: 'combo',
                     id: 'nf',
@@ -350,17 +353,19 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     valueField: 'V_DEPTCODE',
                     store: jhzyqStore,
                     queryMode: 'local'
-                }
-            ]
-        },
-        {
-            xtype: 'panel',
-            layout: 'hbox',
-            defaults: {labelAlign: 'right'},
-            frame: true,
-            border: false,
-            baseCls: 'my-panel-no-border',
-            items: [
+                },
+//----注释时间2018-08-28
+        //     ]
+        // },
+        // {
+        //     xtype: 'panel',
+        //     layout: 'hbox',
+        //     defaults: {labelAlign: 'right'},
+        //     frame: true,
+        //     border: false,
+        //     baseCls: 'my-panel-no-border',
+        //     items: [
+        //-end
                 {
                     xtype: 'combo',
                     id: 'sblx',
@@ -381,7 +386,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     id: 'sbmc',
                     fieldLabel: '设备名称',
                     editable: false,
-                    labelAlign: 'right',
+                 //   labelAlign: 'right',
                     margin: '5 0 0 5',
                     labelWidth: 80,
                     width: 250,
@@ -428,17 +433,19 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     labelWidth: 80,
                     width: 250,
                     labelAlign: 'right'
-                }
-            ]
-        },
-        {
-            xtype: 'panel',
-            layout: 'hbox',
-            defaults: {labelAlign: 'right'},
-            frame: true,
-            border: false,
-            baseCls: 'my-panel-no-border',
-            items: [
+                },
+        //----注释时间2018-08-28
+        //     ]
+        // },
+        // {
+        //     xtype: 'panel',
+        //     layout: 'hbox',
+        //     defaults: {labelAlign: 'right'},
+        //     frame: true,
+        //     border: false,
+        //     baseCls: 'my-panel-no-border',
+        //     items: [
+        //----------注释结束
                 /*{
                     xtype: 'displayfield',
                     id: 'endtime',
@@ -450,7 +457,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     value: ''
                 },*/
                 {
-                    xtype: 'button', text: '查询', margin: '10 0 5 35', icon: imgpath + '/search.png',
+                    xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
                     handler: function () {
                         query();
                     }
@@ -464,8 +471,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
                         click: OnClickExcelButton
                     }
                 }
-            ]
-        }
+        //----注释时间2018-08-28
+        //     ]
+        // }
+        //--end
     ]
 });
 
