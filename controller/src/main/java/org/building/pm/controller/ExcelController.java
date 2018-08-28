@@ -677,6 +677,134 @@ public class ExcelController {
             }
         }
     }
+    //----UPDATE-WORKORDER-2018-EXPORE-EXCEL
+     /*工单查询EXCEL*/
+    @RequestMapping(value = "/GDCX_EXCEL2", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void GDCX_EXCEL2(
+            @RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+            @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+            @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+            @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+            @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
+            @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+            @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
+            @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
+//            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+//            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+//        V_V_REPAIRMAJOR_CODE = new String(V_V_REPAIRMAJOR_CODE.getBytes("iso-8859-1"), "utf-8");
+        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SEL_ADMINALL(V_D_ENTER_DATE_B.equals("0")?"%":V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0")?"%":V_D_DEFECTDATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
+                V_V_STATECODE,V_EQUTYPE_CODE.equals("0")?"%":V_EQUTYPE_CODE,V_EQU_CODE.equals("0")?"%":V_EQU_CODE,V_DJ_PERCODE,V_V_SHORT_TXT,
+                V_V_BJ_TXT,V_V_ORDER_TYP);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for(int i=0;i<=1;i++){
+            sheet.setColumnWidth(i,3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("工单号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("工单描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("设备位置");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("备件消耗");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("委托单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("委托人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("委托时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("检修单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("工单类型描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("工单状态");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_SHORT_TXT") == null ? "" : map.get("V_SHORT_TXT").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_EQUIP_NAME") == null ? "" : map.get("V_EQUIP_NAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_EQUSITENAME") == null ? "" : map.get("V_EQUSITENAME").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_SPARE") == null ? "" : map.get("V_SPARE").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("V_PERSONNAME") == null ? "" : map.get("V_PERSONNAME").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("D_ENTER_DATE") == null ? "" : map.get("D_ENTER_DATE").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_DEPTNAMEREPARIR") == null ? "" : map.get("V_DEPTNAMEREPARIR").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_ORDER_TYP_TXT") == null ? "" : map.get("V_ORDER_TYP_TXT").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("工单查询excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    //---END UPA
     /*工单备件更换管理EXCEL*/
     @RequestMapping(value = "/GDBJGHGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -3159,4 +3287,6 @@ public class ExcelController {
             }
         }
     }
+
+
 }

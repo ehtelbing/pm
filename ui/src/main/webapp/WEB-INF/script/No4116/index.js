@@ -524,21 +524,37 @@ function goToZGD(V_ORDERGUID){
         "", "dialogHeight:700px;dialogWidth:1100px");
 
 }
+// function OnClickExcelButton(){
+//     document.location.href=AppUrl + 'excel/GDCX_EXCEL?V_D_ENTER_DATE_B='+Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d')+
+//     '&V_D_DEFECTDATE_E='+Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d')+
+//     '&V_V_ORGCODE='+Ext.ComponentManager.get("ck").getValue()+
+//     '&V_V_DEPTCODE='+encodeURI(Ext.ComponentManager.get("zyq").getValue())+
+//     '&V_V_DEPTCODEREPARIR='+ ''+
+//     '&V_V_STATECODE='+encodeURI(Ext.ComponentManager.get("gdzt").getValue())+
+//     '&V_EQUTYPE_CODE='+encodeURI(Ext.ComponentManager.get("sblx").getValue())+
+//     '&V_EQU_CODE='+encodeURI(Ext.ComponentManager.get("sbmc").getValue())+
+//     '&V_DJ_PERCODE='+ encodeURI(Ext.ComponentManager.get("djy").getValue())+
+//     '&V_V_SHORT_TXT='+ Ext.ComponentManager.get("selshortTxt").getValue()+
+//     '&V_V_BJ_TXT='+Ext.ComponentManager.get("selmatDesc").getValue()+
+//     '&V_V_ORDER_TYP='+Ext.getCmp('tabpanel').getActiveTab().id+
+//     '&V_V_PAGE='+ Ext.getCmp('page').store.currentPage+
+//     '&V_V_PAGESIZE='+ Ext.getCmp('page').store.pageSize;
+// }
 function OnClickExcelButton(){
-    document.location.href=AppUrl + 'excel/GDCX_EXCEL?V_D_ENTER_DATE_B='+Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d')+
-    '&V_D_DEFECTDATE_E='+Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d')+
-    '&V_V_ORGCODE='+Ext.ComponentManager.get("ck").getValue()+
-    '&V_V_DEPTCODE='+encodeURI(Ext.ComponentManager.get("zyq").getValue())+
-    '&V_V_DEPTCODEREPARIR='+ ''+
-    '&V_V_STATECODE='+encodeURI(Ext.ComponentManager.get("gdzt").getValue())+
-    '&V_EQUTYPE_CODE='+encodeURI(Ext.ComponentManager.get("sblx").getValue())+
-    '&V_EQU_CODE='+encodeURI(Ext.ComponentManager.get("sbmc").getValue())+
-    '&V_DJ_PERCODE='+ encodeURI(Ext.ComponentManager.get("djy").getValue())+
-    '&V_V_SHORT_TXT='+ Ext.ComponentManager.get("selshortTxt").getValue()+
-    '&V_V_BJ_TXT='+Ext.ComponentManager.get("selmatDesc").getValue()+
-    '&V_V_ORDER_TYP='+Ext.getCmp('tabpanel').getActiveTab().id+
-    '&V_V_PAGE='+ Ext.getCmp('page').store.currentPage+
-    '&V_V_PAGESIZE='+ Ext.getCmp('page').store.pageSize;
+    document.location.href=AppUrl + 'excel/GDCX_EXCEL2?V_D_ENTER_DATE_B='+Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d')+
+        '&V_D_DEFECTDATE_E='+Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d')+
+        '&V_V_ORGCODE='+Ext.ComponentManager.get("ck").getValue()+
+        '&V_V_DEPTCODE='+encodeURI(Ext.ComponentManager.get("zyq").getValue())+
+        '&V_V_DEPTCODEREPARIR='+ ''+
+        '&V_V_STATECODE='+encodeURI(Ext.ComponentManager.get("gdzt").getValue())+
+        '&V_EQUTYPE_CODE='+encodeURI(Ext.ComponentManager.get("sblx").getValue())+
+        '&V_EQU_CODE='+encodeURI(Ext.ComponentManager.get("sbmc").getValue())+
+        '&V_DJ_PERCODE='+ encodeURI(Ext.ComponentManager.get("djy").getValue())+
+        '&V_V_SHORT_TXT='+ Ext.ComponentManager.get("selshortTxt").getValue()+
+        '&V_V_BJ_TXT='+Ext.ComponentManager.get("selmatDesc").getValue()+
+        '&V_V_ORDER_TYP='+Ext.getCmp('tabpanel').getActiveTab().id
+        /*+'&V_V_PAGE='+ Ext.getCmp('page').store.currentPage+
+        '&V_V_PAGESIZE='+ Ext.getCmp('page').store.pageSize*/;
 }
 
 function addTab(){
