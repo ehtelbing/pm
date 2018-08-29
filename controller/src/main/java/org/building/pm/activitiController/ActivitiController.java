@@ -1242,48 +1242,50 @@ public class ActivitiController {
 
             for (HistoricTaskInstance task : tasks) {
                 Map taskmap = new HashMap();
-                taskmap.put("Id", task.getId());
-                taskmap.put("Name", task.getName());
-                taskmap.put("ExecutionId", task.getExecutionId());
-                taskmap.put("Description", task.getDescription());
-                taskmap.put("ProcessInstanceId", task.getProcessInstanceId());
-                taskmap.put("ProcessDefinitionId", task.getProcessDefinitionId());
-                taskmap.put("Assignee", task.getAssignee());
-                //taskmap.put("StartTime", dateFormat.format(task.getStartTime()));
-                if (task.getEndTime() != null) {
-                    taskmap.put("endTime", dateFormat.format(task.getEndTime()));
-                } else {
-                    taskmap.put("endTime", "");
-                }
-                taskmap.put("TaskDefinitionKey", task.getTaskDefinitionKey());
-                HistoricProcessInstance instance = historyService
-                        .createHistoricProcessInstanceQuery()
-                        .processInstanceId(task.getProcessInstanceId())
-                        .singleResult();
-                if (instance != null) {
-                    taskmap.put("BusinessKey", instance.getBusinessKey());
-                    taskmap.put("ProcessDefinitionName", instance.getProcessDefinitionName());
-                    taskmap.put("ProcessDefinitionKey", instance.getProcessDefinitionKey());
-                }
+                if(task.getDeleteReason().equals("deleted")!=true) {
+                    taskmap.put("Id", task.getId());
+                    taskmap.put("Name", task.getName());
+                    taskmap.put("ExecutionId", task.getExecutionId());
+                    taskmap.put("Description", task.getDescription());
+                    taskmap.put("ProcessInstanceId", task.getProcessInstanceId());
+                    taskmap.put("ProcessDefinitionId", task.getProcessDefinitionId());
+                    taskmap.put("Assignee", task.getAssignee());
+                    //taskmap.put("StartTime", dateFormat.format(task.getStartTime()));
+                    if (task.getEndTime() != null) {
+                        taskmap.put("endTime", dateFormat.format(task.getEndTime()));
+                    } else {
+                        taskmap.put("endTime", "");
+                    }
+                    taskmap.put("TaskDefinitionKey", task.getTaskDefinitionKey());
+                    HistoricProcessInstance instance = historyService
+                            .createHistoricProcessInstanceQuery()
+                            .processInstanceId(task.getProcessInstanceId())
+                            .singleResult();
+                    if (instance != null) {
+                        taskmap.put("BusinessKey", instance.getBusinessKey());
+                        taskmap.put("ProcessDefinitionName", instance.getProcessDefinitionName());
+                        taskmap.put("ProcessDefinitionKey", instance.getProcessDefinitionKey());
+                    }
 
-                // ProcessVariables
-                List<HistoricVariableInstance> vars = historyService
-                        .createHistoricVariableInstanceQuery()
-                        .processInstanceId(instance.getId()).list();
+                    // ProcessVariables
+                    List<HistoricVariableInstance> vars = historyService
+                            .createHistoricVariableInstanceQuery()
+                            .processInstanceId(instance.getId()).list();
 
-                for (HistoricVariableInstance var : vars) {
-                    taskmap.put(var.getVariableName(), var.getValue());
+                    for (HistoricVariableInstance var : vars) {
+                        taskmap.put(var.getVariableName(), var.getValue());
+                    }
+                    User user = identityService.createUserQuery()
+                            .userId(taskmap.get("originator").toString()).singleResult();
+
+                    if (user != null)
+                        taskmap.put("startName", user.getFirstName());
+                    else {
+                        taskmap.put("startName", "未知");
+                    }
+
+                    resultlist.add(taskmap);
                 }
-                User user = identityService.createUserQuery()
-                        .userId(taskmap.get("originator").toString()).singleResult();
-
-                if (user != null)
-                    taskmap.put("startName", user.getFirstName());
-                else {
-                    taskmap.put("startName", "未知");
-                }
-
-                resultlist.add(taskmap);
 
             }
 
