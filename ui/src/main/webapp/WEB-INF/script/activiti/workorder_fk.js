@@ -577,6 +577,12 @@ function orderonPrint() {
         "dialogHeight:700px;dialogWidth:1100px");
 }
 
+function print() {
+    selectID.push(V_ORDERGUID);
+    window.open(AppUrl + "page/No410101/indexn.html", selectID,
+        "dialogHeight:700px;dialogWidth:1100px");
+}
+
 function todel(view, item, colIndex, rowIndex, e) {
     agridStore.remove(agridStore.data.items[colIndex]);
 }
