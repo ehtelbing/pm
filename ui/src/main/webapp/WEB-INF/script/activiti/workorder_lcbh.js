@@ -71,6 +71,7 @@ var windows = Ext.create('Ext.window.Window', {
                 xtype: "button", id: "btn2", text: "驳回", handler: function () {
                 DisAgree();
                 this.up("window").close();
+                Ext.MessageBox.alert('提示', '驳回成功');
             }
             }]
     }]
