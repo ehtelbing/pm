@@ -1242,7 +1242,7 @@ public class ActivitiController {
 
             for (HistoricTaskInstance task : tasks) {
                 Map taskmap = new HashMap();
-                if(task.getDeleteReason().equals("deleted")!=true) {
+                if(!task.getDeleteReason().equals("deleted")) {
                     taskmap.put("Id", task.getId());
                     taskmap.put("Name", task.getName());
                     taskmap.put("ExecutionId", task.getExecutionId());
