@@ -206,99 +206,99 @@ public class ActivitiController {
         return result;
     }
 
-    //根据时间code查询已办任务
-    @RequestMapping(value = "QueryhistoryTaskList", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> QueryhistoryTaskList(@RequestParam(value = "PersonCode") String PersonCode,
-                                                    @RequestParam(value = "beginTime") String beginTime,
-                                                    @RequestParam(value = "endTime") String endTime,
-                                                    @RequestParam(value = "start") String start,
-                                                    @RequestParam(value = "limit") String limit)
-            throws SQLException {
-
-
-        Map result = new HashMap();
-        List resultlist = new ArrayList();
-
-        Map<String, Object> ProcessType = activitiService.QueryProcessType();
-
-        List list = (List) ProcessType.get("list");
-        String[] nameSapce = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            Map map = (Map) list.get(i);
-            nameSapce[i] = map.get("V_FLOWTYPE_CODE").toString();
-        }
-        try {
-            List<HistoricTaskInstance> tasks;
-            int total = (int) historyService
-                    .createNativeHistoricTaskInstanceQuery()
-                    .sql(makeNativeQuerySQLCountHistory(nameSapce, beginTime, endTime))
-                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime).count();
-            tasks = historyService
-                    .createNativeHistoricTaskInstanceQuery()
-                    .sql(makeNativeQuerySQLResultHistory(nameSapce, beginTime, endTime))
-                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime).listPage(Integer.valueOf(start), Integer.valueOf(limit));
-
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            for (HistoricTaskInstance task : tasks) {
-                Map taskmap = new HashMap();
-                taskmap.put("Id", task.getId());
-                taskmap.put("Name", task.getName());
-                taskmap.put("ExecutionId", task.getExecutionId());
-                taskmap.put("Description", task.getDescription());
-                taskmap.put("ProcessInstanceId", task.getProcessInstanceId());
-                taskmap.put("ProcessDefinitionId", task.getProcessDefinitionId());
-                taskmap.put("Assignee", task.getAssignee());
-                //taskmap.put("StartTime", dateFormat.format(task.getStartTime()));
-                if (task.getEndTime() != null) {
-                    taskmap.put("endTime", dateFormat.format(task.getEndTime()));
-                } else {
-                    taskmap.put("endTime", "");
-                }
-                taskmap.put("TaskDefinitionKey", task.getTaskDefinitionKey());
-                HistoricProcessInstance instance = historyService
-                        .createHistoricProcessInstanceQuery()
-                        .processInstanceId(task.getProcessInstanceId())
-                        .singleResult();
-                if (instance != null) {
-                    taskmap.put("BusinessKey", instance.getBusinessKey());
-                    taskmap.put("ProcessDefinitionName", instance.getProcessDefinitionName());
-                    taskmap.put("ProcessDefinitionKey", instance.getProcessDefinitionKey());
-                }
-
-                // ProcessVariables
-                List<HistoricVariableInstance> vars = historyService
-                        .createHistoricVariableInstanceQuery()
-                        .processInstanceId(instance.getId()).list();
-
-                for (HistoricVariableInstance var : vars) {
-                    taskmap.put(var.getVariableName(), var.getValue());
-                }
-                User user = identityService.createUserQuery()
-                        .userId(taskmap.get("originator").toString()).singleResult();
-
-                if (user != null)
-                    taskmap.put("startName", user.getFirstName());
-                else {
-                    taskmap.put("startName", "未知");
-                }
-
-                resultlist.add(taskmap);
-
-            }
-
-            result.put("list", resultlist);
-            result.put("total", total);
-            result.put("count", result.size());
-            result.put("msg", "Ok");
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("msg", "Error");
-        }
-
-        return result;
-    }
+//    //根据时间code查询已办任务
+//    @RequestMapping(value = "QueryhistoryTaskList", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> QueryhistoryTaskList(@RequestParam(value = "PersonCode") String PersonCode,
+//                                                    @RequestParam(value = "beginTime") String beginTime,
+//                                                    @RequestParam(value = "endTime") String endTime,
+//                                                    @RequestParam(value = "start") String start,
+//                                                    @RequestParam(value = "limit") String limit)
+//            throws SQLException {
+//
+//
+//        Map result = new HashMap();
+//        List resultlist = new ArrayList();
+//
+//        Map<String, Object> ProcessType = activitiService.QueryProcessType();
+//
+//        List list = (List) ProcessType.get("list");
+//        String[] nameSapce = new String[list.size()];
+//        for (int i = 0; i < list.size(); i++) {
+//            Map map = (Map) list.get(i);
+//            nameSapce[i] = map.get("V_FLOWTYPE_CODE").toString();
+//        }
+//        try {
+//            List<HistoricTaskInstance> tasks;
+//            int total = (int) historyService
+//                    .createNativeHistoricTaskInstanceQuery()
+//                    .sql(makeNativeQuerySQLCountHistory(nameSapce, beginTime, endTime))
+//                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime).count();
+//            tasks = historyService
+//                    .createNativeHistoricTaskInstanceQuery()
+//                    .sql(makeNativeQuerySQLResultHistory(nameSapce, beginTime, endTime))
+//                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime).listPage(Integer.valueOf(start), Integer.valueOf(limit));
+//
+//            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//            for (HistoricTaskInstance task : tasks) {
+//                Map taskmap = new HashMap();
+//                taskmap.put("Id", task.getId());
+//                taskmap.put("Name", task.getName());
+//                taskmap.put("ExecutionId", task.getExecutionId());
+//                taskmap.put("Description", task.getDescription());
+//                taskmap.put("ProcessInstanceId", task.getProcessInstanceId());
+//                taskmap.put("ProcessDefinitionId", task.getProcessDefinitionId());
+//                taskmap.put("Assignee", task.getAssignee());
+//                //taskmap.put("StartTime", dateFormat.format(task.getStartTime()));
+//                if (task.getEndTime() != null) {
+//                    taskmap.put("endTime", dateFormat.format(task.getEndTime()));
+//                } else {
+//                    taskmap.put("endTime", "");
+//                }
+//                taskmap.put("TaskDefinitionKey", task.getTaskDefinitionKey());
+//                HistoricProcessInstance instance = historyService
+//                        .createHistoricProcessInstanceQuery()
+//                        .processInstanceId(task.getProcessInstanceId())
+//                        .singleResult();
+//                if (instance != null) {
+//                    taskmap.put("BusinessKey", instance.getBusinessKey());
+//                    taskmap.put("ProcessDefinitionName", instance.getProcessDefinitionName());
+//                    taskmap.put("ProcessDefinitionKey", instance.getProcessDefinitionKey());
+//                }
+//
+//                // ProcessVariables
+//                List<HistoricVariableInstance> vars = historyService
+//                        .createHistoricVariableInstanceQuery()
+//                        .processInstanceId(instance.getId()).list();
+//
+//                for (HistoricVariableInstance var : vars) {
+//                    taskmap.put(var.getVariableName(), var.getValue());
+//                }
+//                User user = identityService.createUserQuery()
+//                        .userId(taskmap.get("originator").toString()).singleResult();
+//
+//                if (user != null)
+//                    taskmap.put("startName", user.getFirstName());
+//                else {
+//                    taskmap.put("startName", "未知");
+//                }
+//
+//                resultlist.add(taskmap);
+//
+//            }
+//
+//            result.put("list", resultlist);
+//            result.put("total", total);
+//            result.put("count", result.size());
+//            result.put("msg", "Ok");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            result.put("msg", "Error");
+//        }
+//
+//        return result;
+//    }
 
     public String makeNativeQuerySQLHistory(String select, String[] nameSpace, String startTime, String endTime) {
         String categorySQL = "";
@@ -574,30 +574,32 @@ public class ActivitiController {
                 }
 
                 //---add 3 columns on work
-                    List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
-                    if(equIp_name.size()>0){
-                        Map equmap=(Map) equIp_name.get(0);
-                        taskmap.put("EQUNAME",equmap.get("V_EQUIP_NAME").toString());
-                        taskmap.put("PLANSTART",equmap.get("D_START_DATE").toString());
-                        taskmap.put("PLANEND",equmap.get("D_FINISH_DATE").toString());
-                    }   //---add 3 columns on NONTH
-                    else  if(taskmap.get("flow_type").equals("MonthPlan")) {
-                        equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");
-                        if(equIp_name.size()>0){
-                            Map equmap=(Map) equIp_name.get(0);
-                            taskmap.put("EQUNAME",equmap.get("V_EQUNAME").toString());
-                            taskmap.put("PLANSTART",equmap.get("V_STARTTIME").toString());
-                            taskmap.put("PLANEND",equmap.get("V_ENDTIME").toString());}
-                    }//---add 3 columns on week
-                    else  if(taskmap.get("flow_type").equals("WeekPlan")) {
-                        equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_WEEK_GET(taskmap.get("BusinessKey").toString()).get("list");
-                        if(equIp_name.size()>0){
-                            Map equmap=(Map) equIp_name.get(0);
-                            taskmap.put("EQUNAME",equmap.get("V_EQUNAME").toString());
-                            taskmap.put("PLANSTART",equmap.get("V_STARTTIME").toString());
-                            taskmap.put("PLANEND",equmap.get("V_ENDTIME").toString());
-                            taskmap.put("PLANHOUR",equmap.get("V_HOUR").toString());}
+                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
+                if (equIp_name.size() > 0) {
+                    Map equmap = (Map) equIp_name.get(0);
+                    taskmap.put("EQUNAME", equmap.get("V_EQUIP_NAME").toString());
+                    taskmap.put("PLANSTART", equmap.get("D_START_DATE").toString());
+                    taskmap.put("PLANEND", equmap.get("D_FINISH_DATE").toString());
+                }   //---add 3 columns on NONTH
+                else if (taskmap.get("flow_type").equals("MonthPlan")) {
+                    equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    if (equIp_name.size() > 0) {
+                        Map equmap = (Map) equIp_name.get(0);
+                        taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                        taskmap.put("PLANSTART", equmap.get("V_STARTTIME").toString());
+                        taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
                     }
+                }//---add 3 columns on week
+                else if (taskmap.get("flow_type").equals("WeekPlan")) {
+                    equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_WEEK_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    if (equIp_name.size() > 0) {
+                        Map equmap = (Map) equIp_name.get(0);
+                        taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                        taskmap.put("PLANSTART", equmap.get("V_STARTTIME").toString());
+                        taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
+                        taskmap.put("PLANHOUR", equmap.get("V_HOUR").toString());
+                    }
+                }
                 User user = identityService.createUserQuery()
                         .userId(taskmap.get("originator").toString()).singleResult();
 
@@ -611,7 +613,7 @@ public class ActivitiController {
             result.put("list", resultlist);
             result.put("total", total);
             result.put("count", result.size());
-            } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             result.put("msg", "Error");
         }
@@ -1122,12 +1124,12 @@ public class ActivitiController {
             /*
             * 挂起流程
             * */
-            runtimeService.suspendProcessInstanceById(instanceId);
+//            runtimeService.suspendProcessInstanceById(instanceId);
 
             /*
             * 删除流程
             * */
-//            runtimeService.deleteProcessInstance(instanceId, null);
+            runtimeService.deleteProcessInstance(instanceId, null);
             result.put("msg", "删除成功");
         } catch (Exception e) {
             result.put("msg", "删除失败");
@@ -1205,4 +1207,95 @@ public class ActivitiController {
         return result;
     }
 
+    //根据时间code查询已办任务
+    @RequestMapping(value = "QueryhistoryTaskList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> QueryhistoryTaskList(@RequestParam(value = "PersonCode") String PersonCode,
+                                                    @RequestParam(value = "beginTime") String beginTime,
+                                                    @RequestParam(value = "endTime") String endTime,
+                                                    @RequestParam(value = "start") String start,
+                                                    @RequestParam(value = "limit") String limit)
+            throws SQLException {
+        Map result = new HashMap();
+        List resultlist = new ArrayList();
+        Map<String, Object> ProcessType = activitiService.QueryProcessType();
+        List list = (List) ProcessType.get("list");
+        String[] nameSapce = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            Map map = (Map) list.get(i);
+            nameSapce[i] = map.get("V_FLOWTYPE_CODE").toString();
+        }
+        try {
+            List<HistoricTaskInstance> tasks;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date b1 = sdf.parse(beginTime);
+            Date e1 = sdf.parse(endTime);
+            // tasks= historyService.createHistoricTaskInstanceQuery().taskCompletedAfter(b1).taskCompletedBefore(e1).finished().list();
+            tasks = historyService.createHistoricTaskInstanceQuery().taskAssignee(PersonCode).taskCompletedAfter(b1).taskCompletedBefore(e1)
+                    .finished().orderByHistoricTaskInstanceEndTime().desc()
+                    .listPage(Integer.valueOf(start), Integer.valueOf(limit));
+
+            int total = (int) historyService.createHistoricTaskInstanceQuery().taskAssignee(PersonCode).taskCompletedAfter(b1).taskCompletedBefore(e1).finished().count();
+
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            for (HistoricTaskInstance task : tasks) {
+                Map taskmap = new HashMap();
+                taskmap.put("Id", task.getId());
+                taskmap.put("Name", task.getName());
+                taskmap.put("ExecutionId", task.getExecutionId());
+                taskmap.put("Description", task.getDescription());
+                taskmap.put("ProcessInstanceId", task.getProcessInstanceId());
+                taskmap.put("ProcessDefinitionId", task.getProcessDefinitionId());
+                taskmap.put("Assignee", task.getAssignee());
+                //taskmap.put("StartTime", dateFormat.format(task.getStartTime()));
+                if (task.getEndTime() != null) {
+                    taskmap.put("endTime", dateFormat.format(task.getEndTime()));
+                } else {
+                    taskmap.put("endTime", "");
+                }
+                taskmap.put("TaskDefinitionKey", task.getTaskDefinitionKey());
+                HistoricProcessInstance instance = historyService
+                        .createHistoricProcessInstanceQuery()
+                        .processInstanceId(task.getProcessInstanceId())
+                        .singleResult();
+                if (instance != null) {
+                    taskmap.put("BusinessKey", instance.getBusinessKey());
+                    taskmap.put("ProcessDefinitionName", instance.getProcessDefinitionName());
+                    taskmap.put("ProcessDefinitionKey", instance.getProcessDefinitionKey());
+                }
+
+                // ProcessVariables
+                List<HistoricVariableInstance> vars = historyService
+                        .createHistoricVariableInstanceQuery()
+                        .processInstanceId(instance.getId()).list();
+
+                for (HistoricVariableInstance var : vars) {
+                    taskmap.put(var.getVariableName(), var.getValue());
+                }
+                User user = identityService.createUserQuery()
+                        .userId(taskmap.get("originator").toString()).singleResult();
+
+                if (user != null)
+                    taskmap.put("startName", user.getFirstName());
+                else {
+                    taskmap.put("startName", "未知");
+                }
+
+                resultlist.add(taskmap);
+
+            }
+
+            result.put("list", resultlist);
+            result.put("total", total);
+            result.put("count", result.size());
+            result.put("msg", "Ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("msg", "Error");
+        }
+
+        return result;
+    }
 }

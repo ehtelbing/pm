@@ -31,7 +31,7 @@ Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 15,
+        pageSize: 25,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name', 'flow_code', 'ProcessDefinitionName', 'ProcessInstanceId', 'TaskDefinitionKey', 'ProcessDefinitionKey', 'BusinessKey'
@@ -173,8 +173,8 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
             PersonCode: Ext.util.Cookies.get('v_personcode'),
-            beginTime: Ext.getCmp('beginTime').getSubmitValue(),
-            endTime: Ext.getCmp('endTime').getSubmitValue()
+            beginTime: Ext.Date.format(Ext.getCmp('beginTime').getValue(),'Y-m-d'),
+            endTime: Ext.Date.format(Ext.getCmp('endTime').getValue(),'Y-m-d')
         }
     });
 
@@ -205,8 +205,8 @@ function _select() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
         PersonCode: Ext.util.Cookies.get('v_personcode'),
-        beginTime: Ext.getCmp('beginTime').getSubmitValue(),
-        endTime: Ext.getCmp('endTime').getSubmitValue()
+        beginTime: Ext.Date.format(Ext.getCmp('beginTime').getValue(),'Y-m-d'),
+        endTime: Ext.Date.format(Ext.getCmp('endTime').getValue(),'Y-m-d')
     };
     gridStore.currentPage = 1;
     gridStore.load();
