@@ -817,7 +817,7 @@ public class ZpfService {
         return result;
     }
 
-    public HashMap pro_alterlubrecord(String x_equname, String x_lubaddress, String x_lubmode, String x_lubtrademark, int x_lubcount, int x_oilamount,
+    public HashMap pro_alterlubrecord(String x_setname, String x_lubaddress, String x_lubmode, String x_lubtrademark, int x_lubcount, int x_oilamount,
                                       String x_addorchange, java.util.Date x_operatedate, String x_operateperson, String x_operatereason, int x_unit, String x_lubricationcode) throws SQLException {
 
         logger.info("begin pro_alterlubrecord");
@@ -829,9 +829,9 @@ public class ZpfService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call pro_alterlubrecord" + "(:x_equname,:x_lubaddress,:x_lubmode,:x_lubtrademark,:x_lubcount," +
+            cstmt = conn.prepareCall("{call pro_alterlubrecord" + "(:x_setname,:x_lubaddress,:x_lubmode,:x_lubtrademark,:x_lubcount," +
                     ":x_oilamount,:x_addorchange,:x_operatedate,:x_operateperson,:x_operatereason,:x_unit,:x_lubricationcode)}");
-            cstmt.setString("x_equname", x_equname);
+            cstmt.setString("x_setname", x_setname);
             cstmt.setString("x_lubaddress", x_lubaddress);
             cstmt.setString("x_lubmode", x_lubmode);
             cstmt.setString("x_lubtrademark", x_lubtrademark);

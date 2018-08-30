@@ -532,7 +532,7 @@ public class ZpfController {
     @RequestMapping(value = "/pro_alterlubrecord", method = RequestMethod.POST)
     @ResponseBody
     public HashMap pro_alterlubrecord(
-            @RequestParam(value = "x_equname") String x_equname,
+            @RequestParam(value = "x_setname") String x_setname,
             @RequestParam(value = "x_lubaddress") String x_lubaddress,
             @RequestParam(value = "x_lubmode") String x_lubmode,
             @RequestParam(value = "x_lubtrademark") String x_lubtrademark,
@@ -548,7 +548,7 @@ public class ZpfController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        return zpfService.pro_alterlubrecord(x_equname, x_lubaddress, x_lubmode, x_lubtrademark, x_lubcount, x_oilamount,
+        return zpfService.pro_alterlubrecord(x_setname, x_lubaddress, x_lubmode, x_lubtrademark, x_lubcount, x_oilamount,
                 x_addorchange, x_operatedate, x_operateperson, x_operatereason, x_unit, x_lubricationcode);
     }
 
