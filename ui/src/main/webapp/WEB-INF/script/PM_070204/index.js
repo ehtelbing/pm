@@ -332,7 +332,6 @@ function OnclickAddButtonLoad() {
                 for (var i=0;i<long;i++){
                     if(Ext.data.StoreManager.lookup('workCenterStore').data.getAt(i).data.V_SAP_WORK==data.list[0].WORKCENTER)
                     { Ext.getCmp('selWorkCenter').select(Ext.data.StoreManager.lookup('workCenterStore').getAt(i));}
-                    i++;
                 }
                 //-----end update
             } else {
