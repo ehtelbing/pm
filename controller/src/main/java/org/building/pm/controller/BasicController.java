@@ -27,16 +27,16 @@ public class BasicController {
     @Autowired
     private BasicService basicService;
 
-//===========update2018-08-30  即时通账号
-@RequestMapping(value = "BASE_PRO_JST_CODESEL2", method = RequestMethod.POST)
-@ResponseBody
-public Map<String, Object> BASE_PRO_JST_CODESEL2(
-        //   @RequestParam(value = "v_usercode"/* ,required=false*/) String v_usercode,
-        @RequestParam(value = "percode",required = false) String percode)
-        throws SQLException {
-    Map<String, Object> result = basicService.BASE_PRO_JST_CODESEL2(percode);
-    return result;
-}
+    //===========update2018-08-30  即时通账号
+    @RequestMapping(value = "BASE_PRO_JST_CODESEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> BASE_PRO_JST_CODESEL2(
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE)
+            throws SQLException {
+        Map<String, Object> result = basicService.BASE_PRO_JST_CODESEL2(V_V_PERCODE);
+        return result;
+    }
+
     //--end update
     /*
      * 班组详情查询
