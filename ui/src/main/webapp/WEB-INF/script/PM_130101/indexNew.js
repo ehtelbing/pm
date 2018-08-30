@@ -224,7 +224,14 @@ Ext.onReady(function () {
                                                         Ext.getCmp('v_lubtrademark2').setValue(resp[0].V_LUBTRADEMARK);
                                                         Ext.getCmp('f_lubcount2').setValue(resp[0].F_LUBCOUNT);
                                                         Ext.getCmp('f_oilamount2').setValue(resp[0].F_OILAMOUNT);
-                                                        Ext.getCmp('i_unit2').setValue(resp[0].I_UNIT);
+                                                        //---update 2018-08-30
+                                                        for(var i=0;i<Ext.getStore('jylStore').data.length;i++){
+                                                            if(resp[0].I_UNIT==Ext.getStore('jylStore').data.getAt(i).data.V_BASENAME){
+                                                                Ext.getCmp('i_unit2').setValue(Ext.getStore('jylStore').getAt(i));
+                                                            }
+                                                        }
+                                                        //Ext.getCmp('i_unit2').setValue(resp[0].I_UNIT);
+                                                        //---end up
                                                         Ext.getCmp('v_addorchange2').setValue(resp[0].V_ADDORCHANGE);
                                                         Ext.getCmp('v_operateperson2').setValue(resp[0].V_OPERATEPERSON);
 
@@ -321,7 +328,7 @@ Ext.onReady(function () {
                                     },
                                     {text: '加油人员', width: 80, dataIndex: 'V_OPERATEPERSON', align: 'center'},
                                     {text: '加油原因', width: 150, dataIndex: 'V_OPERATEREASON', align: 'center'},
-                                    {text: '类型', width: 100, dataIndex: 'XXX', align: 'center'},
+                                    {text: '类型', width: 100, dataIndex: 'V_ADDORCHANGE', align: 'center'},
                                     {width: 0, dataIndex: 'V_LUBRICATIONCODE', align: 'center'},
                                     {width: 0, dataIndex: 'V_DEPTCODE', align: 'center'},
                                     {width: 0, dataIndex: 'V_EQUTYPECODE', align: 'center'},
@@ -643,7 +650,8 @@ Ext.onReady(function () {
                 fieldLabel: '润滑方式',
                 listeners: {
                     select: function (store, field, newValue, oldValue) {
-                        Ext.getCmp('x_lubmode2').select(store.first());
+                        // Ext.getCmp('x_lubmode2').select(store.first());
+                        Ext.getCmp('x_lubmode2').select(Ext.getStore('droplist_lubmode').first());
                     }
                 }
             },
@@ -787,7 +795,7 @@ Ext.onReady(function () {
                     method: 'POST',
                     async: false,
                     params: {
-                        x_equname: Ext.getCmp('v_setname2').value,
+                        x_setname: Ext.getCmp('v_setname2').value,
                         x_lubaddress: Ext.getCmp('v_lubaddress2').value,
                         x_lubmode: Ext.getCmp('x_lubmode2').getValue(),
                         x_lubtrademark: Ext.getCmp('v_lubtrademark2').value,
