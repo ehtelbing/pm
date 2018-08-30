@@ -446,8 +446,8 @@ function JstPage(){
         },
         success: function (response) {
             var resp = Ext.JSON.decode(response.responseText);
-            jstlogcode=resp.V_INFO[0].V_PASSWORD;
-            jstpass=resp.V_INFO[0].V_JST;
+            jstlogcode=resp.V_INFO[0].V_JST;
+            jstpass=resp.V_INFO[0].V_PASSWORD;
             location.href="http://10.101.10.46:8088/PersonCenter-AK/Auth/home?loginname="+jstlogcode+"&password="+jstpass;
         }});
 
