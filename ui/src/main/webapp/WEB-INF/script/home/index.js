@@ -433,7 +433,25 @@ function HomePage() {
         return;
     }
 }
+function JstPage(){
+    var jstlogcode;
+    var jstpass;
+    Ext.Ajax.request({
+        id: 'selUdtDuty',
+        url: AppUrl + 'basic/BASE_PRO_JST_CODESEL2',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_PERCODE:USERID
+        },
+        success: function (response) {
+            var resp = Ext.JSON.decode(response.responseText);
+            jstlogcode=resp.V_INFO[0].V_PASSWORD;
+            jstpass=resp.V_INFO[0].V_JST;
+            location.href="http://10.101.10.46:8088/PersonCenter-AK/Auth/home?loginname="+jstlogcode+"&password="+jstpass;
+        }});
 
+}
 /*function GETDDDL() {
  // 转小神探单点登陆地址PRO_BASE_PERSON_DDDL_GETURL
  $.ajax({

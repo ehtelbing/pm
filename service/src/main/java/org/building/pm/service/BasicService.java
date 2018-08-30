@@ -1619,6 +1619,29 @@ public class BasicService {
         logger.info("end BASE_PRO_JST_CODESEL");
         return result;
     }
-
+    //-update--2018-0830--取即时通
+    public HashMap BASE_PRO_JST_CODESEL2(String V_V_PERCODE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin BASE_PRO_JST_CODESEL2");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call BASE_PRO_JST_CODESEL2(:V_V_PERCODE,:V_INFO)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_INFO", ResultHash((ResultSet) cstmt.getObject("V_INFO")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_PRO_JST_CODESEL2");
+        return result;
+    }
 
 }
