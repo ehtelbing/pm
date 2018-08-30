@@ -457,7 +457,6 @@ public class ExcelController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE,
             @RequestParam(value = "V_V_FLOWCODE") String V_V_FLOWCODE,
-
             HttpServletResponse response)
             throws
             //com.fasterxml.jackson.core.JsonProcessingException,
@@ -1285,18 +1284,19 @@ public class ExcelController {
     /*年计划生产部审批导出EXCEL*/
     @RequestMapping(value = "/YSCBSP_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void YSCBSP_EXCEL(@RequestParam(value = "V_V_INPER") String V_V_INPER,
-                             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+    public void YSCBSP_EXCEL(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
                              @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                             @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE,
-                             @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+                             @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                             @RequestParam(value = "V_V_WXLX") String V_V_WXLX,
+                             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                              HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
-        V_V_REPAIRMAJOR_CODE = new String(V_V_REPAIRMAJOR_CODE.getBytes("iso-8859-1"), "utf-8");
 
         List list = new ArrayList();
 
-        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_INPER, V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRMAJOR_CODE, V_V_PLANTYPE);
+        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR,  V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();

@@ -104,7 +104,10 @@ Ext.onReady(function () {
         id: 'gridStore',
         pageSize: 50,
         autoLoad: false,
-        fields: [],
+        fields: ['I_ID','V_GUID','V_GUID_UP','V_YEAR','V_MONTH','V_ORGCODE','V_ORGNAME',
+            'V_DEPTCODE','V_DEPTNAME','V_PORJECT_CODE','V_PORJECT_NAME','V_SPECIALTY','V_SPECIALTYNAME',
+            'V_SPECIALTYMANCODE','V_SPECIALTYMAN','V_WXTYPECODE','V_WXTYPENAME','V_CONTENT','V_MONEYBUDGET',
+            'V_REPAIRDEPTCODE','V_BDATE','V_EDATE','V_STATE','V_FLAG','V_INMAN','V_INMANCODE','V_INDATE','V_STATENAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -252,14 +255,15 @@ Ext.onReady(function () {
             mode: 'SIMPLE'
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '项目编码', width: 140, dataIndex: 'V_EQUNAME', align: 'center'},
-            {text: '项目名称', width: 140, dataIndex: 'V_REPAIRMAJOR_CODE', align: 'center'},
-            {text: '维修类型', width: 100, dataIndex: 'V_HOUR', align: 'center'},
-            {text: '专业', width: 100, dataIndex: 'V_DEPTNAME', align: 'center'},
-            {text: '维修内容', width: 200, dataIndex: 'V_ORGNAME', align: 'center'},
-            {text: '维修费用', width: 100, dataIndex: 'INPERNAME', align: 'center'},
-            {text: '开工时间', width: 140, dataIndex: 'INPERNAME', align: 'center'},
-            {text: '竣工时间', width: 140, dataIndex: 'INPERNAME', align: 'center'}],
+            {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center',renderer:atleft},
+            {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center',renderer:atleft},
+            {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center',renderer:atleft},
+            {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center',renderer:atleft},
+            {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center',renderer:atleft},
+            {text: '维修内容', width: 300, dataIndex: 'V_CONTENT', align: 'center',renderer:atleft},
+            {text: '维修费用', width: 100, dataIndex: 'V_MONEYBUDGET', align: 'center',renderer:atright},
+            {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center',renderer:atleft},
+            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center',renderer:atleft}],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -345,12 +349,14 @@ Ext.onReady(function () {
 });
 
 function beforeloadStore(store) {
-    store.proxy.extraParams.parName = ['V_V_PERSONCODE', 'V_I_YEAR', 'V_V_DEPTCODE', 'V_V_DEPTNEXTCODE'];
-    store.proxy.extraParams.parType = ['s', 's', 's', 's'];
-    store.proxy.extraParams.parVal = [Ext.util.Cookies.get('v_personcode'), Ext.getCmp('year').getValue(),
-        Ext.getCmp('ck').getValue(), Ext.getCmp('zyq').getValue()];
-    store.proxy.extraParams.proName = 'PRO_PM_PLAN_YEAR_DJY_VIEW';
-    store.proxy.extraParams.cursorName = 'V_CURSOR';
+    store.proxy.extraParams.V_V_YEAR =Ext.getCmp('year').getValue();
+    store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
+    store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('zyq').getValue();
+    store.proxy.extraParams.V_V_ZY = Ext.getCmp('zy').getValue();
+    store.proxy.extraParams.V_V_WXLX = Ext.getCmp('wxlx').getValue();
+    store.proxy.extraParams.V_V_CONTENT = Ext.getCmp('jxnr').getValue();
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').getValue();
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').getValue();
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
@@ -359,10 +365,23 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 }
 
 
-function OnButtonQuery (){}
+function OnButtonQuery (){
+    Ext.data.StoreManager.lookup('gridStore').currentPage = 1;
+    Ext.data.StoreManager.lookup('gridStore').load({
+        params:{
+            V_V_YEAR:Ext.getCmp('year').getValue(),
+            V_V_ORGCODE:Ext.getCmp('ck').getValue(),
+            V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),
+            V_V_ZY:Ext.getCmp('zy').getValue(),
+            V_V_WXLX:Ext.getCmp('wxlx').getValue(),
+            V_V_CONTENT:Ext.getCmp('jxnr').getValue(),
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        }
+    })
+}
 
 function OnButtonAdd(){
-
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
         method: 'POST',
@@ -388,8 +407,56 @@ function OnButtonAdd(){
 
 }
 
-function OnButtonEdit(){}
+function OnButtonEdit(){
+    var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(seldata.length!=1){
+        alert('请选择一条数据进行修改！');
+        return;
+    }else{
+        var owidth = window.document.body.offsetWidth - 600;
+        var oheight = window.document.body.offsetHeight - 100;
+        window.open(AppUrl + 'page/PM_03020101/index.html?guid=' +seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    }
+}
 
-function OnButtonDel(){}
+function OnButtonDel(){
+    var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(seldata.length==0){
+        alert('请选择数据进行删除！');
+    }else{
+        var num=0;
+        for(var i=0;i<seldata.length;i++){
+            Ext.Ajax.request({
+                url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_DEL',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID:seldata[i].data.V_GUID
+                },
+                success: function (resp) {
+                    var resp=Ext.decode(resp.responseText);
+                    if(resp.V_INFO=='SUCCESS'){
+                       num++;
+                    }
+                }
+            });
+
+            if(num==seldata.length){
+                OnButtonQuery();
+            }
+        }
+    }
+}
+
 
 function OnButtonOut(){}
+
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+
+function atright(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:right;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}

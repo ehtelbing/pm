@@ -81,25 +81,15 @@ public class hpController {
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_YEAR_VIEW(
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
-            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_WXLX") String V_V_WXLX,
             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-            @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
-            @RequestParam(value = "page") Integer page,
-            @RequestParam(value = "limit") Integer limit,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
 
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        String V_V_PAGE = page.toString();
-        String V_V_PAGESIZE = limit.toString();
-
-        HashMap data = hpService.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_PLANTYPE, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY,
-                V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        Map data = hpService.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
@@ -198,26 +188,19 @@ public class hpController {
     @RequestMapping(value = "/PM_03_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void PM_03_EXCEL(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
-                            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
                             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                             @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                            @RequestParam(value = "V_V_WXLX") String V_V_WXLX,
                             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-                            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                            @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
-
-                            HttpServletResponse response)
-            throws //com.fasterxml.jackson.core.JsonProcessingException,
-            NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
-        String V_V_PAGE = "1";
-        String V_V_PAGESIZE = "50000";
+                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE, HttpServletResponse response)
+            throws UnsupportedEncodingException, SQLException {
         List list = new ArrayList();
 
         V_V_CONTENT = new String(V_V_CONTENT.getBytes("iso-8859-1"), "utf-8");
-        Map<String, Object> data = hpService.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_PLANTYPE, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY,
-                V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        Map<String, Object> data = hpService.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
+
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
         for (int i = 0; i <= 13; i++) {
@@ -1220,7 +1203,7 @@ public class hpController {
             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
             HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = hpService.PM_13_EXAMINED_FK_SEL(V_V_ORGCODE, V_V_STATE, V_V_DATE, V_V_BEEXAMINED_TYPE,V_V_TYPE, V_V_PAGE, V_V_PAGESIZE);
+        Map<String, Object> result = hpService.PM_13_EXAMINED_FK_SEL(V_V_ORGCODE, V_V_STATE, V_V_DATE, V_V_BEEXAMINED_TYPE, V_V_TYPE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -1330,7 +1313,7 @@ public class hpController {
 
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = hpService.PM_13_EXAMINED_SET(V_V_GUID, V_V_DATE, V_V_BEEXAMINED_DEPT,  V_V_JCBW, V_V_CZWT, V_V_ZGCS,
+        HashMap data = hpService.PM_13_EXAMINED_SET(V_V_GUID, V_V_DATE, V_V_BEEXAMINED_DEPT, V_V_JCBW, V_V_CZWT, V_V_ZGCS,
                 V_V_KHYJ, V_V_KHFS, V_V_KKJE, V_V_DEPTCODE
                 , V_V_TYPE, V_V_BEEXAMINED_TYPE, V_V_YQZGSJ, V_V_TBSJ, V_V_TB_PER, V_V_STATE, V_V_JX_PER);
         String pm_06 = (String) data.get("RET");
@@ -2409,7 +2392,7 @@ public class hpController {
 
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = hpService.PM_13_EXAMINED_COMPANY_SET(V_V_GUID, V_V_DATE,V_V_BEEXAMINED_ORG, V_V_BEEXAMINED_DEPT, V_V_JCBW, V_V_CZWT, V_V_ZGCS,
+        HashMap data = hpService.PM_13_EXAMINED_COMPANY_SET(V_V_GUID, V_V_DATE, V_V_BEEXAMINED_ORG, V_V_BEEXAMINED_DEPT, V_V_JCBW, V_V_CZWT, V_V_ZGCS,
                 V_V_KHYJ, V_V_KHFS, V_V_KKJE, V_V_DEPTCODE
                 , V_V_TYPE, V_V_BEEXAMINED_TYPE, V_V_YQZGSJ, V_V_TBSJ, V_V_TB_PER, V_V_STATE, V_V_JX_PER);
         String pm_06 = (String) data.get("RET");
@@ -2456,7 +2439,7 @@ public class hpController {
 
     @RequestMapping(value = "PRO_PM_EQUREPAIRPLAN_NEXTPERN", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_NEXTPERN( @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+    public Map<String, Object> PRO_PM_EQUREPAIRPLAN_NEXTPERN(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
                                                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                                              @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
                                                              @RequestParam(value = "V_V_GUID") String V_V_GUID,
@@ -2473,7 +2456,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201001_onedetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201001_onedetail(@RequestParam(value = "recordcode_in") String recordcode_in,
-                                                 HttpServletRequest request)
+                                                      HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201001_onedetail(recordcode_in);
         return result;
@@ -2481,41 +2464,41 @@ public class hpController {
 
     @RequestMapping(value = "/PM_06_DJ_CRITERION_SETN", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> PM_06_DJ_CRITERION_SETN(  @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                        @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
-                                                        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                                        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                        @RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
-                                                        @RequestParam(value = "V_V_CRITERION_ITEM") String V_V_CRITERION_ITEM,
-                                                        @RequestParam(value = "V_V_CRITERION_CONTENT") String V_V_CRITERION_CONTENT,
-                                                        @RequestParam(value = "V_V_CRITERION_CR") String V_V_CRITERION_CR,
-                                                        @RequestParam(value = "V_V_CRITERION_CYCLE") String V_V_CRITERION_CYCLE,
-                                                        @RequestParam(value = "V_V_CRITERION_CYCLETYPE") String V_V_CRITERION_CYCLETYPE,
-                                                        @RequestParam(value = "V_V_EQU_STATE1") String V_V_EQU_STATE1,
-                                                        @RequestParam(value = "V_V_EQU_STATE2") String V_V_EQU_STATE2,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION1") String V_V_CK_FUNCTION1,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION2") String V_V_CK_FUNCTION2,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION3") String V_V_CK_FUNCTION3,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION4") String V_V_CK_FUNCTION4,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION5") String V_V_CK_FUNCTION5,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION6") String V_V_CK_FUNCTION6,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION7") String V_V_CK_FUNCTION7,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION8") String V_V_CK_FUNCTION8,
-                                                        @RequestParam(value = "V_I_ORDER") String V_I_ORDER,
-                                                        @RequestParam(value = "V_V_PLAN_STATE") String V_V_PLAN_STATE,
-                                                        @RequestParam(value = "V_I_FLAG") String V_I_FLAG,
-                                                        @RequestParam(value = "V_V_CKTYPE") String V_V_CKTYPE,
-                                                        @RequestParam(value = "V_I_WEIGHT") String V_I_WEIGHT,
-                                                        @RequestParam(value = "V_I_YJ") String V_I_YJ,
-                                                        @RequestParam(value = "V_V_INPER") String V_V_INPER,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) throws Exception {
+    public Map<String, Object> PM_06_DJ_CRITERION_SETN(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                       @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                       @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
+                                                       @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                       @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                       @RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
+                                                       @RequestParam(value = "V_V_CRITERION_ITEM") String V_V_CRITERION_ITEM,
+                                                       @RequestParam(value = "V_V_CRITERION_CONTENT") String V_V_CRITERION_CONTENT,
+                                                       @RequestParam(value = "V_V_CRITERION_CR") String V_V_CRITERION_CR,
+                                                       @RequestParam(value = "V_V_CRITERION_CYCLE") String V_V_CRITERION_CYCLE,
+                                                       @RequestParam(value = "V_V_CRITERION_CYCLETYPE") String V_V_CRITERION_CYCLETYPE,
+                                                       @RequestParam(value = "V_V_EQU_STATE1") String V_V_EQU_STATE1,
+                                                       @RequestParam(value = "V_V_EQU_STATE2") String V_V_EQU_STATE2,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION1") String V_V_CK_FUNCTION1,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION2") String V_V_CK_FUNCTION2,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION3") String V_V_CK_FUNCTION3,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION4") String V_V_CK_FUNCTION4,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION5") String V_V_CK_FUNCTION5,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION6") String V_V_CK_FUNCTION6,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION7") String V_V_CK_FUNCTION7,
+                                                       @RequestParam(value = "V_V_CK_FUNCTION8") String V_V_CK_FUNCTION8,
+                                                       @RequestParam(value = "V_I_ORDER") String V_I_ORDER,
+                                                       @RequestParam(value = "V_V_PLAN_STATE") String V_V_PLAN_STATE,
+                                                       @RequestParam(value = "V_I_FLAG") String V_I_FLAG,
+                                                       @RequestParam(value = "V_V_CKTYPE") String V_V_CKTYPE,
+                                                       @RequestParam(value = "V_I_WEIGHT") String V_I_WEIGHT,
+                                                       @RequestParam(value = "V_I_YJ") String V_I_YJ,
+                                                       @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = hpService.PM_06_DJ_CRITERION_SETN(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_CRITERION_CODE,
                 V_V_CRITERION_ITEM, V_V_CRITERION_CONTENT, V_V_CRITERION_CR, V_V_CRITERION_CYCLE, V_V_CRITERION_CYCLETYPE, V_V_EQU_STATE1, V_V_EQU_STATE2, V_V_CK_FUNCTION1,
-                V_V_CK_FUNCTION2, V_V_CK_FUNCTION3, V_V_CK_FUNCTION4, V_V_CK_FUNCTION5, V_V_CK_FUNCTION6, V_V_CK_FUNCTION7, V_V_CK_FUNCTION8, V_I_ORDER,V_V_PLAN_STATE, V_I_FLAG,
+                V_V_CK_FUNCTION2, V_V_CK_FUNCTION3, V_V_CK_FUNCTION4, V_V_CK_FUNCTION5, V_V_CK_FUNCTION6, V_V_CK_FUNCTION7, V_V_CK_FUNCTION8, V_I_ORDER, V_V_PLAN_STATE, V_I_FLAG,
                 V_V_CKTYPE, V_I_WEIGHT, V_I_YJ, V_V_INPER);
 
         String pm_06 = (String) data.get("RET");
@@ -2537,7 +2520,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201001_threedetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201001_threedetail(@RequestParam(value = "recordcode_in") String recordcode_in,
-                                                      HttpServletRequest request)
+                                                        HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201001_threedetail(recordcode_in);
         return result;
@@ -2546,7 +2529,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201001_fourdetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201001_fourdetail(@RequestParam(value = "recordcode_in") String recordcode_in,
-                                                        HttpServletRequest request)
+                                                       HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201001_fourdetail(recordcode_in);
         return result;
@@ -2564,7 +2547,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201001_sixdetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201001_sixdetail(@RequestParam(value = "recordcode_in") String recordcode_in,
-                                                       HttpServletRequest request)
+                                                      HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201001_sixdetail(recordcode_in);
         return result;
@@ -2573,7 +2556,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201001_sevendetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201001_sevendetail(@RequestParam(value = "recordcode_in") String recordcode_in,
-                                                      HttpServletRequest request)
+                                                        HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201001_sevendetail(recordcode_in);
         return result;
@@ -2582,16 +2565,16 @@ public class hpController {
     @RequestMapping(value = "pro_sy201002_onedetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201002_onedetail(@RequestParam(value = "recordcode_in") String recordcode_in,
-                                                        HttpServletRequest request)
+                                                      HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201002_onedetail(recordcode_in);
         return result;
     }
 
     @RequestMapping(value = "pro_sy201002_twodetail", method = RequestMethod.POST)
-     @ResponseBody
-     public Map<String, Object> pro_sy201002_twodetail(@RequestParam(value = "v_record_id") String v_record_id,
-                                                       HttpServletRequest request)
+    @ResponseBody
+    public Map<String, Object> pro_sy201002_twodetail(@RequestParam(value = "v_record_id") String v_record_id,
+                                                      HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201002_twodetail(v_record_id);
         return result;
@@ -2600,7 +2583,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201002_threedetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201002_threedetail(@RequestParam(value = "v_record_id") String v_record_id,
-                                                      HttpServletRequest request)
+                                                        HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201002_threedetail(v_record_id);
         return result;
@@ -2609,7 +2592,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201002_fourdetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201002_fourdetail(@RequestParam(value = "v_record_id") String v_record_id,
-                                                        HttpServletRequest request)
+                                                       HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201002_fourdetail(v_record_id);
         return result;
@@ -2618,7 +2601,7 @@ public class hpController {
     @RequestMapping(value = "pro_sy201003_onedetail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pro_sy201003_onedetail(@RequestParam(value = "recordcode_in") String recordcode_in,
-                                                       HttpServletRequest request)
+                                                      HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.pro_sy201003_onedetail(recordcode_in);
         return result;
@@ -2636,7 +2619,7 @@ public class hpController {
     @RequestMapping(value = "PM_06_DJ_DATA_TIMER_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_06_DJ_DATA_TIMER_SEL(@RequestParam(value = "V_V_DJPER") String V_V_DJPER,
-                                                 HttpServletRequest request)
+                                                       HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.PM_06_DJ_DATA_TIMER_SEL(V_V_DJPER);
         return result;
@@ -2658,13 +2641,13 @@ public class hpController {
     @RequestMapping(value = "/PM_06_DJ_CRITERION_DATA_SETN", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_06_DJ_CRITERION_DATA_SETN(@RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
-                                                           @RequestParam(value = "V_V_FZ_PER") String V_V_FZ_PER,
-                                                           @RequestParam(value = "V_V_PLAN_STATE") String V_V_PLAN_STATE,
-                                                           @RequestParam(value = "V_V_PLAN_TIME") String V_V_PLAN_TIME,
-                                                           @RequestParam(value = "V_V_PLAN_PER") String V_V_PLAN_PER,
-                                                           @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
+                                                            @RequestParam(value = "V_V_FZ_PER") String V_V_FZ_PER,
+                                                            @RequestParam(value = "V_V_PLAN_STATE") String V_V_PLAN_STATE,
+                                                            @RequestParam(value = "V_V_PLAN_TIME") String V_V_PLAN_TIME,
+                                                            @RequestParam(value = "V_V_PLAN_PER") String V_V_PLAN_PER,
+                                                            @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = hpService.PM_06_DJ_CRITERION_DATA_SETN(V_V_CRITERION_CODE, V_V_FZ_PER, V_V_PLAN_STATE, V_V_PLAN_TIME,
@@ -2678,16 +2661,16 @@ public class hpController {
     }
 
     @RequestMapping(value = "/PM_06_DJ_DATA_UPSET", method = RequestMethod.POST)
-     @ResponseBody
-     public Map<String, Object> PM_06_DJ_DATA_UPSET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                    @RequestParam(value = "V_V_DJ_STATE") String V_V_DJ_STATE,
-                                                    @RequestParam(value = "V_V_DJ_DATE") String V_V_DJ_DATE,
-                                                    @RequestParam(value = "V_V_DJ_PER") String V_V_DJ_PER,
-                                                    @RequestParam(value = "V_V_DJ_NR") String V_V_DJ_NR,
-                                                    @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE,
-                                                    @RequestParam(value = "V_V_TIMER_GUID") String V_V_TIMER_GUID,
-                                                    HttpServletRequest request,
-                                                    HttpServletResponse response) throws Exception {
+    @ResponseBody
+    public Map<String, Object> PM_06_DJ_DATA_UPSET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                   @RequestParam(value = "V_V_DJ_STATE") String V_V_DJ_STATE,
+                                                   @RequestParam(value = "V_V_DJ_DATE") String V_V_DJ_DATE,
+                                                   @RequestParam(value = "V_V_DJ_PER") String V_V_DJ_PER,
+                                                   @RequestParam(value = "V_V_DJ_NR") String V_V_DJ_NR,
+                                                   @RequestParam(value = "V_V_DJ_TYPE") String V_V_DJ_TYPE,
+                                                   @RequestParam(value = "V_V_TIMER_GUID") String V_V_TIMER_GUID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = hpService.PM_06_DJ_DATA_UPSET(V_V_GUID, V_V_DJ_STATE, V_V_DJ_DATE, V_V_DJ_PER, V_V_DJ_NR, V_V_DJ_TYPE, V_V_TIMER_GUID);
@@ -2702,11 +2685,11 @@ public class hpController {
     @RequestMapping(value = "/PM_1917_JXGX_JJ_DATA_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_1917_JXGX_JJ_DATA_SET(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
-                                                   @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
-                                                   @RequestParam(value = "V_V_TS") String V_V_TS,
-                                                   @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                   HttpServletRequest request,
-                                                   HttpServletResponse response) throws Exception {
+                                                        @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
+                                                        @RequestParam(value = "V_V_TS") String V_V_TS,
+                                                        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = hpService.PM_1917_JXGX_JJ_DATA_SET(V_V_JXGX_CODE, V_V_JJ_CODE, V_V_TS, V_V_EQUCODE);
@@ -2726,7 +2709,7 @@ public class hpController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = hpService.PM_1917_JXGX_JJ_DATA_DEL(V_V_JXGX_CODE,V_V_JJ_CODE);
+        HashMap data = hpService.PM_1917_JXGX_JJ_DATA_DEL(V_V_JXGX_CODE, V_V_JJ_CODE);
         String pm_06 = (String) data.get("RET");
 
         result.put("RET", pm_06);
@@ -2737,10 +2720,10 @@ public class hpController {
     @RequestMapping(value = "/PM_1917_JXMX_JJ_TS_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_1917_JXMX_JJ_TS_SET(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
-                                                        @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
-                                                        @RequestParam(value = "V_V_TS") String V_V_TS,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) throws Exception {
+                                                      @RequestParam(value = "V_V_JJ_CODE") String V_V_JJ_CODE,
+                                                      @RequestParam(value = "V_V_TS") String V_V_TS,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = hpService.PM_1917_JXMX_JJ_TS_SET(V_V_JXGX_CODE, V_V_JJ_CODE, V_V_TS);
@@ -2755,14 +2738,12 @@ public class hpController {
     @RequestMapping(value = "/PRO_SAP_EQU_BOM_VIEWN", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_SAP_EQU_BOM_VIEWN(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                    @RequestParam(value = "V_V_SPNAME") String V_V_SPNAME,
-                                    HttpServletRequest request,
-                                    HttpServletResponse response) throws Exception {
-        Map result = hpService.PRO_SAP_EQU_BOM_VIEWN(V_V_EQUCODE,V_V_SPNAME);
+                                     @RequestParam(value = "V_V_SPNAME") String V_V_SPNAME,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) throws Exception {
+        Map result = hpService.PRO_SAP_EQU_BOM_VIEWN(V_V_EQUCODE, V_V_SPNAME);
         return result;
     }
-
-
 
 
 }
