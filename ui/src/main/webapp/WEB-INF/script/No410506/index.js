@@ -302,11 +302,12 @@ Ext
 
         Ext.ComponentManager.get('detaile').on("click",
             function(view, rowIndex, colIndex, item, e) {
+
             });
 
     });
 
 function left(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:left;"
+    metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }

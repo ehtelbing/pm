@@ -2257,9 +2257,17 @@ public class cjyController {
                         spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
                         List<Map<String, Object>> spperlist = (List) spperresult.get("list");
 
-                        V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
-                        V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
-                        sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+                        //--update---2018-08-28
+                        if(spperlist.size()>1){
+                            result.put("mes","下一步审批人存在多个，无法批量审批");
+                        }else{
+                            //---------end up
+                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+                            //--update---2018-08-28
+                        }
+                        //---------end up
 
                         processKey = spperresult.get("RET").toString();
                     }

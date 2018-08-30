@@ -1300,4 +1300,42 @@ public class ActivitiController {
 
         return result;
     }
+
+    //---update 2018-08-30
+//    Task task=taskService.createTaskQuery() // 创建任务查询
+//            .taskId(taskId) // 根据任务id查询
+//            .singleResult();
+//    @RequestMapping(value = "getNodePerson", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> getNodePerson(@RequestParam(value = "businessKey") String businessKey,
+//                                                    @RequestParam(value = "ActivitiId") String ActivitiId,
+//                                                    HttpServletRequest request,
+//                                                    HttpServletResponse response) throws Exception {
+//
+//        List<Map> resList = new ArrayList<>();
+//        Map result = new HashMap();
+//        HistoricProcessInstance instance= historyService
+//                .createHistoricProcessInstanceQuery()
+//                .processInstanceBusinessKey(businessKey).listPage(0, 1)
+//                .get(0);//GetInstanceFromBusinessId
+//        Map map = (Map) data.get("list");
+//        String percode = map.get("Assignee").toString();
+//        List<Map<String, Object>> postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
+//        String post = "";
+//        for (int j = 0; j < postlist.size(); j++) {
+//            if (j == 0) {
+//                post = postlist.get(j).get("V_POSTNAME").toString();
+//            } else {
+//                post += "," + postlist.get(j).get("V_POSTNAME").toString();
+//            }
+//
+//        }
+//
+//        map.put("post", post);
+//        resList.add(map);
+//
+//
+//        result.put("list", resList);
+//        return result;
+//    }
 }

@@ -137,11 +137,18 @@ Ext.onReady(function () {
                 labelWidth: 100,
                 width: 250,
                 baseCls: 'margin-bottom'
+            },
+            {
+                xtype : 'button',
+                text : '查询',
+                icon: imgpath + '/search.png',
+                handler : _selectWorkOrder,
+                style: ' margin: 5px 0px 0px 25px'
             }
         ]
     });
 
-    var buttonPanel = Ext.create('Ext.Panel', {
+/*    var buttonPanel = Ext.create('Ext.Panel', {
         id : 'buttonPanel',
         defaults : {
             style: ' margin: 5px 0px 0px 10px',
@@ -154,7 +161,7 @@ Ext.onReady(function () {
             handler : _selectWorkOrder
         }
         ]
-    });
+    });*/
 
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
         id : 'overhaulApplyPanel',
@@ -270,11 +277,11 @@ Ext.onReady(function () {
             region : 'north',
             border : false,
             items : [ editPanel ]
-        }, {
+        }, /*{
             region : 'north',
             border : false,
             items : [ buttonPanel ]
-        }, {
+        },*/ {
             region : 'center',
             layout : 'fit',
             border : false,

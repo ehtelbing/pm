@@ -11,6 +11,7 @@ var ifYS = 0;
 var winheight;
 var V_TEAMCODE = null;
 var V_V_ORDER_TYP = '';
+var action_time;
 $(function () {
 
     var nextSprStore = Ext.create("Ext.data.Store", {
@@ -1000,9 +1001,9 @@ function ActivitiConfirmAccept() {//确定验收
                     Ext.getCmp('valuepanel').add(bpanel);
                     Ext.getCmp('valuewindow').setHeight(winheight);
                     Ext.getCmp('valuepanel').setHeight(winheight);
-                    //Ext.getCmp('valuepanel').add(panel);
+                    // --Ext.getCmp('valuepanel').add(panel);
                     Ext.getCmp('valuewindow').show();
-                    //OpenDiv('VDiv','Vfade');
+                    // --OpenDiv('VDiv','Vfade');
                 }
             }
 
@@ -1859,3 +1860,8 @@ function guid() {
     }
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
+
+
+
+
+

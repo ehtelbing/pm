@@ -218,7 +218,11 @@ function QueryTabW(){
                         title: resp.list[i].name
                     });
                 }
-                Ext.ComponentManager.get("tabpanel").setActiveTab("WeekPlan");
+                // if(tabturn==''){
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage="WeekPlan");
+                // }else{
+                //     Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage=tabturn);
+                // }
             }
         }
     });
@@ -244,7 +248,7 @@ function QueryTabY(){
                         title: resp.list[i].name
                     });
                 }
-                Ext.ComponentManager.get("tabpanel").setActiveTab("MonthPlan");
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage="MonthPlan");
             }
         }
     });

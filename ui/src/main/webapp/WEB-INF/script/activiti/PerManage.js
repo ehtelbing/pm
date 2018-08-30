@@ -176,6 +176,7 @@ function QueryGrid(){
         ActivitiId:ActivitiId
     };
     gridStore.load();
+
 }
 
 function TreeChecked(){

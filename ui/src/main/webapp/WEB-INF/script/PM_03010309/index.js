@@ -363,7 +363,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             valueField: 'V_DEPTCODE',
             store: jhzyqStore,
             queryMode: 'local'
-        }, ,
+        }, 
         {
             xtype: 'combo',
             id: 'sblx',

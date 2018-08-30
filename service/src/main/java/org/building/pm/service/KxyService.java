@@ -104,6 +104,7 @@ public class KxyService {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PM_MENU_FAVORITE" + "(:A_USERID,:RET)}");
+
             cstmt.setString("A_USERID", A_USERID);
             cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
             cstmt.execute();

@@ -361,7 +361,7 @@ function CreateBill() {
                                         async: false,
                                         url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
                                         params: {
-                                            V_V_ORDERGUID: guid,
+                                            V_V_ORDERGUID: $("#V_ORDERGUID").val(),//guid,
                                             V_V_SEND_STATE: "成功"
                                         },
                                         success: function (response) {

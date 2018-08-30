@@ -575,6 +575,7 @@ function selectPerson(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_090511/index.html?V_V_JXGX_CODE='+Ext.getCmp('jxgxbm').getValue()+'&V_ORDERGUID='+V_ORDERGUID+'&redept='+Ext.getCmp('selWorkCenter').valueModels[0].raw.V_SAP_WORK, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    // return ret;
 }
 
 function getPersonReturnValue(data,ts){
