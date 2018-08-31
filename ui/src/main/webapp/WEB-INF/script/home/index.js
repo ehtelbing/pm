@@ -434,8 +434,8 @@ function HomePage() {
     }
 }
 function JstPage(){
-    var jstlogcode;
-    var jstpass;
+    var jstlogcode="";
+    var jstpass="";
     Ext.Ajax.request({
         id: 'selUdtDuty',
         url: AppUrl + 'basic/BASE_PRO_JST_CODESEL2',
@@ -446,9 +446,15 @@ function JstPage(){
         },
         success: function (response) {
             var resp = Ext.JSON.decode(response.responseText);
+
             jstlogcode=resp.V_INFO[0].V_JST;
             jstpass=resp.V_INFO[0].V_PASSWORD;
-            location.href="http://10.101.10.46:8088/PersonCenter-AK/Auth/home?loginname="+jstlogcode+"&password="+jstpass;
+            if(jstlogcode!=""&&jstpass!=""){
+                location.href="http://10.101.10.46:8088/PersonCenter-AK/Auth/home?loginname="+jstlogcode+"&password="+jstpass;
+            }else{
+                Ext.MessageBox.alert("提示","即时通账号或密码不存在");
+            }
+
         }});
 
 }
