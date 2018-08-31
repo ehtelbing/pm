@@ -3201,6 +3201,38 @@ public class cjyController {
         return result;
     }
 
+//    @RequestMapping(value = "/getNextPerson", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map getNextPerson(@RequestParam(value = "businessKey") String businessKey,
+//                             @RequestParam(value = "ActivitiId") String ActivitiId,
+//                             HttpServletRequest request,
+//                             HttpServletResponse response) throws Exception {
+//
+//
+//        List<Map> resList = new ArrayList<>();
+//        Map result = new HashMap();
+//        Map data = activitiController.GetActivitiStepFromBusinessId(businessKey);//GetInstanceFromBusinessId
+//        Map map = (Map) data.get("list");
+//        String percode = map.get("Assignee").toString();
+//        List<Map<String, Object>> postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
+//        String post = "";
+//        for (int j = 0; j < postlist.size(); j++) {
+//            if (j == 0) {
+//                post = postlist.get(j).get("V_POSTNAME").toString();
+//            } else {
+//                post += "," + postlist.get(j).get("V_POSTNAME").toString();
+//            }
+//
+//        }
+//
+//        map.put("post", post);
+//        resList.add(map);
+//
+//
+//        result.put("list", resList);
+//        return result;
+//    }
+    //----update 2018-0831
     @RequestMapping(value = "/getNextPerson", method = RequestMethod.POST)
     @ResponseBody
     public Map getNextPerson(@RequestParam(value = "businessKey") String businessKey,
@@ -3213,17 +3245,33 @@ public class cjyController {
         Map result = new HashMap();
         Map data = activitiController.GetActivitiStepFromBusinessId(businessKey);//GetInstanceFromBusinessId
         Map map = (Map) data.get("list");
-        String percode = map.get("Assignee").toString();
-        List<Map<String, Object>> postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
-        String post = "";
-        for (int j = 0; j < postlist.size(); j++) {
-            if (j == 0) {
-                post = postlist.get(j).get("V_POSTNAME").toString();
-            } else {
-                post += "," + postlist.get(j).get("V_POSTNAME").toString();
-            }
+        String percode;String post = "";
+        List<Map<String, Object>> postlist;
+        for(int i=0;i<map.size();i++){
+            if(map.get("Assignee").toString()==ActivitiId){
+                percode = map.get("Assignee").toString();
+                postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
 
+                for (int j = 0; j < postlist.size(); j++) {
+                    if (j == 0) {
+                        post = postlist.get(j).get("V_POSTNAME").toString();
+                    } else {
+                        post += "," + postlist.get(j).get("V_POSTNAME").toString();
+                    }
+                }
+            }
         }
+       // String percode = map.get("Assignee").toString();
+       // List<Map<String, Object>> postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
+//        String post = "";
+//        for (int j = 0; j < postlist.size(); j++) {
+//            if (j == 0) {
+//                post = postlist.get(j).get("V_POSTNAME").toString();
+//            } else {
+//                post += "," + postlist.get(j).get("V_POSTNAME").toString();
+//            }
+//
+//        }
 
         map.put("post", post);
         resList.add(map);
@@ -3232,8 +3280,7 @@ public class cjyController {
         result.put("list", resList);
         return result;
     }
-
-
+//---end upate
     @RequestMapping(value = "/setNextPerson", method = RequestMethod.POST)
     @ResponseBody
     public Map setNextPerson(@RequestParam(value = "businessKey") String businessKey,
