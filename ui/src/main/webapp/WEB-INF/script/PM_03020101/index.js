@@ -1848,8 +1848,8 @@ function QueryPageLoad(){
                 Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);
                 Ext.getCmp('content').setValue(resp.list[0].V_CONTENT);
 
-                Ext.getCmp('btime').setValue(resp.list[0].V_BDATE);
-                Ext.getCmp('etime').setValue(resp.list[0].V_EDATE);
+                Ext.getCmp('btime').setValue(resp.list[0].V_BDATE.split(" ")[0]);
+                Ext.getCmp('etime').setValue(resp.list[0].V_EDATE.split(" ")[0]);
                 Ext.getCmp('jhfy').setValue(resp.list[0].V_MONEYBUDGET);
 
                 if(resp.list[0].V_MONEYBUDGET=='99'){
