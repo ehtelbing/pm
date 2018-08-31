@@ -2222,6 +2222,7 @@ public class cjyController {
         int sucNum = 0;
         int fqrNum = 0;
         int faiNum = 0;
+        String a="";
         List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
@@ -2259,7 +2260,8 @@ public class cjyController {
 
                         //--update---2018-08-28
                         if(spperlist.size()>1){
-                            result.put("mes","下一步审批人存在多个，无法批量审批");
+                          //  result.put("mes","下一步审批人存在多个，无法批量审批");
+                            a="下一步审批人存在多个，无法批量审批";
                         }else{
                             //---------end up
                             V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
@@ -2338,6 +2340,9 @@ public class cjyController {
         }
 
         result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+        if(a!=""){
+            result.put("mes",a);
+        }
         return result;
     }
 
@@ -2726,6 +2731,8 @@ public class cjyController {
         int sucNum = 0;
         int fqrNum = 0;
         int faiNum = 0;
+        String sppercode="";
+        String a="";
         List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
@@ -2733,6 +2740,7 @@ public class cjyController {
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
             Map stateresult = new HashMap();
+
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
                 String taskid = stepresult.get("taskId").toString();
@@ -2750,20 +2758,26 @@ public class cjyController {
                     List<Map<String, Object>> Assigneelist = (List) stateresult.get("list");
                     String Assignee = Assigneelist.get(0).get("Assignee").toString();
 
+
                     spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR, "WORK", V_STEPCODE, V_V_PERSONCODE, "%", "通过");
                     List<Map<String, Object>> spperresultlist = (List) spperresult.get("list");
+                    if(spperresultlist.size()>1){
+                        a="批量审批中存在多个审批人,无法批量审批";
+                    }else{
+                        sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
+                    }
 
                     String V_NEXT_SETP = spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
                     String processKey = spperresult.get("RET").toString();
-                    String sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
-                    for (int j = 0; j < spperresultlist.size(); j++) {
-                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)) {
-                            sppercode = Assignee;
-                        }
-                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE)) {
-                            sppercode = V_V_PERSONCODE;
-                        }
-                    }
+//                    String sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
+//                    for (int j = 0; j < spperresultlist.size(); j++) {
+//                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)) {
+//                            sppercode = Assignee;
+//                        }
+//                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE)) {
+//                            sppercode = V_V_PERSONCODE;
+//                        }
+//                    }
                     if (V_STEPNAME.indexOf("审批") != -1) {
                         String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
                         String[] parVal = new String[]{sppercode, "批量审批通过"};
@@ -2825,7 +2839,12 @@ public class cjyController {
             }
         }
 
-        result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+        if(a!=""){
+            result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条,"+a);
+        }else{
+            result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+        }
+       // result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
 
