@@ -628,7 +628,14 @@ function getEquipReturnValue(ret) {
     var str = ret.split('^');
     $("#V_EQUNAME").val(str[1]);
     $("#V_EQUCODE").val(str[0]);
-    $("#V_EQUSITE").val(str[3]);
+    //---update2018-0903
+    if (str[3]==""){
+        $("#V_EQUSITE").val(str[2]);
+    }else{
+        $("#V_EQUSITE").val(str[3]);
+    }
+    //==end up
+    //$("#V_EQUSITE").val(str[3]);
     V_EQUTYPE = str[4];
 }
 
