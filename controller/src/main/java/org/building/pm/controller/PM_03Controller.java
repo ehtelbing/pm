@@ -262,6 +262,77 @@ public class PM_03Controller {
         return result;
     }
 
+    //计划类别查询
+    @RequestMapping(value = "/PM_03_PLAN_JHLB_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_JHLB_SEL() throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_JHLB_SEL();
+        return result;
+    }
+
+    //生产类别查询
+    @RequestMapping(value = "/PM_03_PLAN_SCLB_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_SCLB_SEL() throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_SCLB_SEL();
+        return result;
+    }
+
+    //产品种类查询
+    @RequestMapping(value = "/PM_03_PLAN_CPZL_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_CPZL_SEL( @RequestParam(value = "V_V_SCLB") String V_V_SCLB) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_CPZL_SEL(V_V_SCLB);
+        return result;
+    }
+
+    //大修工序查询
+    @RequestMapping(value = "/PM_03_PLAN_GX_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_GX_SEL( @RequestParam(value = "V_V_CPCODE") String V_V_CPCODE) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_GX_SEL(V_V_CPCODE);
+        return result;
+    }
+
+    //施工方式查询
+    @RequestMapping(value = "/PM_03_PLAN_SGFS_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_SGFS_SEL() throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_SGFS_SEL();
+        return result;
+    }
+
+    //大修专业查询
+    @RequestMapping(value = "/PM_03_PLAN_ZY_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_ZY_SEL() throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_ZY_SEL();
+        return result;
+    }
+
+    /*
+     * 大修年计划工程编号设置
+     * */
+    @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECTCODE_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_PROJECTCODE_CREATE(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_JHLB") String V_V_JHLB,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY) throws Exception {
+
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECTCODE_CREATE(V_V_GUID,V_V_YEAR,V_V_ORGCODE,V_V_DEPTCODE,V_V_JHLB,V_V_ZY);
+        return result;
+    }
+
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_SELECT", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_YEAR_SELECT(

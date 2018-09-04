@@ -411,6 +411,36 @@ public class PM_03Service {
         return result;
     }
 
+    public Map PRO_PM_03_PLAN_PROJECTCODE_CREATE(String V_V_GUID,String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_JHLB,String V_V_ZY) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_PROJECTCODE_CREATE" + "(:V_V_GUID,:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_JHLB,:V_V_ZY,:V_V_PROJECT_OUT,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_JHLB", V_V_JHLB);
+            cstmt.setString("V_V_ZY", V_V_ZY);
+            cstmt.registerOutParameter("V_V_PROJECT_OUT", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_V_PROJECT_OUT", (String) cstmt.getObject("V_V_PROJECT_OUT"));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_PROJECTCODE_CREATE");
+        return result;
+    }
+
     public Map PRO_PM_03_PLAN_PROJECT_SEL(String V_V_GUID) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
@@ -434,6 +464,145 @@ public class PM_03Service {
         return result;
     }
 
+    public Map PM_03_PLAN_JHLB_SEL() throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_JHLB_SEL" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_JHLB_SEL");
+        return result;
+    }
+
+    public Map PM_03_PLAN_SCLB_SEL() throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_SCLB_SEL" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_SCLB_SEL");
+        return result;
+    }
+
+    public Map PM_03_PLAN_SGFS_SEL() throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_SGFS_SEL" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_SGFS_SEL");
+        return result;
+    }
+
+    public Map PM_03_PLAN_ZY_SEL() throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_ZY_SEL" + "(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_ZY_SEL");
+        return result;
+    }
+
+    public Map PM_03_PLAN_CPZL_SEL(String V_V_SCLB) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_CPZL_SEL" + "(:V_V_SCLB,:V_CURSOR)}");
+            cstmt.setString("V_V_SCLB", V_V_SCLB);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_CPZL_SEL");
+        return result;
+    }
+
+    public Map PM_03_PLAN_GX_SEL(String V_V_CPCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_GX_SEL" + "(:V_V_CPCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_CPCODE", V_V_CPCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_GX_SEL");
+        return result;
+    }
 
     public List<Map> PRO_PM_03_PLAN_YEAR_SELECT(String V_V_JXGX_CODE_NEW,String V_V_JXGX_CODE_OLD) throws SQLException {
 //        logger.info("begin PRO_PM_03_PLAN_YEAR_SELECT");

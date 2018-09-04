@@ -1643,7 +1643,7 @@ public class cjyController {
             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
 
-        HashMap data = cjyService.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR,  V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
+        HashMap data = cjyService.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
@@ -2222,7 +2222,7 @@ public class cjyController {
         int sucNum = 0;
         int fqrNum = 0;
         int faiNum = 0;
-        String a="";
+        String a = "";
         List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
@@ -2259,10 +2259,10 @@ public class cjyController {
                         List<Map<String, Object>> spperlist = (List) spperresult.get("list");
 
                         //--update---2018-08-28
-                        if(spperlist.size()>1){
-                          //  result.put("mes","下一步审批人存在多个，无法批量审批");
-                            a="下一步审批人存在多个，无法批量审批";
-                        }else{
+                        if (spperlist.size() > 1) {
+                            //  result.put("mes","下一步审批人存在多个，无法批量审批");
+                            a = "下一步审批人存在多个，无法批量审批";
+                        } else {
                             //---------end up
                             V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
                             V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
@@ -2340,8 +2340,8 @@ public class cjyController {
         }
 
         result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
-        if(a!=""){
-            result.put("mes",a);
+        if (a != "") {
+            result.put("mes", a);
         }
         return result;
     }
@@ -2731,8 +2731,8 @@ public class cjyController {
         int sucNum = 0;
         int fqrNum = 0;
         int faiNum = 0;
-        String sppercode="";
-        String a="";
+        String sppercode = "";
+        String a = "";
         List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
@@ -2761,23 +2761,19 @@ public class cjyController {
 
                     spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR, "WORK", V_STEPCODE, V_V_PERSONCODE, "%", "通过");
                     List<Map<String, Object>> spperresultlist = (List) spperresult.get("list");
-                    if(spperresultlist.size()>1){
-                        a="批量审批中存在多个审批人,无法批量审批";
-                    }else{
-                        sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
-                    }
+
 
                     String V_NEXT_SETP = spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
                     String processKey = spperresult.get("RET").toString();
-//                    String sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
-//                    for (int j = 0; j < spperresultlist.size(); j++) {
-//                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)) {
-//                            sppercode = Assignee;
-//                        }
-//                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE)) {
-//                            sppercode = V_V_PERSONCODE;
-//                        }
-//                    }
+                    sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
+                    for (int j = 0; j < spperresultlist.size(); j++) {
+                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)) {
+                            sppercode = Assignee;
+                        }
+                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE)) {
+                            sppercode = V_V_PERSONCODE;
+                        }
+                    }
                     if (V_STEPNAME.indexOf("审批") != -1) {
                         String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
                         String[] parVal = new String[]{sppercode, "批量审批通过"};
@@ -2796,9 +2792,9 @@ public class cjyController {
                             flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
                         } else if (V_STEPNAME.indexOf("工单打印") != -1) {
                             flowresult = zdhService.PRO_WX_WORKORDER_GET(V_ORDERGUID[i]);
-                            List orderList= (List) flowresult.get("list");
-                            Map orderMap= (Map) orderList.get(0);
-                            flowresult = workOrderService.PRO_PM_WORKORDER_DY(V_V_PERSONCODE, orderMap.get("V_PERSONNAME").toString(),V_ORDERGUID[i],orderMap.get("D_START_DATE").toString(),orderMap.get("D_FINISH_DATE").toString(),"","","","","","");
+                            List orderList = (List) flowresult.get("list");
+                            Map orderMap = (Map) orderList.get(0);
+                            flowresult = workOrderService.PRO_PM_WORKORDER_DY(V_V_PERSONCODE, orderMap.get("V_PERSONNAME").toString(), V_ORDERGUID[i], orderMap.get("D_START_DATE").toString(), orderMap.get("D_FINISH_DATE").toString(), "", "", "", "", "", "");
                         }
                         /*
                          * 如果下一步是不是审批步骤，当前步骤是审批，向物资接口传递工单信息
@@ -2810,7 +2806,7 @@ public class cjyController {
                          * 传递完成
                          * */
 
-                        if (flowresult.get("V_INFO").toString().equals("success")||flowresult.get("V_INFO").toString().equals("成功")) {
+                        if (flowresult.get("V_INFO").toString().equals("success") || flowresult.get("V_INFO").toString().equals("成功")) {
                             sucNum++;
                             nexperList.add(sppercode);
                         }
@@ -2839,12 +2835,12 @@ public class cjyController {
             }
         }
 
-        if(a!=""){
-            result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条,"+a);
-        }else{
+        if (a != "") {
+            result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条," + a);
+        } else {
             result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         }
-       // result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+        // result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
 
@@ -3220,7 +3216,7 @@ public class cjyController {
         return result;
     }
 
-//    @RequestMapping(value = "/getNextPerson", method = RequestMethod.POST)
+    //    @RequestMapping(value = "/getNextPerson", method = RequestMethod.POST)
 //    @ResponseBody
 //    public Map getNextPerson(@RequestParam(value = "businessKey") String businessKey,
 //                             @RequestParam(value = "ActivitiId") String ActivitiId,
@@ -3264,10 +3260,11 @@ public class cjyController {
         Map result = new HashMap();
         Map data = activitiController.GetActivitiStepFromBusinessId(businessKey);//GetInstanceFromBusinessId
         Map map = (Map) data.get("list");
-        String percode;String post = "";
+        String percode;
+        String post = "";
         List<Map<String, Object>> postlist;
-        for(int i=0;i<map.size();i++){
-            if(map.get("Assignee").toString()==ActivitiId){
+        for (int i = 0; i < map.size(); i++) {
+            if (map.get("Assignee").toString() == ActivitiId) {
                 percode = map.get("Assignee").toString();
                 postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
 
@@ -3280,8 +3277,8 @@ public class cjyController {
                 }
             }
         }
-       // String percode = map.get("Assignee").toString();
-       // List<Map<String, Object>> postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
+        // String percode = map.get("Assignee").toString();
+        // List<Map<String, Object>> postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
 //        String post = "";
 //        for (int j = 0; j < postlist.size(); j++) {
 //            if (j == 0) {
@@ -3299,7 +3296,8 @@ public class cjyController {
         result.put("list", resList);
         return result;
     }
-//---end upate
+
+    //---end upate
     @RequestMapping(value = "/setNextPerson", method = RequestMethod.POST)
     @ResponseBody
     public Map setNextPerson(@RequestParam(value = "businessKey") String businessKey,

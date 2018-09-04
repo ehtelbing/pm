@@ -22,6 +22,97 @@ if(Ext.urlDecode(location.href.split('?')[1])!=null){
     Guid=Ext.urlDecode(location.href.split('?')[1]).guid==null?"":Ext.urlDecode(location.href.split('?')[1]).guid;
 }
 
+//计划类别
+var jhlbStore = Ext.create("Ext.data.Store", {
+    storeId: 'jhlbStore',
+    fields: ['V_UID', 'V_XH','V_LBMC','V_BZ','V_BS','V_DLHS','V_FYLX','V_XWLX','V_LBJC'],
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_JHLB_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+//生产类别
+var sclbStore = Ext.create("Ext.data.Store", {
+    storeId: 'sclbStore',
+    fields: ['V_UID', 'V_XH','V_SCLB','V_BZ'],
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_SCLB_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+//产品种类
+var cpzlStore = Ext.create("Ext.data.Store", {
+    storeId: 'cpzlStore',
+    fields: ['V_UID', 'V_XH','V_CPZL','V_LBBM','V_BZ'],
+    autoLoad: false,
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_CPZL_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+//工序
+var cpgxStore = Ext.create("Ext.data.Store", {
+    storeId: 'cpgxStore',
+    fields: ['V_UID', 'V_XH','V_GXMC','V_BZ'],
+    autoLoad: false,
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_GX_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+//施工方式
+var sgfsStore = Ext.create("Ext.data.Store", {
+    storeId: 'sgfsStore',
+    fields: ['ID', 'V_BH','V_SGFS','V_LX'],
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_SGFS_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+
 var wlAllStore = Ext.create("Ext.data.Store", {
     storeId: 'wlAllStore',
     fields: ['V_GGXH', 'V_JLDW','V_JXGX_CODE','V_JXGX_NAME','V_KFNAME','V_PRICE','V_USE_NUM','V_WLCODE','V_WLSM'],
@@ -161,11 +252,11 @@ var wxlxStore = Ext.create('Ext.data.Store', {
 var zyStore = Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'zyStore',
-    fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
+    fields: ['V_GUID', 'V_ZYMC','V_ZYJC','V_LX','V_ORDER'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
+        url: AppUrl + 'PM_03/PM_03_PLAN_ZY_SEL',
         actionMethods: {
             read: 'POST'
         },
@@ -627,6 +718,12 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 0',
             iconCls:'Report',
             handler:btnFlowDisAgree
+        },{
+            xtype: 'button',
+            text: '附件',
+            margin: '5 0 5 0',
+            iconCls:'Tablegear',
+            handler:btnAdd_jxmx
         }
     ]
 });
@@ -636,7 +733,6 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
     width:'100%',
     frame: false,
     border:true,
-    //baseCls: 'my-panel-no-border',
     layout: 'column',
     defaults: {labelAlign: 'right'},
     bodyStyle:"background:#f2f2f2",
@@ -694,10 +790,91 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             queryMode : 'local',
             fieldLabel : '专 业',
             margin:'5 5 5 0',
-            displayField: 'V_BASENAME',
-            valueField: 'V_SPECIALTYCODE',
+            displayField: 'V_ZYMC',
+            valueField: 'V_GUID',
             width:265,
             labelWidth :75,
+            labelAlign : 'right'
+        },
+        {
+            xtype : 'combo',
+            id : "jhlb",
+            store: jhlbStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '计划类别',
+            margin:'5 5 5 0',
+            displayField: 'V_LBMC',
+            valueField: 'V_UID',
+            width:250,
+            labelWidth :60,
+            labelAlign : 'right'
+        }, {
+            xtype : 'combo',
+            id : "sclb",
+            store: sclbStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '生产类别',
+            margin:'5 5 5 0',
+            displayField: 'V_SCLB',
+            valueField: 'V_UID',
+            labelWidth :80,
+            width:250,
+            labelAlign : 'right'
+        }, {
+            xtype : 'combo',
+            id : "cpzl",
+            store: cpzlStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '产品种类',
+            margin:'5 5 5 0',
+            displayField: 'V_CPZL',
+            valueField: 'V_UID',
+            labelWidth :60,
+            width:250,
+            labelAlign : 'right'
+        },
+        {
+            xtype : 'combo',
+            id : "cpgx",
+            store: cpgxStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '工 序',
+            margin:'5 5 5 0',
+            displayField: 'V_GXMC',
+            valueField: 'V_UID',
+            width:265,
+            labelWidth :75,
+            labelAlign : 'right'
+        },
+        {
+            xtype : 'combo',
+            id : "sgfs",
+            store: sgfsStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '施工方式',
+            margin:'5 5 5 0',
+            displayField: 'V_SGFS',
+            valueField: 'V_BH',
+            width:250,
+            labelWidth :60,
+            labelAlign : 'right'
+        }, {
+            xtype : 'combo',
+            id : "sfxj",
+            store: zyqStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '是否修旧',
+            margin:'5 5 5 0',
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            labelWidth :80,
+            width:250,
             labelAlign : 'right'
         }
     ]
@@ -1780,6 +1957,52 @@ Ext.onReady(function () {
     });
 
     QueryPageLoad();
+
+    Ext.data.StoreManager.lookup('jhlbStore').on('load',function(){
+        Ext.getCmp('jhlb').select( Ext.data.StoreManager.lookup('jhlbStore').getAt(0));
+    });
+
+    Ext.data.StoreManager.lookup('sclbStore').on('load',function(){
+        Ext.getCmp('sclb').select( Ext.data.StoreManager.lookup('sclbStore').getAt(0));
+        Ext.data.StoreManager.lookup('cpzlStore').load({
+            params:{
+                V_V_SCLB: Ext.getCmp('sclb').getValue()
+            }
+        });
+    });
+
+    Ext.data.StoreManager.lookup('cpzlStore').on('load',function(){
+        Ext.getCmp('cpzl').select( Ext.data.StoreManager.lookup('cpzlStore').getAt(0));
+        Ext.data.StoreManager.lookup('cpgxStore').load({
+            params:{
+                V_V_CPCODE: Ext.getCmp('cpzl').getValue()
+            }
+        });
+    });
+
+    Ext.data.StoreManager.lookup('cpgxStore').on('load',function(){
+        Ext.getCmp('cpgx').select( Ext.data.StoreManager.lookup('cpgxStore').getAt(0));
+    });
+
+    Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
+        Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+    });
+
+    Ext.getCmp('sclb').on('select',function(){
+        Ext.data.StoreManager.lookup('cpzlStore').load({
+            params:{
+                V_V_SCLB: Ext.getCmp('sclb').getValue()
+            }
+        });
+    });
+
+    Ext.getCmp('cpzl').on('select',function(){
+        Ext.data.StoreManager.lookup('cpgxStore').load({
+            params:{
+                V_V_SCLB: Ext.getCmp('cpzl').getValue()
+            }
+        });
+    });
 
     Ext.getCmp('zyq').on('select',function(){
         Ext.data.StoreManager.lookup('zyStore').load({
