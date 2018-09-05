@@ -2258,18 +2258,9 @@ public class cjyController {
                         spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
                         List<Map<String, Object>> spperlist = (List) spperresult.get("list");
 
-                        //--update---2018-08-28
-                        if (spperlist.size() > 1) {
-                            //  result.put("mes","下一步审批人存在多个，无法批量审批");
-                            a = "下一步审批人存在多个，无法批量审批";
-                        } else {
-                            //---------end up
-                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
-                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
-                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
-                            //--update---2018-08-28
-                        }
-                        //---------end up
+                        V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+                        V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+                        sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
 
                         processKey = spperresult.get("RET").toString();
                     }
@@ -2340,9 +2331,6 @@ public class cjyController {
         }
 
         result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
-        if (a != "") {
-            result.put("mes", a);
-        }
         return result;
     }
 
@@ -2731,8 +2719,6 @@ public class cjyController {
         int sucNum = 0;
         int fqrNum = 0;
         int faiNum = 0;
-        String sppercode = "";
-        String a = "";
         List<String> nexperList = new ArrayList<String>();
         for (int i = 0; i < V_ORDERGUID.length; i++) {
             Map stepresult = new HashMap();
@@ -2740,13 +2726,12 @@ public class cjyController {
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
             Map stateresult = new HashMap();
-
             try {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
                 String taskid = stepresult.get("taskId").toString();
                 String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
                 String V_STEPNAME = stepresult.get("taskName").toString();
-                if (V_STEPNAME.indexOf("审批") == -1 && V_STEPNAME.indexOf("工单打印") == -1) {//没有审批字样
+                if (V_STEPNAME.indexOf("审批") == -1 && V_STEPNAME.indexOf("工单打印") == -1 ) {//没有审批字样
                     fqrNum++;
                 } else {
                     List<Map<String, Object>> perresult = (List) cjyService.PRO_PM_WORKORDER_GET(V_ORDERGUID[i]).get("list");
@@ -2758,14 +2743,12 @@ public class cjyController {
                     List<Map<String, Object>> Assigneelist = (List) stateresult.get("list");
                     String Assignee = Assigneelist.get(0).get("Assignee").toString();
 
-
                     spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR, "WORK", V_STEPCODE, V_V_PERSONCODE, "%", "通过");
                     List<Map<String, Object>> spperresultlist = (List) spperresult.get("list");
 
-
                     String V_NEXT_SETP = spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
                     String processKey = spperresult.get("RET").toString();
-                    sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
+                    String sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
                     for (int j = 0; j < spperresultlist.size(); j++) {
                         if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)) {
                             sppercode = Assignee;
@@ -2779,22 +2762,32 @@ public class cjyController {
                         String[] parVal = new String[]{sppercode, "批量审批通过"};
 
                         complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
-                    } else if (V_STEPNAME.indexOf("工单打印") != -1) {
+                    } else if (V_STEPNAME.equals("工单打印")) {
                         String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
                         String[] parVal = new String[]{sppercode, "批量打印"};
 
                         complresult = activitiController.TaskCompletePL(taskid, "已打印", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请接收！", sppercode, V_V_PERSONCODE);
+                    }else if(V_STEPNAME.equals("工单打印接收")){
+                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                        String[] parVal = new String[]{sppercode, "批量打印接收"};
+
+                        complresult = activitiController.TaskCompletePL(taskid, "已反馈", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请验收！", sppercode, V_V_PERSONCODE);
                     }
 
                     if (complresult.get("ret").toString().equals("任务提交成功")) {
 
                         if (V_STEPNAME.indexOf("审批") != -1) {
                             flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
-                        } else if (V_STEPNAME.indexOf("工单打印") != -1) {
+                        } else if (V_STEPNAME.equals("工单打印")) {
                             flowresult = zdhService.PRO_WX_WORKORDER_GET(V_ORDERGUID[i]);
                             List orderList = (List) flowresult.get("list");
                             Map orderMap = (Map) orderList.get(0);
                             flowresult = workOrderService.PRO_PM_WORKORDER_DY(V_V_PERSONCODE, orderMap.get("V_PERSONNAME").toString(), V_ORDERGUID[i], orderMap.get("D_START_DATE").toString(), orderMap.get("D_FINISH_DATE").toString(), "", "", "", "", "", "");
+                        }else if(V_STEPNAME.equals("工单打印接收")){
+                            flowresult = zdhService.PRO_WX_WORKORDER_GET(V_ORDERGUID[i]);
+                            List orderList = (List) flowresult.get("list");
+                            Map orderMap = (Map) orderList.get(0);
+                            flowresult = workOrderService.PRO_PM_WORKORDER_FK(V_V_PERSONCODE, orderMap.get("V_PERSONNAME").toString(), V_ORDERGUID[i], orderMap.get("D_START_DATE").toString(), orderMap.get("D_FINISH_DATE").toString(), "", "", "", "", "", "");
                         }
                         /*
                          * 如果下一步是不是审批步骤，当前步骤是审批，向物资接口传递工单信息
@@ -2835,12 +2828,7 @@ public class cjyController {
             }
         }
 
-        if (a != "") {
-            result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条," + a);
-        } else {
-            result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
-        }
-        // result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+        result.put("mes", "工单批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
 

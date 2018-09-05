@@ -199,9 +199,17 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_BDATE") String V_V_BDATE,
             @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
             @RequestParam(value = "V_V_INMAN") String V_V_INMAN,
-            @RequestParam(value = "V_V_INMANCODE") String V_V_INMANCODE) throws Exception {
+            @RequestParam(value = "V_V_INMANCODE") String V_V_INMANCODE,
+            @RequestParam(value = "V_V_JHLB") String V_V_JHLB,
+            @RequestParam(value = "V_V_SCLB") String V_V_SCLB,
+            @RequestParam(value = "V_V_CPZL") String V_V_CPZL,
+            @RequestParam(value = "V_V_CPGX") String V_V_CPGX,
+            @RequestParam(value = "V_V_SGFS") String V_V_SGFS,
+            @RequestParam(value = "V_V_SFXJ") String V_V_SFXJ) throws Exception {
 
-        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SET(V_V_GUID, V_V_YEAR,V_V_MONTH,V_V_ORGCODE,V_V_ORGNAME,V_V_DEPTCODE,V_V_DEPTNAME,V_V_PORJECT_CODE,V_V_PORJECT_NAME,V_V_SPECIALTY,V_V_SPECIALTYNAME,V_V_SPECIALTYMANCODE,V_V_SPECIALTYMAN,V_V_WXTYPECODE,V_V_WXTYPENAME,V_V_CONTENT,V_V_MONEYBUDGET,V_V_REPAIRDEPTCODE,V_V_BDATE,V_V_EDATE,V_V_INMAN,V_V_INMANCODE);
+        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SET(V_V_GUID, V_V_YEAR,V_V_MONTH,V_V_ORGCODE,V_V_ORGNAME,V_V_DEPTCODE,V_V_DEPTNAME,V_V_PORJECT_CODE,V_V_PORJECT_NAME,
+                V_V_SPECIALTY,V_V_SPECIALTYNAME,V_V_SPECIALTYMANCODE,V_V_SPECIALTYMAN,V_V_WXTYPECODE,V_V_WXTYPENAME,V_V_CONTENT,V_V_MONEYBUDGET,V_V_REPAIRDEPTCODE,
+                V_V_BDATE,V_V_EDATE,V_V_INMAN,V_V_INMANCODE,V_V_JHLB,V_V_SCLB,V_V_CPZL,V_V_CPGX,V_V_SGFS,V_V_SFXJ);
         return result;
     }
 

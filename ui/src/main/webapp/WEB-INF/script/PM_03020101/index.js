@@ -3,7 +3,7 @@ var Year='';
 var OrgCode='';
 var OrgName='';
 var DeptCode='';
-var ZyCode='';
+var JhlbCode='';
 var WxlxCode='';
 var repairDept='';
 var fzrPer='';
@@ -233,7 +233,7 @@ var zyqStore = Ext.create("Ext.data.Store", {
     }
 });
 var wxlxStore = Ext.create('Ext.data.Store', {
-    autoLoad: false,
+    autoLoad: true,
     storeId: 'wxlxStore',
     fields: ['V_BASECODE', 'V_BASENAME'],
     proxy: {
@@ -246,11 +246,14 @@ var wxlxStore = Ext.create('Ext.data.Store', {
         reader: {
             type: 'json',
             root: 'list'
+        },
+        extraParams: {
+            IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
         }
     }
 });
 var zyStore = Ext.create('Ext.data.Store', {
-    autoLoad: false,
+    autoLoad: true,
     storeId: 'zyStore',
     fields: ['V_GUID', 'V_ZYMC','V_ZYJC','V_LX','V_ORDER'],
     proxy: {
@@ -744,7 +747,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             id:'ProjectCode',
             labelWidth: 60,
             width:250,
-            margin:'5 5 5 15'
+            margin:'5 5 5 15',
+            readOnly:true
         },
         {
             xtype: 'textfield',
@@ -866,13 +870,12 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
         }, {
             xtype : 'combo',
             id : "sfxj",
-            store: zyqStore,
+            store: [[0,'是'],[1,'否']],
             editable : false,
             queryMode : 'local',
+            value:0,
             fieldLabel : '是否修旧',
             margin:'5 5 5 0',
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
             labelWidth :80,
             width:250,
             labelAlign : 'right'
@@ -1958,34 +1961,12 @@ Ext.onReady(function () {
 
     QueryPageLoad();
 
-    Ext.data.StoreManager.lookup('jhlbStore').on('load',function(){
-        Ext.getCmp('jhlb').select( Ext.data.StoreManager.lookup('jhlbStore').getAt(0));
+    Ext.getCmp('zy').on('select',function(){
+        CreateProjectCode();
     });
 
-    Ext.data.StoreManager.lookup('sclbStore').on('load',function(){
-        Ext.getCmp('sclb').select( Ext.data.StoreManager.lookup('sclbStore').getAt(0));
-        Ext.data.StoreManager.lookup('cpzlStore').load({
-            params:{
-                V_V_SCLB: Ext.getCmp('sclb').getValue()
-            }
-        });
-    });
-
-    Ext.data.StoreManager.lookup('cpzlStore').on('load',function(){
-        Ext.getCmp('cpzl').select( Ext.data.StoreManager.lookup('cpzlStore').getAt(0));
-        Ext.data.StoreManager.lookup('cpgxStore').load({
-            params:{
-                V_V_CPCODE: Ext.getCmp('cpzl').getValue()
-            }
-        });
-    });
-
-    Ext.data.StoreManager.lookup('cpgxStore').on('load',function(){
-        Ext.getCmp('cpgx').select( Ext.data.StoreManager.lookup('cpgxStore').getAt(0));
-    });
-
-    Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
-        Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+    Ext.getCmp('jhlb').on('select',function(){
+        CreateProjectCode();
     });
 
     Ext.getCmp('sclb').on('select',function(){
@@ -2005,42 +1986,17 @@ Ext.onReady(function () {
     });
 
     Ext.getCmp('zyq').on('select',function(){
-        Ext.data.StoreManager.lookup('zyStore').load({
-            params: {
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTNEXTCODE: DeptCode
-            }
-        });
-
-        Ext.data.StoreManager.lookup('wxlxStore').load({
-            params: {
-                IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
-            }
-        })
+        QueryZyFzr();
 
         Ext.data.StoreManager.lookup('repairDeptStore').load({
             params:{
                 V_V_DEPTCODE:DeptCode
             }
         });
-
-        Ext.data.StoreManager.lookup('fzPerStore').load({
-            params:{
-                V_V_SPECIALTYCODE : Ext.getCmp('zy').getValue(),
-                V_V_POSTCODE : '0101020104',
-                V_V_DEPTCODE : Ext.getCmp('zyq').getValue()
-            }
-        })
     });
 
-    Ext.getCmp('zyq').on('select',function(){
-        Ext.data.StoreManager.lookup('fzPerStore').load({
-            params:{
-                V_V_SPECIALTYCODE : Ext.getCmp('zy').getValue(),
-                V_V_POSTCODE : '0101020104',
-                V_V_DEPTCODE : Ext.getCmp('zyq').getValue()
-            }
-        })
+    Ext.getCmp('zy').on('select',function(){
+        QueryZyFzr();
     })
 
 });
@@ -2062,17 +2018,113 @@ function QueryPageLoad(){
                 OrgCode=resp.list[0].V_ORGCODE;
                 OrgName=resp.list[0].V_ORGNAME;
                 DeptCode=resp.list[0].V_DEPTCODE;
-                ZyCode=resp.list[0].V_SPECIALTY;
-                WxlxCode=resp.list[0].V_WXTYPECODE;
-                repairDept=resp.list[0].V_REPAIRDEPTCODE
                 fzrPer=resp.list[0].V_SPECIALTYMANCODE;
+                //计划类别
+                Ext.data.StoreManager.lookup('jhlbStore').on('load',function(){
+                    if(resp.list[0].V_JHLB==''){
+                        Ext.getCmp('jhlb').select(Ext.data.StoreManager.lookup('jhlbStore').getAt(0));
+                    } else{
+                        Ext.getCmp('jhlb').select(resp.list[0].V_JHLB);
+                    }
+                });
+                //专业默认值
+                Ext.data.StoreManager.lookup('zyStore').on('load',function() {
+                    if (resp.list[0].V_SPECIALTY == '') {
+                        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+                    } else {
+                        Ext.getCmp('zy').select(resp.list[0].V_SPECIALTY);
+                    }
+                });
+                //生产类别
+                Ext.data.StoreManager.lookup('sclbStore').on('load',function(){
+                    if (resp.list[0].V_SCLB == '') {
+                        Ext.getCmp('sclb').select(Ext.data.StoreManager.lookup('sclbStore').getAt(0));
+                        Ext.data.StoreManager.lookup('cpzlStore').load({
+                            params:{
+                                V_V_SCLB: Ext.getCmp('sclb').getValue()
+                            }
+                        });
+                    } else {
+                        Ext.getCmp('sclb').select(resp.list[0].V_SCLB);
+                        Ext.data.StoreManager.lookup('cpzlStore').load({
+                            params:{
+                                V_V_SCLB: Ext.getCmp('sclb').getValue()
+                            }
+                        });
+                    }
+                });
+
+                Ext.data.StoreManager.lookup('cpzlStore').on('load',function(){
+                    if (resp.list[0].V_CPZL == '') {
+                        Ext.getCmp('cpzl').select(Ext.data.StoreManager.lookup('cpzlStore').getAt(0));
+                        Ext.data.StoreManager.lookup('cpgxStore').load({
+                            params:{
+                                V_V_CPCODE: Ext.getCmp('cpzl').getValue()
+                            }
+                        });
+                    } else {
+                        Ext.getCmp('cpzl').select(resp.list[0].V_CPZL);
+                        Ext.data.StoreManager.lookup('cpgxStore').load({
+                            params:{
+                                V_V_CPCODE: Ext.getCmp('cpzl').getValue()
+                            }
+                        });
+                    }
+                });
+
+                Ext.data.StoreManager.lookup('cpgxStore').on('load',function(){
+                    if (resp.list[0].V_CPGX == '') {
+                        Ext.getCmp('cpgx').select( Ext.data.StoreManager.lookup('cpgxStore').getAt(0));
+                    } else {
+                        Ext.getCmp('cpgx').select( resp.list[0].V_CPGX);
+                    }
+                });
+
+                Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
+                    if (resp.list[0].V_SGFS == '') {
+                        Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+                    } else {
+                        Ext.getCmp('sgfs').select( resp.list[0].V_SGFS);
+                    }
+                });
+
+                Ext.data.StoreManager.lookup('wxlxStore').on('load',function(){
+                    if(resp.list[0].V_WXTYPECODE==''){
+                        Ext.getCmp('wxlx').select(Ext.data.StoreManager.lookup('wxlxStore').getAt(0));
+                    }else{
+                        Ext.getCmp('wxlx').select(resp.list[0].V_WXTYPECODE);
+                    }
+                });
+                //加载检修单位
+                Ext.data.StoreManager.lookup('repairDeptStore').load({
+                    params:{
+                        V_V_DEPTCODE:DeptCode
+                    }
+                });
+                Ext.data.StoreManager.lookup('repairDeptStore').on('load',function(){
+                    if(resp.list[0].V_REPAIRDEPTCODE==''){
+                        Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
+                    }else{
+                        Ext.getCmp('repairDept').select(resp.list[0].V_REPAIRDEPTCODE);
+                    }
+                });
 
                 Ext.getCmp('ProjectCode').setValue(resp.list[0].V_PORJECT_CODE);
                 Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);
                 Ext.getCmp('content').setValue(resp.list[0].V_CONTENT);
 
-                Ext.getCmp('btime').setValue(resp.list[0].V_BDATE.split(" ")[0]);
-                Ext.getCmp('etime').setValue(resp.list[0].V_EDATE.split(" ")[0]);
+
+                if(resp.list[0].V_BDATE==''){
+                    Ext.getCmp('btime').setValue(new Date());
+                }else{
+                    Ext.getCmp('btime').setValue(resp.list[0].V_BDATE.split(" ")[0]);
+                }
+
+                if(resp.list[0].V_EDATE==''){
+                    Ext.getCmp('etime').setValue(new Date());
+                }else{
+                    Ext.getCmp('etime').setValue(resp.list[0].V_EDATE.split(" ")[0]);
+                }
                 Ext.getCmp('jhfy').setValue(resp.list[0].V_MONEYBUDGET);
 
                 if(resp.list[0].V_MONEYBUDGET=='99'){
@@ -2098,6 +2150,46 @@ function QueryPageLoad(){
 
     QueryCGrid();
 }
+//加载专业负责人
+function QueryZyFzr(){
+    Ext.data.StoreManager.lookup('fzPerStore').load({
+        params:{
+            V_V_SPECIALTYCODE : Ext.getCmp('zy').rawValue,
+            V_V_POSTCODE : '0101020104',
+            V_V_DEPTCODE : Ext.getCmp('zyq').getValue()
+        }
+    });
+
+    Ext.data.StoreManager.lookup('fzPerStore').on('load',function(){
+    if(fzrPer==''){
+        Ext.getCmp('fzPer').select(Ext.data.StoreManager.lookup('fzPerStore').getAt(0));
+    }else{
+        Ext.getCmp('fzPer').select(fzrPer);
+         }
+    });
+}
+//创建工程编码
+function CreateProjectCode(){
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_03/PRO_PM_03_PLAN_PROJECTCODE_CREATE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID:Guid,
+            V_V_YEAR:Year,
+            V_V_ORGCODE:OrgCode,
+            V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),
+            V_V_JHLB:Ext.getCmp('jhlb').getValue(),
+            V_V_ZY:Ext.getCmp('zy').getValue()
+        },
+        success: function (resp) {
+            var resp=Ext.decode(resp.responseText);
+            if(resp.V_INFO=='成功'){
+                Ext.getCmp('ProjectCode').setValue(resp.V_V_PROJECT_OUT);
+            }
+        }
+    });
+}
 //查询设备
 function QueryCGrid(){
     Ext.data.StoreManager.lookup('cgridStore').load({
@@ -2106,7 +2198,7 @@ function QueryCGrid(){
         }
     })
 }
-//加载作业区下拉,专业下拉
+//加载作业区下拉
 function QueryZYQ(){
     Ext.data.StoreManager.lookup('zyqStore').load({
         params: {
@@ -2119,84 +2211,9 @@ function QueryZYQ(){
 
     Ext.data.StoreManager.lookup('zyqStore').on('load',function(){
         Ext.getCmp('zyq').select(DeptCode);
-
-        Ext.data.StoreManager.lookup('zyStore').load({
-            params: {
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTNEXTCODE: DeptCode
-            }
-        });
-
-        Ext.data.StoreManager.lookup('wxlxStore').load({
-            params: {
-                IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
-            }
-        })
-
-        Ext.data.StoreManager.lookup('repairDeptStore').load({
-           params:{
-               V_V_DEPTCODE:DeptCode
-           }
-        });
-
+        CreateProjectCode();
+        QueryZyFzr();
     })
-
-    if(ZyCode==''){
-        Ext.data.StoreManager.lookup('zyStore').on('load',function(){
-            Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
-
-            Ext.data.StoreManager.lookup('fzPerStore').load({
-                params:{
-                    V_V_SPECIALTYCODE : Ext.getCmp('zy').getValue(),
-                    V_V_POSTCODE : '0101020104',
-                    V_V_DEPTCODE : Ext.getCmp('zyq').getValue()
-                }
-            })
-        });
-    }else{
-        Ext.data.StoreManager.lookup('zyStore').on('load',function(){
-            Ext.getCmp('zy').select(ZyCode);
-
-            Ext.data.StoreManager.lookup('fzPerStore').load({
-                params:{
-                    V_V_SPECIALTYCODE : Ext.getCmp('zy').getValue(),
-                    V_V_POSTCODE : '0101020104',
-                    V_V_DEPTCODE : Ext.getCmp('zyq').getValue()
-                }
-            })
-        });
-    }
-
-    if(WxlxCode==''){
-        Ext.data.StoreManager.lookup('wxlxStore').on('load',function(){
-            Ext.getCmp('wxlx').select(Ext.data.StoreManager.lookup('wxlxStore').getAt(0));
-        });
-    }else{
-        Ext.data.StoreManager.lookup('wxlxStore').on('load',function(){
-            Ext.getCmp('wxlx').select(WxlxCode);
-        });
-    }
-
-    if(repairDept==''){
-        Ext.data.StoreManager.lookup('repairDeptStore').on('load',function(){
-            Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
-        });
-    }else{
-        Ext.data.StoreManager.lookup('repairDeptStore').on('load',function(){
-            Ext.getCmp('repairDept').select(repairDept);
-        });
-    }
-
-    if(fzrPer==''){
-        Ext.data.StoreManager.lookup('fzPerStore').on('load',function(){
-            Ext.getCmp('fzPer').select(Ext.data.StoreManager.lookup('fzPerStore').getAt(0));
-        });
-    }else{
-        Ext.data.StoreManager.lookup('fzPerStore').on('load',function(){
-            Ext.getCmp('fzPer').select(fzrPer);
-        });
-    }
-
 }
 //添加设备
 function btnAdd_jdsb(){
@@ -2775,7 +2792,13 @@ function btnSaveProject(){
             V_V_BDATE:Ext.Date.format(Ext.getCmp('btime').getValue(),'Y-m-d'),
             V_V_EDATE:Ext.Date.format(Ext.getCmp('etime').getValue(),'Y-m-d'),
             V_V_INMAN:Ext.util.Cookies.get('v_personname2'),
-            V_V_INMANCODE:Ext.util.Cookies.get('v_personcode')
+            V_V_INMANCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_JHLB:Ext.getCmp('jhlb').getValue(),
+            V_V_SCLB:Ext.getCmp('sclb').getValue(),
+            V_V_CPZL:Ext.getCmp('cpzl').getValue(),
+            V_V_CPGX:Ext.getCmp('cpgx').getValue(),
+            V_V_SGFS:Ext.getCmp('sgfs').getValue(),
+            V_V_SFXJ:Ext.getCmp('sfxj').getValue()
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
@@ -2846,7 +2869,13 @@ function btnFlowStart(){
             V_V_BDATE:Ext.Date.format(Ext.getCmp('btime').getValue(),'Y-m-d'),
             V_V_EDATE:Ext.Date.format(Ext.getCmp('etime').getValue(),'Y-m-d'),
             V_V_INMAN:Ext.util.Cookies.get('v_personname2'),
-            V_V_INMANCODE:Ext.util.Cookies.get('v_personcode')
+            V_V_INMANCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_JHLB:Ext.getCmp('jhlb').getValue(),
+            V_V_SCLB:Ext.getCmp('sclb').getValue(),
+            V_V_CPZL:Ext.getCmp('cpzl').getValue(),
+            V_V_CPGX:Ext.getCmp('cpgx').getValue(),
+            V_V_SGFS:Ext.getCmp('sgfs').getValue(),
+            V_V_SFXJ:Ext.getCmp('sfxj').getValue()
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
