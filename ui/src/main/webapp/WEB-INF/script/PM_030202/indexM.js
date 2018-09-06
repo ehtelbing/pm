@@ -1983,7 +1983,6 @@ Ext.onReady(function () {
     });
 
     Ext.getCmp('jhlb').on('select',function(){
-        QueryBudget();
         CreateProjectCode();
     });
 
@@ -3055,25 +3054,6 @@ function btnAdd_file(){
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
     window.open(AppUrl + 'page/PM_03020101/file.html?guid=' +Guid +'&type=YEAR&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
-}
-//查询年预算
-function QueryBudget(){
-    Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_PLAN_BUDGET_YEAR_SEL',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_YEAR: Year,
-            V_V_ORGCODE: OrgCode,
-            V_V_JHLB: Ext.getCmp('jhlb').getValue()
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if(resp.list!=null){
-
-            }
-        }
-    });
 }
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";

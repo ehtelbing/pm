@@ -1,15 +1,20 @@
 package org.building.pm.controller;
 
 import org.building.pm.service.PM_03Service;
+import org.building.pm.webcontroller.BudgetController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +28,13 @@ public class PM_03Controller {
 
     @Autowired
     private PM_03Service pm_03Service;
+    @Autowired
+    private BudgetController budgetController;
 
     //大修年计划编制
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_CREATE", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_PM_03_PLAN_YEAR_SET(
+    public Map PRO_PM_03_PLAN_YEAR_CREATE(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
@@ -38,6 +45,22 @@ public class PM_03Controller {
         return result;
     }
 
+    //大修计划编制
+    @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECT_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_PROJECT_CREATE(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_INPER") String V_V_INPER,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG) throws Exception {
+
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_CREATE(V_V_GUID, V_V_YEAR,V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_INPER,V_V_FLAG);
+        return result;
+    }
+
     //年计划工程项目查询
     @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECT_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -45,6 +68,18 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
 
         Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_SEL(V_V_GUID);
+        return result;
+    }
+
+    //年计划总预算
+    @RequestMapping(value = "/PM_PLAN_BUDGET_YEAR_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_BUDGET_YEAR_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_JHLB") String V_V_JHLB) throws Exception {
+        budgetController.budgetYear("2018");
+        Map result = pm_03Service.PM_PLAN_BUDGET_YEAR_SEL(V_V_YEAR,V_V_ORGCODE,V_V_JHLB);
         return result;
     }
 
@@ -205,17 +240,24 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_CPZL") String V_V_CPZL,
             @RequestParam(value = "V_V_CPGX") String V_V_CPGX,
             @RequestParam(value = "V_V_SGFS") String V_V_SGFS,
-            @RequestParam(value = "V_V_SFXJ") String V_V_SFXJ) throws Exception {
+            @RequestParam(value = "V_V_SFXJ") String V_V_SFXJ,
+            @RequestParam(value = "V_V_ZBFS") String V_V_ZBFS,
+            @RequestParam(value = "V_V_SZ") String V_V_SZ,
+            @RequestParam(value = "V_V_GUID_UP") String V_V_GUID_UP,
+            @RequestParam(value = "V_V_WBS") String V_V_WBS,
+            @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+            @RequestParam(value = "V_V_SUMTIME") String V_V_SUMTIME,
+            @RequestParam(value = "V_V_SUMDATE") String V_V_SUMDATE) throws Exception {
 
-        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SET(V_V_GUID, V_V_YEAR,V_V_MONTH,V_V_ORGCODE,V_V_ORGNAME,V_V_DEPTCODE,V_V_DEPTNAME,V_V_PORJECT_CODE,V_V_PORJECT_NAME,
-                V_V_SPECIALTY,V_V_SPECIALTYNAME,V_V_SPECIALTYMANCODE,V_V_SPECIALTYMAN,V_V_WXTYPECODE,V_V_WXTYPENAME,V_V_CONTENT,V_V_MONEYBUDGET,V_V_REPAIRDEPTCODE,
-                V_V_BDATE,V_V_EDATE,V_V_INMAN,V_V_INMANCODE,V_V_JHLB,V_V_SCLB,V_V_CPZL,V_V_CPGX,V_V_SGFS,V_V_SFXJ);
+        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SET(V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_ORGNAME, V_V_DEPTCODE, V_V_DEPTNAME, V_V_PORJECT_CODE, V_V_PORJECT_NAME,
+                V_V_SPECIALTY, V_V_SPECIALTYNAME, V_V_SPECIALTYMANCODE, V_V_SPECIALTYMAN, V_V_WXTYPECODE, V_V_WXTYPENAME, V_V_CONTENT, V_V_MONEYBUDGET, V_V_REPAIRDEPTCODE,
+                V_V_BDATE, V_V_EDATE, V_V_INMAN, V_V_INMANCODE, V_V_JHLB, V_V_SCLB, V_V_CPZL, V_V_CPGX, V_V_SGFS, V_V_SFXJ, V_V_ZBFS, V_V_SZ, V_V_GUID_UP, V_V_WBS, V_V_WBS_TXT, V_V_SUMTIME, V_V_SUMDATE);
         return result;
     }
 
     /*
-    * 大修年计划删除
-    * */
+     * 大修年计划删除
+     * */
 
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_DEL", method = RequestMethod.POST)
     @ResponseBody
@@ -227,15 +269,42 @@ public class PM_03Controller {
     }
 
     /*
-    * 大修年计划状态修改
-    * */
+     * 大修工程检修单位设置
+     * */
+
+    @RequestMapping(value = "/PM_03_PLAN_REPAIR_DEPT_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_REPAIR_DEPT_SET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_REPAIR_DEPTCODE") String V_V_REPAIR_DEPTCODE,
+            @RequestParam(value = "V_V_REPAIR_DEPTNAME") String V_V_REPAIR_DEPTNAME) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_REPAIR_DEPT_SET(V_V_GUID, V_V_REPAIR_DEPTCODE, V_V_REPAIR_DEPTNAME);
+        return result;
+    }
+
+    /*
+     * 大修工程检修单位查询
+     * */
+    @RequestMapping(value = "/PM_03_PLAN_REPAIR_DEPT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_REPAIR_DEPT_SEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_REPAIR_DEPT_SEL(V_V_GUID);
+        return result;
+    }
+
+    /*
+     * 大修年计划状态修改
+     * */
     @RequestMapping(value = "/PM_03_PLAN_YEAR_STATE_SEND", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_03_PLAN_YEAR_STATE_SEND(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE) throws Exception {
 
-        Map result = pm_03Service.PM_03_PLAN_YEAR_STATE_SEND(V_V_GUID,V_V_STATECODE);
+        Map result = pm_03Service.PM_03_PLAN_YEAR_STATE_SEND(V_V_GUID, V_V_STATECODE);
         return result;
     }
 
@@ -252,8 +321,8 @@ public class PM_03Controller {
     }
 
     /*
-    * 大修年计划上报
-    * */
+     * 大修年计划上报
+     * */
     @RequestMapping(value = "/PM_03_PLAN_YEAR_FLOW_LOG_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_03_PLAN_YEAR_FLOW_LOG_SET(
@@ -266,7 +335,7 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_NEXTPERCODE") String V_V_NEXTPERCODE,
             @RequestParam(value = "V_V_NEXTPERNAME") String V_V_NEXTPERNAME) throws Exception {
 
-        Map result = pm_03Service.PM_03_PLAN_YEAR_FLOW_LOG_SET(V_V_GUID,V_V_FLOWCODE,V_V_FLOWNAME,V_V_IDEA,V_V_INPERCODE,V_V_INPERNAME,V_V_NEXTPERCODE,V_V_NEXTPERNAME);
+        Map result = pm_03Service.PM_03_PLAN_YEAR_FLOW_LOG_SET(V_V_GUID, V_V_FLOWCODE, V_V_FLOWNAME, V_V_IDEA, V_V_INPERCODE, V_V_INPERNAME, V_V_NEXTPERCODE, V_V_NEXTPERNAME);
         return result;
     }
 
@@ -291,7 +360,7 @@ public class PM_03Controller {
     //产品种类查询
     @RequestMapping(value = "/PM_03_PLAN_CPZL_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PM_03_PLAN_CPZL_SEL( @RequestParam(value = "V_V_SCLB") String V_V_SCLB) throws Exception {
+    public Map PM_03_PLAN_CPZL_SEL(@RequestParam(value = "V_V_SCLB") String V_V_SCLB) throws Exception {
 
         Map result = pm_03Service.PM_03_PLAN_CPZL_SEL(V_V_SCLB);
         return result;
@@ -300,7 +369,7 @@ public class PM_03Controller {
     //大修工序查询
     @RequestMapping(value = "/PM_03_PLAN_GX_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PM_03_PLAN_GX_SEL( @RequestParam(value = "V_V_CPCODE") String V_V_CPCODE) throws Exception {
+    public Map PM_03_PLAN_GX_SEL(@RequestParam(value = "V_V_CPCODE") String V_V_CPCODE) throws Exception {
 
         Map result = pm_03Service.PM_03_PLAN_GX_SEL(V_V_CPCODE);
         return result;
@@ -324,12 +393,30 @@ public class PM_03Controller {
         return result;
     }
 
+    //大修计划查询
+    @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECT_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_PROJECT_VIEW(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                           @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                           @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                                           @RequestParam(value = "V_V_WXLX") String V_V_WXLX,
+                                           @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                           @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_VIEW(V_V_YEAR,V_V_MONTH,V_V_ORGCODE,V_V_DEPTCODE,V_V_ZY,V_V_WXLX,V_V_CONTENT,V_V_FLAG,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
     /*
      * 大修年计划工程编号设置
      * */
-    @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECTCODE_CREATE", method = RequestMethod.POST)
+    @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECTCODE_C", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_PM_03_PLAN_PROJECTCODE_CREATE(
+    public Map PRO_PM_03_PLAN_PROJECTCODE_C(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
@@ -337,7 +424,42 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_JHLB") String V_V_JHLB,
             @RequestParam(value = "V_V_ZY") String V_V_ZY) throws Exception {
 
-        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECTCODE_CREATE(V_V_GUID,V_V_YEAR,V_V_ORGCODE,V_V_DEPTCODE,V_V_JHLB,V_V_ZY);
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECTCODE_C(V_V_GUID, V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_JHLB, V_V_ZY);
+        return result;
+    }
+
+    /*
+     * 附件列表查询
+     * */
+    @RequestMapping(value = "/PM_03_PLAN_PROJECT_FILE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_PROJECT_FILE_SEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
+            @RequestParam(value = "V_V_FILENAME") String V_V_FILENAME,
+            @RequestParam(value = "V_V_TYPE") String V_V_TYPE) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_PROJECT_FILE_SEL(V_V_GUID, V_V_FILEGUID, V_V_FILENAME, V_V_TYPE);
+        return result;
+    }
+
+    /*
+     * 附件上传
+     * */
+    @RequestMapping(value = "/PM_03_PLAN_PROJECT_FILE_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_PROJECT_FILE_SET(
+            @RequestParam(value = "upload") MultipartFile upload,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_INPERCODE") String V_V_INPERCODE,
+            @RequestParam(value = "V_V_INPERNAME") String V_V_INPERNAME,
+            @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+        String filename = upload.getOriginalFilename();
+        String filetype = upload.getContentType();
+
+        Map result = pm_03Service.PM_03_PLAN_PROJECT_FILE_SET(V_V_GUID, filename, filetype, upload.getInputStream(), V_V_INPERCODE,
+                V_V_INPERNAME, V_V_TYPE);
         return result;
     }
 
@@ -403,7 +525,7 @@ public class PM_03Controller {
                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
 
 
-        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR,  V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
+        Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
 
         return result;
     }
