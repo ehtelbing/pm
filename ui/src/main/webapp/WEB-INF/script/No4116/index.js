@@ -16,7 +16,7 @@ Ext.onReady(function() {
 
     var gridStore = Ext.create('Ext.data.Store', {
         id : 'gridStore',
-        pageSize : 15,
+        pageSize : 50,
         autoLoad : false,
         fields : [ 'V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
             'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME',
