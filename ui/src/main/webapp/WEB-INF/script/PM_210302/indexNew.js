@@ -1,9 +1,3 @@
-/**
- * Created by Administrator on 2018/9/3 0003.
- */
-/**
- * Created by Administrator on 2018/8/31 0031.
- */
 var ProcessInstanceId = '';
 var BusinessKey = '';
 var flowtype = '';
@@ -40,7 +34,7 @@ Ext.onReady(function () {
         id: 'gridPanel',
         store: gridStore,
         region: 'north',
-        width: '50%',
+        width: '100%',
         height: '50%',
         columnLines: true,
         columns: [{
@@ -111,54 +105,6 @@ Ext.onReady(function () {
 
     _select();
     queryProcessCode();
-
-    var gridStore = Ext.create('Ext.data.Store', {
-        fields: ['ActivityId',
-            'ActivityName',
-            'ActivityType',
-            'Assignee',
-            'AssigneeName',
-            'EndTime',
-            'Id',
-            'StartTime',
-            'post'],
-        autoLoad: false,
-        id: 'gridStore',
-        proxy: {
-            type: 'ajax',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            url: AppUrl + 'cjy/getNextPerson'
-        }
-    });
-
-    var sgrid=Ext.create('Ext.grid.Panel',{
-        id:'sgrid',
-        region: 'center',
-        width: '100%',
-        store:gridStore,
-        autoScroll: true,
-        columns:[Ext.create('Ext.grid.RowNumberer',{header:'序号',width:50,align:'center',sortable:true}),
-            {header:'审批人编码',dataIndex: 'Assignee',sortable:true,align:'center',width:200},
-            {header:'审批人姓名',dataIndex: 'AssigneeName',sortable:true,align:'center',width:200},
-            {header:'操作',dataIndex: 'ActivityId',sortable:true,align:'center',width:60,renderer: function (value, metaData, record) {
-                return '<a href=javascript:changPerson(\'' + value + '\')>' + '审批人' + '</a>';} }
-        ]});
-    var window= Ext.create('Ext.window.Window', {
-        id: 'window',
-        width: 520,
-        height: 357,
-        x: 750,
-        y: 30,
-        closeAction: 'hide',
-        items: [sgrid]
-    });
-
 });
 
 
@@ -237,24 +183,12 @@ function getActivitiMsg() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
         }
-    });
+    })
 }
 
-function perManage(activityId){
-    var owidth = window.screen.availWidth;
-    var oheight = window.screen.availHeight - 50;
-    var gridStore = Ext.data.StoreManager.lookup('gridStore');
-    gridStore.proxy.extraParams = {
-        businessKey: BusinessKey,
-        ActivitiId:activityId
-    };
-    gridStore.load();
-    Ext.getCmp("window").show();
-}
-//function perManage(activityId){
-function changPerson(value) {
+function perManage(activityId) {
     var owidth = window.screen.availWidth;
     var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/activiti/PerManage.html?OrgCode='
-        + msg[0].V_ORGCODE + '&BusinessKey=' + BusinessKey + '&ActivitiId=' + value, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+        + msg[0].V_ORGCODE + '&BusinessKey=' + BusinessKey + '&ActivitiId=' + activityId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }

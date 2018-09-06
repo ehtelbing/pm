@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,8 +65,8 @@ public class PM_03Service {
     @Autowired
     private ComboPooledDataSource dataSources;
 
-    public Map PRO_PM_03_PLAN_YEAR_CREATE(String V_V_GUID,String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                             String V_V_INPER) throws SQLException {
+    public Map PRO_PM_03_PLAN_YEAR_CREATE(String V_V_GUID, String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE,
+                                          String V_V_INPER) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -97,40 +96,7 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PRO_PM_03_PLAN_PROJECT_CREATE(String V_V_GUID,String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                          String V_V_INPER,String V_V_FLAG) throws SQLException {
-        Map result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_PROJECT_CREATE" + "(:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_INPER,:V_V_FLAG," +
-                    ":V_OUT_GUID,:V_INFO)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.setString("V_V_YEAR", V_V_YEAR);
-            cstmt.setString("V_V_MONTH", V_V_MONTH);
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
-            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-            cstmt.setString("V_V_INPER", V_V_INPER);
-            cstmt.setString("V_V_FLAG", V_V_FLAG);
-            cstmt.registerOutParameter("V_OUT_GUID", OracleTypes.VARCHAR);
-            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
-            cstmt.execute();
-            result.put("V_OUT_GUID", (String) cstmt.getObject("V_OUT_GUID"));
-            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PRO_PM_03_PLAN_PROJECT_CREATE");
-        return result;
-    }
-
-    public Map PM_03_PLAN_YEAR_EQU_SET(String V_V_PLANGUID,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+    public Map PM_03_PLAN_YEAR_EQU_SET(String V_V_PLANGUID, String V_V_EQUTYPECODE, String V_V_EQUCODE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -166,7 +132,7 @@ public class PM_03Service {
             cstmt.setString("V_V_PLANGUID", V_V_PLANGUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -178,7 +144,7 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PM_03_PLAN_YEAR_EQU_DEL(String V_V_PLANGUID,String V_V_EQUCODE) throws SQLException {
+    public Map PM_03_PLAN_YEAR_EQU_DEL(String V_V_PLANGUID, String V_V_EQUCODE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -202,7 +168,7 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PRO_PM_DEFECT_DEPT_SEL_ALL(String V_V_DEPTCODE,String V_V_EQUCODE,String V_V_STATECODE) throws SQLException {
+    public Map PRO_PM_DEFECT_DEPT_SEL_ALL(String V_V_DEPTCODE, String V_V_EQUCODE, String V_V_STATECODE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -215,7 +181,7 @@ public class PM_03Service {
             cstmt.setString("V_V_STATECODE", V_V_STATECODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -238,7 +204,7 @@ public class PM_03Service {
             cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -250,7 +216,7 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PM_1917_JXMX_SELBY_MOREEQU(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EUQTYPE,String V_V_EQUCODE) throws SQLException {
+    public Map PM_1917_JXMX_SELBY_MOREEQU(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EUQTYPE, String V_V_EQUCODE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -264,7 +230,7 @@ public class PM_03Service {
             cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -287,7 +253,7 @@ public class PM_03Service {
             cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -326,8 +292,7 @@ public class PM_03Service {
     public Map PRO_PM_03_PLAN_YEAR_SET(String V_V_GUID,String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_ORGNAME,String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_PORJECT_CODE,String V_V_PORJECT_NAME,String V_V_SPECIALTY,
                                        String V_V_SPECIALTYNAME,String V_V_SPECIALTYMANCODE,String V_V_SPECIALTYMAN,String V_V_WXTYPECODE,String V_V_WXTYPENAME,String V_V_CONTENT,
                                        String V_V_MONEYBUDGET,String V_V_REPAIRDEPTCODE,String V_V_BDATE,String V_V_EDATE,String V_V_INMAN,String V_V_INMANCODE,
-                                       String V_V_JHLB,String V_V_SCLB,String V_V_CPZL,String V_V_CPGX,String V_V_SGFS,String V_V_SFXJ,String V_V_ZBFS,
-                                       String V_V_SZ,String V_V_GUID_UP,String V_V_WBS,String V_V_WBS_TXT,String V_V_SUMTIME,String V_V_SUMDATE)throws SQLException {
+                                       String V_V_JHLB,String V_V_SCLB,String V_V_CPZL,String V_V_CPGX,String V_V_SGFS,String V_V_SFXJ)throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -336,7 +301,7 @@ public class PM_03Service {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_SET" + "(:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_ORGNAME,:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_PORJECT_CODE,:V_V_PORJECT_NAME,:V_V_SPECIALTY,:V_V_SPECIALTYNAME,:V_V_SPECIALTYMANCODE" +
                     ",:V_V_SPECIALTYMAN,:V_V_WXTYPECODE,:V_V_WXTYPENAME,:V_V_CONTENT,:V_V_MONEYBUDGET,:V_V_REPAIRDEPTCODE,:V_V_BDATE,:V_V_EDATE,:V_V_INMAN,:V_V_INMANCODE" +
-                    ",:V_V_JHLB,:V_V_SCLB,:V_V_CPZL,:V_V_CPGX,:V_V_SGFS,:V_V_SFXJ,:V_V_ZBFS,:V_V_SZ,:V_V_GUID_UP,:V_V_WBS,:V_V_WBS_TXT,:V_V_SUMTIME,:V_V_SUMDATE,:V_INFO)}");
+                    ",:V_V_JHLB,:V_V_SCLB,:V_V_CPZL,:V_V_CPGX,:V_V_SGFS,:V_V_SFXJ,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_MONTH", V_V_MONTH);
@@ -365,13 +330,6 @@ public class PM_03Service {
             cstmt.setString("V_V_CPGX", V_V_CPGX);
             cstmt.setString("V_V_SGFS", V_V_SGFS);
             cstmt.setString("V_V_SFXJ", V_V_SFXJ);
-            cstmt.setString("V_V_ZBFS", V_V_ZBFS);
-            cstmt.setString("V_V_SZ", V_V_SZ);
-            cstmt.setString("V_V_GUID_UP", V_V_GUID_UP);
-            cstmt.setString("V_V_WBS", V_V_WBS);
-            cstmt.setString("V_V_WBS_TXT", V_V_WBS_TXT);
-            cstmt.setString("V_V_SUMTIME", V_V_SUMTIME);
-            cstmt.setString("V_V_SUMDATE", V_V_SUMDATE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
@@ -413,32 +371,7 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PM_03_PLAN_REPAIR_DEPT_SET(String V_V_GUID, String V_V_REPAIR_DEPTCODE, String V_V_REPAIR_DEPTNAME) throws SQLException {
-        Map result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_REPAIR_DEPT_SET" + "(:V_V_GUID,:V_V_REPAIR_DEPTCODE,:V_V_REPAIR_DEPTNAME,:V_INFO)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.setString("V_V_REPAIR_DEPTCODE", V_V_REPAIR_DEPTCODE);
-            cstmt.setString("V_V_REPAIR_DEPTNAME", V_V_REPAIR_DEPTNAME);
-            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
-            cstmt.execute();
-            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PM_03_PLAN_REPAIR_DEPT_SET");
-        return result;
-    }
-
-    public Map PM_03_PLAN_YEAR_MODEL_DEL(String V_V_PROJECT_GUID,String V_V_MODEL_GUID) throws SQLException {
+    public Map PM_03_PLAN_YEAR_MODEL_DEL(String V_V_PROJECT_GUID, String V_V_MODEL_GUID) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -462,7 +395,7 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PM_03_PLAN_YEAR_DEFECT_DEL(String V_V_PROJECT_GUID,String V_V_DEFECT_GUID) throws SQLException {
+    public Map PM_03_PLAN_YEAR_DEFECT_DEL(String V_V_PROJECT_GUID, String V_V_DEFECT_GUID) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -486,14 +419,14 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PRO_PM_03_PLAN_PROJECTCODE_C(String V_V_GUID,String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_JHLB,String V_V_ZY) throws SQLException {
+    public Map PRO_PM_03_PLAN_PROJECTCODE_CREATE(String V_V_GUID,String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_JHLB,String V_V_ZY) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_PROJECTCODE_C" + "(:V_V_GUID,:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_JHLB,:V_V_ZY,:V_V_PROJECT_OUT,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_PROJECTCODE_CREATE" + "(:V_V_GUID,:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_JHLB,:V_V_ZY,:V_V_PROJECT_OUT,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -512,85 +445,7 @@ public class PM_03Service {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_03_PLAN_PROJECTCODE_C");
-        return result;
-    }
-
-    public Map PM_03_PLAN_PROJECT_FILE_SET(String V_V_GUID, String V_V_FILENAME, String V_V_FILETYPE, InputStream V_V_FILE, String V_V_INPERCODE, String V_V_INPERNAME, String V_V_TYPE) throws SQLException {
-        Map result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_PROJECT_FILE_SET" + "(:V_V_GUID,:V_V_FILENAME,:V_V_FILETYPE,:V_V_FILE,:V_V_INPERCODE,:V_V_INPERNAME,:V_V_TYPE,:V_INFO)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.setString("V_V_FILENAME", V_V_FILENAME);
-            cstmt.setString("V_V_FILETYPE", V_V_FILETYPE);
-            cstmt.setBlob("V_V_FILE", V_V_FILE);
-            cstmt.setString("V_V_INPERCODE", V_V_INPERCODE);
-            cstmt.setString("V_V_INPERNAME", V_V_INPERNAME);
-            cstmt.setString("V_V_TYPE", V_V_TYPE);
-            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
-            cstmt.execute();
-            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PM_03_PLAN_PROJECT_FILE_SET");
-        return result;
-    }
-
-    public Map PM_03_PLAN_PROJECT_FILE_SEL(String V_V_GUID,String V_V_FILEGUID,String V_V_FILENAME,String V_V_TYPE) throws SQLException {
-        Map result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_PROJECT_FILE_SEL" + "(:V_V_GUID,:V_V_FILEGUID,:V_V_FILENAME,:V_V_TYPE,:V_CURSOR)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.setString("V_V_FILEGUID", V_V_FILEGUID);
-            cstmt.setString("V_V_FILENAME", V_V_FILENAME);
-            cstmt.setString("V_V_TYPE", V_V_TYPE);
-            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-            cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PM_03_PLAN_PROJECT_FILE_SEL");
-        return result;
-    }
-
-    public Map PM_03_PLAN_REPAIR_DEPT_SEL(String V_V_GUID) throws SQLException {
-        Map result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_REPAIR_DEPT_SEL" + "(:V_V_GUID,:V_CURSOR)}");
-            cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-            cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PM_03_PLAN_REPAIR_DEPT_SEL");
+        logger.info("end PRO_PM_03_PLAN_PROJECTCODE_CREATE");
         return result;
     }
 
@@ -605,7 +460,7 @@ public class PM_03Service {
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -614,31 +469,6 @@ public class PM_03Service {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_03_PLAN_PROJECT_SEL");
-        return result;
-    }
-
-    public Map PM_PLAN_BUDGET_YEAR_SEL(String V_V_YEAR,String V_V_ORGCODE,String V_V_JHLB) throws SQLException {
-        Map result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_PLAN_BUDGET_YEAR_SEL" + "(:V_V_YEAR,:V_V_ORGCODE,:V_V_JHLB,:V_CURSOR)}");
-            cstmt.setString("V_V_YEAR", V_V_YEAR);
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
-            cstmt.setString("V_V_JHLB", V_V_JHLB);
-            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-            cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PM_PLAN_BUDGET_YEAR_SEL");
         return result;
     }
 
@@ -734,41 +564,6 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PRO_PM_03_PLAN_PROJECT_VIEW(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_ZY,String V_V_WXLX,String V_V_CONTENT,String V_V_FLAG,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
-        Map result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_PROJECT_VIEW" + "(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_ZY,:V_V_WXLX,:V_V_CONTENT,:V_V_FLAG,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
-            cstmt.setString("V_V_YEAR", V_V_YEAR);
-            cstmt.setString("V_V_MONTH", V_V_MONTH);
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
-            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-            cstmt.setString("V_V_ZY", V_V_ZY);
-            cstmt.setString("V_V_WXLX", V_V_WXLX);
-            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
-            cstmt.setString("V_V_FLAG", V_V_FLAG);
-            cstmt.setString("V_V_PAGE", V_V_PAGE);
-            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
-            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
-            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-            cstmt.execute();
-            String sunm = (String) cstmt.getObject("V_V_SNUM");
-            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("total", sunm);
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PRO_PM_03_PLAN_PROJECT_VIEW");
-        return result;
-    }
-
     public Map PM_03_PLAN_CPZL_SEL(String V_V_SCLB) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
@@ -817,7 +612,7 @@ public class PM_03Service {
         return result;
     }
 
-    public List<Map> PRO_PM_03_PLAN_YEAR_SELECT(String V_V_JXGX_CODE_NEW,String V_V_JXGX_CODE_OLD) throws SQLException {
+    public List<Map> PRO_PM_03_PLAN_YEAR_SELECT(String V_V_JXGX_CODE_NEW, String V_V_JXGX_CODE_OLD) throws SQLException {
 //        logger.info("begin PRO_PM_03_PLAN_YEAR_SELECT");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -844,7 +639,7 @@ public class PM_03Service {
         return result;
     }
 
-    public HashMap PRO_PM_03_PLAN_YEAR_DJY_VIEW(String V_V_INPER,String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_YEAR_DJY_VIEW(String V_V_INPER, String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_YEAR_DJY_VIEW");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -976,8 +771,8 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PRO_PM_03_PLAN_YEAR_SEND(String V_V_GUID,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_FLOWCODE,
-                                        String  V_V_PLANTYPE,String V_V_PERSONCODE) throws SQLException {
+    public Map PRO_PM_03_PLAN_YEAR_SEND(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_FLOWCODE,
+                                        String V_V_PLANTYPE, String V_V_PERSONCODE) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_YEAR_SEND");
         Map result = new HashMap();
         Connection conn = null;
@@ -1046,7 +841,7 @@ public class PM_03Service {
     }
 
 
-    public HashMap PRO_PM_03_PLAN_YEAR_VIEW1(String V_V_YEAR,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRMAJOR_CODE,String V_V_FLOWCODE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_YEAR_VIEW1(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_REPAIRMAJOR_CODE, String V_V_FLOWCODE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_YEAR_VIEW1");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -1080,11 +875,8 @@ public class PM_03Service {
     }
 
 
-
-
-
-    public HashMap PM_03_JXMX_DATA_SEL(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPE,
-                                       String V_V_EQUCODE,String V_V_EQUCHILD_CODE,String V_V_JXMX_NAME) throws SQLException {
+    public HashMap PM_03_JXMX_DATA_SEL(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE,
+                                       String V_V_EQUCODE, String V_V_EQUCHILD_CODE, String V_V_JXMX_NAME) throws SQLException {
 
         logger.info("begin PM_03_JXMX_DATA_SEL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -1173,8 +965,9 @@ public class PM_03Service {
         logger.info("end PM_03_JXMX_DETAIL_SEL");
         return result;
     }
+
     //PM_03010201,月,选择计划查询
-    public HashMap PM_03_MONTH_PLAN_SEL(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_ZY,String V_V_CONTENT,String V_V_STATECODE,String V_V_PEROCDE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public HashMap PM_03_MONTH_PLAN_SEL(String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_ZY, String V_V_CONTENT, String V_V_STATECODE, String V_V_PEROCDE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
         logger.info("begin PM_03_MONTH_PLAN_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1198,7 +991,7 @@ public class PM_03Service {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",cstmt.getString("V_V_SNUM"));
+            result.put("total", cstmt.getString("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -1210,45 +1003,9 @@ public class PM_03Service {
         logger.info("end PM_03_MONTH_PLAN_SEL");
         return result;
     }
-    //---------EXCEL--MONTH-UPDATE2018-0828
-    public HashMap PM_03_MONTH_PLAN_SELALL(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_ZY,String V_V_CONTENT,String V_V_STATECODE,String V_V_PEROCDE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
-        logger.info("begin PM_03_MONTH_PLAN_SELALL");
-        HashMap result = new HashMap();
-        Connection conn = null;
-        CallableStatement cstmt = null;
-        try {
-            conn = dataSources.getConnection();
-            conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_03_MONTH_PLAN_SELALL" + "(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_ZY,:V_V_CONTENT,:V_V_STATECODE,:V_V_PEROCDE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
-            cstmt.setString("V_V_YEAR", V_V_YEAR);
-            cstmt.setString("V_V_MONTH", V_V_MONTH);
-            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
-            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
-            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
-            cstmt.setString("V_V_ZY", V_V_ZY);
-            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
-            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
-            cstmt.setString("V_V_PEROCDE", V_V_PEROCDE);
-            cstmt.setString("V_V_PAGE", V_V_PAGE);
-            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
-            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
-            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-            cstmt.execute();
-            result.put("total",cstmt.getString("V_V_SNUM"));
-            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-        } catch (SQLException e) {
-            logger.error(e);
-        } finally {
-            cstmt.close();
-            conn.close();
-        }
-        logger.debug("result:" + result);
-        logger.info("end PM_03_MONTH_PLAN_SELALL");
-        return result;
-    }
+
     //PM_03010201,月,表格信息加载
-    public HashMap PRO_PM_03_PLAN_MONTH_VIEW(String V_V_INPER,String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRMAJOR_CODE,String V_V_PLANTYPE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_MONTH_VIEW(String V_V_INPER, String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_REPAIRMAJOR_CODE, String V_V_PLANTYPE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_MONTH_VIEW");
 
@@ -1279,6 +1036,7 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_MONTH_VIEW");
         return result;
     }
+
     //PM_03010201,月,修改时信息绑定
     public HashMap PRO_PM_03_PLAN_MONTH_GET(String V_V_MONTHPLAN_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_MONTH_GET");
@@ -1304,10 +1062,11 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_MONTH_GET");
         return result;
     }
+
     //PM_03010201,月计划报表，删除
-    public Map<String,Object> PRO_PM_03_PLAN_MONTH_DEL(String V_V_GUID) throws SQLException {
+    public Map<String, Object> PRO_PM_03_PLAN_MONTH_DEL(String V_V_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_MONTH_DEL");
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -1328,9 +1087,10 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_MONTH_DEL");
         return result;
     }
+
     //PM_03010201,月计划报表，上传
-    public List<Map> PRO_PM_03_PLAN_MONTH_SEND(String V_V_GUID,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                               String V_V_FLOWCODE, String  V_V_PLANTYPE,
+    public List<Map> PRO_PM_03_PLAN_MONTH_SEND(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE,
+                                               String V_V_FLOWCODE, String V_V_PLANTYPE,
                                                String V_V_PERSONCODE) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_MONTH_SEND");
         List<Map> result = new ArrayList<Map>();
@@ -1362,6 +1122,7 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_MONTH_SEND");
         return result;
     }
+
     //PM_03010201,检修季度计划,选择计划查询
     public HashMap PM_03_QUARTER_PLAN_SEL(String V_V_PLAN_NAME) throws SQLException {
         logger.info("begin PM_03_QUARTER_PLAN_SEL");
@@ -1387,8 +1148,9 @@ public class PM_03Service {
         logger.info("end PM_03_QUARTER_PLAN_SEL");
         return result;
     }
+
     //PM_03010101,季度,表格信息加载
-    public HashMap PRO_PM_03_PLAN_QUARTER_VIEW(String V_V_INPER,String V_V_YEAR,String V_V_QUARTER,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRMAJOR_CODE,String V_V_PLANTYPE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_QUARTER_VIEW(String V_V_INPER, String V_V_YEAR, String V_V_QUARTER, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_REPAIRMAJOR_CODE, String V_V_PLANTYPE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_QUARTER_VIEW");
 
@@ -1419,6 +1181,7 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_QUARTER_VIEW");
         return result;
     }
+
     //PM_03010101,季度检修计划,修改时信息绑定
     public HashMap PRO_PM_03_PLAN_QUARTER_GET(String V_V_QUARTERPLAN_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_QUARTER_GET");
@@ -1444,10 +1207,11 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_QUARTER_GET");
         return result;
     }
+
     //PM_03010101,季度检修计划，删除
-    public Map<String,Object> PRO_PM_03_PLAN_QUARTER_DEL(String V_V_GUID) throws SQLException {
+    public Map<String, Object> PRO_PM_03_PLAN_QUARTER_DEL(String V_V_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_QUARTER_DEL");
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -1468,12 +1232,13 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_QUARTER_DEL");
         return result;
     }
+
     //PM_03010201,季度检修计划，上传
-    public Map<String,Object> PRO_PM_03_PLAN_QUARTER_SEND(String V_V_GUID,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                                          String V_V_FLOWCODE, String  V_V_PLANTYPE,
-                                                          String V_V_PERSONCODE) throws SQLException {
+    public Map<String, Object> PRO_PM_03_PLAN_QUARTER_SEND(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE,
+                                                           String V_V_FLOWCODE, String V_V_PLANTYPE,
+                                                           String V_V_PERSONCODE) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_QUARTER_SEND");
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -1500,10 +1265,11 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_QUARTER_SEND");
         return result;
     }
+
     //PM_03010301,周,表格信息加载
-    public HashMap PRO_PM_03_PLAN_WEEK_VIEW(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                            String V_V_ZY,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_CONTENT,String V_V_STATE,
-                                            String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_WEEK_VIEW(String V_V_YEAR, String V_V_MONTH, String V_V_WEEK, String V_V_ORGCODE, String V_V_DEPTCODE,
+                                            String V_V_ZY, String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_CONTENT, String V_V_STATE,
+                                            String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_WEEK_VIEW");
 
@@ -1530,7 +1296,7 @@ public class PM_03Service {
             cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",cstmt.getString("V_SUMNUM"));
+            result.put("total", cstmt.getString("V_SUMNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -1543,8 +1309,8 @@ public class PM_03Service {
         return result;
     }
 
-    public HashMap PRO_PM_03_PLAN_WEEK_EXCEL(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                            String V_V_ZY,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_CONTENT,String V_V_STATE) throws SQLException {
+    public HashMap PRO_PM_03_PLAN_WEEK_EXCEL(String V_V_YEAR, String V_V_MONTH, String V_V_WEEK, String V_V_ORGCODE, String V_V_DEPTCODE,
+                                             String V_V_ZY, String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_CONTENT, String V_V_STATE) throws SQLException {
 
         logger.info("begin PRO_PM_03_PLAN_WEEK_EXCEL");
 
@@ -1579,8 +1345,9 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_WEEK_EXCEL");
         return result;
     }
+
     //PM_03010301,周检修计划,选择计划查询
-    public HashMap PM_03_WEEK_PLAN_SEL(String V_V_PLAN_NAME,String V_V_TYPE,String V_V_ORGCODE) throws SQLException {
+    public HashMap PM_03_WEEK_PLAN_SEL(String V_V_PLAN_NAME, String V_V_TYPE, String V_V_ORGCODE) throws SQLException {
         logger.info("begin PM_03_WEEK_PLAN_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1607,10 +1374,11 @@ public class PM_03Service {
         logger.info("end PM_03_WEEK_PLAN_SEL");
         return result;
     }
+
     //PM_03010301,周检修计划，删除
-    public Map<String,Object> PRO_PM_03_PLAN_WEEK_DEL(String V_V_GUID) throws SQLException {
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_DEL(String V_V_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_DEL");
-        Map<String,Object> result = new HashMap<String,Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
@@ -1631,6 +1399,7 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_WEEK_DEL");
         return result;
     }
+
     //PM_03010301,周检修计划,修改时信息绑定
     public HashMap PRO_PM_03_PLAN_WEEK_GET(String V_V_WEEKPLAN_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_GET");
@@ -1656,9 +1425,10 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_WEEK_GET");
         return result;
     }
+
     //PM_03010301,周检修计划，上传
-    public List<Map> PRO_PM_03_PLAN_WEEK_SEND(String V_V_GUID,String V_V_ORGCODE,String V_V_DEPTCODE,
-                                              String V_V_FLOWCODE, String  V_V_PLANTYPE,
+    public List<Map> PRO_PM_03_PLAN_WEEK_SEND(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE,
+                                              String V_V_FLOWCODE, String V_V_PLANTYPE,
                                               String V_V_PERSONCODE) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_SEND");
         List<Map> result = new ArrayList<Map>();
@@ -1690,6 +1460,7 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_WEEK_SEND");
         return result;
     }
+
     public HashMap PM_03_MONTH_PLAN_PLANCODE_SEL(String V_V_PLANCODEE) throws SQLException {
         logger.info("begin PM_03_MONTH_PLAN_PLANCODE_SEL");
         HashMap result = new HashMap();
@@ -1714,6 +1485,7 @@ public class PM_03Service {
         logger.info("end PM_03_MONTH_PLAN_PLANCODE_SEL");
         return result;
     }
+
     public HashMap PM_03_JXMX_DATA_MXCODE_SEL(String V_V_MX_CODE) throws SQLException {
         logger.info("begin PM_03_JXMX_DATA_MXCODE_SEL");
         HashMap result = new HashMap();
@@ -1738,7 +1510,8 @@ public class PM_03Service {
         logger.info("end PM_03_JXMX_DATA_MXCODE_SEL");
         return result;
     }
-    public Map PM_03_WEEK_PLAN_GET(String V_V_PLANCODE,String V_V_TYPE) throws SQLException {
+
+    public Map PM_03_WEEK_PLAN_GET(String V_V_PLANCODE, String V_V_TYPE) throws SQLException {
         logger.info("begin PM_03_WEEK_PLAN_GET");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1762,7 +1535,8 @@ public class PM_03Service {
         logger.info("end PM_03_WEEK_PLAN_GET");
         return result;
     }
-    public Map PRO_PM_03_PLAN_QUARTER_VIEW1(String V_V_YEAR,String V_V_QUARTER,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRMAJOR_CODE,String V_V_FLOWCODE,String V_V_CONTENT) throws SQLException {
+
+    public Map PRO_PM_03_PLAN_QUARTER_VIEW1(String V_V_YEAR, String V_V_QUARTER, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_REPAIRMAJOR_CODE, String V_V_FLOWCODE, String V_V_CONTENT) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_QUARTER_VIEW1");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1791,7 +1565,8 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_QUARTER_VIEW1");
         return result;
     }
-    public Map PRO_PM_PLAN_LOCKING_Q_VIEW(String V_V_YEAR,String V_V_QUARTER,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_CONTENT) throws SQLException {
+
+    public Map PRO_PM_PLAN_LOCKING_Q_VIEW(String V_V_YEAR, String V_V_QUARTER, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_CONTENT) throws SQLException {
         logger.info("begin PRO_PM_PLAN_LOCKING_Q_VIEW");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1809,7 +1584,7 @@ public class PM_03Service {
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-            result.put("V_D_DATE_E",(String) cstmt.getObject("V_D_DATE_E"));
+            result.put("V_D_DATE_E", (String) cstmt.getObject("V_D_DATE_E"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1820,7 +1595,8 @@ public class PM_03Service {
         logger.info("end PRO_PM_PLAN_LOCKING_Q_VIEW");
         return result;
     }
-    public Map PRO_PM_PLAN_LOCKING_DATE_GET(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM,String V_V_TYPE) throws SQLException {
+
+    public Map PRO_PM_PLAN_LOCKING_DATE_GET(String V_I_YEAR, String V_I_MONTH, String V_I_WEEKNUM, String V_V_TYPE) throws SQLException {
         logger.info("begin PRO_PM_PLAN_LOCKING_DATE_GET");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1846,7 +1622,8 @@ public class PM_03Service {
         logger.info("end PRO_PM_PLAN_LOCKING_DATE_GET");
         return result;
     }
-    public Map PRO_PM_PLAN_LOCKING_DATE_SET(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM,String V_V_TYPE,String V_D_DATE_E,Integer V_I_LOCK,String V_D_DATE_S) throws SQLException {
+
+    public Map PRO_PM_PLAN_LOCKING_DATE_SET(String V_I_YEAR, String V_I_MONTH, String V_I_WEEKNUM, String V_V_TYPE, String V_D_DATE_E, Integer V_I_LOCK, String V_D_DATE_S) throws SQLException {
         logger.info("begin PRO_PM_PLAN_LOCKING_DATE_SET");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1865,7 +1642,7 @@ public class PM_03Service {
             cstmt.setString("V_D_DATE_S", V_D_DATE_S);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_INFO",(String) cstmt.getObject("V_CURSOR"));
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1876,7 +1653,8 @@ public class PM_03Service {
         logger.info("end PRO_PM_PLAN_LOCKING_DATE_SET");
         return result;
     }
-    public Map PRO_PM_04_PROJECT_DATA_ITEM_V(String V_V_YEAR,String V_V_MONTH,String V_V_PERCODE,String V_V_ORGCODE,String V_V_SPECIALTY,String V_V_PROJECT_CODE,String V_V_PROJECT_NAME,String V_V_CONTENT,String V_V_BY1,String V_V_BY2) throws SQLException {
+
+    public Map PRO_PM_04_PROJECT_DATA_ITEM_V(String V_V_YEAR, String V_V_MONTH, String V_V_PERCODE, String V_V_ORGCODE, String V_V_SPECIALTY, String V_V_PROJECT_CODE, String V_V_PROJECT_NAME, String V_V_CONTENT, String V_V_BY1, String V_V_BY2) throws SQLException {
         logger.info("begin PRO_PM_04_PROJECT_DATA_ITEM_V");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1910,8 +1688,8 @@ public class PM_03Service {
     }
 
     public Map PM_03_PLAN_SEL(String V_V_YEAR, String V_V_QUARTER, String V_V_MONTH, String V_V_PLANTYPE, String V_V_ORGCODE,
-                              String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_ZY,String V_V_CONTENT,
-                              String V_V_PEROCDE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+                              String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_ZY, String V_V_CONTENT,
+                              String V_V_PEROCDE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
         logger.info("begin PM_03_PLAN_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1939,7 +1717,7 @@ public class PM_03Service {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",cstmt.getString("V_V_SNUM"));
+            result.put("total", cstmt.getString("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -2053,6 +1831,7 @@ public class PM_03Service {
         logger.info("end PM_03_PLAN_CHOOSE_SEL");
         return result;
     }
+
     public Map PRO_BASE_DEPT_VIEW_ROLE_PLAN(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_DEPTTYPE) throws SQLException {
         logger.info("begin PRO_BASE_DEPT_VIEW_ROLE_PLAN");
         HashMap result = new HashMap();
@@ -2079,7 +1858,8 @@ public class PM_03Service {
         logger.info("end PRO_BASE_DEPT_VIEW_ROLE_PLAN");
         return result;
     }
-    public Map PRO_PM_PLAN_LOCKING_M_VIEW(String V_I_YEAR,String V_I_MONTH,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_CONTENT) throws SQLException {
+
+    public Map PRO_PM_PLAN_LOCKING_M_VIEW(String V_I_YEAR, String V_I_MONTH, String V_V_DEPTCODE, String V_V_DEPTNEXTCODE, String V_V_CONTENT) throws SQLException {
         logger.info("begin PRO_PM_PLAN_LOCKING_M_VIEW");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -2096,7 +1876,7 @@ public class PM_03Service {
             cstmt.registerOutParameter("V_D_DATE_E", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("V_D_DATE_E",(String) cstmt.getObject("V_D_DATE_E"));
+            result.put("V_D_DATE_E", (String) cstmt.getObject("V_D_DATE_E"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -2108,7 +1888,8 @@ public class PM_03Service {
         logger.info("end PRO_PM_PLAN_LOCKING_M_VIEW");
         return result;
     }
-    public Map PRO_PM_PLAN_LOCKING_W_VIEW(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_CONTENT) throws SQLException {
+
+    public Map PRO_PM_PLAN_LOCKING_W_VIEW(String V_I_YEAR, String V_I_MONTH, String V_I_WEEKNUM, String V_V_DEPTCODE, String V_V_DEPTNEXTCODE, String V_V_CONTENT) throws SQLException {
         logger.info("begin PRO_PM_PLAN_LOCKING_W_VIEW");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -2126,7 +1907,7 @@ public class PM_03Service {
             cstmt.registerOutParameter("V_D_DATE_E", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("V_D_DATE_E",(String) cstmt.getObject("V_D_DATE_E"));
+            result.put("V_D_DATE_E", (String) cstmt.getObject("V_D_DATE_E"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -2140,7 +1921,7 @@ public class PM_03Service {
     }
 
 
-    public Map PRO_PLAN_LOCK_DATE_HOMENOW(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM) throws SQLException {
+    public Map PRO_PLAN_LOCK_DATE_HOMENOW(String V_I_YEAR, String V_I_MONTH, String V_I_WEEKNUM) throws SQLException {
         logger.info("begin PRO_PLAN_LOCK_DATE_HOMENOW");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -2157,10 +1938,10 @@ public class PM_03Service {
             cstmt.registerOutParameter("V_M_DATE", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_W_DATE", OracleTypes.VARCHAR);
             cstmt.execute();
-            result.put("V_Y_DATE",(String) cstmt.getObject("V_Y_DATE"));
-            result.put("V_Q_DATE",(String) cstmt.getObject("V_Q_DATE"));
-            result.put("V_M_DATE",(String) cstmt.getObject("V_M_DATE"));
-            result.put("V_W_DATE",(String) cstmt.getObject("V_W_DATE"));
+            result.put("V_Y_DATE", (String) cstmt.getObject("V_Y_DATE"));
+            result.put("V_Q_DATE", (String) cstmt.getObject("V_Q_DATE"));
+            result.put("V_M_DATE", (String) cstmt.getObject("V_M_DATE"));
+            result.put("V_W_DATE", (String) cstmt.getObject("V_W_DATE"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

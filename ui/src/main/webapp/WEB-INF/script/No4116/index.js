@@ -21,7 +21,7 @@ Ext.onReady(function() {
         fields : [ 'V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
             'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME',
             'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE',
-            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME','WORKORDERNUM' ],
+            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME','WORKORDERNUM','PLANTIME','FACTTIME'],
 
         proxy : {
             type : 'ajax',
@@ -152,6 +152,9 @@ Ext.onReady(function() {
         }
     });
 
+    Ext.data.StoreManager.lookup('gridStore').on('load',function(store) {
+
+    });
     var panel =Ext.create('Ext.panel.Panel',{
         id : 'panellow',
         region : 'north',
@@ -283,7 +286,19 @@ Ext.onReady(function() {
             align : 'center',
             renderer : left,
             renderer : CreateGridColumnTd
-        } ],
+        } ,{
+            text : '计划工时',
+            dataIndex : 'PLANTIME',
+            width : 100,
+            align : 'center',
+            renderer : left
+        },{
+            text : '实际工时',
+            dataIndex : 'FACTTIME',
+            width : 100,
+            align : 'center',
+            renderer : left
+        }],
         listeners : {
             itemdblclick : itemClick
         },

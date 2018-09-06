@@ -290,7 +290,7 @@ function _preViewProcess(ProcessInstanceId) {
 }
 
 function _dealWith(ProcessDefinitionKey,TaskDefinitionKey,BusinessKey,ProcessInstanceId) {
-    tabturn=tabpage
+    tabturn=tabpage;
     Ext.Ajax.request({
         url: AppUrl + 'hp/PM_EQU_REPAIR_FLOW_MENU_SEL',
         type: 'ajax',
