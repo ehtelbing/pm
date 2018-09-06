@@ -132,15 +132,16 @@ function loadPlantlist() {
         traditional: true,
         async: false,
         data: {
-            V_V_DEPTCODE: $("#V_DEPTCODE").val()
+            V_V_DEPTCODE: $("#selZYQ").val()
         },
         success: function (resp) {
+         //   var resp = Ext.JSON.decode(re.responseText);
             $("#V_DEPTNAMEREPARI").empty();
             $.each(resp.list, function (index, item) {
-                if (item.V_DEPTCODEREPARIR == $("#V_DEPTCODEREPARI").val()) {
+                if (item.V_DEPTCODEREPARIR == $("#V_DEPTCODEREPARI").val()&&index==0) {
                     $("<option selected=\"selected\" value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>").appendTo("#V_DEPTNAMEREPARI");
                 } else {
-                    $("<option value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>").appendTo("#V_DEPTNAMEREPARI");
+                   $("<option  value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>").appendTo("#V_DEPTNAMEREPARI");
                 }
             });
             loadSPR();
