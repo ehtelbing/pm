@@ -8,6 +8,7 @@ var V_DEPTCODE = null;
 var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
 var V_PLANCODE = null;
+var startUpTime=null;
 
 if (location.href.split('?')[1] != undefined) {
     V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
@@ -17,6 +18,7 @@ if (location.href.split('?')[1] != undefined) {
     WEEK = Ext.urlDecode(location.href.split('?')[1]).WEEK;
     V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
     V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
+    startUpTime=Ext.urlDecode(location.href.split('?')[1]).startUpTime;
 }
 
 var date = new Date();
@@ -457,9 +459,11 @@ Ext.onReady(function () {
                                 labelWidth: 80,
                                 width: 280,
                                 value: '',
+                                minValue:new Date(startUpTime),
                                 listeners: {
                                     select: function () {
-                                        Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+                                       // Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+                                        Ext.getCmp('jhtgdate').setMinValue(new Date(startUpTime));
                                         _gongshiheji();
                                     }
                                 }
@@ -542,8 +546,12 @@ Ext.onReady(function () {
                                 labelWidth: 80,
                                 width: 280,
                                 value: '',
+                                renderData:function(){
+                                    Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
+                                },
                                 listeners: {
                                     select: function () {
+                                        Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
                                         _gongshiheji();
                                     }
                                 }
@@ -1151,11 +1159,11 @@ function OnButtonCancelClick() {
 }
 
 function _gongshiheji() {
+
     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
     var date11 = new Date(date1);
     var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
     var date22 = new Date(date2);
-
 
     var gongshicha = date22.getTime() - date11.getTime();
     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);

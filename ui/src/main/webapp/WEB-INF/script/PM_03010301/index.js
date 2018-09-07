@@ -887,6 +887,7 @@ function OnButtonDefectAddClicked() {
                                 "&WEEK=" + Ext.getCmp("zhou").getValue() +
                                 "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
                                 "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+
                         } else {
                             alert("初始数据保存失败");
                         }
@@ -905,13 +906,25 @@ function OnButtonDefectAddClicked() {
 function OnButtonPlanAddClicked() {
     V_WEEKPLAN_GUID = 0;
     V_PLANTYPE = 'DEFECT';
-    var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=0&V_PLANTYPE=' + V_PLANTYPE +
-        "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
-        "&YEAR=" + Ext.getCmp("nf").getValue() +
-        "&MONTH=" + Ext.getCmp("yf").getValue() +
-        "&WEEK=" + Ext.getCmp("zhou").getValue() +
-        "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+    //------update 2018-0907
+  //  if(Ext.getCmp('starttime').getValue()<Ext.Date.format(new Date(),'Y-m-d H:i:s')){
+        //---end update
+        var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=0&V_PLANTYPE=' + V_PLANTYPE +
+            "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
+            "&YEAR=" + Ext.getCmp("nf").getValue() +
+            "&MONTH=" + Ext.getCmp("yf").getValue() +
+            "&WEEK=" + Ext.getCmp("zhou").getValue() +
+            "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+            "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()
+            //update start 20180907
+           +"&startUpTime="+Ext.getCmp("starttime").getValue()
+             //---update end
+            , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+        //------update 2018-0907
+    // }else{
+    //     alert("当前计划时间小于可上报时间，请重新修改");
+    // }
+    //---end update
 }
 
 function OnButtonSelectClicked() {
@@ -1017,80 +1030,160 @@ function OnButtonUp() {
     //    icon: Ext.MessageBox.QUESION,
     //    fn: function (btn) {
     //        if (btn == 'yes') {
+    //----update 20180907 start--------------
     var i_err = 0;
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: records[i].data.V_GUID,
-                V_V_ORGCODE: records[i].data.V_ORGCODE,
-                V_V_DEPTCODE: records[i].data.V_DEPTCODE,
-                V_V_FLOWCODE: '上报',
-                V_V_PLANTYPE: 'WEEK',
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText).list[0];
+    for(var i=0;i<records.length;j++){
+        if(records[i].data.V_STARTTIME<Ext.getCmp('starttime').getValue()){
+            Ext.Msg.alert('提示', '存在“计划停工时间”小于“上报截止开始时间”！，请从新修改后上报');
+        }
+    else {
+            Ext.Ajax.request({
+                url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID: records[i].data.V_GUID,
+                    V_V_ORGCODE: records[i].data.V_ORGCODE,
+                    V_V_DEPTCODE: records[i].data.V_DEPTCODE,
+                    V_V_FLOWCODE: '上报',
+                    V_V_PLANTYPE: 'WEEK',
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText).list[0];
 
-                if (resp.V_INFO == '成功') {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'Activiti/StratProcess',
-                        async: false,
-                        method: 'post',
-                        params: {
-                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                            parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
-                            processKey: processKey,
-                            businessKey: records[i].get('V_GUID'),
-                            V_STEPCODE: 'Start',
-                            V_STEPNAME: V_STEPNAME,
-                            V_IDEA: '请审批！',
-                            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                            V_INPER: Ext.util.Cookies.get('v_personcode')
-                        },
-                        success: function (response) {
-                            if (Ext.decode(response.responseText).ret == 'OK') {
+                    if (resp.V_INFO == '成功') {
+                        Ext.Ajax.request({
+                            url: AppUrl + 'Activiti/StratProcess',
+                            async: false,
+                            method: 'post',
+                            params: {
+                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
+                                processKey: processKey,
+                                businessKey: records[i].get('V_GUID'),
+                                V_STEPCODE: 'Start',
+                                V_STEPNAME: V_STEPNAME,
+                                V_IDEA: '请审批！',
+                                V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                            },
+                            success: function (response) {
+                                if (Ext.decode(response.responseText).ret == 'OK') {
 
-                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                Ext.Msg.alert('提示', '该流程发起失败！');
+                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                    Ext.Msg.alert('提示', '该流程发起失败！');
+                                }
                             }
-                        }
-                    });
-                    i_err++;
+                        });
+                        i_err++;
 
-                    if (i_err == records.length) {
-                        query();
+                        if (i_err == records.length) {
+                            query();
+                        }
+                    } else {
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.V_INFO,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR,
+                            fn: function (btn) {
+                                query();
+                            }
+                        });
                     }
-                } else {
+                },
+                failure: function (response) {
                     Ext.MessageBox.show({
                         title: '错误',
-                        msg: resp.V_INFO,
+                        msg: response.responseText,
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR,
                         fn: function (btn) {
                             query();
                         }
-                    });
+                    })
                 }
-            },
-            failure: function (response) {
-                Ext.MessageBox.show({
-                    title: '错误',
-                    msg: response.responseText,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR,
-                    fn: function (btn) {
-                        query();
-                    }
-                })
-            }
-        });
+            });
+        }
     }
+    //--end update-------------
+            //-----old start
+    // var i_err = 0;
+    // for (var i = 0; i < records.length; i++) {
+    //     Ext.Ajax.request({
+    //         url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
+    //         method: 'POST',
+    //         async: false,
+    //         params: {
+    //             V_V_GUID: records[i].data.V_GUID,
+    //             V_V_ORGCODE: records[i].data.V_ORGCODE,
+    //             V_V_DEPTCODE: records[i].data.V_DEPTCODE,
+    //             V_V_FLOWCODE: '上报',
+    //             V_V_PLANTYPE: 'WEEK',
+    //             V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+    //         },
+    //         success: function (resp) {
+    //             var resp = Ext.decode(resp.responseText).list[0];
+    //
+    //             if (resp.V_INFO == '成功') {
+    //                 Ext.Ajax.request({
+    //                     url: AppUrl + 'Activiti/StratProcess',
+    //                     async: false,
+    //                     method: 'post',
+    //                     params: {
+    //                         parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+    //                         parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
+    //                         processKey: processKey,
+    //                         businessKey: records[i].get('V_GUID'),
+    //                         V_STEPCODE: 'Start',
+    //                         V_STEPNAME: V_STEPNAME,
+    //                         V_IDEA: '请审批！',
+    //                         V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+    //                         V_INPER: Ext.util.Cookies.get('v_personcode')
+    //                     },
+    //                     success: function (response) {
+    //                         if (Ext.decode(response.responseText).ret == 'OK') {
+    //
+    //                         } else if (Ext.decode(response.responseText).error == 'ERROR') {
+    //                             Ext.Msg.alert('提示', '该流程发起失败！');
+    //                         }
+    //                     }
+    //                 });
+    //                 i_err++;
+    //
+    //                 if (i_err == records.length) {
+    //                     query();
+    //                 }
+    //             } else {
+    //                 Ext.MessageBox.show({
+    //                     title: '错误',
+    //                     msg: resp.V_INFO,
+    //                     buttons: Ext.MessageBox.OK,
+    //                     icon: Ext.MessageBox.ERROR,
+    //                     fn: function (btn) {
+    //                         query();
+    //                     }
+    //                 });
+    //             }
+    //         },
+    //         failure: function (response) {
+    //             Ext.MessageBox.show({
+    //                 title: '错误',
+    //                 msg: response.responseText,
+    //                 buttons: Ext.MessageBox.OK,
+    //                 icon: Ext.MessageBox.ERROR,
+    //                 fn: function (btn) {
+    //                     query();
+    //                 }
+    //             })
+    //         }
+    //     });
+    // }
     //    }
     //}
     //});
+            //------old end
 }
 
 function getReturnQXXZ(retdata) {
