@@ -2749,14 +2749,43 @@ public class cjyController {
                     String V_NEXT_SETP = spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
                     String processKey = spperresult.get("RET").toString();
                     String sppercode = spperresultlist.get(0).get("V_PERSONCODE").toString();
-                    for (int j = 0; j < spperresultlist.size(); j++) {
-                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)) {
-                            sppercode = Assignee;
+//                    //---update--2018-0906
+                    if(  spperresultlist.size()>1) {
+                        for (int j = 0; j < spperresultlist.size(); j++) {
+                            if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)) {
+                                sppercode = Assignee;
+                                break;
+                            }
+                            if (spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE)) {
+                                sppercode = V_V_PERSONCODE;
+                                break;
+                            }
+                            if (!spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee)&&!spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE)&&j == spperresultlist.size() - 1) {
+                                break;
+                            }
+                      }
+                        if(!sppercode.equals(Assignee)&&!sppercode.equals(V_V_PERSONCODE)&&!V_STEPNAME.equals("工单打印")&&!V_STEPNAME.equals("工单打印接收")){
+                            if(i==V_ORDERGUID.length-1){
+                                result.put("mes", "批量审批中，下一步审批人存在不固定多人无法批量审批");
+                                return result;
+                            }
+                            else{
+                                continue;
+                            }
                         }
-                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE)) {
-                            sppercode = V_V_PERSONCODE;
-                        }
+
                     }
+//                    //---udupdate--
+//                    for (int j = 0; j < spperresultlist.size();  j++) {
+//                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(Assignee))
+//                        {
+//                            sppercode = Assignee;
+//                        }
+//                        if (spperresultlist.get(j).get("V_PERSONCODE").equals(V_V_PERSONCODE))
+//                        {
+//                            sppercode = V_V_PERSONCODE;
+//                        }
+//                    }
                     if (V_STEPNAME.indexOf("审批") != -1) {
                         String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
                         String[] parVal = new String[]{sppercode, "批量审批通过"};
