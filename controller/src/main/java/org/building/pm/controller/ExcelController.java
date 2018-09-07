@@ -760,6 +760,14 @@ public class ExcelController {
         cell.setCellValue("工单状态");
         cell.setCellStyle(style);
 
+        cell = row.createCell((short) 12);
+        cell.setCellValue("计划工时");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
+        cell.setCellValue("实际工时");
+        cell.setCellStyle(style);
+
         if (data.size() > 0) {
             list = (List) data.get("list");
             for (int i = 0; i < list.size(); i++) {
@@ -789,6 +797,10 @@ public class ExcelController {
                 row.createCell((short) 10).setCellValue(map.get("V_ORDER_TYP_TXT") == null ? "" : map.get("V_ORDER_TYP_TXT").toString());
 
                 row.createCell((short) 11).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("PLANTIME") == null ? "" : map.get("PLANTIME").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("FACTTIME") == null ? "" : map.get("FACTTIME").toString());
 
             }
             try {
