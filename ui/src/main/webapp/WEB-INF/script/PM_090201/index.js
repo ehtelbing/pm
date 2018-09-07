@@ -300,7 +300,12 @@ function loadSPR() {
             var result = [];
             if (resp.list != null) {
                 $.each(resp.list, function (index, item) {
-                    result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
+                  //  result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
+                    if (item.V_PERSONCODE == $.cookies.get('v_personcode')) {
+                        result.push("<option value=\"" + item.V_PERSONCODE + "\" selected=\"selected\">" + item.V_PERSONNAME + "</option>");
+                    } else {
+                        result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
+                    }
                 });
                 processKey = resp.RET;
                 V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
