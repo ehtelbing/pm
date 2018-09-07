@@ -9,6 +9,7 @@ var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
 var V_PLANCODE = null;
 var startUpTime=null;
+var endUpTime=null;
 
 if (location.href.split('?')[1] != undefined) {
     V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
@@ -19,6 +20,7 @@ if (location.href.split('?')[1] != undefined) {
     V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
     V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
     startUpTime=Ext.urlDecode(location.href.split('?')[1]).startUpTime;
+    endUpTime=Ext.urlDecode(location.href.split('?')[1]).endUpTime;
 }
 
 var date = new Date();
@@ -386,6 +388,7 @@ Ext.onReady(function () {
                                 margin: '5 0 0 5',
                                 labelWidth: 70,
                                 width: 255,
+                                matchFieldWidth: false,
                                 value: '',
                                 displayField: 'V_EQUNAME',
                                 valueField: 'V_EQUCODE',
@@ -462,8 +465,9 @@ Ext.onReady(function () {
                                 minValue:new Date(startUpTime),
                                 listeners: {
                                     select: function () {
-                                       // Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+                                        Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
                                         Ext.getCmp('jhtgdate').setMinValue(new Date(startUpTime));
+                                       // Ext.getCmp('jhjgdate').setMinValue(new Date(value));
                                         _gongshiheji();
                                     }
                                 }
@@ -546,9 +550,9 @@ Ext.onReady(function () {
                                 labelWidth: 80,
                                 width: 280,
                                 value: '',
-                                renderData:function(){
-                                    Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
-                                },
+                                // renderData:function(){
+                                //     Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
+                                // },
                                 listeners: {
                                     select: function () {
                                         Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
@@ -1052,6 +1056,7 @@ function OnButtonSaveClick() {
      V_FLOWCODE= Ext.decode(resp.responseText).list[0].V_INFO;
      }
      });*/
+    if(Ext.Date.format(new Date(),'Y-m-d H:i:s')>Ext.Date.format(new Date(startUpTime),'Y-m-d H:i:s')&&Ext.Date.format(new Date(),'Y-m-d H:i:s')<Ext.Date.format(new Date(endUpTime),'Y-m-d H:i:s')){
     //计划停工时间
     var jhtghour = Ext.getCmp('jhtghour').getValue();
     var jhtgminute = Ext.getCmp('jhtgminute').getValue();
@@ -1152,6 +1157,10 @@ function OnButtonSaveClick() {
 
         }
     });
+    }
+    else{
+        Ext.Msg.alert('提示', '此计划不在上报时间内');
+    }
 }
 function OnButtonCancelClick() {
     window.opener.query();
