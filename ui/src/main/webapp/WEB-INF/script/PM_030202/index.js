@@ -1,6 +1,7 @@
 var dt = new Date();
 var thisYear = dt.getFullYear();
 var years = [];
+var months=[];
 //年份
 for (var i = thisYear - 4; i <= thisYear + 1; i++) {
     years.push({displayField: i, valueField: i});
@@ -8,7 +9,7 @@ for (var i = thisYear - 4; i <= thisYear + 1; i++) {
 
 //月份
 for (var i = 1; i <= 12; i++) {
-    years.push({displayField: i, valueField: i});
+    months.push({displayField: i, valueField: i});
 }
 
 var yearStore = Ext.create("Ext.data.Store", {
@@ -24,7 +25,7 @@ var yearStore = Ext.create("Ext.data.Store", {
 var monthStore = Ext.create("Ext.data.Store", {
     storeId: 'monthStore',
     fields: ['displayField', 'valueField'],
-    data: years,
+    data: months,
     proxy: {
         type: 'memory',
         reader: {type: 'json'}
@@ -136,6 +137,9 @@ Ext.onReady(function () {
                 root: 'list',
                 total: 'total'
             }
+        },
+        listeners: {
+            beforeload: beforeloadStore
         }
     });
 
@@ -156,7 +160,6 @@ Ext.onReady(function () {
             fieldLabel: '年份',
             value: new Date().getFullYear() + 1,
             labelWidth: 80,
-            width: 250,
             labelAlign: 'right',
             editable: false,
             displayField: 'displayField',
@@ -168,7 +171,6 @@ Ext.onReady(function () {
             fieldLabel: '月份',
             value: new Date().getMonth() + 2,
             labelWidth: 80,
-            width: 250,
             labelAlign: 'right',
             editable: false,
             displayField: 'displayField',
@@ -182,8 +184,7 @@ Ext.onReady(function () {
             fieldLabel: '计划厂矿',
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
-            labelWidth: 80,
-            width: 250
+            labelWidth: 80
         }, {
             xtype: 'combo',
             id: "zyq",
@@ -193,8 +194,7 @@ Ext.onReady(function () {
             fieldLabel: '作业区',
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
-            labelWidth: 80,
-            width: 250
+            labelWidth: 80
         }, {
             xtype: 'combo',
             id: "wxlx",
@@ -204,8 +204,7 @@ Ext.onReady(function () {
             fieldLabel: '维修类型',
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
-            labelWidth: 80,
-            width: 250
+            labelWidth: 80
         }, {
             xtype: 'combo',
             id: "zy",
@@ -215,16 +214,14 @@ Ext.onReady(function () {
             fieldLabel: '专业',
             displayField: 'V_ZYMC',
             valueField: 'V_GUID',
-            labelWidth: 80,
-            width: 250
+            labelWidth: 80
         }, {
             xtype: 'textfield',
             id: "jxnr",
             editable: false,
             queryMode: 'local',
             fieldLabel: '检修内容',
-            labelWidth: 80,
-            width: 250
+            labelWidth: 80
         }, {
             xtype: 'button',
             text: '查询',
@@ -262,7 +259,6 @@ Ext.onReady(function () {
         id: 'grid',
         region: 'center',
         width: '100%',
-        pageSize: 5,
         columnLines: true,
         store: gridStore,
         autoScroll: true,
@@ -368,8 +364,8 @@ function beforeloadStore(store) {
     store.proxy.extraParams.V_V_WXLX = Ext.getCmp('wxlx').getValue();
     store.proxy.extraParams.V_V_CONTENT = Ext.getCmp('jxnr').getValue();
     store.proxy.extraParams.V_V_FLAG = "MONTH";
-    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').getValue();
-    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').getValue();
+    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
@@ -408,7 +404,7 @@ function OnButtonAdd() {
             V_V_ORGCODE: Ext.getCmp("ck").getValue(),
             V_V_DEPTCODE: Ext.getCmp("zyq").getValue(),
             V_V_INPER: Ext.util.Cookies.get('v_personcode'),
-            V_V_INPER: 'MONTH'
+            V_V_FLAG: 'MONTH'
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

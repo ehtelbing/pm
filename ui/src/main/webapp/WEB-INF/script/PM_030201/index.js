@@ -120,6 +120,9 @@ Ext.onReady(function () {
                 root: 'list',
                 total: 'total'
             }
+        },
+        listeners: {
+            beforeload: beforeloadStore
         }
     });
 
@@ -243,7 +246,6 @@ Ext.onReady(function () {
         id: 'grid',
         region: 'center',
         width: '100%',
-        pageSize: 5,
         columnLines: true,
         store: gridStore,
         autoScroll: true,
@@ -345,8 +347,8 @@ function beforeloadStore(store) {
     store.proxy.extraParams.V_V_ZY = Ext.getCmp('zy').getValue();
     store.proxy.extraParams.V_V_WXLX = Ext.getCmp('wxlx').getValue();
     store.proxy.extraParams.V_V_CONTENT = Ext.getCmp('jxnr').getValue();
-    store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').getValue();
-    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').getValue();
+    store.proxy.extraParams.V_V_PAGE =Ext.getCmp('page').store.currentPage;
+    store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {

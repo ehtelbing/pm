@@ -545,6 +545,31 @@ public class PM_03Service {
         return result;
     }
 
+    public Map PRO_PM_03_PROJECT_COPY_BYGUID(String V_V_UPGUID, String V_V_GUID,String V_V_INPER) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PROJECT_COPY_BYGUID" + "(:V_V_UPGUID,:V_V_GUID,:V_V_INPER,:V_INFO)}");
+            cstmt.setString("V_V_UPGUID", V_V_UPGUID);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_INPER", V_V_INPER);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PROJECT_COPY_BYGUID");
+        return result;
+    }
+
     public Map PM_03_PLAN_PROJECT_FILE_SEL(String V_V_GUID,String V_V_FILEGUID,String V_V_FILENAME,String V_V_TYPE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;

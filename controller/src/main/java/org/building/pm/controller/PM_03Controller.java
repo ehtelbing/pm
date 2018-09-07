@@ -57,7 +57,7 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_INPER") String V_V_INPER,
             @RequestParam(value = "V_V_FLAG") String V_V_FLAG) throws Exception {
 
-        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_CREATE(V_V_GUID, V_V_YEAR,V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_INPER,V_V_FLAG);
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_CREATE(V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_INPER, V_V_FLAG);
         return result;
     }
 
@@ -71,6 +71,18 @@ public class PM_03Controller {
         return result;
     }
 
+
+    //大修计划分解
+    @RequestMapping(value = "/PRO_PM_03_PROJECT_COPY_BYGUID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PROJECT_COPY_BYGUID(
+            @RequestParam(value = "V_V_UPGUID") String V_V_UPGUID,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_INPER") String V_V_INPER) throws Exception {
+
+        Map result = pm_03Service.PRO_PM_03_PROJECT_COPY_BYGUID(V_V_UPGUID, V_V_GUID,V_V_INPER);
+        return result;
+    }
     //年计划总预算
     @RequestMapping(value = "/PM_PLAN_BUDGET_YEAR_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -79,7 +91,7 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_JHLB") String V_V_JHLB) throws Exception {
         budgetController.budgetYear("2018");
-        Map result = pm_03Service.PM_PLAN_BUDGET_YEAR_SEL(V_V_YEAR,V_V_ORGCODE,V_V_JHLB);
+        Map result = pm_03Service.PM_PLAN_BUDGET_YEAR_SEL(V_V_YEAR, V_V_ORGCODE, V_V_JHLB);
         return result;
     }
 
@@ -407,7 +419,7 @@ public class PM_03Controller {
                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
                                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
 
-        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_VIEW(V_V_YEAR,V_V_MONTH,V_V_ORGCODE,V_V_DEPTCODE,V_V_ZY,V_V_WXLX,V_V_CONTENT,V_V_FLAG,V_V_PAGE,V_V_PAGESIZE);
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_VIEW(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_FLAG, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 

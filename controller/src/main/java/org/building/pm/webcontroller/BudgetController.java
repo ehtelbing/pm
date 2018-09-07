@@ -46,10 +46,7 @@ public class BudgetController {
 
             Object[] results = client.invoke("web_budgetyear_getbybm", new Object[]{V_V_YEAR, "990020"});
 
-            if(results==null){
-                result.put("ret", "暂无预算");
-                return result;
-            }
+            Document d = (Document)results[0];
             Document doc = DocumentHelper.parseText(results[0].toString());
 
             Element rootElt = doc.getRootElement();
