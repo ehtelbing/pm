@@ -216,6 +216,12 @@ Ext.onReady(function () {
             icon: imgpath + '/search.png',
             listeners: {click: OnButtonQuery}
         },{
+            xtype: 'button',
+            text: '获取年预算',
+            style: ' margin: 5px 0px 0px 10px',
+            icon: imgpath + '/search.png',
+            listeners: {click: QueryBudget}
+        },{
                 xtype: 'button',
                 text: '新增工程项目',
                 icon: imgpath + '/add.png',
@@ -438,6 +444,26 @@ function OnButtonDel(){
             }
         }
     }
+}
+
+//查询年预算
+function QueryBudget(){
+    Ext.getBody().mask('<p>年预算获取中...</p>');
+    Ext.Ajax.request({
+        url: AppUrl + '/budget/budgetYear',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_YEAR: Ext.getCmp('year').getValue()
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if(resp.setret='SUCCESS'){
+                alert('最新年预算获取成功');
+                Ext.getBody().unmask();
+            }
+        }
+    });
 }
 
 

@@ -46,7 +46,6 @@ public class BudgetController {
 
             Object[] results = client.invoke("web_budgetyear_getbybm", new Object[]{V_V_YEAR, "990020"});
 
-            Document d = (Document)results[0];
             Document doc = DocumentHelper.parseText(results[0].toString());
 
             Element rootElt = doc.getRootElement();
@@ -54,7 +53,6 @@ public class BudgetController {
             String setret = "";
             while (iter.hasNext()) {
                 Element recordEle = (Element) iter.next();
-
                 String year = recordEle.elementTextTrim("Cls_i_year");
                 String deptcode = recordEle.elementTextTrim("Cls_vch_deptcode");
                 String ywfw = recordEle.elementTextTrim("Cls_GSBER");
@@ -66,7 +64,6 @@ public class BudgetController {
                 setret = budgetService.PM_PLAN_BUDGET_YEAR_SET(year, ywfw, chargecode, chargename,
                         money, money_add);
             }
-
             result.put("ret", setret);
         } catch (MalformedURLException e) {
             result.put("ret", "Fail");
