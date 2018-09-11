@@ -1195,7 +1195,7 @@ function _preOrderissued() {
         V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
-        V_V_WHERE: '已反馈' // '已接收'
+        V_V_WHERE:  '已接收'
 
     };
     nextSprStore2.currentPage = 1;
@@ -1471,7 +1471,7 @@ function feedBack() {
         V_V_FLOW_STEP: V_STEPCODE,
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '%',
-        V_V_WHERE:  '已接收'//'已反馈'
+        V_V_WHERE:  '已反馈'
 
     };
 
