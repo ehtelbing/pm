@@ -222,7 +222,7 @@ function btn_select(){
         method: 'POST',
         async: false,
         params: {
-            V_V_JXMX_CODE :  seldata[0].data.V_GX_CODE
+            V_V_JXMX_CODE :  seldata[0].data.V_MX_CODE//seldata[0].data.V_GX_CODE
         }, success: function (response) {
             var resp = Ext.JSON.decode(response.responseText);
             Ext.Ajax.request({
@@ -344,7 +344,7 @@ function btn_select(){
 }
 
 function detail(a,value,metaData){
-    return '<a href="javascript:ondetail(\'' + metaData.data.V_GX_CODE + '\')">详情</a>';
+    return '<a href="javascript:ondetail(\'' + metaData.data.V_MX_CODE + '\')">详情</a>';
 }
 
 function ondetail(a){

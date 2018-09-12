@@ -2174,8 +2174,8 @@ public class cjyService {
 
 
     public List<Map> PRO_PM_WORKORDER_ET_SET_NEW(Double V_I_ID, String V_V_ORDERGUID, String V_V_DESCRIPTION,
-                                                 Double V_I_WORK_ACTIVITY, Double V_I_DURATION_NORMAL, String V_V_WORK_CENTER,
-                                                 Double V_I_ACTUAL_TIME, Double V_I_NUMBER_OF_PEOPLE, String V_V_ID, String V_V_GUID,
+                                                 String V_I_WORK_ACTIVITY, String V_I_DURATION_NORMAL, String V_V_WORK_CENTER,
+                                                 String V_I_ACTUAL_TIME, String V_I_NUMBER_OF_PEOPLE, String V_V_ID, String V_V_GUID,
                                                  String V_V_JXBZ, String V_V_JXBZ_VALUE_DOWN, String V_V_JXBZ_VALUE_UP) throws SQLException {
 //        logger.info("begin SG_INF_DATA_ITEM_SAVE");
         List<Map> result = new ArrayList<Map>();
@@ -2192,11 +2192,11 @@ public class cjyService {
             cstmt.setDouble("V_I_ID", V_I_ID);
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.setString("V_V_DESCRIPTION", V_V_DESCRIPTION);
-            cstmt.setDouble("V_I_WORK_ACTIVITY", V_I_WORK_ACTIVITY);
-            cstmt.setDouble("V_I_DURATION_NORMAL", V_I_DURATION_NORMAL);
+            cstmt.setString("V_I_WORK_ACTIVITY", V_I_WORK_ACTIVITY);
+            cstmt.setString("V_I_DURATION_NORMAL", V_I_DURATION_NORMAL);
             cstmt.setString("V_V_WORK_CENTER", V_V_WORK_CENTER);
-            cstmt.setDouble("V_I_ACTUAL_TIME", V_I_ACTUAL_TIME);
-            cstmt.setDouble("V_I_NUMBER_OF_PEOPLE", V_I_NUMBER_OF_PEOPLE);
+            cstmt.setString("V_I_ACTUAL_TIME", V_I_ACTUAL_TIME);
+            cstmt.setString("V_I_NUMBER_OF_PEOPLE", V_I_NUMBER_OF_PEOPLE);
             cstmt.setString("V_V_ID", V_V_ID);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_JXBZ", V_V_JXBZ);
