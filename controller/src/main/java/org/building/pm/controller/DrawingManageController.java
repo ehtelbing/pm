@@ -52,6 +52,17 @@ public class DrawingManageController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_PLAN_BUDGET_YEAR_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_PLAN_BUDGET_YEAR_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                    @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                    @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = drawingManageService.PRO_PM_PLAN_BUDGET_YEAR_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_YEAR);
+        return result;
+    }
 //    @RequestMapping(value = "/PRO_BASE_DEPT_VIEW_ROLE_NEW", method = RequestMethod.POST)
 //    @ResponseBody
 //    public Map<String, Object> PRO_BASE_DEPT_VIEW_ROLE_NEW(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,

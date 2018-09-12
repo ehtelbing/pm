@@ -122,6 +122,30 @@ public class DrawingManageService {
         logger.info("end PRO_SAP_PM_EQU_P_BYZYQ");
         return result;
     }
-
+    public Map PRO_PM_PLAN_BUDGET_YEAR_SEL(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_YEAR) throws SQLException {
+        logger.info("begin PRO_PM_PLAN_BUDGET_YEAR_SEL");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_PLAN_BUDGET_YEAR_SEL" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_YEAR,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_PLAN_BUDGET_YEAR_SEL");
+        return result;
+    }
 
 }
