@@ -149,7 +149,7 @@ var windowLayout = {
         value:'0',
         minValue: 1,
         width: 400,
-        readOnly:true,
+        readOnly:false,
         colspan : 2
     }, {
         xtype: 'numberfield',
