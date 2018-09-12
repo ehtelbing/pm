@@ -668,6 +668,14 @@ var northPanel = Ext.create('Ext.form.Panel', {
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8' },
         {
             xtype: 'button',
+            id:'agreeFlow',
+            text: '年计划选择',
+            margin: '5 0 5 0',
+            iconCls:'Report',
+            handler:btnYear
+        },
+        {
+            xtype: 'button',
             text: '检修模型',
             margin: '5 0 5 0',
             iconCls:'Tablegear',
@@ -698,30 +706,15 @@ var northPanel = Ext.create('Ext.form.Panel', {
             handler:btnSaveProject
         },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8' },
-        {
+       /* {
             xtype: 'button',
             id:'startFlow',
             text: '上报',
             margin: '5 0 5 0',
             iconCls:'Report',
             handler:btnFlowStart
-        },
+        },*/
         {
-            xtype: 'button',
-            id:'agreeFlow',
-            text: '审批通过',
-            margin: '5 0 5 0',
-            iconCls:'Report',
-            handler:btnFlowAgree
-        },
-        {
-            xtype: 'button',
-            id:'disAgreeFlow',
-            text: '审批驳回',
-            margin: '5 0 5 0',
-            iconCls:'Report',
-            handler:btnFlowDisAgree
-        },{
             xtype: 'button',
             text: '附件',
             margin: '5 0 5 0',
@@ -2030,7 +2023,7 @@ function QueryPageLoad(){
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.list!=null){
-                Ext.getCmp('northPanel').setTitle(resp.list[0].V_YEAR+"年"+resp.list[0].V_ORGNAME+"年计划编制");
+                Ext.getCmp('northPanel').setTitle(resp.list[0].V_YEAR+"年"+resp.list[0].V_MONTH+"月"+resp.list[0].V_ORGNAME+"月计划编制");
                 Year=resp.list[0].V_YEAR;
                 OrgCode=resp.list[0].V_ORGCODE;
                 OrgName=resp.list[0].V_ORGNAME;
@@ -2152,16 +2145,6 @@ function QueryPageLoad(){
                 }
                 Ext.getCmp('jhfy').setValue(resp.list[0].V_MONEYBUDGET);
 
-                if(resp.list[0].V_MONEYBUDGET=='99'){
-                    Ext.getCmp('startFlow').show();
-                    Ext.getCmp('agreeFlow').hide();
-                    Ext.getCmp('disAgreeFlow').hide();
-                }else{
-                    Ext.getCmp('startFlow').hide();
-                    Ext.getCmp('agreeFlow').show();
-                    Ext.getCmp('disAgreeFlow').show();
-                }
-
                 QueryZYQ();
                 QueryDefect()
                 QueryModel();
@@ -2236,7 +2219,7 @@ function QueryZYQ(){
 
     Ext.data.StoreManager.lookup('zyqStore').on('load',function(){
         Ext.getCmp('zyq').select(DeptCode);
-        CreateProjectCode();
+       // CreateProjectCode();
         QueryZyFzr();
     })
 }
@@ -2988,53 +2971,11 @@ function btnFlowStart(){
         }
     });
 }
-//审批通过
-function btnFlowAgree(){
-    Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_FLOW_LOG_SET',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID:Guid,
-            V_V_FLOWCODE:'1',
-            V_V_FLOWNAME:'审批通过',
-            V_V_IDEA:'请审批',
-            V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
-            V_V_INPERNAME:Ext.util.Cookies.get('v_personname2'),
-            V_V_NEXTPERCODE:'',
-            V_V_NEXTPERNAME:''
-        },
-        success: function (resp) {
-            var resp=Ext.decode(resp.responseText);
-            if(resp.V_INFO=='SUCCESS'){
-                alert('审批成功！');
-            }
-        }
-    });
-}
-//审批驳回
-function btnFlowDisAgree(){
-    Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_FLOW_LOG_SET',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID:Guid,
-            V_V_FLOWCODE:'1',
-            V_V_FLOWNAME:'审批驳回',
-            V_V_IDEA:'请审批',
-            V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
-            V_V_INPERNAME:Ext.util.Cookies.get('v_personname2'),
-            V_V_NEXTPERCODE:'',
-            V_V_NEXTPERNAME:''
-        },
-        success: function (resp) {
-            var resp=Ext.decode(resp.responseText);
-            if(resp.V_INFO=='SUCCESS'){
-                alert('驳回成功！');
-            }
-        }
-    });
+//年计划选择
+function btnYear(){
+    var owidth = window.document.body.offsetWidth - 600;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_030202/indexY.html?guid=' +Guid +'&type=YEAR&Orgcode='+OrgCode+'&Year='+Year+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
 }
 function QueryFlow(){
     Ext.data.StoreManager.lookup('flowStore').load({
@@ -3055,7 +2996,6 @@ function btnAdd_file(){
     var oheight = window.document.body.offsetHeight - 100;
     window.open(AppUrl + 'page/PM_03020101/file.html?guid=' +Guid +'&type=YEAR&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
 }
-
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';

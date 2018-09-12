@@ -90,7 +90,7 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_JHLB") String V_V_JHLB) throws Exception {
-        budgetController.budgetYear("2018");
+      //  budgetController.budgetYear("2018");
         Map result = pm_03Service.PM_PLAN_BUDGET_YEAR_SEL(V_V_YEAR, V_V_ORGCODE, V_V_JHLB);
         return result;
     }

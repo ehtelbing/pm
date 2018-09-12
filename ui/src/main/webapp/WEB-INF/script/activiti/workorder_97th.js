@@ -11,6 +11,8 @@ var ifYS = 0;
 var winheight;
 var V_TEAMCODE = null;
 var V_V_ORDER_TYP = '';
+var REPAIRSIGN="";
+var REPAIRPERSON="";
 var action_time;
 $(function () {
 
@@ -482,6 +484,8 @@ function loadPageInfo() {
                 $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
                 $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
 
+                REPAIRSIGN=resp.list[0].V_REPAIRSIGN;
+                REPAIRPERSON=resp.list[0].V_REPAIRPERSON;
                 $("#V_REPAIRSIGN").html(resp.list[0].V_REPAIRSIGN);
                 $("#V_REPAIRPERSON").html(resp.list[0].V_REPAIRPERSON);
 
@@ -1402,8 +1406,8 @@ function print() {
             V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
             V_V_OTHERREASON: $("#V_OTHERREASON").val(),
             V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
-            V_V_REPAIRSIGN: $("#V_REPAIRSIGN").val(),
-            V_V_REPAIRPERSON: $("#V_REPAIRPERSON").val(),
+            V_V_REPAIRSIGN: REPAIRSIGN ,  //$("#V_REPAIRSIGN").val(),
+            V_V_REPAIRPERSON: REPAIRPERSON ,  //$("#V_REPAIRPERSON").val(),
             V_V_POSTMANSIGN: $("#V_POSTMANSIGN").val(),
             V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
             V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),

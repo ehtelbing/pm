@@ -32,7 +32,9 @@ Ext.onReady(function() {
                 text: '按钮',
                 style: 'margin: 7px 3px 2px 15px',
                 handler: reStartPbtn
-            }]
+            },{xtype:'label',
+            text:'(工单号用“;”断开)',
+            style:'font-color:FF3333 red;font-weight:bold;margin: 9px 3px 2px 8px;'}]
     });
     Ext.create('Ext.container.Viewport', {
         layout: 'border',

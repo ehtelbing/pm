@@ -763,7 +763,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_DEPTCODE',
             labelWidth :80,
             width:250,
-            labelAlign : 'right'
+            labelAlign : 'right',
+            readOnly:true
         },
         {
             xtype : 'combo',
@@ -777,7 +778,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_BASECODE',
             labelWidth :60,
             width:250,
-            labelAlign : 'right'
+            labelAlign : 'right',
+            readOnly:true
         },
         {
             xtype : 'combo',
@@ -791,7 +793,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_GUID',
             width:265,
             labelWidth :75,
-            labelAlign : 'right'
+            labelAlign : 'right',
+            readOnly:true
         },
         {
             xtype : 'combo',
@@ -805,7 +808,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_UID',
             width:250,
             labelWidth :60,
-            labelAlign : 'right'
+            labelAlign : 'right',
+            readOnly:true
         }, {
             xtype : 'combo',
             id : "sclb",
@@ -840,6 +844,20 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             editable : false,
             queryMode : 'local',
             fieldLabel : '工 序',
+            margin:'5 5 5 0',
+            displayField: 'V_GXMC',
+            valueField: 'V_UID',
+            width:265,
+            labelWidth :75,
+            labelAlign : 'right'
+        },
+        {
+            xtype : 'combo',
+            id : "gxzx",
+            store: gxzxStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '工序子项',
             margin:'5 5 5 0',
             displayField: 'V_GXMC',
             valueField: 'V_UID',
@@ -2219,7 +2237,7 @@ function QueryZYQ(){
 
     Ext.data.StoreManager.lookup('zyqStore').on('load',function(){
         Ext.getCmp('zyq').select(DeptCode);
-        CreateProjectCode();
+       // CreateProjectCode();
         QueryZyFzr();
     })
 }

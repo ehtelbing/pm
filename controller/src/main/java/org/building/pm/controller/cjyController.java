@@ -1200,16 +1200,16 @@ public class cjyController {
     public Map PRO_PM_WORKORDER_ET_SET_NEW(@RequestParam(value = "V_I_ID") Double V_I_ID,
                                            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
                                            @RequestParam(value = "V_V_DESCRIPTION") String V_V_DESCRIPTION,
-                                           @RequestParam(value = "V_I_WORK_ACTIVITY") Double V_I_WORK_ACTIVITY,
-                                           @RequestParam(value = "V_I_DURATION_NORMAL") Double V_I_DURATION_NORMAL,
+                                           @RequestParam(value = "V_I_WORK_ACTIVITY") String V_I_WORK_ACTIVITY,
+                                           @RequestParam(value = "V_I_DURATION_NORMAL",required=false) String V_I_DURATION_NORMAL,
                                            @RequestParam(value = "V_V_WORK_CENTER") String V_V_WORK_CENTER,
-                                           @RequestParam(value = "V_I_ACTUAL_TIME") Double V_I_ACTUAL_TIME,
-                                           @RequestParam(value = "V_I_NUMBER_OF_PEOPLE") Double V_I_NUMBER_OF_PEOPLE,
-                                           @RequestParam(value = "V_V_ID") String V_V_ID,
+                                           @RequestParam(value = "V_I_ACTUAL_TIME") String V_I_ACTUAL_TIME,
+                                           @RequestParam(value = "V_I_NUMBER_OF_PEOPLE") String V_I_NUMBER_OF_PEOPLE,
+                                           @RequestParam(value = "V_V_ID",required=false) String V_V_ID,
                                            @RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                           @RequestParam(value = "V_V_JXBZ") String V_V_JXBZ,
-                                           @RequestParam(value = "V_V_JXBZ_VALUE_DOWN") String V_V_JXBZ_VALUE_DOWN,
-                                           @RequestParam(value = "V_V_JXBZ_VALUE_UP") String V_V_JXBZ_VALUE_UP,
+                                           @RequestParam(value = "V_V_JXBZ",required=false) String V_V_JXBZ,
+                                           @RequestParam(value = "V_V_JXBZ_VALUE_DOWN",required=false) String V_V_JXBZ_VALUE_DOWN,
+                                           @RequestParam(value = "V_V_JXBZ_VALUE_UP",required=false) String V_V_JXBZ_VALUE_UP,
                                            HttpServletRequest request,
                                            HttpServletResponse response) throws Exception {
         Map test = new HashMap();
@@ -1483,6 +1483,20 @@ public class cjyController {
             @RequestParam(value = "V_V_MAIN_DEFECT") String V_V_MAIN_DEFECT,
             @RequestParam(value = "V_V_EXPECT_AGE") String V_V_EXPECT_AGE,
             @RequestParam(value = "V_V_REPAIR_PER") String V_V_REPAIR_PER,
+
+            @RequestParam(value = "V_V_PDC") String V_V_PDC,
+//            @RequestParam(value = "V_V_SGDATE") String V_V_SGDATE,
+            @RequestParam(value = "V_V_GYYQ") String V_V_GYYQ,
+            @RequestParam(value = "V_V_CHANGPDC") String V_V_CHANGPDC,
+//            @RequestParam(value = "V_V_JXRESON") String V_V_JXRESON,
+            @RequestParam(value = "V_V_JXHOUR") String V_V_JXHOUR,
+            @RequestParam(value = "V_V_JJHOUR") String V_V_JJHOUR,
+//            @RequestParam(value = "V_V_JHHOUR") String V_V_JHHOUR,
+            @RequestParam(value = "V_V_TELNAME") String V_V_TELNAME,
+            @RequestParam(value = "V_V_TELNUMB") String V_V_TELNUMB,
+            @RequestParam(value = "V_V_PDGG") String V_V_PDGG,
+
+
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map result = cjyService.PRO_PM_03_PLAN_WEEK_NSET(
@@ -1510,7 +1524,22 @@ public class cjyController {
                 V_V_DEFECTGUID,
                 V_V_MAIN_DEFECT,
                 V_V_EXPECT_AGE,
-                V_V_REPAIR_PER);
+                V_V_REPAIR_PER
+                //--update 20180910
+//        );
+                , V_V_PDC,
+//                V_V_SGDATE,
+                V_V_GYYQ,
+                V_V_CHANGPDC,
+//                V_V_JXRESON,
+                V_V_JXHOUR,
+                V_V_JJHOUR,
+//                V_V_JHHOUR,
+                V_V_TELNAME,
+                V_V_TELNUMB,
+                V_V_PDGG);
+//end up
+
         return result;
     }
 
@@ -2899,15 +2928,38 @@ public class cjyController {
 
                     spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR, "WORK", V_STEPCODE, V_V_PERSONCODE, "%", "不通过");
                     List<Map<String, Object>> spperresultlist = (List) spperresult.get("list");
+                    String V_NEXT_SETP=spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
+                    String V_NEXT_PERSONCODE= spperresultlist.get(0).get("V_PERSONCODE").toString();
+                    if(spperresultlist.size()>1){
+                        for(int j=0;j<spperresultlist.size();j++) {
 
-                    String V_NEXT_SETP = spperresultlist.get(0).get("V_V_NEXT_SETP").toString();
+                        if(spperresultlist.get(j).get("V_PERSONCODE").toString().equals(Assignee)){
+                            V_NEXT_SETP = spperresultlist.get(j).get("V_V_NEXT_SETP").toString();
+                            //UPDATE 20180910
+                            V_NEXT_PERSONCODE = spperresultlist.get(j).get("V_PERSONCODE").toString();
+                            break;
+                        }
+                        if(spperresultlist.get(j).get("V_PERSONCODE").toString().equals(V_V_PERSONCODE)){
+                        V_NEXT_SETP = spperresultlist.get(j).get("V_V_NEXT_SETP").toString();
+                        //UPDATE 20180910
+                        V_NEXT_PERSONCODE = spperresultlist.get(j).get("V_PERSONCODE").toString();
+                       break ;}
+                    }
+                    }
+                    //--END UPDATE
                     String processKey = spperresult.get("RET").toString();
 
 
                     String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
-                    String[] parVal = new String[]{Assignee, "批量审批驳回"};
+                    //--UPDATE
 
-                    complresult = activitiController.TaskCompletePL(taskid, "不通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", Assignee, V_V_PERSONCODE);
+                    String[] parVal = new String[]{V_NEXT_PERSONCODE, "批量审批驳回"};
+                    //-----OLD VALUE
+                    //  String[] parVal = new String[]{Assignee, "批量审批驳回"};  ---OLD VALUE
+                    // complresult = activitiController.TaskCompletePL(taskid, "不通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", Assignee, V_V_PERSONCODE);
+                    //--OLD VALUE END
+                    complresult = activitiController.TaskCompletePL(taskid, "不通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", V_NEXT_PERSONCODE, V_V_PERSONCODE);
+                    //--END  UPDATE
                     if (complresult.get("ret").toString().equals("任务提交成功")) {
                         flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WORK", processKey, V_STEPCODE, V_NEXT_SETP);
                         if (flowresult.get("V_INFO").toString().equals("success")) {

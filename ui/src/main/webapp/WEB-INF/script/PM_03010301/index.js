@@ -944,7 +944,8 @@ function OnButtonEditClicked() {
         return false;
     }
     V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
-    var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID, '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID +"&startUpTime="+Ext.getCmp("starttime").getValue()
+        +"&endUpTime="+Ext.getCmp("endtime").getValue()+ '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
 }
 
 //删除

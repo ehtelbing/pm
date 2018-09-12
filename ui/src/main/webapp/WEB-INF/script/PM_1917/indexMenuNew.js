@@ -1508,6 +1508,7 @@ Ext.onReady(function () {
             displayField: 'V_SAP_WORKNAME',
             fieldLabel: '检修工作中心',
             width: 340,
+            matchFieldWidth:false,
             editable: false
         }, {
             xtype: 'numberfield',
