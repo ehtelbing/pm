@@ -1,5 +1,7 @@
-﻿var Guid="";
+﻿var YearGuid='';
+var Guid="";
 var Year='';
+var Month='';
 var OrgCode='';
 var OrgName='';
 var DeptCode='';
@@ -269,6 +271,25 @@ var zyStore = Ext.create('Ext.data.Store', {
         }
     }
 });
+
+var zyzxStore = Ext.create('Ext.data.Store', {
+    autoLoad: true,
+    storeId: 'zyzxStore',
+    fields: ['V_UID','V_XH','V_ZYZX','V_BZ','V_SFGLYS'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_ZYZX_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+
 var EquTypeStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'EquTypeStore',
@@ -706,14 +727,14 @@ var northPanel = Ext.create('Ext.form.Panel', {
             handler:btnSaveProject
         },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8' },
-       /* {
+        {
             xtype: 'button',
             id:'startFlow',
-            text: '上报',
+            text: '生成WBS编码',
             margin: '5 0 5 0',
             iconCls:'Report',
-            handler:btnFlowStart
-        },*/
+            handler:CreateProjectCode
+        },
         {
             xtype: 'button',
             text: '附件',
@@ -795,6 +816,19 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             labelWidth :75,
             labelAlign : 'right',
             readOnly:true
+        }, {
+            xtype : 'combo',
+            id : "zyzx",
+            store: zyzxStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '专业子项',
+            margin:'5 5 5 0',
+            displayField: 'V_ZYMC',
+            valueField: 'V_GUID',
+            width:250,
+            labelWidth :60,
+            labelAlign : 'right'
         },
         {
             xtype : 'combo',
@@ -844,20 +878,6 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             editable : false,
             queryMode : 'local',
             fieldLabel : '工 序',
-            margin:'5 5 5 0',
-            displayField: 'V_GXMC',
-            valueField: 'V_UID',
-            width:265,
-            labelWidth :75,
-            labelAlign : 'right'
-        },
-        {
-            xtype : 'combo',
-            id : "gxzx",
-            store: gxzxStore,
-            editable : false,
-            queryMode : 'local',
-            fieldLabel : '工序子项',
             margin:'5 5 5 0',
             displayField: 'V_GXMC',
             valueField: 'V_UID',
@@ -1067,6 +1087,14 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             width:170,
             labelAlign : 'right',
             value:0
+        }, {
+            xtype: 'textfield',
+            fieldLabel: 'WBS编码',
+            id:'WbsCode',
+            labelWidth: 60,
+            width:240,
+            margin:'5 5 5 15',
+            readOnly:true
         }
     ]
 });
@@ -1989,10 +2017,6 @@ Ext.onReady(function () {
 
     QueryPageLoad();
 
-    Ext.getCmp('zy').on('select',function(){
-        CreateProjectCode();
-    });
-
     Ext.getCmp('jhlb').on('select',function(){
         CreateProjectCode();
     });
@@ -2015,7 +2039,7 @@ Ext.onReady(function () {
 
     Ext.getCmp('zyq').on('select',function(){
         QueryZyFzr();
-
+        CreateProjectCode();
         Ext.data.StoreManager.lookup('repairDeptStore').load({
             params:{
                 V_V_DEPTCODE:DeptCode
@@ -2024,8 +2048,18 @@ Ext.onReady(function () {
     });
 
     Ext.getCmp('zy').on('select',function(){
+        Ext.data.StoreManager.lookup('zyzxStore').load({
+            params:{
+                V_V_ZY: Ext.getCmp('zy').getValue()
+            }
+        });
         QueryZyFzr();
-    })
+        CreateProjectCode();
+    });
+
+    Ext.getCmp('sgfs').on('select',function(){
+        CreateProjectCode();
+    });
 
 });
 //加载添加页面
@@ -2042,7 +2076,9 @@ function QueryPageLoad(){
             var resp=Ext.decode(resp.responseText);
             if(resp.list!=null){
                 Ext.getCmp('northPanel').setTitle(resp.list[0].V_YEAR+"年"+resp.list[0].V_MONTH+"月"+resp.list[0].V_ORGNAME+"月计划编制");
+                YearGuid=resp.list[0].V_GUID_UP;
                 Year=resp.list[0].V_YEAR;
+                Month=resp.list[0].V_MONTH;
                 OrgCode=resp.list[0].V_ORGCODE;
                 OrgName=resp.list[0].V_ORGNAME;
                 DeptCode=resp.list[0].V_DEPTCODE;
@@ -2062,7 +2098,24 @@ function QueryPageLoad(){
                     } else {
                         Ext.getCmp('zy').select(resp.list[0].V_SPECIALTY);
                     }
+
+                    Ext.data.StoreManager.lookup('zyzxStore').load({
+                       params:{
+                           V_V_ZY: Ext.getCmp('zy').getValue()
+                       }
+                    });
+
                 });
+
+                //专业子项默认值
+                Ext.data.StoreManager.lookup('zyzxStore').on('load',function() {
+                    if (resp.list[0].V_SPECIALTY_ZX == '') {
+                        Ext.getCmp('zyzx').select(Ext.data.StoreManager.lookup('zyzxStore').getAt(0));
+                    } else {
+                        Ext.getCmp('zyzx').select(resp.list[0].V_SPECIALTY_ZX);
+                    }
+                });
+
                 //生产类别
                 Ext.data.StoreManager.lookup('sclbStore').on('load',function(){
                     if (resp.list[0].V_SCLB == '') {
@@ -2197,21 +2250,26 @@ function QueryZyFzr(){
 //创建工程编码
 function CreateProjectCode(){
     Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PRO_PM_03_PLAN_PROJECTCODE_C',
+        url: AppUrl + '/PM_03/PRO_PM_03_PROJECTCODE_M_C',
         method: 'POST',
         async: false,
         params: {
+            V_V_YEARGUID:YearGuid,
             V_V_GUID:Guid,
             V_V_YEAR:Year,
+            V_V_MONTH:Month,
             V_V_ORGCODE:OrgCode,
             V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),
             V_V_JHLB:Ext.getCmp('jhlb').getValue(),
-            V_V_ZY:Ext.getCmp('zy').getValue()
+            V_V_ZY:Ext.getCmp('zy').getValue(),
+            V_V_SGFS :Ext.getCmp('sgfs').getValue(),
+            V_V_FLAG :'MONTH'
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='成功'){
                 Ext.getCmp('ProjectCode').setValue(resp.V_V_PROJECT_OUT);
+                Ext.getCmp('ProjectCode').setValue(resp.V_V_WBS);
             }
         }
     });
@@ -2858,10 +2916,12 @@ function btnSaveProject(){
             V_V_ZBFS:'',
             V_V_SZ:'',
             V_V_GUID_UP:'',
-            V_V_WBS:'',
+            V_V_WBS:Ext.getCmp('WbsCode').getValue(),
             V_V_WBS_TXT:'',
             V_V_SUMTIME:Ext.getCmp('jhgs').getValue(),
-            V_V_SUMDATE:Ext.getCmp('jhts').getValue()
+            V_V_SUMDATE:Ext.getCmp('jhts').getValue(),
+            V_V_SPECIALTY_ZX:Ext.getCmp('zyzx').getValue(),
+            V_V_SPECIALTY_ZXNAME:Ext.getCmp('zyzx').rawValue
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
@@ -2942,10 +3002,12 @@ function btnFlowStart(){
             V_V_ZBFS:'',
             V_V_SZ:'',
             V_V_GUID_UP:'',
-            V_V_WBS:'',
+            V_V_WBS:Ext.getCmp('WbsCode').getValue(),
             V_V_WBS_TXT:'',
             V_V_SUMTIME:Ext.getCmp('jhgs').getValue(),
-            V_V_SUMDATE:Ext.getCmp('jhts').getValue()
+            V_V_SUMDATE:Ext.getCmp('jhts').getValue(),
+            V_V_SPECIALTY_ZX:Ext.getCmp('zyzx').getValue(),
+            V_V_SPECIALTY_ZXNAME:Ext.getCmp('zyzx').rawValue
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);

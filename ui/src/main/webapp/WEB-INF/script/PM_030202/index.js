@@ -428,7 +428,7 @@ function OnButtonEdit() {
     } else {
         var owidth = window.document.body.offsetWidth - 600;
         var oheight = window.document.body.offsetHeight - 100;
-        window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+        window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
     }
 }
 

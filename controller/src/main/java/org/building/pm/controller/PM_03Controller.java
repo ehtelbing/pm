@@ -259,11 +259,13 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_WBS") String V_V_WBS,
             @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
             @RequestParam(value = "V_V_SUMTIME") String V_V_SUMTIME,
-            @RequestParam(value = "V_V_SUMDATE") String V_V_SUMDATE) throws Exception {
+            @RequestParam(value = "V_V_SUMDATE") String V_V_SUMDATE,
+            @RequestParam(value = "V_V_SPECIALTY_ZX") String V_V_SPECIALTY_ZX,
+            @RequestParam(value = "V_V_SPECIALTY_ZXNAME") String V_V_SPECIALTY_ZXNAME) throws Exception {
 
         Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SET(V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_ORGNAME, V_V_DEPTCODE, V_V_DEPTNAME, V_V_PORJECT_CODE, V_V_PORJECT_NAME,
                 V_V_SPECIALTY, V_V_SPECIALTYNAME, V_V_SPECIALTYMANCODE, V_V_SPECIALTYMAN, V_V_WXTYPECODE, V_V_WXTYPENAME, V_V_CONTENT, V_V_MONEYBUDGET, V_V_REPAIRDEPTCODE,
-                V_V_BDATE, V_V_EDATE, V_V_INMAN, V_V_INMANCODE, V_V_JHLB, V_V_SCLB, V_V_CPZL, V_V_CPGX, V_V_SGFS, V_V_SFXJ, V_V_ZBFS, V_V_SZ, V_V_GUID_UP, V_V_WBS, V_V_WBS_TXT, V_V_SUMTIME, V_V_SUMDATE);
+                V_V_BDATE, V_V_EDATE, V_V_INMAN, V_V_INMANCODE, V_V_JHLB, V_V_SCLB, V_V_CPZL, V_V_CPGX, V_V_SGFS, V_V_SFXJ, V_V_ZBFS, V_V_SZ, V_V_GUID_UP, V_V_WBS, V_V_WBS_TXT, V_V_SUMTIME, V_V_SUMDATE,V_V_SPECIALTY_ZX,V_V_SPECIALTY_ZXNAME);
         return result;
     }
 
@@ -402,6 +404,15 @@ public class PM_03Controller {
     public Map PM_03_PLAN_ZY_SEL() throws Exception {
 
         Map result = pm_03Service.PM_03_PLAN_ZY_SEL();
+        return result;
+    }
+
+    //大修专业子项查询
+    @RequestMapping(value = "/PM_03_PLAN_ZYZX_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_ZYZX_SEL(@RequestParam(value = "V_V_ZY") String V_V_ZY) throws Exception {
+
+        Map result = pm_03Service.PM_03_PLAN_ZYZX_SEL(V_V_ZY);
         return result;
     }
 

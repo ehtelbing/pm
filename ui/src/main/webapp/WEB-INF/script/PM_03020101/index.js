@@ -2860,7 +2860,9 @@ function btnSaveProject(){
             V_V_WBS:'',
             V_V_WBS_TXT:'',
             V_V_SUMTIME:Ext.getCmp('jhgs').getValue(),
-            V_V_SUMDATE:Ext.getCmp('jhts').getValue()
+            V_V_SUMDATE:Ext.getCmp('jhts').getValue(),
+            V_V_SPECIALTY_ZX:'',
+            V_V_SPECIALTY_ZXNAME:''
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
@@ -2944,7 +2946,9 @@ function btnFlowStart(){
             V_V_WBS:'',
             V_V_WBS_TXT:'',
             V_V_SUMTIME:Ext.getCmp('jhgs').getValue(),
-            V_V_SUMDATE:Ext.getCmp('jhts').getValue()
+            V_V_SUMDATE:Ext.getCmp('jhts').getValue(),
+            V_V_SPECIALTY_ZX:'',
+            V_V_SPECIALTY_ZXNAME:''
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
