@@ -356,8 +356,8 @@
 	<tr>
 		<td colspan="3" style="text-align: left; background-color: #F4F5F7">
 			③任务细节
-			<input type="button" id="btnTask" class="btnprint" value="人员与工时查看" />
-			<input type="button" class="btnprint" id="btnEdit" value="编辑任务" onclick="OnClickJJButton();"/>
+			<!--<input type="button" id="btnTask" class="btnprint" value="人员与工时查看" />-->
+			<!--<input type="button" class="btnprint" id="btnEdit" value="编辑任务" onclick="OnClickJJButton();"/>-->
 		</td>
 	</tr>
 	<tr>
@@ -704,10 +704,20 @@
         <td style="border-bottom:0px;"><input style="width:90%;text-align:right;background-color: #FFFF99;" class="numlimit acData1" value="${I_ACTUAL_TIME}"/></td>
         <td style="border-bottom:0px;"><input style="width:90%;text-align:right;background-color: #FFFF99;" class="numlimit acData2" value="${I_NUMBER_OF_PEOPLE}"/></td>
         <!--<td style="border-bottom:0px;">${I_NUMBER_OF_PEOPLE}</td>-->
+        <!--<td style="border-bottom:0px;">${I_ACTUAL_TIME}</td>-->
+        <!--<td style="border-bottom:0px;">${I_NUMBER_OF_PEOPLE}</td>-->
         <td style="border-bottom:0px;">${V_JJ_NAME}</td>
         <td style="border-bottom:0px;">${V_GJ_NAME}</td>
         <td style="border-bottom:0px;">${V_JSQY_NAME}</td>
         <td style="border-bottom:0px;">${V_AQSC_NAME}</td>
+         <!--//&#45;&#45;update 2018-09-13-->
+         <td style="display:none;">${I_ID}</td>
+        <td style="display:none;">${V_ID}</td>
+        <td style="display:none;">${V_GUID}</td>
+        <td style="display:none;">${V_JXBZ}</td>
+        <td style="display:none;">${V_JXBZ_VALUE_DOWN}</td>
+        <td style="display:none;">${V_JXBZ_VALUE_UP}</td>
+        <!--//&#45;&#45;update 2018-09-13-->
     </tr>
     </script>
 <script id="TtableMTemplate" type="text/x-jquery-tmpl">

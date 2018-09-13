@@ -1,4 +1,7 @@
-﻿var selectID = [];
+/**
+ * Created by Administrator on 2018/9/12 0012.
+ */
+var selectID = [];
 var V_V_ORGCODE = '';
 var V_V_DEPTCODE = '';
 var V_V_DEPTCODEREPARIR = '';
@@ -872,7 +875,7 @@ function ValueConfirm() {
         Ext.getCmp('qxmx').disable();
     }
 }
-//---udate 2018-09-12
+//--update 2018-09-13
 function changefactnum(){
     var i=0;
     $("#TtableT").find("tr").each(function () {
@@ -905,7 +908,7 @@ function changefactnum(){
         };
         i++;  });
 }
-//--end upd
+//--end update
 function ActivitiConfirmAccept() {//确定验收
 
     if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
@@ -1561,12 +1564,12 @@ function OnClickJJButton() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_090510/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val()
-    + '&V_DEPTREPAIRCODE=' + V_V_DEPTCODEREPARIR
-    + '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
-    + '&V_V_ORGCODE=' + V_V_ORGCODE
-    + '&V_V_DEPTCODE=' + V_V_DEPTCODE
-    + '&V_EQUTYPE=' + V_EQUTYPE
-    + '&V_TEAMCODE=' + V_TEAMCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        + '&V_DEPTREPAIRCODE=' + V_V_DEPTCODEREPARIR
+        + '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
+        + '&V_V_ORGCODE=' + V_V_ORGCODE
+        + '&V_V_DEPTCODE=' + V_V_DEPTCODE
+        + '&V_EQUTYPE=' + V_EQUTYPE
+        + '&V_TEAMCODE=' + V_TEAMCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
     loadTaskGrid();
 }
@@ -1576,9 +1579,9 @@ function CreateModel() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_091105/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() +
-    '&V_ORGCODE=' + $("#V_ORGCODE").val() +
-    '&V_DEPTCODE=' + $("#V_DEPTCODE").val() +
-    '&V_EQUCODE=' + $("#V_EQUIP_NO").html(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        '&V_ORGCODE=' + $("#V_ORGCODE").val() +
+        '&V_DEPTCODE=' + $("#V_DEPTCODE").val() +
+        '&V_EQUCODE=' + $("#V_EQUIP_NO").html(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function OnBtnLookClicked() {
