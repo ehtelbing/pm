@@ -319,13 +319,14 @@ Ext
                             id: 'KWMName',
                             emptyText: '按库位码搜索',
                             width: 100,
-                            hidden: true,
+                          //  hidden: false,
                             style: 'margin:5px 0 0 10px'
                         }, {
                             xtype: 'textfield',
                             id: 'ggxh',
                             emptyText: '按规格型号搜索',
                             width: 100,
+                            hidden: true,
                             style: 'margin:5px 0 0 10px'
                         }, {
                             xtype: 'button',
