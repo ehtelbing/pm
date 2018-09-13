@@ -319,7 +319,7 @@ Ext
                             id: 'KWMName',
                             emptyText: '按库位码搜索',
                             width: 100,
-                          //  hidden: false,
+                            hidden: false,
                             style: 'margin:5px 0 0 10px'
                         }, {
                             xtype: 'textfield',
