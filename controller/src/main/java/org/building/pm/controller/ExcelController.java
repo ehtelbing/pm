@@ -798,9 +798,9 @@ public class ExcelController {
 
                 row.createCell((short) 11).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
 
-                row.createCell((short) 11).setCellValue(map.get("PLANTIME") == null ? "" : map.get("PLANTIME").toString());
+                row.createCell((short) 12).setCellValue(map.get("PLANTIME") == null ? "" : map.get("PLANTIME").toString());
 
-                row.createCell((short) 11).setCellValue(map.get("FACTTIME") == null ? "" : map.get("FACTTIME").toString());
+                row.createCell((short) 13).setCellValue(map.get("FACTTIME") == null ? "" : map.get("FACTTIME").toString());
 
             }
             try {
