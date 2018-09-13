@@ -295,8 +295,8 @@ $(function () {
     bindDate("D_FACT_START_DATE");
     bindDate("D_FACT_FINISH_DATE");
 
-    NowDate_b("D_FACT_START_DATE");
-    NowDate_e("D_FACT_FINISH_DATE");
+    // NowDate_b("D_FACT_START_DATE");
+    // NowDate_e("D_FACT_FINISH_DATE");
 
     loadOrder();
 
@@ -390,7 +390,18 @@ function loadOrder() {
                 $("#V_SHORT_TXT").html(resp.list[0].V_SHORT_TXT);
                 $("#D_START_DATE").html((resp.list[0].D_START_DATE).split('.0')[0]);
                 $("#D_FINISH_DATE").html((resp.list[0].D_FINISH_DATE).split('.0')[0]);
-                $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
+           //     $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
+                if (resp.list[0].D_FACT_START_DATE != "") {
+                    $("#D_FACT_START_DATE").val(resp.list[0].D_FACT_START_DATE);
+                }
+                else {
+                    $("#D_FACT_START_DATE").val(resp.list[0].D_START_DATE);
+                }
+                if (resp.list[0].D_FACT_FINISH_DATE != "") {
+                    $("#D_FACT_FINISH_DATE").val(resp.list[0].D_FACT_FINISH_DATE);
+                } else {
+                    $("#D_FACT_FINISH_DATE").val(resp.list[0].D_FINISH_DATE);
+                }
                 $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
                 $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
                 $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
