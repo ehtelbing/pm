@@ -131,7 +131,7 @@ var editPanel= Ext.create('Ext.form.Panel', {
 		{xtype: 'combo',id:'qxlx',fieldLabel: '缺陷类型',labelAlign: 'right',editable: false, labelAlign: 'right', margin: '5 0 5 5',labelWidth:75,width:255, value: '',displayField: 'V_SOURCENAME',valueField: 'V_SOURCECODE',store: qxlxStore,queryMode: 'local'},
 		{xtype: 'textfield',id:'qxmc',fieldLabel: '缺陷明细',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,width:255, value: ''},
 		//{xtype: 'textfield',id:'qxdj',fieldLabel: '缺陷等级',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,width:255, value: ''},
-        {xtype: 'combo',id: 'cqxdjk',fieldLabel: '缺陷等级',labelAlign: 'right',editable: false, margin: '5 0 5 5',labelWidth:75,width:255,value:'',displayField: 'V_LEVELNAME',valueField: 'V_LEVELCODE',store:djStore,queryMode: 'local'},
+        {xtype: 'combo',id: 'qxdj',fieldLabel: '缺陷等级',labelAlign: 'right',editable: false, margin: '5 0 5 5',labelWidth:75,width:255,value:'',displayField: 'V_LEVELNAME',valueField: 'V_LEVELCODE',store:djStore,queryMode: 'local'},
 		{xtype: 'textarea',id:'clyj',fieldLabel: '处理意见',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,width:255,height:80, value: ''},
 		{layout: 'column', defaults: {labelAlign: 'right'},frame:true,border: false,baseCls: 'my-panel-no-border',
 			items: [
