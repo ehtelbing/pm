@@ -254,7 +254,7 @@ function btn_select(){
                         V_V_DESCRIPTION:resp.list[i].V_JXGX_NR,
                         V_I_WORK_ACTIVITY:resp.list[i].V_PERTIME,
                         V_I_DURATION_NORMAL:resp.list[i].V_PERNUM,
-                        V_V_WORK_CENTER:resp.list[i].V_WORK_NAME,
+                        V_V_WORK_CENTER:resp.list[i].V_GZZX_CODE,
                         V_I_ACTUAL_TIME:'0',
                         V_I_NUMBER_OF_PEOPLE: '0',
                         V_V_ID:'',
