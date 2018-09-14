@@ -1207,11 +1207,11 @@ function QRYS() {
                                         }
                                     }
                                 });
-                                window.opener.QueryTab();
-                                window.opener.QuerySum();
-                                window.opener.QueryGrid();
-                                window.close();
-                                window.opener.OnPageLoad();
+                                // window.opener.QueryTab();
+                                // window.opener.QuerySum();
+                                // window.opener.QueryGrid();
+                                // window.close();
+                                // window.opener.OnPageLoad();
                             }
                         });
 
