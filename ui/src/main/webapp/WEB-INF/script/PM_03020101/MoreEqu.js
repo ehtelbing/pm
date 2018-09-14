@@ -60,6 +60,7 @@ Ext.onReady(function () {
     });
 
     QueryPageLoad();
+
 });
 
 //加载添加页面
@@ -82,8 +83,9 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 //删除选中设备
 function DelEqu(value, metaData, record) {
     return '<a href="#" onclick="_deleteEqu(\'' + record.data.V_EQUCODE + '\')">' + '删除' + '</a>';
-}
 
+}
+window.parent.QueryCGrid();
 function _deleteEqu(equcode){
 
     Ext.Ajax.request({
@@ -103,5 +105,10 @@ function _deleteEqu(equcode){
             }
         }
     });
-
+    window.opener.QueryCGrid();
 }
+
+// window.onbeforeunload=clseWin;
+// function clseWin(){
+//     QueryCGrid();
+// }

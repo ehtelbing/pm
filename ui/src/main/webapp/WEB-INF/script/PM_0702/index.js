@@ -72,14 +72,24 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('qxzt').select('defct01');
+                Ext.ComponentManager.get("qxzt").store.insert(0, {
+                    'V_SOURCECODE': '%',
+                    'V_SOURCENAME': '全部'
+                });
+                Ext.getCmp('qxzt').select('%');
                 zyStoreload = true;
                 _init();
                 _selectOverhaulApply();
             }
         }
     });
-
+    // sqxzt.on('load', function () {
+    //     Ext.ComponentManager.get("qxzt").store.insert(0, {
+    //         'V_SOURCECODE': '%',
+    //         'V_SOURCENAME': '全部'
+    //     })
+    // });
+    // Ext.getCmp('qxzt').select(sqxzt.getAt(0));
 
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -273,13 +283,7 @@ Ext.onReady(function () {
     _init()
     // _selectOverhaulApply();
 
-    sqxzt.on('load', function () {
-        Ext.ComponentManager.get("qxzt").store.insert(0, {
-            'V_SOURCECODE': '%',
-            'V_SOURCENAME': '全部'
-        })
-    });
-    Ext.getCmp('qxzt').select(sqxzt.getAt(0));
+
 
 
 });
