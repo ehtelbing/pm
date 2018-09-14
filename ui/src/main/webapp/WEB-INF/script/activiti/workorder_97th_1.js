@@ -673,7 +673,7 @@ function comboConfirm() {
                         //otherServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
                         // 小神探接口
                         //xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
-                        Ext.Msg.alert('提示', '验收工单成功');
+                       // Ext.Msg.alert('提示', '验收工单成功');
                         $.ajax({
                             url: APP + 'mm/SetMat',
                             type: 'post',
@@ -1129,6 +1129,7 @@ function QRYS() {
                     dataType: "json",
                     traditional: true,
                     success: function (resp) {
+                     //   Ext.Msg.alert('提示', '验收工单成功');
                         $.ajax({
                             url: APP + 'mm/SetMat',
                             type: 'post',
@@ -1210,11 +1211,11 @@ function QRYS() {
                                         }
                                     }
                                 });
-                                window.opener.QueryTab();
-                                window.opener.QuerySum();
-                                window.opener.QueryGrid();
-                                window.close();
-                                window.opener.OnPageLoad();
+                                // window.opener.QueryTab();
+                                // window.opener.QuerySum();
+                                // window.opener.QueryGrid();
+                                // window.close();
+                                // window.opener.OnPageLoad();
                             }
                         });
                         if (V_V_ORDER_TYP == 'AK07') {
