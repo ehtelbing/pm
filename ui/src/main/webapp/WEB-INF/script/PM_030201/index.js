@@ -379,6 +379,14 @@ function OnButtonQuery (){
     })
 }
 
+function OnButtonOut(){
+    document.location.href=AppUrl + 'cjy/YEAREXCEL?V_V_YEAR='+Ext.getCmp('year').getValue()+
+        '&V_V_ORGCODE='+Ext.getCmp('ck').getValue()+
+        '&V_V_DEPTCODE='+Ext.getCmp('zyq').getValue()+
+        '&V_V_ZY='+Ext.getCmp('zy').getValue()+
+        '&V_V_WXLX='+Ext.getCmp('wxlx').getValue()+
+        '&V_V_CONTENT='+Ext.getCmp('jxnr').getValue();
+}
 function OnButtonAdd(){
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
@@ -467,7 +475,7 @@ function QueryBudget(){
 }
 
 
-function OnButtonOut(){}
+
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";

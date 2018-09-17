@@ -3218,6 +3218,44 @@ public class cjyService {
         return result;
     }
 
+    //---Excel export 2018-09-15  PRO_PM_03_PLAN_YEAR_VIEWALL
+    public HashMap PRO_PM_03_PLAN_YEAR_VIEWALL(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY, String V_V_WXLX, String V_V_CONTENT) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_YEAR_VIEWALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_VIEWALL" + "(:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_ZY,:V_V_WXLX," +
+                    ":V_V_CONTENT,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_ZY", V_V_ZY);
+            cstmt.setString("V_V_WXLX", V_V_WXLX);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("V_V_SNUM");
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_YEAR_VIEWALL");
+        return result;
+    }
+
+    //--end  up
+
     public HashMap PM_DEFECTTOWORKORDER_SELBYPRO(String V_V_PROJECT_GUID, String V_V_FLAG, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_DEFECTTOWORKORDER_SELBYPRO");
