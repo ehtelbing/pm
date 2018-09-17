@@ -917,8 +917,8 @@ function OnButtonPlanAddClicked() {
             "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
             "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()
             //update start 20180907
-           +"&startUpTime="+Ext.getCmp("starttime").getValue()
-            +"&endUpTime="+Ext.getCmp("endtime").getValue()
+           +"&startUpTime="+Ext.getCmp("zks").getValue()
+            +"&endUpTime="+Ext.getCmp("zjs").getValue()
              //---update end
             , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
         //------update 2018-0907
@@ -1032,79 +1032,156 @@ function OnButtonUp() {
     //    icon: Ext.MessageBox.QUESION,
     //    fn: function (btn) {
     //        if (btn == 'yes') {
-
-            //-----old start
+//---new start 2018-09-17
     var i_err = 0;
     for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: records[i].data.V_GUID,
-                V_V_ORGCODE: records[i].data.V_ORGCODE,
-                V_V_DEPTCODE: records[i].data.V_DEPTCODE,
-                V_V_FLOWCODE: '上报',
-                V_V_PLANTYPE: 'WEEK',
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText).list[0];
+        if(records[i].data.V_STARTTIME>=Ext.getCmp("starttime").getValue()&&records[i].data.V_ENDTIME<=Ext.getCmp("endtime")) {
+            Ext.Ajax.request({
+                url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID: records[i].data.V_GUID,
+                    V_V_ORGCODE: records[i].data.V_ORGCODE,
+                    V_V_DEPTCODE: records[i].data.V_DEPTCODE,
+                    V_V_FLOWCODE: '上报',
+                    V_V_PLANTYPE: 'WEEK',
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText).list[0];
 
-                if (resp.V_INFO == '成功') {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'Activiti/StratProcess',
-                        async: false,
-                        method: 'post',
-                        params: {
-                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                            parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
-                            processKey: processKey,
-                            businessKey: records[i].get('V_GUID'),
-                            V_STEPCODE: 'Start',
-                            V_STEPNAME: V_STEPNAME,
-                            V_IDEA: '请审批！',
-                            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                            V_INPER: Ext.util.Cookies.get('v_personcode')
-                        },
-                        success: function (response) {
-                            if (Ext.decode(response.responseText).ret == 'OK') {
+                    if (resp.V_INFO == '成功') {
+                        Ext.Ajax.request({
+                            url: AppUrl + 'Activiti/StratProcess',
+                            async: false,
+                            method: 'post',
+                            params: {
+                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
+                                processKey: processKey,
+                                businessKey: records[i].get('V_GUID'),
+                                V_STEPCODE: 'Start',
+                                V_STEPNAME: V_STEPNAME,
+                                V_IDEA: '请审批！',
+                                V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                            },
+                            success: function (response) {
+                                if (Ext.decode(response.responseText).ret == 'OK') {
 
-                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                Ext.Msg.alert('提示', '该流程发起失败！');
+                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                    Ext.Msg.alert('提示', '该流程发起失败！');
+                                }
                             }
-                        }
-                    });
-                    i_err++;
+                        });
+                        i_err++;
 
-                    if (i_err == records.length) {
-                        query();
+                        if (i_err == records.length) {
+                            query();
+                        }
+                    } else {
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.V_INFO,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR,
+                            fn: function (btn) {
+                                query();
+                            }
+                        });
                     }
-                } else {
+                },
+                failure: function (response) {
                     Ext.MessageBox.show({
                         title: '错误',
-                        msg: resp.V_INFO,
+                        msg: response.responseText,
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR,
                         fn: function (btn) {
                             query();
                         }
-                    });
+                    })
                 }
-            },
-            failure: function (response) {
-                Ext.MessageBox.show({
-                    title: '错误',
-                    msg: response.responseText,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR,
-                    fn: function (btn) {
-                        query();
-                    }
-                })
-            }
-        });
+            });
+        }
+        else{
+            Ext.Msg.alert('提示', '该计划不在上报时间内！');
+        }
     }
+    //--end update
+            //-----old start
+    // var i_err = 0;
+    // for (var i = 0; i < records.length; i++) {
+    //     Ext.Ajax.request({
+    //         url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
+    //         method: 'POST',
+    //         async: false,
+    //         params: {
+    //             V_V_GUID: records[i].data.V_GUID,
+    //             V_V_ORGCODE: records[i].data.V_ORGCODE,
+    //             V_V_DEPTCODE: records[i].data.V_DEPTCODE,
+    //             V_V_FLOWCODE: '上报',
+    //             V_V_PLANTYPE: 'WEEK',
+    //             V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+    //         },
+    //         success: function (resp) {
+    //             var resp = Ext.decode(resp.responseText).list[0];
+    //
+    //             if (resp.V_INFO == '成功') {
+    //                 Ext.Ajax.request({
+    //                     url: AppUrl + 'Activiti/StratProcess',
+    //                     async: false,
+    //                     method: 'post',
+    //                     params: {
+    //                         parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+    //                         parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
+    //                         processKey: processKey,
+    //                         businessKey: records[i].get('V_GUID'),
+    //                         V_STEPCODE: 'Start',
+    //                         V_STEPNAME: V_STEPNAME,
+    //                         V_IDEA: '请审批！',
+    //                         V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+    //                         V_INPER: Ext.util.Cookies.get('v_personcode')
+    //                     },
+    //                     success: function (response) {
+    //                         if (Ext.decode(response.responseText).ret == 'OK') {
+    //
+    //                         } else if (Ext.decode(response.responseText).error == 'ERROR') {
+    //                             Ext.Msg.alert('提示', '该流程发起失败！');
+    //                         }
+    //                     }
+    //                 });
+    //                 i_err++;
+    //
+    //                 if (i_err == records.length) {
+    //                     query();
+    //                 }
+    //             } else {
+    //                 Ext.MessageBox.show({
+    //                     title: '错误',
+    //                     msg: resp.V_INFO,
+    //                     buttons: Ext.MessageBox.OK,
+    //                     icon: Ext.MessageBox.ERROR,
+    //                     fn: function (btn) {
+    //                         query();
+    //                     }
+    //                 });
+    //             }
+    //         },
+    //         failure: function (response) {
+    //             Ext.MessageBox.show({
+    //                 title: '错误',
+    //                 msg: response.responseText,
+    //                 buttons: Ext.MessageBox.OK,
+    //                 icon: Ext.MessageBox.ERROR,
+    //                 fn: function (btn) {
+    //                     query();
+    //                 }
+    //             })
+    //         }
+    //     });
+    // }
             //------old end
 }
 

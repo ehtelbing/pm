@@ -303,7 +303,8 @@ Ext.onReady(function () {
                                 valueField: 'valueField',
                                 value: '',
                                 store: weekStore,
-                                queryMode: 'local'
+                                queryMode: 'local',
+                                readOnly:true
                             },
                             {
                                 xtype: 'combo',
@@ -463,6 +464,7 @@ Ext.onReady(function () {
                                 width: 280,
                                 value: '',
                                 minValue:new Date(startUpTime),
+                                maxValue:new Date(endUpTime),
                                 listeners: {
                                     select: function () {
                                         Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
@@ -550,12 +552,15 @@ Ext.onReady(function () {
                                 labelWidth: 80,
                                 width: 280,
                                 value: '',
+                                minValue:new Date(startUpTime),
+                                maxValue:new Date(endUpTime),
                                 // renderData:function(){
                                 //     Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
                                 // },
                                 listeners: {
                                     select: function () {
                                         Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
+                                        Ext.getCmp('jhjgdate').setMaxValue(new Date(endUpTime));
                                         _gongshiheji();
                                     }
                                 }
@@ -861,7 +866,9 @@ Ext.onReady(function () {
             }
         });
     }
+
     Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
+
     //Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
 });
 
@@ -998,10 +1005,11 @@ function pageLoadInfo() {
         }
     });
     if (V_WEEKPLAN_GUID == '0') {
-        Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
+//--update 2018-09-17
+        Ext.getCmp('jhtgdate').setValue(new Date(startUpTime)); 		//编辑窗口计划停工时间默认值
         Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
         Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-        Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
+        Ext.getCmp('jhjgdate').setValue(new Date(endUpTime));       //编辑窗口计划竣工时间默认值
         Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
         Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
     }
@@ -1197,7 +1205,7 @@ function OnButtonSaveClick() {
      V_FLOWCODE= Ext.decode(resp.responseText).list[0].V_INFO;
      }
      });*/
-    if(Ext.Date.format(new Date(),'Y-m-d H:i:s')>Ext.Date.format(new Date(startUpTime),'Y-m-d H:i:s')&&Ext.Date.format(new Date(),'Y-m-d H:i:s')<Ext.Date.format(new Date(endUpTime),'Y-m-d H:i:s')){
+  //  if(Ext.Date.format(new Date(),'Y-m-d H:i:s')>Ext.Date.format(new Date(startUpTime),'Y-m-d H:i:s')&&Ext.Date.format(new Date(),'Y-m-d H:i:s')<Ext.Date.format(new Date(endUpTime),'Y-m-d H:i:s')){
     //计划停工时间
     var jhtghour = Ext.getCmp('jhtghour').getValue();
     var jhtgminute = Ext.getCmp('jhtgminute').getValue();
@@ -1309,10 +1317,10 @@ function OnButtonSaveClick() {
 
         }
     });
-    }
-    else{
-        Ext.Msg.alert('提示', '此计划不在上报时间内');
-    }
+    // }
+    // else{
+    //     Ext.Msg.alert('提示', '此计划不在上报时间内');
+    // }
 }
 function OnButtonCancelClick() {
     window.opener.query();
