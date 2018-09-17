@@ -1035,7 +1035,7 @@ function OnButtonUp() {
 //---new start 2018-09-17
     var i_err = 0;
     for (var i = 0; i < records.length; i++) {
-        if(records[i].data.V_STARTTIME>=Ext.getCmp("starttime").getValue()&&records[i].data.V_ENDTIME<=Ext.getCmp("endtime")) {
+        if(Ext.Date.format(new Date(),'Y-m-d H:i:s')>=Ext.getCmp("starttime").getValue()&&Ext.Date.format(new Date(),'Y-m-d H:i:s')<=Ext.getCmp("endtime").getValue()) {
             Ext.Ajax.request({
                 url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
                 method: 'POST',
