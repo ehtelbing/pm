@@ -66,9 +66,7 @@ public class DrawingManageService {
     }
 
 
-
-
-    public Map PRO_BASE_DRAWING_SEL(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUCODE,String V_V_EQUNAME) throws SQLException {
+    public Map PRO_BASE_DRAWING_SEL(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTNEXTCODE, String V_V_EQUCODE, String V_V_EQUNAME) throws SQLException {
         logger.info("begin PRO_BASE_DRAWING_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -95,7 +93,8 @@ public class DrawingManageService {
         logger.info("end PRO_BASE_DRAWING_SEL");
         return result;
     }
-    public HashMap PRO_SAP_PM_EQU_P_BYZYQ(String V_V_PERSONCODE,  String V_V_DEPTCODENEXT) throws SQLException {
+
+    public HashMap PRO_SAP_PM_EQU_P_BYZYQ(String V_V_PERSONCODE, String V_V_DEPTCODENEXT) throws SQLException {
 
         logger.info("begin PRO_SAP_PM_EQU_P_BYZYQ");
         HashMap result = new HashMap();
@@ -122,7 +121,8 @@ public class DrawingManageService {
         logger.info("end PRO_SAP_PM_EQU_P_BYZYQ");
         return result;
     }
-    public Map PRO_PM_PLAN_BUDGET_YEAR_SEL(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_YEAR) throws SQLException {
+
+    public Map PRO_PM_PLAN_BUDGET_YEAR_SEL(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_YEAR) throws SQLException {
         logger.info("begin PRO_PM_PLAN_BUDGET_YEAR_SEL");
         Map result = new HashMap();
         Connection conn = null;
@@ -148,4 +148,162 @@ public class DrawingManageService {
         return result;
     }
 
+    public List<Map> PRO_BASE_NEW_MENU_SEL(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE, String V_V_HOME_MENU) throws SQLException {
+        logger.info("begin PRO_BASE_NEW_MENU");
+        List<Map> list = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_SEL(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
+            cstmt.setString("IS_V_ROLECODE", IS_V_ROLECODE);
+            cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_HOME_MENU", V_V_HOME_MENU);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            HashMap result = new HashMap();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            List<Map> datalist = (List) result.get("list");
+            list = getMenuData((List) result.get("list"));
+//            if(datalist.size()>0){
+//                for(Map item:datalist){
+//                    if (item.get("V_MENUCODE_UP").toString().equals("-1")) {
+//                        Map temp = new HashMap();
+//                        temp.put("id", item.get("V_MENUCODE").toString());
+//                        temp.put("text", item.get("V_MENUNAME").toString());
+//                        temp.put("title", item.get("V_MENUNAME").toString());
+//                        temp.put("pid", item.get("V_MENUCODE_UP").toString());
+//                        temp.put("type", item.get("V_TYPE").toString());
+//                        temp.put("flag", item.get("V_FLAG").toString());
+//                        temp.put("other", item.get("V_OTHER").toString());
+//                        temp.put("cls", "empty");
+//                        temp.put("hrefTarget", "Workspace");
+//                        if(getChildren(datalist,item.get("V_MENUCODE").toString()).size()<=0){//���ӽڵ�
+//                            temp.put("leaf",true);
+//                            temp.put("src", item.get("V_URL").toString());
+//                            temp.put("href", item.get("V_URL").toString());
+//                        }else{//���ӽڵ�
+//                            temp.put("leaf",false);
+//                            temp.put("expanded",true);
+//                            temp.put("children",getChildren(datalist,item.get("V_MENUCODE").toString()));
+//                        }
+//                        list.add(temp);
+//                    }
+//
+//                }
+//
+//            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + list);
+        logger.info("end PRO_BASE_NEW_MENU");
+        return list;
+    }
+
+    public List<Map> getChildren(List<Map> list, String parentNode) {
+        List<Map> menu = new ArrayList<>();
+        for (Map item : list) {
+            if (item.get("V_MENUCODE_UP").equals(parentNode)) {
+                Map temp = new HashMap();
+                temp.put("id", item.get("V_MENUCODE").toString());
+                temp.put("text", item.get("V_MENUNAME").toString());
+                temp.put("title", item.get("V_MENUNAME").toString());
+                temp.put("pid", item.get("V_MENUCODE_UP").toString());
+                temp.put("type", item.get("V_TYPE").toString());
+                temp.put("flag", item.get("V_FLAG").toString());
+                temp.put("other", item.get("V_OTHER").toString());
+                temp.put("cls", "empty");
+                temp.put("hrefTarget", "Workspace");
+                if (getChildren(list, item.get("V_MENUCODE").toString()).size() == 0) {//���ӽڵ�
+                    temp.put("leaf", true);
+                    temp.put("src", item.get("V_URL").toString());
+                    temp.put("href", item.get("V_URL").toString());
+                } else {//���ӽڵ�
+                    temp.put("leaf", false);
+                    temp.put("expanded", true);
+                    temp.put("children", getChildren(list, item.get("V_MENUCODE").toString()));
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
+
+    public List<Object> getMenuData(List<Map<String, Object>> myList) {
+        List<Object> result = new ArrayList<Object>();
+        Map<String, Object> item = new HashMap<String, Object>();
+
+        for (Map<String, Object> itemTemp : myList) {
+            item = new HashMap<String, Object>();
+            if (itemTemp.get("V_MENUCODE_UP").toString().equals("-1")) {//item.get("V_MENUCODE_UP").toString().equals("-1")
+                item.put("sid", itemTemp.get("V_MENUCODE"));//item.get("V_MENUCODE").toString()
+                item.put("text", itemTemp.get("V_MENUNAME"));//item.get("V_MENUNAME").toString()
+                Map<String, Object> itemMenu = new HashMap<String, Object>();
+                itemMenu.put("xtype", "menu");
+                itemMenu.put("items", this.getMenuItems(myList, itemTemp.get("V_MENUCODE").toString()));
+                item.put("menu", itemMenu);
+                item.put("name", "menu");
+                item.put("type", itemTemp.get("V_TYPE").toString());
+                item.put("other", itemTemp.get("V_OTHER").toString());
+                result.add("-");
+                result.add(item);
+            }
+        }
+        result.add("-");
+        return result;
+    }
+
+    private List<Map<String, Object>> getMenuItems(List<Map<String, Object>> list, String parentNode) {
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        Map<String, Object> item = new HashMap<String, Object>();
+        for (Map<String, Object> itemTemp : list) {
+            item = new HashMap<String, Object>();
+            if (itemTemp.get("V_MENUCODE_UP").equals(parentNode)) {
+                if (!this.isLeaf(list, itemTemp.get("V_MENUCODE").toString())) {
+                    item.put("sid", itemTemp.get("V_MENUCODE"));
+                    item.put("xtype", "menuitem");
+                    item.put("text", itemTemp.get("V_MENUNAME"));
+                    item.put("src", itemTemp.get("V_URL"));
+                    item.put("name", "page");
+                    item.put("type", itemTemp.get("V_TYPE").toString());
+                    item.put("other", itemTemp.get("V_OTHER").toString());
+                } else {
+                    item.put("sid", itemTemp.get("V_MENUCODE"));
+                    item.put("text", itemTemp.get("V_MENUNAME"));
+                    Map<String, Object> itemMenu = new HashMap<String, Object>();
+                    itemMenu.put("xtype", "menu");
+//                    List<Map<String, Object>> listTemp = new ArrayList<>();
+//                    listTemp = list;
+                    itemMenu.put("items", this.getMenuItems(list, itemTemp.get("V_MENUCODE").toString()));//listTemp
+                    item.put("menu", itemMenu);
+                    item.put("name", "menu");
+                    item.put("type", itemTemp.get("V_TYPE").toString());
+                    item.put("other", itemTemp.get("V_OTHER").toString());
+//                    result.add("-");
+                }
+                result.add(item);
+            }
+        }
+
+        return result;
+    }
+
+
+    private boolean isLeaf(List<Map<String, Object>> list, String parentNode) {
+        for (Map<String, Object> itemTemp : list) {
+            if (itemTemp.get("V_MENUCODE_UP").equals(parentNode)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

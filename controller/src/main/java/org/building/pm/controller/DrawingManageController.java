@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class DrawingManageController {
         return result;
     }
 
-    @RequestMapping(value = "/PRO_PM_PLAN_BUDGET_YEAR_SEL", method = RequestMethod.POST)
+    @RequestMapping(value = "/PRO_BASE_NEW_MENU_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_PLAN_BUDGET_YEAR_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                     @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
@@ -63,6 +64,23 @@ public class DrawingManageController {
         Map result = drawingManageService.PRO_PM_PLAN_BUDGET_YEAR_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_YEAR);
         return result;
     }
+    @RequestMapping(value = "/topMenu", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> topMenu(
+            @RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
+            @RequestParam(value = "IS_V_SYSTYPE") String IS_V_SYSTYPE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU)
+            throws SQLException {
+        List<Map> result = drawingManageService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE,V_V_DEPTCODE, V_V_HOME_MENU);
+        return result;
+    }
+//    @RequestMapping(value = "topMenu", method = RequestMethod.POST)
+//    @ResponseBody
+//    public List<Object> topMenu(User user) {
+//        List<Object> result = menuService.getMenuData(user);
+//        return result;
+//    }
 //    @RequestMapping(value = "/PRO_BASE_DEPT_VIEW_ROLE_NEW", method = RequestMethod.POST)
 //    @ResponseBody
 //    public Map<String, Object> PRO_BASE_DEPT_VIEW_ROLE_NEW(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
