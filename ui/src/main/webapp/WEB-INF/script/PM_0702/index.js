@@ -100,7 +100,7 @@ Ext.onReady(function () {
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
             'V_STATECOLOR', 'V_ORDERID', 'V_EQUTYPECODE', 'V_SOURCECODE',
-            'D_BE_SJ', 'D_EN_SJ'],
+            'D_BE_SJ', 'D_EN_SJ','V_SOURCE_GRADE'],
 
         proxy: {
             type: 'ajax',
@@ -206,6 +206,12 @@ Ext.onReady(function () {
             width: 200,
             renderer: CreateGridColumnTime
         }, {
+            text:'缺陷等级',
+            dataIndex:'V_SOURCE_GRADE',
+            align:'center',
+            width:75,
+            renderer:CreateGridColumnTime
+        },{
             text: '缺陷明细',
             dataIndex: 'V_DEFECTLIST',
             align: 'center',

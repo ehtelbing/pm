@@ -95,7 +95,7 @@ var qxlxStore = Ext.create('Ext.data.Store', {
 		},
 		extraParams: {}
 	}
-});
+}).load();
 
 var  djStore=Ext.create('Ext.data.Store', {
     autoLoad: true,
@@ -211,13 +211,21 @@ function pageLoadInfo(){
 		});
 	});
 	//缺陷类型
-	Ext.data.StoreManager.lookup('qxlxStore').on('load', function () {
-        Ext.ComponentManager.get("qxzt").store.insert(0,{
-            'V_SOURCECODE':'%',
-            'V_SOURCENAME':'全部'
-        });
-		Ext.getCmp("qxlx").select(Ext.data.StoreManager.lookup('qxlxStore').getAt(0));
-	});
+    Ext.data.StoreManager.lookup('qxlxStore').on('load', function () {
+        Ext.getCmp("qxlx").select(Ext.data.StoreManager.lookup('qxlxStore').getAt(0));
+    });
+   // Ext.getCmp("qxlx").select(Ext.data.StoreManager.lookup('qxlxStore').getAt(0));
+	// Ext.data.StoreManager.lookup('qxlxStore').on('load', function () {
+        // Ext.ComponentManager.get("qxzt").store.insert(0,{
+        //     'V_SOURCECODE':'%',
+        //     'V_SOURCENAME':'全部'
+        // });
+	// 	Ext.getCmp("qxlx").select(Ext.data.StoreManager.lookup('qxlxStore').getAt(0));
+	// });
+	//缺陷等级
+    Ext.data.StoreManager.lookup('djStore').on('load', function () {
+        Ext.getCmp('qxdj').select(Ext.data.StoreManager.lookup('djStore').getAt(2));
+    });
 
 }
 Ext.onReady(function () {
