@@ -329,7 +329,7 @@ function loadPageInfo() {
                                         result.push(respTask.list[i].V_ACTIVITY==""?"&nbsp;":respTask.list[i].V_ACTIVITY);
                                         result.push('</td>');
                                         result.push('                <td class="border_r_b" align="center">');
-                                        result.push(respTask.list[i].V_WORK_CENTER==""?"&nbsp;":descBilldescN(respTask.list[i].V_WORK_CENTER));
+                                        result.push(respTask.list[i].V_WORK_CENTER==""?"&nbsp;":descBilldesc(respTask.list[i].V_WORK_CENTER));
                                         result.push('</td>');
                                         result.push('                <td class="border_r_b" align="left">');
                                         result.push(respTask.list[i].V_DESCRIPTION==""?"&nbsp;":descBilldesc(respTask.list[i].V_DESCRIPTION));
@@ -449,7 +449,7 @@ function loadPageInfo() {
                                         result.push(respMat.list[cur_material_index].V_MATERIALCODE==""?"&nbsp;":respMat.list[cur_material_index].V_MATERIALCODE);
                                         result.push('</td>');
                                         result.push('                 <td class="border_r_b" align="left">');
-                                        result.push(descBilldesc(respMat.list[cur_material_index].V_MATERIALNAME)==""?"&nbsp;":descBilldesc(respMat.list[cur_material_index].V_MATERIALNAME));
+                                        result.push(descBill(respMat.list[cur_material_index].V_MATERIALNAME)==""?"&nbsp;":descBill(respMat.list[cur_material_index].V_MATERIALNAME));
                                         result.push('</td>');
                                         result.push('                 <td class="border_r_b"  align="center">');
                                         result.push(respMat.list[cur_material_index].V_UNIT==""?"&nbsp;":respMat.list[cur_material_index].V_UNIT);
@@ -660,9 +660,6 @@ function descBill(content){
     for(var i=0;i<content.length;i++){
         if(i<30){
             temp.push(content.charAt(i));
-            if(i%10==0&&i!=0){
-                temp.push('<br/>');
-            }
         }
     }
 

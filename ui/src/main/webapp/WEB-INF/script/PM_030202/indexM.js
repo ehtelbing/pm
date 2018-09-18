@@ -273,7 +273,7 @@ var zyStore = Ext.create('Ext.data.Store', {
 });
 
 var zyzxStore = Ext.create('Ext.data.Store', {
-    autoLoad: true,
+    autoLoad: false,
     storeId: 'zyzxStore',
     fields: ['V_UID','V_XH','V_ZYZX','V_BZ','V_SFGLYS'],
     proxy: {
@@ -352,24 +352,6 @@ var cgridStore= Ext.create('Ext.data.Store', {
         type: 'ajax',
         async: false,
         url: AppUrl + 'PM_03/PM_03_PLAN_YEAR_EQU_SEL',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        }
-    }
-});
-var repairDeptStore= Ext.create('Ext.data.Store', {
-    autoLoad: false,
-    storeId: 'repairDeptStore',
-    fields: ['V_DEPTCODE','V_DEPTNAME','V_DEPTREPAIRCODE','V_DEPTREPAIRNAME',
-        'I_ORDERID'],
-    proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'zdh/fixdept_sel',
         actionMethods: {
             read: 'POST'
         },
@@ -721,6 +703,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8' },
         {
             xtype: 'button',
+            text: '选择检修单位',
+            margin: '5 0 5 0',
+            iconCls:'Tablesave',
+            handler:btnSaveProject
+        },
+        {
+            xtype: 'button',
             text: '临时保存',
             margin: '5 0 5 0',
             iconCls:'Tablesave',
@@ -761,7 +750,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             id:'ProjectCode',
             labelWidth: 60,
             width:250,
-            margin:'5 5 5 15',
+            margin:'5 5 5 15' ,
             readOnly:true
         },
         {
@@ -784,8 +773,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_DEPTCODE',
             labelWidth :80,
             width:250,
-            labelAlign : 'right',
-            readOnly:true
+            labelAlign : 'right'
         },
         {
             xtype : 'combo',
@@ -799,8 +787,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_BASECODE',
             labelWidth :60,
             width:250,
-            labelAlign : 'right',
-            readOnly:true
+            labelAlign : 'right'
         },
         {
             xtype : 'combo',
@@ -814,8 +801,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_GUID',
             width:265,
             labelWidth :75,
-            labelAlign : 'right',
-            readOnly:true
+            labelAlign : 'right'
         }, {
             xtype : 'combo',
             id : "zyzx",
@@ -841,9 +827,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             displayField: 'V_LBMC',
             valueField: 'V_UID',
             width:250,
-            labelWidth :60,
-            labelAlign : 'right',
-            readOnly:true
+            labelWidth :80,
+            labelAlign : 'right'
         }, {
             xtype : 'combo',
             id : "sclb",
@@ -854,7 +839,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             margin:'5 5 5 0',
             displayField: 'V_SCLB',
             valueField: 'V_UID',
-            labelWidth :80,
+            labelWidth :60,
             width:250,
             labelAlign : 'right'
         }, {
@@ -867,8 +852,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             margin:'5 5 5 0',
             displayField: 'V_CPZL',
             valueField: 'V_UID',
-            labelWidth :60,
-            width:250,
+            labelWidth :75,
+            width:265,
             labelAlign : 'right'
         },
         {
@@ -881,8 +866,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             margin:'5 5 5 0',
             displayField: 'V_GXMC',
             valueField: 'V_UID',
-            width:265,
-            labelWidth :75,
+            width:250,
+            labelWidth :60,
             labelAlign : 'right'
         },
         {
@@ -896,7 +881,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             displayField: 'V_SGFS',
             valueField: 'V_BH',
             width:250,
-            labelWidth :60,
+            labelWidth :80,
             labelAlign : 'right'
         }, {
             xtype : 'combo',
@@ -907,7 +892,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             value:0,
             fieldLabel : '是否修旧',
             margin:'5 5 5 0',
-            labelWidth :80,
+            labelWidth :60,
             width:250,
             labelAlign : 'right'
         }
@@ -1032,7 +1017,7 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             format:'Y/m/d',
             value:new Date()
         },
-        {
+        /*{
             xtype : 'combo',
             id:'repairDept',
             store:repairDeptStore,
@@ -1045,7 +1030,7 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             labelWidth :60,
             width:240,
             labelAlign : 'right'
-        },
+        },*/
         {
             xtype : 'combo',
             id:'fzPer',
@@ -1830,14 +1815,7 @@ var jxwl1tool1 = Ext.create('Ext.form.Panel', {
     tbar: [
         '检修物料',
         { xtype: 'tbfill' },
-        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}/*,
-        {
-            xtype: 'button',
-            text: '更 多',
-            margin: '5 0 5 0',
-            bodyStyle:'float:right;',
-            iconCls:'Magnifierzoomin'
-        },*/
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}
     ]
 });
 //检修物料表格
@@ -1936,14 +1914,7 @@ var jxjsyqtool1 = Ext.create('Ext.form.Panel', {
     tbar: [
         '检修技术要求',
         { xtype: 'tbfill' },
-        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}/*,
-        {
-            xtype: 'button',
-            text: '更 多',
-            margin: '5 0 5 0',
-            bodyStyle:'float:right;',
-            iconCls:'Magnifierzoomin'
-        },*/
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}
     ]
 });
 //检修技术要求表格
@@ -2040,11 +2011,6 @@ Ext.onReady(function () {
     Ext.getCmp('zyq').on('select',function(){
         QueryZyFzr();
         CreateProjectCode();
-        Ext.data.StoreManager.lookup('repairDeptStore').load({
-            params:{
-                V_V_DEPTCODE:DeptCode
-            }
-        });
     });
 
     Ext.getCmp('zy').on('select',function(){
@@ -2075,7 +2041,33 @@ function QueryPageLoad(){
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.list!=null){
+
                 Ext.getCmp('northPanel').setTitle(resp.list[0].V_YEAR+"年"+resp.list[0].V_MONTH+"月"+resp.list[0].V_ORGNAME+"月计划编制");
+
+                if(resp.list[0].V_TYPE=='add'){
+                    Ext.getCmp('agreeFlow').hide();
+                    Ext.getCmp('zyq').setReadOnly(false);
+                    Ext.getCmp('wxlx').setReadOnly(false);
+                    Ext.getCmp('zy').setReadOnly(false);
+                    Ext.getCmp('jhlb').setReadOnly(false);
+                    Ext.getCmp('sclb').setReadOnly(false);
+                    Ext.getCmp('sgfs').setReadOnly(false);
+                    Ext.getCmp('sfxj').setReadOnly(false);
+                    Ext.getCmp('cpzl').setReadOnly(false);
+                    Ext.getCmp('cpgx').setReadOnly(false);
+                }else{
+                    Ext.getCmp('agreeFlow').show();
+                    Ext.getCmp('zyq').setReadOnly(true);
+                    Ext.getCmp('wxlx').setReadOnly(true);
+                    Ext.getCmp('zy').setReadOnly(true);
+                    Ext.getCmp('jhlb').setReadOnly(true);
+                    Ext.getCmp('sclb').setReadOnly(true);
+                    Ext.getCmp('sgfs').setReadOnly(true);
+                    Ext.getCmp('sfxj').setReadOnly(true);
+                    Ext.getCmp('cpzl').setReadOnly(true);
+                    Ext.getCmp('cpgx').setReadOnly(true);
+                }
+
                 YearGuid=resp.list[0].V_GUID_UP;
                 Year=resp.list[0].V_YEAR;
                 Month=resp.list[0].V_MONTH;
@@ -2083,6 +2075,7 @@ function QueryPageLoad(){
                 OrgName=resp.list[0].V_ORGNAME;
                 DeptCode=resp.list[0].V_DEPTCODE;
                 fzrPer=resp.list[0].V_SPECIALTYMANCODE;
+
                 //计划类别
                 Ext.data.StoreManager.lookup('jhlbStore').on('load',function(){
                     if(resp.list[0].V_JHLB==''){
@@ -2112,7 +2105,17 @@ function QueryPageLoad(){
                     if (resp.list[0].V_SPECIALTY_ZX == '') {
                         Ext.getCmp('zyzx').select(Ext.data.StoreManager.lookup('zyzxStore').getAt(0));
                     } else {
-                        Ext.getCmp('zyzx').select(resp.list[0].V_SPECIALTY_ZX);
+                        var num=0;
+                        for(var i=0;i<Ext.data.StoreManager.lookup('zyzxStore').data.items.length;i++){
+                            if (resp.list[0].V_SPECIALTY_ZX == Ext.data.StoreManager.lookup('zyzxStore').data.items[i].data.V_UID){
+                                num++;
+                            }
+                        }
+                        if(num>0){
+                            Ext.getCmp('zyzx').select(resp.list[0].V_SPECIALTY_ZX);
+                        }else{
+                            Ext.getCmp('zyzx').select(Ext.data.StoreManager.lookup('zyzxStore').getAt(0));
+                        }
                     }
                 });
 
@@ -2120,19 +2123,14 @@ function QueryPageLoad(){
                 Ext.data.StoreManager.lookup('sclbStore').on('load',function(){
                     if (resp.list[0].V_SCLB == '') {
                         Ext.getCmp('sclb').select(Ext.data.StoreManager.lookup('sclbStore').getAt(0));
-                        Ext.data.StoreManager.lookup('cpzlStore').load({
-                            params:{
-                                V_V_SCLB: Ext.getCmp('sclb').getValue()
-                            }
-                        });
                     } else {
                         Ext.getCmp('sclb').select(resp.list[0].V_SCLB);
-                        Ext.data.StoreManager.lookup('cpzlStore').load({
-                            params:{
-                                V_V_SCLB: Ext.getCmp('sclb').getValue()
-                            }
-                        });
                     }
+                    Ext.data.StoreManager.lookup('cpzlStore').load({
+                        params:{
+                            V_V_SCLB: Ext.getCmp('sclb').getValue()
+                        }
+                    });
                 });
 
                 Ext.data.StoreManager.lookup('cpzlStore').on('load',function(){
@@ -2167,7 +2165,17 @@ function QueryPageLoad(){
                     if (resp.list[0].V_CPGX == '') {
                         Ext.getCmp('cpgx').select( Ext.data.StoreManager.lookup('cpgxStore').getAt(0));
                     } else {
-                        Ext.getCmp('cpgx').select( resp.list[0].V_CPGX);
+                        var num=0;
+                        for(var i=0;i<Ext.data.StoreManager.lookup('cpgxStore').data.items.length;i++){
+                            if (resp.list[0].V_CPGX == Ext.data.StoreManager.lookup('cpgxStore').data.items[i].data.V_UID){
+                                num++;
+                            }
+                        }
+                        if(num>0){
+                            Ext.getCmp('cpgx').select(resp.list[0].V_CPGX);
+                        }else{
+                            Ext.getCmp('cpgx').select(Ext.data.StoreManager.lookup('cpgxStore').getAt(0));
+                        }
                     }
                 });
 
@@ -2186,7 +2194,7 @@ function QueryPageLoad(){
                         Ext.getCmp('wxlx').select(resp.list[0].V_WXTYPECODE);
                     }
                 });
-                //加载检修单位
+             /*   //加载检修单位
                 Ext.data.StoreManager.lookup('repairDeptStore').load({
                     params:{
                         V_V_DEPTCODE:DeptCode
@@ -2194,7 +2202,7 @@ function QueryPageLoad(){
                 });
 
                 //设置检修单位默认值
-                RepairDeptSend();
+                RepairDeptSend();*/
 
                 Ext.getCmp('ProjectCode').setValue(resp.list[0].V_PORJECT_CODE);
                 Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);
@@ -2269,7 +2277,7 @@ function CreateProjectCode(){
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='成功'){
                 Ext.getCmp('ProjectCode').setValue(resp.V_V_PROJECT_OUT);
-                Ext.getCmp('ProjectCode').setValue(resp.V_V_WBS);
+                Ext.getCmp('WbsCode').setValue(resp.V_V_WBS);
             }
         }
     });
@@ -2295,11 +2303,10 @@ function QueryZYQ(){
 
     Ext.data.StoreManager.lookup('zyqStore').on('load',function(){
         Ext.getCmp('zyq').select(DeptCode);
-       // CreateProjectCode();
         QueryZyFzr();
     })
 }
-//设置检修单位默认值
+/*//设置检修单位默认值
 function  RepairDeptSend(){
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PM_03_PLAN_REPAIR_DEPT_SEL',
@@ -2327,7 +2334,7 @@ function  RepairDeptSend(){
             }
         }
     });
-}
+}*/
 //添加设备
 function btnAdd_jdsb(){
 

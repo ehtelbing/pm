@@ -2100,10 +2100,21 @@ function QueryPageLoad(){
                 });
 
                 Ext.data.StoreManager.lookup('cpgxStore').on('load',function(){
+
                     if (resp.list[0].V_CPGX == '') {
                         Ext.getCmp('cpgx').select( Ext.data.StoreManager.lookup('cpgxStore').getAt(0));
                     } else {
-                        Ext.getCmp('cpgx').select( resp.list[0].V_CPGX);
+                        var num=0;
+                        for(var i=0;i<Ext.data.StoreManager.lookup('cpgxStore').data.items.length;i++){
+                            if (resp.list[0].V_CPGX == Ext.data.StoreManager.lookup('cpgxStore').data.items[i].data.V_UID){
+                                num++;
+                            }
+                        }
+                        if(num>0){
+                            Ext.getCmp('cpgx').select(resp.list[0].V_CPGX);
+                        }else{
+                            Ext.getCmp('cpgx').select(Ext.data.StoreManager.lookup('cpgxStore').getAt(0));
+                        }
                     }
                 });
 

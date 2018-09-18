@@ -547,6 +547,31 @@ public class PM_03Service {
         return result;
     }
 
+    public Map PM_PROJECT_YEAR_VIEW_SEL(String V_V_YEAR,String V_V_PERCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_PROJECT_YEAR_VIEW_SEL" + "(:V_V_YEAR,:V_V_PERCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PROJECT_YEAR_VIEW_SEL");
+        return result;
+    }
+
+
     public Map PRO_PM_03_PROJECT_COPY_BYGUID(String V_V_UPGUID, String V_V_GUID,String V_V_INPER) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
@@ -892,6 +917,73 @@ public class PM_03Service {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_03_PLAN_YEAR_SELECT");
+        return result;
+    }
+
+
+    public Map PRO_PM_03_PROJECTCODE_M_C(String V_V_YEARGUID,String V_V_GUID,String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_JHLB,String V_V_ZY,String V_V_SGFS,String V_V_FLAG) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PROJECTCODE_M_C" + "(:V_V_YEARGUID,:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_JHLB,:V_V_ZY,:V_V_SGFS,:V_V_FLAG,:V_V_PROJECT_OUT,:V_V_WBS,:V_INFO)}");
+            cstmt.setString("V_V_YEARGUID", V_V_YEARGUID);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_JHLB", V_V_JHLB);
+            cstmt.setString("V_V_ZY", V_V_ZY);
+            cstmt.setString("V_V_SGFS", V_V_SGFS);
+            cstmt.setString("V_V_FLAG", V_V_FLAG);
+            cstmt.registerOutParameter("V_V_PROJECT_OUT", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_WBS", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_V_PROJECT_OUT", (String) cstmt.getObject("V_V_PROJECT_OUT"));
+            result.put("V_V_WBS", (String) cstmt.getObject("V_V_WBS"));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PROJECTCODE_M_C");
+        return result;
+    }
+
+    public Map PM_PLAN_BUDGETANDUSE_YEAR_SEL(String V_V_YEAR,String V_V_ORGCODE) throws SQLException {
+
+        logger.info("begin PM_PLAN_BUDGETANDUSE_YEAR_SEL");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PLAN_BUDGETANDUSE_YEAR_SEL" + "(:V_V_YEAR,:V_V_ORGCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_BUDGETANDUSE_YEAR_SEL");
         return result;
     }
 
