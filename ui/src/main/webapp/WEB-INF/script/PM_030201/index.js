@@ -388,28 +388,35 @@ function OnButtonOut(){
         '&V_V_CONTENT='+Ext.getCmp('jxnr').getValue();
 }
 function OnButtonAdd(){
-    Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID:'-1',
-            V_V_YEAR:Ext.getCmp("year").getValue(),
-            V_V_ORGCODE:Ext.getCmp("ck").getValue(),
-            V_V_DEPTCODE:Ext.getCmp("zyq").getValue(),
-            V_V_INPER:Ext.util.Cookies.get('v_personcode')
-        },
-        success: function (resp) {
-            var resp=Ext.decode(resp.responseText);
-            if(resp.V_INFO=='成功'){
-                var owidth = window.document.body.offsetWidth - 600;
-                var oheight = window.document.body.offsetHeight - 100;
-                window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
-            }else{
-                alert("添加失败");
+    if(Ext.getCmp("zyq").getValue()!="%"&&Ext.getCmp("zyq").getValue()!=""){
+        Ext.Ajax.request({
+            url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID:'-1',
+                V_V_YEAR:Ext.getCmp("year").getValue(),
+                V_V_ORGCODE:Ext.getCmp("ck").getValue(),
+                V_V_DEPTCODE:Ext.getCmp("zyq").getValue(),
+                V_V_INPER:Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (resp) {
+                var resp=Ext.decode(resp.responseText);
+                if(resp.V_INFO=='成功'){
+                    var owidth = window.document.body.offsetWidth - 600;
+                    var oheight = window.document.body.offsetHeight - 100;
+                    window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+                }else{
+                    alert("添加失败");
+                }
             }
-        }
-    });
+        });
+    }
+    else{
+        alert("作业区不可为空");
+    }
+
+
 
 }
 
