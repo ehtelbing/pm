@@ -237,7 +237,7 @@ Ext.onReady(function () {
             if (i == 0) {
                 data += store.getAt(i).get('nameA');
             } else {
-                data += ";" + store.getAt(i).get('nameA');
+                data += "☆" + store.getAt(i).get('nameA');
             }
             data += "," + store.getAt(i).get('nameB');
             data += "," + store.getAt(i).get('nameC');
@@ -293,13 +293,17 @@ Ext.onReady(function () {
                 X_YBJCODE: Ext.getCmp('x_ybjcode').getValue()
             },
             success: function (form, action) {
-                Ext.Msg.alert("消息", "保存成功");
+               // Ext.Msg.alert("消息", "保存成功");
+                Ext.MessageBox.show("消息", "保存成功");
 
-                window.parent.location.href = AppUrl + "page/No4105/Index.html";
+               // window.parent.location.href = AppUrl + "page/No4105/Index.html";
 
+            },
+            failure:function(form,action){
+                Ext.MessageBox.show("消息", "保存失败");
             }
         });
-
+        window.parent.location.href = AppUrl + "page/No4105/Index.html";
     }
 
 });
