@@ -75,6 +75,51 @@ public class DrawingManageController {
         List<Map> result = drawingManageService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE,V_V_DEPTCODE, V_V_HOME_MENU);
         return result;
     }
+    @RequestMapping(value = "/orgTree", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> orgTree(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE) throws SQLException {
+        List<Map> result = drawingManageService.getTreeData(V_V_DEPTCODE);
+        return result;
+    }
+    @RequestMapping(value = "/getDeptByParentDeptcode", method = RequestMethod.POST)
+    @ResponseBody
+    public Map getDeptByParentDeptcode(@RequestParam(value = "V_V_DEPT_PCODE") String V_V_DEPT_PCODE) throws SQLException {
+        Map result = drawingManageService.PRO_BASE_DEPT_TREE_BY_PCODE(V_V_DEPT_PCODE);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_BASE_DEPT_ADD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_DEPT_ADD(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                       @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                 @RequestParam(value = "V_V_DEPTCODE_UP") String V_V_DEPTCODE_UP,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws Exception {
+        Map result = drawingManageService.PRO_BASE_DEPT_ADD(V_V_DEPTCODE, V_V_DEPTNAME,V_V_DEPTCODE_UP);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_BASE_DEPT_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_DEPT_DEL(@RequestParam(value = "V_V_DEPTIDS") String V_V_DEPTIDS,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+        Map result =null;
+        String[] parts = V_V_DEPTIDS.split(",");
+        for(int i=0;i<parts.length;i++){
+            result=drawingManageService.PRO_BASE_DEPT_DEL(parts[i]);
+        }
+        return result;
+    }
+    @RequestMapping(value = "/PRO_BASE_DEPT_UPD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_DEPT_UPD(@RequestParam(value = "V_V_DEPTID") String V_V_DEPTID,
+                                 @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                 @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+//                                 @RequestParam(value = "V_V_DEPTCODE_UP") String V_V_DEPTCODE_UP,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+        Map result = drawingManageService.PRO_BASE_DEPT_UPD(V_V_DEPTID,V_V_DEPTCODE, V_V_DEPTNAME);
+        return result;
+    }
 //    @RequestMapping(value = "topMenu", method = RequestMethod.POST)
 //    @ResponseBody
 //    public List<Object> topMenu(User user) {

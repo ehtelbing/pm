@@ -209,34 +209,6 @@ public class DrawingManageService {
         return list;
     }
 
-    public List<Map> getChildren(List<Map> list, String parentNode) {
-        List<Map> menu = new ArrayList<>();
-        for (Map item : list) {
-            if (item.get("V_MENUCODE_UP").equals(parentNode)) {
-                Map temp = new HashMap();
-                temp.put("id", item.get("V_MENUCODE").toString());
-                temp.put("text", item.get("V_MENUNAME").toString());
-                temp.put("title", item.get("V_MENUNAME").toString());
-                temp.put("pid", item.get("V_MENUCODE_UP").toString());
-                temp.put("type", item.get("V_TYPE").toString());
-                temp.put("flag", item.get("V_FLAG").toString());
-                temp.put("other", item.get("V_OTHER").toString());
-                temp.put("cls", "empty");
-                temp.put("hrefTarget", "Workspace");
-                if (getChildren(list, item.get("V_MENUCODE").toString()).size() == 0) {//���ӽڵ�
-                    temp.put("leaf", true);
-                    temp.put("src", item.get("V_URL").toString());
-                    temp.put("href", item.get("V_URL").toString());
-                } else {//���ӽڵ�
-                    temp.put("leaf", false);
-                    temp.put("expanded", true);
-                    temp.put("children", getChildren(list, item.get("V_MENUCODE").toString()));
-                }
-                menu.add(temp);
-            }
-        }
-        return menu;
-    }
 
     public List<Object> getMenuData(List<Map<String, Object>> myList) {
         List<Object> result = new ArrayList<Object>();
@@ -305,5 +277,190 @@ public class DrawingManageService {
             }
         }
         return false;
+    }
+
+
+    public List<Map> getTreeData(String V_V_DEPTCODE) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_TREE");
+        List<Map> list = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_TREE(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            HashMap result = new HashMap();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            List<Map> datalist = (List) result.get("list");
+            if (datalist.size() > 0) {
+                for (Map item : datalist) {
+                    if (item.get("V_DEPTCODE_UP").toString().equals("-1")) {
+                        Map temp = new HashMap();
+                        temp.put("id", item.get("V_DEPTCODE").toString());
+                        temp.put("text", item.get("V_DEPTNAME").toString());
+                        temp.put("title", item.get("V_DEPTNAME").toString());
+                        temp.put("pid", item.get("V_DEPTCODE_UP").toString());
+                        temp.put("type", item.get("V_DEPTTYPE").toString());
+                        temp.put("flag", item.get("I_FLAG").toString());
+//                        temp.put("other", item.get("V_OTHER").toString());
+                        temp.put("cls", "empty");
+                        temp.put("hrefTarget", "Workspace");
+                        if (getChildren(datalist, item.get("V_DEPTCODE").toString()).size() <= 0) {//没有叶子节点的
+                            temp.put("leaf", true);
+//                            temp.put("src", item.get("V_URL").toString());
+//                            temp.put("href", item.get("V_URL").toString());
+                        } else {//有叶子节点的
+                            temp.put("leaf", false);
+                            temp.put("expanded", true);
+                            temp.put("children", getChildren(datalist, item.get("V_DEPTCODE").toString()));
+                        }
+                        list.add(temp);
+                    }
+
+                }
+
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + list);
+        logger.info("end PRO_BASE_DEPT_TREE");
+        return list;
+    }
+    public Map PRO_BASE_DEPT_TREE_BY_PCODE(String V_V_DEPT_PCODE) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_TREE_BY_PCODE");
+        List<Map> list = new ArrayList<>();
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_TREE_BY_PCODE(:V_V_DEPT_PCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPT_PCODE", V_V_DEPT_PCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+//
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + list);
+        logger.info("end PRO_BASE_DEPT_TREE_BY_PCODE");
+        return result;
+    }
+    public List<Map> getChildren(List<Map> list, String parentNode) {
+        List<Map> menu = new ArrayList<>();
+        for (Map item : list) {
+            if (item.get("V_DEPTCODE_UP").equals(parentNode)) {
+                Map temp = new HashMap();
+                temp.put("id", item.get("V_DEPTCODE").toString());
+                temp.put("text", item.get("V_DEPTNAME").toString());
+                temp.put("title", item.get("V_DEPTNAME").toString());
+                temp.put("pid", item.get("V_DEPTCODE_UP").toString());
+                temp.put("type", item.get("V_DEPTTYPE").toString());
+                temp.put("flag", item.get("I_FLAG").toString());
+//                temp.put("other", item.get("V_OTHER").toString());
+                temp.put("cls", "empty");
+                temp.put("hrefTarget", "Workspace");
+                if (getChildren(list, item.get("V_DEPTCODE").toString()).size() == 0) {//没有叶子节点
+                    temp.put("leaf", true);
+//                    temp.put("src", item.get("V_URL").toString());
+//                    temp.put("href", item.get("V_URL").toString());
+                } else {//有叶子节点
+                    temp.put("leaf", false);
+                    temp.put("expanded", true);
+                    temp.put("children", getChildren(list, item.get("V_DEPTCODE").toString()));
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
+    public Map PRO_BASE_DEPT_ADD(String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_DEPTCODE_UP) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_ADD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_ADD(:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_DEPTCODE_UP,:V_INFO)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+            cstmt.setString("V_V_DEPTCODE_UP", V_V_DEPTCODE_UP);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO",(String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_ADD");
+        return result;
+    }
+    public Map PRO_BASE_DEPT_DEL(String V_V_DEPTID) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_DEL(:V_V_DEPTID,:V_INFO)}");
+            cstmt.setInt("V_V_DEPTID", Integer.parseInt(V_V_DEPTID));
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO",(String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_DEL");
+        return result;
+    }
+    public Map PRO_BASE_DEPT_UPD(String V_V_DEPTID,String V_V_DEPTCODE,String V_V_DEPTNAME) throws SQLException {
+        logger.info("begin PRO_BASE_DEPT_UPD");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_UPD(:V_V_DEPTID,:V_V_DEPTCODE,:V_V_DEPTNAME,:V_INFO)}");
+            cstmt.setInt("V_V_DEPTID", Integer.parseInt(V_V_DEPTID));
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
+//            cstmt.setString("V_V_DEPTCODE_UP", V_V_DEPTCODE_UP);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO",(String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_UPD");
+        return result;
     }
 }
