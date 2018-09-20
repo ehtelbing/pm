@@ -54,7 +54,7 @@ public class DrawingManageController {
         return result;
     }
 
-    @RequestMapping(value = "/PRO_BASE_NEW_MENU_SEL", method = RequestMethod.POST)
+    @RequestMapping(value = "/PRO_PM_PLAN_BUDGET_YEAR_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_PLAN_BUDGET_YEAR_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                     @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
