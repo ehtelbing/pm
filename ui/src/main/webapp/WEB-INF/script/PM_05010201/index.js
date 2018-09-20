@@ -1,7 +1,9 @@
 var V_ORDERGUID = null;
 var temp = 0;
+var V_EQUCODE;
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
+    V_EQUCODE=Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
 }
 var GridModel = Ext.create('Ext.selection.RowModel', {});
 Ext
@@ -117,13 +119,14 @@ Ext
                     actionMethods: {
                         read: 'POST'
                     },
-                    extraParams: {
-                        V_V_EQUCODE: Ext.urlDecode(location.href
-                            .split('?')[1]).V_EQUIP_NO,
-                        V_V_DEPTCODE: Ext.urlDecode(location.href
-                            .split('?')[1]).V_DEPTCODE,
-                        V_V_STATUS: '在备'
-                    },
+                    // extraParams: {
+                    //     V_V_EQUCODE: Ext.urlDecode(location.href
+                    //         .split('?')[1]).V_EQUIP_NO,
+                    //     V_V_DEPTCODE: Ext.urlDecode(location.href
+                    //         .split('?')[1]).V_DEPTCODE,
+                    //     /*Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,*/
+                    //     V_V_STATUS: '在备'
+                    // },
                     reader: {
                         type: 'json',
                         root: 'list'
@@ -307,13 +310,27 @@ Ext
                             id: 'KCmatCode',
                             emptyText: '按物料编码搜索',
                             width: 100,
-                            style: 'margin:5px 0 0 10px'
+                            style: 'margin:5px 0 0 10px',
+                            listeners : {
+                                'specialkey' : function  ENTERHC(field, e) {
+                                if (e.getKey() == Ext.EventObject.ENTER) {
+                                    OnClickKCRefreshButton();
+                                }
+                            }
+                        }
                         }, {
                             xtype: 'textfield',
                             id: 'KCmatName',
                             emptyText: '按物料名称搜索',
                             width: 100,
-                            style: 'margin:5px 0 0 10px'
+                            style: 'margin:5px 0 0 10px',
+                            listeners : {
+                                'specialkey' : function(field, e) {
+                                    if (e.getKey() == Ext.EventObject.ENTER) {
+                                        OnClickKCRefreshButton();
+                                    }
+                                }
+                            }
                         }, {
                             xtype: 'textfield',
                             id: 'KWMName',
@@ -837,6 +854,15 @@ Ext
                     }
                 }
             });
+
+            Ext.data.StoreManager.get('YZJStore').load({
+                params: {
+                    V_V_EQUCODE: V_EQUCODE,
+                    V_V_DEPTCODE: Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
+                    V_V_STATUS: '在备'
+                }
+            });
+
 
         });
         Ext.data.StoreManager.get('kfSectionStore').on('load', function () {
