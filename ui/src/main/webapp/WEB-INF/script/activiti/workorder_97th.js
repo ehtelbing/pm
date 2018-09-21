@@ -671,15 +671,15 @@ function comboConfirm() {
                         // 小神探接口
                         //xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
                         Ext.Msg.alert('提示', '验收工单成功');
-                        $.ajax({
-                            url: APP + 'mm/SetMat',
-                            type: 'post',
-                            async: false,
-                            data: {
-                                V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
-                                x_personcode: $.cookies.get('v_personcode')
-                            },
-                            success: function (resp) {
+                        // $.ajax({
+                        //     url: APP + 'mm/SetMat',
+                        //     type: 'post',
+                        //     async: false,
+                        //     data: {
+                        //         V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                        //         x_personcode: $.cookies.get('v_personcode')
+                        //     },
+                        //     success: function (resp) {
                                 Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
                                     method: 'POST',
                                     async: false,
@@ -737,6 +737,17 @@ function comboConfirm() {
                                                                 success: function (ret) {
                                                                     var resp = Ext.decode(ret.responseText);
                                                                     if (resp.V_INFO == 'success') {
+                                                                        $.ajax({
+                                                                            url: APP + 'mm/SetMat',
+                                                                            type: 'post',
+                                                                            async: false,
+                                                                            data: {
+                                                                                V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                                                                                x_personcode: $.cookies.get('v_personcode')
+                                                                            },
+                                                                            success: function (resp) {
+                                                                            }
+                                                                        });
                                                                     } else {
                                                                         alert("修改缺陷状态失败");
                                                                     }
@@ -757,8 +768,8 @@ function comboConfirm() {
                                 window.opener.QueryGrid();
                                 window.close();
                                 window.opener.OnPageLoad();
-                            }
-                        });
+                        //     }
+                        // });
                     },
                     error: function (response, opts) {
                         Ext.Msg.alert('提示', '验收工单失败,请联系管理员');
@@ -1126,94 +1137,106 @@ function QRYS() {
                     dataType: "json",
                     traditional: true,
                     success: function (resp) {
-                        $.ajax({
-                            url: APP + 'mm/SetMat',
-                            type: 'post',
+                        // $.ajax({
+                        //         url: APP + 'mm/SetMat',
+                        //         type: 'post',
+                        //         async: false,
+                        //         data: {
+                        //             V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                        //             x_personcode: $.cookies.get('v_personcode')
+                        //         },
+                        //         success: function (resp) {
+                        Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
+                            method: 'POST',
                             async: false,
-                            data: {
-                                V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
-                                x_personcode: $.cookies.get('v_personcode')
+                            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+                            params: {
+                                V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
+                                V_V_FLAG: "1"
                             },
-                            success: function (resp) {
-                                Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
-                                    method: 'POST',
-                                    async: false,
-                                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
-                                    params: {
-                                        V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
-                                        V_V_FLAG: "1"
-                                    },
-                                    success: function (response) {
-                                        var respl = Ext.decode(response.responseText);
-                                        if (respl.list.length > 0) {
-                                            for (var i = 0; i < respl.list.length; i++) {
-                                                /*Ext.Ajax.request({//修改周计划状态
-                                                 method: 'POST',
-                                                 async: false,
-                                                 url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
-                                                 params: {
-                                                 V_V_GUID: respl.list[i].V_WEEK_GUID,
-                                                 V_V_STATECODE: '34'//已验收
-                                                 },
-                                                 success: function (response) {
-                                                 var respm = Ext.decode(response.responseText);
-                                                 if(respm.V_INFO=='success'){
+                            success: function (response) {
+                                var respl = Ext.decode(response.responseText);
+                                if (respl.list.length > 0) {
+                                    for (var i = 0; i < respl.list.length; i++) {
+                                        /*Ext.Ajax.request({//修改周计划状态
+                                         method: 'POST',
+                                         async: false,
+                                         url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+                                         params: {
+                                         V_V_GUID: respl.list[i].V_WEEK_GUID,
+                                         V_V_STATECODE: '34'//已验收
+                                         },
+                                         success: function (response) {
+                                         var respm = Ext.decode(response.responseText);
+                                         if(respm.V_INFO=='success'){
 
-                                                 }else{
-                                                 alert("周计划状态修改错误");
-                                                 return;
-                                                 }
+                                         }else{
+                                         alert("周计划状态修改错误");
+                                         return;
+                                         }
 
-                                                 }
-                                                 });*/
-                                                Ext.Ajax.request({//保存缺陷详细日志
-                                                    url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
-                                                    method: 'POST',
-                                                    async: false,
-                                                    params: {
-                                                        V_V_GUID: respl.list[i].V_DEFECT_GUID,
-                                                        V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2') + '工单已验收（' + $("#V_ORDERID").html() + '）',
-                                                        V_V_FINISHCODE: '30',
-                                                        V_V_KEY: ''//缺陷guid
+                                         }
+                                         });*/
+                                        Ext.Ajax.request({//保存缺陷详细日志
+                                            url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                                            method: 'POST',
+                                            async: false,
+                                            params: {
+                                                V_V_GUID: respl.list[i].V_DEFECT_GUID,
+                                                V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2') + '工单已验收（' + $("#V_ORDERID").html() + '）',
+                                                V_V_FINISHCODE: '30',
+                                                V_V_KEY: ''//缺陷guid
 
-                                                    },
-                                                    success: function (ret) {
-                                                        var resp = Ext.decode(ret.responseText);
-                                                        if (resp.V_INFO == '成功') {
-                                                            //修改缺陷状态
-                                                            Ext.Ajax.request({
-                                                                url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
-                                                                method: 'POST',
-                                                                async: false,
-                                                                params: {
-                                                                    V_V_GUID: respl.list[i].V_DEFECT_GUID,
-                                                                    V_V_STATECODE: '23'//已验收
-                                                                },
-                                                                success: function (ret) {
-                                                                    var resp = Ext.decode(ret.responseText);
-                                                                    if (resp.V_INFO == 'success') {
-                                                                    } else {
-                                                                        alert("修改缺陷状态失败");
+                                            },
+                                            success: function (ret) {
+                                                var resp = Ext.decode(ret.responseText);
+                                                if (resp.V_INFO == '成功') {
+                                                    //修改缺陷状态
+                                                    Ext.Ajax.request({
+                                                        url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                                        method: 'POST',
+                                                        async: false,
+                                                        params: {
+                                                            V_V_GUID: respl.list[i].V_DEFECT_GUID,
+                                                            V_V_STATECODE: '23'//已验收
+                                                        },
+                                                        success: function (ret) {
+                                                            var resp = Ext.decode(ret.responseText);
+                                                            if (resp.V_INFO == 'success') {
+                                                                // --update 2018--9-18
+                                                                $.ajax({
+                                                                    url: APP + 'mm/SetMat',
+                                                                    type: 'post',
+                                                                    async: false,
+                                                                    data: {
+                                                                        V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                                                                        x_personcode: $.cookies.get('v_personcode')
+                                                                    },
+                                                                    success: function (resp) {
                                                                     }
-                                                                }
-                                                            });
-
-                                                        } else {
-                                                            alert("缺陷日志记录失败");
+                                                                });
+                                                            } else {
+                                                                alert("修改缺陷状态失败");
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
+
+                                                } else {
+                                                    alert("缺陷日志记录失败");
+                                                }
                                             }
-                                        }
+                                        });
                                     }
-                                });
-                                // window.opener.QueryTab();
-                                // window.opener.QuerySum();
-                                // window.opener.QueryGrid();
-                                // window.close();
-                                // window.opener.OnPageLoad();
+                                }
                             }
                         });
+                        // window.opener.QueryTab();
+                        // window.opener.QuerySum();
+                        // window.opener.QueryGrid();
+                        // window.close();
+                        // window.opener.OnPageLoad();
+                //     }
+                // });
 
 
                         if (V_V_ORDER_TYP == 'AK07') {
