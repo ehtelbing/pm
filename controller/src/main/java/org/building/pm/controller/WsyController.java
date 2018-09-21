@@ -403,8 +403,9 @@ public class WsyController {
 
     @RequestMapping(value = "/BASE_GX_GZ_UPD", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String, Object> BASE_GX_GZ_UPD(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE, @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE, @RequestParam(value = "V_V_TS") String V_V_TS, @RequestParam(value = "V_V_DE") String V_V_DE, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.BASE_GX_GZ_UPD(V_V_JXGX_CODE, V_V_PERCODE_DE, V_V_TS, V_V_DE);
+    public HashMap<String, Object> BASE_GX_GZ_UPD(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE, @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE, @RequestParam(value = "V_V_TS") String V_V_TS, @RequestParam(value = "V_V_DE") String V_V_DE,
+                                                  @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.BASE_GX_GZ_UPD(V_V_JXGX_CODE, V_V_PERCODE_DE, V_V_TS, V_V_DE,V_V_PERNUM);
         return data;
     }
 

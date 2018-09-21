@@ -260,7 +260,7 @@ Ext.onReady(function () {
         id: 'gzStore1',
         autoLoad: false,
         loading: false,
-        fields: ['V_JXGX_CODE', 'V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS'],
+        fields: ['V_JXGX_CODE', 'V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS','V_PERNUM'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'Wsy/PRO_PM_19_WORKDE_GXSEL',// 传入工序CODE查询工种
@@ -707,7 +707,7 @@ Ext.onReady(function () {
         autoLoad: false,
         loading: false,
         //pageSize: -1,
-        fields: ['V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS'],
+        fields: ['V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS','V_PERNUM'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GZ_BYJXBZ_SEL',
             type: 'ajax',
@@ -922,6 +922,11 @@ Ext.onReady(function () {
         }, {
             text: '工种台时',
             dataIndex: 'V_TS',
+            align: 'center',
+            flex: 1
+        }, {
+            text: '工种人数',
+            dataIndex: 'V_PERNUM',
             align: 'center',
             flex: 1
         }],
@@ -2679,7 +2684,7 @@ Ext.onReady(function () {
         autoLoad: true,
         loading: false,
         pageSize: 20,
-        fields: ['V_WORKCODE', 'V_WORKNAME', 'V_WORKTYPE', 'V_DE', 'V_TIME'],
+        fields: ['V_WORKCODE', 'V_WORKNAME', 'V_WORKTYPE', 'V_DE', 'V_TIME','V_PERNUM'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'Wsy/PRO_BASE_PERSON_DE_SEL',// 无条件查询所有工种
@@ -2971,6 +2976,12 @@ Ext.onReady(function () {
             name: 'V_V_PERNAME',
             fieldLabel: '人员名称',
             disabled: true,
+            maxLength: 60
+        },{
+            xtype: 'numberfield',
+            id: 'V_PERNUM',
+            name: 'V_V_PERNUM',
+            fieldLabel: '工种人数',
             maxLength: 60
         }]
     });

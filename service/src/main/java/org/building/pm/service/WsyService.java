@@ -1193,7 +1193,7 @@ public class WsyService {
         return result;
     }
 
-    public HashMap BASE_GX_GZ_UPD(String V_V_JXGX_CODE, String V_V_PERCODE_DE, String V_V_TS, String V_V_DE) throws SQLException {
+    public HashMap BASE_GX_GZ_UPD(String V_V_JXGX_CODE, String V_V_PERCODE_DE, String V_V_TS, String V_V_DE,String V_V_PERNUM) throws SQLException {
         logger.info("begin BASE_GX_GZ_UPD");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1201,11 +1201,12 @@ public class WsyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call BASE_GX_GZ_UPD" + "(:V_V_JXGX_CODE, :V_V_PERCODE_DE, :V_V_TS, :V_V_DE, :V_INFO)}");
+            cstmt = conn.prepareCall("{call BASE_GX_GZ_UPD" + "(:V_V_JXGX_CODE, :V_V_PERCODE_DE, :V_V_TS, :V_V_DE,:V_V_PERNUM,:V_INFO)}");
             cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
             cstmt.setString("V_V_PERCODE_DE", V_V_PERCODE_DE);
             cstmt.setString("V_V_TS", V_V_TS);
             cstmt.setString("V_V_DE", V_V_DE);
+            cstmt.setString("V_V_PERNUM", V_V_PERNUM);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
