@@ -4441,6 +4441,7 @@ function _openEditgzWindow() {
 
 // 修改工种
 function _editgz() {
+    var jxgxPanel = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
     var formData = Ext.getCmp('editgzPanel');
     Ext.Ajax.request({
         url: AppUrl + 'Wsy/BASE_GX_GZ_UPD',
@@ -4471,6 +4472,21 @@ function _editgz() {
         }
     });
     _querygz();
+
+    Ext.Ajax.request({
+        url: AppUrl + 'Wsy/PM_1917_JXGX_DATA_UPERS',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_JXGX_CODE: jxgxPanel[0].data.V_JXGX_CODE,
+            V_V_JXMX_CODE:V_JXMX_CODE
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.V_INFO == "Success") { }
+        }
+    });
+
     Ext.getCmp('editgzWindow').close();
 }
 

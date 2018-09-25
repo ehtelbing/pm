@@ -1036,4 +1036,14 @@ public class WsyController {
         }
         return result;
     }
+    //---模型人数写入人数   2018-09-25
+    @RequestMapping(value = "PM_1917_JXGX_DATA_UPERS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> PM_1917_JXGX_DATA_UPERS(
+            @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+            @RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE)
+            throws SQLException {
+        Map<String,Object> result = wsyService.PM_1917_JXGX_DATA_UPERS(V_V_JXGX_CODE, V_V_JXMX_CODE);
+        return result;
+    }
 }

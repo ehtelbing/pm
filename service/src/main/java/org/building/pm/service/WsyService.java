@@ -2050,4 +2050,30 @@ public class WsyService {
         logger.info("end PM_HOME_NOTICE_DEL");
         return result;
     }
+    //---模型人数写入人数   2018-09-25
+    public HashMap PM_1917_JXGX_DATA_UPERS(String V_V_JXGX_CODE,String V_V_JXMX_CODE) throws SQLException {
+        logger.info("begin PM_1917_JXGX_DATA_UPERS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXGX_DATA_UPERS" + "(:V_V_JXGX_CODE,:V_V_JXMX_CODE,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXGX_DATA_UPERS");
+        return result;
+    }
+
 }
