@@ -1046,4 +1046,16 @@ public class WsyController {
         Map<String,Object> result = wsyService.PM_1917_JXGX_DATA_UPERS(V_V_JXGX_CODE, V_V_JXMX_CODE);
         return result;
     }
+    //--获取物料弹出窗口数据  018-09-26
+
+    @RequestMapping(value = "SEL_EQUTOWL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> SEL_EQUTOWL(
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT)
+            throws SQLException {
+        Map<String,Object> result = wsyService.SEL_EQUTOWL(V_V_PERSONCODE, V_V_DEPTCODENEXT);
+        return result;
+    }
+
 }

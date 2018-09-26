@@ -8,6 +8,7 @@ var cmItems = [];
 var ganttdata = [];
 var VSTART;
 var VEND;
+var person=Ext.util.Cookies.get('v_personcode');//---V_V_DEPTCODE
 if (location.href.split('?')[1] != undefined) {
     if (Ext.urlDecode(location.href.split('?')[1]) != null) {
         V_JXMX_CODE = Ext.urlDecode(location.href.split('?')[1]).V_JXMX_CODE;
@@ -2772,27 +2773,49 @@ Ext.onReady(function () {
     });
 
     // 添加物料store
+    // var addwlStore = Ext.create('Ext.data.Store', {
+    //     storeId: 'addwlStore',
+    //     autoLoad: true,
+    //     loading: false,
+    //     pageSize: 20,
+    //     fields: ['V_KFNAME', 'V_WLCODE', 'V_WLSM', 'V_GGXH', 'V_JLDW', 'V_PRICE', 'V_USE_NUM'],
+    //     proxy: {
+    //         url: AppUrl + 'Wsy/BASE_WL_SEL',
+    //         type: 'ajax',
+    //         async: true,
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         extraParams: {},
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list',
+    //             totalProperty: 'total'
+    //         }
+    //     }
+    // });
     var addwlStore = Ext.create('Ext.data.Store', {
         storeId: 'addwlStore',
         autoLoad: true,
-        loading: false,
-        pageSize: 20,
-        fields: ['V_KFNAME', 'V_WLCODE', 'V_WLSM', 'V_GGXH', 'V_JLDW', 'V_PRICE', 'V_USE_NUM'],
+        fields: ['V_SPCODE', 'V_SPNAME', 'V_SPTYPE', 'V_EQUCODE', 'V_NUMBER', 'V_SPCODE_OLD'],
         proxy: {
-            url: AppUrl + 'Wsy/BASE_WL_SEL',
+            url: AppUrl + 'Wsy/SEL_EQUTOWL',
             type: 'ajax',
-            async: true,
+            async: false,
             actionMethods: {
                 read: 'POST'
             },
-            extraParams: {},
+            extraParams: {
+                V_V_PERSONCODE:person,
+                V_V_DEPTCODENEXT:V_V_DEPTCODE
+            },
             reader: {
                 type: 'json',
-                root: 'list',
-                totalProperty: 'total'
+                root: 'list'
             }
         }
     });
+
     // 添加安全措施store
     var addaqcsStore = Ext.create('Ext.data.Store', {
         storeId: 'addaqcsStore',
@@ -3670,7 +3693,7 @@ Ext.onReady(function () {
             text: '序号',
             width: 40,
             sortable: false
-        }, {
+        }/*, {
             text: '库房名称',
             dataIndex: 'V_KFNAME',
             align: 'center',
@@ -3695,17 +3718,23 @@ Ext.onReady(function () {
             dataIndex: 'V_PRICE',
             align: 'center',
             flex: 0.7
-        }],
-        bbar: [{
-            id: 'addwlPanel_toolbar',
-            xtype: 'pagingtoolbar',
-            dock: 'bottom',
-            displayInfo: true,
-            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-            emptyMsg: '没有记录',
-            store: addwlStore,
-            width: '100%'
-        }]
+        }*/
+            , {
+                text: '物料编码',
+                dataIndex: 'V_SPCODE',
+                align: 'center',
+                flex: 1
+            }, {
+                text: '物料描述',
+                dataIndex: 'V_SPNAME',
+                align: 'center',
+                flex: 1
+            }, {
+                text: '物料数量',
+                dataIndex: 'V_NUMBER',
+                align: 'center',
+                flex: 1
+            }]
     });
     // 添加物料弹窗
     var addwlWindow = Ext.create('Ext.window.Window', {
@@ -4968,6 +4997,14 @@ function _deletegj() {
 
 // 打开添加物料窗口
 function _openAddwlWindow() {
+
+    Ext.data.StoreManager.lookup('addwlStore').load({
+        params:{
+            V_V_PERSONCODE:person,
+            V_V_DEPTCODENEXT:V_V_DEPTCODE
+        }
+    });
+    Ext.getCmp('addwlPanel').reconfigure(Ext.data.StoreManager.lookup('addwlStore'));
     var records = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
     if (records.length == 0) {
         Ext.MessageBox.show({
@@ -5044,6 +5081,7 @@ function _addjsbz() {
 
 // 添加选择的物料
 function _addwl() {
+
     var wlRecords = Ext.getCmp('addwlPanel').getSelectionModel().getSelection();
     var jxgxPanel = Ext.getCmp('jxgxPanel').getSelectionModel().getSelection();
     var V_JXGX_CODE=jxgxPanel[0].data.V_JXGX_CODE;
@@ -5065,13 +5103,13 @@ function _addwl() {
             async: false,
             params: {
                 V_V_JXGX_CODE: V_JXGX_CODE,
-                V_V_WLCODE: wlRecords[i].data.V_WLCODE,
-                V_V_KFNAME: wlRecords[i].data.V_KFNAME,
-                V_V_WLSM: wlRecords[i].data.V_WLSM,
-                V_V_GGXH: wlRecords[i].data.V_GGXH,
-                V_V_JLDW: wlRecords[i].data.V_JLDW,
-                V_V_PRICE: wlRecords[i].data.V_PRICE,
-                V_V_USE_NUM: wlRecords[i].data.V_USE_NUM
+                V_V_WLCODE: wlRecords[i].data.V_SPCODE , //wlRecords[i].data.V_WLCODE,
+                V_V_KFNAME: '', //wlRecords[i].data.V_KFNAME,
+                V_V_WLSM: wlRecords[i].data.V_SPNAME ,//wlRecords[i].data.V_WLSM,
+                V_V_GGXH:'' ,//wlRecords[i].data.V_GGXH,
+                V_V_JLDW: '',// wlRecords[i].data.V_JLDW,
+                V_V_PRICE: '',//wlRecords[i].data.V_PRICE,
+                V_V_USE_NUM: wlRecords[i].data.V_NUMBER , //wlRecords[i].data.V_USE_NUM
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
@@ -5451,6 +5489,7 @@ function _deletejxjsbz() {
 function _openAddgdWindow() {
     var addwlStore = Ext.data.StoreManager.lookup('addwlStore');
     addwlStore.load();
+
     Ext.getCmp('addwlWindow').show();
 }
 

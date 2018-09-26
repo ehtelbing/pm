@@ -2075,5 +2075,29 @@ public class WsyService {
         logger.info("end PM_1917_JXGX_DATA_UPERS");
         return result;
     }
-
+//--获取物料弹出窗口数据  018-09-26
+public HashMap SEL_EQUTOWL(String V_V_PERSONCODE,String V_V_DEPTCODENEXT) throws SQLException {
+    logger.info("begin SEL_EQUTOWL");
+    HashMap result = new HashMap();
+    Connection conn = null;
+    CallableStatement cstmt = null;
+    try {
+        conn = dataSources.getConnection();
+        conn.setAutoCommit(true);
+        cstmt = conn.prepareCall("{call SEL_EQUTOWL" + "(:V_V_PERSONCODE,:V_V_DEPTCODENEXT,:V_INFO)}");
+        cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+        cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+        cstmt.registerOutParameter("V_INFO", OracleTypes.CURSOR);
+        cstmt.execute();
+        result.put("list", ResultHash((ResultSet) cstmt.getObject("V_INFO")));
+    } catch (SQLException e) {
+        logger.error(e);
+    } finally {
+        cstmt.close();
+        conn.close();
+    }
+    logger.debug("result:" + result);
+    logger.info("end SEL_EQUTOWL");
+    return result;
+}
 }
