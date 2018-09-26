@@ -259,7 +259,7 @@ Ext.onReady(function () {
         id: 'gzStore1',
         autoLoad: false,
         loading: false,
-        fields: ['V_JXGX_CODE', 'V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS'],
+        fields: ['V_JXGX_CODE', 'V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS','V_PERNUM'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'Wsy/PRO_PM_19_WORKDE_GXSEL',// 传入工序CODE查询工种
@@ -3881,6 +3881,12 @@ Ext.onReady(function () {
             name: 'V_V_PERNAME',
             fieldLabel: '人员名称',
             disabled: true,
+            maxLength: 60
+        }, {
+            xtype: 'numberfield',
+            id: 'V_PERNUM',
+            name: 'V_V_PERNUM',
+            fieldLabel: '工种人数',
             maxLength: 60
         }]
     });

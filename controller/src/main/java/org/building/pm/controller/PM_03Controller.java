@@ -291,9 +291,10 @@ public class PM_03Controller {
     public Map PM_03_PLAN_REPAIR_DEPT_SET(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
             @RequestParam(value = "V_V_REPAIR_DEPTCODE") String V_V_REPAIR_DEPTCODE,
-            @RequestParam(value = "V_V_REPAIR_DEPTNAME") String V_V_REPAIR_DEPTNAME) throws Exception {
+            @RequestParam(value = "V_V_REPAIR_DEPTNAME") String V_V_REPAIR_DEPTNAME,
+            @RequestParam(value = "V_V_TYPE") String V_V_TYPE) throws Exception {
 
-        Map result = pm_03Service.PM_03_PLAN_REPAIR_DEPT_SET(V_V_GUID, V_V_REPAIR_DEPTCODE, V_V_REPAIR_DEPTNAME);
+        Map result = pm_03Service.PM_03_PLAN_REPAIR_DEPT_SET(V_V_GUID, V_V_REPAIR_DEPTCODE, V_V_REPAIR_DEPTNAME,V_V_TYPE);
         return result;
     }
 

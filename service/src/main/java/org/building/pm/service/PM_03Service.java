@@ -415,17 +415,18 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PM_03_PLAN_REPAIR_DEPT_SET(String V_V_GUID, String V_V_REPAIR_DEPTCODE, String V_V_REPAIR_DEPTNAME) throws SQLException {
+    public Map PM_03_PLAN_REPAIR_DEPT_SET(String V_V_GUID, String V_V_REPAIR_DEPTCODE, String V_V_REPAIR_DEPTNAME,String V_V_TYPE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_REPAIR_DEPT_SET" + "(:V_V_GUID,:V_V_REPAIR_DEPTCODE,:V_V_REPAIR_DEPTNAME,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PM_03_PLAN_REPAIR_DEPT_SET" + "(:V_V_GUID,:V_V_REPAIR_DEPTCODE,:V_V_REPAIR_DEPTNAME,:V_V_TYPE,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_REPAIR_DEPTCODE", V_V_REPAIR_DEPTCODE);
             cstmt.setString("V_V_REPAIR_DEPTNAME", V_V_REPAIR_DEPTNAME);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
@@ -548,18 +549,23 @@ public class PM_03Service {
     }
 
     public Map PM_PROJECT_YEAR_VIEW_SEL(String V_V_YEAR,String V_V_PERCODE) throws SQLException {
-        Map result = new HashMap();
+
+        logger.info("begin PM_PROJECT_YEAR_VIEW_SEL");
+
+        HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
+            conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PM_PROJECT_YEAR_VIEW_SEL" + "(:V_V_YEAR,:V_V_PERCODE,:V_CURSOR)}");
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

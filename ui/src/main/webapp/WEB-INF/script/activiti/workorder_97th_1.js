@@ -674,15 +674,16 @@ function comboConfirm() {
                         // 小神探接口
                         //xstServer($("#V_ORDERGUID").val(), "CLOSE", "成功");
                        // Ext.Msg.alert('提示', '验收工单成功');
-                        $.ajax({
-                            url: APP + 'mm/SetMat',
-                            type: 'post',
-                            async: false,
-                            data: {
-                                V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
-                                x_personcode: $.cookies.get('v_personcode')
-                            },
-                            success: function (resp) {
+//---update 2018-09-18
+//                         $.ajax({
+//                             url: APP + 'mm/SetMat',
+//                             type: 'post',
+//                             async: false,
+//                             data: {
+//                                 V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+//                                 x_personcode: $.cookies.get('v_personcode')
+//                             },
+//                             success: function (resp) {
                                 Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
                                     method: 'POST',
                                     async: false,
@@ -740,6 +741,19 @@ function comboConfirm() {
                                                                 success: function (ret) {
                                                                     var resp = Ext.decode(ret.responseText);
                                                                     if (resp.V_INFO == 'success') {
+                                                                        //---update 2018-09-18
+                                                                        $.ajax({
+                                                                            url: APP + 'mm/SetMat',
+                                                                            type: 'post',
+                                                                            async: false,
+                                                                            data: {
+                                                                                V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                                                                                x_personcode: $.cookies.get('v_personcode')
+                                                                            },
+                                                                            success: function (resp) {}
+
+                                                                        });
+                                                                        //---end update 2018-09-18
                                                                     } else {
                                                                         alert("修改缺陷状态失败");
                                                                     }
@@ -760,8 +774,10 @@ function comboConfirm() {
                                 window.opener.QueryGrid();
                                 window.close();
                                 window.opener.OnPageLoad();
-                            }
-                        });
+                        //---update 2018-09-18
+                //     }
+                //
+                // });
                     },
                     error: function (response, opts) {
                         Ext.Msg.alert('提示', '验收工单失败,请联系管理员');
@@ -1130,15 +1146,15 @@ function QRYS() {
                     traditional: true,
                     success: function (resp) {
                      //   Ext.Msg.alert('提示', '验收工单成功');
-                        $.ajax({
-                            url: APP + 'mm/SetMat',
-                            type: 'post',
-                            async: false,
-                            data: {
-                                V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
-                                x_personcode: $.cookies.get('v_personcode')
-                            },
-                            success: function (resp) {
+                     //    $.ajax({
+                     //        url: APP + 'mm/SetMat',
+                     //        type: 'post',
+                     //        async: false,
+                     //        data: {
+                     //            V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                     //            x_personcode: $.cookies.get('v_personcode')
+                     //        },
+                     //        success: function (resp) {
                                 Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
                                     method: 'POST',
                                     async: false,
@@ -1196,6 +1212,20 @@ function QRYS() {
                                                                 success: function (ret) {
                                                                     var resp = Ext.decode(ret.responseText);
                                                                     if (resp.V_INFO == 'success') {
+                                                                        //--//--- update 2018-09-18
+                                                                        $.ajax({
+                                                                            url: APP + 'mm/SetMat',
+                                                                            type: 'post',
+                                                                            async: false,
+                                                                            data: {
+                                                                                V_V_ORDERGUID: $.url().param("V_ORDERGUID"),
+                                                                                x_personcode: $.cookies.get('v_personcode')
+                                                                            },
+                                                                            success: function (resp) {
+
+                                                                    }
+                                                                });
+                                                                        //---end update 2018-09-18
                                                                     } else {
                                                                         alert("修改缺陷状态失败");
                                                                     }
@@ -1216,8 +1246,9 @@ function QRYS() {
                                 // window.opener.QueryGrid();
                                 // window.close();
                                 // window.opener.OnPageLoad();
-                            }
-                        });
+                //     }
+                // });
+
                         if (V_V_ORDER_TYP == 'AK07') {
                             Ext.Ajax.request({
                                 method: 'POST',
