@@ -168,12 +168,29 @@ Ext.onReady(function() {
 
     var gridStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
+        pageSize:   20,
         storeId: 'gridStore',
         fields: ['I_DEPTID','V_DEPTCODE','V_DEPTNAME','V_DEPTCODE_UP', 'V_DEPTSMALLNAME', 'V_DEPTFULLNAME', 'V_DEPTTYPE',
             'I_ORDERID','I_FLAG','V_SAP_DEPT','V_SAP_WORK','V_SAP_JHGC','V_SAP_YWFW', 'D_DATE_EDITTIME','V_EDIT_GUID',
             'V_CLASS_FLAG'
 
-        ]
+        ],proxy:{
+            type: 'ajax',
+            async: false,
+            url : AppUrl + 'drawingManage/getDeptByParentDeptcode',
+            actionMethods: {
+                read: 'POST'//请求方法
+            },
+            reader: {
+                type : 'json',
+                root : 'list',
+                totalProperty : 'total'
+            }
+            //extraParams: {
+            //    V_V_DEPT_PCODE: globalId
+            //    //sort: '[{"property": "sequence", "direction": "ASC"}]'
+            //}//请求参数
+        }
     });
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
@@ -255,29 +272,34 @@ Ext.onReady(function() {
         layout: 'border',
         items: [tree, center]
     });
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload',function(store){
+        store.proxy.extraParams={
+            V_V_DEPT_PCODE: globalId
+        }
+    });
 });
 
 function load(code) {
     //默认查询数据库第一页
     Ext.getStore('gridStore').currentPage = 1;
     //设置查询方式与条件
-    Ext.getStore('gridStore').setProxy({
-        type: 'ajax',
-        async: false,
-        url : AppUrl + 'drawingManage/getDeptByParentDeptcode',
-        actionMethods: {
-            read: 'POST'//请求方法
-        },
-        reader: {
-            type : 'json',
-            root : 'list',
-            totalProperty : 'total'
-        },
-        extraParams: {
-            V_V_DEPT_PCODE: code
-            //sort: '[{"property": "sequence", "direction": "ASC"}]'
-        }//请求参数
-    });
+    //Ext.getStore('gridStore').setProxy({
+    //    type: 'ajax',
+    //    async: false,
+    //    url : AppUrl + 'drawingManage/getDeptByParentDeptcode',
+    //    actionMethods: {
+    //        read: 'POST'//请求方法
+    //    },
+    //    reader: {
+    //        type : 'json',
+    //        root : 'list',
+    //        totalProperty : 'total'
+    //    },
+    //    extraParams: {
+    //        V_V_DEPT_PCODE: code
+    //        //sort: '[{"property": "sequence", "direction": "ASC"}]'
+    //    }//请求参数
+    //});
 
     Ext.data.StoreManager.lookup('gridStore').load();//发出请求
 }

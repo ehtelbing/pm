@@ -82,29 +82,27 @@ Ext.onReady(function() {
             reader : {
                 type : 'json',
                 root : 'list',
-                total : 'total'
+                totalProperty: 'total'
             }
-        },
-        listeners: {
-            beforeload: beforeloadGridStore
         }
+
     });
 
-    var treeStore= Ext.create("Ext.data.TreeStore", {
-        storeId : 'treeStore',
-        autoLoad : false,
-        fields : ['sid', 'text', 'parentid','V_EQUSITE']
-    });
-
-    var treepanel=Ext.create('Ext.tree.Panel',{
-        id:'tree',
-        region:'west',
-        width:'20%',
-        rootVisible : false,
-        store:treeStore,
-        autoScroll: true,
-        listeners:{itemclick:TreeChecked}
-    });
+    //var treeStore= Ext.create("Ext.data.TreeStore", {
+    //    storeId : 'treeStore',
+    //    autoLoad : false,
+    //    fields : ['sid', 'text', 'parentid','V_EQUSITE']
+    //});
+    //
+    //var treepanel=Ext.create('Ext.tree.Panel',{
+    //    id:'tree',
+    //    region:'west',
+    //    width:'20%',
+    //    rootVisible : false,
+    //    store:treeStore,
+    //    autoScroll: true,
+    //    listeners:{itemclick:TreeChecked}
+    //});
 
     var panel=Ext.create('Ext.panel.Panel',{
         id:'panel',
@@ -115,30 +113,18 @@ Ext.onReady(function() {
         items:[{xtype:'panel',frame:true,width:'100%',region:'north',layout:'column',
             items:[{ xtype: 'combo', id: 'ck', store: ckStore, fieldLabel: '厂矿', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, labelAlign: 'right', editable: false, queryMode: 'local', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE' },
                 { xtype: 'combo', id: 'zyq', store: zyqStore, fieldLabel: '作业区', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, labelAlign: 'right', editable: false, queryMode: 'local', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE' },
-                { xtype: 'combo', id: 'sb', store: sbStore, fieldLabel: '设备', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, labelAlign: 'right', emptyText:'请选择作业区',editable: false, queryMode: 'local', displayField: 'V_EQUNAME', valueField: 'V_EQUCODE' },
-                //{xtype : 'textfield',id :'eququery',emptyText : '输入设备名称',width:158,style: ' margin: 5px 0px 5px 70px'},
+                { xtype: 'combo', id: 'sb', store: sbStore, fieldLabel: '设备', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, width: 240,labelAlign: 'right', emptyText:'请选择作业区',editable: false, queryMode: 'local', displayField: 'V_EQUNAME', valueField: 'V_EQUCODE' },
                 {xtype:'button',text:'查询', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/search.png',handler:QueryGrid}
-                //{xtype:'button',text:'复制设备', style: ' margin: 5px 0px 5px 5px',listeners:{click:OnCopyClicked}},
-                //{xtype:'button',text:'添加设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/add.png',listeners:{click:OnBtnClicked}},
-                //{xtype:'button',text:'修改设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnEditClicked}},
-                //{xtype:'button',text:'修改主设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnEditMainClicked}},
-                //{xtype:'button',text:'备件清单编辑', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnBZEditClicked}}
             ]},
             {xtype:'grid',id:'grid', store: gridStore,columnLines : true,autoScroll : true,region:'center',border:false,
-                columns:[{ text: '设备编号', dataIndex: 'V_EQUCODE', width: 120 ,renderer : CreateGridColumnTd},
-                    { text: '物料编号', dataIndex: 'V_MATERIALCODE', width: 100 ,renderer : CreateGridColumnTd},
-                    { text: '物料名称', dataIndex: 'V_SPNAME', width: 200 ,renderer : CreateGridColumnTd},
-                    { text: '物料类型', dataIndex: 'V_SPTYPE', width: 100 ,renderer : CreateGridColumnTd},
-                    { text: '图纸名称', dataIndex: 'V_DRAWINGNAME', width: 160 ,renderer : CreateGridColumnTd},
-                    { text: '图纸描述', dataIndex: 'V_DRAWINGDESCRIPTION', width: 160 ,renderer : CreateGridColumnTd},
-                    { text: '图纸路径', dataIndex: 'V_DRAWINGROUTE', width: 160 ,renderer : CreateGridColumnTd}
-
-                    //{ text: '附件管理', align : 'center', width : 100,
-                    //	renderer : function(value, metaData, record) {
-                    //		return '<div><a href="javascript:OnClickDeleteLink(\'' + value + '\')">修改</a></div>';
-                    //	}
-                    //},
-                    //{ text: '上一级设备代号', dataIndex: 'V_EQUCODEUP', width: 100 ,renderer : CreateGridColumnTd}
+                columns:[{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+                    { text: '设备编号', dataIndex: 'V_EQUCODE', width: 120 ,renderer : toleft},
+                    { text: '物料编号', dataIndex: 'V_MATERIALCODE', width: 100 ,renderer : toleft},
+                    { text: '物料名称', dataIndex: 'V_SPNAME', width: 200 ,renderer : toleft},
+                    { text: '物料类型', dataIndex: 'V_SPTYPE', width: 100 ,renderer : toleft},
+                    { text: '图纸名称', dataIndex: 'V_DRAWINGNAME', width: 160 ,renderer : toleft},
+                    { text: '图纸描述', dataIndex: 'V_DRAWINGDESCRIPTION', width: 160 ,renderer : toleft},
+                    { text: '图纸路径', dataIndex: 'V_DRAWINGROUTE', width: 160 ,renderer : toleft}
                 ],
                 bbar: [{
                     id:'page',
@@ -157,7 +143,15 @@ Ext.onReady(function() {
         layout : 'border',
         items : [panel]//treepanel,
     });
-
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload',function(store){
+        store.proxy.extraParams={
+            V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTCODE:Ext.getCmp('ck').getValue(),
+            V_V_DEPTNEXTCODE:Ext.getCmp('zyq').getValue(),
+            V_V_EQUCODE:Ext.getCmp('sb').getValue(),//treeid,
+            V_V_EQUNAME:'%'//Ext.getCmp('eququery').getValue()
+        }
+    });
     Ext.data.StoreManager.lookup('ckStore').on('load',function(){
         Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
         Ext.data.StoreManager.lookup('zyqStore').load({
@@ -172,31 +166,7 @@ Ext.onReady(function() {
 
     Ext.data.StoreManager.lookup('zyqStore').on('load',function(){
         Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt('0'));
-
-        //starSave();
-        //QueryTree();
-
     });
-    //zyqStore.load({
-    //	callback : function(record, options, success) {
-    //		Ext.MessageBox.show({
-    //			title: Ext.getCmp('zyq').getValue(),
-    //			//progressText: Ext.getCmp('zyq').getValue(),
-    //			width: 300,
-    //			//progress: true,
-    //			closable: true
-    //		});
-    //		Ext.data.StoreManager.lookup('sbStore').load({
-    //			params:{
-    //				V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
-    //				V_V_DEPTNEXTCODE:Ext.getCmp('zyq').getValue(),
-    //			}
-    //		});
-    //	}
-    //});
-    //Ext.data.StoreManager.lookup('sbStore').on('load',function(){
-    //	Ext.getCmp('sb').select(Ext.data.StoreManager.lookup('sbStore').getAt('0'));
-    //});
     Ext.getCmp('ck').on('select',function(){
         Ext.data.StoreManager.lookup('zyqStore').load({
             params:{
@@ -220,22 +190,22 @@ Ext.onReady(function() {
         //QueryTree();
     });
 
-    Ext.data.StoreManager.lookup('treeStore').on('load',function(){
-        countSave=1;
-    });
-    //设备树点击加号加载
-    Ext.getCmp("tree").on("beforeload",function(store,operation){
-        if(operation.node.data.parentid==-1){
-            Ext.apply(store.proxy.extraParams,{
-                    V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                    V_V_DEPTCODE:Ext.getCmp('ck').getValue(),
-                    V_V_DEPTNEXTCODE:Ext.getCmp('zyq').getValue(),
-                    V_V_EQUTYPECODE:'%',
-                    V_V_EQUCODE:operation.node.data.sid
-                },
-                store.proxy.url=AppUrl + 'pm_19/PRO_SAP_PM_CHILDEQU_TREE')
-        }
-    });
+    //Ext.data.StoreManager.lookup('treeStore').on('load',function(){
+    //    countSave=1;
+    //});
+    ////设备树点击加号加载
+    //Ext.getCmp("tree").on("beforeload",function(store,operation){
+    //    if(operation.node.data.parentid==-1){
+    //        Ext.apply(store.proxy.extraParams,{
+    //                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+    //                V_V_DEPTCODE:Ext.getCmp('ck').getValue(),
+    //                V_V_DEPTNEXTCODE:Ext.getCmp('zyq').getValue(),
+    //                V_V_EQUTYPECODE:'%',
+    //                V_V_EQUCODE:operation.node.data.sid
+    //            },
+    //            store.proxy.url=AppUrl + 'pm_19/PRO_SAP_PM_CHILDEQU_TREE')
+    //    }
+    //});
 });
 
 function QueryTree(){
@@ -316,73 +286,8 @@ function starSave(){
     }
 }
 
-//添加设备
-//function OnBtnClicked(){
-//	var ckcode=Ext.getCmp('ck').getValue();
-//	var zyqcode=Ext.getCmp('zyq').getValue();
-//	try{
-//		window.top.append('19240101','添加设备',AppUrl+'page/PM_19240101/index.html?EQUCODEUP='+treeid+'&EQUNAMEUP='+treename+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode);
-//	}catch(e){
-//		window.open(AppUrl+'page/PM_19240101/index.html?EQUCODEUP='+treeid+'&EQUNAMEUP='+treename+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode);
-//	}
-//}
 
-//复制设备
-//function OnCopyClicked(){
-//	var ckcode=Ext.getCmp('ck').getValue();
-//	var zyqcode=Ext.getCmp('zyq').getValue();
-//	var equCode = 	Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_EQUCODE;
-//	try{
-//		window.top.append('95010102','复制设备',AppUrl+'page/PM_19240102/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode);
-//	}catch(e){
-//		window.open(AppUrl+'page/PM_19240102/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode);
-//	}
-//}
-
-//修改设备
-//function OnEditClicked(){
-//	if(Ext.getCmp('grid').getSelectionModel().getSelection().length==0){
-//		alert("请选择设备表中子设备进行操作");
-//		return;
-//	}
-//	var ckcode=Ext.getCmp('ck').getValue();
-//	var zyqcode=Ext.getCmp('zyq').getValue();
-//	var equCode = 	Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_EQUCODE;
-//	try{
-//		window.top.append('95010103','修改设备',AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=no');
-//	}catch(E){
-//		window.open(AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=no');
-//	}
-//}
-
-//修改主设备
-//function OnEditMainClicked(){
-//	var ckcode=Ext.getCmp('ck').getValue();
-//	var zyqcode=Ext.getCmp('zyq').getValue();
-//	var equCode = 	treeid;
-//	try{
-//		window.top.append('95010103','修改设备',AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=yes');
-//	}catch(E){
-//		window.open(AppUrl+'page/PM_19240103/index.html?EQUCODE='+equCode+'&DEPTCODE='+ckcode+'&DEPTNEXTCODE='+zyqcode+'&ifmain=yes');
-//	}
-//}
-
-//备件清单编辑
-//function OnBZEditClicked(){
-//	if(Ext.getCmp('grid').getSelectionModel().getSelection().length==0){
-//		Ext.MessageBox.alert('提示信息', '请选择一条数据进行备件清单操作！');
-//	}else{
-//		var code=Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_EQUCODE;
-//		var name=Ext.getCmp('grid').getSelectionModel().getSelection()[0].data.V_EQUNAME;
-//		try{
-//			window.top.append('95010107','备件清单编辑',AppUrl+'page/PM_19240107/index.html?code='+code+'&name='+name);
-//		}catch(e){
-//			window.open(AppUrl+'page/PM_19240107/index.html?code='+code+'&name='+name);
-//		}
-//	}
-//}
-
-function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
+function toleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }

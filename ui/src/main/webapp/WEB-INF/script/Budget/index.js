@@ -42,7 +42,7 @@ Ext.onReady(function() {
 			reader : {
 				type : 'json',
 				root : 'list',
-				total : 'total'
+				totalProperty : 'total'
 			}
 		}
 	});
@@ -73,7 +73,8 @@ Ext.onReady(function() {
 				{xtype:'button',text:'查询', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/search.png',handler:QueryGrid}
 			]},
 			{xtype:'grid',id:'grid', store: gridStore,columnLines : true,autoScroll : true,region:'center',border:false,
-				columns:[{ text: '厂矿名称', dataIndex: 'V_ORGNAME', width: 120 ,renderer : CreateGridColumnTd},
+				columns:[{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+					{ text: '厂矿名称', dataIndex: 'V_ORGNAME', width: 120 ,renderer : CreateGridColumnTd},
 					{ text: '费用科目', dataIndex: 'V_CHARGENAME', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '预算', dataIndex: 'V_MONEY', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '追加预算', dataIndex: 'V_MONEY_ADD', width: 100 ,renderer : CreateGridColumnTd}
@@ -95,7 +96,13 @@ Ext.onReady(function() {
 		layout : 'border',
 		items : [panel]
 	});
-
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload',function(store){
+		store.proxy.extraParams={
+			V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+			V_V_DEPTCODE:Ext.getCmp('ck').getValue(),
+			V_V_YEAR:Ext.getCmp('year').getValue()
+		}
+	});
 	Ext.data.StoreManager.lookup('ckStore').on('load',function(){
 		Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
 

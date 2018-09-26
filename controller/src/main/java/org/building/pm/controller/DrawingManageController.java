@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +31,27 @@ public class DrawingManageController {
 //    private PM_06Service pm_06Service;
     @RequestMapping(value = "/PRO_BASE_DRAWING_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_BASE_DRAWING_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+    public Map<String, Object> PRO_BASE_DRAWING_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                            @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
                                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                                            @RequestParam(value = "V_V_EQUNAME") String V_V_EQUNAME,
                                            HttpServletRequest request,
                                            HttpServletResponse response) throws Exception {
-        Map result = drawingManageService.PRO_BASE_DRAWING_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUCODE, V_V_EQUNAME);
+        Map<String, Object> result = drawingManageService.PRO_BASE_DRAWING_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_V_EQUCODE, V_V_EQUNAME);
+        Integer page = Integer.valueOf(request.getParameterValues("page")[0].toString());
+        Integer start = Integer.valueOf(request.getParameterValues("start")[0].toString());
+        Integer limit = Integer.valueOf(request.getParameterValues("limit")[0].toString());
+        List list =  (List)result.get("list");
+        List temp = new ArrayList();
+        int total = list.size();
+        int end = start + limit > total ? total : start + limit;
+        for(int i = start ; i < end ; i++){
+            temp.add(list.get(i));
+        }
+        result.put("list",temp);
+        result.put("total",total);
+        result.put("success", true);
         return result;
     }
     @RequestMapping(value = "/PRO_SAP_PM_EQU_P_BYZYQ", method = RequestMethod.POST)
@@ -56,12 +70,25 @@ public class DrawingManageController {
 
     @RequestMapping(value = "/PRO_PM_PLAN_BUDGET_YEAR_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_PM_PLAN_BUDGET_YEAR_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+    public Map<String, Object> PRO_PM_PLAN_BUDGET_YEAR_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                     @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                     @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
                                     HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
-        Map result = drawingManageService.PRO_PM_PLAN_BUDGET_YEAR_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_YEAR);
+        Map<String, Object> result = drawingManageService.PRO_PM_PLAN_BUDGET_YEAR_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_YEAR);
+        Integer page = Integer.valueOf(request.getParameterValues("page")[0].toString());
+        Integer start = Integer.valueOf(request.getParameterValues("start")[0].toString());
+        Integer limit = Integer.valueOf(request.getParameterValues("limit")[0].toString());
+        List list =  (List)result.get("list");
+        List temp = new ArrayList();
+        int total = list.size();
+        int end = start + limit > total ? total : start + limit;
+        for(int i = start ; i < end ; i++){
+            temp.add(list.get(i));
+        }
+        result.put("list",temp);
+        result.put("total",total);
+        result.put("success", true);
         return result;
     }
     @RequestMapping(value = "/topMenu", method = RequestMethod.POST)
@@ -81,10 +108,26 @@ public class DrawingManageController {
         List<Map> result = drawingManageService.getTreeData(V_V_DEPTCODE);
         return result;
     }
+
     @RequestMapping(value = "/getDeptByParentDeptcode", method = RequestMethod.POST)
     @ResponseBody
-    public Map getDeptByParentDeptcode(@RequestParam(value = "V_V_DEPT_PCODE") String V_V_DEPT_PCODE) throws SQLException {
-        Map result = drawingManageService.PRO_BASE_DEPT_TREE_BY_PCODE(V_V_DEPT_PCODE);
+    public Map<String, Object> getDeptByParentDeptcode(@RequestParam(value = "V_V_DEPT_PCODE") String V_V_DEPT_PCODE,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) throws SQLException {
+        Map<String, Object> result = drawingManageService.PRO_BASE_DEPT_TREE_BY_PCODE(V_V_DEPT_PCODE);
+        Integer page = Integer.valueOf(request.getParameterValues("page")[0].toString());
+        Integer start = Integer.valueOf(request.getParameterValues("start")[0].toString());
+        Integer limit = Integer.valueOf(request.getParameterValues("limit")[0].toString());
+        List list =  (List)result.get("list");
+        List temp = new ArrayList();
+        int total = list.size();
+        int end = start + limit > total ? total : start + limit;
+        for(int i = start ; i < end ; i++){
+            temp.add(list.get(i));
+        }
+        result.put("list",temp);
+        result.put("total",total);
+        result.put("success", true);
         return result;
     }
     @RequestMapping(value = "/PRO_BASE_DEPT_ADD", method = RequestMethod.POST)
@@ -120,28 +163,53 @@ public class DrawingManageController {
         Map result = drawingManageService.PRO_BASE_DEPT_UPD(V_V_DEPTID,V_V_DEPTCODE, V_V_DEPTNAME);
         return result;
     }
-//    @RequestMapping(value = "topMenu", method = RequestMethod.POST)
-//    @ResponseBody
-//    public List<Object> topMenu(User user) {
-//        List<Object> result = menuService.getMenuData(user);
-//        return result;
-//    }
-//    @RequestMapping(value = "/PRO_BASE_DEPT_VIEW_ROLE_NEW", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> PRO_BASE_DEPT_VIEW_ROLE_NEW(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-//                                                       @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-//                                                       @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
-//                                                       @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
-//                                                       HttpServletRequest request,
-//                                                       HttpServletResponse response) throws Exception {
-//        Map<String, Object> result = new HashMap<String, Object>();
-//
-//        HashMap data = pm_06Service.PRO_BASE_DEPT_VIEW_ROLE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_DEPTTYPE);
-//        List<Map<String, Object>> pm_06list = (List) data.get("list");
-//        pm_06list.remove(0);
-//        result.put("list", pm_06list);
-//        result.put("success", true);
-//        return result;
-//    }
 
+    @RequestMapping(value = "/PRO_OIL_YEAR_PLAN_AND_APP_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_OIL_YEAR_PLAN_AND_APP_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+//            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        HashMap data = drawingManageService.PRO_OIL_YEAR_PLAN_AND_APP_SEL(V_V_YEAR,V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    @RequestMapping(value = "/PRO_OIL_YEAR_PLAN_APPROVAL_SEL", method = RequestMethod.POST)
+      @ResponseBody
+      public Map<String, Object> PRO_OIL_YEAR_PLAN_APPROVAL_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        HashMap data = drawingManageService.PRO_OIL_YEAR_PLAN_APPROVAL_SEL(V_V_YEAR, V_V_ORGCODE,V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    @RequestMapping(value = "/PRO_OIL_YEAR_PLAN_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_OIL_YEAR_PLAN_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        HashMap data = drawingManageService.PRO_OIL_YEAR_PLAN_SEL(V_V_YEAR, V_V_ORGCODE, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    @RequestMapping(value = "/FIXED_ASSETS_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> FIXED_ASSETS_SEL(
+            @RequestParam(value = "V_V_ORG_CODE") String V_V_ORG_CODE,
+            @RequestParam(value = "V_V_ASSETS_CODE") String V_V_ASSETS_CODE,
+            @RequestParam(value = "V_V_ASSETS_NAME") String V_V_ASSETS_NAME,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        HashMap data = drawingManageService.FIXED_ASSETS_SEL(V_V_ORG_CODE,V_V_ASSETS_CODE ,V_V_ASSETS_NAME, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
 }
