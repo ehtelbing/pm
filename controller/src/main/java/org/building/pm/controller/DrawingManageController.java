@@ -133,11 +133,20 @@ public class DrawingManageController {
     @RequestMapping(value = "/PRO_BASE_DEPT_ADD", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_DEPT_ADD(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                       @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+                                 @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
                                  @RequestParam(value = "V_V_DEPTCODE_UP") String V_V_DEPTCODE_UP,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) throws Exception {
-        Map result = drawingManageService.PRO_BASE_DEPT_ADD(V_V_DEPTCODE, V_V_DEPTNAME,V_V_DEPTCODE_UP);
+                                 @RequestParam(value = "V_V_DEPTSMALLNAME") String V_V_DEPTSMALLNAME,
+                                 @RequestParam(value = "V_V_DEPTFULLNAME") String V_V_DEPTFULLNAME,
+                                 @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
+                                 @RequestParam(value = "V_I_ORDERID") String V_I_ORDERID,
+                                 @RequestParam(value = "V_V_SAP_DEPT") String V_V_SAP_DEPT,
+                                 @RequestParam(value = "V_V_SAP_WORK") String V_V_SAP_WORK,
+                                 @RequestParam(value = "V_V_SAP_JHGC") String V_V_SAP_JHGC,
+                                 @RequestParam(value = "V_V_SAP_YWFW") String V_V_SAP_YWFW,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+        Map result = drawingManageService.PRO_BASE_DEPT_ADD(V_V_DEPTCODE, V_V_DEPTNAME,V_V_DEPTCODE_UP,V_V_DEPTSMALLNAME,V_V_DEPTFULLNAME,
+                V_V_DEPTTYPE,V_I_ORDERID,V_V_SAP_DEPT,V_V_SAP_WORK,V_V_SAP_JHGC,V_V_SAP_YWFW);
         return result;
     }
     @RequestMapping(value = "/PRO_BASE_DEPT_DEL", method = RequestMethod.POST)
@@ -157,10 +166,20 @@ public class DrawingManageController {
     public Map PRO_BASE_DEPT_UPD(@RequestParam(value = "V_V_DEPTID") String V_V_DEPTID,
                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                  @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
-//                                 @RequestParam(value = "V_V_DEPTCODE_UP") String V_V_DEPTCODE_UP,
+                                 @RequestParam(value = "V_V_DEPTCODE_UP") String V_V_DEPTCODE_UP,
+                                 @RequestParam(value = "V_V_DEPTSMALLNAME") String V_V_DEPTSMALLNAME,
+                                 @RequestParam(value = "V_V_DEPTFULLNAME") String V_V_DEPTFULLNAME,
+                                 @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
+                                 @RequestParam(value = "V_I_ORDERID") String V_I_ORDERID,
+                                 @RequestParam(value = "V_V_SAP_DEPT") String V_V_SAP_DEPT,
+                                 @RequestParam(value = "V_V_SAP_WORK") String V_V_SAP_WORK,
+                                 @RequestParam(value = "V_V_SAP_JHGC") String V_V_SAP_JHGC,
+                                 @RequestParam(value = "V_V_SAP_YWFW") String V_V_SAP_YWFW,
                                  HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
-        Map result = drawingManageService.PRO_BASE_DEPT_UPD(V_V_DEPTID,V_V_DEPTCODE, V_V_DEPTNAME);
+        Map result = drawingManageService.PRO_BASE_DEPT_UPD(V_V_DEPTID,V_V_DEPTCODE, V_V_DEPTNAME,
+                     V_V_DEPTCODE_UP,V_V_DEPTSMALLNAME,V_V_DEPTFULLNAME,V_V_DEPTTYPE,V_I_ORDERID,
+                     V_V_SAP_DEPT,V_V_SAP_WORK,V_V_SAP_JHGC,V_V_SAP_YWFW);
         return result;
     }
 

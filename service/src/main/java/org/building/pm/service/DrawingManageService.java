@@ -389,7 +389,9 @@ public class DrawingManageService {
         }
         return menu;
     }
-    public Map PRO_BASE_DEPT_ADD(String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_DEPTCODE_UP) throws SQLException {
+    public Map PRO_BASE_DEPT_ADD(String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_DEPTCODE_UP,String V_V_DEPTSMALLNAME,
+                                 String V_V_DEPTFULLNAME,String V_V_DEPTTYPE,String V_I_ORDERID,String V_V_SAP_DEPT,
+                                 String V_V_SAP_WORK,String V_V_SAP_JHGC,String V_V_SAP_YWFW) throws SQLException {
         logger.info("begin PRO_BASE_DEPT_ADD");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -397,10 +399,20 @@ public class DrawingManageService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_ADD(:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_DEPTCODE_UP,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_ADD(:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_DEPTCODE_UP," +
+                    ":V_V_DEPTSMALLNAME,:V_V_DEPTFULLNAME,:V_V_DEPTTYPE,:V_I_ORDERID,:V_V_SAP_DEPT," +
+                    ":V_V_SAP_WORK,:V_V_SAP_JHGC,:V_V_SAP_YWFW,:V_INFO)}");
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
             cstmt.setString("V_V_DEPTCODE_UP", V_V_DEPTCODE_UP);
+            cstmt.setString("V_V_DEPTSMALLNAME", V_V_DEPTSMALLNAME);
+            cstmt.setString("V_V_DEPTFULLNAME", V_V_DEPTFULLNAME);
+            cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
+            cstmt.setInt("V_I_ORDERID", Integer.parseInt(V_I_ORDERID));
+            cstmt.setString("V_V_SAP_DEPT", V_V_SAP_DEPT);
+            cstmt.setString("V_V_SAP_WORK", V_V_SAP_WORK);
+            cstmt.setString("V_V_SAP_JHGC", V_V_SAP_JHGC);
+            cstmt.setString("V_V_SAP_YWFW", V_V_SAP_YWFW);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO",(String) cstmt.getObject("V_INFO"));
@@ -437,7 +449,9 @@ public class DrawingManageService {
         logger.info("end PRO_BASE_DEPT_DEL");
         return result;
     }
-    public Map PRO_BASE_DEPT_UPD(String V_V_DEPTID,String V_V_DEPTCODE,String V_V_DEPTNAME) throws SQLException {
+    public Map PRO_BASE_DEPT_UPD(String V_V_DEPTID,String V_V_DEPTCODE,String V_V_DEPTNAME,String V_V_DEPTCODE_UP,String V_V_DEPTSMALLNAME,
+                                 String V_V_DEPTFULLNAME,String V_V_DEPTTYPE,String V_I_ORDERID,String V_V_SAP_DEPT,
+                                 String V_V_SAP_WORK,String V_V_SAP_JHGC,String V_V_SAP_YWFW) throws SQLException {
         logger.info("begin PRO_BASE_DEPT_UPD");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -445,11 +459,21 @@ public class DrawingManageService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_UPD(:V_V_DEPTID,:V_V_DEPTCODE,:V_V_DEPTNAME,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_UPD(:V_V_DEPTID,:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_DEPTCODE_UP," +
+                    ":V_V_DEPTSMALLNAME,:V_V_DEPTFULLNAME,:V_V_DEPTTYPE,:V_I_ORDERID,:V_V_SAP_DEPT," +
+                    ":V_V_SAP_WORK,:V_V_SAP_JHGC,:V_V_SAP_YWFW,:V_INFO)}");
             cstmt.setInt("V_V_DEPTID", Integer.parseInt(V_V_DEPTID));
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_DEPTNAME", V_V_DEPTNAME);
-//            cstmt.setString("V_V_DEPTCODE_UP", V_V_DEPTCODE_UP);
+            cstmt.setString("V_V_DEPTCODE_UP", V_V_DEPTCODE_UP);//不进行保存此字段
+            cstmt.setString("V_V_DEPTSMALLNAME", V_V_DEPTSMALLNAME);
+            cstmt.setString("V_V_DEPTFULLNAME", V_V_DEPTFULLNAME);
+            cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
+            cstmt.setInt("V_I_ORDERID", Integer.parseInt(V_I_ORDERID));
+            cstmt.setString("V_V_SAP_DEPT", V_V_SAP_DEPT);
+            cstmt.setString("V_V_SAP_WORK", V_V_SAP_WORK);
+            cstmt.setString("V_V_SAP_JHGC", V_V_SAP_JHGC);
+            cstmt.setString("V_V_SAP_YWFW", V_V_SAP_YWFW);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO",(String) cstmt.getObject("V_INFO"));

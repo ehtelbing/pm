@@ -6,72 +6,140 @@ Ext.onReady(function() {
     Ext.QuickTips.init();
     var editWindow = Ext.create('Ext.window.Window', {
         id: 'editWindow',
-        title: '添加',
+        title: '编辑',
         frame: true,
         modal: true,
-        width: 300,
-        height: 400,
+        width: 620,
+        height: 330,
         layout: 'fit',
         resizable: false,
         closeAction: 'hide',
         items: [Ext.create('Ext.form.Panel', {
             id: 'editForm',
-            layout: 'vbox',
+            //layout: 'vbox',
+            layout:{
+                type:'table',
+                columns:2
+            },
             baseCls: 'my-panel-no-border',
             bodyStyle: 'padding:20px;',
             border: false,
             frame: true,
             items: [{
                 id: 'edit_name',
-                name: 'name',
+                name: 'V_DEPTNAME',
                 xtype: 'textfield',
                 fieldLabel: '组织机构名',
                 labelAlign: 'right',
-                labelWidth: 80
+                labelWidth: 110,
+                style: 'margin-top:15px;'
             }, {
                 id: 'edit_coding',
-                name: 'coding',
+                name: 'V_DEPTCODE',
                 xtype: 'textfield',
                 fieldLabel: '组织机构编码',
                 labelAlign: 'right',
-                labelWidth: 80,
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_coding_up',
+                name: 'V_DEPTCODE_UP',
+                xtype: 'textfield',
+                fieldLabel: '上级组织机构编码',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_smallname',
+                name: 'V_DEPTSMALLNAME',
+                xtype: 'textfield',
+                fieldLabel: '组织机构简称',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_fullname',
+                name: 'V_DEPTFULLNAME',
+                xtype: 'textfield',
+                fieldLabel: '组织机构全称',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_type',
+                name: 'V_DEPTTYPE',
+                xtype: 'textfield',
+                fieldLabel: '组织机构类型',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_sequence',
+                name: 'I_ORDERID',
+                xtype: 'numberfield',
+                fieldLabel: '排序',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_sap_dept',
+                name: 'V_SAP_DEPT',
+                xtype: 'textfield',
+                fieldLabel: 'SAP组织机构编码',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_sap_work',
+                name: 'V_SAP_WORK',
+                xtype: 'textfield',
+                fieldLabel: 'SAP工作中心',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_sap_jhgc',
+                name: 'V_SAP_JHGC',
+                xtype: 'textfield',
+                fieldLabel: 'SAP计划工厂',
+                labelAlign: 'right',
+                labelWidth: 110,
+                style: 'margin-top:15px;'
+            }, {
+                id: 'edit_sap_ywfw',
+                name: 'V_SAP_YWFW',
+                xtype: 'textfield',
+                fieldLabel: 'SAP业务范围',
+                labelAlign: 'right',
+                labelWidth: 110,
                 style: 'margin-top:15px;'
             }
-            //    {
-            //    id: 'edit_sequence',
-            //    name: 'sequence',
-            //    xtype: 'numberfield',
-            //    fieldLabel: '排序',
-            //    labelAlign: 'right',
-            //    labelWidth: 80,
-            //    style: 'margin-top:15px;'
-            //}
             ]
         })],
         buttons: [
             {
-                text: '确认', icon: imgpath + '/accept.png',
+                text: '确认', icon: imgpath + '/saved.png',
                 id: 'addParentButton',
                 handler: function () {
                     onAddParentSave();
                 }
             },
             {
-                text: '确认', icon: imgpath + '/accept.png',
+                text: '确认', icon: imgpath + '/saved.png',
                 id: 'addNodeButton',
                 handler: function () {
                     onAddNodeSave();
                 }
             },
             {
-                text: '确认', icon: imgpath + '/accept.png',
+                text: '确认', icon: imgpath + '/saved.png',
                 id: 'editButton',
                 handler: function () {
                     onEditSave();
                 }
             },
             {
-                text: '取消', icon: imgpath + '/cancel.png',
+                text: '取消', icon: imgpath + '/cross.png',
                 handler: function () {
                     Ext.getCmp('editForm').form.reset();
                     Ext.getCmp('editWindow').hide();
@@ -132,7 +200,7 @@ Ext.onReady(function() {
         items: [{
             xtype: 'button',
             text: '刷新',
-            icon: imgpath + '/refresh-disabled.gif',
+            icon: imgpath + '/table_refresh.png',
             style: ' margin: 3px 0px 3px 20px',
             listeners: {
                 click: function () {
@@ -218,13 +286,61 @@ Ext.onReady(function() {
             text: '组织机构编码',
             dataIndex: 'V_DEPTCODE',
             renderer: atleft,
+            width: 100,
+            align: 'center'
+        }, {
+            text: '上级组织机构编码',
+            dataIndex: 'V_DEPTCODE_UP',
+            renderer: atleft,
+            width: 100,
+            align: 'center'
+        }, {
+            text: '组织机构简称',
+            dataIndex: 'V_DEPTSMALLNAME',
+            renderer: atleft,
+            width: 150,
+            align: 'center'
+        }, {
+            text: '组织机构全称',
+            dataIndex: 'V_DEPTFULLNAME',
+            renderer: atleft,
+            width: 150,
+            align: 'center'
+        }, {
+            text: '组织机构类型',
+            dataIndex: 'V_DEPTTYPE',
+            renderer: atleft,
             width: 150,
             align: 'center'
         }, {
             text: '排序',
             dataIndex: 'I_ORDERID',
             renderer: atleft,
-            width: 130,
+            width: 40,
+            align: 'center'
+        }, {
+            text: 'SAP组织机构编码',
+            dataIndex: 'V_SAP_DEPT',
+            renderer: atleft,
+            width: 100,
+            align: 'center'
+        }, {
+            text: 'SAP工作中心',
+            dataIndex: 'V_SAP_WORK',
+            renderer: atleft,
+            width: 100,
+            align: 'center'
+        }, {
+            text: 'SAP计划工厂',
+            dataIndex: 'V_SAP_JHGC',
+            renderer: atleft,
+            width: 100,
+            align: 'center'
+        }, {
+            text: 'sap业务范围',
+            dataIndex: 'V_SAP_YWFW',
+            renderer: atleft,
+            width: 100,
             align: 'center'
         }, {
             text: '修改',
@@ -305,30 +421,38 @@ function load(code) {
 }
 
 function addParent() {
+    if(globalParentId==''){
+        Ext.Msg.alert('提示', '未选中父节点，请重新点击！');
+        return false;
+    }
     Ext.getCmp('addParentButton').show();
     Ext.getCmp('addNodeButton').hide();
     Ext.getCmp('editButton').hide();
 
+    Ext.getCmp('edit_coding_up').hide();
     Ext.getCmp('editForm').form.reset();
     Ext.getCmp('editWindow').show();
 }
 
 function addNode() {
+    if(globalId==''){
+        Ext.Msg.alert('提示', '未选中子节点，请重新点击！');
+        return false;
+    }
     Ext.getCmp('edit_coding').setValue('');
     Ext.getCmp('edit_name').setValue('');
     Ext.getCmp('addParentButton').hide();
     Ext.getCmp('addNodeButton').show();
     Ext.getCmp('editButton').hide();
-
+    Ext.getCmp('edit_coding_up').hide();
     Ext.getCmp('editForm').form.reset();
     Ext.getCmp('editWindow').show();
 }
 
 function edit(rowIndex) {
     globalModel = Ext.getStore('gridStore').data.items[rowIndex].raw;
-    //Ext.getCmp('editForm').loadRecord(Ext.getStore('gridStore').getAt(rowIndex));
-    Ext.getCmp('edit_coding').setValue(globalModel.V_DEPTCODE);
-    Ext.getCmp('edit_name').setValue(globalModel.V_DEPTNAME);
+    Ext.getCmp('editForm').loadRecord(Ext.getStore('gridStore').getAt(rowIndex));
+    Ext.getCmp('edit_coding_up').hide();
     Ext.getCmp('addParentButton').hide();
     Ext.getCmp('addNodeButton').hide();
     Ext.getCmp('editButton').show();
@@ -338,11 +462,15 @@ function edit(rowIndex) {
 function dels() {
     var ids = [];
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(seldata.length==0){
+        Ext.Msg.alert('提示', '请选择要删除的记录');
+        return false;
+    }
     for (var i = 0; i < seldata.length; i++) {
         ids.push(seldata[i].raw.I_DEPTID);
     }
     if (ids.length > 0) {
-        Ext.Msg.confirm('提示', '您确定要删除该条记录?', function (button) {
+        Ext.Msg.confirm('提示', '您确定要删除该条记录及其子项?', function (button) {
             if (button == "yes") {
                 Ext.Ajax.request({
                     url : AppUrl + 'drawingManage/PRO_BASE_DEPT_DEL',
@@ -367,7 +495,7 @@ function dels() {
 
 function onAddParentSave() {
     if(globalParentId==''){
-        Ext.Msg.alert('提示', '未选中节点，请重新点击！');
+        Ext.Msg.alert('提示', '未选中父节点，请重新点击！');
         return false;
     }
     Ext.Ajax.request({
@@ -375,9 +503,17 @@ function onAddParentSave() {
         async: false,
         url : AppUrl + 'drawingManage/PRO_BASE_DEPT_ADD',
         params: {
-            V_V_DEPTCODE_UP: globalParentId,
             V_V_DEPTNAME: Ext.getCmp('edit_name').getValue(),
-            V_V_DEPTCODE: Ext.getCmp('edit_coding').getValue()
+            V_V_DEPTCODE: Ext.getCmp('edit_coding').getValue(),
+            V_V_DEPTCODE_UP: globalParentId,
+            V_V_DEPTSMALLNAME: Ext.getCmp('edit_smallname').getValue(),
+            V_V_DEPTFULLNAME: Ext.getCmp('edit_fullname').getValue(),
+            V_V_DEPTTYPE: Ext.getCmp('edit_type').getValue(),
+            V_I_ORDERID: Ext.getCmp('edit_sequence').getValue(),
+            V_V_SAP_DEPT: Ext.getCmp('edit_sap_dept').getValue(),
+            V_V_SAP_WORK: Ext.getCmp('edit_sap_work').getValue(),
+            V_V_SAP_JHGC: Ext.getCmp('edit_sap_jhgc').getValue(),
+            V_V_SAP_YWFW: Ext.getCmp('edit_sap_ywfw').getValue()
         },
             //JSON.stringify(params),//请求参数
 
@@ -398,7 +534,7 @@ function onAddParentSave() {
 
 function onAddNodeSave() {
     if(globalId==''){
-        Ext.Msg.alert('提示', '未选中节点，请重新点击！');
+        Ext.Msg.alert('提示', '未选中子节点，请重新点击！');
         return false;
     }
     Ext.Ajax.request({
@@ -406,9 +542,17 @@ function onAddNodeSave() {
         async: false,
         url : AppUrl + 'drawingManage/PRO_BASE_DEPT_ADD',
         params: {
-            V_V_DEPTCODE_UP: globalId,
             V_V_DEPTNAME: Ext.getCmp('edit_name').getValue(),
-            V_V_DEPTCODE: Ext.getCmp('edit_coding').getValue()
+            V_V_DEPTCODE: Ext.getCmp('edit_coding').getValue(),
+            V_V_DEPTCODE_UP: globalId,
+            V_V_DEPTSMALLNAME: Ext.getCmp('edit_smallname').getValue(),
+            V_V_DEPTFULLNAME: Ext.getCmp('edit_fullname').getValue(),
+            V_V_DEPTTYPE: Ext.getCmp('edit_type').getValue(),
+            V_I_ORDERID: Ext.getCmp('edit_sequence').getValue(),
+            V_V_SAP_DEPT: Ext.getCmp('edit_sap_dept').getValue(),
+            V_V_SAP_WORK: Ext.getCmp('edit_sap_work').getValue(),
+            V_V_SAP_JHGC: Ext.getCmp('edit_sap_jhgc').getValue(),
+            V_V_SAP_YWFW: Ext.getCmp('edit_sap_ywfw').getValue()
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
@@ -431,7 +575,16 @@ function onEditSave() {
         params: {
             V_V_DEPTID:globalModel.I_DEPTID,
             V_V_DEPTNAME: Ext.getCmp('edit_name').getValue(),
-            V_V_DEPTCODE: Ext.getCmp('edit_coding').getValue()
+            V_V_DEPTCODE: Ext.getCmp('edit_coding').getValue(),
+            V_V_DEPTCODE_UP: globalId,//不保存此字段
+            V_V_DEPTSMALLNAME: Ext.getCmp('edit_smallname').getValue(),
+            V_V_DEPTFULLNAME: Ext.getCmp('edit_fullname').getValue(),
+            V_V_DEPTTYPE: Ext.getCmp('edit_type').getValue(),
+            V_I_ORDERID: Ext.getCmp('edit_sequence').getValue(),
+            V_V_SAP_DEPT: Ext.getCmp('edit_sap_dept').getValue(),
+            V_V_SAP_WORK: Ext.getCmp('edit_sap_work').getValue(),
+            V_V_SAP_JHGC: Ext.getCmp('edit_sap_jhgc').getValue(),
+            V_V_SAP_YWFW: Ext.getCmp('edit_sap_ywfw').getValue()
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
@@ -448,7 +601,7 @@ function onEditSave() {
 }
 
 function remove(rowIndex) {
-    Ext.Msg.confirm('提示', '您确定要删除该条记录?', function (button) {
+    Ext.Msg.confirm('提示', '您确定要删除该条记录及其子项?', function (button) {
         if (button == "yes") {
             var id = Ext.getStore('gridStore').data.items[rowIndex].data.I_DEPTID;
             Ext.Ajax.request({
