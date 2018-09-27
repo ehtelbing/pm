@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -337,6 +338,87 @@ public class PM_07Service {
         logger.info("end PRO_PM_07_DEFECT_SET");
         return result;
     }
+//2018-09-27
+public Map DEFECT_UPFILE_INSERT(String V_GUID, String V_FILENAME, InputStream V_BLOB, String V_TYPE,
+                                String V_PLANT, String V_DEPT, String V_PERSONCODE) throws SQLException {
+    logger.info("begin DEFECT_UPFILE_INSERT");
+    Map result = new HashMap();
+    Connection conn = null;
+    CallableStatement cstmt = null;
+    try {
+        conn = dataSources.getConnection();
+        conn.setAutoCommit(true);
+        cstmt = conn.prepareCall("{call DEFECT_UPFILE_INSERT" + "(:V_GUID,:V_FILENAME,:V_BLOB,:V_TYPE," +
+                ":V_PLANT,:V_DEPT,:V_PERSONCODE,:RET)}");
+        cstmt.setString("V_GUID", V_GUID);
+        cstmt.setString("V_FILENAME", V_FILENAME);
+        cstmt.setBlob("V_BLOB", V_BLOB);
+        cstmt.setString("V_TYPE", V_TYPE);
+        cstmt.setString("V_PLANT", V_PLANT);
+        cstmt.setString("V_DEPT", V_DEPT);
+        cstmt.setString("V_PERSONCODE", V_PERSONCODE);
 
+        cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+        cstmt.execute();
+        result.put("list", (String) cstmt.getObject("RET"));
+    } catch (SQLException e) {
+        logger.error(e);
+    } finally {
+        cstmt.close();
+        conn.close();
+    }
+    logger.debug("result:" + result);
+    logger.info("end DEFECT_UPFILE_INSERT");
+    return result;
+}
+//--查看
+    public Map DEFECT_UPFILE_SELECT(String V_GUID) throws SQLException {
+        logger.info("begin DEFECT_UPFILE_SELECT");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call DEFECT_UPFILE_SELECT" + "(:V_GUID,:RET)}");
+            cstmt.setString("V_GUID", V_GUID);
 
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash ((ResultSet) cstmt.getObject("RET")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DEFECT_UPFILE_SELECT");
+        return result;
+    }
+//--删除
+    public Map DEFECT_UPFILE_DELETE(String V_FILECODE) throws SQLException {
+        logger.info("begin DEFECT_UPFILE_DELETE");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call DEFECT_UPFILE_DELETE" + "(:V_FILECODE,:RET)}");
+            cstmt.setString("V_FILECODE", V_FILECODE);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DEFECT_UPFILE_DELETE");
+        return result;
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -181,5 +182,41 @@ public class PM_07Controller {
         return result;
     }
 
+//2018-09-27
+@RequestMapping(value = "/DEFECT_UPFILE_INSERT", method = RequestMethod.POST)
+@ResponseBody
+public Map<String, Object> DEFECT_UPFILE_INSERT(@RequestParam(value = "V_V_BLOB") MultipartFile V_V_BLOB,
+                                @RequestParam(value = "V_GUID") String V_GUID,
+                                @RequestParam(value = "V_FILENAME") String V_FILENAME,
+                                @RequestParam(value = "V_PLANT") String V_PLANT,
+                                @RequestParam(value = "V_DEPT") String V_DEPT,
+                                @RequestParam(value = "V_PERSONCODE") String V_PERSONCODE,
+                                HttpServletRequest request,
+                                HttpServletResponse response) throws Exception {
+    Map<String, Object> result = pm_07Service.DEFECT_UPFILE_INSERT(V_GUID, V_FILENAME, V_V_BLOB.getInputStream(), V_V_BLOB.getContentType(),V_PLANT, V_DEPT, V_PERSONCODE);
+    String list = (String) result.get("list");
+
+    result.put("list", list);
+    result.put("success", true);
+
+    return result;
+}
+
+    @RequestMapping(value = "/DEFECT_UPFILE_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_UPFILE_SELECT(@RequestParam(value = "V_GUID") String V_GUID,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = pm_07Service.DEFECT_UPFILE_SELECT(V_GUID);
+        return result;
+    }
+    @RequestMapping(value = "/DEFECT_UPFILE_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_UPFILE_DELETE(@RequestParam(value = "V_FILECODE") String V_FILECODE,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = pm_07Service.DEFECT_UPFILE_DELETE(V_FILECODE);
+        return result;
+    }
 
 }
