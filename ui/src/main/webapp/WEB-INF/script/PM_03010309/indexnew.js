@@ -105,8 +105,11 @@ Ext.onReady(function () {
             expanded: true,
             text: "My Root"
         },
-        fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
-            'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME']
+        fields:['V_GUID','V_WEEKID','V_ORGCODE','V_ORGNAME','V_DEPTCODE','V_DEPTNAME','V_EQUTYPECODE',
+            'V_EQUCODE','V_EQUNAME','V_CONTENT','V_ENDTIME','V_STARTTIME','V_FLOWNAME','V_STATENAME',
+            'V_MAIN_DEFECT','V_EXPECT_AGE', 'V_REPAIR_PER','expanded','leaf']
+        //fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+        //    'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME']
     });
     var treeStore2 = Ext.create('Ext.data.TreeStore', {
         storeId: 'treeStore2',
@@ -115,8 +118,11 @@ Ext.onReady(function () {
             expanded: true,
             text: "My Root"
         },
-        fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
-            'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME','V_EQUIP_NAME']
+        fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_DEPTCODE','V_EQUTYPECODE','V_EQUCODE',
+            'V_CONTENT','V_EQUIP_NAME','V_ENDTIME','V_STARTTIME','V_MAIN_DEFECT','V_EXPECT_AGE',
+            'V_REPAIR_PER','expanded','leaf']
+        //fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+        //    'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME','V_EQUIP_NAME']
     });
     var treeStore3 = Ext.create('Ext.data.TreeStore', {
         storeId: 'treeStore3',
@@ -125,8 +131,11 @@ Ext.onReady(function () {
             expanded: true,
             text: "My Root"
         },
-        fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
-            'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME']
+        fields:['V_TYPE','V_ID','V_ORGCODE','V_ORGNAME','V_DEPTCODE','V_DEPTNAME','V_EQUCODE',
+            'V_EQUNAME', 'V_CONTENT', 'V_ENDTIME', 'V_STARTTIME','V_MAIN_DEFECT','V_EXPECT_AGE'
+            ,'V_REPAIR_PER','expanded','leaf']
+        //fields: ['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+        //    'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME']
     });
 
     var northPanel = Ext.create('Ext.panel.Panel', {
@@ -427,6 +436,17 @@ function createGantt2(){
             });
         }
 
+        for(var i=vsMonth2+1;i<veMonth2;i++){
+            var lastDay=getMonthDays(vStart2.getYear(),i);
+            for(var j=0;j<lastDay;j++){
+                cmItems2.push({
+                    text:i+ '月'+(j+1)+"日",
+                    columns: dateItems,
+                    renderer: changeColor
+                });
+            }
+        }
+
         for(var i=1;i<=veDate2;i++){
             cmItems2.push({
                 text:veMonth2+ '月'+i+"日",
@@ -439,15 +459,18 @@ function createGantt2(){
     cmItems2.push({
         text: '',
         width: 0,
-        dataIndex: 'MYCOLOR',
+        //dataIndex: 'MYCOLOR',
         renderer: pageFunction.IndexShow2
     });
 
     var ganttStore2 = Ext.create("Ext.data.Store", {
         storeId: 'ganttStore2',
-        fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
-            'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME', 'MYCOLOR','V_GUID','V_WEEKID','V_EQUIP_NAME'],
-        data: ganttdata3,
+        fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_DEPTCODE','V_EQUTYPECODE','V_EQUCODE',
+            'V_CONTENT','V_EQUIP_NAME','V_ENDTIME','V_STARTTIME','V_MAIN_DEFECT','V_EXPECT_AGE',
+            'V_REPAIR_PER','expanded','leaf'],
+        //fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+        //    'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME', 'MYCOLOR','V_GUID','V_WEEKID','V_EQUIP_NAME'],
+        data: ganttdata2,//ganttdata3,
         proxy: {
             type: 'memory',
             reader: {
@@ -591,6 +614,17 @@ function createGantt3(){
             });
         }
 
+        for(var i=vsMonth3+1;i<veMonth3;i++){
+            var lastDay=getMonthDays(vStart3.getYear(),i);
+            for(var j=0;j<lastDay;j++){
+                cmItems3.push({
+                    text:i+ '月'+(j+1)+"日",
+                    columns: dateItems,
+                    renderer: changeColor
+                });
+            }
+        }
+
         for(var i=1;i<=veDate3;i++){
             cmItems3.push({
                 text:veMonth3+ '月'+i+"日",
@@ -604,14 +638,17 @@ function createGantt3(){
     cmItems3.push({
         text: '',
         width: 0,
-        dataIndex: 'MYCOLOR',
+        //dataIndex: 'MYCOLOR',
         renderer: pageFunction.IndexShow3
     });
 
     var ganttStore3 = Ext.create("Ext.data.Store", {
         storeId: 'ganttStore3',
-        fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
-            'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME', 'MYCOLOR','V_GUID','V_WEEKID'],
+        fields:['V_TYPE','V_ID','V_ORGCODE','V_ORGNAME','V_DEPTCODE','V_DEPTNAME','V_EQUCODE',
+            'V_EQUNAME', 'V_CONTENT', 'V_ENDTIME', 'V_STARTTIME','V_MAIN_DEFECT','V_EXPECT_AGE'
+            ,'V_REPAIR_PER','expanded','leaf'],
+        //fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+        //    'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME', 'MYCOLOR','V_GUID','V_WEEKID'],
         data: ganttdata3,
         proxy: {
             type: 'memory',
@@ -632,6 +669,7 @@ function createGantt3(){
 
     Ext.getCmp('ganttpanel3').add(ganttgrid3);
 }
+
 
 //第几周
 function getWeekOfMonth(){
@@ -731,6 +769,17 @@ function createGantt(){
             });
         }
 
+        for(var i=vsMonth+1;i<veMonth;i++){
+            var lastDay=getMonthDays(vStart.getYear(),i);
+            for(var j=0;j<lastDay;j++){
+                cmItems.push({
+                    text:i+ '月'+(j+1)+"日",
+                    columns: dateItems,
+                    renderer: changeColor
+                });
+            }
+        }
+
         for(var i=1;i<=veDate;i++){
             cmItems.push({
                 text:veMonth+ '月'+i+"日",
@@ -743,14 +792,17 @@ function createGantt(){
     cmItems.push({
         text: '',
         width: 0,
-        dataIndex: 'MYCOLOR',
+        //dataIndex: 'MYCOLOR',
         renderer: pageFunction.IndexShow
     });
 
     var ganttStore = Ext.create("Ext.data.Store", {
         storeId: 'ganttStore',
-        fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
-        'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME', 'MYCOLOR','V_GUID','V_WEEKID'],
+        fields:['V_GUID','V_WEEKID','V_ORGCODE','V_ORGNAME','V_DEPTCODE','V_DEPTNAME','V_EQUTYPECODE',
+            'V_EQUCODE','V_EQUNAME','V_CONTENT','V_ENDTIME','V_STARTTIME','V_FLOWNAME','V_STATENAME',
+            'V_MAIN_DEFECT','V_EXPECT_AGE', 'V_REPAIR_PER','expanded','leaf'],
+        //fields:['V_YEAR','V_MONTH','V_WEEK','V_ORGCODE','V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME','V_EQUTYPECODE','V_EQUCODE', 'V_EQUNAME', 'V_CONTENT',
+        //'V_ENDTIME', 'V_STARTTIME', 'V_MAIN_DEFECT', 'V_EXPECT_AGE', 'V_REPAIR_PER', 'V_FLOWNAME', 'V_STATENAME', 'MYCOLOR','V_GUID','V_WEEKID'],
         data: ganttdata,
         proxy: {
             type: 'memory',
@@ -866,7 +918,6 @@ var pageFunction = {
 
             var vleft = 0;vleft=((startd.getTime() - vStart3.getTime()) / (3600 * 1000)) * 40;
             var vwidth = 0;vwidth=((endd.getTime() - startd.getTime()) / (3600 * 1000)) * 40;
-
             /*gtt += '<div style="left:' + vleft.toString() + 'px;height:26px;width:' + vwidth.toString()
                 + 'px;background-color:red;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div class="sch-event-inner" >'
                 + record.data.V_CONTENT + '</div></div>'
@@ -898,7 +949,11 @@ var pageFunction = {
 
     }
 };
-
+//传入年份和月份 获取该年对应月份的天数
+function getMonthDays(year,month){
+    var thisDate = new Date(year,month,0); //当天数为0 js自动处理为上一月的最后一天
+    return thisDate.getDate();
+}
 //月共几天
 function getDaysOfMonth(year,month){
     var month = parseInt(month, 10);
