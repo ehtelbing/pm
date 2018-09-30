@@ -1199,14 +1199,14 @@ public class cjyController {
     @ResponseBody
     public Map PRO_PM_WORKORDER_ET_SET_NEW(@RequestParam(value = "V_I_ID") Double V_I_ID,
                                            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                           @RequestParam(value = "V_V_DESCRIPTION") String V_V_DESCRIPTION,
-                                           @RequestParam(value = "V_I_WORK_ACTIVITY") String V_I_WORK_ACTIVITY,
+                                           @RequestParam(value = "V_V_DESCRIPTION",required=false) String V_V_DESCRIPTION,
+                                           @RequestParam(value = "V_I_WORK_ACTIVITY",required=false) String V_I_WORK_ACTIVITY,
                                            @RequestParam(value = "V_I_DURATION_NORMAL",required=false) String V_I_DURATION_NORMAL,
-                                           @RequestParam(value = "V_V_WORK_CENTER") String V_V_WORK_CENTER,
-                                           @RequestParam(value = "V_I_ACTUAL_TIME") String V_I_ACTUAL_TIME,
-                                           @RequestParam(value = "V_I_NUMBER_OF_PEOPLE") String V_I_NUMBER_OF_PEOPLE,
+                                           @RequestParam(value = "V_V_WORK_CENTER",required=false) String V_V_WORK_CENTER,
+                                           @RequestParam(value = "V_I_ACTUAL_TIME",required=false) String V_I_ACTUAL_TIME,
+                                           @RequestParam(value = "V_I_NUMBER_OF_PEOPLE",required=false) String V_I_NUMBER_OF_PEOPLE,
                                            @RequestParam(value = "V_V_ID",required=false) String V_V_ID,
-                                           @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                           @RequestParam(value = "V_V_GUID",required=false) String V_V_GUID,
                                            @RequestParam(value = "V_V_JXBZ",required=false) String V_V_JXBZ,
                                            @RequestParam(value = "V_V_JXBZ_VALUE_DOWN",required=false) String V_V_JXBZ_VALUE_DOWN,
                                            @RequestParam(value = "V_V_JXBZ_VALUE_UP",required=false) String V_V_JXBZ_VALUE_UP,
@@ -3436,7 +3436,7 @@ public class cjyController {
         String post = "";
         List<Map<String, Object>> postlist;
         for (int i = 0; i < map.size(); i++) {
-            if (map.get("Assignee").toString() == ActivitiId) {
+            if (map.get("ActivityId").toString() == ActivitiId) {
                 percode = map.get("Assignee").toString();
                 postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
 
