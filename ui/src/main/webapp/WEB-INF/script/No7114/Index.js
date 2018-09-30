@@ -1,24 +1,45 @@
 ﻿
+// var gzpalceStore = Ext.create('Ext.data.Store', {
+// 	autoLoad : true,
+// 	storeId : 'gzpalceStore',
+// 	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+// 	proxy : {
+// 		type : 'ajax',
+// 		async : false,
+// 		url: AppUrl + 'No4120/PRO_PM_REPAIRDEPT_TODEPT',
+// 		actionMethods : {
+// 			read : 'POST'
+// 		},
+// 		reader : {
+// 			type : 'json',
+// 			root : 'list'
+// 		},
+// 		extraParams : {
+// 			V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+// 			V_PERSONCODE:Ext.util.Cookies.get('v_orgCode')
+// 		}
+// 	}
+// });
 var gzpalceStore = Ext.create('Ext.data.Store', {
-	autoLoad : true,
-	storeId : 'gzpalceStore',
-	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url: AppUrl + 'No4120/PRO_PM_REPAIRDEPT_TODEPT',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
-		},
-		extraParams : {
-			V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-			V_PERSONCODE:Ext.util.Cookies.get('v_orgCode')
-		}
-	}
+    autoLoad : true,
+    storeId : 'gzpalceStore',
+    fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
+        actionMethods : {
+            read : 'POST'
+        },
+        reader : {
+            type : 'json',
+            root : 'list'
+        },
+        extraParams : {
+            IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
+            IS_V_DEPTTYPE:'[主体作业区]'
+        }
+    }
 });
 
 var panel = Ext.create('Ext.panel.Panel', {

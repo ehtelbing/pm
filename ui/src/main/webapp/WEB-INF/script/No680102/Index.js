@@ -288,8 +288,8 @@ function queryGrid() {
             V_V_DEPT: Ext.getCmp('bmmc').getValue(),
             V_V_TYPE: Ext.getCmp('lx').getValue(),
             V_V_CLASSTYPE: Ext.getCmp('bx').getValue(),
-            V_D_FROMDATE: Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d'),
-            V_D_TODATE: Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d')
+            V_D_FROMDATE: Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y/m/d'),
+            V_D_TODATE: Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y/m/d')
         }
     });
 }
