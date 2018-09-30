@@ -93,7 +93,7 @@ Ext.onReady(function () {
 
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 15,
+        pageSize: 50,
         autoLoad: false,
         fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
