@@ -7,7 +7,7 @@ var gzpalceStore = Ext.create('Ext.data.Store', {
 	proxy : {
 		type : 'ajax',
 		async : false,
-		url : APP + '/PRO_BASE_DEPT_VIEW',
+		url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
 		actionMethods : {
 			read : 'POST'
 		},
@@ -16,7 +16,8 @@ var gzpalceStore = Ext.create('Ext.data.Store', {
 			root : 'list'
 		},
 		extraParams : {
-			parVal : [ Ext.util.Cookies.get('v_orgCode'), '[主体作业区]' ]
+            IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
+            IS_V_DEPTTYPE:'[主体作业区]'
 		}
 	}
 });
@@ -28,7 +29,7 @@ var sbxzStore = Ext.create('Ext.data.Store', {
 	proxy : {
 		type : 'ajax',
 		async : false,
-		url : APP + '/pro_run7111_equlist',
+		url : AppUrl + 'cjy/pro_run7111_equlist',
 		actionMethods : {
 			read : 'POST'
 		},
@@ -46,7 +47,7 @@ var fzrStore = Ext.create('Ext.data.Store', {
 	proxy : {
 		type : 'ajax',
 		async : false,
-		url : APP + '/pro_run7115_personlist',
+		url : AppUrl + 'PM_12/pro_run7115_personlist',
 		actionMethods : {
 			read : 'POST'
 		},
@@ -68,7 +69,7 @@ var gridStore = Ext.create("Ext.data.Store", {
 	proxy : {
 		type : 'ajax',
 		async : false,
-		url : APP + '/pro_run7115_select',
+		url : AppUrl + 'PM_12/PRO_RUN7115_SELECT',
 		actionMethods : {
 			read : 'POST'
 		},
@@ -327,10 +328,8 @@ Ext
 				Ext.data.StoreManager.lookup('sbxzStore').load(
 					{
 						params : {
-							parVal : [
-								Ext.util.Cookies
-									.get('v_orgCode'),
-								Ext.getCmp('zyq').getValue() ]
+                            v_v_plantcode : Ext.util.Cookies.get('v_orgCode'),
+                            v_v_deptcode:Ext.getCmp('zyq').getValue()
 						}
 					});
 			});
@@ -393,10 +392,10 @@ function query() {
 	Ext.data.StoreManager.lookup('gridStore').load(
 		{
 			params : {
-				parVal : [ Ext.getCmp('zyq').getValue(),
-					Ext.util.Cookies.get('v_orgCode'),
-					Ext.getCmp('xzsb').getValue(),
-					Ext.getCmp('fzr').getValue()]
+                V_V_DEPARTCODE : Ext.getCmp('zyq').getValue(),
+                V_V_PLANTCODE : Ext.util.Cookies.get('v_orgCode'),
+                V_V_BJ_ID : Ext.getCmp('xzsb').getValue(),
+                V_V_USERID : Ext.getCmp('fzr').getValue()
 			}
 		});
 }
