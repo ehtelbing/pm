@@ -215,13 +215,13 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 0px 10px',
             icon: imgpath + '/search.png',
             listeners: {click: OnButtonQuery}
-        },{
+        },/*{
             xtype: 'button',
             text: '获取年预算',
             style: ' margin: 5px 0px 0px 10px',
             icon: imgpath + '/search.png',
             listeners: {click: QueryBudget}
-        },{
+        },*/{
                 xtype: 'button',
                 text: '新增工程项目',
                 icon: imgpath + '/add.png',
@@ -238,6 +238,12 @@ Ext.onReady(function () {
                 text: '删除工程项目',
                 icon: imgpath + '/delete.png',
                 listeners: {click: OnButtonDel}
+            },
+            {
+                xtype: 'button',
+                text: '上报年计划',
+                icon: imgpath + '/accordion_collapse.png',
+                listeners: {click: OnButtonUp}
             },
             {
                 xtype: 'button',
@@ -481,8 +487,33 @@ function QueryBudget(){
     });
 }
 
+/*
+* 像维修计划中传递年计划数据
+* */
+function OnButtonUp(){
+    var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(seldata.length==0){
+        alert('请选择数据进行上传！');
+    }else{
+        Ext.getBody().mask('<p>年计划上传中...</p>');
+        var guidData=[];
+        for (var i = 0; i < seldata.length; i++) {
+            guidData.push(seldata[i].data.V_GUID);
+        }
+        Ext.Ajax.request({
+            url: AppUrl + '/project/YearDataSet',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID:guidData
+            },
+            success: function (resp) {
+                var resp=Ext.decode(resp.responseText);
 
-
+            }
+        });
+    }
+}
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";

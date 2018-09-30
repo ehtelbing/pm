@@ -1028,20 +1028,44 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             labelWidth :60,
             width:170,
             labelAlign : 'right'
-        },
-        {
+        },{
             xtype: 'numberfield',
-            id:'jhfy',
-            fieldLabel: '计划费用',
+            id:'bjf',
+            fieldLabel: '备件费',
             labelWidth: 60,
             width:170,
             margin:'5 5 5 20',
             value:0
+        },{
+            xtype: 'numberfield',
+            id:'clf',
+            fieldLabel: '材料费',
+            margin:'5 5 5 15',
+            labelWidth: 60,
+            width:170,
+            value:0
+        },{
+            xtype: 'numberfield',
+            id:'sgfy',
+            fieldLabel: '施工费用',
+            margin:'5 5 5 15',
+            labelWidth :60,
+            width:170,
+            value:0
+        },
+        {
+            xtype: 'textfield',
+            id:'tzze',
+            fieldLabel: '投资总额',
+            margin:'5 5 5 15',
+            labelWidth :60,
+            width:240,
+            readOnly:true
         }, {
             xtype : 'numberfield',
             id:'jhgs',
             fieldLabel : '计划工时',
-            margin:'5 5 5 15',
+            margin:'5 5 5 10',
             labelWidth :60,
             width:170,
             labelAlign : 'right',
@@ -1051,9 +1075,9 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             xtype : 'numberfield',
             id:'jhts',
             fieldLabel : '计划天数',
-            margin:'5 5 5 15',
-            labelWidth :60,
+            labelWidth: 60,
             width:170,
+            margin:'5 5 5 20',
             labelAlign : 'right',
             value:0
         }
@@ -2161,7 +2185,7 @@ function QueryPageLoad(){
                 }else{
                     Ext.getCmp('etime').setValue(resp.list[0].V_EDATE.split(" ")[0]);
                 }
-                Ext.getCmp('jhfy').setValue(resp.list[0].V_MONEYBUDGET);
+                Ext.getCmp('tzze').setValue(resp.list[0].V_MONEYBUDGET);
 
                 if(resp.list[0].V_MONEYBUDGET=='99'){
                     Ext.getCmp('startFlow').show();
@@ -2852,7 +2876,7 @@ function btnSaveProject(){
             V_V_WXTYPECODE:Ext.getCmp('wxlx').getValue(),
             V_V_WXTYPENAME:Ext.getCmp('wxlx').rawValue,
             V_V_CONTENT:Ext.getCmp('content').getValue(),
-            V_V_MONEYBUDGET:Ext.getCmp('jhfy').getValue(),
+            V_V_MONEYBUDGET:Ext.getCmp('tzze').getValue(),
             V_V_REPAIRDEPTCODE:Ext.getCmp('repairDept').getValue(),
             V_V_BDATE:Ext.Date.format(Ext.getCmp('btime').getValue(),'Y-m-d'),
             V_V_EDATE:Ext.Date.format(Ext.getCmp('etime').getValue(),'Y-m-d'),
@@ -2939,7 +2963,7 @@ function btnFlowStart(){
             V_V_WXTYPECODE:Ext.getCmp('wxlx').getValue(),
             V_V_WXTYPENAME:Ext.getCmp('wxlx').rawValue,
             V_V_CONTENT:Ext.getCmp('content').getValue(),
-            V_V_MONEYBUDGET:Ext.getCmp('jhfy').getValue(),
+            V_V_MONEYBUDGET:Ext.getCmp('tzze').getValue(),
             V_V_REPAIRDEPTCODE:Ext.getCmp('repairDept').getValue(),
             V_V_BDATE:Ext.Date.format(Ext.getCmp('btime').getValue(),'Y-m-d'),
             V_V_EDATE:Ext.Date.format(Ext.getCmp('etime').getValue(),'Y-m-d'),
