@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <meta name="Copyright" content="新安杰系统集成有限公司"/>
+    <meta name="Description" content="PM"/>
+    <meta name="Version" content="0.0.1.20130614"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="stylesheet" href="../../../pm/css/login/csslogin.css"/>
+    <!--[if lte IE 6]>
+    <link rel="Stylesheet" href="../../../pm/css/cssloginforie6.css"/>
+    <![endif]-->
+    <!-- <link rel="stylesheet" href="../../../pm/css/css.css"/>-->
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
+
+    <link rel="stylesheet" href="../../../../commons/extjs/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+    <script type="text/javascript" src="../../../pm/script/login/logintwo.js"></script>
+</head>
+
+<body class="loginbody">
+<div class="login_div">
+    <div class="loing_div_con">
+        <form>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td><div class="login_yhm2017"><span>用户名：</span><input id="username" type="text" class="text_yhm" /></div></td>
+                </tr>
+                <tr>
+                    <td><div class="login_mm2017"><span>密&nbsp;码：</span><input id="password" type="password" class="text_yhm" onkeypress="OnKeypress(event)" /></div></td>
+                </tr>
+                <tr>
+                    <td class="a_td">
+                        <a href="http://10.101.25.148/download/files/Chrome28.exe" class="xiazai_a" target="_blank">推荐浏览器下载</a>
+                        <!--<a href="install_lodop.exe" class="printa_a">安装打印控件</a>-->
+                        <!--<a href="http://10.192.11.253/tel/LXFS_GW.htm" class="lxfs_a" target="_blank">联系方式</a></td>-->
+                        <a onclick="onTel()" class="xiazai_a" target="_blank">联系方式</a>
+                        <a href="ArCode.apk" class="xiazai_a" target="_blank">手机AR版</a></td>
+                </tr>
+                <tr>
+                    <td><label id="tel1" style="padding-left: 25px;"></label><br><label id="tel2" style="padding-left: 25px;"></label></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="login_btn" id="btnLogin" onclick="OnLogInClick()" value="登 录" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<div class="login_btm">
+	<span><span style="font-family:Arial">Copyright © 2010-2011</span> 鞍钢集团矿业公司 <span style="font-family:Arial">All Rights Reserved.</span> <br />
+地址：辽宁省鞍山市铁东区二一九路39号 电话：<span style="font-family:Arial">0412-5613775. Designed by NewAngel. </span></span>
+</div>
+
+
+</body>
+</html>
