@@ -214,4 +214,36 @@ public class InfoService {
         logger.info("end PRO_BASE_PERSON_DDDL_GETURL");
         return result;
     }
+
+    public Map login_getUrl(String LoginName) throws SQLException {
+
+        logger.info("begin PRO_BASE_DDDL_GETURL");
+        logger.debug("params:V_V_LOGINNAME:" + LoginName);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DDDL_GETURL(:V_V_LOGINNAME,:V_V_info,:V_CURSOR)}");
+            cstmt.setString("V_V_LOGINNAME", LoginName);
+            cstmt.registerOutParameter("V_V_info", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("info", (String) cstmt.getObject("V_V_info"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DDDL_GETURL");
+        return result;
+    }
+
 }

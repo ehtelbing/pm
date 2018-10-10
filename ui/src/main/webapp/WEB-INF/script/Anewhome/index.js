@@ -77,8 +77,11 @@ function QuerySumDb() {
 }
 
 function GoToDb() {
-   // window.parent.append("PM_0101", "流程待办", AppUrl + 'page/PM_2103/index.html');
-    location.href=AppUrl + 'page/PM_2103/index.html';
+    // window.parent.append("PM_0101", "流程待办", AppUrl + 'page/PM_2103/index.html');
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_2103/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href=AppUrl + 'page/PM_2103/index.html';
 }
 
 function tabreload() {
@@ -210,7 +213,10 @@ function _WeekCountSelect() {
 
 function _preDbView() {
     //window.parent.append("PM_0802", "缺陷处理", AppUrl + 'page/PM_0702/index.html');
-    location.href=AppUrl + 'page/PM_0702/index.html';
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_0702/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href=AppUrl + 'page/PM_0702/index.html';
 }
 
 function _banli(V_TIMER_GUID) {
@@ -235,7 +241,10 @@ function toYearPlan() {
     //     }).show();
     // }
     // container.setActiveTab(n);
-    location.href=AppUrl + 'page/PM_220101/index.html';
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_220101/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href=AppUrl + 'page/PM_220101/index.html';
 }
 
 function toQuarterPlan() {
@@ -272,7 +281,10 @@ function toMonthPlan() {
     //     }).show();
     // }
     // container.setActiveTab(n);
-    location.href=AppUrl + 'page/PM_03010201/index.html'
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_03010201/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href=AppUrl + 'page/PM_03010201/index.html'
 }
 
 function toWeekPlan() {
@@ -291,7 +303,10 @@ function toWeekPlan() {
     //     }).show();
     // }
     // container.setActiveTab(n);
-    location.href=AppUrl + 'page/PM_03010301/index.html';
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_03010301/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href=AppUrl + 'page/PM_03010301/index.html';
 }
 
 function toDailyCheck() {
@@ -310,7 +325,10 @@ function toDailyCheck() {
     //     }).show();
     // }
     // container.setActiveTab(n);
-    location.href=AppUrl + 'page/PM_060105/index.html';
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_060105/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href=AppUrl + 'page/PM_060105/index.html';
 }
 
 function toDefectManage() {
@@ -329,7 +347,10 @@ function toDefectManage() {
     //     }).show();
     // }
     // container.setActiveTab(n);
-    location.href=AppUrl + 'page/PM_0702/index.html';
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_0702/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href=AppUrl + 'page/PM_0702/index.html';
 }
 
 function toOrderCreate() {
@@ -348,7 +369,10 @@ function toOrderCreate() {
     //     }).show();
     // }
     // container.setActiveTab(n);
-    location.href= AppUrl + 'page/PM_0901/index.html';
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_0901/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //location.href= AppUrl + 'page/PM_0901/index.html';
 }
 
 function toFixOldManager() {
@@ -529,25 +553,23 @@ function _uploadImageWindow() {
 //    window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height=' + (screen.height - 100) + ',width=' + (screen.width - 100));
     window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height = 768, width = 1366');
 }
-function getNowTime(){
-    var newTime=new Date();
-    var year=Ext.Date.format(newTime,'Y');
-    var month=Ext.Date.format(newTime,'m');
-    var date=Ext.Date.format(newTime,'d');
-    Ext.fly('n_time').dom.innerHTML =  year+'年'+month+'月'+date+'日';
+
+function getNowTime() {
+    var newTime = new Date();
+    var year = Ext.Date.format(newTime, 'Y');
+    var month = Ext.Date.format(newTime, 'm');
+    var date = Ext.Date.format(newTime, 'd');
+    Ext.fly('n_time').dom.innerHTML = year + '年' + month + '月' + date + '日';
 
 }
-function getPersonInf(){
-    Ext.fly('psname').dom.innerHTML =  Ext.util.Cookies.get('v_orgname2');   // 姓名
-    Ext.fly('dtname').dom.innerHTML=Ext.util.Cookies.get('v_orgname2')+'-'+Ext.util.Cookies.get('v_deptname2');
-    Ext.fly('ptname').dom.innerHTML=decodeURI(Ext.util.Cookies.get('v_postname'));
-   // 检修单位 Ext.util.Cookies.get('v_orgname2')
-   //'作业区名称' Ext.util.Cookies.get('v_deptname2')
-   //'姓名'Ext.util.Cookies.get('v_personname2')
-   //'岗位'decodeURI(Ext.util.Cookies.get('v_postname'))
-   //'角色' decodeURI(Ext.util.Cookies.get('v_rolename'))
+
+function getPersonInf() {
+    Ext.fly('psname').dom.innerHTML = Ext.util.Cookies.get('v_orgname2');   // 姓名
+    Ext.fly('dtname').dom.innerHTML = Ext.util.Cookies.get('v_orgname2') + '-' + Ext.util.Cookies.get('v_deptname2');
+    Ext.fly('ptname').dom.innerHTML = decodeURI(Ext.util.Cookies.get('v_postname'));
 }
-function getselmenumain(){
+
+function getselmenumain() {
 
     //mainid2
     Ext.Ajax.request({//菜单 基础功能
@@ -557,150 +579,18 @@ function getselmenumain(){
         params: {
             IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
             IS_V_SYSTYPE: "1",
-            V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode') ,
-            SING_ID:"ONE"
+            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+            SING_ID: "ONE"
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            if(resp.list.length==0){
-                Ext.fly('p1').dom.hidden=true;Ext.fly('jzgl').dom.hidden=true;
-                Ext.fly('p2').dom.hidden=true;Ext.fly('djgl').dom.hidden=true;
-                Ext.fly('p3').dom.hidden=true; Ext.fly('ztgl').dom.hidden=true;
-                Ext.fly('p4').dom.hidden=true;Ext.fly('jxgl').dom.hidden=true;
-                Ext.fly('p5').dom.hidden=true;Ext.fly('wlgl').dom.hidden=true;
-                Ext.fly('p6').dom.hidden=true; Ext.fly('wxgl').dom.hidden=true;
-                Ext.fly('p7').dom.hidden=true;Ext.fly('tzgl').dom.hidden=true;
-                Ext.fly('p8').dom.hidden=true;Ext.fly('gdzc').dom.hidden=true;
-                Ext.fly('p9').dom.hidden=true;Ext.fly('nygl').dom.hidden=true;
-            }else {
-                if (resp.list[0].V_MENUNAME == "") {
-                    Ext.fly('p1').dom.hidden = true;
-                    Ext.fly('jzgl').dom.hidden = true;
+            if (resp.list.length > 0) {
+                for (var i = 0; i < resp.list.length; i++) {
+                    Ext.fly(resp.list[i].V_HOME_MENU + "1").dom.style.display = 'block';
+                    Ext.fly(resp.list[i].V_HOME_MENU).dom.style.display = 'block';
+                    Ext.fly(resp.list[i].V_HOME_MENU).dom.innerText = resp.list[i].V_MENUNAME;
+                    Ext.fly(resp.list[i].V_HOME_MENU + "2").dom.value = resp.list[i].V_MENUCODE;
                 }
-                if (resp.list[1].V_MENUNAME == "") {
-                    Ext.fly('p2').dom.hidden = true;
-                    Ext.fly('djgl').dom.hidden = true;
-                }
-                if (resp.list[2].V_MENUNAME == "") {
-                    Ext.fly('p3').dom.hidden = true;
-                    Ext.fly('ztgl').dom.hidden = true;
-                }
-                if (resp.list[3].V_MENUNAME == "") {
-                    Ext.fly('p4').dom.hidden = true;
-                    Ext.fly('jxgl').dom.hidden = true;
-                }
-                if (resp.list[4].V_MENUNAME == "") {
-                    Ext.fly('p5').dom.hidden = true;
-                    Ext.fly('wlgl').dom.hidden = true;
-                }
-                if (resp.list[5].V_MENUNAME == "") {
-                    Ext.fly('p6').dom.hidden = true;
-                    Ext.fly('wxgl').dom.hidden = true;
-                }
-                if (resp.list[6].V_MENUNAME == "") {
-                    Ext.fly('p7').dom.hidden = true;
-                    Ext.fly('tzgl').dom.hidden = true;
-                }
-                if (resp.list[7].V_MENUNAME == "") {
-                    Ext.fly('p8').dom.hidden = true;
-                    Ext.fly('gdzc').dom.hidden = true;
-                }
-                if (resp.list[8].V_MENUNAME == "") {
-                    Ext.fly('p9').dom.hidden = true;
-                    Ext.fly('nygl').dom.hidden = true;
-                }
-
-                $("#m1").val(resp.list[0].V_MENUCODE);
-                Ext.fly('jzgl').dom.innerHTML = resp.list[0].V_MENUNAME;
-                $("#m2").val(resp.list[1].V_MENUCODE);
-                Ext.fly('djgl').dom.innerHTML = resp.list[1].V_MENUNAME;
-                $("#m3").val(resp.list[2].V_MENUCODE);
-                Ext.fly('ztgl').dom.innerHTML = resp.list[2].V_MENUNAME;
-                $("#m4").val(resp.list[3].V_MENUCODE);
-                Ext.fly('jxgl').dom.innerHTML = resp.list[3].V_MENUNAME;
-                $("#m5").val(resp.list[4].V_MENUCODE);
-                Ext.fly('wlgl').dom.innerHTML = resp.list[4].V_MENUNAME;
-                $("#m6").val(resp.list[5].V_MENUCODE);
-                Ext.fly('wxgl').dom.innerHTML = resp.list[5].V_MENUNAME;
-                $("#m7").val(resp.list[6].V_MENUCODE);
-                Ext.fly('tzgl').dom.innerHTML = resp.list[6].V_MENUNAME;
-                $("#m8").val(resp.list[7].V_MENUCODE);
-                Ext.fly('gdzc').dom.innerHTML = resp.list[7].V_MENUNAME;
-                $("#m9").val(resp.list[8].V_MENUCODE);
-                Ext.fly('nygl').dom.innerHTML = resp.list[8].V_MENUNAME;
-            }
-        }
-    });
-    Ext.Ajax.request({//菜单  绩效提升
-        url: AppUrl + 'anewhome/SEL_MENU_HOME',
-        method: 'POST',
-        async: false,
-        params: {
-            IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
-            IS_V_SYSTYPE: "1",
-            V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode') ,
-            SING_ID:"TWO"
-        },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            if(resp.list.length==0){
-                Ext.fly('q1').dom.hidden = true; Ext.fly('xqgl').dom.hidden = true;
-                Ext.fly('q2').dom.hidden = true;Ext.fly('zylgl').dom.hidden = true;
-                Ext.fly('q3').dom.hidden = true; Ext.fly('gzgl').dom.hidden = true;
-                Ext.fly('q4').dom.hidden = true;Ext.fly('jxjhzx').dom.hidden = true;
-                Ext.fly('q5').dom.hidden = true; Ext.fly('sbxl').dom.hidden = true;
-                Ext.fly('q6').dom.hidden = true;Ext.fly('kffx').dom.hidden = true;
-                Ext.fly('q7').dom.hidden = true;Ext.fly('jxgslyl').dom.hidden = true;
-                Ext.fly('q8').dom.hidden = true;Ext.fly('sbyxgl').dom.hidden = true;
-            }else {
-                if (resp.list[0].V_MENUNAME == "") {
-                    Ext.fly('q1').dom.hidden = true;
-                    Ext.fly('xqgl').dom.hidden = true;
-                }
-                if (resp.list[1].V_MENUNAME == "") {
-                    Ext.fly('q2').dom.hidden = true;
-                    Ext.fly('zylgl').dom.hidden = true;
-                }
-                if (resp.list[2].V_MENUNAME == "") {
-                    Ext.fly('q3').dom.hidden = true;
-                    Ext.fly('gzgl').dom.hidden = true;
-                }
-                if (resp.list[3].V_MENUNAME == "") {
-                    Ext.fly('q4').dom.hidden = true;
-                    Ext.fly('jxjhzx').dom.hidden = true;
-                }
-                if (resp.list[4].V_MENUNAME == "") {
-                    Ext.fly('q5').dom.hidden = true;
-                    Ext.fly('sbxl').dom.hidden = true;
-                }
-                if (resp.list[5].V_MENUNAME == "") {
-                    Ext.fly('q6').dom.hidden = true;
-                    Ext.fly('kffx').dom.hidden = true;
-                }
-                if (resp.list[6].V_MENUNAME == "") {
-                    Ext.fly('q7').dom.hidden = true;
-                    Ext.fly('jxgslyl').dom.hidden = true;
-                }
-                if (resp.list[7].V_MENUNAME == "") {
-                    Ext.fly('q8').dom.hidden = true;
-                    Ext.fly('sbyxgl').dom.hidden = true;
-                }
-                $("#n1").val(resp.list[0].V_MENUCODE);
-                Ext.fly('xqgl').dom.innerHTML = resp.list[0].V_MENUNAME;
-                $("#n2").val(resp.list[1].V_MENUCODE);
-                Ext.fly('zylgl').dom.innerHTML = resp.list[1].V_MENUNAME;
-                $("#n3").val(resp.list[2].V_MENUCODE);
-                Ext.fly('gzgl').dom.innerHTML = resp.list[2].V_MENUNAME;
-                $("#n4").val(resp.list[3].V_MENUCODE);
-                Ext.fly('jxjhzx').dom.innerHTML = resp.list[3].V_MENUNAME;
-                $("#n5").val(resp.list[4].V_MENUCODE);
-                Ext.fly('sbxl').dom.innerHTML = resp.list[4].V_MENUNAME;
-                $("#n6").val(resp.list[5].V_MENUCODE);
-                Ext.fly('kffx').dom.innerHTML = resp.list[5].V_MENUNAME;
-                $("#n7").val(resp.list[6].V_MENUCODE);
-                Ext.fly('jxgslyl').dom.innerHTML = resp.list[6].V_MENUNAME;
-                $("#n8").val(resp.list[7].V_MENUCODE);
-                Ext.fly('sbyxgl').dom.innerHTML = resp.list[7].V_MENUNAME;
             }
         }
     });
@@ -718,12 +608,12 @@ function GoPage() {
         traditional: true,
         success: function (resp) {
             if (resp[0] != '成功') {
-                Ext.Msg.alert('操作信息', resp[0]);
+                alert(resp[0]);
             } else {
                 if (resp[1] != '' && resp[1] != null) {
-                    window.open(resp[1], '工单处理', AppUrl + resp[1]);
+                    window.open(AppUrl + resp[1]);
                 } else {
-                    Ext.Msg.alert('操作信息', '工单号错误请重新输入！');
+                    alert('工单号错误请重新输入！');
                 }
             }
         }
@@ -733,6 +623,7 @@ function GoPage() {
 function ClearText() {
     $('#textfield').val('');
 }
+
 function OnKeypress(e) {
     var keynum;
     if (window.event) // IE
@@ -747,38 +638,45 @@ function OnKeypress(e) {
         document.getElementById('GoPage').click();
     }
 }
+
 function LogOut() {
-    location.href = AppUrl + 'page/login/logintwo' + ".html";
+    location.href = AppUrl + 'page/login/login.html';
     // 日志说明 ,日志类型 ,日志详细信息 ,操作人员账号,操作人编码 ,操作人名称 ,操作状态(0:失败/1:成功),日志对象类型
     sys_log_insert_noip("注销系统", "注销系统", "注销系统", Ext.util.Cookies
             .get('v_loginname'), Ext.util.Cookies.get('v_personcode'),
         Ext.util.Cookies.get('v_personname2'), 1, "注销系统");
 }
-function JstPage(){
-    var jstlogcode="";
-    var jstpass="";
+
+function JstPage() {
+    var jstlogcode = "";
+    var jstpass = "";
     Ext.Ajax.request({
         id: 'selUdtDuty',
         url: AppUrl + 'basic/BASE_PRO_JST_CODESEL2',
         method: 'POST',
         async: false,
         params: {
-            V_V_PERCODE:USERID
+            V_V_PERCODE: USERID
         },
         success: function (response) {
             var resp = Ext.JSON.decode(response.responseText);
 
-            jstlogcode=resp.V_INFO[0].V_JST;
-            jstpass=resp.V_INFO[0].V_PASSWORD;
-            if(jstlogcode!=""&&jstpass!=""){
-                location.href="http://10.101.10.46:8088/PersonCenter-AK/Auth/home?loginname="+jstlogcode+"&password="+jstpass;
-            }else{
-                Ext.MessageBox.alert("提示","即时通账号或密码不存在");
+            jstlogcode = resp.V_INFO[0].V_JST;
+            jstpass = resp.V_INFO[0].V_PASSWORD;
+            if (jstlogcode != "" && jstpass != "") {
+                var owidth = window.document.body.offsetWidth - 200;
+                var oheight = window.document.body.offsetHeight - 100;
+                window.open("http://10.101.10.46:8088/PersonCenter-AK/Auth/home?loginname=" + jstlogcode + "&password=" + jstpass, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                //location.href="http://10.101.10.46:8088/PersonCenter-AK/Auth/home?loginname="+jstlogcode+"&password="+jstpass;
+            } else {
+                Ext.MessageBox.alert("提示", "即时通账号或密码不存在");
             }
 
-        }});
+        }
+    });
 
 }
+
 function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将不会显示在选择列表中
     returnValue = null;
     win = Ext.create('Ext.window.Window', {
@@ -831,92 +729,6 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
     });
 }
 
-function getfn1(){
-   var chomenucd=$("#m1").val();
-    var menunm=Ext.fly('jzgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getfn2(){
-    var chomenucd=$("#m2").val();
-    var menunm=Ext.fly('djgl').dom.innerText;
-    turntohome(chomenucd) ;
-}
-function getfn3(){
-    var chomenucd=$("#m3").val();
-    var menunm=Ext.fly('ztgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getfn4(){
-    var chomenucd=$("#m4").val();
-    var menunm=Ext.fly('jxgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getfn5(){
-    var chomenucd=$("#m5").val();
-    var menunm=Ext.fly('wlgl').dom.innerText;
-    turntohome(chomenucd) ;
-}
-function getfn6(){
-    var chomenucd=$("#m6").val();
-    var menunm=Ext.fly('wxgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getfn7(){
-    var chomenucd=$("#m7").val();
-    var menunm=Ext.fly('tzgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getfn8(){
-    var chomenucd=$("#m8").val();
-    var menunm=Ext.fly('gdzc').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getfn9(){
-    var chomenucd=$("#m9").val();
-    var menunm=Ext.fly('nygl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn1(){
-    var chomenucd=$("#n1").val();
-    var menunm=Ext.fly('xqgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn2(){
-    var chomenucd=$("#n2").val();
-    var menunm=Ext.fly('zylgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn3(){
-    var chomenucd=$("#n3").val();
-    var menunm=Ext.fly('gzgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn4(){
-    var chomenucd=$("#n4").val();
-    var menunm=Ext.fly('jxjhzx').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn5(){
-    var chomenucd=$("#n5").val();
-    var menunm=Ext.fly('sbxl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn6(){
-    var chomenucd=$("#n6").val();
-    var menunm=Ext.fly('kffx').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn7(){
-    var chomenucd=$("#n7").val();
-    var menunm=Ext.fly('jxgslyl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-}
-function getgn8(){
-    var chomenucd=$("#n8").val();
-    var menunm=Ext.fly('sbyxgl').dom.innerText;
-    turntohome(chomenucd,menunm) ;
-
-}
-function turntohome(value,mname){
-    location.href=AppUrl+'page/home/Index2.html?v_menucode='+value+'&v_menuname='+mname;
+function getfn(HomeMenu) {
+    location.href = AppUrl + 'page/home/Index2.html?v_menucode=' + Ext.fly(HomeMenu + '2').dom.value;
 }

@@ -100,4 +100,15 @@ public class InfoController {
         String result = infoService.login_xst(V_V_LOGINNAME, V_V_TYPE);
         return result;
     }
+
+    /*
+     * 单点登录后得到其它系统url
+     * */
+    @RequestMapping(value = "login_getUrl", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> login_getUrl(@RequestParam(value = "LoginName") String LoginName)
+            throws SQLException {
+        Map<String, Object> result = infoService.login_getUrl(LoginName);
+        return result;
+    }
 }

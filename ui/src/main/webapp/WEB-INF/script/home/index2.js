@@ -432,7 +432,7 @@ function CloseWorkItem(item) {
 }
 
 function LogOut() {
-    location.href = AppUrl + 'page/login/login' + ".html";
+    location.href = AppUrl + 'page/Anewhome/index' + ".html";
     // 日志说明 ,日志类型 ,日志详细信息 ,操作人员账号,操作人编码 ,操作人名称 ,操作状态(0:失败/1:成功),日志对象类型
     sys_log_insert_noip("注销系统", "注销系统", "注销系统", Ext.util.Cookies
             .get('v_loginname'), Ext.util.Cookies.get('v_personcode'),
