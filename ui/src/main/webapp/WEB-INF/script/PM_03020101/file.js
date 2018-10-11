@@ -73,9 +73,7 @@ Ext.onReady(function() {
                                 V_V_TYPE:type
                             },
                             success: function (response) {
-                                var data = Ext.decode(response.responseText);
-                                Ext.Msg.alert('提示信息', '保存成功');
-                                Ext.getCmp('filetype').setValue('');
+                                gridload();
                             }
                         });
                     }
@@ -147,43 +145,18 @@ function OnButtonDelClicked() {
                 var i_err=0;
                 for(var i=0;i<records.length;i++){
                     Ext.Ajax.request({
-                        url: AppUrl + 'sxd/DEL_SAP_PM_EQU_FILE',
+                        url: AppUrl + 'PM_03/PM_03_PLAN_PROJECT_FILE_DEL',
                         type: 'ajax',
                         method: 'POST',
                         params: {
-                            V_FILEURL : records[i].get('V_FILEURL'),
-                            V_V_FILENAME : records[i].get('V_FILENAME')
+                            V_V_GUID : records[i].get('V_GUID'),
+                            V_V_FILEGUID : records[i].get('V_FILEGUID')
                         },
                         success: function (response) {
-                            var data = Ext.decode(response.responseText);//后台返回的值
-                            if (data.V_CURSOR=='Success') {//成功，会传回true
-                                i_err++;
-                                if(i_err==records.length){
-                                    Ext.Msg.alert('提示信息','删除成功');
-                                    gridload();
-                                }
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: data.V_CURSOR,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR,
-                                    fn:function () {
-                                        gridload();
-                                    }
-                                });
+                            i_err++;
+                            if(i_err==records.length){
+                                gridload();
                             }
-                        },
-                        failure: function (response) {//访问到后台时执行的方法。
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR,
-                                fn:function () {
-                                    gridload();
-                                }
-                            })
                         }
                     })
                 }
