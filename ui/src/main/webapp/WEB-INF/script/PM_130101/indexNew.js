@@ -211,7 +211,10 @@ Ext.onReady(function () {
                                                         X_DEPTCODE: selected.V_DEPTCODE,
                                                         X_EQUTYPECODE: selected.V_EQUTYPECODE,
                                                         X_EQUCODE: selected.V_EQUCODE,
-                                                        X_LUBRICATIONCODE: selected.V_LUBRICATIONCODE
+                                                        X_LUBRICATIONCODE: selected.V_LUBRICATIONCODE,
+                                                        V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+                                                        V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
+                                                        V_V_DEPTTYPE:'主体作业区'
                                                     },
                                                     success: function (response) {
                                                         var respRoot = Ext.JSON.decode(response.responseText);
@@ -950,7 +953,10 @@ function query() {
             X_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
             X_EQUTYPECODE: X_EQUTYPECODE_,
             X_EQUCODE: X_EQUCODE_,
-            X_LUBRICATIONCODE: ''
+            X_LUBRICATIONCODE: '',
+            V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
+            V_V_DEPTTYPE:'主体作业区'
         }
     });
 }

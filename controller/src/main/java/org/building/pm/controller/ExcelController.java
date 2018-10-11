@@ -3036,6 +3036,10 @@ public class ExcelController {
                            @RequestParam(value = "X_EQUTYPECODE") String X_EQUTYPECODE,
                            @RequestParam(value = "X_EQUCODE") String X_EQUCODE,
                            @RequestParam(value = "X_LUBRICATIONCODE") String X_LUBRICATIONCODE,
+//update2018-10-11
+                              @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                              @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
@@ -3045,7 +3049,7 @@ public class ExcelController {
         String X_EQUCODE_s=X_EQUCODE.equals("0")?"%":X_EQUCODE;
 
 
-        Map<String, Object> data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT, X_TIMEUPPERLIMIT, X_DEPTCODE_s,X_EQUTYPECODE_s,X_EQUCODE_s, X_LUBRICATIONCODE);
+        Map<String, Object> data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT, X_TIMEUPPERLIMIT, X_DEPTCODE_s,X_EQUTYPECODE_s,X_EQUCODE_s, X_LUBRICATIONCODE,V_V_PERSONCODE,V_V_DEPTCODE,V_V_DEPTTYPE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();

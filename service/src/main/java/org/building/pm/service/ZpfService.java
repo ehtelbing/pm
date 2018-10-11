@@ -694,7 +694,7 @@ public class ZpfService {
     }
 
     public HashMap PRO_QUERYLUBRECORD(Date X_TIMELOWERLIMIT, Date X_TIMEUPPERLIMIT, String X_DEPTCODE,
-                                      String X_EQUTYPECODE, String X_EQUCODE, String X_LUBRICATIONCODE) throws SQLException {
+                                      String X_EQUTYPECODE, String X_EQUCODE,String X_LUBRICATIONCODE,String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTTYPE) throws SQLException {
         logger.info("begin PRO_QUERYLUBRECORD");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -702,13 +702,16 @@ public class ZpfService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_QUERYLUBRECORD" + "(:X_TIMELOWERLIMIT,:X_TIMEUPPERLIMIT,:X_DEPTCODE,:X_EQUTYPECODE,:X_EQUCODE,:X_LUBRICATIONCODE,:O_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_QUERYLUBRECORD" + "(:X_TIMELOWERLIMIT,:X_TIMEUPPERLIMIT,:X_DEPTCODE,:X_EQUTYPECODE,:X_EQUCODE,:X_LUBRICATIONCODE,:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTTYPE,:O_CURSOR)}");
             cstmt.setDate("X_TIMELOWERLIMIT", X_TIMELOWERLIMIT);
             cstmt.setDate("X_TIMEUPPERLIMIT", X_TIMEUPPERLIMIT);
             cstmt.setString("X_DEPTCODE", X_DEPTCODE);
             cstmt.setString("X_EQUTYPECODE", X_EQUTYPECODE);
             cstmt.setString("X_EQUCODE", X_EQUCODE);
             cstmt.setString("X_LUBRICATIONCODE", X_LUBRICATIONCODE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
             cstmt.registerOutParameter("O_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 

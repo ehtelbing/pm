@@ -456,13 +456,17 @@ public class ZpfController {
             @RequestParam(value = "X_EQUTYPECODE") String X_EQUTYPECODE,
             @RequestParam(value = "X_EQUCODE") String X_EQUCODE,
             @RequestParam(value = "X_LUBRICATIONCODE") String X_LUBRICATIONCODE,
+//update2018-10-11
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
             /*@RequestParam(value = "start") Integer start,
             @RequestParam(value = "limit") Integer limit,*/
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT,X_TIMEUPPERLIMIT,X_DEPTCODE,X_EQUTYPECODE,X_EQUCODE,X_LUBRICATIONCODE);
+        HashMap data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT,X_TIMEUPPERLIMIT,X_DEPTCODE,X_EQUTYPECODE,X_EQUCODE,X_LUBRICATIONCODE,V_V_PERSONCODE,V_V_DEPTCODE,V_V_DEPTTYPE);
         //List<Map<String, Object>> pageList = new ArrayList<Map<String, Object>>();
         List<Map<String, Object>> list = (List) data.get("list");
         /*int total = list.size();
