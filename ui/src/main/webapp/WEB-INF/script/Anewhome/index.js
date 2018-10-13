@@ -635,7 +635,7 @@ function OnKeypress(e) {
     }
 
     if (keynum == 13) {
-        document.getElementById('GoPage').click();
+        document.getElementById('GoPage2').click();
     }
 }
 

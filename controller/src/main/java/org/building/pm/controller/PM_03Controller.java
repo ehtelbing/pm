@@ -55,9 +55,9 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_INPER") String V_V_INPER,
-            @RequestParam(value = "V_V_FLAG") String V_V_FLAG) throws Exception {
-
-        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_CREATE(V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_INPER, V_V_FLAG);
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+            @RequestParam(value="V_V_TYPE") String V_V_TYPE) throws Exception {
+        Map result = pm_03Service.PRO_PM_03_PLAN_PROJECT_CREATE(V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_INPER, V_V_FLAG,V_V_TYPE);
         return result;
     }
 
@@ -1196,5 +1196,15 @@ public class PM_03Controller {
         Map result = pm_03Service.PRO_PLAN_LOCK_DATE_HOMENOW(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM);
         return result;
     }
+
+    @RequestMapping(value = "/PM_03_PLAN_REPAIR_DEPT_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_REPAIR_DEPT_DEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_REPAIR_DEPTCODE") String V_V_REPAIR_DEPTCODE) throws Exception {
+        Map result = pm_03Service.PM_03_PLAN_REPAIR_DEPT_DEL(V_V_GUID, V_V_REPAIR_DEPTCODE);
+        return result;
+    }
+
 
 }
