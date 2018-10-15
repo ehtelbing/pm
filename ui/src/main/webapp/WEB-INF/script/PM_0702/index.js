@@ -152,9 +152,9 @@ Ext.onReady(function () {
             displayField: 'V_SOURCENAME',
             valueField: 'V_SOURCECODE',
             queryMode: 'local',
-            baseCls: 'margin-bottom',
-            listeners: {
-                change: function (field, newValue, oldValue) {
+            baseCls: 'margin-bottom'
+            ,listeners: {
+                select: function (field, newValue, oldValue) {
                     _selectOverhaulApply2();
                 }
             }
@@ -164,8 +164,8 @@ Ext.onReady(function () {
             allowBlank:true,
             labelWidth: 70,
             value:pername,//Ext.util.Cookies.get('v_personname'),
-            width:180,
-            listeners: {
+            width:180
+            ,listeners: {
                 renderer: function (e) {
                     var keynum;
                     if (window.event) // IE
@@ -321,7 +321,6 @@ Ext.onReady(function () {
     //         V_SIGN:0
     //     }
     // });
-
     _init()
     // _selectOverhaulApply();
 
