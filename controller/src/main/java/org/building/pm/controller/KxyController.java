@@ -102,7 +102,8 @@ public class KxyController {
 
                 for (int i = 0; i < deptList.size(); i++) {
                     dept = deptList.get(i);
-                    if ("-1".equals(dept.get("V_MENUCODE_UP"))) {
+                   // if ("-1".equals(dept.get("V_MENUCODE_UP"))) {
+                    if(dept.get("V_MENUCODE_UP").toString().equals(V_V_HOME_MENU)){
                         children.add(dept);
                         if (fillChildDept(dept, deptList).size() <= 0) {
                             dept.put("leaf", true);

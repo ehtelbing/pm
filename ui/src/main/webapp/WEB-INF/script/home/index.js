@@ -619,7 +619,7 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
         maximizable: true,
         width: 560,
         height: 420,
-        html: '<iframe src="' + AppUrl + 'page/home/favorite.html?menutype=' + menutype + '", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
+        html: '<iframe src="' + AppUrl + 'page/home/favorite2.html?menutype=' + menutype + '", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
         listeners: {
             close: function (panel, eOpts) {
                 if (returnValue != null) {

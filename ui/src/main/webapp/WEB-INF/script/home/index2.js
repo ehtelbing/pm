@@ -17,7 +17,7 @@ var USERID = Ext.util.Cookies.get('v_personcode');
 var PORP_VALUE = APP.substring(0, APP.length - 3);
 if (location.href.split('?')[1] != undefined) {
     if (Ext.urlDecode(location.href.split('?')[1]) != null) {
-        menucode = Ext.urlDecode(location.href.split('?')[1]).v_menucode;
+        menucode = Ext.urlDecode(location.href.split('?')[1]).v_v_menucode;
         menuname = Ext.urlDecode(location.href.split('?')[1]).v_menuname;
         v_url = Ext.urlDecode(location.href.split('?')[1]).v_url;
         menutype = Ext.urlDecode(location.href.split('?')[1]).menutype;
@@ -642,7 +642,7 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
         maximizable: true,
         width: 560,
         height: 420,
-        html: '<iframe src="' + AppUrl + 'page/home/favorite.html?menutype=' + menutype + '", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
+        html: '<iframe src="' + AppUrl + 'page/home/favorite.html?menutype=' + v_menucode + '", style="width: 100%; height: 100%;" frameborder="0"></iframe>',
         listeners: {
             close: function (panel, eOpts) {
                 if (returnValue != null) {
