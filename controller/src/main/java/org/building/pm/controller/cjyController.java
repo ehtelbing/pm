@@ -1659,6 +1659,19 @@ public class cjyController {
                 V_V_PAGESIZE);
         return result;
     }
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYROLE2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYROLE2(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                            @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                            @RequestParam(value="PUT_PERNAME") String PUT_PERNAME,
+                                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                            @RequestParam(value="V_SIGN") String V_SIGN,
+                                                            HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYROLE2(V_V_STATECODE, X_PERSONCODE,PUT_PERNAME, V_V_PAGE,V_V_PAGESIZE,V_SIGN);
+        return result;
+    }
 
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_VIEW", method = RequestMethod.POST)
     @ResponseBody

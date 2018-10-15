@@ -12,8 +12,10 @@ for (var i = 2012; i <= tomorrowYear; i++)
         valueField: i
     });
 var url_guid = '';
+var pername="";
 if (location.href.split('?')[1] != undefined) {
     url_guid = Ext.urlDecode(location.href.split('?')[1]).v_guid_dx;
+    pername=Ext.urlDecode(location.href.split("?")[1]).v_pername;
 }
 var stateData = [{displayField: '全部', valueField: '%'}, {displayField: '编辑', valueField: '编辑'}, {
     displayField: '审批中',
@@ -105,7 +107,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'cjy/PRO_PM_07_DEFECT_VIEW_BYROLE',
+            url: AppUrl + 'cjy/PRO_PM_07_DEFECT_VIEW_BYROLE2',
             actionMethods: {
                 read: 'POST'
             },
@@ -116,7 +118,16 @@ Ext.onReady(function () {
             }
         }
     });
-
+   // Ext.data.StoreManager.lookup('gridStore').load({
+   //     params:{
+   //         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+   //         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+   //         PUT_PERNAME:"",
+   //         V_V_PAGE: Ext.getCmp('page').store.currentPage,
+   //         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+   //         V_SIGN:0
+   //     }
+   // });
     var inputPanel = Ext.create('Ext.Panel', {
         id: 'inputPanel',
         border: true,
@@ -144,13 +155,36 @@ Ext.onReady(function () {
             baseCls: 'margin-bottom',
             listeners: {
                 change: function (field, newValue, oldValue) {
-                    _selectOverhaulApply();
+                    _selectOverhaulApply2();
                 }
             }
-        }, {
+        }, {xtype:'textfield',
+            id:'fzr',
+            fieldLabel:"负责人",
+            allowBlank:true,
+            labelWidth: 70,
+            value:pername,//Ext.util.Cookies.get('v_personname'),
+            width:180,
+            listeners: {
+                renderer: function (e) {
+                    var keynum;
+                    if (window.event) // IE
+                    {
+                        keynum = e.keyCode;
+                    } else if (e.which) // Netscape/Firefox/Opera
+                    {
+                        keynum = e.which;
+                    }
+                    if (keynum == 13) {
+                        _selectOverhaulApply2();
+                    }
+                }
+            }
+            },
+            {
             xtype: 'button',
             text: '查询',
-            handler: _selectOverhaulApply
+            handler: _selectOverhaulApply2
         }, {
             xtype: 'button',
             text: '生成工单',
@@ -277,14 +311,16 @@ Ext.onReady(function () {
         }]
     });
 
-    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
-        store.proxy.extraParams = {
-            V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
-            X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_PAGE: Ext.getCmp('page').store.currentPage,
-            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
-        }
-    });
+    // Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+    //     store.proxy.extraParams = {
+    //         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+    //         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+    //         PUT_PERNAME:"",
+    //         V_V_PAGE: Ext.getCmp('page').store.currentPage,
+    //         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+    //         V_SIGN:0
+    //     }
+    // });
 
     _init()
     // _selectOverhaulApply();
@@ -307,9 +343,24 @@ function _selectOverhaulApply() {
     gridStore.proxy.extraParams = {
         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        PUT_PERNAME:"",
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
-        V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+        V_SIGN:0
 
+    };
+    gridStore.currentPage = 1;
+    gridStore.load();
+}
+function _selectOverhaulApply2() {
+    var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    gridStore.proxy.extraParams = {
+        V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+        X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        PUT_PERNAME:Ext.getCmp('fzr').getValue()==""?"%":Ext.getCmp("fzr").getValue().toString(),
+        V_V_PAGE: Ext.getCmp('page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+        V_SIGN:1
     };
     gridStore.currentPage = 1;
     gridStore.load();

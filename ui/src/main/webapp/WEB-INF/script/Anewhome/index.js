@@ -215,7 +215,7 @@ function _preDbView() {
     //window.parent.append("PM_0802", "缺陷处理", AppUrl + 'page/PM_0702/index.html');
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_0702/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    window.open(AppUrl + 'page/PM_0702/index.html?v_pername='+Ext.util.Cookies.get('v_personname') ,'', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     //location.href=AppUrl + 'page/PM_0702/index.html';
 }
 
@@ -349,7 +349,7 @@ function toDefectManage() {
     // container.setActiveTab(n);
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_0702/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    window.open(AppUrl + 'page/PM_0702/index.html?v_pername='+Ext.util.Cookies.get('v_personname') , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     //location.href=AppUrl + 'page/PM_0702/index.html';
 }
 

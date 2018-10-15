@@ -183,7 +183,7 @@ function _WeekCountSelect() {
 }
 
 function _preDbView() {
-    window.parent.append("PM_0802", "缺陷处理", AppUrl + 'page/PM_0702/index.html');
+    window.parent.append("PM_0802", "缺陷处理", AppUrl + 'page/PM_0702/index.html?v_pername='+Ext.util.Cookies.get('v_personname'));
 }
 
 function _banli(V_TIMER_GUID) {
