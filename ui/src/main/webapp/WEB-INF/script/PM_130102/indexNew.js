@@ -347,5 +347,9 @@ function BeforeGridStoreLoad(store) {
     store.proxy.extraParams.X_DEPTCODE = Ext.getCmp("V_V_DEPTCODE").getValue();
     store.proxy.extraParams.X_EQUTYPECODE = Ext.getCmp("equtype").getValue();
     store.proxy.extraParams.X_EQUCODE = Ext.getCmp("subequname").getValue();
+    store.proxy.extraParams.V_V_PERSONCODE=Ext.util.Cookies.get('v_personcode');
+    store.proxy.extraParams.V_V_DEPTCODE=Ext.util.Cookies.get('v_orgCode');
+    store.proxy.extraParams.V_V_DEPTTYPE='主体作业区';
+
 store.proxy.extraParams.X_LUBRICATIONCODE = '';
 }

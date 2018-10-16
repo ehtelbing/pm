@@ -49,22 +49,43 @@ var selPlantstore = Ext.create('Ext.data.Store', {
 	}
 });
 
+// var selSectionstore = Ext.create('Ext.data.Store', {
+// 	autoLoad : false,
+// 	storeId : 'selSectionstore',
+// 	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+// 	proxy : {
+// 		type : 'ajax',
+// 		async : false,
+// 		url: AppUrl + 'No4120/PRO_PM_REPAIRDEPT_TODEPT',
+// 		actionMethods : {
+// 			read : 'POST'
+// 		},
+// 		reader : {
+// 			type : 'json',
+// 			root : 'list'
+// 		}
+// 	}
+// });
 var selSectionstore = Ext.create('Ext.data.Store', {
-	autoLoad : false,
-	storeId : 'selSectionstore',
-	fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
-	proxy : {
-		type : 'ajax',
-		async : false,
-		url: AppUrl + 'No4120/PRO_PM_REPAIRDEPT_TODEPT',
-		actionMethods : {
-			read : 'POST'
-		},
-		reader : {
-			type : 'json',
-			root : 'list'
-		}
-	}
+    autoLoad : true,
+    storeId : 'selSectionstore',
+    fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url : AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
+        actionMethods : {
+            read : 'POST'
+        },
+        reader : {
+            type : 'json',
+            root : 'list'
+        },
+        extraParams : {
+            IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
+            IS_V_DEPTTYPE:'[主体作业区]'
+        }
+    }
 });
 
 var gridStore = Ext.create('Ext.data.Store', {
@@ -413,8 +434,10 @@ function onPageLoaded() {
 						Ext.data.StoreManager.lookup('selSectionstore').load(
 								{
 									params : {
-										V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-										V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+										// V_REPAIRDEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+										// V_PERSONCODE:Ext.getCmp('selPlant').getValue()
+                                        IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
+                                        IS_V_DEPTTYPE:'[主体作业区]'
 									}
 								});
 					});

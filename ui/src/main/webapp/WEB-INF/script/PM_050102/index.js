@@ -2,6 +2,7 @@
 var I_ID = -1;
 var V_ORDERGUID = null;
 var flag = '';
+var V_EQUCODE;
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
 }
@@ -9,7 +10,9 @@ if (location.href.split('?')[1] != undefined) {
 if (location.href.split('?')[1] != undefined) {
     flag = Ext.urlDecode(location.href.split('?')[1]).flag;
 }
-
+if (location.href.split('?')[1] != undefined) {
+    V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+}
 var gridStore = Ext.create('Ext.data.Store',
     {
         id: 'gridStore',
@@ -189,7 +192,7 @@ var framePanel = Ext.create('Ext.panel.Panel', {
     layout: 'fit',
     flex: 5,
     html: '<iframe frameborder="0" width="100%" height="100%"  src="' + AppUrl
-    + 'page/PM_05010201/index.html?V_ORDERGUID=' + V_ORDERGUID
+    + 'page/PM_05010201/index.html?V_ORDERGUID=' + V_ORDERGUID +'&V_EQUCODE='+V_EQUCODE
     + '"></iframe>'
 
 });
@@ -627,6 +630,7 @@ function OnChangePlanAmount(editor, e, eOpts) {
 }
 
 function WatchOrder() {
+
     var urlOrder = AppUrl
         + 'page/PM_05010201/index.html?V_ORDERGUID='
         + V_ORDERGUID

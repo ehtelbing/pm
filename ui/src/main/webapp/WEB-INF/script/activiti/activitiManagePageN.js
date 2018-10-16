@@ -195,6 +195,7 @@ Ext.onReady(function () {
                 handler: reStartPbtn
             },{xtype:'label',
                 text:'(工单号用“;”断开)',
+                labelStyle:'color:red;',
                 style:'font-color:FF3333 red;font-weight:bold;margin: 9px 3px 2px 8px;'}]
     });
     //----------

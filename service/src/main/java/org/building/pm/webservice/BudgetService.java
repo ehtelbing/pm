@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 @Service
 public class BudgetService {
-    private static final Logger logger = Logger.getLogger(MobileService.class.getName());
+    private static final Logger logger = Logger.getLogger(BudgetService.class.getName());
     @Autowired
     private ComboPooledDataSource dataSources;
 

@@ -202,6 +202,7 @@ function AddLeft(value) {
  * 激活流程步骤
  **/
 function _activiti(activityId, assignee) {
+    var ass=Ext.data.StoreManager.lookup('gridStore').data.getAt(0).data.Assignee;
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/activateActivityCancelCurrent',
         type: 'ajax',
@@ -212,7 +213,7 @@ function _activiti(activityId, assignee) {
             instanceId: ProcessInstanceId,
             activityId: activityId,
             flowStep: activityId,
-            assignees: assignee=="undefined" ? "lcjs" : assignee
+            assignees: assignee=="undefined" ? ass :"lcjs"  // : ass
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);

@@ -1199,14 +1199,14 @@ public class cjyController {
     @ResponseBody
     public Map PRO_PM_WORKORDER_ET_SET_NEW(@RequestParam(value = "V_I_ID") Double V_I_ID,
                                            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                           @RequestParam(value = "V_V_DESCRIPTION") String V_V_DESCRIPTION,
-                                           @RequestParam(value = "V_I_WORK_ACTIVITY") String V_I_WORK_ACTIVITY,
+                                           @RequestParam(value = "V_V_DESCRIPTION",required=false) String V_V_DESCRIPTION,
+                                           @RequestParam(value = "V_I_WORK_ACTIVITY",required=false) String V_I_WORK_ACTIVITY,
                                            @RequestParam(value = "V_I_DURATION_NORMAL",required=false) String V_I_DURATION_NORMAL,
-                                           @RequestParam(value = "V_V_WORK_CENTER") String V_V_WORK_CENTER,
-                                           @RequestParam(value = "V_I_ACTUAL_TIME") String V_I_ACTUAL_TIME,
-                                           @RequestParam(value = "V_I_NUMBER_OF_PEOPLE") String V_I_NUMBER_OF_PEOPLE,
+                                           @RequestParam(value = "V_V_WORK_CENTER",required=false) String V_V_WORK_CENTER,
+                                           @RequestParam(value = "V_I_ACTUAL_TIME",required=false) String V_I_ACTUAL_TIME,
+                                           @RequestParam(value = "V_I_NUMBER_OF_PEOPLE",required=false) String V_I_NUMBER_OF_PEOPLE,
                                            @RequestParam(value = "V_V_ID",required=false) String V_V_ID,
-                                           @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                           @RequestParam(value = "V_V_GUID",required=false) String V_V_GUID,
                                            @RequestParam(value = "V_V_JXBZ",required=false) String V_V_JXBZ,
                                            @RequestParam(value = "V_V_JXBZ_VALUE_DOWN",required=false) String V_V_JXBZ_VALUE_DOWN,
                                            @RequestParam(value = "V_V_JXBZ_VALUE_UP",required=false) String V_V_JXBZ_VALUE_UP,
@@ -1657,6 +1657,19 @@ public class cjyController {
             throws SQLException {
         Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYROLE(V_V_STATECODE, X_PERSONCODE, V_V_PAGE,
                 V_V_PAGESIZE);
+        return result;
+    }
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_BYROLE2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_BYROLE2(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                            @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                            @RequestParam(value="PUT_PERNAME") String PUT_PERNAME,
+                                                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                            @RequestParam(value="V_SIGN") String V_SIGN,
+                                                            HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_BYROLE2(V_V_STATECODE, X_PERSONCODE,PUT_PERNAME, V_V_PAGE,V_V_PAGESIZE,V_SIGN);
         return result;
     }
 
@@ -3436,7 +3449,7 @@ public class cjyController {
         String post = "";
         List<Map<String, Object>> postlist;
         for (int i = 0; i < map.size(); i++) {
-            if (map.get("Assignee").toString() == ActivitiId) {
+            if (map.get("ActivityId").toString() == ActivitiId) {
                 percode = map.get("Assignee").toString();
                 postlist = (List) cjyService.PRO_BASE_POST_GET_BYPER(percode).get("list");
 

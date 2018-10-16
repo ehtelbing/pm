@@ -706,7 +706,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             iconCls:'Report',
             handler:btnFlowStart
         },
-        {
+        /*{
             xtype: 'button',
             id:'agreeFlow',
             text: '审批通过',
@@ -721,7 +721,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 0',
             iconCls:'Report',
             handler:btnFlowDisAgree
-        },{
+        },*/{
             xtype: 'button',
             text: '附件',
             margin: '5 0 5 0',
@@ -1028,20 +1028,53 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             labelWidth :60,
             width:170,
             labelAlign : 'right'
-        },
-        {
+        },{
             xtype: 'numberfield',
-            id:'jhfy',
-            fieldLabel: '计划费用',
+            id:'bjf',
+            fieldLabel: '备件费',
             labelWidth: 60,
             width:170,
             margin:'5 5 5 20',
-            value:0
+            value:0,
+            listeners:{
+                change:MoneyChange
+            }
+        },{
+            xtype: 'numberfield',
+            id:'clf',
+            fieldLabel: '材料费',
+            margin:'5 5 5 15',
+            labelWidth: 60,
+            width:170,
+            value:0,
+            listeners:{
+                change:MoneyChange
+            }
+        },{
+            xtype: 'numberfield',
+            id:'sgfy',
+            fieldLabel: '施工费用',
+            margin:'5 5 5 15',
+            labelWidth :60,
+            width:170,
+            value:0,
+            listeners:{
+                change:MoneyChange
+            }
+        },
+        {
+            xtype: 'textfield',
+            id:'tzze',
+            fieldLabel: '投资总额',
+            margin:'5 5 5 15',
+            labelWidth :60,
+            width:240,
+            readOnly:true
         }, {
             xtype : 'numberfield',
             id:'jhgs',
             fieldLabel : '计划工时',
-            margin:'5 5 5 15',
+            margin:'5 5 5 10',
             labelWidth :60,
             width:170,
             labelAlign : 'right',
@@ -1051,9 +1084,9 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             xtype : 'numberfield',
             id:'jhts',
             fieldLabel : '计划天数',
-            margin:'5 5 5 15',
-            labelWidth :60,
+            labelWidth: 60,
             width:170,
+            margin:'5 5 5 20',
             labelAlign : 'right',
             value:0
         }
@@ -1201,7 +1234,7 @@ var wlmxcd = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             text: '作业区库存明细',
             margin: '5 0 5 0',
-            iconCls:'Tablecell'
+            iconCls:'Tablecell',
 
         },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8' },
@@ -1211,7 +1244,7 @@ var wlmxcd = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 0',
             iconCls:'Tablelightning'
 
-        },
+        }/*,
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8' },
         {
             xtype: 'button',
@@ -1219,7 +1252,7 @@ var wlmxcd = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 0',
             iconCls:'Tablesort'
 
-        }
+        }*/
     ]
 });
 //大修计划所需物料明细（右侧物料）
@@ -1341,12 +1374,12 @@ var Rightdivbtm = Ext.create('Ext.tab.Panel', {
         id:'tabwlsgt',
         layout:'border',
         items:[]
-    }, {
+    }/*, {
         title: '审批流程',
         id:'tabsplc',
         layout:'border',
         items:[flowgird]
-        }
+        }*/
     ]
 });
 var Rightdivtop = Ext.create('Ext.panel.Panel', {
@@ -2147,8 +2180,8 @@ function QueryPageLoad(){
                 Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);
                 Ext.getCmp('content').setValue(resp.list[0].V_CONTENT);
 
-                Ext.getCmp('jhgs').setValue(resp.list[0].V_SUMTIME);
-                Ext.getCmp('jhts').setValue(resp.list[0].V_SUMDATE);
+                Ext.getCmp('jhgs').setValue(resp.list[0].V_SUMTIME==''?0:resp.list[0].V_SUMTIME);
+                Ext.getCmp('jhts').setValue(resp.list[0].V_SUMDATE==''?0:resp.list[0].V_SUMDATE);
 
                 if(resp.list[0].V_BDATE==''){
                     Ext.getCmp('btime').setValue(new Date());
@@ -2161,16 +2194,16 @@ function QueryPageLoad(){
                 }else{
                     Ext.getCmp('etime').setValue(resp.list[0].V_EDATE.split(" ")[0]);
                 }
-                Ext.getCmp('jhfy').setValue(resp.list[0].V_MONEYBUDGET);
+                Ext.getCmp('tzze').setValue(resp.list[0].V_MONEYBUDGET==''?'0':resp.list[0].V_MONEYBUDGET);
 
                 if(resp.list[0].V_MONEYBUDGET=='99'){
                     Ext.getCmp('startFlow').show();
-                    Ext.getCmp('agreeFlow').hide();
-                    Ext.getCmp('disAgreeFlow').hide();
+                    /*Ext.getCmp('agreeFlow').hide();
+                    Ext.getCmp('disAgreeFlow').hide();*/
                 }else{
                     Ext.getCmp('startFlow').hide();
-                    Ext.getCmp('agreeFlow').show();
-                    Ext.getCmp('disAgreeFlow').show();
+                  /*  Ext.getCmp('agreeFlow').show();
+                    Ext.getCmp('disAgreeFlow').show();*/
                 }
 
                 QueryZYQ();
@@ -2852,7 +2885,7 @@ function btnSaveProject(){
             V_V_WXTYPECODE:Ext.getCmp('wxlx').getValue(),
             V_V_WXTYPENAME:Ext.getCmp('wxlx').rawValue,
             V_V_CONTENT:Ext.getCmp('content').getValue(),
-            V_V_MONEYBUDGET:Ext.getCmp('jhfy').getValue(),
+            V_V_MONEYBUDGET:Ext.getCmp('tzze').getValue(),
             V_V_REPAIRDEPTCODE:Ext.getCmp('repairDept').getValue(),
             V_V_BDATE:Ext.Date.format(Ext.getCmp('btime').getValue(),'Y-m-d'),
             V_V_EDATE:Ext.Date.format(Ext.getCmp('etime').getValue(),'Y-m-d'),
@@ -2873,7 +2906,10 @@ function btnSaveProject(){
             V_V_SUMTIME:Ext.getCmp('jhgs').getValue(),
             V_V_SUMDATE:Ext.getCmp('jhts').getValue(),
             V_V_SPECIALTY_ZX:'',
-            V_V_SPECIALTY_ZXNAME:''
+            V_V_SPECIALTY_ZXNAME:'',
+            V_V_BJF:Ext.getCmp('bjf').getValue(),
+            V_V_CLF:Ext.getCmp('clf').getValue(),
+            V_V_SGF:Ext.getCmp('sgfy').getValue()
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
@@ -2939,7 +2975,7 @@ function btnFlowStart(){
             V_V_WXTYPECODE:Ext.getCmp('wxlx').getValue(),
             V_V_WXTYPENAME:Ext.getCmp('wxlx').rawValue,
             V_V_CONTENT:Ext.getCmp('content').getValue(),
-            V_V_MONEYBUDGET:Ext.getCmp('jhfy').getValue(),
+            V_V_MONEYBUDGET:Ext.getCmp('tzze').getValue(),
             V_V_REPAIRDEPTCODE:Ext.getCmp('repairDept').getValue(),
             V_V_BDATE:Ext.Date.format(Ext.getCmp('btime').getValue(),'Y-m-d'),
             V_V_EDATE:Ext.Date.format(Ext.getCmp('etime').getValue(),'Y-m-d'),
@@ -2959,7 +2995,10 @@ function btnFlowStart(){
             V_V_SUMTIME:Ext.getCmp('jhgs').getValue(),
             V_V_SUMDATE:Ext.getCmp('jhts').getValue(),
             V_V_SPECIALTY_ZX:'',
-            V_V_SPECIALTY_ZXNAME:''
+            V_V_SPECIALTY_ZXNAME:'',
+            V_V_BJF:Ext.getCmp('bjf').getValue(),
+            V_V_CLF:Ext.getCmp('clf').getValue(),
+            V_V_SGF:Ext.getCmp('sgfy').getValue()
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
@@ -3078,4 +3117,9 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+
+function MoneyChange(field,newValue,oldValue){
+
+    Ext.getCmp('tzze').setValue(Ext.getCmp('bjf').getValue()-(-Ext.getCmp('clf').getValue())-(-Ext.getCmp('sgfy').getValue()));
 }

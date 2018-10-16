@@ -220,7 +220,7 @@ Ext.onReady(function() {
     var gridStore = Ext.create('Ext.data.Store', {
         id : 'gridStore',
         autoLoad : false,
-        fields : ["V_1", "V_2", "上报数量", "有效数量", "已处理数量", 'F_4', 'F_5'],
+        fields : ["月份", "缺陷数量", "手工消缺数量", "下达工单数量", "已处理数量", '未处理数量', '处理率','消缺率'],
         proxy : {
             type : 'ajax',
             async : false,
@@ -278,29 +278,29 @@ Ext.onReady(function() {
             autoScroll : true,
             height : 400,
             columns : [{
-                text : ' ',
+                text : '月份',
                 align : 'center',
                 width : 100,
-                dataIndex : 'V_1',
+                dataIndex : '月份',
                 hidden : true,
                 renderer : left
             }, {
-                text : ' ',
+                text : '缺陷数量',
                 align : 'center',
                 width : 100,
-                dataIndex : 'V_2',
+                dataIndex : '缺陷数量',
                 renderer : left
             }, {
-                text : '上报数量',
+                text : '手工消缺数量',
                 align : 'center',
                 width : 180,
-                dataIndex : '上报数量',
+                dataIndex : '手工消缺数量',
                 renderer : left
             }, {
-                text : '有效数量',
+                text : '下达工单数量',
                 align : 'center',
                 width : 180,
-                dataIndex : '有效数量',
+                dataIndex : '下达工单数量',
                 renderer : left
             }, {
                 text : '已处理数量',
@@ -312,13 +312,19 @@ Ext.onReady(function() {
                 text : '未处理数量',
                 align : 'center',
                 width : 180,
-                dataIndex : 'F_4',
+                dataIndex : '未处理数量',
                 renderer : left
             }, {
                 text : '处理率',
                 align : 'center',
                 width : 180,
-                dataIndex : 'F_5',
+                dataIndex : '处理率',
+                renderer : left
+            }, {
+                text : '消缺率',
+                align : 'center',
+                width : 180,
+                dataIndex : '消缺率',
                 renderer : left
             }]
         }, {

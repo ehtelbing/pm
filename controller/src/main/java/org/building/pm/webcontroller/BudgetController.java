@@ -30,9 +30,9 @@ public class BudgetController {
     @Value("#{configProperties['budget.url']}")
     private String budgetUrl;
 
+
     @Autowired
     private BudgetService budgetService;
-
     /*
      * 大修各厂矿年预算
      * */

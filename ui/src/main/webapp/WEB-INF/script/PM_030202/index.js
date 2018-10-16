@@ -251,6 +251,12 @@ Ext.onReady(function () {
                 text: '导出',
                 icon: imgpath + '/accordion_collapse.png',
                 listeners: {click: OnButtonOut}
+            },
+            {
+                xtype: 'button',
+                text: '追加月计算',
+                icon: imgpath + '/add.png',
+                listeners: {click: OnButtonOtherAdd}
             }
         ]
     });
@@ -404,7 +410,8 @@ function OnButtonAdd() {
             V_V_ORGCODE: Ext.getCmp("ck").getValue(),
             V_V_DEPTCODE: Ext.getCmp("zyq").getValue(),
             V_V_INPER: Ext.util.Cookies.get('v_personcode'),
-            V_V_FLAG: 'MONTH'
+            V_V_FLAG: 'MONTH',
+            V_V_TYPE:""
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
@@ -418,6 +425,33 @@ function OnButtonAdd() {
         }
     });
 
+}
+function OnButtonOtherAdd(){
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_03/PRO_PM_03_PLAN_PROJECT_CREATE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID: '-1',
+            V_V_YEAR: Ext.getCmp("year").getValue(),
+            V_V_MONTH: Ext.getCmp("month").getValue(),
+            V_V_ORGCODE: Ext.getCmp("ck").getValue(),
+            V_V_DEPTCODE: Ext.getCmp("zyq").getValue(),
+            V_V_INPER: Ext.util.Cookies.get('v_personcode'),
+            V_V_FLAG: 'MONTH',
+            V_V_TYPE:'add'
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO == '成功') {
+                var owidth = window.document.body.offsetWidth - 600;
+                var oheight = window.document.body.offsetHeight - 100;
+                window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+            } else {
+                alert("添加失败");
+            }
+        }
+    });
 }
 
 function OnButtonEdit() {
@@ -463,6 +497,15 @@ function OnButtonDel() {
 
 
 function OnButtonOut() {
+    // var V_V_STATE = Ext.getCmp('state').getValue() == '%' ? '0' : Ext.getCmp('state').getValue();
+    document.location.href = AppUrl + 'excel/PRO_PM_03_PLAN_PROJECT_VIEW2?V_V_YEAR=' + Ext.getCmp('year').getValue()
+        + '&V_V_MONTH=' + Ext.getCmp('month').getValue()
+        + '&V_V_ORGCODE=' + Ext.getCmp('ck').getValue()
+        + '&V_V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
+        + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
+        + '&V_V_WXLX=' + Ext.getCmp('wxlx').getValue()
+        + '&V_V_CONTENT=' + Ext.getCmp('jxnr').getValue()
+        + '&V_V_FLAG=' +"MONTH"
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
