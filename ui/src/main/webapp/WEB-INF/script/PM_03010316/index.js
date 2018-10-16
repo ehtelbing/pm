@@ -364,6 +364,7 @@ Ext.onReady(function () {
         layout: 'border',
         items: [tabpanel]
     });
+    query();
     //Ext.getCmp('jhlx').select('YEAR');
 });
 function QueryGrid(){
