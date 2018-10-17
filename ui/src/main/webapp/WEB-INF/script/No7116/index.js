@@ -34,9 +34,16 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-
-
-                Ext.getCmp('zyqName').setValue(IS_V_DEPTCODE);
+                var falg='0';
+                for(var i=0;i<store.getCount();i++){
+                    var recored = store.getAt(i);
+                    if(recored.get('V_DEPTCODE')==IS_V_DEPTCODE){
+                        falg=i;
+                        break;
+                    }
+                }
+                Ext.getCmp('zyqName').select(records[falg]);
+                //Ext.getCmp('zyqName').setValue(IS_V_DEPTCODE);
                 deptStoreLoad = true;
                 _init();
             }

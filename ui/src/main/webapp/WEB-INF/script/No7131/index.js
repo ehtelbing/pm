@@ -1,3 +1,4 @@
+var V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');//作业区编码
 var plantStoreLoad = false;
 var cycleStoreLoad = false;
 
@@ -78,7 +79,8 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('V_DEPARTCODE').select(store.first());
+                //Ext.getCmp('V_DEPARTCODE').select(store.first());
+                Ext.getCmp('V_DEPARTCODE').setValue(V_DEPTCODE);
             }
         }
     });
@@ -236,7 +238,7 @@ Ext.onReady(function () {
         region: 'north',
         //title: '<div align="center"></div>',
         width: '100%',
-        //height: 50,
+        height: 50,
         items: [{
             xtype: 'panel',
             region: 'north',
@@ -252,7 +254,7 @@ Ext.onReady(function () {
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
                 labelWidth: 80,
-                width: 220,
+                width: 250,
                 style: ' margin: 5px 0px 5px -20px',
                 labelAlign: 'right',
                 listeners: {
@@ -306,7 +308,7 @@ Ext.onReady(function () {
                 displayField: 'SITE_DESC',
                 valueField: 'SITE_ID',
                 labelWidth: 80,
-                width: 220,
+                width: 650,
                 style: ' margin: 5px 0px 5px -15px',
                 labelAlign: 'right'
             }, {

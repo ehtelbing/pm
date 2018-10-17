@@ -77,7 +77,7 @@ Ext.onReady(function () {
         autoLoad: false,
         pageSize: 100,
         fields: ['BJ_ID', 'BJ_UNIQUE_CODE', 'MATERIALCODE', 'MATERIALNAME', 'EQU_DESC', 'SITE_DESC', 'CHANGEDATE',
-            'ALERT_VALUE', 'CYCLE_DESC', 'CYCLE_UNIT'],
+            'ALERT_VALUE', 'CYCLE_DESC', 'CYCLE_UNIT','WARNING_VALUE'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'ml/PRO_RUN7117_BJWORKLIST',
@@ -127,7 +127,7 @@ Ext.onReady(function () {
                 store: bjStore,
                 fieldLabel: '备件描述',
                 labelWidth: 80,
-                width: 250,
+                width: 750,
                 displayField: 'BJ_DESC',
                 valueField: 'BJ_ID',
                 style: ' margin: 5px 0px 5px 0px',
@@ -213,7 +213,7 @@ Ext.onReady(function () {
             renderer: atleft
         }, {
             text: '预警值',
-            dataIndex: 'CYCLE_DESC',
+            dataIndex: 'WARNING_VALUE',
             align: 'center',
             width: 80,
             renderer: atleft

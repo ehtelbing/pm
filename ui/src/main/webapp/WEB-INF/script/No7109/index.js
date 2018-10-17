@@ -9,7 +9,7 @@ var A_BJ_UNIQUE_CODE = '';
 var ckStoreLoad = false;
 var deptStoreLoad = false;
 var sbStoreLoad = false;
-
+var V_BJ_UNIQUE_CODE='';
 Ext.onReady(function () {
     Ext.getBody().mask('<p>正在载入中...</p>');
 
@@ -61,10 +61,10 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                store.insert(0, {
-                    'V_DEPTCODE': '%',
-                    'V_DEPTNAME': '全部'
-                });
+                //store.insert(0, {
+                //    'V_DEPTCODE': '%',
+                //    'V_DEPTNAME': '全部'
+                //});
                 Ext.getCmp('zyqName').select(store.first());
                 deptStoreLoad = true;
                 _init();
@@ -106,7 +106,7 @@ Ext.onReady(function () {
     //设备备件历史Store
     var equHistoryStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
-        pageSize: 100,
+        pageSize: 20,
         storeId: 'equHistoryStore',
         fields: ['BJ_UNIQUE_CODE', 'MATERIALCODE', 'MATERIALNAME', 'UNIT', 'SITE_DESC', 'CHANGEDATE', 'BJ_STATUS',
             'DEPARTNAME', 'EQU_NAME', 'SUPPLY_NAME', 'SITE_ID'],
@@ -130,14 +130,14 @@ Ext.onReady(function () {
     //查询更换情况Store
     var changeConditionStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
-        pageSize: 100,
+        pageSize: 10,
         storeId: 'changeConditionStore',
         fields: ['CHANGEDATE', 'BJ_UNIQUE_CODE', 'MATERIALNAME', 'UNIT', 'CHANGE_EQUNAME', 'CHANGE_SITE_DESC', 'SUPPLY_NAME', 'DIRECTION',
             'REMARK'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'ml/PRO_RUN_SITE_BJ_CHANGE_LOG_ALL',
+            url: AppUrl + 'ml/PRO_RUN_BJ_CHANGE_LOG_ALL',//'ml/PRO_RUN_SITE_BJ_CHANGE_LOG_ALL',
             actionMethods: {
                 read: 'POST'
             },
@@ -343,7 +343,7 @@ Ext.onReady(function () {
             align: 'center',
             width: 120,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href="#" onclick="_checkHistory(\'' + record.data.SITE_ID + '\')">' + '查看' + '</a>';
+                return '<a href="#" onclick="_checkHistory(\'' + record.data.BJ_UNIQUE_CODE + '\')">' + '查看' + '</a>';//'<a href="#" onclick="_checkHistory(\'' + record.data.SITE_ID + '\')">' + '查看' + '</a>';
             }
         }],
         bbar: [{
@@ -458,7 +458,7 @@ Ext.onReady(function () {
     var checkHistoryWindow = Ext.create('Ext.window.Window', {
         id: 'checkHistoryWindow',
         title: '<div align="center"> 详细更换历史</div>',
-        width: 700,
+        width: 1000,
         height: 400,
         modal: true,
         plain: true,
@@ -567,17 +567,18 @@ function _selectHistory() {
 
 //查看详细更换历史
 function _checkHistory(SITE_ID) {
-    V_BEGINDATE = Ext.util.Format.date(Ext.getCmp('A_BEGINDATE').getSubmitValue(), 'Ymd');
-    V_ENDDATE = Ext.util.Format.date(Ext.getCmp('A_ENDDATE').getSubmitValue(), 'Ymd');
-    V_SITE_ID = SITE_ID;
+    //V_BEGINDATE = Ext.util.Format.date(Ext.getCmp('A_BEGINDATE').getSubmitValue(), 'Ymd');
+    //V_ENDDATE = Ext.util.Format.date(Ext.getCmp('A_ENDDATE').getSubmitValue(), 'Ymd');
+    V_BJ_UNIQUE_CODE = SITE_ID;
     Ext.getCmp('checkHistoryWindow').show();
 
     var changeConditionStore = Ext.data.StoreManager.lookup('changeConditionStore');
 
     changeConditionStore.proxy.extraParams = {
-        V_SITE_ID: V_SITE_ID,
-        V_BEGINDATE: V_BEGINDATE,
-        V_ENDDATE: V_ENDDATE
+        A_BJ_UNIQUE_CODE:V_BJ_UNIQUE_CODE
+        //V_SITE_ID: V_SITE_ID,
+        //V_BEGINDATE: V_BEGINDATE,
+        //V_ENDDATE: V_ENDDATE
     };
     changeConditionStore.load();
 };
@@ -602,8 +603,9 @@ function _exportExcel() {
 
 //导出更换历史Excel
 function _exportHistoryExcel() {
-    document.location.href = AppUrl + 'ml/PRO_RUN_SITE_BJ_CHANGE_LOG_ALL_EXCEL?V_SITE_ID=' + encodeURI(encodeURI(V_SITE_ID)) +
-    '&V_BEGINDATE=' + V_BEGINDATE + '&V_ENDDATE=' + V_ENDDATE;
+    document.location.href = AppUrl + 'ml/PRO_RUN_BJ_CHANGE_LOG_ALL_EXCEL?A_BJ_UNIQUE_CODE=' + encodeURI(encodeURI(V_BJ_UNIQUE_CODE)) ;
+    //document.location.href = AppUrl + 'ml/PRO_RUN_SITE_BJ_CHANGE_LOG_ALL_EXCEL?V_SITE_ID=' + encodeURI(encodeURI(V_SITE_ID)) +
+    //'&V_BEGINDATE=' + V_BEGINDATE + '&V_ENDDATE=' + V_ENDDATE;
 }
 
 

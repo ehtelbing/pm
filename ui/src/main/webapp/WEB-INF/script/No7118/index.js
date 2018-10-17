@@ -1,5 +1,5 @@
 var departStoreLoad = false;
-
+var V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');//作业区编码
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
@@ -27,7 +27,8 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 departStoreLoad = true;
-                Ext.getCmp('V_V_DEPTCODE').select(store.first());
+                Ext.getCmp('V_V_DEPTCODE').setValue(V_DEPTCODE);
+                //Ext.getCmp('V_V_DEPTCODE').select(store.first());
                 _init();
             }
         }
@@ -109,7 +110,7 @@ Ext.onReady(function () {
     var bjChangeLogStore = Ext.create('Ext.data.Store', {
         storeId: 'bjChangeLogStore',
         autoLoad: false,
-        pageSize: -1,
+        pageSize: 10,
         fields: ['BJ_UNIQUE_CODE', 'CHANGEDATE', 'CHANGE_SITE_DESC', 'CHANGE_EQUNAME', 'DIRECTION', 'REMARK', 'MATERIALNAME', 'UNIT', 'CHANGE_AMOUNT'],
         proxy: {
             url: AppUrl + 'mwd/PRO_RUN_SITE_BJ_CHANGE_LOG_ALL',
@@ -129,7 +130,7 @@ Ext.onReady(function () {
     var oilPriceDrawChart = Ext.create('Ext.chart.Chart', {
         id: 'oilPriceDrawChart',
         store: workTimeStore,
-        //title: '年预算分解情况',
+        //title: '作业量统计柱状图',
         width: window.screen.width - 280,
         height: window.screen.height / 3 - 50,
         frame: true,
@@ -150,7 +151,7 @@ Ext.onReady(function () {
             position: 'bottom',//category轴放在图表下部
             fields: ['WORKDATE'],
             title: '日期',
-            minimum: 1
+            minimum: 1.
         }],
         series: [{
             type: 'column',//显示图形类型- line：则线图；column：柱形图；radar：雷达图
@@ -165,13 +166,13 @@ Ext.onReady(function () {
                     this.setTitle(item.value[0].substring(0, 4) + '-' + item.value[0].substring(4, 6) + '-' + item.value[0].substring(6, 8) + ' 作业量:' + item.value[1]/*Ext.util.Format.numberRenderer(item.value[1])*/);
                 }
             },
-            label: {
-                display: 'insideEnd',//指定饼图标签的位置。包括"rotate", "middle", "insideStart", "insideEnd", "outside", "over", "under", 或者 "none"可以用来渲染标签。
-                field: 'INSERT_VALUE',//标签要展示的字段的名称。
-                renderer: Ext.util.Format.numberRenderer('0'),
-                orientation: 'vertical',//"horizontal" 或者 "vertical"
-                color: '#333'
-            },
+            //label: {
+            //    display: 'insideEnd',//指定饼图标签的位置。包括"rotate", "middle", "insideStart", "insideEnd", "outside", "over", "under", 或者 "none"可以用来渲染标签。
+            //    field: 'INSERT_VALUE',//标签要展示的字段的名称。
+            //    renderer: Ext.util.Format.numberRenderer('0'),
+            //    orientation: 'vertical',//"horizontal" 或者 "vertical"
+            //    color: '#333'
+            //},
             xField: 'WORKDATE',
             yField: 'INSERT_VALUE'
         }]
@@ -278,7 +279,7 @@ Ext.onReady(function () {
                 displayField: 'SITE_DESC',
                 valueField: 'SITE_ID',
                 labelWidth: 80,
-                width: 250,
+                width: 700,
                 style: ' margin: 5px 0px 5px -5px',
                 labelAlign: 'right'
             }, {

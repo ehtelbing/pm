@@ -1,5 +1,5 @@
 var departStoreLoad = false;
-
+var I_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -31,7 +31,7 @@ Ext.onReady(function () {
     var departStore = Ext.create('Ext.data.Store', {
         storeId: 'departStore',
         autoLoad: true,
-        pageSize: -1,
+        //pageSize: -1,
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
         proxy: {
             url: AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
@@ -50,8 +50,17 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
+                var falg='0';
+                for(var i=0;i<store.getCount();i++){
+                    var recored = store.getAt(i);
+                    if(recored.get('V_DEPTCODE')==I_DEPTCODE){
+                        falg=i;
+                        break;
+                    }
+                }
+                Ext.getCmp('V_V_DEPTCODE').select(records[falg]);
+                //Ext.getCmp('V_V_DEPTCODE').setValue(I_DEPTCODE);
                 departStoreLoad = true;
-                Ext.getCmp('V_V_DEPTCODE').select(store.first());
                 _init();
             }
         }
@@ -270,7 +279,7 @@ Ext.onReady(function () {
             align: 'center',
             width: 120,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href=javascript:dealWith(\'</a><a href="#" onclick="_show(\'' + record.data.LOGID + '\')">' + '查看' + '</a>';
+                return '<a href=javascript:_openImgicWindow(\'</a><a href="#" onclick="_show(\'' + record.data.LOGID + '\')">' + '查看' + '</a>';
             }
         }]
     });
@@ -396,4 +405,12 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
     return value;
+}
+function _openImgicWindow(V_ZG_GUID) {
+    Ext.data.StoreManager.lookup('aqcsfjStore1').load({
+        params: {
+            V_V_GUID: V_ZG_GUID
+        }
+    });
+    Ext.getCmp('attachWindow').show();
 }

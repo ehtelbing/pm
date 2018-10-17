@@ -66,7 +66,9 @@ Ext.onReady(function () {
                     'V_DEPTCODE': V_DEPTCODE,
                     'V_DEPTNAME': V_DEPTNAME
                 });
-                Ext.getCmp('zyqName').select(store.first());
+
+                Ext.getCmp('zyqName').setValue(V_DEPTCODE);
+                //Ext.getCmp('zyqName').select(store.first());
                 deptStoreLoad = true;
                 _init();
             }
@@ -237,7 +239,8 @@ Ext.onReady(function () {
                 submitFormat: 'Y-m-d',
                 labelAlign: 'right',
                 value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-                fieldLabel: '安装日期  从',
+                fieldLabel: '安装日期: 从',
+                labelSeparator: '',
                 labelWidth: 80,
                 width: 250,
                 style: ' margin: 5px 0px 5px 0px',
@@ -250,6 +253,7 @@ Ext.onReady(function () {
                 submitFormat: 'Y-m-d',
                 value: Ext.util.Format.date(new Date(new Date(new Date().getUTCFullYear(), new Date().getMonth() + 1, 1) - 86400000), "Y-m-d"),
                 fieldLabel: '到',
+                labelSeparator: '',
                 labelWidth: 80,
                 width: 250,
                 style: ' margin: 5px 0px 5px 0px',

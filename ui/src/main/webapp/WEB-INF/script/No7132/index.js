@@ -65,10 +65,10 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                store.insert(0, {
-                    'V_DEPTCODE': '%',
-                    'V_DEPTNAME': '全部'
-                });
+                //store.insert(0, {
+                //    'V_DEPTCODE': '%',
+                //    'V_DEPTNAME': '全部'
+                //});
                 Ext.getCmp('zyqName').select(store.first());
                 deptStoreLoad = true;
                 _init();
@@ -475,7 +475,7 @@ function _selectDeptName() {
         'IS_V_DEPTTYPE': '[主体作业区]'
 
     };
-    deptStore.currentPage = 1;
+    //deptStore.currentPage = 1;
     deptStore.load();
 };
 

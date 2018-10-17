@@ -188,8 +188,8 @@ Ext.onReady(function () {
         animate: true,
         shadow: true,
         store: equBJAlertStore,
-        width: window.screen.width - 280,
-        height: window.screen.height / 3 - 50,
+        width: window.innerWidth - 280,
+        height: window.innerHeight/2-40,
         legend: {
             position: 'right'
         },
@@ -464,7 +464,7 @@ Ext.onReady(function () {
             },
             defaults: {
                 columnWidth: 0.333,
-                height: window.screen.height / 3
+                height: window.innerHeight/2
             },
             items: [gridPanel1, gridPanel2, gridPanel3]
         }]
@@ -553,7 +553,7 @@ function _selectEquVGUrl() {
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值
-            if (data.RET != "") {
+            if (data.RET != ""&&data.RET !=null) {
                 window.open(data.RET, '', 'height=800px,width=600px,top=50px,left=100px,resizable=yes');
             } else {
                 Ext.Msg.alert('操作信息', '没有找到相应VG监控');

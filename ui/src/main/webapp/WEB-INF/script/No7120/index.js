@@ -8,7 +8,7 @@ Ext.onReady(function () {
     var departStore = Ext.create('Ext.data.Store', {
         storeId: 'departStore',
         autoLoad: true,
-        pageSize: -1,
+        //pageSize: -1,
         fields: ['V_DEPTCODE', 'V_DEPTNAME'],
         proxy: {
             url: AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
@@ -38,7 +38,7 @@ Ext.onReady(function () {
     var equStore = Ext.create('Ext.data.Store', {
         storeId: 'equStore',
         autoLoad: false,
-        pageSize: -1,
+        //pageSize: -1,
         fields: ['EQU_ID', 'EQU_DESC'],
         proxy: {
             url: AppUrl + 'PM_12/PRO_RUN7111_EQULIST',
@@ -64,7 +64,7 @@ Ext.onReady(function () {
     var cycleStore = Ext.create('Ext.data.Store', {
         storeId: 'cycleStore',
         autoLoad: true,
-        pageSize: -1,
+        //pageSize: -1,
         fields: ['CYCLE_ID', 'CYCLE_DESC'],
         proxy: {
             url: AppUrl + 'PM_12/PRO_RUN_CYCLE_ABLE',
@@ -88,12 +88,30 @@ Ext.onReady(function () {
         }
     });
 
-    var equBJAlertStore = Ext.create('Ext.data.JsonStore', {
-        id: 'equBJAlertStore',
-        fields: ['name', '报警值', '作业量']
-
+    //var equBJAlertStore = Ext.create('Ext.data.JsonStore', {
+    //    id: 'equBJAlertStore',
+    //    fields: ['name', '报警值', '作业量']
+    //
+    //});
+    var equBJAlertStore = Ext.create('Ext.data.Store', {
+        storeId: 'equBJAlertStore',
+        autoLoad: false,
+        pageSize: -1,
+        fields: ['SITE_DESC', 'ALERT_VALUE', 'SUM_YEILD'],
+        proxy: {
+            url: AppUrl + 'PM_12/PRO_RUN_EQU_BJ_ALERT_ALL',
+            async: false,
+            type: 'ajax',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
     });
-
     var chart = Ext.create('Ext.chart.Chart', {
         style: 'background:#fff',
         animate: true,
@@ -107,7 +125,7 @@ Ext.onReady(function () {
             /** x轴 */
             type: 'Numeric',//Numeric轴来展示区域序列数据
             position: 'bottom',//Numeric轴放在图表下部
-            fields: ['报警值', '作业量'],
+            fields: ['ALERT_VALUE', 'SUM_YEILD'],
             minimum: 0,
             label: {
                 renderer: Ext.util.Format.numberRenderer('0,0')
@@ -118,7 +136,7 @@ Ext.onReady(function () {
             /** 左侧分类 - y轴 */
             type: 'Category',
             position: 'left',//category轴放在图表左部
-            fields: ['name'],
+            fields: ['SITE_DESC'],
             title: ''
         }],
         series: [{
@@ -136,13 +154,14 @@ Ext.onReady(function () {
             },
             label: {
                 display: 'insideEnd',//指定饼图标签的位置。包括"rotate", "middle", "insideStart", "insideEnd", "outside", "over", "under", 或者 "none"可以用来渲染标签。
-                field: ['报警值', '作业量'],//标签要展示的字段的名称。
+                fields: ['ALERT_VALUE', 'SUM_YEILD'],//标签要展示的字段的名称。
                 renderer: Ext.util.Format.numberRenderer('0'),
                 orientation: 'vertical',//"horizontal" 或者 "vertical"
                 color: '#444'
             },
             xField: 'SITE_DESC',
-            yField: ['报警值', '作业量']
+            yField:  ['ALERT_VALUE', 'SUM_YEILD'],
+            title: ['报警值', '作业量']
         }]
     });
 
@@ -258,38 +277,44 @@ function _selectEqu() {
 }
 
 function _selectEquBJAlert() {
+    var equBJAlertStore = Ext.data.StoreManager.lookup('equBJAlertStore');
+    equBJAlertStore.proxy.extraParams = {
+        A_EQUID: Ext.getCmp('A_EQUID').getValue(),
+        A_CYCLE_ID: Ext.getCmp('A_CYCLE_ID').getValue()
+    };
 
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_12/PRO_RUN_EQU_BJ_ALERT_ALL',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            A_EQUID: Ext.getCmp('A_EQUID').getValue(),
-            A_CYCLE_ID: Ext.getCmp('A_CYCLE_ID').getValue()
-        },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);//后台返回的值
-            var data = [];
-            Ext.Array.each(resp.list,
-                function (name, index, countriesItSelf) {
-                    data.push({
-                        name: name.SITE_DESC,
-                        报警值: name.ALERT_VALUE,
-                        作业量: name.SUM_YEILD
-                    })
-                });
-            Ext.data.StoreManager.lookup('equBJAlertStore').loadData(data);
-
-        },
-        failure: function (response) {//访问到后台时执行的方法。
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            })
-        }
-
-    });
+    equBJAlertStore.load();
+    //Ext.Ajax.request({
+    //    url: AppUrl + 'PM_12/PRO_RUN_EQU_BJ_ALERT_ALL',
+    //    type: 'ajax',
+    //    method: 'POST',
+    //    params: {
+    //        A_EQUID: Ext.getCmp('A_EQUID').getValue(),
+    //        A_CYCLE_ID: Ext.getCmp('A_CYCLE_ID').getValue()
+    //    },
+    //    success: function (response) {
+    //        var resp = Ext.decode(response.responseText);//后台返回的值
+    //        var data = [];
+    //        Ext.Array.each(resp.list,
+    //            function (name, index, countriesItSelf) {
+    //                data.push({
+    //                    name: name.SITE_DESC,
+    //                    报警值: name.ALERT_VALUE,
+    //                    作业量: name.SUM_YEILD
+    //                })
+    //            });
+    //        Ext.data.StoreManager.lookup('equBJAlertStore').loadData(data);
+    //
+    //    },
+    //    failure: function (response) {//访问到后台时执行的方法。
+    //        Ext.MessageBox.show({
+    //            title: '错误',
+    //            msg: response.responseText,
+    //            buttons: Ext.MessageBox.OK,
+    //            icon: Ext.MessageBox.ERROR
+    //        })
+    //    }
+    //
+    //});
 
 }

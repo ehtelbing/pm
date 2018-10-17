@@ -1,7 +1,6 @@
 var V_V_PLANTCODE = '';
 var V_V_DEPTCODE = '';
 var A_EQUID = '';
-
 var ckStoreLoad = false;
 var deptStoreLoad = false;
 var sbStoreLoad = false;
@@ -69,30 +68,30 @@ Ext.onReady(function () {
     });
 
     //设备Store
-    var sbStore = Ext.create("Ext.data.Store", {
-        id: 'sbStore',
-        autoLoad: false,
-        fields: ['EQU_ID', 'EQU_DESC'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'PM_12/PRO_RUN7111_EQULIST',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
-        },
-        listeners: {
-            load: function (store, records) {
-                sbStoreLoad = true;
-                Ext.getCmp('EQU_DESC').select(store.first());
-                _init();
-            }
-        }
-    });
+    //var sbStore = Ext.create("Ext.data.Store", {
+    //    id: 'sbStore',
+    //    autoLoad: false,
+    //    fields: ['EQU_ID', 'EQU_DESC'],
+    //    proxy: {
+    //        type: 'ajax',
+    //        url: AppUrl + 'PM_12/PRO_RUN7111_EQULIST',
+    //        actionMethods: {
+    //            read: 'POST'
+    //        },
+    //        reader: {
+    //            type: 'json',
+    //            root: 'list'
+    //        },
+    //        extraParams: {}
+    //    },
+    //    listeners: {
+    //        load: function (store, records) {
+    //            sbStoreLoad = true;
+    //            Ext.getCmp('EQU_DESC').select(store.first());
+    //            _init();
+    //        }
+    //    }
+    //});
 
     //作业周期类型
     var zyCycleStore = Ext.create("Ext.data.Store", {
@@ -165,7 +164,7 @@ Ext.onReady(function () {
                 xtype: 'combo',
                 store: ckStore,
                 editable: false,
-                fieldLabel: '厂' + '<a>&nbsp;&nbsp;</a>' + '矿',
+                fieldLabel: '厂矿',
                 labelWidth: 80,
                 width: 250,
                 displayField: 'V_DEPTNAME',
@@ -190,22 +189,34 @@ Ext.onReady(function () {
                 queryMode: 'local',
                 style: ' margin: 5px 0px 5px 0px',
                 labelAlign: 'right',
-                listeners: {
-                    change: function (field, newValue, oldValue) {
-                        _selectSBName();
-                    }
-                }
+                // listeners: {
+                    // change: function (field, newValue, oldValue) {
+                        // _selectSBName();
+                    // }
+                // }
             }, {
-                id: 'EQU_DESC',
+                 id:'sbName',
                 xtype: 'combo',
-                store: sbStore,
                 fieldLabel: '当前设备',
+                readOnly: true,
                 labelWidth: 80,
                 width: 250,
-                displayField: 'EQU_DESC',
-                valueField: 'EQU_ID',
+                emptyText: '点击选择设备....',
                 style: ' margin: 5px 0px 5px 0px',
-                labelAlign: 'right'
+                labelAlign: 'right',
+                listeners: {
+                    click: {
+                        element: 'el',
+                        fn: function () {
+                            var dept=Ext.getCmp("zyqName").getValue()=="%"?Ext.getCmp("ckName").getValue():Ext.getCmp("zyqName").getValue();
+                            var returnValue = window.open(AppUrl + 'page/PM_090101/index.html?V_DEPTCODE=' + dept, '', 'height=' + '600px' + ',width=' + '1000px' + ',top=10px,left=10px,resizable=yes');
+                        }
+                    }
+                }
+             },
+            {
+                xtype: 'hidden',
+                id: 'sbCode'
             }]
         }, {
             xtype: 'panel',
@@ -362,7 +373,7 @@ Ext.onReady(function () {
 //初始化
 function _init() {
 
-    if (ckStoreLoad && sbStoreLoad && deptStoreLoad && zyCycleStoreLoad) {
+    if (ckStoreLoad && deptStoreLoad && zyCycleStoreLoad) {//sbStoreLoad &&
         Ext.getBody().unmask();//去除页面笼罩
     }
 }
@@ -375,11 +386,17 @@ function _selectDeptName() {
         'IS_V_DEPTTYPE': '[主体作业区]'
 
     };
+	deptStore.currentPage = 1;
     deptStore.load();
 };
-
+//返回的设备
+function getEquipReturnValue(ret) {
+    var str = ret.split('^');
+    Ext.getCmp('sbCode').setValue(str[0]);
+    Ext.getCmp('sbName').setValue(str[1]);
+}
 //查找设备
-function _selectSBName() {
+/* function _selectSBName() {
 
     var sbStore = Ext.data.StoreManager.lookup('sbStore');
 
@@ -392,11 +409,11 @@ function _selectSBName() {
     };
     sbStore.load();
 };
-
+ */
 
 //查询设备运行台账
 function _selectEqu() {
-    A_EQUID = Ext.getCmp('EQU_DESC').getValue();
+    A_EQUID = Ext.getCmp('sbCode').getValue();
     A_CYCLE_ID = Ext.getCmp('CYCLE_TYPE').getValue();
 
     var equRunStore = Ext.data.StoreManager.lookup('equRunStore');
