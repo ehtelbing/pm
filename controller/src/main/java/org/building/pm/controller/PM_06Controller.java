@@ -44,7 +44,7 @@ public class PM_06Controller {
         return result;
     }
 
-    //���豸����
+    //������
     @RequestMapping(value = "/PRO_GET_DEPTEQUTYPE_PER", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_GET_DEPTEQUTYPE_PER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,

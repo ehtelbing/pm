@@ -1570,7 +1570,107 @@ public class MlController {
             }
         }
     }
+    //导出详细更换历史Excel
+    @RequestMapping(value = "/PRO_RUN_BJ_CHANGE_LOG_ALL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void PRO_RUN_BJ_CHANGE_LOG_ALL_EXCEL(String V_BJ_UNIQUE_CODE,
+                                                HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
+        List list = new ArrayList();
+        V_BJ_UNIQUE_CODE = URLDecoder.decode(V_BJ_UNIQUE_CODE, "UTF-8");
+        Map<String, Object> data = mlService.PRO_RUN_BJ_CHANGE_LOG_ALL(V_BJ_UNIQUE_CODE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("更换日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("唯一标识");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("物资描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("计量单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("设备");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("设备位置");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("更换方向");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("供应商");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("备注");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("CHANGEDATE") == null ? "" : map.get("CHANGEDATE").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("BJ_UNIQUE_CODE") == null ? "" : map.get("BJ_UNIQUE_CODE").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("CHANGE_EQUNAME") == null ? "" : map.get("CHANGE_EQUNAME").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("CHANGE_SITE_DESC") == null ? "" : map.get("CHANGE_SITE_DESC").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("DIRECTION") == null ? "" : map.get("DIRECTION").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("SUPPLY_NAME") == null ? "" : map.get("SUPPLY_NAME").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("REMARK") == null ? "" : map.get("REMARK").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("设备备件详细更换历史Excel.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     //导出更换历史Excel
     @RequestMapping(value = "/PRO_RUN_SITE_BJ_CHANGE_LOG_ALL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
