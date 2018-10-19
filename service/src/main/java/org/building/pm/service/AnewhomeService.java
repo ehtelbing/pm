@@ -217,4 +217,33 @@ public class AnewhomeService {
         logger.info("end PRO_BASE_MENU_FAVORITE2");
         return result;
     }
+
+    public Map<String, Object> PRO_BASE_ALLMENU_NEW_VIEW(String RoleCode, String IS_V_SYSTYPE, String IS_V_MENUCODE_UP) throws SQLException {
+
+        logger.info("begin PRO_BASE_ALLMENU_NEW_VIEW");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_ALLMENU_NEW_VIEW(:RoleCode,:IS_V_SYSTYPE,:IS_V_MENUCODE_UP,:V_CURSOR)}");
+            cstmt.setString("RoleCode", RoleCode);
+            cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
+            cstmt.setString("IS_V_MENUCODE_UP", IS_V_MENUCODE_UP);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_ALLMENU_NEW_VIEW");
+        return result;
+    }
 }

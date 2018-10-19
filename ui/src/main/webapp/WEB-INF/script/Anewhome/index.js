@@ -57,6 +57,7 @@ $(function () {
     getNowTime();
     getPersonInf();
     getselmenumain();
+    OnCookies();
 });
 
 function QuerySumDb() {
@@ -582,15 +583,92 @@ function getselmenumain() {
             V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
             SING_ID: "ONE"
         },
+        //success: function (ret) {
+        //    var resp = Ext.JSON.decode(ret.responseText);
+        //    if (resp.list.length > 0) {
+        //        for (var i = 0; i < resp.list.length; i++) {
+        //            Ext.fly(resp.list[i].V_HOME_MENU + "1").dom.style.display = 'block';
+        //            Ext.fly(resp.list[i].V_HOME_MENU).dom.style.display = 'block';
+        //            Ext.fly(resp.list[i].V_HOME_MENU).dom.innerText = resp.list[i].V_MENUNAME;
+        //            Ext.fly(resp.list[i].V_HOME_MENU + "2").dom.value = resp.list[i].V_MENUCODE;
+        //        }
+        //    }
+        //}
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             if (resp.list.length > 0) {
-                for (var i = 0; i < resp.list.length; i++) {
-                    Ext.fly(resp.list[i].V_HOME_MENU + "1").dom.style.display = 'block';
-                    Ext.fly(resp.list[i].V_HOME_MENU).dom.style.display = 'block';
-                    Ext.fly(resp.list[i].V_HOME_MENU).dom.innerText = resp.list[i].V_MENUNAME;
-                    Ext.fly(resp.list[i].V_HOME_MENU + "2").dom.value = resp.list[i].V_MENUCODE;
+                var tableData1 = "";
+                var tableData2 = "";
+                var tr1Data1="";
+                var tr1Data2="";
+                var tr2Data1="";
+                var tr2Data2="";
+
+                var j = 0;
+                var k=0;
+                var tableFlag=resp.list[0].V_MENUCODE_UP;
+                for (var i = 0; i < resp.list.length; i++){
+                    if (resp.list[i].V_ICOURL != "" && resp.list[i].V_ICOURL != null) {
+                        if (tableFlag == resp.list[i].V_MENUCODE_UP) {
+
+                            if (j % 5 == 0) {
+                                tableData1 = tableData1 + "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+                                tr1Data1 = tr1Data1 + "<tr>";
+                                tr1Data2 = tr1Data2 + "<tr>";
+                            }
+
+                            tr1Data1 = tr1Data1 + "<td width=\"200\" align=\"center\" onclick=\"getfn(\'" + resp.list[i].V_HOME_MENU + "\')\"><i id=\'" + resp.list[i].V_HOME_MENU + "\' title=\"\">" +
+                                "<img src=\"../../../" + resp.list[i].V_ICOURL + "\" width=\"72\" height=\"72\" onmouseover=\"showMenus(\'"+resp.list[i].V_MENUCODE+"\',\'"+resp.list[i].V_HOME_MENU+"\')\" /></i></td>";
+                            tr1Data2 = tr1Data2 +"<td align=\"center\" onclick=\"getfn(\'"+ resp.list[i].V_HOME_MENU +"\')\"><input type=\"hidden\" id=\""+resp.list[i].V_HOME_MENU+"2\" value=\""+resp.list[i].V_MENUCODE+"\"/>"+resp.list[i].V_MENUNAME+"</td>";
+                            if ((j + 1) % 5 == 0) {
+                                tr1Data1 = tr1Data1 + "</tr>";
+                                tr1Data2 = tr1Data2 + "</tr>";
+                                tableData1 = tableData1+tr1Data1+tr1Data2;
+                                tableData1 = tableData1 + "</table></br>";
+                                tr1Data1="";tr1Data2="";
+
+                            }
+                            j = j + 1;
+                        }else{
+                            if (k % 5 == 0) {
+                                tableData2 = tableData2 + "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+                                tr2Data1 = tr2Data1 + "<tr>";
+                                tr2Data2 = tr2Data2 + "<tr>";
+                            }
+
+                            tr2Data1 = tr2Data1 + "<td width=\"200\" align=\"center\" onclick=\"getfn(\'" + resp.list[i].V_HOME_MENU + "\')\"><i id=\'" + resp.list[i].V_HOME_MENU + "\' title=\"\">" +
+                                "<img src=\"../../../" + resp.list[i].V_ICOURL + "\" width=\"72\" height=\"72\" onmouseover=\"showMenus(\'"+resp.list[i].V_MENUCODE+"\',\'"+resp.list[i].V_HOME_MENU+"\')\" /></i></td>";
+                            tr2Data2 = tr2Data2 +"<td align=\"center\" onclick=\"getfn(\'"+ resp.list[i].V_HOME_MENU +"\')\"><input type=\"hidden\" id=\""+resp.list[i].V_HOME_MENU+"2\" value=\""+resp.list[i].V_MENUCODE+"\"/>"+resp.list[i].V_MENUNAME+"</td>";
+                            if ((k + 1) % 5 == 0) {
+                                tr2Data1 = tr2Data1 + "</tr>";
+                                tr2Data2 = tr2Data2 + "</tr>";
+                                tableData2 = tableData2+tr2Data1+tr2Data2;
+                                tableData2 = tableData2 + "</table></br>";
+                                tr2Data1="";tr2Data2="";
+
+                            }
+                            k = k + 1;
+                        }
+                    }
+
+            }
+                if (j>0 && (j % 5) > 0) {
+                    tr1Data1 = tr1Data1 + "</tr>";
+                    tr1Data2 = tr1Data2 + "</tr>";
+                    tableData1 = tableData1+tr1Data1+tr1Data2;
+                    tableData1 = tableData1 + "</table></br>";
+
                 }
+                if (k>0 && (k % 5) > 0) {
+                    tr2Data1 = tr2Data1 + "</tr>";
+                    tr2Data2 = tr2Data2 + "</tr>";
+                    tableData2 = tableData2+tr2Data1+tr2Data2;
+                    tableData2 = tableData2 + "</table></br>";
+
+                }
+
+                $("#xx1").html(tableData1);
+                $("#xx2").html(tableData2);
             }
         }
     });
@@ -731,4 +809,59 @@ function InsertFavoriteMenu() {//新增收藏（批量），已收藏页面将�
 
 function getfn(HomeMenu) {
     location.href = AppUrl + 'page/home/Index2.html?v_menucode=' + Ext.fly(HomeMenu + '2').dom.value;
+}
+function showMenus(menucode,imgid){
+    if(menucode==null||imgid==null||menucode==""||imgid==""){
+        return false;
+    }else{
+        Ext.Ajax.request({
+            url: AppUrl + 'anewhome/PRO_BASE_ALLMENU_NEW_VIEW',
+            type: 'ajax',
+            method: 'POST',
+            async: false,
+            params: {
+                'RoleCode': '',
+                'IS_V_SYSTYPE':'%',
+                'IS_V_MENUCODE_UP':menucode
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                var mytitle="";
+                if (resp.list.length > 0) {
+                    for (var i = 0; i < resp.list.length; i++) {
+                        mytitle=mytitle+resp.list[i].V_MENUNAME.replace(/^\s*|\s*$/g, "");
+                        if(i<resp.list.length-1){
+                            mytitle=mytitle+'\n';
+                        }
+                    }
+                    document.getElementById(imgid).title=mytitle;
+                }
+            }
+
+        });
+    }
+}
+function OnCookies() {
+    Ext.Ajax.request({
+        url: AppUrl + 'info/login_getUrl',
+        params: {
+            LoginName: Ext.util.Cookies.get('v_personcode')
+        }, success: function (respon) {
+            var resp = Ext.decode(respon.responseText);
+            if (resp.list.length>0) {
+                for(var i = 0; i < resp.list.length; i++)
+                {
+                    var iframe = document.createElement("iframe");
+                    iframe.style.display = "none";
+                    iframe.id = "iframe" + i;
+                    document.body.appendChild(iframe);
+                    document.getElementById("iframe" + i).src = resp.list[i].V_URL;
+
+                }
+            } else {
+                msgbox(resp.info);
+            }
+        }
+    });
+
 }

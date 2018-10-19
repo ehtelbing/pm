@@ -97,4 +97,16 @@ public class aNewhomeController {
         dept.put("children", children);
         return children;
     }
+
+    @RequestMapping(value = "PRO_BASE_ALLMENU_NEW_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_ALLMENU_NEW_VIEW(
+            @RequestParam(value = "RoleCode") String RoleCode,
+            @RequestParam(value = "IS_V_SYSTYPE") String IS_V_SYSTYPE,
+            @RequestParam(value = "IS_V_MENUCODE_UP") String IS_V_MENUCODE_UP
+    )
+            throws SQLException {
+        Map<String, Object> result = anewhomeService.PRO_BASE_ALLMENU_NEW_VIEW(RoleCode, IS_V_SYSTYPE, IS_V_MENUCODE_UP);
+        return result;
+    }
 }

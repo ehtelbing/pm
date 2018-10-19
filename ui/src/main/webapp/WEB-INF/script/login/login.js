@@ -107,8 +107,9 @@ function Login() {
                             Ext.util.Cookies.set('v_workcss',
                                 resp.list[0].V_WORKCSS);
 
-                            OnCookies();
+                            //OnCookies();
                            // location.href = "../../page/home/Index.html";
+
                             location.href = "../../page/Anewhome/index.html";
                         } else {
                             msgbox("不存在此用户！");
@@ -243,7 +244,7 @@ function OnLogInClick() {
                     Ext.util.Cookies.set('v_workcss',
                         resp.list[0].V_WORKCSS);
 
-                    OnCookies();
+                    //OnCookies();
                     //location.href = "../../page/home/Index.html";
                     location.href = "../../page/Anewhome/index.html";
                     /*} else {
@@ -283,27 +284,31 @@ function onTel() {
     $('#tel2').html("弓长岭区域:15042275569");
 }
 
-function OnCookies() {
-    Ext.Ajax.request({
-        url: AppUrl + 'info/login_getUrl',
-        params: {
-            LoginName: document.getElementById('username').value
-        }, success: function (respon) {
-            var resp = Ext.decode(respon.responseText);
-            if (resp.list.length>0) {
-                 for(var i = 0; i < resp.list.length; i++)
-                 {
-                    var iframe = document.createElement("iframe");
-                    iframe.style.display = "none";
-                    iframe.id = "iframe" + i;
-                    document.body.appendChild(iframe);
-                    document.getElementById("iframe" + i).src = resp.list[0].V_URL;
-                 }
-            } else {
-                msgbox(resp.info);
-            }
-        }
-    });
-
-}
+//function OnCookies() {
+//    Ext.Ajax.request({
+//        url: AppUrl + 'info/login_getUrl',
+//        params: {
+//            LoginName: document.getElementById('username').value
+//        }, success: function (respon) {
+//            var resp = Ext.decode(respon.responseText);
+//            if (resp.list.length>0) {
+//                 for(var i = 0; i < resp.list.length; i++)
+//                 {
+//                    var iframe = document.createElement("iframe");
+//                    iframe.style.display = "none";
+//                    iframe.id = "iframe" + i;
+//                    document.body.appendChild(iframe);
+//                    document.getElementById("iframe" + i).src = resp.list[0].V_URL;
+//                     if(i==resp.list.length-1){
+//                         location.href = "../../page/Anewhome/index.html";
+//                     }
+//                 }
+//            } else {
+//                msgbox(resp.info);
+//                location.href = "../../page/Anewhome/index.html";
+//            }
+//        }
+//    });
+//
+//}
 
