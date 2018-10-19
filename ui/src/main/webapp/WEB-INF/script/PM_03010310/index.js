@@ -412,9 +412,13 @@ Ext.onReady(function () {
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 labelWidth: 80,
-                                width: 280,
+                                width: 250,
                                 value: 0
-                            }, {
+                            },{xtype:'label',
+                                margin:'8 0 0 5' ,
+                                text:'小时',
+                                width:28
+                            } ,{
                                 xtype: 'numberfield',
                                 id: 'repairper',
                                 fieldLabel: '维修人数',
@@ -718,7 +722,7 @@ Ext.onReady(function () {
                                 allowNegative: false,
                                 allowDecimals: false,
                                 labelWidth: 80,
-                                width: 220,
+                                width: 245,
                                 value: '0'
                             },{
                                 xtype:'label',
@@ -731,11 +735,11 @@ Ext.onReady(function () {
                                 id: 'jjhour',
                                 fieldLabel: '胶接时间',
                                 labelAlign: 'right',
-                                margin: '5 0 0 5',
+                                margin: '5 0 0 2',
                                 allowNegative: false,
                                 allowDecimals: false,
-                                labelWidth: 80,
-                                width: 220,
+                                labelWidth: 55,
+                                width: 200,
                                 value: '0'
                             },{
                                 xtype:'label',

@@ -188,9 +188,18 @@ function loadOrder() {
                 $("#D_START_DATE").html((resp.list[0].D_START_DATE).split('.0')[0]);
                 $("#D_FINISH_DATE").html((resp.list[0].D_FINISH_DATE).split('.0')[0]);
                 $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
-                $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
-                $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
-                $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
+                var I_OTHERHOUR=""; var V_OTHERREASON="";var V_REPAIRCONTENT="";
+                var V_REPAIRSIGN="";var V_REPAIRPERSON="";
+                I_OTHERHOUR=resp.list[0].I_OTHERHOUR;
+                V_OTHERREASON=resp.list[0].V_OTHERREASON;
+                V_REPAIRCONTENT=resp.list[0].V_REPAIRCONTENT;
+                V_REPAIRSIGN=resp.list[0].V_REPAIRSIGN;
+                V_REPAIRPERSON=resp.list[0].V_REPAIRPERSON;
+                $("#I_OTHERHOUR").val(I_OTHERHOUR);
+                $("#V_OTHERREASON").val(V_OTHERREASON);
+                $("#V_REPAIRCONTENT").val(V_REPAIRCONTENT);
+                $("#V_REPAIRSIGN").val(V_REPAIRSIGN);
+                $("#V_REPAIRPERSON").val(V_REPAIRPERSON);
 
                 $("#V_WBS").html(resp.list[0].V_WBS);
                 $("#V_WBS_TXT").html(resp.list[0].V_WBS_TXT);

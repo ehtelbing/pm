@@ -159,8 +159,8 @@ Ext.onReady(function () {
                 }
             }
         }, {xtype:'textfield',
-            id:'fzr',
-            fieldLabel:"负责人",
+            id:'fzr2',
+            fieldLabel:"人员岗位",
             allowBlank:true,
             labelWidth: 70,
             value:pername,//Ext.util.Cookies.get('v_personname'),
@@ -324,7 +324,125 @@ Ext.onReady(function () {
     _init()
     // _selectOverhaulApply();
 
-
+    var windowEqu = Ext.create('Ext.window.Window', {
+        id: 'windowEqu',
+        width: 900,
+        height: 500,
+        title: '手工消缺',
+        modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        region: 'center',
+        layout: 'vbox',
+        items:[{
+            xtype: 'textfield',
+            id: 'qxly',
+            fieldLabel: '缺陷来源',
+            margin: '5 0 2 10',
+            labelWidth: 80,
+            labelAlign: 'right',
+            width: 230
+        }, {
+            xtype: 'textfield',
+            id: 'qxrq',
+            fieldLabel: '缺陷日期',
+            margin: '5 0 2 10',
+            labelWidth: 80,
+            labelAlign: 'right',
+            width: 230
+        },{
+            xtype: 'textfield',
+            id: 'fzr',
+            fieldLabel: '负责人姓名',
+            margin: '5 0 2 10',
+            labelWidth: 80,
+            labelAlign: 'right',
+            width: 230
+        },{
+            xtype: 'textfield',
+            id: 'dw',
+            fieldLabel: '单位',
+            margin: '5 0 2 10',
+            labelWidth: 80,
+            labelAlign: 'right',
+            width: 230
+        },{
+            xtype: 'textareafield',
+            id: 'qxmx',
+            fieldLabel: '缺陷明细',
+            margin: '5 0 2 10',
+            labelWidth: 80,
+            labelAlign: 'right',
+            width: 600
+        },{
+            xtype: 'textfield',
+            id: 'sb',
+            fieldLabel: '设备',
+            margin: '5 0 2 10',
+            labelWidth: 80,
+            labelAlign: 'right',
+            width: 230
+        },
+            {
+                xtype: 'textfield',
+                id: 'sbwz',
+                fieldLabel: '设备位置',
+                margin: '5 0 2 10',
+                labelWidth: 80,
+                labelAlign: 'right',
+                width: 230
+            }, {
+                xtype: 'textfield',
+                id: 'clyj',
+                fieldLabel: '处理意见',
+                margin: '5 0 2 10',
+                labelWidth: 80,
+                labelAlign: 'right',
+                width: 230
+            }, {
+                xtype: 'textfield',
+                id: 'qxzt1',
+                fieldLabel: '缺陷状态',
+                margin: '5 0 2 10',
+                labelWidth: 80,
+                labelAlign: 'right',
+                width: 230
+            },
+            // ,{
+            //     xtype: 'label',
+            //     text: '消缺原因：',
+            //     style:'margin: 5 0 2 10'
+            // },
+            // {xtype: 'label', text: '*', style: 'color:red'},
+            {
+                xtype: 'textareafield',
+                fieldLabel:'消缺原因(*)',
+                height: 110,
+                labelWidth: 80,
+                width: 600,
+                labelStyle:'color:#ff0000',
+                margin:'5 0 2 2',
+                id: 'xqyy',
+                labelAlign: 'right',
+                style:'color:red'
+            }
+        ],
+        buttons: [
+            {
+                text: '确定',
+                width: 70,
+                listeners: {
+                    click: OnSaveButtonClicked
+                }
+            }, {
+                text: '返回',
+                width: 70,
+                listeners: {
+                    click: OnBackButtonClicked
+                }
+            }]
+    });
 
 
 });
@@ -381,172 +499,7 @@ function OnBtnSxQx() {
     }
 }
 
-var windowEqu = Ext.create('Ext.window.Window', {
-    id: 'windowEqu',
-    width: 900,
-    height: 500,
-    title: '手工消缺',
-    modal: true,//弹出窗口时后面背景不可编辑
-    frame: true,
-    closeAction: 'hide',
-    closable: true,
-    region: 'center',
-    layout: 'vbox',
-    items: [{
-        region: 'center',
-        layout: 'vbox',
-        height: 440,
-        border: false,
-        baseCls: 'my-panel-no-border',
-        frame: true,
-        defaults: {labelAlign: 'right'},
-        items: [
-            {
-                xtype: 'panel',
-                border: false,
-                layout: 'hbox',
-                margin: '15px 15px 0px 15px',
-                items: [
-                    {
-                        xtype: 'textfield',
-                        id: 'qxly',
-                        fieldLabel: '缺陷来源',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    }, {
-                        xtype: 'textfield',
-                        id: 'qxrq',
-                        fieldLabel: '缺陷日期',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    }]
-            }, {
-                xtype: 'panel',
-                border: false,
-                layout: 'hbox',
-                margin: '0px 15px 0px 15px',
-                items: [
-                    {
-                        xtype: 'textfield',
-                        id: 'fzr',
-                        fieldLabel: '负责人',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    },
-                    {
-                        xtype: 'textfield',
-                        id: 'dw',
-                        fieldLabel: '单位',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    }]
-            }, {
-                xtype: 'panel',
-                border: false,
-                layout: 'hbox',
-                margin: '0px 0px 0px 15px',
-                items: [
-                    {
-                        xtype: 'textareafield',
-                        id: 'qxmx',
-                        fieldLabel: '缺陷明细',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 600
-                    }]
-            }, {
-                xtype: 'panel',
-                border: false,
-                layout: 'hbox',
-                margin: '0px 0px 0px 15px',
-                items: [
-                    {
-                        xtype: 'textfield',
-                        id: 'sb',
-                        fieldLabel: '设备',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    },
-                    {
-                        xtype: 'textfield',
-                        id: 'sbwz',
-                        fieldLabel: '设备位置',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    }]
-            }, {
-                xtype: 'panel',
-                border: false,
-                layout: 'hbox',
-                margin: '0px 0px 0px 15px',
-                items: [
-                    {
-                        xtype: 'textfield',
-                        id: 'clyj',
-                        fieldLabel: '处理意见',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    }, {
-                        xtype: 'textfield',
-                        id: 'qxzt1',
-                        fieldLabel: '缺陷状态',
-                        margin: '5 0 5 5',
-                        labelWidth: 80,
-                        width: 230
-                    }]
-            }, {
-                xtype: 'panel',
-                border: false,
-                layout: 'hbox',
-                margin: '0px 0px 0px 15px',
-                items: [{
-                    xtype: 'panel',
-                    width: 120,
-                    height: 120,
-                    border: false,
-                    baseCls: 'border_top5',
-                    layout: 'fit',
-                    items: [{
-                        xtype: 'label',
-                        text: '消缺原因：'
-                    }, {xtype: 'label', text: '*', style: 'color:red'}]
-                }, {
-                    xtype: 'panel',
-                    width: 720,
-                    height: 120,
-                    border: false,
-                    baseCls: 'border_top6',
-                    items: [{
-                        xtype: 'textareafield',
-                        height: 110,
-                        width: 600,
-                        id: 'xqyy'
-                    }]
-                }]
-            }]
-    }],
-    buttons: [
-        {
-            text: '确定',
-            width: 70,
-            listeners: {
-                click: OnSaveButtonClicked
-            }
-        }, {
-            text: '返回',
-            width: 70,
-            listeners: {
-                click: OnBackButtonClicked
-            }
-        }]
-});
+
 
 function OnSaveButtonClicked() {
     var id = GUID;
