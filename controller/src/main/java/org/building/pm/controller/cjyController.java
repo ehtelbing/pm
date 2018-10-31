@@ -1495,6 +1495,10 @@ public class cjyController {
             @RequestParam(value = "V_V_TELNAME") String V_V_TELNAME,
             @RequestParam(value = "V_V_TELNUMB") String V_V_TELNUMB,
             @RequestParam(value = "V_V_PDGG") String V_V_PDGG,
+//----------
+            @RequestParam(value = "V_V_THICKNESS") String V_V_THICKNESS,
+            @RequestParam(value = "V_V_REASON") String V_V_REASON,
+            @RequestParam(value = "V_V_EVERTIME") String V_V_EVERTIME,
 
 
             HttpServletRequest request,
@@ -1537,7 +1541,7 @@ public class cjyController {
 //                V_V_JHHOUR,
                 V_V_TELNAME,
                 V_V_TELNUMB,
-                V_V_PDGG);
+                V_V_PDGG,V_V_THICKNESS,V_V_REASON,V_V_EVERTIME);
 //end up
 
         return result;
