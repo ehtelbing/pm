@@ -259,8 +259,17 @@ function loadSPR() {
                 });
 
                 processKey = resp.RET;
-                V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
-                V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
+                //-----2018-10-31 当默认加载审批人不存在时
+                if(resp.list.length==0){
+                    Ext.MessageBox.alert('消息','当前流程不存在，请从新选择');
+                    // V_STEPNAME="";
+                    // V_NEXT_SETP="";
+                }else{
+                    V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
+                    V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
+                }
+                // V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
+                // V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
 
                 /* for (j=0;j<result.length;j++){
                     if(result[j].value==$.cookies.get('v_personcode')){
