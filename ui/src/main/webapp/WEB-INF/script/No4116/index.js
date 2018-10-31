@@ -170,7 +170,9 @@ Ext.onReady(function() {
                  {id : 'zyq',xtype : 'combo',store : zyqstore,editable : false,fieldLabel : '作业区',labelWidth : 80, displayField : 'V_DEPTNAME',valueField : 'V_DEPTCODE',queryMode : 'local', baseCls : 'margin-bottom'},
                  {id : 'gdzt',xtype : 'combo',store : sgdzt,editable : false, fieldLabel : '工单状态',labelWidth : 80,displayField : 'V_STATENAME', valueField : 'V_STATECODE', queryMode : 'local', baseCls : 'margin-bottom'},
                  {id : 'sblx',xtype : 'combo', store : ssblx,editable : false,fieldLabel : '设备类型', labelWidth : 80,displayField : 'V_EQUTYPENAME',valueField : 'V_EQUTYPECODE',queryMode : 'local', baseCls : 'margin-bottom'},
-                 {id : 'sbmc',xtype : 'combo', store : ssbmc,editable : false,fieldLabel : '设备名称', labelWidth : 80,displayField : 'V_EQUNAME',valueField : 'V_EQUCODE',queryMode : 'local', baseCls : 'margin-bottom'},
+                 {id : 'sbmc',xtype : 'combo', store : ssbmc,editable : false,fieldLabel : '设备名称', labelWidth : 80,displayField : 'V_EQUNAME',valueField : 'V_EQUCODE',queryMode : 'local',listConfig:{
+                         minWidth:400
+                     }, baseCls : 'margin-bottom'},
                  {id : 'djy',xtype : 'combo', store : sdjy,editable : false,fieldLabel : '点检员', labelWidth : 80,displayField : 'V_PERSONNAME',valueField : 'V_PERSONCODE',queryMode : 'local', baseCls : 'margin-bottom'},
                 {id : 'selshortTxt',xtype : 'textfield', width : 158,emptyText : '按工单描述模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'selmatDesc',xtype : 'textfield', width : 158,emptyText : '按使用物料模糊搜索',margin:'5px 0px 5px 90px'},

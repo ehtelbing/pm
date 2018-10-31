@@ -394,7 +394,10 @@ Ext.onReady(function () {
                                 displayField: 'V_EQUNAME',
                                 valueField: 'V_EQUCODE',
                                 store: sbmcStore,
-                                queryMode: 'local'
+                                queryMode: 'local',
+                                listConfig:{
+                                    minWidth:400
+                                }
                             }
                         ]
                     }, {
@@ -648,6 +651,11 @@ Ext.onReady(function () {
                         width: 540,
                         height: 80,
                         value: ''
+                    },{
+                        xtype:'label',
+                        text:"--------------------------------皮带胶接数据(↓)-----------------------------",
+                        margin: '10 0 0 85',
+                        style:'color:blue'
                     },{ layout: 'hbox',
                         defaults: {labelAlign: 'right'},
                         //frame: false,
@@ -773,6 +781,48 @@ Ext.onReady(function () {
                             width: 255,
                             value: ''
                         }]
+                    },
+                    {layout:'hbox',
+                        defaults:{labelAlign:'right'},
+                        baseCls: 'my-panel-no-border',
+                        items:[{
+                            xtype: 'datefield',
+                            id: 'evertime',
+                            format: 'Y-m-d',
+                            fieldLabel: '上次施工时间',
+                            editable: false,
+                            labelAlign: 'right',
+                            margin: '5 0 0 5',
+                            labelWidth: 80,
+                            width: 280,
+                            value: ''
+                        },{
+                            xtype: 'numberfield',
+                            id: 'hd',
+                            fieldLabel: '厚度',
+                            labelAlign: 'right',
+                            margin: '5 0 0 2',
+                            allowNegative: false,
+                            allowDecimals: false,
+                            labelWidth: 85,
+                            width: 230,
+                            value: '0'
+                        },
+                            {
+                            xtype:'label',
+                            text:"(厘米）",
+                            margin: '7 0 0 2',
+                            width:60
+                        }]
+                    },{
+                        xtype: 'textarea',
+                        id: 'sgyy',
+                        fieldLabel: '施工原因',
+                        margin: '5 0 10 5',
+                        labelWidth: 80,
+                        width: 540,
+                        height: 80,
+                        value: ''
                     }
                 ]
             }
@@ -825,6 +875,8 @@ Ext.onReady(function () {
                     var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
                     var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
                     var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
+                    var V_EVERTIME=resp.list[0].V_EVERTIME;
+                    var V_EVERTIME_DATE = V_ENDTIME.split(" ")[0]; //上次时间
 
                     Ext.getCmp('year').select(A_YEAR); //年
                     Ext.getCmp('month').select(A_MONTH);  //月
@@ -859,7 +911,10 @@ Ext.onReady(function () {
                     Ext.getCmp('jjhour').setValue(resp.list[0].V_JJHOUR);//胶接时间（小时）
                     Ext.getCmp('telname').setValue(resp.list[0].V_TELNAME);//联系人姓名
                     Ext.getCmp('telnumb').setValue(resp.list[0].V_TELNUMB);//联系人电话
-
+                    //----2018-10-26
+                    Ext.getCmp('sgyy').setValue(resp.list[0].V_THICKNESS); //--施工原因
+                    Ext.getCmp('hd').setValue(resp.list[0].V_REASON);  //厚度
+                    Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
                     //end up
                     if (V_MONTHPLAN_CODE != '') {
                         V_PLANTYPE = 'PLAN';
@@ -1267,7 +1322,11 @@ function OnButtonSaveClick() {
             V_V_TELNAME:Ext.getCmp('telname').getValue(),//联系人姓名
             V_V_TELNUMB:Ext.getCmp('telnumb').getValue(),//联系人电话
             V_V_PDGG:Ext.getCmp('pdgg').getValue()//皮带规格
-//--end up
+           //--end up
+            //---add2018-10-26
+            , V_V_THICKNESS:Ext.getCmp('hd').getValue(),  //厚度
+            V_V_REASON:Ext.getCmp('sgyy').getValue(),  //--施工原因
+            V_V_EVERTIME:Ext.Date.format(Ext.getCmp('evertime').getValue(),'Y/m/d').toString()  //上次施工时间
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

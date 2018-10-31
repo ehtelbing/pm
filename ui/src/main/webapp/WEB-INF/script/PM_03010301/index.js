@@ -410,7 +410,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
             displayField: 'V_EQUTYPENAME',
             valueField: 'V_EQUTYPECODE',
             store: sblxStore,
-            queryMode: 'local'
+            queryMode: 'local',
+            listConfig:{
+                minWidth:270
+            }
         },
         {
             xtype: 'combo',
@@ -420,12 +423,14 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 285,
+            width: 230,
             value: '',
             displayField: 'V_EQUNAME',
             valueField: 'V_EQUCODE',
             store: sbmcStore,
-            queryMode: 'local'
+            queryMode: 'local',listConfig:{
+                minWidth:400
+            }
         },
         {
             xtype: 'combo',
