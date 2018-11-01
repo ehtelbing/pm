@@ -372,7 +372,15 @@ function toOrderCreate() {
     // container.setActiveTab(n);
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_0901/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    //大球作业区
+    if(Ext.util.Cookies.get('v_deptcode')=="99070205"){
+        window.open(AppUrl + 'page/dq0205/workorder_dqjx.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        return;
+    }{
+        window.open(AppUrl + 'page/PM_0901/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        return;
+    }
+    // window.open(AppUrl + 'page/PM_0901/index.html', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     //location.href= AppUrl + 'page/PM_0901/index.html';
 }
 
