@@ -11,6 +11,7 @@ import org.building.pm.activitiController.ActivitiController;
 import org.building.pm.service.*;
 import org.building.pm.webcontroller.AMToMessController;
 import org.building.pm.webcontroller.MMController;
+import org.building.pm.webpublic.GetShtgtime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,6 +36,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.Date;
+
 
 /**
  * Created by admin on 2017/10/31.
@@ -65,6 +67,9 @@ public class CjyController {
 
     @Autowired
     private BasicService basicService;
+
+    @Autowired
+    private GetShtgtime getShtgtime;
 
     @Autowired
     private Dx_fileService dx_fileService;
@@ -2386,203 +2391,203 @@ public class CjyController {
 
     }
 
-    @RequestMapping(value = "/batchAgreeForWeek", method = RequestMethod.POST)
-    @ResponseBody
-    public Map batchAgreeForWeek(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                 @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
-                                 @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
-                                 @RequestParam(value="FlowType") String[] FlowType,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
-        Map result = new HashMap();
-        int sucNum = 0;
-        int fqrNum = 0;
-        int faiNum = 0;
-        String a = "";
-        List<String> nexperList = new ArrayList<String>();
-        for (int i = 0; i < V_ORDERGUID.length; i++) {
-            Map stepresult = new HashMap();
-            HashMap perresult = new HashMap();
-            Map spperresult = new HashMap();
-            Map spsbbresult = new HashMap();
-            Map complresult = new HashMap();
-            Map flowresult = new HashMap();
-
-            try {
-                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
-                String taskid = stepresult.get("taskId").toString();
-                String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
-
-                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
-                    fqrNum++;
-                } else {
-                    if(FlowType[i].equals("WeekPlan")){
+//    @RequestMapping(value = "/batchAgreeForWeek", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map batchAgreeForWeek(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+//                                 @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+//                                 @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+//                                 @RequestParam(value="FlowType") String[] FlowType,
+//                                 HttpServletRequest request,
+//                                 HttpServletResponse response) throws Exception {
+//        Map result = new HashMap();
+//        int sucNum = 0;
+//        int fqrNum = 0;
+//        int faiNum = 0;
+//        String a = "";
+//        List<String> nexperList = new ArrayList<String>();
+//        for (int i = 0; i < V_ORDERGUID.length; i++) {
+//            Map stepresult = new HashMap();
+//            HashMap perresult = new HashMap();
+//            Map spperresult = new HashMap();
+//            Map spsbbresult = new HashMap();
+//            Map complresult = new HashMap();
+//            Map flowresult = new HashMap();
 //
-                    perresult = cjyService.PRO_PM_03_PLAN_WEEK_GET(V_ORDERGUID[i]);
-                    List<Map<String, Object>> perlist = (List) perresult.get("list");
-                    String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
-                    String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
-                    String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
-
-
-                    String V_STEPNAME = "";
-                    String V_NEXT_SETP = "";
-                    String sppercode = "";
-                    String processKey = "";
-
-
-                    if (V_STEPCODE.equals("scbsp")) {//最后一步
-
-                    } else {
-                        spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
-                        List<Map<String, Object>> spperlist = (List) spperresult.get("list");
-
-                        V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
-                        V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
-                        sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
-
-                        processKey = spperresult.get("RET").toString();
-                    }
-
-
-                    if (V_STEPCODE.equals("scbsp")) {//最后一步
-                        Calendar c = Calendar.getInstance();
-                        int year = c.get(Calendar.YEAR);
-                        int month = c.get(Calendar.MONTH);
-                        int date = c.get(Calendar.DATE);
-                        int hour = c.get(Calendar.HOUR_OF_DAY);
-                        int minute = c.get(Calendar.MINUTE);
-                        int second = c.get(Calendar.SECOND);
-
-                        String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
-                        String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
-                        String[] parVal = new String[]{"lcjs", "批量审批通过", time};
-
-                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
-                        if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = cjyService.PRO_PM_03_PLAN_WEEK_SET_STATE(V_ORDERGUID[i], "30");
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                            }
-                        } else {
-                            faiNum++;
-                        }
-                    } else {
-                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
-                        String[] parVal = new String[]{sppercode, "批量审批通过"};
-
-                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
-                        if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan", processKey, V_STEPCODE, V_NEXT_SETP);
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                                nexperList.add(sppercode);
-                                //result.put("nestper", sppercode);
-                            }
-                        } else {
-                            faiNum++;
-                        }
-                    }
-
-                }
-               // add
-                 if(FlowType[i].equals("WeekPlan01")){
-                    perresult = dx_fileService.PRO_PM_03_PLAN_WEEK_GET2(V_ORDERGUID[i]);
-                    List<Map<String, Object>> perlist = (List) perresult.get("list");
-                    String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
-                    String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
-                    String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
-
-
-                    String V_STEPNAME = "";
-                    String V_NEXT_SETP = "";
-                    String sppercode = "";
-                    String processKey = "";
-
-
-                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
-
-                    } else {
-                        spsbbresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
-                        List<Map<String, Object>> spperlist2 = (List) spsbbresult.get("list");
-
-                        V_STEPNAME = spperlist2.get(0).get("V_V_FLOW_STEPNAME").toString();
-                        V_NEXT_SETP = spperlist2.get(0).get("V_V_NEXT_SETP").toString();
-                        sppercode = spperlist2.get(0).get("V_PERSONCODE").toString();
-
-                        processKey = spperresult.get("RET").toString();
-                    }
-
-
-                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
-                        Calendar d = Calendar.getInstance();
-                        int year2 = d.get(Calendar.YEAR);
-                        int month2 = d.get(Calendar.MONTH);
-                        int date2 = d.get(Calendar.DATE);
-                        int hour2 = d.get(Calendar.HOUR_OF_DAY);
-                        int minute2 = d.get(Calendar.MINUTE);
-                        int second2 = d.get(Calendar.SECOND);
-
-                        String time = year2 + "-" + month2 + "-" + date2 + "T" + hour2 + ":" + minute2 + ":" + second2;
-                        String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
-                        String[] parVal = new String[]{"sbblcjs", "批量审批通过", time};
-
-                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
-                        if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "80");
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                            }
-                        } else {
-                            faiNum++;
-                        }
-                    } else {
-                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
-                        String[] parVal = new String[]{sppercode, "批量审批通过"};
-
-                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
-                        if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                                nexperList.add(sppercode);
-                                //result.put("nestper", sppercode);
-                            }
-                        } else {
-                            faiNum++;
-                        }
-                    }
-
-                }
-            }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                faiNum++;
-            }
-
-
-        }
-
-        Map groupPer = groupList(nexperList);//
-        Iterator<String> iter = groupPer.keySet().iterator();
-        while (iter.hasNext()) {
-            String per = iter.next();
-            String dbnum = groupPer.get(per).toString();
-            //System.out.println(key+" "+value);
-            //发送即时通
-            String mes = amToMessController.MessageSend(dbnum, "周计划", per);
-            if (mes.equals("fail")) {
-                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
-            } else if (mes.equals("true")) {
-                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
-            }
-        }
-
-        result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
-        return result;
-    }
+//            try {
+//                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
+//                String taskid = stepresult.get("taskId").toString();
+//                String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+//
+//                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
+//                    fqrNum++;
+//                } else {
+//                    if(FlowType[i].equals("WeekPlan")){
+////
+//                    perresult = cjyService.PRO_PM_03_PLAN_WEEK_GET(V_ORDERGUID[i]);
+//                    List<Map<String, Object>> perlist = (List) perresult.get("list");
+//                    String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+//                    String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+//                    String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+//
+//
+//                    String V_STEPNAME = "";
+//                    String V_NEXT_SETP = "";
+//                    String sppercode = "";
+//                    String processKey = "";
+//
+//
+//                    if (V_STEPCODE.equals("scbsp")) {//最后一步
+//
+//                    } else {
+//                        spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+//                        List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+//
+//                        V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+//                        V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+//                        sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+//
+//                        processKey = spperresult.get("RET").toString();
+//                    }
+//
+//
+//                    if (V_STEPCODE.equals("scbsp")) {//最后一步
+//                        Calendar c = Calendar.getInstance();
+//                        int year = c.get(Calendar.YEAR);
+//                        int month = c.get(Calendar.MONTH);
+//                        int date = c.get(Calendar.DATE);
+//                        int hour = c.get(Calendar.HOUR_OF_DAY);
+//                        int minute = c.get(Calendar.MINUTE);
+//                        int second = c.get(Calendar.SECOND);
+//
+//                        String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
+//                        String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
+//                        String[] parVal = new String[]{"lcjs", "批量审批通过", time};
+//
+//                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
+//                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                            flowresult = cjyService.PRO_PM_03_PLAN_WEEK_SET_STATE(V_ORDERGUID[i], "30");
+//                            if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                sucNum++;
+//                            }
+//                        } else {
+//                            faiNum++;
+//                        }
+//                    } else {
+//                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+//                        String[] parVal = new String[]{sppercode, "批量审批通过"};
+//
+//                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+//                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan", processKey, V_STEPCODE, V_NEXT_SETP);
+//                            if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                sucNum++;
+//                                nexperList.add(sppercode);
+//                                //result.put("nestper", sppercode);
+//                            }
+//                        } else {
+//                            faiNum++;
+//                        }
+//                    }
+//
+//                }
+//               // add
+//                 if(FlowType[i].equals("WeekPlan01")){
+//                    perresult = dx_fileService.PRO_PM_03_PLAN_WEEK_GET2(V_ORDERGUID[i]);
+//                    List<Map<String, Object>> perlist = (List) perresult.get("list");
+//                    String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+//                    String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+//                    String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+//
+//
+//                    String V_STEPNAME = "";
+//                    String V_NEXT_SETP = "";
+//                    String sppercode = "";
+//                    String processKey = "";
+//
+//
+//                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
+//
+//                    } else {
+//                        spsbbresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+//                        List<Map<String, Object>> spperlist2 = (List) spsbbresult.get("list");
+//
+//                        V_STEPNAME = spperlist2.get(0).get("V_V_FLOW_STEPNAME").toString();
+//                        V_NEXT_SETP = spperlist2.get(0).get("V_V_NEXT_SETP").toString();
+//                        sppercode = spperlist2.get(0).get("V_PERSONCODE").toString();
+//
+//                        processKey = spperresult.get("RET").toString();
+//                    }
+//
+//
+//                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
+//                        Calendar d = Calendar.getInstance();
+//                        int year2 = d.get(Calendar.YEAR);
+//                        int month2 = d.get(Calendar.MONTH);
+//                        int date2 = d.get(Calendar.DATE);
+//                        int hour2 = d.get(Calendar.HOUR_OF_DAY);
+//                        int minute2 = d.get(Calendar.MINUTE);
+//                        int second2 = d.get(Calendar.SECOND);
+//
+//                        String time = year2 + "-" + month2 + "-" + date2 + "T" + hour2 + ":" + minute2 + ":" + second2;
+//                        String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
+//                        String[] parVal = new String[]{"sbblcjs", "批量审批通过", time};
+//
+//                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
+//                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                            flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "80");
+//                            if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                sucNum++;
+//                            }
+//                        } else {
+//                            faiNum++;
+//                        }
+//                    } else {
+//                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+//                        String[] parVal = new String[]{sppercode, "批量审批通过"};
+//
+//                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+//                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
+//                            if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                sucNum++;
+//                                nexperList.add(sppercode);
+//                                //result.put("nestper", sppercode);
+//                            }
+//                        } else {
+//                            faiNum++;
+//                        }
+//                    }
+//
+//                }
+//            }
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                faiNum++;
+//            }
+//
+//
+//        }
+//
+//        Map groupPer = groupList(nexperList);//
+//        Iterator<String> iter = groupPer.keySet().iterator();
+//        while (iter.hasNext()) {
+//            String per = iter.next();
+//            String dbnum = groupPer.get(per).toString();
+//            //System.out.println(key+" "+value);
+//            //发送即时通
+//            String mes = amToMessController.MessageSend(dbnum, "周计划", per);
+//            if (mes.equals("fail")) {
+//                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
+//            } else if (mes.equals("true")) {
+//                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
+//            }
+//        }
+//
+//        result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+//        return result;
+//    }
 
     @RequestMapping(value = "/batchDisAgreeForWeek", method = RequestMethod.POST)
     @ResponseBody
@@ -2687,186 +2692,186 @@ public class CjyController {
         return result;
     }
 
-    @RequestMapping(value = "/batchAgreeForMonth", method = RequestMethod.POST)
-    @ResponseBody
-    public Map batchAgreeForMonth(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                  @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
-                                  @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
-                                  @RequestParam(value="FlowType") String[] FlowType,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) throws Exception {
-        Map result = new HashMap();
-        int sucNum = 0;
-        int fqrNum = 0;
-        int faiNum = 0;
-        List<String> nexperList = new ArrayList<String>();
-        for (int i = 0; i < V_ORDERGUID.length; i++) {
-            Map stepresult = new HashMap();
-            HashMap perresult = new HashMap();
-            Map spperresult = new HashMap();
-            Map complresult = new HashMap();
-            Map flowresult = new HashMap();
-            try {
-                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
-                String taskid = stepresult.get("taskId").toString();
-                String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
-                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
-                    fqrNum++;
-                } else {
-                    if (FlowType[i].equals("MonthPlan")) {
-                        perresult = cjyService.PRO_PM_03_PLAN_MONTH_GET(V_ORDERGUID[i]);
-                        List<Map<String, Object>> perlist = (List) perresult.get("list");
-                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
-                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
-                        String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
-
-                        String V_STEPNAME = "";
-                        String V_NEXT_SETP = "";
-                        String sppercode = "";
-                        String processKey = "";
-
-                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
-
-                        } else {
-                            spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
-                            List<Map<String, Object>> spperlist = (List) spperresult.get("list");
-
-                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
-                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
-                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
-
-                            processKey = spperresult.get("RET").toString();
-                        }
-
-
-                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
-
-                            java.util.Date d = new java.util.Date();
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                            Calendar ca = Calendar.getInstance();
-                            ca.add(Calendar.DATE, 30);
-
-                            d = ca.getTime();
-                            String currdate = format.format(d);
-
-                            String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
-                            String[] parVal = new String[]{"lcjs", "批量审批通过", currdate};
-
-                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
-                            if (complresult.get("ret").toString().equals("任务提交成功")) {
-                                sucNum++;
-                            } else {
-                                faiNum++;
-                            }
-                        } else {
-                            String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
-                            String[] parVal = new String[]{sppercode, "批量审批通过"};
-
-                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
-                            if (complresult.get("ret").toString().equals("任务提交成功")) {
-                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan", processKey, V_STEPCODE, V_NEXT_SETP);
-                                if (flowresult.get("V_INFO").toString().equals("success")) {
-                                    sucNum++;
-                                    nexperList.add(sppercode);
-                                    //result.put("nestper", sppercode);
-                                }
-                            } else {
-                                faiNum++;
-                            }
-                        }
-                    }
-
-                //add
-                if(FlowType[i].equals("MonthPlan01")){
-                    perresult = dx_fileService.PRO_PM_03_PLAN_MONTH_GET2(V_ORDERGUID[i]);
-                    List<Map<String, Object>> perlist = (List) perresult.get("list");
-                    String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
-                    String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
-                    String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
-
-                    String V_STEPNAME = "";
-                    String V_NEXT_SETP = "";
-                    String sppercode = "";
-                    String processKey = "";
-
-                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
-
-                    } else {
-                        spperresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
-                        List<Map<String, Object>> spperlist = (List) spperresult.get("list");
-
-                        V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
-                        V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
-                        sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
-
-                        processKey = spperresult.get("RET").toString();
-                    }
-
-
-                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
-
-                        java.util.Date d = new java.util.Date();
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                        Calendar ca = Calendar.getInstance();
-                        ca.add(Calendar.DATE, 30);
-
-                        d = ca.getTime();
-                        String currdate = format.format(d);
-
-                        String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
-                        String[] parVal = new String[]{"sbblcjs", "批量审批通过", currdate};
-
-                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
-                        if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                            }
-                        } else {
-                            faiNum++;
-                        }
-                    } else {
-                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
-                        String[] parVal = new String[]{sppercode, "批量审批通过"};
-
-                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
-                        if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                                nexperList.add(sppercode);
-                                //result.put("nestper", sppercode);
-                            }
-                        } else {
-                            faiNum++;
-                        }
-                    }
-
-                }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                faiNum++;
-            }
-        }
-        Map groupPer = groupList(nexperList);//
-        Iterator<String> iter = groupPer.keySet().iterator();
-        while (iter.hasNext()) {
-            String per = iter.next();
-            String dbnum = groupPer.get(per).toString();
-            //System.out.println(key+" "+value);
-            //发送即时通
-            String mes = amToMessController.MessageSend(dbnum, "月计划", per);
-            if (mes.equals("fail")) {
-                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
-            } else if (mes.equals("true")) {
-                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
-            }
-        }
-
-        result.put("mes", "月计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
-        return result;
-    }
+//    @RequestMapping(value = "/batchAgreeForMonth", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map batchAgreeForMonth(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+//                                  @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+//                                  @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+//                                  @RequestParam(value="FlowType") String[] FlowType,
+//                                  HttpServletRequest request,
+//                                  HttpServletResponse response) throws Exception {
+//        Map result = new HashMap();
+//        int sucNum = 0;
+//        int fqrNum = 0;
+//        int faiNum = 0;
+//        List<String> nexperList = new ArrayList<String>();
+//        for (int i = 0; i < V_ORDERGUID.length; i++) {
+//            Map stepresult = new HashMap();
+//            HashMap perresult = new HashMap();
+//            Map spperresult = new HashMap();
+//            Map complresult = new HashMap();
+//            Map flowresult = new HashMap();
+//            try {
+//                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
+//                String taskid = stepresult.get("taskId").toString();
+//                String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+//                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
+//                    fqrNum++;
+//                } else {
+//                    if (FlowType[i].equals("MonthPlan")) {
+//                        perresult = cjyService.PRO_PM_03_PLAN_MONTH_GET(V_ORDERGUID[i]);
+//                        List<Map<String, Object>> perlist = (List) perresult.get("list");
+//                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+//                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+//                        String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+//
+//                        String V_STEPNAME = "";
+//                        String V_NEXT_SETP = "";
+//                        String sppercode = "";
+//                        String processKey = "";
+//
+//                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
+//
+//                        } else {
+//                            spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+//                            List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+//
+//                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+//                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+//                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+//
+//                            processKey = spperresult.get("RET").toString();
+//                        }
+//
+//
+//                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
+//
+//                            java.util.Date d = new java.util.Date();
+//                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//                            Calendar ca = Calendar.getInstance();
+//                            ca.add(Calendar.DATE, 30);
+//
+//                            d = ca.getTime();
+//                            String currdate = format.format(d);
+//
+//                            String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
+//                            String[] parVal = new String[]{"lcjs", "批量审批通过", currdate};
+//
+//                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
+//                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                                sucNum++;
+//                            } else {
+//                                faiNum++;
+//                            }
+//                        } else {
+//                            String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+//                            String[] parVal = new String[]{sppercode, "批量审批通过"};
+//
+//                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+//                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan", processKey, V_STEPCODE, V_NEXT_SETP);
+//                                if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                    sucNum++;
+//                                    nexperList.add(sppercode);
+//                                    //result.put("nestper", sppercode);
+//                                }
+//                            } else {
+//                                faiNum++;
+//                            }
+//                        }
+//                    }
+//
+//                //add
+//                if(FlowType[i].equals("MonthPlan01")){
+//                    perresult = dx_fileService.PRO_PM_03_PLAN_MONTH_GET2(V_ORDERGUID[i]);
+//                    List<Map<String, Object>> perlist = (List) perresult.get("list");
+//                    String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+//                    String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+//                    String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+//
+//                    String V_STEPNAME = "";
+//                    String V_NEXT_SETP = "";
+//                    String sppercode = "";
+//                    String processKey = "";
+//
+//                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
+//
+//                    } else {
+//                        spperresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+//                        List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+//
+//                        V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+//                        V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+//                        sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+//
+//                        processKey = spperresult.get("RET").toString();
+//                    }
+//
+//
+//                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
+//
+//                        java.util.Date d = new java.util.Date();
+//                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//                        Calendar ca = Calendar.getInstance();
+//                        ca.add(Calendar.DATE, 30);
+//
+//                        d = ca.getTime();
+//                        String currdate = format.format(d);
+//
+//                        String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
+//                        String[] parVal = new String[]{"sbblcjs", "批量审批通过", currdate};
+//
+//                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
+//                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                            flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
+//                            if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                sucNum++;
+//                            }
+//                        } else {
+//                            faiNum++;
+//                        }
+//                    } else {
+//                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+//                        String[] parVal = new String[]{sppercode, "批量审批通过"};
+//
+//                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+//                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
+//                            if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                sucNum++;
+//                                nexperList.add(sppercode);
+//                                //result.put("nestper", sppercode);
+//                            }
+//                        } else {
+//                            faiNum++;
+//                        }
+//                    }
+//
+//                }
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                faiNum++;
+//            }
+//        }
+//        Map groupPer = groupList(nexperList);//
+//        Iterator<String> iter = groupPer.keySet().iterator();
+//        while (iter.hasNext()) {
+//            String per = iter.next();
+//            String dbnum = groupPer.get(per).toString();
+//            //System.out.println(key+" "+value);
+//            //发送即时通
+//            String mes = amToMessController.MessageSend(dbnum, "月计划", per);
+//            if (mes.equals("fail")) {
+//                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
+//            } else if (mes.equals("true")) {
+//                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
+//            }
+//        }
+//
+//        result.put("mes", "月计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+//        return result;
+//    }
 
     @RequestMapping(value = "/batchDisAgreeForMonth", method = RequestMethod.POST)
     @ResponseBody
@@ -3803,6 +3808,424 @@ public class CjyController {
     public HashMap PRO_PM_WORKORDER_SELBYDEFECT(@RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID)
             throws SQLException {
         HashMap result = cjyService.PRO_PM_WORKORDER_SELBYDEFECT(V_DEFECT_GUID);
+        return result;
+    }
+
+//月计划批量通过
+    @RequestMapping(value = "/batchAgreeForMonth", method = RequestMethod.POST)
+    @ResponseBody
+    public Map batchAgreeForMonth(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                  @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                  @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                  @RequestParam(value="FlowType") String[] FlowType,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+        Map result = new HashMap();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        String nextPerCode="";
+        List<String> nexperList = new ArrayList<String>();
+        for (int i = 0; i < V_ORDERGUID.length; i++) {
+            Map stepresult = new HashMap();
+            HashMap perresult = new HashMap();
+            Map spperresult = new HashMap();
+            Map complresult = new HashMap();
+            Map flowresult = new HashMap();
+            Map nextperResult=new HashMap();
+            try {
+                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
+                String taskid = stepresult.get("taskId").toString();
+                String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
+                    fqrNum++;
+                } else {
+                    if (FlowType[i].equals("MonthPlan")) {
+                        perresult = cjyService.PRO_PM_03_PLAN_MONTH_GET(V_ORDERGUID[i]);
+                        List<Map<String, Object>> perlist = (List) perresult.get("list");
+                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+                        String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+
+                        String V_STEPNAME = "";
+                        String V_NEXT_SETP = "";
+                        String sppercode = "";
+                        String processKey = "";
+//                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
+//
+//                        } else {
+                            spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+                            List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+
+                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+
+                            processKey = spperresult.get("RET").toString();
+//                        }
+
+
+                        if (V_NEXT_SETP.equals("lcjs")) {//最后一步
+
+//                            java.util.Date d = new java.util.Date();
+//                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//                            Calendar ca = Calendar.getInstance();
+//                            ca.add(Calendar.DATE, 30);
+//
+//                            d = ca.getTime();
+//                            String currdate = format.format(d);
+                            String currdate=getShtgtime.Shtgtime();
+
+                            String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
+                            String[] parVal = new String[]{"lcjs", "批量审批通过", currdate};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan", processKey, V_STEPCODE, V_NEXT_SETP);
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        } else {
+                            String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                            String[] parVal = new String[]{sppercode, "批量审批通过"};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan", processKey, V_STEPCODE, V_NEXT_SETP);
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                    nexperList.add(sppercode);
+                                    //result.put("nestper", sppercode);
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        }
+                    }
+
+                    //add sbbsp
+                    if(FlowType[i].equals("MonthPlan01")){
+                        perresult = dx_fileService.PRO_PM_03_PLAN_MONTH_GET2(V_ORDERGUID[i]);
+                        List<Map<String, Object>> perlist = (List) perresult.get("list");
+                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+                        String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+
+                        String V_STEPNAME = "";
+                        String V_NEXT_SETP = "";
+                        String sppercode = "";
+                        String processKey = "";
+
+//                        if (V_STEPCODE.equals("sbbsp")) {//最后一步
+//
+//                        } else {
+                            spperresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+                            List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+
+                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+
+                            processKey = spperresult.get("RET").toString();
+//                        }
+
+
+                        //if (V_STEPCODE.equals("sbbsp")) {//最后一步
+                        if (V_NEXT_SETP.equals("sbblcjs")) {//最后一步
+//                            java.util.Date d = new java.util.Date();
+//                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//                            Calendar ca = Calendar.getInstance();
+//                            ca.add(Calendar.DATE, 30);
+//
+//                            d = ca.getTime();
+//                            String currdate = format.format(d);
+                            String currdate=getShtgtime.Shtgtime();
+
+                            String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
+                            String[] parVal = new String[]{"sbblcjs", "批量审批通过", currdate};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        } else {
+                            String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                            String[] parVal = new String[]{sppercode, "批量审批通过"};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                    nexperList.add(sppercode);
+                                    //result.put("nestper", sppercode);
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        }
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                faiNum++;
+            }
+        }
+        Map groupPer = groupList(nexperList);//
+        Iterator<String> iter = groupPer.keySet().iterator();
+        Map nextperDept=new HashMap();
+        while (iter.hasNext()) {
+            String per = iter.next();
+            String dbnum = groupPer.get(per).toString();
+            nextperDept=zdhService.PRO_BASE_PERSON_GET(per);
+            List<Map<String, Object>> nextperDeptList = (List) nextperDept.get("list");
+            //System.out.println(key+" "+value);
+            //发送即时通
+            if(nextperDeptList.get(0).get("V_ORGCODE").toString().equals("9900")){
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
+            } else {
+                String mes = amToMessController.MessageSend(dbnum, "月计划", per);
+                if (mes.equals("fail")) {
+                    PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
+                } else if (mes.equals("true")) {
+                    PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "0");
+                }
+            }
+        }
+
+        result.put("mes", "月计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
+        return result;
+    }
+ //周计划批量通过
+    @RequestMapping(value = "/batchAgreeForWeek", method = RequestMethod.POST)
+    @ResponseBody
+    public Map batchAgreeForWeek(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                 @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                 @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                 @RequestParam(value="FlowType") String[] FlowType,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
+        Map result = new HashMap();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        String a = "";
+
+        List<String> nexperList = new ArrayList<String>();
+        for (int i = 0; i < V_ORDERGUID.length; i++) {
+            Map stepresult = new HashMap();
+            HashMap perresult = new HashMap();
+            Map spperresult = new HashMap();
+            Map spsbbresult = new HashMap();
+            Map complresult = new HashMap();
+            Map flowresult = new HashMap();
+
+            try {
+                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
+                String taskid = stepresult.get("taskId").toString();
+                String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+
+                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
+                    fqrNum++;
+                } else {
+                    if(FlowType[i].equals("WeekPlan")){
+//
+                        perresult = cjyService.PRO_PM_03_PLAN_WEEK_GET(V_ORDERGUID[i]);
+                        List<Map<String, Object>> perlist = (List) perresult.get("list");
+                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+                        String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+
+
+                        String V_STEPNAME = "";
+                        String V_NEXT_SETP = "";
+                        String sppercode = "";
+                        String processKey = "";
+
+
+//                        if (V_STEPCODE.equals("scbsp")) {//最后一步
+//
+//                        } else {
+                            spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+                            List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+
+                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+
+                            processKey = spperresult.get("RET").toString();
+//                        }
+
+
+//                        if (V_STEPCODE.equals("scbsp")) {//最后一步
+                        if (V_NEXT_SETP.equals("lcjs")) {//最后一步
+//                            Calendar c = Calendar.getInstance();
+//                            int year = c.get(Calendar.YEAR);
+//                            int month = c.get(Calendar.MONTH);
+//                            int date = c.get(Calendar.DATE);
+//                            int hour = c.get(Calendar.HOUR_OF_DAY);
+//                            int minute = c.get(Calendar.MINUTE);
+//                            int second = c.get(Calendar.SECOND);
+//
+//                            String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
+
+//                            Calendar c = Calendar.getInstance();
+//
+//                            c.add(Calendar.MONTH, 2);
+//                            c.set(Calendar.DAY_OF_MONTH, 0);
+//
+//                            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+                            String time=getShtgtime.Shtgtime();
+                            String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
+                            String[] parVal = new String[]{"lcjs", "批量审批通过", time};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = cjyService.PRO_PM_03_PLAN_WEEK_SET_STATE(V_ORDERGUID[i], "30");
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        } else {
+                            String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                            String[] parVal = new String[]{sppercode, "批量审批通过"};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan", processKey, V_STEPCODE, V_NEXT_SETP);
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                    nexperList.add(sppercode);
+                                    //result.put("nestper", sppercode);
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        }
+
+                    }
+                    // add
+                    if(FlowType[i].equals("WeekPlan01")){
+                        perresult = dx_fileService.PRO_PM_03_PLAN_WEEK_GET2(V_ORDERGUID[i]);
+                        List<Map<String, Object>> perlist = (List) perresult.get("list");
+                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+                        String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+
+
+                        String V_STEPNAME = "";
+                        String V_NEXT_SETP = "";
+                        String sppercode = "";
+                        String processKey = "";
+
+
+//                        if (V_STEPCODE.equals("sbbsp")) {//最后一步
+//
+//                        } else {
+                            spsbbresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+                            List<Map<String, Object>> spperlist2 = (List) spsbbresult.get("list");
+
+                            V_STEPNAME = spperlist2.get(0).get("V_V_FLOW_STEPNAME").toString();
+                            V_NEXT_SETP = spperlist2.get(0).get("V_V_NEXT_SETP").toString();
+                            sppercode = spperlist2.get(0).get("V_PERSONCODE").toString();
+
+                            processKey = spsbbresult.get("RET").toString();
+//                        }
+
+
+//                        if (V_STEPCODE.equals("sbbsp")) {//最后一步
+                         if (V_NEXT_SETP.equals("sbblcjs")) {//最后一步
+////                            Calendar d = Calendar.getInstance();
+////                            int year2 = d.get(Calendar.YEAR);
+////                            int month2 = d.get(Calendar.MONTH);
+////                            int date2 = d.get(Calendar.DATE);
+////                            int hour2 = d.get(Calendar.HOUR_OF_DAY);
+////                            int minute2 = d.get(Calendar.MINUTE);
+////                            int second2 = d.get(Calendar.SECOND);
+////
+////                            String time = year2 + "-" + month2 + "-" + date2 + "T" + hour2 + ":" + minute2 + ":" + second2;
+//                             Calendar c = Calendar.getInstance();
+//
+//                             c.add(Calendar.MONTH, 2);
+//                             c.set(Calendar.DAY_OF_MONTH, 0);
+//
+//                             String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+                             String time=getShtgtime.Shtgtime();
+                            String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
+                            String[] parVal = new String[]{"sbblcjs", "批量审批通过", time};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "80");
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        } else {
+                            String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                            String[] parVal = new String[]{sppercode, "批量审批通过"};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                    nexperList.add(sppercode);
+                                    //result.put("nestper", sppercode);
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        }
+
+                    }
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                faiNum++;
+            }
+
+
+        }
+
+        Map groupPer = groupList(nexperList);//
+        Iterator<String> iter = groupPer.keySet().iterator();
+        Map nextperDept=new HashMap();
+        while (iter.hasNext()) {
+            String per = iter.next();
+            String dbnum = groupPer.get(per).toString();
+            nextperDept=zdhService.PRO_BASE_PERSON_GET(per);
+            List<Map<String, Object>> nextperDeptList = (List) nextperDept.get("list");
+            //System.out.println(key+" "+value);
+            //发送即时通
+            if(nextperDeptList.get(0).get("V_ORGCODE").toString().equals("9900")){
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "月计划", "-1");
+            } else {
+                String mes = amToMessController.MessageSend(dbnum, "周计划", per);
+                if (mes.equals("fail")) {
+                    PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "-1");
+                } else if (mes.equals("true")) {
+                    PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "周计划", "0");
+                }
+            }
+        }
+
+        result.put("mes", "周计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
 }
