@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Created by cxy on 2018/10/18.
- * DrawingManageController
+ * DLController
  */
 @Controller
 @RequestMapping("/app/pm/DL")
@@ -47,14 +47,14 @@ public class DLController {
                         m.get("k3").toString(),m.get("k4").toString(), m.get("k5").toString(), m.get("k6").toString(),
                         m.get("k7").toString(), m.get("k8").toString(), m.get("k9").toString());
                 if(!ret.equals("SUCCESS")){
-                    p.put("message","导入失败："+ret);
+                    p.put("message","瀵煎叆澶辫触"+ret);
                     return p;
                 }
             }
-            p.put("message","导入成功");
+            p.put("message","瀵煎叆鎴愬姛");
 
         } catch (Exception e) {
-            p.put("message","导入失败："+e.toString()+"-请查看当前模板是否是标准模板");
+            p.put("message","瀵煎叆澶辫触"+e.toString()+"-璇锋煡鐪嬪綋鍓嶆ā鏉挎槸鍚︽槸鏍囧噯妯℃澘");
             //e.printStackTrace();
         }
         return p;
