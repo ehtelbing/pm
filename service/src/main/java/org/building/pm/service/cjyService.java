@@ -2863,7 +2863,8 @@ public class cjyService {
                                         String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE,
                                         String V_V_CONTENT, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE,
                                         String V_V_JHMX_GUID, String V_V_HOUR, String V_V_BZ, String V_V_DEFECTGUID, String V_V_MAIN_DEFECT, String V_V_EXPECT_AGE, String V_V_REPAIR_PER
-                                        ,String V_V_PDC/*,String V_V_SGDATE*/,String V_V_GYYQ,String V_V_CHANGPDC,/*String V_V_JXRESON,*/String V_V_JXHOUR,String V_V_JJHOUR,/*String V_V_JHHOUR,*/String V_V_TELNAME,String V_V_TELNUMB,String V_V_PDGG
+                                        ,String V_V_PDC/*,String V_V_SGDATE*/,String V_V_GYYQ,String V_V_CHANGPDC,/*String V_V_JXRESON,*/String V_V_JXHOUR,String V_V_JJHOUR,
+                                         /*String V_V_JHHOUR,*/String V_V_TELNAME,String V_V_TELNUMB,String V_V_PDGG,String V_V_THICKNESS,String V_V_REASON,String V_V_EVERTIME
     ) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_NSET");
         Map result = new HashMap<String, Object>();
@@ -2876,7 +2877,7 @@ public class cjyService {
                     ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
                     ":V_V_OTHERPLAN_GUID,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_DEFECTGUID,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER,"+
                     ":V_V_PDC,/*:V_V_SGDATE,*/:V_V_GYYQ,:V_V_CHANGPDC,/*:V_V_JXRESON,*/:V_V_JXHOUR,:V_V_JJHOUR,/*:V_V_JHHOUR,*/:V_V_TELNAME,:V_V_TELNUMB,:V_V_PDGG,"+
-                    ":V_INFO)}");
+                    ":V_V_THICKNESS,:V_V_REASON,:V_V_EVERTIME,:V_INFO)}");
             cstmt.setString("V_V_INPER", V_V_INPER);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_YEAR", V_V_YEAR);
@@ -2917,6 +2918,11 @@ public class cjyService {
             cstmt.setString("V_V_PDGG", V_V_PDGG);
 
             //--end upate
+            //---add 2018-10-26
+            cstmt.setString("V_V_THICKNESS",V_V_THICKNESS);
+            cstmt.setString("V_V_REASON",V_V_REASON);
+            cstmt.setString("V_V_EVERTIME",V_V_EVERTIME);
+            //--end add
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));

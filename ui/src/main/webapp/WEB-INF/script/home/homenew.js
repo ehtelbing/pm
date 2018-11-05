@@ -302,20 +302,45 @@ function toDefectManage() {
 
 function toOrderCreate() {
     var container = top.Ext.getCmp('container');
-    var url = AppUrl + 'page/PM_0901/index.html';
+    // var url=AppUrl + 'page/PM_0901/index.html';
+    //大球特殊作业区判断
+    var url;
+    // if(Ext.util.Cookies.get('v_deptcode')=="99070205")
+    // { url = AppUrl + 'page/dq0205/workorder_dqjx.html'; return;}
+    // else{ url=AppUrl + 'page/PM_0901/index.html'; return;}
     var n = container.getComponent("gdcj");
-    if (!n) {
-        n = container.add({
-            id: 'gdcj',
-            title: '工单创建',
-            closable: true,
-            loadMask: true,
-            autoWidth: true,
-            autoHeight: true,
-            html: '<iframe scrolling="auto" frameborder="0" width="100%" height="100%" src="' + url + '" />'
-        }).show();
+    if(Ext.util.Cookies.get('v_deptcode')=="99070205"){
+        url = AppUrl + 'page/dq0205/workorder_dqjx.html';
+        if (!n) {
+            n = container.add({
+                id: 'gdcj',
+                title: '工单创建',
+                closable: true,
+                loadMask: true,
+                autoWidth: true,
+                autoHeight: true,
+                html: '<iframe scrolling="auto" frameborder="0" width="100%" height="100%" src="' + url + '" />'
+            }).show();
+        }
+        container.setActiveTab(n);
+        return;
+    }else{
+        url=AppUrl + 'page/PM_0901/index.html';
+        if (!n) {
+            n = container.add({
+                id: 'gdcj',
+                title: '工单创建',
+                closable: true,
+                loadMask: true,
+                autoWidth: true,
+                autoHeight: true,
+                html: '<iframe scrolling="auto" frameborder="0" width="100%" height="100%" src="' + url + '" />'
+            }).show();
+        }
+        container.setActiveTab(n);
+        return;
     }
-    container.setActiveTab(n);
+
 }
 
 function toFixOldManager() {

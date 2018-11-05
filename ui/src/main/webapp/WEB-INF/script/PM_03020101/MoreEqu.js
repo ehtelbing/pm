@@ -7,7 +7,7 @@ var cgridStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'cgridStore',
     fields: ['V_PLANGUID','V_EQUTYPECODE','V_EQUTYPENAME','V_EQUCODE',
-        'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE'],
+        'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE','V_EQUSITENAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -37,7 +37,7 @@ var centerPanel = Ext.create('Ext.grid.Panel', {
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
         {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITE', align: 'center',renderer:atleft},
+        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft},
         {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
     ]
 });

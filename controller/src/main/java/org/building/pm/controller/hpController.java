@@ -2744,6 +2744,30 @@ public class hpController {
         Map result = hpService.PRO_SAP_EQU_BOM_VIEWN(V_V_EQUCODE, V_V_SPNAME);
         return result;
     }
+    //工单创建审批人
+    @RequestMapping(value = "/PM_ACTIVITI_PROCESS_PER_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_ACTIVITI_PROCESS_PER_SEL2(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                           @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
+                                                           @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                                                           @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
+                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                                                           @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
 
+        HashMap data = hpService.PM_ACTIVITI_PROCESS_PER_SEL2(V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        String ret = (String) data.get("RET");
+        result.put("RET", ret);
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
 
 }

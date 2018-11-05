@@ -39,7 +39,7 @@ $(function () {
     });
 
     $("#btnTask").click(function () {
-       if ($("#V_EQUCODE").val() == "" || $("#V_EQUCODE").val() == null || $("#V_EQUNAME").val() == "" || $("#V_EQUNAME").val() == null || $("#V_EQUSITE").val() == "" || $("#V_EQUSITE").val() == null) {
+        if ($("#V_EQUCODE").val() == "" || $("#V_EQUCODE").val() == null || $("#V_EQUNAME").val() == "" || $("#V_EQUNAME").val() == null || $("#V_EQUSITE").val() == "" || $("#V_EQUSITE").val() == null) {
             alert("请选择设备");
             return false;
         }
@@ -232,14 +232,14 @@ function loadRepairList() {
 
 function loadSPR() {
     $.ajax({//审批人
-        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL2',
         type: 'post',
         async: false,
         data: {
             V_V_ORGCODE: $("#selDW").val(),
             V_V_DEPTCODE: $("#selZYQ").val(),
             V_V_REPAIRCODE: $("#selPlant").val(),
-            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOWTYPE: 'DQWORK',
             V_V_FLOW_STEP: 'start',
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_SPECIALTY: '%',
@@ -467,32 +467,32 @@ function BillGo() {
                                 success: function (response) {
                                     var resp = Ext.decode(response.responseText);
                                     if (resp.V_CURSOR == '1') {
-                                        Ext.Ajax.request({
-                                            url: AppUrl + 'Activiti/StratProcess',
-                                            async: false,
-                                            method: 'post',
-                                            params: {
-                                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                                parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
-                                                processKey: processKey,
-                                                businessKey: $("#V_ORDERGUID").val(),
-                                                V_STEPCODE: 'start',
-                                                V_STEPNAME: V_STEPNAME,
-                                                V_IDEA: '请审批！',
-                                                V_NEXTPER: $("#selApprover").val(),
-                                                V_INPER: Ext.util.Cookies.get('v_personcode')
-                                            },
-                                            success: function (response) {
-                                                if (Ext.decode(response.responseText).ret == 'OK') {
-                                                    alert("工单创建成功：" + $("#V_ORDERID").html());
-                                                    history.go(0);
-                                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                                    Ext.Msg.alert('提示', '该流程发起失败！');
-                                                    history.go(0);
-                                                }
-                                            }
-                                        });
+                            Ext.Ajax.request({
+                                url: AppUrl + 'Activiti/StratProcess',
+                                async: false,
+                                method: 'post',
+                                params: {
+                                    parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                    parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
+                                    processKey: processKey,
+                                    businessKey: $("#V_ORDERGUID").val(),
+                                    V_STEPCODE: 'start',
+                                    V_STEPNAME: V_STEPNAME,
+                                    V_IDEA: '请审批！',
+                                    V_NEXTPER: $("#selApprover").val(),
+                                    V_INPER: Ext.util.Cookies.get('v_personcode')
+                                },
+                                success: function (response) {
+                                    if (Ext.decode(response.responseText).ret == 'OK') {
+                                        alert("工单创建成功：" + $("#V_ORDERID").html());
+                                        history.go(0);
+                                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                        Ext.Msg.alert('提示', '该流程发起失败！');
+                                        history.go(0);
                                     }
+                                }
+                            });
+                            }
                                     else {
                                         Ext.Ajax.request({
                                             method: 'POST',

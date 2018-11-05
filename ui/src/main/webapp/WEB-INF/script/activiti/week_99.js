@@ -414,8 +414,8 @@ function _agree() {
         params: {
             taskId: taskId,
             idea: '通过',
-            parName: [V_NEXT_SETP, "flow_yj"],
-            parVal: [Ext.getCmp('nextPer').getValue(), spyj],
+            parName: [V_NEXT_SETP, "flow_yj", 'shtgtime'],
+            parVal: [Ext.getCmp('nextPer').getValue(), spyj, Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s')],
             processKey: processKey,
             businessKey: V_ORDERGUID,
             V_STEPCODE: V_STEPCODE,

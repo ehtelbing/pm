@@ -229,7 +229,7 @@ Ext.onReady(function () {
             },
             {
                 xtype: 'button',
-                text: '修改工程项目',
+                text: '编辑',
                 icon: imgpath + '/edit.png',
                 listeners: {click: OnButtonEdit}
             },
@@ -275,9 +275,9 @@ Ext.onReady(function () {
             {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center',renderer:atleft},
             {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center',renderer:atleft},
             {text: '维修内容', width: 300, dataIndex: 'V_CONTENT', align: 'center',renderer:atleft},
-            {text: '维修费用', width: 100, dataIndex: 'V_MONEYBUDGET', align: 'center',renderer:atright},
-            {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center',renderer:atleft},
-            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center',renderer:atleft}],
+            {text: '维修费用（万元）', width: 120, dataIndex: 'V_MONEYBUDGET', align: 'center',renderer:atright},
+            {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center',renderer:timelfet},
+            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center',renderer:timelfet}],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -523,4 +523,8 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+function timelfet(value, metaDate, record, rowIndex, colIndex, store){
+    metaDate.style="text-align:right;";
+    return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';
 }

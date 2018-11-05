@@ -1075,12 +1075,16 @@ function OnButtonDefectAddClicked() {
                         if (resp.V_INFO=='success') {
                             V_WEEKPLAN_GUID = 0;
                             V_PLANTYPE = 'DEFECT';
-                            var ret = window.open(AppUrl + 'page/PM_03010218/index.html?V_WEEKPLAN_GUID='+weekguid+
-                                "&V_PLANTYPE=" + V_PLANTYPE +
-                                "&YEAR=" + Ext.getCmp("nf").getValue() +
-                                "&MONTH=" + Ext.getCmp("yf").getValue() +
-                                "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-                                "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+                            if(Ext.getCmp("jhzyq").getValue()=="%"){
+                                alert("作业区不可以为全部，请重新选择"); return;
+                            }else {
+                                var ret = window.open(AppUrl + 'page/PM_03010218/index.html?V_WEEKPLAN_GUID=' + weekguid +
+                                    "&V_PLANTYPE=" + V_PLANTYPE +
+                                    "&YEAR=" + Ext.getCmp("nf").getValue() +
+                                    "&MONTH=" + Ext.getCmp("yf").getValue() +
+                                    "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+                            }
                         } else {
                             alert("初始数据保存失败");
                         }

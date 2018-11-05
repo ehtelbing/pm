@@ -3730,6 +3730,42 @@ public class hpService {
     }
 
 
+    //工单创建审批人
+    public HashMap PM_ACTIVITI_PROCESS_PER_SEL2(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRCODE,String V_V_FLOWTYPE,String V_V_FLOW_STEP,String V_V_PERCODE,String V_V_SPECIALTY,String V_V_WHERE) throws SQLException {
 
+        logger.info("begin PM_ACTIVITI_PROCESS_PER_SEL2");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_ACTIVITI_PROCESS_PER_SEL2" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_REPAIRCODE,:V_V_FLOWTYPE,:V_V_FLOW_STEP,:V_V_PERCODE,:V_V_SPECIALTY,:V_V_PROCESS_CODE,:V_V_WHERE,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_REPAIRCODE", V_V_REPAIRCODE);
+            cstmt.setString("V_V_FLOWTYPE", V_V_FLOWTYPE);
+            cstmt.setString("V_V_FLOW_STEP", V_V_FLOW_STEP);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_SPECIALTY", V_V_SPECIALTY);
+            cstmt.setString("V_V_WHERE", V_V_WHERE);
+            cstmt.registerOutParameter("V_V_PROCESS_CODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("V_V_PROCESS_CODE"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_ACTIVITI_PROCESS_PER_SEL2");
+        return result;
+    }
 
 }

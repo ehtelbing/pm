@@ -16,7 +16,7 @@ var startd = '0';
 var endd = '0';
 var gmxGuid='';
 var allTime=0;
-
+var itemsPerpage=50;
 
 if(Ext.urlDecode(location.href.split('?')[1])!=null){
     Guid=Ext.urlDecode(location.href.split('?')[1]).guid==null?"":Ext.urlDecode(location.href.split('?')[1]).guid;
@@ -308,7 +308,7 @@ var yxsbGridStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'yxsbGridStore',
     fields: ['V_PLANGUID','V_EQUTYPECODE','V_EQUTYPENAME','V_EQUCODE',
-    'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE'],
+    'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE','V_EQUSITENAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -326,7 +326,7 @@ var cgridStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'cgridStore',
     fields: ['V_PLANGUID','V_EQUTYPECODE','V_EQUTYPENAME','V_EQUCODE',
-        'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE'],
+        'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE','V_EQUSITENAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -421,7 +421,7 @@ var qxEquStore=Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'qxEquStore',
     fields: ['V_PLANGUID','V_EQUTYPECODE','V_EQUTYPENAME','V_EQUCODE',
-        'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE'],
+        'V_EQUNAME','V_EQUSITECODE','V_EQUSITE','V_SAP_EQUCODE','V_SIZE','V_EQUSITENAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -895,8 +895,9 @@ var Toolpanel = Ext.create('Ext.form.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     tbar: [
+        '相关设备',
         { xtype: 'tbfill' },
-        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8',},
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
         {
             xtype: 'button',
             text: '查看更多',
@@ -921,9 +922,9 @@ var centerPanel = Ext.create('Ext.grid.Panel', {
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
         {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITE', align: 'center',renderer:atleft},
-        {text: '查看设备检修明细',dataIndex:'cksbjxmx',width:160},
-        {text: '固定资产',dataIndex:'gdzc',width:160},
+        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft},
+        {text: '设备检修历史',dataIndex:'V_EQUCODE',width:160,renderer:machistory}, //dataIndex:'cksbjxmx'
+        {text: '固定资产',dataIndex:'gdzc',width:160,renderer:gdzcdetail},
         {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
     ]
 });
@@ -1199,7 +1200,7 @@ var jxmx2 = Ext.create('Ext.form.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     tbar: [
-        '检修模型',
+        '相关检修模型',
         { xtype: 'tbfill' },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
         {
@@ -1208,7 +1209,7 @@ var jxmx2 = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 0',
             bodyStyle:'float:right;',
             iconCls:'Magnifierzoomin',listeners:{click:LookMoreModel}
-        },
+        }
     ]
 });
 //物料明细按钮
@@ -1466,7 +1467,7 @@ var yxsbGrid = Ext.create('Ext.grid.Panel', {
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
         {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITE', align: 'center',renderer:atleft},
+        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft},
         {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
     ]
 });
@@ -1532,7 +1533,7 @@ var dtjqxgrid = Ext.create('Ext.grid.Panel', {
     border:false,
     columns: [
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '功能位置',width: 260, dataIndex: 'V_EQUSITE', align: 'center',renderer:atleft}
+        {text: '功能位置',width: 260, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft}
     ],listeners:{itemclick:QueryQxByEqu}
 
 });
@@ -2047,8 +2048,146 @@ Ext.onReady(function () {
 
     Ext.getCmp('zy').on('select',function(){
         QueryZyFzr();
-    })
+    });
+    var workStore = Ext.create('Ext.data.Store', {
+        id : 'workStore',
+        pageSize : itemsPerpage,
+        autoLoad : false,
+        fields : [ 'V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
+            'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME',
+            'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE',
+            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME','WORKORDERNUM','PLANTIME','FACTTIME'],
 
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'dxfile/PM_EDUNOTOWORKORDER',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total: 'total'
+            }
+        }
+    });
+    var workgrid=Ext.create('Ext.grid.Panel',{
+       id: 'workgrid',
+       columnLines: true,
+       width:'100%',
+       height:405,
+       autoScroll: true,
+       region:'center',
+       store:workStore,
+       columns:[
+           {
+               xtype : 'rownumberer',
+               width : 30,
+               sortable : false
+           },{
+               text : '工单GUID(隐藏)',
+               dataIndex:'V_ORDERGUID',
+               align : 'center',
+               hidden : true
+           }, {
+               text : '工单号',
+               dataIndex:'V_ORDERID',
+               width : 100,
+               align : 'center'
+           },  {
+               text : '子工单数量',
+               dataIndex:'WORKORDERNUM',
+               width : 90,
+               align : 'center'
+           }, {
+               text : '工单描述',
+               dataIndex:'V_SHORT_TXT',
+               width : 300,
+               align : 'left'
+           }, {
+               text : '设备编号（隐藏）',
+               dataIndex:'V_EQUIP_NO',
+               align : 'center',
+               hidden : true
+           }, {
+               text : '设备名称',
+               dataIndex:'V_EQUIP_NAME',
+               width : 100,
+               align : 'center'
+           }, {
+               text : '设备位置',
+               dataIndex:'V_EQUSITENAME',
+               width : 200,
+               align : 'center'
+           }, {
+               text : '备件消耗',
+               dataIndex:'V_SPARE',
+               width : 250,
+               align : 'center'
+           }, {
+               text : '委托单位',
+               dataIndex:'V_DEPTNAME',
+               width : 100,
+               align : 'center'
+           }, {
+               text : '委托人',
+               dataIndex:'V_PERSONNAME',
+               width : 100,
+               align : 'center'
+           }, {
+               text : '委托时间',
+               dataIndex:'D_ENTER_DATE',
+               width : 140,
+               align : 'center'
+           }, {
+               text : '检修单位',
+               dataIndex:'V_DEPTNAMEREPARIR',
+               width : 150,
+               align : 'center'
+           }, {
+               text : '工单类型描述',
+               dataIndex:'V_ORDER_TYP_TXT',
+               width : 100,
+               align : 'center'
+           }, {
+               text : '工单状态',
+               dataIndex:'V_STATENAME',
+               width : 65,
+               align : 'center'
+           } ,{
+               text : '计划工时',
+               dataIndex:'PLANTIME',
+               width : 100,
+               align : 'center'
+           },{
+               text : '实际工时',
+               dataIndex:'FACTTIME',
+               width : 100,
+               align : 'center'
+           }],
+        bbar : [ {
+            xtype : 'pagingtoolbar',
+            dock : 'bottom',
+            id : 'page',
+            displayInfo : true,
+            displayMsg : '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg : '没有记录',
+            store : workStore
+        }
+       ]
+
+    });
+    ///-----update 2018-10-19
+    var workWindow=Ext.create('Ext.window.Window',{
+       id:'workWindow',
+       closeAction:'hide',
+       width:870,
+       height:450,
+       autoScroll: true,
+       title:'设备检修历史',
+       items:[workgrid]
+    });
 });
 //加载添加页面
 function QueryPageLoad(){
@@ -2058,7 +2197,7 @@ function QueryPageLoad(){
         method: 'POST',
         async: false,
         params: {
-            V_V_GUID:Guid,
+            V_V_GUID:Guid
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
@@ -3123,3 +3262,23 @@ function MoneyChange(field,newValue,oldValue){
 
     Ext.getCmp('tzze').setValue(Ext.getCmp('bjf').getValue()-(-Ext.getCmp('clf').getValue())-(-Ext.getCmp('sgfy').getValue()));
 }
+function machistory(value, metaData, record, rowIndex, colIndex, store){
+    metaData.style="text-align:center";
+    return '<a href="javascript:macdetail(\''+value+'\')">'+"详细信息"+'</a>'
+}
+function macdetail(edcode){
+//---设备编码查询工单
+   Ext.data.StoreManager.lookup('workStore').on('beforeload',function(store, options){
+       var new_params = {V_EDUCODE: edcode};
+       Ext.apply(store.proxy.extraParams, new_params);
+   });
+   Ext.data.StoreManager.lookup('workStore').load({params:{ start: 0, limit: itemsPerpage }});
+   Ext.getCmp('workWindow').show();
+
+}
+
+function gdzcdetail(value,metaData,record,rowIndex,colIndex,store){
+    metaData.style="text-align:center";
+    return '<a href="javascript:mgdzcdet(\''+value+'\')">'+"详细信息"+'</a>'
+}
+
