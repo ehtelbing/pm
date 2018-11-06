@@ -9,6 +9,7 @@ var flag = "";
 var ganttdata = [];
 var VSTART;
 var VEND;
+var mx_code;
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -935,6 +936,12 @@ Ext.onReady(function () {
             icon: imgpath + '/search.png',
             width: 100,
             handler: _procedualDetail
+        },{
+            xtype:'button',
+            text:'附件添加',
+            icon:imgpath+'/fj.png',
+            width:100,
+            handler:_addmxfile
         }]
     });
     // 设备树treePanel
@@ -1279,7 +1286,52 @@ Ext.onReady(function () {
             }
         }
     });
+//--附件类型
+    var ftypeStore=Ext.create('Ext.data.Store',{
+        id:'ftypeStore',
+        autoLoad:false,
+        fields:['ID','FNAME','FTYPE'],
+        proxy:{
+            type:'ajax',
+            url:AppUrl+'dxfile/FILETYPE_GETLIST',
+            actionMethods:{
+                read:'POST'
+            },
+            reader:{
+                type:'json',
+                root:'list'
+            }
+        }
+    });
+    Ext.data.StoreManager.lookup('ftypeStore').load({
+        params:{
+            SIGN:'M'
+        }
+    });
+    Ext.data.StoreManager.lookup('ftypeStore').on('load',function(){
+        Ext.ComponentManager.get('fjtype').store.insert(0,{
+            'ID':'%',
+            'FNAME':'全部'
+        });
+        Ext.getCmp('fjtype').select(Ext.data.StoreManager.lookup('ftypeStore').data.getAt(0));
+    });
 
+    var mxfileStore=Ext.create('Ext.data.Store',{
+       id:'mxfileStore',
+        autoLoad:false,
+        fields:['V_FILEGUID','V_FILENAME','V_FILETYPE','V_MODE_GUID','V_INPERCODE','V_INPERNAME','V_INTIME','V_TYPE'],
+        proxy:{
+           type:'ajax',
+            url:AppUrl+'dxfile/PM_MODEL_FILE_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader:{
+               type:'json',
+               root:'list'
+            }
+        }
+    });
     // 编辑弹窗gridPanel
     var editPanel = Ext.create('Ext.form.Panel', {
         id: 'editPanel',
@@ -1553,6 +1605,126 @@ Ext.onReady(function () {
         }]
     });
 
+    //------模型附件窗口
+
+    var toolbar=Ext.create("Ext.form.Panel",{
+        id:'toolbar',
+        border:false,
+        region:'north',
+        frame: true,
+        height:45,
+        layout: 'column',
+        defaults : {
+            style : 'margin:5px 0px 5px 5px',
+            labelAlign : 'right'
+        },
+        items:[{xtype:'combobox',id:'fjtype',store:ftypeStore,queryMode:'local',fieldLabel:'附件类型',valueField:'ID',displayField:'FNAME',width:260,labelAlign:'right',labelWidth:80,style:'margin:5px 2px 5px 5px',listeners:{select:function(){querymxfj(mx_code);}}},
+           {
+               xtype : 'filefield',
+               id : 'upload',
+               name : 'upload',
+               fieldLabel : '文件上传',
+               labelAlign:'right',
+               width : 300,
+               msgTarget : 'side',
+               allowBlank : true,
+               anchor : '100%',
+               buttonText : '浏览....',
+               style : ' margin: 5px 0px 5px 8px'
+           }, {
+               xtype : 'button',
+               width : 60,
+               text : '上传',
+               style : ' margin: 5px 0px 5px 10px',
+               handler : function () {
+                   var toolbarpan = Ext.getCmp('toolbar');
+                   if(Ext.getCmp('fjtype').getValue()=="%"){
+                       { Ext.Msg.alert('提示信息','请选择上传附件类型'); return}
+                   }
+                   if(Ext.getCmp('upload').getValue()==''||Ext.getCmp('upload').getValue()==null||Ext.getCmp('upload').getValue()==undefined){
+                       Ext.Msg.alert('提示信息', '请选择要的上传文件');
+                       return;
+                   }else{
+                       toolbarpan.submit({
+                           url: AppUrl + 'dxfile/PM_MODEL_FILE_ADD',
+                           async: false,
+                           method: 'POST',
+                           params : {
+                               V_V_MODE_GUID:mx_code,
+                               V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
+                               V_V_INPERNAME:Ext.util.Cookies.get('v_personname2'),
+                               V_V_TYPE:Ext.getCmp('fjtype').getValue()
+                           },
+                           success: function (response) {
+                               var resp=Ext.decode(response.responseText);
+                               if(resp.RET="SUCCESS"){
+                                   querymxfj(mx_code);
+                               }
+
+                           }
+                       });
+                       querymxfj(mx_code);
+                   }
+               }
+           }, {
+        xtype: 'button',
+        text: '刷新',
+        width : 60,
+        style : ' margin: 5px 0px 5px 10px',
+        listeners: {click: function(){querymxfj(mx_code);}}
+    }, {
+        xtype: 'button',
+        text: '删除',
+        width : 60,
+        style : ' margin: 5px 0px 5px 10px',
+        listeners: {click: _OnButtonDel}
+    }]
+    });
+
+    var mxfilegrid=Ext.create('Ext.grid.Panel',{
+        id:'mxfilegrid',
+        width:'100%',
+        height:340,
+        region:'center',
+        autoScroll:true,
+        columnLines: true,
+        store:mxfileStore,
+        style:'text-align:center;',
+        selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
+            selType: 'checkboxmodel',
+            mode: 'SIMPLE'
+        },
+        columns:[{xtype: 'rownumberer', text: '序号', width : 50,align:'center'},
+            {text:'文件编码',dataIndex:'V_FILEGUID',align:'center',width:50,hidden:true},
+                {text:'文件名称',dataIndex:'V_FILENAME',align:'center',width:160},
+                {text:'上传时间',dataIndex:'V_INTIME', align:'center', width:150,
+                        renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
+                            return value.toString().substring(0,10);
+                 }},
+                 {text:'附件类型',dataIndex:'V_TYPE',align:'center',width:100},
+            {text:'操作',dataIndex:'V_FILEGUID',align:'center',width:150,renderer:operation}
+        ]
+    });
+    var mxfilepanel=Ext.create('Ext.panel.Panel',{
+        id:'mxfilepanel',
+        region:'center',
+        width:'100%',
+        layout:'border',
+        height:'100%',
+        items:[toolbar,mxfilegrid]
+     });
+    var mxfilewin= Ext.create('Ext.window.Window', {
+        id: 'mxfilewin',
+        width: 820,
+        height: 360,
+        title: '模型附件窗口',
+        //modal: true,//弹出窗口时后面背景不可编辑
+        frame: true,
+        layout: 'fit',
+        closeAction: 'hide',
+        closable: true,
+        items:[mxfilepanel]
+    });
 });
 
 // 根据厂矿进行作业区联动
@@ -2194,3 +2366,71 @@ var pageFunction = {
     }
 };
 
+/*添加检修模型附件*/
+function _addmxfile(){
+
+    var jxmxPanel = Ext.getCmp('jxmxPanel').getSelectionModel().getSelection();
+    var length=jxmxPanel.length;
+    if(length!=1){
+        alert('请选择一条检修模型数据');
+    }else{
+        mx_code=jxmxPanel[0].data.V_MX_CODE;
+        querymxfj(mx_code);
+        Ext.getCmp("mxfilewin").show();
+    }
+}
+function querymxfj(mx_code){
+     Ext.data.StoreManager.lookup('mxfileStore').load({
+        params:{
+            V_V_MODE_GUID:mx_code,
+            V_V_TYPE:Ext.getCmp('fjtype').getValue()
+        }
+     });
+
+}
+function _OnButtonDel(){
+       var records=Ext.getCmp('mxfilegrid').getSelectionModel().getSelection();
+       if(records.length==0){
+           Ext.MessageBox.show({
+               title:'提示',
+               msg:'请选择一条数据',
+               buttons:Ext.MessageBox.OK,
+               icon:Ext.MessageBox.WARNING
+           });
+           return false;
+       }
+       Ext.MessageBox.show({
+           title:'确认',
+           msg:'你确定要删除么？',
+           buttons:Ext.MessageBox.YESNO,
+           icon:Ext.MessageBox.WARNING,
+           fn:function(btn){
+               if(btn=='yes'){
+                   var err=0;
+                   for(var i=0;i<records.length;i++){
+                       Ext.Ajax.request({
+                           url:AppUrl+'dxfile/PM_MODEL_FILE_DEL',
+                           type:'ajax',
+                           mehtod:'POST',
+                           params:{
+                               V_V_FILEGUID:records[i].get('V_FILEGUID')
+                           },
+                           success:function(resp){
+                               err++;
+                               if(err==records.length){
+                                   querymxfj(mx_code);
+                               }
+                           }
+                       });
+                   }
+               }
+           }
+       });
+}
+function operation(value, metaData, record, store){
+    metaData.style = "text-align:center";
+    return '<a href="javascript:delfile(\''+value+'\')">'+"下载"+'</a>';
+}
+function delfile(value){
+    window.location.href=AppUrl+'dxfile/PM_MODEL_FILE_DOWN?V_V_FILEGUID='+value;
+}

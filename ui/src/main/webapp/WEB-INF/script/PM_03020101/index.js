@@ -652,7 +652,33 @@ var flowStore=Ext.create('Ext.data.Store', {
             root: 'list'
         }
     }
-})
+});
+var gridStore = Ext.create('Ext.data.Store', {
+    id: 'gridStore',
+    autoLoad: true,
+    fields:['ID','V_GUID','V_FILEGUID','V_FILENAME','V_INPERCODE','V_INPERNAME','V_TYPE','V_INTIME','V_FILETYPE','FNAME'],
+    proxy: {
+        type: 'ajax',
+        url: AppUrl+'dxfile/PM_03_PLAN_PROJECT_FILE_SEL2',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        },
+        extraParams:{
+            V_V_GUID:Guid,
+            V_V_FILEGUID:'',
+            V_V_FILENAME:'',
+            V_V_TYPE:'' //type
+        }
+    }
+});
+
+Ext.data.StoreManager.lookup('gridStore').on('load',function(store, records, success, eOpts){
+    Ext.getCmp('fjsl').setText(store.getProxy().getReader().rawData.V_COUNT);
+});
 var northPanel = Ext.create('Ext.form.Panel', {
     region: 'north',
     frame: false,
@@ -727,7 +753,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 0',
             iconCls:'Tablegear',
             handler:btnAdd_file
-        }
+        },{xtype:'label',id:'label11',width:55,text:'附件数量'},{xtype:'label',
+            id:'fjsl',
+            width:30,
+            margin: '5 0 5 0'}
     ]
 });
 /*项目信息*/
@@ -1183,7 +1212,7 @@ var jxmx1 = Ext.create('Ext.grid.Panel', {
         {text: '版本号',width: 140, dataIndex: 'V_MODEL_BBH', align: 'center',renderer:atleft},
         {text: '备注',width: 300, dataIndex: 'V_BZ', align: 'center',renderer:atleft},
         {text: '查看明细',renderer:function(value,metaData,record){
-                return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID + '\')">'+'查看详细'+'</a>'
+                return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID +','+record.data.V_MODEL_NAME+','+record.data.V_MODEL_BBH+'\')">'+'查看详细'+'</a>'
             }},
         {text: '删除',width: 120,  align: 'center',renderer:DelModel}
     ]
@@ -1592,7 +1621,7 @@ var mxAllGrid = Ext.create('Ext.grid.Panel', {
         {text: '版本号',width: 100, dataIndex: 'V_MXBB_NUM', align: 'center',renderer:atleft},
         {text: '备注',width: 300, dataIndex: 'V_BZ', align: 'center',renderer:atleft},
         {text: '查看明细',renderer:function(value,metaData,record){
-                return '<a href="#" onclick="MXclick(\'' + record.data.V_MX_CODE + '\')">'+'查看详细'+'</a>'
+                return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID +','+record.data.V_MODEL_NAME+','+record.data.V_MODEL_BBH+'\')">'+'查看详细'+'</a>'
             }}
     ],listeners:{itemclick:QueryGx}
 });
@@ -1633,6 +1662,7 @@ var btnAdd_jxmx = Ext.create('Ext.window.Window', {
     items: [mxpanle,mxAllGrid,jxgxGrid]
 });
 //大修计划检修模型明细
+
 var gxgrid = Ext.create('Ext.grid.Panel', {
     region: 'west',
     id:'gxgrid',
@@ -1913,7 +1943,8 @@ var jxaqcs = Ext.create('Ext.panel.Panel', {
     frame: false,
     width:'100%',
     renderTo: Ext.getBody(),
-    items: [jxaqcstool1,jxaqcsgrid]//
+   // items: [jxaqcstool1,jxaqcsgrid]//
+    items:[jxaqcsgrid]
 });
 //检修技术要求表单
 var jxjsyqtool1 = Ext.create('Ext.form.Panel', {
@@ -1970,7 +2001,8 @@ var jxjsyq = Ext.create('Ext.panel.Panel', {
     frame: false,
     width:'100%',
     renderTo: Ext.getBody(),
-    items: [jxjsyqtool1,jxjsyqgrid]//
+    //items: [jxjsyqtool1,jxjsyqgrid]//
+    items:[jxjsyqgrid]
 });
 //大修计划右边布局
 var dxjhsbright = Ext.create('Ext.panel.Panel', {
@@ -1979,7 +2011,166 @@ var dxjhsbright = Ext.create('Ext.panel.Panel', {
     frame: false,
     width:1100,
     renderTo: Ext.getBody(),
-    items: [jxgz,jxwl,jxjj,jxjj1,jxaqcs,jxjsyq]
+    items: [jxgz,jxwl,jxjj,jxjj1]
+});
+// //----------模型附件类型查询
+// var ftypeStore=Ext.create('Ext.data.Store',{
+//     id:'ftypeStore',
+//     autoLoad:false,
+//     fields:['ID','FNAME','FTYPE'],
+//     proxy:{
+//         type:'ajax',
+//         url:AppUrl+'dxfile/FILETYPE_GETLIST',
+//         actionMethods:{
+//             read:'POST'
+//         },
+//         reader:{
+//             type:'json',
+//             root:'list'
+//         }
+//     }
+// });
+// Ext.data.StoreManager.lookup('ftypeStore').load({
+//     params:{
+//         SIGN:'M'
+//     }
+// });
+// Ext.data.StoreManager.lookup('ftypeStore').on('load',function(){
+//     Ext.ComponentManager.get('fjtype').store.insert(0,{
+//         'ID':'%',
+//         'FNAME':'全部'
+//     });
+//     Ext.getCmp('fjtype').select(Ext.data.StoreManager.lookup('ftypeStore').data.getAt(0));
+// });
+var mxfileStore= Ext.create('Ext.data.Store', {
+    autoLoad: false,
+    storeId: 'mxfileStore',
+    fields: ['V_FILEGUID', 'V_FILENAME', 'V_TYPE', 'FNAME', 'V_INPERCODE', 'V_INPERNAME', 'V_MODE_GUID','V_INTIME'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url:AppUrl+'dxfile/PM_MODEL_FILE_SEL_DXF',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+// //----附件上传工具
+/*var toolbar=Ext.create("Ext.form.Panel",{
+    id:'toolbar',
+    border:false,
+    region:'north',
+    frame: true,
+    height:45,
+    layout: 'column',
+    defaults : {
+        style : 'margin:5px 0px 5px 5px',
+        labelAlign : 'right'
+    },
+    items:[{xtype:'combobox',id:'fjtype',store:ftypeStore,queryMode:'local',fieldLabel:'附件类型',valueField:'ID',displayField:'FNAME',width:260,labelAlign:'right',labelWidth:80,style:'margin:5px 2px 5px 5px',listeners:{select:function(){querymxfj(mx_code);}}},
+        {
+            xtype : 'filefield',
+            id : 'upload',
+            name : 'upload',
+            fieldLabel : '文件上传',
+            labelAlign:'right',
+            width : 300,
+            msgTarget : 'side',
+            allowBlank : true,
+            anchor : '100%',
+            buttonText : '浏览....',
+            style : ' margin: 5px 0px 5px 8px'
+        }, {
+            xtype : 'button',
+            width : 60,
+            text : '上传',
+            style : ' margin: 5px 0px 5px 10px',
+            handler : function () {
+                var toolbarpan = Ext.getCmp('toolbar');
+                if(Ext.getCmp('fjtype').getValue()=="%"){
+                    { Ext.Msg.alert('提示信息','请选择上传附件类型'); return}
+                }
+                if(Ext.getCmp('upload').getValue()==''||Ext.getCmp('upload').getValue()==null||Ext.getCmp('upload').getValue()==undefined){
+                    Ext.Msg.alert('提示信息', '请选择要的上传文件');
+                    return;
+                }else{
+                    toolbarpan.submit({
+                       url: AppUrl + 'dxfile/PM_MODEL_FILE_ADD',
+                        async: false,
+                        method: 'POST',
+                        params : {
+                            V_V_MODE_GUID:mx_code,
+                            V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
+                            V_V_INPERNAME:Ext.util.Cookies.get('v_personname2'),
+                            V_V_TYPE:Ext.getCmp('fjtype').getValue()
+                        },
+                        success: function (response) {
+                        }
+                    });
+                    querymxfj(mx_code);
+                }
+            }
+        }, {
+            xtype: 'button',
+            text: '刷新',
+            width : 60,
+            style : ' margin: 5px 0px 5px 10px',
+            listeners: {click: function(){querymxfj(mx_code);}}
+        }, {
+            xtype: 'button',
+            text: '删除',
+            width : 60,
+            style : ' margin: 5px 0px 5px 10px',
+            listeners: {click: _OnButtonDel}
+        }]
+});*/
+//----附件查询表格
+var mxfilegrid=Ext.create('Ext.grid.Panel',{
+    id:'mxfilegrid',
+    height:340,
+    width:'100%',
+    region:'center',
+    autoScroll:true,
+    columnLines: true,
+    store:mxfileStore,
+    style:'text-align:center;',
+    columns:[{xtype: 'rownumberer', text: '序号', width : 50,align:'center'},
+        {text:'文件编码',dataIndex:'V_FILEGUID',align:'center',width:50,hidden:true},
+        {text:'文件名称',dataIndex:'V_FILENAME',align:'center',width:160},
+           {text:'类型名称',dataIndex:'FNAME',align:'center',width:160},
+        {text:'上传时间',dataIndex:'V_INTIME', align:'center', width:150,
+            renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
+                return value.toString().substring(0,10);
+            }},
+        {text:'附件类型',dataIndex:'FNAME',align:'center',width:100}
+        //,{text:'操作',dataIndex:'V_FILEGUID',align:'center',width:150,renderer:operation}
+    ]
+});
+//--------模型附件panel
+// var mxfilepanel=Ext.create('Ext.panel.Panel',{
+//     id:'mxfilepanel',
+//     region:'center',
+//     width:'100%',
+//     layout:'border',
+//     border:false,
+//     frame: true,
+//     items:[mxfilegrid]
+// });
+//大修计划检修模型明细窗口tabpanel
+var tebpanel=Ext.create('Ext.tab.Panel',{
+    id:'tabpanel',
+    region:'center',
+    enableTabScroll:true,
+    defaults:{ autoScroll:true},
+    items:[{id:'tab1',title:'检修模型明细',layout:'border',frame:true,border:false,items:[gxgrid,dxjhsbright]},
+           {id:'tab2',title:'检修技术标准',items:[jxjsyq]},
+           { id:'tab3',title:'检修安全措施',items:[jxaqcs]}
+           ,{id:'tab3',title:'检修附件明细',items:[mxfilegrid]}]
+
 });
 //大修计划检修模型明细
 var MXclickW = Ext.create('Ext.window.Window', {
@@ -1992,7 +2183,8 @@ var MXclickW = Ext.create('Ext.window.Window', {
     closeAction: 'hide',
     closable: true,
     layout: 'border',
-    items: [gxgrid,dxjhsbright]
+   // items: [gxgrid,dxjhsbright]
+    items:[tebpanel]
 });
 Ext.onReady(function () {
     Ext.QuickTips.init();
@@ -2764,11 +2956,46 @@ function SaveMx(){
                 }
             });
 
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/PM_MODEL_FILE_SEL',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_MODE_GUID:selectedRecords[i].data.V_MX_CODE,
+                    V_V_TYPE:''
+                },
+                success: function (resp) {
+                    var resp=Ext.JSON.decode(resp.responseText);
+                    for(var t=0;t<resp.list.length;t++){
+                        Ext.Ajax.request({
+                            url:AppUrl+'dxfile/PM_MODEL_FILE_INSERT_DXF',
+                            method: 'POST',
+                            async: false,
+                            params: {
+                                V_V_GUID:Guid,
+                                V_V_FILEGUID:resp.list[t].V_FILEGUID,
+                                V_V_FILENAME:resp.list[t].V_FILENAME,
+                                V_V_INPERCODE:resp.list[t].V_INPERCODE,
+                                V_V_INPERNAME:resp.list[t].V_INPERNAME,
+                                V_V_TYPE:resp.list[t].V_TYPE,
+                                V_V_FILETYPE:resp.list[t].V_FILETYPE,
+                                V_V_MODE_GUID: resp.list[t].V_MODE_GUID //selectedRecords[i].data.V_MX_CODE
+                            },
+                            success: function (resp) {
+                                var resp=Ext.decode(resp.responseText);
+                            }
+                        });
+                     var filecode=resp.list[0].V_FILEGUID;
+                    }
+
+                }
+            });
             if(num==selectedRecords.length){
                 QueryMxInfAll();
                 QueryGauntt();
                 winMxClose();
             }
+
         }
 
     }else{
@@ -2798,7 +3025,23 @@ function _deleteModel(ModelGuid){
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='SUCCESS'){
-                QueryModel();
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_MODEL_FILE_DEL_DXF',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID:Guid,
+                        V_V_MODE_GUID:ModelGuid
+                    },
+                    success:function(resp){
+                        var res=Ext.decode(resp.responseText);
+                        if(resp.list=='success'){
+                            QueryModel();
+                        }
+
+                    }
+                });
+
             }else{
                 alert("删除失败");
             }
@@ -2807,8 +3050,22 @@ function _deleteModel(ModelGuid){
 }
 //查看检修模型明细
 function MXclick(mxguid){
-    QueryJxgx(mxguid);
+    var arr=[];
+    arr=mxguid.split(',');
+    QueryJxgx(arr[0]);
+    QueryModFj(Guid,arr[0]);
+    Ext.getCmp("MXclickW").setTitle('检修模型：'+arr[1]+arr[2]);
+    //QueryJxgx(mxguid);
     Ext.getCmp("MXclickW").show();
+}
+
+function QueryModFj(acode,bcode){
+    Ext.data.StoreManager.lookup("mxfileStore").load({
+        params:{
+            V_V_GUID:acode,
+            V_V_MODE_GUID:bcode
+        }
+    });
 }
 //查询工序
 function QueryGx(a, record){
