@@ -646,7 +646,8 @@ function Querytime() {
             V_I_YEAR: Ext.getCmp('nf').getValue(),
             V_I_MONTH: Ext.getCmp('yf').getValue(),
             V_I_WEEKNUM: Ext.getCmp('zhou').getValue(),
-            V_V_TYPE: 'W'
+            V_V_TYPE: 'W',
+            V_V_DEPTCODE:Ext.getCmp('jhck').getValue()
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

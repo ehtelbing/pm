@@ -623,10 +623,12 @@ Ext.onReady(function () {
                 'V_V_DEPTTYPE': '主体作业区'
             }
         });
+        Queryendtime();
     });
     //计划作业区加载监听
     Ext.data.StoreManager.lookup('jhzyqStore').on('load', function () {
         Ext.getCmp('jhzyq').select(Ext.data.StoreManager.lookup('jhzyqStore').getAt(0));
+        Querytime();
     });
     //计划厂矿更改时
     Ext.getCmp('jhck').on('select', function () {
@@ -640,6 +642,7 @@ Ext.onReady(function () {
         });
 
         query();
+        Queryendtime();
     });
 
     //加载专业
@@ -704,7 +707,7 @@ Ext.onReady(function () {
 
         Ext.data.StoreManager.lookup('gridStore').load();
     });
-    Queryendtime();
+
     Ext.getCmp('nf').on('select', function () {
         Queryendtime();
         query();
@@ -1000,7 +1003,8 @@ function Queryendtime() {
             V_I_YEAR: Ext.getCmp('nf').getValue(),
             V_I_MONTH: Ext.getCmp('yf').getValue(),
             V_I_WEEKNUM: '0',
-            V_V_TYPE: 'M'
+            V_V_TYPE: 'M',
+            V_V_DEPTCODE:Ext.getCmp('jhck').getValue()
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

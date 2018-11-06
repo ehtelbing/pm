@@ -1033,9 +1033,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_I_MONTH") String V_I_MONTH,
             @RequestParam(value = "V_I_WEEKNUM") String V_I_WEEKNUM,
             @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_GET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM, V_V_TYPE);
+        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_GET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM, V_V_TYPE,V_V_DEPTCODE);
         return result;
     }
 

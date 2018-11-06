@@ -349,5 +349,5 @@ function OnButtonExcelClicked() {
 function OnButtonSetupClicked() {
     var year = Ext.getCmp('year').getValue();
     var month = Ext.getCmp('month').getValue();
-    window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR=' + year + '&V_MONTH=' + month + '&V_WEEK=0' + '&V_TYPE=M', '', "dialogWidth=460px;dialogHeight=280px");
+    window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR=' + year + '&V_MONTH=' + month + '&V_WEEK=0' + '&V_TYPE=M'+'&V_ORGCODE='+Ext.getCmp('ck').getValue(), '', "dialogWidth=460px;dialogHeight=280px");
 }

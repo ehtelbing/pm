@@ -1999,7 +1999,7 @@ public class PM_03Service {
         logger.info("end PRO_PM_PLAN_LOCKING_Q_VIEW");
         return result;
     }
-    public Map PRO_PM_PLAN_LOCKING_DATE_GET(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM,String V_V_TYPE) throws SQLException {
+    public Map PRO_PM_PLAN_LOCKING_DATE_GET(String V_I_YEAR,String V_I_MONTH,String V_I_WEEKNUM,String V_V_TYPE,String V_V_DEPTCODE) throws SQLException {
         logger.info("begin PRO_PM_PLAN_LOCKING_DATE_GET");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -2007,11 +2007,12 @@ public class PM_03Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_PLAN_LOCKING_DATE_GET" + "(:V_I_YEAR,:V_I_MONTH,:V_I_WEEKNUM,:V_V_TYPE,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_PLAN_LOCKING_DATE_GET" + "(:V_I_YEAR,:V_I_MONTH,:V_I_WEEKNUM,:V_V_TYPE,:V_V_DEPTCODE,:V_CURSOR)}");
             cstmt.setString("V_I_YEAR", V_I_YEAR);
             cstmt.setString("V_I_MONTH", V_I_MONTH);
             cstmt.setString("V_I_WEEKNUM", V_I_WEEKNUM);
             cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));

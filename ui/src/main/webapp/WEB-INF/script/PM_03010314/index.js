@@ -373,5 +373,5 @@ function OnButtonSetupClicked(){
 	var year=Ext.getCmp('year').getValue();
 	var month=Ext.getCmp('month').getValue();
 	var week=Ext.getCmp('week').getValue();
-	window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR='+year+'&V_MONTH='+ month+'&V_WEEK='+week+'&V_TYPE=W','', "dialogWidth=460px;dialogHeight=280px");
+	window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR='+year+'&V_MONTH='+ month+'&V_WEEK='+week+'&V_TYPE=W'+'&V_ORGCODE='+Ext.getCmp('ck').getValue(),'', "dialogWidth=460px;dialogHeight=280px");
 }

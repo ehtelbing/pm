@@ -288,5 +288,5 @@ function OnSetUpClicked(){
 	var ret = window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR=' +Ext.getCmp('year').getValue()
 		+'&V_MONTH='+Ext.getCmp('quarter').getValue()
 		+'&V_WEEK=0'
-		+'&V_TYPE=Q', '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+		+'&V_TYPE=Q'+'&V_ORGCODE='+Ext.getCmp('ck').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }

@@ -339,11 +339,11 @@ Ext.onReady(function () {
 			listeners: {
 				change: function (field, newValue, oldValue) {
 					_ck_zyqload();
-					// _zyq_jxdw();
 					_zyq_zy();
 					_zyq_sblx();
 					_zyq_sbmc();
 					OnButtonQueryClicked();
+                    _init();
 				}
 			}
 		}, {
@@ -573,14 +573,12 @@ Ext.onReady(function () {
 		items: [panel, grid]
 	});
 
-	_init();
+
 });
 
-function _init()
-{
+function _init() {
 	Queryendtime();
 	Ext.getCmp('jd').select(getQuarterOfMonth());
-
 }
 
 
@@ -868,9 +866,8 @@ function _ck_zyqload() {
 		'V_V_DEPTCODENEXT': '%',
 		'V_V_DEPTTYPE': '主体作业区'
 	};
-	//matGroupSecondStore.currentPage = 1;
 	zyqStore.load();
-
+    _init();
 }
 
 function _zyq_sblx() {
@@ -879,7 +876,6 @@ function _zyq_sblx() {
 		V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
 		V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
 	};
-	//matGroupSecondStore.currentPage = 1;
 	sblxStore.load();
 }
 
@@ -890,7 +886,6 @@ function _zyq_sbmc() {
 		v_v_deptcodenext: Ext.getCmp('zyq').getValue(),
 		v_v_equtypecode: Ext.getCmp('sblx').getValue()
 	};
-	//matGroupSecondStore.currentPage = 1;
 	sbmcStore.load();
 	Ext.getBody().unmask();//去除页面笼罩
 }
@@ -923,7 +918,8 @@ function Queryendtime() {
 			V_I_YEAR: Ext.getCmp('year').getValue(),
 			V_I_MONTH: Ext.getCmp('jd').getValue(),
 			V_I_WEEKNUM: '0',
-			V_V_TYPE: 'Q'
+			V_V_TYPE: 'Q',
+			V_V_DEPTCODE:Ext.getCmp('ck').getValue()
 		},
 		success: function (resp) {
 			var resp = Ext.decode(resp.responseText);

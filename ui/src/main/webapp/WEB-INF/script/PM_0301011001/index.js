@@ -14,6 +14,11 @@ var V_TYPE=null;
 if (location.href.split('?')[1] != undefined) {
 	V_TYPE = Ext.urlDecode(location.href.split('?')[1]).V_TYPE;
 }
+
+var V_ORGCODE=null;
+if (location.href.split('?')[1] != undefined) {
+    V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
+}
 var centerPanel = Ext.create('Ext.form.Panel', {
 	region: 'center',
 	layout:'vbox',
@@ -69,7 +74,8 @@ Ext.onReady(function () {
 			V_I_YEAR:V_YEAR,
 			V_I_MONTH:V_MONTH,
 			V_I_WEEKNUM:V_WEEK,
-			V_V_TYPE:V_TYPE
+			V_V_TYPE:V_TYPE,
+            V_V_DEPTCODE:V_ORGCODE
 		},
 		success: function (resp) {
 			var resp = Ext.decode(resp.responseText);

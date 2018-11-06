@@ -1132,7 +1132,8 @@ function Queryendtime() {
             V_I_YEAR: Ext.getCmp('nf').getValue(),
             V_I_MONTH: Ext.getCmp('yf').getValue(),
             V_I_WEEKNUM: '0',
-            V_V_TYPE: 'M'
+            V_V_TYPE: 'M',
+            V_V_DEPTCODE:Ext.getCmp('jhck').getValue()
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
