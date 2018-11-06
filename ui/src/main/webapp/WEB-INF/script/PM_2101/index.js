@@ -247,7 +247,7 @@ function OpenEditMat() {
             if($("#V_EQUIP_NO").val() == ""){ alert("设备编码不能为空.");}else{
                 var owidth = window.document.body.offsetWidth-200;
                 var oheight = window.document.body.offsetHeight-100 ;
-                var ret = window.open(AppUrl+'page/PM_070203/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl+'page/PM_070203/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() +'', '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }

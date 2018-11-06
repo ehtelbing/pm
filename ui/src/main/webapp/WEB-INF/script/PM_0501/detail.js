@@ -265,9 +265,9 @@ function OpenEditMat() {
                 var oheight = window.document.body.offsetHeight-100 ;
 
                 if (resp.list == "" || resp.list == null) {
-                    var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() +'', '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 } else {
-                    var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=delete&V_ORDERGUID=' + $("#V_ORDERGUID").val() +'', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    var ret = window.open(AppUrl+'page/PM_050102/index.html?flag=delete&V_ORDERGUID=' + $("#V_ORDERGUID").val() +'', '','_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 }
                 loadMatList();
             }

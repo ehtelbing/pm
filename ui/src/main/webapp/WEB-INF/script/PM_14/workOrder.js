@@ -288,7 +288,7 @@ function OpenEditMat() {
 			if (resp.list == "" || resp.list == null) {
 				var ret = window.showModalDialog(
 					'../../page/No41070102/Index.html?flag=delete&V_ORDERGUID='
-					+ $("#V_ORDERGUID").val() + '', '41070102',
+					+ $("#V_ORDERGUID").val() + '', '41070102','_blank',
 					'dialogHeight:' + window.screen.height
 					+ 'px;dialogWidth:' + window.screen.width
 					+ 'px');
@@ -296,8 +296,8 @@ function OpenEditMat() {
 				//if (window.screen.width == '1024') {
 				var ret = window.showModalDialog(
 					'../../page/No41070102/Index.html?flag=all&V_ORDERGUID='
-					+ $("#V_ORDERGUID").val() + '', '41070102',
-					'dialogHeight:' + window.screen.height
+					+ $("#V_ORDERGUID").val() + '', '41070102','_blank',
+				'dialogHeight:' + window.screen.height
 					+ 'px;dialogWidth:' + window.screen.width
 					+ 'px');
 //				} else {
