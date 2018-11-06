@@ -411,8 +411,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             valueField: 'V_EQUTYPECODE',
             store: sblxStore,
             queryMode: 'local',
-            listConfig:{
-                minWidth:270
+            listConfig: {
+                minWidth: 270
             }
         },
         {
@@ -428,8 +428,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             displayField: 'V_EQUNAME',
             valueField: 'V_EQUCODE',
             store: sbmcStore,
-            queryMode: 'local',listConfig:{
-                minWidth:400
+            queryMode: 'local', listConfig: {
+                minWidth: 400
             }
         },
         {
@@ -569,9 +569,10 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             width: 150,
             dataIndex: 'V_STARTTIME',
-            renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
-                metaData.style="text-align:center;";
-            return value; }
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                metaData.style = "text-align:center;";
+                return value;
+            }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
         {
@@ -579,9 +580,10 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             width: 150,
             dataIndex: 'V_ENDTIME',
-            renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
-                metaData.style="text-align:center;";
-                return value; }
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                metaData.style = "text-align:center;";
+                return value;
+            }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
         {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
@@ -595,9 +597,10 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             width: 150,
             dataIndex: 'V_INDATE',
-            renderer:function(value, metaData, record, rowIdx, colIdx, store, view){
-                metaData.style="text-align:center;";
-                return value; }
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                metaData.style = "text-align:center;";
+                return value;
+            }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         }/*,
         {text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME'},*/
@@ -847,7 +850,7 @@ function Querytime() {
             V_I_MONTH: Ext.getCmp('yf').getValue(),
             V_I_WEEKNUM: Ext.getCmp('zhou').getValue(),
             V_V_TYPE: 'W',
-            V_V_DEPTCODE:Ext.getCmp('jhck').getValue()
+            V_V_DEPTCODE: Ext.getCmp('jhck').getValue()
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
@@ -887,9 +890,10 @@ function OnButtonDefectAddClicked() {
                         if (resp.V_INFO == 'success') {
                             V_WEEKPLAN_GUID = 0;
                             V_PLANTYPE = 'DEFECT';
-                            if(Ext.getCmp("jhzyq").getValue()=="%"){
-                                alert("作业区不可以为全部，请重新选择"); return;
-                            }else{
+                            if (Ext.getCmp("jhzyq").getValue() == "%") {
+                                alert("作业区不可以为全部，请重新选择");
+                                return;
+                            } else {
                                 var ret = window.open(AppUrl + 'page/PM_03010313/index.html?V_WEEKPLAN_GUID=' + weekguid +
                                     "&V_PLANTYPE=" + V_PLANTYPE +
                                     "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
@@ -920,21 +924,21 @@ function OnButtonPlanAddClicked() {
     V_WEEKPLAN_GUID = 0;
     V_PLANTYPE = 'DEFECT';
     //------update 2018-0907
-  //  if(Ext.getCmp('starttime').getValue()<Ext.Date.format(new Date(),'Y-m-d H:i:s')){
-        //---end update
-        var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=0&V_PLANTYPE=' + V_PLANTYPE +
-            "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
-            "&YEAR=" + Ext.getCmp("nf").getValue() +
-            "&MONTH=" + Ext.getCmp("yf").getValue() +
-            "&WEEK=" + Ext.getCmp("zhou").getValue() +
-            "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-            "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()
-            //update start 20180907
-           +"&startUpTime="+Ext.getCmp("zks").getValue()
-            +"&endUpTime="+Ext.getCmp("zjs").getValue()
-             //---update end
-            , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
-        //------update 2018-0907
+    //  if(Ext.getCmp('starttime').getValue()<Ext.Date.format(new Date(),'Y-m-d H:i:s')){
+    //---end update
+    var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=0&V_PLANTYPE=' + V_PLANTYPE +
+        "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
+        "&YEAR=" + Ext.getCmp("nf").getValue() +
+        "&MONTH=" + Ext.getCmp("yf").getValue() +
+        "&WEEK=" + Ext.getCmp("zhou").getValue() +
+        "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()
+        //update start 20180907
+        + "&startUpTime=" + Ext.getCmp("zks").getValue()
+        + "&endUpTime=" + Ext.getCmp("zjs").getValue()
+        //---update end
+        , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+    //------update 2018-0907
     // }else{
     //     alert("当前计划时间小于可上报时间，请重新修改");
     // }
@@ -956,9 +960,13 @@ function OnButtonEditClicked() {
         Ext.Msg.alert('操作信息', '请选择一条信息进行修改');
         return false;
     }
+    if (seldata[0].data.V_INPER==Ext.util.Cookies.get('v_personcode') && Ext.util.Cookies.get('v_rolecode')=='00'&& Ext.util.Cookies.get('v_rolecode')=='99'){
+        Ext.Msg.alert('操作信息', '没有权限修改！');
+        return false;
+    }
     V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
-    var ret = window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID +"&startUpTime="+Ext.getCmp("starttime").getValue()
-        +"&endUpTime="+Ext.getCmp("endtime").getValue()+ '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+    window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
+        + "&endUpTime=" + Ext.getCmp("endtime").getValue() + '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
 }
 
 //删除
@@ -1048,7 +1056,7 @@ function OnButtonUp() {
 //---new start 2018-09-17
     var i_err = 0;
     for (var i = 0; i < records.length; i++) {
-        if(Ext.Date.format(new Date(),'Y-m-d H:i:s')>=Ext.getCmp("starttime").getValue()&&Ext.Date.format(new Date(),'Y-m-d H:i:s')<=Ext.getCmp("endtime").getValue()) {
+        if (Ext.Date.format(new Date(), 'Y-m-d H:i:s') >= Ext.getCmp("starttime").getValue() && Ext.Date.format(new Date(), 'Y-m-d H:i:s') <= Ext.getCmp("endtime").getValue()) {
             Ext.Ajax.request({
                 url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_SEND',
                 method: 'POST',
@@ -1118,12 +1126,12 @@ function OnButtonUp() {
                 }
             });
         }
-        else{
+        else {
             Ext.Msg.alert('提示', '该计划不在上报时间内！');
         }
     }
     //--end update
-            //-----old start
+    //-----old start
     // var i_err = 0;
     // for (var i = 0; i < records.length; i++) {
     //     Ext.Ajax.request({
@@ -1195,7 +1203,7 @@ function OnButtonUp() {
     //         }
     //     });
     // }
-            //------old end
+    //------old end
 }
 
 function getReturnQXXZ(retdata) {
