@@ -857,7 +857,7 @@ function itemClick(s, record, item, index, e, eOpts) {
 function BackClicked() {
     var guid = Ext.getCmp("grid").getSelectionModel().getSelection()[0].data.V_ORDERGUID;
     Ext.Ajax.request({
-        url : APP + '/ModelChange',
+        url : AppUrl + '/ModelChange',
         async : false,
         method : 'POST',
         params : {
@@ -875,7 +875,7 @@ function BackClicked() {
                 Ext.ComponentManager.get('tabpanel').removeAll();
                 addTab();
                 Ext.Ajax.request({
-                    url : APP + 'mm/SetMatService',
+                    url : AppUrl + 'mm/SetMatService',
                     type : 'post',
                     async : false,
                     data : {

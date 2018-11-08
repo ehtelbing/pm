@@ -738,7 +738,7 @@ function comboConfirm() {
                                                                     var resp = Ext.decode(ret.responseText);
                                                                     if (resp.V_INFO == 'success') {
                                                                         $.ajax({
-                                                                            url: APP + 'mm/SetMat',
+                                                                            url: AppUrl + 'mm/SetMat',
                                                                             type: 'post',
                                                                             async: false,
                                                                             data: {
@@ -1205,7 +1205,7 @@ function QRYS() {
                                                             if (resp.V_INFO == 'success') {
                                                                 // --update 2018--9-18
                                                                 $.ajax({
-                                                                    url: APP + 'mm/SetMat',
+                                                                    url: AppUrl + 'mm/SetMat',
                                                                     type: 'post',
                                                                     async: false,
                                                                     data: {

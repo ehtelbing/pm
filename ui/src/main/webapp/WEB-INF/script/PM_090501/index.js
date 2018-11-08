@@ -244,7 +244,7 @@ function GetBillMatByOrder(){
 
 function fun_SetMatservice(V_V_ORDERGUID) {
      $.ajax({
-	                	url : APP +  'mm/SetMatService',
+	                	url : AppUrl +  'mm/SetMatService',
 	                	type:'post',
 	                	async:false,
 	                	data:{
@@ -253,7 +253,7 @@ function fun_SetMatservice(V_V_ORDERGUID) {
 //		                	var resp = Ext.JSON.decode(resp.responseText);
 		            		if(resp=="1"){
 		            		Ext.Ajax.request({
-		            			url : APP + '/ModelChange',
+		            			url : AppUrl + '/ModelChange',
 		            			async : false,
 		            			method : 'POST',
 		            			params : {
@@ -267,7 +267,7 @@ function fun_SetMatservice(V_V_ORDERGUID) {
 		            			});
 		            		}else{
 		            			Ext.Ajax.request({
-		                			url : APP + '/ModelChange',
+		                			url : AppUrl + '/ModelChange',
 		                			async : false,
 		                			method : 'POST',
 		                			params : {

@@ -743,7 +743,7 @@ function comboConfirm() {
                                                                     if (resp.V_INFO == 'success') {
                                                                         //---update 2018-09-18
                                                                         $.ajax({
-                                                                            url: APP + 'mm/SetMat',
+                                                                            url: AppUrl + 'mm/SetMat',
                                                                             type: 'post',
                                                                             async: false,
                                                                             data: {
@@ -1214,7 +1214,7 @@ function QRYS() {
                                                                     if (resp.V_INFO == 'success') {
                                                                         //--//--- update 2018-09-18
                                                                         $.ajax({
-                                                                            url: APP + 'mm/SetMat',
+                                                                            url: AppUrl + 'mm/SetMat',
                                                                             type: 'post',
                                                                             async: false,
                                                                             data: {

@@ -26,7 +26,7 @@
 function loadPageInfo() {
 	//基本信息
 	$.ajax({
-		url: APP + '/ModelSelect',
+		url: AppUrl + '/ModelSelect',
 		type: 'post',
 		async: false,
 		data: {
@@ -46,7 +46,7 @@ function loadPageInfo() {
 			$("#V_EQUNAME").html(resp.list[0].V_EQUNAME);//设备名称
 			//功能位置
 			$.ajax({
-				url: APP + '/ModelSelect',
+				url: AppUrl + '/ModelSelect',
 				type: 'post',
 				async: false,
 				data: {
@@ -65,7 +65,7 @@ function loadPageInfo() {
 	});
 	//工单信息
 	$.ajax({
-		url : APP + '/ModelSelect',
+		url : AppUrl + '/ModelSelect',
 		// url: "/No410701/PRO_PM_WORKORDER_DEFECT_CREATE",
 		type : 'post',
 		async : false,
@@ -114,7 +114,7 @@ function loadPageInfo() {
 function loadToolList() {
 	$
 		.ajax({
-			url : APP + '/ModelSelect',
+			url : AppUrl + '/ModelSelect',
 			// url: "/No410701/PRO_PM_WORKORDER_DEFECT_CREATE",
 			type : 'post',
 			async : false,
@@ -137,7 +137,7 @@ function loadToolList() {
 //类型描述
 function loadTypelist(){
 	$.ajax({
-		url : APP + '/ModelSelect',
+		url : AppUrl + '/ModelSelect',
 		// url: "/No410701/PRO_PM_WORKORDER_TYP_VIEW",
 		type : "post",
 		async : false,
@@ -167,7 +167,7 @@ function loadTypelist(){
 //检修单位
 function loadPlantlist() {
 	$.ajax({
-		url : APP + '/ModelSelect',
+		url : AppUrl + '/ModelSelect',
 		// url: "/No410701/PRO_PM_REPAIRDEPT_VIEW",
 		type : "post",
 		async : false,
@@ -205,7 +205,7 @@ function loadPlantlist() {
 function loadTaskGrid(){
 	$
 		.ajax({
-			url : APP + '/ModelSelect',
+			url : AppUrl + '/ModelSelect',
 			// url: "/No410701/PRO_PM_WORKORDER_ET_OPERATIONS",
 			type : 'post',
 			async : false,
@@ -272,7 +272,7 @@ function OpenTask(){
 function OpenEditMat() {
 
 	$.ajax({
-		url : APP + '/ModelSelect',
+		url : AppUrl + '/ModelSelect',
 		// url: "/No41070102/PRO_PM_WORKORDER_ET_ACTIVITY",
 		type : "post",
 		async : false,
@@ -333,7 +333,7 @@ function OpenGJJJ() {
  */
 function loadMatList() {
 	$.ajax({
-		url : APP + '/ModelSelect',
+		url : AppUrl + '/ModelSelect',
 		// url: "/No41070102/PRO_PM_WORKORDER_SPARE_VIEW",
 		type : 'post',
 		data : {
@@ -368,7 +368,7 @@ function CreateBill() {
 			return false;
 		} else {
 			$.ajax({
-				url : APP + '/ModelChange',
+				url : AppUrl + '/ModelChange',
 				// url: '/No41070102/PRO_PM_WORKORDER_DEFECT_SAVE',
 				type : 'post',
 				data : {
@@ -411,7 +411,7 @@ function CreateBill() {
 				},
 				success : function(resp) {
 					$.ajax({
-						url : APP + 'mm/SetMatService',
+						url : AppUrl + 'mm/SetMatService',
 						type:'post',
 						async:false,
 						data:{
@@ -422,7 +422,7 @@ function CreateBill() {
 							//	var resp = Ext.JSON.decode(resp.responseText);
 							if(resp=="1"){
 								Ext.Ajax.request({
-									url : APP + '/ModelChange',
+									url : AppUrl + '/ModelChange',
 									async : false,
 									method : 'POST',
 									params : {
@@ -436,7 +436,7 @@ function CreateBill() {
 								});
 							}else{
 								Ext.Ajax.request({
-									url : APP + '/ModelChange',
+									url : AppUrl + '/ModelChange',
 									async : false,
 									method : 'POST',
 									params : {
@@ -480,7 +480,7 @@ function GetModel() {//获取模型
 function loadToolAndTxtList() {
 
 	$.ajax({
-		url : APP + '/ModelSelect',
+		url : AppUrl + '/ModelSelect',
 		type: 'post',
 		async: false,
 		data : {
@@ -584,7 +584,7 @@ function bindDate(fid) {
 //添加暂时保存
 function SaveOrder(){
 	$.ajax({
-		url : APP + '/ModelChange',
+		url : AppUrl + '/ModelChange',
 		type: 'post',
 		async: false,
 		data : {

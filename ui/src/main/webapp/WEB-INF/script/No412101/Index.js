@@ -449,7 +449,7 @@ function loadTaskGrid() {
 
 function ConfirmAcceptWebService() {
     $.ajax({
-        url: APP + '/WS_EquipService',
+        url: AppUrl + '/WS_EquipService',
         type: 'post',
         async: false,
         data: {
@@ -460,7 +460,7 @@ function ConfirmAcceptWebService() {
     });
 
     $.ajax({
-        url: APP + 'mm/SetMatService',
+        url: AppUrl + 'mm/SetMatService',
         type: 'post',
         async: false,
         data: {
