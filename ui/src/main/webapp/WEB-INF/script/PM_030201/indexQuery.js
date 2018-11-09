@@ -169,11 +169,11 @@ Ext.onReady(function () {
             valueField: 'V_DEPTCODE',
             labelWidth: 80,
             width: 250
-        }, {
+        }, /*{
             xtype: 'label',
             id: "budget",
             style: ' margin: 8px 0px 0px 10px'
-        }, {
+        },*/ {
             xtype: 'button',
             text: '查询',
             style: ' margin: 5px 0px 0px 10px',
@@ -192,7 +192,23 @@ Ext.onReady(function () {
         }
         ]
     });
-
+    var panel2 = Ext.create('Ext.Panel', {
+        id: 'panel2',
+        region: 'north',
+        width: '100%',
+        titleAlign: 'center',
+        frame: true,
+        layout: 'column',
+        defaults: {
+            style: 'margin:3px 0px 5px 5px',
+            labelAlign: 'right'
+        },
+        items: [{
+            xtype: 'label',
+            id: "budget",
+            style: ' margin: 8px 0px 0px 20px'
+        }]
+    });
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
         region: 'center',
@@ -227,7 +243,7 @@ Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
         id: "id",
         layout: 'border',
-        items: [panel, grid]
+        items: [panel,panel2, grid]
     });
 
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
@@ -260,8 +276,8 @@ function QueryBudget() {
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.list != null) {
-                Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份' + Ext.getCmp('ck').rawValue + '大修年计划查询');
-
+             //   Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份' + Ext.getCmp('ck').rawValue + '大修年计划查询');
+                Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份大修年计划查询');
                 Ext.getCmp('budget').setText('年预算费用：' + resp.list[0].V_BUDGET_CK + '万元；已用费用：' + resp.list[0].V_BUDGET_USE + '万元；剩余费用：' + resp.list[0].V_BUDGET_Y + '万元；')
             }
         }

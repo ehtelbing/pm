@@ -1693,7 +1693,8 @@ var jxrytool1 = Ext.create('Ext.form.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     tbar: [
-        '检修人员',
+        //'检修人员',
+        {xtype:'label',text:'检修人员',style:'font-weight:bolder;'},
         { xtype: 'tbfill' },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}/*,
         {
@@ -1748,7 +1749,8 @@ var jxjjtool1 = Ext.create('Ext.form.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     tbar: [
-        '检修机具',
+       // '检修机具',
+        {xtype:'label',text:'检修机具',style:'font-weight:bolder;'},
         { xtype: 'tbfill' },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}/*,
         {
@@ -1801,7 +1803,8 @@ var jxgjtool1 = Ext.create('Ext.form.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     tbar: [
-        '检修工具',
+        //'检修工具',
+        {xtype:'label',text:'检修工具',style:'font-weight:bolder;'},
         { xtype: 'tbfill' },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}/*,
         {
@@ -1853,7 +1856,8 @@ var jxwl1tool1 = Ext.create('Ext.form.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     tbar: [
-        '检修物料',
+        //'检修物料',
+        {xtype:'label',text:'检修物料',style:'font-weight:bolder;'},
         { xtype: 'tbfill' },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}/*,
         {
