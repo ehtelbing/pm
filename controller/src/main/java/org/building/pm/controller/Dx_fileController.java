@@ -180,6 +180,98 @@ public class Dx_fileController {
         return result;
     }
 
+    /*--2018-11-07 岗位点检 */
+    @RequestMapping(value = "BASE_INSPECT_DAY_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_DAY_SELECT(
+            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+//        HashMap data = dx_fileService.BASE_INSPECT_DAY_SELECT(V_EQUCODE,V_PERCODE);
+//        return setPage(request,response,data);
+        Map result = dx_fileService.BASE_INSPECT_DAY_SELECT(V_EQUCODE,V_PERCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "BASE_INSPECT_DAY_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_DAY_INSERT(
+            @RequestParam(value="V_MAINGUID") String V_MAINGUID,
+            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value = "V_EQUNAME") String V_EQUNAME,
+            @RequestParam(value="V_INSPECT_UNIT_CODE") String V_INSPECT_UNIT_CODE,
+            @RequestParam(value = "V_INSPECT_UNIT") String V_INSPECT_UNIT,
+            @RequestParam(value="V_INSPECT_CONTENT") String V_INSPECT_CONTENT,
+            @RequestParam(value = "V_INSPECT_STANDARD") String V_INSPECT_STANDARD,
+            @RequestParam(value="V_UUID") String V_UUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value="V_PERNAME") String V_PERNAME,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_DAY_INSERT(V_MAINGUID,V_EQUCODE,V_EQUNAME,V_INSPECT_UNIT_CODE,V_INSPECT_UNIT,V_INSPECT_CONTENT,V_INSPECT_STANDARD,V_UUID,V_PERCODE,V_PERNAME);
+        return result;
+    }
+
+
+    @RequestMapping(value = "BASE_INSPECT_DAY_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_DAY_UPDATE(
+            @RequestParam(value = "V_MAINGUID") String V_MAINGUID,
+            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_UUID") String V_UUID,
+            @RequestParam(value="V_STATE_SIGN") String V_STATE_SIGN,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_DAY_UPDATE(V_MAINGUID,V_PERCODE,V_UUID,V_STATE_SIGN);
+        return result;
+    }
+//--获取岗检下一步班组列表
+    @RequestMapping(value = "BASE_INSPECT_GETCLASS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_GETCLASS(
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "DEPTCODE") String DEPTCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_GETCLASS(V_PERCODE,DEPTCODE);
+        return result;
+    }
+//-获取下一步人员列表
+    @RequestMapping(value = "BASE_INSPECT_GETNEXTPERSON", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_GETCLASS(
+            @RequestParam(value = "SAP_WORK") String SAP_WORK,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_GETNEXTPERSON(SAP_WORK);
+        return result;
+    }
+    //----写入write表格
+    @RequestMapping(value = "BASE_INSPECT_WRITE_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_WRITE_INSERT(
+            @RequestParam(value="V_MAINGUID") String V_MAINGUID,
+            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_NEXTPRECODE") String V_NEXTPRECODE,
+            @RequestParam(value="V_INCLASS") String V_INCLASS,
+            @RequestParam(value = "V_NEXTCLASS") String V_NEXTCLASS,
+            @RequestParam(value="V_NCLASSNAME") String V_NCLASSNAME,
+            @RequestParam(value = "V_INSPECT_RESULTE") String V_INSPECT_RESULTE,
+            @RequestParam(value="V_REQUESTION") String V_REQUESTION,
+            @RequestParam(value = "V_EQUESTION") String V_EQUESTION,
+            @RequestParam(value="V_OTHER_QIUEST") String V_OTHER_QIUEST,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_WRITE_INSERT(V_MAINGUID,V_INPERCODE,V_NEXTPRECODE,V_INCLASS,V_NEXTCLASS,V_NCLASSNAME,V_INSPECT_RESULTE,V_REQUESTION,V_EQUESTION,V_OTHER_QIUEST);
+        return result;
+    }
+
     @RequestMapping(value="/setPage",method=RequestMethod.POST)
     @ResponseBody
     public Map<String ,Object> setPage(HttpServletRequest req,HttpServletResponse resp,HashMap data){
