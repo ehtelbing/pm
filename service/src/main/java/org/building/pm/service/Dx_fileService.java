@@ -421,8 +421,8 @@ public class Dx_fileService {
             conn=dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt=conn.prepareCall("{call BASE_INSPECT_GETCLASS"+"(:V_PERCODE,:DEPTCODE,:LOGINCLASS,:RET)}");
-            cstmt.setString(V_PERCODE,V_PERCODE);
-            cstmt.setString(DEPTCODE,DEPTCODE);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.setString("DEPTCODE",DEPTCODE);
 
             cstmt.registerOutParameter("LOGINCLASS",OracleTypes.VARCHAR);
             cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
@@ -449,7 +449,7 @@ public class Dx_fileService {
             conn=dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt=conn.prepareCall("{call BASE_INSPECT_GETNEXTPERSON"+"(:SAP_WORK,:RET)}");
-            cstmt.setString(SAP_WORK,SAP_WORK);
+            cstmt.setString("SAP_WORK",SAP_WORK);
             cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
@@ -473,17 +473,52 @@ public class Dx_fileService {
             logger.info("begin BASE_INSPECT_WRITE_INSERT");
             conn=dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt=conn.prepareCall("{call BASE_INSPECT_WRITE_INSERT"+"(:V_MAINGUID,:V_INPERCODE,:V_NEXTPRECODE,:V_INCLASS,:V_NEXTCLASS,:V_NCLASSNAME,:V_INSPECT_RESULTE,:V_REQUESTION,:V_EQUESTION,:V_OTHER_QIUEST,:RET)}");
-            cstmt.setString(V_MAINGUID,V_MAINGUID);
-            cstmt.setString(V_INPERCODE,V_INPERCODE);
-            cstmt.setString(V_NEXTPRECODE,V_NEXTPRECODE);
-            cstmt.setString(V_INCLASS,V_INCLASS);
-            cstmt.setString(V_NEXTCLASS,V_NEXTCLASS);
-            cstmt.setString(V_NCLASSNAME,V_NCLASSNAME);
-            cstmt.setString(V_INSPECT_RESULTE,V_INSPECT_RESULTE);
-            cstmt.setString(V_REQUESTION,V_REQUESTION);
-            cstmt.setString(V_EQUESTION,V_EQUESTION);
-            cstmt.setString(V_OTHER_QIUEST,V_OTHER_QIUEST);
+            cstmt=conn.prepareCall("{call BASE_INSPECT_WRITE_INSERT"+"(:V_MAINGUID,:V_INPERCODE,:V_NEXTPRECODE,:V_INCLASS,:V_NEXTCLASS,:V_NCLASSNAME,:V_INSPECT_RESULTE,:V_REQUESTION,:V_EQUESTION,:V_OTHER_QIUEST,:V_CHGUID,:RET)}");
+            cstmt.setString("V_MAINGUID",V_MAINGUID);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_NEXTPRECODE",V_NEXTPRECODE);
+            cstmt.setString("V_INCLASS",V_INCLASS);
+            cstmt.setString("V_NEXTCLASS",V_NEXTCLASS);
+            cstmt.setString("V_NCLASSNAME",V_NCLASSNAME);
+            cstmt.setString("V_INSPECT_RESULTE",V_INSPECT_RESULTE);
+            cstmt.setString("V_REQUESTION",V_REQUESTION);
+            cstmt.setString("V_EQUESTION",V_EQUESTION);
+            cstmt.setString("V_OTHER_QIUEST",V_OTHER_QIUEST);
+
+            cstmt.registerOutParameter("V_CHGUID",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_CHGUID",(String) cstmt.getObject("V_CHGUID"));
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end BASE_INSPECT_WRITE_INSERT");
+        return result;
+    }
+    public HashMap BASE_INSPECT_WRITE_UPDATE(String V_MAINGUID,String V_CHILDGUID,String V_PERCODE,String V_NEXT_CLASS,
+                                             String V_NEXTPERCODE,String V_INSPECT_RESULTE,String V_REQUESTION,String V_EQUESTION,String V_OTHER_QIUEST)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin BASE_INSPECT_WRITE_UPDATE");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call BASE_INSPECT_WRITE_UPDATE"+"(:V_MAINGUID,:V_CHILDGUID,:V_PERCODE,:V_NEXT_CLASS,:V_NEXTPERCODE,:V_INSPECT_RESULTE,:V_REQUESTION,:V_EQUESTION,:V_OTHER_QIUEST,:RET)}");
+            cstmt.setString("V_MAINGUID",V_MAINGUID);
+            cstmt.setString("V_CHILDGUID",V_CHILDGUID);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.setString("V_NEXT_CLASS",V_NEXT_CLASS);
+            cstmt.setString("V_NEXTPERCODE",V_NEXTPERCODE);
+            cstmt.setString("V_INSPECT_RESULTE",V_INSPECT_RESULTE);
+            cstmt.setString("V_REQUESTION",V_REQUESTION);
+            cstmt.setString("V_EQUESTION",V_EQUESTION);
+            cstmt.setString("V_OTHER_QIUEST",V_OTHER_QIUEST);
 
             cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
             cstmt.execute();
@@ -495,7 +530,124 @@ public class Dx_fileService {
             conn.close();
         }
         logger.debug("result:"+result);
-        logger.info("end BASE_INSPECT_WRITE_INSERT");
+        logger.info("end BASE_INSPECT_WRITE_UPDATE");
+        return result;
+    }
+    public HashMap BASE_INSPECT_WRITE_SELECT(String V_MAINGUID,String V_CHILDGUID,String V_PERCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin BASE_INSPECT_WRITE_SELECT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call BASE_INSPECT_WRITE_SELECT"+"(:V_MAINGUID,:V_CHILDGUID,:V_PERCODE,:RET)}");
+            cstmt.setString("V_MAINGUID",V_MAINGUID);
+            cstmt.setString("V_CHILDGUID",V_CHILDGUID);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end BASE_INSPECT_WRITE_SELECT");
+        return result;
+    }
+    //-------首页日检数量
+    public HashMap BASE_INSPECT_WRITE_SELNUM(String V_PERCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin BASE_INSPECT_WRITE_SELNUM");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call BASE_INSPECT_WRITE_SELNUM"+"(:V_PERCODE,:NUM,:RET)}");
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("NUM",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("NUM",(String) cstmt.getObject("NUM"));
+            result.put("RET",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end BASE_INSPECT_WRITE_SELNUM");
+        return result;
+    }
+    //---待办日检明细
+    public HashMap BASE_INSPECT_SELTODOS(String V_CHILDGUID,String V_PERSON)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin BASE_INSPECT_SELTODOS");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call BASE_INSPECT_SELTODOS"+"(:V_CHILDGUID,:V_PERSON,:RET)}");
+            cstmt.setString("V_CHILDGUID",V_CHILDGUID);
+            cstmt.setString(V_PERSON,V_PERSON);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end BASE_INSPECT_SELTODOS");
+        return result;
+    }
+
+    public HashMap BASE_INSPECT_WRITE_INSERT2(String V_MAINGUID,String V_CHILDGUID,String V_INPERCODE,String V_NEXTPRECODE,String V_INCLASS,
+                                             String V_NEXTCLASS,String V_NCLASSNAME,String V_INSPECT_RESULTE,String V_REQUESTION,String V_EQUESTION,
+                                             String V_OTHER_QIUEST)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin BASE_INSPECT_WRITE_INSERT2");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call BASE_INSPECT_WRITE_INSERT2"+"(:V_MAINGUID,:V_CHILDGUID,:V_INPERCODE,:V_NEXTPRECODE,:V_INCLASS,:V_NEXTCLASS,:V_NCLASSNAME,:V_INSPECT_RESULTE,:V_REQUESTION,:V_EQUESTION,:V_OTHER_QIUEST,:V_CHGUID,:RET)}");
+            cstmt.setString("V_MAINGUID",V_MAINGUID);
+            cstmt.setString("V_CHILDGUID",V_CHILDGUID);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_NEXTPRECODE",V_NEXTPRECODE);
+            cstmt.setString("V_INCLASS",V_INCLASS);
+            cstmt.setString("V_NEXTCLASS",V_NEXTCLASS);
+            cstmt.setString("V_NCLASSNAME",V_NCLASSNAME);
+            cstmt.setString("V_INSPECT_RESULTE",V_INSPECT_RESULTE);
+            cstmt.setString("V_REQUESTION",V_REQUESTION);
+            cstmt.setString("V_EQUESTION",V_EQUESTION);
+            cstmt.setString("V_OTHER_QIUEST",V_OTHER_QIUEST);
+
+            cstmt.registerOutParameter("V_CHGUID",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_CHGUID",(String) cstmt.getObject("V_CHGUID"));
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end BASE_INSPECT_WRITE_INSERT2");
         return result;
     }
 }

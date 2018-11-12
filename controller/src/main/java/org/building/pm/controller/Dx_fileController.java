@@ -271,6 +271,85 @@ public class Dx_fileController {
         Map result = dx_fileService.BASE_INSPECT_WRITE_INSERT(V_MAINGUID,V_INPERCODE,V_NEXTPRECODE,V_INCLASS,V_NEXTCLASS,V_NCLASSNAME,V_INSPECT_RESULTE,V_REQUESTION,V_EQUESTION,V_OTHER_QIUEST);
         return result;
     }
+//----修改write表
+
+    @RequestMapping(value = "BASE_INSPECT_WRITE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_WRITE_UPDATE(
+            @RequestParam(value="V_MAINGUID") String V_MAINGUID,
+            @RequestParam(value="V_CHILDGUID") String V_CHILDGUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value="V_NEXT_CLASS") String V_NEXT_CLASS,
+            @RequestParam(value = "V_NEXTPERCODE") String V_NEXTPERCODE,
+            @RequestParam(value="V_INSPECT_RESULTE") String V_INSPECT_RESULTE,
+            @RequestParam(value = "V_REQUESTION") String V_REQUESTION,
+            @RequestParam(value="V_EQUESTION") String V_EQUESTION,
+            @RequestParam(value = "V_OTHER_QIUEST") String V_OTHER_QIUEST,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_WRITE_UPDATE(V_MAINGUID,V_CHILDGUID,V_PERCODE,V_NEXT_CLASS,V_NEXTPERCODE,V_INSPECT_RESULTE,V_REQUESTION,V_EQUESTION,V_OTHER_QIUEST);
+        return result;
+    }
+    ///--___-查询返回的write表
+    @RequestMapping(value = "BASE_INSPECT_WRITE_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_WRITE_SELECT(
+            @RequestParam(value="V_MAINGUID") String V_MAINGUID,
+            @RequestParam(value="V_CHILDGUID") String V_CHILDGUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_WRITE_SELECT(V_MAINGUID,V_CHILDGUID,V_PERCODE);
+        return result;
+    }
+
+//---首页日检数量
+@RequestMapping(value = "BASE_INSPECT_WRITE_SELNUM", method = RequestMethod.POST)
+@ResponseBody
+public Map BASE_INSPECT_WRITE_SELNUM(
+        @RequestParam(value="V_PERCODE") String V_PERCODE,
+        HttpServletRequest request,
+        HttpServletResponse response
+) throws Exception {
+    Map result = dx_fileService.BASE_INSPECT_WRITE_SELNUM(V_PERCODE);
+    return result;
+}
+    //---待办日检明细
+
+    @RequestMapping(value = "BASE_INSPECT_SELTODOS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_SELTODOS(
+            @RequestParam(value="V_CHILDGUID") String V_CHILDGUID,
+            @RequestParam(value="V_PERSON") String V_PERSON,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_SELTODOS(V_CHILDGUID,V_PERSON);
+        return result;
+    }
+    @RequestMapping(value = "BASE_INSPECT_WRITE_INSERT2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map BASE_INSPECT_WRITE_INSERT2(
+            @RequestParam(value="V_MAINGUID") String V_MAINGUID,
+            @RequestParam(value="V_CHILDGUID") String V_CHILDGUID,
+            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_NEXTPRECODE") String V_NEXTPRECODE,
+            @RequestParam(value="V_INCLASS") String V_INCLASS,
+            @RequestParam(value = "V_NEXTCLASS") String V_NEXTCLASS,
+            @RequestParam(value="V_NCLASSNAME") String V_NCLASSNAME,
+            @RequestParam(value = "V_INSPECT_RESULTE") String V_INSPECT_RESULTE,
+            @RequestParam(value="V_REQUESTION") String V_REQUESTION,
+            @RequestParam(value = "V_EQUESTION") String V_EQUESTION,
+            @RequestParam(value="V_OTHER_QIUEST") String V_OTHER_QIUEST,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map result = dx_fileService.BASE_INSPECT_WRITE_INSERT2(V_MAINGUID,V_CHILDGUID,V_INPERCODE,V_NEXTPRECODE,V_INCLASS,V_NEXTCLASS,V_NCLASSNAME,V_INSPECT_RESULTE,V_REQUESTION,V_EQUESTION,V_OTHER_QIUEST);
+        return result;
+    }
+
 
     @RequestMapping(value="/setPage",method=RequestMethod.POST)
     @ResponseBody

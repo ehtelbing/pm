@@ -1,4 +1,5 @@
 var mainguid="";
+var childguid='';
 //计划厂矿
 var jhckStore = Ext.create('Ext.data.Store', {
     autoLoad: true,
@@ -177,7 +178,7 @@ var gridStore = Ext.create('Ext.data.Store', {
     pageSize: 15,
     autoLoad: false,
     fields: ['EQUCODE', 'EQUNAME','INSPECT_UNIT_CODE','INSPECT_UNIT','INSPECT_CONTENT','UUID',
-        'INSPECT_STANDARD','STATE_SIGN','MAINGUID'],
+        'INSPECT_STANDARD','STATE_SIGN','MAINGUID','CHILDGUID'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -211,7 +212,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '点检标准', align: 'center', width: 150, dataIndex: 'INSPECT_STANDARD'},
         {text:'正常/异常',align:'center',width: 160,dataIndex: 'STATE_SIGN',renderer:function (value, metaData, record, rowIndex, colIndex, store, view) {
                 //metaData.style = "text-align:center";
-                if (value=="异常"){ metaData.style = "font-color:FF3333;text-align:center";}else{metaData.style = "text-align:center";}
+                if (value=="异常"){ metaData.style = "color:red;font-color:FF3333;text-align:center";}else{metaData.style = "text-align:center";}
                 var uuid=store.data.items[rowIndex].get('UUID');
                 return '<a href="javascript:change(\'' + uuid+ '\')">' + value + '</a>';
             }}
@@ -333,6 +334,7 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('gridStore').on('load',function(store, records, success, eOpts){
         var list=Ext.data.StoreManager.lookup('gridStore').getProxy().getReader().rawData.list;
         mainguid=list[0].MAINGUID;
+        childguid=list[0].CHILDGUID;
     });
 
 
@@ -346,7 +348,7 @@ Ext.onReady(function () {
         height:50,
         layout:'column',
         items:[{ xtype:'datefield',id: 'day',fieldLabel: '上报日期',labelAlign: 'right',labelWidth: 55,width: 191,
-            value:nowdate(),emptyText:nowdate(),format:"Ymd",labelStyle: 'font-weight:bold',style: ' margin: 5px 5px 5px 5px',editable:false},
+            value:nowdate(),emptyText:nowdate(),format:"Ymd",labelStyle: 'font-weight:bold',style: ' margin: 5px 5px 5px 5px',editable:false,readOnly:true},
             {xtype: "textfield", id: "inclass", fieldLabel: "交班班组",labelAlign: 'right',labelWidth: 55,width: 200, allowBlank: false,style: 'margin:5px 5px 5px 5px',readOnly:true},
             {xtype: "textfield", id: "inper", fieldLabel: "交班人",labelAlign: 'right',labelWidth: 55,width: 200, allowBlank: false,style: 'margin: 5px 5px 5px 5px',readOnly:true,
                 value:decodeURI(Ext.util.Cookies.get('v_personname'))}
@@ -449,6 +451,29 @@ function submitTable(){
         Ext.getCmp('jbper').select(Ext.data.StoreManager.lookup('workperStore').getAt(0));
     });
 
+    if(childguid!=""){
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/BASE_INSPECT_WRITE_SELECT',
+            method: 'POST',
+            async: false,
+            params: {
+                V_MAINGUID:mainguid,
+                V_CHILDGUID: childguid,
+                V_PERCODE :Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                Ext.getCmp('jbclass').setValue(resp.RET[0].NEXT_CLASS);
+                Ext.getCmp('jbper').setValue(resp.RET[0].NEXT_PERCODE);
+                Ext.getCmp('jbclass').setRawValue(resp.RET[0].NEXT_CLASSNAME);
+                Ext.getCmp('jbper').setRawValue(resp.RET[0].NEXT_PERNAME);
+                Ext.getCmp('sbdjjg').setValue(resp.RET[0].C_REQUESTION);
+                Ext.getCmp('bbjxwt').setValue(resp.RET[0].E_INSPECT_RESULTE);
+                Ext.getCmp('ubzsm').setValue(resp.RET[0].L_EQUESTION);
+                Ext.getCmp('qtwt').setValue(resp.RET[0].OTHER_QIUEST);
+            }
+        });
+    }
     Ext.getCmp('window').show();
 }
 
@@ -511,30 +536,57 @@ function allExcept(){
 }
 
 function addNextper(){
-    Ext.Ajax.request({
-        url: AppUrl + 'dxfile/BASE_INSPECT_WRITE_INSERT',
-        method: 'POST',
-        async: false,
-        params: {
-            V_MAINGUID:mainguid,
-            V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
-            V_NEXTPRECODE :Ext.getCmp('jbper').getValue(),
-            V_INCLASS: Ext.getCmp('inclass').getValue()=="无"?"":Ext.getCmp('inclass').getValue(),
-            V_NEXTCLASS: Ext.getCmp('jbclass').getValue(),
-            V_NCLASSNAME:Ext.getCmp('jbclass').getDisplayValue(),
-            V_INSPECT_RESULTE:Ext.getCmp('sbdjjg').getValue(),
-            V_REQUESTION:Ext.getCmp('bbjxwt').getValue(),
-            V_EQUESTION:Ext.getCmp('ubzsm').getValue(),
-            V_OTHER_QIUEST:Ext.getCmp('qtwt').getValue()
-        },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);
-            if (resp.RET=='SUCCESS') {
-                Ext.getCmp('window').close();
-                //  Ext.getCmp('window').show();
-            }
-        }
-    });
+ if(childguid==""){
+     Ext.Ajax.request({
+         url: AppUrl + 'dxfile/BASE_INSPECT_WRITE_INSERT',
+         method: 'POST',
+         async: false,
+         params: {
+             V_MAINGUID:mainguid,
+             V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
+             V_NEXTPRECODE :Ext.getCmp('jbper').getValue(),
+             V_INCLASS: Ext.getCmp('inclass').getValue()=="无"?"":Ext.getCmp('inclass').getValue(),
+             V_NEXTCLASS: Ext.getCmp('jbclass').getValue(),
+             V_NCLASSNAME:Ext.getCmp('jbclass').getDisplayValue(),
+             V_INSPECT_RESULTE:Ext.getCmp('sbdjjg').getValue(),
+             V_REQUESTION:Ext.getCmp('bbjxwt').getValue(),
+             V_EQUESTION:Ext.getCmp('ubzsm').getValue(),
+             V_OTHER_QIUEST:Ext.getCmp('qtwt').getValue()
+         },
+         success: function (response) {
+             var resp = Ext.decode(response.responseText);
+             if (resp.RET=='SUCCESS') {
+                 childguid=resp.V_CHGUID;
+                 Ext.getCmp('window').close();
+                 //  Ext.getCmp('window').show();
+             }
+         }
+     });
+ }else{
+     Ext.Ajax.request({
+         url: AppUrl + 'dxfile/BASE_INSPECT_WRITE_UPDATE',
+         method: 'POST',
+         async: false,
+         params: {
+             V_MAINGUID:mainguid,
+             V_CHILDGUID:new_childguid,
+             V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+             V_NEXT_CLASS: Ext.getCmp('jbclass').getValue(),
+             V_NEXTPERCODE :Ext.getCmp('jbper').getValue(),
+             V_INSPECT_RESULTE:Ext.getCmp('sbdjjg').getValue(),
+             V_REQUESTION:Ext.getCmp('bbjxwt').getValue(),
+             V_EQUESTION:Ext.getCmp('ubzsm').getValue(),
+             V_OTHER_QIUEST:Ext.getCmp('qtwt').getValue()
+         },
+         success: function (response) {
+             var resp = Ext.decode(response.responseText);
+             if (resp.RET=='SUCCESS') {
+                 Ext.getCmp('window').close();
+             }
+         }
+     });
+ }
+
 
 }
 function nowdate(){

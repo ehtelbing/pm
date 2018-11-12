@@ -50,10 +50,12 @@ $(function () {
     }
     _AgencySelect();
     _QXNumSelect();
+    selInspectNum();
     QuerySumDb();
     JHselect();
     setInterval("QuerySumDb()", 120000);
     setInterval("_QXNumSelect()", 120000);
+    setInterval("selInspectNum()", 120000);
     getNowTime();
     getPersonInf();
     getselmenumain();
@@ -88,6 +90,7 @@ function GoToDb() {
 function tabreload() {
     _QXNumSelect();
     _AgencySelect();
+    selInspectNum();
 }
 
 //第几周
@@ -872,4 +875,23 @@ function OnCookies() {
         }
     });
 
+}
+function selInspectNum(){
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/BASE_INSPECT_WRITE_SELNUM',
+        method: 'POST',
+        async: false,
+        params: {
+            V_PERCODE:Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            Ext.fly('sectCount').dom.innerHTML = '（' + resp.NUM + '）';
+            Ext.getBody().unmask();//去除页面笼罩
+            // $('#sectCount').val(resp.NUM)
+        }
+    });
+}
+function _inspect(){
+    location.href = AppUrl + 'page/PM_060105/todos.html';
 }
