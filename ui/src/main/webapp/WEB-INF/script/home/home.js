@@ -116,8 +116,8 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('db').setValue(resp.V_DBNUM+'条');
-            Ext.getCmp('yb').setValue(resp.V_YBNUM+'条');
+            Ext.getCmp('db').setValue(resp.V_DBNUM+'项');
+            Ext.getCmp('yb').setValue(resp.V_YBNUM+'项');
 
         }
     });
@@ -134,11 +134,11 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('wclqx').setValue(resp.V_WCL_NUM+'条');
-            Ext.getCmp('yxpqx').setValue(resp.V_YXP_NUM+'条');
-            Ext.getCmp('yxqqx').setValue(resp.V_YCL_NUM+'条');
-            Ext.getCmp('sgxqqx').setValue(resp.V_SGXQ_NUM+'条');
-            Ext.getCmp('ylqx').setValue(resp.V_YL_NUM+'条');
+            Ext.getCmp('wclqx').setValue(resp.V_WCL_NUM+'项');
+            Ext.getCmp('yxpqx').setValue(resp.V_YXP_NUM+'项');
+            Ext.getCmp('yxqqx').setValue(resp.V_YCL_NUM+'项');
+            Ext.getCmp('sgxqqx').setValue(resp.V_SGXQ_NUM+'项');
+            Ext.getCmp('ylqx').setValue(resp.V_YL_NUM+'项');
 
         }
     });
@@ -155,10 +155,10 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('njh').setValue(resp.V_YEAR_NUM+'条');
-            Ext.getCmp('jjh').setValue(resp.V_QUARTER_NUM+'条');
-            Ext.getCmp('yjh').setValue(resp.V_MONTH_NUM+'条');
-            Ext.getCmp('zjh').setValue(resp.V_WEEK_NUM+'条');
+            Ext.getCmp('njh').setValue(resp.V_YEAR_NUM+'项');
+            Ext.getCmp('jjh').setValue(resp.V_QUARTER_NUM+'项');
+            Ext.getCmp('yjh').setValue(resp.V_MONTH_NUM+'项');
+            Ext.getCmp('zjh').setValue(resp.V_WEEK_NUM+'项');
 
         }
     });
@@ -174,11 +174,11 @@ function OnPageLoad() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
 
-            Ext.getCmp('cjgd').setValue(resp.V_CJ_NUM+'条');
-            Ext.getCmp('jsgd').setValue(resp.V_JS_NUM+'条');
-            Ext.getCmp('fkgd').setValue(resp.V_FK_NUM+'条');
-            Ext.getCmp('ysgd').setValue(resp.V_YS_NUM+'条');
-            Ext.getCmp('ylgd').setValue(resp.V_YL_NUM+'条');
+            Ext.getCmp('cjgd').setValue(resp.V_CJ_NUM+'项');
+            Ext.getCmp('jsgd').setValue(resp.V_JS_NUM+'项');
+            Ext.getCmp('fkgd').setValue(resp.V_FK_NUM+'项');
+            Ext.getCmp('ysgd').setValue(resp.V_YS_NUM+'项');
+            Ext.getCmp('ylgd').setValue(resp.V_YL_NUM+'项');
 
         }
     });
