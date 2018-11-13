@@ -151,10 +151,6 @@ Ext.onReady(function() {
             }
         }
     });
-
-    Ext.data.StoreManager.lookup('gridStore').on('load',function(store) {
-
-    });
     var panel =Ext.create('Ext.panel.Panel',{
         id : 'panellow',
         region : 'north',
@@ -196,21 +192,23 @@ Ext.onReady(function() {
             xtype : 'rownumberer',
             width : 30,
             sortable : false
-        }, {
-            text : '工单GUID(隐藏)',
-            dataIndex : 'V_ORDERGUID',
-            align : 'center',
-            hidden : true
-        }, {
+        },  {
             text : '工单号',
             dataIndex : 'V_ORDERID',
             width : 100,
             align : 'center',
             renderer : left
+        }, {
+            text : '流程明细',
+            dataIndex : 'V_ORDERGUID',
+            width : 100,
+            align : 'center',
+            renderer : left,
+            renderer : rendererFlow
         },  {
             text : '子工单数量',
             dataIndex : 'WORKORDERNUM',
-            width : 300,
+            width : 100,
             align : 'center',
             renderer : left,
             renderer : rendererZGD
@@ -221,12 +219,7 @@ Ext.onReady(function() {
             align : 'center',
             renderer : left,
             renderer : CreateGridColumnTd
-        }, {
-            text : '设备编号（隐藏）',
-            dataIndex : 'V_EQUIP_NO',
-            align : 'center',
-            hidden : true
-        }, {
+        },  {
             text : '设备名称',
             dataIndex : 'V_EQUIP_NAME',
             width : 130,
@@ -535,28 +528,38 @@ function QueryGrid() {
 function rendererZGD(a, value, metaData){
     return '<a href="javascript:goToZGD(\'' + metaData.data.V_ORDERGUID + '\')">' + a + '</a>';
 }
+
+
 function goToZGD(V_ORDERGUID){
     window.open(AppUrl + "page/No4117/Index.html?V_ORDERGUID="
         + V_ORDERGUID,
         "", "dialogHeight:700px;dialogWidth:1100px");
+}
+
+function rendererFlow(a, value, metaData){
+    return '<a href="javascript:goToFlow(\'' + metaData.data.V_ORDERGUID + '\')">查看</a>';
+}
+
+function goToFlow(V_ORDERGUID){
+    var InstanceId='';
+    Ext.Ajax.request({
+        url : AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        async : false,
+        method : 'POST',
+        params : {
+            businessKey : V_ORDERGUID
+        },
+        success : function(ret) {
+            var respRoot = Ext.JSON.decode(ret.responseText);
+            InstanceId=respRoot.InstanceId;
+        }
+    });
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;03010219
+    window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='+ InstanceId , '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
-// function OnClickExcelButton(){
-//     document.location.href=AppUrl + 'excel/GDCX_EXCEL?V_D_ENTER_DATE_B='+Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d')+
-//     '&V_D_DEFECTDATE_E='+Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d')+
-//     '&V_V_ORGCODE='+Ext.ComponentManager.get("ck").getValue()+
-//     '&V_V_DEPTCODE='+encodeURI(Ext.ComponentManager.get("zyq").getValue())+
-//     '&V_V_DEPTCODEREPARIR='+ ''+
-//     '&V_V_STATECODE='+encodeURI(Ext.ComponentManager.get("gdzt").getValue())+
-//     '&V_EQUTYPE_CODE='+encodeURI(Ext.ComponentManager.get("sblx").getValue())+
-//     '&V_EQU_CODE='+encodeURI(Ext.ComponentManager.get("sbmc").getValue())+
-//     '&V_DJ_PERCODE='+ encodeURI(Ext.ComponentManager.get("djy").getValue())+
-//     '&V_V_SHORT_TXT='+ Ext.ComponentManager.get("selshortTxt").getValue()+
-//     '&V_V_BJ_TXT='+Ext.ComponentManager.get("selmatDesc").getValue()+
-//     '&V_V_ORDER_TYP='+Ext.getCmp('tabpanel').getActiveTab().id+
-//     '&V_V_PAGE='+ Ext.getCmp('page').store.currentPage+
-//     '&V_V_PAGESIZE='+ Ext.getCmp('page').store.pageSize;
-// }
+
 function OnClickExcelButton(){
     document.location.href=AppUrl + 'excel/GDCX_EXCEL2?V_D_ENTER_DATE_B='+Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d')+
         '&V_D_DEFECTDATE_E='+Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d')+

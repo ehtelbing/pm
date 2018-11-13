@@ -958,11 +958,11 @@ function OnButtonEditClicked() {
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
     if (seldata.length != 1) {
         Ext.Msg.alert('操作信息', '请选择一条信息进行修改');
-        return false;
+        return ;
     }
-    if (seldata[0].data.V_INPER==Ext.util.Cookies.get('v_personcode') && Ext.util.Cookies.get('v_rolecode')=='00'&& Ext.util.Cookies.get('v_rolecode')=='99'){
+    if (seldata[0].data.V_INPER!=Ext.util.Cookies.get('v_personcode') && Ext.util.Cookies.get('v_rolecode')!='00'&& Ext.util.Cookies.get('v_rolecode')!='99'){
         Ext.Msg.alert('操作信息', '没有权限修改！');
-        return false;
+        return ;
     }
     V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
     window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
