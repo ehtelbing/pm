@@ -747,10 +747,10 @@ function JstPage() {
         params: {
             V_V_PERCODE: USERID
         },
-        success: function (response) {
+        success: function (response) {m
             var resp = Ext.JSON.decode(response.responseText);
 
-            jstlogcode = resp.V_INFO[0].V_JST;
+            jstlogcode = resp.V_INFO[0].V_JST;10
             jstpass = resp.V_INFO[0].V_PASSWORD;
             if (jstlogcode != "" && jstpass != "") {
                 var owidth = window.document.body.offsetWidth - 200;
