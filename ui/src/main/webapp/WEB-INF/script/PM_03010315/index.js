@@ -218,6 +218,47 @@ var sbmcStore = Ext.create('Ext.data.Store', {
     }
 });
 
+//施工方式
+var sgfsStore = Ext.create("Ext.data.Store", {
+    storeId: 'sgfsStore',
+    fields: ['ID', 'V_BH','V_SGFS','V_LX'],
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_SGFS_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
+Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+});
+//---检修单位
+var repairDeptStore= Ext.create('Ext.data.Store', {
+    autoLoad: false,
+    storeId: 'repairDeptStore',
+    fields: ['V_DEPTCODE','V_DEPTNAME','V_DEPTREPAIRCODE','V_DEPTREPAIRNAME',
+        'I_ORDERID'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'zdh/fixdept_sel',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+
 var editPanel = Ext.create('Ext.form.Panel', {
     id: 'editPanel',
     region: 'center',
@@ -421,7 +462,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             displayField: 'V_EQUNAME',
                             valueField: 'V_EQUCODE',
                             store: sbmcStore,
-                            queryMode: 'local'
+                            queryMode : 'local'
                         }
                     ]
                 },{
@@ -760,7 +801,10 @@ var editPanel = Ext.create('Ext.form.Panel', {
                         }
                     ]
                 },
-                {
+                {layout:'hbox',
+                    defaults:{labelAlign:'right'},
+                    baseCls: 'my-panel-no-border',
+                    items:[{
                     xtype: 'textfield',
                     id: 'jhgshj',
                     fieldLabel: '计划工时合计',
@@ -768,7 +812,81 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     margin: '5 0 5 5',
                     labelWidth: 80,
                     width: 280,
-                    value: '0'
+                    value: '0'},
+                    {
+                    xtype:'checkboxfield',
+                    boxLabel:'施工准备是否已落实',
+                    id : 'iflag',
+                    inputValue:1,
+                    uncheckedValue:0,
+                    margin: '5 0 5 30'
+                    }
+                    ]
+                },
+                {layout: 'hbox',
+                    defaults: {labelAlign: 'right'},
+                    frame: true,
+                    border: false,
+                    baseCls: 'my-panel-no-border',
+                    items:[
+                        {
+                            xtype : 'combo',
+                            id : "sgfs",
+                            store: sgfsStore,
+                            editable : false,
+                            queryMode : 'local',
+                            fieldLabel : '施工方式',
+                            margin: '5 0 5 5',
+                            displayField: 'V_SGFS',
+                            valueField: 'V_BH',
+                            labelWidth: 80,
+                            width: 280,
+                            labelAlign : 'right'
+                        },{
+                            xtype : 'combo',
+                            id:'repairDept',
+                            store:repairDeptStore,
+                            editable : false,
+                            queryMode : 'local',
+                            fieldLabel : '检修单位',
+                            displayField: 'V_DEPTREPAIRNAME',
+                            valueField: 'V_DEPTREPAIRCODE',
+                            margin: '5 0 5 5',
+                            labelWidth: 55,
+                            width: 255,
+                            labelAlign : 'right',
+                            listConfig:{
+                                minWidth:420
+                            }
+                        }
+                        ]
+                },
+                {layout:'hbox',
+                    defaults:{labelAlign:'right'},
+                    baseCls: 'my-panel-no-border',
+                    items:[{
+                        xtype: 'textfield',
+                        id: 'telname',
+                        fieldLabel: '联系人姓名',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 80,
+                        width: 280,
+                        value: ''
+                    },{
+                        xtype: 'textfield',
+                        id: 'telnumb',
+                        fieldLabel: '联系人电话',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 80,
+                        width: 255,
+                        value: ''
+                    }]
                 },
                 {
                     xtype: 'textarea',
@@ -883,32 +1001,6 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '7 0 0 2',
                             width:60
                         }]
-                },{layout:'hbox',
-                    defaults:{labelAlign:'right'},
-                    baseCls: 'my-panel-no-border',
-                    items:[{
-                        xtype: 'textfield',
-                        id: 'telname',
-                        fieldLabel: '联系人姓名',
-                        labelAlign: 'right',
-                        margin: '5 0 0 5',
-                        allowNegative: false,
-                        allowDecimals: false,
-                        labelWidth: 80,
-                        width: 280,
-                        value: ''
-                    },{
-                        xtype: 'textfield',
-                        id: 'telnumb',
-                        fieldLabel: '联系人电话',
-                        labelAlign: 'right',
-                        margin: '5 0 0 5',
-                        allowNegative: false,
-                        allowDecimals: false,
-                        labelWidth: 80,
-                        width: 255,
-                        value: ''
-                    }]
                 },
                 {layout:'hbox',
                     defaults:{labelAlign:'right'},
@@ -1038,6 +1130,15 @@ function pageLoadInfo() {
                 V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
             }
         });
+        //--加载检修单位
+        Ext.data.StoreManager.lookup('repairDeptStore').load({
+            params:{
+                V_V_DEPTCODE:Ext.getCmp('zyq').getValue()
+            }
+        });
+    });
+    Ext.data.StoreManager.lookup('repairDeptStore').on('load', function () {
+        Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
     });
     //作业区改变
     Ext.getCmp('zyq').on('change', function () {
@@ -1051,6 +1152,11 @@ function pageLoadInfo() {
             params: {
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                 V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
+            }
+        });
+        Ext.data.StoreManager.lookup('repairDeptStore').load({
+            params:{
+                V_V_DEPTCODE:Ext.getCmp('zyq').getValue()
             }
         });
     });
@@ -1348,8 +1454,14 @@ function OnButtonSaveClick() {
 
             , V_V_THICKNESS:Ext.getCmp('hd').getValue(),  //厚度
             V_V_REASON:Ext.getCmp('sgyy').getValue(),  //--施工原因
-            V_V_EVERTIME:Ext.Date.format(Ext.getCmp('evertime').getValue(),'Y/m/d').toString()  //上次施工时间
+            V_V_EVERTIME:Ext.Date.format(Ext.getCmp('evertime').getValue(),'Y/m/d').toString(),  //上次施工时间
             //end up
+            //-2018-1113
+            V_V_FLAG:Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,
+            V_V_RDEPATCODE:Ext.getCmp('sgfs').getValue(),
+            V_V_RDEPATNAME:Ext.getCmp('sgfs').getDisplayValue(),
+            V_V_SGWAY:Ext.getCmp('repairDept').getValue(),
+            V_V_SGWAYNAME:Ext.getCmp('repairDept').getDisplayValue()
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

@@ -937,7 +937,7 @@ function OnButtonPlanAddClicked() {
         + "&startUpTime=" + Ext.getCmp("zks").getValue()
         + "&endUpTime=" + Ext.getCmp("zjs").getValue()
         //---update end
-        , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+        , '','_blank', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
     //------update 2018-0907
     // }else{
     //     alert("当前计划时间小于可上报时间，请重新修改");

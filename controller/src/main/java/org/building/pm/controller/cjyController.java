@@ -1499,7 +1499,12 @@ public class cjyController {
             @RequestParam(value = "V_V_THICKNESS") String V_V_THICKNESS,
             @RequestParam(value = "V_V_REASON") String V_V_REASON,
             @RequestParam(value = "V_V_EVERTIME") String V_V_EVERTIME,
-
+//-------------21081113
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+            @RequestParam(value = "V_V_RDEPATCODE") String V_V_RDEPATCODE,
+            @RequestParam(value = "V_V_RDEPATNAME") String V_V_RDEPATNAME,
+            @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
+            @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -1541,7 +1546,12 @@ public class cjyController {
 //                V_V_JHHOUR,
                 V_V_TELNAME,
                 V_V_TELNUMB,
-                V_V_PDGG,V_V_THICKNESS,V_V_REASON,V_V_EVERTIME);
+                V_V_PDGG,V_V_THICKNESS,V_V_REASON,V_V_EVERTIME,
+                V_V_FLAG,
+                V_V_RDEPATCODE,
+                V_V_RDEPATNAME,
+                V_V_SGWAY,
+                V_V_SGWAYNAME);
 //end up
 
         return result;
