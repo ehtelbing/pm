@@ -1050,9 +1050,10 @@ public class PM_03Controller {
             @RequestParam(value = "V_D_DATE_E") String V_D_DATE_E,
             @RequestParam(value = "V_I_LOCK") Integer V_I_LOCK,
             @RequestParam(value = "V_D_DATE_S") String V_D_DATE_S,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_SET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM, V_V_TYPE, V_D_DATE_E, V_I_LOCK, V_D_DATE_S);
+        Map result = pm_03Service.PRO_PM_PLAN_LOCKING_DATE_SET(V_I_YEAR, V_I_MONTH, V_I_WEEKNUM, V_V_TYPE, V_D_DATE_E, V_I_LOCK, V_D_DATE_S,V_V_ORGCODE);
         return result;
     }
 

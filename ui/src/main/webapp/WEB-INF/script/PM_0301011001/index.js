@@ -130,7 +130,8 @@ function OnButtonSaveClicked(){
 			'V_V_TYPE':V_TYPE,
 			'V_D_DATE_E':etime,
 			'V_I_LOCK':yornlock,
-			'V_D_DATE_S':stime
+			'V_D_DATE_S':stime,
+			'V_V_ORGCODE':V_ORGCODE
 		},
 		success: function (resp) {
 			var resp = Ext.decode(resp.responseText);
