@@ -741,7 +741,9 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('zystore').on('load', function () {
         //Ext.data.StoreManager.lookup('zystore').insert(0, {V_BASENAME: '全部', V_SPECIALTYCODE: '%'});
         Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zystore').getAt(0));
+        queryGrid1();
     });
+
 
 
 });

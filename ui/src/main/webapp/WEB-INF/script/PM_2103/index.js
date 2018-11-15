@@ -229,6 +229,34 @@ function QueryTabW(){
 }
 
 
+function QueryTabYT(){
+    Ext.ComponentManager.get("tabpanel").removeAll();
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/QueryTaskTypeNum',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            PersonCode:Ext.util.Cookies.get('v_personcode'),
+            FlowCode:Ext.getCmp('lxbh').getValue()
+        },
+        success: function (response) {
+            var resp=Ext.decode(response.responseText);
+            if(resp.list.length>0){
+                for(var i=0;i<resp.list.length;i++){
+                    Ext.ComponentManager.get("tabpanel").add({
+                        id : resp.list[i].code,
+                        title: resp.list[i].name
+                    });
+                }
+                // if(tabturn==''){
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage="WeekPlan01");
+                // }else{
+                //     Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage=tabturn);
+                // }
+            }
+        }
+    });
+}
 function QueryTabY(){
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({

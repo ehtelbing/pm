@@ -1264,7 +1264,7 @@ var wlmxcd = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             text: '作业区库存明细',
             margin: '5 0 5 0',
-            iconCls:'Tablecell',
+            iconCls:'Tablecell'
 
         },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8' },
@@ -1621,7 +1621,7 @@ var mxAllGrid = Ext.create('Ext.grid.Panel', {
         {text: '版本号',width: 100, dataIndex: 'V_MXBB_NUM', align: 'center',renderer:atleft},
         {text: '备注',width: 300, dataIndex: 'V_BZ', align: 'center',renderer:atleft},
         {text: '查看明细',renderer:function(value,metaData,record){
-                return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID +','+record.data.V_MODEL_NAME+','+record.data.V_MODEL_BBH+'\')">'+'查看详细'+'</a>'
+                return '<a href="#" onclick="MXclick(\'' + record.data.V_MX_CODE +','+record.data.V_MX_NAME+','+record.data.V_MXBB_NUM+'\')">'+'查看详细'+'</a>'
             }}
     ],listeners:{itemclick:QueryGx}
 });
@@ -2173,7 +2173,7 @@ var tebpanel=Ext.create('Ext.tab.Panel',{
     items:[{id:'tab1',title:'检修模型明细',layout:'border',frame:true,border:false,items:[gxgrid,dxjhsbright]},
            {id:'tab2',title:'检修技术标准',items:[jxjsyq]},
            { id:'tab3',title:'检修安全措施',items:[jxaqcs]}
-           ,{id:'tab3',title:'检修附件明细',items:[mxfilegrid]}]
+           ,{id:'tab4',title:'检修附件明细',items:[mxfilegrid]}]
 
 });
 //大修计划检修模型明细

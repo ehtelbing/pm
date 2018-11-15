@@ -15,9 +15,9 @@ var url_guid='';
 var url_deptcode;
 var url_zy;
 if (location.href.split('?')[1] != undefined) {
-     url_guid = Ext.urlDecode(location.href.split('?')[1]).v_guid_dx;
-     url_deptcode = Ext.urlDecode(location.href.split('?')[1]).v_deptcode;
-     url_zy = Ext.urlDecode(location.href.split('?')[1]).v_specialty;
+    url_guid = Ext.urlDecode(location.href.split('?')[1]).v_guid_dx;
+    url_deptcode = Ext.urlDecode(location.href.split('?')[1]).v_deptcode;
+    url_zy = Ext.urlDecode(location.href.split('?')[1]).v_specialty;
 }
 Ext.onReady(function () {
     var ckstore = Ext.create("Ext.data.Store", {
@@ -175,7 +175,7 @@ Ext.onReady(function () {
             'V_OTHERPLAN_TYPE',
             'V_WEEKID',
             'V_STATE',
-'V_WORKFLAG_NAME',
+            'V_WORKFLAG_NAME',
             'V_STATENAME'
 
         ],
@@ -217,31 +217,31 @@ Ext.onReady(function () {
                 value: '',labelWidth: 80,
                 labelAlign:'right', editable: false,
                 displayField: 'displayField', valueField: 'valueField'},
-            {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
-            {xtype : 'displayfield', id : 'zjs', fieldLabel : '本周结束时间', labelWidth : 80, width:243,labelAlign : 'right'},
-             {
-            id: 'ck',
-            xtype: 'combo',
-            store: ckstore,
-            editable: false,
-            fieldLabel: '厂矿',
-            labelWidth: 80,
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'zyq',
-            xtype: 'combo',
-            store: zyqstore,
-            editable: false,
-            fieldLabel: '作业区',
-            labelWidth: 80,
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
+            // {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
+            // {xtype : 'displayfield', id : 'zjs', fieldLabel : '本周结束时间', labelWidth : 80, width:243,labelAlign : 'right'},
+            {
+                id: 'ck',
+                xtype: 'combo',
+                store: ckstore,
+                editable: false,
+                fieldLabel: '厂矿',
+                labelWidth: 80,
+                displayField: 'V_DEPTNAME',
+                valueField: 'V_DEPTCODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
+                id: 'zyq',
+                xtype: 'combo',
+                store: zyqstore,
+                editable: false,
+                fieldLabel: '作业区',
+                labelWidth: 80,
+                displayField: 'V_DEPTNAME',
+                valueField: 'V_DEPTCODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
                 xtype: 'combo',
                 id: 'sblx',
                 fieldLabel: '设备类型',
@@ -267,52 +267,52 @@ Ext.onReady(function () {
                 store: sbmcStore,
                 queryMode: 'local'
             },{
-            id: 'zy',
-            xtype: 'combo',
-            store: zyStore,
-            editable: false,
-            fieldLabel: '专业',
-            labelWidth: 80,
-            displayField: 'V_MAJOR_CODE',
-            valueField: 'V_MAJOR_NAME',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'zt',
-            xtype: 'combo',
-            store: ztstore,
-            editable: false,
-            fieldLabel: '状态',
-            labelWidth: 80,
-            hidden:true,
-            displayField: 'V_BASENAME',
-            valueField: 'V_BASECODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'seltext',
-            xtype: 'textfield',
-            width: 158,
-            emptyText: '检修明细模糊搜索',
-            margin:'5px 0px 5px 90px'
-        }, {
-            id: 'query',
-            xtype: 'button',
-            icon: imgpath + '/search.png',
-            text: '查询',
-            width: 80,
-            handler:QueryGrid
-        }, {
-            xtype: 'hidden',
-            id: 'tabid'
-        }, {
-            xtype: 'button',
-            text: '生成工单',
-            width: 80,
-            listeners: {
-                click: createWorkorder
-            }
-        }]
+                id: 'zy',
+                xtype: 'combo',
+                store: zyStore,
+                editable: false,
+                fieldLabel: '专业',
+                labelWidth: 80,
+                displayField: 'V_MAJOR_CODE',
+                valueField: 'V_MAJOR_NAME',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
+                id: 'zt',
+                xtype: 'combo',
+                store: ztstore,
+                editable: false,
+                fieldLabel: '状态',
+                labelWidth: 80,
+                hidden:true,
+                displayField: 'V_BASENAME',
+                valueField: 'V_BASECODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
+                id: 'seltext',
+                xtype: 'textfield',
+                width: 158,
+                emptyText: '检修明细模糊搜索',
+                margin:'5px 0px 5px 90px'
+            }, {
+                id: 'query',
+                xtype: 'button',
+                icon: imgpath + '/search.png',
+                text: '查询',
+                width: 80,
+                handler:QueryGrid
+            }, {
+                xtype: 'hidden',
+                id: 'tabid'
+            }, {
+                xtype: 'button',
+                text: '生成工单',
+                width: 80,
+                listeners: {
+                    click: createWorkorder
+                }
+            }]
     });
     var grid=Ext.create('Ext.grid.Panel',{
         region:'center',
@@ -437,21 +437,21 @@ Ext.onReady(function () {
         }
 
     });
-    Ext.getCmp('zks').setValue(getWeekStartDate());
-    Ext.getCmp('zjs').setValue(getWeekEndDate());
+    // Ext.getCmp('zks').setValue(getWeekStartDate());
+    // Ext.getCmp('zjs').setValue(getWeekEndDate());
     Ext.getCmp('year').on('select', function () {
-        Ext.getCmp('zks').setValue(getWeekStartDate());
-        Ext.getCmp('zjs').setValue(getWeekEndDate());
+        // Ext.getCmp('zks').setValue(getWeekStartDate());
+        // Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.getCmp('month').on('select', function () {
-        Ext.getCmp('zks').setValue(getWeekStartDate());
-        Ext.getCmp('zjs').setValue(getWeekEndDate());
+        // Ext.getCmp('zks').setValue(getWeekStartDate());
+        // Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.getCmp('week').on('select', function () {
-        Ext.getCmp('zks').setValue(getWeekStartDate());
-        Ext.getCmp('zjs').setValue(getWeekEndDate());
+        // Ext.getCmp('zks').setValue(getWeekStartDate());
+        // Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -535,62 +535,62 @@ function createWorkorder(){
         }
     }
 
-        Ext.Ajax.request({
-            url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDERBEF',
-            method: 'POST',
-            async : false,
-            params:{
-                V_V_GUID:V_GUIDList
-            },
-            success:function(resp){
-                var resp = Ext.decode(resp.responseText);
-                if(resp.v_info=="SUCCESS"){
-                    Ext.Ajax.request({
-                        url: AppUrl + 'cjy/PM_03_PLAN_PORJECT_WORKORDER',
-                        method: 'POST',
-                        async : false,
-                        params:{
-                            V_V_PROJECT_CODE:url_guid,
-                            V_V_WEEK_GUID:V_GUIDList,
-                            V_V_ORGCODE:Ext.getCmp('ck').getValue(),
-                            V_V_PERCODE:Ext.util.Cookies.get('v_personcode')
-                        },
-                        success:function(resp){
-                            var resp = Ext.decode(resp.responseText);
-                            var V_V_ORDERGUID=resp.list[0].V_ORDERGUID;
-                            var V_V_SOURCECODE=resp.V_V_SOURCECODE;
-                            var V_V_EQUTYPE=record[0].data.V_EQUTYPECODE;
-                            if(url_guid!=undefined){
-                                Ext.Ajax.request({
-                                    url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                                    type: 'post',
-                                    async: false,
-                                    params: {
-                                        V_V_IP: GetIP().ip,
-                                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                                        V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                                        V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                                        V_V_GUID: url_guid
-                                    },
-                                    success: function (response) {
-                                        var resp = Ext.decode(response.responseText);
-                                        if (resp.v_info == "success") {
-                                            window.open(AppUrl + "page/pm_dxgc_workOrder/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID+"&V_V_SOURCECODE="+V_V_SOURCECODE+'&V_V_EQUTYPE='+V_V_EQUTYPE,
-                                                "", "dialogHeight:700px;dialogWidth:1100px");
-                                        }
+    Ext.Ajax.request({
+        url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDERBEF',
+        method: 'POST',
+        async : false,
+        params:{
+            V_V_GUID:V_GUIDList
+        },
+        success:function(resp){
+            var resp = Ext.decode(resp.responseText);
+            if(resp.v_info=="SUCCESS"){
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PM_03_PLAN_PORJECT_WORKORDER',
+                    method: 'POST',
+                    async : false,
+                    params:{
+                        V_V_PROJECT_CODE:url_guid,
+                        V_V_WEEK_GUID:V_GUIDList,
+                        V_V_ORGCODE:Ext.getCmp('ck').getValue(),
+                        V_V_PERCODE:Ext.util.Cookies.get('v_personcode')
+                    },
+                    success:function(resp){
+                        var resp = Ext.decode(resp.responseText);
+                        var V_V_ORDERGUID=resp.list[0].V_ORDERGUID;
+                        var V_V_SOURCECODE=resp.V_V_SOURCECODE;
+                        var V_V_EQUTYPE=record[0].data.V_EQUTYPECODE;
+                        if(url_guid!=undefined){
+                            Ext.Ajax.request({
+                                url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
+                                type: 'post',
+                                async: false,
+                                params: {
+                                    V_V_IP: GetIP().ip,
+                                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                                    V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
+                                    V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
+                                    V_V_GUID: url_guid
+                                },
+                                success: function (response) {
+                                    var resp = Ext.decode(response.responseText);
+                                    if (resp.v_info == "success") {
+                                        window.open(AppUrl + "page/pm_dxgc_workOrder/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID+"&V_V_SOURCECODE="+V_V_SOURCECODE+'&V_V_EQUTYPE='+V_V_EQUTYPE,
+                                            "", "dialogHeight:700px;dialogWidth:1100px");
                                     }
-                                });
-                            }else{
-                                alert(resp.V_INFO);
-                            }
+                                }
+                            });
+                        }else{
+                            alert(resp.V_INFO);
                         }
-                    });
-                }else{
-                    alert(resp.v_info);
-                }
-
+                    }
+                });
+            }else{
+                alert(resp.v_info);
             }
-        });
+
+        }
+    });
 
 
 
