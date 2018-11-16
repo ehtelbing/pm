@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.building.framework.module</groupId>
             <artifactId>common-jquery1.7</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
