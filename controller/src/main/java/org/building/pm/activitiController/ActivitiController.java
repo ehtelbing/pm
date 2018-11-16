@@ -452,7 +452,6 @@ public class ActivitiController {
             e.printStackTrace();
             result.put("msg", "Error");
         }
-
         return result;
     }
 

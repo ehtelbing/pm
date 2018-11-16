@@ -860,6 +860,7 @@ public class TreeService {
                         temp.put("flag", item.get("V_FLAG").toString());
                         temp.put("other", item.get("V_OTHER").toString());
                         temp.put("cls", "empty");
+                        temp.put("expanded", false);
                         temp.put("hrefTarget", "Workspace");
                         if(getChildren(datalist,item.get("V_MENUCODE").toString()).size()<=0){//无子节点
                             temp.put("leaf",true);
@@ -867,7 +868,6 @@ public class TreeService {
                             temp.put("href", item.get("V_URL").toString());
                         }else{//有子节点
                             temp.put("leaf",false);
-                            temp.put("expanded",true);
                             temp.put("children",getChildren(datalist,item.get("V_MENUCODE").toString()));
                         }
                         list.add(temp);
@@ -901,6 +901,7 @@ public class TreeService {
                 temp.put("flag", item.get("V_FLAG").toString());
                 temp.put("other", item.get("V_OTHER").toString());
                 temp.put("cls", "empty");
+                temp.put("expanded",false);
                 temp.put("hrefTarget", "Workspace");
                 if(getChildren(list,item.get("V_MENUCODE").toString()).size()==0){//无子节点
                     temp.put("leaf",true);
@@ -908,7 +909,6 @@ public class TreeService {
                     temp.put("href", item.get("V_URL").toString());
                 }else{//有子节点
                     temp.put("leaf",false);
-                    temp.put("expanded",true);
                     temp.put("children",getChildren(list,item.get("V_MENUCODE").toString()));
                 }
                 menu.add(temp);

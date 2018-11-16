@@ -107,10 +107,13 @@ function Login() {
                             Ext.util.Cookies.set('v_workcss',
                                 resp.list[0].V_WORKCSS);
 
-                            //OnCookies();
-                           // location.href = "../../page/home/Index.html";
+                            if(resp.list[0].V_ROLECODE=='57' || resp.list[0].V_ROLECODE=='15'){
+                                location.href = "../../page/Anewhome/index.html";
+                            }else{
+                                location.href = "../../page/home/ndex.html";
+                            }
 
-                            location.href = "../../page/Anewhome/index.html";
+
                         } else {
                             msgbox("不存在此用户！");
                         }
@@ -244,12 +247,11 @@ function OnLogInClick() {
                     Ext.util.Cookies.set('v_workcss',
                         resp.list[0].V_WORKCSS);
 
-                    //OnCookies();
-                    //location.href = "../../page/home/Index.html";
-                    location.href = "../../page/Anewhome/index.html";
-                    /*} else {
-                        msgbox("密码错误！");
-                    }*/
+                    if(resp.list[0].V_ROLECODE=='57' || resp.list[0].V_ROLECODE=='15'){
+                        location.href = "../../page/Anewhome/index.html";
+                    }else{
+                        location.href = "../../page/home/Index.html";
+                    }
                 } else {
                     alert(resp.V_INFO);
                     //msgbox("不存在此用户！");
