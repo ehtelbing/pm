@@ -396,10 +396,16 @@ Ext.onReady(function () {
 
     Ext.data.StoreManager.lookup('nextSprStore').on('load', function (store, records, success, eOpts) {
             processKey = store.getProxy().getReader().rawData.RET;
-            V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-            V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+            if(store.getAt(0)==undefined){
+                V_STEPNAME ="";
+                V_NEXT_SETP = "";return ;}
+                else{
+                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;}
 
-            Ext.getCmp('nextPer').select(store.first());
+            if(V_STEPNAME!=""){Ext.getCmp('nextPer').select(store.first());}
+
+            // Ext.getCmp('nextPer').select(store.first());
         }
     );
     // Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -453,8 +459,10 @@ Ext.onReady(function () {
 
     Ext.data.StoreManager.lookup('zyqstore').on("load", function () {
         if(url_deptcode!=undefined){
+            Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
             Ext.getCmp("zyq").select(url_deptcode);
         }else{
+            Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
             Ext.getCmp("zyq").select(zyqstore.getAt(0));
         }
         Ext.data.StoreManager.lookup('sblxStore').load({
@@ -731,6 +739,9 @@ function OnButtonUp() {
             icon: Ext.MessageBox.WARNING
         });
         return false;
+    }
+    if(Ext.getCmp('nextPer').getValue()==""){
+        alert('下一步审批人为空，请从新选择'); return;
     }
     //Ext.MessageBox.show({
     //    title: '确认',

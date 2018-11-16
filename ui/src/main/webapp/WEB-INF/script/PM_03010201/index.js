@@ -627,6 +627,8 @@ Ext.onReady(function () {
     });
     //计划作业区加载监听
     Ext.data.StoreManager.lookup('jhzyqStore').on('load', function () {
+
+        Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
         Ext.getCmp('jhzyq').select(Ext.data.StoreManager.lookup('jhzyqStore').getAt(0));
         Querytime();
     });
@@ -813,6 +815,9 @@ function rendererStep(value, metaData, record, rowIndex, colIndex, store, view) 
 }
 //添加
 function OnButtonAddClicked() {
+    if(Ext.getCmp("jhzyq").getValue()=="%"){
+        alert("作业区不可以为全部，请重新选择"); return;
+    }
     V_MONTHPLAN_GUID = '0';
     var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID +
         "&YEAR=" + Ext.getCmp("nf").getValue() +
@@ -921,7 +926,9 @@ function OnButtonUp() {
         alert("已过上报时间，不能上报");
         return false;
     }
-*/
+*/ if(Ext.getCmp('nextPer').getValue()==""){
+    alert('下一步审批人不可以空，请重新选择');
+    }
 
     var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
     if (records.length == 0) {//判断是否选中数据

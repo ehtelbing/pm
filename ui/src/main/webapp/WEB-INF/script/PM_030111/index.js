@@ -388,8 +388,10 @@ Ext.onReady(function () {
 
     zyqstore.on("load", function () {
         if(url_deptcode!=undefined){
+            Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
             Ext.getCmp("zyq").select(url_deptcode);
         }else{
+            Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
             Ext.getCmp("zyq").select(zyqstore.getAt(0));
         }
     });

@@ -560,6 +560,7 @@ Ext.onReady(function () {
     });
     //计划作业区加载监听
     Ext.data.StoreManager.lookup('jhzyqStore').on('load', function () {
+        Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{V_DEPTCODE:'%',V_DEPTNAME:'全部'});
         Ext.getCmp('jhzyq').select(Ext.data.StoreManager.lookup('jhzyqStore').getAt(0));
     });
     //计划厂矿更改时

@@ -640,6 +640,7 @@ Ext.onReady(function () {
     });
     //计划作业区加载监听
     Ext.data.StoreManager.lookup('jhzyqStore').on('load', function () {
+        Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{V_DEPTCODE:'%', V_DEPTNAME:'全部'});
         Ext.getCmp('jhzyq').select(Ext.data.StoreManager.lookup('jhzyqStore').getAt(0));
         Querytime();
     });
@@ -921,6 +922,10 @@ function OnButtonDefectAddClicked() {
 
 //手工添加
 function OnButtonPlanAddClicked() {
+    if (Ext.getCmp("jhzyq").getValue() == "%") {
+        alert("作业区不可以为全部，请重新选择");
+        return;}
+   else{
     V_WEEKPLAN_GUID = 0;
     V_PLANTYPE = 'DEFECT';
     //------update 2018-0907
@@ -943,6 +948,7 @@ function OnButtonPlanAddClicked() {
     //     alert("当前计划时间小于可上报时间，请重新修改");
     // }
     //---end update
+    }
 }
 
 function OnButtonSelectClicked() {
