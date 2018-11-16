@@ -477,7 +477,7 @@ function loadPageInfo() {
                  }*/
 
                 $("#V_WORKSHOPCONTENT").val(resp.list[0].V_WORKSHOPCONTENT);
-                $("#V_WORKSHOPSIGN").html(resp.list[0].V_WORKSHOPSIGN);
+                $("#V_WORKSHOPSIGN").val(resp.list[0].V_WORKSHOPSIGN);
                 $("#V_DEPTSIGN").val(resp.list[0].V_DEPTSIGN);
 
                 $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
@@ -638,7 +638,7 @@ function comboConfirm() {
                         V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
                         V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
                         V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
-                        V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").html(),
+                        V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").val(),
                         V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
                     },
                     dataType: "json",
@@ -659,7 +659,7 @@ function comboConfirm() {
                         'V_V_CHECKMANCONTENT': $("#V_CHECKMANCONTENT").val(),
                         'V_V_CHECKMANSIGN': $("#V_CHECKMANSIGN").val(),
                         'V_V_WORKSHOPCONTENT': $("#V_WORKSHOPCONTENT").val(),
-                        'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").html(),
+                        'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").val(),
                         'V_V_DEPTSIGN': $("#V_DEPTSIGN").val(),
                         'V_V_EQUIP_NO': $("#V_EQUIP_NO").html()
                     },
@@ -1131,7 +1131,7 @@ function QRYS() {
                         V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
                         V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
                         V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
-                        V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").html(),
+                        V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").val(),
                         V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
                     },
                     dataType: "json",
@@ -1275,7 +1275,7 @@ function QRYS() {
                         'V_V_CHECKMANCONTENT': $("#V_CHECKMANCONTENT").val(),
                         'V_V_CHECKMANSIGN': $("#V_CHECKMANSIGN").val(),
                         'V_V_WORKSHOPCONTENT': $("#V_WORKSHOPCONTENT").val(),
-                        'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").html(),
+                        'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").val(),
                         'V_V_DEPTSIGN': $("#V_DEPTSIGN").val(),
                         'V_V_EQUIP_NO': $("#V_EQUIP_NO").html()
                     },
@@ -1453,7 +1453,7 @@ function ConfirmAccept() {
                         V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
                         V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
                         V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
-                        V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").html(),
+                        V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").val(),
                         V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
                     },
                     dataType: "json",
@@ -1483,7 +1483,7 @@ function ConfirmAccept() {
                         'V_V_CHECKMANCONTENT': $("#V_CHECKMANCONTENT").val(),
                         'V_V_CHECKMANSIGN': $("#V_CHECKMANSIGN").val(),
                         'V_V_WORKSHOPCONTENT': $("#V_WORKSHOPCONTENT").val(),
-                        'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").html(),
+                        'V_V_WORKSHOPSIGN': $("#V_WORKSHOPSIGN").val(),
                         'V_V_DEPTSIGN': $("#V_DEPTSIGN").val(),
                         'V_V_EQUIP_NO': $("#V_EQUIP_NO").html()
                     },
@@ -1559,7 +1559,7 @@ function print() {
             V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
             V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
             V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
-            V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").html(),
+            V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").val(),
             V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
         },
         dataType: "json",
@@ -1612,7 +1612,7 @@ function onClickSave() {
             V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
             V_V_CHECKMANSIGN: $("#V_CHECKMANSIGN").val(),
             V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
-            V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").html(),
+            V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").val(),
             V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
         },
         dataType: "json",
@@ -1637,7 +1637,7 @@ function OnBtnHistoryClicked() {
         $("#V_CHECKMANCONTENT").val(str[6]);
         $("#V_CHECKMANSIGN").val(str[7]);
         $("#V_WORKSHOPCONTENT").val(str[8]);
-        $("#V_WORKSHOPSIGN").html(str[9]);
+        $("#V_WORKSHOPSIGN").val(str[9]);
         $("#V_DEPTSIGN").val(str[10]);
     }
 }
