@@ -475,7 +475,7 @@ public class ActivitiController {
                 if (PersonCode.equals("ActivitiManage")) {
                     total = (int) taskService.createTaskQuery().processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
                 } else {
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).taskVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString()+"%")/*.processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString())*/.count();
                 }
 
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
@@ -484,7 +484,7 @@ public class ActivitiController {
                 if (PersonCode.equals("ActivitiManage")) {
                     total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
                 } else {
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString()).count();
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").taskVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString()+"%")/*.processVariableValueEquals("flow_type", map.get("V_FLOWTYPE_CODE").toString())*/.count();
                 }
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
                 ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
