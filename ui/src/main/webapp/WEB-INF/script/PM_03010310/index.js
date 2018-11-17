@@ -513,7 +513,7 @@ Ext.onReady(function () {
                                 width: 280,
                                 value: '',
                                 minValue:new Date(startUpTime),
-                                maxValue:new Date(endUpTime),
+                               // maxValue:new Date(endUpTime),
                                 listeners: {
                                     select: function () {
                                         Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
@@ -602,14 +602,14 @@ Ext.onReady(function () {
                                 width: 280,
                                 value: '',
                                 minValue:new Date(startUpTime),
-                                maxValue:new Date(endUpTime),
+                               // maxValue:new Date(endUpTime),
                                 // renderData:function(){
                                 //     Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
                                 // },
                                 listeners: {
                                     select: function () {
                                         Ext.getCmp('jhjgdate').setMinValue(new Date(Ext.getCmp('jhtgdate').getValue()));
-                                        Ext.getCmp('jhjgdate').setMaxValue(new Date(endUpTime));
+                                        //Ext.getCmp('jhjgdate').setMaxValue(new Date(endUpTime));
                                         _gongshiheji();
                                     }
                                 }

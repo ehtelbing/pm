@@ -1,28 +1,33 @@
 var V_MONTHPLAN_GUID = null;
+var YEAR = null;
+var MONTH = null;
+var V_ORGCODE = null;
+var V_MONTH=null;
 if (location.href.split('?')[1] != undefined) {
     V_MONTHPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_MONTHPLAN_GUID;
-}
-var YEAR = null;
-if (location.href.split('?')[1] != undefined) {
     YEAR = Ext.urlDecode(location.href.split('?')[1]).YEAR;
-}
-var MONTH = null;
-if (location.href.split('?')[1] != undefined) {
     MONTH = Ext.urlDecode(location.href.split('?')[1]).MONTH;
-}
-var V_ORGCODE = null;
-if (location.href.split('?')[1] != undefined) {
     V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
-}
-var V_DEPTCODE = null;
-if (location.href.split('?')[1] != undefined) {
     V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
 }
+
+
 var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
 var V_PLANCODE = null;
 var V_PLANTYPE = null;
 var date = new Date();
+//---update 20181117
+var starttime;
+var V_MONTH=parseInt(MONTH)+1;
+if(V_MONTH==13){
+    starttime=(parseInt(YEAR)+1)+'-'+(parseInt(MONTH)+1-12)+'-'+"1";
+}else{
+    starttime=YEAR+'-'+V_MONTH+'-'+"1";
+}
+//endupdate
+
+
 //年份
 var years = [];
 for (var i = date.getFullYear() - 4; i <= date.getFullYear() + 1; i++) {
@@ -443,6 +448,7 @@ Ext.onReady(function () {
                                 labelWidth: 80,
                                 width: 280,
                                 value: '',
+                                minValue:new Date(starttime),
                                 listeners: {
                                     select: function () {
                                         Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
@@ -716,6 +722,8 @@ Ext.onReady(function () {
     pageLoadInfo();
     if (V_MONTHPLAN_GUID == '0') {
         V_JXGX_CODE = guid();
+        Ext.getCmp('jhtgdate').setValue(new Date(starttime));
+        Ext.getCmp('jhjgdate').setValue(new Date(starttime));
     } else {
         Ext.Ajax.request({
             url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_GET',
@@ -902,10 +910,10 @@ function pageLoadInfo() {
     Ext.data.StoreManager.lookup('zyStore').on('load', function () {
         Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
     });
-    Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
+    Ext.getCmp('jhtgdate').setValue(new Date(starttime)); 		//编辑窗口计划停工时间默认值
     Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
     Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-    Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
+    Ext.getCmp('jhjgdate').setValue(new Date(starttime));       //编辑窗口计划竣工时间默认值
     Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
     Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
 }
