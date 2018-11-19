@@ -902,7 +902,8 @@ function OnButtonDefectAddClicked() {
                                     "&MONTH=" + Ext.getCmp("yf").getValue() +
                                     "&WEEK=" + Ext.getCmp("zhou").getValue() +
                                     "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()+
+                                    "&KSTIME="+Ext.getCmp("zks").getValue() , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
                             }
 
 

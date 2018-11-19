@@ -34,6 +34,10 @@ var V_EQUCODE = null;
 if (location.href.split('?')[1] != undefined) {
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
 }
+var KSTIME=null;
+if(location.href.split('?')[1]!=undefined){
+    KSTIME=Ext.urlDecode(location.href.split('?')[1]).KSTIME;
+}
 var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
 
@@ -541,13 +545,15 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             labelWidth: 80,
                             width: 280,
                             value: '',
+                            minValue:new Date(KSTIME),
                             listeners: {
                                 select: function (field, newValue, oldValue) {
+                                    Ext.getCmp('jhtgdate').setMinValue(new Date(KSTIME));
                                     var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
                                     var date11 = new Date(date1);
                                     var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
-
+                                    //Ext.getCmp('jhtgdate').setMinValue(new Date(KSTIME));
 
                                     var gongshicha = date22.getTime() - date11.getTime();
                                     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
@@ -1195,10 +1201,10 @@ function pageLoadInfo() {
 
     });
 
-        Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
+        Ext.getCmp('jhtgdate').setValue(new Date(KSTIME));		//编辑窗口计划停工时间默认值
         Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
         Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-        Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
+        Ext.getCmp('jhjgdate').setValue(new Date(KSTIME));       //编辑窗口计划竣工时间默认值
         Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
         Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
 

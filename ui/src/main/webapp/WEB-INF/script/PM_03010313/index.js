@@ -40,6 +40,10 @@ if (location.href.split('?')[1] != undefined) {
     V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
 }
 var stateData=[{ displayField:'全部', valueField:'%'},{ displayField:'编辑', valueField:'编辑'},{ displayField:'审批中', valueField:'审批中'},{ displayField:'审批通过', valueField:'审批通过'},{ displayField:'审批驳回', valueField:'审批驳回'}];
+var KSTIME=null;
+if(location.href.split('?')[1]!=undefined){
+    KSTIME=Ext.urlDecode(location.href.split('?')[1]).KSTIME;
+}
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
@@ -534,7 +538,8 @@ function Select(){
             "&V_ORGCODE=" + V_ORGCODE +
             "&V_DEPTCODE=" + V_DEPTCODE+
             "&V_EQUTYPECODE=" + V_EQUTYPECODE+
-            "&V_EQUCODE=" + V_EQUCODE, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            "&V_EQUCODE=" + V_EQUCODE+
+            "&KSTIME="+KSTIME, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
        // window.close();
     } else {
         alert("缺陷添加错误");
