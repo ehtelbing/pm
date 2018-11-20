@@ -156,7 +156,8 @@ function selInspectNum(){
     });
 }
 function _inspect(){
-    location.href = AppUrl + 'page/PM_060105/todos.html';
+    window.parent.append("", "待办岗检", AppUrl + 'page/PM_060105/todos.html');
+   // location.href = AppUrl + 'page/PM_060105/todos.html';
 }
 function _YearCountSelect() {
     $.ajax({

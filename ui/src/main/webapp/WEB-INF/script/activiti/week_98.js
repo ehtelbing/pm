@@ -15,6 +15,8 @@ var zyqStoreLoad = false;
 var sblxStoreLoad = false;
 var zyStoreLoad = false;
 var sbmcStoreLoad = false;
+var repairDeptLoad=false;
+
 var initLoad = true;
 
 if (location.href.split('?')[1] != undefined) {
@@ -277,6 +279,53 @@ Ext.onReady(function () {
         }
     });
 
+//施工方式
+    var sgfsStore = Ext.create("Ext.data.Store", {
+        storeId: 'sgfsStore',
+        fields: ['ID', 'V_BH','V_SGFS','V_LX'],
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_03/PM_03_PLAN_SGFS_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+    Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
+        Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+    });
+//---检修单位
+    var repairDeptStore= Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'repairDeptStore',
+        fields: ['V_DEPTCODE','V_DEPTNAME','V_DEPTREPAIRCODE','V_DEPTREPAIRNAME',
+            'I_ORDERID'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zdh/fixdept_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+    listeners: {
+        load: function (store, records) {
+            // Ext.getCmp('repairDept').select(store.first());
+            // repairDeptLoad = true;
+            _init();
+        }
+    }
+    });
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStore',
@@ -315,11 +364,12 @@ Ext.onReady(function () {
         baseCls: 'my-panel-no-border',
         style: 'background-color:#FFFFFF',
         frame: true,
+        autoScroll:true,
         //border:false,
         items: [{
             xtype: 'fieldset',
-            height: 500,
-            width: 540,
+            height: 840,
+            width: 565,
             style: 'margin-left:10px;',
             defaults: {
                 frame: true,
@@ -381,6 +431,7 @@ Ext.onReady(function () {
                             _zyq_zy();
                             _zyq_sblx();
                             _zyq_sbmc();
+                            _repairDept();
                         }
                     }
                 }]
@@ -404,6 +455,7 @@ Ext.onReady(function () {
                             _zyq_zy();
                             _zyq_sblx();
                             _zyq_sbmc();
+                            _repairDept();
                         }
                     }
                 },{
@@ -458,7 +510,7 @@ Ext.onReady(function () {
                     width: 250,
                     readOnly: true
                 },
-                items: [, {
+                items: [ {
                     id: 'fqr',
                     xtype: 'textfield',
                     allowBlank: false,
@@ -761,20 +813,93 @@ Ext.onReady(function () {
                     }
                 }]
             }, {
-                layout: 'column',
-                defaults: {
-                    xtype: 'textfield',
-                    labelAlign: 'right',
-                    width: 250,
-                    readOnly: true
-                },
+                layout: 'hbox',
+                defaults: {labelAlign: 'right',readOnly:true},
+                frame: true,
+                border: false,
+                baseCls: 'my-panel-no-border',
                 items: [{
+                    xtype: 'textfield',
                     id: 'jhgshj',
                     allowBlank: false,
                     fieldLabel: '计划工时合计',
                     labelWidth: 90
+                }, {
+                    xtype:'checkboxfield',
+                    boxLabel:'施工准备是否已落实',
+                    margin:'5 0 0 65',
+                    id : 'iflag',
+                    inputValue:1,
+                    uncheckedValue:0
+                   //, margin: '5 0 5 30'
                 }]
-            }, {
+            },
+                {layout: 'hbox',
+                    defaults: {labelAlign: 'right',readOnly: false,width: 250},
+                    frame: true,
+                    border: false,
+                    baseCls: 'my-panel-no-border',
+                    items:[
+                        {
+                            xtype : 'combo',
+                            id : "sgfs",
+                            store: sgfsStore,
+                            editable : false,
+                            queryMode : 'local',
+                            fieldLabel : '施工方式',
+                           // margin: '5 0 5 5',
+                            displayField: 'V_SGFS',
+                            valueField: 'V_BH',
+                            labelWidth: 90,
+                            width: 250,
+                            labelAlign : 'right'
+                        },{
+                            xtype : 'combo',
+                            id:'repairDept',
+                            store:repairDeptStore,
+                            editable : false,
+                            queryMode : 'local',
+                            fieldLabel : '检修单位',
+                            displayField: 'V_DEPTREPAIRNAME',
+                            valueField: 'V_DEPTREPAIRCODE',
+                           // margin: '5 0 5 5',
+                            labelWidth: 90,
+                            width: 250,
+                            labelAlign : 'right',
+                            listConfig:{
+                                minWidth:420
+                            }
+                        }
+                    ]
+                },{layout: 'hbox',
+                    defaults: {labelAlign: 'right',readOnly: true,width: 250},
+                    frame: true,
+                    border: false,
+                    baseCls: 'my-panel-no-border',
+                    items:[{
+                        xtype: 'textfield',
+                        id: 'telname',
+                        fieldLabel: '联系人姓名',
+                        labelAlign: 'right',
+                        //margin: '5 0 0 5',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 250,
+                        value: ''
+                    },{
+                        xtype: 'textfield',
+                        id: 'telnumb',
+                        fieldLabel: '联系人电话',
+                        labelAlign: 'right',
+                       // margin: '5 0 0 5',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 250,
+                        value: ''
+                    }]
+                },{
                 layout: 'column',
                 items: [{
                     readOnly: true,
@@ -785,8 +910,157 @@ Ext.onReady(function () {
                     labelWidth: 90,
                     width: 500
                 }]
-            }]
-        }]
+            },{
+                xtype:'label',
+                text:"--------------------------------皮带胶接数据-----------------------------",
+                    margin: '10 0 0 45',
+                style:'color:blue'
+            },{ layout: 'hbox',
+                defaults: {labelAlign: 'right'},
+                //frame: false,
+                //border: false,
+                baseCls: 'my-panel-no-border',
+                items:[{xtype: 'numberfield',
+                    id: 'pdc',
+                    fieldLabel: '皮带周长',
+                    labelAlign: 'right',
+                    margin: '5 0 0 2',
+                    labelWidth: 90,
+                    width: 250,
+                    value: 0
+                },{
+                    xtype:'label',
+                    text:"(米）",
+                    width:30,
+                    margin: '5 0 0 2'
+                },
+                    {xtype:'numberfield',
+                        id:'changpdc',
+                        fieldLabel: '更换皮带长度',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 90,
+                        width: 220,
+                        value: 0},{
+                        xtype:'label',
+                        text:"(米）",
+                        margin: '7 0 0 2',
+                        width:30}
+                ]
+            }, {layout:'hbox',
+                defaults:{labelAlign:'right'},
+                baseCls: 'my-panel-no-border',
+                items:[{
+                    xtype: 'textfield',
+                    id: 'gyyq',
+                    fieldLabel: '工艺要求',
+                    labelAlign: 'right',
+                    margin: '5 0 0 5',
+                    allowNegative: false,
+                    allowDecimals: false,
+                    labelWidth: 90,
+                    width: 250,
+                    value: ''
+                },{
+                    xtype: 'textfield',
+                    id: 'pdgg',
+                    fieldLabel: '皮带规格',
+                    labelAlign: 'right',
+                    margin: '5 0 0 5',
+                    allowNegative: false,
+                    allowDecimals: false,
+                    labelWidth: 90,
+                    width: 250,
+                    value: ''
+                }]
+            },{
+                layout: 'hbox',
+                defaults: {labelAlign: 'right'},
+                //frame: false,
+                //border: false,
+                baseCls: 'my-panel-no-border',
+                items: [
+                    {
+                        xtype: 'numberfield',
+                        id: 'jxhour',
+                        fieldLabel: '检修时间',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 190,
+                        value: '0'
+                    },{
+                        xtype:'label',
+                        text:"(小时）",
+                        margin: '7 0 0 2',
+                        width:60
+                    },
+                    {
+                        xtype: 'numberfield',
+                        id: 'jjhour',
+                        fieldLabel: '胶接时间',
+                        labelAlign: 'right',
+                        margin: '5 0 0 2',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 190,
+                        value: '0'
+                    },{
+                        xtype:'label',
+                        text:"(小时）",
+                        margin: '7 0 0 2',
+                        width:60
+                    }]
+            },
+                {layout:'hbox',
+                    defaults:{labelAlign:'right'},
+                    baseCls: 'my-panel-no-border',
+                    items:[{
+                        xtype: 'datefield',
+                        id: 'evertime',
+                        format: 'Y-m-d',
+                        fieldLabel: '上次施工时间',
+                        editable: false,
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 90,
+                        width: 250,
+                        value: ''
+                    },{
+                        xtype: 'numberfield',
+                        id: 'hd',
+                        fieldLabel: '厚度',
+                        labelAlign: 'right',
+                        margin: '5 0 0 2',
+                        allowNegative: false,
+                        allowDecimals: false,
+                        labelWidth: 90,
+                        width: 190,
+                        value: '0'
+                    },
+                        {
+                            xtype:'label',
+                            text:"(厘米）",
+                            margin: '7 0 0 2',
+                            width:60
+                        }]
+                },{
+                    xtype: 'textarea',
+                    id: 'sgyy',
+                    labelAlign: 'right',
+                    fieldLabel: '施工原因',
+                   // margin: '5 0 10 5',
+                    labelWidth: 90,
+                    width: 500,
+                    height: 80,
+                    value: ''
+                }
+            ]
+        }
+        ]
     });
 
     var buttonPanel = Ext.create('Ext.panel.Panel', {
@@ -855,6 +1129,7 @@ Ext.onReady(function () {
         }, {
             region: 'center',
             //layout: 'fit',
+            autoScroll:true,
             border: false,
             items: [inputPanel]
         }]
@@ -918,11 +1193,12 @@ function _init() {
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
-                if (data.list != null) {
+                if (data.list != null && data.list.length!=0) {
                     V_V_ORGCODE = data.list[0].V_ORGCODE;
                     V_V_DEPTCODE = data.list[0].V_DEPTCODE;
                     V_V_SPECIALTY = data.list[0].V_REPAIRMAJOR_CODE;
                     V_PERSONNAME = data.list[0].V_INPER;
+
                     Ext.getCmp('week').setValue(data.list[0].V_WEEK);
                     Ext.getCmp('year').setValue(data.list[0].V_YEAR);
                     Ext.getCmp('month').setValue(data.list[0].V_MONTH);
@@ -945,6 +1221,31 @@ function _init() {
                     Ext.getCmp('maindefect').setValue(data.list[0].V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('expectage').setValue(data.list[0].V_EXPECT_AGE);  //预计寿命
                     Ext.getCmp('repairper').setValue(data.list[0].V_REPAIR_PER);  //维修人数
+
+                    //---update 2018-1120
+                    Ext.getCmp('pdc').setValue(data.list[0].V_PDC=="0"?"0":data.list[0].V_PDC); //皮带周长
+                    Ext.getCmp('gyyq').setValue(data.list[0].V_GYYQ==""?"":data.list[0].V_GYYQ); //工艺要求
+                    Ext.getCmp('pdgg').setValue(data.list[0].V_PDGG==""?"":data.list[0].V_PDGG);//皮带规格
+                    Ext.getCmp('changpdc').setValue(data.list[0].V_CHANGPDC==""?"0":data.list[0].V_CHANGPDC);//更换皮带长度（米）
+                    Ext.getCmp('jxhour').setValue(data.list[0].V_JXHOUR==0?0:data.list[0].V_JXHOUR); //检修时间（小时）
+                    Ext.getCmp('jjhour').setValue(data.list[0].V_JJHOUR==0?0:data.list[0].V_JJHOUR);//胶接时间（小时）
+                    Ext.getCmp('telname').setValue(data.list[0].V_TELNAME==""?"":data.list[0].V_TELNAME);//联系人姓名
+                    Ext.getCmp('telnumb').setValue(data.list[0].V_TELNUMB==""?"":data.list[0].V_TELNUMB);//联系人电话
+
+                    Ext.getCmp('sgyy').setValue(data.list[0].V_THICKNESS=="0"?"":data.list[0].V_THICKNESS); //--施工原因
+                    Ext.getCmp('hd').setValue(data.list[0].V_REASON==""?"0":data.list[0].V_REASON);  //厚度
+                    if(data.list[0].V_EVERTIME!=""){
+                    var V_EVERTIME=data.list[0].V_EVERTIME;
+                    var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
+                    Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
+                    }else{
+                        Ext.getCmp('evertime').setValue("");
+                    }
+                    //end up
+
+                    Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);  //施工准备是否已落实
+                    Ext.getCmp('sgfs').select(data.list[0].V_SGWAY);  //施工方式
+                    Ext.getCmp('repairDept').select(data.list[0].V_REPAIRDEPATCODE); //检修单位
                     _selectTaskId();
                     Ext.getBody().unmask();
                 }
@@ -1053,6 +1354,25 @@ function _agree() {
             V_V_MAIN_DEFECT: Ext.getCmp('maindefect').getValue(),//主要缺陷
             V_V_EXPECT_AGE: Ext.getCmp('expectage').getValue(),//预计寿命
             V_V_REPAIR_PER: Ext.getCmp('repairper').getValue()//维修人数
+            , V_V_PDC:Ext.getCmp('pdc').getValue(), //皮带周长
+            V_V_GYYQ:Ext.getCmp('gyyq').getValue(),//工艺要求
+            V_V_CHANGPDC:Ext.getCmp('changpdc').getValue(), //更换皮带长度
+            V_V_JXHOUR:Ext.getCmp('jxhour').getValue(),//检修时间
+            V_V_JJHOUR:Ext.getCmp('jjhour').getValue(),//接胶时间
+            V_V_TELNAME:Ext.getCmp('telname').getValue(),//联系人姓名
+            V_V_TELNUMB:Ext.getCmp('telnumb').getValue(),//联系人电话
+            V_V_PDGG:Ext.getCmp('pdgg').getValue()//皮带规格
+            //--end up
+            //---add2018-10-26
+            , V_V_THICKNESS:Ext.getCmp('hd').getValue(),  //厚度
+            V_V_REASON:Ext.getCmp('sgyy').getValue(),  //--施工原因
+            V_V_EVERTIME:Ext.Date.format(Ext.getCmp('evertime').getValue(),'Y/m/d').toString(),  //上次施工时间
+            //20181113
+            V_V_FLAG:Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,
+            V_V_RDEPATCODE:Ext.getCmp('repairDept').getValue(),
+            V_V_RDEPATNAME:Ext.getCmp('repairDept').getDisplayValue(),
+            V_V_SGWAY:Ext.getCmp('sgfs').getValue(),
+            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue()
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
@@ -1210,4 +1530,15 @@ function _gongshiheji() {
     var gongshicha = date22.getTime() - date11.getTime();
     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
     Ext.getCmp('jhgshj').setValue(gongshicha2);
+}
+
+function _repairDept(){
+    Ext.data.StoreManager.lookup('repairDeptStore').load({
+        params:{
+            V_V_DEPTCODE:Ext.getCmp('zyq').getValue()
+        }
+    });
+    // Ext.data.StoreManager.lookup('repairDeptStore').on('load', function () {
+    //     Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
+    // });
 }

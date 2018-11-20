@@ -969,8 +969,7 @@ Ext.onReady(function () {
                     var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
                     var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
                     var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
-                    var V_EVERTIME=resp.list[0].V_EVERTIME;
-                    var V_EVERTIME_DATE = V_ENDTIME.split(" ")[0]; //上次时间
+
 
                     Ext.getCmp('year').select(A_YEAR); //年
                     Ext.getCmp('month').select(A_MONTH);  //月
@@ -1008,7 +1007,12 @@ Ext.onReady(function () {
                     //----2018-10-26
                     Ext.getCmp('sgyy').setValue(resp.list[0].V_THICKNESS); //--施工原因
                     Ext.getCmp('hd').setValue(resp.list[0].V_REASON);  //厚度
+                    if(resp.list[0].V_EVERTIME!=""){
+                    var V_EVERTIME=resp.list[0].V_EVERTIME;
+                    var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
                     Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
+                        }else
+                    {Ext.getCmp('evertime').setValue("");  }
                     //end up
                     //20181113
                     Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);  //施工准备是否已落实
@@ -1446,10 +1450,10 @@ function OnButtonSaveClick() {
             V_V_EVERTIME:Ext.Date.format(Ext.getCmp('evertime').getValue(),'Y/m/d').toString(),  //上次施工时间
            //20181113
             V_V_FLAG:Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,
-            V_V_RDEPATCODE:Ext.getCmp('sgfs').getValue(),
-            V_V_RDEPATNAME:Ext.getCmp('sgfs').getDisplayValue(),
-            V_V_SGWAY:Ext.getCmp('repairDept').getValue(),
-            V_V_SGWAYNAME:Ext.getCmp('repairDept').getDisplayValue()
+            V_V_RDEPATCODE:Ext.getCmp('repairDept').getValue(),
+            V_V_RDEPATNAME:Ext.getCmp('repairDept').getDisplayValue(),
+            V_V_SGWAY:Ext.getCmp('sgfs').getValue(),
+            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue(),
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
