@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +70,7 @@ public class InfoService {
         return result;
     }
 
-    public Map login(String userName, String userIp) throws SQLException {
+    public Map login(String userName, String userIp,String V_OSNAME,String V_BROWN,String V_LOCALHOST,String V_SS) throws SQLException {
 
         logger.info("begin PRO_BASE_PERSON_LOGIN");
         logger.debug("params:userName:" + userName + "params:userIp:" + userIp);
@@ -80,9 +81,13 @@ public class InfoService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN(:V_V_LOGINNAME,:V_V_IP,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN(:V_V_LOGINNAME,:V_V_IP,:V_OSNAME,:V_BROWN,:V_LOCALHOST,:V_SS,:V_CURSOR)}");
             cstmt.setString("V_V_LOGINNAME", userName);
             cstmt.setString("V_V_IP", userIp);
+            cstmt.setString("V_OSNAME", V_OSNAME);
+            cstmt.setString("V_BROWN", V_BROWN);
+            cstmt.setString("V_LOCALHOST", V_LOCALHOST);
+            cstmt.setString("V_SS", V_SS);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));

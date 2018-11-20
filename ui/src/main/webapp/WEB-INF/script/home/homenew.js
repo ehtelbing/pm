@@ -28,10 +28,13 @@ $(function () {
     }
     _AgencySelect();
     _QXNumSelect();
+    selInspectNum();
     QuerySumDb();
     JHselect();
     setInterval("QuerySumDb()", 120000);
     setInterval("_QXNumSelect()", 120000);
+    setInterval("selInspectNum()", 120000);
+    OnCookies();
 });
 
 function QuerySumDb() {
@@ -58,6 +61,7 @@ function GoToDb() {
 function tabreload() {
     _QXNumSelect();
     _AgencySelect();
+    selInspectNum();
 }
 
 //第几周
@@ -135,7 +139,25 @@ function _AgencySelect() {
         }
     });
 }
-
+function selInspectNum(){
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/BASE_INSPECT_WRITE_SELNUM',
+        method: 'POST',
+        async: false,
+        params: {
+            V_PERCODE:Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            Ext.fly('sectCount').dom.innerHTML = '（' + resp.NUM + '）';
+            Ext.getBody().unmask();//去除页面笼罩
+            // $('#sectCount').val(resp.NUM)
+        }
+    });
+}
+function _inspect(){
+    location.href = AppUrl + 'page/PM_060105/todos.html';
+}
 function _YearCountSelect() {
     $.ajax({
         type: 'POST',
@@ -520,4 +542,28 @@ function downloadFile(ID) {
 function _uploadImageWindow() {
 //    window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height=' + (screen.height - 100) + ',width=' + (screen.width - 100));
     window.open(AppUrl + "page/NoticeFileUpload/Index.html", '', 'height = 768, width = 1366');
+}
+function OnCookies() {
+    Ext.Ajax.request({
+        url: AppUrl + 'info/login_getUrl',
+        params: {
+            LoginName: Ext.util.Cookies.get('v_personcode')
+        }, success: function (respon) {
+            var resp = Ext.decode(respon.responseText);
+            if (resp.list.length>0) {
+                for(var i = 0; i < resp.list.length; i++)
+                {
+                    var iframe = document.createElement("iframe");
+                    iframe.style.display = "none";
+                    iframe.id = "iframe" + i;
+                    document.body.appendChild(iframe);
+                    document.getElementById("iframe" + i).src = resp.list[i].V_URL;
+
+                }
+            } else {
+                msgbox(resp.info);
+            }
+        }
+    });
+
 }

@@ -2980,7 +2980,7 @@ public class cjyService {
         return result;
     }
 
-    public Map login(String userName, String UserPassword, String userIp) throws SQLException {
+    public Map login(String userName, String UserPassword, String userIp,String V_OSNAME,String V_BROWN,String V_LOCALHOST,String V_SS) throws SQLException {
 
         logger.info("begin PRO_BASE_PERSON_LOGIN_NEW");
         logger.debug("params:userName:" + userName + "params:userIp:" + userIp);
@@ -2991,10 +2991,14 @@ public class cjyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN_NEW(:V_V_LOGINNAME,:V_V_PASSWORD,:V_V_IP,:V_INFO,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN_NEW(:V_V_LOGINNAME,:V_V_PASSWORD,:V_V_IP,:V_OSNAME,:V_BROWN,:V_LOCALHOST,:V_SS,:V_INFO,:V_CURSOR)}");
             cstmt.setString("V_V_LOGINNAME", userName);
             cstmt.setString("V_V_PASSWORD", UserPassword);
             cstmt.setString("V_V_IP", userIp);
+            cstmt.setString("V_OSNAME", V_OSNAME);
+            cstmt.setString("V_BROWN", V_BROWN);
+            cstmt.setString("V_LOCALHOST", V_LOCALHOST);
+            cstmt.setString("V_SS", V_SS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
 

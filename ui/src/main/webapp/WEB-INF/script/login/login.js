@@ -157,6 +157,7 @@ function OnLogInClick() {
                 UserName: document.getElementById('username').value,
                 UserPassword: document.getElementById('password').value,
                 UserIp: GetIP().ip
+
             },
             success: function (response) {
                 var resp = Ext.decode(response.responseText);

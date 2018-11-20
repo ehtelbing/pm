@@ -9,9 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by zjh on 2017/1/19.
@@ -23,6 +27,7 @@ public class InfoController {
 
     @Autowired
     private InfoService infoService;
+    private InfoController infoController;
 
 
     @RequestMapping(value = "/GetUserIp", method = RequestMethod.POST)
@@ -46,20 +51,36 @@ public class InfoController {
 
 
     /*
-    * 设备登录
-    * */
+     * 设备登录
+     * */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> login(@RequestParam(value = "UserName") String UserName,
-                                     @RequestParam(value = "UserIp") String UserIp)
-            throws SQLException {
-        Map<String, Object> result = infoService.login(UserName, UserIp);
+                                     @RequestParam(value = "UserIp") String UserIp,
+                                     HttpServletRequest request)
+            throws UnknownHostException, SQLException {
+        String LOCALHOST;
+        String OSNAME = System.getProperty("os.name");  //操作系统名
+        String BROWN = request.getHeader("User-Agent").toLowerCase(); //浏览器
+        int ScreenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        int ScreenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+        String SS = ScreenWidth + "*" + ScreenHeight; //分辨率
+        // public static void getHost(String) throws UnknownHostException{
+//            try {
+        LOCALHOST = InetAddress.getLocalHost().toString().split("/")[0]; //主机名
+
+//            } catch (UnknownHostException e) {
+//                e.printStackTrace();
+//            }
+
+        // }
+        Map<String, Object> result = infoService.login(UserName, UserIp, OSNAME, BROWN, LOCALHOST, SS);
         return result;
     }
 
     /*
-    * 登录日志
-    * */
+     * 登录日志
+     * */
     @RequestMapping(value = "log_text", method = RequestMethod.POST)
     @ResponseBody
     public String log_text(@RequestParam(value = "UserIp") String UserIp)
@@ -69,8 +90,8 @@ public class InfoController {
     }
 
     /*
-    * 单点登录
-    * */
+     * 单点登录
+     * */
     @RequestMapping(value = "login_dddl", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> login_dddl(@RequestParam(value = "LoginName") String LoginName, @RequestParam(value = "LoginType") String LoginType)
@@ -80,8 +101,8 @@ public class InfoController {
     }
 
     /*
-    *通过工单号直接获取工单信息
-    * */
+     *通过工单号直接获取工单信息
+     * */
     @RequestMapping(value = "PRO_GO", method = RequestMethod.POST)
     @ResponseBody
     public List PRO_GO(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,

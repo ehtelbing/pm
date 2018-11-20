@@ -29,7 +29,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -1583,9 +1585,19 @@ public class cjyController {
     @ResponseBody
     public Map<String, Object> login(@RequestParam(value = "UserName") String UserName,
                                      @RequestParam(value = "UserPassword") String UserPassword,
-                                     @RequestParam(value = "UserIp") String UserIp)
-            throws SQLException {
-        Map<String, Object> result = cjyService.login(UserName, UserPassword, UserIp);
+                                     @RequestParam(value = "UserIp") String UserIp,
+                                     HttpServletRequest request)
+            throws UnknownHostException, SQLException {
+        String LOCALHOST;
+        String OSNAME = System.getProperty("os.name");  //操作系统名
+        String BROWN = request.getHeader("User-Agent").toLowerCase(); //浏览器
+        int ScreenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        int ScreenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+        String SS = ScreenWidth + "*" + ScreenHeight; //分辨率
+        // public static void getHost(String) throws UnknownHostException{
+//            try {
+        LOCALHOST = InetAddress.getLocalHost().toString().split("/")[0]; //主机名
+        Map<String, Object> result = cjyService.login(UserName, UserPassword, UserIp, OSNAME, BROWN, LOCALHOST, SS);
         return result;
     }
 
