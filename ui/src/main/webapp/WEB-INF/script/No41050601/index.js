@@ -8,7 +8,7 @@ $(function () {
     NowDate_b("V_D_START_DATE");
     NowDate_e("V_D_FINISH_DATE");
     NowDate2("V_D_ENTER_DATE");
-    loadDEPT()
+    loadDEPT();
 
     loadTaskGrid();
     loadMatList();
@@ -167,7 +167,7 @@ function loadSPR() {
         success: function (resp) {
             $("#selApprover").empty();
             var result = [];
-            if (resp.list != null) {
+            if (resp.list.length != 0) {
                 $.each(resp.list, function (index, item) {
                     result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
                 });
