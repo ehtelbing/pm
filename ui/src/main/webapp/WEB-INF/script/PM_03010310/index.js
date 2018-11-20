@@ -1361,6 +1361,10 @@ function getReturnJHXZ(retdata, type) {
  });
  }*/
 function OnButtonSaveClick() {
+    if( Ext.getCmp('sblx').getValue()=="%"&&Ext.getCmp('sbmc').getValue()=="%"){
+        Ext.Msg.alert('消息','设备类型和设备名称不可以为全部，请选择相关名称');
+        return;
+    }
     //获取流动编码
     /*var V_FLOWCODE="";
      Ext.Ajax.request({
