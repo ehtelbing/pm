@@ -748,7 +748,7 @@ function _preViewProcess(businessKey)
                 icon: Ext.MessageBox.ERROR
             });
         }
-    })
+    });
 
     var owidth = window.screen.availWidth;
     var oheight =  window.screen.availHeight - 50;
@@ -760,12 +760,15 @@ function _preViewProcess(businessKey)
 function OnClickExcelButton() {
 
     var V_V_STATE = Ext.getCmp('state').getValue() == '%' ? '0' : Ext.getCmp('state').getValue();
+    var V_V_DEPTCODE=Ext.getCmp('jhzyq').getValue()=='%'?'0':Ext.getCmp('').getValue();
+    var V_V_EQUTYPE=Ext.getCmp('sblx').getValue()=='%'?'0':Ext.getCmp('sblx').getValue();
+    var V_V_EQUCODE=Ext.getCmp('sbmc').getValue()=='%'?'0':Ext.getCmp('sbmc').getValue();
     document.location.href = AppUrl + 'excel/YJHCX_EXCEL?V_V_YEAR=' + Ext.getCmp('nf').getValue()
         + '&V_V_MONTH=' + Ext.getCmp('yf').getValue()
         + '&V_V_ORGCODE=' + Ext.getCmp('jhck').getValue()
-        + '&V_V_DEPTCODE=' + Ext.getCmp('jhzyq').getValue()
-        + '&V_V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
-        + '&V_V_EQUCODE=' + Ext.getCmp('sbmc').getValue()
+        + '&V_V_DEPTCODE=' +V_V_DEPTCODE// Ext.getCmp('jhzyq').getValue()
+        + '&V_V_EQUTYPE=' + V_V_EQUTYPE
+        + '&V_V_EQUCODE=' + V_V_EQUCODE
         + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
         + '&V_V_CONTENT=' + Ext.getCmp('content').getValue()
         + '&V_V_STATECODE=' + V_V_STATE
