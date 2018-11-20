@@ -107,7 +107,7 @@ function Login() {
                             Ext.util.Cookies.set('v_workcss',
                                 resp.list[0].V_WORKCSS);
 
-                            if(resp.list[0].V_ROLECODE=='57' || resp.list[0].V_ROLECODE=='15'){
+                            if((resp.list[0].V_DEPTCODE.indexOf("9900")!=-1)|| resp.list[0].V_ROLECODE=='15'){
                                 location.href = "../../page/Anewhome/index.html";
                             }else{
                                 location.href = "../../page/home/ndex.html";
@@ -248,7 +248,7 @@ function OnLogInClick() {
                     Ext.util.Cookies.set('v_workcss',
                         resp.list[0].V_WORKCSS);
 
-                    if(resp.list[0].V_ROLECODE=='57' || resp.list[0].V_ROLECODE=='15'){
+                    if((resp.list[0].V_DEPTCODE.indexOf("9900")!=-1) || resp.list[0].V_ROLECODE=='15'){
                         location.href = "../../page/Anewhome/index.html";
                     }else{
                         location.href = "../../page/home/Index.html";
