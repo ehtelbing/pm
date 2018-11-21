@@ -1541,6 +1541,40 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_MONTH_SEND");
         return result;
     }
+    //PM_03010201,月计划报表，上传(设备部）
+    public List<Map> PRO_PM_03_PLAN_MONTH_SEND2(String V_V_GUID,String V_V_ORGCODE,String V_V_DEPTCODE,
+                                               String V_V_FLOWCODE, String  V_V_PLANTYPE,
+                                               String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_MONTH_SEND2");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_MONTH_SEND2(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                    ":V_V_FLOWCODE,:V_V_PLANTYPE,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_FLOWCODE", V_V_FLOWCODE);
+            cstmt.setString("V_V_PLANTYPE", V_V_PLANTYPE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_MONTH_SEND2");
+        return result;
+    }
     //PM_03010201,检修季度计划,选择计划查询
     public HashMap PM_03_QUARTER_PLAN_SEL(String V_V_PLAN_NAME) throws SQLException {
         logger.info("begin PM_03_QUARTER_PLAN_SEL");

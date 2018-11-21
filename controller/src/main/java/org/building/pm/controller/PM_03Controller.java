@@ -786,6 +786,25 @@ public class PM_03Controller {
         test.put("list", result);
         return test;
     }
+    //PM_03010201,月计划报表，上传(设备部）
+    @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_SEND2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_MONTH_SEND2(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_FLOWCODE") String V_V_FLOWCODE,
+            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = pm_03Service.PRO_PM_03_PLAN_MONTH_SEND2(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
+        test.put("list", result);
+        return test;
+    }
 
     //PM_03010201,季度计划报表，选择计划查询
     @RequestMapping(value = "/PM_03_QUARTER_PLAN_SEL", method = RequestMethod.POST)
