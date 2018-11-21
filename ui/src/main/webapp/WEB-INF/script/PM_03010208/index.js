@@ -16,15 +16,19 @@ var V_JXMX_CODE = null;
 var V_JXGX_CODE = null;
 var V_PLANCODE = null;
 var V_PLANTYPE = null;
-var date = new Date();
+var date=new Date();
+
+//--update2018-1121
+var stopdate = null;
 //---update 20181117
 var starttime;
 var V_MONTH=parseInt(MONTH)+1;
-if(V_MONTH==13){
-    starttime=(parseInt(YEAR)+1)+'-'+(parseInt(MONTH)+1-12)+'-'+"1";
-}else{
-    starttime=YEAR+'-'+V_MONTH+'-'+"1";
-}
+// if(V_MONTH==13){
+//     starttime=(parseInt(YEAR)+1)+'-'+(parseInt(MONTH)+1-12)+'-'+"1";
+// }else{
+//     starttime=YEAR+'-'+V_MONTH+'-'+"1";
+// }
+starttime=YEAR+'-'+MONTH+'-'+"1";
 //endupdate
 
 
@@ -191,7 +195,46 @@ var sbmcStore = Ext.create('Ext.data.Store', {
         }
     }
 });
-
+//施工方式
+var sgfsStore = Ext.create("Ext.data.Store", {
+    storeId: 'sgfsStore',
+    fields: ['ID', 'V_BH','V_SGFS','V_LX'],
+    autoLoad: true,
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_03/PM_03_PLAN_SGFS_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
+    Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+});
+//---检修单位
+var repairDeptStore= Ext.create('Ext.data.Store', {
+    autoLoad: false,
+    storeId: 'repairDeptStore',
+    fields: ['V_DEPTCODE','V_DEPTNAME','V_DEPTREPAIRCODE','V_DEPTREPAIRNAME',
+        'I_ORDERID'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'zdh/fixdept_sel',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
 Ext.onReady(function () {
     var editPanel = Ext.create('Ext.form.Panel', {
         id: 'editPanel',
@@ -263,7 +306,15 @@ Ext.onReady(function () {
                                 valueField: 'valueField',
                                 value: '',
                                 store: yearStore,
-                                queryMode: 'local'
+                                queryMode: 'local',
+                                listeners:{
+                                    select:function(){
+                                        stopdate=Ext.getCmp('year').getValue()+'-'+Ext.getCmp('month').getValue()+'-'+1;
+                                        Ext.getCmp('jhtgdate').setValue(new Date(stopdate));
+                                        Ext.getCmp('jhjgdate').setValue(new Date(stopdate));
+                                        Ext.getCmp('jhtgdate').setMinValue(new Date(stopdate) );
+                                        Ext.getCmp('jhjgdate').setMinValue(new Date(stopdate) );}
+                                }
                             },
                             {
                                 xtype: 'combo',
@@ -277,7 +328,15 @@ Ext.onReady(function () {
                                 valueField: 'valueField',
                                 value: '',
                                 store: monthStore,
-                                queryMode: 'local'
+                                queryMode: 'local',
+                                listeners:{
+                                    select:function(){
+                                        stopdate=Ext.getCmp('year').getValue()+'-'+Ext.getCmp('month').getValue()+'-'+1;
+                                        Ext.getCmp('jhtgdate').setValue(new Date(stopdate));
+                                        Ext.getCmp('jhjgdate').setValue(new Date(stopdate));
+                                        Ext.getCmp('jhtgdate').setMinValue(new Date(stopdate) );
+                                        Ext.getCmp('jhjgdate').setMinValue(new Date(stopdate) );}
+                                }
                             }
                         ]
                     },
@@ -419,7 +478,52 @@ Ext.onReady(function () {
                             }
                         ]
                     },
-
+                    {layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items:[
+                            {
+                                xtype : 'combo',
+                                id : "sgfs",
+                                store: sgfsStore,
+                                editable : false,
+                                queryMode : 'local',
+                                fieldLabel : '施工方式',
+                                margin: '5 0 5 5',
+                                displayField: 'V_SGFS',
+                                valueField: 'V_BH',
+                                labelWidth: 80,
+                                width: 280,
+                                labelAlign : 'right'
+                            },/*{
+                                xtype : 'combo',
+                                id:'repairDept',
+                                store:repairDeptStore,
+                                editable : false,
+                                queryMode : 'local',
+                                fieldLabel : '检修单位',
+                                displayField: 'V_DEPTREPAIRNAME',
+                                valueField: 'V_DEPTREPAIRCODE',
+                                margin: '5 0 5 5',
+                                labelWidth: 55,
+                                width: 255,
+                                labelAlign : 'right',
+                                listConfig:{
+                                    minWidth:420
+                                }
+                            }*/
+                            {
+                                xtype:'checkboxfield',
+                                boxLabel:'施工准备是否已落实',
+                                id : 'iflag',
+                                inputValue:1,
+                                uncheckedValue:0,
+                                margin: '5 0 5 30'
+                            }
+                        ]
+                    },
                     {
                         xtype: 'textarea',
                         id: 'jxnr',
@@ -448,7 +552,7 @@ Ext.onReady(function () {
                                 labelWidth: 80,
                                 width: 280,
                                 value: '',
-                                minValue:new Date(starttime),
+                                minValue:new Date(starttime),//new Date(starttime),
                                 listeners: {
                                     select: function () {
                                         Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
@@ -722,8 +826,12 @@ Ext.onReady(function () {
     pageLoadInfo();
     if (V_MONTHPLAN_GUID == '0') {
         V_JXGX_CODE = guid();
+        // Ext.getCmp('jhtgdate').setValue(new Date(starttime));
+        // Ext.getCmp('jhjgdate').setValue(new Date(starttime));
+       // stopdate=new Date(Ext.getCmp('year').getValue()+'-'+Ext.getCmp('month').getValue()+'-'+"1");
         Ext.getCmp('jhtgdate').setValue(new Date(starttime));
         Ext.getCmp('jhjgdate').setValue(new Date(starttime));
+        //new Date(starttime),
     } else {
         Ext.Ajax.request({
             url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_GET',
@@ -781,6 +889,8 @@ Ext.onReady(function () {
                     Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
                     Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
+                    Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //--实施方式
+                    Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);
                     if (V_YEARPLAN_CODE != '') {
                         V_PLANCODE = V_YEARPLAN_CODE;
                         V_PLANTYPE = 'YEAR';
@@ -1077,7 +1187,10 @@ function OnButtonSaveClick() {
             V_V_BZ: Ext.getCmp('bz').getValue(),
             V_V_MAIN_DEFECT: Ext.getCmp('maindefect').getValue(),//主要缺陷
             V_V_EXPECT_AGE: Ext.getCmp('expectage').getValue(),//预计寿命
-            V_V_REPAIR_PER: Ext.getCmp('repairper').getValue()//维修人数
+            V_V_REPAIR_PER: Ext.getCmp('repairper').getValue(), //维修人数
+            V_V_SGWAY: Ext.getCmp('sgfs').getValue(),  //施工方式
+            V_V_SGWAYNAME: Ext.getCmp('sgfs').getDisplayValue(),  //施工方式名称
+            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue//施工准备是否已落实 (1)是 (0)否
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

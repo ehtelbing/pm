@@ -152,6 +152,27 @@ Ext.onReady(function () {
                     labelWidth: 90
                 }]
             }, {
+                layout: 'hbox',
+                defaults: {
+                    labelAlign: 'right',
+                    width: 250,
+                    readOnly: true
+                },
+                items: [{
+                    xtype: 'textfield',
+                    id: 'sgfs',
+                    allowBlank: false,
+                    fieldLabel: '施工方式',
+                    labelWidth: 90
+                }, {
+                    xtype:'checkboxfield',
+                    boxLabel:'施工准备是否已落实',
+                    margin:'5 0 0 35',
+                    id : 'iflag',
+                    inputValue:1,
+                    uncheckedValue:0
+                }]
+            },{
                 layout: 'column',
                 defaults: {
                     xtype: 'textfield',
@@ -377,6 +398,10 @@ function _init() {
                 Ext.getCmp('jhjgsj').setValue(data.list[0].V_ENDTIME.substring(0, 19));
                 Ext.getCmp('jhgshj').setValue(data.list[0].V_HOUR);
                 Ext.getCmp('bz').setValue(data.list[0].V_BZ);
+
+                //2018-11-21
+                Ext.getCmp('sgfs').setValue(data.list[0].V_SGWAYNAME);
+                Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);
               //  _selectNextPer();
                 _selectTaskId();
                 Ext.getBody().unmask();

@@ -773,7 +773,7 @@ function OnClickExcelButton() {
         + '&V_V_CONTENT=' + Ext.getCmp('content').getValue()
         + '&V_V_STATECODE=' + V_V_STATE
         + '&V_V_PEROCDE=' + Ext.util.Cookies.get('v_personcode')
-        + '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
-        + '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize;
+      /*  + '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
+        + '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize*/;
 
 }

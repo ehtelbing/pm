@@ -145,6 +145,30 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     width: 280,
                     readOnly: true
                 },
+                {layout: 'hbox',
+                    defaults: {labelAlign: 'right',readOnly:true},
+                    frame: true,
+                    border: false,
+                    baseCls: 'my-panel-no-border',
+                    items:[
+                        {
+                            xtype: 'textfield',
+                            id: 'sgfs',
+                            allowBlank: false,
+                            fieldLabel: '施工方式',
+                            labelWidth: 80,
+                            width:280
+                        },
+                        {
+                            xtype:'checkboxfield',
+                            boxLabel:'施工准备是否已落实',
+                            id : 'iflag',
+                            inputValue:1,
+                            uncheckedValue:0,
+                            margin: '5 0 5 30'
+                        }
+                    ]
+                },
                 {
                     xtype: 'textfield',
                     id: 'jxnr',
@@ -311,6 +335,10 @@ function pageLoadInfo() {
                 Ext.getCmp('jhjgminute').setValue(V_ENDTIME_MINUTE);  //竣工时间分钟
                 Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
                 Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
+
+                //2018-11-21
+                Ext.getCmp('sgfs').setValue(data.list[0].V_SGWAYNAME);
+                Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);
                 V_PLANTYPE = resp.list[0].V_FLOWTYPE;
             }
         }

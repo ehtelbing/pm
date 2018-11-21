@@ -448,6 +448,11 @@ public class BasicController {
             @RequestParam(value = "V_V_MAIN_DEFECT") String V_V_MAIN_DEFECT,
             @RequestParam(value = "V_V_EXPECT_AGE") String V_V_EXPECT_AGE,
             @RequestParam(value = "V_V_REPAIR_PER") String V_V_REPAIR_PER,
+            //2018-11-21
+            @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
+            @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map result = basicService.PRO_PM_03_PLAN_MONTH_SET(
@@ -470,7 +475,10 @@ public class BasicController {
                 V_V_BZ,
                 V_V_MAIN_DEFECT,
                 V_V_EXPECT_AGE,
-                V_V_REPAIR_PER);
+                V_V_REPAIR_PER,
+                V_V_SGWAY,
+                V_V_SGWAYNAME,
+                V_V_FLAG);
         return result;
     }
 

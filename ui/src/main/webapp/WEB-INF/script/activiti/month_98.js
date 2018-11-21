@@ -227,7 +227,26 @@ Ext.onReady(function () {
             }
         }
     });
-
+    var sgfsStore = Ext.create("Ext.data.Store", {
+        storeId: 'sgfsStore',
+        fields: ['ID', 'V_BH','V_SGFS','V_LX'],
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_03/PM_03_PLAN_SGFS_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+    Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
+        Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+    });
     var monthStore = Ext.create("Ext.data.Store", {
         storeId: 'monthStore',
         autoLoad: true,
@@ -305,8 +324,8 @@ Ext.onReady(function () {
         //border:false,
         items: [{
             xtype: 'fieldset',
-            height: 500,
-            width: 540,
+            height: 560,
+            width: 580,
             style: 'margin-left:10px;',
             defaults: {
                 frame: true,
@@ -479,6 +498,35 @@ Ext.onReady(function () {
                     fieldLabel: '发起时间',
                     labelWidth: 90
                 }]
+            },{ layout: 'hbox',
+                defaults: {
+                    labelAlign: 'right',
+                    width: 250
+                },
+                items:[
+                    {
+                        xtype : 'combo',
+                        id : "sgfs",
+                        store: sgfsStore,
+                        editable : false,
+                        queryMode : 'local',
+                        fieldLabel : '施工方式',
+                        margin: '5 0 5 5',
+                        displayField: 'V_SGFS',
+                        valueField: 'V_BH',
+                        labelWidth: 90,
+                        width: 250,
+                        labelAlign : 'right'
+                    },
+                    {
+                        xtype:'checkboxfield',
+                        boxLabel:'施工准备是否已落实',
+                        id : 'iflag',
+                        inputValue:1,
+                        uncheckedValue:0,
+                        margin: '5 0 5 30'
+                    }
+                ]
             }, {
                 layout: 'column',
                 items: [{
@@ -845,6 +893,7 @@ Ext.onReady(function () {
         }, {
             region: 'center',
             //layout: 'fit',
+            autoScroll:true,
             border: false,
             items: [inputPanel]
         }]
@@ -936,6 +985,10 @@ function _init() {
                     Ext.getCmp('maindefect').setValue(data.list[0].V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('expectage').setValue(data.list[0].V_EXPECT_AGE);  //预计寿命
                     Ext.getCmp('repairper').setValue(data.list[0].V_REPAIR_PER);  //维修人数
+
+                    //2018-11-21
+                    Ext.getCmp('sgfs').select(data.list[0].V_SGWAY);
+                    Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);
                     // _selectNextPer();
                     _selectTaskId();
                     Ext.getBody().unmask();
@@ -1039,7 +1092,11 @@ function _agree() {
             V_V_BZ: Ext.getCmp('bz').getValue(),
             V_V_MAIN_DEFECT: Ext.getCmp('maindefect').getValue(),//主要缺陷
             V_V_EXPECT_AGE: Ext.getCmp('expectage').getValue(),//预计寿命
-            V_V_REPAIR_PER: Ext.getCmp('repairper').getValue()//维修人数
+            V_V_REPAIR_PER: Ext.getCmp('repairper').getValue(),//维修人数
+            V_V_SGWAY: Ext.getCmp('sgfs').getValue(),  //施工方式
+            V_V_SGWAYNAME: Ext.getCmp('sgfs').getDisplayValue(),  //施工方式名称
+            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue//施工准备是否已落实 (1)是 (0)否
+
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

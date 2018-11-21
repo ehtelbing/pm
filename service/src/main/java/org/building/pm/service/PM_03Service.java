@@ -1390,7 +1390,7 @@ public class PM_03Service {
         return result;
     }
     //---------EXCEL--MONTH-UPDATE2018-0828
-    public HashMap PM_03_MONTH_PLAN_SELALL(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_ZY,String V_V_CONTENT,String V_V_STATECODE,String V_V_PEROCDE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public HashMap PM_03_MONTH_PLAN_SELALL(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_ZY,String V_V_CONTENT,String V_V_STATECODE,String V_V_PEROCDE) throws SQLException {
         logger.info("begin PM_03_MONTH_PLAN_SELALL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -1398,7 +1398,7 @@ public class PM_03Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_03_MONTH_PLAN_SELALL" + "(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_ZY,:V_V_CONTENT,:V_V_STATECODE,:V_V_PEROCDE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_03_MONTH_PLAN_SELALL" + "(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_ZY,:V_V_CONTENT,:V_V_STATECODE,:V_V_PEROCDE,:V_CURSOR)}");
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_MONTH", V_V_MONTH);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -1409,12 +1409,12 @@ public class PM_03Service {
             cstmt.setString("V_V_CONTENT", V_V_CONTENT);
             cstmt.setString("V_V_STATECODE", V_V_STATECODE);
             cstmt.setString("V_V_PEROCDE", V_V_PEROCDE);
-            cstmt.setString("V_V_PAGE", V_V_PAGE);
-            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
-            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+//            cstmt.setString("V_V_PAGE", V_V_PAGE);
+//            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+//            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",cstmt.getString("V_V_SNUM"));
+//            result.put("total",cstmt.getString("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);

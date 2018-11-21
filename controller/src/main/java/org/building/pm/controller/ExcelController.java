@@ -3173,20 +3173,19 @@ public class ExcelController {
                             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
                             @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
                             @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
-                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+//                            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+//                            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
         String V_V_STATECODE2 = V_V_STATECODE.equals("0") ? "%" : V_V_STATECODE;
-        String V_V_DEPTCODE2 = V_V_DEPTCODE.equals("0") ? "%" : V_V_STATECODE;
-        String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_STATECODE;
-        String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_STATECODE;
+        String V_V_DEPTCODE2 = V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
+        String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_EQUTYPE;
+        String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE;
 
 
-        Map<String, Object> data = pm_03Service.PM_03_MONTH_PLAN_SEL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_ZY,
-                V_V_CONTENT, V_V_STATECODE2, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        Map<String, Object> data = pm_03Service.PM_03_MONTH_PLAN_SELALL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_ZY, V_V_CONTENT, V_V_STATECODE2, V_V_PEROCDE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
