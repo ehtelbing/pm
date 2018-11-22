@@ -10,6 +10,8 @@ var V_JXGX_CODE = null;
 var V_PLANCODE = null;
 var startUpTime=null;
 var endUpTime=null;
+var getOtherguid='';
+var getOtherType='';
 
 if (location.href.split('?')[1] != undefined) {
     V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
@@ -457,7 +459,9 @@ Ext.onReady(function () {
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 labelWidth: 80,
+                                allowNegative:false,
                                 width: 250,
+                                minValue:0,
                                 value: 0
                             },{xtype:'label',
                                 margin:'8 0 0 5' ,
@@ -470,7 +474,9 @@ Ext.onReady(function () {
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 labelWidth: 70,
+                                allowNegative:false,
                                 width: 255,
+                                minValue:0,
                                 value: 0
                             }
                         ]
@@ -785,6 +791,7 @@ Ext.onReady(function () {
                             id: 'pdc',
                             fieldLabel: '皮带周长',
                             labelAlign: 'right',
+                            minValue:0,
                             margin: '5 0 0 2',
                             labelWidth: 80,
                             width: 250,
@@ -800,8 +807,10 @@ Ext.onReady(function () {
                                 fieldLabel: '更换皮带长度',
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
+                                allowNegative:false,
                                 labelWidth: 80,
                                 width: 225,
+                                minValue:0,
                                 value: 0},{
                                 xtype:'label',
                                 text:"(米）",
@@ -848,6 +857,7 @@ Ext.onReady(function () {
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 allowNegative: false,
+                                minValue:0,
                                 allowDecimals: false,
                                 labelWidth: 80,
                                 width: 245,
@@ -864,6 +874,7 @@ Ext.onReady(function () {
                                 fieldLabel: '胶接时间',
                                 labelAlign: 'right',
                                 margin: '5 0 0 2',
+                                minValue:0,
                                 allowNegative: false,
                                 allowDecimals: false,
                                 labelWidth: 55,
@@ -900,6 +911,7 @@ Ext.onReady(function () {
                             allowDecimals: false,
                             labelWidth: 85,
                             width: 230,
+                            minValue:0,
                             value: '0'
                         },
                             {
@@ -1206,13 +1218,17 @@ function guid() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 function jhSelect() {
+    var V_V_ORGCODE=Ext.getCmp('ck').getValue()=='%'?"0":Ext.getCmp('ck').getValue();
+     var V_V_DEPTCODE=Ext.getCmp('zyq').getValue()=='%'?"0":Ext.getCmp('zyq').getValue();
+     var V_V_EQUTYPE=Ext.getCmp('sblx').getValue()=='%'?"0":Ext.getCmp('sblx').getValue();
+     var V_V_EQUCODE=Ext.getCmp('sbmc').getValue()=='%'?"0":Ext.getCmp('sbmc').getValue();
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_03010316/index.html?V_V_YEAR=' + Ext.getCmp('year').getValue()
-    + '&V_V_ORGCODE=' + Ext.getCmp('ck').getValue()
-    + '&V_V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
-    + '&V_V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
-    + '&V_V_EQUCODE=' + Ext.getCmp('sbmc').getValue()
+    + '&V_V_ORGCODE=' +V_V_ORGCODE// Ext.getCmp('ck').getValue()
+    + '&V_V_DEPTCODE=' +V_V_DEPTCODE //Ext.getCmp('zyq').getValue()
+    + '&V_V_EQUTYPE=' + V_V_EQUTYPE// Ext.getCmp('sblx').getValue()
+    + '&V_V_EQUCODE=' + V_V_EQUCODE//Ext.getCmp('sbmc').getValue()
     + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
     + '&V_V_JXNR=' + Ext.getCmp('jxnr').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
@@ -1226,6 +1242,8 @@ function jhSelect() {
  }*/
 function getReturnJHXZ(retdata, type) {
     if (type == 'MONTH') {
+        getOtherguid=retdata;
+        getOtherType=type;
         Ext.Ajax.request({
             url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
             method: 'POST',
@@ -1279,6 +1297,8 @@ function getReturnJHXZ(retdata, type) {
             }
         });
     } else {
+        getOtherguid=retdata;
+        getOtherType=type;
         Ext.Ajax.request({
             url: AppUrl + 'cjy/PM_03_PLAN_CHOOSE_SEL_NEW',
             method: 'POST',
@@ -1424,8 +1444,8 @@ function OnButtonSaveClick() {
             V_V_CONTENT: Ext.getCmp('jxnr').getValue(),                     //检修内容
             V_V_STARTTIME: jhtgTime,                                       //开始时间
             V_V_ENDTIME: jhjgTime,                                          //结束时间
-            V_V_OTHERPLAN_GUID: '',                                  //检修工序编码
-            V_V_OTHERPLAN_TYPE: '',                                  //检修模型编码
+            V_V_OTHERPLAN_GUID: getOtherguid,// '',                         //检修工序编码
+            V_V_OTHERPLAN_TYPE:getOtherType ,// '',                                  //检修模型编码
             V_V_JHMX_GUID: '',                                          //检修标准
             V_V_HOUR: Ext.getCmp('jhgshj').getValue(),
             V_V_BZ: Ext.getCmp('bz').getValue(),
@@ -1453,7 +1473,7 @@ function OnButtonSaveClick() {
             V_V_RDEPATCODE:Ext.getCmp('repairDept').getValue(),
             V_V_RDEPATNAME:Ext.getCmp('repairDept').getDisplayValue(),
             V_V_SGWAY:Ext.getCmp('sgfs').getValue(),
-            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue(),
+            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue()
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

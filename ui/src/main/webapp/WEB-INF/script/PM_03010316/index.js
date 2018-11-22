@@ -7,11 +7,21 @@ var V_V_ZY = '';
 var V_V_JXNR = '';
 if (location.href.split('?')[1] != undefined) {
     V_V_YEAR = Ext.urlDecode(location.href.split('?')[1]).V_V_YEAR;
-    V_V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
-    V_V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
-    V_V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
-    V_V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUCODE;
-    V_V_ZY = Ext.urlDecode(location.href.split('?')[1]).V_V_ZY;
+}
+if (location.href.split('?')[1] != undefined) {
+    V_V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE=='0'?'%':Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
+}
+if (location.href.split('?')[1] != undefined) {
+    V_V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE=='0'?'%':Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
+}if (location.href.split('?')[1] != undefined) {
+    V_V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE=='0'?'%':Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
+}
+if (location.href.split('?')[1] != undefined) {
+    V_V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUCODE=='0'?'%':Ext.urlDecode(location.href.split('?')[1]).V_V_EQUCODE;
+}
+if (location.href.split('?')[1] != undefined) {
+    V_V_ZY = Ext.urlDecode(location.href.split('?')[1]).V_V_ZY;}
+if (location.href.split('?')[1] != undefined) {
     V_V_JXNR = Ext.urlDecode(location.href.split('?')[1]).V_V_JXNR;
 }
 var years = [];

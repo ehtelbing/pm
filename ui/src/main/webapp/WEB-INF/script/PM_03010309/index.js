@@ -232,7 +232,8 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER'],
+        'V_REPAIR_PER',
+        'V_OTHERPLAN_GUID','V_OTHERPLAN_TYPE'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -464,6 +465,15 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             renderer: function (value, metaData, record) {
                 return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
+            }
+        },
+        {
+            text:'关联计划',
+            dataIndex:'',
+            width:75,
+            align:'center',
+            renderer:function(value,metaData,record){
+                return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
             }
         },
         {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
@@ -801,4 +811,23 @@ function OnClickGrid(V_GUID) {
     var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_0301030901/index.html?v_guid='
         + V_GUID, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+function OnClickOtherGrid(otherguid,othertype){
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    if(othertype==""){
+        alert('此计划没有关联项');return;
+    }
+if (othertype=="MONTH"){
+    window.open(AppUrl + 'page/PM_03010309/month_detail.html?monthguid='
+        + otherguid, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+    if(othertype=="YEAR"){
+        alert('该条计划关联年计划');
+    }
+// 年计划关联信息页面过程不可用
+// if(othertype=="YEAR"){
+//     window.open(AppUrl + 'page/PM_03010309/year_detail.html?yearguid='
+//         + otherguid, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+// }
 }
