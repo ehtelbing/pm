@@ -60,6 +60,7 @@ public class InfoController {
     @ResponseBody
     public Map<String, Object> login(@RequestParam(value = "UserName") String UserName,
                                      @RequestParam(value = "UserIp") String UserIp,
+                                     @RequestParam(value="SS") String SS,
                                      HttpServletRequest request)
             throws  SQLException {
 
@@ -67,10 +68,11 @@ public class InfoController {
         Browser browser = userAgent.getBrowser();//获取浏览器信息
         OperatingSystem os = userAgent.getOperatingSystem(); //获取操作系统信息
 
-        String OSNAME="";
-        String BROWN="";
-        String LOCALHOST="";
-        String SS="";
+        String OSNAME=os.toString();
+        String BROWN=browser.toString();
+        String LOCALHOST=request.getRemoteHost();//客户端主机名，若失败返回客户端ip
+//        String LOCALHOST="";
+//        String SS="";
 
         Map<String, Object> result = infoService.login(UserName, UserIp, OSNAME, BROWN, LOCALHOST, SS);
         return result;

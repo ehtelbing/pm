@@ -1589,20 +1589,18 @@ public class cjyController {
     public Map<String, Object> login(@RequestParam(value = "UserName") String UserName,
                                      @RequestParam(value = "UserPassword") String UserPassword,
                                      @RequestParam(value = "UserIp") String UserIp,
+                                     @RequestParam(value="SS") String SS,   //分辨率
                                      HttpServletRequest request)
             throws  SQLException {
 
         UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
         Browser browser = userAgent.getBrowser();//浏览器
         OperatingSystem os = userAgent.getOperatingSystem(); //操作系统
-        String OSNAME=request.getRemoteHost();//客户端主机名，若失败返回客户端ip
+        String LOCALHOST=request.getRemoteHost();//客户端主机名，若失败返回客户端ip
 
-
-
-
-        String BROWN="";
-        String LOCALHOST="";
-        String SS="";
+        String BROWN=browser.toString();
+        String OSNAME=os.toString();
+       // String SS="";
         Map<String, Object> result = cjyService.login(UserName, UserPassword, UserIp, OSNAME, BROWN, LOCALHOST, SS);
         return result;
     }

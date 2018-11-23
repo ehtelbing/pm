@@ -156,7 +156,8 @@ function OnLogInClick() {
             params: {
                 UserName: document.getElementById('username').value,
                 UserPassword: document.getElementById('password').value,
-                UserIp: GetIP().ip
+                UserIp: GetIP().ip,
+                SS:window.screen.height+'*'+window.screen.width
 
             },
             success: function (response) {
