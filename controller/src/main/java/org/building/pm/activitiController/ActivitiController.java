@@ -13,7 +13,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.building.pm.controller.cjyController;
+import org.building.pm.controller.CjyController;
 import org.building.pm.service.*;
 import org.building.pm.webcontroller.AMToMessController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ public class ActivitiController {
     private PM_03Service pm_03Service;
 
     @Autowired
-    private hpService hpService;
+    private HpService hpService;
 
     @Autowired
     private AMToMessController amToMessController;
@@ -78,7 +78,7 @@ public class ActivitiController {
     @Autowired
     private WorkOrderService workOrderService;
     @Autowired
-    private cjyController cjyController;
+    private CjyController cjyController;
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
 

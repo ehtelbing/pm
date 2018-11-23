@@ -4,7 +4,7 @@ package org.building.pm.controller;
  * Created by lxm on 2017/8/5.
  */
 
-import org.building.pm.service.lxmService;
+import org.building.pm.service.LxmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,16 +14,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/app/pm/lxm")
-public class lxmController {
+public class LxmController {
     @Autowired
-    private lxmService mService;
+    private LxmService mService;
 
     @RequestMapping(value = "/PRO_PM_EQUREPAIRPLAN_TREE_GET", method = RequestMethod.POST)
     @ResponseBody

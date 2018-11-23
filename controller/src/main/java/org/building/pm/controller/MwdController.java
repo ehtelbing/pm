@@ -27,10 +27,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ public class MwdController {
     private MwdService mwdService;
 
     @Autowired
-    private org.building.pm.service.hpService hpService;
+    private org.building.pm.service.HpService hpService;
 
     @RequestMapping(value = "/SAP_PM_EQU_FILE_SEL", method = RequestMethod.POST)
     @ResponseBody

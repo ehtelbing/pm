@@ -28,7 +28,7 @@ import java.util.Map;
  */
 
 @Service
-public class hpService {
+public class HpService {
     private static final Logger logger = Logger.getLogger(InfoService.class.getName());
 
     @Value("#{configProperties['system.copyright']}")

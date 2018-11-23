@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/app/pm/anewhome/")
-public class aNewhomeController {
+public class AnewhomeController {
     @Autowired
     private AnewhomeService anewhomeService;
 

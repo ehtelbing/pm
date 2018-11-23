@@ -17,7 +17,7 @@ import java.util.*;
  * Created by admin on 2017/10/31.
  */
 @Service
-public class cjyService {
+public class CjyService {
     private static final Logger logger = Logger.getLogger(InfoService.class.getName());
 
     @Value("#{configProperties['system.copyright']}")

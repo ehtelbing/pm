@@ -11,7 +11,7 @@ import org.building.pm.activitiController.ActivitiController;
 import org.building.pm.service.BasicService;
 import org.building.pm.service.WorkOrderService;
 import org.building.pm.service.ZdhService;
-import org.building.pm.service.cjyService;
+import org.building.pm.service.CjyService;
 import org.building.pm.webcontroller.AMToMessController;
 import org.building.pm.webcontroller.MMController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -46,9 +44,9 @@ import java.sql.Date;
  */
 @Controller
 @RequestMapping("/app/pm/cjy")
-public class cjyController {
+public class CjyController {
     @Autowired
-    private cjyService cjyService;
+    private CjyService cjyService;
 
     @Autowired
     private ActivitiController activitiController;

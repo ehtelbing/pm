@@ -1,6 +1,6 @@
 package org.building.pm.timingTask;
 
-import org.building.pm.service.hpService;
+import org.building.pm.service.HpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 
 import java.sql.SQLException;
-import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -18,12 +16,12 @@ import java.util.*;
  * Created by hpnn on 2017/12/5.
  */
 @Component
-public class hpTimer {
+public class HpTimer {
     @Value("#{configProperties['PM_JST']}")
     private String pm_jst;
 
     @Autowired
-    private hpService hpService;
+    private HpService hpService;
 
     @Scheduled(cron = "0 0/1 * * * ?")//这是定时时间的地方
     public void setDJDB() throws SQLException {
