@@ -1,6 +1,9 @@
 package org.building.pm.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.apache.poi.hssf.usermodel.*;
@@ -1587,16 +1590,18 @@ public class cjyController {
                                      @RequestParam(value = "UserPassword") String UserPassword,
                                      @RequestParam(value = "UserIp") String UserIp,
                                      HttpServletRequest request)
-            throws UnknownHostException, SQLException {
-        String LOCALHOST;
-        String OSNAME = System.getProperty("os.name");  //操作系统名
-        String BROWN = request.getHeader("User-Agent").toLowerCase(); //浏览器
-        int ScreenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
-        int ScreenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-        String SS = ScreenWidth + "*" + ScreenHeight; //分辨率
-        // public static void getHost(String) throws UnknownHostException{
-//            try {
-        LOCALHOST = InetAddress.getLocalHost().toString().split("/")[0]; //主机名
+            throws  SQLException {
+
+        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+        Browser browser = userAgent.getBrowser();//浏览器
+        OperatingSystem os = userAgent.getOperatingSystem(); //操作系统
+
+
+
+        String OSNAME="";
+        String BROWN="";
+        String LOCALHOST="";
+        String SS="";
         Map<String, Object> result = cjyService.login(UserName, UserPassword, UserIp, OSNAME, BROWN, LOCALHOST, SS);
         return result;
     }

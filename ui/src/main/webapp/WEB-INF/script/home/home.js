@@ -100,6 +100,7 @@ Ext.onReady(function () {
     });
 
     OnPageLoad();
+    OnCookies();
 });
 
 
@@ -220,4 +221,29 @@ function Query() {
 function rendererTime(value, metaData) {
     //return Ext.Date.format(value, 'Y-m-d');
     return value.split('.0')[0];
+}
+
+function OnCookies() {
+    Ext.Ajax.request({
+        url: AppUrl + 'info/login_getUrl',
+        params: {
+            LoginName: Ext.util.Cookies.get('v_personcode')
+        }, success: function (respon) {
+            var resp = Ext.decode(respon.responseText);
+            if (resp.list.length>0) {
+                for(var i = 0; i < resp.list.length; i++)
+                {
+                    var iframe = document.createElement("iframe");
+                    iframe.style.display = "none";
+                    iframe.id = "iframe" + i;
+                    document.body.appendChild(iframe);
+                    document.getElementById("iframe" + i).src = resp.list[i].V_URL;
+
+                }
+            } else {
+                msgbox(resp.info);
+            }
+        }
+    });
+
 }

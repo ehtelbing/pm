@@ -1,5 +1,8 @@
 package org.building.pm.controller;
 
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.building.pm.service.InfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,22 +61,17 @@ public class InfoController {
     public Map<String, Object> login(@RequestParam(value = "UserName") String UserName,
                                      @RequestParam(value = "UserIp") String UserIp,
                                      HttpServletRequest request)
-            throws UnknownHostException, SQLException {
-        String LOCALHOST;
-        String OSNAME = System.getProperty("os.name");  //操作系统名
-        String BROWN = request.getHeader("User-Agent").toLowerCase(); //浏览器
-        int ScreenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
-        int ScreenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-        String SS = ScreenWidth + "*" + ScreenHeight; //分辨率
-        // public static void getHost(String) throws UnknownHostException{
-//            try {
-        LOCALHOST = InetAddress.getLocalHost().toString().split("/")[0]; //主机名
+            throws  SQLException {
 
-//            } catch (UnknownHostException e) {
-//                e.printStackTrace();
-//            }
+        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+        Browser browser = userAgent.getBrowser();//获取浏览器信息
+        OperatingSystem os = userAgent.getOperatingSystem(); //获取操作系统信息
 
-        // }
+        String OSNAME="";
+        String BROWN="";
+        String LOCALHOST="";
+        String SS="";
+
         Map<String, Object> result = infoService.login(UserName, UserIp, OSNAME, BROWN, LOCALHOST, SS);
         return result;
     }
