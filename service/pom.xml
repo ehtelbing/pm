@@ -127,8 +127,8 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>snapshots</id>
-            <url>http://192.168.2.119:8081/content/repositories/snapshots</url>
+            <id>nexus</id>
+            <url>http://maven.newangels.cn/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
