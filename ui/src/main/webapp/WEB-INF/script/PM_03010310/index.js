@@ -1272,6 +1272,12 @@ function getReturnJHXZ(retdata, type) {
                     var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
                     var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
                     var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
+
+                    // 2018-11-23 update data
+                    var V_EXPECT_AGE=resp.list[0].V_EXPECT_AGE;
+                    var V_MAIN_DEFECT=resp.list[0].V_MAIN_DEFECT==""?"":resp.list[0].V_MAIN_DEFECT;
+                    var V_REPAIR_PER=resp.list[0].V_REPAIR_PER;
+                    var V_SGWAY=resp.list[0].V_SGWAY==""?"":resp.list[0].V_SGWAY;
                     V_PLANCODE = resp.list[0].V_PLANCODE;
                     V_PLANTYPE = resp.list[0].V_PLANTYPE;
 
@@ -1282,7 +1288,11 @@ function getReturnJHXZ(retdata, type) {
                     Ext.getCmp("sbmc").select(V_EQUCODE);
                     Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
                     Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
-                    //Ext.getCmp('bz').setValue(V_BZ);  //备注
+                    Ext.getCmp('bz').setValue(V_BZ);  //备注
+                    Ext.getCmp('expectage').setValue(V_EXPECT_AGE);   //预计寿命
+                    Ext.getCmp('maindefect').setValue(V_MAIN_DEFECT);  //主要缺陷
+                    Ext.getCmp('repairper').setValue(V_REPAIR_PER);   //维修人数
+                    Ext.getCmp('sgfs').select(V_SGWAY);  //施工方式
 
 
                     Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间

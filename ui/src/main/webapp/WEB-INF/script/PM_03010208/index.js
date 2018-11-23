@@ -430,6 +430,7 @@ Ext.onReady(function () {
                                 margin: '5 0 0 5',
                                 labelWidth: 80,
                                 width: 280,
+                                minValue:0,
                                 value: 0
                             },{
                                 xtype: 'numberfield',
@@ -439,6 +440,7 @@ Ext.onReady(function () {
                                 margin: '5 0 0 5',
                                 labelWidth: 70,
                                 width: 255,
+                                minValue:0,
                                 value: 0
                             }
                         ]
