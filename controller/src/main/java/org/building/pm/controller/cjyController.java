@@ -1595,10 +1595,11 @@ public class cjyController {
         UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
         Browser browser = userAgent.getBrowser();//浏览器
         OperatingSystem os = userAgent.getOperatingSystem(); //操作系统
+        String OSNAME=request.getRemoteHost();//客户端主机名，若失败返回客户端ip
 
 
 
-        String OSNAME="";
+
         String BROWN="";
         String LOCALHOST="";
         String SS="";
