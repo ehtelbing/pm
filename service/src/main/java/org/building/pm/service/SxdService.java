@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by admin on 2017/10/31.
  */
 @Service
-public class sxdService {
+public class SxdService {
     private static final Logger logger = Logger.getLogger(InfoService.class.getName());
 
     @Value("#{configProperties['system.copyright']}")

@@ -11,14 +11,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by lxm on 2017/8/5.
  */
 @Service
-public class lxmService {
-    private static final Logger logger = Logger.getLogger(lxmService.class.getName());
+public class LxmService {
+    private static final Logger logger = Logger.getLogger(LxmService.class.getName());
 
     @Value("#{configProperties['system.copyright']}")
     private String copyright;

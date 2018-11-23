@@ -1,8 +1,7 @@
 package org.building.pm.controller;
 
-import oracle.jdbc.OracleTypes;
 import org.apache.poi.hssf.usermodel.*;
-import org.building.pm.service.sxdService;
+import org.building.pm.service.SxdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -18,8 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -34,9 +31,9 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/app/pm/sxd")
-public class sxdController {
+public class SxdController {
     @Autowired
-    private sxdService sxdService;
+    private SxdService sxdService;
 
     @RequestMapping(value = "/PRO_BASE_DEPT_VIEW", method = RequestMethod.POST)
     @ResponseBody

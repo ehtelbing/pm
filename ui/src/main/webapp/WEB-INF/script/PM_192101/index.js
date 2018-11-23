@@ -195,7 +195,7 @@ function query() {
 }
 
 function detail(a, value, metaData) {
-    return '<a href="javascript:ondetail(\'' + metaData.data.V_GX_CODE + '\',\'' + metaData.data.V_EQUCODE + '\')">详情</a>';
+    return '<a href="javascript:ondetail(\'' + metaData.data.V_MX_CODE + '\',\'' + metaData.data.V_EQUCODE + '\')">详情</a>';
 }
 
 function ondetail(a,b) {

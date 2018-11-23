@@ -311,7 +311,7 @@ Ext.onReady(function () {
         }),
          listeners: {
             load: function (store, records) {
-            Ext.getCmp('winsbtype4').select(store.first());
+            Ext.getCmp('winsbtype4').select(store.data.items[1]);//store.first());
          }
          }
     });
@@ -479,7 +479,13 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
-                queryMode: 'local'
+                queryMode: 'local',
+            listeners:{
+                select:function(){
+                    queryGrid1();
+                }
+            }
+
             }, {
                 id: 'zy',
                 xtype: 'combo',
