@@ -262,7 +262,7 @@
     <distributionManagement>
         <snapshotRepository>
             <id>nexus</id>
-            <url>http://maven.newangels.cn/content/repositories/snapshots</url>
+            <url>http://maven.newangels.cn/nexus/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
