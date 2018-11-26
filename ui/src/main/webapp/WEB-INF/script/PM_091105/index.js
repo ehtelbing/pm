@@ -126,7 +126,7 @@ function OnClickSaveButton() {
 												V_V_JXGX_NAME: resp.list[j].V_DESCRIPTION,
 												V_V_JXGX_NR: resp.list[j].V_DESCRIPTION,
 												V_V_GZZX_CODE: resp.list[j].V_WORK_CENTER_CODE,
-												V_V_JXMX_CODE: V_GX_CODE,
+												V_V_JXMX_CODE: V_JXMX_CODE,//V_GX_CODE,
 												V_V_ORDER: '',
 												V_V_PERNUM: resp.list[j].I_DURATION_NORMAL,
 												V_V_PERTIME: resp.list[j].I_WORK_ACTIVITY,
