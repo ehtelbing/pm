@@ -163,7 +163,7 @@ Ext
             autoLoad: false,
             fields: ['VCH_SPAREPART_CODE', 'VCH_SPAREPART_NAME',
                 'VCH_TYPE', 'VCH_UNIT', 'PRICE', 'ABLECOUNT',
-                'VCH_FROMNAME', 'ID'],
+                'VCH_FROMNAME', 'ID','INPUT_DATE'],
             proxy: {
                 type: 'ajax',
                 async: false,
@@ -252,6 +252,10 @@ Ext
                         dataIndex: 'ID',
                         align: 'center',
                         renderer: AddFloat
+                    },{
+                        text:'到货时间',
+                        dataIndex:'INPUT_DATE',
+                        align:'center'
                     }],
                     dockedItems: [{
                         xtype: 'panel',
@@ -699,6 +703,8 @@ Ext
             var unit = record.data.VCH_UNIT;
             var price = record.data.PRICE;
             var typeID = record.data.ID;
+
+            // var inputdate=record.data.INPUT_DATE;
 
             var moreParams = Ext.String.trim(acti) + '^'
                 + Ext.String.trim(matCode) + '^'

@@ -203,6 +203,8 @@ public class MMController {
                 M.put("VCH_FROMNAME", recordEle.elementTextTrim("vch_fromName"));
                 M.put("ID", recordEle.elementTextTrim("ID"));
 
+                M.put("INPUT_DATE",recordEle.elementTextTrim("input_date"));
+
                 list.add(M);
             }
 
