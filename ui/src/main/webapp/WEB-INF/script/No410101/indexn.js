@@ -133,8 +133,7 @@ function loadPageInfo() {
                             result.push('                    <td width="220" rowspan="6" align="center" class="border_r_b">');
 
                             result.push('      <table  border="0" align="center" cellpadding="0" cellspacing="0">');
-                            result.push(' <tr><td></td><td></td></tr><tr>');
-                            result.push('                        <td><b>检修类型：</b></td><td><b>');
+                            result.push('                        <tr><td><b>检修类型：</b></td><td><b>');
                             result.push(resp.list[0].V_ORDER_TYP_TXT);
                             result.push('                        &nbsp;</b></td>');
                             result.push('                        </tr><tr>');
@@ -146,9 +145,9 @@ function loadPageInfo() {
                             result.push('                        <td><b>检修单位：</b></td><td><b>');
                             result.push(resp.list[0].V_DEPTNAMEREPARIR);
                             result.push('                         &nbsp;</b></td></tr>');
-                            result.push(' <tr>');
-                            result.push(' <td style="vertical-align: top"><b>工单描述：</b></td><td style="text-align:left"><b>');
-                            result.push(descBill(resp.list[0].V_SHORT_TXT));
+                            result.push(' <tr rowspan="2">');
+                            result.push(' <td colspan="2" style="vertical-align: top;text-align:left;"><b>工单描述：</b><b>');
+                            result.push('&nbsp;&nbsp;&nbsp;'+descBill(resp.list[0].V_SHORT_TXT));
                             result.push('&nbsp;</b></td>');
                             result.push(' </tr>');
                             result.push(' </table>');
@@ -658,7 +657,7 @@ function NowTime() {
 function descBill(content){
     var temp = [];
     for(var i=0;i<content.length;i++){
-        if(i<30){
+        if(i<70){
             temp.push(content.charAt(i));
         }
     }
@@ -669,7 +668,7 @@ function descBill(content){
 function descBilldesc(content){
     var temp = [];
     for(var i=0;i<content.length;i++){
-        if(i<20){
+        if(i<38){
             temp.push(content.charAt(i));
         }
     }

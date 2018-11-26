@@ -6,7 +6,7 @@ $(function() {
     GetBillMatByOrder();
     loadMatList();
 });
-
+var rwxj_num=0;
 function loadPageInfo() {
     $.ajax({
         url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_GET',
@@ -19,6 +19,7 @@ function loadPageInfo() {
         traditional : true,
         success : function(resp) {
             if (resp.list != "" && resp.list != null) {
+
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
                 $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
@@ -98,6 +99,7 @@ function loadTaskGrid() {
         success : function(resp) {
             if (resp.list != "" && resp.list != null) {
                 $("#TtableT tbody").empty();
+                rwxj_num=resp.list.length;
                 if (resp.list.length < 3) {
                     $("#TtableTaskTemplate").tmpl(resp.list).appendTo(
                         "#TtableT tbody");
@@ -188,9 +190,12 @@ function GetBillMatByOrder(){
         }
     });
 }
-
 function print() {
     selectID = [];
     selectID.push($("#V_ORDERGUID").val());
-    window.open(AppUrl + "page/No410101/indexn.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+    if(rwxj_num.length==1){
+        window.open(AppUrl + "page/No410101/indexm.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+    }else{
+        window.open(AppUrl + "page/No410101/indexn.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+    }
 }

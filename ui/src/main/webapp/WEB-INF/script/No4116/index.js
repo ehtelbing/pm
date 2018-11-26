@@ -677,7 +677,12 @@ function OnButtonCreateBillClicked() {
         for(var i=0;i<selectedRecord.length;i++){
             selectID.push(selectedRecord[i].data.V_ORDERGUID);
         }
-        window.open(AppUrl + "page/No410101/indexn.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+        if(selectID.length!=1){
+            window.open(AppUrl + "page/No410101/indexn.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+        }else{
+            window.open(AppUrl + "page/No410101/indexm.html", selectID, "dialogHeight:700px;dialogWidth:1100px");
+        }
+
 
     }
 

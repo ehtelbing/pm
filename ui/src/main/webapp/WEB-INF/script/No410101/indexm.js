@@ -146,8 +146,8 @@ function loadPageInfo() {
                             result.push(resp.list[0].V_DEPTNAMEREPARIR);
                             result.push('                         &nbsp;</b></td></tr>');
                             result.push(' <tr rowspan="2">');
-                            result.push(' <td style="vertical-align: top"><b>工单描述：</b></td><td style="text-align:left"><b>');
-                            result.push(descBill(resp.list[0].V_SHORT_TXT));
+                            result.push(' <td colspan="2" style="vertical-align: top;text-align:left;"><b>工单描述：</b><b>');
+                            result.push('&nbsp;&nbsp;&nbsp;'+descBill(resp.list[0].V_SHORT_TXT));
                             result.push('&nbsp;</b></td>');
                             result.push(' </tr>');
                             result.push(' </table>');
