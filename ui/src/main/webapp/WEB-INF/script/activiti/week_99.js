@@ -597,7 +597,7 @@ function _init() {
 
                 Ext.getCmp('sgyy').setValue(data.list[0].V_THICKNESS=="0"?"":data.list[0].V_THICKNESS); //--施工原因
                 Ext.getCmp('hd').setValue(data.list[0].V_REASON==""?"0":data.list[0].V_REASON);  //厚度
-                if(data.list[0].V_EVERTIME!=""){
+                if(data.list[0].V_EVERTIME!=""&&data.list[0]!=undefined){
                     var V_EVERTIME=data.list[0].V_EVERTIME;
                     var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
                     Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
