@@ -301,18 +301,10 @@ Ext.onReady(function () {
                 icon: imgpath + '/search.png',
                 text: '查询',
                 width: 80,
-                handler:QueryGrid
-            }, {
-                xtype: 'hidden',
-                id: 'tabid'
-            }, {
-                xtype: 'button',
-                text: '生成工单',
-                width: 80,
-                listeners: {
-                    click: createWorkorder
-                }
-            }]
+                handler:QueryGrid,
+                margin:'5px 0px 5px 50px'
+            }
+        ]
     });
     var grid=Ext.create('Ext.grid.Panel',{
         region:'center',
@@ -385,7 +377,7 @@ Ext.onReady(function () {
             }
         });
     });
-    'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE'
+
     zyqstore.on("load", function () {
         if(url_deptcode!=undefined){
             Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
@@ -432,9 +424,9 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('zyStore').on('load', function(){
         Ext.data.StoreManager.lookup('zyStore').insert(0,{V_MAJOR_CODE:'全部',V_MAJOR_NAME:'%'});
         if(url_zy!=undefined){
-            Ext.getCmp('zy').select(url_zy); QueryGrid();
+            Ext.getCmp('zy').select(url_zy);
         }else{
-            Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));QueryGrid();
+            Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
 
         }
 
@@ -442,18 +434,18 @@ Ext.onReady(function () {
     // Ext.getCmp('zks').setValue(getWeekStartDate());
     // Ext.getCmp('zjs').setValue(getWeekEndDate());
     Ext.getCmp('year').on('select', function () {
-        // Ext.getCmp('zks').setValue(getWeekStartDate());
-        // Ext.getCmp('zjs').setValue(getWeekEndDate());
+    //     Ext.getCmp('zks').setValue(getWeekStartDate());
+    //     Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.getCmp('month').on('select', function () {
-        // Ext.getCmp('zks').setValue(getWeekStartDate());
-        // Ext.getCmp('zjs').setValue(getWeekEndDate());
+    //     Ext.getCmp('zks').setValue(getWeekStartDate());
+    //     Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.getCmp('week').on('select', function () {
-        // Ext.getCmp('zks').setValue(getWeekStartDate());
-        // Ext.getCmp('zjs').setValue(getWeekEndDate());
+    //     Ext.getCmp('zks').setValue(getWeekStartDate());
+    //     Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -515,89 +507,7 @@ function getWeeks(){
     return Math.ceil((d + 7 - w) / 7);//向上取整
 
 }
-function createWorkorder(){
-    var record=Ext.getCmp('grid').getSelectionModel().getSelection();
-    if(record.length==0){
-        alert('请至少选择一条记录');
-        return;
-    }
 
-    var V_GUIDList='';
-    for(var i=0;i<record.length;i++){
-        if(record[0].data.V_EQUTYPECODE!=record[i].data.V_EQUTYPECODE){
-            alert("请选择同一设备缺陷");
-            return;
-
-        }
-
-        if(i==0){
-            V_GUIDList=record[i].data.V_GUID;
-        }else{
-            V_GUIDList+=','+record[i].data.V_GUID;
-        }
-    }
-
-    Ext.Ajax.request({
-        url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDERBEF',
-        method: 'POST',
-        async : false,
-        params:{
-            V_V_GUID:V_GUIDList
-        },
-        success:function(resp){
-            var resp = Ext.decode(resp.responseText);
-            if(resp.v_info=="SUCCESS"){
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/PM_03_PLAN_PORJECT_WORKORDER',
-                    method: 'POST',
-                    async : false,
-                    params:{
-                        V_V_PROJECT_CODE:url_guid,
-                        V_V_WEEK_GUID:V_GUIDList,
-                        V_V_ORGCODE:Ext.getCmp('ck').getValue(),
-                        V_V_PERCODE:Ext.util.Cookies.get('v_personcode')
-                    },
-                    success:function(resp){
-                        var resp = Ext.decode(resp.responseText);
-                        var V_V_ORDERGUID=resp.list[0].V_ORDERGUID;
-                        var V_V_SOURCECODE=resp.V_V_SOURCECODE;
-                        var V_V_EQUTYPE=record[0].data.V_EQUTYPECODE;
-                        if(url_guid!=undefined){
-                            Ext.Ajax.request({
-                                url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                                type: 'post',
-                                async: false,
-                                params: {
-                                    V_V_IP: GetIP().ip,
-                                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                                    V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                                    V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                                    V_V_GUID: url_guid
-                                },
-                                success: function (response) {
-                                    var resp = Ext.decode(response.responseText);
-                                    if (resp.v_info == "success") {
-                                        window.open(AppUrl + "page/pm_dxgc_workOrder/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID+"&V_V_SOURCECODE="+V_V_SOURCECODE+'&V_V_EQUTYPE='+V_V_EQUTYPE,
-                                            "", "dialogHeight:700px;dialogWidth:1100px");
-                                    }
-                                }
-                            });
-                        }else{
-                            alert(resp.V_INFO);
-                        }
-                    }
-                });
-            }else{
-                alert(resp.v_info);
-            }
-
-        }
-    });
-
-
-
-
-}
 function Atleft(value, metaData) {
     metaData.style = 'text-align: left';
     return value;
