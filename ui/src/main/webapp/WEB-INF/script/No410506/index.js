@@ -230,7 +230,7 @@ Ext
                 id : 'detaile',
                 width : 100,
                 align : 'center',
-                tpl : '<a href="#">详细</a>'
+                tpl : '<a href="">详细</a>'
             } ]
         });
 
@@ -302,7 +302,11 @@ Ext
 
         Ext.ComponentManager.get('detaile').on("click",
             function(view, rowIndex, colIndex, item, e) {
+                var id = Ext.getCmp('grid').getStore().getAt(
+                    colIndex).data.V_MODELNUMBER;
 
+                window.open(AppUrl + "page/No410502/Index.html?x_modelnumber="+ id ,
+                    "", "dialogHeight:700px;dialogWidth:1100px");
             });
 
     });
