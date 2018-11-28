@@ -145,6 +145,8 @@ function OnKeypress(e) {
 
 function OnLogInClick() {
 
+    var browsertype=(navigator.userAgent.match(/(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i))==true?'移动端':'PC端';
+
     if (document.getElementById('username').value == '') {
         msgbox("用户名不能为空，请核对身份证信息重新登录！");
         return;
@@ -157,7 +159,8 @@ function OnLogInClick() {
                 UserName: document.getElementById('username').value,
                 UserPassword: document.getElementById('password').value,
                 UserIp: GetIP().ip,
-                SS:window.screen.height+'*'+window.screen.width
+                SS:window.screen.height+'*'+window.screen.width,
+                V_COMPUTER_TYPE:browsertype
 
             },
             success: function (response) {

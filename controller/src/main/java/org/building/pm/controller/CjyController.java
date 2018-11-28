@@ -1588,6 +1588,7 @@ public class CjyController {
                                      @RequestParam(value = "UserPassword") String UserPassword,
                                      @RequestParam(value = "UserIp") String UserIp,
                                      @RequestParam(value="SS") String SS,   //分辨率
+                                     @RequestParam(value="V_COMPUTER_TYPE") String V_COMPUTER_TYPE, // 登入类型
                                      HttpServletRequest request)
             throws  SQLException {
 
@@ -1599,7 +1600,7 @@ public class CjyController {
         String BROWN=browser.toString();
         String OSNAME=os.toString();
        // String SS="";
-        Map<String, Object> result = cjyService.login(UserName, UserPassword, UserIp, OSNAME, BROWN, LOCALHOST, SS);
+        Map<String, Object> result = cjyService.login(UserName, UserPassword, UserIp, OSNAME, BROWN, LOCALHOST, SS,V_COMPUTER_TYPE);
         return result;
     }
 
