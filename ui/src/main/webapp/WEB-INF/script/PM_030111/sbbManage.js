@@ -182,7 +182,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'lxm/PM_03_PLAN_WEEK_SEL',
+            url: AppUrl + 'dxfile/PM_03_PLAN_WEEK_SEL2',
             actionMethods: {
                 read: 'POST'
             },

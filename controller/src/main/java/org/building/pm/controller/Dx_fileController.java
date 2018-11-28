@@ -362,7 +362,7 @@ public class Dx_fileController {
     }
 
     //----周计划上报设备部
-    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_SEND2", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_SEND2", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_WEEK_SEND2(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
@@ -381,7 +381,121 @@ public class Dx_fileController {
         return test;
     }
 
+    // plan report to find next person  week/month
+    @RequestMapping(value = "PM_ACTIVITI_PROCESS_PER_SELSBB", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_ACTIVITI_PROCESS_PER_SELSBB(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                           @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
+                                                           @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                                                           @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
+                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                                                           @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
 
+        HashMap data = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        String ret = (String) data.get("RET");
+        result.put("RET", ret);
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+    //  plan report to sbb select date
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_VIEWSBB", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_VIEWSBB(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                                        @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                                        @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+                                                        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                        @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                                                        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                        @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                                        @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                                                        @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+
+        HashMap data = dx_fileService.PRO_PM_03_PLAN_WEEK_VIEWSBB(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
+                V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    // 上报设备部周计划数据添加
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_SENDSBB", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_WEEK_SENDSBB(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_UPSBBPER") String V_UPSBBPER,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = dx_fileService.PRO_PM_03_PLAN_WEEK_SENDSBB(V_V_GUID, V_UPSBBPER);
+        test.put("list", result);
+        return test;
+    }
+
+    // SBB办理绑定周计划数据
+    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_GET2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_GET2(
+            @RequestParam(value = "V_V_WEEKPLAN_GUID") String V_V_WEEKPLAN_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = dx_fileService.PRO_PM_03_PLAN_WEEK_GET2(V_V_WEEKPLAN_GUID);
+
+        List<Map<String, Object>> pm_03list = (List) data.get("list");
+
+        result.put("list", pm_03list);
+        result.put("success", true);
+        return result;
+    }
+
+    // 设备部，查询审批中和审批完成的页面
+    @RequestMapping(value = "PM_03_PLAN_WEEK_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_WEEK_SEL2(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+            @RequestParam(value = "V_V_STATE") String V_V_STATE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = dx_fileService.PM_03_PLAN_WEEK_SEL2(V_V_YEAR, V_V_MONTH, V_V_WEEK,V_V_ORGCODE,V_V_DEPTCODE,
+                V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_FLOWTYPE, V_V_STATE, V_V_PAGE, V_V_PAGESIZE);
+
+        List<Map<String, Object>> rlist = (List) data.get("list");
+        String v_info = (String) data.get("total");
+        result.put("list", rlist);
+        result.put("total", v_info);
+        result.put("success", true);
+        return result;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
@@ -433,4 +547,5 @@ public class Dx_fileController {
         }
 
     }
+
 }

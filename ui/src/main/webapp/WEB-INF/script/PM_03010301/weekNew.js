@@ -47,23 +47,23 @@ Ext.onReady(function () {
             }
         }
     });
-    var ztstore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
-        storeId: 'ztstore',
-        fields: ['V_BASECODE', 'V_BASENAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_03/PM_03_PLAN_STATE_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
+    // var ztstore = Ext.create('Ext.data.Store', {
+    //     autoLoad: false,
+    //     storeId: 'ztstore',
+    //     fields: ['V_BASECODE', 'V_BASENAME'],
+    //     proxy: {
+    //         type: 'ajax',
+    //         async: false,
+    //         url: AppUrl + 'PM_03/PM_03_PLAN_STATE_SEL',
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list'
+    //         }
+    //     }
+    // });
 
     var zyqstore = Ext.create("Ext.data.Store", {
         autoLoad: false,
@@ -143,7 +143,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+            url: AppUrl + 'dxfile/PM_ACTIVITI_PROCESS_PER_SELSBB',
             actionMethods: {
                 read: 'POST'
             },
@@ -201,11 +201,12 @@ Ext.onReady(function () {
             'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
             'V_MAIN_DEFECT',
             'V_EXPECT_AGE',
-            'V_REPAIR_PER'],
+            'V_REPAIR_PER',
+        'V_SBB_GUID'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_VIEW',
+            url: AppUrl + 'dxfile/PRO_PM_03_PLAN_WEEK_VIEWSBB',
             actionMethods: {
                 read: 'POST'
             },
@@ -308,20 +309,22 @@ Ext.onReady(function () {
                 valueField: 'V_PERSONCODE',
                 store: nextSprStore,
                 queryMode: 'local'
-            },{
-                xtype: 'combo',
-                id: 'zt',
-                fieldLabel: '状态',
-                editable: false,
-                margin: '5 0 5 5',
-                labelWidth: 80,
-                width: 230,
-                value: '',
-                displayField: 'V_BASENAME',
-                valueField: 'V_BASECODE',
-                store: ztstore,
-                queryMode: 'local'
-            }, {
+            },
+            // {
+            //     xtype: 'combo',
+            //     id: 'zt',
+            //     fieldLabel: '状态',
+            //     editable: false,
+            //     margin: '5 0 5 5',
+            //     labelWidth: 80,
+            //     width: 230,
+            //     value: '',
+            //     displayField: 'V_BASENAME',
+            //     valueField: 'V_BASECODE',
+            //     store: ztstore,
+            //     queryMode: 'local'
+            // },
+            {
                 id: 'seltext',
                 xtype: 'textfield',
                 width: 158,
@@ -335,7 +338,9 @@ Ext.onReady(function () {
                 width: 80,
                 handler:QueryGrid
             }, {
-                xtype: 'hidden',
+                xtype: 'label',
+                hidden:true,
+                width:90,
                 id: 'tabid'
             }, {
                 xtype: 'button',
@@ -376,7 +381,8 @@ Ext.onReady(function () {
             { text: '检修负责人',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft },
             { text: '联系电话',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime },
             { text: '施工准备是否已落实',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft },
-            { text: '情况说明',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime }
+            { text: '情况说明',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime },
+            { text: '新guid',width:200,dataIndex:'V_SBB_GUID', align: 'center',hidden:true,renderer:rendererTime }
         ],
         bbar: [{
             id: 'page',
@@ -517,25 +523,25 @@ Ext.onReady(function () {
         Ext.data.StoreManager.lookup('zyStore').insert(0,{V_MAJOR_CODE:'全部',V_MAJOR_NAME:'%'});
         if(url_zy!=undefined){
             Ext.getCmp('zy').select(url_zy);
-            Ext.data.StoreManager.lookup('ztstore').load({
-                params: {}
-            });
+            // Ext.data.StoreManager.lookup('ztstore').load({
+            //     params: {}
+            // });
         }else{
             Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
-            Ext.data.StoreManager.lookup('ztstore').load({
-                params: {}
-            });
+            // Ext.data.StoreManager.lookup('ztstore').load({
+            //     params: {}
+            // });
         }
         QueryGrid();
     });
-    Ext.data.StoreManager.lookup('ztstore').on('load', function () {
-        Ext.data.StoreManager.lookup('ztstore').insert(0, {V_BASENAME: '全部', V_BASECODE: '%'});
-        Ext.getCmp("zt").select(Ext.data.StoreManager.lookup('ztstore').getAt(0));
-        QueryGrid();
-    });
-    Ext.getCmp("zt").on('select', function () {
-        QueryGrid();
-    });
+    // Ext.data.StoreManager.lookup('ztstore').on('load', function () {
+    //     Ext.data.StoreManager.lookup('ztstore').insert(0, {V_BASENAME: '全部', V_BASECODE: '%'});
+    //     Ext.getCmp("zt").select(Ext.data.StoreManager.lookup('ztstore').getAt(0));
+    //     QueryGrid();
+    // });
+    // Ext.getCmp("zt").on('select', function () {
+    //     QueryGrid();
+    // });
     // Ext.getCmp('zks').setValue(getWeekStartDate());
     // Ext.getCmp('zjs').setValue(getWeekEndDate());
     Ext.getCmp('year').on('select', function () {
@@ -565,7 +571,7 @@ Ext.onReady(function () {
             V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
             V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
             V_V_CONTENT: Ext.getCmp('seltext').getValue()==""?"%":Ext.getCmp('seltext').getValue(),
-            V_V_STATE: Ext.getCmp('zt').getValue(),
+            V_V_STATE: "30",  //Ext.getCmp('zt').getValue(),设置查询查询状态默认为'审批完成'
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -632,7 +638,7 @@ function QueryGrid(){
                 V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
                 V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
                 V_V_CONTENT: Ext.getCmp('seltext').getValue()==""?"%":Ext.getCmp('seltext').getValue(),
-                V_V_STATE: Ext.getCmp('zt').getValue(),
+                V_V_STATE: "30",//Ext.getCmp('zt').getValue(),
                 V_V_PAGE: Ext.getCmp('page').store.currentPage,
                 V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
             }
@@ -754,12 +760,14 @@ function OnButtonUp() {
     var i_err = 0;
     for (var i = 0; i < records.length; i++) {
     //    if (Ext.Date.format(new Date(), 'Y-m-d H:i:s') >= Ext.getCmp("starttime").getValue() && Ext.Date.format(new Date(), 'Y-m-d H:i:s') <= Ext.getCmp("endtime").getValue()) {
+
+
             Ext.Ajax.request({
                 url: AppUrl + 'dxfile/PRO_PM_03_PLAN_WEEK_SEND2',
                 method: 'POST',
                 async: false,
                 params: {
-                    V_V_GUID: records[i].data.V_GUID,
+                    V_V_GUID: records[i].data.V_SBB_GUID,
                     V_V_ORGCODE: records[i].data.V_ORGCODE,
                     V_V_DEPTCODE: records[i].data.V_DEPTCODE,
                     V_V_FLOWCODE: '上报',
@@ -768,6 +776,7 @@ function OnButtonUp() {
                 },
                 success: function (resp) {
                     var resp = Ext.decode(resp.responseText).list[0];
+                    var new_businssflowkey=(parseInt(records[i].get('V_GUID'))+1).toString();
 
                     if (resp.V_INFO == '成功') {
                         Ext.Ajax.request({
@@ -776,9 +785,9 @@ function OnButtonUp() {
                             method: 'post',
                             params: {
                                 parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan01"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_SBB_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan01"],
                                 processKey: processKey,
-                                businessKey: records[i].get('V_GUID'),
+                                businessKey: records[i].get('V_SBB_GUID'), // records[i].get('V_GUID'),
                                 V_STEPCODE: 'Start',
                                 V_STEPNAME: V_STEPNAME,
                                 V_IDEA: '请审批！',
