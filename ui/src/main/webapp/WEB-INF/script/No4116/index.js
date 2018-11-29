@@ -555,7 +555,7 @@ function goToFlow(V_ORDERGUID){
         }
     });
     var owidth = window.screen.availWidth;
-    var oheight = window.screen.availHeight - 50;03010219
+    var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='+ InstanceId , '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
