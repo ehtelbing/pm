@@ -557,6 +557,17 @@ public class Dx_fileController {
         return result;
     }
 
+    @RequestMapping(value = "INSERT_RESTARTPROC", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> INSERT_RESTARTPROC() throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        Map<String, Object> ret = dx_fileService.INSERT_RESTARTPROC();
+
+        result.put("list", ret);
+        result.put("success", true);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

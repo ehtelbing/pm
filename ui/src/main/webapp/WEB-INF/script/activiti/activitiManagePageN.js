@@ -186,11 +186,17 @@ Ext.onReady(function () {
             //     arr = Ext.getCmp('flowcode').getValue().split(";");
             //     size = arr.length;
             // }
+        },{
+            xtype: 'button',
+            id: 'btn001',
+            text: '执行填报数据',
+            style: 'margin: 7px 3px 2px 15px',
+            handler: _exedata
         },
             {
                 xtype: 'button',
                 id: 'btn',
-                text: '按钮',
+                text: '重新发起流程',
                 style: 'margin: 7px 3px 2px 15px',
                 handler: reStartPbtn
             },{xtype:'label',
@@ -402,4 +408,20 @@ function reStartPbtn() {
             });
         }
     }
+}
+function _exedata(){
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/INSERT_RESTARTPROC',
+        type: 'ajax',
+        method: 'POST',
+        params: {  },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.RET == 'Success') {
+                alert("执行成功");
+            } else {
+                alert("填报失败");
+            }
+        }
+    });
 }

@@ -958,5 +958,28 @@ public class Dx_fileService {
       logger.info("end PRO_PM_03_PLAN_MONTH_GET2");
       return result;
   }
+  // 从新发起工单数据填报按钮
+    public HashMap INSERT_RESTARTPROC() throws SQLException{
+        logger.info("begin INSERT_RESTARTPROC");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call INSERT_RESTARTPROC" + "(:RET)}");
 
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end INSERT_RESTARTPROC");
+        return result;
+    }
 }
