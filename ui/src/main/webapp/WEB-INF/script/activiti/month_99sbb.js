@@ -31,7 +31,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+            url: AppUrl +  'dxfile/PM_ACTIVITI_PROCESS_PER_SELSBB',
             actionMethods: {
                 read: 'POST'
             },
@@ -369,7 +369,7 @@ function _selectNextPer() {
 
 function _init() {
     Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_GET',
+        url: AppUrl + 'dxfile/PRO_PM_03_PLAN_MONTH_GET2',
         type: 'ajax',
         method: 'POST',
         params: {

@@ -448,7 +448,7 @@ public class Dx_fileController {
     }
 
     // SBB办理绑定周计划数据
-    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_GET2", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_GET2", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_WEEK_GET2(
             @RequestParam(value = "V_V_WEEKPLAN_GUID") String V_V_WEEKPLAN_GUID,
@@ -496,6 +496,68 @@ public class Dx_fileController {
         result.put("success", true);
         return result;
     }
+    // month report to sbb data
+    @RequestMapping(value = "PM_03_MONTH_PLAN_BYPER_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_MONTH_PLAN_BYPER_SEL2(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+            @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_MONTH_PLAN_BYPER_SEL2(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+    // month report to sbb data view   PM_03_MONTH_PLAN_SEL2
+    @RequestMapping(value = "PM_03_MONTH_PLAN_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_MONTH_PLAN_SEL2(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+            @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_MONTH_PLAN_SEL2(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+    //  SBB 月计划办理获取数据
+    @RequestMapping(value = "PRO_PM_03_PLAN_MONTH_GET2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_MONTH_GET2(
+            @RequestParam(value = "V_V_MONTHPLAN_GUID") String V_V_MONTHPLAN_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = dx_fileService.PRO_PM_03_PLAN_MONTH_GET2(V_V_MONTHPLAN_GUID);
+
+        List<Map<String, Object>> pm_03list = (List) data.get("list");
+
+        result.put("list", pm_03list);
+        result.put("success", true);
+        return result;
+    }
+
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
