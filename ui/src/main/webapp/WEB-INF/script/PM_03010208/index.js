@@ -445,7 +445,6 @@ Ext.onReady(function () {
                             }
                         ]
                     },
-
                     {
                         layout: 'hbox',
                         defaults: {labelAlign: 'right'},
@@ -533,6 +532,7 @@ Ext.onReady(function () {
                         labelAlign: 'right',
                         margin: '5 0 0 5',
                         labelWidth: 80,
+                        allowBlank:false,
                         width: 540,
                         value: ''
                     },
@@ -1145,6 +1145,10 @@ function getReturnMXXZ(retdata) {
 function OnButtonSaveClick() {
     if( Ext.getCmp('sblx').getValue()=="%"&&Ext.getCmp('sbmc').getValue()=="%"){
         Ext.Msg.alert('消息','设备类型和设备名称不可以为全部，请选择相关名称');
+        return;
+    }
+    if(Ext.getCmp('jxnr').getValue()==""){
+        Ext.Msg.alert('消息','检修内容不可为空，请输入后保存');
         return;
     }
     //计划停工时间
