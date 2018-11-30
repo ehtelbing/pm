@@ -2,6 +2,7 @@ package org.building.pm.controller;
 
 import javafx.application.Application;
 import org.activiti.bpmn.converter.CallActivityXMLConverter;
+import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.Dx_fileService;
 import org.building.pm.webpublic.MasageClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -568,6 +571,253 @@ public class Dx_fileController {
         result.put("success", true);
         return result;
     }
+
+
+    /*
+    CREATE BY HRB 2018/11/30
+     */
+    // 备件使用情况查询
+    @RequestMapping(value = "PRO_SPARE_SELECT2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_SPARE_SELECT2(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                                 @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                                 @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                 @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                                 @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                                 @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                                 @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = dx_fileService.PRO_SPARE_SELECT2(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE,V_EQUTYPE_CODE,V_EQU_CODE,V_V_SPARE);
+        return setPage(request, response, data);
+    }
+
+    // 备件使用情况导出
+    @RequestMapping(value = "/SPARESEL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void SPARESEL_EXCEL(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                  @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                  @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                  @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                  @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                  @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws SQLException {
+
+        String V_V_DEPTNEXTCODE2=V_V_DEPTNEXTCODE.equals("all")?"%":V_V_DEPTNEXTCODE;
+        String V_EQUTYPE_CODE2=V_EQUTYPE_CODE.equals("all")?"%":V_EQUTYPE_CODE;
+        String V_EQU_CODE2=V_EQU_CODE.equals("all")?"%":V_EQU_CODE;
+        String V_V_SPARE2=V_V_SPARE.equals("all")?"%":V_V_SPARE;
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.PRO_SPARE_SELECT2(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE2,V_EQUTYPE_CODE2,V_EQU_CODE2,V_V_SPARE2);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for(int i=0;i<=1;i++){
+            sheet.setColumnWidth(i,3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("物料编码");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("物料名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("规格型号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("计量单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("物料更换时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("查看相关工单");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 1).setCellValue(map.get("V_MATERIALCODE") == null ? "" : map.get("V_MATERIALCODE").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_MATERIALNAME") == null ? "" : map.get("V_MATERIALNAME").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_SPEC") == null ? "" : map.get("V_SPEC").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_UNIT") == null ? "" : map.get("V_UNIT").toString());
+                row.createCell((short) 5).setCellValue(map.get("F_NUMBER") == null ? "" : map.get("F_NUMBER").toString());
+                row.createCell((short) 6).setCellValue(map.get("D_FACT_FINISH_DATE") == null ? "" : map.get("D_FACT_FINISH_DATE").toString());
+                row.createCell((short) 7).setCellValue(map.get("V_XGGD") == null ? "" : map.get("V_XGGD").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("设备物料消耗Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 备件使用情况工单明细查询
+    @RequestMapping(value = "PRO_SPARE_SELECT_WORKORDER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_SPARE_SELECT_WORKORDER(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                                                 @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                                 @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                 @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                                 @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                                 @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                                 @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
+                                                 @RequestParam(value = "V_V_SAPRECODE") String V_V_SAPRECODE,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = dx_fileService.PRO_SPARE_SELECT_WORKORDER(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE,V_EQUTYPE_CODE,V_EQU_CODE,V_V_SPARE,V_V_SAPRECODE);
+        return setPage(request, response, data);
+    }
+
+
+    // 备件使用情况工单明细导出
+    @RequestMapping(value = "/SPARESELWORK_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void SPARESELWORK_EXCEL(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+                               @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                               @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                               @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                               @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                               @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
+                               @RequestParam(value = "V_V_SAPRECODE") String V_V_SAPRECODE,
+                               HttpServletRequest request,
+                               HttpServletResponse response)
+            throws SQLException {
+
+        String V_V_DEPTNEXTCODE2=V_V_DEPTNEXTCODE.equals("all")?"%":V_V_DEPTNEXTCODE;
+        String V_EQUTYPE_CODE2=V_EQUTYPE_CODE.equals("all")?"%":V_EQUTYPE_CODE;
+        String V_EQU_CODE2=V_EQU_CODE.equals("all")?"%":V_EQU_CODE;
+        String V_V_SPARE2=V_V_SPARE.equals("K")?"%":V_V_SPARE;
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.PRO_SPARE_SELECT_WORKORDER(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE2,V_EQUTYPE_CODE2,V_EQU_CODE2,V_V_SPARE2,V_V_SAPRECODE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for(int i=0;i<=1;i++){
+            sheet.setColumnWidth(i,3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 1);
+        cell.setCellValue("工单号");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 2);
+        cell.setCellValue("工单描述");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 3);
+        cell.setCellValue("设备位置");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 4);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 5);
+        cell.setCellValue("备件消耗");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 6);
+        cell.setCellValue("委托单位");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 7);
+        cell.setCellValue("委托人");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 8);
+        cell.setCellValue("委托时间");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 9);
+        cell.setCellValue("实际结束时间");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 10);
+        cell.setCellValue("检修单位");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 11);
+        cell.setCellValue("工单类型");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 12);
+        cell.setCellValue("工单状态");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_SHORT_TXT") == null ? "" : map.get("V_SHORT_TXT").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_EQUSITENAME") == null ? "" : map.get("V_EQUSITENAME").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_EQUIP_NAME") == null ? "" : map.get("V_EQUIP_NAME").toString());
+                row.createCell((short) 5).setCellValue(map.get("V_SPARE") == null ? "" : map.get("V_SPARE").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 7).setCellValue(map.get("V_PERSONNAME") == null ? "" : map.get("V_PERSONNAME").toString());
+                row.createCell((short) 8).setCellValue(map.get("D_ENTER_DATE") == null ? "" : map.get("D_ENTER_DATE").toString());
+                row.createCell((short) 9).setCellValue(map.get("D_FACT_FINISH_DATE") == null ? "" : map.get("D_FACT_FINISH_DATE").toString());
+                row.createCell((short) 10).setCellValue(map.get("V_DEPTNAMEREPARIR") == null ? "" : map.get("V_DEPTNAMEREPARIR").toString());
+                row.createCell((short) 11).setCellValue(map.get("V_ORDER_TYP_TXT") == null ? "" : map.get("V_ORDER_TYP_TXT").toString());
+                row.createCell((short) 12).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("备件使用情况工单明细表Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

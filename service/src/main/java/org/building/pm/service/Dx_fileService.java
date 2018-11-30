@@ -982,4 +982,71 @@ public class Dx_fileService {
         logger.info("end INSERT_RESTARTPROC");
         return result;
     }
+
+    // 备件使用情况查询
+    public HashMap PRO_SPARE_SELECT2(String V_D_ENTER_DATE_B,String V_D_ENTER_DATE_E,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_EQUTYPE_CODE,String V_EQU_CODE,String V_V_SPARE) throws SQLException {
+        logger.info("begin PRO_SPARE_SELECT2");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SPARE_SELECT2(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE,:V_EQUTYPE_CODE,:V_EQU_CODE,:V_V_SPARE,:V_TOPNAME,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B", V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E", V_D_ENTER_DATE_E);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_EQUTYPE_CODE", V_EQUTYPE_CODE);
+            cstmt.setString("V_EQU_CODE", V_EQU_CODE);
+            cstmt.setString("V_V_SPARE", V_V_SPARE);
+            cstmt.registerOutParameter("V_TOPNAME",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET",cstmt.getString("V_TOPNAME"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_SPARE_SELECT2");
+        return result;
+    }
+
+    // 备件使用情况工单明细查询
+    public HashMap PRO_SPARE_SELECT_WORKORDER(String V_D_ENTER_DATE_B,String V_D_ENTER_DATE_E,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_EQUTYPE_CODE,String V_EQU_CODE,String V_V_SPARE,String V_V_SAPRECODE) throws SQLException {
+        logger.info("begin PRO_SPARE_SELECT_WORKORDER");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SPARE_SELECT_WORKORDER(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE,:V_EQUTYPE_CODE,:V_EQU_CODE,:V_V_SPARE,:V_V_SAPRECODE,:V_TOPNAME,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B", V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E", V_D_ENTER_DATE_E);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_EQUTYPE_CODE", V_EQUTYPE_CODE);
+            cstmt.setString("V_EQU_CODE", V_EQU_CODE);
+            cstmt.setString("V_V_SPARE", V_V_SPARE);
+            cstmt.setString("V_V_SAPRECODE", V_V_SAPRECODE);
+            cstmt.registerOutParameter("V_TOPNAME",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET",cstmt.getString("V_TOPNAME"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_SPARE_SELECT_WORKORDER");
+        return result;
+    }
 }
