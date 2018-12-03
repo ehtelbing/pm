@@ -243,12 +243,12 @@ function OnClickSaveButton() {
 																	params: {
 																		V_V_JXGX_CODE:resp.list[j].V_GUID,
 																		V_V_KFNAME:'',
-																		V_V_WLCODE:respgz.list[i].V_MATERIALCODE,
-																		V_V_WLSM:respgz.list[i].V_MATERIALNAME,
+																		V_V_WLCODE:respwl.list[i].V_MATERIALCODE,
+																		V_V_WLSM:respwl.list[i].V_MATERIALNAME,
 																		V_V_GGXH: '',
 																		V_V_JLDW: '',
 																		V_V_PRICE:'',
-																		V_V_NUM:respgz.list[i].I_PLANAMOUNT
+																		V_V_NUM:respwl.list[i].I_PLANAMOUNT
 																	},
 																	success: function (response) {
 																	}
