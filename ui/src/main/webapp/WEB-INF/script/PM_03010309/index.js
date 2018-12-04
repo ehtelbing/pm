@@ -237,7 +237,7 @@ var gridStore = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_VIEW',
+        url: AppUrl + 'dxfile/PRO_PM_03_PLAN_WEEK_VIEW2',
         actionMethods: {
             read: 'POST'
         },
@@ -263,6 +263,8 @@ function query() {
             V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
             V_V_CONTENT: Ext.getCmp('content').getValue(),
             V_V_STATE: Ext.getCmp('state').getValue(),
+            V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTTYPE:'主体作业区',
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -629,6 +631,8 @@ Ext.onReady(function () {
             V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
             V_V_CONTENT: Ext.getCmp('content').getValue(),
             V_V_STATE: Ext.getCmp('state').getValue(),
+            V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTTYPE:'主体作业区',
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }

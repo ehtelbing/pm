@@ -707,11 +707,12 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
             @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
             @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
+            @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_03Service.PM_03_MONTH_PLAN_SEL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        Map result = pm_03Service.PM_03_MONTH_PLAN_SEL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE,V_V_DEPTTYPE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 

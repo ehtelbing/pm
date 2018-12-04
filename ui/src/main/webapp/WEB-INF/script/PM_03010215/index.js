@@ -652,6 +652,7 @@ Ext.onReady(function () {
             V_V_CONTENT: Ext.getCmp('content').getValue(),
             V_V_STATECODE: Ext.getCmp('state').getValue(),
             V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTTYPE:'主体作业区',
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
 

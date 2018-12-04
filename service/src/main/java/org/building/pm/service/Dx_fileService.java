@@ -1127,4 +1127,48 @@ public class Dx_fileService {
         logger.info("end PRO_YEAR_PROJECT_WORKORDER_SEL");
         return result;
     }
+    // 周计划按人员查询作业区全部
+    public HashMap PRO_PM_03_PLAN_WEEK_VIEW2(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,String V_V_ORGCODE,String V_V_DEPTCODE,
+                                            String V_V_ZY,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_CONTENT,String V_V_STATE,
+                                            String V_V_PERSONCODE,String V_V_DEPTTYPE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_WEEK_VIEW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_VIEW2(:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                    ":V_V_ZY,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_CONTENT,:V_V_STATE,:V_V_PERSONCODE,:V_V_DEPTTYPE,:V_V_PAGE,:V_V_PAGESIZE,:V_SUMNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_WEEK", V_V_WEEK);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_ZY", V_V_ZY);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setString("V_V_STATE", V_V_STATE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_SUMNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total",cstmt.getString("V_SUMNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_VIEW2");
+        return result;
+    }
 }
