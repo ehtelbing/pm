@@ -7,10 +7,7 @@ import org.building.pm.service.Dx_fileService;
 import org.building.pm.webpublic.MasageClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.ExtensionInstallationException;
 
@@ -388,15 +385,15 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_ACTIVITI_PROCESS_PER_SELSBB", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_ACTIVITI_PROCESS_PER_SELSBB(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                           @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
-                                                           @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
-                                                           @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
-                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-                                                           @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
-                                                           @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
+                                                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                              @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
+                                                              @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                                                              @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
+                                                              @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                              @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                                                              @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
+                                                              HttpServletRequest request,
+                                                              HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);
@@ -409,23 +406,24 @@ public class Dx_fileController {
         result.put("success", true);
         return result;
     }
+
     //  plan report to sbb select date
     @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_VIEWSBB", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_WEEK_VIEWSBB(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
-                                                        @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
-                                                        @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
-                                                        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                        @RequestParam(value = "V_V_ZY") String V_V_ZY,
-                                                        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                                        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                        @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-                                                        @RequestParam(value = "V_V_STATE") String V_V_STATE,
-                                                        @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) throws Exception {
+                                                           @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                                           @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+                                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                           @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                                                           @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                           @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                                           @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
 
@@ -489,7 +487,7 @@ public class Dx_fileController {
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = dx_fileService.PM_03_PLAN_WEEK_SEL2(V_V_YEAR, V_V_MONTH, V_V_WEEK,V_V_ORGCODE,V_V_DEPTCODE,
+        HashMap data = dx_fileService.PM_03_PLAN_WEEK_SEL2(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
                 V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_FLOWTYPE, V_V_STATE, V_V_PAGE, V_V_PAGESIZE);
 
         List<Map<String, Object>> rlist = (List) data.get("list");
@@ -499,6 +497,7 @@ public class Dx_fileController {
         result.put("success", true);
         return result;
     }
+
     // month report to sbb data
     @RequestMapping(value = "PM_03_MONTH_PLAN_BYPER_SEL2", method = RequestMethod.POST)
     @ResponseBody
@@ -542,6 +541,7 @@ public class Dx_fileController {
         Map result = dx_fileService.PM_03_MONTH_PLAN_SEL2(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
+
     //  SBB 月计划办理获取数据
     @RequestMapping(value = "PRO_PM_03_PLAN_MONTH_GET2", method = RequestMethod.POST)
     @ResponseBody
@@ -586,10 +586,10 @@ public class Dx_fileController {
                                                  @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
                                                  @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
                                                  @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
-                                                   HttpServletRequest request,
-                                                   HttpServletResponse response) throws Exception {
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = dx_fileService.PRO_SPARE_SELECT2(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE,V_EQUTYPE_CODE,V_EQU_CODE,V_V_SPARE);
+        HashMap data = dx_fileService.PRO_SPARE_SELECT2(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_EQUTYPE_CODE, V_EQU_CODE, V_V_SPARE);
         return setPage(request, response, data);
     }
 
@@ -597,28 +597,28 @@ public class Dx_fileController {
     @RequestMapping(value = "/SPARESEL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void SPARESEL_EXCEL(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
-                                  @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
-                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                  @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
-                                  @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
-                                  @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
-                                  @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response)
+                               @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                               @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                               @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                               @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                               @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
+                               HttpServletRequest request,
+                               HttpServletResponse response)
             throws SQLException {
 
-        String V_V_DEPTNEXTCODE2=V_V_DEPTNEXTCODE.equals("all")?"%":V_V_DEPTNEXTCODE;
-        String V_EQUTYPE_CODE2=V_EQUTYPE_CODE.equals("all")?"%":V_EQUTYPE_CODE;
-        String V_EQU_CODE2=V_EQU_CODE.equals("all")?"%":V_EQU_CODE;
-        String V_V_SPARE2=V_V_SPARE.equals("all")?"%":V_V_SPARE;
+        String V_V_DEPTNEXTCODE2 = V_V_DEPTNEXTCODE.equals("all") ? "%" : V_V_DEPTNEXTCODE;
+        String V_EQUTYPE_CODE2 = V_EQUTYPE_CODE.equals("all") ? "%" : V_EQUTYPE_CODE;
+        String V_EQU_CODE2 = V_EQU_CODE.equals("all") ? "%" : V_EQU_CODE;
+        String V_V_SPARE2 = V_V_SPARE.equals("all") ? "%" : V_V_SPARE;
         List list = new ArrayList();
 
-        Map<String, Object> data = dx_fileService.PRO_SPARE_SELECT2(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE2,V_EQUTYPE_CODE2,V_EQU_CODE2,V_V_SPARE2);
+        Map<String, Object> data = dx_fileService.PRO_SPARE_SELECT2(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_DEPTCODE, V_V_DEPTNEXTCODE2, V_EQUTYPE_CODE2, V_EQU_CODE2, V_V_SPARE2);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -663,7 +663,7 @@ public class Dx_fileController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
                 row.createCell((short) 1).setCellValue(map.get("V_MATERIALCODE") == null ? "" : map.get("V_MATERIALCODE").toString());
                 row.createCell((short) 2).setCellValue(map.get("V_MATERIALNAME") == null ? "" : map.get("V_MATERIALNAME").toString());
                 row.createCell((short) 3).setCellValue(map.get("V_SPEC") == null ? "" : map.get("V_SPEC").toString());
@@ -692,17 +692,17 @@ public class Dx_fileController {
     @RequestMapping(value = "PRO_SPARE_SELECT_WORKORDER", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_SPARE_SELECT_WORKORDER(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
-                                                 @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
-                                                 @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                 @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
-                                                 @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
-                                                 @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
-                                                 @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
-                                                 @RequestParam(value = "V_V_SAPRECODE") String V_V_SAPRECODE,
-                                                 HttpServletRequest request,
-                                                 HttpServletResponse response) throws Exception {
+                                                          @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                                          @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                          @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                                          @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                                          @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                                          @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
+                                                          @RequestParam(value = "V_V_SAPRECODE") String V_V_SAPRECODE,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = dx_fileService.PRO_SPARE_SELECT_WORKORDER(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE,V_EQUTYPE_CODE,V_EQU_CODE,V_V_SPARE,V_V_SAPRECODE);
+        HashMap data = dx_fileService.PRO_SPARE_SELECT_WORKORDER(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_DEPTCODE, V_V_DEPTNEXTCODE, V_EQUTYPE_CODE, V_EQU_CODE, V_V_SPARE, V_V_SAPRECODE);
         return setPage(request, response, data);
     }
 
@@ -711,29 +711,29 @@ public class Dx_fileController {
     @RequestMapping(value = "/SPARESELWORK_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void SPARESELWORK_EXCEL(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
-                               @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
-                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                               @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
-                               @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
-                               @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
-                               @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
-                               @RequestParam(value = "V_V_SAPRECODE") String V_V_SAPRECODE,
-                               HttpServletRequest request,
-                               HttpServletResponse response)
+                                   @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                   @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                   @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                                   @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                   @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                   @RequestParam(value = "V_V_SPARE") String V_V_SPARE,
+                                   @RequestParam(value = "V_V_SAPRECODE") String V_V_SAPRECODE,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response)
             throws SQLException {
 
-        String V_V_DEPTNEXTCODE2=V_V_DEPTNEXTCODE.equals("all")?"%":V_V_DEPTNEXTCODE;
-        String V_EQUTYPE_CODE2=V_EQUTYPE_CODE.equals("all")?"%":V_EQUTYPE_CODE;
-        String V_EQU_CODE2=V_EQU_CODE.equals("all")?"%":V_EQU_CODE;
-        String V_V_SPARE2=V_V_SPARE.equals("K")?"%":V_V_SPARE;
+        String V_V_DEPTNEXTCODE2 = V_V_DEPTNEXTCODE.equals("all") ? "%" : V_V_DEPTNEXTCODE;
+        String V_EQUTYPE_CODE2 = V_EQUTYPE_CODE.equals("all") ? "%" : V_EQUTYPE_CODE;
+        String V_EQU_CODE2 = V_EQU_CODE.equals("all") ? "%" : V_EQU_CODE;
+        String V_V_SPARE2 = V_V_SPARE.equals("K") ? "%" : V_V_SPARE;
         List list = new ArrayList();
 
-        Map<String, Object> data = dx_fileService.PRO_SPARE_SELECT_WORKORDER(V_D_ENTER_DATE_B,V_D_ENTER_DATE_E,V_V_DEPTCODE,V_V_DEPTNEXTCODE2,V_EQUTYPE_CODE2,V_EQU_CODE2,V_V_SPARE2,V_V_SAPRECODE);
+        Map<String, Object> data = dx_fileService.PRO_SPARE_SELECT_WORKORDER(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_DEPTCODE, V_V_DEPTNEXTCODE2, V_EQUTYPE_CODE2, V_EQU_CODE2, V_V_SPARE2, V_V_SAPRECODE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -786,7 +786,7 @@ public class Dx_fileController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
                 row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
                 row.createCell((short) 2).setCellValue(map.get("V_SHORT_TXT") == null ? "" : map.get("V_SHORT_TXT").toString());
                 row.createCell((short) 3).setCellValue(map.get("V_EQUSITENAME") == null ? "" : map.get("V_EQUSITENAME").toString());
@@ -814,6 +814,38 @@ public class Dx_fileController {
                 e.printStackTrace();
             }
         }
+    }
+
+    //  大修含返回数量的查询机具，物料，工具等数据
+    @RequestMapping(value = "PRO_YEAR_PROJECT_MXUSE_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PROJECT_MXUSE_SEL(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+            @RequestParam(value = "V_V_TYPE") String V_V_TYPE) throws Exception {
+
+        Map result = dx_fileService.PRO_YEAR_PROJECT_MXUSE_SEL2(V_V_PROJECT_GUID, V_V_TYPE);
+        return result;
+    }
+
+    // 大修返回工单明细
+    @RequestMapping(value = "PRO_YEAR_PROJECT_WORKORDER_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PROJECT_WORKORDER_SEL(
+            @RequestParam(value = "V_V_PROJECTGUID") String V_V_PROJECTGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_YEAR_PROJECT_WORKORDER_SEL(V_V_PROJECTGUID);
+        return result;
+    }
+    // 大修返回缺陷明细
+    @RequestMapping(value = "PRO_YEAR_PROJECT_DEFECT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PROJECT_DEFECT_SEL(
+            @RequestParam(value = "V_V_PROJECTGUID") String V_V_PROJECTGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_YEAR_PROJECT_DEFECT_SEL(V_V_PROJECTGUID);
+        return result;
     }
 
 

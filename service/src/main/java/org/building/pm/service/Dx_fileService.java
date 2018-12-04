@@ -1049,4 +1049,82 @@ public class Dx_fileService {
         logger.info("end PRO_SPARE_SELECT_WORKORDER");
         return result;
     }
+    public Map PRO_YEAR_PROJECT_MXUSE_SEL2(String V_V_PROJECTGUID,String V_V_TYPE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_YEAR_PROJECT_MXUSE_SEL2");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_YEAR_PROJECT_MXUSE_SEL2" + "(:V_V_PROJECTGUID,:V_V_TYPE,:V_NUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECTGUID", V_V_PROJECTGUID);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_NUM",cstmt.getString("V_NUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_YEAR_PROJECT_MXUSE_SEL2");
+        return result;
+    }
+    // 大修缺陷明细
+    public Map PRO_YEAR_PROJECT_DEFECT_SEL(String V_V_PROJECTGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_YEAR_PROJECT_DEFECT_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PRO_YEAR_PROJECT_DEFECT_SEL(:V_V_PROJECTGUID,:V_NUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECTGUID",V_V_PROJECTGUID);
+            cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_NUM",cstmt.getString("V_NUM"));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PRO_YEAR_PROJECT_DEFECT_SEL");
+        return result;
+    }
+    // 大修关联工单明细
+    public Map PRO_YEAR_PROJECT_WORKORDER_SEL(String V_V_PROJECTGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_YEAR_PROJECT_WORKORDER_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PRO_YEAR_PROJECT_WORKORDER_SEL(:V_V_PROJECTGUID,:V_NUM,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECTGUID",V_V_PROJECTGUID);
+            cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_NUM",cstmt.getString("V_NUM"));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PRO_YEAR_PROJECT_WORKORDER_SEL");
+        return result;
+    }
 }
