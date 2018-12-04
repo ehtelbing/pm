@@ -281,7 +281,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         ,'V_STATE',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER'],
+        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -587,6 +587,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
         {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
         {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
+        {text:'施工方式',align:'center',width:70,dataIndex:'V_SGWAYNAME'},
         {
             text: '录入时间', align: 'center', width: 200, dataIndex: 'V_INDATE',
             renderer: rendererTime/*Ext.util.Format.dateRenderer('Y-m-d H:m:s')*/
@@ -630,7 +631,7 @@ Ext.onReady(function () {
 
        // Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
         Ext.getCmp('jhzyq').select(Ext.data.StoreManager.lookup('jhzyqStore').getAt(0));
-        Querytime();
+        query();
     });
     //计划厂矿更改时
     Ext.getCmp('jhck').on('select', function () {
