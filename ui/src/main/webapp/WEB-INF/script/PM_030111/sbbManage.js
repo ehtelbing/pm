@@ -6,19 +6,45 @@ var dt = new Date();
 var thisYear = dt.getFullYear();
 var years = [];
 var weeks=[];
-for (var i=1;i<=6;i++) weeks.push([i,i]);
-for (var i = 2014; i <= thisYear + 1; i++) years.push([i,i]);
+for (var i=1;i<=6;i++) weeks.push({displayField:i,valueField:i});
+var yearStore = Ext.create("Ext.data.Store", {
+    storeId: 'yearStore',
+    fields: ['displayField', 'valueField'],
+    data: years,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
+for (var i = 2014; i <= thisYear + 1; i++) years.push({displayField:i,valueField:i});
 var months=[];
-for (var i = 1; i <= 12; i++) months.push([i,i]);
-
-var url_guid='';
-var url_deptcode;
-var url_zy;
-if (location.href.split('?')[1] != undefined) {
-    url_guid = Ext.urlDecode(location.href.split('?')[1]).v_guid_dx;
-    url_deptcode = Ext.urlDecode(location.href.split('?')[1]).v_deptcode;
-    url_zy = Ext.urlDecode(location.href.split('?')[1]).v_specialty;
-}
+var monthStore = Ext.create("Ext.data.Store", {
+    storeId: 'monthStore',
+    fields: ['displayField', 'valueField'],
+    data: months,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
+for (var i = 1; i <= 12; i++) months.push({displayField:i,valueField:i});
+var weekStore = Ext.create("Ext.data.Store", {
+    storeId: 'weekStore',
+    fields: ['displayField', 'valueField'],
+    data: weeks,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
+// var url_guid='';
+// var url_deptcode;
+// var url_zy;
+// if (location.href.split('?')[1] != undefined) {
+//     url_guid = Ext.urlDecode(location.href.split('?')[1]).v_guid_dx;
+//     url_deptcode = Ext.urlDecode(location.href.split('?')[1]).v_deptcode;
+//     url_zy = Ext.urlDecode(location.href.split('?')[1]).v_specialty;
+// }
 Ext.onReady(function () {
     var ckstore = Ext.create("Ext.data.Store", {
         autoLoad: true,
@@ -84,7 +110,7 @@ Ext.onReady(function () {
     var zyStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'zyStore',
-        fields: ['V_MAJOR_CODE','V_MAJOR_NAME', ],
+        fields: ['V_MAJOR_CODE','V_MAJOR_NAME' ],
         proxy: {
             type: 'ajax',
             async: false,
@@ -207,13 +233,13 @@ Ext.onReady(function () {
         items: [
             {id:'year',xtype:'combo',labelWidth: 80,
                 labelAlign:'right',fieldLabel:'年份',
-                store:years,displayField:'Item1',valueField:'Item2',
+                store:yearStore,displayField:'Item1',valueField:'Item2',
                 value:'',editable:false,queryMode:'local'},
-            {id: 'month', store: months, xtype: 'combo', fieldLabel: '月份',
+            {id: 'month', store: monthStore, xtype: 'combo', fieldLabel: '月份',
                 value: '',labelWidth: 80,
                 labelAlign:'right', editable: false,
                 displayField: 'displayField', valueField: 'valueField'},
-            {id: 'week', store: weeks, xtype: 'combo', fieldLabel: '周',
+            {id: 'week', store: weekStore, xtype: 'combo', fieldLabel: '周',
                 value: '',labelWidth: 80,
                 labelAlign:'right', editable: false,
                 displayField: 'displayField', valueField: 'valueField'},
@@ -354,11 +380,11 @@ Ext.onReady(function () {
 
     Ext.getCmp('week').select(getWeekOfMonth());
     ckstore.on("load", function () {
-        if(url_deptcode!=undefined){
-            Ext.getCmp("ck").select(url_deptcode.substring(0,4));
-        }else{
+        // if(url_deptcode!=undefined){
+        //     Ext.getCmp("ck").select(url_deptcode.substring(0,4));
+        // }else{
             Ext.getCmp("ck").select(ckstore.getAt(0));
-        }
+        // }
 
 
     });
@@ -379,13 +405,13 @@ Ext.onReady(function () {
     });
 
     zyqstore.on("load", function () {
-        if(url_deptcode!=undefined){
-            Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
-            Ext.getCmp("zyq").select(url_deptcode);
-        }else{
+        // if(url_deptcode!=undefined){
+        //     Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+        //     Ext.getCmp("zyq").select(url_deptcode);
+        // }else{
             Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
             Ext.getCmp("zyq").select(zyqstore.getAt(0));
-        }
+        // }
     });
 
     Ext.getCmp('zyq').on('change', function () {
@@ -423,12 +449,12 @@ Ext.onReady(function () {
     });
     Ext.data.StoreManager.lookup('zyStore').on('load', function(){
         Ext.data.StoreManager.lookup('zyStore').insert(0,{V_MAJOR_CODE:'全部',V_MAJOR_NAME:'%'});
-        if(url_zy!=undefined){
-            Ext.getCmp('zy').select(url_zy);
-        }else{
+        // if(url_zy!=undefined){
+        //     Ext.getCmp('zy').select(url_zy);
+        // }else{
             Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
 
-        }
+        // }
 
     });
     // Ext.getCmp('zks').setValue(getWeekStartDate());
@@ -525,66 +551,66 @@ function getDaysOfMonth(year,month){
     return d.getDate();
 }
 
-//本周开始时间
-function getWeekStartDate() {
-    var year=Ext.getCmp('year').getValue();
-    var month=Ext.getCmp('month').getValue();
-    var week=Ext.getCmp('week').getValue();
-    var dat=new Date(year,month-1,1);
-    var day=dat.getDay();
-    var date=dat.getDate()+(week-1)*7;
-    var hao=dat.getDate();
-    var days=getDaysOfMonth(year,month-1);//上月有几天
-    if(day==0){
-        day=7;
-    }
-    if(date<day){
-        hao=date+days-day+1;
-    }else{
-        hao=date-day+1;
-    }
-    var yue=dat.getMonth();
-    if(date<day){
-        yue=yue-1;
-    }
-    var nian=dat.getFullYear();
-    if(yue<0){
-        nian=nian-1;
-        yue=yue+12;
-    }
-    if(hao>getDaysOfMonth(year,month)){
-        hao=hao-getDaysOfMonth(year,month);
-        yue=yue+1;
-    }
-    if(yue>11){
-        nian==nian+1;
-    }
-    return nian+"-"+(yue+1)+"-"+hao;
-}
-//本周结束时间
-function getWeekEndDate(){
-    var year=Ext.getCmp('year').getValue();
-    var month=Ext.getCmp('month').getValue();
-    var week=Ext.getCmp('week').getValue();
-    var dat=new Date();
-    var dat=new Date(year,month-1,1);
-    var day=dat.getDay();
-    var date=dat.getDate()+(week-1)*7;
-    var hao=dat.getDate();
-    var days=getDaysOfMonth(year,month);//本月有几天
-    if(day==0){
-        day=7;
-    }
-    hao=date+(7-day);
-    var yue=dat.getMonth();
-    if(hao>days){
-        hao=hao-days;
-        yue=yue+1;
-    }
-    var nian=dat.getFullYear();
-    if(yue>11){
-        yue=yue-12;
-        nian=nian+1;
-    }
-    return nian+"-"+(yue+1)+"-"+hao;
-}
+// //本周开始时间
+// function getWeekStartDate() {
+//     var year=Ext.getCmp('year').getValue();
+//     var month=Ext.getCmp('month').getValue();
+//     var week=Ext.getCmp('week').getValue();
+//     var dat=new Date(year,month-1,1);
+//     var day=dat.getDay();
+//     var date=dat.getDate()+(week-1)*7;
+//     var hao=dat.getDate();
+//     var days=getDaysOfMonth(year,month-1);//上月有几天
+//     if(day==0){
+//         day=7;
+//     }
+//     if(date<day){
+//         hao=date+days-day+1;
+//     }else{
+//         hao=date-day+1;
+//     }
+//     var yue=dat.getMonth();
+//     if(date<day){
+//         yue=yue-1;
+//     }
+//     var nian=dat.getFullYear();
+//     if(yue<0){
+//         nian=nian-1;
+//         yue=yue+12;
+//     }
+//     if(hao>getDaysOfMonth(year,month)){
+//         hao=hao-getDaysOfMonth(year,month);
+//         yue=yue+1;
+//     }
+//     if(yue>11){
+//         nian==nian+1;
+//     }
+//     return nian+"-"+(yue+1)+"-"+hao;
+// }
+// //本周结束时间
+// function getWeekEndDate(){
+//     var year=Ext.getCmp('year').getValue();
+//     var month=Ext.getCmp('month').getValue();
+//     var week=Ext.getCmp('week').getValue();
+//     var dat=new Date();
+//     var dat=new Date(year,month-1,1);
+//     var day=dat.getDay();
+//     var date=dat.getDate()+(week-1)*7;
+//     var hao=dat.getDate();
+//     var days=getDaysOfMonth(year,month);//本月有几天
+//     if(day==0){
+//         day=7;
+//     }
+//     hao=date+(7-day);
+//     var yue=dat.getMonth();
+//     if(hao>days){
+//         hao=hao-days;
+//         yue=yue+1;
+//     }
+//     var nian=dat.getFullYear();
+//     if(yue>11){
+//         yue=yue-12;
+//         nian=nian+1;
+//     }
+//     return nian+"-"+(yue+1)+"-"+hao;
+// }
