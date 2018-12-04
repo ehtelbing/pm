@@ -21,11 +21,19 @@ if (location.href.split('?')[1] != undefined) {
 }
 var startUpTime=null;
 if(location.href.split('?')[1]!=undefined){
-    startUpTime=Ext.urlDecode(location.href.split('?')[1]).startUpTime;
+    if(Ext.urlDecode(location.href.split('?')[1]).startUpTime!=undefined)
+    { startUpTime=Ext.urlDecode(location.href.split('?')[1]).startUpTime; }
+    else{startUpTime=YEAR+'-'+MONTH+'-'+"1";}
 }
 var endUpTime=null;
 if(location.href.split('?')[1]!=undefined){
-    endUpTime=Ext.urlDecode(location.href.split('?')[1]).endUpTime;
+    if(Ext.urlDecode(location.href.split('?')[1]).endUpTime!=undefined){
+        endUpTime=Ext.urlDecode(location.href.split('?')[1]).endUpTime;
+    }
+    else{
+        endUpTime=YEAR+'-'+MONTH+'-'+"1";
+    }
+
 }
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
