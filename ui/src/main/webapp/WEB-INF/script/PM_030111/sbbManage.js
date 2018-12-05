@@ -314,20 +314,22 @@ Ext.onReady(function () {
                 queryMode: 'local'
                 // ,margin:'5px 0px 5px 5px'
                 // baseCls: 'margin-bottom'
-            }, {
-                id: 'zt',
-                xtype: 'combo',
-                store: ztstore,
-                editable: false,
-                fieldLabel: '状态',
-                labelWidth: 80,
-              //  hidden:true,
-                displayField: 'V_BASENAME',
-                valueField: 'V_BASECODE',
-                queryMode: 'local'
-                // ,margin:'5px 0px 5px 5px'
-                // baseCls: 'margin-bottom'
-            }, {
+            },
+            // {
+            //     id: 'zt',
+            //     xtype: 'combo',
+            //     store: ztstore,
+            //     editable: false,
+            //     fieldLabel: '状态',
+            //     labelWidth: 80,
+            //   //  hidden:true,
+            //     displayField: 'V_BASENAME',
+            //     valueField: 'V_BASECODE',
+            //     queryMode: 'local'
+            //     // ,margin:'5px 0px 5px 5px'
+            //     // baseCls: 'margin-bottom'
+            // },
+            {
                 id: 'seltext',
                 xtype: 'textfield',
                 width: 158,
@@ -374,15 +376,15 @@ Ext.onReady(function () {
             { text: '录入人',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft }
             , { text: '录入时间',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime }
         ]
-        // ,bbar: [{
-        //     id: 'page',
-        //     xtype: 'pagingtoolbar',
-        //     dock: 'bottom',
-        //     displayInfo: true,
-        //     displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-        //     emptyMsg: '没有记录',
-        //     store: 'gridStore'
-        // }]
+        ,bbar: [{
+            id: 'page',
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridStore'
+        }]
     });
     Ext.create('Ext.container.Viewport', {
         id: "id",
@@ -402,9 +404,9 @@ Ext.onReady(function () {
 
 
     });
-    ztstore.on("load", function () {
-        Ext.getCmp("zt").select(ztstore.getAt(0));
-    });
+    // ztstore.on("load", function () {
+    //     Ext.getCmp("zt").select(ztstore.getAt(0));
+    // });
 
     Ext.ComponentManager.get("ck").on("change", function () {
         Ext.ComponentManager.get('zyq').getStore().removeAll();
