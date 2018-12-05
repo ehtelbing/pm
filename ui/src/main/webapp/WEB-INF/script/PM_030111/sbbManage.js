@@ -40,6 +40,121 @@ var weekStore = Ext.create("Ext.data.Store", {
         reader: {type: 'json'}
     }
 });
+var ckstore = Ext.create("Ext.data.Store", {
+    autoLoad: true,
+    storeId: 'ckstore',
+    fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl +'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        },
+        extraParams: {
+            'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+            'V_V_DEPTCODE': Ext.util.Cookies.get('v_deptcode'),
+            'V_V_DEPTCODENEXT': '%',
+            'V_V_DEPTTYPE': '基层单位'
+        }
+    }
+});
+var ztstore = Ext.create("Ext.data.Store", {
+    autoLoad: true,
+    storeId: 'ztstore',
+    fields: ['V_BASECODE', 'V_BASENAME'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl +'lxm/pro_pm_basedic_zy',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        },
+        extraParams: {
+            'V_V_PLAN': 'PLAN/WORK'
+        }
+    }
+});
+
+var zyqstore = Ext.create("Ext.data.Store", {
+    autoLoad: false,
+    storeId: 'zyqstore',
+    fields:  ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+var zyStore = Ext.create("Ext.data.Store", {
+    autoLoad: false,
+    storeId: 'zyStore',
+    fields: ['V_MAJOR_CODE','V_MAJOR_NAME' ],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_01/PM_04_PROJECT_MAJOR_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+
+//设备类型
+var sblxStore = Ext.create('Ext.data.Store', {
+    autoLoad: false,
+    storeId: 'sblxStore',
+    fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
+//设备名称
+var sbmcStore = Ext.create('Ext.data.Store', {
+    autoLoad: false,
+    storeId: 'sbmcStore',
+    fields: ['V_EQUCODE', 'V_EQUNAME'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_06/pro_get_deptequ_per',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
 // var url_guid='';
 // var url_deptcode;
 // var url_zy;
@@ -48,122 +163,133 @@ var weekStore = Ext.create("Ext.data.Store", {
 //     url_deptcode = Ext.urlDecode(location.href.split('?')[1]).v_deptcode;
 //     url_zy = Ext.urlDecode(location.href.split('?')[1]).v_specialty;
 // }
+var panel = Ext.create('Ext.form.Panel', {
+    id: 'panellow',
+    region: 'north',
+    height:100,
+    defaults: {
+        style: 'margin:5px 0px 5px 5px'
+        ,labelAlign: 'right'
+    },
+    layout: 'column',
+    frame:true,
+    items: [
+        {id:'year',xtype:'combo',labelWidth: 80,fieldLabel:'年份',
+            // margin:'5px 0px 5px 5px',
+            // labelAlign:'right',
+            store:yearStore,displayField:'displayField',valueField:'valueField',
+            value:'',editable:false,queryMode:'local'},
+        {id: 'month', store: monthStore, xtype: 'combo', fieldLabel: '月份',
+            // margin:'5px 0px 5px 5px',
+            value: '',labelWidth: 80,
+            // labelAlign:'right',
+            editable: false,
+            displayField: 'displayField', valueField: 'valueField'},
+        {id: 'week', store: weekStore, xtype: 'combo', fieldLabel: '周',
+            // margin:'5px 0px 5px 5px',
+            value: '',labelWidth: 80,
+            // labelAlign:'right',
+            editable: false,
+            displayField: 'displayField', valueField: 'valueField'},
+        // {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
+        // {xtype : 'displayfield', id : 'zjs', fieldLabel : '本周结束时间', labelWidth : 80, width:243,labelAlign : 'right'},
+        {
+            id: 'ck',
+            xtype: 'combo',
+            store: ckstore,
+            editable: false,
+            fieldLabel: '厂矿',
+            labelWidth: 80,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local'
+            // ,margin:'5px 0px 5px 5px'
+            //, baseCls: 'margin-bottom'
+        }, {
+            id: 'zyq',
+            xtype: 'combo',
+            store: zyqstore,
+            editable: false,
+            fieldLabel: '作业区',
+            labelWidth: 80,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local'
+            // ,margin:'5px 0px 5px 5px'
+            // ,baseCls: 'margin-bottom'
+        }, {
+            xtype: 'combo',
+            id: 'sblx',
+            fieldLabel: '设备类型',
+            editable: false,
+            labelWidth: 80,
+            displayField: 'V_EQUTYPENAME',
+            valueField: 'V_EQUTYPECODE',
+            store: sblxStore,
+            queryMode: 'local'
+            // ,margin:'5px 0px 5px 5px'
+            ,listConfig:{
+                mixWidth:120
+            }
+        },
+        {
+            xtype: 'combo',
+            id: 'sbmc',
+            fieldLabel: '设备名称',
+            editable: false,
+            labelAlign: 'right',
+            labelWidth: 80,
+            displayField: 'V_EQUNAME',
+            valueField: 'V_EQUCODE',
+            store: sbmcStore,
+            queryMode: 'local'
+            // ,margin:'5px 0px 5px 5px'
+        },{
+            id: 'zy',
+            xtype: 'combo',
+            store: zyStore,
+            editable: false,
+            fieldLabel: '专业',
+            labelWidth: 80,
+            displayField: 'V_MAJOR_CODE',
+            valueField: 'V_MAJOR_NAME',
+            queryMode: 'local'
+            // ,margin:'5px 0px 5px 5px'
+            // baseCls: 'margin-bottom'
+        },
+        // {
+        //     id: 'zt',
+        //     xtype: 'combo',
+        //     store: ztstore,
+        //     editable: false,
+        //     fieldLabel: '状态',
+        //     labelWidth: 80,
+        //   //  hidden:true,
+        //     displayField: 'V_BASENAME',
+        //     valueField: 'V_BASECODE',
+        //     queryMode: 'local'
+        //     // ,margin:'5px 0px 5px 5px'
+        //     // baseCls: 'margin-bottom'
+        // },
+        {
+            id: 'seltext',
+            xtype: 'textfield',
+            width: 158,
+            emptyText: '检修明细模糊搜索'
+            // ,margin:'5px 0px 5px 90px'
+        }, {
+            id: 'query',
+            xtype: 'button',
+            icon: imgpath + '/search.png',
+            text: '查询',
+            width: 80,
+            handler:QueryGrid
+            // ,margin:'5px 0px 5px 50px'
+        }
+    ]
+});
 Ext.onReady(function () {
-    var ckstore = Ext.create("Ext.data.Store", {
-        autoLoad: true,
-        storeId: 'ckstore',
-        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl +'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.util.Cookies.get('v_deptcode'),
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
-            }
-        }
-    });
-    var ztstore = Ext.create("Ext.data.Store", {
-        autoLoad: true,
-        storeId: 'ztstore',
-        fields: ['V_BASECODE', 'V_BASENAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl +'lxm/pro_pm_basedic_zy',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PLAN': 'PLAN/WORK'
-            }
-        }
-    });
 
-    var zyqstore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'zyqstore',
-        fields:  ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
-    var zyStore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'zyStore',
-        fields: ['V_MAJOR_CODE','V_MAJOR_NAME' ],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_01/PM_04_PROJECT_MAJOR_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
-
-    //设备类型
-    var sblxStore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
-        storeId: 'sblxStore',
-        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
-//设备名称
-    var sbmcStore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
-        storeId: 'sbmcStore',
-        fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/pro_get_deptequ_per',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
     var gridStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'gridStore',
@@ -222,130 +348,7 @@ Ext.onReady(function () {
             }
         }
     });
-    var panel = Ext.create('Ext.form.Panel', {
-        id: 'panellow',
-        region: 'north',
-        defaults: {
-            style: 'margin:5px 0px 5px 5px'
-            ,labelAlign: 'right'
-        },
-        layout: 'column',
-        frame:true,
-        items: [
-            {id:'year',xtype:'combo',labelWidth: 80,fieldLabel:'年份',
-                // margin:'5px 0px 5px 5px',
-                // labelAlign:'right',
-                store:yearStore,displayField:'displayField',valueField:'valueField',
-                value:'',editable:false,queryMode:'local'},
-            {id: 'month', store: monthStore, xtype: 'combo', fieldLabel: '月份',
-                // margin:'5px 0px 5px 5px',
-                value: '',labelWidth: 80,
-                // labelAlign:'right',
-                 editable: false,
-                displayField: 'displayField', valueField: 'valueField'},
-            {id: 'week', store: weekStore, xtype: 'combo', fieldLabel: '周',
-                // margin:'5px 0px 5px 5px',
-                value: '',labelWidth: 80,
-                // labelAlign:'right',
-                editable: false,
-                displayField: 'displayField', valueField: 'valueField'},
-            // {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
-            // {xtype : 'displayfield', id : 'zjs', fieldLabel : '本周结束时间', labelWidth : 80, width:243,labelAlign : 'right'},
-            {
-                id: 'ck',
-                xtype: 'combo',
-                store: ckstore,
-                editable: false,
-                fieldLabel: '厂矿',
-                labelWidth: 80,
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                queryMode: 'local'
-                // ,margin:'5px 0px 5px 5px'
-                //, baseCls: 'margin-bottom'
-            }, {
-                id: 'zyq',
-                xtype: 'combo',
-                store: zyqstore,
-                editable: false,
-                fieldLabel: '作业区',
-                labelWidth: 80,
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                queryMode: 'local'
-                // ,margin:'5px 0px 5px 5px'
-            // ,baseCls: 'margin-bottom'
-            }, {
-                xtype: 'combo',
-                id: 'sblx',
-                fieldLabel: '设备类型',
-                editable: false,
-                labelWidth: 80,
-                displayField: 'V_EQUTYPENAME',
-                valueField: 'V_EQUTYPECODE',
-                store: sblxStore,
-                queryMode: 'local'
-                // ,margin:'5px 0px 5px 5px'
-                ,listConfig:{
-                    mixWidth:120
-                }
-            },
-            {
-                xtype: 'combo',
-                id: 'sbmc',
-                fieldLabel: '设备名称',
-                editable: false,
-                labelAlign: 'right',
-                labelWidth: 80,
-                displayField: 'V_EQUNAME',
-                valueField: 'V_EQUCODE',
-                store: sbmcStore,
-                queryMode: 'local'
-                // ,margin:'5px 0px 5px 5px'
-            },{
-                id: 'zy',
-                xtype: 'combo',
-                store: zyStore,
-                editable: false,
-                fieldLabel: '专业',
-                labelWidth: 80,
-                displayField: 'V_MAJOR_CODE',
-                valueField: 'V_MAJOR_NAME',
-                queryMode: 'local'
-                // ,margin:'5px 0px 5px 5px'
-                // baseCls: 'margin-bottom'
-            },
-            // {
-            //     id: 'zt',
-            //     xtype: 'combo',
-            //     store: ztstore,
-            //     editable: false,
-            //     fieldLabel: '状态',
-            //     labelWidth: 80,
-            //   //  hidden:true,
-            //     displayField: 'V_BASENAME',
-            //     valueField: 'V_BASECODE',
-            //     queryMode: 'local'
-            //     // ,margin:'5px 0px 5px 5px'
-            //     // baseCls: 'margin-bottom'
-            // },
-            {
-                id: 'seltext',
-                xtype: 'textfield',
-                width: 158,
-                emptyText: '检修明细模糊搜索'
-                // ,margin:'5px 0px 5px 90px'
-            }, {
-                id: 'query',
-                xtype: 'button',
-                icon: imgpath + '/search.png',
-                text: '查询',
-                width: 80,
-                handler:QueryGrid
-                // ,margin:'5px 0px 5px 50px'
-            }
-        ]
-    });
+
     var grid=Ext.create('Ext.grid.Panel',{
         region:'center',
         width:'100%',
@@ -353,7 +356,7 @@ Ext.onReady(function () {
         id:'grid',
         height:260,
         style:'margin:0px 0px 5px 0px',
-        autoScroll: true,
+        //autoScroll: true,
         columnLines: true,
         // selModel:{
         //     //mode:'singel',
@@ -387,10 +390,11 @@ Ext.onReady(function () {
         }]
     });
     Ext.create('Ext.container.Viewport', {
-        id: "id",
+        //id: "id",
         layout: 'border',
-        frame:true,
-        border:false,
+        //frame:true,
+        height:600,
+        //border:false,
         items: [panel, grid]
     });
 
