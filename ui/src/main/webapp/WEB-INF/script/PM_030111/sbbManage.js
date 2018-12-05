@@ -223,25 +223,28 @@ Ext.onReady(function () {
         id: 'panellow',
         region: 'north',
         defaults: {
-            style: 'margin:5px 0px 5px 5px',
-            labelAlign: 'right'
+            style: 'margin:5px 0px 5px 5px'
+            ,labelAlign: 'right'
         },
-        layout: {
-            type: 'column'
-        },
+        layout: 'column',
         frame:true,
         items: [
-            {id:'year',xtype:'combo',labelWidth: 80,
-                labelAlign:'right',fieldLabel:'年份',
-                store:yearStore,displayField:'Item1',valueField:'Item2',
+            {id:'year',xtype:'combo',labelWidth: 80,fieldLabel:'年份',
+                // margin:'5px 0px 5px 5px',
+                // labelAlign:'right',
+                store:yearStore,displayField:'displayField',valueField:'valueField',
                 value:'',editable:false,queryMode:'local'},
             {id: 'month', store: monthStore, xtype: 'combo', fieldLabel: '月份',
+                // margin:'5px 0px 5px 5px',
                 value: '',labelWidth: 80,
-                labelAlign:'right', editable: false,
+                // labelAlign:'right',
+                 editable: false,
                 displayField: 'displayField', valueField: 'valueField'},
             {id: 'week', store: weekStore, xtype: 'combo', fieldLabel: '周',
+                // margin:'5px 0px 5px 5px',
                 value: '',labelWidth: 80,
-                labelAlign:'right', editable: false,
+                // labelAlign:'right',
+                editable: false,
                 displayField: 'displayField', valueField: 'valueField'},
             // {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
             // {xtype : 'displayfield', id : 'zjs', fieldLabel : '本周结束时间', labelWidth : 80, width:243,labelAlign : 'right'},
@@ -254,8 +257,9 @@ Ext.onReady(function () {
                 labelWidth: 80,
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
-                queryMode: 'local',
-                baseCls: 'margin-bottom'
+                queryMode: 'local'
+                // ,margin:'5px 0px 5px 5px'
+                //, baseCls: 'margin-bottom'
             }, {
                 id: 'zyq',
                 xtype: 'combo',
@@ -265,8 +269,9 @@ Ext.onReady(function () {
                 labelWidth: 80,
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
-                queryMode: 'local',
-                baseCls: 'margin-bottom'
+                queryMode: 'local'
+                // ,margin:'5px 0px 5px 5px'
+            // ,baseCls: 'margin-bottom'
             }, {
                 xtype: 'combo',
                 id: 'sblx',
@@ -276,8 +281,9 @@ Ext.onReady(function () {
                 displayField: 'V_EQUTYPENAME',
                 valueField: 'V_EQUTYPECODE',
                 store: sblxStore,
-                queryMode: 'local',
-                listConfig:{
+                queryMode: 'local'
+                // ,margin:'5px 0px 5px 5px'
+                ,listConfig:{
                     mixWidth:120
                 }
             },
@@ -292,6 +298,7 @@ Ext.onReady(function () {
                 valueField: 'V_EQUCODE',
                 store: sbmcStore,
                 queryMode: 'local'
+                // ,margin:'5px 0px 5px 5px'
             },{
                 id: 'zy',
                 xtype: 'combo',
@@ -301,8 +308,9 @@ Ext.onReady(function () {
                 labelWidth: 80,
                 displayField: 'V_MAJOR_CODE',
                 valueField: 'V_MAJOR_NAME',
-                queryMode: 'local',
-                baseCls: 'margin-bottom'
+                queryMode: 'local'
+                // ,margin:'5px 0px 5px 5px'
+                // baseCls: 'margin-bottom'
             }, {
                 id: 'zt',
                 xtype: 'combo',
@@ -310,25 +318,26 @@ Ext.onReady(function () {
                 editable: false,
                 fieldLabel: '状态',
                 labelWidth: 80,
-                hidden:true,
+              //  hidden:true,
                 displayField: 'V_BASENAME',
                 valueField: 'V_BASECODE',
-                queryMode: 'local',
-                baseCls: 'margin-bottom'
+                queryMode: 'local'
+                // ,margin:'5px 0px 5px 5px'
+                // baseCls: 'margin-bottom'
             }, {
                 id: 'seltext',
                 xtype: 'textfield',
                 width: 158,
-                emptyText: '检修明细模糊搜索',
-                margin:'5px 0px 5px 90px'
+                emptyText: '检修明细模糊搜索'
+                // ,margin:'5px 0px 5px 90px'
             }, {
                 id: 'query',
                 xtype: 'button',
                 icon: imgpath + '/search.png',
                 text: '查询',
                 width: 80,
-                handler:QueryGrid,
-                margin:'5px 0px 5px 50px'
+                handler:QueryGrid
+                // ,margin:'5px 0px 5px 50px'
             }
         ]
     });
@@ -341,10 +350,10 @@ Ext.onReady(function () {
         style:'margin:0px 0px 5px 0px',
         autoScroll: true,
         columnLines: true,
-        selModel:{
-            //mode:'singel',
-            selType:'checkboxmodel'
-        },
+        // selModel:{
+        //     //mode:'singel',
+        //     selType:'checkboxmodel'
+        // },
         columns:[
             { xtype : 'rownumberer',
                 text : '序号',
@@ -359,22 +368,24 @@ Ext.onReady(function () {
             { text: '计划工期',width:200,dataIndex:'V_HOUR', align: 'center',renderer:Atleft },
             { text: '厂矿',width:200,dataIndex:'V_ORGNAME', align: 'center',renderer:Atleft },
             { text: '车间名称',width:200,dataIndex:'V_DEPTNAME', align: 'center',renderer:Atleft },
-            { text: '录入人',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft },
-            { text: '录入时间',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime }
-        ],
-        bbar: [{
-            id: 'page',
-            xtype: 'pagingtoolbar',
-            dock: 'bottom',
-            displayInfo: true,
-            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-            emptyMsg: '没有记录',
-            store: 'gridStore'
-        }]
+            { text: '录入人',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft }
+            , { text: '录入时间',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime }
+        ]
+        // ,bbar: [{
+        //     id: 'page',
+        //     xtype: 'pagingtoolbar',
+        //     dock: 'bottom',
+        //     displayInfo: true,
+        //     displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+        //     emptyMsg: '没有记录',
+        //     store: 'gridStore'
+        // }]
     });
     Ext.create('Ext.container.Viewport', {
         id: "id",
         layout: 'border',
+        frame:true,
+        border:false,
         items: [panel, grid]
     });
 
@@ -433,7 +444,10 @@ Ext.onReady(function () {
             }
         });
     });
-
+    Ext.data.StoreManager.lookup('ckstore').on('load', function () {
+        Ext.data.StoreManager.lookup('ckstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+        Ext.getCmp("ck").select('%');
+    });
     //设备类型加载监听
     Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
         Ext.getCmp("sblx").select('%');
