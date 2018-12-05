@@ -734,7 +734,7 @@ function _selectNextSprStore() {
     nextSprStore.currentPage = 1;
     nextSprStore.load();
 }
-//上传
+//上报
 function OnButtonUp() {
     var records = Ext.getCmp('grid').getSelectionModel().getSelection();
     if (records.length == 0) {//判断是否选中数据

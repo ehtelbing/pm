@@ -6,7 +6,13 @@ var dt = new Date();
 var thisYear = dt.getFullYear();
 var years = [];
 var weeks=[];
+var months=[];
 for (var i=1;i<=6;i++) weeks.push({displayField:i,valueField:i});
+
+for (var i = 2014; i <= thisYear + 1; i++) years.push({displayField:i,valueField:i});
+
+for (var i = 1; i <= 12; i++) months.push({displayField:i,valueField:i});
+
 var yearStore = Ext.create("Ext.data.Store", {
     storeId: 'yearStore',
     fields: ['displayField', 'valueField'],
@@ -16,8 +22,6 @@ var yearStore = Ext.create("Ext.data.Store", {
         reader: {type: 'json'}
     }
 });
-for (var i = 2014; i <= thisYear + 1; i++) years.push({displayField:i,valueField:i});
-var months=[];
 var monthStore = Ext.create("Ext.data.Store", {
     storeId: 'monthStore',
     fields: ['displayField', 'valueField'],
@@ -27,7 +31,6 @@ var monthStore = Ext.create("Ext.data.Store", {
         reader: {type: 'json'}
     }
 });
-for (var i = 1; i <= 12; i++) months.push({displayField:i,valueField:i});
 var weekStore = Ext.create("Ext.data.Store", {
     storeId: 'weekStore',
     fields: ['displayField', 'valueField'],

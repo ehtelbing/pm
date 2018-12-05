@@ -1171,4 +1171,82 @@ public class Dx_fileService {
         logger.info("end PRO_PM_03_PLAN_WEEK_VIEW2");
         return result;
     }
+
+    // 设备部驳回修改
+    public Map PRO_PM_03_PLAN_WEEK_NSETSBB(String V_V_INPER, String V_V_GUID, String V_V_YEAR, String V_V_MONTH, String V_V_WEEK,
+                                        String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE,
+                                        String V_V_CONTENT, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE,
+                                        String V_V_JHMX_GUID, String V_V_HOUR, String V_V_BZ, String V_V_DEFECTGUID, String V_V_MAIN_DEFECT, String V_V_EXPECT_AGE, String V_V_REPAIR_PER
+            ,String V_V_PDC/*,String V_V_SGDATE*/,String V_V_GYYQ,String V_V_CHANGPDC,/*String V_V_JXRESON,*/String V_V_JXHOUR,String V_V_JJHOUR,
+            /*String V_V_JHHOUR,*/String V_V_TELNAME,String V_V_TELNUMB,String V_V_PDGG,String V_V_THICKNESS,String V_V_REASON,String V_V_EVERTIME
+            ,String V_V_FLAG,String V_V_RDEPATCODE,String V_V_RDEPATNAME,String V_V_SGWAY,String V_V_SGWAYNAME
+    ) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_WEEK_NSETSBB");
+        Map result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_NSETSBB" + "(:V_V_INPER,:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                    ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
+                    ":V_V_OTHERPLAN_GUID,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_DEFECTGUID,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER,"+
+                    ":V_V_PDC,/*:V_V_SGDATE,*/:V_V_GYYQ,:V_V_CHANGPDC,/*:V_V_JXRESON,*/:V_V_JXHOUR,:V_V_JJHOUR,/*:V_V_JHHOUR,*/:V_V_TELNAME,:V_V_TELNUMB,:V_V_PDGG,"+
+                    ":V_V_THICKNESS,:V_V_REASON,:V_V_EVERTIME,:V_V_FLAG,:V_V_RDEPATCODE,:V_V_RDEPATNAME,:V_V_SGWAY,:V_V_SGWAYNAME,:V_INFO)}");
+            cstmt.setString("V_V_INPER", V_V_INPER);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_WEEK", V_V_WEEK);
+
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_REPAIRMAJOR_CODE", V_V_REPAIRMAJOR_CODE);
+
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setString("V_V_STARTTIME", V_V_STARTTIME);
+            cstmt.setString("V_V_ENDTIME", V_V_ENDTIME);
+            cstmt.setString("V_V_OTHERPLAN_GUID", V_V_OTHERPLAN_GUID);
+            cstmt.setString("V_V_OTHERPLAN_TYPE", V_V_OTHERPLAN_TYPE);
+
+            cstmt.setString("V_V_JHMX_GUID", V_V_JHMX_GUID);
+            cstmt.setString("V_V_HOUR", V_V_HOUR);
+            cstmt.setString("V_V_BZ", V_V_BZ);
+            cstmt.setString("V_V_DEFECTGUID", V_V_DEFECTGUID);
+            cstmt.setString("V_V_MAIN_DEFECT", V_V_MAIN_DEFECT);
+            cstmt.setString("V_V_EXPECT_AGE", V_V_EXPECT_AGE);
+            cstmt.setString("V_V_REPAIR_PER", V_V_REPAIR_PER);
+
+            cstmt.setString("V_V_PDC", V_V_PDC);
+            cstmt.setString("V_V_GYYQ", V_V_GYYQ);
+            cstmt.setString("V_V_CHANGPDC", V_V_CHANGPDC);
+            cstmt.setString("V_V_JXHOUR", V_V_JXHOUR);
+            cstmt.setString("V_V_JJHOUR", V_V_JJHOUR);
+            cstmt.setString("V_V_TELNAME", V_V_TELNAME);
+            cstmt.setString("V_V_TELNUMB", V_V_TELNUMB);
+            cstmt.setString("V_V_PDGG", V_V_PDGG);
+
+            cstmt.setString("V_V_THICKNESS",V_V_THICKNESS);
+            cstmt.setString("V_V_REASON",V_V_REASON);
+            cstmt.setString("V_V_EVERTIME",V_V_EVERTIME);
+            cstmt.setString("V_V_FLAG",V_V_FLAG);
+            cstmt.setString("V_V_RDEPATCODE",V_V_RDEPATCODE);
+            cstmt.setString("V_V_RDEPATNAME",V_V_RDEPATNAME);
+            cstmt.setString("V_V_SGWAY",V_V_SGWAY);
+            cstmt.setString("V_V_SGWAYNAME",V_V_SGWAYNAME);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_NSETSBB");
+        return result;
+    }
 }
