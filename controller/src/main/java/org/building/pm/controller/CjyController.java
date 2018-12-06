@@ -2589,6 +2589,7 @@ public class CjyController {
                                     @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
                                     @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
                                     @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
+                                    @RequestParam(value="FlowType") String[] FlowType,
                                     HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
         Map result = new HashMap();
@@ -2622,12 +2623,22 @@ public class CjyController {
 
                         complresult = activitiController.TaskCompletePL(taskid, "不通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "fqrxg", "发起人修改", "不通过", Assignee, V_V_PERSONCODE);
                         if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan", ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                                nexperList.add(Assignee);
-                                //result.put("Assignee", Assignee);
-                            }
+//                            if (FlowType[i].equals("WeekPlan")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], FlowType[i], ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                    nexperList.add(Assignee);
+                                    //result.put("Assignee", Assignee);
+                                }
+//                            }
+//                            else if(FlowType[i].equals("WeekPlan01")){
+//                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], FlowType[i], ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
+//                                if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                    sucNum++;
+//                                    nexperList.add(Assignee);
+//                                    //result.put("Assignee", Assignee);
+//                                }
+//                            }
                         } else {
                             faiNum++;
                         }
@@ -2862,6 +2873,7 @@ public class CjyController {
                                      @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
                                      @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
                                      @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
+                                     @RequestParam(value="FlowType") String[] FlowType,
                                      HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
         Map result = new HashMap();
@@ -2898,12 +2910,23 @@ public class CjyController {
 
                         complresult = activitiController.TaskCompletePL(taskid, "不通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "fqrxg", "发起人修改", "不通过", Assignee, V_V_PERSONCODE);
                         if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan", ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
-                            if (flowresult.get("V_INFO").toString().equals("success")) {
-                                sucNum++;
-                                nexperList.add(Assignee);
-                                //result.put("Assignee", Assignee);
-                            }
+//                            if (FlowType[i].equals("MonthPlan")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], FlowType[i], ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                    nexperList.add(Assignee);
+                                    //result.put("Assignee", Assignee);
+                                }
+//                            }
+//                            else if(FlowType[i].equals("MonthPlan01")){
+//                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], FlowType[i], ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
+//                                if (flowresult.get("V_INFO").toString().equals("success")) {
+//                                    sucNum++;
+//                                    nexperList.add(Assignee);
+//                                    //result.put("Assignee", Assignee);
+//                                }
+//                            }
+
                         } else {
                             faiNum++;
                         }

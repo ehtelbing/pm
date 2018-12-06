@@ -492,10 +492,12 @@ function DisAgreeData(){
             var BusinessKeysData=[];
             var ProcessDefinitionKeyData=[];
             var ProcessInstanceIdData=[];
+            var FlowType=[];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
                 ProcessInstanceIdData.push(record[i].data.ProcessInstanceId);
+                FlowType.push(record[i].data.flow_type);
             }
 
             Ext.Ajax.request({
@@ -507,7 +509,8 @@ function DisAgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    ProcessInstanceId:ProcessInstanceIdData
+                    ProcessInstanceId:ProcessInstanceIdData,
+                    FlowType:FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -528,10 +531,12 @@ function DisAgreeData(){
             var BusinessKeysData=[];
             var ProcessDefinitionKeyData=[];
             var ProcessInstanceIdData=[];
+            var FlowType=[];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
                 ProcessInstanceIdData.push(record[i].data.ProcessInstanceId);
+                FlowType.push(record[i].data.flow_type);
             }
 
             Ext.Ajax.request({
@@ -543,7 +548,8 @@ function DisAgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    ProcessInstanceId:ProcessInstanceIdData
+                    ProcessInstanceId:ProcessInstanceIdData,
+                    FlowType:FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
