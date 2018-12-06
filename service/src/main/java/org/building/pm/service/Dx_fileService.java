@@ -1249,4 +1249,33 @@ public class Dx_fileService {
         logger.info("end PRO_PM_03_PLAN_WEEK_NSETSBB");
         return result;
     }
+    // 修改上报设备部审批状态
+    public HashMap PRO_PM_03_PLAN_WEEK_SET_STATESBB(String V_V_GUID, String V_V_STATECODE) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_WEEK_SET_STATESBB");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_SET_STATESBB" + "(:V_V_GUID,:V_V_STATECODE,:V_INFO)}");
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_SET_STATESBB");
+        return result;
+    }
+
 }

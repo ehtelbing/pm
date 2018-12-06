@@ -7,7 +7,7 @@ Ext.onReady(function () {
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME',
-            'EQUNAME','PLANSTART','PLANEND','PLANHOUR'
+            'EQUNAME','PLANSTART','PLANEND','PLANHOUR','flow_type'
         ],
         proxy: {
             type: 'ajax',
@@ -123,6 +123,13 @@ Ext.onReady(function () {
         dataIndex: 'PLANHOUR',
         align: 'center',
         width: 100
+            },
+            {text: '流程类型',
+                dataIndex: 'flow_type',
+                align: 'center',
+                width: 100,
+                hidden:true
+
             }
         ],
         bbar: [{
@@ -366,9 +373,11 @@ function AgreeData(){
         if (record.length > 0) {
             var BusinessKeysData=[];
             var ProcessDefinitionKeyData=[];
+            var FlowType=[];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
+                FlowType.push(record[i].data.flow_type)
             }
 
             Ext.Ajax.request({
@@ -379,7 +388,8 @@ function AgreeData(){
                 params: {
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
-                    ProcessDefinitionKey: ProcessDefinitionKeyData
+                    ProcessDefinitionKey: ProcessDefinitionKeyData,
+                    FlowType:FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);

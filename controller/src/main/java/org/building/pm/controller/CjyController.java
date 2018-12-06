@@ -8,10 +8,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.activitiController.ActivitiController;
-import org.building.pm.service.BasicService;
-import org.building.pm.service.WorkOrderService;
-import org.building.pm.service.ZdhService;
-import org.building.pm.service.CjyService;
+import org.building.pm.service.*;
 import org.building.pm.webcontroller.AMToMessController;
 import org.building.pm.webcontroller.MMController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +65,9 @@ public class CjyController {
 
     @Autowired
     private BasicService basicService;
+
+    @Autowired
+    private Dx_fileService dx_fileService;
 
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
@@ -2390,6 +2390,7 @@ public class CjyController {
     public Map batchAgreeForWeek(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                  @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
                                  @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                 @RequestParam(value="FlowType") String[] FlowType,
                                  HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
         Map result = new HashMap();
@@ -2402,6 +2403,7 @@ public class CjyController {
             Map stepresult = new HashMap();
             HashMap perresult = new HashMap();
             Map spperresult = new HashMap();
+            Map spsbbresult = new HashMap();
             Map complresult = new HashMap();
             Map flowresult = new HashMap();
 
@@ -2413,6 +2415,8 @@ public class CjyController {
                 if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
                     fqrNum++;
                 } else {
+                    if(FlowType[i].equals("WeekPlan")){
+//
                     perresult = cjyService.PRO_PM_03_PLAN_WEEK_GET(V_ORDERGUID[i]);
                     List<Map<String, Object>> perlist = (List) perresult.get("list");
                     String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
@@ -2478,7 +2482,78 @@ public class CjyController {
                             faiNum++;
                         }
                     }
+
                 }
+               // add
+                 if(FlowType[i].equals("WeekPlan01")){
+                    perresult = dx_fileService.PRO_PM_03_PLAN_WEEK_GET2(V_ORDERGUID[i]);
+                    List<Map<String, Object>> perlist = (List) perresult.get("list");
+                    String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+                    String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+                    String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+
+
+                    String V_STEPNAME = "";
+                    String V_NEXT_SETP = "";
+                    String sppercode = "";
+                    String processKey = "";
+
+
+                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
+
+                    } else {
+                        spsbbresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "WeekPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+                        List<Map<String, Object>> spperlist2 = (List) spsbbresult.get("list");
+
+                        V_STEPNAME = spperlist2.get(0).get("V_V_FLOW_STEPNAME").toString();
+                        V_NEXT_SETP = spperlist2.get(0).get("V_V_NEXT_SETP").toString();
+                        sppercode = spperlist2.get(0).get("V_PERSONCODE").toString();
+
+                        processKey = spperresult.get("RET").toString();
+                    }
+
+
+                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
+                        Calendar d = Calendar.getInstance();
+                        int year2 = d.get(Calendar.YEAR);
+                        int month2 = d.get(Calendar.MONTH);
+                        int date2 = d.get(Calendar.DATE);
+                        int hour2 = d.get(Calendar.HOUR_OF_DAY);
+                        int minute2 = d.get(Calendar.MINUTE);
+                        int second2 = d.get(Calendar.SECOND);
+
+                        String time = year2 + "-" + month2 + "-" + date2 + "T" + hour2 + ":" + minute2 + ":" + second2;
+                        String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
+                        String[] parVal = new String[]{"lcjs", "批量审批通过", time};
+
+                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
+                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+                            flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "80");
+                            if (flowresult.get("V_INFO").toString().equals("success")) {
+                                sucNum++;
+                            }
+                        } else {
+                            faiNum++;
+                        }
+                    } else {
+                        String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                        String[] parVal = new String[]{sppercode, "批量审批通过"};
+
+                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "WeekPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
+                            if (flowresult.get("V_INFO").toString().equals("success")) {
+                                sucNum++;
+                                nexperList.add(sppercode);
+                                //result.put("nestper", sppercode);
+                            }
+                        } else {
+                            faiNum++;
+                        }
+                    }
+
+                }
+            }
 
 
             } catch (Exception e) {
