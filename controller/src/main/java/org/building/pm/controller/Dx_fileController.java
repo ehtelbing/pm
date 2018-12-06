@@ -848,7 +848,7 @@ public class Dx_fileController {
         return result;
     }
     // 周计划按人员查询作业区全部
-    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_VIEW2", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_VIEW2", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_WEEK_VIEW2(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
                                                         @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
@@ -875,7 +875,7 @@ public class Dx_fileController {
     }
 
 // 设备部驳回修改
-    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_NSETSBB", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_NSETSBB", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_WEEK_NSETSBB(
             @RequestParam(value = "V_V_INPER") String V_V_INPER,
@@ -966,6 +966,63 @@ public class Dx_fileController {
         return result;
     }
 
+    // 设备部月计划驳回修改保存
+    @RequestMapping(value = "PRO_PM_03_PLAN_MONTH_SETSBB", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_MONTH_SETSBB(
+            @RequestParam(value = "V_V_INPER") String V_V_INPER,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_REPAIRMAJOR_CODE") String V_V_REPAIRMAJOR_CODE,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_STARTTIME") String V_V_STARTTIME,
+            @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
+            @RequestParam(value = "V_V_OTHERPLAN_GUID") String V_V_OTHERPLAN_GUID,
+            @RequestParam(value = "V_V_OTHERPLAN_TYPE") String V_V_OTHERPLAN_TYPE,
+            @RequestParam(value = "V_V_JHMX_GUID") String V_V_JHMX_GUID,
+            @RequestParam(value = "V_V_HOUR") String V_V_HOUR,
+            @RequestParam(value = "V_V_BZ") String V_V_BZ,
+            @RequestParam(value = "V_V_MAIN_DEFECT") String V_V_MAIN_DEFECT,
+            @RequestParam(value = "V_V_EXPECT_AGE") String V_V_EXPECT_AGE,
+            @RequestParam(value = "V_V_REPAIR_PER") String V_V_REPAIR_PER,
+            //2018-11-21
+            @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
+            @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_PM_03_PLAN_MONTH_SETSBB(
+                V_V_INPER,
+                V_V_GUID,
+                V_V_YEAR,
+                V_V_MONTH,
+                V_V_ORGCODE,
+                V_V_DEPTCODE,
+                V_V_EQUTYPECODE,
+                V_V_EQUCODE,
+                V_V_REPAIRMAJOR_CODE,
+                V_V_CONTENT,
+                V_V_STARTTIME,
+                V_V_ENDTIME,
+                V_V_OTHERPLAN_GUID,
+                V_V_OTHERPLAN_TYPE,
+                V_V_JHMX_GUID,
+                V_V_HOUR,
+                V_V_BZ,
+                V_V_MAIN_DEFECT,
+                V_V_EXPECT_AGE,
+                V_V_REPAIR_PER,
+                V_V_SGWAY,
+                V_V_SGWAYNAME,
+                V_V_FLAG);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

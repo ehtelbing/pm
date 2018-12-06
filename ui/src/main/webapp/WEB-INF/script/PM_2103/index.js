@@ -409,9 +409,11 @@ function AgreeData(){
         if (record.length > 0) {
             var BusinessKeysData=[];
             var ProcessDefinitionKeyData=[];
+            var FlowType=[];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
+                FlowType.push(record[i].data.flow_type);
             }
 
             Ext.Ajax.request({
@@ -422,7 +424,8 @@ function AgreeData(){
                 params: {
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
-                    ProcessDefinitionKey: ProcessDefinitionKeyData
+                    ProcessDefinitionKey: ProcessDefinitionKeyData,
+                    FlowType:FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);

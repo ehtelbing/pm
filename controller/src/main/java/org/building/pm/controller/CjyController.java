@@ -2523,8 +2523,8 @@ public class CjyController {
                         int second2 = d.get(Calendar.SECOND);
 
                         String time = year2 + "-" + month2 + "-" + date2 + "T" + hour2 + ":" + minute2 + ":" + second2;
-                        String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
-                        String[] parVal = new String[]{"lcjs", "批量审批通过", time};
+                        String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
+                        String[] parVal = new String[]{"sbblcjs", "批量审批通过", time};
 
                         complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
                         if (complresult.get("ret").toString().equals("任务提交成功")) {
@@ -2680,6 +2680,7 @@ public class CjyController {
     public Map batchAgreeForMonth(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                   @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
                                   @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                  @RequestParam(value="FlowType") String[] FlowType,
                                   HttpServletRequest request,
                                   HttpServletResponse response) throws Exception {
         Map result = new HashMap();
@@ -2700,22 +2701,86 @@ public class CjyController {
                 if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
                     fqrNum++;
                 } else {
-                    perresult = cjyService.PRO_PM_03_PLAN_MONTH_GET(V_ORDERGUID[i]);
+                    if (FlowType[i].equals("MonthPlan")) {
+                        perresult = cjyService.PRO_PM_03_PLAN_MONTH_GET(V_ORDERGUID[i]);
+                        List<Map<String, Object>> perlist = (List) perresult.get("list");
+                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+                        String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+
+                        String V_STEPNAME = "";
+                        String V_NEXT_SETP = "";
+                        String sppercode = "";
+                        String processKey = "";
+
+                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
+
+                        } else {
+                            spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+                            List<Map<String, Object>> spperlist = (List) spperresult.get("list");
+
+                            V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
+                            V_NEXT_SETP = spperlist.get(0).get("V_V_NEXT_SETP").toString();
+                            sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
+
+                            processKey = spperresult.get("RET").toString();
+                        }
+
+
+                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
+
+                            java.util.Date d = new java.util.Date();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                            Calendar ca = Calendar.getInstance();
+                            ca.add(Calendar.DATE, 30);
+
+                            d = ca.getTime();
+                            String currdate = format.format(d);
+
+                            String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
+                            String[] parVal = new String[]{"lcjs", "批量审批通过", currdate};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                sucNum++;
+                            } else {
+                                faiNum++;
+                            }
+                        } else {
+                            String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
+                            String[] parVal = new String[]{sppercode, "批量审批通过"};
+
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                            if (complresult.get("ret").toString().equals("任务提交成功")) {
+                                flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan", processKey, V_STEPCODE, V_NEXT_SETP);
+                                if (flowresult.get("V_INFO").toString().equals("success")) {
+                                    sucNum++;
+                                    nexperList.add(sppercode);
+                                    //result.put("nestper", sppercode);
+                                }
+                            } else {
+                                faiNum++;
+                            }
+                        }
+                    }
+
+                //add
+                if(FlowType[i].equals("MonthPlan01")){
+                    perresult = dx_fileService.PRO_PM_03_PLAN_MONTH_GET2(V_ORDERGUID[i]);
                     List<Map<String, Object>> perlist = (List) perresult.get("list");
                     String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
                     String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
                     String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
-
 
                     String V_STEPNAME = "";
                     String V_NEXT_SETP = "";
                     String sppercode = "";
                     String processKey = "";
 
-                    if (V_STEPCODE.equals("sbczsp")) {//最后一步
+                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
 
                     } else {
-                        spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
+                        spperresult = dx_fileService.PM_ACTIVITI_PROCESS_PER_SELSBB(V_V_ORGCODE, V_V_DEPTCODE, "", "MonthPlan01", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
                         List<Map<String, Object>> spperlist = (List) spperresult.get("list");
 
                         V_STEPNAME = spperlist.get(0).get("V_V_FLOW_STEPNAME").toString();
@@ -2726,26 +2791,25 @@ public class CjyController {
                     }
 
 
-                    if (V_STEPCODE.equals("sbczsp")) {//最后一步
+                    if (V_STEPCODE.equals("sbbsp")) {//最后一步
 
                         java.util.Date d = new java.util.Date();
-
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
                         Calendar ca = Calendar.getInstance();
-
                         ca.add(Calendar.DATE, 30);
 
                         d = ca.getTime();
-
                         String currdate = format.format(d);
 
-                        String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
-                        String[] parVal = new String[]{"lcjs", "批量审批通过", currdate};
+                        String[] parName = new String[]{"sbblcjs", "flow_yj", "shtgtime"};
+                        String[] parVal = new String[]{"sbblcjs", "批量审批通过", currdate};
 
-                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "lcjs", "流程结束", "通过", "lcjs", V_V_PERSONCODE);
+                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
                         if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            sucNum++;
+                            flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
+                            if (flowresult.get("V_INFO").toString().equals("success")) {
+                                sucNum++;
+                            }
                         } else {
                             faiNum++;
                         }
@@ -2755,7 +2819,7 @@ public class CjyController {
 
                         complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
                         if (complresult.get("ret").toString().equals("任务提交成功")) {
-                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan", processKey, V_STEPCODE, V_NEXT_SETP);
+                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "MonthPlan01", processKey, V_STEPCODE, V_NEXT_SETP);
                             if (flowresult.get("V_INFO").toString().equals("success")) {
                                 sucNum++;
                                 nexperList.add(sppercode);
@@ -2765,6 +2829,8 @@ public class CjyController {
                             faiNum++;
                         }
                     }
+
+                }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

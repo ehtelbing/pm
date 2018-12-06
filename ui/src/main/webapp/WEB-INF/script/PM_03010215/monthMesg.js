@@ -307,7 +307,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             displayField: 'displayField',
             valueField: 'valueField',
-            value: date.getFullYear(),
+            value:'',
             store: yearStore,
             queryMode: 'local'
         },
@@ -322,7 +322,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             displayField: 'displayField',
             valueField: 'valueField',
-            value:date.getMonth() + 2,
+            value:'',
             store: monthStore,
             queryMode: 'local'
         }, {
@@ -549,8 +549,10 @@ Ext.onReady(function () {
         layout: 'border',
         items: [northPanel, gridPanel]
     });
+    Ext.getCmp('yf').select(getMonth());
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
+        Ext.data.StoreManager.lookup('jhckStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
         Ext.getCmp('jhck').select(Ext.data.StoreManager.lookup('jhckStore').getAt(0));
         Ext.data.StoreManager.lookup('jhzyqStore').load({
             params: {
@@ -779,4 +781,15 @@ function OnClickExcelButton() {
     /*  + '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
       + '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize*/;
 
+}
+
+function getMonth(){
+    if(date.getMonth()+1==12){
+        Ext.getCmp('nf').select(date.getFullYear()+1);
+        return 1;
+    }else{
+        var month=date.getMonth()+1;
+        Ext.getCmp('nf').select(date.getFullYear());
+        return month+1;
+    }
 }

@@ -1277,5 +1277,89 @@ public class Dx_fileService {
         logger.info("end PRO_PM_03_PLAN_WEEK_SET_STATESBB");
         return result;
     }
+  //设备部月计划驳回修改
+  public Map PRO_PM_03_PLAN_MONTH_SETSBB(String V_V_INPER, String V_V_GUID, String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE,
+                                      String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE, String V_V_CONTENT,
+                                      String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE, String V_V_JHMX_GUID,
+                                      String V_V_HOUR, String V_V_BZ, String V_V_MAIN_DEFECT, String V_V_EXPECT_AGE, String V_V_REPAIR_PER,
+                                      String V_V_SGWAY,String V_V_SGWAYNAME,String V_V_FLAG) throws SQLException {
+      logger.info("begin PRO_PM_03_PLAN_MONTH_SETSBB");
+      Map result = new HashMap();
+      Connection conn = null;
+      CallableStatement cstmt = null;
+      try {
+          conn = dataSources.getConnection();
+          conn.setAutoCommit(true);
+          cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_MONTH_SETSBB" + "(:V_V_INPER,:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                  ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
+                  ":V_V_FLV_V_OTHERPLAN_GUIDOWCODE,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER,"+
+                  ":V_V_SGWAY,:V_V_SGWAYNAME,:V_V_FLAG,:V_INFO)}");
+          cstmt.setString("V_V_INPER", V_V_INPER);
+          cstmt.setString("V_V_GUID", V_V_GUID);
+          cstmt.setString("V_V_YEAR", V_V_YEAR);
+          cstmt.setString("V_V_MONTH", V_V_MONTH);
+          cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
 
+          cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+          cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+          cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+          cstmt.setString("V_V_REPAIRMAJOR_CODE", V_V_REPAIRMAJOR_CODE);
+          cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+
+          cstmt.setString("V_V_STARTTIME", V_V_STARTTIME);
+          cstmt.setString("V_V_ENDTIME", V_V_ENDTIME);
+          cstmt.setString("V_V_OTHERPLAN_GUID", V_V_OTHERPLAN_GUID);
+          cstmt.setString("V_V_OTHERPLAN_TYPE", V_V_OTHERPLAN_TYPE);
+          cstmt.setString("V_V_JHMX_GUID", V_V_JHMX_GUID);
+          cstmt.setString("V_V_HOUR", V_V_HOUR);
+          cstmt.setString("V_V_BZ", V_V_BZ);
+          cstmt.setString("V_V_MAIN_DEFECT", V_V_MAIN_DEFECT);
+          cstmt.setString("V_V_EXPECT_AGE", V_V_EXPECT_AGE);
+          cstmt.setString("V_V_REPAIR_PER", V_V_REPAIR_PER);
+
+          cstmt.setString("V_V_SGWAY", V_V_SGWAY);
+          cstmt.setString("V_V_SGWAYNAME", V_V_SGWAYNAME);
+          cstmt.setString("V_V_FLAG", V_V_FLAG);
+
+          cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+          cstmt.execute();
+          result.put("V_INFO", cstmt.getObject("V_INFO"));
+      } catch (SQLException e) {
+          logger.error(e);
+      } finally {
+          cstmt.close();
+          conn.close();
+      }
+      logger.debug("result:" + result);
+      logger.info("end PRO_PM_03_PLAN_MONTH_SETSBB");
+      return result;
+  }
+  // 月计划上报设备部修改状态
+  public HashMap PRO_PM_03_PLAN_MONTH_SET_STATESBB(String V_V_GUID, String V_V_STATECODE) throws SQLException {
+
+      logger.info("begin PRO_PM_03_PLAN_WEEK_SET_STATESBB");
+      HashMap result = new HashMap();
+      Connection conn = null;
+      CallableStatement cstmt = null;
+      try {
+          conn = dataSources.getConnection();
+          conn.setAutoCommit(false);
+          cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_MONTH_SET_STATESBB" + "(:V_V_GUID,:V_V_STATECODE,:V_INFO)}");
+
+          cstmt.setString("V_V_GUID", V_V_GUID);
+          cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+
+          cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+          cstmt.execute();
+          result.put("V_INFO", cstmt.getObject("V_INFO"));
+      } catch (SQLException e) {
+          logger.error(e);
+      } finally {
+          cstmt.close();
+          conn.close();
+      }
+      logger.debug("result:" + result);
+      logger.info("end PRO_PM_03_PLAN_MONTH_SET_STATESBB");
+      return result;
+  }
 }

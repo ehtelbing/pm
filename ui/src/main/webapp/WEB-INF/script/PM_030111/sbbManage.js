@@ -276,7 +276,7 @@ var panel = Ext.create('Ext.form.Panel', {
             xtype: 'textfield',
             width: 158,
             emptyText: '检修明细模糊搜索'
-            // ,margin:'5px 0px 5px 90px'
+             ,margin:'5px 0px 5px 90px'
         }, {
             id: 'query',
             xtype: 'button',
@@ -403,7 +403,8 @@ Ext.onReady(function () {
         // if(url_deptcode!=undefined){
         //     Ext.getCmp("ck").select(url_deptcode.substring(0,4));
         // }else{
-            Ext.getCmp("ck").select(ckstore.getAt(0));
+        Ext.data.StoreManager.lookup('ckstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+        Ext.getCmp("ck").select(ckstore.getAt(0));
         // }
 
 
@@ -429,8 +430,8 @@ Ext.onReady(function () {
         //     Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
         //     Ext.getCmp("zyq").select(url_deptcode);
         // }else{
-            Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
-            Ext.getCmp("zyq").select(zyqstore.getAt(0));
+        Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+        Ext.getCmp("zyq").select(zyqstore.getAt(0));
         // }
     });
 
@@ -453,10 +454,6 @@ Ext.onReady(function () {
             }
         });
     });
-    Ext.data.StoreManager.lookup('ckstore').on('load', function () {
-        Ext.data.StoreManager.lookup('ckstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
-        Ext.getCmp("ck").select('%');
-    });
     //设备类型加载监听
     Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
         Ext.getCmp("sblx").select('%');
@@ -464,6 +461,7 @@ Ext.onReady(function () {
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
+        QueryGrid();
     });
     zyStore.load({
         params:{
@@ -475,7 +473,7 @@ Ext.onReady(function () {
         // if(url_zy!=undefined){
         //     Ext.getCmp('zy').select(url_zy);
         // }else{
-            Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
 
         // }
 
@@ -483,18 +481,18 @@ Ext.onReady(function () {
     // Ext.getCmp('zks').setValue(getWeekStartDate());
     // Ext.getCmp('zjs').setValue(getWeekEndDate());
     Ext.getCmp('year').on('select', function () {
-    //     Ext.getCmp('zks').setValue(getWeekStartDate());
-    //     Ext.getCmp('zjs').setValue(getWeekEndDate());
+        //     Ext.getCmp('zks').setValue(getWeekStartDate());
+        //     Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.getCmp('month').on('select', function () {
-    //     Ext.getCmp('zks').setValue(getWeekStartDate());
-    //     Ext.getCmp('zjs').setValue(getWeekEndDate());
+        //     Ext.getCmp('zks').setValue(getWeekStartDate());
+        //     Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.getCmp('week').on('select', function () {
-    //     Ext.getCmp('zks').setValue(getWeekStartDate());
-    //     Ext.getCmp('zjs').setValue(getWeekEndDate());
+        //     Ext.getCmp('zks').setValue(getWeekStartDate());
+        //     Ext.getCmp('zjs').setValue(getWeekEndDate());
         QueryGrid();
     });
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
