@@ -309,7 +309,7 @@ public class ActivitiController {
             int i = 1;
             categorySQL += " AND (";
             for (String categoryItem : nameSpace) {
-                categorySQL += " P.CATEGORY_ = '" + categoryItem + "'";
+                categorySQL += " P.CATEGORY_ like '" + categoryItem + "%'";
                 if (i != nameSpace.length)
                     categorySQL += " OR ";
                 i++;
@@ -374,7 +374,7 @@ public class ActivitiController {
             int i = 1;
             categorySQL += " AND (";
             for (String categoryItem : nameSpace) {
-                categorySQL += " P.CATEGORY_ = '" + categoryItem + "'";
+                categorySQL += " P.CATEGORY_ like '" + categoryItem + "%'";
                 if (i != nameSpace.length)
                     categorySQL += " OR ";
                 i++;
