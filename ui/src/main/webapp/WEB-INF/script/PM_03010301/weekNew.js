@@ -198,6 +198,7 @@ Ext.onReady(function () {
             'V_JXGX_CODE',
             'V_MONTHPLAN_CODE',
             'V_WEEKID',
+            'V_STATE',
             'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
             'V_MAIN_DEFECT',
             'V_EXPECT_AGE',
@@ -359,10 +360,10 @@ Ext.onReady(function () {
         style:'margin:0px 0px 5px 0px',
         autoScroll: true,
         columnLines: true,
-        selModel:{
-            //mode:'singel',
-            selType:'checkboxmodel'
-        },
+        // selModel:{
+        //     //mode:'singel',
+        //     selType:'checkboxmodel'
+        // },
         columns:[
             { xtype : 'rownumberer',
                 text : '序号',
@@ -737,16 +738,16 @@ function _selectNextSprStore() {
 }
 //上报
 function OnButtonUp() {
-    var records = Ext.getCmp('grid').getSelectionModel().getSelection();
-    if (records.length == 0) {//判断是否选中数据
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择一条数据',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return false;
-    }
+    // var records = Ext.getCmp('grid').getSelectionModel().getSelection();
+    // if (records.length == 0) {//判断是否选中数据
+    //     Ext.MessageBox.show({
+    //         title: '提示',
+    //         msg: '请选择一条数据',
+    //         buttons: Ext.MessageBox.OK,
+    //         icon: Ext.MessageBox.WARNING
+    //     });
+    //     return false;
+    // }
     if(Ext.getCmp('nextPer').getValue()==""){
         alert('下一步审批人为空，请从新选择'); return;
     }
@@ -759,25 +760,27 @@ function OnButtonUp() {
     //        if (btn == 'yes') {
 //---new start 2018-09-17
     var i_err = 0;
-    for (var i = 0; i < records.length; i++) {
+    // for (var i = 0; i < records.length; i++) {
     //    if (Ext.Date.format(new Date(), 'Y-m-d H:i:s') >= Ext.getCmp("starttime").getValue() && Ext.Date.format(new Date(), 'Y-m-d H:i:s') <= Ext.getCmp("endtime").getValue()) {
 
-
+    var records=Ext.data.StoreManager.lookup('gridStore').getProxy().getReader().rawData;
+    for(var i=0;i<records.list.length;i++){
+        if(records.list[i].V_STATE=="30"){
             Ext.Ajax.request({
                 url: AppUrl + 'dxfile/PRO_PM_03_PLAN_WEEK_SEND2',
                 method: 'POST',
                 async: false,
                 params: {
-                    V_V_GUID: records[i].data.V_SBB_GUID,
-                    V_V_ORGCODE: records[i].data.V_ORGCODE,
-                    V_V_DEPTCODE: records[i].data.V_DEPTCODE,
+                    V_V_GUID: records.list[i].V_SBB_GUID,
+                    V_V_ORGCODE: records.list[i].V_ORGCODE,
+                    V_V_DEPTCODE: records.list[i].V_DEPTCODE,
                     V_V_FLOWCODE: '上报',
                     V_V_PLANTYPE: 'WEEK',
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
                 },
                 success: function (resp) {
                     var resp = Ext.decode(resp.responseText).list[0];
-                    var new_businssflowkey=(parseInt(records[i].get('V_GUID'))+1).toString();
+                    // var new_businssflowkey=(parseInt(records.list[i].get('V_GUID'))+1).toString();
 
                     if (resp.V_INFO == '成功') {
                         Ext.Ajax.request({
@@ -786,9 +789,9 @@ function OnButtonUp() {
                             method: 'post',
                             params: {
                                 parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_SBB_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan01"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, Ext.getCmp('nextPer').getValue(), "请审批!", records.list[i].V_CONTENT, records.list[i].V_WEEKID, "请审批！", "WeekPlan01"],
                                 processKey: processKey,
-                                businessKey: records[i].get('V_SBB_GUID'), // records[i].get('V_GUID'),
+                                businessKey: records.list[i].V_SBB_GUID, // records[i].get('V_GUID'),
                                 V_STEPCODE: 'Start',
                                 V_STEPNAME: V_STEPNAME,
                                 V_IDEA: '请审批！',
@@ -797,17 +800,18 @@ function OnButtonUp() {
                             },
                             success: function (response) {
                                 if (Ext.decode(response.responseText).ret == 'OK') {
-
+                                    QueryGrid();
                                 } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                    Ext.Msg.alert('提示', '该流程发起失败！');
+                                    i_err++;
+                                    Ext.Msg.alert('提示', '该流程发起失败'+i_err+'条数据!');
                                 }
                             }
                         });
-                        i_err++;
-
-                        if (i_err == records.length) {
-                            QueryGrid();
-                        }
+                        // i_err++;
+                        //
+                        // if (i_err == records.length) {
+                        //     QueryGrid();
+                        // }
                     } else {
                         Ext.MessageBox.show({
                             title: '错误',
@@ -819,7 +823,8 @@ function OnButtonUp() {
                             }
                         });
                     }
-                },
+                }
+                ,
                 failure: function (response) {
                     Ext.MessageBox.show({
                         title: '错误',
@@ -832,10 +837,14 @@ function OnButtonUp() {
                     })
                 }
             });
+        }
+
+    }
+
       //  }
       //   else {
       //       Ext.Msg.alert('提示', '该计划不在上报时间内！');
       //   }
-    }
+    // }
 
 }
