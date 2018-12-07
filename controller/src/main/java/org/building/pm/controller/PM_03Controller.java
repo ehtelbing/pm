@@ -1227,6 +1227,14 @@ public class PM_03Controller {
         Map result = pm_03Service.PM_03_PLAN_REPAIR_DEPT_DEL(V_V_GUID, V_V_REPAIR_DEPTCODE);
         return result;
     }
+    //导入放行计划
+    @RequestMapping(value = "/DR_PM_03_PLAN_PROJECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DR_PM_03_PLAN_PROJECT(@RequestParam(value = "V_V_YEAR") String V_V_YEAR
+    ) throws Exception {
 
+        Map result = pm_03Service.DR_PM_03_PLAN_PROJECT(V_V_YEAR);
+        return result;
+    }
 
 }

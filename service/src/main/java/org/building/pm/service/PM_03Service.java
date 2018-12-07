@@ -2443,4 +2443,31 @@ public class PM_03Service {
         logger.info("end PRO_PM_03_PLAN_PROJECT_VIEW2");
         return result;
     }
+
+    //导入放行计划
+    public Map DR_PM_03_PLAN_PROJECT(String V_V_YEAR) throws SQLException {
+
+        logger.info("begin DR_PM_03_PLAN_PROJECT");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{?=call DR_PM_03_PLAN_PROJECT(?)");
+            cstmt.registerOutParameter(1, OracleTypes.VARCHAR);
+            cstmt.setInt(2, Integer.parseInt(V_V_YEAR));
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString(1));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DR_PM_03_PLAN_PROJECT");
+        return result;
+    }
 }

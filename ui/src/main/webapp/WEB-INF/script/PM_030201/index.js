@@ -239,17 +239,23 @@ Ext.onReady(function () {
                 icon: imgpath + '/delete.png',
                 listeners: {click: OnButtonDel}
             },
-            {
-                xtype: 'button',
-                text: '上报年计划',
-                icon: imgpath + '/accordion_collapse.png',
-                listeners: {click: OnButtonUp}
-            },
+            //{
+            //    xtype: 'button',
+            //    text: '上报年计划',
+            //    icon: imgpath + '/accordion_collapse.png',
+            //    listeners: {click: OnButtonUp}
+            //},
             {
                 xtype: 'button',
                 text: '导出',
                 icon: imgpath + '/accordion_collapse.png',
                 listeners: {click: OnButtonOut}
+            },
+            {
+                xtype: 'button',
+                text: '导入放行计划',
+                icon: imgpath + '/accordion_expand.png',
+                listeners: {click: OnButtonDR}
             }
         ]
     });
@@ -514,7 +520,33 @@ function OnButtonUp(){
         });
     }
 }
+function OnButtonDR(){
+    Ext.getBody().mask('<p>放行计划导入中...</p>');
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_03/DR_PM_03_PLAN_PROJECT',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_YEAR: Ext.getCmp('year').getValue()
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if(resp.V_INFO=='SUCCESS'){
+                alert('放行年计划导入成功');
+                OnButtonQuery();
+                Ext.getBody().unmask();
 
+            }else{
+                alert('放行年计划导入失败');
+                Ext.getBody().unmask();
+            }
+        },failure: function (response) {
+            alert('放行年计划导入失败');
+            Ext.getBody().unmask();
+        }
+    });
+
+}
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
