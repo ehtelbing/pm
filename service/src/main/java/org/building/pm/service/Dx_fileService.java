@@ -1362,4 +1362,32 @@ public class Dx_fileService {
       logger.info("end PRO_PM_03_PLAN_MONTH_SET_STATESBB");
       return result;
   }
+  // 大修生成工单查询
+  public HashMap PM_PROJECT_WORKORDER_CREATE(String V_V_PROJECT_GUID, String V_V_INPERCODE) throws SQLException {
+
+      logger.info("begin PM_PROJECT_WORKORDER_CREATE");
+      HashMap result = new HashMap();
+      Connection conn = null;
+      CallableStatement cstmt = null;
+      try {
+          conn = dataSources.getConnection();
+          conn.setAutoCommit(false);
+          cstmt = conn.prepareCall("{call PM_PROJECT_WORKORDER_CREATE" + "(:V_V_PROJECT_GUID,:V_V_INPERCODE,:V_CURSOR)}");
+
+          cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+          cstmt.setString("V_V_INPERCODE", V_V_INPERCODE);
+
+          cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+          cstmt.execute();
+          result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+      } catch (SQLException e) {
+          logger.error(e);
+      } finally {
+          cstmt.close();
+          conn.close();
+      }
+      logger.debug("result:" + result);
+      logger.info("end PM_PROJECT_WORKORDER_CREATE");
+      return result;
+  }
 }

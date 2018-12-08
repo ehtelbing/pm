@@ -256,6 +256,11 @@ Ext.onReady(function () {
                 text: '导入放行计划',
                 icon: imgpath + '/accordion_expand.png',
                 listeners: {click: OnButtonDR}
+            },{
+                xtype: 'button',
+                text: '生成工单',
+                // icon: imgpath + '/accordion_expand.png',
+                listeners: {click: OnButtonWorkorder}
             }
         ]
     });
@@ -559,4 +564,16 @@ function atright(value, metaData, record, rowIndex, colIndex, store) {
 function timelfet(value, metaDate, record, rowIndex, colIndex, store){
     metaDate.style="text-align:right;";
     return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';
+}
+
+function OnButtonWorkorder(){
+    var chodata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(chodata.length!=1){
+        alert('请选择一条数据进行工单生成！');
+        return;
+    }else{
+        var owidth = window.document.body.offsetWidth - 600;
+        var oheight = window.document.body.offsetHeight - 100;
+        window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?guid=' +chodata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    }
 }

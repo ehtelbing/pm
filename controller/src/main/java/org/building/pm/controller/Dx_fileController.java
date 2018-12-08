@@ -1023,6 +1023,19 @@ public class Dx_fileController {
                 V_V_FLAG);
         return result;
     }
+    // 大修生成工单查询
+    @RequestMapping( value="PM_PROJECT_WORKORDER_CREATE",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PROJECT_WORKORDER_CREATE(
+            @RequestParam(value="V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+            @RequestParam(value="V_V_INPERCODE") String V_V_INPERCODE,
+            HttpServletResponse response,
+            HttpServletRequest request)
+        throws SQLException{
+        Map result=dx_fileService.PM_PROJECT_WORKORDER_CREATE(V_V_PROJECT_GUID,V_V_INPERCODE);
+        return result;
+    }
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
