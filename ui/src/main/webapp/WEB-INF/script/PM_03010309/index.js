@@ -475,7 +475,12 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width:75,
             align:'center',
             renderer:function(value,metaData,record){
-                return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
+                if(record.data.V_OTHERPLAN_GUID!=""){
+                    return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
+                }else{
+                    return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+''+'</a>';
+                }
+
             }
         },
         {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
