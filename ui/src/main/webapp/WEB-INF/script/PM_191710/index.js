@@ -217,6 +217,7 @@ function btn_select(){
         alert("请选择一条数据");
         return false;
     }
+    var mxcode=seldata[0].data.V_MX_CODE;
     Ext.Ajax.request({
         url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_SEL',//获取该模型下的工序
         method: 'POST',
@@ -338,7 +339,7 @@ function btn_select(){
     });
 
     window.close();
-    window.opener.getReturnMX();
+    window.opener.getReturnMX(mxcode);
 
 
 }

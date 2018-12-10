@@ -1390,4 +1390,27 @@ public class Dx_fileService {
       logger.info("end PM_PROJECT_WORKORDER_CREATE");
       return result;
   }
+  public HashMap PM_1917_JXMX_DATA_SEL_WORKDESC(String V_V_MX_CODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_1917_JXMX_DATA_SEL_WORKDESC");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_1917_JXMX_DATA_SEL_WORKDESC(:V_V_MX_CODE,:RET)}");
+            cstmt.setString("V_V_MX_CODE",V_V_MX_CODE);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+      logger.debug("result:" + result);
+      logger.info("end PM_1917_JXMX_DATA_SEL_WORKDESC");
+      return result;
+  }
 }

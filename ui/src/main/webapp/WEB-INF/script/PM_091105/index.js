@@ -58,6 +58,21 @@ var form = {
 function OnClickSaveButton() {
 	var V_JXMX_CODE=newGuid();
 	var V_GX_CODE='';
+	var v_work_desc="";
+	Ext.Ajax.request({
+		url:AppUrl + 'WorkOrder/PRO_PM_WORKORDER_GET',
+		methon:'POST',
+		async:false,
+		params:{
+            V_V_ORDERGUID:V_ORDERGUID
+		},
+		success:function (resp) {
+			var res=Ext.decode(resp.responseText);
+            if (res.list != "" && res.list != null) {
+                v_work_desc=res.list[0].V_SHORT_TXT;
+            }
+        }
+	});
 	Ext.Ajax.request({//查找设备类型
 		url: AppUrl + 'PM_06/PRO_SAP_PM_EQU_P_GET',
 		method: 'POST',
@@ -82,7 +97,7 @@ function OnClickSaveButton() {
 						V_V_EQUCODE: V_EQUCODE,
 						V_V_EQUCODE_CHILD: '%',
 						V_V_REPAIRMAJOR_CODE: '',
-						V_V_BZ: '',
+						V_V_BZ: v_work_desc,//'',
 						V_V_HOUR: '',
 						V_V_IN_PER: Ext.util.Cookies.get('v_personname2'),
 						V_V_IN_DATE: Ext.util.Format.date(new Date(), 'Y-m-d')

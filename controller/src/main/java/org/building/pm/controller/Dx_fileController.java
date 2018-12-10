@@ -1036,6 +1036,14 @@ public class Dx_fileController {
         return result;
     }
 
+    @RequestMapping(value="PM_1917_JXMX_DATA_SEL_WORKDESC",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXMX_DATA_SEL_WORKDESC(@RequestParam(value="V_V_MX_CODE") String V_V_MX_CODE)
+        throws SQLException{
+        Map result=dx_fileService.PM_1917_JXMX_DATA_SEL_WORKDESC(V_V_MX_CODE);
+        return result;
+    }
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

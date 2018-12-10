@@ -565,9 +565,10 @@ function GetModel() {//获取模型
 
 }
 
-function getReturnMX() {
+function getReturnMX(mxcode) {
     loadTaskGrid();
     loadMatList();
+    loadWorkDesc(mxcode);
 }
 
 function NowDate_b(id) {
@@ -653,4 +654,21 @@ function getReturnWBS(data) {
     $("#wbsDesc").val(data[1]);
     $("#proCode").val(data[2]);
     $("#proName").val(data[3]);
+}
+
+function loadWorkDesc(mxcode){ //获取模型工单描述
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_1917_JXMX_DATA_SEL_WORKDESC',
+        methon:'POST',
+        async:false,
+        params:{
+            V_V_MX_CODE: mxcode
+        },
+        success:function (resp) {
+            var res=Ext.decode(resp.responseText);
+            if (res.list != "" && res.list != null) {
+                $("#V_DEFECTLIST").val(res.list[0].V_BZ);
+            }
+        }
+    });
 }
