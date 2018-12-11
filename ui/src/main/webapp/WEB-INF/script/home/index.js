@@ -20,6 +20,7 @@ if (location.href.split('?')[1] != undefined) {
         menuname = Ext.urlDecode(location.href.split('?')[1]).v_menuname;
         v_url = Ext.urlDecode(location.href.split('?')[1]).v_url;
         menutype = Ext.urlDecode(location.href.split('?')[1]).menutype;
+        treeid = Ext.urlDecode(location.href.split('?')[1]).treeid;
     }
 }
 
@@ -280,6 +281,7 @@ function _CreateSidebar(accordions) {
         preventHeader: true,
         items: [Ext.create('Ext.panel.Panel', {
             title: '菜单',
+            id:'menutree',
             titleAlign: 'center',
             width: 200,
             layout: 'accordion',
@@ -389,12 +391,16 @@ function OnPageLoaded() {
             Ext.ComponentManager.get('favorite').collapse();
             Ext.getBody().unmask();
             _getHomeMenu();
+            if (treeid != "" && treeid != null) {
+                refreshTree(treeid);
+            }
             //GETDDDL();
         }
     });
     if (menucode != "" && menucode != null) {
         window.parent.append(menucode, menuname, APP + v_url);
     }
+
 }
 
 Ext.onReady(OnPageLoaded);
@@ -402,7 +408,24 @@ Ext.onReady(OnPageLoaded);
 function Close() {
     window.close();
 }
+function refreshTree(pid){
 
+    Ext.getCmp('menutree').removeAll();
+    Ext.Ajax.request({
+        url: AppUrl + 'tree/PRO_BASE_NEW_MENU_SELNEW',
+        params: {
+            IS_V_ROLECODE: '00',
+            IS_V_PID:pid
+        },
+        method: 'post',
+        sync: true,
+        success: function (response) {
+            var result = Ext.decode(response.responseText);
+            var Accordions = _AssembleAccordions(result); // tree
+            Ext.getCmp('menutree').add(Accordions);
+        }
+    });
+}
 function CloseWorkItem(item) {
     var workspace = Ext.ComponentManager.get('container');
     var tab = workspace.items.map[item];
