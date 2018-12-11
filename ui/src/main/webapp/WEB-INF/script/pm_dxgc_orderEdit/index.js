@@ -4,31 +4,28 @@
 /**
  * Created by lxm on 2017/8/14.
  */
-var V_GUID="";
-var V_DX_GUID = null;
+var V_GUID = null;
 var V_EQUTYPECODE = null;
 var V_SOURCECODE = null;
 if (location.href.split('?')[1] != undefined) {
-    V_DX_GUID = Ext.urlDecode(location.href.split('?')[1]).guid;
-    // V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
-    // V_SOURCECODE = Ext.urlDecode(location.href.split('?')[1]).V_V_SOURCECODE;
+    V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_V_ORDERGUID;
+    V_EQUTYPECODE = Ext.urlDecode(location.href.split('?')[1]).V_V_EQUTYPE;
+    V_SOURCECODE = Ext.urlDecode(location.href.split('?')[1]).V_V_SOURCECODE;
 }
 var processKey = '';
 var V_NEXT_SETP = '';
 var V_STEPNAME = '';
 $(function () {
-    // loadinsertWork();
     bindDate("planStartDate");
     bindDate("planFinDate");
 
     $("#personCode").html(Ext.util.Cookies.get('v_personname2'));
-   // NowDate2("createDate");
+    // NowDate2("createDate");
     NowDate_b("planStartDate");
     NowDate_e("planFinDate");
 
-    loadDEPT();
-    loadinsertWork();
-    // loadPageInfo();
+
+    loadPageInfo();
     loadTypelist();
     loadRepairList();
 
@@ -171,14 +168,6 @@ $(function () {
     $("#selType").change(function () {
         $("#ORDER_TYP").html($("#selType").val());
     });
-    $("#selDW").change(function () {
-        loadZYQ($("#selDW").val());
-    });
-
-    $("#selZYQ").change(function () {
-        loadRepairList();
-
-    });
     //WBS编码选择页面
     $("#wbsCode").click(function () {
         var owidth = window.document.body.offsetWidth - 200;
@@ -186,61 +175,16 @@ $(function () {
         var ret = window.open(AppUrl + 'page/PM_04/index.html?V_ORGCODE=' + $("#V_ORGCODE").val() + '&V_DEPTCODE=' + $("#V_DEPTCODE").val() +
             '&V_EQUTYPECODE=' + V_EQUTYPECODE + '&V_EQUCODE=' + $("#V_EQUCODE").val() + '&wbsCode=' + $("#wbsCode").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
-
 });
-function loadDEPT() {//工厂单位
-    $.ajax({
-        url: AppUrl + 'PROJECT/PRO_BASE_DEPT_VIEW_ROLE',
-        type: 'post',
-        async: false,
-        data: {
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
-            V_V_DEPTCODENEXT: '%',
-            V_V_DEPTTYPE: '基层单位'
-        },
-        success: function (resp) {
-            var result = [];
-                $.each(resp.list, function (index, item) {
-                    result.push("<option value=\"" + item.V_DEPTCODE + "\">" + item.V_DEPTNAME + "</option>");
-                });
-                $("#selDW").html(result.join(""));
 
-                loadZYQ($("#selDW").val());
-        }
-    });
-}
-function loadZYQ(dwcode) {//作业区
-    $.ajax({
-        url: AppUrl + 'PROJECT/PRO_BASE_DEPT_VIEW_ROLE',
-        type: 'post',
-        async: false,
-        data: {
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_DEPTCODE: dwcode,
-            V_V_DEPTCODENEXT: '%',
-            V_V_DEPTTYPE: '主体作业区'
-        },
-        success: function (resp) {
-            var result = [];
-            $.each(resp.list, function (index, item) {
-                result.push("<option value=\"" + item.V_DEPTCODE + "\">" + item.V_DEPTNAME + "</option>");
-            });
-            $("#selZYQ").html(result.join(""));
-
-
-            loadRepairList();
-        }
-    });
-}
 function loadSPR() {
     $.ajax({//审批人
         url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
         type: 'post',
         async: false,
         data: {
-            V_V_ORGCODE: $("#selDW").val(),
-            V_V_DEPTCODE:  $("#selZYQ").val(),
+            V_V_ORGCODE: $("#V_ORGCODE").val(),
+            V_V_DEPTCODE: $("#V_DEPTCODE").val(),
             V_V_REPAIRCODE: $("#selPlant").val(),
             V_V_FLOWTYPE: 'WORK',
             V_V_FLOW_STEP: 'start',
@@ -255,11 +199,10 @@ function loadSPR() {
                 $.each(resp.list, function (index, item) {
                     result.push("<option value=\"" + item.V_PERSONCODE + "\">" + item.V_PERSONNAME + "</option>");
                 });
-                if(resp.list.length!=0){
-                    processKey = resp.RET;
-                    V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
-                    V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
-                }
+                processKey = resp.RET;
+                V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
+
                 $("#selApprover").html(result.join(""));
             }
 
@@ -320,7 +263,7 @@ function loadTypelist() {
         type: "post",
         async: false,
         params: {
-            V_V_SOURCECODE: 'defct12'
+            V_V_SOURCECODE: V_SOURCECODE
         },
         success: function (resp) {
             var resp = Ext.JSON.decode(resp.responseText);
@@ -654,88 +597,88 @@ function BillGo() {
                             });
                         }else{
 
-                                        Ext.Ajax.request({
-                                            url: AppUrl + 'Activiti/StratProcess',
+                            Ext.Ajax.request({
+                                url: AppUrl + 'Activiti/StratProcess',
+                                async: false,
+                                method: 'post',
+                                params: {
+                                    parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                    parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
+                                    processKey: processKey,
+                                    businessKey: $("#V_ORDERGUID").val(),
+                                    V_STEPCODE: 'start',
+                                    V_STEPNAME: V_STEPNAME,
+                                    V_IDEA: '请审批！',
+                                    V_NEXTPER: $("#selApprover").val(),
+                                    V_INPER: Ext.util.Cookies.get('v_personcode')
+                                },
+                                success: function (response) {
+                                    if (Ext.decode(response.responseText).ret == 'OK') {
+                                        Ext.Ajax.request({//修改周计划子表状态
+                                            method: 'POST',
                                             async: false,
-                                            method: 'post',
+                                            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_F',
                                             params: {
-                                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                                parVal: [Ext.util.Cookies.get('v_personcode'), $("#V_ORDERGUID").val(), $("#selApprover").val(), "请审批!", $("#V_DEFECTLIST").val(), $("#V_ORDERID").html(), "请审批！", "WORK"],
-                                                processKey: processKey,
-                                                businessKey: $("#V_ORDERGUID").val(),
-                                                V_STEPCODE: 'start',
-                                                V_STEPNAME: V_STEPNAME,
-                                                V_IDEA: '请审批！',
-                                                V_NEXTPER: $("#selApprover").val(),
-                                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                                                V_V_WORKORDER_GUID: V_GUID
                                             },
                                             success: function (response) {
-                                                if (Ext.decode(response.responseText).ret == 'OK') {
-                                                    Ext.Ajax.request({//修改周计划子表状态
+                                                var respf = Ext.decode(response.responseText);
+                                                if (respf.V_INFO == 'success') {
+                                                    Ext.Ajax.request({//查找所需修改状态的周计划
                                                         method: 'POST',
                                                         async: false,
-                                                        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_F',
+                                                        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
                                                         params: {
-                                                            V_V_WORKORDER_GUID: V_GUID
+                                                            V_V_WORKORDER_GUID: V_GUID,
+                                                            V_V_FLAG: "1"
                                                         },
                                                         success: function (response) {
-                                                            var respf = Ext.decode(response.responseText);
-                                                            if (respf.V_INFO == 'success') {
-                                                                Ext.Ajax.request({//查找所需修改状态的周计划
-                                                                    method: 'POST',
-                                                                    async: false,
-                                                                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
-                                                                    params: {
-                                                                        V_V_WORKORDER_GUID: V_GUID,
-                                                                        V_V_FLAG: "1"
-                                                                    },
-                                                                    success: function (response) {
-                                                                        var respl = Ext.decode(response.responseText);
-                                                                        if (respl.list.length > 0) {
-                                                                            for (var i = 0; i < respl.list.length; i++) {
-                                                                                Ext.Ajax.request({//修改周计划状态
-                                                                                    method: 'POST',
-                                                                                    async: false,
-                                                                                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
-                                                                                    params: {
-                                                                                        V_V_GUID: respl.list[i].V_WEEK_GUID,
-                                                                                        V_V_STATECODE: '31'//已下票
-                                                                                    },
-                                                                                    success: function (response) {
-                                                                                        var respm = Ext.decode(response.responseText);
-                                                                                        if (respm.V_INFO == 'success') {
+                                                            var respl = Ext.decode(response.responseText);
+                                                            if (respl.list.length > 0) {
+                                                                for (var i = 0; i < respl.list.length; i++) {
+                                                                    Ext.Ajax.request({//修改周计划状态
+                                                                        method: 'POST',
+                                                                        async: false,
+                                                                        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_STATE',
+                                                                        params: {
+                                                                            V_V_GUID: respl.list[i].V_WEEK_GUID,
+                                                                            V_V_STATECODE: '31'//已下票
+                                                                        },
+                                                                        success: function (response) {
+                                                                            var respm = Ext.decode(response.responseText);
+                                                                            if (respm.V_INFO == 'success') {
 
-                                                                                        } else {
-                                                                                            alert("周计划状态修改错误");
-                                                                                            return;
-                                                                                        }
-
-                                                                                    }
-                                                                                });
+                                                                            } else {
+                                                                                alert("周计划状态修改错误");
+                                                                                return;
                                                                             }
-                                                                        } else {
-                                                                            alert("周计划状态修改失败！");
-                                                                            return;
-                                                                        }
 
-                                                                    }
-                                                                });
-                                                                alert("工单创建成功：" + $("#V_ORDERID").html());
-                                                                window.close();
-                                                                window.opener.query();
+                                                                        }
+                                                                    });
+                                                                }
                                                             } else {
-                                                                alert("工单状态修改失败！");
+                                                                alert("周计划状态修改失败！");
+                                                                return;
                                                             }
 
                                                         }
                                                     });
-                                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                                    Ext.Msg.alert('提示', '该流程发起失败！');
-                                                    // Ext.getBody().unmask();//去除页面笼罩
-                                                    history.go(0);
+                                                    alert("工单创建成功：" + $("#V_ORDERID").html());
+                                                    window.close();
+                                                    window.opener.query();
+                                                } else {
+                                                    alert("工单状态修改失败！");
                                                 }
+
                                             }
                                         });
+                                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                        Ext.Msg.alert('提示', '该流程发起失败！');
+                                        // Ext.getBody().unmask();//去除页面笼罩
+                                        history.go(0);
+                                    }
+                                }
+                            });
 
 
                         }
@@ -982,61 +925,4 @@ function getEquipReturnValue(ret) {
     $("#V_EQUNAME").val(str[1]);
     $("#V_EQUCODE").val(str[0]);
     $("#V_EQUSITE").val(str[3]);
-}
-
-function loadinsertWork(){
-    Ext.Ajax.request({
-        url:AppUrl+'dxfile/PM_PROJECT_WORKORDER_CREATE',
-        method:'POST',
-        async:false,
-        params:{
-            V_V_PROJECT_GUID:V_DX_GUID,
-            V_V_INPERCODE:$.cookies.get('v_personcode')  // Ext.util.Cookies.get('v_personcode')
-        },
-        success:function(response){
-            var resp=Ext.decode(response.responseText);
-            V_GUID=resp.list[0].V_ORDERGUID;
-            $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
-            $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
-            // $("#selDW").empty();
-            $("<option value=\"" + resp.list[0].V_ORGCODE + "\">"
-                + resp.list[0].V_ORGNAME + "</option>")
-                .appendTo("#selDW");
-            $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
-            $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
-            // $("#selZYQ").empty();
-            $("<option value=\"" + resp.list[0].V_DEPTCODE + "\" selected='selected'>"
-                + resp.list[0].V_DEPTNAME + "</option>")
-                .appendTo("#selZYQ");
-            //var data=new Date(resp.list[0].D_ENTER_DATE);
-
-            $("#createDate").html(resp.list[0].D_ENTER_DATE.split(' ')[0]);
-            // $("#createDate").html(resp.list[0].D_ENTER_DATE);
-            $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
-            $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
-            $("#V_EQUSITE").val(resp.list[0].V_EQUSITENAME);
-
-            // $("#selPlant").empty();
-            $("<option value=\""+resp.list[0].V_DEPTCODEREPARIR+"\">"+resp.list[0].V_DEPTNAMEREPARIR+"</option>").appendTo("#selPlant");
-            $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
-            $("#selType").empty();
-            $("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">"
-                + resp.list[0].V_ORDER_TYP_TXT + "</option>")
-                .appendTo("#selType");
-            $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
-            $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
-            $("#V_ORDERID").html(resp.list[0].V_ORDERID);
-            $("#V_DEPTCODEREPARIR").val(
-                resp.list[0].V_DEPTCODEREPARIR);
-            $("#tool").val(resp.list[0].V_TOOL);
-            $("#tech").val(resp.list[0].V_TECHNOLOGY);
-            $("#safe").val(resp.list[0].V_SAFE);
-            $("#wbsCode").val(resp.list[0].V_WBS);
-            $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
-            $("#proCode").val(resp.list[0].V_PROJECT_CODE);
-            $("#proName").val(resp.list[0].V_PROJECT_NAME);
-
-
-        }
-    });
 }
