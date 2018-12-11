@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <title>设备智慧管控平台</title>
     <link rel="stylesheet" href="../../css/style.css">
-
-
+    <script type="text/javascript" src="../../../pm/script/home/index.js"></script>
 
 </head>
 <body>
@@ -15,24 +14,21 @@
         <div class="div_top1_right">
             <a href="#" class="icon_search">搜索</a>
             <a href="#" class="icon_help">帮助</a>
-            <a href="#" class="icon_exit">退出</a>
+            <a onclick="LogOut()" href="#" class="icon_exit">退出</a>
         </div>
     </div>
     <div class="div-top2">
         <div>
-            <a href="#" class="icon-jcgl">基础管理</a>
-            <a href="#" class="icon-djgl">点检管理</a>
-            <a href="#" class="icon-ztgl">状态管理</a>
-            <a href="#" class="icon-jxgl">检修管理</a>
-            <a href="#" class="icon-wlgl">物料管理</a>
-            <a href="#" class="icon-fygl">费用管理</a>
-            <a href="#" class="icon-tzsb">特种设备</a>
-            <a href="#" class="icon-gdzc">固定资产</a>
-            <a href="#" class="icon-nygl">能源管理</a>
-            <a href="#" class="icon-tjfx">统计分析</a>
-            <a href="#" class="icon-xtgl">系统管理</a>
-            <a href="#" class="icon-htgl">合同管理</a>
-            <a href="#" class="icon-jlsb">计量设备</a>
+            <a href="javascript:refreshTree('pmnew0100')" class="icon-jcgl">个人中心</a>
+            <a href="javascript:refreshTree('pmnew0104')" class="icon-djgl">检修管理</a>
+            <a href="javascript:refreshTree('pmnew0101')" class="icon-ztgl">基准管理</a>
+            <a href="javascript:refreshTree('pmnew0102')" class="icon-jxgl">点检管理</a>
+            <a href="javascript:refreshTree('pmnew0103')" class="icon-wlgl">状态管理</a>
+            <a href="javascript:refreshTree('pmnew0105')" class="icon-nygl">物料管理</a>
+            <a href="javascript:refreshTree('pmnew0106')" class="icon-tjfx">维修费管理</a>
+            <a href="javascript:refreshTree('pmnew0108')" class="icon-xtgl">固定资产管理</a>
+            <a href="javascript:refreshTree('pmnew0109')" class="icon-htgl">能源管理</a>
+            <a href="javascript:refreshTree('pmnew0111')" class="icon-jlsb">维修工程施工管理</a>
         </div>
     </div>
 </div>
@@ -59,21 +55,21 @@
             <button class="active1">待办事项</button>
         </div>
         <div class="div-grzx-body">
-            <div class="grzx-label">合<br>同</div>
+            <div class="grzx-label">工<br>单</div>
             <ul>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
             </ul>
             <div style="clear:both"></div>
-            <div class="grzx-label">财<br>务</div>
+            <div class="grzx-label">月<br>计<br>划</div>
             <ul>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
             </ul>
             <div style="clear:both"></div>
-            <div class="grzx-label">文<br>件</div>
+            <div class="grzx-label">周<br>计<br>划</div>
             <ul>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
@@ -81,21 +77,21 @@
             </ul>
         </div>
         <div class="div-grzx-body">1</div>
-        <div class="div-grzx-body" style="display:block;"><div class="grzx-label">合<br>同</div>
+        <div class="div-grzx-body" style="display:block;"><div class="grzx-label">工<br>单</div>
             <ul>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节3！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
             </ul>
             <div style="clear:both"></div>
-            <div class="grzx-label">财<br>务</div>
+            <div class="grzx-label">月<br>计<br>划</div>
             <ul>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
             </ul>
             <div style="clear:both"></div>
-            <div class="grzx-label">文<br>件</div>
+            <div class="grzx-label">周<br>计<br>划</div>
             <ul>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
                 <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
@@ -117,7 +113,7 @@
                         obtn[i].className="";
                         adiv[i].style.display="none";
                     }
-                    this.className="active1"
+                    this.className="active1";s
                     adiv[this.index].style.display="block"
                 }
             }
@@ -132,12 +128,12 @@
                         <li><div class="rc-list">
                             <table>
                                 <tr>
-                                    <td><img src="images/icon-wdgzzd.png"> <a href="#">我的规章制度</a> </td>
-                                    <td><img src="images/icon-qdjxgd.png"> <a href="#">我的检修工单</a> </td>
+                                    <td><img src="../../images/icon-wdgzzd.png"> <a href="#">我的规章制度</a> </td>
+                                    <td><img src="../../images/icon-qdjxgd.png"> <a href="#">我的检修工单</a> </td>
                                 </tr>
                                 <tr>
-                                    <td><img src="images/icon-wdsb.png"> <a href="#">我的设备</a> </td>
-                                    <td><img src="images/icon-wdtz.png"> <a href="#">我的图纸</a> </td>
+                                    <td><img src="../../images/icon-wdsb.png"> <a href="#">我的设备</a> </td>
+                                    <td><img src="../../images/icon-wdtz.png"> <a href="#">我的图纸</a> </td>
                                 </tr>
                             </table>
                         </div></li>
@@ -145,12 +141,12 @@
                             <div class="rc-list blue-top">
                                 <table>
                                     <tr>
-                                        <td><img src="images/icon-wdgc.png"> <a href="#">我的工程</a> </td>
-                                        <td><img src="images/icon-wdyzj.png"> <a href="#">我的预装件</a> </td>
+                                        <td><img src="../../images/icon-wdgc.png"> <a href="#">我的工程</a> </td>
+                                        <td><img src="../../images/icon-wdyzj.png"> <a href="#">我的预装件</a> </td>
                                     </tr>
                                     <tr>
-                                        <td><img src="images/icon-wdlld.png"> <a href="#">我的领料单</a> </td>
-                                        <td><img src="images/icon-wdqx.png"> <a href="#">我的缺陷</a> </td>
+                                        <td><img src="../../images/icon-wdlld.png"> <a href="#">我的领料单</a> </td>
+                                        <td><img src="../../images/icon-wdqx.png"> <a href="#">我的缺陷</a> </td>
                                     </tr>
                                 </table>
                             </div>
@@ -159,12 +155,12 @@
                             <div class="rc-list green-top">
                                 <table>
                                     <tr>
-                                        <td><img src="images/icon-wdgc.png"> <a href="#">我关注的备件</a> </td>
-                                        <td><img src="images/icon-wdyzj.png"> <a href="#">我的周计划</a> </td>
+                                        <td><img src="../../images/icon-wdgc.png"> <a href="#">我关注的备件</a> </td>
+                                        <td><img src="../../images/icon-wdyzj.png"> <a href="#">我的周计划</a> </td>
                                     </tr>
                                     <tr>
-                                        <td><img src="images/icon-wdlld.png"> <a href="#">我的台帐</a> </td>
-                                        <td><img src="images/icon-wdqx.png"> <a href="#">我的检修模型</a> </td>
+                                        <td><img src="../../images/icon-wdlld.png"> <a href="#">我的台帐</a> </td>
+                                        <td><img src="../../images/icon-wdqx.png"> <a href="#">我的检修模型</a> </td>
                                     </tr>
                                 </table>
                             </div>
@@ -172,12 +168,12 @@
                         <li><div class="rc-list">
                             <table>
                                 <tr>
-                                    <td><img src="images/icon-wdgzzd.png"> <a href="#">我的规章制度</a> </td>
-                                    <td><img src="images/icon-qdjxgd.png"> <a href="#">我的检修工单</a> </td>
+                                    <td><img src="../../images/icon-wdgzzd.png"> <a href="#">我的规章制度</a> </td>
+                                    <td><img src="../../images/icon-qdjxgd.png"> <a href="#">我的检修工单</a> </td>
                                 </tr>
                                 <tr>
-                                    <td><img src="images/icon-wdsb.png"> <a href="#">我的设备</a> </td>
-                                    <td><img src="images/icon-wdtz.png"> <a href="#">我的图纸</a> </td>
+                                    <td><img src="../../images/icon-wdsb.png"> <a href="#">我的设备</a> </td>
+                                    <td><img src="../../images/icon-wdtz.png"> <a href="#">我的图纸</a> </td>
                                 </tr>
                             </table>
                         </div></li>
@@ -206,6 +202,13 @@
     </div>
     </div>
 </div>
+
 <script src="../../../pm/script/home/lrtk.js"></script>
+<script>
+    function refreshTree(id){
+
+        window.open('../../page/home/Index.html?treeid='+id);
+    }
+</script>
 </body>
 </html>
