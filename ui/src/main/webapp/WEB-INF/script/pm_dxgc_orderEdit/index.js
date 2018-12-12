@@ -250,6 +250,13 @@ function loadPageInfo() {
                 $("#wbsCode").val(resp.list[0].V_WBS);
                 $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
 
+                if(resp.list[0].D_START_DATE!=""){
+                    $("#planStartDate").val(resp.list[0].D_START_DATE);
+                }
+               if(resp.list[0].D_FINISH_DATE!=""){
+                   $("#planFinDate").val(resp.list[0].D_FINISH_DATE);
+               }
+
 
             } else {
             }
