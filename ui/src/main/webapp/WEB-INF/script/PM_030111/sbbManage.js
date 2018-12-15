@@ -368,6 +368,38 @@ Ext.onReady(function () {
                 width : 50,
                 align : 'center' },
             { text: '计划状态',width:200,dataIndex:'V_STATENAME', align: 'center',renderer:Atleft },
+            // {
+            //     text: '审批详情',
+            //     dataIndex: 'V_ORDERID',
+            //     width: 55,
+            //     align: 'center',
+            //     renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+            //         return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+            //     }
+            // },
+            {
+                text: '工单详情',
+                dataIndex: 'V_ORDERID',
+                width: 55,
+                align: 'center',
+                renderer: function (value, metaData, record) {
+                    return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
+                }
+            },
+            // {
+            //     text:'关联计划',
+            //     dataIndex:'',
+            //     width:75,
+            //     align:'center',
+            //     renderer:function(value,metaData,record){
+            //         if(record.data.V_OTHERPLAN_GUID!=""){
+            //             return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
+            //         }else{
+            //             return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+''+'</a>';
+            //         }
+            //
+            //     }
+            // },
             { text: '设备名称',width:200,dataIndex:'V_EQUTYPENAME', align: 'center',renderer:Atleft },
             { text: '专业',width:200,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft },
             { text: '检修内容',width:200,dataIndex:'V_CONTENT', align: 'center',renderer:Atleft },
@@ -635,3 +667,53 @@ function getDaysOfMonth(year,month){
 //     }
 //     return nian+"-"+(yue+1)+"-"+hao;
 // }
+function _preViewProcess(businessKey) {
+
+    var ProcessInstanceId = '';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if (data.msg == 'Ok') {
+                ProcessInstanceId = data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+}
+function OnClickGrid(V_GUID) {
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    window.open(AppUrl + 'page/PM_0301030901/index.html?v_guid='
+        + V_GUID, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+function OnClickOtherGrid(otherguid,othertype) {
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    if (othertype == "") {
+        alert('此计划没有关联项');
+        return;
+    }
+    if (othertype == "MONTH") {
+        window.open(AppUrl + 'page/PM_03010309/month_detail.html?monthguid='
+            + otherguid, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+    }
+    if (othertype == "YEAR") {
+        alert('该条计划关联年计划');
+    }
+}
