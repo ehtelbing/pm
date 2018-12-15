@@ -548,7 +548,12 @@ Ext.onReady(function () {
     });
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
-        Ext.getCmp('jhck').select(Ext.data.StoreManager.lookup('jhckStore').getAt(0));
+        if(Ext.util.Cookies.get('v_deptcode').substring(0,4)=="9900"){
+            Ext.data.StoreManager.lookup('jhckStore').insert(0,{V_DEPTCODE:'%',V_DEPTNAME:'全部'});
+            Ext.getCmp('jhck').select(Ext.data.StoreManager.lookup('jhckStore').getAt(0));
+        }else{
+            Ext.getCmp('jhck').select(Ext.data.StoreManager.lookup('jhckStore').getAt(0));
+        }
         Ext.data.StoreManager.lookup('jhzyqStore').load({
             params: {
                 'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
