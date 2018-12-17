@@ -110,7 +110,7 @@ function Login() {
                             if((resp.list[0].V_DEPTCODE.indexOf("9900")!=-1)|| resp.list[0].V_ROLECODE=='15'){
                                 location.href = "../../page/Anewhome/index.html";
                             }else{
-                                location.href = "../../page/home/ndex.html";
+                                location.href = "../../page/home/Index.html";
                             }
 
 
