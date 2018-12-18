@@ -202,18 +202,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '执行数', align: 'center', width: 100, dataIndex: 'V_EXENUM'},
         {text: '执行率（%)', align: 'center', width: 100, dataIndex: 'V_EXTRATE',renderer:aleft}
     ]
-    // ,bbar: ["->",
-    //     {
-    //         id: 'page',
-    //         xtype: 'pagingtoolbar',
-    //         store: gridStore,
-    //         width: '100%',
-    //         dock: 'bottom',
-    //         displayInfo: true,
-    //         displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-    //         emptyMsg: '没有记录'
-    //     }
-    // ]
+
 });
 Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
