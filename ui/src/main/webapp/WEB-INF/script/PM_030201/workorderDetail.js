@@ -126,6 +126,24 @@ Ext.onReady(function() {
             }
         }
     });
+    var nothpanel=Ext.create('Ext.panel.Panel',{
+       id:'nothpanel',
+       region:'north',
+       layout:'vbox',
+       // style:'background-color:#dfe8f6',
+       // pandding:'2px 630px 2px 630px',
+       items:[{
+           xtype:'button',
+           id:'creatWork',
+           text:'生成工单',
+           handler:OnButtonWorkorder,
+           // style:'background-color:#dfe8f6',
+           // pandding:'2px 630px 2px 630px',
+           margin:'2px 630px 2px 630px',
+           style:'background-color:#dfe8f6;border-color:#dfe8f6',
+           width:60
+       }]
+    });
     var westpanel=Ext.create('Ext.panel.Panel',{
         id:'westpanel',
         region:'west',
@@ -324,6 +342,7 @@ Ext.onReady(function() {
             renderer: CreateGridColumnTd
         }]
     });
+
     var workgrid = Ext.create('Ext.grid.Panel', {
         xtype : 'gridpanel',
         id : 'workgrid',
@@ -457,7 +476,7 @@ Ext.onReady(function() {
     Ext.create('Ext.container.Viewport', {
         id : "id",
         layout : 'border',
-        items : [ westpanel,centpanel]
+        items : [ nothpanel,westpanel,centpanel]
     });
     Ext.data.StoreManager.lookup('wlAllStore').load({
         params:{
@@ -616,4 +635,17 @@ function left(value, metaData) {
 function rendererTime(value, metaData) {
     metaData.style = "text-align:left";
     return '<div data-qtip="' + value.split('.0')[0] + '" >' + value.split('.0')[0] + '</div>';
+}
+
+function OnButtonWorkorder(){  //生成工单
+   // var chodata = Ext.getCmp('grid').getSelectionModel().getSelection();
+   //  if(chodata.length!=1){
+   //      alert('请选择一条数据进行工单生成！');
+   //      return;
+   //  }else{
+        var owidth = window.document.body.offsetWidth - 600;
+        var oheight = window.document.body.offsetHeight - 100;
+        window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?guid=' +v_guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+        // window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?guid=' +chodata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    // }
 }

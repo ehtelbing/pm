@@ -214,6 +214,12 @@ Ext.onReady(function(){
             icon: imgpath + '/search.png',
             handler:OnButtonQuery
         }
+            ,{
+                xtype:'button',
+                text:'查看施工进度',
+                listeners: {click: OnButtonSgjd}
+
+            }
         ]
     });
 
@@ -242,7 +248,7 @@ Ext.onReady(function(){
             {text: '维修费用（万元）', width: 120, dataIndex: 'V_MONEYBUDGET', align: 'center',renderer:atright},
             {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center',renderer:timelfet},
             {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center',renderer:timelfet}],
-        listeners:{itemClick:turnOpen},
+        listeners:{itemdblclick:turnOpen},  //itemClick:turnOpen},
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -361,8 +367,24 @@ function timelfet(value, metaDate, record, rowIndex, colIndex, store){
     return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';
 }
 function turnOpen(value, metaDate, record, rowIndex, colIndex, store){
-    var owidth = window.document.body.offsetWidth - 600;
-    var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_030201/workorderDetail.html?guid=' +metaDate.get('V_GUID')+ '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    var indate=(metaDate.get('V_BDATE')).toString().substring(0,10);
+    var enddate=(metaDate.get('V_EDATE')).toString().substring(0,10);
+    var owidth = 1374;//window.document.body.offsetWidth - 600;
+    var oheight =799;// window.document.body.offsetHeight - 100;
+   // window.open(AppUrl + 'page/PM_030201/workorderDetail.html?guid=' +metaDate.get('V_GUID')+ '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +metaDate.get('V_GUID') +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
 }
 
+function OnButtonSgjd(){
+    var chodata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(chodata.length!=1){
+        alert('请选择一条数据进行查看！');
+        return;
+    }else{
+        var indate=(chodata[0].data.V_BDATE).toString().substring(0,10);
+        var enddate=(chodata[0].data.V_EDATE).toString().substring(0,10);
+        var owidth = 1374;//window.document.body.offsetWidth - 600;
+        var oheight =799;// window.document.body.offsetHeight - 100;
+        window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +chodata[0].data.V_GUID +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    }
+}

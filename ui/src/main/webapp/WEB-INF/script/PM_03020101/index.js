@@ -2504,7 +2504,7 @@ function QueryPageLoad(){
                 //加载检修单位
                 Ext.data.StoreManager.lookup('repairDeptStore').load({
                     params:{
-                        V_V_DEPTCODE:DeptCode
+                        V_V_DEPTCODE:Ext.getCmp('zyq').getValue()//DeptCode
                     }
                 });
 
@@ -2614,7 +2614,8 @@ function QueryZYQ(){
     });
 
     Ext.data.StoreManager.lookup('zyqStore').on('load',function(){
-        Ext.getCmp('zyq').select(DeptCode);
+        //Ext.getCmp('zyq').select(DeptCode);
+        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').data.get(0));
         CreateProjectCode();
         QueryZyFzr();
     })

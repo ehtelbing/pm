@@ -168,18 +168,20 @@ Ext.onReady(function () {
             valueField: 'V_DEPTCODE',
             labelWidth: 80,
             width: 250
-        }, {
-            xtype: 'combo',
-            id: "zyq",
-            store: zyqStore,
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '作业区',
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            labelWidth: 80,
-            width: 250
-        },{
+        }
+        // , {
+        //     xtype: 'combo',
+        //     id: "zyq",
+        //     store: zyqStore,
+        //     editable: false,
+        //     queryMode: 'local',
+        //     fieldLabel: '作业区',
+        //     displayField: 'V_DEPTNAME',
+        //     valueField: 'V_DEPTCODE',
+        //     labelWidth: 80,
+        //     width: 250
+        // }
+        ,{
             xtype: 'combo',
             id: "wxlx",
             store: wxlxStore,
@@ -253,15 +255,22 @@ Ext.onReady(function () {
             },
             {
                 xtype: 'button',
-                text: '导入放行计划',
+                text: '关联项目',//'导入放行计划',
                 icon: imgpath + '/accordion_expand.png',
                 listeners: {click: OnButtonDR}
-            },{
-                xtype: 'button',
-                text: '生成工单',
-                // icon: imgpath + '/accordion_expand.png',
-                listeners: {click: OnButtonWorkorder}
             }
+            // ,{
+            //     xtype:'button',
+            //     text:'查看施工进度',
+            //     listeners: {click: OnButtonSgjd}
+            //
+            // }
+            // ,{
+            //     xtype: 'button',
+            //     text: '生成工单',
+            //     // icon: imgpath + '/accordion_expand.png',
+            //     listeners: {click: OnButtonWorkorder}
+            // }
         ]
     });
 
@@ -308,12 +317,17 @@ Ext.onReady(function () {
 
     Ext.data.StoreManager.lookup('ckStore').on('load',function(){
         Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
-        Ext.data.StoreManager.lookup('zyqStore').load({
-            params: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '主体作业区'
+        // Ext.data.StoreManager.lookup('zyqStore').load({
+        //     params: {
+        //         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+        //         'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+        //         'V_V_DEPTCODENEXT': '%',
+        //         'V_V_DEPTTYPE': '主体作业区'
+        //     }
+        // });
+        Ext.data.StoreManager.lookup('wxlxStore').load({
+            params:{
+                IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
             }
         });
     });
@@ -321,11 +335,11 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup("zyqStore").on('load',function(){
         Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
         Ext.data.StoreManager.lookup('wxlxStore').load({
-           params:{
-               IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
-           }
+            params:{
+                IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
+            }
         });
-    })
+    });
 
     Ext.data.StoreManager.lookup('wxlxStore').on('load',function(){
        Ext.getCmp('wxlx').select(Ext.data.StoreManager.lookup('wxlxStore').getAt(0));
@@ -339,19 +353,19 @@ Ext.onReady(function () {
 
 
     Ext.getCmp('ck').on('select',function(){
-        Ext.data.StoreManager.lookup('zyqStore').load({
-            params: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '主体作业区'
-            }
-        });
+        // Ext.data.StoreManager.lookup('zyqStore').load({
+        //     params: {
+        //         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+        //         'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+        //         'V_V_DEPTCODENEXT': '%',
+        //         'V_V_DEPTTYPE': '主体作业区'
+        //     }
+        // });
     });
 
-    Ext.getCmp('zyq').on('select',function(){
-        OnButtonQuery();
-    })
+    // Ext.getCmp('zyq').on('select',function(){
+    //     OnButtonQuery();
+    // })
 
     Ext.getCmp('wxlx').on('select',function(){
         OnButtonQuery();
@@ -366,8 +380,8 @@ Ext.onReady(function () {
 function beforeloadStore(store) {
     store.proxy.extraParams.V_V_YEAR =Ext.getCmp('year').getValue();
     store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
-    store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('zyq').getValue();
-    store.proxy.extraParams.V_V_ZY = Ext.getCmp('zy').getValue();
+    store.proxy.extraParams.V_V_DEPTCODE = ""; //Ext.getCmp('zyq').getValue();
+    store.proxy.extraParams.V_V_ZY =  Ext.getCmp('zy').getValue();
     store.proxy.extraParams.V_V_WXLX = Ext.getCmp('wxlx').getValue();
     store.proxy.extraParams.V_V_CONTENT = Ext.getCmp('jxnr').getValue();
     store.proxy.extraParams.V_V_PAGE =Ext.getCmp('page').store.currentPage;
@@ -386,7 +400,7 @@ function OnButtonQuery (){
         params:{
             V_V_YEAR:Ext.getCmp('year').getValue(),
             V_V_ORGCODE:Ext.getCmp('ck').getValue(),
-            V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),
+            V_V_DEPTCODE:"",//Ext.getCmp('zyq').getValue(),
             V_V_ZY:Ext.getCmp('zy').getValue(),
             V_V_WXLX:Ext.getCmp('wxlx').getValue(),
             V_V_CONTENT:Ext.getCmp('jxnr').getValue(),
@@ -399,13 +413,13 @@ function OnButtonQuery (){
 function OnButtonOut(){
     document.location.href=AppUrl + 'cjy/YEAREXCEL?V_V_YEAR='+Ext.getCmp('year').getValue()+
         '&V_V_ORGCODE='+Ext.getCmp('ck').getValue()+
-        '&V_V_DEPTCODE='+Ext.getCmp('zyq').getValue()+
+        '&V_V_DEPTCODE='+ ""+ //Ext.getCmp('zyq').getValue()+
         '&V_V_ZY='+Ext.getCmp('zy').getValue()+
         '&V_V_WXLX='+Ext.getCmp('wxlx').getValue()+
         '&V_V_CONTENT='+Ext.getCmp('jxnr').getValue();
 }
 function OnButtonAdd(){
-    if(Ext.getCmp("zyq").getValue()!="%"&&Ext.getCmp("zyq").getValue()!=""){
+    //if(Ext.getCmp("zyq").getValue()!="%"&&Ext.getCmp("zyq").getValue()!=""){
         Ext.Ajax.request({
             url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
             method: 'POST',
@@ -414,7 +428,7 @@ function OnButtonAdd(){
                 V_V_GUID:'-1',
                 V_V_YEAR:Ext.getCmp("year").getValue(),
                 V_V_ORGCODE:Ext.getCmp("ck").getValue(),
-                V_V_DEPTCODE:Ext.getCmp("zyq").getValue(),
+                V_V_DEPTCODE:"", // Ext.getCmp("zyq").getValue(),
                 V_V_INPER:Ext.util.Cookies.get('v_personcode')
             },
             success: function (resp) {
@@ -428,10 +442,10 @@ function OnButtonAdd(){
                 }
             }
         });
-    }
-    else{
-        alert("作业区不可为空");
-    }
+    // }
+    // else{
+    //     alert("作业区不可为空");
+    // }
 
 
 
@@ -574,6 +588,20 @@ function OnButtonWorkorder(){
     }else{
         var owidth = window.document.body.offsetWidth - 600;
         var oheight = window.document.body.offsetHeight - 100;
-        window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?guid=' +chodata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+        window.open(AppUrl + 'page/pm_dxgc_orderEdit/dxWorkOrder.html?guid=' +chodata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
     }
 }
+//
+// function OnButtonSgjd(){
+//     var chodata = Ext.getCmp('grid').getSelectionModel().getSelection();
+//     if(chodata.length!=1){
+//         alert('请选择一条数据进行查看！');
+//         return;
+//     }else{
+//         var indate=(chodata[0].data.V_BDATE).toString().substring(0,10);
+//         var enddate=(chodata[0].data.V_EDATE).toString().substring(0,10);
+//         var owidth = 1370;//window.document.body.offsetWidth - 600;
+//         var oheight =740;// window.document.body.offsetHeight - 100;
+//         window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +chodata[0].data.V_GUID +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+//     }
+// }

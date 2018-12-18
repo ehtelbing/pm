@@ -1731,10 +1731,10 @@ public class CjyController {
             HttpServletResponse resp) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
         List list=new ArrayList();
 
-//        String V_V_DEPTCODE_s=V_V_DEPTCODE.equals("")?"%":V_V_DEPTCODE;
+        String V_V_DEPTCODE_s=V_V_DEPTCODE.equals("")?"%":V_V_DEPTCODE;
 //        String V_V_CONTENT_s=V_V_CONTENT.equals("")?"":V_V_CONTENT;
 
-        HashMap data = cjyService.PRO_PM_03_PLAN_YEAR_VIEWALL(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT);
+        HashMap data = cjyService.PRO_PM_03_PLAN_YEAR_VIEWALL(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE_s, V_V_ZY, V_V_WXLX, V_V_CONTENT);
         HSSFWorkbook wb=new HSSFWorkbook();
         HSSFSheet sheet=wb.createSheet();
         for(int i=0;i<=1;i++){
