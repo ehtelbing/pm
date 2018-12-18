@@ -5,7 +5,13 @@ import org.activiti.bpmn.converter.CallActivityXMLConverter;
 import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.Dx_fileService;
 import org.building.pm.webpublic.MasageClass;
+import org.building.pm.webservice.MMService;
+import org.codehaus.xfire.client.Client;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,21 +21,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/app/pm/dxfile/")
 public class Dx_fileController {
     @Autowired
     private Dx_fileService dx_fileService;
+
+    @Value("#{configProperties['MMEqu.url']}")
+    private String MMEquurl;
 
     @RequestMapping(value = "PM_EDUNOTOWORKORDER", method = RequestMethod.POST)
     @ResponseBody
@@ -821,9 +830,12 @@ public class Dx_fileController {
     @ResponseBody
     public Map PRO_YEAR_PROJECT_MXUSE_SEL(
             @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-            @RequestParam(value = "V_V_TYPE") String V_V_TYPE) throws Exception {
+            @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+            @RequestParam(value = "V_SDATE") String V_SDATE,
+            @RequestParam(value = "V_EDATE") String V_EDATE)
+            throws Exception {
 
-        Map result = dx_fileService.PRO_YEAR_PROJECT_MXUSE_SEL2(V_V_PROJECT_GUID, V_V_TYPE);
+        Map result = dx_fileService.PRO_YEAR_PROJECT_MXUSE_SEL2(V_V_PROJECT_GUID, V_V_TYPE, V_SDATE, V_EDATE);
         return result;
     }
 
@@ -837,44 +849,48 @@ public class Dx_fileController {
         Map result = dx_fileService.PRO_YEAR_PROJECT_WORKORDER_SEL(V_V_PROJECTGUID);
         return result;
     }
+
     // 大修返回缺陷明细
     @RequestMapping(value = "PRO_YEAR_PROJECT_DEFECT_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_YEAR_PROJECT_DEFECT_SEL(
             @RequestParam(value = "V_V_PROJECTGUID") String V_V_PROJECTGUID,
+            @RequestParam(value = "V_SDATE") String V_SDATE,
+            @RequestParam(value = "V_EDATE") String V_EDATE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = dx_fileService.PRO_YEAR_PROJECT_DEFECT_SEL(V_V_PROJECTGUID);
+        Map result = dx_fileService.PRO_YEAR_PROJECT_DEFECT_SEL(V_V_PROJECTGUID, V_SDATE, V_EDATE);
         return result;
     }
+
     // 周计划按人员查询作业区全部
     @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_VIEW2", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_WEEK_VIEW2(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
-                                                        @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
-                                                        @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
-                                                        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                        @RequestParam(value = "V_V_ZY") String V_V_ZY,
-                                                        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                                        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                        @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-                                                        @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                                                         @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                                                         @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+                                                         @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                         @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                                                         @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                         @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                                         @RequestParam(value = "V_V_STATE") String V_V_STATE,
                                                          @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                                          @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
-                                                        @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) throws Exception {
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
 
         HashMap data = dx_fileService.PRO_PM_03_PLAN_WEEK_VIEW2(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
-                V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE,V_V_PERSONCODE,V_V_DEPTTYPE, V_V_PAGE, V_V_PAGESIZE);
+                V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PERSONCODE, V_V_DEPTTYPE, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
-// 设备部驳回修改
+    // 设备部驳回修改
     @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_NSETSBB", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_WEEK_NSETSBB(
@@ -956,7 +972,7 @@ public class Dx_fileController {
                 V_V_JJHOUR,
                 V_V_TELNAME,
                 V_V_TELNUMB,
-                V_V_PDGG,V_V_THICKNESS,V_V_REASON,V_V_EVERTIME,
+                V_V_PDGG, V_V_THICKNESS, V_V_REASON, V_V_EVERTIME,
                 V_V_FLAG,
                 V_V_RDEPATCODE,
                 V_V_RDEPATNAME,
@@ -1023,27 +1039,470 @@ public class Dx_fileController {
                 V_V_FLAG);
         return result;
     }
+
     // 大修生成工单查询
-    @RequestMapping( value="PM_PROJECT_WORKORDER_CREATE",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_PROJECT_WORKORDER_CREATE", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PROJECT_WORKORDER_CREATE(
-            @RequestParam(value="V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
-            @RequestParam(value="V_V_INPERCODE") String V_V_INPERCODE,
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+            @RequestParam(value = "V_V_INPERCODE") String V_V_INPERCODE,
             HttpServletResponse response,
             HttpServletRequest request)
-        throws SQLException{
-        Map result=dx_fileService.PM_PROJECT_WORKORDER_CREATE(V_V_PROJECT_GUID,V_V_INPERCODE);
+            throws SQLException {
+        Map result = dx_fileService.PM_PROJECT_WORKORDER_CREATE(V_V_PROJECT_GUID, V_V_INPERCODE);
         return result;
     }
 
-    @RequestMapping(value="PM_1917_JXMX_DATA_SEL_WORKDESC",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_1917_JXMX_DATA_SEL_WORKDESC", method = RequestMethod.POST)
     @ResponseBody
-    public Map PM_1917_JXMX_DATA_SEL_WORKDESC(@RequestParam(value="V_V_MX_CODE") String V_V_MX_CODE)
-        throws SQLException{
-        Map result=dx_fileService.PM_1917_JXMX_DATA_SEL_WORKDESC(V_V_MX_CODE);
+    public Map PM_1917_JXMX_DATA_SEL_WORKDESC(@RequestParam(value = "V_V_MX_CODE") String V_V_MX_CODE)
+            throws SQLException {
+        Map result = dx_fileService.PM_1917_JXMX_DATA_SEL_WORKDESC(V_V_MX_CODE);
         return result;
     }
 
+    @RequestMapping(value = "PRO_YEAR_PROJECT_SEL_WORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PROJECT_SEL_WORK(@RequestParam(value = "DX_GUID") String DX_GUID,
+                                         @RequestParam(value = "STARTTIME") String STARTTIME,
+                                         @RequestParam(value = "ENDTIME") String ENDTIME)
+            throws SQLException {
+        Map result = dx_fileService.PRO_YEAR_PROJECT_SEL_WORK(DX_GUID, STARTTIME, ENDTIME);
+        return result;
+    }
+
+    // 大修工单施工方--工单所有检修单位
+    @RequestMapping(value = "PRO_YEAR_PROJECT_REDEPT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PROJECT_REDEPT_SEL(
+            @RequestParam(value = "V_V_PROJECTGUID") String V_V_PROJECTGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_YEAR_PROJECT_REDEPT_SEL(V_V_PROJECTGUID);
+        return result;
+    }
+
+    //大修施工方
+    @RequestMapping(value = "PM_03_PLAN_REPAIR_DEPT_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_REPAIR_DEPT_SEL2(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_PLAN_REPAIR_DEPT_SEL2(V_V_GUID);
+        return result;
+    }
+
+    //-大修 查询物资消耗
+//    @RequestMapping(value = "PRO_YEAR_PROJECT_SEL_WORKGUID", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map PRO_YEAR_PROJECT_SEL_WORKGUID(
+//            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+//            @RequestParam(value = "STARTTIME") String STARTTIME,
+//            @RequestParam(value = "ENDTIME") String ENDTIME,
+//            HttpServletRequest request,
+//            HttpServletResponse response) throws Exception {
+//        Map result = dx_fileService.PRO_YEAR_PROJECT_SEL_WORKGUID(V_V_GUID,STARTTIME,ENDTIME);
+//        return result;
+//    }
+    @RequestMapping(value = "PRO_YEAR_PROJECT_SEL_WH", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PROJECT_SEL_WH(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "STARTTIME") String STARTTIME,
+            @RequestParam(value = "ENDTIME") String ENDTIME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = new HashMap();
+        List listList = new ArrayList();
+        List<Map> ret = new ArrayList<Map>();
+        Map<String, Object> getguid = dx_fileService.PRO_YEAR_PROJECT_SEL_WORKGUID(V_V_GUID, STARTTIME, ENDTIME);
+
+        try {
+            if (!getguid.isEmpty()) {
+                listList = (List) getguid.get("list");
+                Map Mdate = new HashMap();
+                for (int i = 0; i < getguid.size(); i++) {
+                    Map map = (Map) listList.get(i);
+
+                    Client client = new Client(new URL(MMEquurl));
+                    Object[] results = client.invoke("getBillMaterialByOrder", new Object[]{map.get("V_ORDERGUID")});
+                    Document doc = DocumentHelper.parseText(results[0].toString());
+                    Element rootElt = doc.getRootElement();
+                    Iterator iter = rootElt.elementIterator("Bill");
+                    List<Map> list = new ArrayList<Map>();
+
+                    while (iter.hasNext()) {
+                        Element recordEle = (Element) iter.next();
+                        Mdate.put("orderguid", map.get("V_ORDERGUID"));
+                        Mdate.put("billcode", recordEle.elementTextTrim("billcode"));
+                        Mdate.put("vch_sparepart_code", recordEle.elementTextTrim("vch_sparepart_code"));
+                        Mdate.put("vch_sparepart_name", recordEle.elementTextTrim("vch_sparepart_name"));
+                        Mdate.put("vch_type", recordEle.elementTextTrim("vch_type"));
+                        Mdate.put("vch_unit", recordEle.elementTextTrim("vch_unit"));
+                        Mdate.put("price", recordEle.elementTextTrim("price"));
+                        Mdate.put("f_number", recordEle.elementTextTrim("f_number"));
+                        Mdate.put("BillType", recordEle.elementTextTrim("BillType"));
+                        ret.add(Mdate);
+                    }
+                }
+            }
+            result.put("ret", ret);
+        } catch (MalformedURLException e) {
+            result.put("ret", "Fail");
+            e.printStackTrace();
+        } catch (Exception e) {
+            result.put("ret", "Fail");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 月计划厂矿执行率
+    @RequestMapping(value = "PM_03_MONTH_PLAN_CKSTAT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_MONTH_PLAN_CKSTAT_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_MONTH_PLAN_CKSTAT_SEL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "CK_MONTH_STATE_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void CK_MONTH_STATE_EXCEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        String V_ORGCODE = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.PM_03_MONTH_PLAN_CKSTAT_SEL(V_V_YEAR, V_V_MONTH, V_ORGCODE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("执行数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("执行率（%）");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("ALLNUM") == null ? "" : map.get("ALLNUM").toString());
+                row.createCell((short) 3).setCellValue(map.get("EXENUM") == null ? "" : map.get("EXENUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("EXTRATE") == null ? "" : map.get("EXTRATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("月计划厂矿执行率Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 周计划厂矿执行率
+    @RequestMapping(value = "PM_03_WEEK_PLAN_CKSTAT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_WEEK_PLAN_CKSTAT_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_WEEK_PLAN_CKSTAT_SEL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "CK_WEEK_STATE_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void CK_WEEK_STATE_EXCEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        String V_ORGCODE = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.PM_03_WEEK_PLAN_CKSTAT_SEL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_ORGCODE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("执行数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("执行率（%）");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("ALLNUM") == null ? "" : map.get("ALLNUM").toString());
+                row.createCell((short) 3).setCellValue(map.get("EXENUM") == null ? "" : map.get("EXENUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("EXTRATE") == null ? "" : map.get("EXTRATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("周计划厂矿执行率Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    // 月计划作业区执行率
+    @RequestMapping(value = "PM_03_MONTH_PLAN_ZYQSTAT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_MONTH_PLAN_ZYQSTAT_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_MONTH_PLAN_ZYQSTAT_SEL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE);
+        return result;
+    }
+
+    // 周计划作业区执行率
+    @RequestMapping(value = "PM_03_WEEK_PLAN_ZYQSTAT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_WEEK_PLAN_ZYQSTAT_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        HashMap data = dx_fileService.PM_03_WEEK_PLAN_ZYQSTAT_SEL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE);
+        return setPage(request, response, data);
+    }
+
+    @RequestMapping(value = "ZYQ_MONTH_STATE_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void ZYQ_MONTH_STATE_EXCEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        String V_ORGCODE = V_V_ORGCODE.equals("0") ? "" : V_V_ORGCODE;
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.PM_03_MONTH_PLAN_ZYQSTAT_SEL(V_V_YEAR, V_V_MONTH, V_ORGCODE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("执行数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("执行率（%）");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("ALLNUM") == null ? "" : map.get("ALLNUM").toString());
+                row.createCell((short) 3).setCellValue(map.get("EXENUM") == null ? "" : map.get("EXENUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("EXTRATE") == null ? "" : map.get("EXTRATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("月计划作业区执行率Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "ZYQ_WEEK_STATE_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void ZYQ_WEEK_STATE_EXCEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        String V_ORGCODE = V_V_ORGCODE.equals("0") ? "" : V_V_ORGCODE;
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.PM_03_WEEK_PLAN_ZYQSTAT_SEL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_ORGCODE);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("总数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("执行数");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("执行率（%）");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_ALLNUM") == null ? "" : map.get("V_ALLNUM").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_EXENUM") == null ? "" : map.get("V_EXENUM").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_EXTRATE") == null ? "" : map.get("V_EXTRATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("周计划作业区执行率Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

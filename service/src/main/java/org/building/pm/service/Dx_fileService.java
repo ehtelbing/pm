@@ -1,6 +1,7 @@
 package org.building.pm.service;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import oracle.jdbc.OracleTypes;
+import org.apache.ibatis.session.SqlSessionException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -1049,7 +1050,7 @@ public class Dx_fileService {
         logger.info("end PRO_SPARE_SELECT_WORKORDER");
         return result;
     }
-    public Map PRO_YEAR_PROJECT_MXUSE_SEL2(String V_V_PROJECTGUID,String V_V_TYPE) throws SQLException {
+    public Map PRO_YEAR_PROJECT_MXUSE_SEL2(String V_V_PROJECTGUID,String V_V_TYPE,String V_SDATE,String V_EDATE) throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -1057,9 +1058,11 @@ public class Dx_fileService {
             logger.info("begin PRO_YEAR_PROJECT_MXUSE_SEL2");
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_YEAR_PROJECT_MXUSE_SEL2" + "(:V_V_PROJECTGUID,:V_V_TYPE,:V_NUM,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_YEAR_PROJECT_MXUSE_SEL2" + "(:V_V_PROJECTGUID,:V_V_TYPE,:V_SDATE,:V_EDATE,:V_NUM,:V_CURSOR)}");
             cstmt.setString("V_V_PROJECTGUID", V_V_PROJECTGUID);
             cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_SDATE", V_SDATE);
+            cstmt.setString("V_EDATE", V_EDATE);
             cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
@@ -1076,7 +1079,7 @@ public class Dx_fileService {
         return result;
     }
     // 大修缺陷明细
-    public Map PRO_YEAR_PROJECT_DEFECT_SEL(String V_V_PROJECTGUID)throws SQLException{
+    public Map PRO_YEAR_PROJECT_DEFECT_SEL(String V_V_PROJECTGUID,String V_SDATE,String V_EDATE)throws SQLException{
         Map result=new HashMap();
         Connection conn=null;
         CallableStatement cstmt=null;
@@ -1084,8 +1087,10 @@ public class Dx_fileService {
             logger.info("begin PRO_YEAR_PROJECT_DEFECT_SEL");
             conn=dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt=conn.prepareCall("{call PRO_YEAR_PROJECT_DEFECT_SEL(:V_V_PROJECTGUID,:V_NUM,:V_CURSOR)}");
+            cstmt=conn.prepareCall("{call PRO_YEAR_PROJECT_DEFECT_SEL(:V_V_PROJECTGUID,:V_SDATE,:V_EDATE,:V_NUM,:V_CURSOR)}");
             cstmt.setString("V_V_PROJECTGUID",V_V_PROJECTGUID);
+            cstmt.setString("V_SDATE",V_SDATE);
+            cstmt.setString("V_EDATE",V_EDATE);
             cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
             cstmt.execute();
@@ -1413,4 +1418,217 @@ public class Dx_fileService {
       logger.info("end PM_1917_JXMX_DATA_SEL_WORKDESC");
       return result;
   }
+  public HashMap PRO_YEAR_PROJECT_SEL_WORK(String DX_GUID,String STARTTIME,String ENDTIME)throws SQLException{
+        HashMap result=new HashMap();
+      Connection conn=null;
+      CallableStatement cstmt=null;
+      try{
+          logger.info("begin PRO_YEAR_PROJECT_SEL_WORK");
+          conn=dataSources.getConnection();
+          conn.setAutoCommit(false);
+          cstmt=conn.prepareCall("{call PRO_YEAR_PROJECT_SEL_WORK(:DX_GUID,:STARTTIME,:ENDTIME,:V_NUM,:RET)}");
+          cstmt.setString("DX_GUID",DX_GUID);
+          cstmt.setString("STARTTIME",STARTTIME);
+          cstmt.setString("ENDTIME",ENDTIME);
+          cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
+          cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+          cstmt.execute();
+          result.put("V_NUM",cstmt.getString("V_NUM"));
+          result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+      }catch(SQLException e){
+          logger.error(e);
+      }finally{
+          cstmt.close();
+          conn.close();
+      }
+      logger.debug("result:" + result);
+      logger.info("end PRO_YEAR_PROJECT_SEL_WORK");
+      return result;
+  }
+  //大修工单施工方-所有工单相关检修单位
+  public HashMap PRO_YEAR_PROJECT_REDEPT_SEL(String V_V_PROJECTGUID)throws SQLException{
+      HashMap result=new HashMap();
+      Connection conn=null;
+      CallableStatement cstmt=null;
+      try{
+          logger.info("begin PRO_YEAR_PROJECT_REDEPT_SEL");
+          conn=dataSources.getConnection();
+          conn.setAutoCommit(false);
+          cstmt=conn.prepareCall("{call PRO_YEAR_PROJECT_REDEPT_SEL(:V_V_PROJECTGUID,:V_NUM,:V_CURSOR)}");
+          cstmt.setString("V_V_PROJECTGUID",V_V_PROJECTGUID);
+
+          cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
+          cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+          cstmt.execute();
+          result.put("V_NUM",cstmt.getString("V_NUM"));
+          result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+      }catch(SQLException e){
+          logger.error(e);
+      }finally{
+          cstmt.close();
+          conn.close();
+      }
+      logger.debug("result:" + result);
+      logger.info("end PRO_YEAR_PROJECT_REDEPT_SEL");
+      return result;
+  }
+
+  // 大修检修单位
+    public HashMap PM_03_PLAN_REPAIR_DEPT_SEL2(String V_V_GUID)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_PLAN_REPAIR_DEPT_SEL2");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_PLAN_REPAIR_DEPT_SEL2(:V_V_GUID,:V_NUM,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID",V_V_GUID);
+            cstmt.registerOutParameter("V_NUM",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_NUM",cstmt.getString("V_NUM"));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_REPAIR_DEPT_SEL2");
+        return result;
+    }
+    // 大修检修查询工单
+    public HashMap PRO_YEAR_PROJECT_SEL_WORKGUID(String DX_GUID,String STARTTIME,String ENDTIME)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_YEAR_PROJECT_SEL_WORKGUID");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_YEAR_PROJECT_SEL_WORKGUID(:DX_GUID,:STARTTIME,:ENDTIME,:RET)}");
+            cstmt.setString("DX_GUID",DX_GUID);
+            cstmt.setString("STARTTIME",STARTTIME);
+            cstmt.setString("ENDTIME",ENDTIME);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_YEAR_PROJECT_SEL_WORKGUID");
+        return result;
+    }
+    // 月计划厂矿执行率统计
+    public HashMap PM_03_MONTH_PLAN_CKSTAT_SEL(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_MONTH_PLAN_CKSTAT_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_MONTH_PLAN_CKSTAT_SEL(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_MONTH_PLAN_CKSTAT_SEL");
+        return result;
+    }
+    // 周计划厂矿执行率统计
+    public HashMap PM_03_WEEK_PLAN_CKSTAT_SEL(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,String V_V_ORGCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_WEEK_PLAN_CKSTAT_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_WEEK_PLAN_CKSTAT_SEL(:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+            cstmt.setString("V_V_WEEK",V_V_WEEK);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_WEEK_PLAN_CKSTAT_SEL");
+        return result;
+    }
+    // 月计划作业区执行率统计
+    public HashMap PM_03_MONTH_PLAN_ZYQSTAT_SEL(String V_V_YEAR,String V_V_MONTH,String V_V_ORGCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_MONTH_PLAN_ZYQSTAT_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_MONTH_PLAN_ZYQSTAT_SEL(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_MONTH_PLAN_ZYQSTAT_SEL");
+        return result;
+    }
+    // 周计划作业区执行率统计
+    public HashMap PM_03_WEEK_PLAN_ZYQSTAT_SEL(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,String V_V_ORGCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_WEEK_PLAN_ZYQSTAT_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_WEEK_PLAN_ZYQSTAT_SEL(:V_V_YEAR,:V_V_MONTH,:V_V_WEEK,:V_V_ORGCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+            cstmt.setString("V_V_WEEK",V_V_WEEK);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_WEEK_PLAN_ZYQSTAT_SEL");
+        return result;
+    }
 }
