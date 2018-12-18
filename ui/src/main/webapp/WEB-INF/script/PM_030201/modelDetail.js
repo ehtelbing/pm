@@ -257,13 +257,14 @@ Ext.onReady(function() {
         items:[ ]
     });
 
-
+    Ext.QuickTips.init();
 
     Ext.create('Ext.container.Viewport', {
         id : "id",
         layout : 'border',
         items : [ nothpanel,westpanel,centpanel]
     });
+
     onSgfBtnClick();
     onQxjBtnClick();
     onWzjhBtnClick();
@@ -394,7 +395,7 @@ var pageFunction = {
                 if (startd>=new Date(vStart) && endd<=new Date(vEnd)) {
                     var vleft = ((startd.getTime() - new Date(vStart).getTime()) / (86400 * 1000)) ;
                     var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) ;
-                    var gtt = '<div style="left:' + (vleft * 40).toString() + 'px;height:21px;width:' + (vwidth * 40+40).toString() + 'px;background-color:A6FFA6;" class="sch-event"  ><div class="sch-event-inner" >' + record.data.V_ORDERID + '</div></div><div class="lxm"  id="' + record.data.V_ORDERID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">';
+                    var gtt = '<div style="left:' + (vleft * 40).toString() + 'px;height:23.5px;width:' + (vwidth * 40+40).toString() + 'px;background-color:A6FFA6;" class="sch-event"  ><div class="sch-event-inner" ><div data-qtip="' + record.data.V_ORDERID+ '" >' + record.data.V_ORDERID + '</div></div></div><div class="lxm"  id="' + record.data.V_ORDERID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">';
 
                     var cont = record.data.V_ORDERID;
                     var contt = '内容：';
