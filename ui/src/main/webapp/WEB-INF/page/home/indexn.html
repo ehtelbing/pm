@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>设备管理系统</title>
+
+    <link rel="stylesheet" href="../../css/homenew/css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/homenew/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="../../css/homenew/css/my-css.css">
+
+    <!--[if lt IE 9]>
+    <script src="../../resources/home/html5shiv.min.js"></script>
+    <script src="js/respond.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container-fluid div_top">
+    <div class="div_top1_right">
+        <a href="#" class="icon_search">搜索</a>
+        <a href="#" class="icon_help">帮助</a>
+        <a href="#" class="icon_exit">退出</a>
+    </div>
+</div>
+<div class="container-fluid div-top2">
+<ul class="nav nav-pills nav_a" style="margin-top:10px;">
+    <li role="presentation"><a href="#" class="icon-jcgl">基准管理</a></li>
+    <li role="presentation"><a href="#" class="icon-djgl">点检管理</a></li>
+    <li role="presentation"><a href="#" class="icon-ztgl">状态管理</a></li>
+    <li role="presentation"><a href="#" class="icon-jxgl">检修管理</a></li>
+    <li role="presentation"><a href="#" class="icon-wlgl">物料管理</a></li>
+    <li role="presentation"><a href="#" class="icon-fygl">费用管理</a></li>
+    <li role="presentation"><a href="#" class="icon-tzsb">特种设备</a></li>
+    <li role="presentation"><a href="#" class="icon-gdzc">固定资产</a></li>
+    <li role="presentation"><a href="#" class="icon-nygl">能源管理</a></li>
+    <li role="presentation"><a href="#" class="icon-tjfx">统计分析</a></li>
+    <li role="presentation"><a href="#" class="icon-xtgl">系统管理</a></li>
+    <li role="presentation"><a href="#" class="icon-htgl">合同管理</a></li>
+    <li role="presentation"><a href="#" class="icon-jlsb">计量设备</a></li>
+</ul>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2" style="background:#fff;">
+            <div class="div-left-tab">
+                <a onclick="MyEqu()" target="_blank" class="active">我的设备</a>
+                <a onclick="EquTree()" target="_blank">设备树</a>
+                <a onclick="DeptTree()" target="_blank">部门树</a>
+            </div>
+            <div class="div-left-tree" id="tree"></div>
+            <div style="clear:both"></div>
+            <div class="div-left-sc">
+                <a href="#">我的会议时间管理</a>
+                <a href="#">我的会议时间管理</a>
+                <a href="#">我的会议时间管理</a>
+            </div>
+        </div>
+        <div class="col-lg-10">
+
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div id="odiv">
+                            <div class="div-con-left-title">
+                                <button>已办事项<label>8</label></button>
+                                <button>可办事项<label>10</label></button>
+                                <button class="active1">待办事项</button>
+                            </div>
+                            <div class="div-grzx-body">
+                                <div class="grzx-label">合<br>同</div>
+                                <ul>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                </ul>
+                                <div style="clear:both"></div>
+                                <div class="grzx-label">财<br>务</div>
+                                <ul>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                </ul>
+                                <div style="clear:both"></div>
+                                <div class="grzx-label">文<br>件</div>
+                                <ul>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                </ul>
+                            </div>
+                            <div class="div-grzx-body">1</div>
+                            <div class="div-grzx-body" style="display:block;"><div class="grzx-label">合<br>同</div>
+                                <ul>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节3！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                </ul>
+                                <div style="clear:both"></div>
+                                <div class="grzx-label">财<br>务</div>
+                                <ul>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                </ul>
+                                <div style="clear:both"></div>
+                                <div class="grzx-label">文<br>件</div>
+                                <ul>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                    <li><a href="#"><span>一.您在【维工项目】流程【项目申请查询】环节！</span><label>2018-03-26  19:23:26</label></a> </li>
+                                </ul></div>
+                        </div>
+                        <script type="text/javascript">
+
+                            var odiv=document.getElementById("odiv");
+                            var obtn=odiv.getElementsByTagName("button");
+                            var adiv=odiv.getElementsByClassName("div-grzx-body")
+                            for(var i=0; i<obtn.length; i++)
+                            {
+                                obtn[i].index=i;
+                                obtn[i].onclick=function()
+                                {
+                                    for(var i=0; i<obtn.length; i++)
+                                    {
+                                        obtn[i].className="";
+                                        adiv[i].style.display="none";
+                                    }
+                                    this.className="active1"
+                                    adiv[this.index].style.display="block"
+                                }
+                            }
+
+                        </script>
+
+                        <div class="div-rcywzq">
+                            <div class="div-rcywzq-title"><span>日常业务专区</span></div>
+                            <div id="ztbox">
+                                <div id="left"></div>
+                                <div id="conter">
+                                    <ul>
+                                        <li><div class="rc-list">
+                                            <table>
+                                                <tr>
+                                                    <td><img src="../../images/icon-wdgzzd.png"> <a href="#">我的规章制度</a> </td>
+                                                    <td><img src="../../images/icon-qdjxgd.png"> <a href="#">我的检修工单</a> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><img src="../../images/icon-wdsb.png"> <a href="#">我的设备</a> </td>
+                                                    <td><img src="../../images/icon-wdtz.png"> <a href="#">我的图纸</a> </td>
+                                                </tr>
+                                            </table>
+                                        </div></li>
+                                        <li>
+                                            <div class="rc-list blue-top">
+                                                <table>
+                                                    <tr>
+                                                        <td><img src="../../images/icon-wdgc.png"> <a href="#">我的工程</a> </td>
+                                                        <td><img src="../../images/icon-wdyzj.png"> <a href="#">我的预装件</a> </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><img src="../../images/icon-wdlld.png"> <a href="#">我的领料单</a> </td>
+                                                        <td><img src="../../images/icon-wdqx.png"> <a href="#">我的缺陷</a> </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="rc-list green-top">
+                                                <table>
+                                                    <tr>
+                                                        <td><img src="../../images/icon-wdgc.png"> <a href="#">我关注的备件</a> </td>
+                                                        <td><img src="../../images/icon-wdyzj.png"> <a href="#">我的周计划</a> </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><img src="../../images/icon-wdlld.png"> <a href="#">我的台帐</a> </td>
+                                                        <td><img src="../../images/icon-wdqx.png"> <a href="#">我的检修模型</a> </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li><div class="rc-list">
+                                            <table>
+                                                <tr>
+                                                    <td><img src="../../images/icon-wdgzzd.png"> <a href="#">我的规章制度</a> </td>
+                                                    <td><img src="images/icon-qdjxgd.png"> <a href="#">我的检修工单</a> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><img src="../../images/icon-wdsb.png"> <a href="#">我的设备</a> </td>
+                                                    <td><img src="../../images/icon-wdtz.png"> <a href="#">我的图纸</a> </td>
+                                                </tr>
+                                            </table>
+                                        </div></li>
+                                    </ul>
+                                    <div id="scroll"> <span></span> </div>
+                                </div>
+                                <div id="right"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="div-con-grtx">
+                            <div class="div-con-grtx-title">个人提醒</div>
+                            <ul>
+                                <li><a href=""> <img src="../../images/icon-click.png"><label><h3>闹钟</h3><h4>等等等</h4></label><span>4分钟之后</span> </a></li>
+                                <li class="c-b-gray"><a href=""> <img src="../../images/icon-click.png"><label><h3>闹钟</h3><h4>等等等</h4></label><span>4分钟之后</span> </a></li>
+                                <li><a href=""> <img src="../../images/icon-click.png"><label><h3>闹钟</h3><h4>等等等</h4></label><span>4分钟之后</span> </a></li>
+                                <li class="c-b-gray"><a href=""> <img src="../../images/icon-click.png"><label><h3>闹钟</h3><h4>等等等</h4></label><span>4分钟之后</span> </a></li>
+                            </ul>
+                        </div>
+                        <div class="div-con-tzgg">
+                            <div class="div-con-tzgg-title"></div>
+                            <a href="#">询系统的正常维护工作正在进</a>
+                            <a href="#">询系统的正常维护工作正在进</a>
+                            <a href="#">询系统的正常维护工作正在进</a>
+                            <a href="#">询系统的正常维护工作正在进</a>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../resources/home/bootstrap.js"></script>
+<script src="../../resources/home/lrtk.js"></script>
+</body>
+</html>
