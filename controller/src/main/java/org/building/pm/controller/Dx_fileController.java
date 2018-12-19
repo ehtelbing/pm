@@ -28,8 +28,10 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/app/pm/dxfile/")
@@ -1502,6 +1504,20 @@ public class Dx_fileController {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    @RequestMapping(value = "PRO_PM_DEPT_SORT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_DEPT_SORT(
+            @RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
+            @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_PM_DEPT_SORT(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE);
+        return data;
     }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)

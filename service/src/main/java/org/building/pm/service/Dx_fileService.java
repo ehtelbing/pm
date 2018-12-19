@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.sql.Date;
 
 
 @Service
@@ -1629,6 +1632,37 @@ public class Dx_fileService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_03_WEEK_PLAN_ZYQSTAT_SEL");
+        return result;
+    }
+    // 工单执行率
+    public HashMap PRO_PM_DEPT_SORT(String V_D_ENTER_DATE_B,String V_D_ENTER_DATE_E,String V_V_ORGCODE)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+//        DateFormat format =new SimpleDateFormat("yyyy/MM/dd");
+//        Date V_D_ENTER_DATE_B= (Date) format.parse(stime);
+//        Date V_D_ENTER_DATE_E= (Date) format.parse(etime);
+        try{
+            logger.info("begin PRO_PM_DEPT_SORT");
+
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_PM_DEPT_SORT(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_ORGCODE,:V_CURSOR)}");
+            cstmt.setString("V_D_ENTER_DATE_B",V_D_ENTER_DATE_B);
+            cstmt.setString("V_D_ENTER_DATE_E",V_D_ENTER_DATE_E);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEPT_SORT");
         return result;
     }
 }
