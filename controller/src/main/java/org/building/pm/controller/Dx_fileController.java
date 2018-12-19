@@ -1519,6 +1519,19 @@ public class Dx_fileController {
         Map data = dx_fileService.PRO_PM_DEPT_SORT(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE);
         return data;
     }
+    // 计划模型修改
+    @RequestMapping(value = "PM_1921_PLAN_MX_DATA_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1921_PLAN_MX_DATA_UPDATE(
+            @RequestParam(value = "V_V_MX_CODE") String V_V_MX_CODE,
+            @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,
+            @RequestParam(value = "V_V_LIFELONG") String V_V_LIFELONG,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_1921_PLAN_MX_DATA_UPDATE(V_V_MX_CODE, V_V_PERNUM, V_V_LIFELONG);
+        return data;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

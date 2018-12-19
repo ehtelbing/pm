@@ -94,6 +94,8 @@ public class PM_1921Controller {
             @RequestParam(value = "V_V_MENO") String V_V_MENO,
             @RequestParam(value = "V_V_INPER") String V_V_INPER,
             @RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE,
+            @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,
+            @RequestParam(value = "V_V_LIFELONG") String V_V_LIFELONG,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map test = new HashMap();
@@ -101,7 +103,7 @@ public class PM_1921Controller {
         List<Map> result = null;
 
 
-        result = pm_1921Service.PM_1921_PLAN_EQU_DATA_SET(V_V_MX_CODE, V_V_GUID, V_V_EQUTYPE, V_V_EQUCODE, V_V_MENO, V_V_INPER, V_V_JXMX_CODE);
+        result = pm_1921Service.PM_1921_PLAN_EQU_DATA_SET(V_V_MX_CODE, V_V_GUID, V_V_EQUTYPE, V_V_EQUCODE, V_V_MENO, V_V_INPER, V_V_JXMX_CODE,V_V_PERNUM,V_V_LIFELONG);
         test.put("list", result);
         return test;
     }

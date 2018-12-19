@@ -1639,12 +1639,8 @@ public class Dx_fileService {
         HashMap result=new HashMap();
         Connection conn=null;
         CallableStatement cstmt=null;
-//        DateFormat format =new SimpleDateFormat("yyyy/MM/dd");
-//        Date V_D_ENTER_DATE_B= (Date) format.parse(stime);
-//        Date V_D_ENTER_DATE_E= (Date) format.parse(etime);
         try{
             logger.info("begin PRO_PM_DEPT_SORT");
-
             conn=dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt=conn.prepareCall("{call PRO_PM_DEPT_SORT(:V_D_ENTER_DATE_B,:V_D_ENTER_DATE_E,:V_V_ORGCODE,:V_CURSOR)}");
@@ -1663,6 +1659,33 @@ public class Dx_fileService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_DEPT_SORT");
+        return result;
+    }
+    // 计划模型修改
+    public HashMap PM_1921_PLAN_MX_DATA_UPDATE(String V_V_MX_CODE,String V_V_PERNUM,String V_V_LIFELONG)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_1921_PLAN_MX_DATA_UPDATE");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_1921_PLAN_MX_DATA_UPDATE(:V_V_MX_CODE,:V_V_PERNUM,:V_V_LIFELONG,:RET)}");
+            cstmt.setString("V_V_MX_CODE",V_V_MX_CODE);
+            cstmt.setString("V_V_PERNUM",V_V_PERNUM);
+            cstmt.setString("V_V_LIFELONG",V_V_LIFELONG);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1921_PLAN_MX_DATA_UPDATE");
         return result;
     }
 }

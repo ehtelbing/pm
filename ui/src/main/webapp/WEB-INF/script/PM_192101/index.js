@@ -141,13 +141,29 @@ Ext.onReady(function () {
 });
 
 function addbtn(){
+    var pernum=0;
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
     if (seldata.length != 1) {
         alert('请选择一条数据进行修改！');
         return false;
     }
+        Ext.Ajax.request({
+            url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_SEL',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_JXMX_CODE: seldata[0].data.V_MX_CODE
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                for(var i=0;i<resp.list.length;i++){
+                    pernum=pernum+resp.list[i].V_PERNUM;
+                }
+            }
+        });
+
     window.close();
-    window.opener.getReturnValue(seldata[0].data.V_MX_CODE,seldata[0].data.V_MX_NAME);
+    window.opener.getReturnValue(seldata[0].data.V_MX_CODE,seldata[0].data.V_MX_NAME,pernum);
 }
 function _init() {
     if (orgLoad && equTypeLoad && deptLoad) {

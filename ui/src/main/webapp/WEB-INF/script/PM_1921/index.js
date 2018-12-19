@@ -428,7 +428,7 @@ Ext.onReady(function () {
         fields: ['V_MX_CODE', 'V_MX_NAME', 'V_ORGCODE', 'V_ORGNAME',
             'V_DEPTCODE', 'V_DEPTNAME', 'V_SPECIALTY', 'V_MX_MENO', 'V_MX_FALG',
             'V_MX_INPERCODE', 'V_MX_INPERNAME', 'V_MX_INDATE', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME',
-            'V_EQU_MENO', 'V_EQU_FALG', 'V_EQU_INPERCODE', 'V_EQU_INPERNAME', 'V_EQU_INDATE', 'V_JXMX_CODE', 'V_GUID'],
+            'V_EQU_MENO', 'V_EQU_FALG', 'V_EQU_INPERCODE', 'V_EQU_INPERNAME', 'V_EQU_INDATE', 'V_JXMX_CODE', 'V_GUID','V_PERNUM','V_LIFELONG'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
@@ -641,6 +641,16 @@ Ext.onReady(function () {
         }, {
             text: '检修内容',
             dataIndex: 'V_EQU_MENO',
+            flex: 2,
+            align: 'center'
+        }, {
+            text: '维修人数',
+            dataIndex: 'V_PERNUM',
+            flex: 2,
+            align: 'center'
+        }, {
+            text: '预期寿命',
+            dataIndex: 'V_LIFELONG',
             flex: 2,
             align: 'center'
         }],
@@ -935,14 +945,33 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 0px -8px',
             width: 220,
             labelAlign: 'right'
-        },
-            {
-                xtype: 'button',
-                text: '+',
-                style: ' margin: 5px 0px 0px 5px',
-                handler: OnJXMXClicked,
-                width: 25
-            }],
+        },{
+            xtype: 'button',
+            text: '+',
+            style: ' margin: 5px 0px 0px 5px',
+            handler: OnJXMXClicked,
+            width: 25
+        },{
+            xtype:'textfield',
+            id:'winjxper',
+            fieldLabel:'模型人数',
+            labelWidth: 70,
+            allowBlank: true,
+            readOnly: true,
+            style: ' margin: 5px 0px 0px -8px',
+            width: 220,
+            labelAlign: 'right',
+            emptyValue:0
+        },{
+            xtype:'textfield',
+            id:'winjxlifelet',
+            fieldLabel:'预计寿命',
+            labelWidth: 70,
+            allowBlank: true,
+            style: ' margin: 5px 0px 0px -8px',
+            width: 220,
+            labelAlign: 'right'
+        }],
         buttons: [{
             xtype: 'button',
             text: '保存',
@@ -1202,28 +1231,47 @@ function addshebeiSave() {
 
 
     var records = Ext.getCmp('grid').getSelectionModel().getSelection();//获取选中的数据
-    Ext.Ajax.request({
-        url: AppUrl + 'pm_1921/PM_1921_PLAN_EQU_DATA_SET',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_MX_CODE: records[0].get('V_MX_CODE'),
-            V_V_GUID:"",
-            V_V_EQUTYPE: Ext.getCmp('winsbtype4').getValue(),
-            V_V_EQUCODE: Ext.getCmp('winsbname4').getValue(),
-            V_V_MENO: Ext.getCmp('winjxneirong4').getValue(),
-            V_V_INPER: Ext.util.Cookies.get('v_personcode'),
-            V_V_JXMX_CODE: Ext.getCmp('winjxmx4').getValue()
-        },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            Ext.MessageBox.alert('提示', '添加设备成功');
-            Ext.getCmp('window3').hide();
-            //queryGrid1();
-            querygrid1();
+    // Ext.Ajax.request({
+    //     url: AppUrl + 'dxfile/PM_1921_PLAN_MX_DATA_UPDATE',
+    //     method: 'POST',
+    //     async: false,
+    //     params: {
+    //         V_V_MX_CODE: records[0].get('V_MX_CODE'),
+    //         V_V_PERNUM:Ext.getCmp("winjxper").getValue(),
+    //         V_V_LIFELONG: Ext.getCmp('winjxlifelet').getValue()
+    //     },
+    //     success: function (ret) {
+    //         var resp = Ext.decode(ret.responseText);
+    //          if(resp.RET){
+                 Ext.Ajax.request({
+                     url: AppUrl + 'pm_1921/PM_1921_PLAN_EQU_DATA_SET',
+                     method: 'POST',
+                     async: false,
+                     params: {
+                         V_V_MX_CODE: records[0].get('V_MX_CODE'),
+                         V_V_GUID:"",
+                         V_V_EQUTYPE: Ext.getCmp('winsbtype4').getValue(),
+                         V_V_EQUCODE: Ext.getCmp('winsbname4').getValue(),
+                         V_V_MENO: Ext.getCmp('winjxneirong4').getValue(),
+                         V_V_INPER: Ext.util.Cookies.get('v_personcode'),
+                         V_V_JXMX_CODE: Ext.getCmp('winjxmx4').getValue(),
+                         V_V_PERNUM:Ext.getCmp("winjxper").getValue(),
+                         V_V_LIFELONG:Ext.getCmp('winjxlifelet').getValue()
+                     },
+                     success: function (ret) {
+                         var resp = Ext.JSON.decode(ret.responseText);
+                         Ext.MessageBox.alert('提示', '添加设备成功');
+                         Ext.getCmp('window3').hide();
+                         //queryGrid1();
+                         querygrid1();
 
-        }
-    });
+                     }
+                 });
+
+        //      }
+        //
+        // }
+    // });
 
 
 }
@@ -1262,7 +1310,9 @@ function updateshebeiSave() {
             V_V_EQUCODE: Ext.getCmp('winsbname5').getValue(),
             V_V_MENO: Ext.getCmp('winjxneirong5').getValue(),
             V_V_INPER: Ext.util.Cookies.get('v_personcode'),
-            V_V_JXMX_CODE: Ext.getCmp('winjxmx5').getValue()
+            V_V_JXMX_CODE: Ext.getCmp('winjxmx5').getValue(),
+            V_V_PERNUM:Ext.getCmp("winjxper").getValue(),
+            V_V_LIFELONG:Ext.getCmp('winjxlifelet').getValue()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -1645,9 +1695,10 @@ function _selectSbFourth5() {
     sbname5.load();
 }
 
-function getReturnValue(code,name) {
+function getReturnValue(code,name,pernum) {
     Ext.getCmp("winjxmx4").setValue(name);
     Ext.getCmp("winjxmx4code").setValue(code);
+    Ext.getCmp("winjxper").setValue(pernum);
 }
 function OnJXMXClicked(){
     var owidth = window.document.body.offsetWidth - 200;

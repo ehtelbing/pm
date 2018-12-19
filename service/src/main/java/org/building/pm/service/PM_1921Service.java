@@ -165,7 +165,7 @@ public class PM_1921Service {
         return result;
     }
 
-    public List<Map> PM_1921_PLAN_EQU_DATA_SET(String V_V_MX_CODE,String V_V_GUID,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_MENO,String V_V_INPER,String V_V_JXMX_CODE) throws SQLException {
+    public List<Map> PM_1921_PLAN_EQU_DATA_SET(String V_V_MX_CODE,String V_V_GUID,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_MENO,String V_V_INPER,String V_V_JXMX_CODE,String V_V_PERNUM,String V_V_LIFELONG) throws SQLException {
 //        logger.info("begin PM_1921_PLAN_EQU_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -173,7 +173,7 @@ public class PM_1921Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_1921_PLAN_EQU_DATA_SET" + "(:V_V_MX_CODE,:V_V_GUID,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_MENO,:V_V_INPER,:V_V_JXMX_CODE,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PM_1921_PLAN_EQU_DATA_SET" + "(:V_V_MX_CODE,:V_V_GUID,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_MENO,:V_V_INPER,:V_V_JXMX_CODE,:V_V_PERNUM,:V_V_LIFELONG,:V_INFO)}");
             cstmt.setString("V_V_MX_CODE", V_V_MX_CODE);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
@@ -181,6 +181,8 @@ public class PM_1921Service {
             cstmt.setString("V_V_MENO", V_V_MENO);
             cstmt.setString("V_V_INPER", V_V_INPER);
             cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
+            cstmt.setString("V_V_PERNUM", V_V_PERNUM);
+            cstmt.setString("V_V_LIFELONG", V_V_LIFELONG);
             cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
