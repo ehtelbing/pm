@@ -102,6 +102,17 @@ public class DrawingManageController {
         List<Map> result = drawingManageService.PRO_BASE_NEW_MENU_SEL(IS_V_ROLECODE, IS_V_SYSTYPE,V_V_DEPTCODE, V_V_HOME_MENU);
         return result;
     }
+    @RequestMapping(value = "/PRO_BASE_NEW_MENU_1220", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_NEW_MENU_1220(
+            @RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
+            @RequestParam(value = "IS_V_SYSTYPE") String IS_V_SYSTYPE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU)
+            throws SQLException {
+        Map<String, Object> result = drawingManageService.PRO_BASE_NEW_MENU_1220(IS_V_ROLECODE, IS_V_SYSTYPE, V_V_DEPTCODE, V_V_HOME_MENU);
+        return result;
+    }
     @RequestMapping(value = "/orgTree", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> orgTree(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE) throws SQLException {

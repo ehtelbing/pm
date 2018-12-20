@@ -149,14 +149,14 @@ public class DrawingManageService {
     }
 
     public List<Map> PRO_BASE_NEW_MENU_SEL(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE, String V_V_HOME_MENU) throws SQLException {
-        logger.info("begin PRO_BASE_NEW_MENU");
+        logger.info("begin PRO_BASE_NEW_MENU_1220");
         List<Map> list = new ArrayList<>();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_SEL(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_1220(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
             cstmt.setString("IS_V_ROLECODE", IS_V_ROLECODE);
             cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
@@ -205,11 +205,42 @@ public class DrawingManageService {
             conn.close();
         }
         logger.debug("result:" + list);
-        logger.info("end PRO_BASE_NEW_MENU");
+        logger.info("end PRO_BASE_NEW_MENU_1220");
         return list;
     }
 
+    public Map PRO_BASE_NEW_MENU_1220(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE, String V_V_HOME_MENU) throws SQLException {
+        logger.info("begin PRO_BASE_NEW_MENU_1220");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_1220(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
+            cstmt.setString("IS_V_ROLECODE", IS_V_ROLECODE);
+            cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_HOME_MENU", V_V_HOME_MENU);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
 
+//            HashMap result = new HashMap();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            List<Map> datalist = (List) result.get("list");
+//            list = getMenuData((List) result.get("list"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_NEW_MENU_1220");
+        return result;
+    }
     public List<Object> getMenuData(List<Map<String, Object>> myList) {
         List<Object> result = new ArrayList<Object>();
         Map<String, Object> item = new HashMap<String, Object>();

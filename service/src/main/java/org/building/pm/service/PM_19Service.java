@@ -3978,4 +3978,167 @@ public class PM_19Service {
 
     }
 
+    public List<Map> deptTree(String V_V_DEPTCODE) throws SQLException {
+        logger.info("begin deptTree");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_TREE" + "(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+
+            for (int i=0;i<list.size();i++) {
+                if (list.get(i).get("V_DEPTCODE").equals(V_V_DEPTCODE)) {
+                    Map temp = new HashMap();
+                    temp.put("id", list.get(i).get("V_DEPTCODE"));
+                    temp.put("text", list.get(i).get("V_DEPTNAME"));
+                    temp.put("expanded", false);
+                    temp.put("children", GetDeptTreeChildren(list, V_V_DEPTCODE));
+                    result.add(temp);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end deptTree");
+        return result;
+    }
+
+    public List<Map> GetDeptTreeChildren(List<HashMap> list, String V_V_DEPTCODE)throws SQLException{
+        List<Map> menu = new ArrayList<Map>();
+        for(int i = 0; i < list.size(); i++){
+            if (list.get(i).get("V_DEPTCODE_UP").equals(V_V_DEPTCODE)) {
+                Map temp = new HashMap();
+                temp.put("id", list.get(i).get("V_DEPTCODE"));
+                temp.put("text", list.get(i).get("V_DEPTNAME"));
+
+                if(GetDeptTreeChildren(list, list.get(i).get("V_DEPTCODE").toString()).size()>0){
+                    temp.put("children", GetDeptTreeChildren(list, list.get(i).get("V_DEPTCODE").toString()));
+                    temp.put("leaf", false);
+                    temp.put("expanded", false);
+                }else{
+                    temp.put("leaf", true);
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
+    public List<Map> DepartAndEquTree(String V_V_PERSONCODE,String V_V_DEPTCODENEXT) throws SQLException {
+        logger.info("begin DepartAndEquTree");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_TREE" + "(:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODENEXT);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            for (int i=0;i<list.size();i++) {
+                if (list.get(i).get("V_DEPTCODE").equals(V_V_DEPTCODENEXT)) {
+                    Map temp = new HashMap();
+                    temp.put("id", list.get(i).get("V_DEPTCODE"));
+                    temp.put("text", list.get(i).get("V_DEPTNAME"));
+                    temp.put("leaf", false);
+                    temp.put("expanded", false);
+                    temp.put("children", GetDeptEquChildren(V_V_PERSONCODE, V_V_DEPTCODENEXT));
+                    result.add(temp);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DepartAndEquTree");
+        return result;
+    }
+    public List<Map> GetDeptEquChildren(String V_V_PERSONCODE,String V_V_DEPTCODENEXT) throws SQLException{
+        logger.info("begin PRO_GET_DEPTEQUTYPE_PER");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_GET_DEPTEQUTYPE_PER" + "(:V_V_PERSONCODE,:V_V_DEPTCODENEXT,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+            for(int i = 0; i < list.size(); i++) {
+                Map temp = new HashMap();
+                temp.put("id", list.get(i).get("V_EQUTYPECODE"));
+                temp.put("text", list.get(i).get("V_EQUTYPENAME"));
+                temp.put("leaf", true);
+                result.add(temp);
+//                if(GetDeptTreeChildren(list, list.get(i).get("V_DEPTCODE").toString()).size()>0){
+//                    temp.put("children", GetDeptTreeChildren(list, list.get(i).get("V_DEPTCODE").toString()));
+//                    temp.put("leaf", false);
+//                    temp.put("expanded", false);
+//                }else{
+//                    temp.put("children", GetEquChildren(list, list.get(i).get("V_DEPTCODE").toString()));
+//                    temp.put("leaf", false);
+//                    temp.put("expanded", false);
+//
+//                }
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_GET_DEPTEQUTYPE_PER");
+        return result;
+    }
+
+    public List<Map> GetEquChildren(String V_V_PERSONCODE,String V_V_EQUCODE) throws SQLException{
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_PERSONTOEQU_VIEW" + "(:V_V_PERSONCODE,:V_V_EQUCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            List<HashMap> list=ResultHash((ResultSet) cstmt.getObject("V_CURSOR"));
+
+            for(int i = 0; i < list.size(); i++) {
+                Map temp = new HashMap();
+                temp.put("id", list.get(i).get("V_PERSONCODE"));
+                temp.put("text", list.get(i).get("V_PERSONNAME"));
+                temp.put("leaf", true);
+                result.add(temp);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        return result;
+    }
 }

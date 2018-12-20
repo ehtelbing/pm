@@ -1480,4 +1480,22 @@ public class PM_19Controller {
         return result;
     }
 
+    @RequestMapping(value = "/deptTree", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> deptTree(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        List<Map> result = pm_19Service.deptTree(V_V_DEPTCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/DepartAndEquTree", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> DepartAndEquTree(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                          @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
+        List<Map> result = pm_19Service.DepartAndEquTree(V_V_PERSONCODE,V_V_DEPTCODENEXT);
+        return result;
+    }
 }

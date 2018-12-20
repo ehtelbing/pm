@@ -1236,5 +1236,23 @@ public class PM_03Controller {
         Map result = pm_03Service.DR_PM_03_PLAN_PROJECT(V_V_YEAR);
         return result;
     }
+    //导入放行月计划
+    @RequestMapping(value = "/DR_PM_03_PLAN_MONTH", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DR_PM_03_PLAN_MONTH(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                                   @RequestParam(value = "V_V_MOUTH") String V_V_MOUTH
+    ) throws Exception {
 
+        Map result = pm_03Service.DR_PM_03_PLAN_MONTH(V_V_YEAR,V_V_MOUTH);
+        return result;
+    }
+    @RequestMapping(value = "/PM_PROJECT_WORKORDER_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PROJECT_WORKORDER_CREATE(@RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+                                                            @RequestParam(value = "V_V_INPERCODE") String V_V_INPERCODE
+    ) throws Exception {
+
+        Map result = pm_03Service.PM_PROJECT_WORKORDER_CREATE(V_V_PROJECT_GUID,V_V_INPERCODE);
+        return result;
+    }
 }
