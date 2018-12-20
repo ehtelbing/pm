@@ -770,13 +770,14 @@ function OnClickExcelButton() {
     var V_V_DEPTCODE=Ext.getCmp('jhzyq').getValue()=='%'?'0':Ext.getCmp('').getValue();
     var V_V_EQUTYPE=Ext.getCmp('sblx').getValue()=='%'?'0':Ext.getCmp('sblx').getValue();
     var V_V_EQUCODE=Ext.getCmp('sbmc').getValue()=='%'?'0':Ext.getCmp('sbmc').getValue();
+    var V_V_ZY=Ext.getCmp('zy').getValue()=='%'?'0':Ext.getCmp('zy').getValue();
     document.location.href = AppUrl + 'excel/YJHCX_EXCEL?V_V_YEAR=' + Ext.getCmp('nf').getValue()
         + '&V_V_MONTH=' + Ext.getCmp('yf').getValue()
         + '&V_V_ORGCODE=' + V_V_ORGCODE
         + '&V_V_DEPTCODE=' +V_V_DEPTCODE// Ext.getCmp('jhzyq').getValue()
         + '&V_V_EQUTYPE=' + V_V_EQUTYPE
         + '&V_V_EQUCODE=' + V_V_EQUCODE
-        + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
+        + '&V_V_ZY=' +V_V_ZY
         + '&V_V_CONTENT=' + Ext.getCmp('content').getValue()
         + '&V_V_STATECODE=' + V_V_STATE
         + '&V_V_PEROCDE=' + Ext.util.Cookies.get('v_personcode')
