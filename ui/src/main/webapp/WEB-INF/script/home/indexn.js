@@ -258,15 +258,15 @@ function _toMenu(data) {
                         var xx='';
                         Ext.Array.each(data.list, function (zj) {
                             if(zj.V_MENUCODE_UP==tk.V_MENUCODE) {
-
                                 xx=xx+'<li><a onclick=\"openWin(\''+AppUrlFrame+zj.V_URL+'\',\''+zj.V_MENUNAME+'\')\">'+zj.V_MENUNAME+'</a></li>';
                             }
                         });
                         if(xx!=''){
-                            menuzx=menuzx+'<ul style="">';
-                            menuzx=menuzx+xx+'</ul>';
-                        }
+                            menuzx=menuzx+'<li><a href="#"><span class="imea imeas"><span></span></span>'+tk.V_MENUNAME+'</a><div class="imsc"><div class="imsubc" style="width:180px;top:-22px;left:170px;"><ul style="">';
+                            menuzx=menuzx+xx+'</ul></div></div></li>';
+                        }else{
                         menuzx=menuzx+'<li><a onclick=\"openWin(\''+AppUrlFrame+tk.V_URL+'\',\''+tk.V_MENUNAME+'\')\">'+tk.V_MENUNAME+'</a></li>';
+                        }
                     }
                 });
                 if(menuzx!=''){
