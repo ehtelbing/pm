@@ -3179,13 +3179,14 @@ public class ExcelController {
 
         List list = new ArrayList();
 
+        String V_V_ORGCODE2 = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
         String V_V_STATECODE2 = V_V_STATECODE.equals("0") ? "%" : V_V_STATECODE;
         String V_V_DEPTCODE2 = V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
         String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_EQUTYPE;
         String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE;
 
 
-        Map<String, Object> data = pm_03Service.PM_03_MONTH_PLAN_SELALL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_ZY, V_V_CONTENT, V_V_STATECODE2, V_V_PEROCDE);
+        Map<String, Object> data = pm_03Service.PM_03_MONTH_PLAN_SELALL(V_V_YEAR, V_V_MONTH, V_V_ORGCODE2, V_V_DEPTCODE2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_ZY, V_V_CONTENT, V_V_STATECODE2, V_V_PEROCDE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();

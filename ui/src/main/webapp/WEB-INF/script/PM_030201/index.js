@@ -255,7 +255,7 @@ Ext.onReady(function () {
             },
             {
                 xtype: 'button',
-                text: '关联项目',//'导入放行计划',
+                text: '关联维修计划',//'导入放行计划',
                 icon: imgpath + '/accordion_expand.png',
                 listeners: {click: OnButtonDR}
             }
