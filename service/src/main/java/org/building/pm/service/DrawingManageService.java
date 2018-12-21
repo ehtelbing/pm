@@ -210,21 +210,27 @@ public class DrawingManageService {
     }
 
     public Map PRO_BASE_NEW_MENU_1220(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE, String V_V_HOME_MENU) throws SQLException {
-        logger.info("begin PRO_BASE_NEW_MENU_1220");
+        logger.info("begin PRO_BASE_NEW_MENU_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_1220(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
+//            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_1220(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
+//            cstmt.setString("IS_V_ROLECODE", IS_V_ROLECODE);
+//            cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
+//            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+//            cstmt.setString("V_V_HOME_MENU", V_V_HOME_MENU);
+//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+//            cstmt.execute();
+            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_SEL(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_CURSOR)}");
             cstmt.setString("IS_V_ROLECODE", IS_V_ROLECODE);
             cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_HOME_MENU", V_V_HOME_MENU);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-
 //            HashMap result = new HashMap();
             result.put("list",
                     ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
@@ -238,7 +244,7 @@ public class DrawingManageService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_BASE_NEW_MENU_1220");
+        logger.info("end PRO_BASE_NEW_MENU_SEL");
         return result;
     }
     public List<Object> getMenuData(List<Map<String, Object>> myList) {

@@ -250,123 +250,82 @@ function _toMenu(data) {
     } else {
 
         Ext.Array.each(data.list, function (item) {
-            if(item.V_MENUCODE_UP=='-1'){
+            if(item.V_MENUCODE_UP=='pmnew'){
                 menuText=menuText+'<li class="imatm" ><a class="line_a icon-jcgl" href="#"><span class="imea imeam"><span></span></span>'+item.V_MENUNAME+'</a>';
                 var menuzx='';
-                Ext.Array.each(data.list, function (tk) {
-                    if(tk.V_MENUCODE_UP==item.V_MENUCODE) {
-                        var xx='';
-                        Ext.Array.each(data.list, function (zj) {
-                            if(zj.V_MENUCODE_UP==tk.V_MENUCODE) {
-                                xx=xx+'<li><a onclick=\"openWin(\''+AppUrlFrame+zj.V_URL+'\',\''+zj.V_MENUNAME+'\')\">'+zj.V_MENUNAME+'</a></li>';
-                            }
-                        });
-                        if(xx!=''){
-                            menuzx=menuzx+'<li><a href="#"><span class="imea imeas"><span></span></span>'+tk.V_MENUNAME+'</a><div class="imsc"><div class="imsubc" style="width:180px;top:-22px;left:170px;"><ul style="">';
-                            menuzx=menuzx+xx+'</ul></div></div></li>';
-                        }else{
-                        menuzx=menuzx+'<li><a onclick=\"openWin(\''+AppUrlFrame+tk.V_URL+'\',\''+tk.V_MENUNAME+'\')\">'+tk.V_MENUNAME+'</a></li>';
-                        }
-                    }
-                });
-                if(menuzx!=''){
+                //Ext.Array.each(data.list, function (tk) {
+                //    if(tk.V_MENUCODE_UP==item.V_MENUCODE) {
+                //        var xx='';
+                //        //Ext.Array.each(data.list, function (zj) {
+                //            //if(zj.V_MENUCODE_UP==tk.V_MENUCODE) {
+                //            //    xx=xx+'<li><a onclick=\"openWin(\''+AppUrlFrame+zj.V_URL+'\',\''+zj.V_MENUNAME+'\')\">'+zj.V_MENUNAME+'</a></li>';
+                //            //}
+                //
+                //        //});
+                //
+                //        if(xx!=''){
+                //            menuzx=menuzx+'<li><a href="#"><span class="imea imeas"><span></span></span>'+tk.V_MENUNAME+'</a><div class="imsc"><div class="imsubc" style="width:180px;top:-22px;left:170px;"><ul style="">';
+                //            menuzx=menuzx+xx+'</ul></div></div></li>';
+                //        }else{
+                //        menuzx=menuzx+'<li><a onclick=\"openWin(\''+AppUrlFrame+tk.V_URL+'\',\''+tk.V_MENUNAME+'\')\">'+tk.V_MENUNAME+'</a></li>';
+                //        }
+                //    }
+                //});
+                //if(menuzx!=''){
+                //    menuText=menuText+'<div class="imsc"><div class="imsubc" style="width:180px;top:-4px;left:0px;"><ul style="">';
+                //    menuText=menuText+menuzx+'</ul></div>';
+                //}
+                var arr=new Array();
+                arr=getChildren(data.list,item.V_MENUCODE);
+                if(arr[0]==1){
                     menuText=menuText+'<div class="imsc"><div class="imsubc" style="width:180px;top:-4px;left:0px;"><ul style="">';
-                    menuText=menuText+menuzx+'</ul></div>';
+                    menuText=menuText+arr[1]+'</ul></div>';
+                }else{
+                    menuText=menuText+arr[1];
                 }
+
                 menuText=menuText+ '</div></li>';
             }
-            //var tree = Ext.create('Ext.panel.Panel', {
-            //    border: false,
-            //    title: item.title,
-            //    cls: item.cls,
-            //
-            //    layout: 'fit',
-            //    items: [Ext.create('Ext.tree.Panel', {
-            //        id: 'tree' + item.id,
-            //        border: false,
-            //        rootVisible: false,
-            //        header: false,
-            //        hideHeaders: true,
-            //        store: Ext.create('Ext.data.TreeStore', {
-            //            root: {
-            //                expanded: true,
-            //                children: item.children
-            //            }
-            //        }),
-            //        listeners: {
-            //            itemclick: function (view, model, element, index, e) {
-            //                e.preventDefault();
-            //                var htmlStr = '';
-            //                if (model.childNodes.length != 0) {
-            //                } else {
-            //                    if (model.raw.type == 2) {
-            //                        if (model.raw.other == 0) {
-            //                            var owidth = window.document.body.offsetWidth;
-            //                            var oheight = window.document.body.offsetHeight;
-            //                            window.open(AppUrlFrame + model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-            //                        } else {
-            //                            var owidth = window.document.body.offsetWidth;
-            //                            var oheight = window.document.body.offsetHeight;
-            //                            window.open(model.raw.src, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-            //                        }
-            //                    } else {
-            //                        if (model.raw.other == 0) {
-            //                            htmlStr = [
-            //                                '<iframe id="Workspace'
-            //                                , item.sid
-            //                                , '" name="Workspace'
-            //                                , item.sid
-            //                                , '" frameborder="0" width="100%" height="100%" src="'
-            //                                , AppUrlFrame + model.raw.src
-            //                                , '" />'
-            //                            ].join('')
-            //                        } else {
-            //                            htmlStr = [
-            //                                '<iframe id="Workspace'
-            //                                , item.sid
-            //                                , '" name="Workspace'
-            //                                , item.sid
-            //                                , '" frameborder="0" width="100%" height="100%" src="'
-            //                                , ''
-            //                                , +model.raw.src + "?v_mancode=" + Ext.util.Cookies.get('v_personcode')
-            //                                , '" />'
-            //                            ].join('');
-            //                        }
-            //                        if (model.raw.leaf) {
-            //                            var tab = container.items.map[model.raw.id];
-            //                            if (tab === undefined) {
-            //                                tab = Ext.create('Ext.panel.Panel', {
-            //                                    id: model.raw.id,
-            //                                    title: model.raw.text,
-            //                                    closable: true,
-            //                                    html: htmlStr
-            //                                });
-            //                                container.add(tab);
-            //                                container.setActiveTab(tab);
-            //                            } else {
-            //                                container.setActiveTab(tab);
-            //                            }
-            //                        }
-            //                    }
-            //                    /*//自动化设备管理
-            //                     htmlStr = [
-            //                     '<iframe id="Workspace',
-            //                     model.raw.id,
-            //                     '" name="Workspace',
-            //                     model.raw.id,
-            //                     '" frameborder="0" width="100%" height="100%" src="'
-            //                     + _geturl(model.raw.src, APP)
-            //                     + '" />'].join('');*/
-            //                }
-            //
-            //            }
-            //        }
-            //    })]
-            //});
-            //array.push(tree);
         });
         return menuText;
     }
+}
+
+function getChildren(list,code){
+    var myArray=new Array();
+    var menuzx='';
+    var fg='0';
+    //var tt='';
+    Ext.Array.each(list, function (i) {
+        if(i.V_MENUCODE_UP==code) {
+            //var xx='';
+            fg='1';
+            //menuzx=menuzx+'<div class="imsc"><div class="imsubc" style="width:180px;top:-4px;left:0px;"><ul style="">';
+            var arr=new Array();
+            arr=getChildren(list, i.V_MENUCODE)
+            if(arr[0]== '1'){
+                //menuzx=menuzx+'<div class="imsc"><div class="imsubc" style="width:180px;top:-4px;left:0px;"><ul style="">';
+                menuzx=menuzx+'<li><a href="#"><span class="imea imeas"><span></span></span>'+i.V_MENUNAME+'</a><div class="imsc"><div class="imsubc" style="width:180px;top:-22px;left:170px;"><ul style="">';
+
+                menuzx=menuzx+arr[1]+'</ul></div></div></li>';
+                //menuzx=+menuzx+'</ul></div>';
+            }else{
+                menuzx=menuzx+'<li><a onclick=\"openWin(\''+AppUrlFrame+i.V_URL+'\',\''+i.V_MENUNAME+'\')\">'+i.V_MENUNAME+'</a></li>';
+
+            }
+            //menuzx=+menuzx+'</ul></div>';
+        }
+    });
+    //tt=tt+menuzx+'</ul></div>';
+    //if(fg==1){
+    //    tt='<div class="imsc"><div class="imsubc" style="width:180px;top:-4px;left:0px;"><ul style="">';
+    //    tt=tt+menuzx+'</ul></div>';
+    //}else{
+    //    tt=tt+menuzx;
+    //}
+    myArray[0]=fg;
+    myArray[1]=menuzx;
+    return myArray;
 }
 function openWin(url,title){
     var owidth = window.document.body.offsetWidth;
