@@ -214,7 +214,7 @@ Ext.onReady(function () {
     Ext.getCmp('zhou').select(getWeekOfMonth());
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
-        Ext.data.StoreManager.lookup('jhckStore').insert(0,{V_DEPTCODE:'',V_DEPTNAME:'全部' });
+        //Ext.data.StoreManager.lookup('jhckStore').insert(0,{V_DEPTCODE:'',V_DEPTNAME:'全部' });
         Ext.getCmp('jhck').select(Ext.data.StoreManager.lookup('jhckStore').getAt(0));
         query();
 

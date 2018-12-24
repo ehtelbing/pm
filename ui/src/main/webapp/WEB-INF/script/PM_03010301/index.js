@@ -704,12 +704,10 @@ Ext.onReady(function () {
 
     //设备类型加载监听
     Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
-        Ext.data.StoreManager.lookup('sblxStore').insert(0, {V_EQUTYPENAME: '全部', V_EQUTYPECODE: '%'});
         Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
     });
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
-        Ext.data.StoreManager.lookup('sbmcStore').insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
         query();
     });
@@ -1373,7 +1371,7 @@ function createWorkorder() {
 
     var V_GUIDList = '';
     for (var i = 0; i < record.length; i++) {
-        if (record[i].data.V_STATENAME != '审批完成' && record[i].data.V_STATENAME != '已下票'&&record[i].data.V_STATENAME != '设备部审批完成') {
+        if (record[i].data.V_STATE  == '10' && record[i].data.V_STATE == '100'&&record[i].data.V_STATE== '20'&&record[i].data.V_STATE== '99') {
             alert("该计划状态无法生成工单");
             return;
         }
