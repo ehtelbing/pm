@@ -136,7 +136,7 @@ var jhzyqStore = Ext.create('Ext.data.Store', {
         }
     }
 });
-
+//
 var nextSprStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'nextSprStore',
@@ -164,14 +164,10 @@ var nextSprStore = Ext.create("Ext.data.Store", {
             }else{
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                 V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
-                Ext.getCmp('nextPer').select(store.first());
+                // Ext.getCmp('nextPer').select(store.first());
             }
-
-
             // Ext.getCmp('nextPer').select(store.first());
-
         }
-
     }
 });
 
@@ -308,7 +304,7 @@ var gridStore = Ext.create('Ext.data.Store', {
 //grid显示
 function query() {
     Ext.data.StoreManager.lookup('gridStore').load();
-    _selectNextSprStore();
+    // _selectNextSprStore();
     /*Ext.data.StoreManager.lookup('gridStore').load({
      params: {
 
@@ -456,21 +452,22 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 5',
             labelWidth: 80,
             width: 250
-        }, {
-            xtype: 'combo',
-            id: 'nextPer',
-            labelAlign: 'right',
-            fieldLabel: '下一步接收人',
-            editable: false,
-            margin: '5 0 5 5',
-            labelWidth: 80,
-            width: 250,
-            value: '',
-            displayField: 'V_PERSONNAME',
-            valueField: 'V_PERSONCODE',
-            store: nextSprStore,
-            queryMode: 'local'
         },
+        // {
+        //     xtype: 'combo',
+        //     id: 'nextPer',
+        //     labelAlign: 'right',
+        //     fieldLabel: '下一步接收人',
+        //     editable: false,
+        //     margin: '5 0 5 5',
+        //     labelWidth: 80,
+        //     width: 250,
+        //     value: '',
+        //     displayField: 'V_PERSONNAME',
+        //     valueField: 'V_PERSONCODE',
+        //     store: nextSprStore,
+        //     queryMode: 'local'
+        // },
         // {
         //     xtype: 'displayfield',
         //     id: 'endtime',
@@ -708,6 +705,37 @@ Ext.onReady(function () {
 
         }
     });
+    var btnpanel=Ext.create('Ext.panel.Panel',{
+        id:'btnpanel',
+        height:50,
+        frame:true,
+        region:'north',
+        layout:'column',
+        border:false,
+        defaults:{width:50,style: 'margin:5px 0px 10px 5px',labelAlign: 'center'},
+        items:[{xtype:'button',id:'chonextper',text:'确定',handler:saveOnButtonUp},
+            {xtype:'button',id:'cancelbtn',text:'关闭',handler:function(){this.up("window").close()}}]
+    });
+    var nextperGrid=Ext.create('Ext.grid.Panel',{
+        id: 'nextperGrid',
+        columnLines:true,
+        region:'center',
+        selType: 'checkboxmodel',
+        store: nextSprStore,width:147,
+        // tbar:[{xtype:'button',id:'chonextper',text:'确定',handler:saveOnButtonUp},
+        //     {xtype:'button',id:'cancelbtn',text:'关闭',handler:function(){this.up("window").close()}}],
+        columns:[{herder:'下一步审批人',dataIndex:'V_PERSONCODE',sortable:true,align:'center',width:147,hidden:true},
+            {herder:'下一步审批人',dataIndex:'V_PERSONNAME',sortable:true,align:'center',width:147}]
+    });
+    var nextSprWind=Ext.create('Ext.window.Window',{
+        id:'nextSprWind',
+        title: '下一步审批人',
+        layout: 'border',width:187,
+        height:200,
+        modal:true,
+        closeAction: 'hide',
+        items:[btnpanel,nextperGrid]
+    });
 
 
 });
@@ -771,102 +799,11 @@ function rendererStep(value, metaData, record, rowIndex, colIndex, store, view) 
                 icon: Ext.MessageBox.ERROR
             });
         }
-    })
+    });
 
     return stepValue;
 }
 
-
-
-
-
-function OnButtonUp() {
-    /* if (Ext.Date.format(new Date(Ext.getCmp('endtime').getValue()), 'Y/m/d') < Ext.Date.format(new Date(), 'Y/m/d')) {
-         alert("已过上报时间，不能上报");
-         return false;
-     }
- */ if(Ext.getCmp('nextPer').getValue()==""){
-        alert('下一步审批人不可以空，请重新选择');
-    }
-
-    // var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
-    // if (records.length == 0) {//判断是否选中数据
-    //     Ext.MessageBox.show({
-    //         title: '提示',
-    //         msg: '请选择一条数据',
-    //         buttons: Ext.MessageBox.OK,
-    //         icon: Ext.MessageBox.WARNING
-    //     });
-    //     return false;
-    // }
-    // for (var i = 0; i < records.length; i++) {
-    //     if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已驳回') {
-    //         Ext.Msg.alert('提升信息', '此计划状态不能上报');
-    //         return false;
-    //     }
-    // }
-    //
-    //
-    var i_err = 0;
-    // for (var i = 0; i < records.length; i++) {
-    var records=Ext.data.StoreManager.lookup('gridStore').getProxy().getReader().rawData;
-    for(var i=0;i<records.list.length;i++){
-        if(records.list[i].V_STATE=="30"){
-            Ext.Ajax.request({
-                url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_SEND2',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_GUID: records.list[i].V_SBB_GUID,
-                    V_V_ORGCODE: records.list[i].V_ORGCODE,
-                    V_V_DEPTCODE: records.list[i].V_DEPTCODE,
-                    V_V_FLOWCODE: records.list[i].V_FLOWCODE,
-                    V_V_PLANTYPE: 'MONTH',
-                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-                },
-                success: function (resp) {
-                    var resp = Ext.decode(resp.responseText).list[0];
-                    if (resp.V_INFO != 'Fail') {
-
-                        Ext.Ajax.request({
-                            url: AppUrl + 'Activiti/StratProcess',
-                            async: false,
-                            method: 'post',
-                            params: {
-                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, Ext.getCmp('nextPer').getValue(), "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"],
-                                processKey: processKey,
-                                businessKey: records.list[i].V_SBB_GUID,
-                                V_STEPCODE: 'Start',
-                                V_STEPNAME: V_STEPNAME,
-                                V_IDEA: '请审批！',
-                                V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                                V_INPER: Ext.util.Cookies.get('v_personcode')
-                            },
-                            success: function (response) {
-                                if (Ext.decode(response.responseText).ret == 'OK') {
-                                    query();
-                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                    i_err++;
-                                    Ext.Msg.alert('提示', '流程发起失败'+i_err+'条！');
-                                }
-                            }
-                        });
-                        // i_err++;
-                        // if (i_err == records.length) {
-                        //     query();
-                        // }
-                    } else {
-                        Ext.Msg.alert('提示', '上报失败！');
-                    }
-                }
-            });
-        }
-    }
-
-    // }
-
-}
 //截止上报时间
 function Queryendtime() {
     Ext.Ajax.request({
@@ -935,4 +872,106 @@ function guid() {
     }
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+
+function saveOnButtonUp(){
+
+    /* if (Ext.Date.format(new Date(Ext.getCmp('endtime').getValue()), 'Y/m/d') < Ext.Date.format(new Date(), 'Y/m/d')) {
+         alert("已过上报时间，不能上报");
+         return false;
+     }
+ */
+    // if(Ext.getCmp('nextPer').getValue()==""){
+    //     alert('下一步审批人不可以空，请重新选择');
+    // }
+    var nextper=[];
+    var records = Ext.getCmp('nextperGrid').getSelectionModel().getSelection();
+    if (records.length == 0) {//判断下一步审批人是否选中数据
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一条数据，下一步审批人不可为空',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    // for (var i = 0; i < records.length; i++) {
+    //     if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已驳回') {
+    //         Ext.Msg.alert('提升信息', '此计划状态不能上报');
+    //         return false;
+    //     }
+    // }
+    //
+    //
+    for(var i=0;i<records.length;i++){
+       nextper.push(records[i].data.V_PERSONCODE);
+    }
+    var i_err = 0;
+    // for (var i = 0; i < records.length; i++) {
+    var records=Ext.data.StoreManager.lookup('gridStore').getProxy().getReader().rawData;
+    for(var i=0;i<records.list.length;i++){
+        if(records.list[i].V_STATE=="30"){
+            Ext.Ajax.request({
+                url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_SEND2',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID: records.list[i].V_SBB_GUID,
+                    V_V_ORGCODE: records.list[i].V_ORGCODE,
+                    V_V_DEPTCODE: records.list[i].V_DEPTCODE,
+                    V_V_FLOWCODE: records.list[i].V_FLOWCODE,
+                    V_V_PLANTYPE: 'MONTH',
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText).list[0];
+                    if (resp.V_INFO != 'Fail') {
+
+                        Ext.Ajax.request({
+                            url: AppUrl + 'Activiti/StratProcess',
+                            async: false,
+                            method: 'post',
+                            params: {
+                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, nextper, "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"],
+                                processKey: processKey,
+                                businessKey: records.list[i].V_SBB_GUID,
+                                V_STEPCODE: 'Start',
+                                V_STEPNAME: nextper,
+                                V_IDEA: '请审批！',
+                                V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                            },
+                            success: function (response) {
+                                if (Ext.decode(response.responseText).ret == 'OK') {
+                                    query();
+                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                    i_err++;
+                                    Ext.Msg.alert('提示', '流程发起失败'+i_err+'条！');
+                                }
+                            }
+                        });
+                        // i_err++;
+                        // if (i_err == records.length) {
+                        //     query();
+                        // }
+                    } else {
+                        Ext.Msg.alert('提示', '上报失败！');
+                    }
+                }
+            });
+        }
+       Ext.Array.erase(nextper,0,nextper.length);
+    }
+    // }
+}
+
+
+
+function OnButtonUp() {
+    _selectNextSprStore();
+    Ext.getCmp('nextSprWind').show();
+
+
 }
