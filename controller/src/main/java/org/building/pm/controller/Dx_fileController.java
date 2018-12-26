@@ -1532,6 +1532,232 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_1921_PLAN_MX_DATA_UPDATE(V_V_MX_CODE, V_V_PERNUM, V_V_LIFELONG);
         return data;
     }
+    //-年计划检修类别下拉列表
+    @RequestMapping(value = "PM_YEAR_REPARI_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_YEAR_REPARI_SELECT(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_YEAR_REPARI_SELECT();
+        return data;
+    }
+    // 年计划-计划模型选择
+    @RequestMapping(value = "PM_PLAN_YEAR_GETMX_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_GETMX_INSERT(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_REPAIRTYPE") String V_V_REPAIRTYPE,
+            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_SUNTIME") String V_V_SUNTIME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_GETMX_INSERT(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE,V_V_REPAIRTYPE, V_V_PLANTYPE, V_V_PERCODE,V_V_YEAR, V_V_MONTH, V_V_SUNTIME);
+        return data;
+    }
+    // 年计划查询
+    @RequestMapping(value = "PM_PLAN_YEAR_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_SEL(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY);
+        return data;
+    }
+
+    // 年计划查询导出
+    @RequestMapping(value = "YEAR_EXPORT_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void YEAR_EXPORT_EXCEL(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.PM_PLAN_YEAR_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("计划状态");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("车间名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("年份");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("计划停机月份");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("计划工期（小时）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("检修类别");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("录入时间");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("RET");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("STATENAME") == null ? "" : map.get("STATENAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
+                row.createCell((short) 3).setCellValue(map.get("DEPTNAME") == null ? "" : map.get("DEPTNAME").toString());
+                row.createCell((short) 4).setCellValue(map.get("ZYNAME") == null ? "" : map.get("ZYNAME").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_YEAR") == null ? "" : map.get("V_YEAR").toString());
+                row.createCell((short) 7).setCellValue(map.get("V_MONTH") == null ? "" : map.get("V_MONTH").toString());
+                row.createCell((short) 8).setCellValue(map.get("PLANHOUR") == null ? "" : map.get("PLANHOUR").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("REPAIRTYPENAME") == null ? "" : map.get("REPAIRTYPENAME").toString());
+                row.createCell((short) 10).setCellValue(map.get("INPERNAME") == null ? "" : map.get("INPERNAME").toString());
+                row.createCell((short) 11).setCellValue(map.get("INDATE") == null ? "" : map.get("INDATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("年计划导出Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 年计划单条数据返回
+    @RequestMapping(value = "PM_PLAN_YEAR_GETONE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_SEL(
+            @RequestParam(value = "V_GUID") String V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_GETONE_SEL(V_GUID);
+        return data;
+    }
+
+    // 年计划添加和修改
+
+    @RequestMapping(value = "PM_PLAN_YEAR_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_INSERT(
+            @RequestParam(value="V_GUID") String V_GUID,
+            @RequestParam(value="V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value="V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value="V_DEPTCODE") String V_DEPTCODE,
+            @RequestParam(value="V_DEPTNAME") String V_DEPTNAME,
+
+            @RequestParam(value="V_ZYCODE") String V_ZYCODE,
+            @RequestParam(value="V_ZYNAME") String V_ZYNAME,
+            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value="V_EQUTYPE") String V_EQUTYPE,
+            @RequestParam(value="V_REPAIRCONTENT") String V_REPAIRCONTENT,
+
+            @RequestParam(value="V_PLANHOUR") String V_PLANHOUR,
+            @RequestParam(value="V_REPAIRTYPE") String V_REPAIRTYPE,
+            @RequestParam(value="V_REPAIRTYPENAME") String V_REPAIRTYPENAME,
+            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
+
+            @RequestParam(value="V_REMARK") String V_REMARK,
+            @RequestParam(value="V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value="V_V_MONTH") String V_V_MONTH,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_INSERT(V_GUID,V_ORGCODE,V_ORGNAME,V_DEPTCODE,V_DEPTNAME,V_ZYCODE,V_ZYNAME,V_EQUCODE,V_EQUTYPE,V_REPAIRCONTENT,
+                V_PLANHOUR,V_REPAIRTYPE,V_REPAIRTYPENAME,V_INPERCODE,V_INPERNAME,V_REMARK,V_V_YEAR,V_V_MONTH);
+        return data;
+    }
+
+    // 年计划删除
+    @RequestMapping(value = "PM_PLAN_YEAR_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_DEL(
+            @RequestParam(value="V_GUID") String V_GUID,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_DEL(V_GUID);
+        return data;
+    }
+
+    // 年计划上报
+    @RequestMapping(value = "PRO_PM_03_PLAN_YEAR_SEND", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_YEAR_SEND(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_FLOWCODE") String V_V_FLOWCODE,
+            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = dx_fileService.PRO_PM_03_PLAN_YEAR_SEND(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
+        test.put("list", result);
+        return test;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

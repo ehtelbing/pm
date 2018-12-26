@@ -1688,4 +1688,224 @@ public class Dx_fileService {
         logger.info("end PM_1921_PLAN_MX_DATA_UPDATE");
         return result;
     }
+    //-年计划检修类别下拉列表
+    public HashMap PM_YEAR_REPARI_SELECT()throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_YEAR_REPARI_SELECT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_YEAR_REPARI_SELECT(:RET)}");
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_YEAR_REPARI_SELECT");
+        return result;
+    }
+    // 年计划-计划模型选择
+    public HashMap PM_PLAN_YEAR_GETMX_INSERT(String V_V_GUID,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRTYPE,String V_V_PLANTYPE,String V_V_PERCODE,String V_V_YEAR,String V_V_MONTH,String V_V_SUNTIME)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_GETMX_INSERT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_GETMX_INSERT(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_REPAIRTYPE,:V_V_PLANTYPE,:V_V_PERCODE,:V_V_YEAR,:V_V_MONTH,:V_V_SUNTIME,:V_INFO)}");
+            cstmt.setString("V_V_GUID",V_V_GUID);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_REPAIRTYPE",V_V_REPAIRTYPE);
+            cstmt.setString("V_V_PLANTYPE",V_V_PLANTYPE);
+            cstmt.setString("V_V_PERCODE",V_V_PERCODE);
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+            cstmt.setString("V_V_SUNTIME",V_V_SUNTIME);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("V_INFO"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_GETMX_INSERT");
+        return result;
+    }
+    // 年计划查询
+    public HashMap PM_PLAN_YEAR_SEL(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERCODE,String V_V_ZY)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_SEL(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PERCODE,:V_V_ZY,:RET)}");
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_PERCODE",V_V_PERCODE);
+            cstmt.setString("V_V_ZY",V_V_ZY);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_SEL");
+        return result;
+    }
+
+    // 年计划单条数据返回
+    public HashMap PM_PLAN_YEAR_GETONE_SEL(String V_GUID)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_GETONE_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_GETONE_SEL(:V_GUID,:RET)}");
+            cstmt.setString("V_GUID",V_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_GETONE_SEL");
+        return result;
+    }
+
+    //- 年计划添加和修改
+    public HashMap PM_PLAN_YEAR_INSERT(String V_GUID,String V_ORGCODE ,String V_ORGNAME,String V_DEPTCODE,String V_DEPTNAME,
+                                       String V_ZYCODE ,String V_ZYNAME ,String V_EQUCODE,String V_EQUTYPE ,String V_REPAIRCONTENT ,
+                                       String V_PLANHOUR ,String V_REPAIRTYPE ,String V_REPAIRTYPENAME ,String V_INPERCODE,String V_INPERNAME ,
+                                       String V_REMARK,String V_V_YEAR,String V_V_MONTH)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_INSERT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_INSERT(:V_GUID,:V_ORGCODE ,:V_ORGNAME,:V_DEPTCODE,:V_DEPTNAME,\n" +
+                    ":V_ZYCODE,:V_ZYNAME,:V_EQUCODE,:V_EQUTYPE ,:V_REPAIRCONTENT,\n" +
+                    ":V_PLANHOUR ,:V_REPAIRTYPE ,:V_REPAIRTYPENAME ,:V_INPERCODE,:V_INPERNAME,\n" +
+                    ":V_REMARK,:V_V_YEAR,:V_V_MONTH,:RET )}");
+            cstmt.setString("V_GUID",V_GUID);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+            cstmt.setString("V_DEPTCODE",V_DEPTCODE);
+            cstmt.setString("V_DEPTNAME",V_DEPTNAME);
+            cstmt.setString("V_ZYCODE",V_ZYCODE);
+            cstmt.setString("V_ZYNAME",V_ZYNAME);
+            cstmt.setString("V_EQUCODE",V_EQUCODE);
+            cstmt.setString("V_EQUTYPE",V_EQUTYPE);
+            cstmt.setString("V_REPAIRCONTENT",V_REPAIRCONTENT);
+            cstmt.setString("V_PLANHOUR",V_PLANHOUR);
+            cstmt.setString("V_REPAIRTYPE",V_REPAIRTYPE);
+            cstmt.setString("V_REPAIRTYPENAME",V_REPAIRTYPENAME);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.setString("V_REMARK",V_REMARK);
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_INSERT");
+        return result;
+    }
+    // 年计划删除
+
+    public HashMap PM_PLAN_YEAR_DEL(String V_GUID)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_DEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_DEL(:V_GUID,:RET)}");
+            cstmt.setString("V_GUID",V_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_DEL");
+        return result;
+    }
+    // 年计划上报
+    public List<Map> PRO_PM_03_PLAN_YEAR_SEND(String V_V_GUID,String V_V_ORGCODE,String V_V_DEPTCODE,
+                                              String V_V_FLOWCODE, String  V_V_PLANTYPE,
+                                              String V_V_PERSONCODE) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_YEAR_SEND");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_SEND(:V_V_WEEKPLAN_GUID,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                    ":V_V_FLOWCODE,:V_V_PLANTYPE,:V_V_PERSONCODE,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_FLOWCODE", V_V_FLOWCODE);
+            cstmt.setString("V_V_PLANTYPE", V_V_PLANTYPE);
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_YEAR_SEND");
+        return result;
+    }
 }
