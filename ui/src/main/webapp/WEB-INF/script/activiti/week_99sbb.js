@@ -248,6 +248,21 @@ Ext.onReady(function () {
                     fieldLabel: '检修单位',
                     labelWidth: 90
                 }]
+            },{
+                layout: 'column',
+                defaults: {
+                    xtype: 'textfield',
+                    labelAlign: 'right',
+                    width: 250,
+                    readOnly: true
+                },
+                items: [{
+                    readOnly: true,
+                    id: 'gx',
+                    fieldLabel: '工序',
+                    allowBlank: false,
+                    labelWidth: 90
+                }]
             }, {
                 layout: 'column',
                 defaults: {
@@ -609,6 +624,7 @@ function _init() {
                 Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);  //施工准备是否已落实
                 Ext.getCmp('sgfs').setValue(data.list[0].V_SGWAYNAME);  //施工方式
                 Ext.getCmp('repairDept').setValue(data.list[0].V_REPAIRDEPATNAME); //检修单位
+                Ext.getCmp('gx').setValue(data.list[0].V_OPERANAME);// 工序
 
                 _selectTaskId();
                 Ext.getBody().unmask();

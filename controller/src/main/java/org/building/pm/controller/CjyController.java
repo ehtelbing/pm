@@ -1508,6 +1508,7 @@ public class CjyController {
             @RequestParam(value = "V_V_RDEPATNAME") String V_V_RDEPATNAME,
             @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
             @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
+            @RequestParam(value="V_V_OPERANAME") String V_V_OPERANAME,
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -1554,7 +1555,7 @@ public class CjyController {
                 V_V_RDEPATCODE,
                 V_V_RDEPATNAME,
                 V_V_SGWAY,
-                V_V_SGWAYNAME);
+                V_V_SGWAYNAME,V_V_OPERANAME);
 //end up
 
         return result;

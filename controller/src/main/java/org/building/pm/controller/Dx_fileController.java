@@ -938,7 +938,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_RDEPATNAME") String V_V_RDEPATNAME,
             @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
             @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
-
+            @RequestParam(value = "V_V_OPERANAME") String V_V_OPERANAME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map result = dx_fileService.PRO_PM_03_PLAN_WEEK_NSETSBB(
@@ -979,7 +979,7 @@ public class Dx_fileController {
                 V_V_RDEPATCODE,
                 V_V_RDEPATNAME,
                 V_V_SGWAY,
-                V_V_SGWAYNAME);
+                V_V_SGWAYNAME,V_V_OPERANAME);
 
         return result;
     }
@@ -1757,6 +1757,19 @@ public class Dx_fileController {
         result = dx_fileService.PRO_PM_03_PLAN_YEAR_SEND(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
         test.put("list", result);
         return test;
+    }
+
+    // 工序
+    @RequestMapping(value = "BASE_OPERATION_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> BASE_OPERATION_SEL(
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_DPPTCODE") String V_DPPTCODE,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                    @RequestParam(value = "V_FLAG") String V_FLAG)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.BASE_OPERATION_SEL(V_PERCODE,V_DPPTCODE,V_ORGCODE,V_FLAG);
+        return result;
     }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)

@@ -9,13 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.sql.Date;
+import java.util.*;
 
 
 @Service
@@ -1187,7 +1184,7 @@ public class Dx_fileService {
                                         String V_V_JHMX_GUID, String V_V_HOUR, String V_V_BZ, String V_V_DEFECTGUID, String V_V_MAIN_DEFECT, String V_V_EXPECT_AGE, String V_V_REPAIR_PER
             ,String V_V_PDC/*,String V_V_SGDATE*/,String V_V_GYYQ,String V_V_CHANGPDC,/*String V_V_JXRESON,*/String V_V_JXHOUR,String V_V_JJHOUR,
             /*String V_V_JHHOUR,*/String V_V_TELNAME,String V_V_TELNUMB,String V_V_PDGG,String V_V_THICKNESS,String V_V_REASON,String V_V_EVERTIME
-            ,String V_V_FLAG,String V_V_RDEPATCODE,String V_V_RDEPATNAME,String V_V_SGWAY,String V_V_SGWAYNAME
+            ,String V_V_FLAG,String V_V_RDEPATCODE,String V_V_RDEPATNAME,String V_V_SGWAY,String V_V_SGWAYNAME,String V_V_OPERANAME
     ) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_NSETSBB");
         Map result = new HashMap<String, Object>();
@@ -1200,7 +1197,7 @@ public class Dx_fileService {
                     ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
                     ":V_V_OTHERPLAN_GUID,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_DEFECTGUID,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER,"+
                     ":V_V_PDC,/*:V_V_SGDATE,*/:V_V_GYYQ,:V_V_CHANGPDC,/*:V_V_JXRESON,*/:V_V_JXHOUR,:V_V_JJHOUR,/*:V_V_JHHOUR,*/:V_V_TELNAME,:V_V_TELNUMB,:V_V_PDGG,"+
-                    ":V_V_THICKNESS,:V_V_REASON,:V_V_EVERTIME,:V_V_FLAG,:V_V_RDEPATCODE,:V_V_RDEPATNAME,:V_V_SGWAY,:V_V_SGWAYNAME,:V_INFO)}");
+                    ":V_V_THICKNESS,:V_V_REASON,:V_V_EVERTIME,:V_V_FLAG,:V_V_RDEPATCODE,:V_V_RDEPATNAME,:V_V_SGWAY,:V_V_SGWAYNAME,:V_V_OPERANAME,:V_INFO)}");
             cstmt.setString("V_V_INPER", V_V_INPER);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_YEAR", V_V_YEAR);
@@ -1244,6 +1241,7 @@ public class Dx_fileService {
             cstmt.setString("V_V_RDEPATNAME",V_V_RDEPATNAME);
             cstmt.setString("V_V_SGWAY",V_V_SGWAY);
             cstmt.setString("V_V_SGWAYNAME",V_V_SGWAYNAME);
+            cstmt.setString("V_V_OPERANAME",V_V_OPERANAME);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
@@ -1908,4 +1906,33 @@ public class Dx_fileService {
         logger.info("end PRO_PM_03_PLAN_YEAR_SEND");
         return result;
     }
+    // 周月计划-工序调取
+    public HashMap BASE_OPERATION_SEL(String V_PERCODE,String V_DPPTCODE,String V_ORGCODE,String V_FLAG) throws SQLException {
+        List<Map> list = new ArrayList<>();
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin BASE_OPERATION_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call BASE_OPERATION_SEL(:V_PERCODE,:V_DPPTCODE,:V_ORGCODE,:V_FLAG,:RET)}");
+            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.setString("V_DPPTCODE",V_DPPTCODE);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_FLAG",V_FLAG);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end BASE_OPERATION_SEL");
+        return result;
+    }
+
 }

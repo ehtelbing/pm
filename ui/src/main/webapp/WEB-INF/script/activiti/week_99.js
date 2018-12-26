@@ -194,6 +194,15 @@ Ext.onReady(function () {
                     fieldLabel: '计划停工时间',
                     labelWidth: 90,
                     width: 250
+                },{
+                    xtype: 'textfield',
+                    readOnly: true,
+                    id: 'gx',
+                    labelAlign: 'right',
+                    allowBlank: false,
+                    fieldLabel: '工序',
+                    labelWidth: 90,
+                    width: 250
                 }]
             }, {
                 layout: 'column',
@@ -609,6 +618,7 @@ function _init() {
                 Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);  //施工准备是否已落实
                 Ext.getCmp('sgfs').setValue(data.list[0].V_SGWAYNAME);  //施工方式
                 Ext.getCmp('repairDept').setValue(data.list[0].V_REPAIRDEPATNAME); //检修单位
+                Ext.getCmp('gx').setValue(data.list[0].V_OPERANAME);// 工序
 
                 _selectTaskId();
                 Ext.getBody().unmask();

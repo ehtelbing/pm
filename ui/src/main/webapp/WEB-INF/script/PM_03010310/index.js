@@ -245,6 +245,23 @@ var repairDeptStore= Ext.create('Ext.data.Store', {
     }
 });
 
+var gxStore=Ext.create('Ext.data.Store',{
+    id:'gxStore',
+    autoLoad:false,
+    fields:[ 'OPERA_NAME','ID'],
+    proxy:{
+        type:'ajax',
+        async:false,
+        url:AppUrl+'dxfile/BASE_OPERATION_SEL',
+        actionMethods:{
+            read:'POST'
+        },
+        reader:{
+            type:'json',
+            root:'RET'
+        }
+    }
+});
 
 Ext.onReady(function () {
     var editPanel = Ext.create('Ext.form.Panel', {
@@ -482,13 +499,41 @@ Ext.onReady(function () {
                         ]
                     },
                     {
-                        xtype: 'textfield',
-                        id: 'maindefect',
-                        fieldLabel: '主要缺陷',
-                        labelAlign: 'right',
-                        margin: '5 0 0 5',
-                        labelWidth: 80,
-                        width: 280
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        //frame: false,
+                        //border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                id: 'maindefect',
+                                fieldLabel: '主要缺陷',
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280
+                            },{
+                                xtype: 'combo',
+                                id: 'gx',
+                                fieldLabel: '工序',
+                                editable: false,
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 70,
+                                width: 255,
+                                matchFieldWidth: false,
+                                value: '',
+                                displayField: 'OPERA_NAME',
+                                valueField: 'OPERA_NAME',
+                                store: gxStore,
+                                queryMode: 'local',
+                                listConfig:{
+                                    minWidth:400
+                                }
+                            }
+
+                        ]
                     },
                     {
                         xtype: 'textarea',
@@ -680,7 +725,6 @@ Ext.onReady(function () {
                             }
                         ]
                     },
-                    ,
                     {layout:'hbox',
                         defaults:{labelAlign:'right'},
                         baseCls: 'my-panel-no-border',
@@ -1030,6 +1074,7 @@ Ext.onReady(function () {
                     Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);  //施工准备是否已落实
                     Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //施工方式
                     Ext.getCmp('repairDept').select(resp.list[0].V_REPAIRDEPATCODE); //检修单位
+                    Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
 
                     if (V_MONTHPLAN_CODE != '') {
                         V_PLANTYPE = 'PLAN';
@@ -1135,6 +1180,14 @@ function pageLoadInfo() {
             }
         });
     });
+    Ext.data.StoreManager.lookup('gxStore').load({
+        params:{
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_DPPTCODE:Ext.util.Cookies.get('v_deptcode'),
+            V_ORGCODE:Ext.util.Cookies.get('v_orgCode'),
+            V_FLAG:'0'
+        }
+    });
     Ext.data.StoreManager.lookup('repairDeptStore').on('load', function () {
         Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
     });
@@ -1190,6 +1243,12 @@ function pageLoadInfo() {
     Ext.data.StoreManager.lookup('zyStore').on('load', function () {
         if (V_WEEKPLAN_GUID == '0') {
             Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+        }
+    });
+
+    Ext.data.StoreManager.lookup('gxStore').on('load',function(){
+        if (V_WEEKPLAN_GUID == '0') {
+            Ext.getCmp('gx').select(Ext.data.StoreManager.lookup('gxStore').getAt(0));
         }
     });
     if (V_WEEKPLAN_GUID == '0') {
@@ -1293,7 +1352,7 @@ function getReturnJHXZ(retdata, type) {
                     Ext.getCmp('maindefect').setValue(V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('repairper').setValue(V_REPAIR_PER);   //维修人数
                     Ext.getCmp('sgfs').select(V_SGWAY);  //施工方式
-
+                    Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
 
                     Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
                     Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
@@ -1301,6 +1360,7 @@ function getReturnJHXZ(retdata, type) {
                     Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
                     Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
                     Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+
 
                 }
 
@@ -1349,6 +1409,7 @@ function getReturnJHXZ(retdata, type) {
                     Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
                     Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
                     //Ext.getCmp('bz').setValue(V_BZ);  //备注
+                    Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
 
                     Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
                     Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
@@ -1483,7 +1544,8 @@ function OnButtonSaveClick() {
             V_V_RDEPATCODE:Ext.getCmp('repairDept').getValue(),
             V_V_RDEPATNAME:Ext.getCmp('repairDept').getDisplayValue(),
             V_V_SGWAY:Ext.getCmp('sgfs').getValue(),
-            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue()
+            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue(),
+            V_V_OPERANAME:Ext.getCmp('gx').getValue()  //工序
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

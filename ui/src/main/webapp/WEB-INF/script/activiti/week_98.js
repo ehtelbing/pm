@@ -326,6 +326,25 @@ Ext.onReady(function () {
         }
     }
     });
+    //工序
+    var gxStore=Ext.create('Ext.data.Store',{
+        id:'gxStore',
+        autoLoad:false,
+        fields:[ 'OPERA_NAME','ID'],
+        proxy:{
+            type:'ajax',
+            async:false,
+            url:AppUrl+'dxfile/BASE_OPERATION_SEL',
+            actionMethods:{
+                read:'POST'
+            },
+            reader:{
+                type:'json',
+                root:'RET'
+            }
+        }
+    });
+
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStore',
@@ -871,6 +890,28 @@ Ext.onReady(function () {
                             }
                         }
                     ]
+                },{
+                    layout: 'hbox',
+                    defaults: {labelAlign: 'right',readOnly: false,width: 250},
+                    frame: true,
+                    border: false,
+                    baseCls: 'my-panel-no-border',
+                    items:[
+                        {
+                            xtype : 'combo',
+                            id : "gx",
+                            store: gxStore,
+                            editable : false,
+                            queryMode : 'local',
+                            fieldLabel : '工序',
+                            // margin: '5 0 5 5',
+                            displayField: 'OPERA_NAME',
+                            valueField: 'OPERA_NAME',
+                            labelWidth: 90,
+                            width: 250,
+                            labelAlign : 'right'
+                        }
+                    ]
                 },{layout: 'hbox',
                     defaults: {labelAlign: 'right',readOnly: true,width: 250},
                     frame: true,
@@ -1134,7 +1175,14 @@ Ext.onReady(function () {
             items: [inputPanel]
         }]
     });
-
+    Ext.data.StoreManager.lookup('gxStore').load({
+        params:{
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_DPPTCODE:Ext.util.Cookies.get('v_deptcode'),
+            V_ORGCODE:Ext.util.Cookies.get('v_orgCode'),
+            V_FLAG:'0'
+        }
+    });
     _init();
 });
 
@@ -1246,6 +1294,8 @@ function _init() {
                     Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);  //施工准备是否已落实
                     Ext.getCmp('sgfs').select(data.list[0].V_SGWAY);  //施工方式
                     Ext.getCmp('repairDept').select(data.list[0].V_REPAIRDEPATCODE); //检修单位
+                    Ext.getCmp('gx').select(data.list[0].V_OPERANAME);// 工序
+
                     _selectTaskId();
                     Ext.getBody().unmask();
                 }
@@ -1372,7 +1422,8 @@ function _agree() {
             V_V_RDEPATCODE:Ext.getCmp('repairDept').getValue(),
             V_V_RDEPATNAME:Ext.getCmp('repairDept').getDisplayValue(),
             V_V_SGWAY:Ext.getCmp('sgfs').getValue(),
-            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue()
+            V_V_SGWAYNAME:Ext.getCmp('sgfs').getDisplayValue(),
+            V_V_OPERANAME:Ext.getCmp('gx').getValue()  //工序
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
