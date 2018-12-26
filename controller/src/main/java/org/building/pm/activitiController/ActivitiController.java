@@ -233,17 +233,17 @@ public class ActivitiController {
             int total = (int) historyService
                     .createNativeHistoricTaskInstanceQuery()
                     .sql(makeNativeQuerySQLCountHistory(nameSapce, beginTime, endTime))
-                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime+1).count();
+                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime + 1).count();
             tasks = historyService
                     .createNativeHistoricTaskInstanceQuery()
                     .sql(makeNativeQuerySQLResultHistory(nameSapce, beginTime, endTime))
-                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime+1).listPage(Integer.valueOf(start), Integer.valueOf(limit));
+                    .parameter("assignee", PersonCode).parameter("startTime", beginTime).parameter("endTime", endTime + 1).listPage(Integer.valueOf(start), Integer.valueOf(limit));
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             for (HistoricTaskInstance task : tasks) {
                 Map taskmap = new HashMap();
-               if(!task.getDeleteReason().equals("deleted")) {
+                if (!task.getDeleteReason().equals("deleted")) {
 
                     taskmap.put("Id", task.getId());
                     taskmap.put("Name", task.getName());
@@ -287,7 +287,7 @@ public class ActivitiController {
                     }
 
                     resultlist.add(taskmap);
-               }
+                }
 
             }
 
@@ -472,18 +472,18 @@ public class ActivitiController {
             int total = 0;
             if (FlowCode.equals("")) {
                 if (PersonCode.equals("ActivitiManage")) {
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString()+"%").count();
+                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
                 } else {
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString()+"%").count();
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
                 }
 
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
                 ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
             } else {
                 if (PersonCode.equals("ActivitiManage")) {
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString()+"%").count();
+                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
                 } else {
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString()+"%").count();
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
                 }
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
                 ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
@@ -517,19 +517,19 @@ public class ActivitiController {
             List<Task> taskList = null;
             if (FlowCode.equals("")) {
                 if (PersonCode.equals("ActivitiManage")) {
-                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType+"%").orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType+"%").count();
+                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").count();
                 } else {
-                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType+"%").orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType+"%").count();
+                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").count();
                 }
             } else {
                 if (PersonCode.equals("ActivitiManage")) {
-                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType+"%").orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType+"%").count();
+                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
                 } else {
-                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType+"%").orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType+"%").count();
+                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
                 }
             }
 
@@ -1124,13 +1124,13 @@ public class ActivitiController {
         Map result = new HashMap();
         try {
             /*
-            * 挂起流程
-            * */
+             * 挂起流程
+             * */
 //            runtimeService.suspendProcessInstanceById(instanceId);
 
             /*
-            * 删除流程
-            * */
+             * 删除流程
+             * */
             runtimeService.deleteProcessInstance(instanceId, null);
             result.put("msg", "删除成功");
         } catch (Exception e) {
@@ -1209,6 +1209,74 @@ public class ActivitiController {
         return result;
     }
 
+    //会签流程发起
+    @RequestMapping(value = "StratProcessList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> StratProcessList(@RequestParam(value = "V_INPER") String V_INPER,
+                                                @RequestParam(value = "V_NEXTPER") String[] V_NEXTPER,
+                                                @RequestParam(value = "V_IDEA") String V_IDEA,
+                                                @RequestParam(value = "V_STEPNAME") String V_STEPNAME,
+                                                @RequestParam(value = "V_STEPCODE") String V_STEPCODE,
+                                                @RequestParam(value = "processKey") String processKey,
+                                                @RequestParam(value = "businessKey") String businessKey,
+                                                @RequestParam(value = "parName") String[] parName,
+                                                @RequestParam(value = "parVal") String[] parVal,
+                                                HttpServletRequest request, HttpServletResponse response)
+            throws SQLException {
+        Map result = new HashMap();
+        Map param = new HashMap();
+
+        String perList="";
+
+        int num = (int) taskService.createTaskQuery().processVariableValueLike("flow_businesskey", businessKey).count();
+
+        if (num == 0) {
+            List list = new ArrayList();
+            for (int i = 0; i < V_NEXTPER.length; i++) {
+                list.add(V_NEXTPER[i]);
+                activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER[i], V_INPER);
+            }
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int date = c.get(Calendar.DATE);
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            int second = c.get(Calendar.SECOND);
+
+            String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
+
+            try {
+                for (int i = 0; i < parName.length; i++) {
+                    param.put(parName[i].toString(), parVal[i].toString());
+                    if(parName[i].toString().equals("Next_StepCode")){
+                        perList=parVal[i].toString();
+                    }
+                }
+
+                param.put("idea", V_IDEA);
+                param.put("shtgtime", time);
+                ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
+                        param);
+                param.put(perList, list);
+                result.put("id", processInstance.getId());
+                result.put("InstanceId", processInstance.getProcessInstanceId());
+                result.put("BusinessKey", processInstance.getBusinessKey());
+                result.put("ProcessId", processInstance.getProcessDefinitionId());
+                result.put("ret", "OK");
+                result.put("msg", "流程发起成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.put("ret", "ERROR");
+                result.put("msg", "流程发起失败");
+            }
+        } else {
+            result.put("ret", "ERROR");
+            result.put("msg", "流程发起失败,流程businesskey重复");
+        }
+
+        return result;
+    }
 //    //根据时间code查询已办任务
 //    @RequestMapping(value = "QueryhistoryTaskList", method = RequestMethod.POST)
 //    @ResponseBody
