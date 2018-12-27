@@ -1251,9 +1251,9 @@ public class ExcelController {
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
 
-                row.createCell((short) 2).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
 
-                row.createCell((short) 3).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
 
                 row.createCell((short) 4).setCellValue(map.get("V_REPAIRMAJOR_CODE") == null ? "" : map.get("V_REPAIRMAJOR_CODE").toString());
 
