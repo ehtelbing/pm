@@ -216,6 +216,25 @@ var sgfsStore = Ext.create("Ext.data.Store", {
 Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
     Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
 });
+
+var gxStore=Ext.create('Ext.data.Store',{
+    id:'gxStore',
+    autoLoad:false,
+    fields:[ 'OPERA_NAME','ID'],
+    proxy:{
+        type:'ajax',
+        async:false,
+        url:AppUrl+'dxfile/BASE_OPERATION_SEL',
+        actionMethods:{
+            read:'POST'
+        },
+        reader:{
+            type:'json',
+            root:'RET'
+        }
+    }
+});
+
 //---检修单位
 var repairDeptStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
@@ -770,44 +789,67 @@ Ext.onReady(function () {
                         ]
                     },
                     {
-                        xtype: 'textfield',
-                        id: 'jhgshj',
-                        fieldLabel: '计划工时合计',
-                        labelAlign: 'right',
-                        margin: '5 0 0 5',
-                        labelWidth: 80,
-                        width: 280,
-                        value: 0,
-                        listeners: {
-                            select: function (field, newValue, oldValue) {
-                                var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
-                                var date11 = new Date(date1);
-                                var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
-                                var date22 = new Date(date2);
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                id: 'jhgshj',
+                                fieldLabel: '计划工时合计',
+                                labelAlign: 'right',
+                                margin: '5 0 0 5',
+                                labelWidth: 80,
+                                width: 280,
+                                value: 0,
+                                listeners: {
+                                    select: function (field, newValue, oldValue) {
+                                        var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                        var date11 = new Date(date1);
+                                        var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                        var date22 = new Date(date2);
 
 
-                                var gongshicha = date22.getTime() - date11.getTime();
-                                var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-                                if(gongshicha2 >= 0)
-                                {
-                                    _gongshiheji();
-                                }else{
-                                    Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                    function callBack(id) {
-                                        Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                        Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                        Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                        Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                        Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                        Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                        Ext.getCmp('jhgshj').setValue(0);
-                                        return ;
+                                        var gongshicha = date22.getTime() - date11.getTime();
+                                        var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
+                                        if (gongshicha2 >= 0) {
+                                            _gongshiheji();
+                                        } else {
+                                            Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
 
+                                            function callBack(id) {
+                                                Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
+                                                Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
+                                                Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
+                                                Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
+                                                Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
+                                                Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
+                                                Ext.getCmp('jhgshj').setValue(0);
+                                                return;
+
+                                            }
+
+                                        }
                                     }
-
                                 }
+                            },
+                            {
+                                xtype: 'combo',
+                                id: 'gx',
+                                fieldLabel: '工序',
+                                editable: false,
+                                margin: '5 0 0 5',
+                                labelWidth: 70,
+                                width: 255,
+                                displayField: 'OPERA_NAME',
+                                valueField: 'OPERA_NAME',
+                                value: '',
+                                store: gxStore,
+                                queryMode: 'local'
                             }
-                        }
+                        ]
                     },
 
                     {
@@ -903,6 +945,7 @@ Ext.onReady(function () {
                         V_PLANCODE = V_QUARTERPLAN_CODE;
                         V_PLANTYPE = 'QUARTER';
                     }
+                    Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);//工序
                 }
             }
         });
@@ -981,6 +1024,21 @@ function pageLoadInfo() {
                 V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
             }
         });
+    });
+    //工序
+    Ext.data.StoreManager.lookup('gxStore').load({
+        params:{
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_DPPTCODE:Ext.util.Cookies.get('v_deptcode'),
+            V_ORGCODE:Ext.util.Cookies.get('v_orgCode'),
+            V_FLAG:'0'
+        }
+    });
+    //工序改变
+    Ext.data.StoreManager.lookup('gxStore').on('load',function(){
+        if (V_MONTHPLAN_GUID == '0') {
+            Ext.getCmp('gx').select(Ext.data.StoreManager.lookup('gxStore').getAt(0));
+        }
     });
     //作业区改变
     Ext.getCmp('zyq').on('change', function () {
@@ -1203,7 +1261,8 @@ function OnButtonSaveClick() {
             V_V_REPAIR_PER: Ext.getCmp('repairper').getValue(), //维修人数
             V_V_SGWAY: Ext.getCmp('sgfs').getValue(),  //施工方式
             V_V_SGWAYNAME: Ext.getCmp('sgfs').getDisplayValue(),  //施工方式名称
-            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue//施工准备是否已落实 (1)是 (0)否
+            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,//施工准备是否已落实 (1)是 (0)否
+            V_V_OPERANAME:Ext.getCmp('gx').getValue()
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

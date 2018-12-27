@@ -453,6 +453,7 @@ public class BasicController {
             @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
             @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
 
+            @RequestParam(value="V_V_OPERANAME") String V_V_OPERANAME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map result = basicService.PRO_PM_03_PLAN_MONTH_SET(
@@ -478,7 +479,8 @@ public class BasicController {
                 V_V_REPAIR_PER,
                 V_V_SGWAY,
                 V_V_SGWAYNAME,
-                V_V_FLAG);
+                V_V_FLAG,
+                V_V_OPERANAME);
         return result;
     }
 

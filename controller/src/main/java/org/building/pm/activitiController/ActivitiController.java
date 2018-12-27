@@ -590,6 +590,8 @@ public class ActivitiController {
                         taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
                         taskmap.put("PLANSTART", equmap.get("V_STARTTIME").toString());
                         taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
+                        taskmap.put("V_OPERANAME", equmap.get("V_OPERANAME").toString());
+
                     }
                 }//---add 3 columns on week
                 else if (taskmap.get("flow_type").equals("WeekPlan")) {
