@@ -1251,17 +1251,19 @@ public class ActivitiController {
 
             try {
                 for (int i = 0; i < parName.length; i++) {
-                    param.put(parName[i].toString(), parVal[i].toString());
                     if(parName[i].toString().equals("Next_StepCode")){
                         perList=parVal[i].toString();
+                    }else{
+                        param.put(parName[i].toString(), parVal[i].toString());
                     }
                 }
 
                 param.put("idea", V_IDEA);
                 param.put("shtgtime", time);
+                param.put(perList, list);
+
                 ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
                         param);
-                param.put(perList, list);
                 result.put("id", processInstance.getId());
                 result.put("InstanceId", processInstance.getProcessInstanceId());
                 result.put("BusinessKey", processInstance.getBusinessKey());
