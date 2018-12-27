@@ -945,116 +945,119 @@ function ActivitiConfirmAccept() {//确定验收
         dataType: "json",
         traditional: true,
         success: function (resp) {
-            var fnum = resp.list.length;
+            QRYS();
 
-            if (resp.list.length == 0) {
-                QRYS();
-            } else {
-                for (var i = 0; i < resp.list.length; i++) {
-                    if (resp.list[i].V_JXBZ_VALUE_DOWN == '' || resp.list[i].V_JXBZ_VALUE_DOWN == null || resp.list[i].V_JXBZ_VALUE_UP == '' || resp.list[i].V_JXBZ_VALUE_UP == null) {
-                        fnum--;
-                    } else {
-                        var khpanel = [{
-                            xtype: 'displayfield',
-                            id: 'gxcode' + i,
-                            fieldLabel: '工序编号',
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            style: {
-                                margin: '5px 0 5px 0px'
-                            },
-                            value: resp.list[i].V_ACTIVITY,
-                            width: 200
-                        }, {
-                            xtype: 'displayfield',
-                            id: 'gxname' + i,
-                            fieldLabel: '工序内容',
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            style: {
-                                margin: '5px 0 5px 0px'
-                            },
-                            value: resp.list[i].V_DESCRIPTION,
-                            width: 200
-                        }, {
-                            xtype: 'displayfield',
-                            id: 'svaluedown' + i,
-                            fieldLabel: '标准值(下限)',
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            style: {
-                                margin: '5px 0 5px 0px'
-                            },
-                            value: resp.list[i].V_JXBZ_VALUE_DOWN,
-                            width: 150
-                        }, {
-                            xtype: 'displayfield',
-                            id: 'svalueup' + i,
-                            fieldLabel: '标准值(上限)',
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            style: {
-                                margin: '5px 0 5px 0px'
-                            },
-                            value: resp.list[i].V_JXBZ_VALUE_UP,
-                            width: 150
-                        }, {
-                            xtype: 'textfield',
-                            id: 'fvlaue' + i,
-                            fieldStyle: 'background :#FFFF99;',
-                            fieldLabel: '实际值',
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            style: {
-                                margin: '5px 0 5px 0px'
-                            },
-                            listeners: {
-                                change: valueChange
-                            },
-                            width: 200
-                        }, {
-                            xtype: 'textfield',
-                            id: 'gxguid' + i,
-                            fieldStyle: 'background :#FFFF99;',
-                            fieldLabel: '工序guid',
-                            hidden: true,
-                            labelAlign: 'right',
-                            labelWidth: 80,
-                            width: 200,
-                            value: resp.list[i].V_GUID
-                        }];
-
-                        Ext.getCmp('valuepanel').add(khpanel);
-                    }
-                }
-
-                var bpanel = {
-                    xtype: 'button',
-                    text: '确定',
-                    icon: imgpath + '/saved.png',
-                    style: ' margin: 5px 0px 0px 35px',
-                    handler: ValueConfirm
-                };
-
-                if (fnum == 0) {
-                    Ext.getCmp('combowindow').show();
-                    Ext.getCmp('qxmx').disable();
-                } else {
-                    if (fnum == 1 || fnum == 2) {
-                        winheight = fnum * 140;
-                    } else {
-                        winheight = fnum * 70;
-                    }
-
-                    GXlength = fnum;
-                    Ext.getCmp('valuepanel').add(bpanel);
-                    Ext.getCmp('valuewindow').setHeight(winheight);
-                    Ext.getCmp('valuepanel').setHeight(winheight);
-                    // --Ext.getCmp('valuepanel').add(panel);
-                    Ext.getCmp('valuewindow').show();
-                    // --OpenDiv('VDiv','Vfade');
-                }
-            }
+            Ext.getCmp('combowindow').show();
+            // var fnum = resp.list.length;
+            //
+            // if (resp.list.length == 0) {
+            //     // QRYS();
+            // } else {
+            //     for (var i = 0; i < resp.list.length; i++) {
+            //         if (resp.list[i].V_JXBZ_VALUE_DOWN == '' || resp.list[i].V_JXBZ_VALUE_DOWN == null || resp.list[i].V_JXBZ_VALUE_UP == '' || resp.list[i].V_JXBZ_VALUE_UP == null) {
+            //             fnum--;
+            //         } else {
+            //             var khpanel = [{
+            //                 xtype: 'displayfield',
+            //                 id: 'gxcode' + i,
+            //                 fieldLabel: '工序编号',
+            //                 labelAlign: 'right',
+            //                 labelWidth: 80,
+            //                 style: {
+            //                     margin: '5px 0 5px 0px'
+            //                 },
+            //                 value: resp.list[i].V_ACTIVITY,
+            //                 width: 200
+            //             }, {
+            //                 xtype: 'displayfield',
+            //                 id: 'gxname' + i,
+            //                 fieldLabel: '工序内容',
+            //                 labelAlign: 'right',
+            //                 labelWidth: 80,
+            //                 style: {
+            //                     margin: '5px 0 5px 0px'
+            //                 },
+            //                 value: resp.list[i].V_DESCRIPTION,
+            //                 width: 200
+            //             }, {
+            //                 xtype: 'displayfield',
+            //                 id: 'svaluedown' + i,
+            //                 fieldLabel: '标准值(下限)',
+            //                 labelAlign: 'right',
+            //                 labelWidth: 80,
+            //                 style: {
+            //                     margin: '5px 0 5px 0px'
+            //                 },
+            //                 value: resp.list[i].V_JXBZ_VALUE_DOWN,
+            //                 width: 150
+            //             }, {
+            //                 xtype: 'displayfield',
+            //                 id: 'svalueup' + i,
+            //                 fieldLabel: '标准值(上限)',
+            //                 labelAlign: 'right',
+            //                 labelWidth: 80,
+            //                 style: {
+            //                     margin: '5px 0 5px 0px'
+            //                 },
+            //                 value: resp.list[i].V_JXBZ_VALUE_UP,
+            //                 width: 150
+            //             }, {
+            //                 xtype: 'textfield',
+            //                 id: 'fvlaue' + i,
+            //                 fieldStyle: 'background :#FFFF99;',
+            //                 fieldLabel: '实际值',
+            //                 labelAlign: 'right',
+            //                 labelWidth: 80,
+            //                 style: {
+            //                     margin: '5px 0 5px 0px'
+            //                 },
+            //                 listeners: {
+            //                     change: valueChange
+            //                 },
+            //                 width: 200
+            //             }, {
+            //                 xtype: 'textfield',
+            //                 id: 'gxguid' + i,
+            //                 fieldStyle: 'background :#FFFF99;',
+            //                 fieldLabel: '工序guid',
+            //                 hidden: true,
+            //                 labelAlign: 'right',
+            //                 labelWidth: 80,
+            //                 width: 200,
+            //                 value: resp.list[i].V_GUID
+            //             }];
+            //
+            //             Ext.getCmp('valuepanel').add(khpanel);
+            //         }
+            //     }
+            //
+            //     var bpanel = {
+            //         xtype: 'button',
+            //         text: '确定',
+            //         icon: imgpath + '/saved.png',
+            //         style: ' margin: 5px 0px 0px 35px',
+            //         handler: ValueConfirm
+            //     };
+            //
+            //     if (fnum == 0) {
+            //         Ext.getCmp('combowindow').show();
+            //         Ext.getCmp('qxmx').disable();
+            //     } else {
+            //         if (fnum == 1 || fnum == 2) {
+            //             winheight = fnum * 140;
+            //         } else {
+            //             winheight = fnum * 70;
+            //         }
+            //
+            //         GXlength = fnum;
+            //         Ext.getCmp('valuepanel').add(bpanel);
+            //         Ext.getCmp('valuewindow').setHeight(winheight);
+            //         Ext.getCmp('valuepanel').setHeight(winheight);
+            //         // --Ext.getCmp('valuepanel').add(panel);
+            //         Ext.getCmp('valuewindow').show();
+            //         // --OpenDiv('VDiv','Vfade');
+            //     }
+            // }
 
         }
     });
