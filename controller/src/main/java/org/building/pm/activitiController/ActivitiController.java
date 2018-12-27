@@ -600,6 +600,7 @@ public class ActivitiController {
                         taskmap.put("PLANSTART", equmap.get("V_STARTTIME").toString());
                         taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
                         taskmap.put("PLANHOUR", equmap.get("V_HOUR").toString());
+                        taskmap.put("OPERANAME", equmap.get("V_OPERANAME").toString());
                     }
                 }
                 User user = identityService.createUserQuery()

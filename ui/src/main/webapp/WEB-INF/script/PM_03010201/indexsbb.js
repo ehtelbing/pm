@@ -933,8 +933,8 @@ function saveOnButtonUp(){
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, nextper, "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"],
+                                parName: ["originator", "flow_businesskey", Next_StepCode, "idea", "remark", "flow_code", "flow_yj","flow_type"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"],
                                 processKey: processKey,
                                 businessKey: records.list[i].V_SBB_GUID,
                                 V_STEPCODE: 'Start',
