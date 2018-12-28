@@ -1605,42 +1605,50 @@ public class Dx_fileController {
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 2);
-        cell.setCellValue("厂矿");
+        cell.setCellValue("项目名称");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 3);
-        cell.setCellValue("车间名称");
-        cell.setCellStyle(style);
-
-        cell = row.createCell((short) 4);
-        cell.setCellValue("专业");
-        cell.setCellStyle(style);
-
-        cell = row.createCell((short) 5);
-        cell.setCellValue("设备名称");
-        cell.setCellStyle(style);
-
-        cell = row.createCell((short) 6);
         cell.setCellValue("年份");
         cell.setCellStyle(style);
 
-        cell = row.createCell((short) 7);
+        cell = row.createCell((short) 4);
         cell.setCellValue("计划停机月份");
         cell.setCellStyle(style);
 
+        cell = row.createCell((short) 5);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("车间名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
         cell = row.createCell((short) 8);
-        cell.setCellValue("计划工期（小时）");
+        cell.setCellValue("设备名称");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 9);
-        cell.setCellValue("检修类别");
+        cell.setCellValue("检修内容");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 10);
-        cell.setCellValue("录入人");
+        cell.setCellValue("计划工期（小时）");
         cell.setCellStyle(style);
 
         cell = row.createCell((short) 11);
+        cell.setCellValue("检修类别");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
         cell.setCellValue("录入时间");
         cell.setCellStyle(style);
 
@@ -1654,18 +1662,22 @@ public class Dx_fileController {
 
                 row.createCell((short) 0).setCellValue(i + 1);
                 row.createCell((short) 1).setCellValue(map.get("STATENAME") == null ? "" : map.get("STATENAME").toString());
-                row.createCell((short) 2).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
-                row.createCell((short) 3).setCellValue(map.get("DEPTNAME") == null ? "" : map.get("DEPTNAME").toString());
-                row.createCell((short) 4).setCellValue(map.get("ZYNAME") == null ? "" : map.get("ZYNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("PRO_NAME") == null ? "" : map.get("PRO_NAME").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_YEAR") == null ? "" : map.get("V_YEAR").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_MONTH") == null ? "" : map.get("V_MONTH").toString());
 
-                row.createCell((short) 5).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
-                row.createCell((short) 6).setCellValue(map.get("V_YEAR") == null ? "" : map.get("V_YEAR").toString());
-                row.createCell((short) 7).setCellValue(map.get("V_MONTH") == null ? "" : map.get("V_MONTH").toString());
-                row.createCell((short) 8).setCellValue(map.get("PLANHOUR") == null ? "" : map.get("PLANHOUR").toString());
+                row.createCell((short) 5).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
+                row.createCell((short) 6).setCellValue(map.get("DEPTNAME") == null ? "" : map.get("DEPTNAME").toString());
+                row.createCell((short) 7).setCellValue(map.get("ZYNAME") == null ? "" : map.get("ZYNAME").toString());
 
-                row.createCell((short) 9).setCellValue(map.get("REPAIRTYPENAME") == null ? "" : map.get("REPAIRTYPENAME").toString());
-                row.createCell((short) 10).setCellValue(map.get("INPERNAME") == null ? "" : map.get("INPERNAME").toString());
-                row.createCell((short) 11).setCellValue(map.get("INDATE") == null ? "" : map.get("INDATE").toString());
+                row.createCell((short) 8).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+                row.createCell((short) 9).setCellValue(map.get("REPAIRCONTENT") == null ? "" : map.get("REPAIRCONTENT").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("PLANHOUR") == null ? "" : map.get("PLANHOUR").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("REPAIRTYPENAME") == null ? "" : map.get("REPAIRTYPENAME").toString());
+                row.createCell((short) 12).setCellValue(map.get("INPERNAME") == null ? "" : map.get("INPERNAME").toString());
+                row.createCell((short) 13).setCellValue(map.get("INDATE") == null ? "" : map.get("INDATE").toString());
 
             }
             try {
