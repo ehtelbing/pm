@@ -83,7 +83,9 @@ var gridStore=Ext.create('Ext.data.Store',{
     autoLoad: true,
     fields: ['ID_GUID', 'ORGCODE','ORGNAME','DEPTCODE','DEPTNAME','ZYCODE','ZYNAME','EQUCODE','V_EQUNAME','EQUTYPE',
     'V_EQUTYPENAME','REPAIRCONTENT','PLANHOUR','REPAIRTYPE','REPAIRTYPENAME','INPERCODE','INPERNAME','INDATE',
-        'STATE','STATENAME','REMARK','V_FLOWCODE','V_FLOWTYPE','MXCODE','PLANTYPE','V_YEAR', 'V_MONTH'],
+        'STATE','STATENAME','REMARK','V_FLOWCODE','V_FLOWTYPE','MXCODE','PLANTYPE','V_YEAR', 'V_MONTH',
+        'PLANTJMONTH','PLANJGMONTH','WXTYPECODE','WXTYPENAME','PTYPECODE','PTYPENAME','PLANDAY','REDEPTCODE','REDEPTNAME',
+    'FZPERCODE','FZPERNAME','SGTYPECODE','SGTYPENAME','SCLBCODE','SCLBNAME','PRO_NAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -146,13 +148,17 @@ var cpanel=Ext.create('Ext.grid.Panel',{
         {text: 'ID_GUID', align: 'center', width: 100, dataIndex: 'ID_GUID',hidden:true},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATE',hidden:true},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATENAME'},
+        {text: '项目名称', align: 'center', width: 100, dataIndex:'PRO_NAME'},
+        {text: '年份', align: 'center', width: 70, dataIndex: 'V_YEAR'},
+        {text: '计划停机月份', align: 'center', width: 100, dataIndex: 'V_MONTH'},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATENAME'},
         {text: '厂矿', align: 'center', width: 120, dataIndex: 'ORGNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'DEPTNAME'},
         {text: '专业', align: 'center', width: 100, dataIndex: 'ZYNAME'},
         {text: '设备名称', align: 'center', width: 180, dataIndex: 'V_EQUNAME'},
         {text: '设备类型名称', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME',hidden:true},
-        {text: '年份', align: 'center', width: 70, dataIndex: 'V_YEAR'},
-        {text: '计划停机月份', align: 'center', width: 100, dataIndex: 'V_MONTH'},
+        {text:'检修内容',align:'center',width:150,dataIndex:'REPAIRCONTENT'},
+
         {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'PLANHOUR'},
         {text: '检修类别', align: 'center', width: 100, dataIndex: 'REPAIRTYPENAME'},
 
@@ -224,8 +230,23 @@ function OnButtonQuery(){
 
 //手工添加
 function OnButtonPlanAddClicked(){
-   window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
-       "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+'new', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_GET_NEWGUID',
+        method: 'POST',
+        async: false,
+        params: {
+            V_GUID: 'new',
+            V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_INPERNAME: decodeURI(Ext.util.Cookies.get('v_personname').substring())
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.RET != '') {
+                window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
+                    "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+resp.RET+'&FLAG='+'new', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+            }
+        }
+    });
 }
 
 //模型选择
@@ -250,7 +271,7 @@ function OnButtonEditClicked(){
         return false;
     }else{
     window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
-        "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+record[0].get('ID_GUID'), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+        "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+record[0].get('ID_GUID')+'&FLAG='+'update', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
     }
 }
 //作废

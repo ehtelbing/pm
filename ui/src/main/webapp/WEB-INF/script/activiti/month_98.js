@@ -280,6 +280,23 @@ Ext.onReady(function () {
         }
     });
 
+    var gxStore=Ext.create('Ext.data.Store',{
+        id:'gxStore',
+        autoLoad:false,
+        fields:[ 'OPERA_NAME','ID'],
+        proxy:{
+            type:'ajax',
+            async:false,
+            url:AppUrl+'dxfile/BASE_OPERATION_SEL',
+            actionMethods:{
+                read:'POST'
+            },
+            reader:{
+                type:'json',
+                root:'RET'
+            }
+        }
+    });
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStore',
@@ -395,6 +412,7 @@ Ext.onReady(function () {
                             _zyq_zy();
                             _zyq_sblx();
                             _zyq_sbmc();
+                            _zyq_gx();
                         }
                     }
                 }]
@@ -812,7 +830,21 @@ Ext.onReady(function () {
                     allowBlank: false,
                     fieldLabel: '计划工时合计',
                     labelWidth: 90
-                }]
+                },
+                    {
+                        xtype: 'combo',
+                        id: 'gx',
+                        fieldLabel: '工序',
+                        editable: false,
+                        margin: '5 0 0 5',
+                        labelWidth: 90,
+                        displayField: 'OPERA_NAME',
+                        valueField: 'OPERA_NAME',
+                        value: '',
+                        store: gxStore,
+                        queryMode: 'local'
+                    }
+                ]
             }, {
                 layout: 'column',
                 items: [{
@@ -985,7 +1017,7 @@ function _init() {
                     Ext.getCmp('maindefect').setValue(data.list[0].V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('expectage').setValue(data.list[0].V_EXPECT_AGE);  //预计寿命
                     Ext.getCmp('repairper').setValue(data.list[0].V_REPAIR_PER);  //维修人数
-
+                    Ext.getCmp('gx').select(data.list[0].V_OPERANAME);//工序
                     //2018-11-21
                     Ext.getCmp('sgfs').select(data.list[0].V_SGWAY);
                     Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);
@@ -1095,8 +1127,8 @@ function _agree() {
             V_V_REPAIR_PER: Ext.getCmp('repairper').getValue(),//维修人数
             V_V_SGWAY: Ext.getCmp('sgfs').getValue(),  //施工方式
             V_V_SGWAYNAME: Ext.getCmp('sgfs').getDisplayValue(),  //施工方式名称
-            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue//施工准备是否已落实 (1)是 (0)否
-
+            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,//施工准备是否已落实 (1)是 (0)否
+            V_V_OPERANAME:Ext.getCmp('gx').getValue()
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
@@ -1259,7 +1291,16 @@ function _zyq_sbmc() {
 
 
 }
-
+function _zyq_gx(){
+    Ext.data.StoreManager.lookup('gxStore').load({
+        params:{
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_DPPTCODE:Ext.util.Cookies.get('v_deptcode'),
+            V_ORGCODE:Ext.util.Cookies.get('v_orgCode'),
+            V_FLAG:'0'
+        }
+    });
+}
 function _gongshiheji() {
     var date1 = Ext.getCmp('jhtgsj').getSubmitValue() + " " + Ext.getCmp('tghour').getValue() + ":" + Ext.getCmp('tgminute').getValue() + ":00";
     var date11 = new Date(date1);
