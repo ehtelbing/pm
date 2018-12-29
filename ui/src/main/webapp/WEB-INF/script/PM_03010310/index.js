@@ -510,6 +510,7 @@ Ext.onReady(function () {
                                 id: 'maindefect',
                                 fieldLabel: '主要缺陷',
                                 labelAlign: 'right',
+                                allowBlank:false,
                                 margin: '5 0 0 5',
                                 labelWidth: 80,
                                 width: 280
@@ -542,6 +543,7 @@ Ext.onReady(function () {
                         labelAlign: 'right',
                         margin: '5 0 0 5',
                         labelWidth: 80,
+                        allowBlank:false,
                         width: 540,
                         value: ''
                     },
@@ -1458,6 +1460,23 @@ function getReturnJHXZ(retdata, type) {
 function OnButtonSaveClick() {
     if( Ext.getCmp('sblx').getValue()=="%"&&Ext.getCmp('sbmc').getValue()=="%"){
         Ext.Msg.alert('消息','设备类型和设备名称不可以为全部，请选择相关名称');
+        return;
+    }
+
+    if(Ext.getCmp('expectage').getValue()=="0"){
+        Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('repairper').getValue()=="0"){
+        Ext.Msg.alert('消息','维修人数不可为0，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('maindefect').getValue()==""){
+        Ext.Msg.alert('消息','主要缺陷不可为空，请输入后保存');
+        return;
+    }
+    if(Ext.getCmp('jxnr').getValue()==""){
+        Ext.Msg.alert('消息','检修内容不可为空，请输入后保存');
         return;
     }
     //获取流动编码

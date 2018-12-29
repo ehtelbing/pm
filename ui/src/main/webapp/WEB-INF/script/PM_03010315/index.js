@@ -510,6 +510,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             xtype: 'textfield',
                             id: 'maindefect',
                             fieldLabel: '主要缺陷',
+                            allowBlank:false,
                             labelAlign: 'right',
                             margin: '5 0 5 5',
                             labelWidth: 80,
@@ -522,6 +523,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     id: 'jxnr',
                     fieldLabel: '检修内容',
                     labelAlign: 'right',
+                    allowBlank:false,
                     margin: '5 0 5 5',
                     labelWidth: 80,
                     width: 540,
@@ -1400,6 +1402,23 @@ function OnButtonSaveClick() {
      V_FLOWCODE= Ext.decode(resp.responseText).list[0].V_INFO;
      }
      });*/
+
+    if(Ext.getCmp('expectage').getValue()=="0"){
+        Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('repairper').getValue()=="0"){
+        Ext.Msg.alert('消息','维修人数不可为0，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('maindefect').getValue()==""){
+        Ext.Msg.alert('消息','主要缺陷不可为空，请输入后保存');
+        return;
+    }
+    if(Ext.getCmp('jxnr').getValue()==""){
+        Ext.Msg.alert('消息','检修内容不可为空，请输入后保存');
+        return;
+    }
     //计划停工时间
     var jhtghour = Ext.getCmp('jhtghour').getValue();
     var jhtgminute = Ext.getCmp('jhtgminute').getValue();

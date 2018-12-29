@@ -445,6 +445,7 @@ Ext.onReady(function () {
                                 xtype: 'numberfield',
                                 id: 'expectage',
                                 fieldLabel: '预计寿命',
+                                allowBlank:false,
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 labelWidth: 80,
@@ -455,6 +456,7 @@ Ext.onReady(function () {
                                 xtype: 'numberfield',
                                 id: 'repairper',
                                 fieldLabel: '维修人数',
+                                allowBlank:false,
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 labelWidth: 70,
@@ -491,6 +493,7 @@ Ext.onReady(function () {
                                 xtype: 'textfield',
                                 id: 'maindefect',
                                 fieldLabel: '主要缺陷',
+                                allowBlank:false,
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 labelWidth: 70,
@@ -1206,6 +1209,18 @@ function getReturnMXXZ(retdata) {
 function OnButtonSaveClick() {
     if( Ext.getCmp('sblx').getValue()=="%"&&Ext.getCmp('sbmc').getValue()=="%"){
         Ext.Msg.alert('消息','设备类型和设备名称不可以为全部，请选择相关名称');
+        return;
+    }
+    if(Ext.getCmp('maindefect').getValue()==""){
+        Ext.Msg.alert('消息','主要缺陷不可为空，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('expectage').getValue()=="0"){
+        Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('repairper').getValue()=="0"){
+        Ext.Msg.alert('消息','维修人数不可为0，请选择相关信息');
         return;
     }
     if(Ext.getCmp('jxnr').getValue()==""){
