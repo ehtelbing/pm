@@ -527,9 +527,8 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = dx_fileService.PM_03_MONTH_PLAN_BYPER_SEL2(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
-        return setPage(request, response, data);
+        Map result = dx_fileService.PM_03_MONTH_PLAN_BYPER_SEL2(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT, V_V_STATECODE, V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
     }
 
     // month report to sbb data view   PM_03_MONTH_PLAN_SEL2
