@@ -963,9 +963,10 @@ function saveOnButtonUp(){
                 }
             });
         }
-       Ext.Array.erase(nextper,0,nextper.length);
+       // Ext.Array.erase(nextper,0,nextper.length);
     }
     // }
+    Ext.Array.erase(nextper,0,nextper.length);
 }
 
 

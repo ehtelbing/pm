@@ -809,11 +809,11 @@ function saveOnButtonUp(){
 
                     if (resp.V_INFO == '成功') {
                         Ext.Ajax.request({
-                            url: AppUrl + 'Activiti/StratProcess',
+                            url: AppUrl + 'Activiti/StratProcessList',
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", Next_StepCode, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj", "flow_type"],
                                 parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List'/*Ext.getCmp('nextPer').getValue()*/, "请审批!", records.list[i].V_CONTENT, records.list[i].V_WEEKID, "请审批！", "WeekPlan01"],
                                 processKey: processKey,
                                 businessKey: records.list[i].V_SBB_GUID, // records[i].get('V_GUID'),
@@ -825,6 +825,7 @@ function saveOnButtonUp(){
                             },
                             success: function (response) {
                                 if (Ext.decode(response.responseText).ret == 'OK') {
+                                    Ext.getCmp('nextSprWind').close();
                                     QueryGrid();
                                 } else if (Ext.decode(response.responseText).error == 'ERROR') {
                                     i_err++;
@@ -863,9 +864,9 @@ function saveOnButtonUp(){
                 }
             });
         }
-        Ext.Array.erase(nextper,0,nextper.length);
+        // Ext.Array.erase(nextper,0,nextper.length);
     }
-
+    Ext.Array.erase(nextper,0,nextper.length);
     //  }
     //   else {
     //       Ext.Msg.alert('提示', '该计划不在上报时间内！');
