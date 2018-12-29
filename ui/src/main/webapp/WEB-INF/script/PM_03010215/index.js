@@ -150,6 +150,15 @@ var zyStore = Ext.create('Ext.data.Store', {
             type: 'json',
             root: 'list'
         }
+    },listeners: {
+        load: function (store, records) {
+            store.insert(0, {
+                'V_SPECIALTYCODE': '%',
+                'V_BASENAME': '全部'
+            });
+            Ext.getCmp('zy').select(store.first());
+
+        }
     }
 });
 //设备类型
@@ -590,7 +599,6 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('stateStore').load({
         params: {}
     });
-
     //作业区改变
     Ext.getCmp('jhzyq').on('change', function () {
         Ext.data.StoreManager.lookup('zyStore').load({
