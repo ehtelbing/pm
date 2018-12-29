@@ -929,22 +929,23 @@ function saveOnButtonUp(){
                     if (resp.V_INFO != 'Fail') {
 
                         Ext.Ajax.request({
-                            url: AppUrl + 'Activiti/StratProcess',
+                            url: AppUrl + 'Activiti/StratProcessList',
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", Next_StepCode, "idea", "remark", "flow_code", "flow_yj","flow_type"],
+                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj","flow_type"],
                                 parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"],
                                 processKey: processKey,
                                 businessKey: records.list[i].V_SBB_GUID,
                                 V_STEPCODE: 'Start',
-                                V_STEPNAME: nextper,
+                                V_STEPNAME:V_STEPNAME,// nextper,
                                 V_IDEA: '请审批！',
-                                V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                                V_NEXTPER:nextper,// Ext.getCmp('nextPer').getValue(),
                                 V_INPER: Ext.util.Cookies.get('v_personcode')
                             },
                             success: function (response) {
                                 if (Ext.decode(response.responseText).ret == 'OK') {
+                                    Ext.getCmp('nextSprWind').close();
                                     query();
                                 } else if (Ext.decode(response.responseText).error == 'ERROR') {
                                     i_err++;

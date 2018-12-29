@@ -234,7 +234,14 @@ Ext.onReady(function () {
                     allowBlank: false,
                     fieldLabel: '计划工时合计',
                     labelWidth: 90
-                }]
+                },
+                    {
+                        readOnly:true,
+                        id: 'gx',
+                        allowBlank: false,
+                        fieldLabel: '工序',
+                        labelWidth: 90
+                    }]
             }, {
                 layout: 'column',
                 items: [{
@@ -402,6 +409,7 @@ function _init() {
                 //2018-11-21
                 Ext.getCmp('sgfs').setValue(data.list[0].V_SGWAYNAME);
                 Ext.getCmp('iflag').setValue(data.list[0].V_FLAG);
+                Ext.getCmp('gx').setValue(data.list[0].V_OPERANAME);
                 //  _selectNextPer();
                 _selectTaskId();
                 Ext.getBody().unmask();

@@ -1288,7 +1288,7 @@ public class Dx_fileService {
                                       String V_V_DEPTCODE, String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_REPAIRMAJOR_CODE, String V_V_CONTENT,
                                       String V_V_STARTTIME, String V_V_ENDTIME, String V_V_OTHERPLAN_GUID, String V_V_OTHERPLAN_TYPE, String V_V_JHMX_GUID,
                                       String V_V_HOUR, String V_V_BZ, String V_V_MAIN_DEFECT, String V_V_EXPECT_AGE, String V_V_REPAIR_PER,
-                                      String V_V_SGWAY,String V_V_SGWAYNAME,String V_V_FLAG) throws SQLException {
+                                      String V_V_SGWAY,String V_V_SGWAYNAME,String V_V_FLAG,String V_V_OPERANAME) throws SQLException {
       logger.info("begin PRO_PM_03_PLAN_MONTH_SETSBB");
       Map result = new HashMap();
       Connection conn = null;
@@ -1299,7 +1299,7 @@ public class Dx_fileService {
           cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_MONTH_SETSBB" + "(:V_V_INPER,:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE," +
                   ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_REPAIRMAJOR_CODE,:V_V_CONTENT,:V_V_STARTTIME,:V_V_ENDTIME," +
                   ":V_V_FLV_V_OTHERPLAN_GUIDOWCODE,:V_V_OTHERPLAN_TYPE,:V_V_JHMX_GUID,:V_V_HOUR,:V_V_BZ,:V_V_MAIN_DEFECT,:V_V_EXPECT_AGE,:V_V_REPAIR_PER,"+
-                  ":V_V_SGWAY,:V_V_SGWAYNAME,:V_V_FLAG,:V_INFO)}");
+                  ":V_V_SGWAY,:V_V_SGWAYNAME,:V_V_FLAG,:V_V_OPERANAME,:V_INFO)}");
           cstmt.setString("V_V_INPER", V_V_INPER);
           cstmt.setString("V_V_GUID", V_V_GUID);
           cstmt.setString("V_V_YEAR", V_V_YEAR);
@@ -1326,6 +1326,7 @@ public class Dx_fileService {
           cstmt.setString("V_V_SGWAY", V_V_SGWAY);
           cstmt.setString("V_V_SGWAYNAME", V_V_SGWAYNAME);
           cstmt.setString("V_V_FLAG", V_V_FLAG);
+          cstmt.setString("V_V_OPERANAME",V_V_OPERANAME);
 
           cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
           cstmt.execute();
