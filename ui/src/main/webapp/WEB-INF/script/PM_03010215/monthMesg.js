@@ -150,6 +150,15 @@ var zyStore = Ext.create('Ext.data.Store', {
             type: 'json',
             root: 'list'
         }
+    },listeners: {
+        load: function (store, records) {
+            store.insert(0, {
+                'V_SPECIALTYCODE': '%',
+                'V_BASENAME': '全部'
+            });
+            Ext.getCmp('zy').select(store.first());
+
+        }
     }
 });
 //设备类型
@@ -462,21 +471,16 @@ var northPanel = Ext.create('Ext.form.Panel', {
             handler: function () {
                 query();
             }
-        }
-        // , {
-        //     xtype: 'button',
-        //     text: '导出excel',
-        //     style: ' margin: 5px 0px 5px 5px',
-        //     icon: imgpath + '/excel.gif',
-        //     width: 100,
-        //     listeners: {
-        //         click: OnClickExcelButton
-        //     }
-        // }
-        //----注释时间2018-08-28
-        //     ]
-        // }
-        //--end
+        }, {
+             xtype: 'button',
+             text: '导出excel',
+             style: ' margin: 5px 0px 5px 5px',
+             icon: imgpath + '/excel.gif',
+             width: 100,
+             listeners: {
+                 click: OnClickExcelButton
+             }
+         }
     ]
 });
 
@@ -763,23 +767,24 @@ function _preViewProcess(businessKey)
 }
 
 function OnClickExcelButton() {
-
+    var V_V_ORGCODE = Ext.getCmp('jhck').getValue() == '%' ? '0' : Ext.getCmp('jhck').getValue();
     var V_V_STATE = Ext.getCmp('state').getValue() == '%' ? '0' : Ext.getCmp('state').getValue();
     var V_V_DEPTCODE=Ext.getCmp('jhzyq').getValue()=='%'?'0':Ext.getCmp('').getValue();
     var V_V_EQUTYPE=Ext.getCmp('sblx').getValue()=='%'?'0':Ext.getCmp('sblx').getValue();
     var V_V_EQUCODE=Ext.getCmp('sbmc').getValue()=='%'?'0':Ext.getCmp('sbmc').getValue();
-    document.location.href = AppUrl + 'excel/YJHCX_EXCEL?V_V_YEAR=' + Ext.getCmp('nf').getValue()
+    var V_V_ZY = Ext.getCmp('zy').getValue() == '%' ? '0' : Ext.getCmp('zy').getValue();
+    document.location.href = AppUrl + 'PM_03/PM_03_MONTH_PLAN_EXLALL?V_V_YEAR=' + Ext.getCmp('nf').getValue()
         + '&V_V_MONTH=' + Ext.getCmp('yf').getValue()
-        + '&V_V_ORGCODE=' + Ext.getCmp('jhck').getValue()
+        + '&V_V_ORGCODE=' + V_V_ORGCODE
         + '&V_V_DEPTCODE=' +V_V_DEPTCODE// Ext.getCmp('jhzyq').getValue()
         + '&V_V_EQUTYPE=' + V_V_EQUTYPE
         + '&V_V_EQUCODE=' + V_V_EQUCODE
-        + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
+        + '&V_V_ZY=' + V_V_ZY
         + '&V_V_CONTENT=' + Ext.getCmp('content').getValue()
         + '&V_V_STATECODE=' + V_V_STATE
         + '&V_V_PEROCDE=' + Ext.util.Cookies.get('v_personcode')
-    /*  + '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
-      + '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize*/;
+        /*  + '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
+         + '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize*/;
 
 }
 
