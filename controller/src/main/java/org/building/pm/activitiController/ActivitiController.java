@@ -143,15 +143,20 @@ public class ActivitiController {
             String ret = (String) data.get("RET");
             result.put("RET", ret);
 
+            Date date = new Date();
             Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
+            c.setTime(date);
+
+            c.add(Calendar.MONTH, 2);
+            c.set(Calendar.DAY_OF_MONTH, 0);
+            /* int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH)+1;
             int date = c.get(Calendar.DATE);
-            int hour = c.get(Calendar.HOUR_OF_DAY);
+           int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
-            int second = c.get(Calendar.SECOND);
+            int second = c.get(Calendar.SECOND);*/
+            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
 
-            String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
 
             try {
                 for (int i = 0; i < parName.length; i++) {
@@ -950,6 +955,16 @@ public class ActivitiController {
         }
 
         try {
+
+            Date date = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+
+            c.add(Calendar.MONTH, 2);
+            c.set(Calendar.DAY_OF_MONTH, 0);
+            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+            map.put("shtgtime", time);
+
             map.put("idea", idea);
             taskService.complete(taskId, map);
             result.put("ret", "任务提交成功");
@@ -997,6 +1012,13 @@ public class ActivitiController {
         }
 
         try {
+            Date date = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.MONTH, 2);
+            c.set(Calendar.DAY_OF_MONTH, 0);
+            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+            map.put("shtgtime", time);
             map.put("idea", idea);
             taskService.complete(taskId, map);
             result.put("ret", "任务提交成功");
@@ -1229,7 +1251,7 @@ public class ActivitiController {
         Map result = new HashMap();
         Map param = new HashMap();
 
-        String perList="";
+        String perList = "";
 
         int num = (int) taskService.createTaskQuery().processVariableValueLike("flow_businesskey", businessKey).count();
 
@@ -1239,21 +1261,19 @@ public class ActivitiController {
                 list.add(V_NEXTPER[i]);
                 activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER[i], V_INPER);
             }
+            Date date = new Date();
             Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int date = c.get(Calendar.DATE);
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-            int second = c.get(Calendar.SECOND);
-
-            String time = year + "-" + month + "-" + date + "T" + hour + ":" + minute + ":" + second;
+            c.setTime(date);
+            c.add(Calendar.MONTH, 2);
+            c.set(Calendar.DAY_OF_MONTH, 0);
+            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+            param.put("shtgtime", time);
 
             try {
                 for (int i = 0; i < parName.length; i++) {
-                    if(parName[i].toString().equals("Next_StepCode")){
-                        perList=parVal[i].toString();
-                    }else{
+                    if (parName[i].toString().equals("Next_StepCode")) {
+                        perList = parVal[i].toString();
+                    } else {
                         param.put(parName[i].toString(), parVal[i].toString());
                     }
                 }
