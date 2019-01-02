@@ -534,6 +534,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
         },
         {
             xtype: 'button',
+            text: '导入放行计划',
+            margin: '5 0 5 5',
+            icon: imgpath + '/accordion_expand.png',
+            listeners: {click: OnButtonDR}
+        },
+        {
+            xtype: 'button',
             text: '生成工单',
             margin: '5 0 5 5',
             icon: imgpath + '/accordion_collapse.png',
@@ -1213,4 +1220,32 @@ function guid() {
     }
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+function OnButtonDR(){
+    Ext.getBody().mask('<p>放行月计划导入中...</p>');
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_03/DR_PM_03_PLAN_MONTH',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_YEAR: Ext.getCmp('nf').getValue(),
+            V_V_MOUTH: Ext.getCmp('yf').getValue()
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if(resp.V_INFO=='SUCCESS'){
+                alert('放行月计划导入成功');
+                query();
+                Ext.getBody().unmask();
+
+            }else{
+                alert('放行月计划导入失败');
+                Ext.getBody().unmask();
+            }
+        },failure: function (response) {
+            alert('放行月计划导入失败');
+            Ext.getBody().unmask();
+        }
+    });
+
 }
