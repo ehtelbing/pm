@@ -84,7 +84,7 @@ Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
         id: 'main',
         layout: 'border',
-        items: [ cpanel]
+        items: [ panel,cpanel]
     });
 
         Query();
