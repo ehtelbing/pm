@@ -1336,6 +1336,7 @@ function getReturnJHXZ(retdata, type) {
 
                     // 2018-11-23 update data
                     var V_EXPECT_AGE=resp.list[0].V_EXPECT_AGE;
+                    var expect_age=parseInt(V_EXPECT_AGE)*8;
                     var V_MAIN_DEFECT=resp.list[0].V_MAIN_DEFECT==""?"":resp.list[0].V_MAIN_DEFECT;
                     var V_REPAIR_PER=resp.list[0].V_REPAIR_PER;
                     var V_SGWAY=resp.list[0].V_SGWAY==""?"":resp.list[0].V_SGWAY;
@@ -1350,7 +1351,7 @@ function getReturnJHXZ(retdata, type) {
                     Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
                     Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
                     Ext.getCmp('bz').setValue(V_BZ);  //备注
-                    Ext.getCmp('expectage').setValue(V_EXPECT_AGE);   //预计寿命
+                    Ext.getCmp('expectage').setValue(expect_age);   //预计寿命
                     Ext.getCmp('maindefect').setValue(V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('repairper').setValue(V_REPAIR_PER);   //维修人数
                     Ext.getCmp('sgfs').select(V_SGWAY);  //施工方式

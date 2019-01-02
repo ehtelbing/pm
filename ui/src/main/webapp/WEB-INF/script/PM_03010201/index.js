@@ -551,6 +551,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     selType: 'checkboxmodel',
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATE',hidden:true},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
         {
             text: '详细',
@@ -1120,7 +1121,7 @@ function createWorkorder() {
 
     var V_GUIDList = '';
     for (var i = 0; i < record.length; i++) {
-        if(record[i].data.V_STATENAME!='审批完成'&&record[i].data.V_STATENAME!='已下票'){
+        if(record[i].data.V_STATE=='10'&&record[i].data.V_STATE=='100'&&record[i].data.V_STATE== '20'&&record[i].data.V_STATE== '99'){
             alert("该计划状态无法生成工单");
             return;
         }
