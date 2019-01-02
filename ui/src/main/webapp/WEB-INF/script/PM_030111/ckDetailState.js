@@ -59,6 +59,14 @@ var gridStore = Ext.create('Ext.data.Store', {
     }
 });
 
+var panel = Ext.create('Ext.panel.Panel', {
+    region: 'north',
+    width: '100%',
+    layout: 'column',
+    frame: true,
+    items: [{xtype: 'label', style: ' margin: 8px 0px 5px 5px;color:red', text: '*注：执行数为生成工单数量；执行率为执行数/审批完成的周计划总数'}]
+});
+
 var cpanel=Ext.create('Ext.grid.Panel',{
     id:'cpanel',
     region:'center',

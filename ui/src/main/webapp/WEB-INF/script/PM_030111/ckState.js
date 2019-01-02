@@ -173,7 +173,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             listeners: {
                 click: OnClickExcelButton
             }
-        }
+        },{xtype:'label', style: ' margin: 8px 0px 5px 5px;color:red',text:'*注：执行数为生成工单数量；执行率为执行数/审批完成的周计划总数'}
     ]
 });
 

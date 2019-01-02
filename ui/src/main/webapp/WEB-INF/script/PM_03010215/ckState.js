@@ -107,21 +107,6 @@ var npanel = Ext.create('Ext.panel.Panel', {
             store: monthStore,
             queryMode: 'local'
         },
-        // {
-        //     xtype: 'combo',
-        //     id: 'jhck',
-        //     fieldLabel: '计划厂矿',
-        //     editable: false,
-        //     margin: '5 0 0 5',
-        //     labelWidth: 80,
-        //     width: 250,
-        //     labelAlign: 'right',
-        //     value: '',
-        //     displayField: 'V_DEPTNAME',
-        //     valueField: 'V_DEPTCODE',
-        //     store: jhckStore,
-        //     queryMode: 'local'
-        // },
         {
             xtype:'button',
             id:'selQuery',
@@ -140,7 +125,9 @@ var npanel = Ext.create('Ext.panel.Panel', {
             listeners: {
                 click: OnClickExcelButton
             }
-        }]
+        },{xtype:'label', style: ' margin: 8px 0px 5px 5px;color:red',text:'*注：执行数为生成周计划数量；执行率为执行数/审批完成的月计划总数'}]
+
+
 
 });
 var cpanel=Ext.create('Ext.grid.Panel',{
