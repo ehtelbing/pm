@@ -5,13 +5,13 @@ var date = new Date();
 var dt = new Date();
 var thisYear = dt.getFullYear();
 var years = [];
-var weeks=[];
-var months=[];
-for (var i=1;i<=6;i++) weeks.push({displayField:i,valueField:i});
+var weeks = [];
+var months = [];
+for (var i = 1; i <= 6; i++) weeks.push({displayField: i, valueField: i});
 
-for (var i = 2014; i <= thisYear + 1; i++) years.push({displayField:i,valueField:i});
+for (var i = 2014; i <= thisYear + 1; i++) years.push({displayField: i, valueField: i});
 
-for (var i = 1; i <= 12; i++) months.push({displayField:i,valueField:i});
+for (var i = 1; i <= 12; i++) months.push({displayField: i, valueField: i});
 
 var yearStore = Ext.create("Ext.data.Store", {
     storeId: 'yearStore',
@@ -47,7 +47,7 @@ var ckstore = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl +'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+        url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
         actionMethods: {
             read: 'POST'
         },
@@ -70,7 +70,7 @@ var ztstore = Ext.create("Ext.data.Store", {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl +'lxm/pro_pm_basedic_zy',
+        url: AppUrl + 'lxm/pro_pm_basedic_zy',
         actionMethods: {
             read: 'POST'
         },
@@ -87,7 +87,7 @@ var ztstore = Ext.create("Ext.data.Store", {
 var zyqstore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'zyqstore',
-    fields:  ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+    fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -104,7 +104,7 @@ var zyqstore = Ext.create("Ext.data.Store", {
 var zyStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'zyStore',
-    fields: ['V_MAJOR_CODE','V_MAJOR_NAME' ],
+    fields: ['V_MAJOR_CODE', 'V_MAJOR_NAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -166,31 +166,37 @@ var sbmcStore = Ext.create('Ext.data.Store', {
 var panel = Ext.create('Ext.form.Panel', {
     id: 'panellow',
     region: 'north',
-    height:100,
+    height: 100,
     defaults: {
         style: 'margin:5px 0px 5px 5px'
-        ,labelAlign: 'right'
+        , labelAlign: 'right'
     },
     layout: 'column',
-    frame:true,
+    frame: true,
     items: [
-        {id:'year',xtype:'combo',labelWidth: 80,fieldLabel:'年份',
+        {
+            id: 'year', xtype: 'combo', labelWidth: 80, fieldLabel: '年份',
             // margin:'5px 0px 5px 5px',
             // labelAlign:'right',
-            store:yearStore,displayField:'displayField',valueField:'valueField',
-            value:'',editable:false,queryMode:'local'},
-        {id: 'month', store: monthStore, xtype: 'combo', fieldLabel: '月份',
+            store: yearStore, displayField: 'displayField', valueField: 'valueField',
+            value: '', editable: false, queryMode: 'local'
+        },
+        {
+            id: 'month', store: monthStore, xtype: 'combo', fieldLabel: '月份',
             // margin:'5px 0px 5px 5px',
-            value: '',labelWidth: 80,
-            // labelAlign:'right',
-            editable: false,
-            displayField: 'displayField', valueField: 'valueField'},
-        {id: 'week', store: weekStore, xtype: 'combo', fieldLabel: '周',
-            // margin:'5px 0px 5px 5px',
-            value: '',labelWidth: 80,
+            value: '', labelWidth: 80,
             // labelAlign:'right',
             editable: false,
-            displayField: 'displayField', valueField: 'valueField'},
+            displayField: 'displayField', valueField: 'valueField'
+        },
+        {
+            id: 'week', store: weekStore, xtype: 'combo', fieldLabel: '周',
+            // margin:'5px 0px 5px 5px',
+            value: '', labelWidth: 80,
+            // labelAlign:'right',
+            editable: false,
+            displayField: 'displayField', valueField: 'valueField'
+        },
         // {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
         // {xtype : 'displayfield', id : 'zjs', fieldLabel : '本周结束时间', labelWidth : 80, width:243,labelAlign : 'right'},
         {
@@ -228,8 +234,8 @@ var panel = Ext.create('Ext.form.Panel', {
             store: sblxStore,
             queryMode: 'local'
             // ,margin:'5px 0px 5px 5px'
-            ,listConfig:{
-                mixWidth:120
+            , listConfig: {
+                mixWidth: 120
             }
         },
         {
@@ -244,7 +250,7 @@ var panel = Ext.create('Ext.form.Panel', {
             store: sbmcStore,
             queryMode: 'local'
             // ,margin:'5px 0px 5px 5px'
-        },{
+        }, {
             id: 'zy',
             xtype: 'combo',
             store: zyStore,
@@ -276,15 +282,24 @@ var panel = Ext.create('Ext.form.Panel', {
             xtype: 'textfield',
             width: 158,
             emptyText: '检修明细模糊搜索'
-             ,margin:'5px 0px 5px 90px'
+            , margin: '5px 0px 5px 90px'
         }, {
             id: 'query',
             xtype: 'button',
             icon: imgpath + '/search.png',
             text: '查询',
             width: 80,
-            handler:QueryGrid
+            handler: QueryGrid
             // ,margin:'5px 0px 5px 50px'
+        }, {
+            xtype: 'button',
+            text: '导出excel',
+            style: ' margin: 5px 0px 5px 5px',
+            icon: imgpath + '/excel.gif',
+            width: 100,
+            listeners: {
+                click: OnClickExcelButton
+            }
         }
     ]
 });
@@ -349,34 +364,23 @@ Ext.onReady(function () {
         }
     });
 
-    var grid=Ext.create('Ext.grid.Panel',{
-        region:'center',
-        width:'100%',
-        store:gridStore,
-        id:'grid',
-        height:260,
-        style:'margin:0px 0px 5px 0px',
+    var grid = Ext.create('Ext.grid.Panel', {
+        region: 'center',
+        width: '100%',
+        store: gridStore,
+        id: 'grid',
+        height: 260,
+        style: 'margin:0px 0px 5px 0px',
         //autoScroll: true,
         columnLines: true,
-        // selModel:{
-        //     //mode:'singel',
-        //     selType:'checkboxmodel'
-        // },
-        columns:[
-            { xtype : 'rownumberer',
-                text : '序号',
-                width : 50,
-                align : 'center' },
-            { text: '计划状态',width:200,dataIndex:'V_STATENAME', align: 'center',renderer:Atleft },
-            // {
-            //     text: '审批详情',
-            //     dataIndex: 'V_ORDERID',
-            //     width: 55,
-            //     align: 'center',
-            //     renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-            //         return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
-            //     }
-            // },
+        columns: [
+            {
+                xtype: 'rownumberer',
+                text: '序号',
+                width: 50,
+                align: 'center'
+            },
+            {text: '计划状态', width: 200, dataIndex: 'V_STATENAME', align: 'center', renderer: Atleft},
             {
                 text: '工单详情',
                 dataIndex: 'V_ORDERID',
@@ -386,32 +390,18 @@ Ext.onReady(function () {
                     return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
                 }
             },
-            // {
-            //     text:'关联计划',
-            //     dataIndex:'',
-            //     width:75,
-            //     align:'center',
-            //     renderer:function(value,metaData,record){
-            //         if(record.data.V_OTHERPLAN_GUID!=""){
-            //             return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
-            //         }else{
-            //             return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+''+'</a>';
-            //         }
-            //
-            //     }
-            // },
-            { text: '设备名称',width:200,dataIndex:'V_EQUTYPENAME', align: 'center',renderer:Atleft },
-            { text: '专业',width:200,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft },
-            { text: '检修内容',width:200,dataIndex:'V_CONTENT', align: 'center',renderer:Atleft },
-            { text: '计划停机日期',width:200,dataIndex:'V_ENDTIME', align: 'center',renderer:rendererTime },
-            { text: '计划竣工日期',width:200,dataIndex:'V_STARTTIME', align: 'center',renderer:rendererTime },
-            { text: '计划工期',width:200,dataIndex:'V_HOUR', align: 'center',renderer:Atleft },
-            { text: '厂矿',width:200,dataIndex:'V_ORGNAME', align: 'center',renderer:Atleft },
-            { text: '车间名称',width:200,dataIndex:'V_DEPTNAME', align: 'center',renderer:Atleft },
-            { text: '录入人',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft }
-            , { text: '录入时间',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime }
+            {text: '设备名称', width: 200, dataIndex: 'V_EQUNAME', align: 'center', renderer: Atleft},
+            {text: '专业', width: 200, dataIndex: 'V_REPAIRMAJOR_CODE', align: 'center', renderer: Atleft},
+            {text: '检修内容', width: 200, dataIndex: 'V_CONTENT', align: 'center', renderer: Atleft},
+            {text: '计划停机日期', width: 200, dataIndex: 'V_ENDTIME', align: 'center', renderer: rendererTime},
+            {text: '计划竣工日期', width: 200, dataIndex: 'V_STARTTIME', align: 'center', renderer: rendererTime},
+            {text: '计划工期', width: 200, dataIndex: 'V_HOUR', align: 'center', renderer: Atleft},
+            {text: '厂矿', width: 200, dataIndex: 'V_ORGNAME', align: 'center', renderer: Atleft},
+            {text: '车间名称', width: 200, dataIndex: 'V_DEPTNAME', align: 'center', renderer: Atleft},
+            {text: '录入人', width: 200, dataIndex: 'V_INPERNAME', align: 'center', renderer: Atleft}
+            , {text: '录入时间', width: 200, dataIndex: 'V_INDATE', align: 'center', renderer: rendererTime}
         ]
-        ,bbar: [{
+        , bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
             dock: 'bottom',
@@ -425,7 +415,7 @@ Ext.onReady(function () {
         //id: "id",
         layout: 'border',
         //frame:true,
-        height:600,
+        height: 600,
         //border:false,
         items: [panel, grid]
     });
@@ -435,7 +425,7 @@ Ext.onReady(function () {
         // if(url_deptcode!=undefined){
         //     Ext.getCmp("ck").select(url_deptcode.substring(0,4));
         // }else{
-        Ext.data.StoreManager.lookup('ckstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+        Ext.data.StoreManager.lookup('ckstore').insert(0, {V_DEPTNAME: '全部', V_DEPTCODE: '%'});
         Ext.getCmp("ck").select(ckstore.getAt(0));
         // }
 
@@ -462,7 +452,7 @@ Ext.onReady(function () {
         //     Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
         //     Ext.getCmp("zyq").select(url_deptcode);
         // }else{
-        Ext.data.StoreManager.lookup('zyqstore').insert(0,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+        Ext.data.StoreManager.lookup('zyqstore').insert(0, {V_DEPTNAME: '全部', V_DEPTCODE: '%'});
         Ext.getCmp("zyq").select(zyqstore.getAt(0));
         // }
     });
@@ -496,12 +486,10 @@ Ext.onReady(function () {
         QueryGrid();
     });
     zyStore.load({
-        params:{
-
-        }
+        params: {}
     });
-    Ext.data.StoreManager.lookup('zyStore').on('load', function(){
-        Ext.data.StoreManager.lookup('zyStore').insert(0,{V_MAJOR_CODE:'全部',V_MAJOR_NAME:'%'});
+    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
+        Ext.data.StoreManager.lookup('zyStore').insert(0, {V_MAJOR_CODE: '全部', V_MAJOR_NAME: '%'});
         // if(url_zy!=undefined){
         //     Ext.getCmp('zy').select(url_zy);
         // }else{
@@ -529,58 +517,60 @@ Ext.onReady(function () {
     });
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
-            V_V_YEAR:Ext.getCmp('year').getValue(),
-            V_V_MONTH:Ext.getCmp('month').getValue(),
-            V_V_WEEK:Ext.getCmp('week').getValue(),
-            V_V_ORGCODE:Ext.getCmp('ck').getValue(),
-            V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),
-            V_V_ZY:Ext.getCmp('zy').getValue(),
-            V_V_EQUTYPE:Ext.getCmp('sblx').getValue(),
-            V_V_EQUCODE:Ext.getCmp('sbmc').getValue(),
-            V_V_CONTENT:Ext.getCmp('seltext').getValue()==""?"%":Ext.getCmp('seltext').getValue(),
-            V_V_FLOWTYPE:'WORK',
-            V_V_STATE:'30,31',//审批完成，已下票
+            V_V_YEAR: Ext.getCmp('year').getValue(),
+            V_V_MONTH: Ext.getCmp('month').getValue(),
+            V_V_WEEK: Ext.getCmp('week').getValue(),
+            V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+            V_V_ZY: Ext.getCmp('zy').getValue(),
+            V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),
+            V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
+            V_V_CONTENT: Ext.getCmp('seltext').getValue() == "" ? "%" : Ext.getCmp('seltext').getValue(),
+            V_V_FLOWTYPE: 'WORK',
+            V_V_STATE: '30,31',//审批完成，已下票
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
     });
 });
 
-function rendererTime(value, metaData){
+function rendererTime(value, metaData) {
 
     return value.split(".")[0];
 }
+
 //第几周
 function getWeekOfMonth() {//周一为起始
-    var w = date.getDay()==0?7:date.getDay();//星期
+    var w = date.getDay() == 0 ? 7 : date.getDay();//星期
     var d = date.getDate();//日期
 
-    var week= Math.ceil((d + 7 - w) / 7);//向上取整
+    var week = Math.ceil((d + 7 - w) / 7);//向上取整
 
-    if(week==getWeeks()){//为最后周
-        if(date.getMonth() + 1==12){//为最后月，月份年份均变化
-            Ext.getCmp('year').select(date.getFullYear()+1);
+    if (week == getWeeks()) {//为最后周
+        if (date.getMonth() + 1 == 12) {//为最后月，月份年份均变化
+            Ext.getCmp('year').select(date.getFullYear() + 1);
             Ext.getCmp('month').select(1);
-        }else{//月份变化
+        } else {//月份变化
             Ext.getCmp('year').select(date.getFullYear());
             Ext.getCmp('month').select(date.getMonth() + 2);
         }
         return 1;
-    }else{
+    } else {
         Ext.getCmp('year').select(date.getFullYear());
         Ext.getCmp('month').select(date.getMonth() + 1);
-        return week+1;
+        return week + 1;
     }
 
 }
-//当前月有几周
-function getWeeks(){
-    var str=date;
-    var year=str.getFullYear();
-    var month=str.getMonth()+1;
-    var lastday=new Date(year, month,0);
 
-    var w = lastday.getDay()==0?7:lastday.getDay();//星期
+//当前月有几周
+function getWeeks() {
+    var str = date;
+    var year = str.getFullYear();
+    var month = str.getMonth() + 1;
+    var lastday = new Date(year, month, 0);
+
+    var w = lastday.getDay() == 0 ? 7 : lastday.getDay();//星期
     var d = lastday.getDate();//日期
 
     return Math.ceil((d + 7 - w) / 7);//向上取整
@@ -591,16 +581,17 @@ function Atleft(value, metaData) {
     metaData.style = 'text-align: left';
     return value;
 }
-function QueryGrid(){
+
+function QueryGrid() {
     Ext.getCmp('page').store.currentPage = 1;
     Ext.data.StoreManager.get('gridStore').load();
 }
 
 
 //月共几天
-function getDaysOfMonth(year,month){
+function getDaysOfMonth(year, month) {
     var month = parseInt(month, 10);
-    var d= new Date(year, month, 0);
+    var d = new Date(year, month, 0);
     return d.getDate();
 }
 
@@ -696,13 +687,15 @@ function _preViewProcess(businessKey) {
         }
     });
 }
+
 function OnClickGrid(V_GUID) {
     var owidth = window.screen.availWidth;
     var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_0301030901/index.html?v_guid='
         + V_GUID, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
-function OnClickOtherGrid(otherguid,othertype) {
+
+function OnClickOtherGrid(otherguid, othertype) {
     var owidth = window.screen.availWidth;
     var oheight = window.screen.availHeight - 50;
     if (othertype == "") {
@@ -716,4 +709,24 @@ function OnClickOtherGrid(otherguid,othertype) {
     if (othertype == "YEAR") {
         alert('该条计划关联年计划');
     }
+}
+
+function OnClickExcelButton() {
+    var V_V_ORGCODE = Ext.getCmp('ck').getValue() == '%' ? '0' : Ext.getCmp('ck').getValue();
+    var V_V_DEPTCODE = Ext.getCmp('zyq').getValue() == '%' ? '0' : Ext.getCmp('zyq').getValue();
+    var V_V_ZY = Ext.getCmp('zy').getValue() == '%' ? '0' : Ext.getCmp('zy').getValue();
+    var V_V_EQUTYPE = Ext.getCmp('sblx').getValue() == '%' ? '0' : Ext.getCmp('sblx').getValue();
+    var V_V_EQUCODE = Ext.getCmp('sbmc').getValue() == '%' ? '0' : Ext.getCmp('sbmc').getValue();
+    document.location.href = AppUrl + 'excel/ZJHSBBGL_EXCEL?V_V_YEAR=' + Ext.getCmp('year').getValue()
+        + '&V_V_MONTH=' + Ext.getCmp('month').getValue()
+        + '&V_V_WEEK=' + Ext.getCmp('week').getValue()
+        + '&V_V_ORGCODE=' + V_V_ORGCODE
+        + '&V_V_DEPTCODE=' + V_V_DEPTCODE
+        + '&V_V_ZY=' + V_V_ZY
+        + '&V_V_EQUTYPE=' + V_V_EQUTYPE
+        + '&V_V_EQUCODE=' + V_V_EQUCODE
+        + '&V_V_CONTENT=' + Ext.getCmp('seltext').getValue()
+        + '&V_V_FLOWTYPE=WORK'
+        + '&V_V_STATE=30,31';
+
 }

@@ -30,9 +30,8 @@ import java.util.Map;
 
 /**
  * Created by zjh on 2017/1/22.
- *
+ * <p>
  * �豸�¹�controller
- *
  */
 @Controller
 @RequestMapping("/app/pm/excel")
@@ -62,21 +61,21 @@ public class ExcelController {
     @Autowired
     private LxmService mService;
 
-    @RequestMapping(value="/upload",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public List  upload(@RequestParam(value="file",required = false)MultipartFile file,
+    public List upload(@RequestParam(value = "file", required = false) MultipartFile file,
 
-                          HttpServletRequest request, HttpServletResponse response){
-        String result ="";
+                       HttpServletRequest request, HttpServletResponse response) {
+        String result = "";
         //创建处理EXCEL的类
-        ReadExcel readExcel=new ReadExcel();
+        ReadExcel readExcel = new ReadExcel();
         List useList = readExcel.getExcelInfo(file);
 
         //pm_03Service.pm_04_project_data_item_set(useList);
 
-        if(useList != null && !useList.isEmpty()){
+        if (useList != null && !useList.isEmpty()) {
             result = "上传成功";
-        }else{
+        } else {
             result = "上传失败";
         }
         return useList;
@@ -101,12 +100,12 @@ public class ExcelController {
         List list = new ArrayList();
 
         V_V_SG_NAME = new String(V_V_SG_NAME.getBytes("iso-8859-1"), "utf-8");
-        Map<String, Object> data = sgService.SG_INF_DATA_ITEM_SEL(V_V_SG_NAME, V_V_SG_STIME, V_V_SG_ETIME, V_V_SG_DEPT,V_V_SG_TYPE,V_V_SG_YY);
+        Map<String, Object> data = sgService.SG_INF_DATA_ITEM_SEL(V_V_SG_NAME, V_V_SG_STIME, V_V_SG_ETIME, V_V_SG_DEPT, V_V_SG_TYPE, V_V_SG_YY);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -151,7 +150,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_SG_TIEM") == null ? "" : map.get("V_SG_TIEM").toString());
 
@@ -194,7 +193,7 @@ public class ExcelController {
                            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
                            @RequestParam(value = "V_V_DEFECT") String V_V_DEFECT,
                            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
-                         HttpServletResponse response)
+                           HttpServletResponse response)
             throws //com.fasterxml.jackson.core.JsonProcessingException,
             NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
@@ -203,12 +202,12 @@ public class ExcelController {
         V_V_DEFECT = new String(V_V_DEFECT.getBytes("iso-8859-1"), "utf-8");
 
         Map<String, Object> data = pm_22Service.PRO_PM_EQUREPAIRPLAN_VIEW(V_V_IP, V_V_PERCODE, V_V_ORGCODE, V_V_DEPTCODE,
-                V_D_INDATE_B, V_D_INDATE_E,V_V_SPECIALTY,V_V_DEFECT,V_V_FLAG);
+                V_D_INDATE_B, V_D_INDATE_E, V_V_SPECIALTY, V_V_DEFECT, V_V_FLAG);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -289,7 +288,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_PROJECTCODE_GS") == null ? "" : map.get("V_PROJECTCODE_GS").toString());
 
@@ -349,12 +348,12 @@ public class ExcelController {
         V_V_DEFECTLIST = new String(V_V_DEFECTLIST.getBytes("iso-8859-1"), "utf-8");
 
         Map<String, Object> data = qxService.PRO_PM_07_DEFECT_VIEW_PER(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
-                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE,V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE,V_V_PAGE,V_V_PAGESIZE);
+                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -411,7 +410,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
 
@@ -450,7 +449,6 @@ public class ExcelController {
     }
 
 
-
     /*年EXCEL*/
     @RequestMapping(value = "/N_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -472,8 +470,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -520,7 +518,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
 
@@ -553,6 +551,7 @@ public class ExcelController {
             }
         }
     }
+
     /*工单查询EXCEL*/
     @RequestMapping(value = "/GDCX_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -575,14 +574,14 @@ public class ExcelController {
 
         List list = new ArrayList();
 //        V_V_REPAIRMAJOR_CODE = new String(V_V_REPAIRMAJOR_CODE.getBytes("iso-8859-1"), "utf-8");
-        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SELECT_ADMIN(V_D_ENTER_DATE_B.equals("0")?"%":V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0")?"%":V_D_DEFECTDATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
-                V_V_STATECODE,V_EQUTYPE_CODE.equals("0")?"%":V_EQUTYPE_CODE,V_EQU_CODE.equals("0")?"%":V_EQU_CODE,V_DJ_PERCODE,V_V_SHORT_TXT,
-                V_V_BJ_TXT,V_V_ORDER_TYP,V_V_PAGE,V_V_PAGESIZE);
+        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SELECT_ADMIN(V_D_ENTER_DATE_B.equals("0") ? "%" : V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0") ? "%" : V_D_DEFECTDATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
+                V_V_STATECODE, V_EQUTYPE_CODE.equals("0") ? "%" : V_EQUTYPE_CODE, V_EQU_CODE.equals("0") ? "%" : V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT,
+                V_V_BJ_TXT, V_V_ORDER_TYP, V_V_PAGE, V_V_PAGESIZE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -642,7 +641,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
 
@@ -679,8 +678,9 @@ public class ExcelController {
             }
         }
     }
+
     //----UPDATE-WORKORDER-2018-EXPORE-EXCEL
-     /*工单查询EXCEL*/
+    /*工单查询EXCEL*/
     @RequestMapping(value = "/GDCX_EXCEL2", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void GDCX_EXCEL2(
@@ -702,14 +702,14 @@ public class ExcelController {
 
         List list = new ArrayList();
 //        V_V_REPAIRMAJOR_CODE = new String(V_V_REPAIRMAJOR_CODE.getBytes("iso-8859-1"), "utf-8");
-        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SEL_ADMINALL(V_D_ENTER_DATE_B.equals("0")?"%":V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0")?"%":V_D_DEFECTDATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
-                V_V_STATECODE,V_EQUTYPE_CODE.equals("0")?"%":V_EQUTYPE_CODE,V_EQU_CODE.equals("0")?"%":V_EQU_CODE,V_DJ_PERCODE,V_V_SHORT_TXT,
-                V_V_BJ_TXT,V_V_ORDER_TYP);
+        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SEL_ADMINALL(V_D_ENTER_DATE_B.equals("0") ? "%" : V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0") ? "%" : V_D_DEFECTDATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
+                V_V_STATECODE, V_EQUTYPE_CODE.equals("0") ? "%" : V_EQUTYPE_CODE, V_EQU_CODE.equals("0") ? "%" : V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT,
+                V_V_BJ_TXT, V_V_ORDER_TYP);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -777,7 +777,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
 
@@ -818,6 +818,7 @@ public class ExcelController {
             }
         }
     }
+
     //---END UPA
     /*工单备件更换管理EXCEL*/
     @RequestMapping(value = "/GDBJGHGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
@@ -830,12 +831,12 @@ public class ExcelController {
             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
-        Map<String, Object> data = workOrderService.pro_run7113_ordermatlist(V_DEPT_CODE, V_EQUIP_CODE, V_MATERIALCODE,V_MATERIALNAME);
+        Map<String, Object> data = workOrderService.pro_run7113_ordermatlist(V_DEPT_CODE, V_EQUIP_CODE, V_MATERIALCODE, V_MATERIALNAME);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -879,7 +880,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_ORDERID") == null ? "" : map.get("V_ORDERID").toString());
 
@@ -908,6 +909,7 @@ public class ExcelController {
             }
         }
     }
+
     /*季度计划生产部审批导出EXCEL*/
     @RequestMapping(value = "/QSCBSP_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -927,8 +929,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -987,7 +989,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATUSNAME") == null ? "" : map.get("V_STATUSNAME").toString());
 
@@ -1023,6 +1025,7 @@ public class ExcelController {
             }
         }
     }
+
     /*月计划生产部审批导出EXCEL*/
     @RequestMapping(value = "/MSCBSP_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -1039,12 +1042,12 @@ public class ExcelController {
         List list = new ArrayList();
 
 
-        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_MONTH_VIEW(V_V_INPER, V_V_YEAR, V_V_MONTH, V_V_ORGCODE,V_V_DEPTCODE,V_V_REPAIRMAJOR_CODE,V_V_PLANTYPE);
+        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_MONTH_VIEW(V_V_INPER, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRMAJOR_CODE, V_V_PLANTYPE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1103,7 +1106,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATUSNAME") == null ? "" : map.get("V_STATUSNAME").toString());
 
@@ -1153,24 +1156,24 @@ public class ExcelController {
                              @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
                              @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
                              @RequestParam(value = "V_V_STATE") String V_V_STATE,
-                             HttpServletResponse response) throws  SQLException {
+                             HttpServletResponse response) throws SQLException {
 
         List list = new ArrayList();
 
-        String V_V_DEPTCODE2=V_V_DEPTCODE.equals("0")?"%":V_V_DEPTCODE;
-        String V_V_ORGCODE2=V_V_ORGCODE.equals("0")?"%":V_V_ORGCODE;
-        String V_V_ZY2=V_V_ZY.equals("0")?"%":V_V_ZY;
-        String V_V_EQUTYPE2=V_V_EQUTYPE.equals("0")?"%":V_V_EQUTYPE;
-        String V_V_EQUCODE2=V_V_EQUCODE.equals("0")?"%":V_V_EQUCODE;
-        String V_V_STATE2=V_V_STATE.equals("0")?"%":V_V_STATE;
+        String V_V_DEPTCODE2 = V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
+        String V_V_ORGCODE2 = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
+        String V_V_ZY2 = V_V_ZY.equals("0") ? "%" : V_V_ZY;
+        String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_EQUTYPE;
+        String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE;
+        String V_V_STATE2 = V_V_STATE.equals("0") ? "%" : V_V_STATE;
 
-        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_WEEK_EXCEL(V_V_YEAR, V_V_MONTH,V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
+        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_WEEK_EXCEL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
                 V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_STATE2);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1250,7 +1253,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
 
@@ -1296,6 +1299,7 @@ public class ExcelController {
             }
         }
     }
+
     /*年计划生产部审批导出EXCEL*/
     @RequestMapping(value = "/YSCBSP_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -1311,12 +1315,12 @@ public class ExcelController {
 
         List list = new ArrayList();
 
-        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR,  V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
+        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_YEAR_VIEW(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1375,7 +1379,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATUSNAME") == null ? "" : map.get("V_STATUSNAME").toString());
 
@@ -1427,12 +1431,12 @@ public class ExcelController {
 
         List list = new ArrayList();
 
-        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_QUARTER_VIEW1(V_V_YEAR, V_V_QUARTER, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRMAJOR_CODE, V_V_FLOWCODE,V_V_CONTENT);
+        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_QUARTER_VIEW1(V_V_YEAR, V_V_QUARTER, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRMAJOR_CODE, V_V_FLOWCODE, V_V_CONTENT);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1491,7 +1495,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATUSNAME") == null ? "" : map.get("V_STATUSNAME").toString());
 
@@ -1527,6 +1531,7 @@ public class ExcelController {
             }
         }
     }
+
     /*季度检修计划查询导出EXCEL*/
     @RequestMapping(value = "/JDSDGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -1543,8 +1548,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1600,7 +1605,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATE_LOCK") == null ? "" : map.get("V_STATE_LOCK").toString());
 
@@ -1635,6 +1640,7 @@ public class ExcelController {
             }
         }
     }
+
     /*备件跟踪使用明细表查询导出EXCEL*/
     @RequestMapping(value = "/BJGZSYMX_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -1650,12 +1656,12 @@ public class ExcelController {
 
         List list = new ArrayList();
 
-        Map<String, Object> data = pm_12Service.PRO_RUN7132_ORDERMATLIST(V_D_FACT_START_DATE, V_D_FACT_FINISH_DATE, V_V_PLANT, V_V_DEPTCODE, V_V_EQUIP_NO, V_V_ORDERGUID, V_V_MATERIALCODE,V_V_MATERIALNAME);
+        Map<String, Object> data = pm_12Service.PRO_RUN7132_ORDERMATLIST(V_D_FACT_START_DATE, V_D_FACT_FINISH_DATE, V_V_PLANT, V_V_DEPTCODE, V_V_EQUIP_NO, V_V_ORDERGUID, V_V_MATERIALCODE, V_V_MATERIALNAME);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1739,6 +1745,7 @@ public class ExcelController {
             }
         }
     }
+
     /*备件跟踪部门情况统计查询导出EXCEL*/
     @RequestMapping(value = "/BJGZBMTJ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -1758,8 +1765,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1813,6 +1820,7 @@ public class ExcelController {
             }
         }
     }
+
     /*报警信息处理查询导出EXCEL*/
     @RequestMapping(value = "/BJXXCL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -1828,8 +1836,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1901,6 +1909,7 @@ public class ExcelController {
             }
         }
     }
+
     /*在库备件监控查询导出EXCEL*/
     @RequestMapping(value = "/ZKBJJK_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -1915,8 +1924,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -1994,18 +2003,19 @@ public class ExcelController {
             }
         }
     }
+
     /*在库备件监控查询导出EXCEL*/
     @RequestMapping(value = "/HXBJCL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void HXBJCL_EXCEL( @RequestParam(value = "D_BEGIN_DATE") String D_BEGIN_DATE,
-                              @RequestParam(value = "D_END_DATE") String D_END_DATE,
-                              @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
-                              @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
-                              @RequestParam(value = "V_EQU_ID") String V_EQU_ID,
-                              @RequestParam(value = "V_MATERIALCODE") String V_MATERIALCODE,
-                              @RequestParam(value = "V_MATERIALNAME") String V_MATERIALNAME,
-                              @RequestParam(value = "V_STATUS") String V_STATUS,
-                              HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void HXBJCL_EXCEL(@RequestParam(value = "D_BEGIN_DATE") String D_BEGIN_DATE,
+                             @RequestParam(value = "D_END_DATE") String D_END_DATE,
+                             @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+                             @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+                             @RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                             @RequestParam(value = "V_MATERIALCODE") String V_MATERIALCODE,
+                             @RequestParam(value = "V_MATERIALNAME") String V_MATERIALNAME,
+                             @RequestParam(value = "V_STATUS") String V_STATUS,
+                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
@@ -2013,8 +2023,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2086,14 +2096,15 @@ public class ExcelController {
             }
         }
     }
+
     /*设备作业量台账查询导出EXCEL*/
     @RequestMapping(value = "/SBZYLTZ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void SBZYLTZ_EXCEL( @RequestParam(value = "A_EQUID") String A_EQUID,
-                               @RequestParam(value = "A_BEGINDATE") String A_BEGINDATE,
-                               @RequestParam(value = "A_ENDDATE") String A_ENDDATE,
-                               @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
-                               HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void SBZYLTZ_EXCEL(@RequestParam(value = "A_EQUID") String A_EQUID,
+                              @RequestParam(value = "A_BEGINDATE") String A_BEGINDATE,
+                              @RequestParam(value = "A_ENDDATE") String A_ENDDATE,
+                              @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                              HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
@@ -2101,8 +2112,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2138,7 +2149,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("CYCLE_DESC") == null ? "" : map.get("CYCLE_DESC").toString());
 
@@ -2162,12 +2173,13 @@ public class ExcelController {
             }
         }
     }
+
     /*设备运行台账查询导出EXCEL*/
     @RequestMapping(value = "/SBYXTZ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void SBYXTZ_EXCEL( @RequestParam(value = "A_EQUID") String A_EQUID,
-                              @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
-                              HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void SBYXTZ_EXCEL(@RequestParam(value = "A_EQUID") String A_EQUID,
+                             @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
@@ -2175,8 +2187,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2236,7 +2248,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("SITE_DESC") == null ? "" : map.get("SITE_DESC").toString());
 
@@ -2272,16 +2284,17 @@ public class ExcelController {
             }
         }
     }
+
     /*设备运行台账查询导出EXCEL*/
     @RequestMapping(value = "/SBBJLSGHTZ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void SBBJLSGHTZ_EXCEL( @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
-                                  @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
-                                  @RequestParam(value = "A_EQUID") String A_EQUID,
-                                  @RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
-                                  @RequestParam(value = "A_BEGINDATE") String A_BEGINDATE,
-                                  @RequestParam(value = "A_ENDDATE") String A_ENDDATE,
-                                  HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void SBBJLSGHTZ_EXCEL(@RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                 @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                 @RequestParam(value = "A_EQUID") String A_EQUID,
+                                 @RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
+                                 @RequestParam(value = "A_BEGINDATE") String A_BEGINDATE,
+                                 @RequestParam(value = "A_ENDDATE") String A_ENDDATE,
+                                 HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
@@ -2289,8 +2302,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2346,7 +2359,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("CHANGEDATE") == null ? "" : map.get("CHANGEDATE").toString());
 
@@ -2380,24 +2393,25 @@ public class ExcelController {
             }
         }
     }
+
     /*报警信息查询导出EXCEL*/
     @RequestMapping(value = "/BJXXCX_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void BJXXCX_EXCEL(  @RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
-                               @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
-                               @RequestParam(value = "V_V_BJ_ID") String V_V_BJ_ID,
-                               @RequestParam(value = "V_V_BEGIN_DATE") String V_V_BEGIN_DATE,
-                               @RequestParam(value = "V_V_END_DATE") String V_V_END_DATE,
-                               HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void BJXXCX_EXCEL(@RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
+                             @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+                             @RequestParam(value = "V_V_BJ_ID") String V_V_BJ_ID,
+                             @RequestParam(value = "V_V_BEGIN_DATE") String V_V_BEGIN_DATE,
+                             @RequestParam(value = "V_V_END_DATE") String V_V_END_DATE,
+                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
-        Map<String, Object> data =pm_12Service.PRO_RUN7116_SELECT(V_V_DEPARTCODE, V_V_PLANTCODE, V_V_BJ_ID, V_V_BEGIN_DATE, V_V_END_DATE);
+        Map<String, Object> data = pm_12Service.PRO_RUN7116_SELECT(V_V_DEPARTCODE, V_V_PLANTCODE, V_V_BJ_ID, V_V_BEGIN_DATE, V_V_END_DATE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2487,22 +2501,23 @@ public class ExcelController {
             }
         }
     }
+
     /*备件运行统计查询导出EXCEL*/
     @RequestMapping(value = "/BJYXTJ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void BJYXTJ_EXCEL(  @RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
-                               @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
-                               @RequestParam(value = "V_V_BJ_ID") String V_V_BJ_ID,
-                               HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void BJYXTJ_EXCEL(@RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
+                             @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+                             @RequestParam(value = "V_V_BJ_ID") String V_V_BJ_ID,
+                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
-        Map<String, Object> data =pm_12Service.PRO_RUN7117_BJWORKLIST(V_V_DEPARTCODE, V_V_PLANTCODE, V_V_BJ_ID);
+        Map<String, Object> data = pm_12Service.PRO_RUN7117_BJWORKLIST(V_V_DEPARTCODE, V_V_PLANTCODE, V_V_BJ_ID);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2558,7 +2573,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("BJ_ID") == null ? "" : map.get("BJ_ID").toString());
 
@@ -2592,24 +2607,25 @@ public class ExcelController {
             }
         }
     }
+
     /*备件位置台帐查询导出EXCEL*/
     @RequestMapping(value = "/BJWZTZ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void BJWZTZ_EXCEL(  @RequestParam(value = "IN_EQUID") String IN_EQUID,
-                               @RequestParam(value = "IN_PLANT") String IN_PLANT,
-                               @RequestParam(value = "IN_DEPART") String IN_DEPART,
-                               @RequestParam(value = "IN_STATUS") String IN_STATUS,
-                               @RequestParam(value = "IN_BJCODE") String IN_BJCODE,
-                               @RequestParam(value = "IN_BJDESC") String IN_BJDESC,
-                               HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void BJWZTZ_EXCEL(@RequestParam(value = "IN_EQUID") String IN_EQUID,
+                             @RequestParam(value = "IN_PLANT") String IN_PLANT,
+                             @RequestParam(value = "IN_DEPART") String IN_DEPART,
+                             @RequestParam(value = "IN_STATUS") String IN_STATUS,
+                             @RequestParam(value = "IN_BJCODE") String IN_BJCODE,
+                             @RequestParam(value = "IN_BJDESC") String IN_BJDESC,
+                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
         IN_STATUS = new String(IN_STATUS.getBytes("iso-8859-1"), "utf-8");
         List list = new ArrayList();
-        Map<String, Object> data =pm_12Service.PRO_RUN_SITE_BJ_ALL(IN_EQUID, IN_PLANT, IN_DEPART, IN_STATUS, IN_BJCODE, IN_BJDESC);
+        Map<String, Object> data = pm_12Service.PRO_RUN_SITE_BJ_ALL(IN_EQUID, IN_PLANT, IN_DEPART, IN_STATUS, IN_BJCODE, IN_BJDESC);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2657,7 +2673,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("SITE_DESC") == null ? "" : map.get("SITE_DESC").toString());
 
@@ -2687,24 +2703,25 @@ public class ExcelController {
             }
         }
     }
+
     /*备件寿命统计查询导出EXCEL*/
     @RequestMapping(value = "/BJSMTJ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void BJSMTJ_EXCEL(   @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
-                                @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
-                                @RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
-                                @RequestParam(value = "V_MATERIALNAME") String V_MATERIALNAME,
-                                @RequestParam(value = "D_BEGIN_DATE") String D_BEGIN_DATE,
-                                @RequestParam(value = "D_END_DATE") String D_END_DATE,
-                                @RequestParam(value = "V_CYCLE_ID") String V_CYCLE_ID,
-                                HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void BJSMTJ_EXCEL(@RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+                             @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+                             @RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
+                             @RequestParam(value = "V_MATERIALNAME") String V_MATERIALNAME,
+                             @RequestParam(value = "D_BEGIN_DATE") String D_BEGIN_DATE,
+                             @RequestParam(value = "D_END_DATE") String D_END_DATE,
+                             @RequestParam(value = "V_CYCLE_ID") String V_CYCLE_ID,
+                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
         List list = new ArrayList();
-        Map<String, Object> data =pm_12Service.PRO_RUN7130_SELECTBJTIME(V_PLANTCODE, V_DEPARTCODE, V_SUPPLY_CODE, V_MATERIALNAME, D_BEGIN_DATE, D_END_DATE, V_CYCLE_ID);
+        Map<String, Object> data = pm_12Service.PRO_RUN7130_SELECTBJTIME(V_PLANTCODE, V_DEPARTCODE, V_SUPPLY_CODE, V_MATERIALNAME, D_BEGIN_DATE, D_END_DATE, V_CYCLE_ID);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2813,15 +2830,16 @@ public class ExcelController {
             }
         }
     }
+
     /*月检修计划锁定管理导出EXCEL*/
     @RequestMapping(value = "/MSDGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void MSDGL_EXCEL(@RequestParam(value = "V_I_YEAR") String V_I_YEAR,
-                             @RequestParam(value = "V_I_MONTH") String V_I_MONTH,
-                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                             @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
-                             @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-                             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+                            @RequestParam(value = "V_I_MONTH") String V_I_MONTH,
+                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                            @RequestParam(value = "V_V_DEPTNEXTCODE") String V_V_DEPTNEXTCODE,
+                            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
@@ -2829,8 +2847,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2886,7 +2904,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATE_LOCK") == null ? "" : map.get("V_STATE_LOCK").toString());
 
@@ -2921,6 +2939,7 @@ public class ExcelController {
             }
         }
     }
+
     /*周检修计划锁定管理导出EXCEL*/
     @RequestMapping(value = "/WSDGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -2938,8 +2957,8 @@ public class ExcelController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -2995,7 +3014,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATE_LOCK") == null ? "" : map.get("V_STATE_LOCK").toString());
 
@@ -3034,31 +3053,31 @@ public class ExcelController {
     /*润滑查询导出EXCEL*/
     @RequestMapping(value = "/RHQuery_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void RHQuery_EXCEL(@RequestParam(value ="X_TIMELOWERLIMIT") Date X_TIMELOWERLIMIT,
-                           @RequestParam(value = "X_TIMEUPPERLIMIT") Date X_TIMEUPPERLIMIT,
-                           @RequestParam(value = "X_DEPTCODE") String X_DEPTCODE,
-                           @RequestParam(value = "X_EQUTYPECODE") String X_EQUTYPECODE,
-                           @RequestParam(value = "X_EQUCODE") String X_EQUCODE,
-                           @RequestParam(value = "X_LUBRICATIONCODE") String X_LUBRICATIONCODE,
+    public void RHQuery_EXCEL(@RequestParam(value = "X_TIMELOWERLIMIT") Date X_TIMELOWERLIMIT,
+                              @RequestParam(value = "X_TIMEUPPERLIMIT") Date X_TIMEUPPERLIMIT,
+                              @RequestParam(value = "X_DEPTCODE") String X_DEPTCODE,
+                              @RequestParam(value = "X_EQUTYPECODE") String X_EQUTYPECODE,
+                              @RequestParam(value = "X_EQUCODE") String X_EQUCODE,
+                              @RequestParam(value = "X_LUBRICATIONCODE") String X_LUBRICATIONCODE,
 //update2018-10-11
                               @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                               @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
-                            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+                              HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
 
-        String X_DEPTCODE_s=X_DEPTCODE.equals("0")?"%":X_DEPTCODE;
-        String X_EQUTYPECODE_s=X_EQUTYPECODE.equals("0")?"%":X_EQUTYPECODE;
-        String X_EQUCODE_s=X_EQUCODE.equals("0")?"%":X_EQUCODE;
+        String X_DEPTCODE_s = X_DEPTCODE.equals("0") ? "%" : X_DEPTCODE;
+        String X_EQUTYPECODE_s = X_EQUTYPECODE.equals("0") ? "%" : X_EQUTYPECODE;
+        String X_EQUCODE_s = X_EQUCODE.equals("0") ? "%" : X_EQUCODE;
 
 
-        Map<String, Object> data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT, X_TIMEUPPERLIMIT, X_DEPTCODE_s,X_EQUTYPECODE_s,X_EQUCODE_s, X_LUBRICATIONCODE,V_V_PERSONCODE,V_V_DEPTCODE,V_V_DEPTTYPE);
+        Map<String, Object> data = zpfService.PRO_QUERYLUBRECORD(X_TIMELOWERLIMIT, X_TIMEUPPERLIMIT, X_DEPTCODE_s, X_EQUTYPECODE_s, X_EQUCODE_s, X_LUBRICATIONCODE, V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTTYPE);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
-        for(int i=0;i<=1;i++){
-            sheet.setColumnWidth(i,3000);
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
         }
         HSSFRow row = sheet.createRow((int) 0);
         HSSFCellStyle style = wb.createCellStyle();
@@ -3123,7 +3142,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
 
@@ -3269,7 +3288,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
 
@@ -3329,7 +3348,7 @@ public class ExcelController {
 
         String V_V_FLAG2 = V_V_FLAG.equals("0") ? "%" : V_V_FLAG;
 
-        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_PROJECT_VIEW2(V_V_YEAR,V_V_MONTH,V_V_ORGCODE,V_V_DEPTCODE, V_V_ZY,V_V_WXLX, V_V_CONTENT,V_V_FLAG2);
+        Map<String, Object> data = pm_03Service.PRO_PM_03_PLAN_PROJECT_VIEW2(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_FLAG2);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -3395,7 +3414,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_YEAR") == null ? "" : map.get("V_YEAR").toString());
 
@@ -3524,7 +3543,7 @@ public class ExcelController {
                 row = sheet.createRow((int) i + 1);
                 Map map = (Map) list.get(i);
 
-                row.createCell((short) 0).setCellValue(i+1);
+                row.createCell((short) 0).setCellValue(i + 1);
 
                 row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
 
@@ -3551,7 +3570,136 @@ public class ExcelController {
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("周计划管理excel.xls", "UTF-8"));
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("周计划.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /*周计划管理-导出EXCEL*/
+    @RequestMapping(value = "/ZJHSBBGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void ZJHSBBGL_EXCEL(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                               @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                               @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                               @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                               @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                               @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                               @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                               @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                               HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        String V_V_ORGCODE2 = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
+        String V_V_DEPTCODE2 = V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
+        String V_V_ZY2 = V_V_ZY.equals("0") ? "%" : V_V_ZY;
+        String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_EQUTYPE;
+        String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE;
+
+        Map<String, Object> data = mService.PM_03_PLAN_WEEK_SEL2_ALL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
+                V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_FLOWTYPE, V_V_STATE);
+
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("计划状态");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("检修内容");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("计划停机日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("计划竣工日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("计划工期（小时）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("车间名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("录入时间");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_REPAIRMAJOR_CODE") == null ? "" : map.get("V_REPAIRMAJOR_CODE").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_CONTENT") == null ? "" : map.get("V_CONTENT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_STARTTIME") == null ? "" : map.get("V_STARTTIME").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("V_ENDTIME") == null ? "" : map.get("V_ENDTIME").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("V_HOUR") == null ? "" : map.get("V_HOUR").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_INPERNAME") == null ? "" : map.get("V_INPERNAME").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("周计划.xls", "UTF-8"));
                 OutputStream out = response.getOutputStream();
                 wb.write(out);
                 out.flush();

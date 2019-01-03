@@ -975,5 +975,4 @@ function OnButtonUp() {
     _selectNextSprStore();
     Ext.getCmp('nextSprWind').show();
 
-
 }

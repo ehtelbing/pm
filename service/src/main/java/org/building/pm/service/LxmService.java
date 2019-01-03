@@ -63,7 +63,7 @@ public class LxmService {
     @Autowired
     private ComboPooledDataSource dataSources;
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_TREE_GET(String V_V_GUID,String V_BY1,String V_BY2,String V_BY3) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_TREE_GET(String V_V_GUID, String V_BY1, String V_BY2, String V_BY3) throws SQLException {
 //        logger.info("begin PRO_PM_EQUREPAIRPLAN_TREE_GET");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -91,8 +91,9 @@ public class LxmService {
         logger.info("end PRO_PM_03_PLAN_YEAR_DJY_VIEW");
         return result;
     }
+
     // out varchar
-    public HashMap PRO_PM_EQUREPAIRPLAN_WL_SET(String V_I_ID, String V_V_GUID, String V_V_WL_CODE, String V_V_WL_NAME,String V_V_JLDW,String V_V_NUM,String V_V_GGXH,String V_V_DJ) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_WL_SET(String V_I_ID, String V_V_GUID, String V_V_WL_CODE, String V_V_WL_NAME, String V_V_JLDW, String V_V_NUM, String V_V_GGXH, String V_V_DJ) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_WL_SET");
         HashMap result = new HashMap();
@@ -127,7 +128,7 @@ public class LxmService {
         return result;
     }
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_YG_SET(String V_I_ID, String V_V_GUID, String V_V_GZ, String V_V_NUM,String V_V_TIME,String V_V_MEMO,String V_V_CODE,String V_V_DE) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_YG_SET(String V_I_ID, String V_V_GUID, String V_V_GZ, String V_V_NUM, String V_V_TIME, String V_V_MEMO, String V_V_CODE, String V_V_DE) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_YG_SET");
         HashMap result = new HashMap();
@@ -162,7 +163,7 @@ public class LxmService {
         return result;
     }
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_JJ_SET(String V_I_ID, String V_V_GUID, String V_V_JJ_CODE, String V_V_JJ_NAME,String V_V_JLDW,String V_V_NUM) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_JJ_SET(String V_I_ID, String V_V_GUID, String V_V_JJ_CODE, String V_V_JJ_NAME, String V_V_JLDW, String V_V_NUM) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_JJ_SET");
         HashMap result = new HashMap();
@@ -250,6 +251,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_WL_DEL");
         return result;
     }
+
     // out varchar out cursor
     public HashMap PRO_PM_EQUREPAIRPLAN_WL_VIEW(String V_V_GUID) throws SQLException {
 
@@ -279,6 +281,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_WL_VIEW");
         return result;
     }
+
     public HashMap PRO_PM_EQUREPAIRPLAN_YG_VIEW(String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_YG_VIEW");
@@ -307,6 +310,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_YG_VIEW");
         return result;
     }
+
     public HashMap PRO_PM_EQUREPAIRPLAN_JJ_VIEW(String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_JJ_VIEW");
@@ -335,6 +339,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_JJ_VIEW");
         return result;
     }
+
     public HashMap PRO_PM_EQUREPAIRPLAN_JJ_DEL(String V_I_ID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_JJ_DEL");
@@ -362,6 +367,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_JJ_DEL");
         return result;
     }
+
     public HashMap PRO_PM_04_PROJECT_DATA_ITEM_G(String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_04_PROJECT_DATA_ITEM_G");
@@ -388,6 +394,7 @@ public class LxmService {
         logger.info("end PRO_PM_04_PROJECT_DATA_ITEM_G");
         return result;
     }
+
     public HashMap PRO_PM_EQUREPAIRPLAN_GETGS(String V_V_PROJECTCODE_GS) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_GETGS");
@@ -416,6 +423,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_GETGS");
         return result;
     }
+
     public HashMap PRO_BASE_DEPT_VIEW_PER(String V_DEPTCODE, String V_DEPTTYPE, String V_V_PERSON) throws SQLException {
 
         logger.info("begin PRO_BASE_DEPT_VIEW_PER");
@@ -444,6 +452,7 @@ public class LxmService {
         logger.info("end PRO_BASE_DEPT_VIEW_PER");
         return result;
     }
+
     public HashMap PM_04_PROJECT_MAJOR_SEL() throws SQLException {
 
         logger.info("begin PM_04_PROJECT_MAJOR_SEL");
@@ -469,6 +478,7 @@ public class LxmService {
         logger.info("end PM_04_PROJECT_MAJOR_SEL");
         return result;
     }
+
     public HashMap PRO_PM_EQUREPAIRPLAN_TREE_SEL(String V_V_PERCODE, String V_V_YEAR, String V_V_MONTH,
                                                  String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_SPECIALTY,
                                                  String V_V_EQUNAME, String V_V_PROJECT_CODE, String V_V_PROJECT_NAME,
@@ -514,7 +524,7 @@ public class LxmService {
         return result;
     }
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_TOWORK_C(String V_V_IP,String V_V_PERCODE,String V_V_PERNAME,String V_V_GUID) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_TOWORK_C(String V_V_IP, String V_V_PERCODE, String V_V_PERNAME, String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_TOWORK_C");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -545,7 +555,8 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_TOWORK_C");
         return result;
     }
-    public HashMap PRO_PM_EQUREPAIRPLAN_TOWORK_U(String V_V_IP, String V_V_PERCODE, String V_V_PERNAME, String V_V_ORDERGUID,String V_V_GUID) throws SQLException {
+
+    public HashMap PRO_PM_EQUREPAIRPLAN_TOWORK_U(String V_V_IP, String V_V_PERCODE, String V_V_PERNAME, String V_V_ORDERGUID, String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_WL_SET");
         HashMap result = new HashMap();
@@ -576,7 +587,8 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_TOWORK_U");
         return result;
     }
-    public HashMap PRO_PM_EQUREPAIRPLAN_TREE_TJ(String V_V_GUID_FXJH,String V_BY1,String V_BY2,String V_BY3) throws SQLException {
+
+    public HashMap PRO_PM_EQUREPAIRPLAN_TREE_TJ(String V_V_GUID_FXJH, String V_BY1, String V_BY2, String V_BY3) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_TREE_TJ");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -605,6 +617,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_TREE_TJ");
         return result;
     }
+
     public HashMap PRO_PM_EQUREPAIRPLAN_NR_DEL(String V_I_ID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_NR_DEL");
@@ -633,7 +646,7 @@ public class LxmService {
         return result;
     }
 
-    public HashMap PRO_PM_EQUREPAIRPLAN_NR_SET(String V_I_ID,String V_V_GUID,String V_V_MEMO) throws SQLException {
+    public HashMap PRO_PM_EQUREPAIRPLAN_NR_SET(String V_I_ID, String V_V_GUID, String V_V_MEMO) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_NR_SET");
         HashMap result = new HashMap();
@@ -662,6 +675,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_NR_SET");
         return result;
     }
+
     public HashMap PRO_PM_EQUREPAIRPLAN_NR_VIEW(String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_EQUREPAIRPLAN_NR_VIEW");
@@ -690,6 +704,7 @@ public class LxmService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_NR_VIEW");
         return result;
     }
+
     public HashMap pro_pm_basedic_zy(String V_V_PLAN) throws SQLException {
 
         logger.info("begin pro_pm_basedic_zy");
@@ -716,6 +731,7 @@ public class LxmService {
         logger.info("end pro_pm_basedic_zy");
         return result;
     }
+
     public HashMap PM_03_PLAN_CREATE_WORKORDERBEF(String V_V_GUID) throws SQLException {
 
         logger.info("begin PM_03_PLAN_CREATE_WORKORDERBEF");
@@ -744,7 +760,7 @@ public class LxmService {
         return result;
     }
 
-    public HashMap PM_03_PLAN_CREATE_WORKORDER(String V_V_GUID,String V_V_PERCODE) throws SQLException {
+    public HashMap PM_03_PLAN_CREATE_WORKORDER(String V_V_GUID, String V_V_PERCODE) throws SQLException {
 
         logger.info("begin PM_03_PLAN_CREATE_WORKORDER");
         HashMap result = new HashMap();
@@ -777,9 +793,10 @@ public class LxmService {
         logger.info("end PM_03_PLAN_CREATE_WORKORDER");
         return result;
     }
-    public HashMap PM_03_PLAN_WEEK_SEL(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,
-                                       String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_ZY,
-                                       String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_CONTENT,String V_V_FLOWTYPE,String V_V_STATE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+
+    public HashMap PM_03_PLAN_WEEK_SEL(String V_V_YEAR, String V_V_MONTH, String V_V_WEEK,
+                                       String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY,
+                                       String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_CONTENT, String V_V_FLOWTYPE, String V_V_STATE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PM_03_PLAN_WEEK_SEL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -821,9 +838,9 @@ public class LxmService {
         return result;
     }
 
-    public HashMap PM_03_PLAN_WEEK_SELALL(String V_V_YEAR,String V_V_MONTH,String V_V_WEEK,
-                                       String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_ZY,
-                                       String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_CONTENT,String V_V_FLOWTYPE,String V_V_STATE) throws SQLException {
+    public HashMap PM_03_PLAN_WEEK_SELALL(String V_V_YEAR, String V_V_MONTH, String V_V_WEEK,
+                                          String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY,
+                                          String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_CONTENT, String V_V_FLOWTYPE, String V_V_STATE) throws SQLException {
 
         logger.info("begin PM_03_PLAN_WEEK_SELALL");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -858,6 +875,47 @@ public class LxmService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_03_PLAN_WEEK_SELALL");
+        return result;
+    }
+
+
+    public HashMap PM_03_PLAN_WEEK_SEL2_ALL(String V_V_YEAR, String V_V_MONTH, String V_V_WEEK,
+                                            String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY,
+                                            String V_V_EQUTYPE, String V_V_EQUCODE, String V_V_CONTENT, String V_V_FLOWTYPE, String V_V_STATE) throws SQLException {
+
+        logger.info("begin PM_03_PLAN_WEEK_SEL2_ALL");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_WEEK_SEL2_ALL" + "(:V_V_YEAR,:V_V_MONTH,:V_V_WEEK," +
+                    ":V_V_ORGCODE,:V_V_DEPTCODE,:V_V_ZY,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_CONTENT,:V_V_FLOWTYPE,:V_V_STATE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_MONTH", V_V_MONTH);
+            cstmt.setString("V_V_WEEK", V_V_WEEK);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_ZY", V_V_ZY);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setString("V_V_FLOWTYPE", V_V_FLOWTYPE);
+            cstmt.setString("V_V_STATE", V_V_STATE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_WEEK_SEL2_ALL");
         return result;
     }
 }
