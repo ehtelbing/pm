@@ -449,10 +449,13 @@ Ext.onReady(function () {
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 labelWidth: 80,
-                                width: 280,
+                                width: 270,
                                 minValue:0,
                                 value: 0
-                            },{
+                            },{xtype:'label',
+                            id:'yjsmdw',
+                            text:'天',
+                             margin: '8 0 0 5',width: 6},{
                                 xtype: 'numberfield',
                                 id: 'repairper',
                                 fieldLabel: '维修人数',

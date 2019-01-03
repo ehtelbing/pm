@@ -490,13 +490,15 @@ Ext.onReady(function () {
             style: ' margin: 5px 20px 0px 20px',
             icon: imgpath + '/saved.png',
             handler: _agree
-        }, {
-            xtype: 'button',
-            text: '驳回',
-            style: ' margin: 5px 20px 0px 0px',
-            icon: imgpath + '/cross.png',
-            handler: _reject
-        }]
+        }
+        // , {
+        //     xtype: 'button',
+        //     text: '驳回',
+        //     style: ' margin: 5px 20px 0px 0px',
+        //     icon: imgpath + '/cross.png',
+        //     handler:  _reject
+        // }
+        ]
     });
 
     Ext.create('Ext.container.Viewport', {

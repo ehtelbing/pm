@@ -138,7 +138,7 @@ var npanel = Ext.create('Ext.panel.Panel', {
             listeners: {
                 click: OnClickExcelButton
             }
-        }]
+        },{xtype: 'label', style: ' margin: 8px 0px 5px 5px;color:red', text: '*注：执行数为生成周计划数量；执行率为执行数/审批完成的月计划总数'}]
 
 });
 var cpanel=Ext.create('Ext.grid.Panel',{

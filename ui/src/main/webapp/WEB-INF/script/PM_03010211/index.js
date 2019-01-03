@@ -168,6 +168,24 @@ Ext.onReady(function () {
         items: [northPanel, gridPanel]
     });
     Ext.getCmp('jhlx').select('YEAR');
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload',function(){
+        store.proxy.extraParams = {
+            V_V_YEAR: V_V_YEAR,
+            V_V_QUARTER: '%',
+            V_V_MONTH: '%',
+            V_V_PLANTYPE: Ext.getCmp('jhlx').getValue(),
+            V_V_ORGCODE: V_V_ORGCODE,
+
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_EQUTYPE: V_V_EQUTYPE,
+            V_V_EQUCODE: V_V_EQUCODE,
+            V_V_ZY: V_V_ZY,
+            V_V_CONTENT: V_V_JXNR,
+            V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        }
+    });
 });
 function select() {
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
