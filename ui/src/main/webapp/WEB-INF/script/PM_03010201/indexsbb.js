@@ -166,8 +166,6 @@ var nextSprStore = Ext.create("Ext.data.Store", {
                 V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
                 // Ext.getCmp('nextPer').select(store.first());
             }
-            Ext.getCmp('nextperGrid').getSelectionModel().selectAll();
-            //store.getSelectionModel().selectAll();
             // Ext.getCmp('nextPer').select(store.first());
         }
     }
@@ -732,8 +730,8 @@ Ext.onReady(function () {
     var nextSprWind=Ext.create('Ext.window.Window',{
         id:'nextSprWind',
         title: '下一步审批人',
-        layout: 'border',width:400,
-        height:250,
+        layout: 'border',width:187,
+        height:200,
         modal:true,
         closeAction: 'hide',
         items:[btnpanel,nextperGrid]
@@ -935,27 +933,19 @@ function saveOnButtonUp(){
                             async: false,
                             method: 'post',
                             params: {
-                                    V_INPER: Ext.util.Cookies.get('v_personcode'),
-                                    V_NEXTPER: [],
-                                    V_IDEA: '请审批！',
-                                    V_STEPNAME: nextper,
-                                    V_STEPCODE: 'Start',
-                                    processKey: processKey,
-                                    businessKey:records.list[i].V_SBB_GUID,
-                                    parName:["originator", "flow_businesskey", Next_StepCode, "idea", "remark", "flow_code", "flow_yj","flow_type"],
-                                    parVal:[Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"]
-                                //parName: ["originator", "flow_businesskey", Next_StepCode, "idea", "remark", "flow_code", "flow_yj","flow_type"],
-                                //parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"],
-                                //processKey: processKey,
-                                //businessKey: records.list[i].V_SBB_GUID,
-                                //V_STEPCODE: 'Start',
-                                //V_STEPNAME: nextper,
-                                //V_IDEA: '请审批！',
-                                //V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                                //V_INPER: Ext.util.Cookies.get('v_personcode')
+                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj","flow_type"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01"],
+                                processKey: processKey,
+                                businessKey: records.list[i].V_SBB_GUID,
+                                V_STEPCODE: 'Start',
+                                V_STEPNAME:V_STEPNAME,// nextper,
+                                V_IDEA: '请审批！',
+                                V_NEXTPER:nextper,// Ext.getCmp('nextPer').getValue(),
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
                             },
                             success: function (response) {
                                 if (Ext.decode(response.responseText).ret == 'OK') {
+                                    Ext.getCmp('nextSprWind').close();
                                     query();
                                 } else if (Ext.decode(response.responseText).error == 'ERROR') {
                                     i_err++;
