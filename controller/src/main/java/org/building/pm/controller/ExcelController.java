@@ -59,6 +59,9 @@ public class ExcelController {
     @Autowired
     private ZpfService zpfService;
 
+    @Autowired
+    private LxmService mService;
+
     @RequestMapping(value="/upload",method = RequestMethod.POST)
     @ResponseBody
     public List  upload(@RequestParam(value="file",required = false)MultipartFile file,
@@ -3420,6 +3423,135 @@ public class ExcelController {
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
                 response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("月检修计划excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /*周计划管理-导出EXCEL*/
+    @RequestMapping(value = "/ZJHGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void ZJHGL_EXCEL(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+                            @RequestParam(value = "V_V_WEEK") String V_V_WEEK,
+                            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                            @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                            @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        String V_V_ORGCODE2 = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
+        String V_V_DEPTCODE2 = V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
+        String V_V_ZY2 = V_V_ZY.equals("0") ? "%" : V_V_ZY;
+        String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_EQUTYPE;
+        String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE;
+
+        Map<String, Object> data = mService.PM_03_PLAN_WEEK_SELALL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
+                V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_FLOWTYPE, V_V_STATE);
+
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("计划状态");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("检修内容");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("计划停机日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("计划竣工日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("计划工期（小时）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("车间名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("录入时间");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_REPAIRMAJOR_CODE") == null ? "" : map.get("V_REPAIRMAJOR_CODE").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_CONTENT") == null ? "" : map.get("V_CONTENT").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_STARTTIME") == null ? "" : map.get("V_STARTTIME").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("V_ENDTIME") == null ? "" : map.get("V_ENDTIME").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("V_HOUR") == null ? "" : map.get("V_HOUR").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_INPERNAME") == null ? "" : map.get("V_INPERNAME").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("周计划管理excel.xls", "UTF-8"));
                 OutputStream out = response.getOutputStream();
                 wb.write(out);
                 out.flush();

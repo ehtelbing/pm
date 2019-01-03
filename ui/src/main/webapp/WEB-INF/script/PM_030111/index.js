@@ -312,7 +312,16 @@ Ext.onReady(function () {
             listeners: {
                 click: createWorkorder
             }
-        }]
+        },{
+                xtype: 'button',
+                text: '导出excel',
+                style: ' margin: 5px 0px 5px 5px',
+                icon: imgpath + '/excel.gif',
+                width: 100,
+                listeners: {
+                    click: OnClickExcelButton
+                }
+            }]
     });
     var grid=Ext.create('Ext.grid.Panel',{
         region:'center',
@@ -333,7 +342,7 @@ Ext.onReady(function () {
                 width : 50,
                 align : 'center' },
             { text: '计划状态',width:200,dataIndex:'V_STATENAME', align: 'center',renderer:Atleft },
-            { text: '设备名称',width:200,dataIndex:'V_EQUTYPENAME', align: 'center',renderer:Atleft },
+            { text: '设备名称',width:200,dataIndex:'V_EQUNAME', align: 'center',renderer:Atleft },
             { text: '专业',width:200,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft },
             { text: '检修内容',width:200,dataIndex:'V_CONTENT', align: 'center',renderer:Atleft },
             { text: '计划停机日期',width:200,dataIndex:'V_ENDTIME', align: 'center',renderer:rendererTime },
@@ -677,4 +686,23 @@ function getWeekEndDate(){
         nian=nian+1;
     }
     return nian+"-"+(yue+1)+"-"+hao;
+}
+function OnClickExcelButton() {
+    var V_V_ORGCODE = Ext.getCmp('ck').getValue() == '%' ? '0' : Ext.getCmp('ck').getValue();
+    var V_V_DEPTCODE=Ext.getCmp('zyq').getValue()=='%'?'0':Ext.getCmp('zyq').getValue();
+    var V_V_ZY=Ext.getCmp('zy').getValue()=='%'?'0':Ext.getCmp('zy').getValue();
+    var V_V_EQUTYPE=Ext.getCmp('sblx').getValue()=='%'?'0':Ext.getCmp('sblx').getValue();
+    var V_V_EQUCODE=Ext.getCmp('sbmc').getValue()=='%'?'0':Ext.getCmp('sbmc').getValue();
+    document.location.href = AppUrl + 'excel/ZJHGL_EXCEL?V_V_YEAR=' + Ext.getCmp('year').getValue()
+        + '&V_V_MONTH=' + Ext.getCmp('month').getValue()
+        + '&V_V_WEEK=' + Ext.getCmp('week').getValue()
+        + '&V_V_ORGCODE=' + V_V_ORGCODE
+        + '&V_V_DEPTCODE=' +V_V_DEPTCODE
+        + '&V_V_ZY=' +V_V_ZY
+        + '&V_V_EQUTYPE=' +V_V_EQUTYPE
+        + '&V_V_EQUCODE=' +V_V_EQUCODE
+        + '&V_V_CONTENT=' + Ext.getCmp('seltext').getValue()
+        + '&V_V_FLOWTYPE=WORK'
+        + '&V_V_STATE=30,31';
+
 }
