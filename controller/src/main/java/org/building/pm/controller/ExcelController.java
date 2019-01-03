@@ -59,7 +59,7 @@ public class ExcelController {
     private ZpfService zpfService;
 
     @Autowired
-    private LxmService mService;
+    private LxmService lxmService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -3476,7 +3476,7 @@ public class ExcelController {
         String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_EQUTYPE;
         String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE;
 
-        Map<String, Object> data = mService.PM_03_PLAN_WEEK_SELALL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
+        Map<String, Object> data = lxmService.PM_03_PLAN_WEEK_SELALL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
                 V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_FLOWTYPE, V_V_STATE);
 
 
@@ -3595,7 +3595,7 @@ public class ExcelController {
                                @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
                                @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
                                @RequestParam(value = "V_V_STATE") String V_V_STATE,
-                               HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+                               HttpServletResponse response) throws SQLException {
 
         List list = new ArrayList();
 
@@ -3605,7 +3605,7 @@ public class ExcelController {
         String V_V_EQUTYPE2 = V_V_EQUTYPE.equals("0") ? "%" : V_V_EQUTYPE;
         String V_V_EQUCODE2 = V_V_EQUCODE.equals("0") ? "%" : V_V_EQUCODE;
 
-        Map<String, Object> data = mService.PM_03_PLAN_WEEK_SEL2_ALL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
+        Map<String, Object> data = lxmService.PM_03_PLAN_WEEK_SEL2_ALL(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE2, V_V_DEPTCODE2,
                 V_V_ZY2, V_V_EQUTYPE2, V_V_EQUCODE2, V_V_CONTENT, V_V_FLOWTYPE, V_V_STATE);
 
 
