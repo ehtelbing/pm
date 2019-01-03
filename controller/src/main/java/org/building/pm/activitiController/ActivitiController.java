@@ -1251,6 +1251,18 @@ public class ActivitiController {
         Map result = new HashMap();
         Map param = new HashMap();
 
+        String flowtype = "error";
+
+        if (processKey.indexOf("Month") != -1) {
+            flowtype = "月计划";
+        }
+        if (processKey.indexOf("Week") != -1) {
+            flowtype = "周计划";
+        }
+        if (processKey.indexOf("WorkOrder") != -1) {
+            flowtype = "工单";
+        }
+
         String perList = "";
 
         int num = (int) taskService.createTaskQuery().processVariableValueLike("flow_businesskey", businessKey).count();
@@ -1261,6 +1273,7 @@ public class ActivitiController {
                 list.add(V_NEXTPER[i]);
                 activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER[i], V_INPER);
             }
+
             Date date = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(date);
@@ -1284,6 +1297,14 @@ public class ActivitiController {
 
                 ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
                         param);
+
+                /*
+                 * 等待定时发送即时通
+                 * */
+                for (int i = 0; i < list.size(); i++) {
+                    cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, list.get(i).toString(), flowtype, "-1");
+                }
+
                 result.put("id", processInstance.getId());
                 result.put("InstanceId", processInstance.getProcessInstanceId());
                 result.put("BusinessKey", processInstance.getBusinessKey());
