@@ -164,7 +164,7 @@ var treeStore = Ext.create('Ext.data.TreeStore', {
 });
 //grid显示
 function query() {
-
+    Ext.data.StoreManager.lookup("gridStore").currentPage=1;
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
             V_V_YEAR: V_V_YEAR,
@@ -179,7 +179,7 @@ function query() {
             V_V_ZY: V_V_ZY,
             V_V_CONTENT: '',//V_V_JXNR,
             V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
-            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGE: 1,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
     });
@@ -374,8 +374,29 @@ Ext.onReady(function () {
         layout: 'border',
         items: [tabpanel]
     });
-    query();
+
     //Ext.getCmp('jhlx').select('YEAR');
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            //params: {
+            V_V_YEAR: '2019',
+            V_V_QUARTER: '%',
+            V_V_MONTH: '%',
+            V_V_PLANTYPE: 'MONTH',
+            V_V_ORGCODE: V_V_ORGCODE,
+
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_EQUTYPE: V_V_EQUTYPE,
+            V_V_EQUCODE: V_V_EQUCODE,
+            V_V_ZY: V_V_ZY,
+            V_V_CONTENT: '',//V_V_JXNR,
+            V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+            //}
+        }
+    });
+    query();
 });
 function QueryGrid(){
     Ext.data.StoreManager.lookup('gridYearStore').load({
