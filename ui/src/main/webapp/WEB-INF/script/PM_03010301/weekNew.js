@@ -182,7 +182,7 @@ Ext.onReady(function () {
             'V_EQUTYPENAME',
             'V_EQUCODE',
             'V_EQUNAME',
-            'V_REPAIRMAJOR_CODE',
+            'V_REPAIRMAJOR_CODE', //专业
             'V_CONTENT',
             'V_STARTTIME',
             'V_ENDTIME',
@@ -380,6 +380,7 @@ Ext.onReady(function () {
             { text: '计划工时',width:200,dataIndex:'V_HOUR', align: 'center',renderer:Atleft },
             { text: '施工方式',width:200,dataIndex:'V_ORGNAME', align: 'center',renderer:Atleft },
             { text: '施工单位',width:200,dataIndex:'V_DEPTNAME', align: 'center',renderer:Atleft },
+            {text:'专业',width:200,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft},
             { text: '检修负责人',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft },
             { text: '联系电话',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime },
             { text: '施工准备是否已落实',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft },
@@ -813,8 +814,8 @@ function saveOnButtonUp(){
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List'/*Ext.getCmp('nextPer').getValue()*/, "请审批!", records.list[i].V_CONTENT, records.list[i].V_WEEKID, "请审批！", "WeekPlan01"],
+                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj", "flow_type","zyName"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List'/*Ext.getCmp('nextPer').getValue()*/, "请审批!", records.list[i].V_CONTENT, records.list[i].V_WEEKID, "请审批！", "WeekPlan01",records.list[i].V_REPAIRMAJOR_CODE],
                                 processKey: processKey,
                                 businessKey: records.list[i].V_SBB_GUID, // records[i].get('V_GUID'),
                                 V_STEPCODE: 'Start',

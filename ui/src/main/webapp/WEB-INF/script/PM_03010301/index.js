@@ -1085,8 +1085,8 @@ function OnButtonUp() {
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan"],
+                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type","zyName"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_WEEKID'), "请审批！", "WeekPlan",records[i].get('V_REPAIRMAJOR_CODE')],
                                 processKey: processKey,
                                 businessKey: records[i].get('V_GUID'),
                                 V_STEPCODE: 'Start',
