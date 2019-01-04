@@ -1,6 +1,26 @@
 var tabpage='';
 var tabturn='';
+
+var zyStore = Ext.create('Ext.data.Store', {
+    autoLoad: false,
+    storeId: 'zyStore',
+    fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
+    proxy:  {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
 Ext.onReady(function () {
+
+
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         pageSize: 50,
@@ -35,6 +55,18 @@ Ext.onReady(function () {
         layout:'column',
         items : [{ xtype:'textfield',id:'lxbh',fieldLabel: '流程编号',labelWidth: 70,labelAlign: 'right'},
                 { xtype: 'hidden',id: 'tabid'},
+            {
+                xtype: 'combo',
+                id: 'zy',
+                allowBlank: false,
+                store: zyStore,
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '专业',
+                displayField: 'V_BASENAME',
+                valueField: 'V_SPECIALTYCODE',labelAlign:'right',
+                labelWidth: 60,width:190
+            },
                 {xtype: 'button',text: '查询', width : 70,icon: imgpath + '/search.png',handler:QueryGrid},
                 {xtype: 'button',text: '批量通过',width : 100,id:'agr',icon: imgpath + '/saved.png',handler:AgreeData},
                 {xtype: 'button',text: '批量驳回',width : 100,id:'dagr', icon: imgpath + '/cross.png',handler:DisAgreeData }
@@ -182,6 +214,19 @@ Ext.onReady(function () {
     });
     QueryTab();
     QuerySum();
+    Ext.data.StoreManager.lookup('zyStore').load({
+        params:{
+            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTNEXTCODE: '%'//Ext.getCmp('zyq').getValue()
+        }
+    });
+    Ext.data.StoreManager.lookup('zyStore').on('load',function(){
+        Ext.ComponentManager.get("zy").store.insert(0,{
+            'V_SPECIALTYCODE':'%',
+            'V_BASENAME':'--全部--'
+        });
+        Ext.getCmp('zy').select( Ext.data.StoreManager.lookup('zyStore').getAt(0));
+    });
 });
 
 
