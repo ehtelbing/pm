@@ -410,9 +410,10 @@ function OnButtonSave(){
 			var resp=Ext.decode(resp.responseText);
 			if(resp.V_INFO=='成功'){
 				Ext.Msg.alert('操作信息','保存成功');
-				Ext.getCmp('qxmc').setValue();
-				Ext.getCmp('qxdj').setValue();
-				Ext.getCmp('clyj').setValue();
+				window.location.reload();
+				//Ext.getCmp('qxmc').setValue();
+				//Ext.getCmp('qxdj').setValue();
+				//Ext.getCmp('clyj').setValue();
 			}
 		}
 	});
