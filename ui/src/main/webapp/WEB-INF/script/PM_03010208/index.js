@@ -1230,6 +1230,10 @@ function OnButtonSaveClick() {
         Ext.Msg.alert('消息','检修内容不可为空，请输入后保存');
         return;
     }
+    if(Ext.getCmp('zy').getValue()==""){
+        Ext.Msg.alert('消息','专业不可为空，请选择相关信息');
+        return;
+    }
     //计划停工时间
     var jhtghour = Ext.getCmp('jhtghour').getValue();
     var jhtgminute = Ext.getCmp('jhtgminute').getValue();
