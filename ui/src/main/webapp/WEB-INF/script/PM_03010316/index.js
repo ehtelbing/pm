@@ -379,7 +379,7 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             //params: {
-            V_V_YEAR: '2019',
+            V_V_YEAR: V_V_YEAR,
             V_V_QUARTER: '%',
             V_V_MONTH: '%',
             V_V_PLANTYPE: 'MONTH',
