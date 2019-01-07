@@ -2058,7 +2058,7 @@ public class HpController {
         return result;
     }
 
-    //PM_03010201,月计划报表，删除
+    //PM_03010201,月计划报表，作废
     @RequestMapping(value = "/PM_03_PLAN_MONTH_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_MONTH_DEL(
@@ -2068,7 +2068,16 @@ public class HpController {
         Map<String, Object> result = hpService.PM_03_PLAN_MONTH_DEL(V_V_GUID);
         return result;
     }
-
+    //PM_03010201,月计划报表，删除
+    @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_DELDATA", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_MONTH_DELDATA(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = hpService.PRO_PM_03_PLAN_MONTH_DELDATA(V_V_GUID);
+        return result;
+    }
     @RequestMapping(value = "/PRO_PM_WORKORDER_GX_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_GX_VIEW(

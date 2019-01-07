@@ -1821,7 +1821,7 @@ public class PM_03Service {
         logger.info("end PM_03_WEEK_PLAN_SEL");
         return result;
     }
-    //PM_03010301,周检修计划，删除
+    //PM_03010301,周检修计划，作废
     public Map<String,Object> PRO_PM_03_PLAN_WEEK_DEL(String V_V_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_WEEK_DEL");
         Map<String,Object> result = new HashMap<String,Object>();
@@ -1843,6 +1843,30 @@ public class PM_03Service {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_PM_03_PLAN_WEEK_DEL");
+        return result;
+    }
+    //PM_03010301,周检修计划，删除
+    public Map<String,Object> PRO_PM_03_PLAN_WEEK_DELDATA(String V_V_GUID) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_WEEK_DELDATA");
+        Map<String,Object> result = new HashMap<String,Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_DELDATA" + "(:V_V_GUID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_DELDATA");
         return result;
     }
     //PM_03010301,周检修计划,修改时信息绑定

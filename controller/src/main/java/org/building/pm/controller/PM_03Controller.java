@@ -943,7 +943,7 @@ public class PM_03Controller {
         return result;
     }
 
-    //PM_03010301,周检修计划，删除
+    //PM_03010301,周检修计划，作废
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_03_PLAN_WEEK_DEL(
@@ -953,7 +953,16 @@ public class PM_03Controller {
         Map<String, Object> result = pm_03Service.PRO_PM_03_PLAN_WEEK_DEL(V_V_GUID);
         return result;
     }
-
+    //PM_03010301,周检修计划，删除
+    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_DELDATA", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_WEEK_DELDATA(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = pm_03Service.PRO_PM_03_PLAN_WEEK_DELDATA(V_V_GUID);
+        return result;
+    }
     //PM_03010301,周检修计划,修改时信息绑定
     @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_GET", method = RequestMethod.POST)
     @ResponseBody

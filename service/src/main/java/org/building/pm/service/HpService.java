@@ -2395,7 +2395,7 @@ public class HpService {
         return result;
     }
 
-    //PM_03010201,月计划报表，删除
+    //PM_03010201,月计划报表，作废
     public Map<String,Object> PM_03_PLAN_MONTH_DEL(String V_V_GUID) throws SQLException {
         logger.info("begin PRO_PM_03_PLAN_MONTH_DEL");
         Map<String,Object> result = new HashMap<String,Object>();
@@ -2419,7 +2419,30 @@ public class HpService {
         logger.info("end PRO_PM_03_PLAN_MONTH_DEL");
         return result;
     }
-
+    //PM_03010201,月计划报表，删除
+    public Map<String,Object> PRO_PM_03_PLAN_MONTH_DELDATA(String V_V_GUID) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_MONTH_DELDATA");
+        Map<String,Object> result = new HashMap<String,Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_MONTH_DELDATA" + "(:V_V_GUID,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_MONTH_DELDATA");
+        return result;
+    }
     public Map<String,Object> PRO_PM_WORKORDER_GX_DEL(String I_I_ID) throws SQLException {
         logger.info("begin PRO_PM_WORKORDER_GX_DEL");
         Map<String,Object> result = new HashMap<String,Object>();

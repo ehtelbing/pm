@@ -1,4 +1,4 @@
-﻿var date = new Date();
+var date = new Date();
 var V_MONTHPLAN_GUID = '';
 var processKey = '';
 var V_STEPNAME = '';
@@ -463,17 +463,17 @@ var northPanel = Ext.create('Ext.form.Panel', {
             store: nextSprStore,
             queryMode: 'local'
         },
-        {
-            xtype: 'displayfield',
-            id: 'endtime',
-            labelAlign: 'right',
-            fieldLabel: '截止时间',
-            readOnly: true,
-            margin: '5 0 5 5',
-            labelWidth: 80,
-            width: 250,
-            value: ''
-        },
+        // {
+        //     xtype: 'displayfield',
+        //     id: 'endtime',
+        //     labelAlign: 'right',
+        //     fieldLabel: '截止时间',
+        //     readOnly: true,
+        //     margin: '5 0 5 5',
+        //     labelWidth: 80,
+        //     width: 250,
+        //     value: ''
+        // },
         {
             xtype: 'button',
             text: '查询',
@@ -485,73 +485,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
         },
         {
             xtype: 'button',
-            text: '添加',
-            margin: '5 0 5 5',
-            icon: imgpath + '/add.png',
-            handler: OnButtonAddClicked
-        },
-        {
-            xtype: 'button',
-            text: '从缺陷添加',
-            margin: '5 0 5 5',
-            icon: imgpath + '/add.png',
-            handler: OnButtonDefectAddClicked
-        },
-        {
-            xtype: 'button',
-            text: '模型选择',
-            margin: '5 0 5 5',
-            icon: imgpath + '/add.png',
-            handler: OnButtonSelectClicked
-        },
-        {
-            xtype: 'button',
             text: '修改',
             margin: '5 0 5 5',
             icon: imgpath + '/edit.png',
             handler: OnButtonEditClicked
-        }/*,
-        {
-            xtype: 'button',
-            text: '作废',
-            margin: '5 0 5 5',
-            icon: imgpath + '/delete1.png',
-            handler: OnButtonDelete
-        }*/,
-        {
-            xtype: 'button',
-            text: '作废',
-            margin: '5 0 5 5',
-            icon: imgpath + '/delete1.png',
-            handler: OnButtonDelete
-        },
-        {
-            xtype: 'button',
-            text: '删除',
-            margin: '5 0 5 5',
-            icon: imgpath + '/delete1.png',
-            handler: OnButtonDeleteData
-        },
-        {
-            xtype: 'button',
-            text: '上报',
-            margin: '5 0 5 5',
-            icon: imgpath + '/accordion_collapse.png',
-            handler: OnButtonUp
-        },
-        {
-            xtype: 'button',
-            text: '导入放行计划',
-            margin: '5 0 5 5',
-            icon: imgpath + '/accordion_expand.png',
-            listeners: {click: OnButtonDR}
-        },
-        {
-            xtype: 'button',
-            text: '生成工单',
-            margin: '5 0 5 5',
-            icon: imgpath + '/accordion_collapse.png',
-            handler: createWorkorder
         }
     ]
 });
@@ -644,7 +581,7 @@ Ext.onReady(function () {
     //计划作业区加载监听
     Ext.data.StoreManager.lookup('jhzyqStore').on('load', function () {
 
-       // Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
+        // Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
         Ext.getCmp('jhzyq').select(Ext.data.StoreManager.lookup('jhzyqStore').getAt(0));
         query();
     });
@@ -798,57 +735,7 @@ function rendererTime(value, metaData) {
     return value.split(".")[0];
 }
 
-function rendererStep(value, metaData, record, rowIndex, colIndex, store, view) {
-    var stepValue = '';
-    Ext.Ajax.request({
-        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
-        type: 'ajax',
-        method: 'POST',
-        async: false,
-        params: {
-            businessKey: record.data.V_GUID
-        },
-        success: function (resp) {
-            var data = Ext.decode(resp.responseText);//后台返回的值
-            if(data.msg == 'Ok'){
-                stepValue = data.list.ActivityName;
-            }else{
-                stepValue = '起草';
-            }
 
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
-        }
-    })
-
-    return stepValue;
-}
-//添加
-function OnButtonAddClicked() {
-    if(Ext.getCmp("jhzyq").getValue()=="%"){
-        alert("作业区不可以为全部，请重新选择"); return;
-    }
-    V_MONTHPLAN_GUID = '0';
-    var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID +
-        "&YEAR=" + Ext.getCmp("nf").getValue() +
-        "&MONTH=" + Ext.getCmp("yf").getValue() +
-        "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
-}
-
-function OnButtonSelectClicked() {
-    var ret = window.open(AppUrl + 'page/PM_1922/index.html?YEAR=' + Ext.getCmp("nf").getValue() +
-        "&QUARTER=0" +
-        "&MONTH=" + Ext.getCmp("yf").getValue() +
-        "&WEEK=0" +
-        "&PLANTYPE=MONTH", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
-}
 //修改
 function OnButtonEditClicked() {
     var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
@@ -857,260 +744,19 @@ function OnButtonEditClicked() {
         return false;
     }
     console.log(seldata[0].data.V_STATE);
-    if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100) {
-        V_MONTHPLAN_GUID = seldata[0].data.V_GUID;
-        var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
-    }else {
-        Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
-    }
+    V_MONTHPLAN_GUID = seldata[0].data.V_GUID;
+    var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
+
 
 }
-//作废
-function OnButtonDelete() {
-    var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();//获取选中的数据
-    if (records.length == 0) {//判断是否选中数据
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择一条数据',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return false;
-    }
-    for (var i = 0; i < records.length; i++) {
-        if (records[i].data.V_STATENAME != '未发起') {
-            Ext.Msg.alert('提升信息', '只能删除未发起的数据');
-            return false;
-        }
+
+function guid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     }
 
-    Ext.MessageBox.show({
-        title: '确认',
-        msg: '您确定要作废吗？',
-        buttons: Ext.MessageBox.YESNO,
-        icon: Ext.MessageBox.QUESION,
-        fn: function (btn) {
-            if (btn == 'yes') {
-                var i_err = 0;
-                for (var i = 0; i < records.length; i++) {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'hp/PM_03_PLAN_MONTH_DEL',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID: records[i].get('V_GUID')
-                        },
-                        success: function (response) {
-                            var resp = Ext.decode(response.responseText);//后台返回的值
-                            if (resp.V_INFO == 'success') {//成功，会传回true
-                                i_err++;
-                                if (i_err == records.length) {
-                                    query();
-                                }
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: resp.V_INFO,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR,
-                                    fn: function () {
-                                        query();
-                                    }
-                                });
-                            }
-                        },
-                        failure: function (response) {//访问到后台时执行的方法。
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR,
-                                fn: function () {
-                                    query();
-                                }
-                            })
-                        }
-                    });
-                }
-            }
-        }
-    });
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
-//删除
-function OnButtonDeleteData(){
-    var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();//获取选中的数据
-    if (records.length == 0) {//判断是否选中数据
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择一条数据',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return false;
-    }
-    for (var i = 0; i < records.length; i++) {
-        if (records[i].data.V_STATE != 100) {
-            Ext.Msg.alert('提升信息', '只能删除作废的数据');
-            return false;
-        }
-    }
-
-    Ext.MessageBox.show({
-        title: '确认',
-        msg: '您确定要删除吗？',
-        buttons: Ext.MessageBox.YESNO,
-        icon: Ext.MessageBox.QUESION,
-        fn: function (btn) {
-            if (btn == 'yes') {
-                var i_err = 0;
-                for (var i = 0; i < records.length; i++) {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'hp/PRO_PM_03_PLAN_MONTH_DELDATA',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID: records[i].get('V_GUID')
-                        },
-                        success: function (response) {
-                            var resp = Ext.decode(response.responseText);//后台返回的值
-                            if (resp.V_INFO == 'success') {//成功，会传回true
-                                i_err++;
-                                if (i_err == records.length) {
-                                    query();
-                                }
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: resp.V_INFO,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR,
-                                    fn: function () {
-                                        query();
-                                    }
-                                });
-                            }
-                        },
-                        failure: function (response) {//访问到后台时执行的方法。
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR,
-                                fn: function () {
-                                    query();
-                                }
-                            })
-                        }
-                    });
-                }
-            }
-        }
-    });
-}
-function OnButtonUp() {
-   /* if (Ext.Date.format(new Date(Ext.getCmp('endtime').getValue()), 'Y/m/d') < Ext.Date.format(new Date(), 'Y/m/d')) {
-        alert("已过上报时间，不能上报");
-        return false;
-    }
-*/ if(Ext.getCmp('nextPer').getValue()==""){
-    alert('下一步审批人不可以空，请重新选择');
-    }
-
-    var records = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
-    if (records.length == 0) {//判断是否选中数据
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择一条数据',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return false;
-    }
-    for (var i = 0; i < records.length; i++) {
-        if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已驳回') {
-            Ext.Msg.alert('提升信息', '此计划状态不能上报');
-            return false;
-        }
-    }
-
-
-    var i_err = 0;
-    for (var i = 0; i < records.length; i++) {
-        Ext.Ajax.request({
-            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_SEND',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: records[i].data.V_GUID,
-                V_V_ORGCODE: records[i].data.V_ORGCODE,
-                V_V_DEPTCODE: records[i].data.V_DEPTCODE,
-                V_V_FLOWCODE: records[i].data.V_FLOWCODE,
-                V_V_PLANTYPE: 'MONTH',
-                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText).list[0];
-                if (resp.V_INFO != 'Fail') {
-
-                    Ext.Ajax.request({
-                        url: AppUrl + 'Activiti/StratProcess',
-                        async: false,
-                        method: 'post',
-                        params: {
-                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type","zyName"],
-                            parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_MONTHID'), "请审批！","MonthPlan",records[i].get('V_REPAIRMAJOR_CODE')],
-                            processKey: processKey,
-                            businessKey: records[i].get('V_GUID'),
-                            V_STEPCODE: 'Start',
-                            V_STEPNAME: V_STEPNAME,
-                            V_IDEA: '请审批！',
-                            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                            V_INPER: Ext.util.Cookies.get('v_personcode')
-                        },
-                        success: function (response) {
-                            if (Ext.decode(response.responseText).ret == 'OK') {
-
-                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                Ext.Msg.alert('提示', '该流程发起失败！');
-                            }
-                        }
-                    });
-                    i_err++;
-                    if (i_err == records.length) {
-                        query();
-                    }
-                } else {
-                    Ext.Msg.alert('提示', '上报失败！');
-                }
-            }
-        });
-    }
-
-}
-//截止上报时间
-function Queryendtime() {
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PRO_PM_PLAN_LOCKING_DATE_GET',
-        method: 'POST',
-        async: false,
-        params: {
-            V_I_YEAR: Ext.getCmp('nf').getValue(),
-            V_I_MONTH: Ext.getCmp('yf').getValue(),
-            V_I_WEEKNUM: '0',
-            V_V_TYPE: 'M',
-            V_V_DEPTCODE:Ext.getCmp('jhck').getValue()
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if (resp.list.length != 1) {
-                Ext.getCmp('endtime').setValue('未设置');
-            } else {
-                Ext.getCmp('endtime').setValue(resp.list[0].D_DATE_E.split('.')[0]);
-            }
-        }
-    });
-}
-
 function _preViewProcess(businessKey)
 {
 
@@ -1139,191 +785,11 @@ function _preViewProcess(businessKey)
                 icon: Ext.MessageBox.ERROR
             });
         }
-    })
+    });
 
     var owidth = window.screen.availWidth;
     var oheight =  window.screen.availHeight - 50;
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
-
-}
-//缺陷添加
-function OnButtonDefectAddClicked() {
-    var weekguid=guid();
-    //清空表
-    Ext.Ajax.request({
-        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_DEFECT_DEL',
-        method: 'POST',
-        async: false,
-        params: {
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if (resp.V_INFO=='success') {
-                Ext.Ajax.request({//新增空数据
-                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_GUID',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        V_V_GUID:weekguid,
-                        V_V_ORGCODE: Ext.getCmp("jhck").getValue()
-                    },
-                    success: function (resp) {
-                        var resp = Ext.decode(resp.responseText);
-                        if (resp.V_INFO=='success') {
-                            V_WEEKPLAN_GUID = 0;
-                            V_PLANTYPE = 'DEFECT';
-                            if(Ext.getCmp("jhzyq").getValue()=="%"){
-                                alert("作业区不可以为全部，请重新选择"); return;
-                            }else {
-                                var ret = window.open(AppUrl + 'page/PM_03010218/index.html?V_WEEKPLAN_GUID=' + weekguid +
-                                    "&V_PLANTYPE=" + V_PLANTYPE +
-                                    "&YEAR=" + Ext.getCmp("nf").getValue() +
-                                    "&MONTH=" + Ext.getCmp("yf").getValue() +
-                                    "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
-                            }
-                        } else {
-                            alert("初始数据保存失败");
-                        }
-                    }
-                });
-            } else {
-                alert("数据清理错误");
-            }
-        }
-    });
-
-
-}
-function createWorkorder() {
-    var record = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
-    if (record.length == 0) {
-        alert('请至少选择一条记录');
-        return;
-    }
-
-    var V_GUIDList = '';
-    for (var i = 0; i < record.length; i++) {
-        if(record[i].data.V_STATE=='10'&&record[i].data.V_STATE=='100'&&record[i].data.V_STATE== '20'&&record[i].data.V_STATE== '99'){
-            alert("该计划状态无法生成工单");
-            return;
-        }
-        if (i == 0) {
-            V_GUIDList = record[i].data.V_GUID;
-        } else {
-            V_GUIDList += ',' + record[i].data.V_GUID;
-        }
-    }
-
-    Ext.Ajax.request({
-        url: AppUrl + 'cjy/PM_03_PLAN_CREATE_WORKORDERMON',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID: V_GUIDList
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if (resp.v_info == "SUCCESS") {
-                Ext.Ajax.request({
-                    url: AppUrl + 'cjy/PM_03_PLAN_M_CREATE_WORKORDER',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        V_V_GUID: V_GUIDList,
-                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
-                    },
-                    success: function (resp) {
-                        var resp = Ext.decode(resp.responseText);
-                        var V_V_ORDERGUID = resp.V_V_ORDERGUID;
-                        var V_V_SOURCECODE = resp.V_V_SOURCECODE;
-                        var V_V_EQUTYPE = resp.V_V_EQUTYPE;
-                            Ext.Ajax.request({
-                                url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                                type: 'post',
-                                async: false,
-                                params: {
-                                    V_V_IP: GetIP().ip,
-                                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                                    V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                                    V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                                    V_V_GUID: ''
-                                },
-                                success: function (response) {
-                                    var resp = Ext.decode(response.responseText);
-                                    if (resp.v_info == "success") {
-                                        for (var i = 0; i < record.length; i++) {//录入关系表
-                                            Ext.Ajax.request({//
-                                                method: 'POST',
-                                                async: false,
-                                                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_W',
-                                                params: {
-                                                    V_V_WORKORDER_GUID: V_V_ORDERGUID,
-                                                    V_V_WEEK_GUID: record[i].data.V_GUID
-                                                },
-                                                success: function (response) {
-                                                    var respm = Ext.decode(response.responseText);
-                                                    if(respm.V_INFO=='success'){
-
-                                                    }else{
-                                                        alert("关系数据保存错误,工单生成失败");
-                                                        return;
-                                                    }
-
-                                                }
-                                            });
-
-                                        }
-                                        window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
-                                            "", "dialogHeight:700px;dialogWidth:1100px");
-                                    }
-                                }
-                            });
-
-                    }
-                });
-            } else {
-                alert(resp.v_info);
-            }
-
-        }
-    });
-
-
-}
-function guid() {
-    function S4() {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    }
-
-    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-}
-function OnButtonDR(){
-    Ext.getBody().mask('<p>放行月计划导入中...</p>');
-    Ext.Ajax.request({
-        url: AppUrl + '/PM_03/DR_PM_03_PLAN_MONTH',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_YEAR: Ext.getCmp('nf').getValue(),
-            V_V_MOUTH: Ext.getCmp('yf').getValue()
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if(resp.V_INFO=='SUCCESS'){
-                alert('放行月计划导入成功');
-                query();
-                Ext.getBody().unmask();
-
-            }else{
-                alert('放行月计划导入失败');
-                Ext.getBody().unmask();
-            }
-        },failure: function (response) {
-            alert('放行月计划导入失败');
-            Ext.getBody().unmask();
-        }
-    });
 
 }
