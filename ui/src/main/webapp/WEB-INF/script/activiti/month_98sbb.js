@@ -1136,8 +1136,8 @@ function _agree() {
                     params: {
                         taskId: taskId,
                         idea: '通过',
-                        parName: [V_NEXT_SETP, "flow_yj", "remark"],
-                        parVal: [Ext.getCmp('nextPer').getValue(), spyj, Ext.getCmp('jxnr').getValue()],
+                        parName: [V_NEXT_SETP, "flow_yj", "remark","zyName"],
+                        parVal: [Ext.getCmp('nextPer').getValue(), spyj, Ext.getCmp('jxnr').getValue(),Ext.getCmp('zy').getValue()],
                         processKey: processKey,
                         businessKey: V_ORDERGUID,
                         V_STEPCODE: V_STEPCODE,
