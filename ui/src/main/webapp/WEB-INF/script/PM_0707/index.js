@@ -409,8 +409,9 @@ function OnButtonSave(){
 		success:function(resp){
 			var resp=Ext.decode(resp.responseText);
 			if(resp.V_INFO=='成功'){
-				Ext.Msg.alert('操作信息','保存成功');
-				window.location.reload();
+				Ext.Msg.alert('操作信息','保存成功',function(){
+					window.location.reload();
+				});
 				//Ext.getCmp('qxmc').setValue();
 				//Ext.getCmp('qxdj').setValue();
 				//Ext.getCmp('clyj').setValue();
