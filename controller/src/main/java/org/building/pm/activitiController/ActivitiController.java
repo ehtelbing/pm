@@ -472,27 +472,41 @@ public class ActivitiController {
         List retlist = new ArrayList();
         HashMap retType = activitiService.QueryProcessType();
         List list = (List) retType.get("list");
-        if(ZyType.equals("全部")){
-            ZyType="%";
-        }
         for (int i = 0; i < list.size(); i++) {
             Map ret = new HashMap();
             Map map = (Map) list.get(i);
             int total = 0;
             if (FlowCode.equals("")) {
                 if (PersonCode.equals("ActivitiManage")) {
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName",ZyType).count();
+                    if (ZyType.equals("%") || ZyType.equals("")) {
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName", ZyType).count();
+                    } else {
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
+                    }
                 } else {
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName",ZyType).count();
+                    if (ZyType.equals("%") || ZyType.equals("")) {
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
+                    } else {
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName", ZyType).count();
+                    }
                 }
 
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
                 ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
             } else {
                 if (PersonCode.equals("ActivitiManage")) {
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName",ZyType).count();
+                    if (ZyType.equals("%") || ZyType.equals("")) {
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
+                    } else {
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName", ZyType).count();
+                    }
                 } else {
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName",ZyType).count();
+                    if (ZyType.equals("%") || ZyType.equals("")) {
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
+                    } else {
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName", ZyType).count();
+                    }
+
                 }
                 ret.put("code", map.get("V_FLOWTYPE_CODE").toString());
                 ret.put("name", map.get("V_FLOWTYPE_NAME").toString() + "(" + total + ")");
@@ -523,26 +537,46 @@ public class ActivitiController {
         int total = 0;
         int start = (Integer.valueOf(Page) - 1) * Integer.valueOf(PageSize);
         int limit = Integer.valueOf(PageSize);
-        if(ZyType.equals("全部")){
-            ZyType="%";
-        }
         try {
             List<Task> taskList = null;
             if (FlowCode.equals("")) {
                 if (PersonCode.equals("ActivitiManage")) {
-                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").count();
+                    if(ZyType.equals("%") || ZyType.equals("")){
+                        taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").count();
+                    }else{
+                        taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
+                    }
                 } else {
-                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName",ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName",ZyType).count();
+                    if(ZyType.equals("%") || ZyType.equals("")){
+                        taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").count();
+                    }else{
+                        taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
+                    }
+
                 }
             } else {
                 if (PersonCode.equals("ActivitiManage")) {
-                    taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
+                    if(ZyType.equals("%") || ZyType.equals("")){
+                        taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
+                    }else{
+                        taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
+                    }
+
                 } else {
-                    taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName",ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
-                    total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName",ZyType).count();
+                    if(ZyType.equals("%") || ZyType.equals("")){
+                        taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
+                    }else{
+                        taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
+                        total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
+                    }
+
                 }
             }
 
@@ -595,8 +629,8 @@ public class ActivitiController {
                     taskmap.put("EQUNAME", equmap.get("V_EQUIP_NAME").toString());
                     taskmap.put("PLANSTART", equmap.get("D_START_DATE").toString());
                     taskmap.put("PLANEND", equmap.get("D_FINISH_DATE").toString());
-                    taskmap.put("ORGNAME",equmap.get("V_ORGNAME").toString());
-                    taskmap.put("DEPTNAME",equmap.get("V_DEPTNAME").toString());
+                    taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                    taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                 }   //---add 3 columns on NONTH
                 else if (taskmap.get("flow_type").equals("MonthPlan")) {
                     equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");
