@@ -570,7 +570,7 @@ Ext.onReady(function () {
             }
         }, {
             text: '作业区',
-            dataIndex: 'V_ORGCODE',
+            dataIndex: 'V_DEPTCODE',
             align: 'center',
             flex: 3,
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
@@ -1147,6 +1147,7 @@ function queryGrid1() {
          V_V_PAGESIZE: Ext.getCmp('gpage').store.pageSize*/
     };
     //flowDicListStore.currentPage = 1;
+    gridStore.currentPage=1;
     gridStore.load();
 }
 
