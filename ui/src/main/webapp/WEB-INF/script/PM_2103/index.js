@@ -27,7 +27,7 @@ Ext.onReady(function () {
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
             'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME',
-            'EQUNAME','PLANSTART','PLANEND','PLANHOUR','flow_type','OPERANAME'
+            'EQUNAME','PLANSTART','PLANEND','PLANHOUR','flow_type','OPERANAME','ORGNAME','DEPTNAME','ZYNAME'
         ],
         proxy: {
             type: 'ajax',
@@ -79,14 +79,15 @@ Ext.onReady(function () {
         id:'grid',
         frame : true,
         columnLines : true,
+        autoScroll:true,
         selModel: {
             selType: 'checkboxmodel'
         },
         region:'center',
-        columns : [ {
-            xtype : 'rownumberer',
-            text : '序号',
-            width : 40,
+        columns : [{
+            xtype: 'rownumberer',
+            text: '序号',
+            width: 40,
             align: 'center'
         }, {
             text: '操作',
@@ -98,73 +99,106 @@ Ext.onReady(function () {
                     + record.data.BusinessKey + '\',\'' + record.data.ProcessInstanceId + '\')>' + '办理' + '</a>&nbsp;&nbsp;&nbsp;' +
                     '<a href="#" onclick="_preViewProcess(\'' + record.data.ProcessInstanceId + '\')">' + '查看流程' + '</a>';
             }
-        }, {
-            text: '流程类型',
-            dataIndex: 'ProcessDefinitionName',
-            align: 'center',
-            width: 150
-        }, {
-            text: '流程编号',
-            dataIndex: 'flow_code',
-            align: 'center',
-            width: 200
-        }, {
-            text: '流程步骤',
-            dataIndex: 'Name',
-            align: 'center',
-            width: 200
-        }, {
-            text: '摘要',
-            dataIndex: 'remark',
-            align: 'center',
-            width: 300
-        }, {
-            text: '备件消耗',
-            dataIndex: 'MATERIALNAME',
-            align: 'center',
-            width: 100
-        }, {
-            text: '发起人',
-            dataIndex: 'startName',
-            align: 'center',
-            width: 100
-        }, {
-            text: '发起时间',
-            dataIndex: 'CreateTime',
-            align: 'center',
-            width: 200,
-            renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
-                return value.substring(0, 10);
-            }
-            },{
-            text: '设备名称',
-            dataIndex: 'EQUNAME',
-            align: 'center',
-            width: 200
-        },{
-            text: '开始时间',
-            dataIndex: 'PLANSTART',
-            align: 'center',
-            width: 200
-        },{
-            text: '结束时间',
-            dataIndex: 'PLANEND',
-            align: 'center',
-            width: 200
-        },
-            {
-                text: '计划工期（h)',
-                dataIndex: 'PLANHOUR',
+        }
+            , {
+                text: '流程类型',
+                dataIndex: 'ProcessDefinitionName',
                 align: 'center',
-                width: 100
+                width: 150,
+                hidden: true
+            }
+            , {
+                text: '流程步骤',
+                dataIndex: 'Name',
+                align: 'center',
+                width: 200
+            }
+            , {
+                text: '流程编号',
+                dataIndex: 'flow_code',
+                align: 'center',
+                width: 200
+            }
+            , {
+                text: '厂矿',
+                dataIndex: 'ORGNAME',
+                align: 'center',
+                width: 200
+            }
+            , {
+                text: '设备名称',
+                dataIndex: 'EQUNAME',
+                align: 'center',
+                width: 200
+            }
+            , {
+                text: '计划内容',
+                dataIndex: 'remark',
+                align: 'center',
+                width: 300
+            }
+            , {
+                text: '专业',
+                dataIndex: 'ZYNAME',
+                align: 'center',
+                width: 300
             },
             {
                 text: '工序',
                 dataIndex: 'OPERANAME',
                 align: 'center',
                 width: 100
+                // ,renderer:function(){ if(Ext.getCmp('tabpanel').getActiveTab().id=='WORK'){
+                // grid.columns[10].hide();
+                // }}
+                // ,renderer:function(){ if(Ext.getCmp('tabpanel').getActiveTab().id=='WORK'){
+                //         this.hidden=true;
+                //     }}
+            }
+            , {
+                text: '开始时间',
+                dataIndex: 'PLANSTART',
+                align: 'center',
+                width: 200
+            }, {
+                text: '结束时间',
+                dataIndex: 'PLANEND',
+                align: 'center',
+                width: 200
+            }, {
+                text: '计划工期（h)',
+                dataIndex: 'PLANHOUR',
+                align: 'center',
+                width: 100
+            }
+            , {
+                text: '发起人',
+                dataIndex: 'startName',
+                align: 'center',
+                width: 100
             },
             {
+                text: '作业区',
+                dataIndex: 'DEPTNAME',
+                align: 'center',
+                width: 300
+            }
+            , {
+                text: '发起时间',
+                dataIndex: 'CreateTime',
+                align: 'center',
+                width: 200,
+                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    return value.substring(0, 10);
+                }
+            }
+            , {
+                text: '备件消耗',
+                dataIndex: 'MATERIALNAME',
+                align: 'center',
+                width: 100
+            }
+            , {
                 text: '流程类型',
                 dataIndex: 'flow_type',
                 align: 'center',
@@ -178,7 +212,7 @@ Ext.onReady(function () {
             xtype: 'pagingtoolbar',
             dock: 'bottom',
             displayInfo: true,
-            width: '100%',
+            width: 1701,//'100%',
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
             store: 'gridStore'
@@ -209,6 +243,7 @@ Ext.onReady(function () {
             PersonCode : Ext.util.Cookies.get('v_personcode'),
             FlowType :tabpage,//Ext.getCmp('tabid').getValue(),
             FlowCode : Ext.getCmp('lxbh').getValue(),
+            ZyType:Ext.getCmp('zy').getValue()=="%"?'全部':Ext.getCmp('zy').getValue(),
             Page :  Ext.getCmp('page').store.currentPage,
             PageSize :  Ext.getCmp('page').store.pageSize
         }
@@ -240,7 +275,8 @@ function QueryTab(){
         method: 'POST',
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue()
+            FlowCode:Ext.getCmp('lxbh').getValue(),
+            ZyType:"全部"
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -269,7 +305,8 @@ function QueryTabW(){
         method: 'POST',
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue()
+            FlowCode:Ext.getCmp('lxbh').getValue(),
+            ZyType:"全部"
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -299,7 +336,8 @@ function QueryTabYT(){
         method: 'POST',
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue()
+            FlowCode:Ext.getCmp('lxbh').getValue(),
+            ZyType:"全部"
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -327,7 +365,8 @@ function QueryTabY(){
         method: 'POST',
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue()
+            FlowCode:Ext.getCmp('lxbh').getValue(),
+            ZyType:"全部"
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -367,6 +406,7 @@ function QueryGrid(){
         PersonCode : Ext.util.Cookies.get('v_personcode'),
         FlowType : tabpage,//Ext.getCmp('tabid').getValue(),
         FlowCode : Ext.getCmp('lxbh').getValue(),
+        ZyType:Ext.getCmp('zy').getValue()=="%"?'全部':Ext.getCmp('zy').getValue(),
         Page :  Ext.getCmp('page').store.currentPage,
         PageSize :  Ext.getCmp('page').store.pageSize
     });

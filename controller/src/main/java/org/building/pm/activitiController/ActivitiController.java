@@ -595,6 +595,8 @@ public class ActivitiController {
                     taskmap.put("EQUNAME", equmap.get("V_EQUIP_NAME").toString());
                     taskmap.put("PLANSTART", equmap.get("D_START_DATE").toString());
                     taskmap.put("PLANEND", equmap.get("D_FINISH_DATE").toString());
+                    taskmap.put("ORGNAME",equmap.get("V_ORGNAME").toString());
+                    taskmap.put("DEPTNAME",equmap.get("V_DEPTNAME").toString());
                 }   //---add 3 columns on NONTH
                 else if (taskmap.get("flow_type").equals("MonthPlan")) {
                     equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");
@@ -605,6 +607,9 @@ public class ActivitiController {
                         taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
                         taskmap.put("PLANHOUR", equmap.get("V_HOUR").toString());
                         taskmap.put("OPERANAME", equmap.get("V_OPERANAME").toString());
+                        taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                        taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                        taskmap.put("ZYNAME", equmap.get("V_REPAIRMAJOR_CODE").toString());
 
                     }
                 }//---add 3 columns on week
@@ -617,6 +622,9 @@ public class ActivitiController {
                         taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
                         taskmap.put("PLANHOUR", equmap.get("V_HOUR").toString());
                         taskmap.put("OPERANAME", equmap.get("V_OPERANAME").toString());
+                        taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                        taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                        taskmap.put("ZYNAME", equmap.get("V_REPAIRMAJOR_CODE").toString());
                     }
                 }
                 User user = identityService.createUserQuery()
