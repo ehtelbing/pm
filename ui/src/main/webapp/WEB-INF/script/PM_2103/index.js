@@ -243,7 +243,7 @@ Ext.onReady(function () {
             PersonCode : Ext.util.Cookies.get('v_personcode'),
             FlowType :tabpage,//Ext.getCmp('tabid').getValue(),
             FlowCode : Ext.getCmp('lxbh').getValue(),
-            ZyType:Ext.getCmp('zy').getValue()=="%"?'全部':Ext.getCmp('zy').getValue(),
+            ZyType:Ext.getCmp('zy').getValue(),
             Page :  Ext.getCmp('page').store.currentPage,
             PageSize :  Ext.getCmp('page').store.pageSize
         }
@@ -276,7 +276,7 @@ function QueryTab(){
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
             FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:"全部"
+            ZyType:Ext.getCmp('zy').getValue()
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -306,7 +306,7 @@ function QueryTabW(){
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
             FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:"全部"
+            ZyType:Ext.getCmp('zy').getValue()
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -337,7 +337,7 @@ function QueryTabYT(){
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
             FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:"全部"
+            ZyType:Ext.getCmp('zy').getValue()
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -366,7 +366,7 @@ function QueryTabY(){
         params: {
             PersonCode:Ext.util.Cookies.get('v_personcode'),
             FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:"全部"
+            ZyType:Ext.getCmp('zy').getValue()
         },
         success: function (response) {
             var resp=Ext.decode(response.responseText);
@@ -406,7 +406,7 @@ function QueryGrid(){
         PersonCode : Ext.util.Cookies.get('v_personcode'),
         FlowType : tabpage,//Ext.getCmp('tabid').getValue(),
         FlowCode : Ext.getCmp('lxbh').getValue(),
-        ZyType:Ext.getCmp('zy').getValue()=="%"?'全部':Ext.getCmp('zy').getValue(),
+        ZyType:Ext.getCmp('zy').getValue(),
         Page :  Ext.getCmp('page').store.currentPage,
         PageSize :  Ext.getCmp('page').store.pageSize
     });
