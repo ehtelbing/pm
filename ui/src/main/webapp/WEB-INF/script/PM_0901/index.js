@@ -36,6 +36,7 @@ $(function () {
         var oheight = window.document.body.offsetHeight - 100;
 
         var ret = window.open(AppUrl + 'page/PM_090101/index.html?V_DEPTCODE=' + $("#selZYQ").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        // var ret = window.open(AppUrl + 'page/PM_090101/equTab.html?V_DEPTCODE=' + $("#selZYQ").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     });
 
     $("#btnTask").click(function () {

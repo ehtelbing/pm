@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -194,4 +195,22 @@ public class TreeController {
         List<Map> result = treeService.PM_WORKREPAIR_PERBYROLE_SEL(V_V_DEPTCODE,V_V_ROLECODE);
         return result;
     }
+
+    // ADMIN deptEQU TREE
+    @RequestMapping(value = "/GET_ADMIN_DEPTEQUTYPE_ADMIN_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map GET_ADMIN_DEPTEQUTYPE_ADMIN_TREE(  @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT) throws Exception {
+        Map map = treeService.GET_ADMIN_DEPTEQUTYPE_ADMIN_TREE(V_V_DEPTCODENEXT);
+        return map;
+    }
+    // ADMIN EQU TREE
+    @RequestMapping(value = "/GETADMIN_DEPTEQU_ADMIN_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map GETADMIN_DEPTEQU_ADMIN_TREE(@RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE) throws Exception {
+        Map map = treeService.GETADMIN_DEPTEQU_ADMIN_TREE(V_V_DEPTCODENEXT, V_V_EQUTYPECODE);
+        return map;
+    }
+
+
 }
