@@ -310,7 +310,7 @@ function btn_select(){
                                     V_V_MATERIALNAME: respwl.list[j].V_WLSM,
                                     V_V_SPEC: respwl.list[j].V_GGXH,
                                     V_V_UNIT: respwl.list[j].V_JLDW,
-                                    V_F_UNITPRICE: respwl.list[j].V_PRICE==null?0:respwl.list[j].V_PRICE,
+                                    V_F_UNITPRICE: respwl.list[j].V_PRICE==null||respwl.list[j].V_PRICE==''?0:respwl.list[j].V_PRICE,
                                     V_I_PLANAMOUNT:'1',
                                     V_F_PLANMONEY: '0',
                                     V_I_ACTUALAMOUNT:'0',
