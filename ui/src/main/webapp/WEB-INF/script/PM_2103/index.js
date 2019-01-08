@@ -111,19 +111,19 @@ Ext.onReady(function () {
                 text: '流程步骤',
                 dataIndex: 'Name',
                 align: 'center',
-                width: 200
+                width: 150
             }
             , {
                 text: '流程编号',
                 dataIndex: 'flow_code',
                 align: 'center',
-                width: 200
+                width: 120
             }
             , {
                 text: '厂矿',
                 dataIndex: 'ORGNAME',
                 align: 'center',
-                width: 200
+                width: 150
             }
             , {
                 text: '设备名称',
@@ -141,13 +141,13 @@ Ext.onReady(function () {
                 text: '专业',
                 dataIndex: 'ZYNAME',
                 align: 'center',
-                width: 300
+                width: 82
             },
             {
                 text: '工序',
                 dataIndex: 'OPERANAME',
                 align: 'center',
-                width: 100
+                width: 82
                 // ,renderer:function(){ if(Ext.getCmp('tabpanel').getActiveTab().id=='WORK'){
                 // grid.columns[10].hide();
                 // }}
