@@ -148,6 +148,7 @@ function select(){
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
 
     var retdata = [];
+    var retcode=[];
 
     for (var i = 0; i < seldata.length; i++) {
         Ext.Ajax.request({
@@ -161,15 +162,17 @@ function select(){
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
                 if(i ==  seldata.length-1){
+                    retcode.push(seldata[i].data.V_AQCS_CODE);
                     retdata.push(seldata[i].data.V_AQCS_NAME);
                 }
                 else{
+                    retcode.push(seldata[i].data.V_AQCS_CODE);
                     retdata.push(seldata[i].data.V_AQCS_NAME+',');
                 }
             }
         });
     }
-    window.opener.getReturnJXSAFE(retdata);
+    window.opener.getReturnJXSAFE(retcode,retdata);
     window.close();
 }
 
