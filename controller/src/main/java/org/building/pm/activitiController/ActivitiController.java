@@ -619,10 +619,7 @@ public class ActivitiController {
                         Map map = (Map) MATERIALNAME.get(0);
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
-                    //--------
                 }
-
-                //---add 3 columns on work
                 List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
                 if (equIp_name.size() > 0) {
                     Map equmap = (Map) equIp_name.get(0);
@@ -632,7 +629,7 @@ public class ActivitiController {
                     taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                     taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                 }   //---add 3 columns on NONTH
-                else if (taskmap.get("flow_type").equals("MonthPlan")) {
+                else if (taskmap.get("flow_type").toString().indexOf("MonthPlan")!=-1) {
                     equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
@@ -647,7 +644,7 @@ public class ActivitiController {
 
                     }
                 }//---add 3 columns on week
-                else if (taskmap.get("flow_type").equals("WeekPlan")) {
+                else if (taskmap.get("flow_type").toString().indexOf("WeekPlan")!=-1) {
                     equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_WEEK_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);

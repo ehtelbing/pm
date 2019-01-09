@@ -1,11 +1,11 @@
-var tabpage='';
-var tabturn='';
+var tabpage = '';
+var tabturn = '';
 
 var zyStore = Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'zyStore',
     fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
-    proxy:  {
+    proxy: {
         type: 'ajax',
         async: false,
         url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
@@ -26,8 +26,8 @@ Ext.onReady(function () {
         pageSize: 50,
         autoLoad: false,
         fields: ['originator', 'CreateTime', 'remark',
-            'Name','flow_code','ProcessDefinitionName','ProcessInstanceId','TaskDefinitionKey','ProcessDefinitionKey','BusinessKey','startName','MATERIALNAME',
-            'EQUNAME','PLANSTART','PLANEND','PLANHOUR','flow_type','OPERANAME','ORGNAME','DEPTNAME','ZYNAME'
+            'Name', 'flow_code', 'ProcessDefinitionName', 'ProcessInstanceId', 'TaskDefinitionKey', 'ProcessDefinitionKey', 'BusinessKey', 'startName', 'MATERIALNAME',
+            'EQUNAME', 'PLANSTART', 'PLANEND', 'PLANHOUR', 'flow_type', 'OPERANAME', 'ORGNAME', 'DEPTNAME', 'ZYNAME'
         ],
         proxy: {
             type: 'ajax',
@@ -46,15 +46,15 @@ Ext.onReady(function () {
 
 
     var buttonPanel = Ext.create('Ext.Panel', {
-        id : 'buttonPanel',
-        frame:true,
-        region:'north',
-        defaults : {
+        id: 'buttonPanel',
+        frame: true,
+        region: 'north',
+        defaults: {
             style: ' margin: 5px 0px 5px 10px'
         },
-        layout:'column',
-        items : [{ xtype:'textfield',id:'lxbh',fieldLabel: '流程编号',labelWidth: 70,labelAlign: 'right'},
-                { xtype: 'hidden',id: 'tabid'},
+        layout: 'column',
+        items: [{xtype: 'textfield', id: 'lxbh', fieldLabel: '流程编号', labelWidth: 70, labelAlign: 'right'},
+            {xtype: 'hidden', id: 'tabid'},
             {
                 xtype: 'combo',
                 id: 'zy',
@@ -64,27 +64,33 @@ Ext.onReady(function () {
                 queryMode: 'local',
                 fieldLabel: '专业',
                 displayField: 'V_BASENAME',
-                valueField: 'V_SPECIALTYCODE',labelAlign:'right',
-                labelWidth: 60,width:190
+                valueField: 'V_SPECIALTYCODE', labelAlign: 'right',
+                labelWidth: 60, width: 190
             },
-                {xtype: 'button',text: '查询', width : 70,icon: imgpath + '/search.png',handler:QueryGrid},
-                {xtype: 'button',text: '批量通过',width : 100,id:'agr',icon: imgpath + '/saved.png',handler:AgreeData}
-                //{xtype: 'button',text: '批量驳回',width : 100,id:'dagr', icon: imgpath + '/cross.png',handler:DisAgreeData }
-                 ]
-        ,listeners:{render:function(){if(Ext.util.Cookies.get('v_orgCode')=="9900"){ Ext.getCmp('dagr').hide();Ext.getCmp('dagr').hidden=true;} }}
+            {xtype: 'button', text: '查询', width: 70, icon: imgpath + '/search.png', handler: QueryGrid},
+            {xtype: 'button', text: '批量通过', width: 100, id: 'agr', icon: imgpath + '/saved.png', handler: AgreeData},
+            {xtype: 'button', text: '批量驳回', width: 100, id: 'dagr', icon: imgpath + '/cross.png', handler: DisAgreeData}
+        ], listeners: {
+            render: function () {
+                if (Ext.util.Cookies.get('v_orgCode') == "9900") {
+                    Ext.getCmp('dagr').hide();
+                    Ext.getCmp('dagr').hidden = true;
+                }
+            }
+        }
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
-        store : gridStore,
-        id:'grid',
-        frame : true,
-        columnLines : true,
-        autoScroll:true,
+        store: gridStore,
+        id: 'grid',
+        frame: true,
+        columnLines: true,
+        autoScroll: true,
         selModel: {
             selType: 'checkboxmodel'
         },
-        region:'center',
-        columns : [{
+        region: 'center',
+        columns: [{
             xtype: 'rownumberer',
             text: '序号',
             width: 40,
@@ -224,7 +230,7 @@ Ext.onReady(function () {
         region: 'north',
         listeners: {
             tabchange: function () {
-                tabpage=Ext.getCmp('tabpanel').getActiveTab().id;
+                tabpage = Ext.getCmp('tabpanel').getActiveTab().id;
                 Ext.ComponentManager.get("tabid").setValue(Ext.getCmp('tabpanel').getActiveTab().id);
                 QuerySum();
                 QueryGrid();
@@ -235,90 +241,91 @@ Ext.onReady(function () {
 
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [ buttonPanel,tabpanel,grid]
+        items: [buttonPanel, tabpanel, grid]
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
-            PersonCode : Ext.util.Cookies.get('v_personcode'),
-            FlowType :tabpage,//Ext.getCmp('tabid').getValue(),
-            FlowCode : Ext.getCmp('lxbh').getValue(),
-            ZyType:Ext.getCmp('zy').getValue(),
-            Page :  Ext.getCmp('page').store.currentPage,
-            PageSize :  Ext.getCmp('page').store.pageSize
+            PersonCode: Ext.util.Cookies.get('v_personcode'),
+            FlowType: tabpage,//Ext.getCmp('tabid').getValue(),
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue(),
+            Page: Ext.getCmp('page').store.currentPage,
+            PageSize: Ext.getCmp('page').store.pageSize
         }
     });
     QueryTab();
     QuerySum();
     Ext.data.StoreManager.lookup('zyStore').load({
-        params:{
+        params: {
             V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_DEPTNEXTCODE: '%'//Ext.getCmp('zyq').getValue()
         }
     });
-    Ext.data.StoreManager.lookup('zyStore').on('load',function(){
-        Ext.ComponentManager.get("zy").store.insert(0,{
-            'V_SPECIALTYCODE':'%',
-            'V_BASENAME':'--全部--'
+    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
+        Ext.ComponentManager.get("zy").store.insert(0, {
+            'V_SPECIALTYCODE': '%',
+            'V_BASENAME': '--全部--'
         });
-        Ext.getCmp('zy').select( Ext.data.StoreManager.lookup('zyStore').getAt(0));
+        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
     });
 
 });
 
 
-function QueryTab(){
+function QueryTab() {
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskTypeNum',
         type: 'ajax',
         method: 'POST',
         params: {
-            PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:Ext.getCmp('zy').getValue()
+            PersonCode: Ext.util.Cookies.get('v_personcode'),
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue()
         },
         success: function (response) {
-            var resp=Ext.decode(response.responseText);
-            if(resp.list.length>0){
-                for(var i=0;i<resp.list.length;i++){
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.ComponentManager.get("tabpanel").add({
-                        id : resp.list[i].code,
+                        id: resp.list[i].code,
                         title: resp.list[i].name
                     });
                 }
-                if(tabturn==''){
-                    Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage==''?'WORK':tabpage);
-                }else{
-                    Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage=tabturn);
+                if (tabturn == '') {
+                    Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage == '' ? 'WORK' : tabpage);
+                } else {
+                    Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage = tabturn);
                 }
 
             }
         }
     });
 }
-function QueryTabW(){
+
+function QueryTabW() {
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskTypeNum',
         type: 'ajax',
         method: 'POST',
         params: {
-            PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:Ext.getCmp('zy').getValue()
+            PersonCode: Ext.util.Cookies.get('v_personcode'),
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue()
         },
         success: function (response) {
-            var resp=Ext.decode(response.responseText);
-            if(resp.list.length>0){
-                for(var i=0;i<resp.list.length;i++){
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.ComponentManager.get("tabpanel").add({
-                        id : resp.list[i].code,
+                        id: resp.list[i].code,
                         title: resp.list[i].name
                     });
                 }
                 // if(tabturn==''){
-                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage="WeekPlan");
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage = "WeekPlan");
                 // }else{
                 //     Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage=tabturn);
                 // }
@@ -328,28 +335,28 @@ function QueryTabW(){
 }
 
 
-function QueryTabYT(){
+function QueryTabYT() {
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskTypeNum',
         type: 'ajax',
         method: 'POST',
         params: {
-            PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:Ext.getCmp('zy').getValue()
+            PersonCode: Ext.util.Cookies.get('v_personcode'),
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue()
         },
         success: function (response) {
-            var resp=Ext.decode(response.responseText);
-            if(resp.list.length>0){
-                for(var i=0;i<resp.list.length;i++){
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.ComponentManager.get("tabpanel").add({
-                        id : resp.list[i].code,
+                        id: resp.list[i].code,
                         title: resp.list[i].name
                     });
                 }
                 // if(tabturn==''){
-                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage="WeekPlan01");
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage = "WeekPlan01");
                 // }else{
                 //     Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage=tabturn);
                 // }
@@ -357,70 +364,71 @@ function QueryTabYT(){
         }
     });
 }
-function QueryTabY(){
+
+function QueryTabY() {
     Ext.ComponentManager.get("tabpanel").removeAll();
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskTypeNum',
         type: 'ajax',
         method: 'POST',
         params: {
-            PersonCode:Ext.util.Cookies.get('v_personcode'),
-            FlowCode:Ext.getCmp('lxbh').getValue(),
-            ZyType:Ext.getCmp('zy').getValue()
+            PersonCode: Ext.util.Cookies.get('v_personcode'),
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue()
         },
         success: function (response) {
-            var resp=Ext.decode(response.responseText);
-            if(resp.list.length>0){
-                for(var i=0;i<resp.list.length;i++){
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.ComponentManager.get("tabpanel").add({
-                        id : resp.list[i].code,
+                        id: resp.list[i].code,
                         title: resp.list[i].name
                     });
                 }
-                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage="MonthPlan");
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage = "MonthPlan");
             }
         }
     });
 }
 
-function QuerySum(){
+function QuerySum() {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskListSum',
         method: 'POST',
-        async : false,
-        params:{
-            PersonCode:  Ext.util.Cookies.get('v_personcode')
+        async: false,
+        params: {
+            PersonCode: Ext.util.Cookies.get('v_personcode')
         },
-        success:function(resp){
-            var resp=Ext.decode(resp.responseText);
-            if(resp.msg=='Ok'){
-                num=resp.total;
-                Ext.getCmp('buttonPanel').setTitle('我的待办任务共（'+num+'）条');
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.msg == 'Ok') {
+                num = resp.total;
+                Ext.getCmp('buttonPanel').setTitle('我的待办任务共（' + num + '）条');
             }
         }
     });
 }
 
-function QueryGrid(){
+function QueryGrid() {
     Ext.data.StoreManager.lookup("gridStore").load({
-        PersonCode : Ext.util.Cookies.get('v_personcode'),
-        FlowType : tabpage,//Ext.getCmp('tabid').getValue(),
-        FlowCode : Ext.getCmp('lxbh').getValue(),
-        ZyType:Ext.getCmp('zy').getValue(),
-        Page :  Ext.getCmp('page').store.currentPage,
-        PageSize :  Ext.getCmp('page').store.pageSize
+        PersonCode: Ext.util.Cookies.get('v_personcode'),
+        FlowType: tabpage,//Ext.getCmp('tabid').getValue(),
+        FlowCode: Ext.getCmp('lxbh').getValue(),
+        ZyType: Ext.getCmp('zy').getValue(),
+        Page: Ext.getCmp('page').store.currentPage,
+        PageSize: Ext.getCmp('page').store.pageSize
     });
 }
 
 function _preViewProcess(ProcessInstanceId) {
     var owidth = window.screen.availWidth;
-    var oheight =  window.screen.availHeight - 50;
-     window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
-        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+    var oheight = window.screen.availHeight - 50;
+    window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
 
-function _dealWith(ProcessDefinitionKey,TaskDefinitionKey,BusinessKey,ProcessInstanceId) {
-    tabturn=tabpage;
+function _dealWith(ProcessDefinitionKey, TaskDefinitionKey, BusinessKey, ProcessInstanceId) {
+    tabturn = tabpage;
     Ext.Ajax.request({
         url: AppUrl + 'hp/PM_EQU_REPAIR_FLOW_MENU_SEL',
         type: 'ajax',
@@ -432,10 +440,10 @@ function _dealWith(ProcessDefinitionKey,TaskDefinitionKey,BusinessKey,ProcessIns
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值
             if (data.success) {//成功，会传回true
-                var V_URL =  data.list[0].V_URL;
+                var V_URL = data.list[0].V_URL;
                 var owidth = window.screen.availWidth;
-                var oheight =  window.screen.availHeight - 50;
-                window.open(AppUrl + 'page'+V_URL+'?V_ORDERGUID='+ BusinessKey+ '&TaskDefinitionKey='+ TaskDefinitionKey +'&ProcessDefinitionKey='+ProcessDefinitionKey +'&ProcessInstanceId='+ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+                var oheight = window.screen.availHeight - 50;
+                window.open(AppUrl + 'page' + V_URL + '?V_ORDERGUID=' + BusinessKey + '&TaskDefinitionKey=' + TaskDefinitionKey + '&ProcessDefinitionKey=' + ProcessDefinitionKey + '&ProcessInstanceId=' + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
             } else {
                 Ext.MessageBox.show({
                     title: '错误',
@@ -459,16 +467,16 @@ function _dealWith(ProcessDefinitionKey,TaskDefinitionKey,BusinessKey,ProcessIns
 /*
 * 批量通过
 * */
-function AgreeData(){
+function AgreeData() {
     // var BusinessKeysData=[];
     if (Ext.getCmp('tabid').getValue() == 'WeekPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
-        var fnum=0;
+        var fnum = 0;
         if (record.length > 0) {
-            var BusinessKeysData=[];
-            var ProcessDefinitionKeyData=[];
-            var FlowType=[];
+            var BusinessKeysData = [];
+            var ProcessDefinitionKeyData = [];
+            var FlowType = [];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
@@ -484,7 +492,7 @@ function AgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    FlowType:FlowType
+                    FlowType: FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -500,11 +508,11 @@ function AgreeData(){
     } else if (Ext.getCmp('tabid').getValue() == 'MonthPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
-        var fnum=0;
+        var fnum = 0;
         if (record.length > 0) {
-            var BusinessKeysData=[];
-            var ProcessDefinitionKeyData=[];
-            var FlowType=[];
+            var BusinessKeysData = [];
+            var ProcessDefinitionKeyData = [];
+            var FlowType = [];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
@@ -520,7 +528,7 @@ function AgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    FlowType:FlowType
+                    FlowType: FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -533,14 +541,14 @@ function AgreeData(){
             alert("请选择审批数据！");
             return;
         }
-    }else if(Ext.getCmp('tabid').getValue() == 'WORK'){
+    } else if (Ext.getCmp('tabid').getValue() == 'WORK') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
-        var fnum=0;
+        var fnum = 0;
         if (record.length > 0) {
-            var BusinessKeysData=[];
-            var ProcessDefinitionKeyData=[];
-            var ProcessInstanceIdData=[];
+            var BusinessKeysData = [];
+            var ProcessDefinitionKeyData = [];
+            var ProcessInstanceIdData = [];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
@@ -556,7 +564,7 @@ function AgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    ProcessInstanceId:ProcessInstanceIdData
+                    ProcessInstanceId: ProcessInstanceIdData
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -574,20 +582,21 @@ function AgreeData(){
 
 
 }
+
 /*
  * 批量驳回
  * */
-function DisAgreeData(){
+function DisAgreeData() {
     //var BusinessKeysData=[];
-    if(Ext.getCmp('tabid').getValue()=='WeekPlan') {
+    if (Ext.getCmp('tabid').getValue() == 'WeekPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
-        var fnum=0;
+        var fnum = 0;
         if (record.length > 0) {
-            var BusinessKeysData=[];
-            var ProcessDefinitionKeyData=[];
-            var ProcessInstanceIdData=[];
-            var FlowType=[];
+            var BusinessKeysData = [];
+            var ProcessDefinitionKeyData = [];
+            var ProcessInstanceIdData = [];
+            var FlowType = [];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
@@ -604,8 +613,8 @@ function DisAgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    ProcessInstanceId:ProcessInstanceIdData,
-                    FlowType:FlowType
+                    ProcessInstanceId: ProcessInstanceIdData,
+                    FlowType: FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -618,15 +627,15 @@ function DisAgreeData(){
             alert("请选择审批数据！");
             return;
         }
-    }else if (Ext.getCmp('tabid').getValue() == 'MonthPlan') {
+    } else if (Ext.getCmp('tabid').getValue() == 'MonthPlan') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
-        var fnum=0;
+        var fnum = 0;
         if (record.length > 0) {
-            var BusinessKeysData=[];
-            var ProcessDefinitionKeyData=[];
-            var ProcessInstanceIdData=[];
-            var FlowType=[];
+            var BusinessKeysData = [];
+            var ProcessDefinitionKeyData = [];
+            var ProcessInstanceIdData = [];
+            var FlowType = [];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
@@ -643,8 +652,8 @@ function DisAgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    ProcessInstanceId:ProcessInstanceIdData,
-                    FlowType:FlowType
+                    ProcessInstanceId: ProcessInstanceIdData,
+                    FlowType: FlowType
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -657,14 +666,14 @@ function DisAgreeData(){
             alert("请选择审批数据！");
             return;
         }
-    }else if (Ext.getCmp('tabid').getValue() == 'WORK') {
+    } else if (Ext.getCmp('tabid').getValue() == 'WORK') {
         var record = Ext.getCmp('grid').getSelectionModel().getSelection();
         var num = 0;
-        var fnum=0;
+        var fnum = 0;
         if (record.length > 0) {
-            var BusinessKeysData=[];
-            var ProcessDefinitionKeyData=[];
-            var ProcessInstanceIdData=[];
+            var BusinessKeysData = [];
+            var ProcessDefinitionKeyData = [];
+            var ProcessInstanceIdData = [];
             for (var i = 0; i < record.length; i++) {
                 BusinessKeysData.push(record[i].data.BusinessKey);
                 ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
@@ -680,7 +689,7 @@ function DisAgreeData(){
                     V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                     V_ORDERGUID: BusinessKeysData,
                     ProcessDefinitionKey: ProcessDefinitionKeyData,
-                    ProcessInstanceId:ProcessInstanceIdData
+                    ProcessInstanceId: ProcessInstanceIdData
                 },
                 success: function (response) {
                     var data = Ext.decode(response.responseText);
@@ -696,6 +705,7 @@ function DisAgreeData(){
     }
 
 }
-function OnPageLoad(){
+
+function OnPageLoad() {
     window.location.reload();
 }
