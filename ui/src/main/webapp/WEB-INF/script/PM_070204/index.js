@@ -2,6 +2,8 @@
 var I_ID = -1;
 var flag = "";
 var V_ORDERGUID = null;
+var aqcsGuid="";
+var aqcsGuidList=[];
 var A_USERID = Ext.util.Cookies.get('v_personcode');
 var A_USERNAME = Ext.util.Cookies.get('v_personname2');
 if (location.href.split('?')[1] != undefined) {
@@ -283,15 +285,59 @@ var windowLayout = {
             xtype: 'textfield',
             id: 'jxsafe',
             fieldLabel: '检修安全措施',
-            readOnly: true,
-            width: 365
+            readOnly: false,
+            width: 365,
+            enableKeyEvents:true,
+            listeners:{
+                keyup:function(){
+                    var num=0;
+                    var laststr=Ext.getCmp('jxsafe').getValue().charAt(Ext.getCmp('jxsafe').getValue().length-1);
+                    if (Ext.getCmp('jxsafe').getValue() != "" && laststr == ";" ||Ext.getCmp('jxsafe').getValue() != "" && laststr == "；") {
+                            if(Ext.getCmp('jxsafe').getValue().split(";").length==2){
+                            aqcsGuid = guid2();
+                            Ext.Ajax.request({
+                                url: AppUrl + 'pm_19/PRO_PM_19_AQCS_EDIT',
+                                method: 'POST',
+                                async: false,
+                                params: {
+                                    V_V_AQCSCODE: aqcsGuid,//Ext.getCmp('winaqcscode').getValue(),
+                                    V_V_AQCSNAME: Ext.getCmp('jxsafe').getValue(),
+                                    V_V_EQUCODE: 'TY',
+                                    V_V_EQUNAME: 'TY',
+                                    V_V_EQUSITE: 'TY'
+                                },
+                                success: function (ret) {
+                                    var resp = Ext.JSON.decode(ret.responseText);
+                                    if (resp.list[0].V_INFO == "SUCCESS") {
+                                        num = 1;
+                                        for (var i; i < Ext.getCmp('jxsafe').getValue().split(";").length; i++) {
+                                            aqcsGuidList.push();
+                                        }
+                                    }
+
+                                }
+                            });
+                        }
+                        else{
+                            Ext.Msg.alert("消息提示","以“；”为输入结尾，且只能输入一次“；”！")
+                            }
+                    }
+                }
+            }
         }, {
             xtype: 'button',
             text: '+',
             handler: selectJXSAFE,
             width: 25,
             margin: '0px 0px 0px -7px'
-        }, {
+        },
+        // ,{
+        //     xtype:'label',
+        //     text:'手动输入安全措施，需要以“;”结尾',
+        //     width:200,
+        //     sytle:'color:red'
+        // },
+        {
             xtype: 'toolbar',
             border: 0,
             layout: 'column',
@@ -363,7 +409,21 @@ function OnClickSaveButton() {
         Ext.MessageBox.alert('提示', '请填写工序内容');
         return false;
     }
+    if(aqcsGuid!=""){
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET',
+            params: {
+                V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
+                V_V_AQCS_CODE: aqcsGuid
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
 
+            }
+        });
+    }
     Ext.Ajax.request({
         url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_SET_NEW',
         method: 'POST',
@@ -581,6 +641,13 @@ function guid() {
     }
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+function guid2(){
+    function S6() {
+        return (((1 + Math.random()) * 0x10002) | 0).toString(16).substring(1);
+    }
+
+    return (S6() + S6() + "-" + S6() + "-" + S6() + "-" + S6() + "-" + S6() + S6() + S6());
 }
 function selectJXPER() {
     var owidth = window.document.body.offsetWidth - 200;
