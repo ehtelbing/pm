@@ -360,6 +360,9 @@ Ext.onReady(function () {
         bodyStyle: 'overflow-x:hidden; overflow-y:auto',
         title: '检修设备',
         autoScroll: true,
+        plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+        })],
         /*selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
          selType: 'checkboxmodel',
          mode: 'SIMPLE'
@@ -388,7 +391,12 @@ Ext.onReady(function () {
             text: '维修人数',
             dataIndex: 'V_PERNUM',
             flex: 2,
-            align: 'center'
+            align: 'center',
+            editor: {
+                xtype: 'numberfield',
+                hideTrigger: true,
+                minValue: 0
+            }
         }, {
             text: '预期寿命',
             dataIndex: 'V_LIFELONG',
@@ -849,7 +857,16 @@ function addModelSave() {
         alert('停工时间不可以大于竣工时间请从新设定'); return;
     }
     var data = Ext.getCmp('grid').getSelectionModel().getSelection();
+    var ss = Ext.getCmp('grid1').getStore();
+    var personnum=0;
+    for(var i=0;i<ss.getCount();i++){
+        var num=0;
+        if(ss.getAt(i).get('V_PERNUM')!=null && ss.getAt(i).get('V_PERNUM')!=''){
+            num=ss.getAt(i).get('V_PERNUM');
 
+        }
+        personnum=personnum+num;
+    }
     Ext.Ajax.request({
         url: AppUrl + 'pm_1921/PM_1921_PLAN_MX_DATA_CHECK',
         method: 'POST',
@@ -866,8 +883,8 @@ function addModelSave() {
             V_V_WEEK: WEEK,
             V_V_STIME: jhtgTime,
             V_V_ETIME: jhjgTime,
-            V_V_SUNTIME: Ext.getCmp('jhgshj').getValue()
-
+            V_V_SUNTIME: Ext.getCmp('jhgshj').getValue(),
+            V_V_PRENUM:personnum
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
