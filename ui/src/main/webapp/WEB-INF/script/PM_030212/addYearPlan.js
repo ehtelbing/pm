@@ -745,7 +745,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'textfield',
             fieldLabel: '项目名称',
             id: 'ProjectName',
-            labelWidth: 60,
+            labelWidth: 80,
             width: 250,
             margin: '5 5 5 0'
         },{
@@ -786,7 +786,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             margin: '5 5 5 0',
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
-            labelWidth: 60,
+            labelWidth: 80,
             width: 250,
             labelAlign: 'right'
         },
@@ -800,8 +800,8 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             margin: '5 5 5 0',
             displayField: 'V_ZYMC',
             valueField: 'V_GUID',
-            width: 265,
-            labelWidth: 75,
+            width: 250,
+            labelWidth: 80,
             labelAlign: 'right'
         },
         {
@@ -815,7 +815,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             displayField: 'V_LBMC',
             valueField: 'V_UID',
             width: 250,
-            labelWidth: 60,
+            labelWidth: 80,
             labelAlign: 'right'
         }, {
             xtype: 'combo',
@@ -842,7 +842,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             displayField: 'V_SGFS',
             valueField: 'V_BH',
             width: 250,
-            labelWidth: 60,
+            labelWidth: 80,
             labelAlign: 'right'
         }, {
             xtype: 'combo',
@@ -850,7 +850,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             fieldLabel: '检修类别',
             editable: false,
             // style : 'margin:5px 0px 5px 5px',
-            labelWidth: 100,
+            labelWidth: 80,
             width: 250,
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
@@ -908,36 +908,14 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
     border: false,
     layout: 'column',
     height: 70,
+    autoScroll:true,
     width: '100%',
     margin: '0',
     bodyStyle: 'background:#f2f2f2 !important;',
     defaults: {labelAlign: 'right'},
     collapsible: false,
     items: [
-        {
-            xtype: 'datefield',
-            id: 'btime',
-            editable: false,
-            fieldLabel: '开工时间',
-            margin: '5 5 5 15',
-            labelWidth: 60,
-            width: 170,
-            labelAlign: 'right',
-            format: 'Y/m/d',
-            value: new Date()
-        },
-        {
-            xtype: 'datefield',
-            id: 'etime',
-            editable: false,
-            fieldLabel: '竣工时间',
-            margin: '5 5 5 15',
-            labelWidth: 60,
-            width: 170,
-            labelAlign: 'right',
-            format: 'Y/m/d',
-            value: new Date()
-        },
+
         {
             xtype: 'combo',
             id: 'repairDept',
@@ -947,9 +925,9 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             fieldLabel: '检修单位',
             displayField: 'V_DEPTREPAIRNAME',
             valueField: 'V_DEPTREPAIRCODE',
-            margin: '5 5 5 15',
+            margin: '5 5 5 10',
             labelWidth: 60,
-            width: 240,
+            width: 230,
             labelAlign: 'right'
         },
         {
@@ -963,16 +941,54 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             valueField: 'V_PERSONCODE',
             margin: '5 5 5 10',
             labelWidth: 60,
-            width: 170,
+            width: 230,
             labelAlign: 'right'
+        },
+        {
+            xtype: 'combo',
+            id: 'nf',
+            fieldLabel: '年份',
+            editable: false,
+            margin: '5 5 5 10',
+            labelWidth: 60,
+            width: 160,
+            displayField: 'displayField',
+            valueField: 'valueField',
+            value: '',
+            store: yearStore,
+            queryMode: 'local'
+        }, {
+            xtype: 'combo',
+            id: 'yf',
+            fieldLabel: '月份',
+            editable: false,
+            margin: '5 5 5 10',
+            labelWidth: 60,
+            width: 160,
+            displayField: 'displayField',
+            valueField: 'valueField',
+            value: '',
+            store: monthStore,
+            queryMode: 'local'
         },{
+            xtype: 'numberfield',
+            id: 'jhgs',
+            fieldLabel: '计划工时',
+            margin: '5 5 5 10',
+            labelWidth: 60,
+            width: 160,
+            labelAlign: 'right',
+            value: 0,
+            minValue:0
+        },
+        {
             xtype: 'combo',
             id: 'sblx',
             fieldLabel: '设备类型',
             editable: false,
-            margin: '5 5 5 20',
+            margin: '5 5 5 10',
             labelWidth: 60,
-            width: 170,
+            width: 230,
             value: '',
             displayField: 'V_EQUTYPENAME',
             valueField: 'V_EQUTYPECODE',
@@ -988,9 +1004,9 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             fieldLabel: '设备名称',
             editable: false,
             labelAlign: 'right',
-            margin: '5 5 5 20',
+            margin: '5 5 5 10',
             labelWidth: 60,
-            width: 170,
+            width: 230,
             matchFieldWidth: false,
             value: '',
             displayField: 'V_EQUNAME',
@@ -1000,53 +1016,42 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             listConfig: {
                 minWidth: 400
             }
-        }, {
-            xtype: 'combo',
-            id: 'nf',
-            fieldLabel: '年份',
-            editable: false,
-            // style : 'margin:5px 0px 5px 5px',
-            labelWidth: 60,
-            width: 170,
-            displayField: 'displayField',
-            valueField: 'valueField',
-            value: '',
-            store: yearStore,
-            queryMode: 'local'
-        }, {
-            xtype: 'combo',
-            id: 'yf',
-            fieldLabel: '月份',
-            editable: false,
-            // style : 'margin:5px 0px 5px 5px',
-            labelWidth: 60,
-            width: 170,
-            displayField: 'displayField',
-            valueField: 'valueField',
-            value: '',
-            store: monthStore,
-            queryMode: 'local'
-        },{
-            xtype: 'numberfield',
-            id: 'jhgs',
-            fieldLabel: '计划工时',
-            margin: '5 5 5 10',
-            labelWidth: 60,
-            width: 170,
-            labelAlign: 'right',
-            value: 0,
-            minValue:0
         },
+
         {
             xtype: 'numberfield',
             id: 'jhts',
             fieldLabel: '计划天数',
             labelWidth: 60,
-            width: 170,
-            margin: '5 5 5 20',
+            width: 160,
+            margin: '5 5 5 10',
             labelAlign: 'right',
             value: 0,
             minValue:0
+        } ,
+        {
+            xtype: 'datefield',
+            id: 'btime',
+            editable: false,
+            fieldLabel: '开工时间',
+            margin: '5 5 5 10',
+            labelWidth: 60,
+            width: 160,
+            labelAlign: 'right',
+            format: 'Y/m/d',
+            value: new Date()
+        },
+        {
+            xtype: 'datefield',
+            id: 'etime',
+            editable: false,
+            fieldLabel: '竣工时间',
+            margin: '5 5 5 10',
+            labelWidth: 60,
+            width: 160,
+            labelAlign: 'right',
+            format: 'Y/m/d',
+            value: new Date()
         }
     ]
 });
