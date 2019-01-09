@@ -77,7 +77,7 @@ var zyStore = Ext.create('Ext.data.Store', {
 //页面表格信息加载
 var gridStore = Ext.create('Ext.data.Store', {
 	id : 'gridStore',
-	pageSize : 15,
+	pageSize : 50,
 	autoLoad : false,
 	fields :['I_ID',
 	'V_YEARPLAN_GUID',

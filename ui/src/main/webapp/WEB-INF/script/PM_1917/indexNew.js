@@ -303,7 +303,7 @@ Ext.onReady(function () {
     var gridStore = Ext.create('Ext.data.Store', {
         storeId: 'gridStore',
         autoLoad: false,
-        pageSize: 2,
+        pageSize: 50,
         fields: ['data_'],
         data: [[' '], [' '], [' '], [' '], [' ']],// 添加五行空白数据
         proxy: {
@@ -325,7 +325,7 @@ Ext.onReady(function () {
         storeId: 'jxmxStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_MX_CODE', 'V_MX_NAME', 'V_GX_CODE', 'V_ORGCODE', 'V_DEPTCODE', 'V_EQUTYPE', 'V_EQUCODE', 'V_EQUCODE_CHILD', 'V_BZ', 'V_IN_DATE', 'V_IN_PER', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_MXBB_NUM'],
         proxy: {
             url: AppUrl + 'Wsy/PM_1917_JXMX_DATA_SEL',
@@ -347,7 +347,7 @@ Ext.onReady(function () {
         storeId: 'jxgxStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_MX_CODE', 'V_MX_NAME', 'V_JXGX_CODE', 'V_JXGX_NAME', 'V_JXGX_NR'],
         proxy: {
             url: AppUrl + 'Wsy/PM_1917_JXGX_DATA_SEL',
@@ -369,7 +369,7 @@ Ext.onReady(function () {
         storeId: 'jjStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_JXGX_CODE', 'V_JJ_CODE', 'V_JJ_NAME', 'V_JJ_TYPE', 'V_JJ_TS', 'V_JJ_DE'],
         proxy: {
             url: AppUrl + 'Wsy/PRO_PM_19_CARDE_GXSEL',
@@ -391,7 +391,7 @@ Ext.onReady(function () {
         storeId: 'jjxxStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_CARCODE', 'V_CARNAME', 'V_DE', 'V_CARGUISUO', 'V_USE', 'V_FLAG', 'V_DRIVER_NAME'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_JXMX_JJCODE_SEL',
@@ -413,7 +413,7 @@ Ext.onReady(function () {
         storeId: 'aqcsStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_AQCS_CODE', 'V_AQCS_NAME', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_AQCS_BBH', 'V_AQ_ZYSX', 'V_AQCS_DETAIL', 'V_GX_CODE'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_AQCS_BY_GXCODE_SEL',
@@ -435,7 +435,7 @@ Ext.onReady(function () {
         storeId: 'aqcsyaStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_AQCS_CODE', 'V_AQYA_CODE', 'V_AQYA_NAME', 'V_AQYA_DETAIL'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_AQCS_AQYA_SEL',
@@ -457,7 +457,7 @@ Ext.onReady(function () {
         storeId: 'aqsgalStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_FINDTIME', 'V_FAULT_DD', 'V_FAULT_YY', 'V_FAULT_XX', 'V_FILE_GUID'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_AQCS_FAULT_ITEM_SEL',
@@ -479,7 +479,7 @@ Ext.onReady(function () {
         storeId: 'aqcszgStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_AQCS_CODE', 'V_ZG_GUID', 'V_ZG_TIME', 'V_ZG_PLACE', 'V_ZG_PERSON', 'V_ZG_DETAIL', 'V_ZG_COST'],
         proxy: {
             url: AppUrl + 'zs/BASE_AQCS_ZG_SEL',
@@ -501,7 +501,7 @@ Ext.onReady(function () {
         storeId: 'aqcsfjStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_GUID', 'V_FILEGUID', 'V_FILENAME', 'V_TIME', 'V_PERSON'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_FILE_CHAKAN_SEL',
@@ -523,7 +523,7 @@ Ext.onReady(function () {
         storeId: 'aqcsfjStore1',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_GUID', 'V_FILEGUID', 'V_FILENAME', 'V_TIME', 'V_PERSON'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_FILE_CHAKAN_SEL',
@@ -545,7 +545,7 @@ Ext.onReady(function () {
         storeId: 'jxjsbzStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_GUID', 'V_PART_NUMBER', 'V_PART_NAME', 'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE_UP', 'V_VALUE_DOWN', 'V_REPLACE_CYC', 'V_WEIGHT', 'V_IMGCODE', 'V_CONTENT'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_JXBZ_BY_GXCODE_SEL',
@@ -567,7 +567,7 @@ Ext.onReady(function () {
         storeId: 'zsbjxStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_GUID', 'V_PART_NUMBER', 'V_PART_NAME', 'V_PART_CODE', 'V_MATERIAL', 'V_IMGSIZE', 'V_IMGGAP', 'V_VALUE_UP', 'V_VALUE_DOWN', 'V_REPLACE_CYC', 'V_WEIGHT', 'V_IMGCODE', 'V_CONTENT'],
         proxy: {
             url: AppUrl + 'mwd/PM_REPAIR_JS_STANDARD_SEL',
@@ -589,7 +589,7 @@ Ext.onReady(function () {
         storeId: 'gdmxStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_ORDERGUID', 'V_ORDERID', 'D_ENTER_DATE', 'V_SHORT_TXT', 'V_ORDER_TYP', 'V_DEPTNAME', 'V_STATECODE'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_JXBZ_GD_SEL',
@@ -611,7 +611,7 @@ Ext.onReady(function () {
         storeId: 'qxmxStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_GUID', 'D_DEFECTDATE', 'V_DEFECTLIST', 'V_IDEA', 'V_STATECODE'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_JXBZ_QX_SEL',
@@ -633,7 +633,7 @@ Ext.onReady(function () {
         storeId: 'jxjjStore1',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_JJ_CODE', 'V_JJ_NAME', 'V_JJ_TYPE', 'V_JJ_DE', 'V_JJ_TS'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_JJ_BYJXBZ_SEL',
@@ -655,7 +655,7 @@ Ext.onReady(function () {
         storeId: 'jxjjStore2',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_CARCODE', 'V_CARNAME', 'V_DE', 'V_CARGUISUO', 'V_USE', 'V_FLAG', 'V_DRIVER_NAME'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_JXMX_JJCODE_SEL',
@@ -677,7 +677,7 @@ Ext.onReady(function () {
         storeId: 'jxgjStore1',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_TOOLCODE', 'V_TOOLNAME', 'V_TOOLTYPE', 'V_TOOLPLACE', 'V_TOOLINDATE', 'V_TOOLSTATUS'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GJ_BYJXBZ_SEL',
@@ -699,7 +699,7 @@ Ext.onReady(function () {
         storeId: 'jxgzStore1',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GZ_BYJXBZ_SEL',
@@ -721,7 +721,7 @@ Ext.onReady(function () {
         storeId: 'lsgdStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_ORDERGUID', 'V_ORDERID', 'V_ORDER_TYP_TXT', 'V_SHORT_TXT', 'D_ENTER_DATE', 'V_DEPTNAME'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GD_BY_GXGUID_SEL',
@@ -743,7 +743,7 @@ Ext.onReady(function () {
         storeId: 'gdgzStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_PERCODE_DE', 'V_PERNAME_DE', 'V_PERTYPE_DE', 'V_DE', 'V_TS'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GZ_BY_GDGUID_SEL',
@@ -765,7 +765,7 @@ Ext.onReady(function () {
         storeId: 'gdgjStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_GJ_CODE', 'V_GJ_NAME', 'V_GJ_TYPE'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_GJ_BY_GDGUID_SEL',
@@ -787,7 +787,7 @@ Ext.onReady(function () {
         storeId: 'gdjjStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_JJ_CODE', 'V_JJ_NAME', 'V_JJ_TYPE', 'V_JJ_TS'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_JJ_BY_GDGUID_SEL',
@@ -809,7 +809,7 @@ Ext.onReady(function () {
         storeId: 'wlStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_JXGX_CODE', 'V_WLCODE', 'V_KFNAME', 'V_WLSM', 'V_GGXH', 'V_JLDW', 'V_PRICE', 'V_USE_NUM'],
         proxy: {
             url: AppUrl + 'Wsy/PM_1917_JXGX_WL_DATA_SEL',
@@ -831,7 +831,7 @@ Ext.onReady(function () {
         storeId: 'gdwlStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_WLCODE', 'V_WLSM', 'V_USE_NUM'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_WL_BY_GDGUID_SEL',
@@ -3639,7 +3639,7 @@ Ext.onReady(function () {
         storeId: 'addjjStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_CARCODE', 'V_CARNAME', 'V_CARTYPE', 'V_CARGUISUO', 'V_CARINDATE', 'V_FLAG', 'V_CARINFO', 'V_DE'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_EXAMINE_CAR_SEL',
@@ -3661,7 +3661,7 @@ Ext.onReady(function () {
         storeId: 'addgjStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_TOOLCODE', 'V_TOOLNAME', 'V_TOOLTYPE', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_TOOLPLACE', 'V_TOOLINDATE', 'V_TOOLSTATUS'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_WORK_TOOL_SEL',
@@ -3683,7 +3683,7 @@ Ext.onReady(function () {
         storeId: 'addwlStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_KFNAME', 'V_WLCODE', 'V_WLSM', 'V_GGXH', 'V_JLDW', 'V_PRICE', 'V_USE_NUM'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_WL_SEL',
@@ -3705,7 +3705,7 @@ Ext.onReady(function () {
         storeId: 'addaqcsStore',
         autoLoad: false,
         loading: false,
-        pageSize: 20,
+        pageSize: 50,
         fields: ['V_AQCS_CODE', 'V_AQCS_NAME', 'V_AQCS_BBH'],
         proxy: {
             url: AppUrl + 'Wsy/BASE_AQCS_SEL',

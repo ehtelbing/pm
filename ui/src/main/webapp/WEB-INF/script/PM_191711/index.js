@@ -29,7 +29,7 @@ var gridStore = Ext.create("Ext.data.Store", {
 
 var wlQueryGridStore=Ext.create('Ext.data.Store',{
     id : 'wlQueryGridStore',
-    pageSize : 15,
+    pageSize : 50,
     autoLoad : false,
     fields : [ 'V_JXGX_CODE',
         'V_KFNAME',
