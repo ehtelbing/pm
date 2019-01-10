@@ -1,5 +1,22 @@
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
+    var zyStore = Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'zyStore',
+        fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
 
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -34,6 +51,18 @@ Ext.onReady(function () {
         layout: 'column',
         items: [{xtype: 'textfield', id: 'lxbh', fieldLabel: '流程编号', labelWidth: 70, labelAlign: 'right'},
             {xtype: 'hidden', id: 'tabid'},
+            {
+                xtype: 'combo',
+                id: 'zy',
+                allowBlank: false,
+                store: zyStore,
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '专业',
+                displayField: 'V_BASENAME',
+                valueField: 'V_SPECIALTYCODE', labelAlign: 'right',
+                labelWidth: 60, width: 190
+            },
             {xtype: 'button', text: '查询', width: 70, icon: imgpath + '/search.png', handler: QueryGrid}
         ]
     });
@@ -263,11 +292,26 @@ Ext.onReady(function () {
             PersonCode: 'ActivitiManage',
             FlowType: Ext.getCmp('tabid').getValue(),
             FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue(),
             Page: Ext.getCmp('page').store.currentPage,
             PageSize: Ext.getCmp('page').store.pageSize
         }
     });
 
+
+    Ext.data.StoreManager.lookup('zyStore').load({
+        params: {
+            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_DEPTNEXTCODE: '%'//Ext.getCmp('zyq').getValue()
+        }
+    });
+    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
+        Ext.ComponentManager.get("zy").store.insert(0, {
+            'V_SPECIALTYCODE': '%',
+            'V_BASENAME': '--全部--'
+        });
+        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+    });
     QueryTab();
 });
 
@@ -279,7 +323,8 @@ function QueryTab() {
         method: 'POST',
         params: {
             PersonCode: 'ActivitiManage',
-            FlowCode: Ext.getCmp('lxbh').getValue()
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue()
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
