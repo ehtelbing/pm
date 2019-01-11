@@ -479,9 +479,9 @@ public class ActivitiController {
             if (FlowCode.equals("")) {
                 if (PersonCode.equals("ActivitiManage")) {
                     if (ZyType.equals("%") || ZyType.equals("")) {
-                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName", ZyType).count();
-                    } else {
                         total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").count();
+                    } else {
+                        total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", map.get("V_FLOWTYPE_CODE").toString() + "%").processVariableValueLike("zyName", ZyType).count();
                     }
                 } else {
                     if (ZyType.equals("%") || ZyType.equals("")) {
