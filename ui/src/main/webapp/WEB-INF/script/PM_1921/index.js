@@ -397,7 +397,7 @@ Ext.onReady(function () {
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         autoLoad: false,
-        pageSize: 5,
+        pageSize: 15,
        /* fields: ['V_MX_CODE', 'V_MX_NAME', 'V_ORGCODE', 'V_ORGNAME',
             'V_DEPTCODE', 'V_DEPTNAME', 'V_SPECIALTY', 'V_MX_MENO', 'V_MX_FALG',
             'V_MX_INPERCODE', 'V_MX_INPERNAME', 'V_MX_INDATE', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME',
@@ -1149,8 +1149,6 @@ function queryGrid1() {
     //flowDicListStore.currentPage = 1;
     gridStore.currentPage=1;
     gridStore.load();
-    // V_MX_CODETEST='';
-    // querygrid1();
     itemClick('');
 }
 
@@ -1673,8 +1671,6 @@ function querygrid1() {
     };
     //flowDicListStore.currentPage = 1;
     gridStore1.load();
-    // V_MX_CODETEST='';
-
 }
 
 function _selectSbFourth4() {
