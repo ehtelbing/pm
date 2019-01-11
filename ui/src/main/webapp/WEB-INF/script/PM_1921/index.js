@@ -1,4 +1,4 @@
-var V_MX_CODETEST
+var V_MX_CODETEST;
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 Ext.define('Ext.ux.data.proxy.Ajax', {
@@ -957,7 +957,7 @@ Ext.onReady(function () {
             fieldLabel:'模型人数',
             labelWidth: 70,
             allowBlank: true,
-            readOnly: true,
+            // readOnly: true,
             style: ' margin: 5px 0px 0px -8px',
             width: 220,
             labelAlign: 'right',
@@ -1149,6 +1149,9 @@ function queryGrid1() {
     //flowDicListStore.currentPage = 1;
     gridStore.currentPage=1;
     gridStore.load();
+    // V_MX_CODETEST='';
+    // querygrid1();
+    itemClick('');
 }
 
 function _selectSbSecond2() {
@@ -1488,7 +1491,7 @@ function addshebei() {
 
     Ext.getCmp('winmxname4').setValue(records[0].get('V_MX_NAME'));//给厂矿设置默认值
    // Ext.getCmp('winsbtype4').setValue(records[0].get('V_EQUTYPECODE'));
-    Ext.getCmp('winsbname4').select(sbname4.getAt(1).get('V_EQUCODE'));
+    Ext.getCmp('winsbname4').select(sbname4.getAt(0).get('V_EQUCODE'));
     Ext.getCmp('winjxneirong4').setValue("");
     Ext.getCmp('winjxmx4').setValue("");
 
@@ -1670,6 +1673,8 @@ function querygrid1() {
     };
     //flowDicListStore.currentPage = 1;
     gridStore1.load();
+    // V_MX_CODETEST='';
+
 }
 
 function _selectSbFourth4() {
@@ -1702,10 +1707,11 @@ function getReturnValue(code,name,pernum) {
     Ext.getCmp("winjxper").setValue(pernum);
 }
 function OnJXMXClicked(){
+    var records = Ext.getCmp('grid').getSelectionModel().getSelection();//获取选中的数据
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     window.open(AppUrl + 'page/PM_192101/index.html?V_V_ORGCODE=' + Ext.getCmp('ck').getValue()
-     +'&V_V_DEPTCODE='+Ext.getCmp('zyq').getValue()
+     +'&V_V_DEPTCODE='+records[0].get('V_DEPTCODE')//Ext.getCmp('zyq').getValue()
      +'&V_V_EQUTYPE='+Ext.getCmp('winsbtype4').getValue()
      +'&V_V_EQUCODE='+Ext.getCmp('winsbname4').getValue(), '', 'height='+oheight+',width='+owidth+',top=100px,left=100px,resizable=yes');
 }

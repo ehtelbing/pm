@@ -137,7 +137,7 @@ Ext.onReady(function () {
         layout: 'border',
         items: [rightPanel]
     });
-
+    query();
 });
 
 function addbtn(){
