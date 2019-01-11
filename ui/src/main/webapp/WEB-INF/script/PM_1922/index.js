@@ -356,7 +356,12 @@ Ext.onReady(function () {
             displayInfo: true,
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
-            store: 'gridStore'
+            store: 'gridStore',
+            listeners : {
+                "beforechange" : function(bbar, params){
+                    itemClick('');
+                }
+            }
         }],
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
