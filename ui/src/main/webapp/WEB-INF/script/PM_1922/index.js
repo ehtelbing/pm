@@ -163,7 +163,24 @@ Ext.onReady(function () {
             }
         }
     });
-
+//施工方式
+    var sgfsStore = Ext.create("Ext.data.Store", {
+        storeId: 'sgfsStore',
+        fields: ['ID', 'V_BH','V_SGFS','V_LX'],
+        autoLoad: true,
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_03/PM_03_PLAN_SGFS_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         autoLoad: false,
@@ -228,53 +245,53 @@ Ext.onReady(function () {
         },
         frame:true,
         items: [{
-                id: 'ck',
-                xtype: 'combo',
-                store: ckstore,
-                fieldLabel: '单位名称',
-                editable: false,
-                labelWidth: 70,
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                queryMode: 'local'
-            }, {
-                id: 'zyq',
-                xtype: 'combo',
-                store: zyqstore,
-                fieldLabel: '作业区',
-                editable: false,
-                labelWidth: 70,
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                queryMode: 'local'
-            }, {
-                id: 'zy',
-                xtype: 'combo',
-                store: zystore,
-                fieldLabel: '专业',
-                editable: false,
-                labelWidth: 70,
-                displayField: 'V_BASENAME',
-                valueField: 'V_SPECIALTYCODE',
-                queryMode: 'local'
-            }, {
-                id: 'mxname',
-                xtype: 'textfield',
-                fieldLabel: '模型名称',
-                editable: false,
-                labelWidth: 70,
-                queryMode: 'local'
-            },{
-                xtype: 'button',
-                text: '查询',
-                icon: imgpath + '/search.png',
-                handler: queryGrid1
-            }, {
-                xtype: 'button',
-                text: '选择',
-                icon: imgpath + '/add.png',
-                handler: addModel
-            }
+            id: 'ck',
+            xtype: 'combo',
+            store: ckstore,
+            fieldLabel: '单位名称',
+            editable: false,
+            labelWidth: 70,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local'
+        }, {
+            id: 'zyq',
+            xtype: 'combo',
+            store: zyqstore,
+            fieldLabel: '作业区',
+            editable: false,
+            labelWidth: 70,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local'
+        }, {
+            id: 'zy',
+            xtype: 'combo',
+            store: zystore,
+            fieldLabel: '专业',
+            editable: false,
+            labelWidth: 70,
+            displayField: 'V_BASENAME',
+            valueField: 'V_SPECIALTYCODE',
+            queryMode: 'local'
+        }, {
+            id: 'mxname',
+            xtype: 'textfield',
+            fieldLabel: '模型名称',
+            editable: false,
+            labelWidth: 70,
+            queryMode: 'local'
+        },{
+            xtype: 'button',
+            text: '查询',
+            icon: imgpath + '/search.png',
+            handler: queryGrid1
+        }, {
+            xtype: 'button',
+            text: '选择',
+            icon: imgpath + '/add.png',
+            handler: addModel
+        }
         ]
     });
 
@@ -360,9 +377,9 @@ Ext.onReady(function () {
         bodyStyle: 'overflow-x:hidden; overflow-y:auto',
         title: '检修设备',
         autoScroll: true,
-        plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
-        })],
+        // plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
+        //     clicksToEdit: 1
+        // })],
         /*selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
          selType: 'checkboxmodel',
          mode: 'SIMPLE'
@@ -391,12 +408,12 @@ Ext.onReady(function () {
             text: '维修人数',
             dataIndex: 'V_PERNUM',
             flex: 2,
-            align: 'center',
-            editor: {
-                xtype: 'numberfield',
-                hideTrigger: true,
-                minValue: 0
-            }
+            align: 'center'
+            // editor: {
+            //     xtype: 'numberfield',
+            //     hideTrigger: true,
+            //     minValue: 0
+            // }
         }, {
             text: '预期寿命',
             dataIndex: 'V_LIFELONG',
@@ -417,7 +434,7 @@ Ext.onReady(function () {
     var window = Ext.create('Ext.window.Window', {
         id: 'window',
         width: 600,
-        height: 200,
+        height: 250,
         bodyPadding: 15,
         layout: 'vbox',
         title: '时间编辑',
@@ -700,16 +717,74 @@ Ext.onReady(function () {
                         }
                     }
                 ]
-            },
-            {
-                xtype: 'textfield',
-                id: 'jhgshj',
-                fieldLabel: '计划工时合计',
-                labelAlign: 'right',
-                margin: '5 0 5 5',
-                labelWidth: 80,
-                width: 280,
-                value: 0
+            }, {
+                layout: 'hbox',
+                defaults: {labelAlign: 'right'},
+                //frame: true,
+                border: false,
+                baseCls: 'my-panel-no-border',
+                items: [
+                    {
+                        xtype: 'textfield',
+                        id: 'jhgshj',
+                        fieldLabel: '计划工时合计',
+                        labelAlign: 'right',
+                        margin: '5 0 5 5',
+                        labelWidth: 80,
+                        width: 280,
+                        value: 0
+                    }, {
+                        xtype: 'numberfield',
+                        id: 'repairper',
+                        fieldLabel: '维修人数',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 80,
+                        allowNegative:false,
+                        width: 255,
+                        minValue:0,
+                        value: 0
+                    }
+                    // , {
+                    //     xtype : 'combo',
+                    //     id : "sgfs",
+                    //     store: sgfsStore,
+                    //     editable : false,
+                    //     queryMode : 'local',
+                    //     fieldLabel : '施工方式',
+                    //     margin: '5 0 5 5',
+                    //     displayField: 'V_SGFS',
+                    //     valueField: 'V_BH',
+                    //     labelWidth: 80,
+                    //     width: 254,
+                    //     labelAlign : 'right'
+                    // }
+                ]
+            }, {
+                layout: 'hbox',
+                defaults: {labelAlign: 'right'},
+                //frame: true,
+                border: false,
+                baseCls: 'my-panel-no-border',
+                items: [
+                    {
+                        xtype: 'numberfield',
+                        id: 'expectage',
+                        fieldLabel: '预计寿命',
+                        labelAlign: 'right',
+                        margin: '5 0 0 5',
+                        labelWidth: 80,
+                        allowNegative:false,
+                        width: 250,
+                        minValue:0,
+                        value: 0
+                    },{xtype:'label',
+                        id:'xs',
+                        margin:'8 0 0 5' ,
+                        text:'小时',
+                        width:28
+                    }
+                ]
             }],
         buttons: [{
             xtype: 'button',
@@ -739,7 +814,11 @@ Ext.onReady(function () {
     Ext.getCmp('jhjgdate').setValue(new Date(startUpTime));       //编辑窗口计划竣工时间默认值
     Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
     Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-
+    if(WEEK=='0'){
+        Ext.getCmp('repairper').hide();
+        Ext.getCmp('expectage').hide();
+        Ext.getCmp('xs').hide();
+    }
     Ext.data.StoreManager.lookup('ckstore').on('load', function () {
         Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckstore').getAt(0));
         Ext.data.StoreManager.lookup('zyqstore').load({
@@ -807,6 +886,16 @@ function addModel() {
         alert("请选择一条数据操作");
         return false;
     } else {
+        var data1 = Ext.getCmp('grid1').getStore();
+        var v1=0;
+        var v2=0;
+        for(var i = 0 ;i< data1.getCount(); i++){
+            v1 =Number(v1)+Number(data1.getAt(i).get('V_PERNUM'));
+            v2 =Number(v2)+Number(data1.getAt(i).get('V_LIFELONG'));
+
+        }
+        Ext.getCmp('repairper').setValue(v1);
+        Ext.getCmp('expectage').setValue(v2);
         Ext.getCmp('window').show();
     }
 }
@@ -824,7 +913,9 @@ function queryGrid1() {
          V_V_PAGESIZE: Ext.getCmp('gpage').store.pageSize*/
     };
     //flowDicListStore.currentPage = 1;
+    gridStore.currentPage=1;
     gridStore.load();
+    itemClick('');
 }
 
 
@@ -858,15 +949,17 @@ function addModelSave() {
     }
     var data = Ext.getCmp('grid').getSelectionModel().getSelection();
     var ss = Ext.getCmp('grid1').getStore();
-    var personnum=0;
-    for(var i=0;i<ss.getCount();i++){
-        var num=0;
-        if(ss.getAt(i).get('V_PERNUM')!=null && ss.getAt(i).get('V_PERNUM')!=''){
-            num=ss.getAt(i).get('V_PERNUM');
-
-        }
-        personnum=personnum+num;
-    }
+    // var personnum=0;
+    // for(var i=0;i<ss.getCount();i++){
+    //     var num=0;
+    //     if(ss.getAt(i).get('V_PERNUM')!=null && ss.getAt(i).get('V_PERNUM')!=''){
+    //         num=ss.getAt(i).get('V_PERNUM');
+    //
+    //     }
+    //     personnum=personnum+num;
+    // }
+    var personnum=Ext.getCmp('repairper').getValue();
+    var expectage=Ext.getCmp('expectage').getValue();
     Ext.Ajax.request({
         url: AppUrl + 'pm_1921/PM_1921_PLAN_MX_DATA_CHECK',
         method: 'POST',
@@ -884,7 +977,8 @@ function addModelSave() {
             V_V_STIME: jhtgTime,
             V_V_ETIME: jhjgTime,
             V_V_SUNTIME: Ext.getCmp('jhgshj').getValue(),
-            V_V_PRENUM:personnum
+            V_V_PRENUM:personnum,
+            V_V_EXPNUM:expectage
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);

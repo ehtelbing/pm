@@ -184,6 +184,7 @@ public class PM_1921Controller {
             @RequestParam(value = "V_V_ETIME") String V_V_ETIME,
             @RequestParam(value = "V_V_SUNTIME") String V_V_SUNTIME,
             @RequestParam(value = "V_V_PRENUM") String V_V_PRENUM,
+            @RequestParam(value = "V_V_EXPNUM") String V_V_EXPNUM,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map test = new HashMap();
@@ -191,7 +192,7 @@ public class PM_1921Controller {
         List<Map> result = null;
 
         result = pm_1921Service.PM_1921_PLAN_MX_DATA_CHECK(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_PLANTYPE, V_V_PERCODE,
-                V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_WEEK, V_V_STIME, V_V_ETIME, V_V_SUNTIME,V_V_PRENUM);
+                V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_WEEK, V_V_STIME, V_V_ETIME, V_V_SUNTIME,V_V_PRENUM,V_V_EXPNUM);
         test.put("list", result);
         return test;
     }
