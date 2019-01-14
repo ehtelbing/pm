@@ -2123,4 +2123,280 @@ public class Dx_fileService {
         logger.info("end PM_PLAN_YEAR_RE_JXMOD_SEL");
         return result;
     }
+    //大修作业区查看上报数量
+    public Map PRO_PM_YEAR_GROUPEBY_DEPT() throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_PM_YEAR_GROUPEBY_DEPT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_YEAR_GROUPEBY_DEPT" + "(:RET)}");
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_YEAR_GROUPEBY_DEPT");
+        return result;
+    }
+    //-月计划统计表1查询
+    public Map PRO_MONTH_EQU_STATIS_IN_SEL(String V_EOS_GUID,String V_YEAR,String V_MONTH,String V_ORGCODE,
+                                           String V_ORGNAME,String V_INPERCODE,String V_INPERNAME) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_MONTH_EQU_STATIS_IN_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_MONTH_EQU_STATIS_IN_SEL" + "(:V_EOS_GUID,:V_YEAR,:V_MONTH,:V_ORGCODE,:V_ORGNAME,:V_INPERCODE,:V_INPERNAME,:V_NUM,:RET)}");
+            cstmt.setString("V_EOS_GUID",V_EOS_GUID);
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_MONTH",V_MONTH);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.registerOutParameter("V_NUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_NUM",(String) cstmt.getObject("V_NUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_MONTH_EQU_STATIS_IN_SEL");
+        return result;
+    }
+    //-月计划统计表1-add
+    public Map PRO_MONTH_EQU_STATIS_IN_IN(String V_EOS_GUID,String V_YEAR, String V_MONTH, String V_ORGCODE,String V_ORGNAME,String V_EFPLAN,String V_EFHOUR,String V_EFACTUAL,
+                                          String V_CPLAN,String V_CSNUM,String V_CCNUM,String V_CACT, String V_CUSEPLAN,String V_CUSEACTUAL,String V_DXPFPLAN,String V_DXPFACTUAL,
+                                          String V_DXPFRATE,String V_DXTPLAN,String V_DXTACT,String V_DXTRATE ,String V_COPTPLAN,String V_COPTACT,String V_XKOPTPLAN,
+                                          String V_XKOPTACT,String V_SJSPLAN,String V_SJSACT,String V_QTSPLAN,String V_QTSACT,String V_INERTDATE,String V_INPERCODE,
+                                          String V_INPERNAME) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_MONTH_EQU_STATIS_IN_IN");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_MONTH_EQU_STATIS_IN_IN" +
+                            "(:V_EOS_GUID,:V_YEAR,:V_MONTH,:V_ORGCODE,:V_ORGNAME,:V_EFPLAN,:V_EFHOUR,:V_EFACTUAL,:V_CPLAN,:V_CSNUM,:V_CCNUM,:V_CACT,:V_CUSEPLAN,:V_CUSEACTUAL," +
+                            ":V_DXPFPLAN,:V_DXPFACTUAL,:V_DXPFRATE,:V_DXTPLAN,:V_DXTACT,:V_DXTRATE,:V_COPTPLAN,:V_COPTACT,:V_XKOPTPLAN,:V_XKOPTACT,:V_SJSPLAN,:V_SJSACT," +
+                            ":V_QTSPLAN,:V_QTSACT,:V_INERTDATE,:V_INPERCODE,:V_INPERNAME,:RET)}");
+            cstmt.setString("V_EOS_GUID",V_EOS_GUID);
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_MONTH",V_MONTH);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+            cstmt.setString("V_EFPLAN",V_EFPLAN);
+            cstmt.setString("V_EFHOUR",V_EFHOUR);
+            cstmt.setString("V_EFACTUAL",V_EFACTUAL);
+            cstmt.setString("V_CPLAN",V_CPLAN);
+            cstmt.setString("V_CSNUM",V_CSNUM);
+            cstmt.setString("V_CCNUM",V_CCNUM);
+            cstmt.setString("V_CACT",V_CACT);
+            cstmt.setString("V_CUSEPLAN",V_CUSEPLAN);
+            cstmt.setString("V_CUSEACTUAL",V_CUSEACTUAL);
+
+            cstmt.setString("V_DXPFPLAN",V_DXPFPLAN);
+            cstmt.setString("V_DXPFACTUAL",V_DXPFACTUAL);
+            cstmt.setString("V_DXPFRATE",V_DXPFRATE);
+            cstmt.setString("V_DXTPLAN",V_DXTPLAN);
+            cstmt.setString("V_DXTACT",V_DXTACT);
+            cstmt.setString("V_DXTRATE",V_DXTRATE);
+            cstmt.setString("V_COPTPLAN",V_COPTPLAN);
+            cstmt.setString("V_COPTACT",V_COPTACT);
+            cstmt.setString("V_XKOPTPLAN",V_XKOPTPLAN);
+            cstmt.setString("V_XKOPTACT",V_XKOPTACT);
+            cstmt.setString("V_SJSPLAN",V_SJSPLAN);
+            cstmt.setString("V_SJSACT",V_SJSACT);
+            cstmt.setString("V_QTSPLAN",V_QTSPLAN);
+            cstmt.setString("V_QTSACT",V_QTSACT);
+            cstmt.setString("V_INERTDATE",V_INERTDATE);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_MONTH_EQU_STATIS_IN_IN");
+        return result;
+    }
+    // MONTH SEL TABLE2
+    public Map PM_MONTH_EQU_ORG_STATIS2_SEL(String V_EOS_GUID,String V_YEAR,String V_MONTH,String V_ORGCODE,
+                                           String V_ORGNAME,String V_INPERCODE,String V_INPERNAME) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_MONTH_EQU_ORG_STATIS2_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_MONTH_EQU_ORG_STATIS2_SEL" + "(:V_EOS_GUID,:V_YEAR,:V_MONTH,:V_ORGCODE,:V_ORGNAME,:V_INPERCODE,:V_INPERNAME,:V_NUM,:RET)}");
+            cstmt.setString("V_EOS_GUID",V_EOS_GUID);
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_MONTH",V_MONTH);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.registerOutParameter("V_NUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_NUM",(String) cstmt.getObject("V_NUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_MONTH_EQU_ORG_STATIS2_SEL");
+        return result;
+    }
+    // MONTH IN TABLE2
+    public Map PM_MONTH_EQU_ORG_STATIS2_IN(String V_MAIN_GUID,String V_YEAR,String V_MONTH,String V_ORGCODE,String V_ORGNAME,String V_PERCODE,
+                                           String V_PERNAME,String V_DQ_PLAN,String V_DQ_HNUM,String V_DQ_CNUM,String V_DQ_ACT,String V_DL_PLAN,
+                                           String V_DL_ACTUAL,String V_GD_PLAN,String V_GD_ACT,String V_DX_FPLAN ,String V_DX_FACT,
+                                           String V_DX_FRATE,String V_DX_TPLAN,String V_DX_TACT,String V_DX_TRATE,String V_REMARK) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_MONTH_EQU_ORG_STATIS2_IN");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_MONTH_EQU_ORG_STATIS2_IN" +
+                    "(:V_MAIN_GUID,:V_YEAR,:V_MONTH,:V_ORGCODE,:V_ORGNAME,:V_PERCODE,:V_PERNAME,:V_DQ_PLAN,:V_DQ_HNUM,:V_DQ_CNUM,:V_DQ_ACT,:V_DL_PLAN," +
+                    ":V_DL_ACTUAL,:V_GD_PLAN,:V_GD_ACT,:V_DX_FPLAN,:V_DX_FACT,:V_DX_FRATE,:V_DX_TPLAN,:V_DX_TACT,:V_DX_TRATE,:V_REMARK,:RET)}");
+            cstmt.setString("V_MAIN_GUID",V_MAIN_GUID);
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_MONTH",V_MONTH);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.setString("V_PERNAME",V_PERNAME);
+            cstmt.setString("V_DQ_PLAN",V_DQ_PLAN);
+            cstmt.setString("V_DQ_HNUM",V_DQ_HNUM);
+            cstmt.setString("V_DQ_CNUM",V_DQ_CNUM);
+            cstmt.setString("V_DQ_ACT",V_DQ_ACT);
+            cstmt.setString("V_DL_PLAN",V_DL_PLAN);
+
+            cstmt.setString("V_DL_ACTUAL",V_DL_ACTUAL);
+            cstmt.setString("V_GD_PLAN",V_GD_PLAN);
+            cstmt.setString("V_GD_ACT",V_GD_ACT);
+            cstmt.setString("V_DX_FPLAN",V_DX_FPLAN);
+            cstmt.setString("V_DX_FACT",V_DX_FACT);
+            cstmt.setString("V_DX_FRATE",V_DX_FRATE);
+            cstmt.setString("V_DX_TPLAN",V_DX_TPLAN);
+            cstmt.setString("V_DX_TACT",V_DX_TACT);
+            cstmt.setString("V_DX_TRATE",V_DX_TRATE);
+            cstmt.setString("V_REMARK",V_REMARK);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_MONTH_EQU_ORG_STATIS2_IN");
+        return result;
+    }
+    // MONTH SEL TABLE3
+    public Map PM_MONTH_EQU_ORG_STATIS3_SEL(String V_V_GUID,String V_YEAR,String V_MONTH,String V_ORGCODE,
+                                            String V_ORGNAME,String V_INPERCODE,String V_INPERNAME) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_MONTH_EQU_ORG_STATIS3_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_MONTH_EQU_ORG_STATIS3_SEL" + "(:V_V_GUID,:V_YEAR,:V_MONTH,:V_ORGCODE,:V_ORGNAME,:V_INPERCODE,:V_INPERNAME,:V_NUM,:RET)}");
+            cstmt.setString("V_V_GUID",V_V_GUID);
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_MONTH",V_MONTH);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.registerOutParameter("V_NUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_NUM",(String) cstmt.getObject("V_NUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_MONTH_EQU_ORG_STATIS3_SEL");
+        return result;
+    }
+    // MONTH IN TABLE3
+    public Map PM_MONTH_EQU_ORG_STATIS3_IN(String V_MAIN_GUID,String V_YEAR,String V_MONTH,String V_ORGCODE,String V_ORGNAME,
+                                           String V_INPERCODE,String V_INPERNAME,String V_PRO_Q_PLAN,String V_PRO_Q_ACT,String V_RAMARK) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_MONTH_EQU_ORG_STATIS3_IN");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_MONTH_EQU_ORG_STATIS3_IN" +
+                    "(:V_MAIN_GUID,:V_YEAR,:V_MONTH,:V_ORGCODE,:V_ORGNAME,:V_INPERCODE,:V_INPERNAME,:V_PRO_Q_PLAN,:V_PRO_Q_ACT,:V_RAMARK,:RET)}");
+            cstmt.setString("V_MAIN_GUID",V_MAIN_GUID);
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_MONTH",V_MONTH);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.setString("V_PRO_Q_PLAN",V_PRO_Q_PLAN);
+            cstmt.setString("V_PRO_Q_ACT",V_PRO_Q_ACT);
+            cstmt.setString("V_RAMARK",V_RAMARK);
+
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_MONTH_EQU_ORG_STATIS3_IN");
+        return result;
+    }
 }

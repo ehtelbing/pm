@@ -1883,8 +1883,144 @@ public class Dx_fileController {
         return result;
     }
 
+    //大修作业区查看上报数量
+    @RequestMapping(value = "PRO_PM_YEAR_GROUPEBY_DEPT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_YEAR_GROUPEBY_DEPT() throws Exception {
 
+        Map result = dx_fileService.PRO_PM_YEAR_GROUPEBY_DEPT();
+        return result;
+    }
 
+    //-月计划统计表1查询
+    @RequestMapping(value = "PRO_MONTH_EQU_STATIS_IN_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_MONTH_EQU_STATIS_IN_SEL(@RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
+                                           @RequestParam(value = "V_YEAR") String V_YEAR,
+                                           @RequestParam(value = "V_MONTH") String V_MONTH,
+                                           @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                           @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+                                           @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+                                           @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
+
+        Map result = dx_fileService.PRO_MONTH_EQU_STATIS_IN_SEL(V_EOS_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME);
+        return result;
+    }
+    //-月计划统计表1增加
+    @RequestMapping(value = "PRO_MONTH_EQU_STATIS_IN_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_MONTH_EQU_STATIS_IN_IN(@RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
+                                          @RequestParam(value = "V_YEAR") String  V_YEAR,
+                                          @RequestParam(value = "V_MONTH") String  V_MONTH,
+                                          @RequestParam(value = "V_ORGCODE") String  V_ORGCODE,
+                                          @RequestParam(value = "V_ORGNAME") String  V_ORGNAME,
+                                          @RequestParam(value = "V_EFPLAN") String  V_EFPLAN,
+                                          @RequestParam(value = "V_EFHOUR") String  V_EFHOUR,
+                                          @RequestParam(value = "V_EFACTUAL") String  V_EFACTUAL,
+                                          @RequestParam(value = "V_CPLAN") String  V_CPLAN,
+                                          @RequestParam(value = "V_CSNUM") String  V_CSNUM,
+                                          @RequestParam(value = "V_CCNUM") String  V_CCNUM,
+                                          @RequestParam(value = "V_CACT") String  V_CACT,
+                                          @RequestParam(value = "V_CUSEPLAN") String V_CUSEPLAN,
+                                          @RequestParam(value = "V_CUSEACTUAL") String V_CUSEACTUAL,
+                                          @RequestParam(value = "V_DXPFPLAN") String V_DXPFPLAN,
+                                          @RequestParam(value = "V_DXPFACTUAL") String V_DXPFACTUAL,
+                                          @RequestParam(value = "V_DXPFRATE") String V_DXPFRATE,
+                                          @RequestParam(value = "V_DXTPLAN") String V_DXTPLAN,
+                                          @RequestParam(value = "V_DXTACT") String V_DXTACT,
+                                          @RequestParam(value = "V_DXTRATE") String V_DXTRATE,
+                                          @RequestParam(value = "V_COPTPLAN") String V_COPTPLAN,
+                                          @RequestParam(value = "V_COPTACT") String V_COPTACT,
+                                          @RequestParam(value = "V_XKOPTPLAN") String V_XKOPTPLAN,
+                                          @RequestParam(value = "V_XKOPTACT") String V_XKOPTACT,
+                                          @RequestParam(value = "V_SJSPLAN") String V_SJSPLAN,
+                                          @RequestParam(value = "V_SJSACT") String V_SJSACT,
+                                          @RequestParam(value = "V_QTSPLAN") String V_QTSPLAN,
+                                          @RequestParam(value = "V_QTSACT") String V_QTSACT,
+                                          @RequestParam(value = "V_INERTDATE") String V_INERTDATE,
+                                          @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+                                          @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
+
+        Map result = dx_fileService.PRO_MONTH_EQU_STATIS_IN_IN(V_EOS_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_EFPLAN,V_EFHOUR,V_EFACTUAL,V_CPLAN,V_CSNUM,V_CCNUM,
+                V_CACT,V_CUSEPLAN,V_CUSEACTUAL,V_DXPFPLAN,V_DXPFACTUAL,V_DXPFRATE,V_DXTPLAN,V_DXTACT,V_DXTRATE,V_COPTPLAN,V_COPTACT ,V_XKOPTPLAN ,V_XKOPTACT,V_SJSPLAN,
+                V_SJSACT,V_QTSPLAN,V_QTSACT,V_INERTDATE,V_INPERCODE,V_INPERNAME);
+        return result;
+    }
+    //-月计划统计表2查询
+    @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS2_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_MONTH_EQU_ORG_STATIS2_SEL(@RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
+                                           @RequestParam(value = "V_YEAR") String V_YEAR,
+                                           @RequestParam(value = "V_MONTH") String V_MONTH,
+                                           @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                           @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+                                           @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+                                           @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
+
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_SEL(V_EOS_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME);
+        return result;
+    }
+    //-月计划统计表2增加
+    @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS2_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_MONTH_EQU_ORG_STATIS2_IN(@RequestParam(value = "V_MAIN_GUID") String V_MAIN_GUID,
+                                           @RequestParam(value = "V_YEAR") String V_YEAR,
+                                           @RequestParam(value = "V_MONTH") String V_MONTH,
+                                           @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                           @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+                                           @RequestParam(value = "V_PERCODE") String V_PERCODE,
+                                           @RequestParam(value = "V_PERNAME") String V_PERNAME,
+                                           @RequestParam(value = "V_DQ_PLAN") String V_DQ_PLAN,
+                                           @RequestParam(value = "V_DQ_HNUM") String V_DQ_HNUM,
+                                           @RequestParam(value = "V_DQ_CNUM") String V_DQ_CNUM,
+                                           @RequestParam(value = "V_DQ_ACT") String V_DQ_ACT,
+                                           @RequestParam(value = "V_DL_PLAN") String V_DL_PLAN,
+                                           @RequestParam(value = "V_DL_ACTUAL") String V_DL_ACTUAL,
+                                           @RequestParam(value = "V_GD_PLAN") String V_GD_PLAN,
+                                           @RequestParam(value = "V_GD_ACT") String V_GD_ACT,
+                                           @RequestParam(value = "V_DX_FPLAN") String V_DX_FPLAN,
+                                           @RequestParam(value = "V_DX_FACT") String V_DX_FACT,
+                                           @RequestParam(value = "V_DX_FRATE") String V_DX_FRATE,
+                                           @RequestParam(value = "V_DX_TPLAN") String V_DX_TPLAN,
+                                           @RequestParam(value = "V_DX_TACT") String V_DX_TACT,
+                                           @RequestParam(value = "V_DX_TRATE") String V_DX_TRATE,
+                                           @RequestParam(value = "V_REMARK") String V_REMARK) throws Exception {
+
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_IN(V_MAIN_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_PERCODE,V_PERNAME,V_DQ_PLAN,V_DQ_HNUM,V_DQ_CNUM,V_DQ_ACT,
+                V_DL_PLAN,V_DL_ACTUAL,V_GD_PLAN,V_GD_ACT,V_DX_FPLAN,V_DX_FACT,V_DX_FRATE,V_DX_TPLAN,V_DX_TACT,V_DX_TRATE,V_REMARK);
+        return result;
+    }
+    //-月计划统计表3查询
+    @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS3_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_MONTH_EQU_ORG_STATIS3_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                            @RequestParam(value = "V_YEAR") String V_YEAR,
+                                            @RequestParam(value = "V_MONTH") String V_MONTH,
+                                            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+                                            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+                                            @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
+
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_SEL(V_V_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME);
+        return result;
+    }
+    //-月计划统计表3增加
+    @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS3_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_MONTH_EQU_ORG_STATIS3_IN(@RequestParam(value = "V_MAIN_GUID") String V_MAIN_GUID,
+                                           @RequestParam(value = "V_YEAR") String V_YEAR,
+                                           @RequestParam(value = "V_MONTH") String V_MONTH,
+                                           @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                           @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+                                           @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+                                           @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
+                                           @RequestParam(value = "V_PRO_Q_PLAN") String V_PRO_Q_PLAN,
+                                           @RequestParam(value = "V_PRO_Q_ACT") String V_PRO_Q_ACT,
+                                           @RequestParam(value = "V_RAMARK") String V_RAMARK) throws Exception {
+
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_IN(V_MAIN_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME,V_PRO_Q_PLAN,V_PRO_Q_ACT,V_RAMARK);
+        return result;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
