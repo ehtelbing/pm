@@ -80,9 +80,9 @@ var gridpanel=Ext.create('Ext.grid.GridPanel',{
     columns: [
         {header: '唯一码', width: 100, dataIndex: 'V_GUID', align: 'center',flex: 1, editor: 'textfield',hidden:true},
         {header: '单位', width: 120, dataIndex: 'ORGCODE', align: 'center',flex: 1,hidden:true},
-        {header:'单位', width:200, dataIndex: 'ORGNAME', align: 'center',flex: 1},
-        {header: '年份', width: 60, dataIndex: 'D_YEAR', align: 'center',flex: 1},
-        {header: '月份', width: 60, dataIndex: 'D_MONTH', align: 'center',flex: 1},
+        {header:'单位', width:180, dataIndex: 'ORGNAME', align: 'center'},
+        {header: '年份', width: 60, dataIndex: 'D_YEAR', align: 'center'},
+        {header: '月份', width: 60, dataIndex: 'D_MONTH', align: 'center'},
         {header:'电气单体设备完好率',columns:[
                 {text: '计划（%）', width: 80, dataIndex: 'DQ_EGOOD_PLAN', align: 'center',flex: 1,
                     editor: {xtype: "numberfield",minValue: '0', id: "a1",decimalPrecision:2

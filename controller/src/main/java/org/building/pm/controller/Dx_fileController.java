@@ -2021,6 +2021,19 @@ public class Dx_fileController {
         Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_IN(V_MAIN_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME,V_PRO_Q_PLAN,V_PRO_Q_ACT,V_RAMARK);
         return result;
     }
+
+    // 设备部月计划设备开和标准数据计划月报表统计
+    @RequestMapping(value = "PM_MONTH_EQU_ORGCODE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_MONTH_EQU_ORGCODE_SEL(@RequestParam(value = "V_YEAR") String V_YEAR,
+                                        @RequestParam(value = "V_MONTH") String V_MONTH,
+                                        @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                        @RequestParam(value = "V_PERCODE") String V_PERCODE,
+                                        @RequestParam(value = "V_SIGN") String V_SIGN) throws SQLException {
+        Map result = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR,V_MONTH,V_ORGCODE,V_PERCODE,V_SIGN);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

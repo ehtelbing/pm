@@ -86,11 +86,11 @@ var gridpanel=Ext.create('Ext.grid.GridPanel',{
     store:storeDate,
     columnLines: true,
     columns: [
-        {header: '唯一码', width: 100, dataIndex: 'EOS_GUID', align: 'center',flex: 1, editor: 'textfield',hidden:true},
-        {header: '单位', width: 120, dataIndex: 'ORGCODE', align: 'center',flex: 1,hidden:true},
-        {header: '单位', width: 200, dataIndex: 'ORGNAME', align: 'center',flex: 1},
-        {header: '年份', width: 80, dataIndex: 'D_YEAR', align: 'center',flex: 1},
-        {header: '月份', width: 80, dataIndex: 'D_MONTH', align: 'center',flex: 1},
+        {header: '唯一码', width: 100, dataIndex: 'EOS_GUID', align: 'center',editor: 'textfield',hidden:true},
+        {header: '单位', width: 120, dataIndex: 'ORGCODE', align: 'center',hidden:true},
+        {header: '单位', width: 180, dataIndex: 'ORGNAME', align: 'center'},
+        {header: '年份', width: 80, dataIndex: 'D_YEAR', align: 'center'},
+        {header: '月份', width: 80, dataIndex: 'D_MONTH', align: 'center'},
         {header:'设备故障率',columns:[
                 {text: '计划率（%）', width: 80, dataIndex: 'E_FAULT_PLAN', align: 'center',flex: 1,
                     editor: {xtype: "numberfield",minValue: '0', id: "a1",decimalPrecision:2

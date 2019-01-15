@@ -2399,4 +2399,32 @@ public class Dx_fileService {
         logger.info("end PM_MONTH_EQU_ORG_STATIS3_IN");
         return result;
     }
+    //设备部月计划设备开和标准数据计划月报表统计
+    public Map PM_MONTH_EQU_ORGCODE_SEL(String V_YEAR,String V_MONTH,String V_ORGCODE,String V_PERCODE,String V_SIGN)throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_MONTH_EQU_ORGCODE_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PM_MONTH_EQU_ORGCODE_SEL(:V_YEAR,:V_MONTH,:V_ORGCODE,:V_PERCODE,:V_SIGN,:RET)}");
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_MONTH",V_MONTH);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PM_MONTH_EQU_ORGCODE_SEL");
+        return result;
+    }
 }
