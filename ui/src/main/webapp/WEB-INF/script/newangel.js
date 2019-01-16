@@ -26,6 +26,7 @@ var AppUrl = APP + '/app/pm/';
 var AppUrlFrame = APP + '/app/pm';
 
 var imgpath = APP + '/app/pm/images/gif';
+var dxImgPath=APP+'/app/pm/css/images';
 
 document.write('<script type="text/javascript" charset="UTF-8" src="../../../pm/resources/shared/examples.js"></script>');
 
