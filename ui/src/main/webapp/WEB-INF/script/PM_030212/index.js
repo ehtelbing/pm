@@ -1,8 +1,17 @@
 
 
+var takeDept="";
+
 var processKey = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
+
+if(location.href.split('?')[1]!=undefined){
+    if(Ext.urlDecode(location.href.split('?')[1]) != null){
+        takeDept = Ext.urlDecode(location.href.split('?')[1]).ZYQ;
+    }
+}
+
 
 var ckStore = Ext.create('Ext.data.Store', {
     autoLoad: true,
@@ -205,7 +214,12 @@ Ext.onReady(function(){
         OnButtonQuery;
     });
     Ext.data.StoreManager.lookup('zyqStore').on('load',function(){
-        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+        if(takeDept==""){
+            Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+        }else{
+            Ext.getCmp('zyq').select(takeDept);
+        }
+
         OnButtonQuery();
     });
     Ext.getCmp('zyq').on('select',function(){

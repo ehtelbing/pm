@@ -1892,6 +1892,14 @@ public class Dx_fileController {
         return result;
     }
 
+    //大修专业查看上报数量
+    @RequestMapping(value = "PRO_PM_YEAR_GROUPEBY_ZY", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_YEAR_GROUPEBY_ZY() throws Exception {
+
+        Map result = dx_fileService.PRO_PM_YEAR_GROUPEBY_ZY();
+        return result;
+    }
     //-月计划统计表1查询
     @RequestMapping(value = "PRO_MONTH_EQU_STATIS_IN_SEL", method = RequestMethod.POST)
     @ResponseBody

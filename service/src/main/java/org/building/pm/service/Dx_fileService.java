@@ -2147,6 +2147,30 @@ public class Dx_fileService {
         logger.info("end PRO_PM_YEAR_GROUPEBY_DEPT");
         return result;
     }
+    //大修专业查看上报数量
+    public Map PRO_PM_YEAR_GROUPEBY_ZY() throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_PM_YEAR_GROUPEBY_ZY");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_YEAR_GROUPEBY_ZY" + "(:RET)}");
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_YEAR_GROUPEBY_ZY");
+        return result;
+    }
     //-月计划统计表1查询
     public Map PRO_MONTH_EQU_STATIS_IN_SEL(String V_EOS_GUID,String V_YEAR,String V_MONTH,String V_ORGCODE,
                                            String V_ORGNAME,String V_INPERCODE,String V_INPERNAME) throws SQLException {
