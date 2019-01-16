@@ -141,4 +141,5 @@ function openEin(code,name){
 }
 function openEinZy(code,name){
 
+
 }
