@@ -1108,7 +1108,7 @@ var TOPGIRDRIGHTtable = Ext.create('Ext.grid.Panel', {
         {text: '缺陷类型', width: 120, dataIndex: 'DEFECT_TYPE', align: 'center', renderer: atleft},
         {text: '缺陷内容', width: 300, dataIndex: 'DEFECT_CONTENT', align: 'center', renderer: atleft},
         {text: '缺陷日期', width: 140, dataIndex: 'DEFECT_DATE', align: 'center', renderer: atleft},
-        {text: '删除', width: 65, align: 'center', renderer: DelDefect}
+        {text: '删除', width: 100, align: 'center',maxWidth:100, renderer: DelDefect}
     ]
 });
 var TOPGIRDRIGHT = Ext.create('Ext.panel.Panel', {
@@ -1182,7 +1182,7 @@ var jxmx1 = Ext.create('Ext.grid.Panel', {
                 return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID + ',' + record.data.V_MODEL_NAME + ',' + record.data.V_MODEL_BBH + '\')">' + '查看详细' + '</a>'
             }
         },
-        {text: '删除', width: 65, align: 'center', renderer: DelModel}
+        {text: '删除', width: 100,maxWidth:100, align: 'center', renderer: DelModel}
     ]
 
 });
@@ -1446,25 +1446,26 @@ var centerPanel = Ext.create('Ext.panel.Panel', {
 var tjqxpanel = Ext.create('Ext.panel.Panel', {
     region: 'north',
     layout: 'column',
-    frame: true,
+    frame: false,
+    border:false,
     wdith: '100%',
     items: [{
         xtype: 'button',
         text: '确认返回',
         margin: '5 5 5 5',
-        bodyStyle: 'float:right;',
-        iconCls: 'Tablesave',
+        bodyStyle: 'float:center;',
+        // iconCls: 'Tablesave',
         listeners: {click: SaveQx}
     },
         {
             xtype: 'button',
             text: '关闭',
             margin: '5 5 5 5',
-            bodyStyle: 'float:right;',
-            iconCls: 'Tabledelete',
+            bodyStyle: 'float:center;',
+            // iconCls: 'Tabledelete',
             listeners: {click: winQxClose}
         }]
-})
+});
 var tjqxgrid = Ext.create('Ext.grid.Panel', {
     region: "center",
     id: 'qxAdd',
@@ -1543,22 +1544,23 @@ var dbtnAdd_tjqx = Ext.create('Ext.window.Window', {
 var mxpanle = Ext.create('Ext.panel.Panel', {
     region: 'north',
     layout: 'column',
-    frame: true,
+    frame: false,
+    border:false,
     wdith: '100%',
     items: [{
         xtype: 'button',
         text: '确认返回',
         margin: '5 5 5 5',
-        bodyStyle: 'float:right;',
-        iconCls: 'Tablesave',
+        bodyStyle: 'float:center;',
+        // iconCls: 'Tablesave',
         listeners: {click: SaveMx}
     },
         {
             xtype: 'button',
             text: '关闭',
             margin: '5 5 5 5',
-            bodyStyle: 'float:right;',
-            iconCls: 'Tabledelete',
+            bodyStyle: 'float:center;',
+            // iconCls: 'Tabledelete',
             listeners: {click: winMxClose}
         }]
 });
@@ -2611,6 +2613,7 @@ function DelDefect(value, metaData, record) {
             //value: value / 100,
             height: 25,
             width: 55,
+            margin:'padding:10px 50px 10px 10px;',
             text: '删除',
             handler: function () {
                 _deleteDefect(record.data.V_GUID);
@@ -2748,6 +2751,7 @@ function DelModel(value, metaData, record) {
             height: 25,
             width: 55,
             text: '删除',
+            margin:'padding:10px 50px 10px 10px;',
             handler: function () {
                 _deleteModel(record.data.V_MODEL_GUID, record.data.V_MODEL_NAME,record.data.V_MODEL_BBH);
             }
