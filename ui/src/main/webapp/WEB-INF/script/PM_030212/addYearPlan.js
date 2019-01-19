@@ -1082,7 +1082,9 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.form.Panel', {
     collapsible: false,
     tbar: [
         '缺陷明细',
-        { xtype: 'tbfill' ,style:'background-color:red'},
+        {xtype: 'tbfill'},
+        {xtype: 'tbseparator', baseCls: 'x-toolbar-separator-horizontal'},
+        // { xtype: 'tbfill' ,style:'background-color:red'},
         {
             xtype: 'button',
             text: '查看更多',
@@ -1104,6 +1106,7 @@ var TOPGIRDRIGHTtable = Ext.create('Ext.grid.Panel', {
     border: false,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text:'缺陷guid',width:100,dataIndex:'DEFECT_GUID',align:'center',hidden:true},
         {text: '设备名称', width: 140, dataIndex: 'EQUNAME', align: 'center', renderer: atleft},
         {text: '缺陷类型', width: 120, dataIndex: 'DEFECT_TYPE', align: 'center', renderer: atleft},
         {text: '缺陷内容', width: 300, dataIndex: 'DEFECT_CONTENT', align: 'center', renderer: atleft},
@@ -1174,12 +1177,13 @@ var jxmx1 = Ext.create('Ext.grid.Panel', {
     border: false,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text: '模型名称', width: 200, dataIndex: 'JX_MODCODE', align: 'center', renderer: atleft,hidden:true},
         {text: '模型名称', width: 200, dataIndex: 'JX_MODNAME', align: 'center', renderer: atleft},
         {text: '版本号', width: 140, dataIndex: 'JX_MODBBH', align: 'center', renderer: atleft},
         {text: '备注', width: 300, dataIndex: 'JX_MODBZ', align: 'center', renderer: atleft},
         {
             text: '查看明细', renderer: function (value, metaData, record) {
-                return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID + ',' + record.data.V_MODEL_NAME + ',' + record.data.V_MODEL_BBH + '\')">' + '查看详细' + '</a>'
+                return '<a href="#" onclick="MXclick(\'' + record.data.JX_MODCODE + ',' + record.data.JX_MODNAME + ',' + record.data.JX_MODBBH + '\')">' + '查看详细' + '</a>'
             }
         },
         {text: '删除', width: 100,maxWidth:100, align: 'center', renderer: DelModel}
@@ -1443,29 +1447,63 @@ var centerPanel = Ext.create('Ext.panel.Panel', {
 });
 
 //单设备缺陷添加
-var tjqxpanel = Ext.create('Ext.panel.Panel', {
-    region: 'north',
-    layout: 'column',
-    frame: false,
+var tjqxpanel = Ext.create("Ext.toolbar.Toolbar", {
+    id:'tjqxpanel',
+    frame: true,
     border:false,
-    wdith: '100%',
+    width: '100%',
+    // height:30,
+    // bodyCls:'borderff',
+    bodyCls:'border_wid',
     items: [{
         xtype: 'button',
         text: '确认返回',
-        margin: '5 5 5 5',
+        // margin: '2 5 2 5',
         bodyStyle: 'float:center;',
         // iconCls: 'Tablesave',
+        iconCls: 'buy-button',
+        icon:dxImgPath+'/back.png',
         listeners: {click: SaveQx}
     },
         {
             xtype: 'button',
             text: '关闭',
-            margin: '5 5 5 5',
+            // margin: '2 5 2 5',
             bodyStyle: 'float:center;',
+            iconCls: 'buy-button',
+            icon:dxImgPath+'/close.png',
             // iconCls: 'Tabledelete',
             listeners: {click: winQxClose}
         }]
 });
+//     Ext.create('Ext.panel.Panel', {
+//     region: 'north',
+//     layout: 'column',
+//     frame: false,
+//     border:true,
+//     wdith: '100%',
+//     bodyCls:'border_wid',
+//     items: [{
+//         xtype: 'button',
+//         text: '确认返回',
+//         margin: '5 5 5 5',
+//         bodyStyle: 'float:center;',
+//         // iconCls: 'Tablesave',
+//         iconCls: 'buy-button',
+//         icon:dxImgPath+'/back.png',
+//         listeners: {click: SaveQx}
+//     },
+//         {
+//             xtype: 'button',
+//             text: '关闭',
+//             margin: '5 5 5 5',
+//             bodyStyle: 'float:center;',
+//             iconCls: 'buy-button',
+//             icon:dxImgPath+'/close.png',
+//             // iconCls: 'Tabledelete',
+//             listeners: {click: winQxClose}
+//         }]
+// });
 var tjqxgrid = Ext.create('Ext.grid.Panel', {
     region: "center",
     id: 'qxAdd',
@@ -1483,7 +1521,8 @@ var tjqxgrid = Ext.create('Ext.grid.Panel', {
         {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'center', renderer: atleft},
         {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft},
         {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft}
-    ]
+    ],
+    tbar:[tjqxpanel]
 });
 var btnAdd_tjqx = Ext.create('Ext.window.Window', {
     id: 'btnAdd_tjqx',
@@ -1495,7 +1534,8 @@ var btnAdd_tjqx = Ext.create('Ext.window.Window', {
     closeAction: 'hide',
     closable: true,
     layout: 'border',
-    items: [tjqxpanel, tjqxgrid]
+    // items: [tjqxpanel, tjqxgrid]
+    items: [tjqxgrid]
 });
 //多设备缺陷添加
 var dtjqxgrid = Ext.create('Ext.grid.Panel', {
@@ -1541,29 +1581,53 @@ var dbtnAdd_tjqx = Ext.create('Ext.window.Window', {
     items: [dtjqxgrid, tjqxgrid1]
 });
 //检修模型确认返回
-var mxpanle = Ext.create('Ext.panel.Panel', {
-    region: 'north',
-    layout: 'column',
-    frame: false,
+var mxpanle = Ext.create("Ext.toolbar.Toolbar", {
+    id:'mxpanle',
+    frame: true,
     border:false,
-    wdith: '100%',
+    width: '100%',
+    bodyCls:'border_wid',
     items: [{
         xtype: 'button',
         text: '确认返回',
-        margin: '5 5 5 5',
+        // margin: '2 5 2 5',
         bodyStyle: 'float:center;',
-        // iconCls: 'Tablesave',
+        iconCls: 'buy-button',
+        icon:dxImgPath+'/back.png',
         listeners: {click: SaveMx}
     },
         {
             xtype: 'button',
             text: '关闭',
-            margin: '5 5 5 5',
             bodyStyle: 'float:center;',
-            // iconCls: 'Tabledelete',
+            iconCls: 'buy-button',
+            icon:dxImgPath+'/close.png',
             listeners: {click: winMxClose}
         }]
 });
+    // Ext.create('Ext.panel.Panel', {
+    // region: 'north',
+    // layout: 'column',
+    // frame: false,
+    // border:false,
+    // wdith: '100%',
+    // items: [{
+    //     xtype: 'button',
+    //     text: '确认返回',
+    //     margin: '5 5 5 5',
+    //     bodyStyle: 'float:center;',
+    //     // iconCls: 'Tablesave',
+    //     listeners: {click: SaveMx}
+    // },
+    //     {
+    //         xtype: 'button',
+    //         text: '关闭',
+    //         margin: '5 5 5 5',
+    //         bodyStyle: 'float:center;',
+    //         // iconCls: 'Tabledelete',
+    //         listeners: {click: winMxClose}
+    //     }]
+// });
 //检修模型表单1
 var mxAllGrid = Ext.create('Ext.grid.Panel', {
     region: "north",
@@ -1574,7 +1638,7 @@ var mxAllGrid = Ext.create('Ext.grid.Panel', {
     id: 'mxAllGrid',
     store: mxAllStore,
     columnLines: true,
-    border: true,
+    border: false,
     selType: 'checkboxmodel',
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
@@ -1587,7 +1651,9 @@ var mxAllGrid = Ext.create('Ext.grid.Panel', {
                 return '<a href="#" onclick="MXclick(\'' + record.data.V_MX_CODE + ',' + record.data.V_MX_NAME + ',' + record.data.V_MXBB_NUM + '\')">' + '查看详细' + '</a>'
             }
         }
-    ], listeners: {itemclick: QueryGx}
+    ],
+    tbar:[mxpanle],
+    listeners: {itemclick: QueryGx}
 });
 //检修模型表单2
 var jxgxGrid = Ext.create('Ext.grid.Panel', {
@@ -1623,7 +1689,8 @@ var btnAdd_jxmx = Ext.create('Ext.window.Window', {
     closeAction: 'hide',
     closable: true,
     layout: 'border',
-    items: [mxpanle, mxAllGrid, jxgxGrid]
+    // items: [mxpanle, mxAllGrid, jxgxGrid]
+    items: [mxAllGrid, jxgxGrid]
 });
 //大修计划检修模型明细
 
@@ -2136,7 +2203,7 @@ var tebpanel = Ext.create('Ext.tab.Panel', {
     region: 'center',
     enableTabScroll: true,
     defaults: {autoScroll: true},
-    items: [{id: 'tab1', title: '检修模型明细', layout: 'border', frame: true, border: false, items: [gxgrid, dxjhsbright]},
+    items: [{id: 'tab1', title: '检修模型明细', layout: 'border', frame: false, border: false, items: [gxgrid, dxjhsbright]},
         {id: 'tab2', title: '检修技术标准', items: [jxjsyq]},
         {id: 'tab3', title: '检修安全措施', items: [jxaqcs]}
         , {id: 'tab4', title: '检修附件明细', items: [mxfilegrid]}]
@@ -2149,7 +2216,8 @@ var MXclickW = Ext.create('Ext.window.Window', {
     height: 800,
     title: '大修计划检修模型明细',
     modal: true,
-    frame: true,
+    frame: false,
+    border:false,
     closeAction: 'hide',
     closable: true,
     layout: 'border',
@@ -2191,8 +2259,23 @@ Ext.onReady(function () {
     Ext.get('toolbar-1020').setStyle(tbarStyle);
     Ext.get('tbtext-1021').setStyle('color','white');
 
-    Ext.get('toolbar-1047').setStyle(tbarStyle);
-    Ext.get('tbtext-1048').setStyle('color','white');
+
+    if(Ext.get('toolbar-1049')==null){
+        Ext.get('toolbar-1050').setStyle(tbarStyle);
+        Ext.get('tbtext-1051').setStyle('color','white');
+    }else
+    if(Ext.get('toolbar-1048')==null){
+        Ext.get('toolbar-1049').setStyle(tbarStyle);
+        Ext.get('tbtext-1050').setStyle('color','white');
+    }else if(Ext.get('toolbar-1047')==null){
+        Ext.get('toolbar-1048').setStyle(tbarStyle);
+        Ext.get('tbtext-1049').setStyle('color','white');
+    }else{
+        Ext.get('toolbar-1047').setStyle(tbarStyle);
+        Ext.get('tbtext-1048').setStyle('color','white');
+
+    }
+
 
 
     Ext.getCmp('ck').on('select', function () {
@@ -2616,26 +2699,26 @@ function DelDefect(value, metaData, record) {
             margin:'padding:10px 50px 10px 10px;',
             text: '删除',
             handler: function () {
-                _deleteDefect(record.data.V_GUID);
+                _deleteDefect(record.data.DEFECT_GUID);
             }
         });
     }, 50);
     return Ext.String.format('<div id="{0}"></div>', id);
     // return '<a href="#" onclick="_deleteDefect(\'' + record.data.V_GUID + '\')">' + '删除' + '</a>';
 }
-
+//删除年计划中缺陷
 function _deleteDefect(DefectGuid) {
     Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_DEFECT_DEL',
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_DEFECT_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_PROJECT_GUID: Guid,
-            V_V_DEFECT_GUID: DefectGuid
+            V_GUID: yearguid,
+            V_DEFECTCODE: DefectGuid
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
-            if (resp.V_INFO == 'SUCCESS') {
+            if (resp.RET == 'SUCCESS') {
                 QueryDefect();
             } else {
                 alert("删除失败");
@@ -2753,7 +2836,7 @@ function DelModel(value, metaData, record) {
             text: '删除',
             margin:'padding:10px 50px 10px 10px;',
             handler: function () {
-                _deleteModel(record.data.V_MODEL_GUID, record.data.V_MODEL_NAME,record.data.V_MODEL_BBH);
+                _deleteModel(record.data.JX_MODCODE);//, record.data.JX_MODNAME,record.data.JX_MODBBH);
             }
         });
     }, 50);
@@ -2763,32 +2846,33 @@ function DelModel(value, metaData, record) {
 
 function _deleteModel(ModelGuid) {
     Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_MODEL_DEL',
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_JXMOD_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_PROJECT_GUID: Guid,
-            V_V_MODEL_GUID: ModelGuid
+            V_GUID: yearguid,
+            V_MODCODE: ModelGuid
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
-            if (resp.V_INFO == 'SUCCESS') {
-                Ext.Ajax.request({
-                    url: AppUrl + 'dxfile/PM_MODEL_FILE_DEL_DXF',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        V_V_GUID: Guid,
-                        V_V_MODE_GUID: ModelGuid
-                    },
-                    success: function (resp) {
-                        var res = Ext.decode(resp.responseText);
-                        if (resp.list == 'success') {
-                            QueryModel();
-                        }
-
-                    }
-                });
+            if (resp.RET == 'SUCCESS') {
+                QueryModel();
+                // Ext.Ajax.request({
+                //     url: AppUrl + 'dxfile/PM_MODEL_FILE_DEL_DXF',
+                //     method: 'POST',
+                //     async: false,
+                //     params: {
+                //         V_V_GUID: Guid,
+                //         V_V_MODE_GUID: ModelGuid
+                //     },
+                //     success: function (resp) {
+                //         var res = Ext.decode(resp.responseText);
+                //         if (resp.list == 'success') {
+                //             QueryModel();
+                //         }
+                //
+                //     }
+                // });
 
             } else {
                 alert("删除失败");

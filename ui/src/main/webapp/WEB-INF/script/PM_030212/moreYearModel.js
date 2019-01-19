@@ -26,11 +26,11 @@ var gxStore=Ext.create('Ext.data.Store', {
 var cgridStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'cgridStore',
-    fields: ['ID', 'V_PROJECT_GUID', 'V_MODEL_GUID', 'V_MODEL_NAME', 'V_MODEL_BBH','V_BZ'],
+    fields: ['YEAR_GUID', 'EQU_CODE', 'JX_MODCODE', 'JX_MODNAME', 'JX_MODBBH', 'JX_MODBZ','REMARK'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_03/PM_03_PLAN_YEAR_MODEL_SEL',
+        url:AppUrl + 'dxfile/PM_PLAN_YEAR_RE_JXMOD_SEL',
         actionMethods: {
             read: 'POST'
         },
@@ -166,11 +166,12 @@ var centerPanel = Ext.create('Ext.grid.Panel', {
     border: true,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-        {text: '模型名称',width: 200, dataIndex: 'V_MODEL_NAME', align: 'center',renderer:atleft},
-        {text: '版本号',width: 140, dataIndex: 'V_MODEL_BBH', align: 'center',renderer:atleft},
-        {text: '备注',width: 300, dataIndex: 'V_BZ', align: 'center',renderer:atleft},
+        {text: '模型名称',width: 200, dataIndex: 'JX_MODCODE', align: 'center',renderer:atleft,hidden:true},
+        {text: '模型名称',width: 200, dataIndex: 'JX_MODNAME', align: 'center',renderer:atleft},
+        {text: '版本号',width: 140, dataIndex: 'JX_MODBBH', align: 'center',renderer:atleft},
+        {text: '备注',width: 300, dataIndex: 'JX_MODBZ', align: 'center',renderer:atleft},
         {text: '查看明细',renderer:function(value,metaData,record){
-                return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID +','+record.data.V_MODEL_NAME+','+record.data.V_MODEL_BBH+'\')">'+'查看详细'+'</a>'
+                return '<a href="#" onclick="MXclick(\'' + record.data.JX_MODCODE +','+record.data.JX_MODNAME+','+record.data.JX_MODBBH+'\')">'+'查看详细'+'</a>'
             }},
         {text: '删除',width: 120,  align: 'center',renderer:DelModel}
     ]
@@ -583,8 +584,8 @@ Ext.onReady(function () {
 function QueryPageLoad(){
 
     Ext.data.StoreManager.lookup('cgridStore').load({
-        params:{
-            V_V_PROJECT_GUID:Guid
+        params: {
+            V_GUID: Guid
         }
     })
 
@@ -664,22 +665,39 @@ function QueryJxjsyq(mxguid){
 }
 //删除检修模型
 function DelModel(value, metaData, record){
-    return '<a href="#" onclick="_deleteModel(\'' + record.data.V_MODEL_GUID + '\')">' + '删除' + '</a>';
+    return '<a href="#" onclick="_deleteModel(\'' + record.data.JX_MODCODE + '\')">' + '删除' + '</a>';
 }
 function _deleteModel(ModelGuid){
     Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_MODEL_DEL',
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_JXMOD_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_PROJECT_GUID:Guid,
-            V_V_MODEL_GUID:ModelGuid
+            V_GUID: Guid,
+            V_MODCODE: ModelGuid
         },
         success: function (resp) {
-            var resp=Ext.decode(resp.responseText);
-            if(resp.V_INFO=='SUCCESS'){
-                QueryModel();
-            }else{
+            var resp = Ext.decode(resp.responseText);
+            if (resp.RET == 'SUCCESS') {
+                QueryPageLoad();
+                // Ext.Ajax.request({
+                //     url: AppUrl + 'dxfile/PM_MODEL_FILE_DEL_DXF',
+                //     method: 'POST',
+                //     async: false,
+                //     params: {
+                //         V_V_GUID: Guid,
+                //         V_V_MODE_GUID: ModelGuid
+                //     },
+                //     success: function (resp) {
+                //         var res = Ext.decode(resp.responseText);
+                //         if (resp.list == 'success') {
+                //             QueryModel();
+                //         }
+                //
+                //     }
+                // });
+
+            } else {
                 alert("删除失败");
             }
         }
