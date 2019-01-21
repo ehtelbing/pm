@@ -10,8 +10,8 @@ var V_JXGX_CODE = null;
 var V_PLANCODE = null;
 var startUpTime=null;
 var endUpTime=null;
-var getOtherguid='';
-var getOtherType='';
+var getOtherguid="";
+var getOtherType="";
 
 if (location.href.split('?')[1] != undefined) {
     V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
@@ -56,7 +56,7 @@ var monthStore = Ext.create("Ext.data.Store", {
 });
 //周
 var weeks = [];
-for (var i = 1; i <= 6; i++) {
+for (var i = 1; i <= 5; i++) {
     weeks.push({displayField: i, valueField: i});
 }
 var weekStore = Ext.create("Ext.data.Store", {
@@ -1521,6 +1521,21 @@ function OnButtonSaveClick() {
     }
     //模型
     V_JXMX_CODE = guid();
+    if(getOtherType == 'MONTH'&&getOtherguid!=""){
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/PM_03_PLAN_MONTH_SIGN_UPDT',
+            method:'POST',
+            async: false,
+            params: {
+                V_V_GUID: getOtherguid
+            },
+            success: function (response) {
+                var resp=Ext.decode(response.responseText);
+                if(resp.RET=='SUCCESS'){
+                }
+            }
+        });
+    }
     //保存
     Ext.Ajax.request({
         url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_NSET',

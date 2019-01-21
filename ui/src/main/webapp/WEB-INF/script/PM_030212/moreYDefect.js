@@ -6,15 +6,11 @@ if(Ext.urlDecode(location.href.split('?')[1])!=null){
 var gridStore= Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'gridStore',
-    fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE', 'V_SOURCENAME', 'V_SOURCETABLE', 'V_SOURCEREMARK', 'V_SOURCEID',
-        'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME',
-        'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_IDEA', 'V_STATECODE',
-        'V_STATENAME', 'V_STATECOLOR', 'V_GUID', 'V_EQUSITE1', 'D_DATE_EDITTIME', 'V_EDIT_GUID', 'V_SOURCE_GRADE', 'V_EQUCHILDCODE',
-        'V_INPERCODE', 'V_INPERNAME', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_FLAG'],
+    fields: ['YEAR_GUID', 'DEFECT_GUID','EQUCODE', 'EQUNAME', 'DEFECT_TYPE', 'DEFECT_CONTENT','DEFECT_DATE'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_DEFECT_SEL',
         actionMethods: {
             read: 'POST'
         },
@@ -38,10 +34,11 @@ var centerPanel = Ext.create('Ext.grid.Panel', {
     border: true,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-        {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft},
-        {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
-        {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atleft},
+        {text:'缺陷guid',width:100,dataIndex:'DEFECT_GUID',align:'center',hidden:true},
+        {text: '设备名称',width: 140, dataIndex: 'EQUNAME', align: 'center',renderer:atleft},
+        {text: '缺陷类型',width: 120, dataIndex: 'DEFECT_TYPE', align: 'center',renderer:atleft},
+        {text: '缺陷内容',width: 300, dataIndex: 'DEFECT_CONTENT', align: 'center',renderer:atleft},
+        {text: '缺陷日期',width: 140, dataIndex: 'DEFECT_DATE', align: 'center',renderer:atleft},
         {text: '删除',width: 120,  align: 'center',renderer:DelDefect}
     ]
 });
@@ -60,6 +57,7 @@ Ext.onReady(function () {
             bodyStyle: "background-color: #FFFFFF;",
             frame: true
         },
+        baseCls:'x-window-body x-window-body-default x-plain x-window-body-plain x-window-body-default-plain x-border-layout-ct x-closable x-window-body-closable x-window-body-default-closable x-window-body-default x-window-body-default-plain x-window-body-default-closable x-docked-noborder-top x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left x-resizable x-window-body-resizable x-window-body-default-resizable',
         items: [centerPanel]
     });
 
@@ -70,8 +68,8 @@ Ext.onReady(function () {
 function QueryPageLoad(){
 
     Ext.data.StoreManager.lookup('gridStore').load({
-        params:{
-            V_V_PROJECT_GUID:Guid
+        params: {
+            V_GUID: Guid
         }
     })
 
@@ -85,23 +83,23 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 
 //删除缺陷
 function DelDefect(value, metaData, record){
-    return '<a href="#" onclick="_deleteDefect(\'' + record.data.V_GUID + '\')">' + '删除' + '</a>';
+    return '<a href="#" onclick="_deleteDefect(\'' + record.data.DEFECT_GUID + '\')">' + '删除' + '</a>';
 }
 
 function _deleteDefect(DefectGuid){
     Ext.Ajax.request({
-        url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_DEFECT_DEL',
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_DEFECT_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_PROJECT_GUID:Guid,
-            V_V_DEFECT_GUID:DefectGuid
+            V_GUID: Guid,
+            V_DEFECTCODE: DefectGuid
         },
         success: function (resp) {
-            var resp=Ext.decode(resp.responseText);
-            if(resp.V_INFO=='SUCCESS'){
+            var resp = Ext.decode(resp.responseText);
+            if (resp.RET == 'SUCCESS') {
                 QueryPageLoad();
-            }else{
+            } else {
                 alert("删除失败");
             }
         }

@@ -2123,6 +2123,58 @@ public class Dx_fileService {
         logger.info("end PM_PLAN_YEAR_RE_JXMOD_SEL");
         return result;
     }
+    //年计划缺陷删除
+    public Map PM_PLAN_YEAR_RE_DEFECT_DEL(String V_GUID,String V_DEFECTCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_RE_DEFECT_DEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_RE_DEFECT_DEL" + "(:V_GUID,:V_DEFECTCODE,:RET)}");
+            cstmt.setString("V_GUID", V_GUID);
+            cstmt.setString("V_DEFECTCODE", V_DEFECTCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_RE_DEFECT_DEL");
+        return result;
+    }
+    //年计划模型删除
+    public Map PM_PLAN_YEAR_RE_JXMOD_DEL(String V_GUID,String V_MODCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_RE_JXMOD_DEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_RE_JXMOD_DEL" + "(:V_GUID,:V_MODCODE,:RET)}");
+            cstmt.setString("V_GUID", V_GUID);
+            cstmt.setString("V_MODCODE", V_MODCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_RE_JXMOD_DEL");
+        return result;
+    }
     //大修作业区查看上报数量
     public Map PRO_PM_YEAR_GROUPEBY_DEPT() throws SQLException {
         Map result = new HashMap();
@@ -2449,6 +2501,35 @@ public class Dx_fileService {
         }
         logger.debug("result:"+result);
         logger.info("end PM_MONTH_EQU_ORGCODE_SEL");
+        return result;
+    }
+
+    // MONTH 分解状态修改
+    public Map PM_03_PLAN_MONTH_SIGN_UPDT(String V_V_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_03_PLAN_MONTH_SIGN_UPDT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_MONTH_SIGN_UPDT" +
+                    "(:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_GUID",V_V_GUID);
+
+
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_MONTH_SIGN_UPDT");
         return result;
     }
 }

@@ -1882,7 +1882,22 @@ public class Dx_fileController {
         Map result = dx_fileService.PM_PLAN_YEAR_RE_JXMOD_SEL(V_GUID);
         return result;
     }
-
+    //年计划缺陷删除
+    @RequestMapping(value="PM_PLAN_YEAR_RE_DEFECT_DEL",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_RE_DEFECT_DEL(@RequestParam(value="V_GUID") String V_GUID,
+                                         @RequestParam(value="V_DEFECTCODE") String V_DEFECTCODE)throws Exception{
+        Map result=dx_fileService.PM_PLAN_YEAR_RE_DEFECT_DEL(V_GUID,V_DEFECTCODE);
+        return result;
+    }
+    //年计划模型删除
+    @RequestMapping(value="PM_PLAN_YEAR_RE_JXMOD_DEL",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_RE_JXMOD_DEL(@RequestParam(value="V_GUID") String V_GUID,
+                                         @RequestParam(value="V_MODCODE") String V_MODCODE)throws Exception{
+        Map result=dx_fileService.PM_PLAN_YEAR_RE_JXMOD_DEL(V_GUID,V_MODCODE);
+        return result;
+    }
     //大修作业区查看上报数量
     @RequestMapping(value = "PRO_PM_YEAR_GROUPEBY_DEPT", method = RequestMethod.POST)
     @ResponseBody
@@ -2039,6 +2054,13 @@ public class Dx_fileController {
                                         @RequestParam(value = "V_PERCODE") String V_PERCODE,
                                         @RequestParam(value = "V_SIGN") String V_SIGN) throws SQLException {
         Map result = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR,V_MONTH,V_ORGCODE,V_PERCODE,V_SIGN);
+        return result;
+    }
+    // MONTH 分解状态修改
+    @RequestMapping(value = "PM_03_PLAN_MONTH_SIGN_UPDT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_MONTH_SIGN_UPDT(@RequestParam(value = "V_V_GUID") String V_V_GUID) throws SQLException {
+        Map result = dx_fileService.PM_03_PLAN_MONTH_SIGN_UPDT(V_V_GUID);
         return result;
     }
 

@@ -389,6 +389,10 @@ function OnButtonSave(){
 		Ext.Msg.alert('操作信息','处理意见不能为空');
 		return;
 	}
+    if(Ext.getCmp('sblx').getValue()=='%'||Ext.getCmp('sbmc').getValue()=='%'){
+        Ext.Msg.alert('操作信息','设备类型或设备名称不可以为空');
+        return;
+    }
 	Ext.Ajax.request({
 		url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_SET',
 		method: 'POST',

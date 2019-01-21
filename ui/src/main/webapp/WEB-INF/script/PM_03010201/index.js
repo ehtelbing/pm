@@ -545,14 +545,14 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 5',
             icon: imgpath + '/accordion_expand.png',
             listeners: {click: OnButtonDR}
-        },
+        }/*,
         {
             xtype: 'button',
             text: '生成工单',
             margin: '5 0 5 5',
             icon: imgpath + '/accordion_collapse.png',
             handler: createWorkorder
-        }
+        }*/
     ]
 });
 
