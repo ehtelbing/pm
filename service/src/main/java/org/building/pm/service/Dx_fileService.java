@@ -2503,4 +2503,33 @@ public class Dx_fileService {
         logger.info("end PM_MONTH_EQU_ORGCODE_SEL");
         return result;
     }
+
+    // MONTH 分解状态修改
+    public Map PM_03_PLAN_MONTH_SIGN_UPDT(String V_V_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_03_PLAN_MONTH_SIGN_UPDT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_MONTH_SIGN_UPDT" +
+                    "(:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_GUID",V_V_GUID);
+
+
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_MONTH_SIGN_UPDT");
+        return result;
+    }
 }

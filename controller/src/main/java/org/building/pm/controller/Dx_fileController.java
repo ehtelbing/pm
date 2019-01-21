@@ -2056,6 +2056,13 @@ public class Dx_fileController {
         Map result = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR,V_MONTH,V_ORGCODE,V_PERCODE,V_SIGN);
         return result;
     }
+    // MONTH 分解状态修改
+    @RequestMapping(value = "PM_03_PLAN_MONTH_SIGN_UPDT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_MONTH_SIGN_UPDT(@RequestParam(value = "V_V_GUID") String V_V_GUID) throws SQLException {
+        Map result = dx_fileService.PM_03_PLAN_MONTH_SIGN_UPDT(V_V_GUID);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

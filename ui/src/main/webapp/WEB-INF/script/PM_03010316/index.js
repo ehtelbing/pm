@@ -426,8 +426,26 @@ function select(){
         return false;
     }
 
+
     var retdata = seldata[0].data.V_GUID;
     var type = 'MONTH';
+
+
+    // Ext.Ajax.request({
+    //     url: AppUrl + 'dxfile/PM_03_PLAN_MONTH_SIGN_UPDT',
+    //     method:'POST',
+    //     async: false,
+    //     params: {
+    //         V_V_GUID: retdata
+    //     },
+    //     success: function (response) {
+    //         var resp=Ext.decode(response.responseText);
+    //         if(resp.RET=='SUCCESS'){
+    //             window.opener.getReturnJHXZ(retdata,type);
+    //             window.close();
+    //         }
+    //     }
+    // });
     window.opener.getReturnJHXZ(retdata,type);
     window.close();
 }
@@ -441,6 +459,8 @@ function selectY(){
 
     var retdata = seldata[0].data.V_GUID;
     var type = 'YEAR';
+
+
     window.opener.getReturnJHXZ(retdata,type);
     window.close();
 }
