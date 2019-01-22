@@ -440,60 +440,64 @@ public class MMController {
 
         List<Map> listsecond = zdhService.PRO_PM_WORKORDER_ET_OPERATIONS1(V_V_ORDERGUID);
 
-        Map smap = listsecond.get(0);
+        if(listsecond.size()>0){
+            Map smap = listsecond.get(0);
 
-        List slrst = (List) smap.get("list");
+            List slrst = (List) smap.get("list");
 
-        for (int i = 0; i < slrst.size(); i++) {
-            Map srmap = (Map) slrst.get(i);
+            for (int i = 0; i < slrst.size(); i++) {
+                Map srmap = (Map) slrst.get(i);
 
-            Element ET_OPERATIONS = Fields.addElement("ET_OPERATIONS"); //添加子节点
+                Element ET_OPERATIONS = Fields.addElement("ET_OPERATIONS"); //添加子节点
 
-            ET_OPERATIONS.addElement("ORDERID").setText(ORDERID);
-            ET_OPERATIONS.addElement("ACTIVITY").setText(srmap.get("V_ACTIVITY") == null ? "" : srmap.get("V_ACTIVITY").toString());
-            ET_OPERATIONS.addElement("SUB_ACTIVITY").setText(srmap.get("V_SUB_ACTIVITY") == null ? "" : srmap.get("V_SUB_ACTIVITY").toString());
-            ET_OPERATIONS.addElement("CONTROL_KEY").setText(srmap.get("V_CONTROL_KEY") == null ? "" : srmap.get("V_CONTROL_KEY").toString());
+                ET_OPERATIONS.addElement("ORDERID").setText(ORDERID);
+                ET_OPERATIONS.addElement("ACTIVITY").setText(srmap.get("V_ACTIVITY") == null ? "" : srmap.get("V_ACTIVITY").toString());
+                ET_OPERATIONS.addElement("SUB_ACTIVITY").setText(srmap.get("V_SUB_ACTIVITY") == null ? "" : srmap.get("V_SUB_ACTIVITY").toString());
+                ET_OPERATIONS.addElement("CONTROL_KEY").setText(srmap.get("V_CONTROL_KEY") == null ? "" : srmap.get("V_CONTROL_KEY").toString());
 
-            ET_OPERATIONS.addElement("DESCRIPTION").setText(srmap.get("V_DESCRIPTION") == null ? "" : srmap.get("V_DESCRIPTION").toString());
-            ET_OPERATIONS.addElement("NUMBER_OF_CAPACITIES").setText(srmap.get("I_NUMBER_OF_CAPACITIES") == null ? "" : srmap.get("I_NUMBER_OF_CAPACITIES").toString());
-            ET_OPERATIONS.addElement("WORK_ACTIVITY").setText(srmap.get("I_WORK_ACTIVITY") == null ? "" : srmap.get("I_WORK_ACTIVITY").toString());
-            ET_OPERATIONS.addElement("UN_WORK").setText(srmap.get("V_UN_WORK") == null ? "" : srmap.get("V_UN_WORK").toString());
-            ET_OPERATIONS.addElement("DURATION_NORMAL").setText(srmap.get("I_DURATION_NORMAL") == null ? "" : srmap.get("I_DURATION_NORMAL").toString());
+                ET_OPERATIONS.addElement("DESCRIPTION").setText(srmap.get("V_DESCRIPTION") == null ? "" : srmap.get("V_DESCRIPTION").toString());
+                ET_OPERATIONS.addElement("NUMBER_OF_CAPACITIES").setText(srmap.get("I_NUMBER_OF_CAPACITIES") == null ? "" : srmap.get("I_NUMBER_OF_CAPACITIES").toString());
+                ET_OPERATIONS.addElement("WORK_ACTIVITY").setText(srmap.get("I_WORK_ACTIVITY") == null ? "" : srmap.get("I_WORK_ACTIVITY").toString());
+                ET_OPERATIONS.addElement("UN_WORK").setText(srmap.get("V_UN_WORK") == null ? "" : srmap.get("V_UN_WORK").toString());
+                ET_OPERATIONS.addElement("DURATION_NORMAL").setText(srmap.get("I_DURATION_NORMAL") == null ? "" : srmap.get("I_DURATION_NORMAL").toString());
 
-            ET_OPERATIONS.addElement("DURATION_NORMAL_UNIT").setText(srmap.get("V_DURATION_NORMAL_UNIT") == null ? "" : srmap.get("V_DURATION_NORMAL_UNIT").toString());
-            ET_OPERATIONS.addElement("WORK_CENTER").setText(srmap.get("V_WORK_CENTER") == null ? "" : srmap.get("V_WORK_CENTER").toString());
-            ET_OPERATIONS.addElement("ACTUAL_TIME").setText(srmap.get("I_ACTUAL_TIME") == null ? "" : srmap.get("I_ACTUAL_TIME").toString());
-            ET_OPERATIONS.addElement("NUMBER_OF_PEOPLE").setText(srmap.get("I_NUMBER_OF_PEOPLE") == null ? "" : srmap.get("I_NUMBER_OF_PEOPLE").toString());
+                ET_OPERATIONS.addElement("DURATION_NORMAL_UNIT").setText(srmap.get("V_DURATION_NORMAL_UNIT") == null ? "" : srmap.get("V_DURATION_NORMAL_UNIT").toString());
+                ET_OPERATIONS.addElement("WORK_CENTER").setText(srmap.get("V_WORK_CENTER") == null ? "" : srmap.get("V_WORK_CENTER").toString());
+                ET_OPERATIONS.addElement("ACTUAL_TIME").setText(srmap.get("I_ACTUAL_TIME") == null ? "" : srmap.get("I_ACTUAL_TIME").toString());
+                ET_OPERATIONS.addElement("NUMBER_OF_PEOPLE").setText(srmap.get("I_NUMBER_OF_PEOPLE") == null ? "" : srmap.get("I_NUMBER_OF_PEOPLE").toString());
+            }
         }
+
 
         List<Map> listthird = zdhService.PRO_PM_WORKORDER_SPARE_VIEW1(V_V_ORDERGUID);
 
         System.out.print("---------------------------物料信息开始----------------------------");
         System.out.println("第三段长度 : " + listthird.size());
 
-        Map tmap = listthird.get(0);
+        if(listthird.size()>0){
+            Map tmap = listthird.get(0);
 
-        List tlrst = (List) tmap.get("list");
+            List tlrst = (List) tmap.get("list");
 
-        for (int i = 0; i < tlrst.size(); i++) {
+            for (int i = 0; i < tlrst.size(); i++) {
 
-            Map trmap = (Map) tlrst.get(i);
+                Map trmap = (Map) tlrst.get(i);
 
-            Element Materials = Fields.addElement("Materials"); //添加子节点
+                Element Materials = Fields.addElement("Materials"); //添加子节点
 
-            System.out.println(trmap.get("I_KC_ID").toString());
+                System.out.println(trmap.get("I_KC_ID").toString());
 
-            Materials.addElement("ORDERID").setText(ORDERID);
-            Materials.addElement("ACTIVITY").setText(trmap.get("V_ACTIVITY") == null ? "" : trmap.get("V_ACTIVITY").toString());
+                Materials.addElement("ORDERID").setText(ORDERID);
+                Materials.addElement("ACTIVITY").setText(trmap.get("V_ACTIVITY") == null ? "" : trmap.get("V_ACTIVITY").toString());
 
-            Materials.addElement("materialcode").setText(trmap.get("V_MATERIALCODE") == null ? "" : trmap.get("V_MATERIALCODE").toString());
-            Materials.addElement("materialname").setText(trmap.get("V_MATERIALNAME") == null ? "" : trmap.get("V_MATERIALNAME").toString());
-            Materials.addElement("materialunit").setText(trmap.get("V_UNIT") == null ? "" : trmap.get("V_UNIT").toString());
-            Materials.addElement("f_price").setText(trmap.get("F_UNITPRICE") == null ? "" : trmap.get("F_UNITPRICE").toString());
-            Materials.addElement("pln_amount").setText(trmap.get("I_PLANAMOUNT") == null ? "" : trmap.get("I_PLANAMOUNT").toString());
-            Materials.addElement("kc_id").setText(trmap.get("I_KC_ID") == null ? "" : trmap.get("I_KC_ID").toString());
+                Materials.addElement("materialcode").setText(trmap.get("V_MATERIALCODE") == null ? "" : trmap.get("V_MATERIALCODE").toString());
+                Materials.addElement("materialname").setText(trmap.get("V_MATERIALNAME") == null ? "" : trmap.get("V_MATERIALNAME").toString());
+                Materials.addElement("materialunit").setText(trmap.get("V_UNIT") == null ? "" : trmap.get("V_UNIT").toString());
+                Materials.addElement("f_price").setText(trmap.get("F_UNITPRICE") == null ? "" : trmap.get("F_UNITPRICE").toString());
+                Materials.addElement("pln_amount").setText(trmap.get("I_PLANAMOUNT") == null ? "" : trmap.get("I_PLANAMOUNT").toString());
+                Materials.addElement("kc_id").setText(trmap.get("I_KC_ID") == null ? "" : trmap.get("I_KC_ID").toString());
+            }
         }
-
 
         System.out.println("生成XML : " + root.asXML());
 
