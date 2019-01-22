@@ -1,0 +1,104 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <link href="../../css/home/style21.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+    <script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+    <script type="text/javascript" src="../../../pm/script/home/home21.js"></script>
+</head>
+<body>
+<div class="main">
+    <div class="main_title">
+        <img src="../../css/home/images/dbrw_icon.png"><span>我的待办任务</span>
+    </div>
+    <div class="dbrw_body">
+        <ul>
+            <li>
+                <img src="../../css/home/images/lcdblm_icon.png">
+                <span onclick="GoToDb()">流程待办</span>
+                <label id="onSumDb"></label>
+            </li>
+            <li>
+                <img src="../../css/home/images/wclqx_icon.jpg">
+                <span onclick="_preDbView()">未处理缺陷</span>
+                <label id="wclqxcount"></label>
+            </li>
+            <li>
+                <img src="../../css/home/images/wcldj_icon.jpg">
+                <span onclick="_inspect()">未处理点检</span>
+                <label id="sectCount"></label>
+            </li>
+        </ul>
+    </div>
+    <div class="main_title">
+        <img src="../../css/home/images/zxgg_icon.png"><span>最新公告</span>
+        <a href="#">查看更多</a>
+        <span id="uploadNoticeLink"><a href="#" onclick="_uploadImageWindow()">公告上传</a></span></h2>
+    </div>
+    <div class="zxgg_body" id="notice">
+        <!--<ul>-->
+            <!--<li>-->
+                <!--<a href="#">密码修改：修改密码在系统左侧菜单“系统设置”中修改<span>2019-03-05</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="#">修改密码在系统左侧菜单“系统设置”中修改<span>2019-03-05</span></a>-->
+            <!--</li>-->
+        <!--</ul>-->
+    </div>
+    <div class="main_title">
+        <img src="../../css/home/images/zxgg_icon.png"><span>日常业务专区</span>
+    </div>
+    <div class="zxgg_body">
+        <table class="zxgg_table">
+            <tr>
+                <td style="border-top:0px; border-left:0px;">
+                    <ul style="margin-top:10px;">
+                        <li><a href="#" onclick="toWeekPlan()">周计划</a></li>
+                        <li style="background:url('../../css/home/images/yjh_icon.png') no-repeat center 0px; "><a href="#" onclick="toMonthPlan()">月计划</a></li>
+                        <li style="background:url('../../css/home/images/njh_icon.png') no-repeat center 0px; "><a href="#" onclick="toYearPlan()">年计划</a></li>
+                        <li style="background:url('../../css/home/images/wxjh_icon.png') no-repeat center 0px; "><a href="#" onclick="toWXJH()">维修计划</a></li>
+                        <li style="background:url('../../css/home/images/dxxs_icon.png') no-repeat center 0px; "><a href="#" onclick="toDXXS()">大修写实</a></li>
+                    </ul>
+                </td>
+                <td style="border-top:0px; border-right:0px;">
+                    <ul style="margin-top:10px;">
+                        <li style="background:url('../../css/home/images/gwdj_icon.png') no-repeat center 0px; "><a href="#" onclick="toGWDJ()">岗位点检</a></li>
+                        <li style="background:url('../../css/home/images/zydj_icon.png') no-repeat center 0px; "><a href="#" onclick="toZYDJ()">专业点检</a></li>
+                        <li style="background:url('../../css/home/images/jmdj_icon.png') no-repeat center 0px; "><a href="#" onclick="toJMDJ()">精密点检</a></li>
+                        <li style="background:url('../../css/home/images/qxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toDefectManage()">缺陷管理</a></li>
+                        <li style="background:url('../../css/home/images/sggzgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toSGGZ()">事故故障管理</a></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="border-left:0px; border-bottom:0px;">
+                    <ul style="margin-top:10px;">
+                        <li style="background:url('../../css/home/images/rxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toOrderCreate()">日修管理</a></li>
+                        <li style="background:url('../../css/home/images/nxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toYearOrderManager()">年修管理</a></li>
+                        <li style="background:url('../../css/home/images/rhgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toRunHuaManager()">润滑管理</a></li>
+                        <li style="background:url('../../css/home/images/rzjgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toYuZhuangJianManager()">预装件管理</a></li>
+                        <li style="background:url('../../css/home/images/jxmx_icon.png') no-repeat center 0px; "><a href="#" onclick="toJXMX()">检修模型</a></li>
+                    </ul>
+                </td>
+                <td style="border-top:0px; border-bottom:0px;">
+                    <ul>
+                        <li style="background:url('../../css/home/images/wdbj_icon.png') no-repeat center 0px; "><a href="#">我的备件</a></li>
+                        <li style="background:url('../../css/home/images/wdsb_icon.png') no-repeat center 0px; "><a href="#">我的设备</a></li>
+                        <li style="background:url('../../css/home/images/wgzdtz_icon.png') no-repeat center 0px; "><a href="#">我关注的台账</a></li>
+                        <li style="background:url('../../css/home/images/wdtz_icon.png') no-repeat center 0px; "><a href="#">我的图纸</a></li>
+                        <li style="background:url('../../css/home/images/wdsbyx_icon.png') no-repeat center 0px; "><a href="#">我的设备运行</a></li>
+                        <li style="background:url('../../css/home/images/bjqsm_icon.png') no-repeat center 0px; "><a href="#">设备全寿命</a></li>
+                        <li style="background:url('../../css/home/images/gdzc_icon.png') no-repeat center 0px; "><a href="#">固定资产</a></li>
+                        <li style="background:url('../../css/home/images/nygl_icon.png') no-repeat center 0px; "><a href="#">能源管理</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
