@@ -829,7 +829,7 @@ Ext.onReady(function () {
                     xtype: 'combo',
                     id: 'gx',
                     fieldLabel: '工序',
-                    editable: false,
+                    editable: true,
                     margin: '5 0 0 5',
                     labelWidth: 90,
                     displayField: 'OPERA_NAME',

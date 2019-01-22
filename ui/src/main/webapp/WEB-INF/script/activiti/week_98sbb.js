@@ -905,7 +905,7 @@ Ext.onReady(function () {
                             xtype : 'combo',
                             id : "gx",
                             store: gxStore,
-                            editable : false,
+                            editable : true,
                             queryMode : 'local',
                             fieldLabel : '工序',
                             // margin: '5 0 5 5',
