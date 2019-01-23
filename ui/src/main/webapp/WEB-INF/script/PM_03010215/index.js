@@ -67,7 +67,18 @@ var minuteStore = Ext.create("Ext.data.Store", {
         reader: {type: 'json'}
     }
 });
-
+var inputer = [];
+inputer.push({v_code: '%', v_name: '全部'});
+inputer.push({v_code: Ext.util.Cookies.get('v_personcode'), v_name: decodeURI(Ext.util.Cookies.get('v_personname'))});
+var inputerStore = Ext.create("Ext.data.Store", {
+    storeId: 'inputerStore',
+    fields: ['v_code', 'v_name'],
+    data: inputer,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
 Ext.define('Ext.grid.column.LineBreakColumn', {
     extend: 'Ext.grid.column.Column',
     alias: 'widget.linebreakcolumn',
@@ -442,6 +453,20 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     labelWidth: 80,
                     width: 250,
                     labelAlign: 'right'
+                },{
+                    xtype: 'combo',
+                    id: 'lrr',
+                    fieldLabel: '录入人',
+                    editable: false,
+                    margin: '5 25 0 5',
+                    labelWidth: 80,
+                    width: 250,
+                    labelAlign: 'right',
+                    value: '',
+                    displayField: 'v_name',
+                    valueField: 'v_code',
+                    store: inputerStore,
+                    queryMode: 'local'
                 },
         //----注释时间2018-08-28
         //     ]
@@ -466,7 +491,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     value: ''
                 },*/
                 {
-                    xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
+                    xtype: 'button', text: '查询', margin: '5 0 5 20', icon: imgpath + '/search.png',
                     handler: function () {
                         query();
                     }
@@ -652,6 +677,7 @@ Ext.onReady(function () {
     Ext.getCmp('yf').on('select', function () {
         //Queryendtime();
     });
+    Ext.getCmp('lrr').select(Ext.data.StoreManager.lookup('inputerStore').getAt(0));
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
 
         store.proxy.extraParams = {
@@ -666,6 +692,7 @@ Ext.onReady(function () {
             V_V_STATECODE: Ext.getCmp('state').getValue(),
             V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
             V_V_DEPTTYPE:'主体作业区',
+            V_V_INPER:Ext.getCmp('lrr').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
 
