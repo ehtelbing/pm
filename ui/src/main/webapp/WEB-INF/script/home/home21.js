@@ -21,6 +21,7 @@ var noticeStore = Ext.create("Ext.data.Store", {
         }
     }
 });
+
 $(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
     if (Ext.util.Cookies.get('v_personcode') != 'admin') {
@@ -555,6 +556,9 @@ function toFixOldManager() {
     container.setActiveTab(n);
 }
 
+function toNoticeMx() {
+    window.open(AppUrl + "page/home/mx.html", '', 'height = 700, width = 1000');
+}
 function OnPageLoad() {
     Ext.Ajax.request({
         url: AppUrl + 'basic/PM_PRO_DB_PERSONNUM_SEL',
@@ -689,7 +693,13 @@ function noticeUp(obj, top, time) {
 function notice() {
     var s1 = '<ul>\n';
     noticeStore.filter('DISPLAY', '1');
-    for (var i = 0; i < noticeStore.getCount(); i++) {
+    var num =0;
+    if(noticeStore.getCount()<=3){
+        num=noticeStore.getCount();
+    }else{
+        num=3;
+    }
+    for (var i = 0; i < num; i++) {//noticeStore.getCount()
         var record = noticeStore.getAt(i);
         if (record.get('FILENAME') != null && record.get('FILENAME') != '') {
             // s1 = s1 + '<li><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/><a href="#" onclick="downloadFile(\'' + record.get('ID') + '\')">[附件]</a>' + record.get('TITLE') + '<span style="cursor:text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></li>\n';
@@ -698,9 +708,9 @@ function notice() {
         } else {
             // s1 = s1 + '<li><img src="../../css/home/images/bullet_blue.png" width="16" height="16" alt=""/>' + record.get('TITLE') + '<span style="cursor:text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + record.get('CONTENT') + '</span></li>\n';
             s1 = s1 + '<li><a href="#">'+record.get('TITLE')+ ' : ' +record.get('CONTENT') +'<span>' +record.get('UPLOADTIME').split(' ')[0] + '</span></a>';
+
         }
     }
-
     s1 = s1 + '</ul>';
     $("#notice").append(s1);
     // var myar = setInterval("noticeUp('.notice ul','-35px',500)", 2000);

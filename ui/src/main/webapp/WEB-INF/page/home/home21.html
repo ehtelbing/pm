@@ -18,25 +18,25 @@
     <div class="dbrw_body">
         <ul>
             <li>
-                <img src="../../css/home/images/lcdblm_icon.png">
+                <img src="../../css/home/images/lcdblm_icon.png" onclick="GoToDb()">
                 <span onclick="GoToDb()">流程待办</span>
-                <label id="onSumDb"></label>
+                <label id="onSumDb" onclick="GoToDb()"></label>
             </li>
             <li>
-                <img src="../../css/home/images/wclqx_icon.jpg">
+                <img src="../../css/home/images/wclqx_icon.jpg" onclick="_preDbView()">
                 <span onclick="_preDbView()">未处理缺陷</span>
-                <label id="wclqxcount"></label>
+                <label id="wclqxcount" onclick="_preDbView()"></label>
             </li>
             <li>
-                <img src="../../css/home/images/wcldj_icon.jpg">
+                <img src="../../css/home/images/wcldj_icon.jpg" onclick="_inspect()">
                 <span onclick="_inspect()">未处理点检</span>
-                <label id="sectCount"></label>
+                <label id="sectCount" onclick="_inspect()"></label>
             </li>
         </ul>
     </div>
     <div class="main_title">
         <img src="../../css/home/images/zxgg_icon.png"><span>最新公告</span>
-        <a href="#">查看更多</a>
+        <a href="#" onclick="toNoticeMx()">查看更多</a>
         <span id="uploadNoticeLink"><a href="#" onclick="_uploadImageWindow()">公告上传</a></span></h2>
     </div>
     <div class="zxgg_body" id="notice">
@@ -58,19 +58,19 @@
                 <td style="border-top:0px; border-left:0px;">
                     <ul style="margin-top:10px;">
                         <li><a href="#" onclick="toWeekPlan()">周计划</a></li>
-                        <li style="background:url('../../css/home/images/yjh_icon.png') no-repeat center 0px; "><a href="#" onclick="toMonthPlan()">月计划</a></li>
-                        <li style="background:url('../../css/home/images/njh_icon.png') no-repeat center 0px; "><a href="#" onclick="toYearPlan()">年计划</a></li>
-                        <li style="background:url('../../css/home/images/wxjh_icon.png') no-repeat center 0px; "><a href="#" onclick="toWXJH()">维修计划</a></li>
-                        <li style="background:url('../../css/home/images/dxxs_icon.png') no-repeat center 0px; "><a href="#" onclick="toDXXS()">大修写实</a></li>
+                        <li style="background:url('../../css/home/images/yjh_icon.png') no-repeat center 0px; " onclick="toMonthPlan()"><a href="#" >月计划</a></li>
+                        <li style="background:url('../../css/home/images/njh_icon.png') no-repeat center 0px; " onclick="toYearPlan()"><a href="#" >年计划</a></li>
+                        <li style="background:url('../../css/home/images/wxjh_icon.png') no-repeat center 0px; " onclick="toWXJH()"><a href="#" >维修计划</a></li>
+                        <li style="background:url('../../css/home/images/dxxs_icon.png') no-repeat center 0px; " onclick="toDXXS()"><a href="#" >大修写实</a></li>
                     </ul>
                 </td>
                 <td style="border-top:0px; border-right:0px;">
                     <ul style="margin-top:10px;">
-                        <li style="background:url('../../css/home/images/gwdj_icon.png') no-repeat center 0px; "><a href="#" onclick="toGWDJ()">岗位点检</a></li>
-                        <li style="background:url('../../css/home/images/zydj_icon.png') no-repeat center 0px; "><a href="#" onclick="toZYDJ()">专业点检</a></li>
-                        <li style="background:url('../../css/home/images/jmdj_icon.png') no-repeat center 0px; "><a href="#" onclick="toJMDJ()">精密点检</a></li>
-                        <li style="background:url('../../css/home/images/qxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toDefectManage()">缺陷管理</a></li>
-                        <li style="background:url('../../css/home/images/sggzgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toSGGZ()">事故故障管理</a></li>
+                        <li style="background:url('../../css/home/images/gwdj_icon.png') no-repeat center 0px; " onclick="toGWDJ()"><a href="#" >岗位点检</a></li>
+                        <li style="background:url('../../css/home/images/zydj_icon.png') no-repeat center 0px; " onclick="toZYDJ()"><a href="#" >专业点检</a></li>
+                        <li style="background:url('../../css/home/images/jmdj_icon.png') no-repeat center 0px; " onclick="toJMDJ()"><a href="#" >精密点检</a></li>
+                        <li style="background:url('../../css/home/images/qxgl_icon.png') no-repeat center 0px; " onclick="toDefectManage()"><a href="#" >缺陷管理</a></li>
+                        <li style="background:url('../../css/home/images/sggzgl_icon.png') no-repeat center 0px; " onclick="toSGGZ()"><a href="#" >事故故障管理</a></li>
                     </ul>
                 </td>
             </tr>
@@ -85,7 +85,7 @@
                     </ul>
                 </td>
                 <td style="border-top:0px; border-bottom:0px;">
-                    <ul>
+                    <ul style="margin-top:10px;">
                         <li style="background:url('../../css/home/images/wdbj_icon.png') no-repeat center 0px; "><a href="#">我的备件</a></li>
                         <li style="background:url('../../css/home/images/wdsb_icon.png') no-repeat center 0px; "><a href="#">我的设备</a></li>
                         <li style="background:url('../../css/home/images/wgzdtz_icon.png') no-repeat center 0px; "><a href="#">我关注的台账</a></li>
