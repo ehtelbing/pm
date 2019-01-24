@@ -691,7 +691,7 @@ function noticeUp(obj, top, time) {
 }
 
 function notice() {
-    var s1 = '<ul>\n';
+    var s1 = '<ul class="zxgg_body_ul">\n';
     noticeStore.filter('DISPLAY', '1');
     var num =0;
     if(noticeStore.getCount()<=3){

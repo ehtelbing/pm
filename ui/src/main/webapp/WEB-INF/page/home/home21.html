@@ -9,6 +9,28 @@
     <script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
     <script type="text/javascript" src="../../../pm/script/newangel.js"></script>
     <script type="text/javascript" src="../../../pm/script/home/home21.js"></script>
+    <script type="text/javascript">
+        window.onload=function()
+        {
+            var odiv=document.getElementById("odiv");
+            var obtn=odiv.getElementsByTagName("input");
+            var adiv=odiv.getElementsByTagName("div");
+            for(var i=0; i<obtn.length; i++)
+            {
+                obtn[i].index=i;
+                obtn[i].onclick=function()
+                {
+                    for(var i=0; i<obtn.length; i++)
+                    {
+                        obtn[i].className="";
+                        adiv[i].style.display="none";
+                    }
+                    this.className="active";
+                    adiv[this.index].style.display="block";
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="main">
@@ -53,52 +75,128 @@
         <img src="../../css/home/images/zxgg_icon.png"><span>日常业务专区</span>
     </div>
     <div class="zxgg_body">
-        <table class="zxgg_table">
-            <tr>
-                <td style="border-top:0px; border-left:0px;">
-                    <ul style="margin-top:10px;">
-                        <li><a href="#" onclick="toWeekPlan()">周计划</a></li>
-                        <li style="background:url('../../css/home/images/yjh_icon.png') no-repeat center 0px; " onclick="toMonthPlan()"><a href="#" >月计划</a></li>
-                        <li style="background:url('../../css/home/images/njh_icon.png') no-repeat center 0px; " onclick="toYearPlan()"><a href="#" >年计划</a></li>
-                        <li style="background:url('../../css/home/images/wxjh_icon.png') no-repeat center 0px; " onclick="toWXJH()"><a href="#" >维修计划</a></li>
-                        <li style="background:url('../../css/home/images/dxxs_icon.png') no-repeat center 0px; " onclick="toDXXS()"><a href="#" >大修写实</a></li>
-                    </ul>
-                </td>
-                <td style="border-top:0px; border-right:0px;">
-                    <ul style="margin-top:10px;">
-                        <li style="background:url('../../css/home/images/gwdj_icon.png') no-repeat center 0px; " onclick="toGWDJ()"><a href="#" >岗位点检</a></li>
-                        <li style="background:url('../../css/home/images/zydj_icon.png') no-repeat center 0px; " onclick="toZYDJ()"><a href="#" >专业点检</a></li>
-                        <li style="background:url('../../css/home/images/jmdj_icon.png') no-repeat center 0px; " onclick="toJMDJ()"><a href="#" >精密点检</a></li>
-                        <li style="background:url('../../css/home/images/qxgl_icon.png') no-repeat center 0px; " onclick="toDefectManage()"><a href="#" >缺陷管理</a></li>
-                        <li style="background:url('../../css/home/images/sggzgl_icon.png') no-repeat center 0px; " onclick="toSGGZ()"><a href="#" >事故故障管理</a></li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td style="border-left:0px; border-bottom:0px;">
-                    <ul style="margin-top:10px;">
-                        <li style="background:url('../../css/home/images/rxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toOrderCreate()">日修管理</a></li>
-                        <li style="background:url('../../css/home/images/nxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toYearOrderManager()">年修管理</a></li>
-                        <li style="background:url('../../css/home/images/rhgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toRunHuaManager()">润滑管理</a></li>
-                        <li style="background:url('../../css/home/images/rzjgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toYuZhuangJianManager()">预装件管理</a></li>
-                        <li style="background:url('../../css/home/images/jxmx_icon.png') no-repeat center 0px; "><a href="#" onclick="toJXMX()">检修模型</a></li>
-                    </ul>
-                </td>
-                <td style="border-top:0px; border-bottom:0px;">
-                    <ul style="margin-top:10px;">
-                        <li style="background:url('../../css/home/images/wdbj_icon.png') no-repeat center 0px; "><a href="#">我的备件</a></li>
-                        <li style="background:url('../../css/home/images/wdsb_icon.png') no-repeat center 0px; "><a href="#">我的设备</a></li>
-                        <li style="background:url('../../css/home/images/wgzdtz_icon.png') no-repeat center 0px; "><a href="#">我关注的台账</a></li>
-                        <li style="background:url('../../css/home/images/wdtz_icon.png') no-repeat center 0px; "><a href="#">我的图纸</a></li>
-                        <li style="background:url('../../css/home/images/wdsbyx_icon.png') no-repeat center 0px; "><a href="#">我的设备运行</a></li>
-                        <li style="background:url('../../css/home/images/bjqsm_icon.png') no-repeat center 0px; "><a href="#">设备全寿命</a></li>
-                        <li style="background:url('../../css/home/images/gdzc_icon.png') no-repeat center 0px; "><a href="#">固定资产</a></li>
-                        <li style="background:url('../../css/home/images/nygl_icon.png') no-repeat center 0px; "><a href="#">能源管理</a></li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
+        <div id="odiv">
+        <span class="zxgg_title">
+        	<input type="button" value="计划管理" class="active">
+            <input type="button" value="点检管理">
+            <input type="button" value="状态管理">
+            <input type="button" value="检修管理">
+            <input type="button" value="润滑管理">
+            <input type="button" value="备件全寿命周期">
+            <input type="button" value="物料管理">
+            <input type="button" value="设备全寿命周期">
+            <input type="button" value="固定资产">
+            <input type="button" value="标准台帐">
+       </span>
+            <div style="display:block">
+                <ul>
+                    <li><a href="#"><img src="../../css/home/images/njhgl.png"><span>年计划管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/wxjhgl.png"><span>维修计划管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/yjhgl.png"><span>月计划管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/zjhgl.png"><span>周计划管理</span></a></li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li><a href="#"><img src="../../css/home/images/gwdjgl.png"><span>岗位点检管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/zydjgl.png"><span>专业点检管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/jmdjgl.png"><span>精密点检管理</span></a></li>
+
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li><a href="#"><img src="../../css/home/images/qxgl.png"><span>缺陷管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/sbyx.png"><span>设备运行</span></a></li>
+
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li><a href="#"><img src="../../css/home/images/rdx.png"><span>日定修</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/ndx.png"><span>年定修</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/qt.png"><span>全停</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/dxzq.png"><span>大修周期</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/yzjgl.png"><span>预装件管理</span></a></li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li><a href="#"><img src="../../css/home/images/rhjhgl.png"><span>润滑计划管理</span></a></li>
+                </ul>
+            </div>
+            <div>
+                <ul><li>备件全寿命</li></ul>
+            </div>
+            <div>
+                <ul>
+                    <li><a href="#"><img src="../../css/home/images/bjgl.png"><span>备件管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/wlgl.png"><span>物料管理</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/gjjgl.png"><span>工机具管理</span></a></li>
+                </ul>
+            </div>
+            <div><ul><li>设备全寿命</li></ul></div>
+            <div><ul><li>固定资产</li></ul></div>
+            <div>
+                <ul>
+                    <li><a href="#"><img src="../../css/home/images/djbz_icon.png"><span>点检标准</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/rhbz.png"><span>润滑标准</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/jxjsbz.png"><span>检修技术标准</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/jxzybz.png"><span>检修作业标准</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/rhtz.png"><span>润滑台账</span></a></li>
+                    <li><a href="#"><img src="../../css/home/images/jxtz.png"><span>检修台账</span></a></li>
+                </ul>
+            </div>
+        </div>
     </div>
+    <!--<div class="zxgg_body">-->
+        <!--<table class="zxgg_table">-->
+            <!--<tr>-->
+                <!--<td style="border-top:0px; border-left:0px;">-->
+                    <!--<ul style="margin-top:10px;">-->
+                        <!--<li><a href="#" onclick="toWeekPlan()">周计划</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/yjh_icon1.png') no-repeat center 0px; " onclick="toMonthPlan()"><a href="#" >月计划</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/njh_icon1.png') no-repeat center 0px; " onclick="toYearPlan()"><a href="#" >年计划</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/wxjh_icon1.png') no-repeat center 0px; " onclick="toWXJH()"><a href="#" >维修计划</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/dxxs_icon1.png') no-repeat center 0px; " onclick="toDXXS()"><a href="#" >大修写实</a></li>-->
+                    <!--</ul>-->
+                <!--</td>-->
+                <!--<td style="border-top:0px; border-right:0px;">-->
+                    <!--<ul style="margin-top:10px;">-->
+                        <!--<li style="background:url('../../css/home/images/gwdj_icon1.png') no-repeat center 0px; " onclick="toGWDJ()"><a href="#" >岗位点检</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/zydj_icon1.png') no-repeat center 0px; " onclick="toZYDJ()"><a href="#" >专业点检</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/jmdj_icon.png') no-repeat center 0px; " onclick="toJMDJ()"><a href="#" >精密点检</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/qxgl_icon.png') no-repeat center 0px; " onclick="toDefectManage()"><a href="#" >缺陷管理</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/sggzgl_icon.png') no-repeat center 0px; " onclick="toSGGZ()"><a href="#" >事故故障管理</a></li>-->
+                    <!--</ul>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td style="border-left:0px; border-bottom:0px;">-->
+                    <!--<ul style="margin-top:10px;">-->
+                        <!--<li style="background:url('../../css/home/images/rxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toOrderCreate()">日修管理</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/nxgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toYearOrderManager()">年修管理</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/rhgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toRunHuaManager()">润滑管理</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/rzjgl_icon.png') no-repeat center 0px; "><a href="#" onclick="toYuZhuangJianManager()">预装件管理</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/jxmx_icon.png') no-repeat center 0px; "><a href="#" onclick="toJXMX()">检修模型</a></li>-->
+                    <!--</ul>-->
+                <!--</td>-->
+                <!--<td style="border-top:0px; border-bottom:0px;">-->
+                    <!--<ul style="margin-top:10px;">-->
+                        <!--<li style="background:url('../../css/home/images/wdbj_icon.png') no-repeat center 0px; "><a href="#">我的备件</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/wdsb_icon.png') no-repeat center 0px; "><a href="#">我的设备</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/wgzdtz_icon.png') no-repeat center 0px; "><a href="#">我关注的台账</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/wdtz_icon.png') no-repeat center 0px; "><a href="#">我的图纸</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/wdsbyx_icon.png') no-repeat center 0px; "><a href="#">我的设备运行</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/bjqsm_icon.png') no-repeat center 0px; "><a href="#">设备全寿命</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/gdzc_icon.png') no-repeat center 0px; "><a href="#">固定资产</a></li>-->
+                        <!--<li style="background:url('../../css/home/images/nygl_icon.png') no-repeat center 0px; "><a href="#">能源管理</a></li>-->
+                    <!--</ul>-->
+                <!--</td>-->
+            <!--</tr>-->
+        <!--</table>-->
+    <!--</div>-->
+
 </div>
 </body>
 </html>
