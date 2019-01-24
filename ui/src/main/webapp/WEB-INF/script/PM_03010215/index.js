@@ -282,6 +282,7 @@ var gridStore = Ext.create('Ext.data.Store', {
 });
 //grid显示
 function query() {
+    Ext.data.StoreManager.lookup('gridStore').currentPage = 1;
     Ext.data.StoreManager.lookup('gridStore').load();
     /*Ext.data.StoreManager.lookup('gridStore').load({
      params: {

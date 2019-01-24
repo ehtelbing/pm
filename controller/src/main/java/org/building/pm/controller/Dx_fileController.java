@@ -3,6 +3,8 @@ package org.building.pm.controller;
 import javafx.application.Application;
 import org.activiti.bpmn.converter.CallActivityXMLConverter;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellUtil;
 import org.building.pm.service.Dx_fileService;
 import org.building.pm.webpublic.MasageClass;
 import org.building.pm.webservice.MMService;
@@ -2062,6 +2064,478 @@ public class Dx_fileController {
     public Map PM_03_PLAN_MONTH_SIGN_UPDT(@RequestParam(value = "V_V_GUID") String V_V_GUID) throws SQLException {
         Map result = dx_fileService.PM_03_PLAN_MONTH_SIGN_UPDT(V_V_GUID);
         return result;
+    }
+
+    //monthStatis 03 export excel
+    @RequestMapping(value="monthStatis3",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void monthStatis3(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_YEAR") String V_YEAR,
+            @RequestParam(value = "V_MONTH") String V_MONTH,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        List list = new ArrayList();
+        String GUID = V_V_GUID.equals("0") ? "" : V_V_GUID;
+        String[] head0 = new String[] { "序号", "单位", "年份", "月份", "产品合格率（%）"};
+        String[] head1=new String[]{"计划","实际（%）"};
+        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_SEL(GUID, V_YEAR, V_MONTH,V_ORGCODE, V_ORGNAME, V_INPERCODE,V_INPERNAME);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+
+        HSSFFont font2 = wb.createFont();
+        font2.setFontName("宋体");
+        font2.setFontHeightInPoints((short) 10);
+         HSSFCellStyle style2 = wb.createCellStyle();
+         style2.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+         style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+         style2.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+         style2.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+         style2.setFont(font2);
+         style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+         style2.setWrapText(true); // 换行
+         style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
+
+
+
+        HSSFRow row = sheet.createRow(0);
+        HSSFCell cell = row.createCell(0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        row = sheet.createRow(0);
+
+
+        for (int i = 0; i < head0.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(head0[i]);
+            cell.setCellStyle(style2);
+        }
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, head0.length));
+        row = sheet.createRow(1);
+        for (int i = 0; i < head0.length+1; i++) {
+            cell = row.createCell(i);
+            cell.setCellStyle(style2);
+            if(i>3&&i<6) {
+                for (int j = 0; j <head1.length; j++) {
+                    cell = row.createCell(j + 4);
+                    cell.setCellValue(head1[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+        }
+        for(int k=0;k<4;k++){
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
+        }
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 2);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("D_YEAR") == null ? "" : map.get("D_YEAR").toString());
+                row.createCell((short) 3).setCellValue(map.get("D_MONTH") == null ? "" : map.get("D_MONTH").toString());
+                row.createCell((short) 4).setCellValue(map.get("PRO_Q_PLAN") == null ? "" : map.get("PRO_Q_PLAN").toString());
+                row.createCell((short) 5).setCellValue(map.get("PRO_Q_ACT") == null ? "" : map.get("PRO_Q_ACT").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("设备考核指标数据计划月报表3Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // month statis2 export excel
+    @RequestMapping(value="monthStatis2",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void monthStatis2(
+            @RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
+            @RequestParam(value = "V_YEAR") String V_YEAR,
+            @RequestParam(value = "V_MONTH") String V_MONTH,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        List list = new ArrayList();
+        String GUID = V_EOS_GUID.equals("0") ? "" : V_EOS_GUID;
+        String[] head = new String[] { "序号", "单位", "年份", "月份", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率","电网力率","电网力率","供电损失率（%）","供电损失率（%）","定修计划完成率","定修计划完成率","定修计划完成率","定修时间准确率","定修时间准确率","定修时间准确率"};
+        String[] coList1=new String[]{"计划（%）","在册设备数量","可开动设备数量","实际（%）"};
+        String[] coList2=new String[]{"计划（%）","实际（%）"};
+        String[] coList3=new String[]{"计划","实际"};
+        String[] coList4=new String[]{"计划项目","实际完成项目","定修计划完成率（%）"};
+        String[] coList5=new String[]{"计划定修时间(h)","实际完成时间(h)","定修时间准确率(%)"};
+        int allLength=coList1.length+coList2.length+coList3.length+coList4.length+coList5.length+4;
+        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_SEL(GUID, V_YEAR, V_MONTH,V_ORGCODE, V_ORGNAME, V_INPERCODE,V_INPERNAME);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+
+        HSSFFont font2 = wb.createFont();
+        font2.setFontName("宋体");
+        font2.setFontHeightInPoints((short) 10);
+        HSSFCellStyle style2 = wb.createCellStyle();
+        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        style2.setFont(font2);
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+        style2.setWrapText(true); // 换行
+        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
+
+
+        HSSFRow row = sheet.createRow(0);
+        HSSFCell cell = row.createCell(0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        row = sheet.createRow(0);
+
+        for (int i = 0; i < allLength; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(head[i]);
+            cell.setCellStyle(style2);
+            if(i==4){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 7));
+            }
+            if(i==5){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
+            }
+            if(i==6){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 11));
+            }
+            if(i==7){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 14));
+            }
+            if(i==8){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 17));
+            }
+        }
+
+        row = sheet.createRow(1);
+        for (int i = 0; i < head.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellStyle(style2);
+            if(i>3&&i<8) {
+                for (int j = 0; j <coList1.length; j++) {
+                    cell = row.createCell(j + 4);
+                    cell.setCellValue(coList1[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>7&&i<10) {
+                for (int j = 0; j <coList2.length; j++) {
+                    cell = row.createCell(j + 8);
+                    cell.setCellValue(coList2[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>9&&i<12) {
+                for (int j = 0; j <coList3.length; j++) {
+                    cell = row.createCell(j + 10);
+                    cell.setCellValue(coList3[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>11&&i<15) {
+                for (int j = 0; j <coList4.length; j++) {
+                    cell = row.createCell(j + 12);
+                    cell.setCellValue(coList4[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>14&&i<18) {
+                for (int j = 0; j <coList5.length; j++) {
+                    cell = row.createCell(j + 15);
+                    cell.setCellValue(coList5[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+        }
+        for(int k=0;k<4;k++){
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
+        }
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 2);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("D_YEAR") == null ? "" : map.get("D_YEAR").toString());
+                row.createCell((short) 3).setCellValue(map.get("D_MONTH") == null ? "" : map.get("D_MONTH").toString());
+                row.createCell((short) 4).setCellValue(map.get("DQ_EGOOD_PLAN") == null ? "" : map.get("DQ_EGOOD_PLAN").toString());
+                row.createCell((short) 5).setCellValue(map.get("DQ_EGOOD_HNUM") == null ? "" : map.get("DQ_EGOOD_HNUM").toString());
+                row.createCell((short) 6).setCellValue(map.get("DQ_EGOOD_CNUM") == null ? "" : map.get("DQ_EGOOD_CNUM").toString());
+                row.createCell((short) 7).setCellValue(map.get("DQ_EGOOD_ACT") == null ? "" : map.get("DQ_EGOOD_ACT").toString());
+                row.createCell((short) 8).setCellValue(map.get("DL_PLAN") == null ? "" : map.get("DL_PLAN").toString());
+                row.createCell((short) 9).setCellValue(map.get("DL_ACTUAL") == null ? "" : map.get("DL_ACTUAL").toString());
+                row.createCell((short) 10).setCellValue(map.get("GD_LOSS_PLAN") == null ? "" : map.get("GD_LOSS_PLAN").toString());
+                row.createCell((short) 11).setCellValue(map.get("GD_LOSS_ACT") == null ? "" : map.get("GD_LOSS_ACT").toString());
+                row.createCell((short) 12).setCellValue(map.get("DX_FINISH_PLAN") == null ? "" : map.get("DX_FINISH_PLAN").toString());
+                row.createCell((short) 13).setCellValue(map.get("DX_FINISH_ACT") == null ? "" : map.get("DX_FINISH_ACT").toString());
+                row.createCell((short) 14).setCellValue(map.get("DX_FINISH_RATE").equals("") ? "0" : map.get("DX_FINISH_RATE").equals("NaN")?"0":map.get("DX_FINISH_RATE").toString());
+                row.createCell((short) 15).setCellValue(map.get("DX_TIME_PLAN") == null ? "" : map.get("DX_TIME_PLAN").toString());
+                row.createCell((short) 16).setCellValue(map.get("DX_TIME_ACT") == null ? "" : map.get("DX_TIME_ACT").toString());
+                row.createCell((short) 17).setCellValue(map.get("DX_TIME_RATE").equals("")? "0" : map.get("DX_TIME_RATE").equals("NaN")?"0":map.get("DX_TIME_RATE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("设备考核指标数据计划月报表2Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    // month statis1 export excel
+    @RequestMapping(value="monthStatis1",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void monthStatis1(
+            @RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
+            @RequestParam(value = "V_YEAR") String V_YEAR,
+            @RequestParam(value = "V_MONTH") String V_MONTH,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        List list = new ArrayList();
+        String GUID = V_EOS_GUID.equals("0") ? "" : V_EOS_GUID;
+        String[] head = new String[] { "序号", "单位", "年份", "月份","设备故障率","设备故障率","设备故障率","采矿单体设备完好率","采矿单体设备完好率","采矿单体设备完好率","采矿单体设备完好率","可开动率","可开动率","定修计划完成率","定修计划完成率","定修计划完成率","定修时间准确率","定修时间准确率","定修时间准确率","开矿工序能耗","开矿工序能耗","选矿/精铁矿工序能耗","选矿/精铁矿工序能耗","烧结综合能耗","烧结综合能耗","球团综合能耗","球团综合能耗"};
+        String[] coList1=new String[]{"计划率（%）","故障时间(h)","实际（%）"};
+        String[] coList2=new String[]{"计划（%）","在册设备数量","可开动设备数量","实际（%）"};
+        String[] coList3=new String[]{"计划（%）","实际（%）"};
+        String[] coList4=new String[]{"计划项目","实际完成项目","定修计划完成率（%）"};
+        String[] coList5=new String[]{"计划定修时间(h)","实际完成时间(h)","定修时间准确率(%)"};
+        int[] sint=new int[]{4,7,11,13,16,19,21,23,25};
+        int[] eint=new int[]{6,10,12,15,18,20,22,24,26};
+        Map<String, Object> data = dx_fileService.PRO_MONTH_EQU_STATIS_IN_SEL(GUID, V_YEAR, V_MONTH,V_ORGCODE, V_ORGNAME, V_INPERCODE,V_INPERNAME);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+
+        HSSFFont font2 = wb.createFont();
+        font2.setFontName("宋体");
+        font2.setFontHeightInPoints((short) 10);
+        HSSFCellStyle style2 = wb.createCellStyle();
+        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        style2.setFont(font2);
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+        style2.setWrapText(true); // 换行
+        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
+
+
+        HSSFRow row = sheet.createRow(0);
+        HSSFCell cell = row.createCell(0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        row = sheet.createRow(0);
+
+        for (int i = 0; i < head.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(head[i]);
+            cell.setCellStyle(style2);
+            if(i==4){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 6));
+            }
+            if(i==5){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 10));
+            }
+            if(i==6){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 12));
+            }
+            if(i==7){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 15));
+            }
+            if(i==8){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 18));
+            }
+            if(i==9){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 20));
+            }
+            if(i==10){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 21, 22));
+            }
+            if(i==11){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 23, 24));
+            }
+            if(i==12){
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 25, 26));
+            }
+        }
+
+        row = sheet.createRow(1);
+        for (int i = 0; i < head.length; i++) {
+            cell = row.createCell(i);
+            cell.setCellStyle(style2);
+            if(i>3&&i<7) {
+                for (int j = 0; j <coList1.length; j++) {
+                    cell = row.createCell(j + 4);
+                    cell.setCellValue(coList1[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>6&&i<11) {
+                for (int j = 0; j <coList2.length; j++) {
+                    cell = row.createCell(j + 7);
+                    cell.setCellValue(coList2[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>10&&i<13) {
+                for (int j = 0; j <coList3.length; j++) {
+                    cell = row.createCell(j + 11);
+                    cell.setCellValue(coList3[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>12&&i<16) {
+                for (int j = 0; j <coList4.length; j++) {
+                    cell = row.createCell(j + 13);
+                    cell.setCellValue(coList4[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>15&&i<19) {
+                for (int j = 0; j <coList5.length; j++) {
+                    cell = row.createCell(j + 16);
+                    cell.setCellValue(coList5[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>18&&i<21) {
+                for (int j = 0; j <coList3.length; j++) {
+                    cell = row.createCell(j + 19);
+                    cell.setCellValue(coList3[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>20&&i<23) {
+                for (int j = 0; j <coList3.length; j++) {
+                    cell = row.createCell(j + 21);
+                    cell.setCellValue(coList3[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>22&&i<25) {
+                for (int j = 0; j <coList3.length; j++) {
+                    cell = row.createCell(j + 23);
+                    cell.setCellValue(coList3[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+            if(i>24&&i<27) {
+                for (int j = 0; j <coList3.length; j++) {
+                    cell = row.createCell(j + 25);
+                    cell.setCellValue(coList3[j]);
+                    cell.setCellStyle(style2);
+                }
+            }
+        }
+        for(int k=0;k<4;k++){
+            sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
+        }
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 2);
+                Map map = (Map) list.get(i);
+
+                String DXPFINISH_PRO_RATE_V=map.get("DXT_EXACT_HOUR_RATE").equals("NaN")?"0":map.get("DXT_EXACT_HOUR_RATE").toString();
+                row.createCell((short) 0).setCellValue(i + 1);
+                row.createCell((short) 1).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
+                row.createCell((short) 2).setCellValue(map.get("D_YEAR") == null ? "" : map.get("D_YEAR").toString());
+                row.createCell((short) 3).setCellValue(map.get("D_MONTH") == null ? "" : map.get("D_MONTH").toString());
+                row.createCell((short) 4).setCellValue(map.get("E_FAULT_PLAN") == null ? "" : map.get("E_FAULT_PLAN").toString());
+                row.createCell((short) 5).setCellValue(map.get("E_FAULT_HOUR") == null ? "" : map.get("E_FAULT_HOUR").toString());
+                row.createCell((short) 6).setCellValue(map.get("E_FAULT_ACTUAL") == null ? "" : map.get("E_FAULT_ACTUAL").toString());
+                row.createCell((short) 7).setCellValue(map.get("C_EQU_GOOD_PLAN") == null ? "" : map.get("C_EQU_GOOD_PLAN").toString());
+                row.createCell((short) 8).setCellValue(map.get("C_EQU_GOOD_SNUM") == null ? "" : map.get("C_EQU_GOOD_SNUM").toString());
+                row.createCell((short) 9).setCellValue(map.get("C_EQU_GOOD_CNUM") == null ? "" : map.get("C_EQU_GOOD_CNUM").toString());
+                row.createCell((short) 10).setCellValue(map.get("C_EQU_GOOD_ACT") == null ? "" : map.get("C_EQU_GOOD_ACT").toString());
+                row.createCell((short) 11).setCellValue(map.get("CUSE_OPENR_PLAN") == null ? "" : map.get("CUSE_OPENR_PLAN").toString());
+                row.createCell((short) 12).setCellValue(map.get("CUSE_OPENR_ACTUAL") == null ? "" : map.get("CUSE_OPENR_ACTUAL").toString());
+                row.createCell((short) 13).setCellValue(map.get("DXPFINISH_PRO_PLAN") == null ? "" : map.get("DXPFINISH_PRO_PLAN").toString());
+                row.createCell((short) 14).setCellValue(map.get("DXPFINISH_PRO_ACTUAL") == null ? "" : map.get("DXPFINISH_PRO_ACTUAL").toString());
+                row.createCell((short) 15).setCellValue(map.get("DXPFINISH_PRO_RATE").equals("") ? "0" : DXPFINISH_PRO_RATE_V);
+                row.createCell((short) 16).setCellValue(map.get("DXT_EXACT_HOUR_PLAN") == null ? "" : map.get("DXT_EXACT_HOUR_PLAN").toString());
+                row.createCell((short) 17).setCellValue(map.get("DXT_EXACT_HOUR_ACT") == null ? "" : map.get("DXT_EXACT_HOUR_ACT").toString());
+                row.createCell((short) 18).setCellValue(map.get("DXT_EXACT_HOUR_RATE").equals("")  ? "0" : map.get("DXT_EXACT_HOUR_RATE").equals("NaN")?"0":map.get("DXT_EXACT_HOUR_RATE").toString());
+                row.createCell((short) 19).setCellValue(map.get("COPT_CSENERGY_PLAN") == null ? "" : map.get("COPT_CSENERGY_PLAN").toString());
+                row.createCell((short) 20).setCellValue(map.get("COPT_CSENERGY_ACT") == null ? "" : map.get("COPT_CSENERGY_ACT").toString());
+                row.createCell((short) 21).setCellValue(map.get("XKOPT_CSENERGY_PLAN") == null ? "" : map.get("XKOPT_CSENERGY_PLAN").toString());
+                row.createCell((short) 22).setCellValue(map.get("XKOPT_CSENERGY_ACT") == null ? "" : map.get("XKOPT_CSENERGY_ACT").toString());
+                row.createCell((short) 23).setCellValue(map.get("SJSYNTH_CSENERGY_PLAN") == null ? "" : map.get("SJSYNTH_CSENERGY_PLAN").toString());
+                row.createCell((short) 24).setCellValue(map.get("SJSYNTH_CSENERGY_ACT") == null ? "" : map.get("SJSYNTH_CSENERGY_ACT").toString());
+                row.createCell((short) 25).setCellValue(map.get("QTSYNTH_CSENERGY_PLAN") == null ? "" : map.get("QTSYNTH_CSENERGY_PLAN").toString());
+                row.createCell((short) 26).setCellValue(map.get("QTSYNTH_CSENERGY_ACT") == null ? "" : map.get("QTSYNTH_CSENERGY_ACT").toString());
+//
+//                for(int m=0;m<27;i++){
+//                    row.createCell((short) m).setCellStyle(style2);
+//                }
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("设备考核指标数据计划月报表1Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)

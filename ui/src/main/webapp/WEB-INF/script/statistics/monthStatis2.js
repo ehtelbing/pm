@@ -52,19 +52,26 @@ var storeDate= Ext.create('Ext.data.Store', {
 });
 var npanel=Ext.create('Ext.panel.Panel',{
     id:'npanel',
-    height: 30,
+    height: 40,
     frame:true,
     border:false,
     width: 1920,
     layout:'column',
     region:'north',
     padding:'7px 0px 3px 30px',
-    items:[
+    items:[{
+        xtype:'button',
+        id:'exportEx',
+        text:'导出',
+        width:50,
+        style:'margin:0px 20px 0px 30px',
+        handler:onBtnExcel
+    },
         {
             xtype:'label',
             id:'gssm',
             text:'定修计划完成率=（实际完成项目数/计划项目数）| 定修时间准确率=（1-未按计划时间完成/计划定修时间）',
-            style:'color:red;'
+            style:'color:red;padding:7px 0px 7px 0px'
         }
     ]
 });
@@ -80,63 +87,63 @@ var gridpanel=Ext.create('Ext.grid.GridPanel',{
     columns: [
         {header: '唯一码', width: 100, dataIndex: 'V_GUID', align: 'center',flex: 1, editor: 'textfield',hidden:true},
         {header: '单位', width: 120, dataIndex: 'ORGCODE', align: 'center',flex: 1,hidden:true},
-        {header:'单位', width:180, dataIndex: 'ORGNAME', align: 'center'},
-        {header: '年份', width: 60, dataIndex: 'D_YEAR', align: 'center'},
-        {header: '月份', width: 60, dataIndex: 'D_MONTH', align: 'center'},
+        {header:'单位', width:180, dataIndex: 'ORGNAME', align: 'center',renderer:dataCss},
+        {header: '年份', width: 60, dataIndex: 'D_YEAR', align: 'center',renderer:dataCss},
+        {header: '月份', width: 60, dataIndex: 'D_MONTH', align: 'center',renderer:dataCss},
         {header:'电气单体设备完好率',columns:[
-                {text: '计划（%）', width: 80, dataIndex: 'DQ_EGOOD_PLAN', align: 'center',flex: 1,
+                {text: '计划（%）', width: 80, dataIndex: 'DQ_EGOOD_PLAN', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "a1",decimalPrecision:2
 
                     }
                 },
-                {text: '在册设备数量', width: 90, dataIndex: 'DQ_EGOOD_HNUM', align: 'center',flex: 1,
+                {text: '在册设备数量', width: 90, dataIndex: 'DQ_EGOOD_HNUM', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "a2",decimalPrecision:2
 
                     }},
-                {text: '可开动设备数量', width: 90, dataIndex: 'DQ_EGOOD_CNUM', align: 'center',flex: 1,
+                {text: '可开动设备数量', width: 90, dataIndex: 'DQ_EGOOD_CNUM', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "a3",decimalPrecision:2
 
                     }},
-                {text: '实际（%）', width: 80, dataIndex: 'DQ_EGOOD_ACT', align: 'center',flex: 1,
+                {text: '实际（%）', width: 80, dataIndex: 'DQ_EGOOD_ACT', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "a4",decimalPrecision:2
 
                     }}
             ]},
         {header:'电网力率',columns:[
-                {text: '计划（%）', width: 80, dataIndex: 'DL_PLAN', align: 'center',flex: 1,
+                {text: '计划（%）', width: 80, dataIndex: 'DL_PLAN', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "b1",decimalPrecision:2
 
                     }
                 },
-                {text: '实际（%）', width: 100, dataIndex: 'DL_ACTUAL', align: 'center',flex: 1,
+                {text: '实际（%）', width: 100, dataIndex: 'DL_ACTUAL', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "b2",decimalPrecision:2
 
                     }
                 }
             ]},
         {header:'供电损失率（%）',columns:[
-                {text: '计划', width: 65, dataIndex: 'GD_LOSS_PLAN', align: 'center',flex: 1,
+                {text: '计划', width: 65, dataIndex: 'GD_LOSS_PLAN', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "c1",decimalPrecision:2
 
                     }
                 },
-                {text: '实际', width: 65, dataIndex: 'GD_LOSS_ACT', align: 'center',flex: 1,
+                {text: '实际', width: 65, dataIndex: 'GD_LOSS_ACT', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype: "numberfield",minValue: '0', id: "c2",decimalPrecision:2
 
                     }
                 }
             ]},
         {header:'定修计划完成率',columns:[
-                {text: '计划项目', width: 100, dataIndex: 'DX_FINISH_PLAN', align: 'center',flex: 1,
+                {text: '计划项目', width: 100, dataIndex: 'DX_FINISH_PLAN', align: 'center',flex: 1,renderer:dataCss,
                     editor:{xtype:'numberfield',minValue:'0',id:"text1",decimalPrecision:2
 
                     }
 
                 },
-                {text: '实际完成项目', width: 100, dataIndex: 'DX_FINISH_ACT', align: 'center',flex: 1,
+                {text: '实际完成项目', width: 100, dataIndex: 'DX_FINISH_ACT', align: 'center',flex: 1,renderer:dataCss,
                     editor: {xtype:'numberfield',minValue:'0',decimalPrecision:2,id:'text2'
                     }},
-                {text: '定修计划完成率（%）', width: 100, dataIndex: 'DX_FINISH_RATE', align: 'center',flex: 1, //editor: {xtype:'textfield' ,id:'text3',style:'background-color:#FFF68F'},
+                {text: '定修计划完成率（%）', width: 100, dataIndex: 'DX_FINISH_RATE', align: 'center',flex: 1,renderer:dataCss,//editor: {xtype:'textfield' ,id:'text3',style:'background-color:#FFF68F'},
                     renderer:function(value,metaData,record,rowIdx,colIncex,store,view){
                     if(record.get('DX_FINISH_ACT')!=""&&record.get('DX_FINISH_PLAN')!=""){
                         var rate1 = (record.get('DX_FINISH_ACT') / record.get('DX_FINISH_PLAN')) * 100;
@@ -149,17 +156,17 @@ var gridpanel=Ext.create('Ext.grid.GridPanel',{
                 }
             ]},
         {header:'定修时间准确率',columns:[
-                {text: '计划定修时间（h)', width: 100, dataIndex: 'DX_TIME_PLAN', align: 'center',flex: 1,
+                {text: '计划定修时间（h)', width: 100, dataIndex: 'DX_TIME_PLAN', align: 'center',flex: 1,renderer:dataCss,
                     editor:{xtype:'numberfield',minValue:'0',id:"d1",decimalPrecision:2
 
                     }
                 },
-                {text: '实际完成时间（h)', width: 100, dataIndex: 'DX_TIME_ACT', align: 'center',flex: 1,
+                {text: '实际完成时间（h)', width: 100, dataIndex: 'DX_TIME_ACT', align: 'center',flex: 1,renderer:dataCss,
                     editor:{xtype:'numberfield',minValue:'0',id:"d2",decimalPrecision:2
 
                     }
                 },
-                {text: '定修时间准确率（%）', width: 100, dataIndex: 'DX_TIME_RATE', align: 'center',flex: 1
+                {text: '定修时间准确率（%）', width: 100, dataIndex: 'DX_TIME_RATE', align: 'center',flex: 1,renderer:dataCss
                     ,renderer:function(value,mateD,record,rowIndex,colIndex,store,view){
                     if(record.get('DX_TIME_ACT')!=""&&record.get('DX_TIME_PLAN')!=""){
                         var rate2=(1-record.get('DX_TIME_ACT')/record.get('DX_TIME_PLAN'))*100;
@@ -174,11 +181,11 @@ var gridpanel=Ext.create('Ext.grid.GridPanel',{
             ]}
     ],
     plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
-        clicksToEdit: 2,
+        clicksToEdit: 1,
         listeners: {
             beforeedit:function (editor, context, eOpts) {
-                if(context.record.get('D_MONTH')!=date.getMonth()+1){
-                    return alert("非本月数据无法修改");
+                if(context.record.get('D_MONTH')!=date.getMonth()+1&&context.record.get('D_YEAR')==date.getFullYear()){
+                    alert("非本月数据无法修改");return false;
                 }
             },
             edit: OnChangeEleData
@@ -248,4 +255,25 @@ function OnChangeEleData(e){
             }
         }
     });
+}
+
+function dataCss(value, metaData, record, rowIndex, colIndex, store){
+    if(record.get('D_MONTH')==date.getMonth()+1&&record.get('D_YEAR')==date.getFullYear()) {
+        metaData.style = "background: yellow";
+        //return '<div  data-qtip="' + value + '" >' + value + '</div>';
+        return value;
+    } else{
+       // return '<div  data-qtip="' + value + '" >' + value + '</div>';
+        return value;
+    }
+}
+function onBtnExcel(){
+
+    document.location.href = AppUrl + 'dxfile/monthStatis2?V_EOS_GUID=' + '0'
+        + '&V_YEAR=' + (date.getFullYear()).toString()
+        + '&V_MONTH=' + (date.getMonth()+1).toString()
+        + '&V_ORGCODE=' + Ext.util.Cookies.get('v_orgCode')
+        + '&V_ORGNAME=' + decodeURI(Ext.util.Cookies.get('v_orgname').substring())
+        + '&V_INPERCODE=' + Ext.util.Cookies.get('v_personcode')
+        + '&V_INPERNAME=' + decodeURI(Ext.util.Cookies.get('v_personname').substring());
 }
