@@ -170,9 +170,18 @@ var npanel=Ext.create('Ext.panel.Panel',{
             id:'button01',
             width: 65,
             text:'查询',
-            margin:'10px 0px 15px 50px',
+            margin:'10px 50px 15px 50px',
             handler:Query
-        }]
+        },
+        {
+            xtype:'button',
+            id:'exportEx',
+            text:'导出',
+            width:65,
+            margin:'10px 0px 15px 0px',
+            handler:onBtnExcel
+        }
+        ]
 });
 
 var gridPanelA=Ext.create('Ext.grid.GridPanel',{
@@ -182,6 +191,7 @@ var gridPanelA=Ext.create('Ext.grid.GridPanel',{
     width:1920,
     height:820,
     frame:true,
+    autoScroll:true,
     store:storeDate01,
     columnLines: true,
     columns: [
@@ -240,6 +250,7 @@ var gridPanelB=Ext.create('Ext.grid.GridPanel',{
     width:1920,
     height:820,
     frame:true,
+    autoScroll:true,
     store:storeDate02,
     columnLines: true,
     columns: [
@@ -283,6 +294,7 @@ var gridPanelC=Ext.create('Ext.grid.GridPanel',{
     width:1920,
     height:820,
     frame:true,
+    autoScroll:true,
     store:storeDate03,
     columnLines: true,
     columns: [
@@ -300,8 +312,8 @@ var gridPanelC=Ext.create('Ext.grid.GridPanel',{
 var tabPanel=Ext.create("Ext.tab.Panel",{
     id:'tabPanel',
     region:'center',
-    width:1902,
-    defaults:{autoScroll:true},
+    width:1920,
+    // defaults:{autoScroll:true},
     activeTab:0,
     enableTabScroll:true,
     items:[{
@@ -392,5 +404,32 @@ function Query(){
                 V_SIGN:'TAB3'
             }
         });
+    }
+}
+
+function onBtnExcel(){
+    if(Ext.getCmp('tabPanel').activeTab.id=='tab0') {
+        document.location.href = AppUrl + 'dxfile/exportExDate01?'
+            + 'V_YEAR=' + Ext.getCmp('yearid').getValue()
+            + '&V_MONTH=' + Ext.getCmp('monthid').getValue()
+            + '&V_ORGCODE=' + Ext.util.Cookies.get('v_orgCode')
+            + '&V_PERCODE=' + Ext.util.Cookies.get('v_personcode')
+            + '&V_SIGN=' + 'TAB1';
+    }
+    if(Ext.getCmp('tabPanel').activeTab.id=='tab1') {
+        document.location.href = AppUrl + 'dxfile/exportExDate02?'
+            + 'V_YEAR=' + Ext.getCmp('yearid').getValue()
+        + '&V_MONTH=' + Ext.getCmp('monthid').getValue()
+        + '&V_ORGCODE=' + Ext.util.Cookies.get('v_orgCode')
+        + '&V_PERCODE=' + Ext.util.Cookies.get('v_personcode')
+        + '&V_SIGN=' + 'TAB2';
+    }
+    if(Ext.getCmp('tabPanel').activeTab.id=='tab2') {
+        document.location.href = AppUrl + 'dxfile/exportExDate03?'
+            + 'V_YEAR=' + Ext.getCmp('yearid').getValue()
+        + '&V_MONTH=' + Ext.getCmp('monthid').getValue()
+        + '&V_ORGCODE=' + Ext.util.Cookies.get('v_orgCode')
+        + '&V_PERCODE=' + Ext.util.Cookies.get('v_personcode')
+        + '&V_SIGN=' + 'TAB3';
     }
 }
