@@ -31,6 +31,7 @@ $(function () {
     _QXNumSelect();
     selInspectNum();
     QuerySumDb();
+    showTab();
     // JHselect();
     setInterval("QuerySumDb()", 120000);
     setInterval("_QXNumSelect()", 120000);
@@ -162,6 +163,84 @@ function _inspect(){
     window.parent.append("", "待办岗检", AppUrl + 'page/PM_060105/todos.html');
    // location.href = AppUrl + 'page/PM_060105/todos.html';
 }
+function showTab(){
+    Ext.Ajax.request({
+        url: AppUrl + 'cxy/BASE_ROLETOTABLE_SEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
+            V_V_ROLECODE:Ext.util.Cookies.get('v_rolecode'),
+            V_V_UPCODE:'-1'
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length>0) {
+
+                var sq = '';
+                for(var i = 0; i < resp.list.length; i++)
+                {
+                    if(i==0){
+                        sq = sq + '<input type="button" value="'+ resp.list[i].V_TABLENAME +'" class="active" onclick="showList(\''+ resp.list[i].V_TABLECODE +'\',\''+i+'\')">';
+
+                    }else {
+                        sq = sq + '<input type="button" value="'+ resp.list[i].V_TABLENAME +'" onclick="showList(\''+ resp.list[i].V_TABLECODE +'\',\''+i+'\')">';
+                    }
+                }
+                $("#ywglq").append(sq);
+            }
+            showList(resp.list[0].V_TABLECODE,'0');
+            // Ext.getBody().unmask();//去除页面笼罩
+        }
+    });
+}
+function showList(code,j) {
+    Ext.Ajax.request({
+        url: AppUrl + 'cxy/BASE_ROLETOTABLE_SEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_DEPTCODE:Ext.util.Cookies.get('v_orgCode'),
+            V_V_ROLECODE:Ext.util.Cookies.get('v_rolecode'),
+            V_V_UPCODE:code
+        },
+        success: function (response) {
+            var odiv=document.getElementById("odiv");
+            var obtn=odiv.getElementsByTagName("input");
+            for(var k=0; k<obtn.length; k++){
+                obtn[k].className="";
+            }
+            obtn[j].className="active";
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length>0) {
+                $("#ywglmx").html('');
+                var ss = '<ul>';
+                for(var i = 0; i < resp.list.length; i++)
+                {
+                    if(resp.list[i].V_IMGURL==''){
+                        ss =ss+ '<li><a href="#"><span>'+resp.list[i].V_TABLENAME+'</span></a></li>';
+                    }else{
+                        if(resp.list[i].V_URL==''){
+                            ss =ss+ '<li><a href="#"><img src="../../css/home/images/'+ resp.list[i].V_IMGURL +'"><span>'+resp.list[i].V_TABLENAME+'</span></a></li>';
+                        }else{
+                            ss =ss+ '<li><a href="#" onclick="openIframe(\''+resp.list[i].V_URL +'\',\''+resp.list[i].V_TABLECODE+'\',\''+resp.list[i].V_TABLENAME +'\')"><img src="../../css/home/images/'+ resp.list[i].V_IMGURL +'"><span>'+resp.list[i].V_TABLENAME+'</span></a></li>';
+                        }
+                    }
+                }
+                ss = ss + '</ul>';
+                $("#ywglmx").append(ss);
+            }
+        },failure:function (response) {
+            var odiv=document.getElementById("odiv");
+            var obtn=odiv.getElementsByTagName("input");
+            for(var k=0; k<obtn.length; k++){
+                obtn[k].className="";
+            }
+            obtn[j].className="active";
+            $("#ywglmx").html('');
+        }
+    });
+}
 function _YearCountSelect() {
     $.ajax({
         type: 'POST',
@@ -217,7 +296,24 @@ function _banli(V_TIMER_GUID) {
     var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_060106/index.html?V_TIMER_GUID=' + V_TIMER_GUID, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
-
+function openIframe(iurl,iid,ititle) {
+    var container = top.Ext.getCmp('container');
+    // var url = AppUrl + 'page/PM_030212/index.html';
+    var url = AppUrl + iurl;
+    var n = container.getComponent(iid);
+    if (!n) {
+        n = container.add({
+            id: iid,
+            title: ititle,
+            closable: true,
+            loadMask: true,
+            autoWidth: true,
+            autoHeight: true,
+            html: '<iframe scrolling="auto" frameborder="0" width="100%" height="100%" src="' + url + '" />'
+        }).show();
+    }
+    container.setActiveTab(n);
+}
 function toYearPlan() {
     var container = top.Ext.getCmp('container');
     // var url = AppUrl + 'page/PM_220101/index.html';
