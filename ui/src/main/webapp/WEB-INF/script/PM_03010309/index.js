@@ -55,7 +55,18 @@ var weekStore = Ext.create("Ext.data.Store", {
         reader: {type: 'json'}
     }
 });
-
+var inputer = [];
+inputer.push({v_code: '%', v_name: '全部'});
+inputer.push({v_code: Ext.util.Cookies.get('v_personcode'), v_name: decodeURI(Ext.util.Cookies.get('v_personname'))});
+var inputerStore = Ext.create("Ext.data.Store", {
+    storeId: 'inputerStore',
+    fields: ['v_code', 'v_name'],
+    data: inputer,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
 Ext.define('Ext.grid.column.LineBreakColumn', {
     extend: 'Ext.grid.column.Column',
     alias: 'widget.linebreakcolumn',
@@ -266,6 +277,7 @@ function query() {
             V_V_STATE: Ext.getCmp('state').getValue(),
             V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
             V_V_DEPTTYPE:'主体作业区',
+            V_V_INPER:Ext.getCmp('lrr').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -422,11 +434,25 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 0 5',
             labelWidth: 80,
             width: 230
+        },{
+            xtype: 'combo',
+            id: 'lrr',
+            fieldLabel: '录入人',
+            editable: false,
+            margin: '5 25 0 5',
+            labelWidth: 80,
+            width: 250,
+            labelAlign: 'right',
+            value: '',
+            displayField: 'v_name',
+            valueField: 'v_code',
+            store: inputerStore,
+            queryMode: 'local'
         },
         /*{xtype: 'displayfield',id:'starttime',fieldLabel: '上报开始时间',readOnly: true,  margin: '5 0 0 5',labelWidth:80,width:230, value: ''},
         {xtype: 'displayfield',id:'endtime',fieldLabel: '上报截止时间',readOnly: true, margin: '5 0 0 5',labelWidth:80,width:230,value: ''},*/
         {
-            xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
+            xtype: 'button', text: '查询', margin: '5 0 5 20', icon: imgpath + '/search.png',
             handler: function () {
                 query();
             }
@@ -631,7 +657,7 @@ Ext.onReady(function () {
         Ext.getCmp('zjs').setValue(getWeekEndDate());
         //Querytime();
     });
-
+    Ext.getCmp('lrr').select(Ext.data.StoreManager.lookup('inputerStore').getAt(1));
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             V_V_YEAR: Ext.getCmp('nf').getValue(),
@@ -646,6 +672,7 @@ Ext.onReady(function () {
             V_V_STATE: Ext.getCmp('state').getValue(),
             V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
             V_V_DEPTTYPE:'主体作业区',
+            V_V_INPER:Ext.getCmp('lrr').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
