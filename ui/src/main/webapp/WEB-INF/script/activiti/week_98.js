@@ -1140,7 +1140,7 @@ Ext.onReady(function () {
             width: 250
         }, {
             xtype: 'button',
-            text: '同意',
+            text:  "提交",//'同意',
             style: ' margin: 5px 20px 0px 20px',
             icon: imgpath + '/saved.png',
             handler: _agree
