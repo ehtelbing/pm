@@ -827,9 +827,16 @@ Ext.onReady(function () {
                 },
                 items: [{
                     id: 'jhgshj',
+                    xtype: 'textfield',
                     allowBlank: false,
                     fieldLabel: '计划工时合计',
+                    readOnly: false,
                     labelWidth: 90
+
+                    // id: 'jhgshj',
+                    // allowBlank: false,
+                    // fieldLabel: '计划工时合计',
+                    // labelWidth: 90
                 },
                     {
                         xtype: 'combo',
