@@ -42,7 +42,19 @@ public class CxyController {
         return result;
     }
 
+    //通过月计划的GUID查询对应周计划
+    @RequestMapping(value = "/PRO_PM_03_PLAN_WEEK_BY_MONTHGUID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_BY_MONTHGUID(@RequestParam(value = "V_V_OTHERPLAN_GUID") String V_V_OTHERPLAN_GUID,
 
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+
+        HashMap data = cService.PRO_PM_03_PLAN_WEEK_BY_MONTHGUID(V_V_OTHERPLAN_GUID);
+        return data;
+    }
 
 
 

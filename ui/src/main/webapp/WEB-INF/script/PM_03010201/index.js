@@ -538,14 +538,15 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 5',
             icon: imgpath + '/accordion_collapse.png',
             handler: OnButtonUp
-        },
-        {
+        }
+        /*,{
             xtype: 'button',
             text: '导入放行计划',
             margin: '5 0 5 5',
             icon: imgpath + '/accordion_expand.png',
             listeners: {click: OnButtonDR}
-        }/*,
+        }*/
+        /*,
         {
             xtype: 'button',
             text: '生成工单',
@@ -574,6 +575,15 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+            }
+        },
+        {
+            text: '对应周计划',
+            dataIndex: 'V_GUID',
+            width: 100,
+            align: 'center',
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                return '<a href="#" onclick="_weekPlanDetail(\'' + record.data.V_GUID + '\')">明细</a>';
             }
         },
         /*{text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
@@ -1145,6 +1155,15 @@ function _preViewProcess(businessKey)
     var oheight =  window.screen.availHeight - 50;
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+
+}
+function _weekPlanDetail(monthGuid)
+{
+
+
+    var owidth = window.screen.availWidth-300;
+    var oheight =  window.screen.availHeight - 500;
+    var ret = window.open(AppUrl + 'page/PM_03010201/weekdetail.html?monthGuid='+monthGuid, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
 //缺陷添加

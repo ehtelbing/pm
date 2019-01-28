@@ -91,7 +91,32 @@ public class CxyService {
     }
 
 
+    public HashMap PRO_PM_03_PLAN_WEEK_BY_MONTHGUID(String V_V_OTHERPLAN_GUID) throws SQLException {
 
+        logger.info("begin PRO_PM_03_PLAN_WEEK_BY_MONTHGUID");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_BY_MONTHGUID(:V_V_OTHERPLAN_GUID,:V_CURSOR,:V_INFO)}");
+            cstmt.setString("V_V_OTHERPLAN_GUID", V_V_OTHERPLAN_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_BY_MONTHGUID");
+        return result;
+    }
 
 
 
