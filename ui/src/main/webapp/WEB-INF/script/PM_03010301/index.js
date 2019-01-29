@@ -57,6 +57,19 @@ var weekStore = Ext.create("Ext.data.Store", {
     }
 });
 
+//--上报人
+var inperList=[];
+inperList.push({V_PERSCODE:Ext.util.Cookies.get('v_personcode'),V_PERSNAME:decodeURI(Ext.util.Cookies.get('v_personname'))});
+inperList.push({V_PERSCODE:"%",V_PERSNAME:"全部"});
+var insertPerStore=Ext.create('Ext.data.Store',{
+    storeId:'insertPerStore',
+    fields:['V_PERSNAME', 'V_PERSCODE'],
+    data:inperList,
+    proxy:{
+        type:'memory',
+        reader:{type:'json'}
+    }
+});
 Ext.define('Ext.grid.column.LineBreakColumn', {
     extend: 'Ext.grid.column.Column',
     alias: 'widget.linebreakcolumn',
@@ -268,7 +281,7 @@ var gridStore = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_VIEW',
+        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_VIEW_IN',
         actionMethods: {
             read: 'POST'
         },
@@ -295,7 +308,8 @@ function query() {
             V_V_CONTENT: Ext.getCmp('content').getValue(),
             V_V_STATE: Ext.getCmp('state').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
-            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+            V_V_INPER:Ext.getCmp('instPer').getValue()
         }
     });
 
@@ -466,6 +480,19 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelWidth: 80,
             width: 230
         }, {
+            xtype: 'combo',
+            id: 'instPer',
+            fieldLabel: '上报人',
+            editable: false,
+            margin: '5 0 5 5',
+            labelWidth: 80,
+            width: 220,
+            value: '',
+            displayField: 'V_PERSNAME',
+            valueField: 'V_PERSCODE',
+            store: insertPerStore,
+            queryMode: 'local'
+        },{
             xtype: 'combo',
             id: 'nextPer',
             fieldLabel: '下一步接收人',
@@ -751,6 +778,7 @@ Ext.onReady(function () {
         query();
     });
 
+    Ext.getCmp('instPer').select(Ext.data.StoreManager.lookup('insertPerStore').getAt(0));
     // _selectNextSprStore();
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -766,7 +794,8 @@ Ext.onReady(function () {
             V_V_CONTENT: Ext.getCmp('content').getValue(),
             V_V_STATE: Ext.getCmp('state').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
-            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+            V_V_INPER: Ext.getCmp('instPer').getValue()
         }
     });
 
@@ -1449,6 +1478,10 @@ function createWorkorder() {
     for (var i = 0; i < record.length; i++) {
         if (record[i].data.V_STATE  == '10' && record[i].data.V_STATE == '100'&&record[i].data.V_STATE== '20'&&record[i].data.V_STATE== '99') {
             alert("该计划状态无法生成工单");
+            return;
+        }
+        if(record[i].get('V_INPER')!==Ext.util.Cookies.get('v_personcode')){
+            alert("该计划录入人非本人，无法生成工单");
             return;
         }
         if (i == 0) {
