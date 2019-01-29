@@ -1652,4 +1652,60 @@ public class BasicService {
         return result;
     }
 
+    // 工单工序安全措施修改
+    public List<Map> PM_1917_JXGX_AQCS_DATA_SET_W(String V_V_JXGX_CODE, String V_V_AQCS_CODE,String V_SIGN) throws SQLException {
+//        logger.info("begin PM_1917_JXGX_AQCS_DATA_SET");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXGX_AQCS_DATA_SET_W" + "(:V_V_JXGX_CODE,:V_V_AQCS_CODE,:V_SIGN,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_AQCS_CODE", V_V_AQCS_CODE);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXGX_AQCS_DATA_SET_W");
+        return result;
+    }
+    public List<Map> PM_1917_JXGX_AQCS_DATA_DEL(String V_V_JXGX_CODE, String V_V_AQCS_CODE,String V_SIGN) throws SQLException {
+//        logger.info("begin PM_1917_JXGX_AQCS_DATA_SET");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_1917_JXGX_AQCS_DATA_DEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1917_JXGX_AQCS_DATA_DEL" + "(:V_V_JXGX_CODE,:V_V_AQCS_CODE,:V_SIGN,:V_INFO)}");
+            cstmt.setString("V_V_JXGX_CODE", V_V_JXGX_CODE);
+            cstmt.setString("V_V_AQCS_CODE", V_V_AQCS_CODE);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", cstmt.getObject("V_INFO"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1917_JXGX_AQCS_DATA_DEL");
+        return result;
+    }
 }

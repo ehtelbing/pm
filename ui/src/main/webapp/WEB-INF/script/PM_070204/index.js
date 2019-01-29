@@ -5,6 +5,7 @@ var V_ORDERGUID = null;
 var aqcsGuid="";
 var aqcsGuidList=[];
 var aqcsCodeList=[];
+var sign="";
 var A_USERID = Ext.util.Cookies.get('v_personcode');
 var A_USERNAME = Ext.util.Cookies.get('v_personname2');
 if (location.href.split('?')[1] != undefined) {
@@ -368,6 +369,8 @@ function OnclickAddButtonLoad() {
     Ext.getCmp('jxtecbzguid').setValue('');
     flag = 1;
     Ext.getCmp('dialog').show();
+    sign="IN";
+
 }
 
 function OnClickSaveButton() {
@@ -394,10 +397,11 @@ function OnClickSaveButton() {
                     Ext.Ajax.request({
                         method: 'POST',
                         async: false,
-                        url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET',
+                        url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET_W',
                         params: {
                             V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
-                            V_V_AQCS_CODE: aqcsGuid
+                            V_V_AQCS_CODE: aqcsGuid,
+                            V_SIGN:sign
                         },
                         success: function (response) {
                             var resp = Ext.decode(response.responseText);
@@ -411,6 +415,67 @@ function OnClickSaveButton() {
 
             }
         });
+    }
+    else{
+        if(sign=="UPDATE"){
+            Ext.Ajax.request({
+                method: 'POST',
+                async: false,
+                url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_DEL',
+                params: {
+                    V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
+                    V_V_AQCS_CODE: aqcsCodeList[0],
+                    V_SIGN:sign
+                },
+                success: function (response) {
+                    var resp = Ext.decode(response.responseText);
+                    if (resp.list[0].V_INFO == "success") {
+                        for(var j=0;j<aqcsCodeList.length;j++){
+                            Ext.Ajax.request({
+                                method: 'POST',
+                                async: false,
+                                url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET_W',
+                                params: {
+                                    V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
+                                    V_V_AQCS_CODE: aqcsCodeList[j],
+                                    V_SIGN:sign
+                                },
+                                success: function (response) {
+                                    var resp = Ext.decode(response.responseText);
+                                    if (resp.list[0].V_INFO == "success") {
+                                        // aqcsCodeList.splice(0, aqcsCodeList.length);
+                                        // console.log(aqcsCodeList);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }else{
+            for(var j=0;j<aqcsCodeList.length;j++){
+                Ext.Ajax.request({
+                    method: 'POST',
+                    async: false,
+                    url: AppUrl + 'basic/PM_1917_JXGX_AQCS_DATA_SET_W',
+                    params: {
+                        V_V_JXGX_CODE: Ext.getCmp('jxgxbm').getValue(),
+                        V_V_AQCS_CODE: aqcsCodeList[j],
+                        V_SIGN:sign
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp.list[0].V_INFO == "success") {
+                            // aqcsCodeList.splice(0, aqcsCodeList.length);
+                            // console.log(aqcsCodeList);
+                        }
+                    }
+                });
+            }
+        }
+
+        aqcsCodeList.splice(0, aqcsCodeList.length);
+        console.log(aqcsCodeList);
     }
     Ext.Ajax.request({
         url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_SET_NEW',
@@ -501,6 +566,7 @@ function OnclickUpdateButtonLoad() {
                     Ext.getCmp('jxtechnologybzd').setValue(resp.list[0].V_JXBZ_VALUE_DOWN);
                     Ext.getCmp('jxtechnologybzu').setValue(resp.list[0].V_JXBZ_VALUE_UP);
                     Ext.getCmp('jxtecbzguid').setValue(resp.list[0].V_JXBZ);
+                    sign="UPDATE";
                 }
             });
 

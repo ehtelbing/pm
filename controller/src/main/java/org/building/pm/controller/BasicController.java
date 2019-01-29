@@ -897,5 +897,37 @@ public class BasicController {
         Map result = basicService.BASE_PERSEL_BYJST(V_V_JSTCODE);
         return result;
     }
+    // 工单工序安全措施修改
+    @RequestMapping(value = "/PM_1917_JXGX_AQCS_DATA_SET_W", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXGX_AQCS_DATA_SET_W(
+            @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+            @RequestParam(value = "V_V_AQCS_CODE") String V_V_AQCS_CODE,
+            @RequestParam(value="V_SIGN") String V_SIGN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
 
+        List<Map> result = null;
+        result = basicService.PM_1917_JXGX_AQCS_DATA_SET_W(V_V_JXGX_CODE, V_V_AQCS_CODE,V_SIGN);
+        test.put("list", result);
+        return test;
+    }
+
+    //PM_1917_JXGX_AQCS_DATA_DEL
+    @RequestMapping(value = "/PM_1917_JXGX_AQCS_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1917_JXGX_AQCS_DATA_DEL(
+            @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
+            @RequestParam(value = "V_V_AQCS_CODE") String V_V_AQCS_CODE,
+            @RequestParam(value="V_SIGN") String V_SIGN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = basicService.PM_1917_JXGX_AQCS_DATA_DEL(V_V_JXGX_CODE, V_V_AQCS_CODE,V_SIGN);
+        test.put("list", result);
+        return test;
+    }
 }
