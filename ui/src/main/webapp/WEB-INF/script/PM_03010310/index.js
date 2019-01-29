@@ -12,6 +12,7 @@ var startUpTime=null;
 var endUpTime=null;
 var getOtherguid="";
 var getOtherType="";
+var returnSing="0";
 
 if (location.href.split('?')[1] != undefined) {
     V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
@@ -985,7 +986,7 @@ Ext.onReady(function () {
         items: [editPanel]
     });
     pageLoadInfo();
-    if (V_WEEKPLAN_GUID == '0') {
+    if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
         V_JXGX_CODE = guid();
     } else {
         Ext.Ajax.request({
@@ -1094,7 +1095,7 @@ Ext.onReady(function () {
 });
 
 function pageLoadInfo() {
-    if (V_WEEKPLAN_GUID == '0') {
+    if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
         if (YEAR == null || YEAR == '') {
             Ext.getCmp('year').setValue(new Date().getFullYear());
         } else {
@@ -1113,7 +1114,7 @@ function pageLoadInfo() {
     }
 
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
-        if (V_WEEKPLAN_GUID == '0') {
+        if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
             if (V_ORGCODE == null || V_ORGCODE == '') {
                 Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
             } else {
@@ -1147,7 +1148,7 @@ function pageLoadInfo() {
         });
     });
     Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
-        if (V_WEEKPLAN_GUID == '0') {
+        if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
             if (V_DEPTCODE == null || V_DEPTCODE == '') {
                 Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
             } else {
@@ -1225,7 +1226,7 @@ function pageLoadInfo() {
     });
     //设备类型加载监听
     Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
-        if (V_WEEKPLAN_GUID == '0') {
+        if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
             Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
         }
         Ext.data.StoreManager.lookup('sbmcStore').load({
@@ -1238,22 +1239,22 @@ function pageLoadInfo() {
     });
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
-        if (V_WEEKPLAN_GUID == '0') {
+        if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
             Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
         }
     });
     Ext.data.StoreManager.lookup('zyStore').on('load', function () {
-        if (V_WEEKPLAN_GUID == '0') {
+        if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
             Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
         }
     });
 
     Ext.data.StoreManager.lookup('gxStore').on('load',function(){
-        if (V_WEEKPLAN_GUID == '0') {
+        if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
             Ext.getCmp('gx').select(Ext.data.StoreManager.lookup('gxStore').getAt(0));
         }
     });
-    if (V_WEEKPLAN_GUID == '0') {
+    if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
 //--update 2018-09-17
         Ext.getCmp('jhtgdate').setValue(new Date(startUpTime)); 		//编辑窗口计划停工时间默认值
         Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
@@ -1305,13 +1306,14 @@ function getReturnJHXZ(retdata, type) {
     if (type == 'MONTH') {
         getOtherguid=retdata;
         getOtherType=type;
+        returnSing="1";
         Ext.Ajax.request({
             url: AppUrl + 'PM_03/PM_03_PLAN_CHOOSE_SEL',
             method: 'POST',
             async: false,
             params: {
-                V_V_GUID: retdata,
-                V_V_PLANTYPE: type
+                V_V_GUID: getOtherguid,
+                V_V_PLANTYPE: getOtherType
             },
             success: function (ret) {
                 var resp = Ext.decode(ret.responseText);
@@ -1340,8 +1342,8 @@ function getReturnJHXZ(retdata, type) {
                     var V_MAIN_DEFECT=resp.list[0].V_MAIN_DEFECT==""?"":resp.list[0].V_MAIN_DEFECT;
                     var V_REPAIR_PER=resp.list[0].V_REPAIR_PER;
                     var V_SGWAY=resp.list[0].V_SGWAY==""?"":resp.list[0].V_SGWAY;
-                    V_PLANCODE = resp.list[0].V_PLANCODE;
-                    V_PLANTYPE = resp.list[0].V_PLANTYPE;
+                    // V_PLANCODE = resp.list[0].V_PLANCODE;
+                    // V_PLANTYPE = resp.list[0].V_PLANTYPE;
 
                     Ext.getCmp('ck').select(V_ORGCODE);
                     Ext.getCmp('zyq').select(V_DEPTCODE);
@@ -1351,6 +1353,14 @@ function getReturnJHXZ(retdata, type) {
                     Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
                     Ext.getCmp('jhgshj').setValue(V_HOUR);  //计划工时合计
                     Ext.getCmp('bz').setValue(V_BZ);  //备注
+                    // Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
+                    // Ext.getCmp('zyq').select(resp.list[0].V_DEPTCODE);
+                    // Ext.getCmp("zy").select(resp.list[0].V_REPAIRMAJOR_CODE);
+                    // Ext.getCmp("sblx").select(resp.list[0].V_EQUTYPECODE);
+                    // Ext.getCmp("sbmc").select(resp.list[0].V_EQUCODE);
+                    // Ext.getCmp('jxnr').setValue(resp.list[0].V_CONTENT);  //检修内容
+                    // Ext.getCmp('jhgshj').setValue(resp.list[0].V_HOUR);  //计划工时合计
+                    // Ext.getCmp('bz').setValue(resp.list[0].V_BZ);  //备注
                     Ext.getCmp('expectage').setValue(expect_age);   //预计寿命
                     Ext.getCmp('maindefect').setValue(V_MAIN_DEFECT);  //主要缺陷
                     Ext.getCmp('repairper').setValue(V_REPAIR_PER);   //维修人数
@@ -1377,8 +1387,8 @@ function getReturnJHXZ(retdata, type) {
             method: 'POST',
             async: false,
             params: {
-                V_V_GUID: retdata,
-                V_V_PLANTYPE: type
+                V_V_GUID: getOtherguid,
+                V_V_PLANTYPE: getOtherType
             },
             success: function (ret) {
                 var resp = Ext.decode(ret.responseText);
@@ -1401,8 +1411,8 @@ function getReturnJHXZ(retdata, type) {
                     var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
                     var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
                     var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
-                    V_PLANCODE = resp.list[0].V_PLANCODE;
-                    V_PLANTYPE = resp.list[0].V_PLANTYPE;
+                    // V_PLANCODE = resp.list[0].V_PLANCODE;
+                    // V_PLANTYPE = resp.list[0].V_PLANTYPE;
 
                     Ext.getCmp('ck').select(V_ORGCODE);
                     //Ext.getCmp('zyq').select(V_DEPTCODE);
@@ -1426,6 +1436,7 @@ function getReturnJHXZ(retdata, type) {
             }
         });
     }
+    // V_WEEKPLAN_GUID="0";
 
 }
 /*function getReturnMXXZ(retdata) {
