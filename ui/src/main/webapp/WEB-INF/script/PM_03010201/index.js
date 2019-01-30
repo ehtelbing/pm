@@ -281,7 +281,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         ,'V_STATE',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME'],
+        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME','V_WEEKNUM'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -579,11 +579,13 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         },
         {
             text: '对应周计划',
-            dataIndex: 'V_GUID',
-            width: 100,
+            dataIndex: 'V_WEEKNUM',
+            width: 80,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href="#" onclick="_weekPlanDetail(\'' + record.data.V_GUID + '\')">明细</a>';
+                // return '<a href="#" onclick="_weekPlanDetail(\'' + record.data.V_GUID + '\')">明细</a>';
+                // return '<a href="#" onclick="_weekPlanDetail(\'' + record.data.V_GUID + '\')">'+record.data.V_WEEKNUM+' 条</a>';
+                return record.data.V_WEEKNUM+' 条';
             }
         },
         /*{text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
