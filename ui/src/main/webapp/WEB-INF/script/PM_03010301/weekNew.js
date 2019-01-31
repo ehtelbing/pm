@@ -791,7 +791,7 @@ function saveOnButtonUp(){
 
     var records=Ext.data.StoreManager.lookup('gridStore').getProxy().getReader().rawData;
     for(var i=0;i<records.list.length;i++){
-        if(records.list[i].V_STATE=="30"){
+        if(records.list[i].V_STATE=="30"||records.list[i].V_STATE=="31"){
             Ext.Ajax.request({
                 url: AppUrl + 'dxfile/PRO_PM_03_PLAN_WEEK_SEND2',
                 method: 'POST',

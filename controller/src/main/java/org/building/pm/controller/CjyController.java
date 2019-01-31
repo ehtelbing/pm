@@ -3913,6 +3913,7 @@ public class CjyController {
                         String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
                         String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
                         String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+                        String V_V_STATE=perlist.get(0).get("V_STATE").toString();
 
                         String V_STEPNAME = "";
                         String V_NEXT_SETP = "";
@@ -3949,7 +3950,12 @@ public class CjyController {
 
                             complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
                             if (complresult.get("ret").toString().equals("任务提交成功")) {
-                                flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
+                                if(V_V_STATE.equals("90")){
+                                    flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "90");
+                                }else{
+                                    flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
+                                }
+//                                flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
                                 if (flowresult.get("V_INFO").toString().equals("success")) {
                                     sucNum++;
                                 }
@@ -4122,6 +4128,7 @@ public class CjyController {
                         String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
                         String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
                         String V_V_SPECIALTY = perlist.get(0).get("V_REPAIRMAJOR_CODE").toString();
+                        String V_V_STATE=perlist.get(0).get("V_STATE").toString();
 
 
                         String V_STEPNAME = "";
@@ -4167,7 +4174,12 @@ public class CjyController {
 
                             complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
                             if (complresult.get("ret").toString().equals("任务提交成功")) {
-                                flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "80");
+                                if(V_V_STATE.equals("31")){
+                                    flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "31");
+                                }else{
+                                    flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "80");
+                                }
+//                                flowresult = dx_fileService.PRO_PM_03_PLAN_WEEK_SET_STATESBB(V_ORDERGUID[i], "80");
                                 if (flowresult.get("V_INFO").toString().equals("success")) {
                                     sucNum++;
                                 }

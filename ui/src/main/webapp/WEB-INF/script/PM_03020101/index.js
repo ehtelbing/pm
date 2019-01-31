@@ -679,6 +679,35 @@ var gridStore = Ext.create('Ext.data.Store', {
 Ext.data.StoreManager.lookup('gridStore').on('load',function(store, records, success, eOpts){
     Ext.getCmp('fjsl').setText(store.getProxy().getReader().rawData.V_COUNT);
 });
+
+var yearStore=Ext.create('Ext.data.Store', {
+    id:'yearStore',
+    autoLoad: false,
+    fields: ['ID_GUID', 'ORGCODE','ORGNAME','DEPTCODE','DEPTNAME','ZYCODE','ZYNAME','EQUCODE','V_EQUNAME','EQUTYPE',
+        'V_EQUTYPENAME','REPAIRCONTENT','PLANHOUR','REPAIRTYPE','REPAIRTYPENAME','INPERCODE','INPERNAME','INDATE',
+        'STATE','STATENAME','REMARK','V_FLOWCODE','V_FLOWTYPE','MXCODE','PLANTYPE','V_YEAR', 'V_MONTH',
+        'PLANTJMONTH','PLANJGMONTH','WXTYPECODE','WXTYPENAME','PTYPECODE','PTYPENAME','PLANDAY','REDEPTCODE','REDEPTNAME',
+        'FZPERCODE','FZPERNAME','SGTYPECODE','SGTYPENAME','SCLBCODE','SCLBNAME','PRO_NAME'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_SEL',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'RET'
+        }
+        // ,
+        // extraParams:{
+        //     V_V_ORGCODE:  Ext.getCmp('zyq').getValue().toString().substring(0,4),
+        //     V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+        //     V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+        //     V_V_ZY: ''
+        // }
+    }
+});
 var northPanel = Ext.create('Ext.form.Panel', {
     region: 'north',
     frame: false,
@@ -748,6 +777,14 @@ var northPanel = Ext.create('Ext.form.Panel', {
             iconCls:'Report',
             handler:btnFlowStart
         },
+        {
+            xtype: 'button',
+            text: '计划选择',
+            iconCls: 'buy-button',
+            // icon:dxImgPath + '/tjsb.png',
+            icon: imgpath + '/add.png',
+            listeners: {click: OnButtonPlanAddClicked}
+        },
         /*{
             xtype: 'button',
             id:'agreeFlow',
@@ -766,7 +803,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
         },*/{
             xtype: 'button',
             text: '附件',
-            margin: '5 0 5 0',
+            margin: '5 10 5 0',
             iconCls:'Tablegear',
             iconCls: 'buy-button',
             icon:dxImgPath + '/fj.png',
@@ -2495,14 +2532,78 @@ Ext.onReady(function () {
         'background-color':'rgb(45,60,137)',
         "height":"35px"
     };
-    Ext.get('toolbar-1029').setStyle(tbarStyle);
-    Ext.get('tbtext-1030').setStyle('color','white');
+    Ext.get('toolbar-1030').setStyle(tbarStyle);
+    Ext.get('tbtext-1031').setStyle('color','white');
 
-    Ext.get('toolbar-1045').setStyle(tbarStyle);
-    Ext.get('tbtext-1046').setStyle('color','white');
+    Ext.get('toolbar-1046').setStyle(tbarStyle);
+    Ext.get('tbtext-1047').setStyle('color','white');
 
-    Ext.get('toolbar-1061').setStyle(tbarStyle);
-    Ext.get('tbtext-1062').setStyle('color','white');
+    Ext.get('toolbar-1062').setStyle(tbarStyle);
+    Ext.get('tbtext-1063').setStyle('color','white');
+
+    var yeartool = Ext.create('Ext.panel.Panel', {
+        region:'north',
+        layout:'column',
+        frame:false,
+        border:true,
+        width:'100%',
+        tbar:[
+            // { xtype: 'combo',fieldLabel: '设备类型',store: EquTypeStore,id:'EquType',editable : false,queryMode : 'local',displayField: 'V_EQUTYPENAME', valueField: 'V_EQUTYPECODE',labelWidth: 75, width:265,margin:'5 5 5 0',labelAlign:'right'},
+            {xtype: 'button',text: '查询', margin: '5 5 5 5',/*bodyStyle:'float:right;',iconCls:'Magnifierzoomin',*/ iconCls: 'buy-button',icon:dxImgPath + '/search.png',listeners:{click:QueryEquGrid}},
+            {xtype: 'button',text: '确认返回', margin: '5 5 5 5',/*bodyStyle:'float:right;',iconCls:'Tablesave' ,*/iconCls: 'buy-button',icon:dxImgPath + '/tjsb.png',listeners:{click:winClose}}]
+    });
+    var yeargrid=Ext.create('Ext.grid.Panel',{
+       id:'yeargrid' ,
+        region:'center',
+        border: false,
+        store: 'yearStore',
+        columnLines: true,
+        columns: [
+            {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
+            {text: 'yearid', align: 'center', width: 100, dataIndex: 'YEARID',hidden:true},
+            {text: 'ID_GUID', align: 'center', width: 100, dataIndex: 'ID_GUID',hidden:true},
+            {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATE',hidden:true},
+            {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATENAME'},
+            {text: '项目名称', align: 'center', width: 100, dataIndex:'PRO_NAME'},
+            {text: '年份', align: 'center', width: 70, dataIndex: 'V_YEAR'},
+            {text: '计划停机月份', align: 'center', width: 100, dataIndex: 'V_MONTH'},
+            {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATENAME'},
+            {text: '厂矿', align: 'center', width: 120, dataIndex: 'ORGNAME'},
+            {text: '车间名称', align: 'center', width: 150, dataIndex: 'DEPTNAME'},
+            {text: '专业', align: 'center', width: 100, dataIndex: 'ZYNAME'},
+            {text: '设备名称', align: 'center', width: 180, dataIndex: 'V_EQUNAME'},
+            {text: '设备类型名称', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME',hidden:true},
+            {text:'检修内容',align:'center',width:150,dataIndex:'REPAIRCONTENT'},
+
+            {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'PLANHOUR'},
+            {text: '检修类别', align: 'center', width: 100, dataIndex: 'REPAIRTYPENAME'},
+
+            {text: '录入人', align: 'center', width: 100, dataIndex: 'INPERNAME'},
+            {text: '录入人', align: 'center', width: 100, dataIndex: 'INPERCODE',hidden:true},
+            {
+                text: '录入时间',
+                align: 'center',
+                width: 150,
+                dataIndex: 'INDATE',
+                renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                    metaData.style = "text-align:center;";
+                    return value;
+                }
+            }
+        ]
+    });
+
+
+    var yearWindow=Ext.create('Ext.window.Window',{
+        id:'yearWindow',
+        closeAction:'hide',
+        width:870,
+        height:450,
+        autoScroll: true,
+        layout:'border',
+        title:'设备检修历史',
+        items:[yeartool,yeargrid]
+    });
 });
 
 
@@ -3741,3 +3842,14 @@ function gdzcdetail(value,metaData,record,rowIndex,colIndex,store){
     return '<a href="javascript:mgdzcdet(\''+value+'\')">'+"详细信息"+'</a>'
 }
 
+function OnButtonPlanAddClicked(){
+    Ext.data.StoreManager.lookup('yearStore').load({
+        params:{
+            V_V_ORGCODE: Ext.getCmp('zyq').getValue().toString().substring(0,4),
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_ZY: ''
+        }
+    });
+    Ext.getCmp('yearWindow').show();
+}
