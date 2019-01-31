@@ -229,7 +229,7 @@ var statList=[];
 statList.push({V_BASECODE:'%',V_BASENAME:'全部'});
 statList.push({V_BASECODE:30,V_BASENAME:'审批完成'});
 statList.push({V_BASECODE:70,V_BASENAME:'设备部审批中'});
-statList.push({V_BASECODE:80,V_BASENAME:'设备部计划审批步骤'});
+statList.push({V_BASECODE:80,V_BASENAME:'设备部审批完成'});
 statList.push({V_BASECODE:90,V_BASENAME:'已分解'});
 //状态
 var stateStore = Ext.create('Ext.data.Store', {
