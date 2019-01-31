@@ -166,7 +166,7 @@ var sbmcStore = Ext.create('Ext.data.Store', {
 var panel = Ext.create('Ext.form.Panel', {
     id: 'panellow',
     region: 'north',
-    height: 100,
+    // height: 100,
     defaults: {
         style: 'margin:5px 0px 5px 5px'
         , labelAlign: 'right'

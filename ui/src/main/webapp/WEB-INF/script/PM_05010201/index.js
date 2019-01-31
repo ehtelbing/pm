@@ -703,15 +703,16 @@ Ext
             var unit = record.data.VCH_UNIT;
             var price = record.data.PRICE;
             var typeID = record.data.ID;
+            var kccount=record.data.ABLECOUNT;
 
-            // var inputdate=record.data.INPUT_DATE;
-
+            // var inputdate=record.data.INPUT_DATE;  ABLECOUNT
             var moreParams = Ext.String.trim(acti) + '^'
                 + Ext.String.trim(matCode) + '^'
                 + Ext.String.trim(matDesc) + '^'
                 + Ext.String.trim(matgon) + '^' + Ext.String.trim(unit)
                 + '^' + Ext.String.trim(price) + '^'
-                + Ext.String.trim(typeID);
+                + Ext.String.trim(typeID)+'^'
+                +Ext.String.trim(kccount);
             window.parent.OnClickKCText(moreParams);
 
         }

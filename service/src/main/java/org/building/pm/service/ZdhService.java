@@ -2915,4 +2915,59 @@ public class ZdhService {
         logger.info("end PRO_WORKORDER_FLOW_CLASS");
         return result;
     }
+
+    public List<Map> PRO_PM_WORKORDER_SPARE_SET2(Double V_I_ID,String V_V_ORDERGUID,String V_V_FETCHORDERGUID,String V_V_ACTIVITY,
+                                                String V_V_MATERIALCODE, String V_V_MATERIALNAME,String V_V_SPEC,String V_V_UNIT,
+                                                Double V_F_UNITPRICE,Double V_I_PLANAMOUNT,Double V_F_PLANMONEY,Double V_I_ACTUALAMOUNT,
+                                                Double V_F_ACTUALMONEY, String V_V_TYPE,String V_V_MEMO,String V_V_SUBTYPE,
+                                                String V_V_STATUS,Double V_I_ABANDONEDAMOUNT,Double V_I_RECLAIMEDAMOUNT,Double V_I_FIXEDAMOUNT,
+                                                String V_V_ID,Double V_KFCOUNT) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_SPARE_SET2");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_SET2" + "(:V_I_ID,:V_V_ORDERGUID,:V_V_FETCHORDERGUID,:V_V_ACTIVITY,:V_V_MATERIALCODE,:V_V_MATERIALNAME,:V_V_SPEC,:V_V_UNIT,:V_F_UNITPRICE,:V_I_PLANAMOUNT,:V_F_PLANMONEY,:V_I_ACTUALAMOUNT,:V_F_ACTUALMONEY,:V_V_TYPE,:V_V_MEMO,:V_V_SUBTYPE,:V_V_STATUS,:V_I_ABANDONEDAMOUNT,:V_I_RECLAIMEDAMOUNT,:V_I_FIXEDAMOUNT,:V_V_ID,:V_KFCOUNT,:RET)}");
+
+            cstmt.setDouble("V_I_ID", V_I_ID);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_FETCHORDERGUID", V_V_FETCHORDERGUID);
+            cstmt.setString("V_V_ACTIVITY", V_V_ACTIVITY);
+            cstmt.setString("V_V_MATERIALCODE", V_V_MATERIALCODE);
+            cstmt.setString("V_V_MATERIALNAME", V_V_MATERIALNAME);
+            cstmt.setString("V_V_SPEC", V_V_SPEC);
+            cstmt.setString("V_V_UNIT", V_V_UNIT);
+            cstmt.setDouble("V_F_UNITPRICE", V_F_UNITPRICE);
+            cstmt.setDouble("V_I_PLANAMOUNT", V_I_PLANAMOUNT);
+            cstmt.setDouble("V_F_PLANMONEY", V_F_PLANMONEY);
+            cstmt.setDouble("V_I_ACTUALAMOUNT", V_I_ACTUALAMOUNT);
+            cstmt.setDouble("V_F_ACTUALMONEY", V_F_ACTUALMONEY);
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_V_MEMO", V_V_MEMO);
+            cstmt.setString("V_V_SUBTYPE", V_V_SUBTYPE);
+            cstmt.setString("V_V_STATUS", V_V_STATUS);
+            cstmt.setDouble("V_I_ABANDONEDAMOUNT", V_I_ABANDONEDAMOUNT);
+            cstmt.setDouble("V_I_RECLAIMEDAMOUNT", V_I_RECLAIMEDAMOUNT);
+            cstmt.setDouble("V_I_FIXEDAMOUNT", V_I_FIXEDAMOUNT);
+            cstmt.setString("V_V_ID", V_V_ID);
+            cstmt.setDouble("V_KFCOUNT", V_KFCOUNT);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sss = (String) cstmt.getObject("RET");
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", "SUCCESS");
+            sledata.put("RET", sss);
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SPARE_SET2");
+        return result;
+    }
 }

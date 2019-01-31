@@ -1474,4 +1474,41 @@ public class ZdhController {
         Map<String, Object> result = zdhService.PRO_WX_WORKORDER_GET(V_V_ORDERGUID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_SPARE_SET2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_SPARE_SET2(@RequestParam(value = "V_I_ID") Double V_I_ID,
+                                          @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                          @RequestParam(value = "V_V_FETCHORDERGUID") String V_V_FETCHORDERGUID,
+                                          @RequestParam(value = "V_V_ACTIVITY") String V_V_ACTIVITY,
+                                          @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
+                                          @RequestParam(value = "V_V_MATERIALNAME") String V_V_MATERIALNAME,
+                                          @RequestParam(value = "V_V_SPEC") String V_V_SPEC,
+                                          @RequestParam(value = "V_V_UNIT") String V_V_UNIT,
+                                          @RequestParam(value = "V_F_UNITPRICE") Double V_F_UNITPRICE,
+                                          @RequestParam(value = "V_I_PLANAMOUNT") Double V_I_PLANAMOUNT,
+                                          @RequestParam(value = "V_F_PLANMONEY") Double V_F_PLANMONEY,
+                                          @RequestParam(value = "V_I_ACTUALAMOUNT") Double V_I_ACTUALAMOUNT,
+                                          @RequestParam(value = "V_F_ACTUALMONEY") Double V_F_ACTUALMONEY,
+                                          @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                          @RequestParam(value = "V_V_MEMO") String V_V_MEMO,
+                                          @RequestParam(value = "V_V_SUBTYPE") String V_V_SUBTYPE,
+                                          @RequestParam(value = "V_V_STATUS") String V_V_STATUS,
+                                          @RequestParam(value = "V_I_ABANDONEDAMOUNT") Double V_I_ABANDONEDAMOUNT,
+                                          @RequestParam(value = "V_I_RECLAIMEDAMOUNT") Double V_I_RECLAIMEDAMOUNT,
+                                          @RequestParam(value = "V_I_FIXEDAMOUNT") Double V_I_FIXEDAMOUNT,
+                                          @RequestParam(value = "V_V_ID") String V_V_ID,
+                                          @RequestParam(value = "V_KFCOUNT") Double V_KFCOUNT,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = zdhService.PRO_PM_WORKORDER_SPARE_SET2(V_I_ID,V_V_ORDERGUID,V_V_FETCHORDERGUID,V_V_ACTIVITY,V_V_MATERIALCODE,
+                V_V_MATERIALNAME,V_V_SPEC,V_V_UNIT,V_F_UNITPRICE,V_I_PLANAMOUNT,V_F_PLANMONEY,V_I_ACTUALAMOUNT,V_F_ACTUALMONEY,
+                V_V_TYPE,V_V_MEMO,V_V_SUBTYPE,V_V_STATUS,V_I_ABANDONEDAMOUNT,V_I_RECLAIMEDAMOUNT,V_I_FIXEDAMOUNT,V_V_ID,V_KFCOUNT);
+        test.put("list", result);
+        return test;
+    }
+
 }

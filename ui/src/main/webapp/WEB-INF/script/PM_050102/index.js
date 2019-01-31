@@ -3,6 +3,7 @@ var I_ID = -1;
 var V_ORDERGUID = null;
 var flag = '';
 var V_EQUCODE;
+var KC_COUNT=0;
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
 }
@@ -343,6 +344,7 @@ function OnClickMatCodeText(threeParams) {
         var str = threeParams;
         var strs = [];
         strs = threeParams.split('^');
+        KC_COUNT=str[7];
         Ext.Ajax.request({
             url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_SET',
             // url : '/No41070102/PRO_PM_WORKORDER_SPARE_SET',
@@ -496,8 +498,9 @@ function OnClickKCText(moreParams) {
         var str = moreParams;
         var strs = [];
         strs = moreParams.split('^');
+        KC_COUNT=strs[7];
         Ext.Ajax.request({
-            url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_SET',
+            url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_SET2',
             // url : '/No41070102/PRO_PM_WORKORDER_SPARE_SET',
             method: 'POST',
             async: false,
@@ -522,10 +525,14 @@ function OnClickKCText(moreParams) {
                 V_I_ABANDONEDAMOUNT: '0',
                 V_I_RECLAIMEDAMOUNT: '0',
                 V_I_FIXEDAMOUNT: '0',
-                V_V_ID: ''
+                V_V_ID: '',
+                V_KFCOUNT:KC_COUNT
             },
             success: function (response) {
-
+                var resp=Ext.decode(response.responseText);
+                if(resp.list[0].RET=='FALSE'){
+                    Ext.Msg.alert('提示','数量以已超出库存数量，不再添加')
+                }
                 Ext.getCmp('grid').getStore().load();
                 Ext.getCmp('grid2').getStore().load();
             }
@@ -593,6 +600,11 @@ Ext.onReady(function () {
 function OnChangePlanAmount(editor, e, eOpts) {
     var str = e.record.data.F_UNITPRICE * e.record.data.I_PLANAMOUNT;
 
+    if(e.record.data.I_PLANAMOUNT>=KC_COUNT){
+        alert('计划数量已超出库存数量，请从新输入');
+        Ext.getCmp('grid').store.load();
+        return false;
+    }
     Ext.Ajax
         .request({
             type: 'ajax',
@@ -625,7 +637,7 @@ function OnChangePlanAmount(editor, e, eOpts) {
             success: function (response) {
             }
         });
-
+    // Ext.getCmp('grid').store.load();
     Ext.getCmp('grid2').getStore().load();
 }
 
