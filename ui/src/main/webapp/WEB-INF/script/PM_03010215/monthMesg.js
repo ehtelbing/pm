@@ -197,24 +197,34 @@ var sbmcStore = Ext.create('Ext.data.Store', {
         }
     }
 });
-
+var statList=[];
+statList.push({V_BASECODE:'%',V_BASENAME:'全部'});
+// statList.push({V_BASECODE:30,V_BASENAME:'审批完成'});
+statList.push({V_BASECODE:70,V_BASENAME:'设备部审批中'});
+statList.push({V_BASECODE:80,V_BASENAME:'设备部审批完成'});
+statList.push({V_BASECODE:90,V_BASENAME:'已分解'});
 //状态
 var stateStore = Ext.create('Ext.data.Store', {
-    autoLoad: false,
+    autoLoad: true,
     storeId: 'stateStore',
     fields: ['V_BASECODE', 'V_BASENAME'],
+    data:statList,
     proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'PM_03/PM_03_PLAN_STATE_SEL',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        }
+        type: 'memory',
+        reader: {type: 'json'}
     }
+    // proxy: {
+    //     type: 'ajax',
+    //     async: false,
+    //     url: AppUrl + 'PM_03/PM_03_PLAN_STATE_SEL',
+    //     actionMethods: {
+    //         read: 'POST'
+    //     },
+    //     reader: {
+    //         type: 'json',
+    //         root: 'list'
+    //     }
+    // }
 });
 //页面表格信息加载
 var gridStore = Ext.create('Ext.data.Store', {
@@ -591,9 +601,9 @@ Ext.onReady(function () {
             V_V_DEPTNEXTCODE: Ext.getCmp('jhzyq').getValue()
         }
     });
-    Ext.data.StoreManager.lookup('stateStore').load({
-        params: {}
-    });
+    // Ext.data.StoreManager.lookup('stateStore').load({
+    //     params: {}
+    // });
 
     //作业区改变
     Ext.getCmp('jhzyq').on('change', function () {
@@ -635,12 +645,13 @@ Ext.onReady(function () {
         Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
     });
 
-    Ext.data.StoreManager.lookup('stateStore').on('load', function () {
-        Ext.data.StoreManager.lookup('stateStore').insert(0, {V_BASENAME: '全部', V_BASECODE: '%'});
-        Ext.getCmp("state").select(Ext.data.StoreManager.lookup('stateStore').getAt(0));
+    // Ext.data.StoreManager.lookup('stateStore').on('load', function () {
+    //     Ext.data.StoreManager.lookup('stateStore').insert(0, {V_BASENAME: '全部', V_BASECODE: '%'});
+    //     Ext.getCmp("state").select(Ext.data.StoreManager.lookup('stateStore').getAt(0));
 
-        query();
-    });
+    //     query();
+    // });
+    Ext.getCmp("state").select('%');
     //Queryendtime();
     Ext.getCmp('nf').on('select', function () {
         //Queryendtime();
