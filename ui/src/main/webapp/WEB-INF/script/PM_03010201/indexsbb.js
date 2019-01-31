@@ -225,24 +225,34 @@ var sbmcStore = Ext.create('Ext.data.Store', {
         }
     }
 });
-
+var statList=[];
+statList.push({V_BASECODE:'%',V_BASENAME:'全部'});
+statList.push({V_BASECODE:30,V_BASENAME:'审批完成'});
+statList.push({V_BASECODE:70,V_BASENAME:'设备部审批中'});
+statList.push({V_BASECODE:80,V_BASENAME:'设备部计划审批步骤'});
+statList.push({V_BASECODE:90,V_BASENAME:'已分解'});
 //状态
 var stateStore = Ext.create('Ext.data.Store', {
-    autoLoad: false,
+    autoLoad: true,
     storeId: 'stateStore',
     fields: ['V_BASECODE', 'V_BASENAME'],
+    data:statList,
     proxy: {
-        type: 'ajax',
-        async: false,
-        url: AppUrl + 'PM_03/PM_03_PLAN_STATE_SEL',
-        actionMethods: {
-            read: 'POST'
-        },
-        reader: {
-            type: 'json',
-            root: 'list'
-        }
+        type: 'memory',
+        reader: {type: 'json'}
     }
+    // proxy: {
+    //     type: 'ajax',
+    //     async: false,
+    //     url: AppUrl + 'PM_03/PM_03_PLAN_STATE_SEL',
+    //     actionMethods: {
+    //         read: 'POST'
+    //     },
+    //     reader: {
+    //         type: 'json',
+    //         root: 'list'
+    //     }
+    // }
 });
 
 //页面表格信息加载
@@ -645,9 +655,9 @@ Ext.onReady(function () {
 
         query();
     });
-    Ext.data.StoreManager.lookup('stateStore').load({
-        params: {}
-    });
+    // Ext.data.StoreManager.lookup('stateStore').load({
+    //     params: {}
+    // });
 
     //设备类型加载监听
     Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
@@ -663,12 +673,10 @@ Ext.onReady(function () {
         Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
     });
 
-    Ext.data.StoreManager.lookup('stateStore').on('load', function () {
-        Ext.data.StoreManager.lookup('stateStore').insert(0, {V_BASENAME: '全部', V_BASECODE: '%'});
-        Ext.getCmp("state").select(Ext.data.StoreManager.lookup('stateStore').getAt(0));
-
-        Ext.data.StoreManager.lookup('gridStore').load();
-    });
+    // Ext.data.StoreManager.lookup('stateStore').on('load', function () {
+        Ext.getCmp("state").select('%');
+        // Ext.data.StoreManager.lookup('gridStore').load();
+    // });
 
     Ext.getCmp('nf').on('select', function () {
         // Queryendtime();
@@ -911,7 +919,7 @@ function saveOnButtonUp(){
     // for (var i = 0; i < records.length; i++) {
     var records=Ext.data.StoreManager.lookup('gridStore').getProxy().getReader().rawData;
     for(var i=0;i<records.list.length;i++){
-        if(records.list[i].V_STATE=="30"){
+        if(records.list[i].V_STATE=="30"||records.list[i].V_STATE=="90"){
             Ext.Ajax.request({
                 url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_SEND2',
                 method: 'POST',
