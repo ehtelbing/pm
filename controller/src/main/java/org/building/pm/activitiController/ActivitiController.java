@@ -159,8 +159,8 @@ public class ActivitiController {
            int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
             int second = c.get(Calendar.SECOND);*/
-            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
-
+//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+            String time=getShtgtime.Shtgtime();
 
             try {
                 for (int i = 0; i < parName.length; i++) {
@@ -1070,7 +1070,8 @@ public class ActivitiController {
             c.setTime(date);
             c.add(Calendar.MONTH, 2);
             c.set(Calendar.DAY_OF_MONTH, 0);
-            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+            String time=getShtgtime.Shtgtime();
             map.put("shtgtime", time);
             map.put("idea", idea);
             taskService.complete(taskId, map);
@@ -1332,7 +1333,8 @@ public class ActivitiController {
             c.setTime(date);
             c.add(Calendar.MONTH, 2);
             c.set(Calendar.DAY_OF_MONTH, 0);
-            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+            String time=getShtgtime.Shtgtime();
             param.put("shtgtime", time);
 
             try {
