@@ -371,8 +371,8 @@ function OnPageLoaded() {
         location.href = AppUrl + 'page/login/login' + ".html";
     }
     Ext.getBody().mask('<p>设备管理系统</p><p>系统加载中...</p>');
-    // append('Index', '首页', AppUrl + "page/home/home" + ".html", false);//原有的
-    append('Index', '首页', AppUrl + "page/home/home21" + ".html", false);
+    append('Index', '首页', AppUrl + "page/home/home" + ".html", false);//原有的
+    // append('Index', '首页', AppUrl + "page/home/home21" + ".html", false);
     var header = _CreateHeader();
     Ext.Ajax.request({
         url: AppUrl + 'tree/PRO_BASE_NEW_MENU_SEL',
