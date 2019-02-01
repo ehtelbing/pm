@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.building.pm.webpublic.GetShtgtime;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -74,6 +75,9 @@ public class ActivitiController {
 
     @Autowired
     private BasicService basicService;
+
+    @Autowired
+    private GetShtgtime getShtgtime;
 
     @Autowired
     private WorkOrderService workOrderService;
@@ -1004,13 +1008,14 @@ public class ActivitiController {
 
         try {
 
-            Date date = new Date();
-            Calendar c = Calendar.getInstance();
-            c.setTime(date);
-
-            c.add(Calendar.MONTH, 2);
-            c.set(Calendar.DAY_OF_MONTH, 0);
-            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+//            Date date = new Date();
+//            Calendar c = Calendar.getInstance();
+//            c.setTime(date);
+//
+//            c.add(Calendar.MONTH, 2);
+//            c.set(Calendar.DAY_OF_MONTH, 0);
+//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+            String time=getShtgtime.Shtgtime();
             map.put("shtgtime", time);
 
             map.put("idea", idea);
