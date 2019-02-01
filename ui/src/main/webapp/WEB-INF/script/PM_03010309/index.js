@@ -244,7 +244,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
         'V_REPAIR_PER',
-        'V_OTHERPLAN_GUID','V_OTHERPLAN_TYPE'],
+        'V_OTHERPLAN_GUID','V_OTHERPLAN_TYPE','WORKORDERNUM'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -489,11 +489,12 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             }
         },{
             text: '工单详情',
-            dataIndex: 'V_ORDERID',
+            dataIndex: 'WORKORDERNUM',
             width: 55,
             align: 'center',
             renderer: function (value, metaData, record) {
-                return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
+                // return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
+                return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
             }
         },
         {

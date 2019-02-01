@@ -277,7 +277,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_STATUSNAME', 'V_GUID','V_STATE','V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME'],
+        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME','WORKORDERNUM'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -586,6 +586,16 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
             }
+        },
+        {
+            text: '关联工单数量',
+            dataIndex: 'WORKORDERNUM',
+            width: 55,
+            align: 'center'
+        // ,renderer: function (value, metaData, record) {
+        //         // return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
+        //         return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
+        //     }
         },
         {text: '厂矿', align: 'center', width: 120, dataIndex: 'V_ORGNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},

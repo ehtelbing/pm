@@ -2884,7 +2884,17 @@ public class Dx_fileController {
             }
         }
     }
-
+ //月计划、年计划找周计划详情  PM_03_PLAN_MONTH_SEL_WEEKVIEW
+   @RequestMapping(value="PM_03_PLAN_MONTH_SEL_WEEKVIEW",method=RequestMethod.POST)
+   @ResponseBody
+   public Map PM_03_PLAN_MONTH_SEL_WEEKVIEW(
+           @RequestParam(value = "V_OTHERGRID") String V_OTHERGRID,
+           @RequestParam(value = "V_TYPE") String V_TYPE,
+           HttpServletRequest request,
+           HttpServletResponse response) throws Exception {
+       Map data = dx_fileService.PM_03_PLAN_MONTH_SEL_WEEKVIEW(V_OTHERGRID,V_TYPE);
+       return data;
+   }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

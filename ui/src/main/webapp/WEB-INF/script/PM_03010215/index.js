@@ -265,7 +265,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_STATENAME',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER'],
+        'V_REPAIR_PER','V_WEEKNUM'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -529,6 +529,15 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+            }
+        },
+        {
+            text: '周计划详情',
+            dataIndex: 'V_WEEKNUM',
+            width: 55,
+            align: 'center',
+            renderer: function (value, metaData, record) {
+                return '<a href="#" onclick="OnClickWeekGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
             }
         },
         /*{text: '流程步骤', align: 'center', width: 100, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
@@ -820,4 +829,12 @@ function OnClickExcelButton() {
       /*  + '&V_V_PAGE=' + Ext.getCmp('page').store.currentPage
         + '&V_V_PAGESIZE=' + Ext.getCmp('page').store.pageSize*/;
 
+}
+
+
+function OnClickWeekGrid(V_GUID) {
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    window.open(AppUrl + 'page/PM_0301021501/index.html?v_guid='
+        + V_GUID, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }

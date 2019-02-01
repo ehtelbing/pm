@@ -600,6 +600,10 @@ Ext.onReady(function () {
 function OnChangePlanAmount(editor, e, eOpts) {
     var str = e.record.data.F_UNITPRICE * e.record.data.I_PLANAMOUNT;
 
+    if(KC_COUNT=='0'){
+        alert('无法识别库存数量，请从新选择该物料');
+        return false;
+    }
     if(e.record.data.I_PLANAMOUNT>KC_COUNT){
         alert('计划数量已超出库存数量，请从新输入');
         Ext.getCmp('grid').store.load();

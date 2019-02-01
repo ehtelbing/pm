@@ -2533,4 +2533,30 @@ public class Dx_fileService {
         logger.info("end PM_03_PLAN_MONTH_SIGN_UPDT");
         return result;
     }
+
+    //月计划、年计划找周计划详情  PM_03_PLAN_MONTH_SEL_WEEKVIEW
+    public Map PM_03_PLAN_MONTH_SEL_WEEKVIEW(String V_OTHERGRID,String V_TYPE) throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_PLAN_MONTH_SEL_WEEKVIEW");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PM_03_PLAN_MONTH_SEL_WEEKVIEW(:V_OTHERGRID,:V_TYPE,:RET)}");
+            cstmt.setString("V_OTHERGRID",V_OTHERGRID);
+            cstmt.setString("V_TYPE",V_TYPE);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch (SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result"+result);
+        logger.info("end PM_03_PLAN_MONTH_SEL_WEEKVIEW");
+        return result;
+    }
 }
