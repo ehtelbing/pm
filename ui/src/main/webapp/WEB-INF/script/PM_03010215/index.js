@@ -678,7 +678,7 @@ Ext.onReady(function () {
     Ext.getCmp('yf').on('select', function () {
         //Queryendtime();
     });
-    Ext.getCmp('lrr').select(Ext.data.StoreManager.lookup('inputerStore').getAt(1));
+    Ext.getCmp('lrr').select(Ext.data.StoreManager.lookup('inputerStore').getAt(0));
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
 
         store.proxy.extraParams = {

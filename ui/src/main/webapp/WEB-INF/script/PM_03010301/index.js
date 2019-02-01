@@ -1480,10 +1480,10 @@ function createWorkorder() {
             alert("该计划状态无法生成工单");
             return;
         }
-        if(record[i].get('V_INPER')!==Ext.util.Cookies.get('v_personcode')){
-            alert("该计划录入人非本人，无法生成工单");
-            return;
-        }
+        // if(record[i].get('V_INPER')!==Ext.util.Cookies.get('v_personcode')){
+        //     alert("该计划录入人非本人，无法生成工单");
+        //     return;
+        // }
         if (i == 0) {
             V_GUIDList = record[i].data.V_GUID;
         } else {

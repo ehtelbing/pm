@@ -657,7 +657,7 @@ Ext.onReady(function () {
         Ext.getCmp('zjs').setValue(getWeekEndDate());
         //Querytime();
     });
-    Ext.getCmp('lrr').select(Ext.data.StoreManager.lookup('inputerStore').getAt(1));
+    Ext.getCmp('lrr').select(Ext.data.StoreManager.lookup('inputerStore').getAt(0));
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             V_V_YEAR: Ext.getCmp('nf').getValue(),
