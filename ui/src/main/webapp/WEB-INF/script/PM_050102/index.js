@@ -525,13 +525,14 @@ function OnClickKCText(moreParams) {
                 V_I_ABANDONEDAMOUNT: '0',
                 V_I_RECLAIMEDAMOUNT: '0',
                 V_I_FIXEDAMOUNT: '0',
-                V_V_ID: '',
-                V_KFCOUNT:KC_COUNT
+                V_V_ID: ''
+                ,V_KFCOUNT:KC_COUNT
             },
             success: function (response) {
                 var resp=Ext.decode(response.responseText);
                 if(resp.list[0].RET=='FALSE'){
-                    Ext.Msg.alert('提示','数量以已超出库存数量，不再添加')
+                    // Ext.Msg.alert('提示','数量以已超出库存数量，不再添加')
+                    Ext.Msg.alert('提示','数量以已超出库存数量')
                 }
                 Ext.getCmp('grid').getStore().load();
                 Ext.getCmp('grid2').getStore().load();
@@ -605,9 +606,10 @@ function OnChangePlanAmount(editor, e, eOpts) {
         return false;
     }
     if(e.record.data.I_PLANAMOUNT>KC_COUNT){
-        alert('计划数量已超出库存数量，请从新输入');
-        Ext.getCmp('grid').store.load();
-        return false;
+        // alert('计划数量已超出库存数量，请从新输入');
+        alert('计划数量已超出库存数量');
+        // Ext.getCmp('grid').store.load();
+        // return false;
     }
     Ext.Ajax
         .request({
