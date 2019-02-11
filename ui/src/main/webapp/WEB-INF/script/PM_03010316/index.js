@@ -28,6 +28,36 @@ var years = [];
 var dt = new Date();
 var thisYear = dt.getFullYear();
 for (var i = 2014; i <= thisYear + 1; i++) years.push([i,i]);
+//月计划年份
+var date=new Date();
+var monthyear = [];
+for(var i=date.getFullYear();i<=date.getFullYear()+1;i++)
+{monthyear.push({displayField: i, valueField: i});}
+// for (var i = 2013; i <= thisYear + 1; i++) years.push({displayField: i, valueField: i});
+
+var myearStore = Ext.create("Ext.data.Store", {
+    storeId: 'myearStore',
+    fields: ['displayField', 'valueField'],
+    data: monthyear,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
+var month=[];
+for(var i=1;i<=12;i++){
+    month.push({displayField: i, valueField: i});
+}
+month.push({displayField: '全部', valueField: '%'});
+var monthStore = Ext.create("Ext.data.Store", {
+    storeId: 'monthStore',
+    fields: ['displayField', 'valueField'],
+    data: month,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
 //计划类型
 var jhlxData = [{'displayField': '年计划', 'valueField': 'YEAR'}, {'displayField': '季度计划', 'valueField': 'QUARTER'},{'displayField': '月计划', 'valueField': 'MONTH'}];
 var jhlxStore = Ext.create("Ext.data.Store", {
@@ -167,9 +197,9 @@ function query() {
     Ext.data.StoreManager.lookup("gridStore").currentPage=1;
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
-            V_V_YEAR: V_V_YEAR,
+            V_V_YEAR: Ext.getCmp('mnf').getValue(),//V_V_YEAR,
             V_V_QUARTER: '%',
-            V_V_MONTH: '%',
+            V_V_MONTH:Ext.getCmp('myf').getValue(),//'%',
             V_V_PLANTYPE: 'MONTH',
             V_V_ORGCODE: V_V_ORGCODE,
 
@@ -184,7 +214,7 @@ function query() {
         }
     });
 }
-
+//月计划north
 var northPanel = Ext.create('Ext.form.Panel', {
     region: 'north',
     frame: true,
@@ -208,6 +238,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
                     store: jhlxStore,
                     queryMode: 'local'
                 },*/
+                {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
+                {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
                 {xtype: 'textfield',id:'jhmc',fieldLabel: '计划名称',editable: false, margin: '10 0 0 5',labelWidth:55,width:205,value:''},
                 {xtype: 'button', text: '查询', margin: '10 0 5 10',icon:imgpath + '/search.png',handler:query},
                 {xtype: 'button', text: '选择', margin: '10 0 5 10',icon: imgpath +'/add.png', handler:select}
@@ -374,14 +406,15 @@ Ext.onReady(function () {
         layout: 'border',
         items: [tabpanel]
     });
-
+    Ext.getCmp('mnf').select(date.getFullYear());
+    Ext.getCmp('myf').select(date.getMonth()+1);
     //Ext.getCmp('jhlx').select('YEAR');
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
         store.proxy.extraParams = {
             //params: {
-            V_V_YEAR: V_V_YEAR,
+            V_V_YEAR: Ext.getCmp('mnf').getValue(),//V_V_YEAR,
             V_V_QUARTER: '%',
-            V_V_MONTH: '%',
+            V_V_MONTH: Ext.getCmp('myf').getValue(),//'%',
             V_V_PLANTYPE: 'MONTH',
             V_V_ORGCODE: V_V_ORGCODE,
 
