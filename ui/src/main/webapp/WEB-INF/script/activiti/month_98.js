@@ -397,6 +397,7 @@ Ext.onReady(function () {
                             _zyq_zy();
                             _zyq_sblx();
                             _zyq_sbmc();
+                            _zyq_gx();
                         }
                     }
                 }, {
@@ -831,6 +832,7 @@ Ext.onReady(function () {
                     allowBlank: false,
                     fieldLabel: '计划工时合计',
                     readOnly: false,
+                    editable: true,
                     labelWidth: 90
 
                     // id: 'jhgshj',
@@ -842,13 +844,14 @@ Ext.onReady(function () {
                         xtype: 'combo',
                         id: 'gx',
                         fieldLabel: '工序',
+                        readOnly: false,
                         editable: true,
                         margin: '5 0 0 5',
                         labelWidth: 90,
-                        displayField: 'OPERA_NAME',
+                        displayField:  'OPERA_NAME',
                         valueField: 'OPERA_NAME',
                         value: '',
-                        store: gxStore,
+                        store: 'gxStore',
                         queryMode: 'local'
                     }
                 ]
