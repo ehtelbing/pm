@@ -2895,6 +2895,20 @@ public class Dx_fileController {
        Map data = dx_fileService.PM_03_PLAN_MONTH_SEL_WEEKVIEW(V_OTHERGRID,V_TYPE);
        return data;
    }
+//预装件备件信息修改
+@RequestMapping(value="PRO_PRELOADWARECOMPONENT_SET",method=RequestMethod.POST)
+@ResponseBody
+public Map PRO_PRELOADWARECOMPONENT_SET(
+        @RequestParam(value = "V_V_MODELNUMBER") String V_V_MODELNUMBER,
+        @RequestParam(value = "V_V_SPCODE") String V_V_SPCODE,
+        @RequestParam(value = "N_N_NUMBER") String N_N_NUMBER,
+        @RequestParam(value = "V_V_SIZE") String V_V_SIZE,
+        HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+    Map data = dx_fileService.PRO_PRELOADWARECOMPONENT_SET(V_V_MODELNUMBER,V_V_SPCODE,N_N_NUMBER,V_V_SIZE);
+    return data;
+}
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

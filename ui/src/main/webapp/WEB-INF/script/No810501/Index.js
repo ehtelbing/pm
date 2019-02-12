@@ -10,9 +10,13 @@
     var V_V_SPARE="";
     var V_V_MATERIALCODE="";
     var V_V_MATERIALNAME="";
+    var dd="";
+    var ss="";
 	if(location.href.split('?')[1]!=undefined){
         V_D_ENTER_DATE_B=Ext.urlDecode(location.href.split('?')[1]).V_D_ENTER_DATE_B;
-        V_D_ENTER_DATE_E=Ext.urlDecode(location.href.split('?')[1]).V_D_ENTER_DATE_E;
+        dd=Ext.urlDecode(location.href.split('?')[1]).V_D_ENTER_DATE_E;
+        ss=Ext.urlDecode(location.href.split('?')[1]).ss;
+        V_D_ENTER_DATE_E=dd+" "+ss;//Ext.urlDecode(location.href.split('?')[1]).V_D_ENTER_DATE_E;
             V_V_DEPTCODE=Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
         V_V_DEPTNEXTCODE=Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTNEXTCODE== 'ALL' ? '%' : Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTNEXTCODE;
         V_EQUTYPE_CODE=Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPE_CODE== 'ALL' ? '%' : Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPE_CODE;

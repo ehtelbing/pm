@@ -2559,4 +2559,31 @@ public class Dx_fileService {
         logger.info("end PM_03_PLAN_MONTH_SEL_WEEKVIEW");
         return result;
     }
+    //预装件备件信息修改
+    public Map PRO_PRELOADWARECOMPONENT_SET(String V_V_MODELNUMBER,String V_V_SPCODE,String N_N_NUMBER,String V_V_SIZE) throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_PRELOADWARECOMPONENT_SET");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PRO_PRELOADWARECOMPONENT_SET(:V_V_MODELNUMBER,:V_V_SPCODE,:N_N_NUMBER,:V_V_SIZE,:RET)}");
+            cstmt.setString("V_V_MODELNUMBER",V_V_MODELNUMBER);
+            cstmt.setString("V_V_SPCODE",V_V_SPCODE);
+            cstmt.setString("N_N_NUMBER",N_N_NUMBER);
+            cstmt.setString("V_V_SIZE",V_V_SIZE);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list",(String) cstmt.getObject("RET"));
+        }catch (SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result"+result);
+        logger.info("end PRO_PRELOADWARECOMPONENT_SET");
+        return result;
+    }
 }

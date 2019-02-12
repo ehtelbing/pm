@@ -26,7 +26,7 @@ Ext.onReady(function () {
                 X_MODELNUMBER: x_modelnumberF
             }
         }
-    })
+    });
 
 
 
@@ -87,14 +87,27 @@ Ext.onReady(function () {
         store: gridStore,
         region: 'center',
         plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
+            clicksToEdit: 1,
+            listeners: {
+                            // beforeedit:function (editor, context, eOpts) {
+                            //    if(context.record.get('D_MONTH')!=date.getMonth()+1&&context.record.get('D_YEAR')==date.getFullYear()){
+                            //        alert("非本月数据无法修改");return false;
+                            //    }
+                            // },
+                            edit: OnChangeEleData
+                        }
         })],
         columns: [Ext.create('Ext.grid.RowNumberer', { align: 'center' }),
             { header: "备件编码", dataIndex: 'V_SPCODE', align: 'center' ,width:100},
             { header: "备件名称", dataIndex: 'V_SPNAME', align: 'center',width:150},
-            { header: "规格型号", dataIndex: 'V_SIZE', editor: { allowBlank: false }, align: 'center' ,width:100},
+            { header: "规格型号", dataIndex: 'V_SIZE', editor: {
+                xtype:'textfield',id:'size_v',
+                    allowBlank: false
+                }, align: 'center' ,width:100},
             { header: "单价", dataIndex: 'N_UNITPRICE', align: 'right', width:50},
-            { header: "需求数量", dataIndex: 'N_NUMBER', align: 'right',width:100}
+            { header: "需求数量", dataIndex: 'N_NUMBER',editor: {
+                xtype:'numberfield',minValue:'0',id:"g2",decimalPrecision:2,
+                allowBlank: false }, align: 'right',width:100}
         ],
         selType: 'cellmodel'
     });
@@ -141,7 +154,27 @@ function queryText(x_modelnumberF) {
 
 
 
-
+function OnChangeEleData(e){
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PRO_PRELOADWARECOMPONENT_SET',
+        mothod: 'POST',
+        params: {
+            V_V_MODELNUMBER: x_modelnumberF,
+            V_V_SPCODE:e.context.record.data.V_SPCODE,
+            N_N_NUMBER:e.context.record.data.N_NUMBER,
+            V_V_SIZE:e.context.record.data.V_SIZE
+        },
+        success: function (response) {
+            var resp = Ext.JSON.decode(response.responseText);
+            if(resp.list!="SUCCESS"){
+                Ext.Msg.alert('提示','修改失败');
+            }
+            else{
+                queryText(x_modelnumberF);
+            }
+        }
+    })
+}
 
 
 

@@ -270,7 +270,7 @@ function center(value, metaData, record, rowIndex, colIndex, store){
 function searchMore(){
     var asd = Ext.getCmp('grid').getSelectionModel().getSelection()[0].data;
     var a = Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(),'Y-m-d');
-    var b = Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(),'Y-m-d');
+    var b =(asd.D_FACT_FINISH_DATE).split(" ")[0];//Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(),'Y-m-d');
     var c = Ext.getCmp('ck').getValue();
     var d = Ext.getCmp('zyq').getValue() == '%' ? 'ALL' : Ext.getCmp('zyq').getValue();
     var e = Ext.getCmp('sblx').getValue() == '%' ? 'ALL' : Ext.getCmp('sblx').getValue();
@@ -278,5 +278,7 @@ function searchMore(){
     var g = Ext.getCmp('bjmc').getValue() == '' ? 'K' : Ext.getCmp('bjmc').getValue();
     var h = asd.V_MATERIALCODE;
     var i = asd.V_MATERIALNAME;
-    window.open(AppUrl + '/No810501/Index.html?V_D_ENTER_DATE_B=' + a + '&V_D_ENTER_DATE_E=' + b + '&V_V_DEPTCODE=' + c + '&V_V_DEPTNEXTCODE=' + d + '&V_EQUTYPE_CODE=' + e +'&V_EQU_CODE=' + f + '&V_V_SPARE=' + g + '&V_V_MATERIALCODE=' + h + '&V_V_MATERIALNAME=' + i);
+    var s=(asd.D_FACT_FINISH_DATE).split(" ")[1];
+    window.open(AppUrl + 'page/No810501/Index.html?V_D_ENTER_DATE_B=' + a + '&V_D_ENTER_DATE_E=' + b + '&V_V_DEPTCODE=' + c + '&V_V_DEPTNEXTCODE='
+        + d + '&V_EQUTYPE_CODE=' + e +'&V_EQU_CODE=' + f + '&V_V_SPARE=' + g + '&V_V_MATERIALCODE=' + h + '&V_V_MATERIALNAME=' + i+'&ss='+s);
 }
