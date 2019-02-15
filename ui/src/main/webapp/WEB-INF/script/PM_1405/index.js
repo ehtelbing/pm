@@ -13,7 +13,7 @@ var equFaultLoad1 = false;
 var equFaultLoad2 = false;
 var init = true;
 var initadd = true;
-
+var code ="";
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -393,7 +393,7 @@ Ext.onReady(function () {
         id: 'subequNameStore',
         autoLoad: false,
         fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy:  Ext.create("Ext.ux.data.proxy.Ajax", {
+        proxy: {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_14/PRO_SAP_EQU_VIEW',
@@ -404,7 +404,7 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
+        },
         listeners: {
             load: function (store, records) {
 
@@ -420,7 +420,7 @@ Ext.onReady(function () {
         id: 'subequNameStore1',
         autoLoad: false,
         fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+        proxy: {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_14/PRO_SAP_EQU_VIEW',
@@ -431,7 +431,7 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
+        },
         listeners: {
             load: function (store, records) {
                 if (initadd) {
@@ -451,7 +451,7 @@ Ext.onReady(function () {
         id: 'subequNameStore2',
         autoLoad: false,
         fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax",  {
+        proxy: {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_14/PRO_SAP_EQU_VIEW',
@@ -462,7 +462,7 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
+        },
         listeners: {
             load: function (store, records) {
                 store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
@@ -559,7 +559,50 @@ Ext.onReady(function () {
             }
         }
     });
-
+    var faultStore1 = Ext.create('Ext.data.Store', {
+        id: 'faultStore1',
+        autoLoad: false,
+        fields: ['V_FAULTCODE', 'V_FAULTNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'cxy/PRO_BASE_FAULT_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('faultLevel1').select(store.first());
+            }
+        }
+    });
+    var faultStore2 = Ext.create('Ext.data.Store', {
+        id: 'faultStore2',
+        autoLoad: false,
+        fields: ['V_FAULTCODE', 'V_FAULTNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'cxy/PRO_BASE_FAULT_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                Ext.getCmp('faultLevel2').select(store.first());
+            }
+        }
+    });
     var faultItemStore = Ext.create('Ext.data.Store', {
         storeId: 'faultItemStore',
         autoLoad: false,
@@ -1087,13 +1130,19 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [{
-                xtype: 'textfield',
+                xtype: 'combo',
                 id: 'faultLevel1',
+                store: faultStore1,
+                queryMode: 'local',
+                valueField: 'V_FAULTCODE',
+                displayField: 'V_FAULTNAME',
+                forceSelection: true,
                 fieldLabel: '故障等级',
+                editable: false,
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540
+                width: 280
             }
 
             ]
@@ -1331,13 +1380,20 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [{
-                xtype: 'textfield',
+
+                xtype: 'combo',
                 id: 'faultLevel2',
+                store: faultStore2,
+                queryMode: 'local',
+                valueField: 'V_FAULTCODE',
+                displayField: 'V_FAULTNAME',
+                forceSelection: true,
                 fieldLabel: '故障等级',
+                editable: false,
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540
+                width: 280
             }
 
             ]
@@ -1632,13 +1688,15 @@ Ext.onReady(function () {
     _selectDept2();
     _selecteType2();
     _selectequName2();
-
+    _selecteFaultStore1();
+    _selecteFaultStore2();
 });
 
 function _init() {
     if (orgLoad && zyqload && sbtypeload && sbnameload && zsbnameload) {
 
         Ext.getBody().unmask();
+        _seltctFault();
     }
 }
 
@@ -1829,7 +1887,20 @@ function _selectsubequName2() {
         Ext.getBody().unmask();//去除页面笼罩
     }
 }
+function _selecteFaultStore1() {
+    var faultStore1 = Ext.data.StoreManager.lookup('faultStore1');
+    faultStore1.proxy.extraParams = {
 
+    };
+    faultStore1.load();
+}
+function _selecteFaultStore2() {
+    var faultStore2 = Ext.data.StoreManager.lookup('faultStore2');
+    faultStore2.proxy.extraParams = {
+
+    };
+    faultStore2.load();
+}
 function _seltctFault() {
     var faultItemStore = Ext.data.StoreManager.lookup('faultItemStore');
 
@@ -1845,7 +1916,7 @@ function _seltctFault() {
         'V_V_FINDTIME_E': Ext.getCmp("endtime").getSubmitValue()
     };
 
-    //faultItemStore.currentPage = 1;
+    // faultItemStore.currentPage = 1;
     faultItemStore.load();
 }
 
@@ -2510,12 +2581,19 @@ function _preUpdateFault() {
     Ext.getCmp('faultDesc2').setValue(records[0].data.V_FAULT_XX);
     Ext.getCmp('faultLevel2').setValue(records[0].data.V_FAULT_LEVEL);
     Ext.getCmp('faultSol2').setValue(records[0].data.V_JJBF);
-
+    code = records[0].get('V_EQUCHILD_CODE');
     filequery2(records[0].get('V_GUID'));
     _selectsubequName2();
-    Ext.getCmp('SUB_V_EQUNAME2').setValue(records[0].get('V_EQUCHILD_CODE'));
+    Ext.data.StoreManager.lookup('subequNameStore2').load({
+        callback: function(records, options, success){
+            if(code!=""){
+                Ext.getCmp('SUB_V_EQUNAME2').setValue(code);
+                code="";
+            }
+        }
+    });
     Ext.getBody().unmask();//去除页面笼罩
-
+    // Ext.getCmp('SUB_V_EQUNAME2').setValue(records[0].get('V_EQUCHILD_CODE'));
 }
 
 function _deleteFaultData() {

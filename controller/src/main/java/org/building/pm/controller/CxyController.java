@@ -56,7 +56,18 @@ public class CxyController {
         return data;
     }
 
+    @RequestMapping(value = "/PRO_BASE_FAULT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_FAULT_SEL(HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
 
+        HashMap data = cService.PRO_BASE_FAULT_SEL();
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+//        result.put("success", true);
+        return result;
+    }
 
 }
 
