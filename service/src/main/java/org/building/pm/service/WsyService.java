@@ -1674,7 +1674,7 @@ public class WsyService {
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
-            conn.setAutoCommit(true);
+            conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_LIST" + "(:V_V_PERSONCODE,:V_V_DEPT,:V_V_TYPE,:V_V_CLASSTYPE,:V_D_FROMDATE,:V_D_TODATE,:V_CURSOR)}");
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_DEPT", V_V_DEPT);

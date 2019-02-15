@@ -175,7 +175,7 @@ var Layout = {
                                     width: 70,
                                     handler: zhuce,
                                     icon: imgpath + '/saved.png',
-                                    style: {margin: '15px 10px 10px 10px'}
+                                    style: {margin: '12px 10px 10px 10px'}
                                 }
                             ]
                         },
@@ -229,12 +229,13 @@ var Layout = {
                         },
                         {
                             xtype: 'panel', layout: 'column', region: 'north', baseCls: 'my-panel-no-border',
-                            defaults: {labelAlign: 'right', labelWidth: 60, style: {margin: '10px 10px 10px 10px'}},
+                            defaults: {labelAlign: 'right',  style: {margin: '10px 10px 10px 10px'}},//labelWidth: 60,
                             items: [
                                 {
                                     xtype: 'textfield',
                                     fieldLabel: '所属部门',
                                     value: Ext.util.Cookies.get('v_deptname2'),
+                                    labelWidth: 60,
                                     readOnly: true,
                                     editable: false,
                                     id: 'ssbm'
@@ -244,6 +245,7 @@ var Layout = {
                                     fieldLabel: '班型',
                                     id: 'bx',
                                     store: bxStore,
+                                    labelWidth: 40,
                                     editable: false,
                                     displayField: 'V_BASENAME',
                                     valueField: 'V_BASECODE',
@@ -255,6 +257,7 @@ var Layout = {
                                     id: 'bz',
                                     store: 'bzStore',
                                     editable: false,
+                                    labelWidth: 60,
                                     displayField: 'V_BASENAME',
                                     valueField: 'V_BASECODE',
                                     queryMode: 'local'
@@ -287,19 +290,33 @@ var Layout = {
                                     width: 630,
                                     id: 'xxnr'
                                 },
+                                // {
+                                //     xtype: 'panel',
+                                //     region: 'north',
+                                //     layout: {
+                                //         type: 'hbox',
+                                //         align: 'stretch'
+                                //     }, baseCls: 'my-panel-no-border', items: [
+                                // {xtype:'label',width: 630,margin: '10px 10px 5px 10px',text:'---------------------------------------------------------------------------------------------------------'},
+                                //     ]
+                                // },
                                 {
-                                    xtype: 'button', text: '添加', style: {margin: '0px 5px 5px 105px'}, handler: addModel
+                                    xtype: 'button', text: '添   加',width:70,icon: imgpath + '/add.png',style: {margin: '10px 5px 5px 105px'}, handler: addModel
                                 },
                                 {
                                     xtype: 'button',
-                                    text: '选择',
-                                    style: {margin: '0px 5px 5px 10px'},
+                                    text: '选   择',
+                                    width:70,
+                                    icon: imgpath + '/add.png',
+                                    style: {margin: '10px 5px 5px 10px'},
                                     handler: selectModel
                                 },
                                 {
                                     xtype: 'button',
-                                    text: '删除',
-                                    style: {margin: '0px 5px 5px 10px'},
+                                    text: '删   除',
+                                    width:70,
+                                    icon: imgpath + '/delete1.png',
+                                    style: {margin: '10px 5px 5px 10px'},
                                     handler: delModel
                                 },
                                 {
@@ -321,8 +338,8 @@ var Layout = {
                         {
                             xtype: 'panel', region: 'north', baseCls: 'my-panel-no-border',
                             items: [
-                                {xtype: 'button', text: '全选', style: {margin: '10px 0px 0px 10px'}, handler: checkAll},
-                                {xtype: 'button', text: '反选', style: {margin: '10px 0px 0px 10px'}, handler: unCheckAll}
+                                {xtype: 'button', text: '全   选', width:60,style: {margin: '10px 0px 0px 10px'}, handler: checkAll},
+                                {xtype: 'button', text: '反   选', width:60,style: {margin: '10px 0px 0px 10px'}, handler: unCheckAll}
                             ]
                         },
                         {xtype: 'panel', region: 'north', baseCls: 'my-panel-no-border', id: 'xgbmPanel'}
