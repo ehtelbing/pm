@@ -7,7 +7,7 @@ var sbmcLoad = false;
 var zsbmcLoad = false;
 var sblxLoad = false;
 var V_V_ORGCODE = "";
-var V_V_DEPTCODE = "";
+// var V_V_DEPTCODE = "";
 var V_V_EQUTYPE = "";
 var V_V_EQUCODE = "";
 var V_V_EQUCHILD_CODE = "";
@@ -543,7 +543,7 @@ function _seltctFault() {
 }
 function _exportExcel() {
     document.location.href = AppUrl + 'PM_14/PM_14_EXCEL?V_V_ORGCODE=' + Ext.ComponentManager.get("V_V_ORGCODE").getValue() + '&V_V_DEPTCODE=' +
-        Ext.ComponentManager.get("V_V_DEPTCODE").getValue() + '&V_V_EQUTYPE=' + encodeURI(Ext.ComponentManager.get("V_V_EQUTYPE").getValue()) + '&V_V_EQUCODE='
+        encodeURI(Ext.ComponentManager.get("V_V_DEPTCODE").getValue()) + '&V_V_EQUTYPE=' + encodeURI(Ext.ComponentManager.get("V_V_EQUTYPE").getValue()) + '&V_V_EQUCODE='
         + encodeURI(Ext.ComponentManager.get("V_EQUNAME").getValue()) + '&V_V_EQUCHILD_CODE=' + encodeURI(Ext.ComponentManager.get("SUB_V_EQUNAME").getValue())
         + '&V_V_FAULT_TYPE=' + encodeURI(Ext.ComponentManager.get("equFaultname").getValue()) + '&V_V_FAULT_YY=' + Ext.ComponentManager.get('faulttext').getValue()
         + '&V_V_FINDTIME_B=' + Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d') + '&V_V_FINDTIME_E=' +

@@ -2581,19 +2581,22 @@ function _preUpdateFault() {
     Ext.getCmp('faultDesc2').setValue(records[0].data.V_FAULT_XX);
     Ext.getCmp('faultLevel2').setValue(records[0].data.V_FAULT_LEVEL);
     Ext.getCmp('faultSol2').setValue(records[0].data.V_JJBF);
-    code = records[0].get('V_EQUCHILD_CODE');
+    // code = records[0].get('V_EQUCHILD_CODE');
+    // filequery2(records[0].get('V_GUID'));
+    // _selectsubequName2();
+    // Ext.data.StoreManager.lookup('subequNameStore2').load({
+    //     callback: function(records, options, success){
+    //         if(code!=""){
+    //             Ext.getCmp('SUB_V_EQUNAME2').setValue(code);
+    //             code="";
+    //         }
+    //     }
+    // });
     filequery2(records[0].get('V_GUID'));
     _selectsubequName2();
-    Ext.data.StoreManager.lookup('subequNameStore2').load({
-        callback: function(records, options, success){
-            if(code!=""){
-                Ext.getCmp('SUB_V_EQUNAME2').setValue(code);
-                code="";
-            }
-        }
-    });
+    Ext.getCmp('SUB_V_EQUNAME2').setValue(records[0].get('V_EQUCHILD_CODE'));
     Ext.getBody().unmask();//去除页面笼罩
-    // Ext.getCmp('SUB_V_EQUNAME2').setValue(records[0].get('V_EQUCHILD_CODE'));
+
 }
 
 function _deleteFaultData() {
