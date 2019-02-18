@@ -96,6 +96,8 @@ public class PM_1921Controller {
             @RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE,
             @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,
             @RequestParam(value = "V_V_LIFELONG") String V_V_LIFELONG,
+            @RequestParam(value = "V_V_MAIN_DEFECT") String V_V_MAIN_DEFECT,
+            @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map test = new HashMap();
@@ -103,7 +105,7 @@ public class PM_1921Controller {
         List<Map> result = null;
 
 
-        result = pm_1921Service.PM_1921_PLAN_EQU_DATA_SET(V_V_MX_CODE, V_V_GUID, V_V_EQUTYPE, V_V_EQUCODE, V_V_MENO, V_V_INPER, V_V_JXMX_CODE,V_V_PERNUM,V_V_LIFELONG);
+        result = pm_1921Service.PM_1921_PLAN_EQU_DATA_SET(V_V_MX_CODE, V_V_GUID, V_V_EQUTYPE, V_V_EQUCODE, V_V_MENO, V_V_INPER, V_V_JXMX_CODE,V_V_PERNUM,V_V_LIFELONG,V_V_MAIN_DEFECT,V_V_SGWAY);
         test.put("list", result);
         return test;
     }
@@ -185,6 +187,9 @@ public class PM_1921Controller {
             @RequestParam(value = "V_V_SUNTIME") String V_V_SUNTIME,
             @RequestParam(value = "V_V_PRENUM") String V_V_PRENUM,
             @RequestParam(value = "V_V_EXPNUM") String V_V_EXPNUM,
+            @RequestParam(value = "V_V_MAIN_DEFECT") String V_V_MAIN_DEFECT,
+            @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
+            @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map test = new HashMap();
@@ -192,7 +197,7 @@ public class PM_1921Controller {
         List<Map> result = null;
 
         result = pm_1921Service.PM_1921_PLAN_MX_DATA_CHECK(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_PLANTYPE, V_V_PERCODE,
-                V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_WEEK, V_V_STIME, V_V_ETIME, V_V_SUNTIME,V_V_PRENUM,V_V_EXPNUM);
+                V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_WEEK, V_V_STIME, V_V_ETIME, V_V_SUNTIME,V_V_PRENUM,V_V_EXPNUM,V_V_MAIN_DEFECT,V_V_SGWAY,V_V_SGWAYNAME);
         test.put("list", result);
         return test;
     }

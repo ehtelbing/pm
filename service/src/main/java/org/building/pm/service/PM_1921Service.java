@@ -165,7 +165,7 @@ public class PM_1921Service {
         return result;
     }
 
-    public List<Map> PM_1921_PLAN_EQU_DATA_SET(String V_V_MX_CODE,String V_V_GUID,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_MENO,String V_V_INPER,String V_V_JXMX_CODE,String V_V_PERNUM,String V_V_LIFELONG) throws SQLException {
+    public List<Map> PM_1921_PLAN_EQU_DATA_SET(String V_V_MX_CODE,String V_V_GUID,String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_MENO,String V_V_INPER,String V_V_JXMX_CODE,String V_V_PERNUM,String V_V_LIFELONG,String V_V_MAIN_DEFECT,String V_V_SGWAY) throws SQLException {
 //        logger.info("begin PM_1921_PLAN_EQU_DATA_SET");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -173,7 +173,7 @@ public class PM_1921Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_1921_PLAN_EQU_DATA_SET" + "(:V_V_MX_CODE,:V_V_GUID,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_MENO,:V_V_INPER,:V_V_JXMX_CODE,:V_V_PERNUM,:V_V_LIFELONG,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PM_1921_PLAN_EQU_DATA_SET" + "(:V_V_MX_CODE,:V_V_GUID,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_MENO,:V_V_INPER,:V_V_JXMX_CODE,:V_V_PERNUM,:V_V_LIFELONG,:V_V_MAIN_DEFECT,:V_V_SGWAY,:V_INFO)}");
             cstmt.setString("V_V_MX_CODE", V_V_MX_CODE);
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
@@ -183,6 +183,8 @@ public class PM_1921Service {
             cstmt.setString("V_V_JXMX_CODE", V_V_JXMX_CODE);
             cstmt.setString("V_V_PERNUM", V_V_PERNUM);
             cstmt.setString("V_V_LIFELONG", V_V_LIFELONG);
+            cstmt.setString("V_V_MAIN_DEFECT", V_V_MAIN_DEFECT);
+            cstmt.setString("V_V_SGWAY", V_V_SGWAY);
             cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
@@ -232,7 +234,8 @@ public class PM_1921Service {
 
     public List<Map> PM_1921_PLAN_MX_DATA_CHECK(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_PLANTYPE, String V_V_PERCODE,
                                                 String V_V_YEAR, String V_V_QUARTER, String V_V_MONTH, String V_V_WEEK, String V_V_STIME,
-                                                String V_V_ETIME, String V_V_SUNTIME, String V_V_PRENUM,String V_V_EXPNUM) throws SQLException {
+                                                String V_V_ETIME, String V_V_SUNTIME, String V_V_PRENUM,String V_V_EXPNUM,
+                                                String V_V_MAIN_DEFECT,String V_V_SGWAY,String V_V_SGWAYNAME) throws SQLException {
 //        logger.info("begin PM_1921_PLAN_MX_DATA_CHECK");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -242,7 +245,7 @@ public class PM_1921Service {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PM_1921_PLAN_MX_DATA_CHECK" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PLANTYPE,:V_V_PERCODE," +
                     ":V_V_YEAR,:V_V_QUARTER,:V_V_MONTH,:V_V_WEEK,:V_V_STIME," +
-                    ":V_V_ETIME,:V_V_SUNTIME,:V_V_PRENUM,:V_V_EXPNUM,:V_INFO)}");
+                    ":V_V_ETIME,:V_V_SUNTIME,:V_V_PRENUM,:V_V_EXPNUM,:V_V_MAIN_DEFECT,:V_V_SGWAY,:V_V_SGWAYNAME,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
@@ -257,6 +260,9 @@ public class PM_1921Service {
             cstmt.setString("V_V_SUNTIME", V_V_SUNTIME);
             cstmt.setString("V_V_PRENUM", V_V_PRENUM);
             cstmt.setString("V_V_EXPNUM", V_V_EXPNUM);
+            cstmt.setString("V_V_MAIN_DEFECT", V_V_MAIN_DEFECT);
+            cstmt.setString("V_V_SGWAY", V_V_SGWAY);
+            cstmt.setString("V_V_SGWAYNAME", V_V_SGWAYNAME);
             cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();

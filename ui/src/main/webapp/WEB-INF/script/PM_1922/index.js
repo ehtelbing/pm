@@ -181,6 +181,9 @@ Ext.onReady(function () {
             }
         }
     });
+    Ext.data.StoreManager.lookup('sgfsStore').on('load',function(){
+        Ext.getCmp('sgfs').select( Ext.data.StoreManager.lookup('sgfsStore').getAt(0));
+    });
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         autoLoad: false,
@@ -215,7 +218,8 @@ Ext.onReady(function () {
         fields: ['V_MX_CODE', 'V_MX_NAME', 'V_ORGCODE', 'V_ORGNAME',
             'V_DEPTCODE', 'V_DEPTNAME', 'V_SPECIALTY', 'V_MX_MENO', 'V_MX_FALG',
             'V_MX_INPERCODE', 'V_MX_INPERNAME', 'V_MX_INDATE', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME',
-            'V_EQU_MENO', 'V_EQU_FALG', 'V_EQU_INPERCODE', 'V_EQU_INPERNAME', 'V_EQU_INDATE', 'V_JXMX_CODE', 'V_GUID','V_PERNUM','V_LIFELONG'],
+            'V_EQU_MENO', 'V_EQU_FALG', 'V_EQU_INPERCODE', 'V_EQU_INPERNAME', 'V_EQU_INDATE', 'V_JXMX_CODE', 'V_GUID',
+            'V_PERNUM','V_LIFELONG','V_MAIN_DEFECT','V_SGWAY','V_SGWAYNAME'],
         proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
@@ -422,6 +426,16 @@ Ext.onReady(function () {
         }, {
             text: '预期寿命',
             dataIndex: 'V_LIFELONG',
+            flex: 2,
+            align: 'center'
+        }, {
+            text: '主要缺陷',
+            dataIndex: 'V_MAIN_DEFECT',
+            flex: 2,
+            align: 'center'
+        }, {
+            text: '施工方式',
+            dataIndex: 'V_SGWAYNAME',
             flex: 2,
             align: 'center'
         }],
@@ -777,7 +791,7 @@ Ext.onReady(function () {
                         id: 'expectage',
                         fieldLabel: '预计寿命',
                         labelAlign: 'right',
-                        margin: '5 0 0 5',
+                        margin: '5 0 5 5',
                         labelWidth: 80,
                         allowNegative:false,
                         width: 250,
@@ -785,9 +799,40 @@ Ext.onReady(function () {
                         value: 0
                     },{xtype:'label',
                         id:'xs',
-                        margin:'8 0 0 5' ,
+                        margin:'8 0 5 5' ,
                         text:'小时',
                         width:28
+                    },{
+                        xtype : 'combo',
+                        id : "sgfs",
+                        store: sgfsStore,
+                        editable : false,
+                        queryMode : 'local',
+                        fieldLabel : '施工方式',
+                        margin: '5 0 5 5',
+                        displayField: 'V_SGFS',
+                        valueField: 'V_BH',
+                        labelWidth: 80,
+                        width: 250,
+                        labelAlign : 'right'
+                    }
+                ]
+            },{
+                layout: 'hbox',
+                defaults: {labelAlign: 'right'},
+                //frame: true,
+                border: false,
+                baseCls: 'my-panel-no-border',
+                items: [
+                    {
+                        xtype: 'textfield',
+                        id: 'maindefect',
+                        fieldLabel: '主要缺陷',
+                        labelAlign: 'right',
+                        allowBlank:false,
+                        margin: '5 0 0 5',
+                        labelWidth: 80,
+                        width: 250
                     }
                 ]
             }],
@@ -886,21 +931,26 @@ function _selectSbSecond() {
 
 
 function addModel() {
-    var data = Ext.getCmp('grid').getSelectionModel().getSelection();
+    var data = Ext.getCmp('grid1').getSelectionModel().getSelection();
     if (data.length != 1) {
         alert("请选择一条数据操作");
         return false;
     } else {
-        var data1 = Ext.getCmp('grid1').getStore();
-        var v1=0;
-        var v2=0;
-        for(var i = 0 ;i< data1.getCount(); i++){
-            v1 =Number(v1)+Number(data1.getAt(i).get('V_PERNUM'));
-            v2 =Number(v2)+Number(data1.getAt(i).get('V_LIFELONG'));
+        // var data1 = Ext.getCmp('grid1').getStore();
+        // var v1=0;
+        // var v2=0;
+        // var v3='';
+        // for(var i = 0 ;i< data1.getCount(); i++){
+        //     v1 =Number(v1)+Number(data1.getAt(i).get('V_PERNUM'));
+        //     v2 =Number(v2)+Number(data1.getAt(i).get('V_LIFELONG'));
+        //     v3 =v3+','+data1.getAt(i).get('V_MAIN_DEFECT');
+        // }
 
-        }
-        Ext.getCmp('repairper').setValue(v1);
-        Ext.getCmp('expectage').setValue(v2);
+        Ext.getCmp('repairper').setValue(data[0].data.V_PERNUM);
+        Ext.getCmp('expectage').setValue(data[0].data.V_LIFELONG);
+
+        Ext.getCmp('maindefect').setValue(data[0].data.V_MAIN_DEFECT);
+        Ext.getCmp('sgfs').setValue(data[0].data.V_SGWAY);
         Ext.getCmp('window').show();
     }
 }
@@ -952,7 +1002,7 @@ function addModelSave() {
     if(jhtgTime>jhjgTime){
         alert('停工时间不可以大于竣工时间请从新设定'); return;
     }
-    var data = Ext.getCmp('grid').getSelectionModel().getSelection();
+    // var data = Ext.getCmp('grid').getSelectionModel().getSelection();
     var ss = Ext.getCmp('grid1').getStore();
     // var personnum=0;
     // for(var i=0;i<ss.getCount();i++){
@@ -965,12 +1015,13 @@ function addModelSave() {
     // }
     var personnum=Ext.getCmp('repairper').getValue();
     var expectage=Ext.getCmp('expectage').getValue();
+    var data = Ext.getCmp('grid1').getSelectionModel().getSelection();
     Ext.Ajax.request({
         url: AppUrl + 'pm_1921/PM_1921_PLAN_MX_DATA_CHECK',
         method: 'POST',
         async: false,
         params: {
-            V_V_GUID: data[0].raw.V_MX_CODE,
+            V_V_GUID: data[0].raw.V_GUID,//data[0].raw.V_MX_CODE,
             V_V_ORGCODE: Ext.getCmp('ck').getValue(),
             V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
             V_V_PLANTYPE: PLANTYPE,
@@ -983,7 +1034,10 @@ function addModelSave() {
             V_V_ETIME: jhjgTime,
             V_V_SUNTIME: Ext.getCmp('jhgshj').getValue(),
             V_V_PRENUM:personnum,
-            V_V_EXPNUM:expectage
+            V_V_EXPNUM:expectage,
+            V_V_MAIN_DEFECT:Ext.getCmp('maindefect').getValue(),
+            V_V_SGWAY:Ext.getCmp('sgfs').getValue(),
+            V_V_SGWAYNAME:Ext.getCmp('sgfs').getRawValue()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
