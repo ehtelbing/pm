@@ -51,7 +51,7 @@ Ext.onReady(function() {
 		autoLoad : false,
 		fields : [ 'V_EQUCODE', 'V_EQULEV', 'V_EQUNAME', 'V_EQUSITE','V_EQUSITENAME', 'V_ZZCH', 'V_EQUTYPECODE', 'V_EQUTYPENAME',
 			'F_MONEY','V_MONEYTYPE','F_WEIGHT','V_WEIGHTTYPE','V_DATE_B','V_DATE_E','V_ZZS','V_GGXH','V_YWFW','V_ABC','V_SIZE',
-			'V_WHGC','V_JHWHGC','V_CBZX','V_GZRQ','V_JHZY','V_SBYDH','V_EQUCODEUP'],
+			'V_WHGC','V_JHWHGC','V_CBZX','V_GZRQ','V_JHZY','V_SBYDH','V_EQUCODEUP','V_EQUSITE_DOWN','V_SITENAME_DOWN'],
 		proxy : {
 			type : 'ajax',
 			async : false,
@@ -107,7 +107,7 @@ Ext.onReady(function() {
 				columns:[{ text: '设备编号', dataIndex: 'V_EQUCODE', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '设备种类', dataIndex: 'V_EQULEV', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '设备名称', dataIndex: 'V_EQUNAME', width: 100 ,renderer : CreateGridColumnTd},
-					{ text: '功能位置', dataIndex: 'V_EQUSITENAME', width: 100 ,renderer : CreateGridColumnTd},
+                    { text: '上级功能位置', dataIndex: 'V_EQUSITENAME', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '技术对象类型', dataIndex: 'V_EQUTYPENAME', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '购置价值', dataIndex: 'F_MONEY', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '货币种类', dataIndex: 'V_MONEYTYPE', width: 100 ,renderer : CreateGridColumnTd},
@@ -125,7 +125,8 @@ Ext.onReady(function() {
 							return '<div><a href="javascript:OnClickDeleteLink(\'' + value + '\')">修改</a></div>';
 						}
 					},
-					{ text: '上一级设备代号', dataIndex: 'V_EQUCODEUP', width: 100 ,renderer : CreateGridColumnTd}],
+					{ text: '上一级设备代号', dataIndex: 'V_EQUCODEUP', width: 100 ,renderer : CreateGridColumnTd}
+                    , { text: '功能位置', dataIndex: 'V_SITENAME_DOWN', width: 100 ,renderer : CreateGridColumnTd,hidden:true}],
 				bbar: [{
 					id:'page',
 					xtype: 'pagingtoolbar',

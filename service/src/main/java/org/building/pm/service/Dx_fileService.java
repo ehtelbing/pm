@@ -2586,4 +2586,56 @@ public class Dx_fileService {
         logger.info("end PRO_PRELOADWARECOMPONENT_SET");
         return result;
     }
+    //缺陷厂矿tab-bypersoncode
+    public Map PRO_SELECT_ORG_BYPERCODE(String V_PERCODE) throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_SELECT_ORG_BYPERCODE");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PRO_SELECT_ORG_BYPERCODE(:V_PERCODE,:RET)}");
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch (SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result"+result);
+        logger.info("end PRO_SELECT_ORG_BYPERCODE");
+        return result;
+    }
+    //根据厂矿查看对应每月缺陷数量
+    public Map PM_07_DEFECT_STAT(String V_YEAR,String  V_CKCODE,String V_PERCODE) throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_07_DEFECT_STAT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PM_07_DEFECT_STAT(:V_YEAR,:V_CKCODE,:V_PERCODE,:RET)}");
+            cstmt.setString("V_YEAR",V_YEAR);
+            cstmt.setString("V_CKCODE",V_CKCODE);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch (SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result"+result);
+        logger.info("end PM_07_DEFECT_STAT");
+        return result;
+    }
 }

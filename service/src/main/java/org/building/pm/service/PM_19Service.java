@@ -4141,4 +4141,31 @@ public class PM_19Service {
         }
         return result;
     }
+
+    // 设备位置数据查找：PRO_SAP_EQU_SITE_SEL
+    public Map PRO_SAP_EQU_SITE_SEL(String V_V_DEPTCODE,String V_V_EQUSITE,String V_V_EQUSITENAME)throws SQLException{
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_GET_DEPTEQUTYPE_PER");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_SAP_EQU_SITE_SEL" + "(:V_V_DEPTCODE,:V_V_EQUSITE,:V_V_EQUSITENAME,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUSITE", V_V_EQUSITE);
+            cstmt.setString("V_V_EQUSITENAME", V_V_EQUSITENAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_SAP_EQU_SITE_SEL");
+        return result;
+    }
 }

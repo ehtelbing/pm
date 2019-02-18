@@ -1,5 +1,10 @@
 var limits = '';
 var equCode='';
+
+var CKCODE=""
+if(location.href.split('?')!=undefined){
+    CKCODE=Ext.urlDecode(location.href.split('?')[1]).DEPTCODE;
+}
 var sapCastStore = Ext.create('Ext.data.Store',{
 	id:'sapCastStore',
 	autoLoad: true,
@@ -232,7 +237,7 @@ function getReturnEquType(ret){
 }
 //设备位置选择
 function ChoiceEquSite(){
-	window.open(AppUrl+'page/PM_19240104/index.html', '','dialogHeight:500px;dialogWidth:800px');
+	window.open(AppUrl+'page/PM_19240104/newindex.html?CKCODE='+CKCODE, '','dialogHeight:500px;dialogWidth:800px');
 }
 function getReturnEquSite(ret){
 	if(ret!=null&&ret!=""&&ret!=undefined){
@@ -286,6 +291,7 @@ function OnClickSaveTXButton(){
 //关闭
 function OnClickCloseButton(){
 	if (window.top.frames['Workspace192401'] == null) {
+		window.close();
 		window.top.CloseWorkItem('19240101');
 	} else {
 		window.top.frames['Workspace192401'].QueryGrid();

@@ -2895,20 +2895,45 @@ public class Dx_fileController {
        Map data = dx_fileService.PM_03_PLAN_MONTH_SEL_WEEKVIEW(V_OTHERGRID,V_TYPE);
        return data;
    }
-//预装件备件信息修改
-@RequestMapping(value="PRO_PRELOADWARECOMPONENT_SET",method=RequestMethod.POST)
-@ResponseBody
-public Map PRO_PRELOADWARECOMPONENT_SET(
-        @RequestParam(value = "V_V_MODELNUMBER") String V_V_MODELNUMBER,
-        @RequestParam(value = "V_V_SPCODE") String V_V_SPCODE,
-        @RequestParam(value = "N_N_NUMBER") String N_N_NUMBER,
-        @RequestParam(value = "V_V_SIZE") String V_V_SIZE,
-        HttpServletRequest request,
-        HttpServletResponse response) throws Exception {
-    Map data = dx_fileService.PRO_PRELOADWARECOMPONENT_SET(V_V_MODELNUMBER,V_V_SPCODE,N_N_NUMBER,V_V_SIZE);
-    return data;
-}
 
+    //预装件备件信息修改
+    @RequestMapping(value = "PRO_PRELOADWARECOMPONENT_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PRELOADWARECOMPONENT_SET(
+            @RequestParam(value = "V_V_MODELNUMBER") String V_V_MODELNUMBER,
+            @RequestParam(value = "V_V_SPCODE") String V_V_SPCODE,
+            @RequestParam(value = "N_N_NUMBER") String N_N_NUMBER,
+            @RequestParam(value = "V_V_SIZE") String V_V_SIZE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_PRELOADWARECOMPONENT_SET(V_V_MODELNUMBER, V_V_SPCODE, N_N_NUMBER, V_V_SIZE);
+        return data;
+    }
+
+
+    // //缺陷厂矿tab-bypersoncode
+    @RequestMapping(value = "PRO_SELECT_ORG_BYPERCODE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SELECT_ORG_BYPERCODE(
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_SELECT_ORG_BYPERCODE(V_PERCODE);
+        return data;
+    }
+
+    //根据厂矿查看对应每月缺陷数量
+    @RequestMapping(value = "PM_07_DEFECT_STAT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_07_DEFECT_STAT(
+            @RequestParam(value = "V_YEAR") String V_YEAR,
+            @RequestParam(value = "V_CKCODE") String V_CKCODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_07_DEFECT_STAT(V_YEAR,V_CKCODE,V_PERCODE);
+        return data;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

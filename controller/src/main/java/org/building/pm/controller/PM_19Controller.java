@@ -1498,4 +1498,16 @@ public class PM_19Controller {
         List<Map> result = pm_19Service.DepartAndEquTree(V_V_PERSONCODE,V_V_DEPTCODENEXT);
         return result;
     }
+
+    // 设备位置数据查找：PRO_SAP_EQU_SITE_SEL
+    @RequestMapping(value = "/PRO_SAP_EQU_SITE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SAP_EQU_SITE_SEL(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                      @RequestParam(value = "V_V_EQUSITE") String V_V_EQUSITE,
+                                      @RequestParam(value = "V_V_EQUSITENAME") String V_V_EQUSITENAME,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response) throws Exception {
+        Map result = pm_19Service.PRO_SAP_EQU_SITE_SEL(V_V_DEPTCODE,V_V_EQUSITE,V_V_EQUSITENAME);
+        return result;
+    }
 }

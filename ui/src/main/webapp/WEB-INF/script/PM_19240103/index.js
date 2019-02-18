@@ -1,5 +1,10 @@
 ﻿var limits = '';
 var equCode='';
+var CKCODE=""
+if(location.href.split('?')!=undefined){
+    CKCODE=Ext.urlDecode(location.href.split('?')[1]).DEPTCODE;
+}
+
 var sapCastStore = Ext.create('Ext.data.Store',{
 	id:'sapCastStore',
 	autoLoad: true,
@@ -150,10 +155,13 @@ Ext.QuickTips.init();
 		items:[centerPanel,northPanel]
 	});
 	firstStep();
-	Ext.fly('V_EQUTYPENAME').on('click',ChoiceEquLev);//,listeners:{focus:ChoiceEquLev}
-	Ext.fly('V_EQUSITENAME').on('click',ChoiceEquSite);//,listeners:{focus:ChoiceEquSite}
+    textClick();
 });
 
+function textClick(){
+    Ext.fly('V_EQUTYPENAME').on('click',ChoiceEquLev);//,listeners:{focus:ChoiceEquLev}
+    Ext.fly('V_EQUSITENAME').on('click',ChoiceEquSite);//,listeners:{focus:ChoiceEquSite}
+}
 function firstStep(){
 			Ext.Ajax.request({
 				url:AppUrl+'pm_19/PRO_SAP_PM_EQU_P_GET',
@@ -168,8 +176,8 @@ function firstStep(){
 					Ext.getCmp('V_EQUCODE').setValue(respObj.list[0].V_EQUCODE);
 					equCode = respObj.list[0].V_EQUCODE;
 					Ext.getCmp('V_EQUNAME').setValue(respObj.list[0].V_EQUNAME);
-					Ext.getCmp('V_EQUSITENAME').setValue(respObj.list[0].V_EQUSITENAME);
-					Ext.getCmp('V_EQUSITE').setValue(respObj.list[0].V_EQUSITE);
+					Ext.getCmp('V_EQUSITENAME').setValue(respObj.list[0].V_SITENAME_DOWN);
+					Ext.getCmp('V_EQUSITE').setValue(respObj.list[0].V_EQUSITENAME);
 					Ext.getCmp('V_EQUTYPECODE').setValue(respObj.list[0].V_EQUTYPECODE);
 					Ext.getCmp('V_EQUTYPENAME').setValue(respObj.list[0].V_EQUTYPENAME);
 					
@@ -192,7 +200,8 @@ function firstStep(){
 						Ext.getCmp('V_EQUSITENAME').setReadOnly(true);
 						limits = 'V_EQUNAME^V_EQUTYPENAME';
 					}else{limits = 'V_EQUNAME^V_EQUSITENAME^V_EQUTYPENAME';
-						Ext.fly('V_EQUSITENAME').on('click',ChoiceEquSite);
+						// Ext.fly('V_EQUSITENAME').on('click',ChoiceEquSite);
+                        // textClick();
 					}
 					
 					Ext.getCmp('V_ABC').select(respObj.list[0].V_ABC);
@@ -253,8 +262,10 @@ function OnClickSaveButton(){
 					}
 				}
 			});
-		}else{//修改主设备，同时修改相应子设备
+		}else{
+			//修改主设备，同时修改相应子设备
 			var num=0;
+            Ext.getCmp('V_EQUSITENAME').setFieldLabel('位置编码');
 			Ext.Ajax.request({
 				url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_SET',
 				method: 'POST',
@@ -285,6 +296,15 @@ function OnClickSaveButton(){
 					var resp = Ext.decode(response.responseText);
 					if(resp.V_CURSOR=='成功'){
 						equCode = resp.V_V_EQUCODENEW;
+                        Ext.Ajax.request({
+                            url:AppUrl + 'pm_19/PRO_BASE_DEPTTOSAPCSAT_SET',
+                            method: 'POST',
+                            params: {
+                                V_V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+                                V_V_CBZX:Ext.getCmp('V_CBZX').getValue()
+                            },
+                            success: function () {}
+                        });
 						Ext.data.StoreManager.lookup('gridstore').load({
 							params:{
 								V_V_EQUCODE:resp.V_V_EQUCODENEW,
@@ -355,7 +375,11 @@ function getReturnEquType(ret){
 }
 //设备位置选择
 function ChoiceEquSite(){
-	window.open(AppUrl+'page/PM_19240104/index.html', '','dialogHeight:500px;dialogWidth:800px');
+	// window.open(AppUrl+'page/PM_19240104/index.html', '','dialogHeight:500px;dialogWidth:800px');
+	// if(Ext.getCmp('V_EQUCODEUP').getValue()!=""){
+        window.open(AppUrl+'page/PM_19240104/newindex.html?CKCODE='+CKCODE, '')//,'dialogHeight:500px;dialogWidth:800px')
+	// }
+
 }
 function getReturnEquSite(ret){
 	if(ret!=null&&ret!=""&&ret!=undefined){
