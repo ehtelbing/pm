@@ -82,14 +82,15 @@ Ext.onReady(function () {
             }
         }
     });
-    var zyStore = Ext.create("Ext.data.Store", {
+    //专业
+    var zyStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'zyStore',
-        fields: ['V_MAJOR_CODE','V_MAJOR_NAME' ],
+        fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_01/PM_04_PROJECT_MAJOR_SEL',
+            url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
             actionMethods: {
                 read: 'POST'
             },
@@ -99,6 +100,23 @@ Ext.onReady(function () {
             }
         }
     });
+    // var zyStore = Ext.create("Ext.data.Store", {
+    //     autoLoad: false,
+    //     storeId: 'zyStore',
+    //     fields: ['V_MAJOR_CODE','V_MAJOR_NAME' ],
+    //     proxy: {
+    //         type: 'ajax',
+    //         async: false,
+    //         url: AppUrl + 'PM_01/PM_04_PROJECT_MAJOR_SEL',
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list'
+    //         }
+    //     }
+    // });
 
     //设备类型
     var sblxStore = Ext.create('Ext.data.Store', {
@@ -293,8 +311,8 @@ Ext.onReady(function () {
                 editable: false,
                 fieldLabel: '专业',
                 labelWidth: 80,
-                displayField: 'V_MAJOR_CODE',
-                valueField: 'V_MAJOR_NAME',
+                displayField: 'V_SPECIALTYCODE',
+                valueField: 'V_BASENAME',
                 queryMode: 'local',
                 baseCls: 'margin-bottom'
             },
@@ -477,6 +495,12 @@ Ext.onReady(function () {
                 V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
             }
         });
+        Ext.data.StoreManager.lookup('zyStore').load({
+            params:{
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue()
+            }
+        });
     });
 
     Ext.getCmp('sblx').on('select', function () {
@@ -503,11 +527,7 @@ Ext.onReady(function () {
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
-        zyStore.load({
-            params:{
 
-            }
-        });
     });
 
     Ext.data.StoreManager.lookup('zyStore').on('load', function(){
