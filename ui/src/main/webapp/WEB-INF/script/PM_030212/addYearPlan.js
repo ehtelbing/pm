@@ -3212,7 +3212,7 @@ function getYearDate() {
                 var endtime=resp.RET[0].PLANJGMONTH;
                 var etime=endtime.split(" ")[0];
 
-                Ext.getCmp('ck').select(resp.RET[0].V_YEAR); //年
+                Ext.getCmp('nf').select(resp.RET[0].V_YEAR); //年
                 Ext.getCmp('yf').select(resp.RET[0].V_MONTH);  //月
 
                 Ext.getCmp('ck').select(resp.RET[0].ORGCODE);  //厂矿编码
