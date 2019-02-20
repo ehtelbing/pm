@@ -2549,14 +2549,18 @@ Ext.onReady(function () {
         width:'100%',
         tbar:[
             // { xtype: 'combo',fieldLabel: '设备类型',store: EquTypeStore,id:'EquType',editable : false,queryMode : 'local',displayField: 'V_EQUTYPENAME', valueField: 'V_EQUTYPECODE',labelWidth: 75, width:265,margin:'5 5 5 0',labelAlign:'right'},
-            {xtype: 'button',text: '查询', margin: '5 5 5 5',/*bodyStyle:'float:right;',iconCls:'Magnifierzoomin',*/ iconCls: 'buy-button',icon:dxImgPath + '/search.png',listeners:{click:QueryEquGrid}},
-            {xtype: 'button',text: '确认返回', margin: '5 5 5 5',/*bodyStyle:'float:right;',iconCls:'Tablesave' ,*/iconCls: 'buy-button',icon:dxImgPath + '/tjsb.png',listeners:{click:winClose}}]
+            {xtype: 'button',text: '查询', margin: '5 5 5 5',/*bodyStyle:'float:right;',iconCls:'Magnifierzoomin',*/ iconCls: 'buy-button',icon:dxImgPath + '/search.png',listeners:{click:QueryYearGrid}},
+            {xtype: 'button',text: '确认返回', margin: '5 5 5 5',/*bodyStyle:'float:right;',iconCls:'Tablesave' ,*/iconCls: 'buy-button',icon:dxImgPath + '/tjsb.png',listeners:{click:YearwinClose}}]
     });
     var yeargrid=Ext.create('Ext.grid.Panel',{
        id:'yeargrid' ,
         region:'center',
         border: false,
         store: 'yearStore',
+        selModel : {
+            selType : 'rowmodel',
+            mode : 'SINGLE'
+        },
         columnLines: true,
         columns: [
             {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
@@ -2601,7 +2605,7 @@ Ext.onReady(function () {
         height:450,
         autoScroll: true,
         layout:'border',
-        title:'设备检修历史',
+        title:'年计划详情',
         items:[yeartool,yeargrid]
     });
 });
@@ -2620,7 +2624,7 @@ function QueryPageLoad(){
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.list!=null){
-                Ext.getCmp('northPanel').setTitle(resp.list[0].V_YEAR+"年"+resp.list[0].V_ORGNAME+"年计划编制");
+                Ext.getCmp('northPanel').setTitle(resp.list[0].V_YEAR+"年"+resp.list[0].V_ORGNAME+"大修计划编制");
                 Year=resp.list[0].V_YEAR;
                 OrgCode=resp.list[0].V_ORGCODE;
                 OrgName=resp.list[0].V_ORGNAME;
@@ -3614,6 +3618,8 @@ function btnSaveProject(){
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='成功'){
                 alert('保存成功！');
+
+                window.close();
             }
         }
     });
@@ -3843,6 +3849,20 @@ function gdzcdetail(value,metaData,record,rowIndex,colIndex,store){
 }
 
 function OnButtonPlanAddClicked(){
+    // Ext.data.StoreManager.lookup('yearStore').load({
+    //     params:{
+    //         V_V_ORGCODE: Ext.getCmp('zyq').getValue().toString().substring(0,4),
+    //         V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+    //         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+    //         V_V_ZY: ''
+    //     }
+    // });
+    QueryYearGrid();
+    Ext.getCmp('yearWindow').show();
+}
+
+//年添加窗口查询
+function QueryYearGrid(){
     Ext.data.StoreManager.lookup('yearStore').load({
         params:{
             V_V_ORGCODE: Ext.getCmp('zyq').getValue().toString().substring(0,4),
@@ -3851,5 +3871,192 @@ function OnButtonPlanAddClicked(){
             V_V_ZY: ''
         }
     });
-    Ext.getCmp('yearWindow').show();
+}
+
+function YearwinClose(){
+    var numdef=0;
+    var nummod=0;
+    var record=Ext.getCmp('yeargrid').getSelectionModel().getSelection();
+    if(record.length!=1){
+        alert('请选择一条记录，且只能选择一条记录。');
+        return false;
+    }
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_GETONE_SEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_GUID: record[0].get('ID_GUID')
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.RET.length == 1) {
+                var startime=resp.RET[0].PLANTJMONTH;
+                var btime=startime.split(" ")[0];
+                var endtime=resp.RET[0].PLANJGMONTH;
+                var etime=endtime.split(" ")[0];
+
+                // Ext.getCmp('ck').select(resp.RET[0].V_YEAR); //年
+                // Ext.getCmp('yf').select(resp.RET[0].V_MONTH);  //月
+
+                OrgCode=resp.RET[0].ORGCODE;  //厂矿编码
+                Ext.getCmp('zyq').select(resp.RET[0].DEPTCODE);  //作业区编码
+                Ext.getCmp('zy').select(resp.RET[0].ZYCODE);  //专业编码
+
+                // Ext.getCmp('sblx').select(resp.RET[0].EQUTYPE);  //设备类型编码
+                // Ext.getCmp('sbmc').select(resp.RET[0].EQUCODE);  //设备名称编码
+                // Ext.getCmp('jxtype').select(resp.RET[0].REPAIRTYPE);  //检修类别
+                Ext.getCmp('content').setValue(resp.RET[0].REPAIRCONTENT);  //检修内容
+
+                Ext.getCmp('jhgs').setValue(resp.RET[0].PLANHOUR);  //计划小时数
+                // Ext.getCmp('bz').setValue(resp.RET[0].REMARK);  //备注
+
+                Ext.getCmp('wxlx').select(resp.RET[0].WXTYPECODE); // 维修类型
+                Ext.getCmp('jhlb').select(resp.RET[0].PTYPECODE);   // 计划类别
+                Ext.getCmp('sfxj').select(resp.RET[0].OLD_FLAG);  //修旧标识
+                Ext.getCmp('repairDept').select(resp.RET[0].REDEPTCODE);  //检修单位
+                Ext.getCmp('jhts').setValue(resp.RET[0].PLANDAY);  //计划天数
+                Ext.getCmp('fzPer').select(resp.RET[0].FZPERCODE); // 负责人编码
+                Ext.getCmp('sgfs').select(resp.RET[0].SGTYPECODE);  //施工方式
+
+                Ext.getCmp('sclb').setValue(resp.RET[0].SCLBCODE); //生产类别
+                // Ext.getCmp('ProjectName').setValue(resp.RET[0].PRO_NAME);  // 项目名称
+                Ext.getCmp('btime').setValue(Ext.Date.format(new Date(btime),'Y/m/d')); // 停工时间
+                Ext.getCmp('etime').setValue(Ext.Date.format(new Date(etime),'Y/m/d')); // 竣工时间
+                //查询写入设备
+                Ext.Ajax.request({
+                    url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_EQU_SET',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_PLANGUID:Guid,
+                        V_V_EQUTYPECODE:resp.RET[0].EQUTYPE,
+                        V_V_EQUCODE:resp.RET[0].EQUCODE
+                    },
+                    success: function (resp) {
+                        var resp=Ext.decode(resp.responseText);
+                        if(resp.V_INFO=='成功'){
+                            QueryCGrid();
+                        }else{
+                            alert("添加失败");
+                        }
+                    }
+                });
+                //--查询返回明细
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_DEFECT_SEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_GUID: record[0].get('ID_GUID')
+                    },
+                    success: function (resp) {
+                        var respdef=Ext.decode(resp.responseText);
+                        if(respdef.list.length!=0){
+                            for(var i=0;i<respdef.list.length;i++){
+                                Ext.Ajax.request({
+                                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_PD',
+                                    method: 'POST',
+                                    async: false,
+                                    params: {
+                                        V_V_DEFECT_GUID: respdef.list[i].DEFECT_GUID,
+                                        V_V_PROJECT_GUID: Guid
+                                    },
+                                    success: function (resp) {
+                                        var resp = Ext.decode(resp.responseText);
+                                        numdef++;
+                                    }
+                                });
+                                if(numdef==respdef.list.length) {
+                                    QueryDefect();
+                                }
+                            }
+                        }else{
+                            alert("添加失败");
+                        }
+                    }
+                });
+                //--查询返回模型
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_JXMOD_SEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_GUID:record[0].get('ID_GUID')
+                    },
+                    success: function (resp) {
+                        var respmode=Ext.decode(resp.responseText);
+                        if(respmode.list.length!=0){
+                            for(var i=0;i<respmode.list.length;i++){
+                                Ext.Ajax.request({
+                                    url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_MODEL_SET',
+                                    method: 'POST',
+                                    async: false,
+                                    params: {
+                                        V_V_PORJECTGUID:Guid,
+                                        V_V_MODELGUID:respmode.list[i].JX_MODCODE,
+                                        V_V_MODELNAME:respmode.list[i].JX_MODNAME,
+                                        V_V_BBH:respmode.list[i].JX_MODBBH,
+                                        V_V_BZ:respmode.list[i].JX_MODBZ
+                                    },
+                                    success: function (resp) {
+                                        var respmodin=Ext.decode(resp.responseText);
+                                        if(respmodin.V_INFO=='SUCCESS'){
+                                            nummod++;
+                                        }else{
+                                            nummod++;
+                                            alert('模型'+respmode[i].data.JX_MODCODE+"添加失败！");
+                                        }
+                                    }
+                                });
+
+                                // Ext.Ajax.request({
+                                //     url: AppUrl + 'dxfile/PM_MODEL_FILE_SEL',
+                                //     method: 'POST',
+                                //     async: false,
+                                //     params: {
+                                //         V_V_MODE_GUID:selectedRecords[i].data.V_MX_CODE,
+                                //         V_V_TYPE:''
+                                //     },
+                                //     success: function (resp) {
+                                //         var resp=Ext.JSON.decode(resp.responseText);
+                                //         for(var t=0;t<resp.list.length;t++){
+                                //             Ext.Ajax.request({
+                                //                 url:AppUrl+'dxfile/PM_MODEL_FILE_INSERT_DXF',
+                                //                 method: 'POST',
+                                //                 async: false,
+                                //                 params: {
+                                //                     V_V_GUID:Guid,
+                                //                     V_V_FILEGUID:resp.list[t].V_FILEGUID,
+                                //                     V_V_FILENAME:resp.list[t].V_FILENAME,
+                                //                     V_V_INPERCODE:resp.list[t].V_INPERCODE,
+                                //                     V_V_INPERNAME:resp.list[t].V_INPERNAME,
+                                //                     V_V_TYPE:resp.list[t].V_TYPE,
+                                //                     V_V_FILETYPE:resp.list[t].V_FILETYPE,
+                                //                     V_V_MODE_GUID: resp.list[t].V_MODE_GUID //selectedRecords[i].data.V_MX_CODE
+                                //                 },
+                                //                 success: function (resp) {
+                                //                     var resp=Ext.decode(resp.responseText);
+                                //                 }
+                                //             });
+                                //             var filecode=resp.list[0].V_FILEGUID;
+                                //         }
+                                //
+                                //     }
+                                // });
+                                if(nummod==respmode.list.length){
+                                    QueryModel();
+                                }
+                            }
+                        }else{
+                            alert("添加失败");
+                        }
+                    }
+                });
+
+            }
+        }
+    });
+    Ext.getCmp('yearWindow').close();
+
 }
