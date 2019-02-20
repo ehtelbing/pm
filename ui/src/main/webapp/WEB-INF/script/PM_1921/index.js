@@ -1533,7 +1533,7 @@ function _preUpdateModel() {
     Ext.getCmp('winzyq3').setValue(records[0].get('V_DEPTCODE'));//给作业区设置默认值
     Ext.getCmp('winzy3').setValue(records[0].get('V_SPECIALTY'));//给设备类型设置默认值
     Ext.getCmp('winmxname3').setValue(records[0].get('V_MX_NAME'));//给设备名称设置默认值
-    Ext.getCmp('winbz3').setValue(records[0].get('V_MX_MENO'));//给子设备传默认值
+    Ext.getCmp('winbz3').setValue(records[0].get('V_MENO'));//给子设备传默认值
 
 
     Ext.getCmp('window2').show();
