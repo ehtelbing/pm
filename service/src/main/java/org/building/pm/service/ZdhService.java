@@ -1913,7 +1913,7 @@ public class ZdhService {
         return result;
     }
 
-    public List<Map> PRO_PM_WORKORDER_SPARE_SET(Double V_I_ID,String V_V_ORDERGUID,String V_V_FETCHORDERGUID,String V_V_ACTIVITY,
+    public List<Map> PRO_PM_WORKORDER_SPARE_SET(String V_I_ID,String V_V_ORDERGUID,String V_V_FETCHORDERGUID,String V_V_ACTIVITY,
                                                 String V_V_MATERIALCODE, String V_V_MATERIALNAME,String V_V_SPEC,String V_V_UNIT,
                                                 Double V_F_UNITPRICE,Double V_I_PLANAMOUNT,Double V_F_PLANMONEY,Double V_I_ACTUALAMOUNT,
                                                 Double V_F_ACTUALMONEY, String V_V_TYPE,String V_V_MEMO,String V_V_SUBTYPE,
@@ -1928,7 +1928,7 @@ public class ZdhService {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_SET" + "(:V_I_ID,:V_V_ORDERGUID,:V_V_FETCHORDERGUID,:V_V_ACTIVITY,:V_V_MATERIALCODE,:V_V_MATERIALNAME,:V_V_SPEC,:V_V_UNIT,:V_F_UNITPRICE,:V_I_PLANAMOUNT,:V_F_PLANMONEY,:V_I_ACTUALAMOUNT,:V_F_ACTUALMONEY,:V_V_TYPE,:V_V_MEMO,:V_V_SUBTYPE,:V_V_STATUS,:V_I_ABANDONEDAMOUNT,:V_I_RECLAIMEDAMOUNT,:V_I_FIXEDAMOUNT,:V_V_ID)}");
 
-            cstmt.setDouble("V_I_ID", V_I_ID);
+            cstmt.setString("V_I_ID", V_I_ID);
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.setString("V_V_FETCHORDERGUID", V_V_FETCHORDERGUID);
             cstmt.setString("V_V_ACTIVITY", V_V_ACTIVITY);
@@ -2916,7 +2916,7 @@ public class ZdhService {
         return result;
     }
 
-    public List<Map> PRO_PM_WORKORDER_SPARE_SET2(Double V_I_ID,String V_V_ORDERGUID,String V_V_FETCHORDERGUID,String V_V_ACTIVITY,
+    public List<Map> PRO_PM_WORKORDER_SPARE_SET2(String V_I_ID,String V_V_ORDERGUID,String V_V_FETCHORDERGUID,String V_V_ACTIVITY,
                                                 String V_V_MATERIALCODE, String V_V_MATERIALNAME,String V_V_SPEC,String V_V_UNIT,
                                                 Double V_F_UNITPRICE,Double V_I_PLANAMOUNT,Double V_F_PLANMONEY,Double V_I_ACTUALAMOUNT,
                                                 Double V_F_ACTUALMONEY, String V_V_TYPE,String V_V_MEMO,String V_V_SUBTYPE,
@@ -2931,7 +2931,7 @@ public class ZdhService {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_SET2" + "(:V_I_ID,:V_V_ORDERGUID,:V_V_FETCHORDERGUID,:V_V_ACTIVITY,:V_V_MATERIALCODE,:V_V_MATERIALNAME,:V_V_SPEC,:V_V_UNIT,:V_F_UNITPRICE,:V_I_PLANAMOUNT,:V_F_PLANMONEY,:V_I_ACTUALAMOUNT,:V_F_ACTUALMONEY,:V_V_TYPE,:V_V_MEMO,:V_V_SUBTYPE,:V_V_STATUS,:V_I_ABANDONEDAMOUNT,:V_I_RECLAIMEDAMOUNT,:V_I_FIXEDAMOUNT,:V_V_ID,:V_KFCOUNT,:RET)}");
 
-            cstmt.setDouble("V_I_ID", V_I_ID);
+            cstmt.setString("V_I_ID", V_I_ID);
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.setString("V_V_FETCHORDERGUID", V_V_FETCHORDERGUID);
             cstmt.setString("V_V_ACTIVITY", V_V_ACTIVITY);

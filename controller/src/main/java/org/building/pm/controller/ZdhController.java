@@ -1,6 +1,7 @@
 package org.building.pm.controller;
 
 //import com.AMToMessService;
+
 import org.building.pm.service.ZdhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,8 +35,8 @@ public class ZdhController {
     private ZdhService zdhService;
 
     /*
-    * 厂矿查询
-    * */
+     * 厂矿查询
+     * */
     @RequestMapping(value = "plant_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> plant_sel(@RequestParam(value = "IS_V_DEPTCODE") String IS_V_DEPTCODE,
@@ -48,8 +49,8 @@ public class ZdhController {
     }
 
     /*
-        * 作业区查询
-        * */
+     * 作业区查询
+     * */
     @RequestMapping(value = "dept_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> dept_sel(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
@@ -63,8 +64,8 @@ public class ZdhController {
     }
 
     /*
-        * 检修单位查询
-        * */
+     * 检修单位查询
+     * */
     @RequestMapping(value = "fixdept_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> fixdept_sel(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
@@ -75,8 +76,8 @@ public class ZdhController {
     }
 
     /*
-        * 创建工单号
-        * */
+     * 创建工单号
+     * */
     @RequestMapping(value = "orderid_create", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> orderid_create(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
@@ -90,8 +91,8 @@ public class ZdhController {
     }
 
     /*
-        * 工作中心查询
-        * */
+     * 工作中心查询
+     * */
     @RequestMapping(value = "workcenter_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> workcenter_sel(@RequestParam(value = "V_V_DEPTREPAIRCODE") String V_V_DEPTREPAIRCODE,
@@ -102,8 +103,8 @@ public class ZdhController {
     }
 
     /*
-  * 维修工单创建
-  * */
+     * 维修工单创建
+     * */
     @RequestMapping(value = "/save_workorder", method = RequestMethod.POST)
     @ResponseBody
     public Map save_workorder(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
@@ -134,8 +135,8 @@ public class ZdhController {
     }
 
     /*
-       * 区域工程师查询查询
-       * */
+     * 区域工程师查询查询
+     * */
     @RequestMapping(value = "select_engineer", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> select_engineer(@RequestParam(value = "V_V_EQUIPCODE") String V_V_EQUIPCODE,
@@ -147,8 +148,8 @@ public class ZdhController {
     }
 
     /*
-        * 区域工程师查询查询
-        * */
+     * 区域工程师查询查询
+     * */
     @RequestMapping(value = "create_workorder", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> create_workorder(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
@@ -162,8 +163,8 @@ public class ZdhController {
     }
 
     /*
-        * 工单状态查询
-        * */
+     * 工单状态查询
+     * */
     @RequestMapping(value = "workorderstate_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> workorderstate_sel(
@@ -175,8 +176,8 @@ public class ZdhController {
 
 
     /*
-        * 设备名称查询
-        * */
+     * 设备名称查询
+     * */
     @RequestMapping(value = "equipname_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> equipname_sel(@RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
@@ -188,8 +189,8 @@ public class ZdhController {
     }
 
     /*
-        * 设备类型查询
-        * */
+     * 设备类型查询
+     * */
     @RequestMapping(value = "equiptype_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> equiptype_sel(@RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
@@ -200,8 +201,8 @@ public class ZdhController {
     }
 
     /*
-* 维修工单查询
-* */
+     * 维修工单查询
+     * */
     @RequestMapping(value = "/workorder_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map workorder_sel(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
@@ -225,13 +226,13 @@ public class ZdhController {
         Map<String, Object> result = null;
         result = zdhService.workorder_sel(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE, V_V_DEPTCODE,
                 V_V_DEPTCODEREPARIR, V_V_STATECODE, V_EQUTYPE_CODE, V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT,
-                V_V_BJ_TXT, V_V_ORDER_TYP, V_V_PAGE,V_V_PAGESIZE);
+                V_V_BJ_TXT, V_V_ORDER_TYP, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
     /*
- * 提交至主任
- * */
+     * 提交至主任
+     * */
     @RequestMapping(value = "/send_manager", method = RequestMethod.POST)
     @ResponseBody
     public Map send_manager(@RequestParam(value = "V_V_DEPTREPAIRCODE") String V_V_DEPTREPAIRCODE,
@@ -248,8 +249,8 @@ public class ZdhController {
     }
 
     /*
-       * 班组查询
-       * */
+     * 班组查询
+     * */
     @RequestMapping(value = "team_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> team_sel(@RequestParam(value = "IN_DEPARTCODE") String IN_DEPARTCODE,
@@ -261,8 +262,8 @@ public class ZdhController {
     }
 
     /*
-       * 工作中心查询
-       * */
+     * 工作中心查询
+     * */
     @RequestMapping(value = "workCenter_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> workCenter_sel(@RequestParam(value = "V_V_DEPTREPAIRCODE") String V_V_DEPTREPAIRCODE,
@@ -273,8 +274,8 @@ public class ZdhController {
     }
 
     /*
-       * 角色查询
-       * */
+     * 角色查询
+     * */
     @RequestMapping(value = "role_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> role_sel(HttpServletRequest request)
@@ -284,8 +285,8 @@ public class ZdhController {
     }
 
     /*
-      * 角色查询
-      * */
+     * 角色查询
+     * */
     @RequestMapping(value = "role_new_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> role_new_sel(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
@@ -296,8 +297,8 @@ public class ZdhController {
     }
 
     /*
-       * 人员添加查询
-       * */
+     * 人员添加查询
+     * */
     @RequestMapping(value = "addperson_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> addperson_sel(@RequestParam(value = "IN_DEPTCODE") String IN_DEPTCODE,
@@ -308,65 +309,65 @@ public class ZdhController {
                                              @RequestParam(value = "IN_ORDERGUID") String IN_ORDERGUID,
                                              HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = zdhService.addperson_sel(IN_DEPTCODE, IN_ROLECODE, IN_PERSONCODE, IN_PERSONNAME,IN_CLASSCODE,IN_ORDERGUID);
+        Map<String, Object> result = zdhService.addperson_sel(IN_DEPTCODE, IN_ROLECODE, IN_PERSONCODE, IN_PERSONNAME, IN_CLASSCODE, IN_ORDERGUID);
         return result;
     }
 
     /*
-       * 人员添加查询
-       * */
+     * 人员添加查询
+     * */
     @RequestMapping(value = "addbaseperson_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> addbaseperson_sel(@RequestParam(value = "IN_DEPTCODE") String IN_DEPTCODE,
-                                             @RequestParam(value = "IN_ROLECODE") String IN_ROLECODE,
-                                             @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
-                                             @RequestParam(value = "IN_PERSONNAME") String IN_PERSONNAME,
-                                             HttpServletRequest request)
+                                                 @RequestParam(value = "IN_ROLECODE") String IN_ROLECODE,
+                                                 @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
+                                                 @RequestParam(value = "IN_PERSONNAME") String IN_PERSONNAME,
+                                                 HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = zdhService.addbaseperson_sel(IN_DEPTCODE, IN_ROLECODE, IN_PERSONCODE, IN_PERSONNAME);
         return result;
     }
 
     /*
-       * 班组详情查询
-       * */
+     * 班组详情查询
+     * */
     @RequestMapping(value = "teamdetail_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> teamdetail_sel(@RequestParam(value = "IN_CLASSCODE") String IN_CLASSCODE,
                                               @RequestParam(value = "IN_ORDERGUID") String IN_ORDERGUID,
                                               HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = zdhService.teamdetail_sel(IN_CLASSCODE,IN_ORDERGUID);
+        Map<String, Object> result = zdhService.teamdetail_sel(IN_CLASSCODE, IN_ORDERGUID);
         return result;
     }
 
     /*
-       * 班组名称查询
-       * */
+     * 班组名称查询
+     * */
     @RequestMapping(value = "teamname_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> teamname_sel(@RequestParam(value = "IN_CLASSCODE") String IN_CLASSCODE,
-                                              HttpServletRequest request)
+                                            HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = zdhService.teamname_sel(IN_CLASSCODE);
         return result;
     }
 
     /*
-      * 班组详情查询
-      * */
+     * 班组详情查询
+     * */
     @RequestMapping(value = "teambasedetail_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> teambasedetail_sel(@RequestParam(value = "IN_CLASSCODE") String IN_CLASSCODE,
-                                              HttpServletRequest request)
+                                                  HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = zdhService.teambasedetail_sel(IN_CLASSCODE);
         return result;
     }
 
     /*
-* 新增班组
-* */
+     * 新增班组
+     * */
     @RequestMapping(value = "/team_save", method = RequestMethod.POST)
     @ResponseBody
     public Map team_save(@RequestParam(value = "IN_DEPARTCODE") String IN_DEPARTCODE,
@@ -384,16 +385,16 @@ public class ZdhController {
     }
 
     /*
-* 新增班组
-* */
+     * 新增班组
+     * */
     @RequestMapping(value = "/teambase_save", method = RequestMethod.POST)
     @ResponseBody
     public Map teambase_save(@RequestParam(value = "IN_DEPARTCODE") String IN_DEPARTCODE,
-                         @RequestParam(value = "IN_CLASSNAME") String IN_CLASSNAME,
-                         @RequestParam(value = "IN_WORKCODE") String IN_WORKCODE,
-                         @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
-                         HttpServletRequest request,
-                         HttpServletResponse response) throws Exception {
+                             @RequestParam(value = "IN_CLASSNAME") String IN_CLASSNAME,
+                             @RequestParam(value = "IN_WORKCODE") String IN_WORKCODE,
+                             @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -403,8 +404,8 @@ public class ZdhController {
     }
 
     /*
-* 修改班组
-* */
+     * 修改班组
+     * */
     @RequestMapping(value = "/team_edit", method = RequestMethod.POST)
     @ResponseBody
     public Map team_edit(@RequestParam(value = "IN_CLASSCODE") String IN_CLASSCODE,
@@ -418,23 +419,23 @@ public class ZdhController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.team_edit(IN_CLASSCODE, IN_DEPARTCODE, IN_CLASSNAME, IN_WORKCODE, IN_PERSONCODE,IN_ORDERGUID);
+        result = zdhService.team_edit(IN_CLASSCODE, IN_DEPARTCODE, IN_CLASSNAME, IN_WORKCODE, IN_PERSONCODE, IN_ORDERGUID);
         test.put("list", result);
         return test;
     }
 
     /*
-* 修改班组
-* */
+     * 修改班组
+     * */
     @RequestMapping(value = "/teambase_edit", method = RequestMethod.POST)
     @ResponseBody
     public Map teambase_edit(@RequestParam(value = "IN_CLASSCODE") String IN_CLASSCODE,
-                         @RequestParam(value = "IN_DEPARTCODE") String IN_DEPARTCODE,
-                         @RequestParam(value = "IN_CLASSNAME") String IN_CLASSNAME,
-                         @RequestParam(value = "IN_WORKCODE") String IN_WORKCODE,
-                         @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
-                         HttpServletRequest request,
-                         HttpServletResponse response) throws Exception {
+                             @RequestParam(value = "IN_DEPARTCODE") String IN_DEPARTCODE,
+                             @RequestParam(value = "IN_CLASSNAME") String IN_CLASSNAME,
+                             @RequestParam(value = "IN_WORKCODE") String IN_WORKCODE,
+                             @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -444,8 +445,8 @@ public class ZdhController {
     }
 
     /*
-       * 班组修改查询查询
-       * */
+     * 班组修改查询查询
+     * */
     @RequestMapping(value = "teamedit_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> teamedit_sel(@RequestParam(value = "IN_CLASSCODE") String IN_CLASSCODE,
@@ -456,8 +457,8 @@ public class ZdhController {
     }
 
     /*
-* 修改班组
-* */
+     * 修改班组
+     * */
     @RequestMapping(value = "/team_del", method = RequestMethod.POST)
     @ResponseBody
     public Map team_del(@RequestParam(value = "IN_CLASSCODE") String IN_CLASSCODE,
@@ -472,8 +473,8 @@ public class ZdhController {
     }
 
     /*
- * 分配给班组
- * */
+     * 分配给班组
+     * */
     @RequestMapping(value = "/send_team", method = RequestMethod.POST)
     @ResponseBody
     public Map send_team(@RequestParam(value = "V_V_TEAMCODE") String V_V_TEAMCODE,
@@ -489,8 +490,8 @@ public class ZdhController {
     }
 
     /*
-* 维修工单（管理员）查询
-* */
+     * 维修工单（管理员）查询
+     * */
     @RequestMapping(value = "/workorderall_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map workorderall_sel(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
@@ -518,8 +519,8 @@ public class ZdhController {
     }
 
     /*
-      * 编辑物料
-      * */
+     * 编辑物料
+     * */
     @RequestMapping(value = "PRO_PM_WORKORDER_ET_ACTIVITY", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_ET_ACTIVITY(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
@@ -529,14 +530,14 @@ public class ZdhController {
 
 
         //System.out.println(result.get("list").);
-       // for( int i =0;i<result.)
+        // for( int i =0;i<result.)
 
         return result;
     }
 
     /*
-      * 物料加载
-      * */
+     * 物料加载
+     * */
     @RequestMapping(value = "PRO_PM_WORKORDER_SPARE_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_SPARE_VIEW(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
@@ -545,23 +546,21 @@ public class ZdhController {
         Map<String, Object> result = zdhService.PRO_PM_WORKORDER_SPARE_VIEW(V_V_ORDERGUID);
 
         int fujianCount;
-        List<Map<String, Object>> list  = (List)result.get("list");
-        for(Map<String,Object> fujian : list)
-        {
-            if((String)fujian.get("V_GUID") == null)
-            {
+        List<Map<String, Object>> list = (List) result.get("list");
+        for (Map<String, Object> fujian : list) {
+            if ((String) fujian.get("V_GUID") == null) {
                 fujianCount = 0;
-                fujian.put("FUJIAN_COUNT",fujianCount);
-            }else{
-                String V_V_GUID = (String)fujian.get("V_GUID");
+                fujian.put("FUJIAN_COUNT", fujianCount);
+            } else {
+                String V_V_GUID = (String) fujian.get("V_GUID");
                 String V_V_FILETYPECODE = "SBGZ";
                 HashMap data = zdhService.PRO_BASE_FILE_SEL(V_V_GUID, V_V_FILETYPECODE);
                 List<Map<String, Object>> fujianlist = (List) data.get("list");
                 fujianCount = fujianlist.size();
-                fujian.put("FUJIAN_COUNT",fujianCount);
+                fujian.put("FUJIAN_COUNT", fujianCount);
             }
         }
-        result.put("list",list);
+        result.put("list", list);
         /*for(int i =0;i < a.size(); i++)
         {
             if(a.get(i).get("V_GUID") == null)
@@ -586,8 +585,8 @@ public class ZdhController {
     }
 
     /*
-    * 库房查询
-    * */
+     * 库房查询
+     * */
     @RequestMapping(value = "PRO_MM_STORE_DIC", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_MM_STORE_DIC(
@@ -598,8 +597,8 @@ public class ZdhController {
     }
 
     /*
-    * 机旁备件 显视列表
-    * */
+     * 机旁备件 显视列表
+     * */
     @RequestMapping(value = "PRO_PM_WORKORDER_JIP_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_JIP_VIEW(@RequestParam(value = "V_V_EQUIP_NO") String V_V_EQUIP_NO,
@@ -611,8 +610,8 @@ public class ZdhController {
     }
 
     /*
-    * 机旁备件 显视列表
-    * */
+     * 机旁备件 显视列表
+     * */
     @RequestMapping(value = "PRO_BASE_DEPT_SAP_JHGC", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_DEPT_SAP_JHGC(@RequestParam(value = "V_V_SAP_JHGC") String V_V_SAP_JHGC,
@@ -623,8 +622,8 @@ public class ZdhController {
     }
 
     /*
-* 维修工单（维修人员）查询
-* */
+     * 维修工单（维修人员）查询
+     * */
     @RequestMapping(value = "/workorder_membersel", method = RequestMethod.POST)
     @ResponseBody
     public Map workorder_membersel(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
@@ -664,8 +663,8 @@ public class ZdhController {
     }
 
     /*
-  * 任务创建
-  * */
+     * 任务创建
+     * */
     @RequestMapping(value = "/PRO_PM_WORKORDER_ET_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_ET_SET(@RequestParam(value = "V_I_ID") Double V_I_ID,
@@ -685,7 +684,7 @@ public class ZdhController {
         List<Map> result = null;
         result = zdhService.PRO_PM_WORKORDER_ET_SET(V_I_ID, V_V_ORDERGUID, V_V_DESCRIPTION,
                 V_I_WORK_ACTIVITY, V_I_DURATION_NORMAL, V_V_WORK_CENTER,
-                V_I_ACTUAL_TIME, V_I_NUMBER_OF_PEOPLE, V_V_ID,V_V_GUID);
+                V_I_ACTUAL_TIME, V_I_NUMBER_OF_PEOPLE, V_V_ID, V_V_GUID);
         test.put("list", result);
         return test;
     }
@@ -703,8 +702,8 @@ public class ZdhController {
     }
 
     /*
- * 任务创建
- * */
+     * 任务创建
+     * */
     @RequestMapping(value = "/PRO_PM_WORKORDER_ET_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_ET_DEL(@RequestParam(value = "V_I_ID") Double V_I_ID,
@@ -725,7 +724,7 @@ public class ZdhController {
     @RequestMapping(value = "PRO_PM_WORKORDER_GET", method = RequestMethod.POST)
     @ResponseBody
     public List<Map> PRO_PM_WORKORDER_GET(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                                    HttpServletRequest request)
+                                          HttpServletRequest request)
             throws SQLException {
         List<Map> result = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
         return result;
@@ -744,8 +743,8 @@ public class ZdhController {
     }
 
     /*
-   *
-   * */
+     *
+     * */
     @RequestMapping(value = "PRO_BASE_CRAFT_QUERY", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_CRAFT_QUERY(
@@ -780,8 +779,8 @@ public class ZdhController {
     }
 
     /*
- *
- * */
+     *
+     * */
     @RequestMapping(value = "/PRO_BASE_PERSON_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_PERSON_SET(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
@@ -797,8 +796,8 @@ public class ZdhController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_BASE_PERSON_SET(V_V_PERSONCODE, V_V_PERSONNAME,V_V_LOGINNAME,V_V_PASSWORD,
-                V_V_DEPTCODE,V_V_ROLECODE,V_I_ORDERID,V_I_CLASS);
+        result = zdhService.PRO_BASE_PERSON_SET(V_V_PERSONCODE, V_V_PERSONNAME, V_V_LOGINNAME, V_V_PASSWORD,
+                V_V_DEPTCODE, V_V_ROLECODE, V_I_ORDERID, V_I_CLASS);
         test.put("list", result);
         return test;
     }
@@ -809,15 +808,15 @@ public class ZdhController {
     @RequestMapping(value = "PRO_BASE_PERSON_GET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_BASE_PERSON_GET(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                                                    HttpServletRequest request)
+                                                   HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = zdhService.PRO_BASE_PERSON_GET(V_V_PERSONCODE);
         return result;
     }
 
     /*
-*
-* */
+     *
+     * */
     @RequestMapping(value = "/PRO_BASE_PERSON_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_PERSON_DEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
@@ -835,12 +834,12 @@ public class ZdhController {
     @ResponseBody
     public Map PRO_PERSON_ADD_CRAFT(@RequestParam(value = "IN_CRAFTCODE") String IN_CRAFTCODE,
                                     @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
-                                   HttpServletRequest request,
-                                   HttpServletResponse response) throws Exception {
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_PERSON_ADD_CRAFT(IN_CRAFTCODE,IN_PERSONCODE);
+        result = zdhService.PRO_PERSON_ADD_CRAFT(IN_CRAFTCODE, IN_PERSONCODE);
         test.put("list", result);
         return test;
     }
@@ -851,7 +850,7 @@ public class ZdhController {
     @RequestMapping(value = "PRO_PERSON_QUERY_CRAFT", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PERSON_QUERY_CRAFT(@RequestParam(value = "IN_PERSON") String IN_PERSON,
-                                                   HttpServletRequest request)
+                                                      HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = zdhService.PRO_PERSON_QUERY_CRAFT(IN_PERSON);
         return result;
@@ -860,9 +859,9 @@ public class ZdhController {
     @RequestMapping(value = "/PRO_PERSON_DELETE_CRAFT", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PERSON_DELETE_CRAFT(
-                                    @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
-                                    HttpServletRequest request,
-                                    HttpServletResponse response) throws Exception {
+            @RequestParam(value = "IN_PERSONCODE") String IN_PERSONCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -883,7 +882,7 @@ public class ZdhController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_BASE_POSTTOPERSON_SET(V_V_ORGCODE,V_V_POSTCODE,V_V_PERSONCODE,V_V_TYPE);
+        result = zdhService.PRO_BASE_POSTTOPERSON_SET(V_V_ORGCODE, V_V_POSTCODE, V_V_PERSONCODE, V_V_TYPE);
         test.put("list", result);
         return test;
     }
@@ -932,19 +931,19 @@ public class ZdhController {
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody
-    public  Map uploadFile(@RequestParam(value = "upload") MultipartFile upload,
-                           @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                           @RequestParam(value = "V_V_MATERIALGUID") String V_V_MATERIALGUID,
-                           @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
-                           @RequestParam(value = "V_V_FILEPER") String V_V_FILEPER,
-                           @RequestParam(value = "V_V_FILETIME") String V_V_FILETIME,
-                           HttpServletRequest request,HttpServletResponse response, ModelMap model) throws Exception {
+    public Map uploadFile(@RequestParam(value = "upload") MultipartFile upload,
+                          @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                          @RequestParam(value = "V_V_MATERIALGUID") String V_V_MATERIALGUID,
+                          @RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
+                          @RequestParam(value = "V_V_FILEPER") String V_V_FILEPER,
+                          @RequestParam(value = "V_V_FILETIME") String V_V_FILETIME,
+                          HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
         String filename = upload.getOriginalFilename();
 
         String path = request.getSession().getServletContext().getRealPath("upload");
 
         File targetFile = new File(path, filename);
-        if(!targetFile.exists()){
+        if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
         //保存
@@ -953,23 +952,23 @@ public class ZdhController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("fileUrl", request.getContextPath()+"/upload/"+filename);
+        model.addAttribute("fileUrl", request.getContextPath() + "/upload/" + filename);
         FileInputStream filedata = null;
-        filedata = new FileInputStream(path+"/"+filename);
+        filedata = new FileInputStream(path + "/" + filename);
 
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.WX_INF_FILE_SET(V_V_ORDERGUID,V_V_MATERIALGUID, V_V_FILEGUID, filename, filedata,
-                 V_V_FILEPER, V_V_FILETIME);
+        result = zdhService.WX_INF_FILE_SET(V_V_ORDERGUID, V_V_MATERIALGUID, V_V_FILEGUID, filename, filedata,
+                V_V_FILEPER, V_V_FILETIME);
         test.put("list", result);
         test.put("success", true);
         return test;
     }
 
     /*
-    * 附件查询
-    * */
+     * 附件查询
+     * */
     @RequestMapping(value = "WX_INF_FILE_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> WX_INF_FILE_SEL(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
@@ -977,15 +976,15 @@ public class ZdhController {
                                                @RequestParam(value = "V_V_FILENAME") String V_V_FILENAME,
                                                HttpServletRequest request)
             throws SQLException, UnsupportedEncodingException {
-        Map<String, Object> result = zdhService.WX_INF_FILE_SEL(V_V_ORDERGUID, V_V_MATERIALGUID,V_V_FILENAME);
+        Map<String, Object> result = zdhService.WX_INF_FILE_SEL(V_V_ORDERGUID, V_V_MATERIALGUID, V_V_FILENAME);
         return result;
     }
 
     @RequestMapping(value = "/downloadFile", method = RequestMethod.GET)
     @ResponseBody
-    public  void downloadFile(@RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
+    public void downloadFile(@RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
                              @RequestParam(value = "V_V_FILENAME") String V_V_FILENAME,
-                             HttpServletRequest request,HttpServletResponse response, ModelMap model) throws Exception {
+                             HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
         List<Map> result = null;
         result = zdhService.WX_ORDER_FILE_GET(V_V_FILEGUID);
@@ -1010,14 +1009,15 @@ public class ZdhController {
         fos.close();
 
     }
+
     /*
- * 附件删除
- * */
+     * 附件删除
+     * */
     @RequestMapping(value = "/WX_ORDER_FILE_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map WX_ORDER_FILE_DEL(@RequestParam(value = "V_V_FILEGUID") String V_V_FILEGUID,
-                               HttpServletRequest request,
-                               HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -1027,13 +1027,13 @@ public class ZdhController {
     }
 
     /*
-* 物料删除
-* */
+     * 物料删除
+     * */
     @RequestMapping(value = "/PRO_PM_WORKORDER_SPARE_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_SPARE_DEL(@RequestParam(value = "V_I_ID") String V_I_ID,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -1043,11 +1043,11 @@ public class ZdhController {
     }
 
     /*
-* 物料保存
-* */
+     * 物料保存
+     * */
     @RequestMapping(value = "/PRO_PM_WORKORDER_SPARE_SET", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_PM_WORKORDER_SPARE_SET(@RequestParam(value = "V_I_ID") Double V_I_ID,
+    public Map PRO_PM_WORKORDER_SPARE_SET(@RequestParam(value = "V_I_ID") String V_I_ID,
                                           @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
                                           @RequestParam(value = "V_V_FETCHORDERGUID") String V_V_FETCHORDERGUID,
                                           @RequestParam(value = "V_V_ACTIVITY") String V_V_ACTIVITY,
@@ -1073,21 +1073,21 @@ public class ZdhController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_PM_WORKORDER_SPARE_SET(V_I_ID,V_V_ORDERGUID,V_V_FETCHORDERGUID,V_V_ACTIVITY,V_V_MATERIALCODE,
-                V_V_MATERIALNAME,V_V_SPEC,V_V_UNIT,V_F_UNITPRICE,V_I_PLANAMOUNT,V_F_PLANMONEY,V_I_ACTUALAMOUNT,V_F_ACTUALMONEY,
-                V_V_TYPE,V_V_MEMO,V_V_SUBTYPE,V_V_STATUS,V_I_ABANDONEDAMOUNT,V_I_RECLAIMEDAMOUNT,V_I_FIXEDAMOUNT,V_V_ID);
+        result = zdhService.PRO_PM_WORKORDER_SPARE_SET(V_I_ID, V_V_ORDERGUID, V_V_FETCHORDERGUID, V_V_ACTIVITY, V_V_MATERIALCODE,
+                V_V_MATERIALNAME, V_V_SPEC, V_V_UNIT, V_F_UNITPRICE, V_I_PLANAMOUNT, V_F_PLANMONEY, V_I_ACTUALAMOUNT, V_F_ACTUALMONEY,
+                V_V_TYPE, V_V_MEMO, V_V_SUBTYPE, V_V_STATUS, V_I_ABANDONEDAMOUNT, V_I_RECLAIMEDAMOUNT, V_I_FIXEDAMOUNT, V_V_ID);
         test.put("list", result);
         return test;
     }
 
     /*
-*
-* */
+     *
+     * */
     @RequestMapping(value = "/PRO_PM_PRELOADWARE_SELECT_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_PRELOADWARE_SELECT_SET(@RequestParam(value = "V_I_ID") String V_I_ID,
-                                          HttpServletRequest request,
-                                          HttpServletResponse response) throws Exception {
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -1097,13 +1097,13 @@ public class ZdhController {
     }
 
     /*
-*
-* */
+     *
+     * */
     @RequestMapping(value = "/PRO_PM_WORKORDER_JIP_SELECT", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_JIP_SELECT(@RequestParam(value = "V_I_ID") String V_I_ID,
-                                             HttpServletRequest request,
-                                             HttpServletResponse response) throws Exception {
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -1120,12 +1120,11 @@ public class ZdhController {
     @ResponseBody
     public Map<String, Object> PRO_WORKORDER_SPARE_ZY_ITEM(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
                                                            @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
-                                                      HttpServletRequest request)
+                                                           HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = zdhService.PRO_WORKORDER_SPARE_ZY_ITEM(V_V_ORDERGUID,V_V_MATERIALCODE);
+        Map<String, Object> result = zdhService.PRO_WORKORDER_SPARE_ZY_ITEM(V_V_ORDERGUID, V_V_MATERIALCODE);
         return result;
     }
-
 
 
     /*
@@ -1134,15 +1133,15 @@ public class ZdhController {
     @RequestMapping(value = "PRO_WX_WORKORDER_OTHER_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_WX_WORKORDER_OTHER_SEL(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                                           HttpServletRequest request)
+                                                          HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = zdhService.PRO_WX_WORKORDER_OTHER_SEL(V_V_ORDERGUID);
         return result;
     }
 
     /*
-*
-* */
+     *
+     * */
     @RequestMapping(value = "/PRO_WX_WORKORDER_OTHER_SAVE", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WX_WORKORDER_OTHER_SAVE(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
@@ -1155,32 +1154,32 @@ public class ZdhController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_WX_WORKORDER_OTHER_SAVE(V_V_ORDERGUID,D_DATE_ACP,D_DATE_OVERDUE,V_REASON_OVERDUE,
+        result = zdhService.PRO_WX_WORKORDER_OTHER_SAVE(V_V_ORDERGUID, D_DATE_ACP, D_DATE_OVERDUE, V_REASON_OVERDUE,
                 V_FIX_EXPLAIN);
         test.put("list", result);
         return test;
     }
 
     /*
-    * 预留工单查询
-    * */
+     * 预留工单查询
+     * */
     @RequestMapping(value = "/workorderbooked_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map workorderbooked_sel(@RequestParam(value = "V_D_ENTER_DATE_B") String V_D_ENTER_DATE_B,
-                                @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
-                                @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
-                                @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
-                                @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
-                                @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
-                                @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
-                                @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
-                                @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
-                                @RequestParam(value = "V_V_USERCODE") String V_V_USERCODE,
-                                HttpServletRequest request,
-                                HttpServletResponse response) throws Exception {
+                                   @RequestParam(value = "V_D_ENTER_DATE_E") String V_D_ENTER_DATE_E,
+                                   @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                   @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                   @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                   @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                   @RequestParam(value = "V_EQUTYPE_CODE") String V_EQUTYPE_CODE,
+                                   @RequestParam(value = "V_EQU_CODE") String V_EQU_CODE,
+                                   @RequestParam(value = "V_DJ_PERCODE") String V_DJ_PERCODE,
+                                   @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                   @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
+                                   @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
+                                   @RequestParam(value = "V_V_USERCODE") String V_V_USERCODE,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         Map<String, Object> result = null;
@@ -1219,20 +1218,20 @@ public class ZdhController {
     }
 
     /*
-    * 厂矿查询(班长)
-    * */
+     * 厂矿查询(班长)
+     * */
     @RequestMapping(value = "pertodept_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pertodept_sel(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-                                         HttpServletRequest request)
+                                             HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = zdhService.pertodept_sel(V_V_PERCODE);
         return result;
     }
 
     /*
-   * 厂矿查询(班长)
-   * */
+     * 厂矿查询(班长)
+     * */
     @RequestMapping(value = "pertoplan_sel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> pertoplan_sel(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
@@ -1253,20 +1252,20 @@ public class ZdhController {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_PM_WORKORDER_SEND_UPDATE(V_V_ORDERGUID,V_V_SEND_STATE);
+        result = zdhService.PRO_PM_WORKORDER_SEND_UPDATE(V_V_ORDERGUID, V_V_SEND_STATE);
         test.put("list", result);
         return test;
     }
 
     /*
-* 检查工单是否下单
-* */
+     * 检查工单是否下单
+     * */
     @RequestMapping(value = "/PRO_PM_WORKORDER_SENDSTATE_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_SENDSTATE_SEL(
-                                       @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) throws Exception {
+            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -1278,8 +1277,8 @@ public class ZdhController {
     @RequestMapping(value = "/PRO_PM_WORKORDER_SENDSTATE_E", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_WORKORDER_SENDSTATE_E(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                              HttpServletRequest request,
-                                              HttpServletResponse response) throws Exception {
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
@@ -1288,27 +1287,27 @@ public class ZdhController {
         return test;
     }
 
-  /*  @RequestMapping(value = "/MessageSend", method = RequestMethod.POST)
-    @ResponseBody
-    public Map MessageSend(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                            HttpServletRequest request,
-                                            HttpServletResponse response) throws Exception {
-        Map test = new HashMap();
+    /*  @RequestMapping(value = "/MessageSend", method = RequestMethod.POST)
+      @ResponseBody
+      public Map MessageSend(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                              HttpServletRequest request,
+                                              HttpServletResponse response) throws Exception {
+          Map test = new HashMap();
 
-        List<Map> result = zdhService.PRO_WX_WORKORDER_PERGET(V_V_ORDERGUID);
-        String results = null;
-        try {
-            String usercode = (String) result.get(0).get("V_INFO");
-            AMToMessService ser = new AMToMessService();
-            System.out.println("---------------------------------1----------------------------------------------");
-            results = ser.AMToMessIFCheck("<SendMessage><AM_Name>" + usercode + "</AM_Name><UserId></UserId><Type>即时通</Type><Access></Access><EMail></EMail><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2><PhoneNum></PhoneNum><MessageTxt></MessageTxt><SystemName>AKSB</SystemName></SendMessage>", "http://10.101.9.43:8081/pm/app/pm/page/login/login.html");
-            System.out.println("----------------------------------2---------------------------------------------");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        test.put("list", results);
-        return test;
-    }*/
+          List<Map> result = zdhService.PRO_WX_WORKORDER_PERGET(V_V_ORDERGUID);
+          String results = null;
+          try {
+              String usercode = (String) result.get(0).get("V_INFO");
+              AMToMessService ser = new AMToMessService();
+              System.out.println("---------------------------------1----------------------------------------------");
+              results = ser.AMToMessIFCheck("<SendMessage><AM_Name>" + usercode + "</AM_Name><UserId></UserId><Type>即时通</Type><Access></Access><EMail></EMail><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2><PhoneNum></PhoneNum><MessageTxt></MessageTxt><SystemName>AKSB</SystemName></SendMessage>", "http://10.101.9.43:8081/pm/app/pm/page/login/login.html");
+              System.out.println("----------------------------------2---------------------------------------------");
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+          test.put("list", results);
+          return test;
+      }*/
     @RequestMapping(value = "/PM_1917_JXGX_WL_DATA_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_1917_JXGX_WL_DATA_SET(
@@ -1322,18 +1321,20 @@ public class ZdhController {
             @RequestParam(value = "V_V_NUM") String V_V_NUM,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map test = zdhService.PM_1917_JXGX_WL_DATA_SET(V_V_JXGX_CODE, V_V_KFNAME, V_V_WLCODE,V_V_WLSM,V_V_GGXH,V_V_JLDW,V_V_PRICE,V_V_NUM);
+        Map test = zdhService.PM_1917_JXGX_WL_DATA_SET(V_V_JXGX_CODE, V_V_KFNAME, V_V_WLCODE, V_V_WLSM, V_V_GGXH, V_V_JLDW, V_V_PRICE, V_V_NUM);
         return test;
     }
+
     @RequestMapping(value = "/PM_1917_JXGX_WL_DATA_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_1917_JXGX_WL_DATA_SEL(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
                                                         HttpServletRequest request,
-                                                        HttpServletResponse response)throws SQLException {
-        Map list= zdhService.PM_1917_JXGX_WL_DATA_SEL(V_V_JXGX_CODE);
+                                                        HttpServletResponse response) throws SQLException {
+        Map list = zdhService.PM_1917_JXGX_WL_DATA_SEL(V_V_JXGX_CODE);
 
         return list;
     }
+
     @RequestMapping(value = "/PM_1917_JXGX_WL_DATA_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_1917_JXGX_WL_DATA_DEL(
@@ -1341,9 +1342,10 @@ public class ZdhController {
             @RequestParam(value = "V_V_WLCODE") String V_V_WLCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map test = zdhService.PM_1917_JXGX_WL_DATA_DEL(V_V_JXGX_CODE,V_V_WLCODE);
+        Map test = zdhService.PM_1917_JXGX_WL_DATA_DEL(V_V_JXGX_CODE, V_V_WLCODE);
         return test;
     }
+
     @RequestMapping(value = "/PM_1917_JXGX_WL_USENUM_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_1917_JXGX_WL_DATA_DEL(
@@ -1352,7 +1354,7 @@ public class ZdhController {
             @RequestParam(value = "V_V_NUM") String V_V_NUM,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map test = zdhService.PM_1917_JXGX_WL_USENUM_SET(V_V_JXGX_CODE, V_V_WLCODE,V_V_NUM);
+        Map test = zdhService.PM_1917_JXGX_WL_USENUM_SET(V_V_JXGX_CODE, V_V_WLCODE, V_V_NUM);
         return test;
     }
 
@@ -1362,15 +1364,16 @@ public class ZdhController {
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_D_BEGINTIME") String V_D_BEGINTIME,
             @RequestParam(value = "V_D_ENDTIME") String V_D_ENDTIME,
-            @RequestParam(value = "V_V_GDH") String  V_V_GDH,
-            @RequestParam(value = "V_V_FLOWTYPE") String  V_V_FLOWTYPE,
+            @RequestParam(value = "V_V_GDH") String V_V_GDH,
+            @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
             @RequestParam(value = "V_I_PAGE") Integer V_I_PAGE,
             @RequestParam(value = "V_I_PAGENUMBER") Integer V_I_PAGENUMBER,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        HashMap result = zdhService.PRO_WO_FLOW_DATA_SEL(V_V_PERCODE,V_D_BEGINTIME,V_D_ENDTIME,V_V_GDH,V_V_FLOWTYPE,V_I_PAGE,V_I_PAGENUMBER);
+        HashMap result = zdhService.PRO_WO_FLOW_DATA_SEL(V_V_PERCODE, V_D_BEGINTIME, V_D_ENDTIME, V_V_GDH, V_V_FLOWTYPE, V_I_PAGE, V_I_PAGENUMBER);
         return result;
     }
+
     @RequestMapping(value = "/PRO_WO_FLOW_DATA_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WO_FLOW_DATA_VIEW(
@@ -1382,6 +1385,7 @@ public class ZdhController {
         HashMap result = zdhService.PRO_WO_FLOW_DATA_VIEW(V_V_DBGUID, V_I_PAGE, V_I_PAGENUMBER);
         return result;
     }
+
     @RequestMapping(value = "/PRO_WO_FLOW_AGREE", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WO_FLOW_AGREE(
@@ -1391,9 +1395,10 @@ public class ZdhController {
             @RequestParam(value = "V_V_FLOWSTEP") String V_V_FLOWSTEP,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        HashMap result = zdhService.PRO_WO_FLOW_AGREE(V_V_ORDERID, V_V_DBGUID, V_V_IDEA,V_V_FLOWSTEP);
+        HashMap result = zdhService.PRO_WO_FLOW_AGREE(V_V_ORDERID, V_V_DBGUID, V_V_IDEA, V_V_FLOWSTEP);
         return result;
     }
+
     @RequestMapping(value = "/PRO_WO_FLOW_EQU_DISAGREE", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WO_FLOW_EQU_DISAGREE(
@@ -1406,6 +1411,7 @@ public class ZdhController {
         HashMap result = zdhService.PRO_WO_FLOW_EQU_DISAGREE(V_V_ORDERID, V_V_DBGUID, V_V_IDEA, V_V_FLOWSTEP);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_REPAIRDEPT_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_REPAIRDEPT_VIEW(
@@ -1415,6 +1421,7 @@ public class ZdhController {
         HashMap result = zdhService.PRO_PM_REPAIRDEPT_VIEW(V_V_DEPTCODE);
         return result;
     }
+
     @RequestMapping(value = "/PRO_WO_FLOW_EQU_AGREE", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WO_FLOW_EQU_AGREE(
@@ -1426,9 +1433,10 @@ public class ZdhController {
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        HashMap result = zdhService.PRO_WO_FLOW_EQU_AGREE(V_V_ORDERID, V_V_DBGUID, V_V_IDEA, V_V_FLOWSTEP,V_V_REPAIRCODE,V_V_PERCODE);
+        HashMap result = zdhService.PRO_WO_FLOW_EQU_AGREE(V_V_ORDERID, V_V_DBGUID, V_V_IDEA, V_V_FLOWSTEP, V_V_REPAIRCODE, V_V_PERCODE);
         return result;
     }
+
     @RequestMapping(value = "/PRO_WO_FLOW_EQU_insertdb", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WO_FLOW_EQU_insertdb(
@@ -1440,6 +1448,7 @@ public class ZdhController {
         HashMap result = zdhService.PRO_WO_FLOW_EQU_insertdb(V_V_ORDERID, V_V_FLOWSTEP, V_V_DEPTCODE);
         return result;
     }
+
     @RequestMapping(value = "/PRO_WO_FLOW_EQU_CANCEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WO_FLOW_EQU_CANCEL(
@@ -1459,13 +1468,13 @@ public class ZdhController {
             @RequestParam(value = "V_V_CLASS") String V_V_CLASS,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        HashMap result = zdhService.PRO_WORKORDER_FLOW_CLASS(V_V_ORDERGUID,V_V_DBGUID,V_V_IDEA,V_V_CLASS);
+        HashMap result = zdhService.PRO_WORKORDER_FLOW_CLASS(V_V_ORDERGUID, V_V_DBGUID, V_V_IDEA, V_V_CLASS);
         return result;
     }
 
     /*
- * 工单查询(GUID)
- * */
+     * 工单查询(GUID)
+     * */
     @RequestMapping(value = "PRO_WX_WORKORDER_GET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_WX_WORKORDER_GET(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
@@ -1477,36 +1486,36 @@ public class ZdhController {
 
     @RequestMapping(value = "/PRO_PM_WORKORDER_SPARE_SET2", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_PM_WORKORDER_SPARE_SET2(@RequestParam(value = "V_I_ID") Double V_I_ID,
-                                          @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                                          @RequestParam(value = "V_V_FETCHORDERGUID") String V_V_FETCHORDERGUID,
-                                          @RequestParam(value = "V_V_ACTIVITY") String V_V_ACTIVITY,
-                                          @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
-                                          @RequestParam(value = "V_V_MATERIALNAME") String V_V_MATERIALNAME,
-                                          @RequestParam(value = "V_V_SPEC") String V_V_SPEC,
-                                          @RequestParam(value = "V_V_UNIT") String V_V_UNIT,
-                                          @RequestParam(value = "V_F_UNITPRICE") Double V_F_UNITPRICE,
-                                          @RequestParam(value = "V_I_PLANAMOUNT") Double V_I_PLANAMOUNT,
-                                          @RequestParam(value = "V_F_PLANMONEY") Double V_F_PLANMONEY,
-                                          @RequestParam(value = "V_I_ACTUALAMOUNT") Double V_I_ACTUALAMOUNT,
-                                          @RequestParam(value = "V_F_ACTUALMONEY") Double V_F_ACTUALMONEY,
-                                          @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
-                                          @RequestParam(value = "V_V_MEMO") String V_V_MEMO,
-                                          @RequestParam(value = "V_V_SUBTYPE") String V_V_SUBTYPE,
-                                          @RequestParam(value = "V_V_STATUS") String V_V_STATUS,
-                                          @RequestParam(value = "V_I_ABANDONEDAMOUNT") Double V_I_ABANDONEDAMOUNT,
-                                          @RequestParam(value = "V_I_RECLAIMEDAMOUNT") Double V_I_RECLAIMEDAMOUNT,
-                                          @RequestParam(value = "V_I_FIXEDAMOUNT") Double V_I_FIXEDAMOUNT,
-                                          @RequestParam(value = "V_V_ID") String V_V_ID,
-                                          @RequestParam(value = "V_KFCOUNT") Double V_KFCOUNT,
-                                          HttpServletRequest request,
-                                          HttpServletResponse response) throws Exception {
+    public Map PRO_PM_WORKORDER_SPARE_SET2(@RequestParam(value = "V_I_ID") String V_I_ID,
+                                           @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                           @RequestParam(value = "V_V_FETCHORDERGUID") String V_V_FETCHORDERGUID,
+                                           @RequestParam(value = "V_V_ACTIVITY") String V_V_ACTIVITY,
+                                           @RequestParam(value = "V_V_MATERIALCODE") String V_V_MATERIALCODE,
+                                           @RequestParam(value = "V_V_MATERIALNAME") String V_V_MATERIALNAME,
+                                           @RequestParam(value = "V_V_SPEC") String V_V_SPEC,
+                                           @RequestParam(value = "V_V_UNIT") String V_V_UNIT,
+                                           @RequestParam(value = "V_F_UNITPRICE") Double V_F_UNITPRICE,
+                                           @RequestParam(value = "V_I_PLANAMOUNT") Double V_I_PLANAMOUNT,
+                                           @RequestParam(value = "V_F_PLANMONEY") Double V_F_PLANMONEY,
+                                           @RequestParam(value = "V_I_ACTUALAMOUNT") Double V_I_ACTUALAMOUNT,
+                                           @RequestParam(value = "V_F_ACTUALMONEY") Double V_F_ACTUALMONEY,
+                                           @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                           @RequestParam(value = "V_V_MEMO") String V_V_MEMO,
+                                           @RequestParam(value = "V_V_SUBTYPE") String V_V_SUBTYPE,
+                                           @RequestParam(value = "V_V_STATUS") String V_V_STATUS,
+                                           @RequestParam(value = "V_I_ABANDONEDAMOUNT") Double V_I_ABANDONEDAMOUNT,
+                                           @RequestParam(value = "V_I_RECLAIMEDAMOUNT") Double V_I_RECLAIMEDAMOUNT,
+                                           @RequestParam(value = "V_I_FIXEDAMOUNT") Double V_I_FIXEDAMOUNT,
+                                           @RequestParam(value = "V_V_ID") String V_V_ID,
+                                           @RequestParam(value = "V_KFCOUNT") Double V_KFCOUNT,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
         Map test = new HashMap();
 
         List<Map> result = null;
-        result = zdhService.PRO_PM_WORKORDER_SPARE_SET2(V_I_ID,V_V_ORDERGUID,V_V_FETCHORDERGUID,V_V_ACTIVITY,V_V_MATERIALCODE,
-                V_V_MATERIALNAME,V_V_SPEC,V_V_UNIT,V_F_UNITPRICE,V_I_PLANAMOUNT,V_F_PLANMONEY,V_I_ACTUALAMOUNT,V_F_ACTUALMONEY,
-                V_V_TYPE,V_V_MEMO,V_V_SUBTYPE,V_V_STATUS,V_I_ABANDONEDAMOUNT,V_I_RECLAIMEDAMOUNT,V_I_FIXEDAMOUNT,V_V_ID,V_KFCOUNT);
+        result = zdhService.PRO_PM_WORKORDER_SPARE_SET2(V_I_ID, V_V_ORDERGUID, V_V_FETCHORDERGUID, V_V_ACTIVITY, V_V_MATERIALCODE,
+                V_V_MATERIALNAME, V_V_SPEC, V_V_UNIT, V_F_UNITPRICE, V_I_PLANAMOUNT, V_F_PLANMONEY, V_I_ACTUALAMOUNT, V_F_ACTUALMONEY,
+                V_V_TYPE, V_V_MEMO, V_V_SUBTYPE, V_V_STATUS, V_I_ABANDONEDAMOUNT, V_I_RECLAIMEDAMOUNT, V_I_FIXEDAMOUNT, V_V_ID, V_KFCOUNT);
         test.put("list", result);
         return test;
     }
