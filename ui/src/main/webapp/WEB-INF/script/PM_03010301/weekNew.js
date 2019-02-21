@@ -486,6 +486,12 @@ Ext.onReady(function () {
                 V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
             }
         });
+        Ext.data.StoreManager.lookup('zyStore').load({
+            params:{
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue()
+            }
+        });
     });
 
     Ext.getCmp('zyq').on('select', function () {
@@ -531,7 +537,7 @@ Ext.onReady(function () {
     });
 
     Ext.data.StoreManager.lookup('zyStore').on('load', function(){
-        Ext.data.StoreManager.lookup('zyStore').insert(0,{V_MAJOR_CODE:'全部',V_MAJOR_NAME:'%'});
+        Ext.data.StoreManager.lookup('zyStore').insert(0,{V_SPECIALTYCODE:'全部',V_BASENAME:'%'});
         // if(url_zy!=undefined){
         //     Ext.getCmp('zy').select(url_zy);
         //     // Ext.data.StoreManager.lookup('ztstore').load({

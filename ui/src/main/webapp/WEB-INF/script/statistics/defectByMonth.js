@@ -19,6 +19,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         }
     }
 });
+
 var npanel=Ext.create('Ext.panel.Panel',{
     id:'npanel',
     region:'north',
@@ -31,6 +32,7 @@ var npanel=Ext.create('Ext.panel.Panel',{
 var cpanel = Ext.create("Ext.tab.Panel", {
     id: 'cpanel',
     region: 'north',
+    autoScroll:true,
     listeners: {
         tabchange: function () {
             tabpage = Ext.getCmp('cpanel').getActiveTab().id;
@@ -60,11 +62,21 @@ var grid=Ext.create('Ext.grid.Panel',{
 
     ]
 });
+
+// var framePanel=Ext.create('Ext.panel.Panel',{
+//     id:'framePanel',
+//     region:'center',
+//     layout:'border',
+//     frame:true,
+//     border:false,
+//     autoScroll: true,
+//     items:[npanel,cpanel,grid]
+// });
 Ext.onReady(function(){
    Ext.create('Ext.container.Viewport',{
        id:'main',
        layout:'border',
-       // items:[cpanel]
+       // items:[framePanel]
        items:[npanel,cpanel,grid]
    });
     QueryTab();
