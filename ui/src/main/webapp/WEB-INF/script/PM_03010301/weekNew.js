@@ -216,7 +216,7 @@ Ext.onReady(function () {
             'V_JXGX_CODE',
             'V_MONTHPLAN_CODE',
             'V_WEEKID',
-            'V_STATE',
+            'V_STATE','V_SGWAYNAME','V_REPAIRDEPATNAME','V_TELNAME','V_TELNUMB','V_THICKNESS','V_REASON',
             'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
             'V_MAIN_DEFECT',
             'V_EXPECT_AGE',
@@ -395,14 +395,14 @@ Ext.onReady(function () {
             { text: '检修开始时间',width:200,dataIndex:'V_STARTTIME', align: 'center',renderer:rendererTime },
             // { text: '计划竣工日期',width:200,dataIndex:'V_STARTTIME', align: 'center',renderer:rendererTime },
             { text: '检修结束时间',width:200,dataIndex:'V_ENDTIME', align: 'center',renderer:Atleft },
-            { text: '计划工时',width:200,dataIndex:'V_HOUR', align: 'center',renderer:Atleft },
-            { text: '施工方式',width:200,dataIndex:'V_ORGNAME', align: 'center',renderer:Atleft },
-            { text: '施工单位',width:200,dataIndex:'V_DEPTNAME', align: 'center',renderer:Atleft },
-            {text:'专业',width:200,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft},
-            { text: '检修负责人',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft },
-            { text: '联系电话',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime },
-            { text: '施工准备是否已落实',width:200,dataIndex:'V_INPERNAME', align: 'center',renderer:Atleft },
-            { text: '情况说明',width:200,dataIndex:'V_INDATE', align: 'center',renderer:rendererTime },
+            { text: '计划工时',width:100,dataIndex:'V_HOUR', align: 'center',renderer:Atleft },
+            { text: '施工方式',width:100,dataIndex:'V_SGWAYNAME', align: 'center',renderer:Atleft },
+            { text: '施工单位',width:200,dataIndex:'V_REPAIRDEPATNAME', align: 'center',renderer:Atleft },
+            {text:'专业',width:80,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft},
+            { text: '检修负责人',width:100,dataIndex:'V_TELNAME', align: 'center',renderer:Atleft },
+            { text: '联系电话',width:100,dataIndex:'V_TELNUMB', align: 'center',renderer:rendererTime },
+            { text: '施工准备是否已落实',width:160,dataIndex:'V_THICKNESS', align: 'center',renderer:AtFalg },
+            { text: '情况说明',width:200,dataIndex:'V_REASON', align: 'center',renderer:rendererTime },
             { text: '新guid',width:200,dataIndex:'V_SBB_GUID', align: 'center',hidden:true,renderer:rendererTime }
         ],
         bbar: [{
@@ -672,6 +672,15 @@ function getWeeks(){
 function Atleft(value, metaData) {
     metaData.style = 'text-align: left';
     return value;
+}
+
+function AtFalg(value, metaData){
+    var ret="是";
+    metaData.style = 'text-align: left';
+    if(value==0){
+        ret="否";
+    }
+    return ret;
 }
 function QueryGrid(){
     Ext.getCmp('page').store.currentPage = 1;
