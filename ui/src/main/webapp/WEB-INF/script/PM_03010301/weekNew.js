@@ -913,19 +913,125 @@ function saveOnButtonUp(){
 //上报
 function OnButtonUp() {
 
-    _selectNextSprStore();
-    Ext.data.StoreManager.lookup('nextSprStore').on('load', function (store, records, success, eOpts) {
-            processKey = store.getProxy().getReader().rawData.RET;
-            if(store.getAt(0)==undefined){
-                V_STEPNAME ="";
-                V_NEXT_SETP = "";return ;}
+    // _selectNextSprStore();
+    // Ext.data.StoreManager.lookup('nextSprStore').on('load', function (store, records, success, eOpts) {
+    //         processKey = store.getProxy().getReader().rawData.RET;
+    //         if(store.getAt(0)==undefined){
+    //             V_STEPNAME ="";
+    //             V_NEXT_SETP = "";return ;}
+    //         else{
+    //             V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+    //             V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;}
+    //     }
+    // );
+
+    // Ext.getCmp('nextSprWind').show();
+    var nextper=[];
+    var i_err = 0;
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_ACTIVITI_PROCESS_PER_SELSBB',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+            V_V_REPAIRCODE: '',
+            V_V_FLOWTYPE: 'WeekPlan01',
+            V_V_FLOW_STEP: 'start',
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: Ext.getCmp('zy').getValue(),
+            V_V_WHERE: ''
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.list.length!=0){
+                for(var i=0;i<resp.list.length;i++){
+                    nextper.push(resp.list[i].V_PERSONCODE);
+                    V_STEPNAME = resp.list[i].V_V_FLOW_STEPNAME;
+                    V_NEXT_SETP = resp.list[i].V_V_NEXT_SETP;
+                }
+            }
             else{
-                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;}
+                alert('没有下一步审批人，无法上报')
+            }
         }
-    );
+});
+    var records=Ext.data.StoreManager.lookup('gridStore').getProxy().getReader().rawData;
+    for(var i=0;i<records.list.length;i++) {
+        if (records.list[i].V_STATE == "30" || records.list[i].V_STATE == "31") {
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/PRO_PM_03_PLAN_WEEK_SEND2',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID: records.list[i].V_SBB_GUID,
+                    V_V_ORGCODE: records.list[i].V_ORGCODE,
+                    V_V_DEPTCODE: records.list[i].V_DEPTCODE,
+                    V_V_FLOWCODE: '上报',
+                    V_V_PLANTYPE: 'WEEK',
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText).list[0];
+                    // var new_businssflowkey=(parseInt(records.list[i].get('V_GUID'))+1).toString();
 
-    Ext.getCmp('nextSprWind').show();
-
-
+                    if (resp.V_INFO == '成功') {
+                        Ext.Ajax.request({
+                            url: AppUrl + 'Activiti/StratProcessList',
+                            async: false,
+                            method: 'post',
+                            params: {
+                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj", "flow_type", "zyName"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP + 'List'/*Ext.getCmp('nextPer').getValue()*/, "请审批!", records.list[i].V_CONTENT, records.list[i].V_WEEKID, "请审批！", "WeekPlan01", records.list[i].V_REPAIRMAJOR_CODE],
+                                processKey: processKey,
+                                businessKey: records.list[i].V_SBB_GUID, // records[i].get('V_GUID'),
+                                V_STEPCODE: 'Start',
+                                V_STEPNAME: V_STEPNAME,
+                                V_IDEA: '请审批！',
+                                V_NEXTPER: nextper,// Ext.getCmp('nextPer').getValue(),
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                            },
+                            success: function (response) {
+                                if (Ext.decode(response.responseText).ret == 'OK') {
+                                    // Ext.getCmp('nextSprWind').close();
+                                    QueryGrid();
+                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                    i_err++;
+                                    Ext.Msg.alert('提示', '该流程发起失败' + i_err + '条数据!');
+                                }
+                            }
+                        });
+                        // i_err++;
+                        //
+                        // if (i_err == records.length) {
+                        //     QueryGrid();
+                        // }
+                    } else {
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.V_INFO,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR,
+                            fn: function (btn) {
+                                QueryGrid();
+                            }
+                        });
+                    }
+                }
+                ,
+                failure: function (response) {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: response.responseText,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR,
+                        fn: function (btn) {
+                            QueryGrid();
+                        }
+                    })
+                }
+            });
+        }
+    }
+    Ext.Array.erase(nextper,0,nextper.length);
 }
