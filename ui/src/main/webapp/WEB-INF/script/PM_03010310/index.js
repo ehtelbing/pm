@@ -1530,6 +1530,10 @@ function OnButtonSaveClick() {
     } else if (V_PLANTYPE == 'DEFECT') {
         V_V_DEFECTPLAN_CODE = V_PLANCODE;
     }
+    if(Ext.getCmp('jhgshj').getValue()<="0"){
+        alert('合计工时不可以为复数');
+        return false;
+    }
     //模型
     V_JXMX_CODE = guid();
     if(getOtherType == 'MONTH'&&getOtherguid!=""){
