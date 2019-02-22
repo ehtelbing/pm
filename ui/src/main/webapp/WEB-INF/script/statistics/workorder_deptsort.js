@@ -195,7 +195,8 @@ function GridSum(grid) {
         V_DEPTNAME : '合计',
         WR_OK : ysSum,
         WR_TOTAL : gdzsSum,
-        RATE : gdzsSum == 0 ? 0 : Math.round(ysSum / gdzsSum * 100) / 100
+        // RATE : gdzsSum == 0 ? 0 : Math.round(ysSum / gdzsSum * 100) / 100
+        RATE : gdzsSum == 0 ? 0 : Math.round(ysSum / gdzsSum * 100)
     });
     grid.store.insert(n, ins_rec);
 }
