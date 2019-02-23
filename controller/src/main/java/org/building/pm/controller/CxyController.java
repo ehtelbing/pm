@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,5 +70,16 @@ public class CxyController {
         return result;
     }
 
+    @RequestMapping(value = "PRO_PM_STANDARD_GX_BOM_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_STANDARD_GX_BOM_SEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                          @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                          @RequestParam(value = "V_V_REPAIR_CODE") String V_V_REPAIR_CODE,
+                                                          @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+
+        return cService.PRO_PM_STANDARD_GX_BOM_SEL(V_V_PERSONCODE,V_V_DEPTCODE,V_V_REPAIR_CODE,V_V_EQUTYPE);
+    }
 }
 

@@ -1027,12 +1027,15 @@ public class MwdController {
             @RequestParam(value = "V_V_WORK_AQ") String V_V_WORK_AQ,
             @RequestParam(value = "V_V_WORK_DEPT") String V_V_WORK_DEPT,
             @RequestParam(value = "V_V_REPAIR_NAME") String V_V_REPAIR_NAME,
+            @RequestParam(value = "V_V_WORK_CODE") String V_V_WORK_CODE,
+            @RequestParam(value = "V_V_WORK_NAME") String V_V_WORK_NAME,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = mwdService.PM_REAPIR_STANDARD_DATA_SET(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUCODE,V_V_EQUNAME, V_V_PROJECT_IMG,V_V_WORK_BEFORE,
-                V_V_WORK_PER,V_V_WORK_CRAFT,V_V_WORK_TOOL,   V_V_WORK_TIME, V_V_SUM_TIME, V_V_WORK_AQ, V_V_WORK_DEPT, V_V_REPAIR_NAME);
+                V_V_WORK_PER,V_V_WORK_CRAFT,V_V_WORK_TOOL,   V_V_WORK_TIME, V_V_SUM_TIME, V_V_WORK_AQ, V_V_WORK_DEPT, V_V_REPAIR_NAME,V_V_WORK_CODE,V_V_WORK_NAME,V_V_CONTENT);
 
         String V_INFO = (String) data.get("V_INFO");
 

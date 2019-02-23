@@ -22,7 +22,7 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.V_V_ORGCODE == undefined) ? V_V_ORGCODE = '' : V_V_ORGCODE = parameters.V_V_ORGCODE;
     (parameters.V_V_DEPTCODE == undefined) ? V_V_DEPTCODE = '' : V_V_DEPTCODE = parameters.V_V_DEPTCODE;
     (parameters.V_V_EQUCODE == undefined) ? V_V_EQUCODE = '' : V_V_EQUCODE = parameters.V_V_EQUCODE;
-    (parameters.V_V_EQUNAME == undefined) ? V_V_EQUNAME = '' : V_V_EQUNAME = parameters.V_V_EQUNAME;
+    (parameters.V_V_EQUNAME == '%25') ? V_V_EQUNAME = '%' : V_V_EQUNAME = parameters.V_V_EQUNAME;
 }
 
 Ext.define('Ext.ux.data.proxy.Ajax', {
@@ -243,6 +243,14 @@ Ext.onReady(function () {
                 fieldLabel: '作业施工图',
                 value: V_V_GUID,
                 readOnly:true,
+                hidden: true,
+                margin: '5 0 5 10',
+                labelWidth: 80,
+                width: 230
+            }, {
+                id: 'V_V_WORK_CODE',
+                xtype: 'textfield',
+                fieldLabel: '作业施工编码',
                 margin: '5 0 5 10',
                 labelWidth: 80,
                 width: 230
@@ -254,22 +262,21 @@ Ext.onReady(function () {
                     xtype: 'textfield',
                     labelAlign: 'right'
                 },
-                items: [{
+                items: [
+                    {
+                        id: 'V_V_WORK_NAME',
+                        fieldLabel: '作业施工名称',
+                        // readOnly:true,
+                        margin: '5 0 5 10',
+                        labelWidth: 80,
+                        width: 230
+                    },{
                     id: 'V_V_WORK_BEFORE',
-                    xtype: 'textfield',
                     fieldLabel: '作业前准备',
                     margin: '5 0 5 10',
                     labelWidth: 80,
                     width: 230
                 //     'V_V_PROJECT_IMG': V_V_GUID,
-                }, {
-                    id: 'V_V_WORK_PER',
-                    xtype: 'textfield',
-                    fieldLabel: '作业人员',
-                    //readOnly: true,
-                    margin: '5 0 5 10',
-                    labelWidth: 80,
-                    width: 230
                 }]
             }, {
                 layout: 'column',
@@ -277,18 +284,21 @@ Ext.onReady(function () {
                     xtype: 'textfield',
                     labelAlign: 'right'
                 },
-                items: [{
+                items: [
+                     {
+                        id: 'V_V_WORK_PER',
+                        xtype: 'textfield',
+                        fieldLabel: '作业人员',
+                        //readOnly: true,
+                        margin: '5 0 5 10',
+                        labelWidth: 80,
+                        width: 230
+                    },{
                     id: 'V_V_WORK_CRAFT',
                     fieldLabel: '作业工种',
                     margin: '5 0 5 10',
                     labelWidth: 80,
                     width: 230
-                }, {
-                    id: 'V_V_WORK_TOOL',
-                    fieldLabel: '作业工器具',
-                    margin: '5 0 5 10',
-                    labelWidth: 80,
-                    width: 230
                 }]
             }, {
                 layout: 'column',
@@ -296,16 +306,16 @@ Ext.onReady(function () {
                     xtype: 'textfield',
                     labelAlign: 'right'
                 },
-                items: [{
-                    id: 'V_V_WORK_TIME',
-                    xtype: 'textfield',
-                    fieldLabel: '作业时间',
+                items: [ {
+                    id: 'V_V_WORK_TOOL',
+                    fieldLabel: '作业工器具',
                     margin: '5 0 5 10',
                     labelWidth: 80,
                     width: 230
                 },{
-                    id: 'V_V_SUM_TIME',
-                    fieldLabel: '总工时',
+                    id: 'V_V_WORK_TIME',
+                    xtype: 'textfield',
+                    fieldLabel: '作业时间',
                     margin: '5 0 5 10',
                     labelWidth: 80,
                     width: 230
@@ -316,15 +326,15 @@ Ext.onReady(function () {
                     xtype: 'textfield',
                     labelAlign: 'right'
                 },
-                items: [ {
-                    id: 'V_V_WORK_AQ',
-                    fieldLabel: '安全要素',
+                items: [{
+                    id: 'V_V_SUM_TIME',
+                    fieldLabel: '总工时',
                     margin: '5 0 5 10',
                     labelWidth: 80,
                     width: 230
-                },{
-                    id: 'V_V_WORK_DEPT',
-                    fieldLabel: '协助单位',
+                } ,{
+                    id: 'V_V_WORK_AQ',
+                    fieldLabel: '安全要素',
                     margin: '5 0 5 10',
                     labelWidth: 80,
                     width: 230
@@ -336,6 +346,12 @@ Ext.onReady(function () {
                     labelAlign: 'right'
                 },
                 items: [{
+                    id: 'V_V_WORK_DEPT',
+                    fieldLabel: '协助单位',
+                    margin: '5 0 5 10',
+                    labelWidth: 80,
+                    width: 230
+                },{
                     id: 'V_V_REPAIR',
                     xtype: 'textfield',
                     fieldLabel: '维修部位',
@@ -601,11 +617,11 @@ function _save() {
         type: 'ajax',
         method: 'POST',
         params: {
-            'V_V_GUID': V_V_GUID,
+            'V_V_GUID': '-1',
             'V_V_ORGCODE': V_V_ORGCODE,
             'V_V_DEPTCODE': V_V_DEPTCODE,
             'V_V_EQUCODE':  V_V_EQUCODE,
-            'V_V_EQUNAME': V_V_EQUNAME,
+            'V_V_EQUNAME': Ext.getCmp('V_V_EQUNAME').getSubmitValue(),
             'V_V_PROJECT_IMG': Ext.getCmp('V_V_PROJECT_IMG').getSubmitValue(),
             'V_V_WORK_BEFORE': Ext.getCmp('V_V_WORK_BEFORE').getSubmitValue(),
             'V_V_WORK_PER': Ext.getCmp('V_V_WORK_PER').getSubmitValue(),
@@ -615,7 +631,10 @@ function _save() {
             'V_V_SUM_TIME': Ext.getCmp('V_V_SUM_TIME').getSubmitValue(),
             'V_V_WORK_AQ': Ext.getCmp('V_V_WORK_AQ').getSubmitValue(),
             'V_V_WORK_DEPT': Ext.getCmp('V_V_WORK_DEPT').getSubmitValue(),
-            'V_V_REPAIR_NAME': Ext.getCmp('V_V_REPAIR').getSubmitValue()
+            'V_V_REPAIR_NAME': Ext.getCmp('V_V_REPAIR').getSubmitValue(),
+            'V_V_WORK_CODE': Ext.getCmp('V_V_WORK_CODE').getSubmitValue(),
+            'V_V_WORK_NAME': Ext.getCmp('V_V_WORK_NAME').getSubmitValue(),
+            'V_V_CONTENT': Ext.getCmp('V_V_CONTENT').getSubmitValue()
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);

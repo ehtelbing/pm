@@ -143,4 +143,34 @@ public class CxyService {
         return result;
     }
 
+    public HashMap PRO_PM_STANDARD_GX_BOM_SEL(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_REPAIR_CODE,String V_V_EQUTYPE) throws SQLException {
+
+        logger.info("begin PRO_PM_STANDARD_GX_BOM_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_STANDARD_GX_BOM_SEL" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_REPAIR_CODE,:V_V_EQUTYPE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_REPAIR_CODE", V_V_REPAIR_CODE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("V_CURSOR", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_STANDARD_GX_BOM_SEL");
+        return result;
+    }
+
 }

@@ -170,7 +170,7 @@ Ext.onReady(function () {
             'V_PROJECT_IMG', 'V_WORK_BEFORE', 'V_WORK_PER',
             'V_WORK_TIME', 'V_WORK_CRAFT', 'V_WORK_TOOL',
             'V_SUM_TIME', 'V_WORK_AQ', 'V_WORK_DEPT',
-            'V_REPAIR_NAME'],
+            'V_REPAIR_NAME','V_WORK_CODE','V_WORK_NAME','V_CONTENT'],
         proxy: {
             type: 'ajax',
             url: AppUrl + 'mwd/PM_REAPIR_STANDARD_DATA_SEL',
@@ -221,13 +221,22 @@ Ext.onReady(function () {
             text: '序号',
             width: 40,
             align: 'center'
-        }, {
+        },
+            {
             text: '作业前准备',
             dataIndex: 'V_WORK_BEFORE',
             align: 'center',
             renderer: atleft,
             width: 120
-        }, {
+        },
+        {
+            text: '作业施工名称',
+            dataIndex: 'V_WORK_NAME',
+            align: 'center',
+            renderer: atleft,
+            width: 120
+        },
+        {
             text: '作业人员',
             dataIndex: 'V_WORK_PER',
             align: 'center',
@@ -260,6 +269,12 @@ Ext.onReady(function () {
         }, {
             text: '协助单位',
             dataIndex: 'V_WORK_DEPT',
+            align: 'center',
+            renderer: atleft,
+            width: 120
+        }, {
+            text: '备注',
+            dataIndex: 'V_CONTENT',
             align: 'center',
             renderer: atleft,
             width: 120
@@ -318,7 +333,11 @@ Ext.onReady(function () {
             align: 'center',
             renderer: atleft,
             width: 80
-        }]
+        }],listeners: {
+            itemclick: function (panel, record, item, index, e, eOpts) {
+                _selectBom(record.data.V_REPAIR_CODE,Ext.getCmp('V_V_EQUCODE').getValue());
+            }
+        }
 
     });
 
@@ -438,7 +457,7 @@ Ext.onReady(function () {
     var viewImagePanel = Ext.create("Ext.form.Panel", {
         id: 'viewImagePanel',
         editable: false,
-        region: 'center',
+        region: 'north',
         items: [{
             layout: 'column',
             defaults: {
@@ -461,6 +480,44 @@ Ext.onReady(function () {
                 }
             }]
         }]
+    });
+    var standardGXbomStore = Ext.create('Ext.data.Store', {
+        id: 'standardGXbomStore',
+        autoLoad: false,
+        fields: ['V_SPCODE', 'V_SPNAME'],
+        proxy: {
+            type: 'ajax',
+            url: AppUrl + 'cxy/PRO_PM_STANDARD_GX_BOM_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {},
+            reader: {
+                type: 'json',
+                root: 'V_CURSOR'
+            }
+        }
+    });
+    var standardGXbomGridPanel = Ext.create('Ext.grid.Panel', {
+        id: 'standardGXbomGridPanel',
+        store: standardGXbomStore,
+        region: 'center',
+        border: false,
+        columnLines: true,
+        columns: [{
+            text: '备件编码',
+            dataIndex: 'V_SPCODE',
+            align: 'center',
+            renderer: atleft,
+            width: 120
+        }, {
+            text: '备件名称',
+            dataIndex: 'V_SPNAME',
+            align: 'center',
+            renderer: atleft,
+            width: 300
+        }]
+
     });
 
     var leftPanel = Ext.create('Ext.Panel', {
@@ -493,9 +550,9 @@ Ext.onReady(function () {
             items: [leftPanel]
         }, {
             region: 'center',
-            layout: 'fit',
+            layout: 'border',
             border: false,
-            items: [viewImagePanel]
+            items: [viewImagePanel,standardGXbomGridPanel]
         }]
 
     });
@@ -550,6 +607,7 @@ function _selectEquName() {
         'V_V_DEPTCODENEXT': Ext.getCmp('V_V_DEPTCODE').getValue(),
         'V_V_EQUTYPECODE': Ext.getCmp('V_V_EQUCODE').getValue()
     };
+
     sbNameStore.load();
 }
 
@@ -583,7 +641,7 @@ function _update() {
 
     window.open(AppUrl + 'page/PM_01020102/index_update.html?V_V_ORGCODE=' + records[0].get('V_ORGCODE') +
         '&V_V_DEPTCODE=' + records[0].get('V_DEPTCODE') + '&V_V_EQUCODE=' + records[0].get('V_EQUCODE') +
-        '&V_V_EQUNAME=' + records[0].get('V_EQUNAME') + '&V_V_GUID=' + records[0].get('V_GUID'), '_blank',
+        '&V_V_EQUNAME=' + encodeURI(records[0].get('V_EQUNAME')) + '&V_V_GUID=' + records[0].get('V_GUID'), '_blank',
         'width=900,height=600,resizable=yes,scrollbars=yes');
 }
 
@@ -679,7 +737,17 @@ function _selectGX(V_V_GUID) {
     };
     reapirStandardGXStore.load();
 }
+function _selectBom(V_REPAIR_CODE,V_YPEE) {
+    var standardGXbomStore = Ext.data.StoreManager.lookup('standardGXbomStore');
+    standardGXbomStore.proxy.extraParams = {
+        V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+        V_V_DEPTCODE:Ext.getCmp('V_V_DEPTCODE').getValue(),
+        V_V_REPAIR_CODE: V_REPAIR_CODE,
+        V_V_EQUTYPE: V_YPEE
 
+    };
+    standardGXbomStore.load();
+}
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
@@ -697,10 +765,10 @@ function detail(a,value,metaData){
 
 function insert(V_GUID){
     var metaData = Ext.getCmp('reapirStandardDataGridPanel').getSelectionModel().getSelection();
-    window.open(AppUrl + 'page/PM_01020101/index_insert.html?V_V_ORGCODE=' + metaData[0].get('V_ORGCODE') +
-        '&V_V_DEPTCODE=' + metaData[0].get('V_DEPTCODE') + '&V_V_EQUCODE=' +metaData[0].get('V_EQUCODE') +
-        '&V_V_EQUNAME=' +metaData[0].get('V_EQUNAME') + '&V_V_GUID=' +metaData[0].get('V_GUID') ,'_blank',
-        'width=900,height=600,resizable=yes,scrollbars=yes');
+    window.open(AppUrl + 'page/PM_01020101/index_insert.html?V_V_ORGCODE=' + metaData[0].data.V_ORGCODE +
+        '&V_V_DEPTCODE=' + metaData[0].data.V_DEPTCODE + '&V_V_EQUCODE=' +metaData[0].data.V_EQUCODE +
+        '&V_V_EQUNAME=' + encodeURI(metaData[0].data.V_EQUNAME) + '&V_V_GUID=' +metaData[0].data.V_GUID ,'_blank',
+        'width=550,height=300,resizable=yes,scrollbars=yes');
 }
 
 function _insert(){
@@ -728,19 +796,19 @@ function _insert(){
         });
         return;
     }
-    if(V_V_EQUNAME == '%'){
-        Ext.MessageBox.show({
-            title: '提示',
-            msg: '请选择设备!',
-            buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.WARNING
-        });
-        return;
-    }
+    // if(V_V_EQUNAME == '%'){
+    //     Ext.MessageBox.show({
+    //         title: '提示',
+    //         msg: '请选择设备!',
+    //         buttons: Ext.MessageBox.OK,
+    //         icon: Ext.MessageBox.WARNING
+    //     });
+    //     return;
+    // }
 
     window.open(AppUrl + 'page/PM_01020101/index_01.html?V_V_ORGCODE=' + V_V_ORGCODE +
         '&V_V_DEPTCODE=' + V_V_DEPTCODE + '&V_V_EQUCODE=' + V_V_EQUCODE +
-        '&V_V_EQUNAME=' + V_V_EQUNAME , '_blank',
+         '&V_V_EQUNAME=' + encodeURI(V_V_EQUNAME), '_blank',
         'width=900,height=600,resizable=yes,scrollbars=yes');
 
 }

@@ -1724,8 +1724,9 @@ public class MwdService {
 
     public HashMap PM_REAPIR_STANDARD_DATA_SET(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUCODE,String V_V_EQUNAME,String V_V_PROJECT_IMG,
                                                String V_V_WORK_BEFORE,String V_V_WORK_PER,String V_V_WORK_CRAFT,String V_V_WORK_TOOL,
-                                               String V_V_WORK_TIME, String V_V_SUM_TIME, String V_V_WORK_AQ, String V_V_WORK_DEPT,String V_V_REPAIR_NAME
-    ) throws SQLException {
+                                               String V_V_WORK_TIME, String V_V_SUM_TIME, String V_V_WORK_AQ, String V_V_WORK_DEPT,String V_V_REPAIR_NAME,String V_V_WORK_CODE,
+                                               String V_V_WORK_NAME,String V_V_CONTENT
+                                               ) throws SQLException {
 
         logger.info("begin PM_REAPIR_STANDARD_DATA_SET");
         HashMap result = new HashMap();
@@ -1738,7 +1739,7 @@ public class MwdService {
             cstmt = conn.prepareCall("{call PM_REAPIR_STANDARD_DATA_SET" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUNAME," +
                     ":V_V_PROJECT_IMG," +
                     ":V_V_WORK_BEFORE,:V_V_WORK_PER,:V_V_WORK_CRAFT,:V_V_WORK_TOOL,:V_V_WORK_TIME,:V_V_SUM_TIME," +
-                    ":V_V_WORK_AQ,:V_V_WORK_DEPT,:V_V_REPAIR_NAME," +
+                    ":V_V_WORK_AQ,:V_V_WORK_DEPT,:V_V_REPAIR_NAME,:V_V_WORK_CODE,:V_V_WORK_NAME,:V_V_CONTENT," +
                     ":V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -1755,6 +1756,9 @@ public class MwdService {
             cstmt.setString("V_V_WORK_AQ", V_V_WORK_AQ);
             cstmt.setString("V_V_WORK_DEPT", V_V_WORK_DEPT);
             cstmt.setString("V_V_REPAIR_NAME", V_V_REPAIR_NAME);
+            cstmt.setString("V_V_WORK_CODE", V_V_WORK_CODE);
+            cstmt.setString("V_V_WORK_NAME", V_V_WORK_NAME);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
 
