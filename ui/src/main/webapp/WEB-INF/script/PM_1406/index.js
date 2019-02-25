@@ -503,6 +503,7 @@ Ext.onReady(function () {
     });
 
     _init();
+
 });
 function rendererGD(a, value, metaData){
     return '<a href="javascript:goToGD(\'' + metaData.data.V_ORDERGUID + '\')">' + a + '</a>';
@@ -519,7 +520,7 @@ function _init() {
         sblxLoad = false;
         sbmcLoad = false;
         zsbmcLoad = false;
-
+        _seltctFault();
         Ext.getBody().unmask();
     }
 }
