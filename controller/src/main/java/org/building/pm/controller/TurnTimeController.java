@@ -67,7 +67,8 @@ public class TurnTimeController {
             int rowNum=sheet.getLastRowNum();
             if(rowNum==0){
 //                errMsg=new String("您上传的excel没有数据！");
-                errMsg.put("fail","您上传的excel没有数据！");
+                errMsg.put("RET","您上传的excel没有数据！");
+                errMsg.put("success",false);
                 return errMsg;
             }
             Row row=sheet.getRow(0);
@@ -78,7 +79,9 @@ public class TurnTimeController {
                 row.getCell(i).setCellType(Cell.CELL_TYPE_STRING);
                 if(!tableHeader[i].trim().equals(row.getCell(i).getStringCellValue().trim())){
 //                    errMsg = row.getCell(i).getStringCellValue().trim()+"--"+tableHeader[i].trim()+"--"+"模板列头不正确！,请重新导出后修改";
-                    errMsg.put("fail","模板列头不正确！,请重新导出后修改");
+                    errMsg.put("RET","模板列头不正确！,请重新导出后修改");
+                    errMsg.put("success",false);
+                    return errMsg;
                 }
                 else{
                     rownum=rowNum;
@@ -131,6 +134,7 @@ public class TurnTimeController {
                 }
                 if (rownum == snum) {
 //                    errMsg = new String("success");
+                    errMsg.put("RET","导入成功");
                     errMsg.put("success",true);
                 }
             }
