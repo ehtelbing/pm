@@ -1486,7 +1486,9 @@ function OnButtonSaveClick() {
             V_V_RDEPATCODE:Ext.getCmp('sgfs').getValue(),
             V_V_RDEPATNAME:Ext.getCmp('sgfs').getDisplayValue(),
             V_V_SGWAY:Ext.getCmp('repairDept').getValue(),
-            V_V_SGWAYNAME:Ext.getCmp('repairDept').getDisplayValue()
+            V_V_SGWAYNAME:Ext.getCmp('repairDept').getDisplayValue(),
+            //cxy2019/2/26
+            V_V_OPERANAME:''  //工序
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
