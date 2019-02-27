@@ -100,11 +100,12 @@ var nextSprStore = Ext.create("Ext.data.Store", {
     listeners: {
         load: function (store, records, success, eOpts) {
             processKey = store.getProxy().getReader().rawData.RET;
-            V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-            V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
-
-            Ext.getCmp('nextPer').select(store.first());
-
+            if( store.getAt(0)!=undefined){
+                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+                Ext.getCmp('nextPer').select(store.first());
+            }
+            Ext.getCmp('nextPer').select("");
         }
 
     }
@@ -264,7 +265,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_STATUSNAME', 'V_GUID','V_STATE','V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME'],
+        'V_REPAIR_PER','V_SGWAY','V_SGWAYNAME','DRSIGN'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -576,6 +577,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         }/*,
         {text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME'},*/
+        ,{text:'导入标示符',align:'center',width:150,dataIndex:'DRSIGN',hidden:true}
     ],
     bbar: ["->",
         {
@@ -838,18 +840,7 @@ function Querytime() {
 
 
 
-//修改
-function OnButtonEditClicked() {
-    var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
-    if (seldata.length != 1) {
-        Ext.Msg.alert('操作信息', '请选择一条信息进行修改');
-        return ;
-    }
 
-    V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
-    window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
-        + "&endUpTime=" + Ext.getCmp("endtime").getValue() + '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
-}
 
 
 //月共几天
@@ -859,7 +850,7 @@ function getDaysOfMonth(year, month) {
     return d.getDate();
 }
 
-//本周开始时间
+//当前框对应的本周开始时间(默认下周）
 function getWeekStartDate() {
     var year = Ext.getCmp('nf').getValue();
     var month = Ext.getCmp('yf').getValue();
@@ -896,7 +887,7 @@ function getWeekStartDate() {
     return nian + "-" + (yue + 1) + "-" + hao;
 }
 
-//本周结束时间
+//当前框对应的本周结束时间（默认下周）
 function getWeekEndDate() {
     var year = Ext.getCmp('nf').getValue();
     var month = Ext.getCmp('yf').getValue();
@@ -960,11 +951,89 @@ function _preViewProcess(businessKey) {
                 icon: Ext.MessageBox.ERROR
             });
         }
-    })
+    });
 
     var owidth = window.screen.availWidth;
     var oheight = window.screen.availHeight - 50;
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
+}
+//
+function GetDateStr(AddDayCount) {
+    var dd = new Date();
+    dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+    var y = dd.getFullYear();
+    var m = (dd.getMonth() + 1) < 10 ? "0" + (dd.getMonth() + 1) : (dd.getMonth() + 1);//获取当前月份的日期，不足10补0
+    var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();//获取当前几号，不足10补0
+    return y + "-" + m + "-" + d;
+}
+//修改
+function OnButtonEditClicked() {
+    var seldata = Ext.getCmp('gridPanel').getSelectionModel().getSelection();
+    if (seldata.length != 1) {
+        Ext.Msg.alert('操作信息', '请选择一条信息进行修改');
+        return false;
+    }
+    if(seldata[0].get('DRSIGN')!="1"){
+        if(Ext.util.Cookies.get("v_orgCode")=="9900"){
+            sbbcompareTime(seldata);
+        }
+        else{compareTime(seldata);}
+    }else{
+        alert('此计划已锁定，不可以修改');
+    }
+
+
+}
+//设备部时间比较
+function sbbcompareTime(griddate){
+    //当前日期
+    var nowMonth=date.getMonth()+1;
+    var day=date.getFullYear()+'-'+nowMonth+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+    var hourtime=date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+    var nowTime=new Date(day);
+    var weekDay=nowTime.getDay();
+    //可修改时间判断
+    if ((weekDay==1&&hourtime>="00:00:01")||weekDay==2||weekDay==3||weekDay==4||weekDay==5||weekDay==6||(weekDay==0&&hourtime<="23:59:59")){
+        //修改计划时间判断
+        var jhStartDate=Ext.Date.format(new Date(griddate[0].get('V_STARTTIME').split(" ")[0]),"Y/m/d");
+        var jhEndDate=Ext.Date.format(new Date(griddate[0].get('V_ENDTIME').split(" ")[0]),"Y/m/d");
+        var startweek=Ext.Date.format(new Date(getWeekStartDate()),"Y/m/d");
+        var endweek=Ext.Date.format(new Date(getWeekEndDate()),"Y/m/d");
+        if(jhStartDate>=startweek&&jhEndDate<=endweek){
+            turnUpdatePage(griddate);
+        }
+    }
+    else{
+        Ext.Msg.alert("温馨提示","本周只可以修改下周计划");
+    }
+}
+//非设备部时间比较
+function compareTime(griddate){
+    //当前日期
+    var nowMonth=date.getMonth()+1;
+    var day=date.getFullYear()+'-'+nowMonth+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+    var hourtime=date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+    var nowTime=new Date(day);
+    var weekDay=nowTime.getDay();
+    if ((weekDay==1&&hourtime>="00:00:01")||weekDay==2||weekDay==3||(weekDay==4&&hourtime<="13:30:00")){
+        var jhStartDate=Ext.Date.format(new Date(griddate[0].get('V_STARTTIME').split(" ")[0]),"Y/m/d");
+        var jhEndDate=Ext.Date.format(new Date(griddate[0].get('V_ENDTIME').split(" ")[0]),"Y/m/d");
+        var startweek=Ext.Date.format(new Date(getWeekStartDate()),"Y/m/d");
+        var endweek=Ext.Date.format(new Date(getWeekEndDate()),"Y/m/d");
+        if(jhStartDate>=startweek&&jhEndDate<=endweek){
+            turnUpdatePage(griddate);
+        }
+    }
+    else{
+        Ext.Msg.alert("温馨提示","只每周一 ~ 周四下午1:30之前，允许修改下周计划。");
+    }
+}
+
+//页面跳转
+function turnUpdatePage(seldata){
+    V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
+    window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
+        + "&endUpTime=" + Ext.getCmp("endtime").getValue() + '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
 }

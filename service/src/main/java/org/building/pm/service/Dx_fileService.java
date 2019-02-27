@@ -2638,4 +2638,35 @@ public class Dx_fileService {
         logger.info("end PM_07_DEFECT_STAT");
         return result;
     }
+
+    //sbb导入week_plan  设备部周计划管理页面
+    public HashMap PRO_PM_03_PLAN_WEEK_IMPORT(String V_V_SBBGUID,String V_V_STARTTIME,String V_V_ENDTIME,String V_V_HOUR,String V_LOCKPER,String V_LOCKPERNAME) throws SQLException{
+        HashMap result = new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_PM_03_PLAN_WEEK_IMPORT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_IMPORT(:V_V_SBBGUID,:V_V_STARTTIME,:V_V_ENDTIME,:V_V_HOUR,:V_LOCKPER,:V_LOCKPERNAME,:RET)}");
+            cstmt.setString("V_V_SBBGUID",V_V_SBBGUID);
+            cstmt.setString("V_V_STARTTIME",V_V_STARTTIME);
+            cstmt.setString("V_V_ENDTIME",V_V_ENDTIME);
+            cstmt.setString("V_V_HOUR",V_V_HOUR);
+            cstmt.setString("V_LOCKPER",V_LOCKPER);
+            cstmt.setString("V_LOCKPERNAME",V_LOCKPERNAME);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("RET"));
+        }catch (SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result"+result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_IMPORT");
+        return result;
+    }
 }

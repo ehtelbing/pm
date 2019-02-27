@@ -244,7 +244,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
         'V_REPAIR_PER',
-        'V_OTHERPLAN_GUID','V_OTHERPLAN_TYPE','WORKORDERNUM'],
+        'V_OTHERPLAN_GUID','V_OTHERPLAN_TYPE','WORKORDERNUM','DRSIGN'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -477,14 +477,17 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     columnLines: true,
     selType: 'checkboxmodel',
     columns: [
-        {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
+        {text: '序号', align: 'center', width: 50, xtype: 'rownumberer', renderer: dataCss},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME', renderer: dataCss},
         {
             text: '审批详情',
             dataIndex: 'V_ORDERID',
             width: 55,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                // if(record.get('DRSIGN')=="1") {
+                //     metaData.style = "background-color: yellow";
+                // }
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
             }
         },{
@@ -493,6 +496,9 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width: 55,
             align: 'center',
             renderer: function (value, metaData, record) {
+                // if(record.get('DRSIGN')=="1") {
+                //     metaData.style = "background-color: yellow";
+                // }
                 // return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
                 return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
             }
@@ -503,6 +509,9 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width:75,
             align:'center',
             renderer:function(value,metaData,record){
+                // if(record.get('DRSIGN')=="1") {
+                //     metaData.style = "background-color: yellow";
+                // }
                 if(record.data.V_OTHERPLAN_GUID!=""){
                     return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
                 }else{
@@ -511,20 +520,21 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
 
             }
         },
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
-        {text: '车间名称', align: 'center', width: 100, dataIndex: 'V_DEPTNAME'},
-        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
-        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME'},
-        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT'},
-        {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME'},
+        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME', renderer: dataCss},
+        {text: '车间名称', align: 'center', width: 100, dataIndex: 'V_DEPTNAME', renderer: dataCss},
+        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: dataCss},
+        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME', renderer: dataCss},
+        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT', renderer: dataCss},
+        {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME', renderer: dataCss},
         {text: '计划停机日期', align: 'center', width: 150, dataIndex: 'V_STARTTIME', renderer: rendererTime},
         {text: '计划竣工日期', align: 'center', width: 150, dataIndex: 'V_ENDTIME', renderer: rendererTime},
-        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
-        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
-        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
-        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
-        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
+        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR', renderer: dataCss},
+        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME', renderer: dataCss},
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT', renderer: dataCss},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE', renderer: dataCss},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER', renderer: dataCss},
         {text: '录入时间', align: 'center', width: 100, dataIndex: 'V_INDATE', renderer: rendererTime}
+        ,{text:'导入标示符',align:'center',width:150,dataIndex:'DRSIGN',hidden:true}
     ],
     bbar: ["->",
         {
@@ -680,8 +690,10 @@ Ext.onReady(function () {
     });
 });
 
-function rendererTime(value, metaData) {
-
+function rendererTime(value, metaData,record) {
+    if(record.get('DRSIGN')=="1") {
+        metaData.style = "background-color: yellow";
+    }
     return value.split(".")[0];
 }
 
@@ -875,4 +887,10 @@ if (othertype=="MONTH"){
 //     window.open(AppUrl + 'page/PM_03010309/year_detail.html?yearguid='
 //         + otherguid, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 // }
+}
+function dataCss(value, metaData, record, rowIndex, colIndex, store){
+    if(record.get('DRSIGN')=="1") {
+        metaData.style = "background-color: yellow";
+    }
+        return value;
 }

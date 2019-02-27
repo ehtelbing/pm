@@ -299,6 +299,15 @@ var panel = Ext.create('Ext.form.Panel', {
             width: 100,
             listeners: {
                 click: OnClickExcelButton
+            }}
+            ,{
+            xtype: 'button',
+            text: '导入excel',
+            style: ' margin: 5px 0px 5px 5px',
+            icon: imgpath + '/excel.gif',
+            width: 100,
+            listeners: {
+                click: OnClickDrExcelButton
             }
         }
     ]
@@ -346,8 +355,8 @@ Ext.onReady(function () {
             'V_WEEKID',
             'V_STATE',
             'V_WORKFLAG_NAME',
-            'V_STATENAME'
-
+            'V_STATENAME',
+            'DRSIGN'
         ],
         proxy: {
             type: 'ajax',
@@ -380,7 +389,7 @@ Ext.onReady(function () {
                 width: 50,
                 align: 'center'
             },
-            {text: '计划状态', width: 200, dataIndex: 'V_STATENAME', align: 'center', renderer: Atleft},
+            {text: '计划状态', width: 200, dataIndex: 'V_STATENAME', align: 'center', renderer: dataCss},
             {
                 text: '工单详情',
                 dataIndex: 'V_ORDERID',
@@ -390,16 +399,17 @@ Ext.onReady(function () {
                     return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
                 }
             },
-            {text: '设备名称', width: 200, dataIndex: 'V_EQUNAME', align: 'center', renderer: Atleft},
-            {text: '专业', width: 200, dataIndex: 'V_REPAIRMAJOR_CODE', align: 'center', renderer: Atleft},
-            {text: '检修内容', width: 200, dataIndex: 'V_CONTENT', align: 'center', renderer: Atleft},
+            {text: '设备名称', width: 200, dataIndex: 'V_EQUNAME', align: 'center', renderer: dataCss},
+            {text: '专业', width: 200, dataIndex: 'V_REPAIRMAJOR_CODE', align: 'center', renderer: dataCss},
+            {text: '检修内容', width: 200, dataIndex: 'V_CONTENT', align: 'center', renderer: dataCss},
             {text: '计划停机日期', width: 200, dataIndex: 'V_STARTTIME', align: 'center', renderer: rendererTime},
             {text: '计划竣工日期', width: 200, dataIndex: 'V_ENDTIME', align: 'center', renderer: rendererTime},
-            {text: '计划工期', width: 200, dataIndex: 'V_HOUR', align: 'center', renderer: Atleft},
-            {text: '厂矿', width: 200, dataIndex: 'V_ORGNAME', align: 'center', renderer: Atleft},
-            {text: '车间名称', width: 200, dataIndex: 'V_DEPTNAME', align: 'center', renderer: Atleft},
-            {text: '录入人', width: 200, dataIndex: 'V_INPERNAME', align: 'center', renderer: Atleft}
+            {text: '计划工期', width: 200, dataIndex: 'V_HOUR', align: 'center', renderer: dataCss},
+            {text: '厂矿', width: 200, dataIndex: 'V_ORGNAME', align: 'center', renderer: dataCss},
+            {text: '车间名称', width: 200, dataIndex: 'V_DEPTNAME', align: 'center', renderer: dataCss},
+            {text: '录入人', width: 200, dataIndex: 'V_INPERNAME', align: 'center', renderer: dataCss}
             , {text: '录入时间', width: 200, dataIndex: 'V_INDATE', align: 'center', renderer: rendererTime}
+            ,{text:'导入标示符',align:'center',width:150,dataIndex:'DRSIGN',hidden:true}
         ]
         , bbar: [{
             id: 'page',
@@ -532,12 +542,104 @@ Ext.onReady(function () {
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
     });
+    var drfilepanel=Ext.create("Ext.form.Panel",{
+        id:'drfilepanel',
+        border:false,
+        region:'north',
+        frame: true,
+        height:45,
+        layout: 'column',
+        defaults : {
+            style : 'margin:5px 0px 5px 5px',
+            labelAlign : 'right'
+        },
+        items:[
+            // {xtype:'combobox',id:'fjtype',store:ftypeStore,queryMode:'local',fieldLabel:'附件类型',valueField:'ID',displayField:'FNAME',width:260,labelAlign:'right',labelWidth:80,style:'margin:5px 2px 5px 5px',listeners:{select:function(){querymxfj(mx_code);}}},
+            {
+                xtype : 'filefield',
+                id : 'upload',
+                name : 'upload',
+                fieldLabel : '文件上传',
+                labelAlign:'right',
+                width : 300,
+                msgTarget : 'side',
+                allowBlank : true,
+                anchor : '100%',
+                buttonText : '浏览....',
+                // regex:/\.(xls|xlsx)$/,
+                // regexText : "请上传Excel文档",
+                style : ' margin: 20px 0px 20px 8px'
+            // ,validator:function(value){
+            //         // 文件类型判断
+            //         if(value!=" ") {
+            //             var arrType = value.split('.');
+            //             var docType = arrType[arrType.length - 1].toLowerCase();
+            //             if (docType == "xlsx" || docType == "xls") {
+            //                 return true;
+            //             }
+            //             else {
+            //                 return Ext.Msg.alert("提示", '文件类型必须为.xls或者.xlsx的excel文件');
+            //             }
+            //         }
+            //     }
+            }, {
+                xtype : 'button',
+                width : 60,
+                text : '上传',
+                style : ' margin: 20px 0px 20px 8px',
+                handler : function () {
+                    var drfilepan = Ext.getCmp('drfilepanel');
+                    if(Ext.getCmp('upload').getValue()==''||Ext.getCmp('upload').getValue()==null||Ext.getCmp('upload').getValue()==undefined){
+                        Ext.Msg.alert('提示信息', '请选择要的上传文件');
+                        return;
+                    }
+                    else{
+                        var arrType=Ext.getCmp('upload').getValue().split('.');
+                        var docType = arrType[arrType.length - 1].toLowerCase();
+                        if(docType == "xlsx" || docType == "xls"){
+                            drfilepan.submit({
+                                url: AppUrl + 'turntime/sbbImporteWeekExcel',
+                                async: false,
+                                method: 'POST',
+                                params : {
+
+                                    V_LOCKPER:Ext.util.Cookies.get('v_personcode'),
+                                    V_LOCKPERNAME:Ext.util.Cookies.get('v_personname2')
+
+                                },
+                                success : function(fp, o) {
+                                    alert(resp);
+                                    Ext.getCmp('fjWindow').close();
+                                },
+                                failure: function (resp) {
+                                    resp.toString();
+                                    Ext.getCmp('fjWindow').close();
+                                    alert("导入成功");
+                                    QueryGrid();
+                                }
+                            });
+                        }
+                        else {
+                            return Ext.Msg.alert("提示", '文件类型必须为.xls或者.xlsx的excel文件');
+                        }
+
+                    }
+                }
+            }]
+    });
+    var fjWindow=Ext.create("Ext.window.Window",{
+        id:'fjWindow',
+        width:450,
+        height:120,
+        title:'附件导入窗口',
+        frame:true,
+        layout:'fit',
+        closeAction:'hit',
+        items:[drfilepanel]
+    })
 });
 
-function rendererTime(value, metaData) {
 
-    return value.split(".")[0];
-}
 
 //第几周
 function getWeekOfMonth() {//周一为起始
@@ -577,10 +679,7 @@ function getWeeks() {
 
 }
 
-function Atleft(value, metaData) {
-    metaData.style = 'text-align: left';
-    return value;
-}
+
 
 function QueryGrid() {
     Ext.getCmp('page').store.currentPage = 1;
@@ -729,4 +828,29 @@ function OnClickExcelButton() {
         + '&V_V_FLOWTYPE=WORK'
         + '&V_V_STATE=30,31';
 
+}
+
+function OnClickDrExcelButton(){
+    Ext.getCmp('fjWindow').show();
+}
+function Atleft(value, metaData) {
+    metaData.style = 'text-align: left';
+    return value;
+}
+function rendererTime(value, metaData,record, rowIndex, colIndex, store) {
+    if(record.get('DRSIGN')=="1") {
+        metaData.style = "background-color: yellow";
+    }
+    return value.split(".")[0];
+}
+function dataCss(value, metaData, record, rowIndex, colIndex, store){
+    if(record.get('DRSIGN')=="1") {
+        metaData.style = "background-color: yellow;text-align: left;";
+        // return '<div  data-qtip="' + value + '" >' + value + '</div>';
+        return value;
+    } else{
+        metaData.style = 'text-align: left';
+        // return '<div  data-qtip="' + value + '" >' + value + '</div>';
+        return value;
+    }
 }

@@ -4,9 +4,17 @@ import com.sun.net.httpserver.HttpContext;
 import net.sf.json.JSONObject;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.building.pm.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -60,6 +69,9 @@ public class ExcelController {
 
     @Autowired
     private LxmService lxmService;
+
+    @Autowired
+    private Dx_fileService dx_fileService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -3666,6 +3678,10 @@ public class ExcelController {
         cell.setCellValue("录入时间");
         cell.setCellStyle(style);
 
+        cell=row.createCell((short) 12);
+        cell.setCellValue("V_V_SBBGUID");
+        cell.setCellStyle(style);
+
         if (data.size() > 0) {
             list = (List) data.get("list");
             for (int i = 0; i < list.size(); i++) {
@@ -3696,6 +3712,8 @@ public class ExcelController {
 
                 row.createCell((short) 11).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
 
+                row.createCell((short) 12).setCellValue(map.get("V_SBB_GUID") == null ? "" : map.get("V_SBB_GUID").toString());
+
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
@@ -3709,4 +3727,86 @@ public class ExcelController {
             }
         }
     }
+    //设备部周计划导入excel
+//    @RequestMapping(value = "/sbbImporteWeekExcel", method = RequestMethod.POST)
+//    @ResponseBody
+////    public  ResponseEntity<String> sbbImporteWeekExcel(
+//    public String sbbImporteWeekExcel(
+//            @RequestParam(value = "V_LOCKPER") String V_LOCKPER,
+//            @RequestParam(value = "V_LOCKPERNAME") String V_LOCKPERNAME,
+//            @RequestParam(value = "upload") MultipartFile upload,
+//            HttpServletRequest request,
+//            HttpServletResponse response) throws Exception {
+//        String errMsg="";
+//        List list = new ArrayList();
+//        int snum=0;
+//        int fnum=0;
+//        HttpHeaders headers = new HttpHeaders();
+//        String[] tableHeader = new String[] { "序号","计划状态", "设备名称", "专业",
+//                "检修内容", "计划停机日期", "计划竣工日期", "计划工期（小时）", "厂矿", "车间名称","录入人",
+//                "录入时间", "SBBGUID"};
+//
+//        MediaType mt = new MediaType("text", "html", Charset.forName("UTF-8"));
+//        headers.setContentType(mt);
+//        String json = "";
+//        try{
+//            Workbook hssfBook = null;
+//            InputStream is =upload.getInputStream();//获取excel数据
+//            if (upload.getOriginalFilename().contains(".xlsx")) {
+//                hssfBook = new XSSFWorkbook(is); // excel2007
+//            } else {
+//                hssfBook = new HSSFWorkbook(is); // excel2003
+//            }
+//            Sheet sheet=hssfBook.getSheetAt(0);//或 表头数据
+//            int rowNum=sheet.getLastRowNum();
+//            if(rowNum==0){
+//                errMsg="您上传的excel没有数据！";
+//                return errMsg;
+//            }
+//            Row row=sheet.getRow(0);
+//            int colNum=0;
+//            colNum=row.getLastCellNum();
+//            //验证表头格式
+//            for(int i=0;i<tableHeader.length;i++){
+//                row.getCell(i).setCellType(Cell.CELL_TYPE_STRING);
+//                if(!tableHeader[i].trim().equals(row.getCell(i).getStringCellValue().trim())){
+//                    errMsg = row.getCell(i).getStringCellValue().trim()+"--"+tableHeader[i].trim()+"--"+"模板列头不正确！,请重新导出后修改";
+//                }
+//                else{
+//                    for(int j=0;j<=rowNum;j+=1){
+//                        String V_V_SBBGUID=sheet.getRow(j+1).getCell(12).getStringCellValue().trim();
+//                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                        String V_V_STARTTIME=sheet.getRow(j+1).getCell(5).getDateCellValue().toString();
+//                        String V_V_ENDTIME=sheet.getRow(j+1).getCell(6).getDateCellValue().toString();
+//                        sheet.getRow(j+1).getCell(7).setCellType(Cell.CELL_TYPE_STRING);
+//                        String V_V_HOUR=sheet.getRow(j+1).getCell(7).getStringCellValue().trim();
+//                        Map resutlt=dx_fileService.PRO_PM_03_PLAN_WEEK_IMPORT(V_V_SBBGUID, V_V_STARTTIME, V_V_ENDTIME,V_V_HOUR,V_LOCKPER,V_LOCKPERNAME);
+//                        if (resutlt.size() > 0) {
+//                            list = (List) resutlt.get("RET");
+//                            Map map = (Map) list.get(0);
+//                            if(map.get("RET").toString().equals("SUCCESS")){
+//                                snum++;
+//                            }
+//                        }
+//                        else{fnum++; }
+//
+//                    }
+//                    if(rowNum==snum){
+//                        errMsg = "导入成功！" ;
+//                    }
+//                }
+//            }
+//        }catch(Exception e){
+//            errMsg = e.getMessage() ;
+//            e.printStackTrace();
+//        }
+//        return errMsg;
+//    }
+
+//        Map result = pm_03Service.PM_03_PLAN_PROJECT_FILE_SET(V_V_GUID, filename, filetype, upload.getInputStream(), V_V_INPERCODE,
+//                V_V_INPERNAME, V_V_TYPE);
+//        result.put("success",true);
+//        return result;
+
+
 }
