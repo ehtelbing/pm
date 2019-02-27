@@ -23,10 +23,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/app/pm/turntime/")
@@ -37,14 +34,15 @@ public class TurnTimeController {
     //设备部周计划导入excel
     @RequestMapping(value = "sbbImporteWeekExcel", method = RequestMethod.POST)
     @ResponseBody
-//    public  ResponseEntity<String> sbbImporteWeekExcel(
-    public String sbbImporteWeekExcel(
+
+    public Map sbbImporteWeekExcel(
             @RequestParam(value = "V_LOCKPER") String V_LOCKPER,
             @RequestParam(value = "V_LOCKPERNAME") String V_LOCKPERNAME,
             @RequestParam(value = "upload") MultipartFile upload,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        String errMsg="";
+//        String errMsg="";
+        Map errMsg=new HashMap();
         List list = new ArrayList();
         int snum=0;
         int fnum=0;
@@ -68,7 +66,8 @@ public class TurnTimeController {
             Sheet sheet=hssfBook.getSheetAt(0);//或 表头数据
             int rowNum=sheet.getLastRowNum();
             if(rowNum==0){
-                errMsg=new String("您上传的excel没有数据！");
+//                errMsg=new String("您上传的excel没有数据！");
+                errMsg.put("fail","您上传的excel没有数据！");
                 return errMsg;
             }
             Row row=sheet.getRow(0);
@@ -78,7 +77,8 @@ public class TurnTimeController {
             for(int i=0;i<tableHeader.length;i++){
                 row.getCell(i).setCellType(Cell.CELL_TYPE_STRING);
                 if(!tableHeader[i].trim().equals(row.getCell(i).getStringCellValue().trim())){
-                    errMsg = row.getCell(i).getStringCellValue().trim()+"--"+tableHeader[i].trim()+"--"+"模板列头不正确！,请重新导出后修改";
+//                    errMsg = row.getCell(i).getStringCellValue().trim()+"--"+tableHeader[i].trim()+"--"+"模板列头不正确！,请重新导出后修改";
+                    errMsg.put("fail","模板列头不正确！,请重新导出后修改");
                 }
                 else{
                     rownum=rowNum;
@@ -86,15 +86,40 @@ public class TurnTimeController {
             }
             if(rownum!=0) {
                 for (int j = 1; j <= rownum;j++) {
+                    String V_V_STARTTIME="";
+                    String V_V_ENDTIME ="";
                     String V_V_SBBGUID = sheet.getRow(j).getCell(12).getStringCellValue().trim();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-                    Date date1 = sheet.getRow(j).getCell(5).getDateCellValue();
-                    Date date2 = sheet.getRow(j).getCell(6).getDateCellValue();
-
-                    String V_V_STARTTIME = dateFormat.format(date1);
-                    String V_V_ENDTIME = dateFormat.format(date2);
-                    sheet.getRow(j).getCell(7).setCellType(Cell.CELL_TYPE_STRING);
-                    String V_V_HOUR = sheet.getRow(j).getCell(7).getStringCellValue().trim();
+                    //star
+                    if (sheet.getRow(j).getCell(5).getCellType() == Cell.CELL_TYPE_STRING) {
+                        int m=0;
+                        m=sheet.getRow(j).getCell(5).getStringCellValue().indexOf("-");
+                        if(m!=0){
+                            V_V_STARTTIME =  sheet.getRow(j).getCell(5).getStringCellValue().replace("-","/");
+                        }
+                    }
+                    else{
+                        Date date1 = sheet.getRow(j).getCell(5).getDateCellValue();
+                        V_V_STARTTIME = dateFormat.format(date1);
+                    }
+                    //end
+                    if (sheet.getRow(j).getCell(6).getCellType() == Cell.CELL_TYPE_STRING) {
+                        int n=0;
+                        n=sheet.getRow(j).getCell(6).getStringCellValue().indexOf("-");
+                        if(n!=0){
+                            V_V_ENDTIME = sheet.getRow(j).getCell(6).getStringCellValue().replace("-","/");
+                        }
+                    }
+                    else{
+                        Date date2 = sheet.getRow(j).getCell(6).getDateCellValue();
+                        V_V_ENDTIME = dateFormat.format(date2);
+                    }
+                    //hour
+                    String V_V_HOUR="";
+                    if(sheet.getRow(j).getCell(7)!=null){
+                        sheet.getRow(j).getCell(7).setCellType(Cell.CELL_TYPE_STRING);
+                        V_V_HOUR = sheet.getRow(j).getCell(7).getStringCellValue().trim();
+                    }
                     Map resutlt = dx_fileService.PRO_PM_03_PLAN_WEEK_IMPORT(V_V_SBBGUID, V_V_STARTTIME, V_V_ENDTIME, V_V_HOUR, V_LOCKPER, V_LOCKPERNAME);
                     if (resutlt.size() > 0) {
                         if (resutlt.get("RET").equals("SUCCESS")) {
@@ -105,7 +130,8 @@ public class TurnTimeController {
                     }
                 }
                 if (rownum == snum) {
-                    errMsg = new String("success");
+//                    errMsg = new String("success");
+                    errMsg.put("success",true);
                 }
             }
         }catch(Exception e){
@@ -114,5 +140,4 @@ public class TurnTimeController {
         return errMsg;
 
     }
-
 }

@@ -3679,7 +3679,7 @@ public class ExcelController {
         cell.setCellStyle(style);
 
         cell=row.createCell((short) 12);
-        cell.setCellValue("V_V_SBBGUID");
+        cell.setCellValue("SBBGUID");
         cell.setCellStyle(style);
 
         if (data.size() > 0) {

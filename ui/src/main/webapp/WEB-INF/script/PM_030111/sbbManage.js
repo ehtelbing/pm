@@ -608,14 +608,19 @@ Ext.onReady(function () {
 
                                 },
                                 success : function(fp, o) {
-                                    alert(resp);
-                                    Ext.getCmp('fjWindow').close();
+                                    if(o.result.success==true){
+                                       Ext.getCmp('fjWindow').close();
+                                       alert("导入成功");
+                                       QueryGrid();
+                                    }
+
                                 },
-                                failure: function (resp) {
-                                    resp.toString();
-                                    Ext.getCmp('fjWindow').close();
-                                    alert("导入成功");
-                                    QueryGrid();
+                                failure: function (fp, o) {
+                                    if(o.result.success==true) {
+                                        Ext.getCmp('fjWindow').close();
+                                        alert("导入成功");
+                                        QueryGrid();
+                                    }
                                 }
                             });
                         }
