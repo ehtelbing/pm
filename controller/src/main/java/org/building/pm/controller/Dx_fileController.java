@@ -2935,6 +2935,35 @@ public class Dx_fileController {
         return data;
     }
 
+    //周月计划添加模型
+    @RequestMapping(value = "PM_1921_PLAN_IN_MX_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_1921_PLAN_IN_MX_SET(
+            @RequestParam(value = "V_V_MX_NAME") String V_V_MX_NAME,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+
+            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value = "V_V_MENO") String V_V_MENO,
+            @RequestParam(value = "V_V_INPER") String V_V_INPER,
+
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_CONTEXT") String V_V_CONTEXT,
+
+            @RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE,
+            @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,
+            @RequestParam(value = "V_V_LIFELONG") String V_V_LIFELONG,
+
+            @RequestParam(value = "V_V_MAIN_DEFECT") String V_V_MAIN_DEFECT,
+            @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_1921_PLAN_IN_MX_SET(V_V_MX_NAME,V_V_ORGCODE,V_V_DEPTCODE,V_V_SPECIALTY,V_V_MENO,V_V_INPER,V_V_EQUTYPE,V_V_EQUCODE,V_V_CONTEXT,V_V_JXMX_CODE,V_V_PERNUM,V_V_LIFELONG,V_V_MAIN_DEFECT,V_V_SGWAY);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

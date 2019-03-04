@@ -295,6 +295,13 @@ Ext.onReady(function () {
                             },
                             {
                                 xtype: 'button',
+                                text: '模型保存',
+                                icon: imgpath + '/saved.png',
+                                margin: '10px 0px 0px 10px',
+                                handler: OnModelSaveClick
+                            },
+                            {
+                                xtype: 'button',
                                 text: '保存',
                                 icon: imgpath + '/saved.png',
                                 margin: '10px 0px 0px 10px',
@@ -1092,6 +1099,34 @@ Ext.onReady(function () {
     Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
 
     //Ext.getCmp('jhtgdate').setMaxValue(Ext.getCmp('jhjgdate').getSubmitValue());
+
+    var modeWin = Ext.create("Ext.window.Window", {
+        id: 'modeWin',
+        closeAction: 'hide',
+        title: '模型添加',
+        width: 350,
+        height: 100,
+        // layout:'fit',
+        layout: "column",
+        items: [
+            {
+                xtype: 'textfield',
+                id: 'modename',
+                fieldLabel: '模型名称',
+                labelAlign: 'right',
+                allowBlank: false,
+                margin: '5 0 0 5',
+                labelWidth: 80,
+                width: 280
+            }, {
+                xtype: 'button',
+                margin: '5 0 0 5',
+                text: '确定',
+                id: 'okBtn',
+                handler: onModeOKBtn
+            }
+        ]
+    });
 });
 
 function pageLoadInfo() {
@@ -1674,4 +1709,78 @@ function _gongshiheji() {
     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
     Ext.getCmp('jhgshj').setValue(gongshicha2);
 
+}
+//计划模型保存
+function OnModelSaveClick(){
+    if( Ext.getCmp('sblx').getValue()=="%"&&Ext.getCmp('sbmc').getValue()=="%"){
+        Ext.Msg.alert('消息','设备类型和设备名称不可以为全部，请选择相关名称');
+        return;
+    }
+
+    if(Ext.getCmp('expectage').getValue()=="0"){
+        Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('repairper').getValue()=="0"){
+        Ext.Msg.alert('消息','维修人数不可为0，请选择相关信息');
+        return;
+    }
+    if(Ext.getCmp('maindefect').getValue()==""){
+        Ext.Msg.alert('消息','主要缺陷不可为空，请输入后保存');
+        return;
+    }
+    if(Ext.getCmp('jxnr').getValue()==""){
+        Ext.Msg.alert('消息','检修内容不可为空，请输入后保存');
+        return;
+    }
+    if(Ext.getCmp('zy').getValue()==""){
+        Ext.Msg.alert('消息','专业不可为空，请选择相关信息');
+        return;
+    }
+    Ext.getCmp('modeWin').show();
+
+
+}
+function onModeOKBtn(){
+    if(Ext.getCmp('modename').getValue()==""){
+        Ext.Msg.alert('消息','模型名称不可为空');
+        return;
+    }
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_1921_PLAN_IN_MX_SET',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_MX_NAME: Ext.getCmp('modename').getValue(),  //模型名称
+            V_V_ORGCODE:Ext.getCmp('ck').getValue(),  //单位名称
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),  //作业区
+            V_V_SPECIALTY: Ext.getCmp('zy').getValue(),  //专业
+            V_V_MENO:Ext.getCmp('bz').getValue(),  // 备注
+            V_V_INPER:Ext.util.Cookies.get('v_personcode'),  //录入人
+
+            V_V_EQUTYPE: Ext.getCmp('sblx').getValue(),  //设备类型
+            V_V_EQUCODE:Ext.getCmp('sbmc').getValue(),  //设备名称
+            V_V_CONTEXT:Ext.getCmp('jxnr').getValue(),  //检修内容
+            V_V_JXMX_CODE:"",  //检修模型
+            V_V_PERNUM:Ext.getCmp('repairper').getValue(),  //维修人数
+            V_V_LIFELONG:Ext.getCmp('expectage').getValue(), //预计寿命
+
+            V_V_MAIN_DEFECT:Ext.getCmp('maindefect').getValue(), //主要缺陷
+            V_V_SGWAY:Ext.getCmp('sgfs').getValue()  //施工方式
+
+        },
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if(resp.RET=="SUCCESSEQU"){
+                Ext.MessageBox.alert('提示', '模型保存成功');
+            }
+            else if(resp.RET=="FAILEQU"){
+                Ext.MessageBox.alert('提示', '模型设备保存失败');
+            }
+            else if(resp.RET=="FAIL"){
+                Ext.MessageBox.alert('提示', '模型保存失败');
+            }
+            Ext.getCmp('modeWin').hide();
+        }
+    });
 }

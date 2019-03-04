@@ -2669,4 +2669,49 @@ public class Dx_fileService {
         logger.info("end PRO_PM_03_PLAN_WEEK_IMPORT");
         return result;
     }
+    //周月计划添加模型
+    public HashMap PM_1921_PLAN_IN_MX_SET(String V_V_MX_NAME,String V_V_ORGCODE,String V_V_DEPTCODE,
+                                          String V_V_SPECIALTY,String V_V_MENO,String V_V_INPER,
+                                          String V_V_EQUTYPE,String V_V_EQUCODE,String V_V_CONTEXT,
+                                          String V_V_JXMX_CODE,String V_V_PERNUM,String V_V_LIFELONG,
+                                          String V_V_MAIN_DEFECT,String V_V_SGWAY) throws SQLException{
+        HashMap result = new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_1921_PLAN_IN_MX_SET");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PM_1921_PLAN_IN_MX_SET(:V_V_MX_NAME,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_SPECIALTY,:V_V_MENO,:V_V_INPER," +
+                    ":V_V_EQUTYPE,:V_V_EQUCODE,:V_V_CONTEXT,:V_V_JXMX_CODE,:V_V_PERNUM,:V_V_LIFELONG,:V_V_MAIN_DEFECT,:V_V_SGWAY,:RET)}");
+            cstmt.setString("V_V_MX_NAME",V_V_MX_NAME);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_SPECIALTY",V_V_SPECIALTY);
+            cstmt.setString("V_V_MENO",V_V_MENO);
+            cstmt.setString("V_V_INPER",V_V_INPER);
+
+            cstmt.setString("V_V_EQUTYPE",V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE",V_V_EQUCODE);
+            cstmt.setString("V_V_CONTEXT",V_V_CONTEXT);
+            cstmt.setString("V_V_JXMX_CODE",V_V_JXMX_CODE);
+            cstmt.setString("V_V_PERNUM",V_V_PERNUM);
+            cstmt.setString("V_V_LIFELONG",V_V_LIFELONG);
+
+            cstmt.setString("V_V_MAIN_DEFECT",V_V_MAIN_DEFECT);
+            cstmt.setString("V_V_SGWAY",V_V_SGWAY);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("RET"));
+        }catch (SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result"+result);
+        logger.info("end PM_1921_PLAN_IN_MX_SET");
+        return result;
+    }
 }
