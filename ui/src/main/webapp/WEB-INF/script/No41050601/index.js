@@ -14,6 +14,14 @@ $(function () {
     loadMatList();
 
 
+    // $("#selPlant").on("input propertychange",function(){
+    //     if($("#selPlant").val()=="99170208"){
+    //         $("#selType").val("AK11");
+    //     }else{
+    //         $("#selType").val($("#selType").get(0).checked=true)
+    //     }
+    // });
+
     $("#btnTask").click(function () {
         if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null || $("#V_EQUIP_NAME").val() == "" || $("#V_EQUIP_NAME").val() == null || $("#V_FUNC_LOC").val() == "" || $("#V_FUNC_LOC").val() == null) {
             alert("请选择设备");

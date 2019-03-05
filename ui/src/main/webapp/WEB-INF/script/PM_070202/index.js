@@ -39,7 +39,13 @@ $(function() {
         $("#ORDER_TYP").html($("#selType").val());
     });
 
-
+    $("#selPlant").on("input propertychange",function(){
+        if($("#selPlant").val()=="99170208"){
+            $("#selType").val("AK11");
+        }else{
+            $("#selType").val($("#selType").get(0).checked=true)
+        }
+    });
 });
 
 
