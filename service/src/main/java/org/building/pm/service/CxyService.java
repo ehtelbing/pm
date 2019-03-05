@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cxy on 2019/1/24.
@@ -173,4 +174,123 @@ public class CxyService {
         return result;
     }
 
+    public HashMap PM_STANDARD_GX_BOM_SET(String V_V_GUID,String V_V_SPCODE,String V_V_EQUCODE,String V_V_NUM,String V_V_INPUTER) throws SQLException {
+
+        logger.info("begin PM_STANDARD_GX_BOM_SET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_STANDARD_GX_BOM_SET" + "(:V_V_GUID,:V_V_SPCODE,:V_V_EQUCODE,:V_V_NUM,:V_V_INPUTER,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_SPCODE", V_V_SPCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_NUM", V_V_NUM);
+            cstmt.setString("V_V_INPUTER", V_V_INPUTER);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_STANDARD_GX_BOM_SET");
+        return result;
+    }
+
+    public HashMap SAP_PM_EQU_BOM_FOR_JX_SEL(String V_V_GUID) throws SQLException {
+
+        logger.info("begin SAP_PM_EQU_BOM_FOR_JX_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call SAP_PM_EQU_BOM_FOR_JX_SEL" + "(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("V_CURSOR", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end SAP_PM_EQU_BOM_FOR_JX_SEL");
+        return result;
+    }
+
+    //查询维修标准主表BY TYPE
+    public Map PRO_STANDARD_DATA_BY_TYPE_SEL(String V_V_EQUTYPE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PRO_STANDARD_DATA_BY_TYPE_SEL");
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_STANDARD_DATA_BY_TYPE_SEL(:V_V_EQUTYPE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            String V_V_SNUM = (String) cstmt.getObject("V_V_SNUM");
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("RET")));
+            result.put("total", V_V_SNUM);
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end PRO_STANDARD_DATA_BY_TYPE_SEL");
+        return result;
+    }
+
+    public HashMap PRO_WORKORDER_STANDARD_SET(String V_V_GUID,String V_V_ORDERID,String V_V_INPUTER) throws SQLException {
+
+        logger.info("begin PRO_WORKORDER_STANDARD_SET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_WORKORDER_STANDARD_SET" + "(:V_V_GUID,:V_V_ORDERID,:V_V_INPUTER,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORDERID", V_V_ORDERID);
+            cstmt.setString("V_V_INPUTER", V_V_INPUTER);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_WORKORDER_STANDARD_SET");
+        return result;
+    }
 }

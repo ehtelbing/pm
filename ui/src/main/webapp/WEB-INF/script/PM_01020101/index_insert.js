@@ -27,7 +27,7 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.V_V_ORGCODE == undefined) ? V_V_ORGCODE = '' : V_V_ORGCODE = parameters.V_V_ORGCODE;
     (parameters.V_V_DEPTCODE == undefined) ? V_V_DEPTCODE = '' : V_V_DEPTCODE = parameters.V_V_DEPTCODE;
     (parameters.V_V_EQUCODE == undefined) ? V_V_EQUCODE = '' : V_V_EQUCODE = parameters.V_V_EQUCODE;
-    (parameters.V_V_EQUNAME == '%25') ? V_V_EQUNAME = '%' : V_V_EQUNAME = parameters.V_V_EQUNAME;
+    // (parameters.V_V_EQUNAME == '%25') ? V_V_EQUNAME = '%' : V_V_EQUNAME = parameters.V_V_EQUNAME;
     (parameters.V_V_GUID == undefined) ? V_V_GUID = '' : V_V_GUID = parameters.V_V_GUID;
 }
 
@@ -61,20 +61,21 @@ Ext.onReady(function () {
     var inputPanel = Ext.create('Ext.form.Panel', {
         id: 'inputPanel',
         width: '100%',
-        region: 'north',
+        region: 'center',
         defaults: {
             baseCls: 'my-panel-no-border'
         },
-        padding: '10px 0px 0px 0px',
+        padding: '10px 10px 10px 10px',
         baseCls: 'my-panel-no-border',
         style: 'background-color:#FFFFFF',
+         border:false,
         frame: true,
         layout:{type:'table',columns:2},
         items: [{
             id: 'V_V_GXCODE',
             xtype: 'textfield',
             fieldLabel: '程序编码',
-            margin: '5 0 5 10',
+            margin: '30 0 5 100',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
@@ -82,7 +83,7 @@ Ext.onReady(function () {
             id: 'V_V_GXNAME',
             xtype: 'textfield',
             fieldLabel: '程序',
-            margin: '5 0 5 5',
+            margin: '30 0 5 5',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
@@ -91,7 +92,7 @@ Ext.onReady(function () {
             xtype: 'textfield',
             fieldLabel: '作业步骤',
             //readOnly: true,
-            margin: '5 0 5 10',
+            margin: '5 0 5 100',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
@@ -108,7 +109,7 @@ Ext.onReady(function () {
             xtype: 'textfield',
             id: 'V_V_WORKTYPE',
             fieldLabel: '工种',
-            margin: '5 0 5 10',
+            margin: '5 0 5 100',
             labelAlign: 'right',
             labelWidth: 100,
             width: 230
@@ -124,7 +125,7 @@ Ext.onReady(function () {
             xtype: 'textfield',
             id: 'V_V_TOOL',
             fieldLabel: '工器具',
-            margin: '5 0 5 10',
+            margin: '5 0 5 100',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
@@ -140,27 +141,29 @@ Ext.onReady(function () {
             xtype: 'textfield',
             id: 'V_V_XZ_DEPT',
             fieldLabel: '协助单位',
-            margin: '5 0 5 10',
+            margin: '5 0 5 100',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
-        },{
-            xtype: 'textfield',
-            id: 'V_V_INPER',
-            fieldLabel: '录入人',
-            margin: '5 0 5 5',
-            labelWidth: 100,
-            labelAlign: 'right',
-            width: 230
-        }, {
-            xtype: 'textfield',
-            id: 'V_V_INTIME',
-            fieldLabel: '录入时间',
-            margin: '5 0 5 10',
-            labelWidth: 100,
-            labelAlign: 'right',
-            width: 230
-        },{
+        },
+        //     {
+        //     xtype: 'textfield',
+        //     id: 'V_V_INPER',
+        //     fieldLabel: '录入人',
+        //     margin: '5 0 5 5',
+        //     labelWidth: 100,
+        //     labelAlign: 'right',
+        //     width: 230
+        // }, {
+        //     xtype: 'textfield',
+        //     id: 'V_V_INTIME',
+        //     fieldLabel: '录入时间',
+        //     margin: '5 0 5 10',
+        //     labelWidth: 100,
+        //     labelAlign: 'right',
+        //     width: 230
+        // },
+            {
             xtype: 'textfield',
             id: 'V_V_ORDER',
             fieldLabel: '排序',
@@ -174,7 +177,7 @@ Ext.onReady(function () {
             id: 'V_V_WORKWAY',
             fieldLabel: '操作方法及要求',
             //readOnly: true,
-            margin: '5 0 5 10',
+            margin: '5 0 25 100',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
@@ -183,21 +186,38 @@ Ext.onReady(function () {
             id: 'V_V_JSYQ',
             fieldLabel: '技术要求',
             //readOnly: true,
-            margin: '5 0 5 5',
+            margin: '5 0 25 5',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
-        },{
+        }
+        ,{
             xtype: 'textfield',
             id: 'V_V_REPAIR_CODE',
             fieldLabel: '维修作业标准编码',
             value:V_V_GUID,
+            hidden:true,
             readOnly: true,
-            margin: '5 0 26 10',
+            margin: '5 0 26 30',
             labelWidth: 100,
             labelAlign: 'right',
             width: 230
-        },{
+        }
+        ,
+            // {
+            //     xtype: 'button',
+            //     text: '保存',
+            //     icon: imgpath + '/filesave.png',
+            //     style: 'margin: 5px 0px 26px 100px',
+            //     handler: _save
+            // }, {
+            //     xtype: 'button',
+            //     text: '取消',
+            //     style: ' margin: 5px 0px 26px 5px',
+            //     icon: imgpath + '/error_16x16.gif',
+            //     handler: _close
+            // }
+            {
             layout: 'column',
             defaults: {
                 labelAlign: 'right'
@@ -206,7 +226,7 @@ Ext.onReady(function () {
                 xtype: 'button',
                 text: '保存',
                 icon: imgpath + '/filesave.png',
-                style: 'margin: 5px 0px 26px 100px',
+                style: 'margin: 5px 0px 26px 300px',
                 handler: _save
             }, {
                 xtype: 'button',
@@ -215,7 +235,8 @@ Ext.onReady(function () {
                 icon: imgpath + '/error_16x16.gif',
                 handler: _close
             }]
-        }]
+          }
+        ]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -229,7 +250,7 @@ Ext.onReady(function () {
             }
         },
         items: [{
-            region: 'north',
+            region: 'center',
             border: false,
             items: [inputPanel]
         }]
@@ -259,8 +280,8 @@ function _save() {
             'V_V_TOOL':Ext.getCmp('V_V_TOOL').getSubmitValue(),
             'V_V_AQ':Ext.getCmp('V_V_AQ').getSubmitValue(),
             'V_V_XZ_DEPT': Ext.getCmp('V_V_XZ_DEPT').getSubmitValue(),
-            'V_V_INPER': Ext.getCmp('V_V_INPER').getSubmitValue(),
-            'V_V_INTIME': Ext.getCmp('V_V_INTIME').getSubmitValue(),
+            'V_V_INPER': V_V_PERSONCODE,
+            'V_V_INTIME': '',//Ext.getCmp('V_V_INTIME').getSubmitValue(),
             'V_V_ORDER': Ext.getCmp('V_V_ORDER').getSubmitValue()==''?0:Ext.getCmp('V_V_ORDER').getSubmitValue(),
             'V_V_WORKWAY': Ext.getCmp('V_V_WORKWAY').getSubmitValue(),
             'V_V_JSYQ': Ext.getCmp('V_V_JSYQ').getSubmitValue(),

@@ -21,7 +21,7 @@ if (location.href.split('?')[1] != undefined) {
     (parameters.V_V_ORGCODE == undefined) ? V_V_ORGCODE = '' : V_V_ORGCODE = parameters.V_V_ORGCODE;
     (parameters.V_V_DEPTCODE == undefined) ? V_V_DEPTCODE = '' : V_V_DEPTCODE = parameters.V_V_DEPTCODE;
     (parameters.V_V_EQUCODE == undefined) ? V_V_EQUCODE = '' : V_V_EQUCODE = parameters.V_V_EQUCODE;
-    (parameters.V_V_EQUNAME == '%25') ? V_V_EQUNAME = '%' : V_V_EQUNAME = parameters.V_V_EQUNAME;
+    // (parameters.V_V_EQUNAME == '%25') ? V_V_EQUNAME = '%' : V_V_EQUNAME = parameters.V_V_EQUNAME;
     (parameters.V_V_GUID == undefined) ? V_V_GUID = '' : V_V_GUID = parameters.V_V_GUID;
 }
 
@@ -152,13 +152,13 @@ Ext.onReady(function () {
         }),
         listeners: {
             load: function (store, records) {
-                if (BOOLEAN) {
-                    Ext.getCmp('V_V_EQUNAME').setValue(V_V_EQUNAME);
-                    sbNameStoreLoad = true;
-                    _init();
-                } else {
+                // if (BOOLEAN) {
+                //     Ext.getCmp('V_V_EQUNAME').setValue(V_V_EQUNAME);
+                //     sbNameStoreLoad = true;
+                //     _init();
+                // } else {
                     Ext.getCmp('V_V_EQUNAME').select(store.last());
-                }
+                // }
             }
         }
     });

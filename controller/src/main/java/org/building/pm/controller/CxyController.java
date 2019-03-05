@@ -81,5 +81,48 @@ public class CxyController {
 
         return cService.PRO_PM_STANDARD_GX_BOM_SEL(V_V_PERSONCODE,V_V_DEPTCODE,V_V_REPAIR_CODE,V_V_EQUTYPE);
     }
+
+    @RequestMapping(value = "PM_STANDARD_GX_BOM_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_STANDARD_GX_BOM_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                      @RequestParam(value = "V_V_SPCODE") String V_V_SPCODE,
+                                                          @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                          @RequestParam(value = "V_V_NUM") String V_V_NUM,
+                                                      @RequestParam(value = "V_V_INPUTER") String V_V_INPUTER,
+                                                      HttpServletRequest request)
+            throws SQLException {
+
+        return cService.PM_STANDARD_GX_BOM_SET(V_V_GUID,V_V_SPCODE,V_V_EQUCODE,V_V_NUM,V_V_INPUTER);
+    }
+
+    @RequestMapping(value = "SAP_PM_EQU_BOM_FOR_JX_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> SAP_PM_EQU_BOM_FOR_JX_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                      HttpServletRequest request)
+            throws SQLException {
+
+        return cService.SAP_PM_EQU_BOM_FOR_JX_SEL(V_V_GUID);
+    }
+
+    @RequestMapping(value = "/PRO_STANDARD_DATA_BY_TYPE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_STANDARD_DATA_BY_TYPE_SEL(@RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                           HttpServletRequest request) throws SQLException {
+
+        return cService.PRO_STANDARD_DATA_BY_TYPE_SEL(V_V_EQUTYPE,V_V_PAGE, V_V_PAGESIZE);
+    }
+
+    @RequestMapping(value = "PRO_WORKORDER_STANDARD_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_WORKORDER_STANDARD_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                      @RequestParam(value = "V_V_ORDERID") String V_V_ORDERID,
+                                                      @RequestParam(value = "V_V_INPUTER") String V_V_INPUTER,
+                                                      HttpServletRequest request)
+            throws SQLException {
+
+        return cService.PRO_WORKORDER_STANDARD_SET(V_V_GUID,V_V_ORDERID,V_V_INPUTER);
+    }
 }
 
