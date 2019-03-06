@@ -1509,11 +1509,30 @@ function _reject() {
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
-            window.opener.QueryTabW();
-            window.opener.QuerySum();
-            window.opener.QueryGrid();
-            window.close();
-            window.opener.OnPageLoad();
+            Ext.Ajax.request({
+                url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_DEL',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID: V_ORDERGUID
+                },
+                success: function (response) {
+                    var resp = Ext.decode(response.responseText);//后台返回的值
+                    if (resp.V_INFO == '成功') {//成功，会传回true
+                        window.opener.QueryTabW();
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
+                        window.close();
+                        window.opener.OnPageLoad();
+                    }
+
+                }
+            });
+            // window.opener.QueryTabW();
+            // window.opener.QuerySum();
+            // window.opener.QueryGrid();
+            // window.close();
+            // window.opener.OnPageLoad();
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
