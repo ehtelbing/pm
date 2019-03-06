@@ -422,8 +422,10 @@ function queryStore() {
                 V_V_DEPT: Ext.ComponentManager.get('bmmc').getValue(),
                 V_V_TYPE: Ext.ComponentManager.get('lx').getValue(),
                 V_V_CLASSTYPE: Ext.ComponentManager.get('bb').getValue(),
-                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'),
-                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')
+                // V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y/m/d H:i:m'),
+                // V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y/m/d H:i:s')
+                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y/m/d'),
+                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y/m/d')
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);

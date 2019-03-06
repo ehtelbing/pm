@@ -546,8 +546,9 @@ public class WsyController {
 
     @RequestMapping(value = "/PM_REALINFOTL_QUERY", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PM_REALINFOTL_QUERY(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.PM_REALINFOTL_QUERY();
+    public HashMap PM_REALINFOTL_QUERY(@RequestParam(value="V_PERCODE") String V_PERCODE
+            ,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PM_REALINFOTL_QUERY(V_PERCODE);
         return data;
     }
 
@@ -581,8 +582,11 @@ public class WsyController {
 
     @RequestMapping(value = "/PM_REALINFOTL_EDIT", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PM_REALINFOTL_EDIT(@RequestParam(value = "V_V_CODE") String V_V_CODE, @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.PM_REALINFOTL_EDIT(V_V_CODE, V_V_CONTENT);
+    public HashMap PM_REALINFOTL_EDIT(@RequestParam(value = "V_V_CODE") String V_V_CODE,
+                                      @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+                                      @RequestParam(value="V_PERCODE") String V_PERCODE,
+                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.PM_REALINFOTL_EDIT(V_V_CODE,V_V_CONTENT,V_PERCODE);
         return data;
     }
 
@@ -623,7 +627,13 @@ public class WsyController {
 
     @RequestMapping(value = "/PRO_PP_INFORMATION_WITHD_LIST2", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PRO_PP_INFORMATION_WITHD_LIST2(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_DEPT") String V_V_DEPT, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE, @RequestParam(value = "V_D_TODATE") String V_D_TODATE, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public HashMap PRO_PP_INFORMATION_WITHD_LIST2(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                                  @RequestParam(value = "V_V_DEPT") String V_V_DEPT,
+                                                  @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                                  @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE,
+                                                  @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE,
+                                                  @RequestParam(value = "V_D_TODATE") String V_D_TODATE,
+                                                  HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.PRO_PP_INFORMATION_WITHD_LIST2(V_V_PERSONCODE, V_V_DEPT, V_V_TYPE, V_V_CLASSTYPE, V_D_FROMDATE, V_D_TODATE);
         return data;
     }

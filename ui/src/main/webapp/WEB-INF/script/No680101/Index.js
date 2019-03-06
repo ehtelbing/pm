@@ -503,7 +503,8 @@ function query() {
     Ext.data.StoreManager.lookup('gridStore').load(
             {
                 params: {
-                    parVal: []
+                    // parVal: []
+                    V_PERCODE:Ext.util.Cookies.get("v_personcode")
                 }
             });
 }
@@ -528,7 +529,9 @@ function addModel() {
         method: 'POST',
         params: {
             V_V_CODE: '-1',
-            V_V_CONTENT: Ext.getCmp('xxnr').getValue()
+            V_V_CONTENT: Ext.getCmp('xxnr').getValue(),
+            V_PERCODE:Ext.util.Cookies.get("v_personcode")
+
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
