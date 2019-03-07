@@ -217,7 +217,7 @@ Ext.onReady(function () {
             'V_MONTHPLAN_CODE',
             'V_WEEKID',
             'V_STATE','V_SGWAYNAME','V_REPAIRDEPATNAME','V_TELNAME','V_TELNUMB','V_THICKNESS','V_REASON',
-            'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',
+            'V_STATUSNAME', 'V_GUID', 'V_STATENAME', 'V_INPERNAME', 'V_FLOWNAME',"V_FLAG",
             'V_MAIN_DEFECT',
             'V_EXPECT_AGE',
             'V_REPAIR_PER',
@@ -401,7 +401,7 @@ Ext.onReady(function () {
             {text:'专业',width:80,dataIndex:'V_REPAIRMAJOR_CODE', align: 'center',renderer:Atleft},
             { text: '检修负责人',width:100,dataIndex:'V_TELNAME', align: 'center',renderer:Atleft },
             { text: '联系电话',width:100,dataIndex:'V_TELNUMB', align: 'center',renderer:rendererTime },
-            { text: '施工准备是否已落实',width:160,dataIndex:'V_THICKNESS', align: 'center',renderer:AtFalg },
+            { text: '施工准备是否已落实',width:160,dataIndex:'V_FLAG', align: 'center',renderer:AtFalg },
             { text: '情况说明',width:200,dataIndex:'V_REASON', align: 'center',renderer:rendererTime },
             { text: '新guid',width:200,dataIndex:'V_SBB_GUID', align: 'center',hidden:true,renderer:rendererTime }
         ],
