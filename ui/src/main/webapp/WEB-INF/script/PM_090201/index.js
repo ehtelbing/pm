@@ -1109,3 +1109,16 @@ function getEquipReturnValue(ret) {
     $("#V_EQUSITE").val(str[3]);
 }
 
+function Getjxzy() {//关联检修标准
+    if ($("#V_EQUCODE").val() == '') {
+        alert('请选择设备！');
+        return;
+    }
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_0901/index_jx.html?V_GUID=' + $("#V_ORDERGUID").val() + '&V_ORGCODE=' +
+        $("#V_ORGCODE").val() + '&V_DEPTCODE=' + $("#V_DEPTCODE").val() + '&V_EQUTYPE=' + V_EQUTYPECODE + '&V_EQUCODE=' +
+        $("#V_EQUCODE").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+
+
+}

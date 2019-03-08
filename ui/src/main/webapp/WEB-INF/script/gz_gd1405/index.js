@@ -14,14 +14,6 @@ $(function () {
     loadMatList();
 
 
-    // $("#selPlant").on("input propertychange",function(){
-    //     if($("#selPlant").val()=="99170208"){
-    //         $("#selType").val("AK11");
-    //     }else{
-    //         $("#selType").val($("#selType").get(0).checked=true)
-    //     }
-    // });
-
     $("#btnTask").click(function () {
         if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null || $("#V_EQUIP_NAME").val() == "" || $("#V_EQUIP_NAME").val() == null || $("#V_FUNC_LOC").val() == "" || $("#V_FUNC_LOC").val() == null) {
             alert("请选择设备");
@@ -44,7 +36,7 @@ $(function () {
 function loadPageInfo() {
 
     $.ajax({
-        url: AppUrl + '/No4120/PRO_PM_WORKORDER_YZJ_CREATE',
+        url: AppUrl + '/cxy/PRO_PM_WORKORDER_SBGZ_CREATE',
         type: 'post',
         async: false,
         data: {
@@ -81,6 +73,7 @@ function loadPageInfo() {
 
                 $("#V_DEPTCODEREPARIR").val(resp.list[0].V_DEPTCODEREPAIR);
             }
+
         }
     });
 }
@@ -248,7 +241,7 @@ function loadMatList() {
 
 function loadToolAndTxtList() {
     $.ajax({
-        url: AppUrl + '/No4120/PRO_PM_WORKORDER_YZJ_CREATE',
+        url: AppUrl + '/cxy/PRO_PM_WORKORDER_SBGZ_CREATE',
         type: 'post',
         async: false,
         data: {
@@ -296,6 +289,19 @@ function GetModel() {
     loadMatList();
 }
 
+function Getjxzy() {//关联检修标准
+    if ($("#V_EQUCODE").val() == '') {
+        alert('请选择设备！');
+        return;
+    }
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + 'page/PM_0901/index_jx.html?V_GUID=' + $("#V_ORDERGUID").val() + '&V_ORGCODE=' +
+        $("#V_ORGCODE").val() + '&V_DEPTCODE=' + $("#V_DEPTCODE").val() + '&V_EQUTYPE=' + V_EQUTYPE + '&V_EQUCODE=' +
+        $("#V_EQUCODE").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
+
+
+}
 
 function OpenEditMat() {
     if ($("#V_EQUCODE").val() == '') {
@@ -534,17 +540,4 @@ function OnStamp() {
     selectID.push($('#V_ORDERGUID').val());
     window.open(AppUrl + "page/No410101/Index.html", selectID,
         "dialogHeight:700px;dialogWidth:1100px");
-}
-function Getjxzy() {//关联检修标准
-    if ($("#V_EQUIP_NO").val() == '') {
-        alert('请选择设备！');
-        return;
-    }
-    var owidth = window.document.body.offsetWidth - 200;
-    var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/PM_0901/index_jx.html?V_GUID=' + $("#V_ORDERGUID").val() + '&V_ORGCODE=' +
-        $("#V_ORGCODE").val() + '&V_DEPTCODE=' + $("#V_DEPTCODE").val() + '&V_EQUTYPE=' + '&V_EQUCODE=' +
-        $("#V_EQUIP_NO").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
-
-
 }
