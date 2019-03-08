@@ -1230,6 +1230,46 @@ function _reject() {
             V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
+            Ext.Ajax.request({
+                url: AppUrl + 'hp/PM_03_PLAN_MONTH_DEL',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID: V_ORDERGUID
+                },
+                success: function (response) {
+                    var resp = Ext.decode(response.responseText);//后台返回的值
+                    if (resp.V_INFO == 'success') {//成功，会传回true
+                        window.opener.QueryTabY();
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
+                        window.close();
+                        window.opener.OnPageLoad();
+
+                    } else {
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.V_INFO,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR,
+                            fn: function () {
+
+                            }
+                        });
+                    }
+                },
+                failure: function (response) {//访问到后台时执行的方法。
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: response.responseText,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR,
+                        fn: function () {
+
+                        }
+                    })
+                }
+            });
             window.opener.QueryTabY();
             window.opener.QuerySum();
             window.opener.QueryGrid();

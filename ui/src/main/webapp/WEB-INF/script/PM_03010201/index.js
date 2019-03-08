@@ -961,8 +961,8 @@ function OnButtonDeleteData(){
         return false;
     }
     for (var i = 0; i < records.length; i++) {
-        if (records[i].data.V_STATE != 100) {
-            Ext.Msg.alert('提升信息', '只能删除作废的数据');
+        if (records[i].data.V_STATE != 100&&records[i].data.V_STATE != 10&&records[i].data.V_STATE != 99) {
+            Ext.Msg.alert('提示信息', '只有作废、已驳回和未发起的数据可以删除');
             return false;
         }
     }
