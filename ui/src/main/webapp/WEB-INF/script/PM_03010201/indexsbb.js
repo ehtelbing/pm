@@ -526,7 +526,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             width: 55,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+                // return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+                return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_SBB_GUID + '\')">' + '详细' + '</a>';
             }
         },
         /*{text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
