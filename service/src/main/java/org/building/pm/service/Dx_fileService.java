@@ -2714,4 +2714,43 @@ public class Dx_fileService {
         logger.info("end PM_1921_PLAN_IN_MX_SET");
         return result;
     }
+    // 事故统计分析
+    public HashMap PM_14_FAULT_ITEM_DATA_STAT(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_EQUTYPE,
+                                          String V_V_EQUCODE,String V_V_EQUCHILD_CODE,String V_V_FAULT_TYPE,
+                                          String V_V_FAULT_YY,String V_STAR_DATE,String V_END_DATE) throws SQLException{
+        HashMap result = new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_14_FAULT_ITEM_DATA_STAT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_STAT(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPE," +
+                    ":V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_TYPE," +
+                    ":V_V_FAULT_YY,:V_STAR_DATE,:V_END_DATE,:RET)}");
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPE",V_V_EQUTYPE);
+
+            cstmt.setString("V_V_EQUCODE",V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCHILD_CODE",V_V_EQUCHILD_CODE);
+            cstmt.setString("V_V_FAULT_TYPE",V_V_FAULT_TYPE);
+
+            cstmt.setString("V_V_FAULT_YY",V_V_FAULT_YY);
+            cstmt.setString("V_STAR_DATE",V_STAR_DATE);
+            cstmt.setString("V_END_DATE",V_END_DATE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch (SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result"+result);
+        logger.info("end PM_14_FAULT_ITEM_DATA_STAT");
+        return result;
+    }
 }

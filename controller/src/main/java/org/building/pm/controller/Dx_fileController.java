@@ -2963,7 +2963,27 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_1921_PLAN_IN_MX_SET(V_V_MX_NAME,V_V_ORGCODE,V_V_DEPTCODE,V_V_SPECIALTY,V_V_MENO,V_V_INPER,V_V_EQUTYPE,V_V_EQUCODE,V_V_CONTEXT,V_V_JXMX_CODE,V_V_PERNUM,V_V_LIFELONG,V_V_MAIN_DEFECT,V_V_SGWAY);
         return data;
     }
+    // 事故统计分析
+    @RequestMapping(value = "PM_14_FAULT_ITEM_DATA_STAT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_14_FAULT_ITEM_DATA_STAT(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
 
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+            @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+
+            @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+            @RequestParam(value = "V_STAR_DATE") String V_STAR_DATE,
+            @RequestParam(value = "V_END_DATE") String V_END_DATE,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_14_FAULT_ITEM_DATA_STAT(V_V_ORGCODE,V_V_DEPTCODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_EQUCHILD_CODE,V_V_FAULT_TYPE,V_V_FAULT_YY,V_STAR_DATE,V_END_DATE);
+        return data;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
