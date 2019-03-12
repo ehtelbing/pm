@@ -366,7 +366,7 @@ var pageFunction = {
         var ganttStore = Ext.create("Ext.data.Store", {
             storeId: 'ganttStore',
             fields : [ 'V_GUID', 'V_FAULT_NAME', 'V_EQUCODE', 'V_EQUNAME',
-                'V_FAULT_SS', 'V_FINDTIME', 'V_ENDTIME','MYCOLOR'],
+                'V_FAULT_SS', 'V_FINDTIME', 'V_ENDTIME','WORKORDERID','MYCOLOR'],
             data: ganttdata,
             proxy: {
                 type: 'memory',
@@ -439,7 +439,7 @@ var pageFunction = {
                     gtt =
                         '<div style="left:' + (150).toString() + 'px;height:21px;width:' + (vleft* 40).toString() + 'px;background-color:#e83d3dbf;" class="table-color" ></div>' +
                         ' <div style="left:' + (vleft * 40+150).toString() +  'px;height: 21px;width:' + (vwidth * 40+40).toString() + 'px;" class="sch-event"  >' +
-                        '<div class="sch-event-inner" data-qtip="' + record.data.V_FAULT_NAME+'/'+record.data.V_EQUNAME+'/'+record.data.V_ENDTIME+'/'+record.data.V_FAULT_SS+ '" >' +
+                        '<div class="sch-event-inner" data-qtip="' + record.data.V_FAULT_NAME+'/'+record.data.V_EQUNAME+'/'+record.data.V_ENDTIME+'/'+record.data.V_FAULT_SS+'/'+record.data.WORKORDERID+ '" >' +
                         '<div >' + record.data.V_EQUNAME + '</div></div></div>'
                         +'<div style="left:' + (releft).toString() + 'px;height:21px;width:' + (relong * 40).toString() + 'px;background-color:#e83d3dbf;" class="table-color" ></div>'+
                         +'<div class="lxm"  id="' + record.data.V_EQUCODE + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">';

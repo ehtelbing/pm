@@ -5,7 +5,7 @@
 var ip =
     Ext.onReady(function () {
         Login();
-        OnPageLoad();
+        // OnPageLoad();
     });
 
 function Login() {
