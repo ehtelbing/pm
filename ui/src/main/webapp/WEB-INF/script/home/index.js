@@ -14,6 +14,7 @@ var win;//父窗口对象，由子窗口调用
 var returnValue;//父窗口对象，由子窗口调用
 var USERID = Ext.util.Cookies.get('v_personcode');
 var PORP_VALUE = APP.substring(0, APP.length - 3);
+var treeid="";
 if (location.href.split('?')[1] != undefined) {
     if (Ext.urlDecode(location.href.split('?')[1]) != null) {
         menucode = Ext.urlDecode(location.href.split('?')[1]).v_menucode;
@@ -392,7 +393,7 @@ function OnPageLoaded() {
             Ext.ComponentManager.get('favorite').collapse();
             Ext.getBody().unmask();
             _getHomeMenu();
-            if (treeid != "" && treeid != null) {
+           if (treeid != "" && treeid != null) {
                 refreshTree(treeid);
             }
             //GETDDDL();
@@ -437,9 +438,9 @@ function CloseWorkItem(item) {
 function LogOut() {
     location.href = AppUrl + 'page/login/login' + ".html";
     // 日志说明 ,日志类型 ,日志详细信息 ,操作人员账号,操作人编码 ,操作人名称 ,操作状态(0:失败/1:成功),日志对象类型
-    sys_log_insert_noip("注销系统", "注销系统", "注销系统", Ext.util.Cookies
-            .get('v_loginname'), Ext.util.Cookies.get('v_personcode'),
-        Ext.util.Cookies.get('v_personname2'), 1, "注销系统");
+    // sys_log_insert_noip("注销系统", "注销系统", "注销系统", Ext.util.Cookies
+    //         .get('v_loginname'), Ext.util.Cookies.get('v_personcode'),
+    //     Ext.util.Cookies.get('v_personname2'), 1, "注销系统");
 }
 
 function Return() {

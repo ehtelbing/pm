@@ -308,6 +308,7 @@ var pageFunction = {
 // 施工图
     CreateGantt:function () {
         cmItems = [];
+
         indate=Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y/m/d h:i:s');
         endate=Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y/m/d h:i:s');
         vStart = new Date(indate);
@@ -318,6 +319,12 @@ var pageFunction = {
         var vmonth = vTmpDate.getMonth();
         var vTmpMonth;
 
+        cmItems.push({
+            text: '事故名称',
+            width: 150,
+            dataIndex: 'V_FAULT_NAME'
+            ,renderer: pageFunction.testShow
+        });
         while (vTmpDate <= vEnd) {
 
             vTmpMonth = vTmpDate.getMonth();
@@ -330,6 +337,8 @@ var pageFunction = {
             } else {
                 var vyear = vTmpDate.getFullYear();
                 if (vmonth == 11) vyear -= 1;
+                // cmItems.push({
+                //     text: '事故名称', width: 150,dataIndex: 'V_FAULT_NAME'});
                 cmItems.push({text: vyear.toString() + '年' + (vmonth + 1).toString() + '月', columns: dateItems});
                 vmonth = vTmpMonth;
                 dateItems = [];
@@ -338,6 +347,8 @@ var pageFunction = {
             vTmpDate = new Date((vTmpDate / 1000 + 86400) * 1000);
         }
         if (vTmpMonth == vmonth) {
+            // cmItems.push({
+            //     text: '事故名称', width: 150,dataIndex: 'V_FAULT_NAME'});
             cmItems.push({
                 text: vTmpDate.getFullYear().toString() + '年' + (vmonth + 1).toString() + '月',
                 columns: dateItems
@@ -364,12 +375,7 @@ var pageFunction = {
                 }
             }
         });
-        cmItems.push({
-            text: '事故名称',
-            width: 0,
-            dataIndex: 'V_FAULT_NAME'
-            ,renderer: pageFunction.testShow
-        });
+
         var ganttgrid = Ext.create('Ext.grid.Panel', {
             id: 'ganttgrid',
             store: ganttStore,
@@ -413,44 +419,58 @@ var pageFunction = {
 
     IndexShow:function (value, metaData, record) {
         if (record != undefined) {
-
+            var gtt="";
+            // metaData.css = 'x-grid-back-red';
             if (record.data.V_FINDTIME!= null && record.data.V_ENDTIME!= null) {
-                stime = record.data.V_FINDTIME+" 00:00:01";
-                etime = record.data.V_ENDTIME+" 23:59:59";
+                stime = record.data.V_FINDTIME+" 12:00:00";
+                etime = record.data.V_ENDTIME+" 12:00:00";
 
                 var startd = new Date(stime.split(".0")[0].replace(/-/g, "/"));
                 var endd = new Date(etime.split(".0")[0].replace(/-/g, "/"));
                 vStart = Ext.Date.format(new Date(indate), 'Y/m/d h:i:s');
                 vEnd = Ext.Date.format(new Date(endate), 'Y/m/d h:i:s');
+                var aStime=((new Date(vEnd).getTime() - new Date(vStart).getTime()) / (86400 * 1000)) ;
+                var aStleft='<div style="left:' + (150).toString() + 'px;height:21px;width:' + (aStime * 40+40).toString() + 'px;background-color:#e83d3dbf;" class="table-color" ></div>'
                 if (startd>=new Date(vStart) && endd<=new Date(vEnd)) {
                     var vleft = ((startd.getTime() - new Date(vStart).getTime()) / (86400 * 1000)) ;
                     var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) ;
-                    var gtt = '<div style="left:' + (vleft * 40).toString() + 'px;height:23.5px;width:' + (vwidth * 40+40).toString() + 'px;background-color:A6FFA6;" class="sch-event"  ><div class="sch-event-inner" ><div data-qtip="' + record.data.V_FAULT_NAME+'/'+record.data.V_EQUNAME+'/'+record.data.V_ENDTIME+record.data.V_FAULT_SS+ '" >' + record.data.V_EQUNAME + '</div></div></div><div class="lxm"  id="' + record.data.V_EQUCODE + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">';
-
-                    var cont = record.data.V_EQUNAME;//设备名称
-                    var cont2=record.data.V_ENDTIME;//停机时间
-                    var cont3=record.data.V_FAULT_SS;  //设备损失
-                    var contt = '内容：';
-                    for (var i = 0; i < cont.length; i++) {
-                        if (i == 0) {
-                            contt = contt + cont[i] +cont2[i]+cont3[i]+ '<br>';
-                        } else {
-                            contt = contt + cont[i] +cont2[i]+cont3[i]+ '<br>';
-                        }
-                    }
-                    gtt = gtt + contt + '</div>';
-
+                    var relong=((new Date(vEnd).getTime() - endd.getTime()) / (86400 * 1000)) ;
+                    var releft=(vleft * 40+150)+(vwidth * 40+40)
+                    gtt =
+                        '<div style="left:' + (150).toString() + 'px;height:21px;width:' + (vleft* 40).toString() + 'px;background-color:#e83d3dbf;" class="table-color" ></div>' +
+                        ' <div style="left:' + (vleft * 40+150).toString() +  'px;height: 21px;width:' + (vwidth * 40+40).toString() + 'px;" class="sch-event"  >' +
+                        '<div class="sch-event-inner" data-qtip="' + record.data.V_FAULT_NAME+'/'+record.data.V_EQUNAME+'/'+record.data.V_ENDTIME+'/'+record.data.V_FAULT_SS+ '" >' +
+                        '<div >' + record.data.V_EQUNAME + '</div></div></div>'
+                        +'<div style="left:' + (releft).toString() + 'px;height:21px;width:' + (relong * 40).toString() + 'px;background-color:#e83d3dbf;" class="table-color" ></div>'+
+                        +'<div class="lxm"  id="' + record.data.V_EQUCODE + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">';
+                    // var cont = record.data.V_EQUNAME;  //设备名称
+                    // var cont2=record.data.V_ENDTIME;   //停机时间
+                    // var cont3=record.data.V_FAULT_SS;  //设备损失
+                    // var contt = '内容：';
+                    // for (var i = 0; i < cont.length; i++) {
+                    //     if (i == 0) {
+                    //         contt = contt + cont[i] +cont2[i]+cont3[i]+ '<br>';
+                    //     } else {
+                    //         contt = contt + cont[i] +cont2[i]+cont3[i]+ '<br>';
+                    //     }
+                    // }
+                    // gtt = gtt + contt + '</div>';
+                    gtt = gtt  + '</div>';
 
                     return gtt;
                 }
+                else{
+                    return aStleft+gtt;
+                }
+
             }
         }
 
     },
     testShow:function (value, metaData, record) {
         if (record != undefined) {
-            metaData.style = "text-align:left";
-            return '<div >' + record.data.V_FAULT_NAME + '</div>';
+            // metaData.class= "text-align:left;background-color:#FFFFFF;";
+            return '<div style="text-align:left;">' + record.data.V_FAULT_NAME + '</div>';
         }
     }
 }
