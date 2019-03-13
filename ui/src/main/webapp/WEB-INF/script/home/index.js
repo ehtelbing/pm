@@ -24,7 +24,7 @@ if (location.href.split('?')[1] != undefined) {
         treeid = Ext.urlDecode(location.href.split('?')[1]).treeid;
     }
 }
-
+var searchcontext = "%";
 OnCookies();
 
 Ext.Ajax.request({
@@ -62,7 +62,28 @@ var userFavoriteMenuStore = Ext.create('Ext.data.TreeStore', {
         }
     }
 });
-
+var userhistoryMenuStore = Ext.create('Ext.data.Store', {
+    storeId: 'userhistoryMenuStore',
+    autoLoad: true,
+    pageSize: -1,
+    fields: ['I_ID','V_USERID','V_INSERTDATE','V_ACTIVE',
+        'V_REMARK','V_ACT_TYPE','V_IP','V_MENUNAME','V_URL' ],
+    proxy: {
+        url: AppUrl + 'cxy/MM_USER_TRENDS_SEL',
+        type: 'ajax',
+        actionMethods: {
+            read: 'POST'
+        },
+        async: true,
+        extraParams: {
+            V_V_USERID: Ext.util.Cookies.get('v_personcode')
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
 var container = Ext.create('Ext.tab.Panel', {
     id: 'container',
     region: 'center',
@@ -184,6 +205,7 @@ function _AssembleAccordions(data) {
                                  '" frameborder="0" width="100%" height="100%" src="'
                                  + _geturl(model.raw.src, APP)
                                  + '" />'].join('');*/
+                                insertHistory(model.data.id);
                             }
 
                         }
@@ -204,7 +226,24 @@ function _geturl(s_src, s_app) {
     s_url = s_url + s_src;
     return s_url;
 }
-
+function insertHistory(active) {
+    Ext.Ajax.request({
+        url: AppUrl + 'cxy/MM_USER_TRENDS_INS',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            'V_V_USERID': USERID,
+            'V_V_ACTIVE': active,
+            'V_V_REMARK': '',
+            'V_V_ACT_TYPE': '页面访问',
+            'V_V_IP': ''
+        },
+        success: function (response) {
+            userhistoryMenuStore.load();
+        }
+    });
+}
 function _CreateHeader() {
     return Ext.create('Ext.panel.Panel', {
         region: 'north',
@@ -269,8 +308,65 @@ var favoriteTreePanel = new Ext.create('Ext.tree.Panel', {
         }
     }
 });
+var historyTreePanel = new Ext.create('Ext.grid.Panel', {
+    id: 'historyTreePanel',
+    baseCls: 'my-panel-no-border',
+    store: userhistoryMenuStore,
+    frame: true,
+    rootVisible: false,
+    hideHeaders: true,
+    columns: [{
+        dataIndex: 'V_MENUNAME',
+        align: 'left',
+        width: '100%'
+    }],
+    listeners: {
+        'itemclick': function (view, record, item, index) {
+                //append(record.data.MENU_ID, record.data.V_MENUNAME, record.data.URL)//标签页
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                window.open(AppUrlFrame +record.data.V_URL, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');//弹窗
+                insertHistory(record.data.V_ACTIVE);
+        }
+    }
+});
+var searchPanel = Ext.create('Ext.Panel', {
+    id : 'searchPanel',
+    header : false,
+    frame : true,
+    layout : 'column',
+    defaults : {
+        labelAlign : 'right',
+        // labelWidth : 100,
+        // inputWidth : 200,
+        margin : '4,0,0,0'
+    },
+    items : [
+        {
+            xtype: 'textfield',
+            id: 'searchtext',
+             fieldLabel: ' ',
+            labelSeparator: '',
+            style: { background: 'url('+imgpath + '/search.png) no-repeat left center'},
+            labelWidth: 15,
+            width: 180,
+            emptyText:'点检',
+            listeners :{
+                specialKey :function(field,e){
+                    if (e.getKey() == Ext.EventObject.ENTER) _changeMenu();
 
+                }
+                // , 'focus': function(f){
 
+                //     this.selectText();
+                //     // Ext.getCmp('searchtext').setValue('');
+                // }
+
+            }
+        }
+
+    ]
+});
 function _CreateSidebar(accordions) {
     return Ext.create('Ext.panel.Panel', {
         region: 'west',
@@ -281,7 +377,7 @@ function _CreateSidebar(accordions) {
         collapseMode: 'mini',
         preventHeader: true,
         items: [Ext.create('Ext.panel.Panel', {
-            title: '菜单',
+            // title: '菜单',
             id:'menutree',
             titleAlign: 'center',
             width: 200,
@@ -300,6 +396,30 @@ function _CreateSidebar(accordions) {
             //collapsed: true,
             collapsible: true,
             items: [favoriteTreePanel]
+        }, {
+            id: 'history',
+            xtype: 'panel',
+            title: '历史',
+            titleAlign: 'center',
+            region: 'north',
+            layout: 'fit',
+            height: 260,
+            border: false,
+            collapsed: true,
+            collapsible: true,
+            items: [historyTreePanel]
+        }, {
+            id: 'search',
+            xtype: 'panel',
+            title: '菜单',
+            titleAlign: 'center',
+            region: 'north',
+            layout: 'fit',
+            height: 68,
+            border: false,
+            // collapsed: true,
+            // collapsible: true,
+            items: [searchPanel]
         },
             {
                 xtype: 'panel',
@@ -402,11 +522,33 @@ function OnPageLoaded() {
     if (menucode != "" && menucode != null) {
         window.parent.append(menucode, menuname, APP + v_url);
     }
-
 }
 
 Ext.onReady(OnPageLoaded);
-
+function searchMenu() {
+    Ext.getCmp('menutree').removeAll();
+    Ext.Ajax.request({
+        url: AppUrl + 'cxy/PRO_BASE_NEW_MENU_BYNAME_SEL',
+        params: {
+            IS_V_ROLECODE: Ext.util.Cookies.get('v_rolecode'),
+            IS_V_SYSTYPE: '1',
+            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_HOME_MENU: menutype,
+            V_V_MENUNAME:searchcontext
+        },
+        method: 'post',
+        sync: true,
+        success: function (response) {
+            var result = Ext.decode(response.responseText);
+            var Accordions = _AssembleAccordions(result); // tree
+            Ext.getCmp('menutree').add(Accordions);
+            //GETDDDL();
+        }
+    });
+    // if (menucode != "" && menucode != null) {
+    //     window.parent.append(menucode, menuname, APP + v_url);
+    // }
+}
 function Close() {
     window.close();
 }
@@ -713,9 +855,12 @@ function OnCookies() {
 
 }
 
-
-
-
-
-
+function _changeMenu() {
+    if(Ext.getCmp('searchtext').getValue()!=null && Ext.getCmp('searchtext').getValue()!=''){
+        searchcontext=Ext.getCmp('searchtext').getValue();
+    }else{
+        searchcontext=Ext.getCmp('searchtext').emptyText;
+    }
+    searchMenu();
+}
 

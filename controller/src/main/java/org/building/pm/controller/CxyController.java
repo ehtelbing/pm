@@ -183,5 +183,85 @@ public class CxyController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "/MM_USER_TRENDS_INS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MM_USER_TRENDS_INS(@RequestParam(value = "V_V_USERID") String V_V_USERID,
+                                               @RequestParam(value = "V_V_ACTIVE") String V_V_ACTIVE,
+                                               @RequestParam(value = "V_V_REMARK") String V_V_REMARK,
+                                               @RequestParam(value = "V_V_ACT_TYPE") String V_V_ACT_TYPE,
+                                               @RequestParam(value = "V_V_IP") String V_V_IP,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.MM_USER_TRENDS_INS(V_V_USERID, V_V_ACTIVE, V_V_REMARK, V_V_ACT_TYPE, V_V_IP);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/MM_USER_TRENDS_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MM_USER_TRENDS_SEL(@RequestParam(value = "V_V_USERID") String V_V_USERID,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.MM_USER_TRENDS_SEL(V_V_USERID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_BASE_NEW_MENU_BYNAME_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PRO_BASE_NEW_MENU_BYNAME_SEL(
+            @RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
+            @RequestParam(value = "IS_V_SYSTYPE") String IS_V_SYSTYPE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_HOME_MENU") String V_V_HOME_MENU,
+            @RequestParam(value = "V_V_MENUNAME") String V_V_MENUNAME)
+            throws SQLException {
+        List<Map> result = cService.PRO_BASE_NEW_MENU_BYNAME_SELTree(IS_V_ROLECODE, IS_V_SYSTYPE,V_V_DEPTCODE, V_V_HOME_MENU,V_V_MENUNAME);
+        return result;
+    }
+    @RequestMapping(value = "/MM_USER_TRENDS_BYNAME_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MM_USER_TRENDS_BYNAME_SEL(@RequestParam(value = "V_V_USERID") String V_V_USERID,
+                                                  @RequestParam(value = "V_V_MENUNAME") String V_V_MENUNAME,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.MM_USER_TRENDS_BYNAME_SEL(V_V_USERID,V_V_MENUNAME);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/MM_USER_TRENDS_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MM_USER_TRENDS_DEL(@RequestParam(value = "V_I_ID") String V_I_ID,
+
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.MM_USER_TRENDS_DEL(V_I_ID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
 }
 

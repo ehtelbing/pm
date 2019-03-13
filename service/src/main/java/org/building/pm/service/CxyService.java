@@ -380,4 +380,204 @@ public class CxyService {
         logger.info("end PRO_PM_WORKORDER_SBGZ_CREATE");
         return result;
     }
+    public HashMap MM_USER_TRENDS_INS(String V_V_USERID, String V_V_ACTIVE, String V_V_REMARK, String V_V_ACT_TYPE, String V_V_IP) throws SQLException {
+        logger.info("begin MM_USER_TRENDS_INS");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call MM_USER_TRENDS_INS" + "(:V_V_USERID,:V_V_ACTIVE,:V_V_REMARK," +
+                    ":V_V_ACT_TYPE,:V_V_IP,:V_INFO)}");
+            cstmt.setString("V_V_USERID", V_V_USERID);
+            cstmt.setString("V_V_ACTIVE", V_V_ACTIVE);
+            cstmt.setString("V_V_REMARK", V_V_REMARK);
+            cstmt.setString("V_V_ACT_TYPE", V_V_ACT_TYPE);
+            cstmt.setString("V_V_IP", V_V_IP);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MM_USER_TRENDS_INS");
+        return result;
+    }
+
+    public HashMap MM_USER_TRENDS_SEL(String V_V_USERID) throws SQLException {
+
+        logger.info("begin MM_USER_TRENDS_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call MM_USER_TRENDS_SEL" + "(:V_V_USERID,:V_CURSOR)}");
+            cstmt.setString("V_V_USERID", V_V_USERID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MM_USER_TRENDS_SEL");
+        return result;
+    }
+//    String[] str=new String[100];
+//    int k=0;
+    public List<Map> PRO_BASE_NEW_MENU_BYNAME_SELTree(String IS_V_ROLECODE, String IS_V_SYSTYPE, String V_V_DEPTCODE,String V_V_HOME_MENU,String V_V_MENUNAME) throws SQLException {
+        logger.info("begin PRO_BASE_NEW_MENU_BYNAME_SEL");
+        List<Map> list=new ArrayList<>();
+        List<Map> mylist=new ArrayList<>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_NEW_MENU_BYNAME_SEL(:IS_V_ROLECODE,:IS_V_SYSTYPE,:V_V_DEPTCODE,:V_V_HOME_MENU,:V_V_MENUNAME,:V_CURSOR)}");
+            cstmt.setString("IS_V_ROLECODE", IS_V_ROLECODE);
+            cstmt.setString("IS_V_SYSTYPE", IS_V_SYSTYPE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_HOME_MENU", V_V_HOME_MENU);
+            cstmt.setString("V_V_MENUNAME", V_V_MENUNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            HashMap result = new HashMap();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            List<Map> datalist = (List) result.get("list");
+
+            if(datalist.size()>0){
+                for(Map item:datalist){
+                    if (item.get("V_MENUCODE_UP").toString().equals("-1")) {
+                        Map temp = new HashMap();
+                        temp.put("id", item.get("V_MENUCODE").toString());
+                        temp.put("text", item.get("V_MENUNAME").toString());
+                        temp.put("title", item.get("V_MENUNAME").toString());
+                        temp.put("pid", item.get("V_MENUCODE_UP").toString());
+                        temp.put("type", item.get("V_TYPE").toString());
+                        temp.put("flag", item.get("V_FLAG").toString());
+                        temp.put("other", item.get("V_OTHER").toString());
+                        temp.put("cls", "empty");
+                        temp.put("expanded", true);
+                        temp.put("hrefTarget", "Workspace");
+                        if(getChildren(datalist,item.get("V_MENUCODE").toString()).size()<=0){//无子节点
+                            temp.put("leaf",true);
+                            temp.put("src", item.get("V_URL").toString());
+                            temp.put("href", item.get("V_URL").toString());
+                        }else{//有子节点
+                            temp.put("leaf",false);
+                            temp.put("children",getChildren(datalist,item.get("V_MENUCODE").toString()));
+                        }
+                        list.add(temp);
+                    }
+
+                }
+
+            }
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + list);
+        logger.info("end PRO_BASE_NEW_MENU_BYNAME_SEL");
+        return list;
+    }
+    public List<Map> getChildren(List<Map> list,String parentNode) {
+        List<Map> menu=new ArrayList<>();
+        for(Map item:list){
+            if(item.get("V_MENUCODE_UP").equals(parentNode)){
+                Map temp=new HashMap();
+                temp.put("id", item.get("V_MENUCODE").toString());
+                temp.put("text", item.get("V_MENUNAME").toString());
+                temp.put("title", item.get("V_MENUNAME").toString());
+                temp.put("pid", item.get("V_MENUCODE_UP").toString());
+                temp.put("type", item.get("V_TYPE").toString());
+                temp.put("flag", item.get("V_FLAG").toString());
+                temp.put("other", item.get("V_OTHER").toString());
+                temp.put("cls", "empty");
+                temp.put("expanded", true);
+                temp.put("hrefTarget", "Workspace");
+                if(getChildren(list,item.get("V_MENUCODE").toString()).size()==0){//无子节点
+                    temp.put("leaf",true);
+                    temp.put("src", item.get("V_URL").toString());
+                    temp.put("href", item.get("V_URL").toString());
+                }else{//有子节点
+                    temp.put("leaf",false);
+                    temp.put("children",getChildren(list,item.get("V_MENUCODE").toString()));
+                }
+                menu.add(temp);
+            }
+        }
+        return menu;
+    }
+    public HashMap MM_USER_TRENDS_BYNAME_SEL(String V_V_USERID,String V_V_MENUNAME) throws SQLException {
+
+        logger.info("begin MM_USER_TRENDS_BYNAME_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call MM_USER_TRENDS_BYNAME_SEL" + "(:V_V_USERID,:V_V_MENUNAME,:V_CURSOR)}");
+            cstmt.setString("V_V_USERID", V_V_USERID);
+            cstmt.setString("V_V_MENUNAME", V_V_MENUNAME);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MM_USER_TRENDS_BYNAME_SEL");
+        return result;
+    }
+    public HashMap MM_USER_TRENDS_DEL(String V_I_ID) throws SQLException {
+        logger.info("begin MM_USER_TRENDS_DEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call MM_USER_TRENDS_DEL" + "(:V_I_ID,:V_INFO)}");
+            cstmt.setString("V_I_ID", V_I_ID);
+
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MM_USER_TRENDS_DEL");
+        return result;
+    }
 }
