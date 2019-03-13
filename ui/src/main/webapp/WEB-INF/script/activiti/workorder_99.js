@@ -58,6 +58,16 @@ $(function () {
         createDD();
     });
 
+
+    $("#selPlant").on("input propertychange",function(){
+        if($("#selPlant").val()=="99170208"){
+            $("#selType").val("AK11");
+        }else{
+            $("#selType").val($("#selType").get(0).checked=true)
+        }
+    });
+
+
     //WBS编码选择页面
     $("#wbsCode").click(function () {
         var owidth = window.document.body.offsetWidth - 200;
@@ -590,11 +600,60 @@ function Submit() {
             V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
-            window.opener.QueryTab();
-            window.opener.QuerySum();
-            window.opener.QueryGrid();
-            window.close();
-            window.opener.OnPageLoad();
+            $.ajax({
+                url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_BH_EDIT',
+                type: 'post',
+                async: false,
+                data: {
+
+                    V_V_PERCODE: $.cookies.get('v_personcode'),
+                    V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
+                    V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                    V_V_SHORT_TXT: $("#V_DEFECTLIST").val(),
+                    V_V_FUNC_LOC: $("#V_EQUSITE").val(),
+                    V_V_EQUIP_NO: $("#V_EQUCODE").val(),
+                    V_V_EQUIP_NAME: $("#V_EQUNAME").val(),
+                    V_D_START_DATE: $("#planStartDate").val(),
+                    V_D_FINISH_DATE: $("#planFinDate").val(),
+                    V_V_ORDER_TYP:$("#selType").val(),
+                    V_V_ORDER_TYP_TXT:$("#selType").find("option:selected").text(),
+                    V_V_WBS:$("#wbsCode").html(),
+
+                    V_V_WBS_TXT:$("#proName").html(),
+                    V_V_DEPTCODEREPARIR: $("#selPlant").val(),//$("#V_DEPTNAMEREPARIR").html(),//
+                    V_V_TOOL:'',
+                    V_V_TECHNOLOGY: ' ',
+                    V_V_SAFE: ' ',
+                    V_D_DATE_ACP: '', //验收日期 $("#D_DATE_ACP").val(),
+                    V_I_OTHERHOUR: '', //$("#I_OTHERHOUR").val(),
+                    V_V_OTHERREASON: '',//$("#V_OTHERREASON").val(),
+                    V_V_REPAIRCONTENT: '',//$("#V_REPAIRCONTENT").val(),
+                    V_V_REPAIRSIGN: '',//$("#V_REPAIRSIGN").val(),
+                    V_V_REPAIRPERSON: '',//$("#V_REPAIRPERSON").val(),
+                    V_V_POSTMANSIGN: '',//$("#V_POSTMANSIGN").val(),
+                    V_V_CHECKMANCONTENT: '',//$("#V_CHECKMANCONTENT").val(),
+                    V_V_CHECKMANSIGN: '',//Ext.util.Cookies.get("v_personname2"),
+                    V_V_WORKSHOPCONTENT: '',//$("#V_WORKSHOPCONTENT").val(),
+                    V_V_WORKSHOPSIGN: '',//$("#V_WORKSHOPSIGN").html(),
+                    V_V_DEPTSIGN: ''//$("#V_DEPTSIGN").val()
+                },
+                dataType: "json",
+                traditional: true,
+                success: function (resp) {
+
+                    // alert(resp.V_INFO);
+                    window.opener.QueryTab();
+                    window.opener.QuerySum();
+                    window.opener.QueryGrid();
+                    window.close();
+                    window.opener.OnPageLoad();
+                }
+            });
+            // window.opener.QueryTab();
+            // window.opener.QuerySum();
+            // window.opener.QueryGrid();
+            // window.close();
+            // window.opener.OnPageLoad();
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({

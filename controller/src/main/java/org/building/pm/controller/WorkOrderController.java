@@ -897,4 +897,44 @@ public class WorkOrderController {
                 V_V_PERNAME,V_V_INPER);
         return result;
     }
+    //工单驳回修改-99
+    @RequestMapping(value = "/PRO_PM_WORKORDER_BH_EDIT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_BH_EDIT(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                     @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                     @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                     @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                     @RequestParam(value = "V_V_FUNC_LOC") String V_V_FUNC_LOC,
+                                                     @RequestParam(value = "V_V_EQUIP_NO") String V_V_EQUIP_NO,
+                                                     @RequestParam(value = "V_V_EQUIP_NAME") String V_V_EQUIP_NAME,
+                                                     @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                                     @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                                        @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
+                                                        @RequestParam(value = "V_V_ORDER_TYP_TXT") String V_V_ORDER_TYP_TXT,
+                                                     @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                                     @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+                                                     @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                                     @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                     @RequestParam(value = "V_V_TECHNOLOGY") String V_V_TECHNOLOGY,
+                                                     @RequestParam(value = "V_V_SAFE") String V_V_SAFE,
+                                                     @RequestParam(value = "V_D_DATE_ACP") String V_D_DATE_ACP,
+                                                     @RequestParam(value = "V_I_OTHERHOUR") String V_I_OTHERHOUR,
+                                                     @RequestParam(value = "V_V_OTHERREASON") String V_V_OTHERREASON,
+                                                     @RequestParam(value = "V_V_REPAIRCONTENT") String V_V_REPAIRCONTENT,
+                                                     @RequestParam(value = "V_V_REPAIRSIGN") String V_V_REPAIRSIGN,
+                                                     @RequestParam(value = "V_V_REPAIRPERSON") String V_V_REPAIRPERSON,
+                                                     @RequestParam(value = "V_V_POSTMANSIGN") String V_V_POSTMANSIGN,
+                                                     @RequestParam(value = "V_V_CHECKMANCONTENT") String V_V_CHECKMANCONTENT,
+                                                     @RequestParam(value = "V_V_CHECKMANSIGN") String V_V_CHECKMANSIGN,
+                                                     @RequestParam(value = "V_V_WORKSHOPCONTENT") String V_V_WORKSHOPCONTENT,
+                                                     @RequestParam(value = "V_V_WORKSHOPSIGN") String V_V_WORKSHOPSIGN,
+                                                     @RequestParam(value = "V_V_DEPTSIGN") String V_V_DEPTSIGN,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        HashMap result = workOrderService.PRO_PM_WORKORDER_BH_EDIT(V_V_PERCODE,V_V_PERNAME,V_V_ORDERGUID,V_V_SHORT_TXT,
+                V_V_FUNC_LOC, V_V_EQUIP_NO, V_V_EQUIP_NAME, V_D_START_DATE, V_D_FINISH_DATE,V_V_ORDER_TYP,V_V_ORDER_TYP_TXT, V_V_WBS, V_V_WBS_TXT,
+                V_V_DEPTCODEREPARIR, V_V_TOOL, V_V_TECHNOLOGY, V_V_SAFE, V_D_DATE_ACP, V_I_OTHERHOUR, V_V_OTHERREASON, V_V_REPAIRCONTENT,
+                V_V_REPAIRSIGN, V_V_REPAIRPERSON, V_V_POSTMANSIGN, V_V_CHECKMANCONTENT, V_V_CHECKMANSIGN, V_V_WORKSHOPCONTENT, V_V_WORKSHOPSIGN, V_V_DEPTSIGN);
+        return result;
+    }
 }
