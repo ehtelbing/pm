@@ -106,6 +106,28 @@ Ext
             }
         });
 
+        var bomStore = Ext.create('Ext.data.Store', {
+            id: 'bomStore',
+            autoLoad : true,
+            fields : [ 'I_ID', 'V_EQUCODE','V_SPCODE','V_SPNAME','V_SPTYPE','V_SPCODE_OLD','V_NUMBER','V_MEMO'],
+            proxy : {
+                type : 'ajax',
+                async : false,
+                url : AppUrl + 'pm_19/PRO_SAP_EQU_BOM_VIEW',
+                actionMethods : {
+                    read : 'POST'
+                },
+                reader : {
+                    type : 'json',
+                    root : 'list',
+                    total : 'total'
+                },
+                extraParams:{
+                    V_V_EQUCODE:V_EQUCODE
+                }
+            }
+        });
+
         var YZJStore = Ext.create('Ext.data.Store',
             {
                 id: 'YZJStore',
@@ -180,15 +202,50 @@ Ext
 
         var tab = Ext.create('Ext.tab.Panel', {
             id: 'tabpanel',
-            xtype: 'tabpanel',
-            height: "100%",
-            width: "100%",
+            // xtype: 'tabpanel',
+            height: "50%",
+            width: "50%",
             activeTab: 0,
+            region:"west",
             listeners: {
                 beforerender: addTab
             }
         });
 
+        var bomgrid=Ext.create('Ext.grid.Panel',{
+            id:'bomgrid',
+            title:'BOM备件信息',
+            height: "50%",
+            width: "50%",
+            // region:'center',
+            region:"center",
+            store:bomStore,
+            columnLines:true,
+            columns:[
+                // Ext.create('Ext.grid.RowNumberer', {
+                //     header: '序号',
+                //     width: 50,
+                //     align:'center'
+                // }),
+                {header:'设备编码',dataIndex:'V_EQUCODE',align: 'center', width: 120,hidden:true},
+                {header:'备件编码',dataIndex:'V_SPCODE',align: 'center', width: 150},
+                {header:'备件名称',dataIndex:'V_SPNAME',align: 'center', width: 150},
+                {header:'备件数量',dataIndex:'V_NUMBER',align: 'center', width: 150}
+            ]
+        });
+        var bomPanel=Ext.create('Ext.panel.Panel',{
+            id:'bomPanel',
+            region:'east',
+            frame:true,
+            border:false,
+            layout:'border',
+            items:[bomgrid]
+        });
+        // Ext.create('Ext.container.Viewport',{
+        //    id:'main',
+        //    layout:'border',
+        //    items:[tab,bomPanel]
+        // });
         function addTab() {
 
             Ext.ComponentManager.get("tabpanel").add({
@@ -778,7 +835,9 @@ Ext
         });
 
         Ext.create('Ext.container.Viewport', {
-            items: [tab]
+            id:'main',
+            layout:'border',
+            items: [bomgrid,tab]
         });
 
         Ext.ComponentManager.get('selType').select('材料');
