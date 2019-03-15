@@ -1,6 +1,7 @@
 /**
  * Created by zjh on 2017/1/19.
  */
+
 Ext.Loader.setPath('Ext.ux', '../../../pm/resources/shared/ux');
 var Index = "";
 var Accordions = [];
@@ -24,7 +25,7 @@ if (location.href.split('?')[1] != undefined) {
         treeid = Ext.urlDecode(location.href.split('?')[1]).treeid;
     }
 }
-var searchcontext = "%";
+var searchcontext = "";
 OnCookies();
 
 Ext.Ajax.request({
@@ -332,6 +333,26 @@ var historyTreePanel = new Ext.create('Ext.grid.Panel', {
         }
     }
 });
+// Ext.define('Ext.ux.TriggerField', {
+//     extend: 'Ext.form.field.Trigger',
+//     alias: 'widget.triggerfield',
+//     trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+//     trigger2Cls: Ext.baseCSSPrefix + 'form-search-trigger',
+//     onTrigger1Click : function(){
+//         alert(1);
+//     },
+//     onTrigger2Click : function(){
+//         alert(2);
+//     }
+// });
+//
+// var a=Ext.create('Ext.form.FormPanel', {
+//     renderTo: Ext.getBody(),
+//     items:[{
+//         xtype: 'triggerfield',
+//         fieldLabel : ''
+//     }]
+// });
 var searchPanel = Ext.create('Ext.Panel', {
     id: 'searchPanel',
     header: false,
@@ -352,7 +373,7 @@ var searchPanel = Ext.create('Ext.Panel', {
             style: {background: 'url(' + imgpath + '/search.png) no-repeat left center'},
             labelWidth: 15,
             width: 180,
-            emptyText: '点检',
+            emptyText: '搜索',
             listeners: {
                 specialKey: function (field, e) {
                     if (e.getKey() == Ext.EventObject.ENTER) _changeMenu();
@@ -864,11 +885,12 @@ function OnCookies() {
 }
 
 function _changeMenu() {
-    if (Ext.getCmp('searchtext').getValue() != null && Ext.getCmp('searchtext').getValue() != '') {
-        searchcontext = Ext.getCmp('searchtext').getValue();
-    } else {
-        searchcontext = Ext.getCmp('searchtext').emptyText;
-    }
+    // if (Ext.getCmp('searchtext').getValue() != null && Ext.getCmp('searchtext').getValue() != '') {
+    //     searchcontext = Ext.getCmp('searchtext').getValue();
+    // } else {
+    //     searchcontext = Ext.getCmp('searchtext').emptyText;
+    // }
+    searchcontext = Ext.getCmp('searchtext').getValue();
     searchMenu();
 }
 
