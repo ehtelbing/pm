@@ -1,4 +1,4 @@
-
+var V_V_PERSONCODE=Ext.util.Cookies.get('v_personcode');
 var defectguid;
 //厂矿
 var ckStore = Ext.create('Ext.data.Store', {
@@ -79,6 +79,23 @@ var sbmcStore = Ext.create('Ext.data.Store', {
 		}
 	}
 });
+var childEquStore = Ext.create('Ext.data.Store', {
+    id: 'childEquStore',
+    autoLoad: false,
+    fields: ['V_EQUCODE', 'V_EQUNAME'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_14/PRO_SAP_EQU_VIEW',
+        actionMethods: {
+            read: 'POST'
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
+    }
+});
 //缺陷类型
 var qxlxStore = Ext.create('Ext.data.Store', {
 	autoLoad: true,
@@ -130,6 +147,21 @@ var editPanel= Ext.create('Ext.form.Panel', {
 		{xtype: 'combo',id:'zyq',fieldLabel: '作业区',labelAlign: 'right',editable: false, margin: '5 0 5 5',labelWidth:75,width:255,value:'',displayField: 'V_DEPTNAME',valueField: 'V_DEPTCODE',store:zyqStore,queryMode: 'local'},
 		{xtype: 'combo',id:'sblx',fieldLabel: '设备类型',labelAlign: 'right',editable: false, margin: '5 0 5 5',labelWidth:75,width:255, value: '',displayField: 'V_EQUTYPENAME',valueField: 'V_EQUTYPECODE',store:sblxStore,queryMode: 'local'},
 		{xtype: 'combo',id:'sbmc',fieldLabel: '设备名称',labelAlign: 'right',editable: false, labelAlign: 'right', margin: '5 0 5 5',labelWidth:75,width:255, value: '',displayField: 'V_EQUNAME',valueField: 'V_EQUCODE',store: sbmcStore,queryMode: 'local'},
+        {
+            xtype: 'combo',
+            id: 'zsbmc',
+            store: childEquStore,
+            queryMode: 'local',
+            valueField: 'V_EQUCODE',
+            displayField: 'V_EQUNAME',
+            forceSelection: true,
+            fieldLabel: '子设备名称',
+            editable: false,
+            labelWidth: 75,
+            margin: '5 0 5 5',
+            labelAlign: 'right',
+            width: 255
+        },
 		{xtype: 'combo',id:'qxlx',fieldLabel: '缺陷类型',labelAlign: 'right',editable: false, labelAlign: 'right', margin: '5 0 5 5',labelWidth:75,width:255, value: '',displayField: 'V_SOURCENAME',valueField: 'V_SOURCECODE',store: qxlxStore,queryMode: 'local'},
 		{xtype: 'textfield',id:'qxmc',fieldLabel: '缺陷明细',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,width:255, value: ''},
 		//{xtype: 'textfield',id:'qxdj',fieldLabel: '缺陷等级',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,width:255, value: ''},
@@ -202,6 +234,7 @@ function pageLoadInfo(){
 	//设备名称加载监听
 	Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
 		Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
+        _selectsubequName1();
 	});
 	//作业区改变
 	Ext.getCmp('zyq').on('select', function () {
@@ -222,6 +255,9 @@ function pageLoadInfo(){
 			}
 		});
 	});
+	Ext.getCmp('sbmc').on('select',function(){
+        _selectsubequName1();
+    });
 	//缺陷类型
     Ext.data.StoreManager.lookup('qxlxStore').on('load', function () {
         Ext.getCmp("qxlx").select(Ext.data.StoreManager.lookup('qxlxStore').getAt(0));
@@ -406,7 +442,7 @@ function OnButtonSave(){
 			V_D_DEFECTDATE: Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),
 			V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
 			V_V_EQUCODE:Ext.getCmp('sbmc').getValue(),
-			V_V_EQUCHILDCODE:'%',
+			V_V_EQUCHILDCODE:Ext.getCmp('zsbmc').getValue(),
 			V_V_IDEA:Ext.getCmp('clyj').getValue(),
 			V_V_LEVEL:Ext.getCmp('qxdj').getValue()
 		},
@@ -524,4 +560,39 @@ function filequery(defectguid){
             V_GUID: defectguid
         }
     });
+}
+
+function _selectsubequName1() {
+    if(Ext.getCmp('sbmc').getValue() == '%')
+    {
+        Ext.data.StoreManager.lookup('childEquStore').load({
+            params: {
+                V_V_PERSONCODE: V_V_PERSONCODE,
+                V_V_DEPTCODE: Ext.getCmp('ck').getValue(),
+                V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue(),
+                V_V_EQUTYPECODE: Ext.getCmp('sblx').getValue(),
+                V_V_EQUCODE: Ext.getCmp('sbmc').getValue()
+            }
+        });
+        Ext.data.StoreManager.lookup('childEquStore').on('load',function(){
+            Ext.ComponentManager.get("zsbmc").store.insert(0,{V_EQUCODE:'%',V_EQUNAME:'全部'});
+            Ext.ComponentManager.get("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(0));
+        });
+
+    }
+    if(Ext.getCmp('sbmc').getValue() != '%')
+    {
+        Ext.data.StoreManager.lookup('childEquStore').load({
+            params: {
+                V_V_PERSONCODE: V_V_PERSONCODE,
+                V_V_DEPTCODE: Ext.getCmp('ck').getValue(),
+                V_V_DEPTNEXTCODE: Ext.getCmp('zyq').getValue(),
+                V_V_EQUTYPECODE: Ext.getCmp('sblx').getValue(),
+                V_V_EQUCODE: Ext.getCmp('sbmc').getValue()
+            }
+        });
+        Ext.data.StoreManager.lookup('childEquStore').on('load',function(){
+            Ext.ComponentManager.get("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(1));
+        })
+    }
 }
