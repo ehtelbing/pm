@@ -100,20 +100,29 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         hideGroupedHeader:false
     }],
     selModel: {
-        selType: 'checkboxmodel'
+        selType: 'checkboxmodel',
+        checkOnly: true //只能通过checkbox选择
     },
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
-        {text: '时间', align: 'center', width: 200, dataIndex: 'V_TIME',renderer: rendererTime},
-        {text: '页面', align: 'center', width: 200, dataIndex: 'V_MENUNAME'}
+        {text: '时间', align: 'center', width: 100, dataIndex: 'V_TIME',renderer: rendererTime},
+        {text: '页面', align: 'center', width: 230, dataIndex: 'V_MENUNAME'
+            }
         // {text: '', align: '', width: 200, dataIndex: 'V_DATE',hidden:true}
 
-    ],listeners: {
-        'itemclick': function (view, record, item, index) {
-            var owidth = window.document.body.offsetWidth;
-            var oheight = window.document.body.offsetHeight;
-            window.open(AppUrlFrame +record.data.V_URL, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');//弹窗
-            insertHistory(record.data.V_ACTIVE);
+    ]
+    ,listeners: {
+        'cellclick':function(grid,rowIndex,columnIndex,record) {
+            if(columnIndex==3){
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                window.open(AppUrlFrame +record.data.V_URL, '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');//弹窗
+                insertHistory(record.data.V_ACTIVE);
+            }else{
+                return false;
+            }
+
+
         }
     }
     // bbar: ["->",
