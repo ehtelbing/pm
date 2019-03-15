@@ -352,7 +352,7 @@ Ext.onReady(function () {
                 //     Ext.getCmp('V_EQUNAME1').select(store.last());
                 // }
 
-                store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
+                // store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
                 Ext.getCmp('SUB_V_EQUNAME').select(store.first());
                 zsbnameload = true;
                 _init();
@@ -611,7 +611,7 @@ Ext.onReady(function () {
             'V_FAULT_YY', 'V_FAULT_XX', 'V_FAULT_LEVEL', 'V_JJBF', 'V_GUID', 'V_FILE_GUID',
             'V_ORGCODE', 'I_ID', 'V_DEPTNAME', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_TYPECODE',
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
-            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME',
+            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL'],
         proxy: {
             url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_SEL',
@@ -873,8 +873,8 @@ Ext.onReady(function () {
         titleAlign: 'center',
         region: 'center',
         selModel: {
-            selType: 'checkboxmodel',
-            mode: 'SINGLE'
+            selType: 'checkboxmodel'
+            // mode: 'SINGLE'
         },
         columns: [{
             xtype: 'rownumberer',
@@ -908,6 +908,11 @@ Ext.onReady(function () {
         }, {
             text: '设备名称',
             dataIndex: 'V_EQUNAME',
+            align: 'center',
+            width: 100
+        }, {
+            text: '作业区',
+            dataIndex: 'V_DEPTNAME',
             align: 'center',
             width: 100
         }, {
@@ -975,6 +980,12 @@ Ext.onReady(function () {
             dataIndex: 'V_FZR_CL',
             align: 'center',
             width: 100
+        }, {
+            text: '状态',
+            dataIndex: 'V_STATE',
+            align: 'center',
+            width: 100,
+            renderer: statename
         }
 
         ]
@@ -988,7 +999,7 @@ Ext.onReady(function () {
         region: 'center',
         //title: '<div align="center"></div>',
         width: '100%',
-        height: 700,
+        height: 595,
         bodyPadding: 10,
         fileUpload: true,
         items: [{
@@ -1178,65 +1189,10 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540,
+                width: 280,
                 baseCls: 'margin-bottom'
-            }
+            }, {
 
-            ]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textarea',
-                id: 'faultclgc',
-                fieldLabel: '处理过程',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 540
-            }
-
-            ]
-        },  {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textarea',
-                id: 'faultRea1',
-                fieldLabel: '故障原因',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 540
-            }
-
-            ]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textarea',
-                id: 'faultDesc1',
-                fieldLabel: '故障现象',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 540
-            }
-
-            ]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
                 xtype: 'combo',
                 id: 'faultLevel1',
                 store: faultStore1,
@@ -1253,6 +1209,78 @@ Ext.onReady(function () {
             }
 
             ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textfield',
+                id: 'faultss',
+                fieldLabel: '损失',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 280
+            }, {
+                xtype: 'textfield',
+                id: 'faultxz',
+                fieldLabel: '性质',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 280
+            }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultclgc',
+                fieldLabel: '处理过程',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 552
+            }
+
+            ]
+        },  {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultRea1',
+                fieldLabel: '故障原因',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 552
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultDesc1',
+                fieldLabel: '故障现象',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 552
+            }
+
+            ]
         }, {
             xtype: 'panel',
             region: 'north',
@@ -1265,35 +1293,11 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540
+                width: 552
             }
 
             ]
         },{
-        xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                    xtype: 'textfield',
-                    id: 'faultss',
-                    fieldLabel: '损失',
-                    labelWidth: 70,
-                    style: ' margin: 5px 0px 0px -8px',
-                    labelAlign: 'right',
-                    width: 280
-                }, {
-                xtype: 'textfield',
-                id: 'faultxz',
-                fieldLabel: '性质',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 280
-                }
-
-        ]
-    },{
             xtype: 'panel',
             region: 'north',
             layout: 'column',
@@ -1305,7 +1309,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540
+                width: 552
             }
 
             ]
@@ -1321,7 +1325,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540
+                width: 552
             }
 
             ]
@@ -1335,7 +1339,7 @@ Ext.onReady(function () {
         region: 'center',
         //title: '<div align="center"></div>',
         width: '100%',
-        height: 500,
+        height: 595,
         bodyPadding: 10,
         fileUpload: true,
         items: [{
@@ -1525,49 +1529,9 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540,
+                width: 280,
                 baseCls: 'margin-bottom'
-            }
-
-            ]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textfield',
-                id: 'faultRea2',
-                fieldLabel: '故障原因',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 540
-            }
-
-            ]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textfield',
-                id: 'faultDesc2',
-                fieldLabel: '故障现象',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 540
-            }
-
-            ]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
+            },{
 
                 xtype: 'combo',
                 id: 'faultLevel2',
@@ -1582,37 +1546,6 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 280
-            }
-
-            ]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textfield',
-                id: 'faultSol2',
-                fieldLabel: '故障解决',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 540
-            }
-
-            ]
-        },{xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textfield',
-                id: 'faultclgc2',
-                fieldLabel: '处理过程',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 540
             }
 
             ]
@@ -1639,19 +1572,18 @@ Ext.onReady(function () {
                 width: 280 }
 
             ]
-        },{
-            xtype: 'panel',
+        },{xtype: 'panel',
             region: 'north',
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [{
-                xtype: 'textfield',
-                id: 'faultzgcs2',
-                fieldLabel: '整改措施',
+                xtype: 'textarea',
+                id: 'faultclgc2',
+                fieldLabel: '处理过程',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540
+                width: 552
             }
 
             ]
@@ -1661,13 +1593,77 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [{
-                xtype: 'textfield',
+                xtype: 'textarea',
+                id: 'faultRea2',
+                fieldLabel: '故障原因',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 552
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultDesc2',
+                fieldLabel: '故障现象',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 552
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultSol2',
+                fieldLabel: '故障解决',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 552
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultzgcs2',
+                fieldLabel: '整改措施',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 552
+            }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
                 id: 'fzrcl2',
                 fieldLabel: '对相关负责人的处理',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 540
+                width: 552
             }
 
             ]
@@ -1682,7 +1678,7 @@ Ext.onReady(function () {
         columnLines: true,
         store: fileGridStore,
         autoScroll: true,
-        margin: '10px 0px 0px 15px',
+        // margin: '20px 0px 0px 2px',
         //colspan: 3,
         columns: [{
             text: '附件名称',
@@ -1725,26 +1721,23 @@ Ext.onReady(function () {
     });
 
 
+    var uploadpanel= Ext.create('Ext.form.FormPanel', {
+            border: false,
+            frame: true,
+            id: 'uploadpanel',
+            region: 'center',
+            width: '300',
+        layout: 'vbox',
+            height: 597,
+            bodyPadding: 10,
+            fileUpload: true,
 
-    var addFaultWindow = Ext.create('Ext.window.Window', {
-        id: 'addFaultWindow',
-        title: "",
-        layout: 'hbox',
-        width: 1080,
-        height: 730,
-        modal: true,
-        plain: true,
-        bodyPadding: 15,
-        items: [{
-            columnWidth: 1,
-            items: addPanel,
-            height: 650,
-            width: 580
-        }, {
+        items: [
+            {
             xtype: 'form',
             id:'uploadForm',
             region: 'north',
-            layout: 'vbox',
+            layout: 'hbox',
             baseCls: 'my-panel-no-border',
             items: [{
                 xtype: 'filefield',
@@ -1754,15 +1747,15 @@ Ext.onReady(function () {
                 fieldLabel: '故障附件',
                 labelWidth: 70,
                 labelAlign: 'right',
-                inputWidth: 202,
-                style: ' margin: 5px 0px 0px 10px',
+                inputWidth: 201,
+                style: ' margin: 32px 0px 0px 10px',
                 buttonText: '选择文件',
                 allowBlank: false
             }, {
                 id: 'insertFilesFj',
                 xtype: 'button',
                 text: '上传',
-                style: ' margin: 5px 0px 0px 15px',
+                style: ' margin: 32px 0px 0px 10px',
                 handler: _upLoadFile
             }, {
                 xtype: 'hidden',
@@ -1792,15 +1785,92 @@ Ext.onReady(function () {
                 xtype: 'hidden',
                 name: 'V_V_REMARK',
                 id: 'V_V_REMARK'
-            },{
-                columnWidth: 1,
-                height: 380,
-                width: 450,
-                items: filegridPanel
-            }
-
-            ]
-        }],
+            }]},{
+            columnWidth: 1,
+            height: 480,
+            width: 450,
+                margin: '25px 0px 0px 0px',
+            items: filegridPanel
+        }
+        ]
+    });
+    var addFaultWindow = Ext.create('Ext.window.Window', {
+        id: 'addFaultWindow',
+        title: "",
+        layout: 'hbox',
+        width: 1104,
+        height: 688,
+        modal: true,
+        plain: true,
+        bodyPadding: 15,
+        items: [{
+            columnWidth: 1,
+            items: addPanel,
+            height: 597,
+            width: 580
+        }, uploadpanel
+        //     {
+        //     xtype: 'form',
+        //     id:'uploadForm',
+        //     region: 'north',
+        //     layout: 'vbox',
+        //     baseCls: 'my-panel-no-border',
+        //     items: [{
+        //         xtype: 'filefield',
+        //         id: 'V_V_FILEBLOB',
+        //         name: 'V_V_FILEBLOB',
+        //         enctype: "multipart/form-data",
+        //         fieldLabel: '故障附件',
+        //         labelWidth: 70,
+        //         labelAlign: 'right',
+        //         inputWidth: 201,
+        //         style: ' margin: 20px 0px 0px 10px',
+        //         buttonText: '选择文件',
+        //         allowBlank: false
+        //     }, {
+        //         id: 'insertFilesFj',
+        //         xtype: 'button',
+        //         text: '上传',
+        //         style: ' margin: 5px 0px 0px 10px',
+        //         handler: _upLoadFile
+        //     }, {
+        //         xtype: 'hidden',
+        //         name: 'V_V_GUID',
+        //         id: 'V_V_GUID'
+        //     }, {
+        //         xtype: 'hidden',
+        //         name: 'V_V_FILENAME',
+        //         id: 'V_V_FILENAME'
+        //     }, {
+        //         xtype: 'hidden',
+        //         name: 'V_V_FILETYPECODE',
+        //         id: 'V_V_FILETYPECODE'
+        //     }, {
+        //         xtype: 'hidden',
+        //         name: 'V_V_PLANT',
+        //         id: 'V_V_PLANT'
+        //     }, {
+        //         xtype: 'hidden',
+        //         name: 'V_V_DEPT',
+        //         id: 'V_V_DEPT'
+        //     }, {
+        //         xtype: 'hidden',
+        //         name: 'V_V_PERSON',
+        //         id: 'V_V_PERSON'
+        //     }, {
+        //         xtype: 'hidden',
+        //         name: 'V_V_REMARK',
+        //         id: 'V_V_REMARK'
+        //     },{
+        //         columnWidth: 1,
+        //         height: 380,
+        //         width: 450,
+        //         items: filegridPanel
+        //     }]
+        //
+        //
+        // }
+        ],
         buttons: [{
             text: '保存',
             handler: _saveBtnFault,
@@ -1814,85 +1884,158 @@ Ext.onReady(function () {
         closeAction: 'close',
         model: true
     });
+    var uploadpanel2= Ext.create('Ext.form.FormPanel', {
+        border: false,
+        frame: true,
+        id: 'uploadpanel2',
+        region: 'center',
+        width: '300',
+        layout: 'vbox',
+        height: 597,
+        bodyPadding: 10,
+        fileUpload: true,
 
+        items: [
+            {
+                xtype: 'form',
+                id:'uploadForm2',
+                region: 'north',
+                layout: 'hbox',
+                baseCls: 'my-panel-no-border',
+                items: [{
+                    xtype: 'filefield',
+                    id: 'V_V_FILEBLOB2',
+                    name: 'V_V_FILEBLOB2',
+                    enctype: "multipart/form-data",
+                    fieldLabel: '故障附件',
+                    labelWidth: 70,
+                    labelAlign: 'right',
+                    inputWidth: 201,
+                    style: ' margin: 32px 0px 0px -8px',
+                    buttonText: '选择文件',
+                    allowBlank: false
+                }, {
+                    id: 'insertFilesFj2',
+                    xtype: 'button',
+                    text: '上传',
+                    style: ' margin: 32px 0px 0px 15px',
+                    handler: _upLoadFile2
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_GUID2',
+                    id: 'V_V_GUID2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_FILENAME2',
+                    id: 'V_V_FILENAME2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_FILETYPECODE2',
+                    id: 'V_V_FILETYPECODE2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_PLANT2',
+                    id: 'V_V_PLANT2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_DEPT2',
+                    id: 'V_V_DEPT2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_PERSON2',
+                    id: 'V_V_PERSON2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_REMARK2',
+                    id: 'V_V_REMARK2'
+                }]},{
+                    columnWidth: 1,
+                    height: 480,
+                    width: 450,
+                    items: filegridPanel2
+            }
+        ]
+    });
     var updateFaultWindow = Ext.create('Ext.window.Window', {
         id: 'updateFaultWindow',
         title: "",
         layout: 'hbox',
-        width: 1080,
-        height: 500,
+        width: 1104,
+        height: 688,
         modal: true,
         plain: true,
-        bodyPadding: 10,
+        bodyPadding: 15,
         //frame : true,
         //closeAction : 'hide',
         //closable : true,
         items: [{
             columnWidth: 1,
             items: addPanel2,
-            height: 420,
+            height: 597,
             width: 580
-        }, {
-            xtype: 'form',
-            id:'uploadForm2',
-            region: 'north',
-            layout: 'vbox',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'filefield',
-                id: 'V_V_FILEBLOB2',
-                name: 'V_V_FILEBLOB2',
-                enctype: "multipart/form-data",
-                fieldLabel: '故障附件',
-                labelWidth: 70,
-                labelAlign: 'right',
-                inputWidth: 302,
-                style: ' margin: 5px 0px 0px -8px',
-                buttonText: '选择文件',
-                allowBlank: false
-            }, {
-                id: 'insertFilesFj2',
-                xtype: 'button',
-                text: '上传',
-                style: ' margin: 5px 0px 0px 15px',
-                handler: _upLoadFile2
-            }, {
-                xtype: 'hidden',
-                name: 'V_V_GUID2',
-                id: 'V_V_GUID2'
-            }, {
-                xtype: 'hidden',
-                name: 'V_V_FILENAME2',
-                id: 'V_V_FILENAME2'
-            }, {
-                xtype: 'hidden',
-                name: 'V_V_FILETYPECODE2',
-                id: 'V_V_FILETYPECODE2'
-            }, {
-                xtype: 'hidden',
-                name: 'V_V_PLANT2',
-                id: 'V_V_PLANT2'
-            }, {
-                xtype: 'hidden',
-                name: 'V_V_DEPT2',
-                id: 'V_V_DEPT2'
-            }, {
-                xtype: 'hidden',
-                name: 'V_V_PERSON2',
-                id: 'V_V_PERSON2'
-            }, {
-                xtype: 'hidden',
-                name: 'V_V_REMARK2',
-                id: 'V_V_REMARK2'
-            },{
-                columnWidth: 1,
-                height: 380,
-                width: 450,
-                items: filegridPanel2
-            }
+        },uploadpanel2
+            // {
+            // xtype: 'form',
+            // id:'uploadForm2',
+            // region: 'north',
+            // layout: 'vbox',
+            // baseCls: 'my-panel-no-border',
+            // items: [{
+            //     xtype: 'filefield',
+            //     id: 'V_V_FILEBLOB2',
+            //     name: 'V_V_FILEBLOB2',
+            //     enctype: "multipart/form-data",
+            //     fieldLabel: '故障附件',
+            //     labelWidth: 70,
+            //     labelAlign: 'right',
+            //     inputWidth: 302,
+            //     style: ' margin: 5px 0px 0px -8px',
+            //     buttonText: '选择文件',
+            //     allowBlank: false
+            // }, {
+            //     id: 'insertFilesFj2',
+            //     xtype: 'button',
+            //     text: '上传',
+            //     style: ' margin: 5px 0px 0px 15px',
+            //     handler: _upLoadFile2
+            // }, {
+            //     xtype: 'hidden',
+            //     name: 'V_V_GUID2',
+            //     id: 'V_V_GUID2'
+            // }, {
+            //     xtype: 'hidden',
+            //     name: 'V_V_FILENAME2',
+            //     id: 'V_V_FILENAME2'
+            // }, {
+            //     xtype: 'hidden',
+            //     name: 'V_V_FILETYPECODE2',
+            //     id: 'V_V_FILETYPECODE2'
+            // }, {
+            //     xtype: 'hidden',
+            //     name: 'V_V_PLANT2',
+            //     id: 'V_V_PLANT2'
+            // }, {
+            //     xtype: 'hidden',
+            //     name: 'V_V_DEPT2',
+            //     id: 'V_V_DEPT2'
+            // }, {
+            //     xtype: 'hidden',
+            //     name: 'V_V_PERSON2',
+            //     id: 'V_V_PERSON2'
+            // }, {
+            //     xtype: 'hidden',
+            //     name: 'V_V_REMARK2',
+            //     id: 'V_V_REMARK2'
+            // },{
+            //     columnWidth: 1,
+            //     height: 380,
+            //     width: 450,
+            //     items: filegridPanel2
+            // }
 
-            ]
-        } ],
+            // ]
+        // }
+        ],
         buttons: [{
             text: '保存',
             handler: _saveBtnFault2,
@@ -1952,11 +2095,20 @@ Ext.onReady(function () {
         .on(
             "click",
             function(view, rowIndex, colIndex, item, e) {
-                var id = Ext.getCmp('faultItemPanel').getStore().getAt(
-                    colIndex).data.V_GUID;
-
-                window.open(AppUrl + "page/gz_gd1405/index.html?V_MODELNUMBER=" + id ,
-                    "", "dialogHeight:700px;dialogWidth:1100px");
+                var data=Ext.getCmp('faultItemPanel').getStore().getAt(
+                    colIndex).data;
+                if(data.V_STATE=='1') {
+                    var id = data.V_GUID;
+                    window.open(AppUrl + "page/gz_gd1405/index.html?V_GUID=" + id,
+                        "", "dialogHeight:700px;dialogWidth:1100px");
+                }else{
+                    Ext.MessageBox.show({
+                        title: '提示',
+                        msg: '请先上报再生成工单！',
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.WARNING
+                    });
+                }
             });
 });
 
@@ -2768,7 +2920,7 @@ function _saveBtnFault2() {
             title: '提示',
             msg: '下拉选项不能为全部',
             buttons: Ext.MessageBox.OK,
-            icon: Ext.MessageBox.ERROR
+            icon: Ext.MessageBox.WARNING
         });
         return;
     }
@@ -2779,7 +2931,7 @@ function _saveBtnFault2() {
 function _preUpdateFault() {
     var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
 
-    if (records.length == 0) {
+    if (records.length != 1) {
         Ext.MessageBox.show({
             title: '提示',
             msg: '请选一条数据',
@@ -2788,25 +2940,34 @@ function _preUpdateFault() {
         });
         return false;
     }
+    if(records[0].get('V_STATE')=='1'){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '已上报不能修改',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+    }else{
+        Ext.getCmp('updateFaultWindow').show();
+    }
 
-
-    Ext.Ajax.request({
-        url: AppUrl + ' qx/PRO_PM_07_DEFECT_GET',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            V_V_GUID:records[0].get('V_GUID')
-        },
-        success: function (response) {
-            var data = Ext.JSON.decode(response.responseText);
-            if(data.list[0].V_STATECODE=='20'||data.list[0].V_STATECODE=='40'){
-                alert("已下票或已消缺，不能更改");
-
-            }else{
-                Ext.getCmp('updateFaultWindow').show();
-            }
-        }
-    });
+    // Ext.Ajax.request({
+    //     url: AppUrl + ' qx/PRO_PM_07_DEFECT_GET',
+    //     type: 'ajax',
+    //     method: 'POST',
+    //     params: {
+    //         V_V_GUID:records[0].get('V_GUID')
+    //     },
+    //     success: function (response) {
+    //         var data = Ext.JSON.decode(response.responseText);
+    //         if(data.list[0].V_STATECODE=='20'||data.list[0].V_STATECODE=='40'){
+    //             alert("已下票或已消缺，不能更改");
+    //
+    //         }else{
+    //             Ext.getCmp('updateFaultWindow').show();
+    //         }
+    //     }
+    // });
     init = true;
 
     orgLoad2 = false;
@@ -2909,19 +3070,19 @@ function _deleteFaultData() {
         return false;
     }
 
-    Ext.Ajax.request({
-        url: AppUrl + ' qx/PRO_PM_07_DEFECT_GET',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            V_V_GUID:records[0].get('V_GUID')
-        },
-        success: function (response) {
-            var data = Ext.JSON.decode(response.responseText);
-            if(data.list[0].V_STATECODE=='20'||data.list[0].V_STATECODE=='40'){
-                alert("已下票或已消缺，不能删除");
-
-            }else{
+    // Ext.Ajax.request({
+    //     url: AppUrl + ' qx/PRO_PM_07_DEFECT_GET',
+    //     type: 'ajax',
+    //     method: 'POST',
+    //     params: {
+    //         V_V_GUID:records[0].get('V_GUID')
+    //     },
+    //     success: function (response) {
+    //         var data = Ext.JSON.decode(response.responseText);
+    //         if(data.list[0].V_STATECODE=='20'||data.list[0].V_STATECODE=='40'){
+    //             alert("已下票或已消缺，不能删除");
+    //
+    //         }else{
                 Ext.MessageBox.show({
                     title: '确认',
                     msg: '请确认是否删除',
@@ -2929,75 +3090,94 @@ function _deleteFaultData() {
                     icon: Ext.MessageBox.QUESTION,
                     fn: function (btn) {
                         if (btn == 'yes') {
-                            Ext.Ajax.request({
-                                url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_DEL',
-                                type: 'ajax',
-                                method: 'POST',
-                                params: {
-                                    'V_V_PERCODE': V_V_PERSONCODE,
-                                    'V_V_IP': V_V_IP,
-                                    'V_V_GUID': records[0].get('V_GUID')
-                                },
-                                success: function (response) {
-                                    var data = Ext.decode(response.responseText);
-                                    if (data.success) {
-                                        Ext.Ajax.request({
-                                            url: AppUrl + 'PM_14/PRO_PM_07_DEFECT_DEL',
-                                            type: 'ajax',
-                                            method: 'POST',
-                                            params: {
-                                                V_V_GUID:records[0].get('V_GUID'),
-                                                V_V_PERCODE:Ext.util.Cookies.get('v_personcode')
-                                            },
-                                            success: function (response) {
-                                                var data = Ext.JSON.decode(response.responseText);
-                                                if(data.V_INFO=='成功'){
-                                                    Ext.data.StoreManager.lookup('faultItemStore').remove(records[0]);
-                                                    Ext.Msg.alert('操作信息', '删除成功');
-                                                } else {
+                            for (var i = 0; i < records.length; i++) {
+                                if(records[i].get('V_STATE')==0){
+                                    Ext.Ajax.request({
+                                    url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_DEL',
+                                    type: 'ajax',
+                                    method: 'POST',
+                                    params: {
+                                        'V_V_PERCODE': V_V_PERSONCODE,
+                                        'V_V_IP': V_V_IP,
+                                        'V_V_GUID': records[i].get('V_GUID')
+                                    },
+                                    // success: function (response) {
+                                    //     var data = Ext.decode(response.responseText);
+                                    //     if (data.success) {
+                                    //         Ext.Ajax.request({
+                                    //             url: AppUrl + 'PM_14/PRO_PM_07_DEFECT_DEL',
+                                    //             type: 'ajax',
+                                    //             method: 'POST',
+                                    //             params: {
+                                    //                 V_V_GUID: records[0].get('V_GUID'),
+                                    //                 V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
+                                    //             },
+                                                success: function (response) {
+                                                    var data = Ext.JSON.decode(response.responseText);
+                                                    if (data.RET == 'success') {
+                                                        Ext.MessageBox.show({
+                                                            title: '操作信息',
+                                                            msg: '删除成功',
+                                                            buttons: Ext.MessageBox.OK,
+                                                            icon: Ext.MessageBox.ERROR
+                                                        });
+                                                        _seltctFault();
+                                                    } else {
+                                                        Ext.MessageBox.show({
+                                                            title: '错误',
+                                                            msg: data.message,
+                                                            buttons: Ext.MessageBox.OK,
+                                                            icon: Ext.MessageBox.ERROR
+                                                        });
+                                                        _seltctFault();
+                                                    }
+                                                },
+                                                failure: function (response) {
                                                     Ext.MessageBox.show({
                                                         title: '错误',
-                                                        msg: data.message,
+                                                        msg: response.responseText,
                                                         buttons: Ext.MessageBox.OK,
                                                         icon: Ext.MessageBox.ERROR
                                                     });
+                                                    _seltctFault();
                                                 }
-                                            },
-                                            failure: function (response) {
-                                                Ext.MessageBox.show({
-                                                    title: '错误',
-                                                    msg: response.responseText,
-                                                    buttons: Ext.MessageBox.OK,
-                                                    icon: Ext.MessageBox.ERROR
-                                                });
-                                            }
-                                        });
-                                        Ext.data.StoreManager.lookup('faultItemStore').remove(records[0]);
-                                        Ext.Msg.alert('操作信息', '删除成功');
-                                    } else {
-                                        Ext.MessageBox.show({
-                                            title: '错误',
-                                            msg: data.message,
-                                            buttons: Ext.MessageBox.OK,
-                                            icon: Ext.MessageBox.ERROR
-                                        });
-                                    }
-                                },
-                                failure: function (response) {
+                                            // });
+                                            // Ext.data.StoreManager.lookup('faultItemStore').remove(records[0]);
+                                            // Ext.Msg.alert('操作信息', '删除成功');
+                                        // } else {
+                                        //     Ext.MessageBox.show({
+                                        //         title: '错误',
+                                        //         msg: data.message,
+                                        //         buttons: Ext.MessageBox.OK,
+                                        //         icon: Ext.MessageBox.ERROR
+                                        //     });
+                                        // }
+                                    // },
+                                    // failure: function (response) {
+                                    //     Ext.MessageBox.show({
+                                    //         title: '错误',
+                                    //         msg: response.responseText,
+                                    //         buttons: Ext.MessageBox.OK,
+                                    //         icon: Ext.MessageBox.ERROR
+                                    //     });
+                                    // }
+                                });
+                                }else{
                                     Ext.MessageBox.show({
-                                        title: '错误',
-                                        msg: response.responseText,
+                                        title: '提示',
+                                        msg: '已上报，不能删除',
                                         buttons: Ext.MessageBox.OK,
                                         icon: Ext.MessageBox.ERROR
                                     });
                                 }
-                            });
+
+                        }
                         }
                     }
                 });
-            }
-        }
-    });
+    //         }
+    //     }
+    // });
 
 }
 
@@ -3068,5 +3248,92 @@ function guid() {
 }
 //上报
 function OnButtonUp() {
+    var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
 
+    var V_V_IP = '';
+    if (location.href.split('?')[0] != undefined) {
+        var parameters = Ext.urlDecode(location.href.split('?')[0]);
+        (parameters.V_V_IP == undefined) ? V_V_IP = '' : V_V_IP = parameters.V_V_IP;
+    }
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+
+
+    Ext.MessageBox.show({
+        title: '确认',
+        msg: '请确认是否上报！',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                var i_err = 0;
+                for (var i = 0; i < records.length; i++) {
+                    Ext.Ajax.request({
+                        url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_UP',
+                        type: 'ajax',
+                        method: 'POST',
+                        params: {
+                            'V_V_PERCODE': V_V_PERSONCODE,
+                            'V_V_IP': V_V_IP,
+                            'V_V_GUID': records[i].get('V_GUID')
+                        },
+                        success: function (response) {
+                            var resp = Ext.decode(response.responseText);
+                            if (resp.RET == 'success') {//成功，会传回true
+                                i_err++;
+                                if (i_err == records.length) {
+                                    _seltctFault();
+                                    Ext.MessageBox.show({
+                                        title: '提示',
+                                        msg: '上报成功!',
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR,
+                                        fn: function () {
+                                            _seltctFault();
+                                        }
+                                    });
+                                }
+                            } else {
+                                Ext.MessageBox.show({
+                                    title: '错误',
+                                    msg: resp.RET,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR,
+                                    fn: function () {
+                                        _seltctFault();
+                                    }
+                                });
+                            }
+
+                        },
+                        failure: function (response) {
+                            Ext.MessageBox.show({
+                                title: '错误',
+                                msg: response.responseText,
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.ERROR
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+
+}
+function statename(value) {
+    if(value=='1'){
+        return '已上报';
+    }else{
+        return '未上报';
+    }
 }

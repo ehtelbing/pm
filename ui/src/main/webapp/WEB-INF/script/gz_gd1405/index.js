@@ -42,7 +42,7 @@ function loadPageInfo() {
         data: {
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
-            V_V_MODELNUMBER: $.url().param('V_MODELNUMBER')
+            V_V_GUID: $.url().param('V_GUID')
         },
         success: function (resp) {
             if (resp.list != "" && resp.list != null) {
@@ -60,8 +60,10 @@ function loadPageInfo() {
                 $("#tech").val(resp.list[0].V_TECHNOLOGY);
                 $("#safe").val(resp.list[0].V_SAFE);
 
-                $("#selDW").html(resp.list[0].V_ORGNAME);
-                $("#selZYQ").html(resp.list[0].V_DEPTNAME);
+                // $("#selDW").html(resp.list[0].V_ORGNAME);
+                // $("#selZYQ").html(resp.list[0].V_DEPTNAME);
+
+                $("#selZYQ").val(resp.list[0].V_DEPTCODE);
 
                 $("#V_EQUIP_NAME").val(resp.list[0].V_EQUIP_NAME);
                 $("#V_EQUIP_NO").val(resp.list[0].V_EQUIP_NO);
@@ -95,7 +97,7 @@ function loadDEPT() {//工厂单位
                 result.push("<option value=\"" + item.V_DEPTCODE + "\">" + item.V_DEPTNAME + "</option>");
             });
             $("#selDW").html(result.join(""));
-
+            $("#selDW").val($("#V_ORGCODE").val());
             loadZYQ($("#selDW").val());
 
         }
@@ -121,6 +123,7 @@ function loadZYQ(dwcode) {
                 result.push("<option value=\"" + item.V_DEPTCODE + "\">" + item.V_DEPTNAME + "</option>");
             });
             $("#selZYQ").html(result.join(""));
+            $("#selZYQ").val($("#V_DEPTCODE").val());
             loadPlantlist();
         }
     });
@@ -145,6 +148,9 @@ function loadPlantlist() {
                    $("<option  value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>").appendTo("#V_DEPTNAMEREPARI");
                 }
             });
+            if($("#V_DEPTCODEREPARI").val()!=null||$("#V_DEPTCODEREPARI").val()!=''){
+                $("#V_DEPTNAMEREPARI").val($("#V_DEPTCODEREPARI").val());
+            }
             loadSPR();
         }
     });
@@ -247,7 +253,7 @@ function loadToolAndTxtList() {
         data: {
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
-            V_V_MODELNUMBER: $.url().param('V_MODELNUMBER')
+            V_V_GUID: $.url().param('V_GUID')
         },
         success: function (resp) {
             if (resp.list != "" && resp.list != null) {
@@ -336,14 +342,14 @@ function CreateBill() {
     } else {
 
         Ext.Ajax.request({
-            url: AppUrl + 'No4120/PRO_PM_WORKORDER_YZJ_SAVE',
+            url: AppUrl + 'cxy/PRO_PM_WORKORDER_FAULT_SAVE',
             type: 'post',
             async: false,
             params: {
 
                 V_V_PERCODE: Ext.util.Cookies.get("v_personcode"),
                 V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
-                V_V_MODELNUMBER: $.url().param('V_MODELNUMBER'),
+                V_V_GUID: $.url().param('V_GUID'),
                 V_V_ORDERGUID: $("#V_ORDERGUID").val(),
                 V_V_SHORT_TXT: $("#V_SHORT_TXT").val(),
                 V_V_DEPTCODEREPAIR: $("#V_DEPTNAMEREPARI").val(),
