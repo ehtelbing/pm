@@ -170,12 +170,12 @@ public class CxyController {
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_SBGZ_CREATE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
                                                            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
-                                                           @RequestParam(value = "V_V_MODELNUMBER") String V_V_MODELNUMBER,
+                                                           @RequestParam(value = "V_V_GUID") String V_V_GUID,
                                                            HttpServletRequest request,
                                                            HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cService.PRO_PM_WORKORDER_SBGZ_CREATE(V_V_PERCODE, V_V_PERNAME,V_V_MODELNUMBER);
+        HashMap data = cService.PRO_PM_WORKORDER_SBGZ_CREATE(V_V_PERCODE, V_V_PERNAME,V_V_GUID);
 
         List<Map<String, Object>> no4120list = (List) data.get("list");
 
@@ -256,6 +256,51 @@ public class CxyController {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = cService.MM_USER_TRENDS_DEL(V_I_ID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_PM_WORKORDER_FAULT_SAVE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_FAULT_SAVE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                         @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                         @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                         @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                         @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                         @RequestParam(value = "V_V_DEPTCODEREPAIR") String V_V_DEPTCODEREPAIR,
+                                                         @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                                         @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                                         @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                                         @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+                                                         @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                         @RequestParam(value = "V_V_TECHNOLOGY") String V_V_TECHNOLOGY,
+                                                         @RequestParam(value = "V_V_SAFE") String V_V_SAFE,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_PM_WORKORDER_FAULT_SAVE(V_V_PERCODE,V_V_PERNAME,V_V_GUID,V_V_ORDERGUID,V_V_SHORT_TXT,
+                V_V_DEPTCODEREPAIR,V_D_START_DATE,V_D_FINISH_DATE,V_V_WBS,V_V_WBS_TXT,V_V_TOOL,V_V_TECHNOLOGY,V_V_SAFE);
+
+        String list =  data.get("list").toString();
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_UP", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_14_FAULT_ITEM_DATA_UP(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                        @RequestParam(value = "V_V_IP") String V_V_IP,
+                                                        @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_14_FAULT_ITEM_DATA_UP(V_V_PERCODE,V_V_IP,V_V_GUID);
 
         String ss = (String) data.get("RET");
 
