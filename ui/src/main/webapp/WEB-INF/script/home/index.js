@@ -103,7 +103,7 @@ function append(item, title, link) {
     if (tab === undefined) {
         tab = Ext.create('Ext.panel.Panel', {
             id: item,
-            title: title,
+            title: title+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: closable,
             html: [
                 '<iframe id="Workspace',
@@ -186,7 +186,7 @@ function _AssembleAccordions(data) {
                                         if (tab === undefined) {
                                             tab = Ext.create('Ext.panel.Panel', {
                                                 id: model.raw.id,
-                                                title: model.raw.text,
+                                                title: model.raw.text+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
                                                 closable: true,
                                                 html: htmlStr
                                             });

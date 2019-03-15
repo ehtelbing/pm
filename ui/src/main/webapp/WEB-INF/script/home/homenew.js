@@ -222,7 +222,7 @@ function toYearPlan() {
     if (!n) {
         n = container.add({
             id: 'njh',
-            title: '年计划',
+            title: '年计划'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: true,
             loadMask: true,
             autoWidth: true,
@@ -240,7 +240,7 @@ function toQuarterPlan() {
     if (!n) {
         n = container.add({
             id: 'jdjh',
-            title: '季度计划',
+            title: '季度计划'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: true,
             loadMask: true,
             autoWidth: true,
@@ -258,7 +258,7 @@ function toMonthPlan() {
     if (!n) {
         n = container.add({
             id: 'yjh',
-            title: '月计划',
+            title: '月计划'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: true,
             loadMask: true,
             autoWidth: true,
@@ -276,7 +276,7 @@ function toWeekPlan() {
     if (!n) {
         n = container.add({
             id: 'zjh',
-            title: '周计划',
+            title: '周计划'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: true,
             loadMask: true,
             autoWidth: true,
@@ -294,7 +294,7 @@ function toDailyCheck() {
     if (!n) {
         n = container.add({
             id: 'rcdj',
-            title: '日常点检',
+            title: '日常点检'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: true,
             loadMask: true,
             autoWidth: true,
@@ -312,7 +312,7 @@ function toDefectManage() {
     if (!n) {
         n = container.add({
             id: 'qxgl',
-            title: '缺陷管理',
+            title: '缺陷管理'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: true,
             loadMask: true,
             autoWidth: true,
@@ -337,7 +337,7 @@ function toOrderCreate() {
         if (!n) {
             n = container.add({
                 id: 'gdcj',
-                title: '工单创建',
+                title: '工单创建'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
                 closable: true,
                 loadMask: true,
                 autoWidth: true,
@@ -352,7 +352,7 @@ function toOrderCreate() {
         if (!n) {
             n = container.add({
                 id: 'gdcj',
-                title: '工单创建',
+                title: '工单创建'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
                 closable: true,
                 loadMask: true,
                 autoWidth: true,
@@ -373,7 +373,7 @@ function toFixOldManager() {
     if (!n) {
         n = container.add({
             id: 'xjgl',
-            title: '修旧管理',
+            title: '修旧管理'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/fav.png">'+'&nbsp;&nbsp;<img src="'+AppUrl+'images/home/help.png">',
             closable: true,
             loadMask: true,
             autoWidth: true,
