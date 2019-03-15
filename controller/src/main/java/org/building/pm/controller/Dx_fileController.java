@@ -2984,6 +2984,32 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_14_FAULT_ITEM_DATA_STAT(V_V_ORGCODE,V_V_DEPTCODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_EQUCHILD_CODE,V_V_FAULT_TYPE,V_V_FAULT_YY,V_STAR_DATE,V_END_DATE);
         return data;
     }
+    // 事故、故障月-设备类型统计
+    @RequestMapping(value = "PM_14_FAULT_ITEM_STAT_NUM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_14_FAULT_ITEM_STAT_NUM(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+
+            @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+            @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception {
+        Map data = dx_fileService.PM_14_FAULT_ITEM_STAT_NUM(V_V_ORGCODE,V_V_DEPTCODE,V_V_PERSONCODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_EQUCHILD_CODE,V_V_FAULT_TYPE,V_V_FAULT_YY,V_V_YEAR,V_V_MONTH);
+        return data;
+    }
+
+
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

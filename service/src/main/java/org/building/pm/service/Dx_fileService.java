@@ -2753,4 +2753,43 @@ public class Dx_fileService {
         logger.info("end PM_14_FAULT_ITEM_DATA_STAT");
         return result;
     }
+    // 事故、故障月-设备类型统计
+    public HashMap PM_14_FAULT_ITEM_STAT_NUM(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERSONCODE,String V_V_EQUTYPE
+            ,String V_V_EQUCODE,String V_V_EQUCHILD_CODE,String V_V_FAULT_TYPE,String V_V_FAULT_YY,String V_V_YEAR,String V_V_MONTH)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_14_FAULT_ITEM_STAT_NUM");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_14_FAULT_ITEM_STAT_NUM(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PERSONCODE," +
+                    ":V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE," +
+                    ":V_V_FAULT_TYPE,:V_V_FAULT_YY,:V_V_YEAR,:V_V_MONTH,:MON_NUM,:RET)}");
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_PERSONCODE",V_V_PERSONCODE);
+
+            cstmt.setString("V_V_EQUTYPE",V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE",V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCHILD_CODE",V_V_EQUCHILD_CODE);
+
+            cstmt.setString("V_V_FAULT_TYPE",V_V_FAULT_TYPE);
+            cstmt.setString("V_V_FAULT_YY",V_V_FAULT_YY);
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+            cstmt.registerOutParameter("MON_NUM",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("NUM",cstmt.getString("MON_NUM"));
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException ex){
+            logger.error(ex);
+        }finally{
+            logger.debug("result"+result);
+            logger.info("end PM_14_FAULT_ITEM_STAT_NUM");
+        }
+        return result;
+    }
 }
