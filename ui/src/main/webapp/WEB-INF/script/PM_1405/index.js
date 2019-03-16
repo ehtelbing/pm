@@ -611,7 +611,7 @@ Ext.onReady(function () {
             'V_FAULT_YY', 'V_FAULT_XX', 'V_FAULT_LEVEL', 'V_JJBF', 'V_GUID', 'V_FILE_GUID',
             'V_ORGCODE', 'I_ID', 'V_DEPTNAME', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_TYPECODE',
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
-            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE',
+            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL'],
         proxy: {
             url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_SEL',
@@ -982,10 +982,9 @@ Ext.onReady(function () {
             width: 100
         }, {
             text: '状态',
-            dataIndex: 'V_STATE',
+            dataIndex: 'V_STATENAME',
             align: 'center',
-            width: 100,
-            renderer: statename
+            width: 100
         }
 
         ]
@@ -1952,6 +1951,7 @@ Ext.onReady(function () {
                     columnWidth: 1,
                     height: 480,
                     width: 450,
+                    margin: '25px 0px 0px 0px',
                     items: filegridPanel2
             }
         ]
@@ -2101,10 +2101,17 @@ Ext.onReady(function () {
                     var id = data.V_GUID;
                     window.open(AppUrl + "page/gz_gd1405/index.html?V_GUID=" + id,
                         "", "dialogHeight:700px;dialogWidth:1100px");
-                }else{
+                }else if(data.V_STATE=='0'){
                     Ext.MessageBox.show({
                         title: '提示',
                         msg: '请先上报再生成工单！',
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.WARNING
+                    });
+                }else if(data.V_STATE=='2'){
+                    Ext.MessageBox.show({
+                        title: '提示',
+                        msg: '已生成工单不能再次生成！',
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.WARNING
                     });
@@ -2242,8 +2249,17 @@ function _selectsubequName() {
     if(Ext.getCmp('V_EQUNAME').getValue() == '%')
     {
 
-        var subequNameStore = Ext.data.StoreManager.lookup('subequNameStore');
-        subequNameStore.load();
+        // var subequNameStore = Ext.data.StoreManager.lookup('subequNameStore');
+        // subequNameStore.load();
+        Ext.data.StoreManager.lookup('subequNameStore').load({
+            params: {
+                V_V_PERSONCODE: V_V_PERSONCODE,
+                V_V_DEPTCODE: Ext.getCmp('V_V_ORGCODE').getValue(),
+                V_V_DEPTNEXTCODE: Ext.getCmp('V_V_DEPTCODE').getValue(),
+                V_V_EQUTYPECODE: Ext.getCmp('V_V_EQUTYPE').getValue(),
+                V_V_EQUCODE: ''
+            }
+        });
     }
     if(Ext.getCmp('V_EQUNAME').getValue() != '%')
     {
@@ -2717,56 +2733,61 @@ function _saveBtnFault() {
 
                 // var data = Ext.decode(response.responseText);
                 if (data.RET == 'Success') {
-                    //Ext.Msg.alert('成功', '添加成功');
-                    Ext.Ajax.request({
-                        url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_SET',
-                        type: 'ajax',
-                        method: 'POST',
-                        params: {
-                            V_V_GUID:V_V_GUID,
-                            V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-                            V_V_DEFECTLIST:Ext.getCmp('faultRea1').getValue(),
-                            V_V_SOURCECODE:'defct09',//故障/事故
-                            V_V_SOURCEID:'',
-                            V_D_DEFECTDATE: Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),
-                            V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE1').getValue(),
-                            V_V_EQUCODE:Ext.getCmp('V_EQUNAME1').getValue(),
-                            V_V_EQUCHILDCODE: Ext.getCmp("SUB_V_EQUNAME1").getValue(),
-                            V_V_IDEA:Ext.getCmp('faultSol1').getValue(),
-                            V_V_LEVEL:Ext.getCmp('faultLevel1').getValue()
-                        },
-                        success: function (response) {
-                            var data = Ext.JSON.decode(response.responseText);
-
-                            // var data = Ext.decode(response.responseText);
-                            if(data.V_INFO=='成功'){
-                                //Ext.Msg.alert('成功', '添加成功');
-                                Ext.getCmp("addFaultWindow").close();
-                                Ext.getCmp("faultRea1").reset();
-                                Ext.getCmp("faultDesc1").reset();
-                                Ext.getCmp("faultSol1").reset();
-                                Ext.getCmp("faultLevel1").reset();
-                                Ext.getCmp("filegridPanel").removeAll();
-                                _seltctFault();
-
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: data.message,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR
-                                });
-                            }
-                        },
-                        failure: function (response) {
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            });
-                        }
-                    });
+                    Ext.MessageBox.show({
+                                        title: '提示',
+                                        msg:  '添加成功',
+                                        buttons: Ext.MessageBox.OK
+                                    });
+                    _seltctFault();
+                    // Ext.Ajax.request({
+                    //     url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_SET',
+                    //     type: 'ajax',
+                    //     method: 'POST',
+                    //     params: {
+                    //         V_V_GUID:V_V_GUID,
+                    //         V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                    //         V_V_DEFECTLIST:Ext.getCmp('faultRea1').getValue(),
+                    //         V_V_SOURCECODE:'defct09',//故障/事故
+                    //         V_V_SOURCEID:'',
+                    //         V_D_DEFECTDATE: Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),
+                    //         V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE1').getValue(),
+                    //         V_V_EQUCODE:Ext.getCmp('V_EQUNAME1').getValue(),
+                    //         V_V_EQUCHILDCODE: Ext.getCmp("SUB_V_EQUNAME1").getValue(),
+                    //         V_V_IDEA:Ext.getCmp('faultSol1').getValue(),
+                    //         V_V_LEVEL:Ext.getCmp('faultLevel1').getValue()
+                    //     },
+                    //     success: function (response) {
+                    //         var data = Ext.JSON.decode(response.responseText);
+                    //
+                    //         // var data = Ext.decode(response.responseText);
+                    //         if(data.V_INFO=='成功'){
+                    //             //Ext.Msg.alert('成功', '添加成功');
+                    //             Ext.getCmp("addFaultWindow").close();
+                    //             Ext.getCmp("faultRea1").reset();
+                    //             Ext.getCmp("faultDesc1").reset();
+                    //             Ext.getCmp("faultSol1").reset();
+                    //             Ext.getCmp("faultLevel1").reset();
+                    //             Ext.getCmp("filegridPanel").removeAll();
+                    //             _seltctFault();
+                    //
+                    //         } else {
+                    //             Ext.MessageBox.show({
+                    //                 title: '错误',
+                    //                 msg: data.message,
+                    //                 buttons: Ext.MessageBox.OK,
+                    //                 icon: Ext.MessageBox.ERROR
+                    //             });
+                    //         }
+                    //     },
+                    //     failure: function (response) {
+                    //         Ext.MessageBox.show({
+                    //             title: '错误',
+                    //             msg: response.responseText,
+                    //             buttons: Ext.MessageBox.OK,
+                    //             icon: Ext.MessageBox.ERROR
+                    //         });
+                    //     }
+                    // });
 
                 } else {
                     Ext.MessageBox.show({
@@ -2775,6 +2796,7 @@ function _saveBtnFault() {
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR
                     });
+                    _seltctFault();
                 }
             },
             failure: function (response) {
@@ -2784,6 +2806,7 @@ function _saveBtnFault() {
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
                 });
+                _seltctFault();
             }
         });
     } else {
@@ -2856,46 +2879,52 @@ function _saveBtnFault2() {
                 var data = Ext.decode(response.responseText);
                 if (data.RET == 'Success') {
                     // Ext.Msg.alert('成功', '修改成功');
-                    Ext.Ajax.request({
-                        url: AppUrl + 'PM_14/PRO_PM_07_DEFECT_MANY_EDIT',
-                        type: 'ajax',
-                        method: 'POST',
-                        params: {
-                            V_V_GUID:records[0].get('V_GUID'),
-                            V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-                            V_V_DEFECTLIST:Ext.getCmp('faultRea2').getValue(),
-                            V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE2').getValue(),
-                            V_V_EQUCODE:Ext.getCmp('V_EQUNAME2').getValue(),
-                            V_V_EQUCHILDCODE: Ext.getCmp("SUB_V_EQUNAME2").getValue(),
-                            V_V_IDEA:Ext.getCmp('faultSol2').getValue(),
-                            V_V_LEVEL:Ext.getCmp('faultLevel2').getValue()
-                        },
-                        success: function (response) {
-                            var data = Ext.JSON.decode(response.responseText);
-
-                            // var data = Ext.decode(response.responseText);
-                            if(data.V_INFO=='成功'){
-                                Ext.getCmp("updateFaultWindow").close();
-                                _seltctFault();
-
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: data.message,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR
-                                });
-                            }
-                        },
-                        failure: function (response) {
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            });
-                        }
+                    Ext.MessageBox.show({
+                        title: '提示',
+                        msg: '修改成功',
+                        buttons: Ext.MessageBox.OK
                     });
+                    _seltctFault();
+                    // Ext.Ajax.request({
+                    //     url: AppUrl + 'PM_14/PRO_PM_07_DEFECT_MANY_EDIT',
+                    //     type: 'ajax',
+                    //     method: 'POST',
+                    //     params: {
+                    //         V_V_GUID:records[0].get('V_GUID'),
+                    //         V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                    //         V_V_DEFECTLIST:Ext.getCmp('faultRea2').getValue(),
+                    //         V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE2').getValue(),
+                    //         V_V_EQUCODE:Ext.getCmp('V_EQUNAME2').getValue(),
+                    //         V_V_EQUCHILDCODE: Ext.getCmp("SUB_V_EQUNAME2").getValue(),
+                    //         V_V_IDEA:Ext.getCmp('faultSol2').getValue(),
+                    //         V_V_LEVEL:Ext.getCmp('faultLevel2').getValue()
+                    //     },
+                    //     success: function (response) {
+                    //         var data = Ext.JSON.decode(response.responseText);
+                    //
+                    //         // var data = Ext.decode(response.responseText);
+                    //         if(data.V_INFO=='成功'){
+                    //             Ext.getCmp("updateFaultWindow").close();
+                    //             _seltctFault();
+                    //
+                    //         } else {
+                    //             Ext.MessageBox.show({
+                    //                 title: '错误',
+                    //                 msg: data.message,
+                    //                 buttons: Ext.MessageBox.OK,
+                    //                 icon: Ext.MessageBox.ERROR
+                    //             });
+                    //         }
+                    //     },
+                    //     failure: function (response) {
+                    //         Ext.MessageBox.show({
+                    //             title: '错误',
+                    //             msg: response.responseText,
+                    //             buttons: Ext.MessageBox.OK,
+                    //             icon: Ext.MessageBox.ERROR
+                    //         });
+                    //     }
+                    // });
 
                 } else {
                     Ext.MessageBox.show({
@@ -2904,6 +2933,7 @@ function _saveBtnFault2() {
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR
                     });
+                    _seltctFault();
                 }
             },
             failure: function (response) {
@@ -2913,6 +2943,7 @@ function _saveBtnFault2() {
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
                 });
+                _seltctFault();
             }
         });
     } else {
@@ -2940,10 +2971,10 @@ function _preUpdateFault() {
         });
         return false;
     }
-    if(records[0].get('V_STATE')=='1'){
+    if(records[0].get('V_STATE')!='0'){
         Ext.MessageBox.show({
             title: '提示',
-            msg: '已上报不能修改',
+            msg: '上报后不能修改',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
@@ -3295,7 +3326,6 @@ function OnButtonUp() {
                                         title: '提示',
                                         msg: '上报成功!',
                                         buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.ERROR,
                                         fn: function () {
                                             _seltctFault();
                                         }
@@ -3329,11 +3359,4 @@ function OnButtonUp() {
     });
 
 
-}
-function statename(value) {
-    if(value=='1'){
-        return '已上报';
-    }else{
-        return '未上报';
-    }
 }

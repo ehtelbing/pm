@@ -404,10 +404,12 @@ function CreateBill() {
                                                 success: function (response) {
                                                     if (Ext.decode(response.responseText).ret == 'OK') {
                                                         alert("工单创建成功：" + $("#V_ORDERID").html());
-                                                        history.go(0);
+                                                        window.opener._seltctFault();
+                                                        window.close();
                                                     } else if (Ext.decode(response.responseText).error == 'ERROR') {
                                                         Ext.Msg.alert('提示', '该流程发起失败！');
-                                                        history.go(0);
+                                                        window.opener._seltctFault();
+                                                        window.close();
                                                     }
                                                 }
                                             });
@@ -425,7 +427,8 @@ function CreateBill() {
                                         },
                                         success: function (response) {
                                             alert("工单创建失败：" + $("#V_ORDERID").html());
-                                            history.go(0);
+                                            window.opener._seltctFault();
+                                            window.close();
                                         }
                                     });
                                 }
@@ -452,9 +455,12 @@ function CreateBill() {
                                 if (Ext.decode(response.responseText).ret == 'OK') {
                                     alert("工单创建成功：" + $("#V_ORDERID").html());
                                     history.go(0);
+                                    window.opener._seltctFault();
+                                    window.close();
                                 } else if (Ext.decode(response.responseText).error == 'ERROR') {
                                     Ext.Msg.alert('提示', '该流程发起失败！');
-                                    history.go(0);
+                                    window.opener._seltctFault();
+                                    window.close();
                                 }
                             }
                         });
