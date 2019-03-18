@@ -368,12 +368,12 @@ var searchPanel = Ext.create('Ext.Panel', {
         {
             xtype: 'textfield',
             id: 'searchtext',
-            fieldLabel: ' ',
-            labelSeparator: '',
-            style: {background: 'url(' + imgpath + '/search.png) no-repeat left center'},
+            // fieldLabel: ' ',
+            // labelSeparator: '',
+            // style: {background: 'url(' + imgpath + '/search.png) no-repeat left center'},
             labelWidth: 15,
             width: 180,
-            emptyText: '搜索',
+            emptyText: '业务功能搜索',
             listeners: {
                 specialKey: function (field, e) {
                     if (e.getKey() == Ext.EventObject.ENTER) _changeMenu();
@@ -385,7 +385,7 @@ var searchPanel = Ext.create('Ext.Panel', {
                 //     // Ext.getCmp('searchtext').setValue('');
                 // }
 
-            }
+            },fieldCls:'cxtb'
         }
 
     ]

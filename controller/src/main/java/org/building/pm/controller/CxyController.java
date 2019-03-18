@@ -308,5 +308,21 @@ public class CxyController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "/MM_USER_TRENDS_TABLE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MM_USER_TRENDS_TABLE_SEL(@RequestParam(value = "V_V_USERID") String V_V_USERID,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.MM_USER_TRENDS_TABLE_SEL(V_V_USERID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
 }
 

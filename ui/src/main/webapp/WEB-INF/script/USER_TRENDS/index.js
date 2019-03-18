@@ -21,7 +21,8 @@
     }
 });
 
-
+var x_2 = [];
+var y_2 = [];
 //页面表格信息加载
 var gridStore = Ext.create('Ext.data.Store', {
     id: 'gridStore',
@@ -86,10 +87,23 @@ var northPanel = Ext.create('Ext.form.Panel', {
         }
     ]
 });
+var imagePanel = new Ext.Panel({
+    id : 'imagePanel',
+    region: 'center',
+    html :      '<div id="mainEchart" style="height:70%;padding:30px;text-align:center;"></div>',
+        // 'border:1px solid #ccc;'+ '<div id="mainTable" style="position:relative;text-align:center;padding:10px;">'
+        // +'<label for="mainTable"><h1>档案调用次数表</h1></label>'
+        // +'<table id="content-table" border="1" style="width:100%;text-align:center;">'
+        // + '<tr><th>月份</th><th>调用次数</th></tr>',
+    buttonAlign : 'center',
+    autoScroll : true,//允许滚动
+    bodyStyle : 'overflow-x:hidden; overflow-y:scroll'
+    //开启竖直滚动条，关闭水平滚动条
+});
 
 var gridPanel = Ext.create('Ext.grid.Panel', {
     id: 'gridPanel',
-    region: 'center',
+    // region: 'west',
     border: true,
     columnLines: true,
     store: 'gridStore',
@@ -141,7 +155,22 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
 Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
-        items: [northPanel, gridPanel]
+        items: [{
+            region: 'north',
+            border: false,
+            items: [northPanel]
+        }, {
+            region: 'west',
+            layout: 'fit',
+            width: '40%',
+            border: false,
+            items: [gridPanel]
+        }, {
+            region: 'center',
+            layout: 'border',
+            border: false,
+            items: [imagePanel]
+        }]
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -153,7 +182,7 @@ Ext.onReady(function () {
         }
     });
     query();
-
+    getColumn();
 });
 function rendererTime(value, metaData) {
 
@@ -249,6 +278,175 @@ function insertHistory(active) {
         },
         success: function (response) {
             query();
+        }
+    });
+}
+function getColumn() {
+var myChart2 = echarts.init(document.getElementById("mainEchart"));
+    Ext.Ajax.request({
+        url: AppUrl + 'cxy/MM_USER_TRENDS_TABLE_SEL',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            V_V_USERID: Ext.util.Cookies.get('v_personcode')
+
+        },
+        success: function (resps) {
+            var resp = Ext.decode(resps.responseText);
+            // if (resp.msg == 'success') {
+
+                if (resp.list.length > 0) {
+                    for (var i = 0; i < resp.list.length; i++) {
+                        y_2.push(resp.list[i].V_MENUNAME);
+                        x_2.push(Ext.util.Format.number(parseFloat(resp.list[i].V_NUM),'0'));
+                    }
+                    var option = {
+                        title: {
+                            text: '历史统计图',
+                            textStyle: {
+                                fontSize: 20
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        // legend: {
+                        //     data:['2011年']
+                        // },
+                        toolbox: {
+                            feature: {
+                                dataView: {show: false, readOnly: false},        // 数据试图是否在控件中显示
+                                //magicType: {show: true, type: ['stack', 'tiled']},
+                                //restore: {show: true},
+                                saveAsImage: {show: false}
+                            }
+                        },
+                        // calculable : true,
+                        grid: {
+                            top: '10%',
+                            left: '1%',
+                            right: '6%',
+                            bottom: '6%',
+                            containLabel: true,
+                            show: false                 // 网格边框是否显示，上和右边框
+                        },
+                        // xAxis : [
+                        //     {
+                        //         type : 'value',
+                        //         boundaryGap : [0, 0.1]
+                        //     }
+                        // ],
+                        yAxis: [{
+                            type: 'category',
+                            // "axisLine": {
+                            //     lineStyle: {
+                            //         color: '#000'
+                            //     }
+                            // },
+                            "splitLine": {
+                                "show": true
+                            },
+                            // "axisTick": {
+                            //     "show": true
+                            // },
+                            // "splitArea": {
+                            //     "show": true
+                            // },
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color:'#000000'  //这里用参数代替了
+                                }
+                            },
+                            axisLine:{      　　　　　　　　//坐标轴轴线相关设置。
+                                show:true,　　　　　　　　//是否显示坐标轴轴线。
+                                textStyle:{
+                                    fontSize:14,
+                                    color: '#ffffff'
+                                },
+                                lineStyle:{
+                                    width:2 ,  　　　　　　　　//坐标轴线线宽。　
+                                    color:'#1e90ff'　　　　　　　　//颜色。
+
+                                }
+                            },
+                            // axisLine:{      　　　　　　　　//坐标轴轴线相关设置。
+                            //     show:true,　　　　　　　　//是否显示坐标轴轴线。
+                            //     lineStyle:{
+                            //         width:2 ,  　　　　　　　　//坐标轴线线宽。　
+                            //         color:'#1e90ff'　　　　　　　　//颜色。
+                            //
+                            //     }
+                            // }
+                            data: y_2
+                        }],
+                        xAxis: [{
+                            name: '',
+                            type: 'value',
+                            splitLine: {                // 网格线 y轴对应的是否显示
+                                show: true
+                            },
+                            "axisTick": {
+                                "show": true
+                            },
+                            "splitArea": {
+                                "show": true
+                            },
+                            axisLabel: {
+                                // formatter: '{value}',
+                                show: true,
+                                textStyle: {
+                                    color:'#000000'  //这里用参数代替了
+                                }
+                            },
+                            axisLine:{      　　　　　　　　//坐标轴轴线相关设置。
+                                show:true,　　　　　　　　//是否显示坐标轴轴线。
+                                textStyle:{
+                                    fontSize:14,
+                                    color: '#ffffff'
+                                },
+                                lineStyle:{
+                            　　　width:2 ,  　　　　　　　　//坐标轴线线宽。　
+                            　　 color:'#1e90ff'　　　　　　　　//颜色。
+                            　
+                            　　}
+                            }
+                        }],
+                        series: [{
+                            name: '',
+                            type: 'bar',
+                            // itemStyle: {
+                            //     normal: {color: '#2ec7c9'}
+                            // },
+                            data: x_2,
+                            itemStyle: {
+                                emphasis: {
+                                    barBorderRadius: [10, 10, 10, 10]
+                                },
+                                normal: {
+                                    barBorderRadius: [10, 10, 10, 10],
+                                    color: '#2ec7c9'
+                                }
+
+
+                            }
+                            // markLine: {
+                            //     data: [
+                            //         {type: 'average', name: '平均值'}
+                            //     ]
+                            // },
+
+
+                        }]
+                    };
+                    myChart2.setOption(option);
+            }
+            // else {
+            //             //     alert('数据有误');
+            //             // }
         }
     });
 }

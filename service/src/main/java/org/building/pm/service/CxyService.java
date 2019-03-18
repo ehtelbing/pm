@@ -653,4 +653,31 @@ public class CxyService {
         logger.info("end PM_14_FAULT_ITEM_DATA_UP");
         return result;
     }
+
+    public HashMap MM_USER_TRENDS_TABLE_SEL(String V_V_USERID) throws SQLException {
+
+        logger.info("begin MM_USER_TRENDS_TABLE_SEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call MM_USER_TRENDS_TABLE_SEL" + "(:V_V_USERID,:V_CURSOR)}");
+            cstmt.setString("V_V_USERID", V_V_USERID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MM_USER_TRENDS_TABLE_SEL");
+        return result;
+    }
 }
