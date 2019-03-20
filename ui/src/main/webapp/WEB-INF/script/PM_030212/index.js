@@ -160,7 +160,7 @@ var cpanel=Ext.create('Ext.grid.Panel',{
         {text: '项目名称', align: 'center', width: 100, dataIndex:'PRO_NAME'},
         {text: '年份', align: 'center', width: 70, dataIndex: 'V_YEAR'},
         {text: '计划停机月份', align: 'center', width: 100, dataIndex: 'V_MONTH'},
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATENAME'},
+        // {text: '计划状态', align: 'center', width: 100, dataIndex: 'STATENAME'},
         {text: '厂矿', align: 'center', width: 120, dataIndex: 'ORGNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'DEPTNAME'},
         {text: '专业', align: 'center', width: 100, dataIndex: 'ZYNAME'},

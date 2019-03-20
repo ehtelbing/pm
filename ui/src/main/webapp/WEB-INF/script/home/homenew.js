@@ -217,7 +217,8 @@ function _banli(V_TIMER_GUID) {
 
 function toYearPlan() {
     var container = top.Ext.getCmp('container');
-    var url = AppUrl + 'page/PM_220101/index.html';
+    // var url = AppUrl + 'page/PM_220101/index.html';
+    var url=AppUrl+'page/PM_030212/index.html';
     var n = container.getComponent("njh");
     if (!n) {
         n = container.add({
