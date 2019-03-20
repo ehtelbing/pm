@@ -837,36 +837,53 @@ function _init() {
     if(ckStoreLoad && zyqStoreLoad && sblxStoreLoad && zyStoreLoad && sbmcStoreLoad && initLoad){
         initLoad = false;
         Ext.Ajax.request({
-            url: AppUrl + 'hp/PRO_PM_03_PLAN_YEAR_GET',
+            url: AppUrl + 'dxfile/PM_PLAN_YEAR_GETONE_SEL',
             type: 'ajax',
             method: 'POST',
+            async: false,
             params: {
-                'V_V_GUID': V_ORDERGUID
+                V_GUID: V_ORDERGUID
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
-                if (data.list != null) {
-                    V_V_ORGCODE = data.list[0].V_ORGCODE;
-                    V_V_DEPTCODE = data.list[0].V_DEPTCODE;
-                    V_V_SPECIALTY = data.list[0].V_REPAIRMAJOR_CODE;
-                    V_PERSONNAME = data.list[0].V_INPER
-                    Ext.getCmp('year').setValue(data.list[0].V_YEAR);
-                    Ext.getCmp('ck').setValue(data.list[0].V_ORGCODE);
-                    Ext.getCmp('zyq').setValue(data.list[0].V_DEPTCODE);
-                    Ext.getCmp('zy').setValue(data.list[0].V_REPAIRMAJOR_CODE);
-                    Ext.getCmp('sblx').setValue(data.list[0].V_EQUTYPECODE);
-                    Ext.getCmp('sbmc').setValue(data.list[0].V_EQUCODE);
-                    Ext.getCmp('fqr').setValue(data.list[0].INPERNAME);
-                    Ext.getCmp('fqsj').setValue(data.list[0].V_INDATE.substring(0, 19));
-                    Ext.getCmp('jxnr').setValue(data.list[0].V_CONTENT);
-                    Ext.getCmp('jhtgsj').setValue(data.list[0].V_STARTTIME.substring(0, 10));
-                    Ext.getCmp('tghour').setValue(data.list[0].V_STARTTIME.substring(11, 13));
-                    Ext.getCmp('tgminute').setValue(data.list[0].V_STARTTIME.substring(14, 16));
-                    Ext.getCmp('jhjgsj').setValue(data.list[0].V_ENDTIME.substring(0, 10));
-                    Ext.getCmp('jghour').setValue(data.list[0].V_STARTTIME.substring(11, 13));
-                    Ext.getCmp('jgminute').setValue(data.list[0].V_STARTTIME.substring(14, 16));
-                    Ext.getCmp('jhgshj').setValue(data.list[0].V_HOUR);
-                    Ext.getCmp('bz').setValue(data.list[0].V_BZ);
+                if (data.RET != null) {
+                    V_V_ORGCODE = data.RET[0].ORGCODE;
+                    V_V_DEPTCODE = data.RET[0].DEPTCODE;
+                    V_V_SPECIALTY = data.RET[0].ZYCODE;
+                    V_PERSONNAME = data.RET[0].INPERNAME;
+                    V_PERSONCODE = data.RET[0].INPERCODE;
+                    //alert(V_PERSONCODE);
+                    Ext.getCmp('year').setValue(data.RET[0].V_YEAR);
+                    Ext.getCmp('ck').setValue(data.RET[0].ORGNAME);
+                    Ext.getCmp('zyq').setValue(data.RET[0].DEPTNAME);
+                    Ext.getCmp('zy').setValue(data.RET[0].ZYNAME);
+                    Ext.getCmp('sblx').setValue(data.RET[0].EQUTYPE);
+                    Ext.getCmp('sbmc').setValue(data.RET[0].V_EQUNAME);
+                    Ext.getCmp('fqr').setValue(data.RET[0].INPERNAME);
+                    Ext.getCmp('fqsj').setValue(data.RET[0].INDATE.substring(0, 19));
+                    Ext.getCmp('jxnr').setValue(data.RET[0].REPAIRCONTENT);
+                    Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 19));
+                    Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 19));
+                    Ext.getCmp('jhgshj').setValue(data.RET[0].PLANHOUR);
+                    Ext.getCmp('bz').setValue(data.RET[0].REMARK);
+
+                    Ext.getCmp('year').setValue(data.RET[0].V_YEAR);
+                    Ext.getCmp('ck').setValue(data.RET[0].ORGNAME);
+                    Ext.getCmp('zyq').setValue(data.RET[0].ORGNAME);
+                    Ext.getCmp('zy').setValue(data.RET[0].ZYNAME);
+                    Ext.getCmp('sblx').setValue(data.RET[0].EQUTYPE);
+                    Ext.getCmp('sbmc').setValue(data.RET[0].V_EQUCODE);
+                    Ext.getCmp('fqr').setValue(data.RET[0].INPERNAME);
+                    Ext.getCmp('fqsj').setValue(data.RET[0].INDATE.substring(0, 19));
+                    Ext.getCmp('jxnr').setValue(data.RET[0].REPAIRCONTENT);
+                    Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 10));
+                    Ext.getCmp('tghour').setValue(data.RET[0].PLANTJMONTH.substring(11, 13));
+                    Ext.getCmp('tgminute').setValue(data.RET[0].PLANTJMONTH.substring(14, 16));
+                    Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 10));
+                    Ext.getCmp('jghour').setValue(data.RET[0].PLANJGMONTH.substring(11, 13));
+                    Ext.getCmp('jgminute').setValue(data.RET[0].PLANJGMONTH.substring(14, 16));
+                    Ext.getCmp('jhgshj').setValue(data.RET[0].PLANHOUR);
+                    Ext.getCmp('bz').setValue(data.RET[0].REMARK);
                     _selectNextPer();
                     _selectTaskId();
                     Ext.getBody().unmask();

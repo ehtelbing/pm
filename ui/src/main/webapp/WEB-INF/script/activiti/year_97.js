@@ -322,35 +322,35 @@ function _selectNextPer() {
 
 function _init() {
     Ext.Ajax.request({
-        url: AppUrl + 'hp/PRO_PM_03_PLAN_YEAR_GET',
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_GETONE_SEL',
         type: 'ajax',
         method: 'POST',
+        async: false,
         params: {
-            'V_V_GUID': V_ORDERGUID
-
+            V_GUID: V_ORDERGUID
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);
-            if (data.list != null) {
-                V_V_ORGCODE = data.list[0].V_ORGCODE;
-                V_V_DEPTCODE = data.list[0].V_DEPTCODE;
-                V_V_SPECIALTY = data.list[0].V_REPAIRMAJOR_CODE;
-                V_PERSONNAME = data.list[0].V_INPERNAME;
-                V_PERSONCODE = data.list[0].V_INPER;
+            if (data.RET != null) {
+                V_V_ORGCODE = data.RET[0].ORGCODE;
+                V_V_DEPTCODE = data.RET[0].DEPTCODE;
+                V_V_SPECIALTY = data.RET[0].ZYCODE;
+                V_PERSONNAME = data.RET[0].INPERNAME;
+                V_PERSONCODE = data.RET[0].INPERCODE;
                 //alert(V_PERSONCODE);
-                Ext.getCmp('year').setValue(data.list[0].V_YEAR);
-                Ext.getCmp('ck').setValue(data.list[0].V_ORGNAME);
-                Ext.getCmp('zyq').setValue(data.list[0].V_DEPTNAME);
-                Ext.getCmp('zy').setValue(data.list[0].V_REPAIRMAJOR_CODE);
-                Ext.getCmp('sblx').setValue(data.list[0].V_EQUTYPENAME);
-                Ext.getCmp('sbmc').setValue(data.list[0].V_EQUNAME);
-                Ext.getCmp('fqr').setValue(data.list[0].V_INPERNAME);
-                Ext.getCmp('fqsj').setValue(data.list[0].V_INDATE.substring(0, 19));
-                Ext.getCmp('jxnr').setValue(data.list[0].V_CONTENT);
-                Ext.getCmp('jhtgsj').setValue(data.list[0].V_STARTTIME.substring(0, 19));
-                Ext.getCmp('jhjgsj').setValue(data.list[0].V_ENDTIME.substring(0, 19));
-                Ext.getCmp('jhgshj').setValue(data.list[0].V_HOUR);
-                Ext.getCmp('bz').setValue(data.list[0].V_BZ);
+                Ext.getCmp('year').setValue(data.RET[0].V_YEAR);
+                Ext.getCmp('ck').setValue(data.RET[0].ORGNAME);
+                Ext.getCmp('zyq').setValue(data.RET[0].DEPTNAME);
+                Ext.getCmp('zy').setValue(data.RET[0].ZYNAME);
+                Ext.getCmp('sblx').setValue(data.RET[0].EQUTYPE);
+                Ext.getCmp('sbmc').setValue(data.RET[0].V_EQUNAME);
+                Ext.getCmp('fqr').setValue(data.RET[0].INPERNAME);
+                Ext.getCmp('fqsj').setValue(data.RET[0].INDATE.substring(0, 19));
+                Ext.getCmp('jxnr').setValue(data.RET[0].REPAIRCONTENT);
+                Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 19));
+                Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 19));
+                Ext.getCmp('jhgshj').setValue(data.RET[0].PLANHOUR);
+                Ext.getCmp('bz').setValue(data.RET[0].REMARK);
                 //_selectNextPer();
                 _selectTaskId();
                 Ext.getBody().unmask();
@@ -395,8 +395,26 @@ function _agree() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.ret == '任务提交成功') {
-                window.close();
-                window.opener.OnPageLoad();
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_PLAN_YEAR_STATE_UPDATE',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_GUID: $.url().param("V_ORDERGUID"),
+                        V_STATE: '30'
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        if (resp.RET == 'SUCCESS') {
+                            window.close();
+                            window.opener.OnPageLoad();
+                        } else {
+                            Ext.Msg.alert('提示', 'state update fail！');
+                        }
+                    }
+                });
+                // window.close();
+                // window.opener.OnPageLoad();
             }
         },
         failure: function (response) {//访问到后台时执行的方法。

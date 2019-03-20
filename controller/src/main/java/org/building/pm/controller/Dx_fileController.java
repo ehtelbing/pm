@@ -3008,6 +3008,18 @@ public class Dx_fileController {
         return data;
     }
 
+    //年计划流程结束修改状态
+    @RequestMapping(value = "PM_PLAN_YEAR_STATE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_STATE_UPDATE(
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_STATE") String V_STATE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_STATE_UPDATE(V_GUID, V_STATE);
+        return data;
+    }
 
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)

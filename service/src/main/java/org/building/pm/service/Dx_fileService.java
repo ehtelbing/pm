@@ -2792,4 +2792,28 @@ public class Dx_fileService {
         }
         return result;
     }
+    //年计划流程结束状态修改
+    public HashMap PM_PLAN_YEAR_STATE_UPDATE(String V_GUID,String V_STATE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_STATE_UPDATE");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_STATE_UPDATE(:V_GUID,:V_STATE,:RET)}");
+            cstmt.setString("V_GUID",V_GUID);
+            cstmt.setString("V_STATE",V_STATE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",cstmt.getString("RET"));
+        }catch(SQLException ex){
+            logger.error(ex);
+        }finally{
+            logger.debug("result"+result);
+            logger.info("end PM_PLAN_YEAR_STATE_UPDATE");
+        }
+        return result;
+    }
 }

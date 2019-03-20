@@ -988,6 +988,9 @@ public class ActivitiController {
         Map map = new HashMap();
         String flowtype = "error";
 
+        if (processKey.indexOf("Year") != -1) {
+            flowtype = "年计划";
+        }
         if (processKey.indexOf("Month") != -1) {
             flowtype = "月计划";
         }

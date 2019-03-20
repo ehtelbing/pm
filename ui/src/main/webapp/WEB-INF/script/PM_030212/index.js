@@ -89,12 +89,12 @@ var nextSprStore = Ext.create("Ext.data.Store", {
 });
 var gridStore=Ext.create('Ext.data.Store',{
    id:'gridStore',
-    autoLoad: true,
+    autoLoad: false,
     fields: ['ID_GUID', 'ORGCODE','ORGNAME','DEPTCODE','DEPTNAME','ZYCODE','ZYNAME','EQUCODE','V_EQUNAME','EQUTYPE',
     'V_EQUTYPENAME','REPAIRCONTENT','PLANHOUR','REPAIRTYPE','REPAIRTYPENAME','INPERCODE','INPERNAME','INDATE',
         'STATE','STATENAME','REMARK','V_FLOWCODE','V_FLOWTYPE','MXCODE','PLANTYPE','V_YEAR', 'V_MONTH',
         'PLANTJMONTH','PLANJGMONTH','WXTYPECODE','WXTYPENAME','PTYPECODE','PTYPENAME','PLANDAY','REDEPTCODE','REDEPTNAME',
-    'FZPERCODE','FZPERNAME','SGTYPECODE','SGTYPENAME','SCLBCODE','SCLBNAME','PRO_NAME'],
+    'FZPERCODE','FZPERNAME','SGTYPECODE','SGTYPENAME','SCLBCODE','SCLBNAME','PRO_NAME','YEARID'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -119,7 +119,7 @@ var npanel=Ext.create('Ext.panel.Panel',{
         labelAlign: 'right',width: 250},
         {xtype:'combobox',id:'zyq', store: zyqStore,editable: false,queryMode: 'local',fieldLabel: '作业区',labelAlign: 'right',
          displayField: 'V_DEPTNAME',valueField: 'V_DEPTCODE',labelWidth: 80,width: 250,style: ' margin: 5px 0px 0px 10px'},
-        , {
+        ,{
             xtype: 'combo',
             id: 'nextPer',
             fieldLabel: '下一步接收人',
@@ -256,7 +256,8 @@ function OnButtonPlanAddClicked(){
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.RET != '') {
-                window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
+                // window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
+                    window.open(AppUrl+'page/PM_030212/newAdd.html?CK=' + Ext.getCmp("ck").getValue() +
                     "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+resp.RET+'&FLAG='+'new', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
             }
         }
@@ -284,7 +285,8 @@ function OnButtonEditClicked(){
         alert("此条数据不是有当前用户录入，无权修改");
         return false;
     }else{
-    window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
+    // window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
+        window.open(AppUrl+'page/PM_030212/newAdd.html?CK=' + Ext.getCmp("ck").getValue() +
         "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+record[0].get('ID_GUID')+'&FLAG='+'update', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
     }
 }
@@ -344,22 +346,7 @@ function OnButtonUp(){
     }
     var i_err = 0;
     for (var i = 0; i < records.length; i++) {
-            Ext.Ajax.request({
-                url: AppUrl + 'dxfile/PRO_PM_03_PLAN_YEAR_SEND',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_GUID: records[i].get('ID_GUID'),
-                    V_V_ORGCODE: records[i].get('ORGCODE'),
-                    V_V_DEPTCODE: records[i].get('DEPTCODE'),
-                    V_V_FLOWCODE: '上报',
-                    V_V_PLANTYPE: 'YEAR',
-                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-                },
-                success: function (resp) {
-                    var resp = Ext.decode(resp.responseText).list[0];
 
-                    if (resp.V_INFO == '成功') {
                         Ext.Ajax.request({
                             url: AppUrl + 'Activiti/StratProcess',
                             async: false,
@@ -377,41 +364,58 @@ function OnButtonUp(){
                             },
                             success: function (response) {
                                 if (Ext.decode(response.responseText).ret == 'OK') {
-
+                                    Ext.Ajax.request({
+                                        url: AppUrl + 'dxfile/PRO_PM_03_PLAN_YEAR_SEND',
+                                        method: 'POST',
+                                        async: false,
+                                        params: {
+                                            V_V_GUID: records[i].get('ID_GUID'),
+                                            V_V_ORGCODE: records[i].get('ORGCODE'),
+                                            V_V_DEPTCODE: records[i].get('DEPTCODE'),
+                                            V_V_FLOWCODE: '上报',
+                                            V_V_PLANTYPE: 'YEAR',
+                                            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+                                        },
+                                        success: function (resp) {
+                                            var resp = Ext.decode(resp.responseText).list[0];
+                                            if (resp.V_INFO == 'Success') {
+                                                alert("上报成功！");
+                                                OnButtonQuery();
+                                            } else {
+                                                Ext.MessageBox.show({
+                                                    title: '错误',
+                                                    msg: resp.V_INFO,
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR,
+                                                    fn: function (btn) {
+                                                    }
+                                                });
+                                            }
+                                        },
+                                        failure: function (response) {
+                                            Ext.MessageBox.show({
+                                                title: '错误',
+                                                msg: response.responseText,
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR,
+                                                fn: function (btn) {
+                                                    OnButtonQuery();
+                                                }
+                                            })
+                                        }
+                                    });
+                                    i_err++;
                                 } else if (Ext.decode(response.responseText).error == 'ERROR') {
                                     Ext.Msg.alert('提示', '该流程发起失败！');
                                 }
                             }
                         });
-                        i_err++;
+
 
                         if (i_err == records.length) {
                             OnButtonQuery();
                         }
-                    } else {
-                        Ext.MessageBox.show({
-                            title: '错误',
-                            msg: resp.V_INFO,
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.ERROR,
-                            fn: function (btn) {
-                                OnButtonQuery();
-                            }
-                        });
-                    }
-                },
-                failure: function (response) {
-                    Ext.MessageBox.show({
-                        title: '错误',
-                        msg: response.responseText,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR,
-                        fn: function (btn) {
-                            OnButtonQuery();
-                        }
-                    })
-                }
-            });
+
     }
 
 }
