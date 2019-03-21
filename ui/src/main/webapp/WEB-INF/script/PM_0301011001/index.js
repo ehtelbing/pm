@@ -19,6 +19,7 @@ var V_ORGCODE=null;
 if (location.href.split('?')[1] != undefined) {
     V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_ORGCODE;
 }
+var nowdate=new Date();
 var centerPanel = Ext.create('Ext.form.Panel', {
 	region: 'center',
 	layout:'vbox',
@@ -31,7 +32,7 @@ var centerPanel = Ext.create('Ext.form.Panel', {
 		{xtype:'displayfield',id:'jhsj', fieldLabel: '计划时间',labelAlign: 'right',labelWidth:90,margin:'5 0 0 5'},
 		{layout: 'column', defaults: {labelAlign: 'right'},frame:true,border: false,baseCls: 'my-panel-no-border',
 			items: [
-				{xtype:'datefield',fieldLabel:'上报开始时间',format : 'Y-m-d',editable : false,value:new Date(),id:'kssj',labelAlign:'right',labelWidth:90,style: ' margin: 5px 0px 0px 6px'},
+				{xtype:'datefield',fieldLabel:'上报开始时间',format : 'Y-m-d',editable : true,/*value:new Date(),*/id:'kssj',labelAlign:'right',labelWidth:90,style: ' margin: 5px 0px 0px 6px'},
 				{xtype: 'numberfield',id: 'shour',labelAlign: 'right', value: 8, maxValue: 23, minValue: 00, labelWidth: 30, style: ' margin: 5px 0px 0px 6px', width: 70 },
 				{xtype: 'label', text: '小时', style: ' margin: 8px 0px 0px 6px' },
 				{xtype: 'numberfield', id: 'sminute',value: 0, maxValue: 59, minValue: 00, style: ' margin: 5px 0px 0px 6px', width: 70 },
@@ -40,7 +41,7 @@ var centerPanel = Ext.create('Ext.form.Panel', {
 		},
 		{layout: 'column', defaults: {labelAlign: 'right'},frame:true,border: false,baseCls: 'my-panel-no-border',
 			items: [
-				{xtype:'datefield',fieldLabel:'上报结束时间',format : 'Y-m-d',editable : false,value:new Date(),id:'jssj',labelAlign:'right',labelWidth:90,style: ' margin: 5px 0px 0px 6px'},
+				{xtype:'datefield',fieldLabel:'上报结束时间',format : 'Y-m-d',editable : true,/*value:new Date(),*/id:'jssj',labelAlign:'right',labelWidth:90,style: ' margin: 5px 0px 0px 6px'},
 				{xtype: 'numberfield',id: 'ehour',labelAlign: 'right', value: 8, maxValue: 23, minValue: 00, labelWidth: 30, style: ' margin: 5px 0px 0px 6px', width: 70 },
 				{xtype: 'label', text: '小时', style: ' margin: 8px 0px 0px 6px' },
 				{xtype: 'numberfield', id: 'eminute',value: 0, maxValue: 59, minValue: 00, style: ' margin: 5px 0px 0px 6px', width: 70 },
@@ -86,21 +87,54 @@ Ext.onReady(function () {
 			}else{
 				Ext.getCmp('lock').setValue(false);
 			}
+			if(resp.list[0].D_DATE_E)
+			    // 获取开始时间
 			var strtimee=resp.list[0].D_DATE_E;
 			var strdatee=strtimee.split('.')[0].split(' ')[0];
-			Ext.getCmp('jssj').setValue(strdatee);
-			var ehour=strtimee.split('.')[0].split(' ')[1].split(':')[0];
-			var eminute=strtimee.split('.')[0].split(' ')[1].split(':')[1];
-			Ext.getCmp('ehour').setValue(ehour);
-			Ext.getCmp('eminute').setValue(eminute);
+            var ehour=strtimee.split('.')[0].split(' ')[1].split(':')[0];
+            var eminute=strtimee.split('.')[0].split(' ')[1].split(':')[1];
+			// 获取结束时间
+            var strtimes=resp.list[0].D_DATE_S;
+            var strdates=strtimes.split('.')[0].split(' ')[0];
+            var shour=strtimes.split('.')[0].split(' ')[1].split(':')[0];
+            var sminute=strtimes.split('.')[0].split(' ')[1].split(':')[1];
 
-			var strtimes=resp.list[0].D_DATE_S;
-			var strdates=strtimes.split('.')[0].split(' ')[0];
-			Ext.getCmp('kssj').setValue(strdates);
-			var shour=strtimes.split('.')[0].split(' ')[1].split(':')[0];
-			var sminute=strtimes.split('.')[0].split(' ')[1].split(':')[1];
-			Ext.getCmp('shour').setValue(shour);
-			Ext.getCmp('sminute').setValue(sminute);
+            var nowTime=Ext.Date.format(nowdate,'Y-m-d');
+            if(strdatee==strdates&&strdates==nowTime){
+               //开始时间
+               //  Ext.getCmp('kssj').setValue(getWeekStartDate());
+                Ext.getCmp('kssj').setValue(Ext.Date.format(new Date(getWeekStartDate()),'Y-m-d'));
+                Ext.getCmp('shour').setValue("8");
+                Ext.getCmp('sminute').setValue("00");
+
+                //结束时间
+                // Ext.getCmp('jssj').setValue(getWeekEndDate());
+                Ext.getCmp('jssj').setValue(Ext.Date.format(new Date(getWeekEndDate()),'Y-m-d'));
+                Ext.getCmp('ehour').setValue("12");
+                Ext.getCmp('eminute').setValue("00");
+
+            }else{
+                //开始时间
+                Ext.getCmp('kssj').setValue(strdates);
+                Ext.getCmp('shour').setValue(shour);
+                Ext.getCmp('sminute').setValue(sminute);
+                //结束时间
+                Ext.getCmp('jssj').setValue(strdatee);
+                Ext.getCmp('ehour').setValue(ehour);
+                Ext.getCmp('eminute').setValue(eminute);
+            }
+			// Ext.getCmp('jssj').setValue(strdatee);
+			// var ehour=strtimee.split('.')[0].split(' ')[1].split(':')[0];
+			// var eminute=strtimee.split('.')[0].split(' ')[1].split(':')[1];
+			// Ext.getCmp('ehour').setValue(ehour);
+			// Ext.getCmp('eminute').setValue(eminute);
+            //
+            //
+			// Ext.getCmp('kssj').setValue(strdates);
+			// var shour=strtimes.split('.')[0].split(' ')[1].split(':')[0];
+			// var sminute=strtimes.split('.')[0].split(' ')[1].split(':')[1];
+			// Ext.getCmp('shour').setValue(shour);
+			// Ext.getCmp('sminute').setValue(sminute);
 		}
 	});
 });
@@ -147,4 +181,84 @@ function OnButtonSaveClicked(){
 function OnButtonCancelClicked() {
 	window.opener.queryGrid();
 	window.close();
+}
+//月共几天
+function getDaysOfMonth(year, month) {
+    var month = parseInt(month, 10);
+    var d = new Date(year, month, 0);
+    return d.getDate();
+}
+//本周开始时间
+function getWeekStartDate() {
+    var year = parseInt(V_YEAR);
+    var month = parseInt(V_MONTH);
+    var week = parseInt(V_WEEK)-1;
+    if(week==0){
+        month=parseInt(V_MONTH)-1;
+        week=5;
+    }
+    var dat = new Date(year, month - 1, 1);
+    var day = dat.getDay();
+    var date = dat.getDate() + (week - 1) * 7;
+    var hao = dat.getDate();
+    var days = getDaysOfMonth(year, month - 1);//上月有几天
+    if (day == 0) {
+        day = 7;
+    }
+    if (date < day) {
+        hao = date + days - day + 1;
+    } else {
+        hao = date - day + 1;
+    }
+    var yue = dat.getMonth();
+    if (date < day) {
+        yue = yue - 1;
+    }
+    var nian = dat.getFullYear();
+    if (yue < 0) {
+        nian = nian - 1;
+        yue = yue + 12;
+    }
+    if (hao > getDaysOfMonth(year, month)) {
+        hao = hao - getDaysOfMonth(year, month);
+        yue = yue + 1;
+    }
+    if (yue > 11) {
+        nian == nian + 1;
+    }
+    return nian + "-" + (yue + 1) + "-" + hao;
+}
+
+//本周结束时间
+function getWeekEndDate() {
+    var year = parseInt(V_YEAR);
+    var month = parseInt(V_MONTH);
+    var week = parseInt(V_WEEK)-1;
+    if(week==0){
+        month=parseInt(V_MONTH)-1;
+        week=5;
+    }
+    var dat = new Date();
+    var dat = new Date(year, month - 1, 1);
+    var day = dat.getDay();
+    var date = dat.getDate() + (week - 1) * 7;
+    var hao = dat.getDate();
+    var days = getDaysOfMonth(year, month);//本月有几天
+    if (day == 0) {
+        // day = 7;
+        day = 4;
+    }
+    // hao = date + (7 - day);
+    hao = date + (4 - day);
+    var yue = dat.getMonth();
+    if (hao > days) {
+        hao = hao - days;
+        yue = yue + 1;
+    }
+    var nian = dat.getFullYear();
+    if (yue > 11) {
+        yue = yue - 12;
+        nian = nian + 1;
+    }
+    return nian + "-" + (yue + 1) + "-" + hao;
 }
