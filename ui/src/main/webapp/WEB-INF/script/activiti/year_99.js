@@ -368,13 +368,15 @@ function _init() {
                 Ext.getCmp('ck').setValue(data.RET[0].ORGNAME);
                 Ext.getCmp('zyq').setValue(data.RET[0].DEPTNAME);
                 Ext.getCmp('zy').setValue(data.RET[0].ZYNAME);
-                Ext.getCmp('sblx').setValue(data.RET[0].EQUTYPE);
+                Ext.getCmp('sblx').setValue(data.RET[0].EQUTYPENAME);
                 Ext.getCmp('sbmc').setValue(data.RET[0].V_EQUNAME);
                 Ext.getCmp('fqr').setValue(data.RET[0].INPERNAME);
                 Ext.getCmp('fqsj').setValue(data.RET[0].INDATE.substring(0, 19));
                 Ext.getCmp('jxnr').setValue(data.RET[0].REPAIRCONTENT);
-                Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 19));
-                Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 19));
+                Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 7));
+                Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 7));
+                // Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 19));
+                // Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 19));
                 Ext.getCmp('jhgshj').setValue(data.RET[0].PLANHOUR);
                 Ext.getCmp('bz').setValue(data.RET[0].REMARK);
                 _selectNextPer();
@@ -421,6 +423,24 @@ function _agree() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.ret == '任务提交成功') {
+                // Ext.Ajax.request({
+                //     url: AppUrl + 'dxfile/PM_PLAN_YEAR_STATE_UPDATE',
+                //     method: 'POST',
+                //     async: false,
+                //     params: {
+                //         V_GUID: $.url().param("V_ORDERGUID"),
+                //         V_STATE: '99'
+                //     },
+                //     success: function (resp) {
+                //         var resp = Ext.decode(resp.responseText);
+                //         if (resp.RET == 'SUCCESS') {
+                //             window.close();
+                //             window.opener.OnPageLoad();
+                //         } else {
+                //             Ext.Msg.alert('提示', 'state update fail！');
+                //         }
+                //     }
+                // });
                 Ext.Ajax.request({
                     url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
                     method: 'POST',

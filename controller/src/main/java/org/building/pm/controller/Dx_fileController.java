@@ -3021,6 +3021,36 @@ public class Dx_fileController {
         return data;
     }
 
+    //年计划驳回修改数据
+    @RequestMapping(value = "PM_PLAN_YEAR_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_UPDATE(
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value = "V_DEPTCODE") String V_DEPTCODE,
+            @RequestParam(value = "V_DEPTNAME") String V_DEPTNAME,
+            @RequestParam(value = "V_EQUTYPE") String V_EQUTYPE,
+            @RequestParam(value = "V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value = "V_ZYCODE") String V_ZYCODE,
+            @RequestParam(value = "V_ZYMANE") String V_ZYMANE,
+            @RequestParam(value = "V_CONTENT") String V_CONTENT,
+            @RequestParam(value = "V_TGDATE") String V_TGDATE,
+            @RequestParam(value = "V_JGDATE") String V_JGDATE,
+            @RequestParam(value = "V_HOUR") String V_HOUR,
+            @RequestParam(value = "V_BZ") String V_BZ,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_UPDATE(V_GUID,V_V_YEAR,V_V_MONTH,V_ORGCODE,V_ORGNAME,V_DEPTCODE,V_DEPTNAME,
+                V_EQUTYPE,V_EQUCODE,V_ZYCODE,V_ZYMANE,V_CONTENT,V_TGDATE,V_JGDATE,V_HOUR,V_BZ,V_INPERCODE);
+        return data;
+    }
+
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
