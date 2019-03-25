@@ -2817,7 +2817,6 @@ public class Dx_fileService {
         return result;
     }
     //年计划流程驳回数据修改
-    //年计划流程结束状态修改
     public HashMap PM_PLAN_YEAR_UPDATE(String V_GUID,String V_V_YEAR,String V_V_MONTH,String V_ORGCODE,
                                        String V_ORGNAME,String V_DEPTCODE,String V_DEPTNAME,String V_EQUTYPE
             ,String V_EQUCODE,String V_ZYCODE,String V_ZYMANE,String V_CONTENT,String V_TGDATE,String V_JGDATE
@@ -2857,6 +2856,86 @@ public class Dx_fileService {
         }finally{
             logger.debug("result"+result);
             logger.info("end PM_PLAN_YEAR_UPDATE");
+        }
+        return result;
+    }
+    ////年计划放行计划查询
+    public HashMap PM_PLAN_YEAR_SEL_FX(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERCODE,String V_V_ZY,
+                                       String V_SDATE,String V_EDATE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_SEL_FX");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_SEL_FX(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PERCODE,:V_V_ZY,:V_SDATE,:V_EDATE,:RET)}");
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_PERCODE",V_V_PERCODE);
+            cstmt.setString("V_V_ZY",V_V_ZY);
+            cstmt.setString("V_SDATE",V_SDATE);
+            cstmt.setString("V_EDATE",V_EDATE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException ex){
+            logger.error(ex);
+        }finally{
+            logger.debug("result"+result);
+            logger.info("end PM_PLAN_YEAR_SEL_FX");
+        }
+        return result;
+    }
+
+    //年计划大修查询
+    public HashMap PRO_PM_03_PLAN_PROJECT_BYFX(String V_PRONAME,String V_ZY,String V_V_YEAR)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_PM_03_PLAN_PROJECT_BYFX");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_PM_03_PLAN_PROJECT_BYFX(:V_PRONAME,:V_ZY,:V_V_YEAR,:RET)}");
+            cstmt.setString("V_PRONAME",V_PRONAME);
+            cstmt.setString("V_ZY",V_ZY);
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException ex){
+            logger.error(ex);
+        }finally{
+            logger.debug("result"+result);
+            logger.info("end PRO_PM_03_PLAN_PROJECT_BYFX");
+        }
+        return result;
+    }
+    //年计划大修写入关联表
+    public HashMap YEAR_TO_PROGUID_FX_INSERT(String V_YEARGUID,String V_PROGUID,String V_INPERCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin YEAR_TO_PROGUID_FX_INSERT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call YEAR_TO_PROGUID_FX_INSERT(:V_YEARGUID,:V_PROGUID,:V_INPERCODE,:RET)}");
+            cstmt.setString("V_YEARGUID",V_YEARGUID);
+            cstmt.setString("V_PROGUID",V_PROGUID);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",cstmt.getString("RET"));
+        }catch(SQLException ex){
+            logger.error(ex);
+        }finally{
+            logger.debug("result"+result);
+            logger.info("end YEAR_TO_PROGUID_FX_INSERT");
         }
         return result;
     }
