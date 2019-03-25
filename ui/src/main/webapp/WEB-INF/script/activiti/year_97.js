@@ -11,6 +11,9 @@ var V_PERSONCODE = '';
 var taskId = '';
 var V_STEPCODE = '';
 var V_PERSONNAME ='';
+var processKey="";
+var V_STEPNAME="";
+var V_NEXT_SETP="";
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
@@ -342,16 +345,18 @@ function _init() {
                 Ext.getCmp('ck').setValue(data.RET[0].ORGNAME);
                 Ext.getCmp('zyq').setValue(data.RET[0].DEPTNAME);
                 Ext.getCmp('zy').setValue(data.RET[0].ZYNAME);
-                Ext.getCmp('sblx').setValue(data.RET[0].EQUTYPE);
+                Ext.getCmp('sblx').setValue(data.RET[0].EQUTYPENAME);
                 Ext.getCmp('sbmc').setValue(data.RET[0].V_EQUNAME);
                 Ext.getCmp('fqr').setValue(data.RET[0].INPERNAME);
                 Ext.getCmp('fqsj').setValue(data.RET[0].INDATE.substring(0, 19));
                 Ext.getCmp('jxnr').setValue(data.RET[0].REPAIRCONTENT);
-                Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 19));
-                Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 19));
+                Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 7));
+                Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 7));
+                // Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 19));
+                // Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 19));
                 Ext.getCmp('jhgshj').setValue(data.RET[0].PLANHOUR);
                 Ext.getCmp('bz').setValue(data.RET[0].REMARK);
-                //_selectNextPer();
+                // _selectNextPer();
                 _selectTaskId();
                 Ext.getBody().unmask();
             }
@@ -444,7 +449,7 @@ function _reject() {
             idea: '不通过',
             parName: ['fqrxg', "flow_yj"],
             parVal: [V_PERSONCODE, spyj],
-            processKey: processKey,
+            processKey: $.url().param("ProcessDefinitionKey"),
             businessKey: V_ORDERGUID,
             V_STEPCODE: 'fqrxg',
             V_STEPNAME: '发起人修改',
@@ -456,25 +461,43 @@ function _reject() {
             var resp = Ext.decode(response.responseText);
             if (resp.ret == '任务提交成功') {
                 Ext.Ajax.request({
-                    //url: AppUrl + 'zdh/PRO_WO_FLOW_AGREE',
-                    url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                    url: AppUrl + 'dxfile/PM_PLAN_YEAR_STATE_UPDATE',
                     method: 'POST',
                     async: false,
                     params: {
-                        'V_V_ORDERID': V_ORDERGUID,
-                        'V_V_PROCESS_NAMESPACE': 'YearPlan',
-                        'V_V_PROCESS_CODE': processKey,
-                        'V_V_STEPCODE': V_STEPCODE,
-                        'V_V_STEPNEXT_CODE': 'fqrxg'
+                        V_GUID: $.url().param("V_ORDERGUID"),
+                        V_STATE: '99'
                     },
-                    success: function (ret) {
-                        var resp = Ext.JSON.decode(ret.responseText);
-                        if (resp.V_INFO == 'success') {
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        if (resp.RET == 'SUCCESS') {
                             window.close();
                             window.opener.OnPageLoad();
+                        } else {
+                            Ext.Msg.alert('提示', 'state update fail！');
                         }
                     }
                 });
+                // Ext.Ajax.request({
+                //     //url: AppUrl + 'zdh/PRO_WO_FLOW_AGREE',
+                //     url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                //     method: 'POST',
+                //     async: false,
+                //     params: {
+                //         'V_V_ORDERID': V_ORDERGUID,
+                //         'V_V_PROCESS_NAMESPACE': 'YearPlan',
+                //         'V_V_PROCESS_CODE': processKey,
+                //         'V_V_STEPCODE': V_STEPCODE,
+                //         'V_V_STEPNEXT_CODE': 'fqrxg'
+                //     },
+                //     success: function (ret) {
+                //         var resp = Ext.JSON.decode(ret.responseText);
+                //         if (resp.V_INFO == 'success') {
+                //             window.close();
+                //             window.opener.OnPageLoad();
+                //         }
+                //     }
+                // });
             } else {
                 Ext.MessageBox.alert('提示', '任务提交失败');
             }
