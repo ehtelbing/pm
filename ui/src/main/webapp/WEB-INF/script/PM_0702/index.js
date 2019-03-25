@@ -533,7 +533,7 @@ function OnSaveButtonClicked() {
 }
 
 function OnBackButtonClicked() {
-    window.close();
+    Ext.getCmp('windowEqu').hide();
 }
 
 function bind() {
