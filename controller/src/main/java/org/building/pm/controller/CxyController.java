@@ -159,9 +159,11 @@ public class CxyController {
                 V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX,V_V_JJBF, V_V_FAULT_LEVEL,
                 V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL);
 
-        String pm_06 = (String) data.get("RET");
+        String RET = (String) data.get("RET");
+        String FAULTID = (String) data.get("FAULTID");
 
-        result.put("RET", pm_06);
+        result.put("RET", RET);
+        result.put("FAULTID", FAULTID);
         result.put("success", true);
         return result;
     }
@@ -321,6 +323,72 @@ public class CxyController {
         List<Map<String, Object>> list = (List) data.get("list");
 
         result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_FAULT_ITEM_DATA_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_FAULT_ITEM_DATA_GET(@RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_FAULT_ITEM_DATA_GET(V_V_FAULT_GUID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_INSTANCEID_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_14_FAULT_ITEM_DATA_INSTANCEID_SET(
+                                                        @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                        @RequestParam(value = "V_V_INSTANCEID") String V_V_INSTANCEID,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_14_FAULT_ITEM_DATA_INSTANCEID_SET(V_V_GUID,V_V_INSTANCEID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_14_FAULT_ITEM_DATA_GET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_14_FAULT_ITEM_DATA_GET(V_V_GUID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("RET", list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_STATE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_14_FAULT_ITEM_DATA_STATE_UPDATE(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_STATE") String V_STATE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_14_FAULT_ITEM_DATA_STATE_UPDATE(V_V_GUID,V_STATE);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
         result.put("success", true);
         return result;
     }

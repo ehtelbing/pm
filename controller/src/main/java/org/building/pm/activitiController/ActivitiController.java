@@ -81,6 +81,10 @@ public class ActivitiController {
 
     @Autowired
     private WorkOrderService workOrderService;
+
+    @Autowired
+    private CxyService cxyService;
+
     @Autowired
     private CjyController cjyController;
     @Value("#{configProperties['infopub.url']}")
@@ -624,7 +628,7 @@ public class ActivitiController {
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
                 }
-                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
+                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
                 if (equIp_name.size() > 0) {
                     Map equmap = (Map) equIp_name.get(0);
                     taskmap.put("EQUNAME", equmap.get("V_EQUIP_NAME").toString());
@@ -660,6 +664,19 @@ public class ActivitiController {
                         taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                         taskmap.put("ZYNAME", equmap.get("V_REPAIRMAJOR_CODE").toString());
+                    }
+                }
+                else if (taskmap.get("flow_type").toString().indexOf("Fault")!=-1) {
+                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                    if (equIp_name.size() > 0) {
+                        Map equmap = (Map) equIp_name.get(0);
+                        taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                        taskmap.put("PLANSTART", equmap.get("V_FINDTIME").toString());
+                        taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
+                        taskmap.put("PLANHOUR", equmap.get("V_TIME").toString());
+                        taskmap.put("OPERANAME", equmap.get("V_FZR").toString());
+                        taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                        taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                     }
                 }
                 User user = identityService.createUserQuery()
@@ -999,6 +1016,9 @@ public class ActivitiController {
         }
         if (processKey.indexOf("WorkOrder") != -1) {
             flowtype = "工单";
+        }
+        if (processKey.indexOf("Fault") != -1) {
+            flowtype = "事故";
         }
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 

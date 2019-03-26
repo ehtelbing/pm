@@ -312,7 +312,7 @@ public class CxyService {
                     ":V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_GUID,:V_V_FAULT_TYPE,:V_V_FAULT_YY,:V_V_FINDTIME," +
                     ":V_V_FAULT_XX,:V_V_JJBF,:V_V_FAULT_LEVEL," +
                     ":V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_V_FAULT_NAME,:V_V_FAULT_PART,:V_V_FAULT_CLGC," +
-                    ":V_V_FAULT_SS,:V_V_FAULT_XZ,:V_V_FAULT_ZGCS,:V_V_FZR_CL,:V_INFO)}");
+                    ":V_V_FAULT_SS,:V_V_FAULT_XZ,:V_V_FAULT_ZGCS,:V_V_FZR_CL,:V_INFO,:FAULTID)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
@@ -338,8 +338,10 @@ public class CxyService {
             cstmt.setString("V_V_FAULT_ZGCS", V_V_FAULT_ZGCS);
             cstmt.setString("V_V_FZR_CL", V_V_FZR_CL);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("FAULTID", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("RET", cstmt.getString("V_INFO"));
+            result.put("FAULTID", cstmt.getString("FAULTID"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -678,6 +680,113 @@ public class CxyService {
         }
         logger.debug("result:" + result);
         logger.info("end MM_USER_TRENDS_TABLE_SEL");
+        return result;
+    }
+    public HashMap PRO_FAULT_ITEM_DATA_GET(String V_V_FAULT_GUID) throws SQLException {
+
+        logger.info("begin PRO_FAULT_ITEM_DATA_GET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_FAULT_ITEM_DATA_GET" + "(:V_V_FAULT_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_FAULT_GUID", V_V_FAULT_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_FAULT_ITEM_DATA_GET");
+        return result;
+    }
+
+    public HashMap PM_14_FAULT_ITEM_DATA_INSTANCEID_SET(String V_V_GUID,String V_V_INSTANCEID) throws SQLException {
+        logger.info("begin PM_14_FAULT_ITEM_DATA_INSTANCEID_SET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_INSTANCEID_SET" + "(:V_V_GUID,:V_V_INSTANCEID,:V_INFO)}");
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_INSTANCEID", V_V_INSTANCEID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_14_FAULT_ITEM_DATA_INSTANCEID_SET");
+        return result;
+    }
+
+    public HashMap PM_14_FAULT_ITEM_DATA_GET(String V_V_GUID) throws SQLException {
+
+        logger.info("begin PM_14_FAULT_ITEM_DATA_GET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_GET" + "(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_14_FAULT_ITEM_DATA_GET");
+        return result;
+    }
+
+    public HashMap PM_14_FAULT_ITEM_DATA_STATE_UPDATE(String V_V_GUID,String V_STATE) throws SQLException {
+        logger.info("begin PM_14_FAULT_ITEM_DATA_STATE_UPDATE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_STATE_UPDATE" + "(:V_V_GUID,:V_STATE,:RET)}");
+
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_STATE", V_STATE);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_14_FAULT_ITEM_DATA_STATE_UPDATE");
         return result;
     }
 }
