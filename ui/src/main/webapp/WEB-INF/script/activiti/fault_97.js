@@ -471,8 +471,7 @@ function _reject() {
                     async: false,
                     params: {
                         V_GUID: $.url().param("V_ORDERGUID"),
-                        V_STATE: '0'
-                        //99
+                        V_STATE: '99'
                     },
                     success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
