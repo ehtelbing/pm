@@ -772,10 +772,12 @@ function _upLoadFile() {
         method: 'POST',
         async: false,
         waitMsg: '上传中...',
-        success: function (list) {
-            Ext.Msg.alert('成功', '上传成功');
-            filequery(defectguid);
-
+        success: function (form, action) {
+             var massage=action.result.message;
+             if(massage=="{list=Success}"){
+                 Ext.Msg.alert('成功', '上传成功');
+                 filequery(defectguid);
+             }
         },
         failure: function (resp) {
             Ext.Msg.alert('错误', '上传失败');

@@ -2,6 +2,10 @@ package org.building.pm.controller;
 
 import org.building.pm.service.PM_07Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -183,23 +187,28 @@ public class PM_07Controller {
     }
 
 //2018-09-27
-@RequestMapping(value = "/DEFECT_UPFILE_INSERT", method = RequestMethod.POST)
+//@RequestMapping(value = "/DEFECT_UPFILE_INSERT", method = RequestMethod.POST)
+@RequestMapping(value = "/DEFECT_UPFILE_INSERT")
 @ResponseBody
-public Map<String, Object> DEFECT_UPFILE_INSERT(@RequestParam(value = "V_V_BLOB") MultipartFile V_V_BLOB,
-                                @RequestParam(value = "V_GUID") String V_GUID,
+//public Map<String, Object> DEFECT_UPFILE_INSERT(@RequestParam(value = "V_V_BLOB") MultipartFile V_V_BLOB,
+public ResponseEntity<String> DEFECT_UPFILE_INSERT(@RequestParam(value = "V_V_BLOB") MultipartFile V_V_BLOB,
+                                                   @RequestParam(value = "V_GUID") String V_GUID,
                                 @RequestParam(value = "V_FILENAME") String V_FILENAME,
                                 @RequestParam(value = "V_PLANT") String V_PLANT,
                                 @RequestParam(value = "V_DEPT") String V_DEPT,
                                 @RequestParam(value = "V_PERSONCODE") String V_PERSONCODE,
                                 HttpServletRequest request,
                                 HttpServletResponse response) throws Exception {
-    Map<String, Object> result = pm_07Service.DEFECT_UPFILE_INSERT(V_GUID, V_FILENAME, V_V_BLOB.getInputStream(), V_V_BLOB.getContentType(),V_PLANT, V_DEPT, V_PERSONCODE);
+    HttpHeaders responseHeaders = new HttpHeaders();
+    responseHeaders.setContentType(MediaType.TEXT_HTML);
+    String filename=V_V_BLOB.getOriginalFilename();
+    Map<String, Object> result = pm_07Service.DEFECT_UPFILE_INSERT(V_GUID, filename, V_V_BLOB.getInputStream(), V_V_BLOB.getContentType(),V_PLANT, V_DEPT, V_PERSONCODE);
     String list = (String) result.get("list");
-
-    result.put("list", list);
-    result.put("success", true);
-
-    return result;
+//    result.put("list", list);
+//    result.put("success", true);
+    String json= "{\"success\":true,\"message\":\""+result+"\"}";
+    return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+//    return result;
 }
 
     @RequestMapping(value = "/DEFECT_UPFILE_SELECT", method = RequestMethod.POST)
