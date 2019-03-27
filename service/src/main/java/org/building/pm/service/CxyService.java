@@ -789,4 +789,61 @@ public class CxyService {
         logger.info("end PM_14_FAULT_ITEM_DATA_STATE_UPDATE");
         return result;
     }
+
+    public HashMap PM_1405_FAULT_ITEM_DATA_UPDATE(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE,
+                                               String V_V_EQUCHILD_CODE, String V_V_FAULT_GUID, String V_V_FAULT_TYPE, String V_V_FAULT_YY,
+                                               String V_V_FINDTIME, String V_V_FAULT_XX,
+                                               String V_V_JJBF,String V_V_FAULT_LEVEL, String V_V_FILE_GUID, String V_V_INTIME,
+                                               String V_V_PERCODE, String V_V_IP,String V_V_FAULT_NAME,String V_V_FAULT_PART,String V_V_FAULT_CLGC,
+                                               String V_V_FAULT_SS,String V_V_FAULT_XZ,String V_V_FAULT_ZGCS,String V_V_FZR_CL) throws SQLException {
+        logger.info("begin PM_1405_FAULT_ITEM_DATA_UPDATE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_1405_FAULT_ITEM_DATA_UPDATE" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                    ":V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_GUID,:V_V_FAULT_TYPE,:V_V_FAULT_YY,:V_V_FINDTIME," +
+                    ":V_V_FAULT_XX,:V_V_JJBF,:V_V_FAULT_LEVEL," +
+                    ":V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_V_FAULT_NAME,:V_V_FAULT_PART,:V_V_FAULT_CLGC," +
+                    ":V_V_FAULT_SS,:V_V_FAULT_XZ,:V_V_FAULT_ZGCS,:V_V_FZR_CL,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCHILD_CODE", V_V_EQUCHILD_CODE);
+            cstmt.setString("V_V_FAULT_GUID", V_V_FAULT_GUID);
+            cstmt.setString("V_V_FAULT_TYPE", V_V_FAULT_TYPE);
+            cstmt.setString("V_V_FAULT_YY", V_V_FAULT_YY);
+            cstmt.setString("V_V_FINDTIME", V_V_FINDTIME);
+            cstmt.setString("V_V_FAULT_XX", V_V_FAULT_XX);
+            cstmt.setString("V_V_JJBF", V_V_JJBF);
+            cstmt.setString("V_V_FAULT_LEVEL", V_V_FAULT_LEVEL);
+            cstmt.setString("V_V_FILE_GUID", V_V_FILE_GUID);
+            cstmt.setString("V_V_INTIME", V_V_INTIME);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_IP", V_V_IP);
+            cstmt.setString("V_V_FAULT_NAME", V_V_FAULT_NAME);
+            cstmt.setString("V_V_FAULT_PART", V_V_FAULT_PART);
+            cstmt.setString("V_V_FAULT_CLGC", V_V_FAULT_CLGC);
+            cstmt.setString("V_V_FAULT_SS", V_V_FAULT_SS);
+            cstmt.setString("V_V_FAULT_XZ", V_V_FAULT_XZ);
+            cstmt.setString("V_V_FAULT_ZGCS", V_V_FAULT_ZGCS);
+            cstmt.setString("V_V_FZR_CL", V_V_FZR_CL);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_1405_FAULT_ITEM_DATA_UPDATE");
+        return result;
+    }
 }

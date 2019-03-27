@@ -173,45 +173,46 @@ Ext.onReady(function () {
                     labelWidth: 90,
                     width: 500
                 }]
-            }, {
-                layout: 'column',
-                items: [{
-                    xtype: 'textfield',
-                    readOnly: true,
-                    id: 'jhtgsj',
-                    labelAlign: 'right',
-                    allowBlank: false,
-                    fieldLabel: '计划停工时间',
-                    labelWidth: 90,
-                    width: 250
-                }]
-            }, {
-                layout: 'column',
-                items: [{
-                    xtype: 'textfield',
-                    readOnly: true,
-                    id: 'jhjgsj',
-                    labelAlign: 'right',
-                    allowBlank: false,
-                    fieldLabel: '计划竣工时间',
-                    labelWidth: 90,
-                    width: 250
-                }]
-            }, {
-                layout: 'column',
-                defaults: {
-                    xtype: 'textfield',
-                    labelAlign: 'right',
-                    width: 250,
-                    readOnly: true
-                },
-                items: [{
-                    id: 'jhgshj',
-                    allowBlank: false,
-                    fieldLabel: '计划工时合计',
-                    labelWidth: 90
-                }]
             }
+            // , {
+            //     layout: 'column',
+            //     items: [{
+            //         xtype: 'textfield',
+            //         readOnly: true,
+            //         id: 'jhtgsj',
+            //         labelAlign: 'right',
+            //         allowBlank: false,
+            //         fieldLabel: '计划停工时间',
+            //         labelWidth: 90,
+            //         width: 250
+            //     }]
+            // }, {
+            //     layout: 'column',
+            //     items: [{
+            //         xtype: 'textfield',
+            //         readOnly: true,
+            //         id: 'jhjgsj',
+            //         labelAlign: 'right',
+            //         allowBlank: false,
+            //         fieldLabel: '计划竣工时间',
+            //         labelWidth: 90,
+            //         width: 250
+            //     }]
+            // }, {
+            //     layout: 'column',
+            //     defaults: {
+            //         xtype: 'textfield',
+            //         labelAlign: 'right',
+            //         width: 250,
+            //         readOnly: true
+            //     },
+            //     items: [{
+            //         id: 'jhgshj',
+            //         allowBlank: false,
+            //         fieldLabel: '计划工时合计',
+            //         labelWidth: 90
+            //     }]
+            // }
             // , {
             //     layout: 'column',
             //     items: [{
@@ -408,9 +409,9 @@ function _agree() {
                 Ext.Ajax.request({
                     url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
                     method: 'POST',
-                    async: false,
+                    type: 'ajax',
                     params: {
-                        V_GUID: $.url().param("V_ORDERGUID"),
+                        V_V_GUID: $.url().param("V_ORDERGUID"),
                         V_STATE: '30'
                     },
                     success: function (resp) {
@@ -421,6 +422,13 @@ function _agree() {
                         } else {
                             Ext.Msg.alert('提示', 'state update fail！');
                         }
+                    },failure: function (resp) {//访问到后台时执行的方法。
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        })
                     }
                 });
                 // window.close();
@@ -468,9 +476,9 @@ function _reject() {
                 Ext.Ajax.request({
                     url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
                     method: 'POST',
-                    async: false,
+                    type: 'ajax',
                     params: {
-                        V_GUID: $.url().param("V_ORDERGUID"),
+                        V_V_GUID: $.url().param("V_ORDERGUID"),
                         V_STATE: '99'
                     },
                     success: function (resp) {
@@ -481,6 +489,13 @@ function _reject() {
                         } else {
                             Ext.Msg.alert('提示', 'state update fail！');
                         }
+                    },failure: function (resp) {//访问到后台时执行的方法。
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        })
                     }
                 });
                 // Ext.Ajax.request({

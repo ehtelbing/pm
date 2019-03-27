@@ -392,5 +392,45 @@ public class CxyController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "/PM_1405_FAULT_ITEM_DATA_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_1405_FAULT_ITEM_DATA_UPDATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                           @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                           @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+                                                           @RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
+                                                           @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+                                                           @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+                                                           @RequestParam(value = "V_V_FINDTIME") String V_V_FINDTIME,
+                                                           @RequestParam(value = "V_V_FAULT_XX") String V_V_FAULT_XX,
+                                                           @RequestParam(value = "V_V_JJBF") String V_V_JJBF,
+                                                           @RequestParam(value = "V_V_FAULT_LEVEL") String V_V_FAULT_LEVEL,
+                                                           @RequestParam(value = "V_V_FILE_GUID") String V_V_FILE_GUID,
+                                                           @RequestParam(value = "V_V_INTIME") String V_V_INTIME,
+                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           @RequestParam(value = "V_V_IP") String V_V_IP,
+                                                           @RequestParam(value = "V_V_FAULT_NAME") String V_V_FAULT_NAME,
+                                                           @RequestParam(value = "V_V_FAULT_PART") String V_V_FAULT_PART,
+                                                           @RequestParam(value = "V_V_FAULT_CLGC") String V_V_FAULT_CLGC,
+                                                           @RequestParam(value = "V_V_FAULT_SS") String V_V_FAULT_SS,
+                                                           @RequestParam(value = "V_V_FAULT_XZ") String V_V_FAULT_XZ,
+                                                           @RequestParam(value = "V_V_FAULT_ZGCS") String V_V_FAULT_ZGCS,
+                                                           @RequestParam(value = "V_V_FZR_CL") String V_V_FZR_CL,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_1405_FAULT_ITEM_DATA_UPDATE(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
+                V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX,V_V_JJBF, V_V_FAULT_LEVEL,
+                V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL);
+
+        String RET = (String) data.get("RET");
+        result.put("RET", RET);
+        result.put("success", true);
+        return result;
+    }
 }
 

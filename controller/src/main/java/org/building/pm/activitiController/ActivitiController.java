@@ -628,7 +628,7 @@ public class ActivitiController {
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
                 }
-                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
                 if (equIp_name.size() > 0) {
                     Map equmap = (Map) equIp_name.get(0);
                     taskmap.put("EQUNAME", equmap.get("V_EQUIP_NAME").toString());
@@ -667,7 +667,8 @@ public class ActivitiController {
                     }
                 }
                 else if (taskmap.get("flow_type").toString().indexOf("Fault")!=-1) {
-                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
+//                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
                         taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
@@ -1045,12 +1046,12 @@ public class ActivitiController {
             taskService.complete(taskId, map);
             result.put("ret", "任务提交成功");
             result.put("msg", "OK");
-            String mes = amToMessController.MessageSend("1", flowtype, V_NEXTPER);
-            if (mes.equals("true")) {
-                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
-            } else {
-                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
-            }
+//            String mes = amToMessController.MessageSend("1", flowtype, V_NEXTPER);
+//            if (mes.equals("true")) {
+//                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
+//            } else {
+//                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
+//            }
 
         } catch (Exception e) {
             result.put("ret", "任务提交失败");
