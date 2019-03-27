@@ -1046,12 +1046,12 @@ public class ActivitiController {
             taskService.complete(taskId, map);
             result.put("ret", "任务提交成功");
             result.put("msg", "OK");
-//            String mes = amToMessController.MessageSend("1", flowtype, V_NEXTPER);
-//            if (mes.equals("true")) {
-//                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
-//            } else {
-//                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
-//            }
+            String mes = amToMessController.MessageSend("1", flowtype, V_NEXTPER);
+            if (mes.equals("true")) {
+                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "0");
+            } else {
+                cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
+            }
 
         } catch (Exception e) {
             result.put("ret", "任务提交失败");
