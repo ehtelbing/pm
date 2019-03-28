@@ -187,14 +187,39 @@ Ext.onReady(function () {
         }
     });
 
+    // var zyStore = Ext.create('Ext.data.Store', {
+    //     autoLoad: false,
+    //     storeId: 'zyStore',
+    //     fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
+    //     proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+    //         type: 'ajax',
+    //         async: false,
+    //         url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list'
+    //         }
+    //     }),
+    //     listeners: {
+    //         load: function (store, records) {
+    //             Ext.getCmp('zy').select(store.first());
+    //             zyStoreLoad = true;
+    //             _init();
+    //         }
+    //     }
+    // });
+    //专业
     var zyStore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
+        autoLoad: true,
         storeId: 'zyStore',
-        fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+        fields: ['V_GUID', 'V_ZYMC', 'V_ZYJC', 'V_LX', 'V_ORDER'],
+        proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
+            url: AppUrl + 'PM_03/PM_03_PLAN_ZY_SEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -202,14 +227,14 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('zy').select(store.first());
-                zyStoreLoad = true;
-                _init();
+        },
+            listeners: {
+                load: function (store, records) {
+                    Ext.getCmp('zy').select(store.first());
+                    zyStoreLoad = true;
+                    _init();
+                }
             }
-        }
     });
 
     var zyqStore = Ext.create('Ext.data.Store', {
@@ -411,8 +436,8 @@ Ext.onReady(function () {
                     editable: false,
                     queryMode: 'local',
                     fieldLabel: '专业',
-                    displayField: 'V_BASENAME',
-                    valueField: 'V_SPECIALTYCODE',
+                    displayField: 'V_ZYMC',
+                    valueField: 'V_GUID',
                     labelWidth: 90
                 }, {
                     id: 'sblx',
