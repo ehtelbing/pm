@@ -548,7 +548,7 @@ function BillGo() {
                                                                                                 async: false,
                                                                                                 params: {
                                                                                                     V_V_GUID: respguid.list[i].V_DEFECT_GUID,
-                                                                                                    V_V_STATECODE: '20',//已下票
+                                                                                                    V_V_STATECODE: '20'//已下票
 
                                                                                                 },
                                                                                                 success: function (ret) {
@@ -681,7 +681,7 @@ function BillGo() {
                                                                                     async: false,
                                                                                     params: {
                                                                                         V_V_GUID: respguid.list[i].V_DEFECT_GUID,
-                                                                                        V_V_STATECODE: '20',//已下票
+                                                                                        V_V_STATECODE: '20'//已下票
 
                                                                                     },
                                                                                     success: function (ret) {
@@ -935,7 +935,7 @@ function orderissued() {
                                                                     async: false,
                                                                     params: {
                                                                         V_V_GUID: respguid.list[i].V_DEFECT_GUID,
-                                                                        V_V_STATECODE: '20',//已下票
+                                                                        V_V_STATECODE: '20'//已下票
 
                                                                     },
                                                                     success: function (ret) {
