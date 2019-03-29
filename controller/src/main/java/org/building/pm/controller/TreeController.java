@@ -212,5 +212,19 @@ public class TreeController {
         return map;
     }
 
+//年计划分解查询
+    @RequestMapping(value="/PM_PLAN_YEAR_SEL_FJ",method=RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PM_PLAN_YEAR_SEL_FJ(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                         @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                         @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                                         @RequestParam(value = "V_SDATE") String V_SDATE,
+                                         @RequestParam(value = "V_EDATE") String V_EDATE,
+                                         @RequestParam(value = "V_UPGRID") String V_UPGRID) throws Exception {
+        List<Map> map = treeService.PM_PLAN_YEAR_SEL_FJ(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY,V_SDATE, V_EDATE, V_UPGRID);
+        return map;
+    }
+
 
 }
