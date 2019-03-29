@@ -302,9 +302,9 @@ public class PM_07Service {
         return result;
     }
     /*保存过程*/
-    public Map PRO_PM_07_DEFECT_SET(String V_V_GUID,String V_V_PERCODE,String V_V_DEFECTLIST,String V_V_SOURCECODE,
+    public Map PRO_PM_07_DEFECT_SET(String V_V_GUID,String V_V_PERCODE,String V_V_PERNAME,String V_V_INPERCODE,String V_V_INPERNAME,String V_V_DEFECTLIST,String V_V_SOURCECODE,
                                     String V_V_SOURCEID,String V_D_DEFECTDATE,String V_V_DEPTCODE,String V_V_EQUCODE,
-                                    String V_V_EQUCHILDCODE,String V_V_IDEA, String V_V_LEVEL) throws SQLException {
+                                    String V_V_EQUCHILDCODE,String V_V_IDEA, String V_V_LEVEL,String V_V_PROWAY) throws SQLException {
         logger.info("begin PRO_PM_07_DEFECT_SET");
         Map result = new HashMap();
         Connection conn = null;
@@ -312,10 +312,13 @@ public class PM_07Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_SET" + "(:V_V_GUID,:V_V_PERCODE,:V_V_DEFECTLIST,:V_V_SOURCECODE," +
-                    ":V_V_SOURCEID,:V_D_DEFECTDATE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUCHILDCODE,:V_V_IDEA,:V_V_LEVEL,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_SET" + "(:V_V_GUID,:V_V_PERCODE,:V_V_PERNAME,:V_V_INPERCODE,:V_V_INPERNAME,:V_V_DEFECTLIST,:V_V_SOURCECODE," +
+                    ":V_V_SOURCEID,:V_D_DEFECTDATE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUCHILDCODE,:V_V_IDEA,:V_V_LEVEL,:V_V_PROWAY,:V_CURSOR)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_INPERCODE", V_V_INPERCODE);
+            cstmt.setString("V_V_INPERNAME", V_V_INPERNAME);
             cstmt.setString("V_V_DEFECTLIST", V_V_DEFECTLIST);
             cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
             cstmt.setString("V_V_SOURCEID", V_V_SOURCEID);
@@ -325,6 +328,7 @@ public class PM_07Service {
             cstmt.setString("V_V_EQUCHILDCODE", V_V_EQUCHILDCODE);
             cstmt.setString("V_V_IDEA", V_V_IDEA);
             cstmt.setString("V_V_LEVEL", V_V_LEVEL);
+            cstmt.setString("V_V_PROWAY", V_V_PROWAY);
             cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));

@@ -2939,4 +2939,131 @@ public class Dx_fileService {
         }
         return result;
     }
+    //- 年计划分解创建guid
+    public HashMap PM_PLAN_YEAR_GET_FJGUID(String V_GUID,String V_INPERCODE ,String V_INPERNAME,String V_UPGUID)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_GET_FJGUID");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_GET_FJGUID(:V_GUID,:V_INPERCODE ,:V_INPERNAME,:V_UPGUID,:RET )}");
+            cstmt.setString("V_GUID",V_GUID);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.setString("V_UPGUID",V_UPGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_GET_FJGUID");
+        return result;
+    }
+
+    //- 年计划添加和修改
+    public HashMap PM_PLAN_YEAR_INSERT_FJ(String V_GUID,String V_ORGCODE ,String V_ORGNAME,String V_DEPTCODE,String V_DEPTNAME,
+                                       String V_ZYCODE ,String V_ZYNAME ,String V_EQUCODE,String V_EQUTYPE ,String V_REPAIRCONTENT ,
+                                       String V_PLANHOUR ,String V_REPAIRTYPE ,String V_REPAIRTYPENAME ,String V_INPERCODE,String V_INPERNAME ,
+                                       String V_REMARK,String V_V_YEAR,String V_V_MONTH,String V_TGTIME,String V_JGTIME,String V_WXTYPECODE,String V_WXTYPENAME,
+                                       String V_PTYPECODE,String V_PTYPENAME,String V_OLD_FLAG,String V_REDEPTCODE,String V_REDEPTNAME,
+                                       String V_PLANDAY,String V_FZPERCODE,String V_FZPERNAME,String V_SGTYPECODE,String V_SGTYPENAME,String V_SCLBCODE,String V_SCLBNAME,String V_PRO_NAME)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_INSERT_FJ");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_INSERT_FJ(:V_GUID,:V_ORGCODE,:V_ORGNAME,:V_DEPTCODE,:V_DEPTNAME," +
+                    ":V_ZYCODE,:V_ZYNAME,:V_EQUCODE,:V_EQUTYPE,:V_REPAIRCONTENT," +
+                    ":V_PLANHOUR,:V_REPAIRTYPE,:V_REPAIRTYPENAME,:V_INPERCODE,:V_INPERNAME," +
+                    ":V_REMARK,:V_V_YEAR,:V_V_MONTH,:V_TGTIME,:V_JGTIME,:V_WXTYPECODE,:V_WXTYPENAME,"+
+                    ":V_PTYPECODE,:V_PTYPENAME," +
+                    ":V_OLD_FLAG,:V_REDEPTCODE,:V_REDEPTNAME,:V_PLANDAY,:V_FZPERCODE,:V_FZPERNAME,:V_SGTYPECODE,"+
+                    ":V_SGTYPENAME,:V_SCLBCODE,:V_SCLBNAME,:V_PRO_NAME,:RET)}");
+            cstmt.setString("V_GUID",V_GUID);
+            cstmt.setString("V_ORGCODE",V_ORGCODE);
+            cstmt.setString("V_ORGNAME",V_ORGNAME);
+            cstmt.setString("V_DEPTCODE",V_DEPTCODE);
+            cstmt.setString("V_DEPTNAME",V_DEPTNAME);
+            cstmt.setString("V_ZYCODE",V_ZYCODE);
+            cstmt.setString("V_ZYNAME",V_ZYNAME);
+            cstmt.setString("V_EQUCODE",V_EQUCODE);
+            cstmt.setString("V_EQUTYPE",V_EQUTYPE);
+            cstmt.setString("V_REPAIRCONTENT",V_REPAIRCONTENT);
+            cstmt.setString("V_PLANHOUR",V_PLANHOUR);
+            cstmt.setString("V_REPAIRTYPE",V_REPAIRTYPE);
+            cstmt.setString("V_REPAIRTYPENAME",V_REPAIRTYPENAME);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.setString("V_REMARK",V_REMARK);
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+
+            cstmt.setString("V_TGTIME",V_TGTIME);
+            cstmt.setString("V_JGTIME",V_JGTIME);
+            cstmt.setString("V_WXTYPECODE",V_WXTYPECODE);
+            cstmt.setString("V_WXTYPENAME",V_WXTYPENAME);
+            cstmt.setString("V_PTYPECODE",V_PTYPECODE);
+            cstmt.setString("V_PTYPENAME",V_PTYPENAME);
+            cstmt.setString("V_OLD_FLAG",V_OLD_FLAG);
+            cstmt.setString("V_REDEPTCODE",V_REDEPTCODE);
+            cstmt.setString("V_REDEPTNAME",V_REDEPTNAME);
+            cstmt.setString("V_PLANDAY",V_PLANDAY);
+            cstmt.setString("V_FZPERCODE",V_FZPERCODE);
+            cstmt.setString("V_FZPERNAME",V_FZPERNAME);
+            cstmt.setString("V_SGTYPECODE",V_SGTYPECODE);
+            cstmt.setString("V_SGTYPENAME",V_SGTYPENAME);
+            cstmt.setString("V_SCLBCODE",V_SCLBCODE);
+            cstmt.setString("V_SCLBNAME",V_SCLBNAME);
+            cstmt.setString("V_PRO_NAME",V_PRO_NAME);
+
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_INSERT_FJ");
+        return result;
+    }
+    // 缺陷处理方式
+    public HashMap DEFECT_PROCESS_WAY_SEL(String V_DEPTCODE,String V_PERCODE)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin DEFECT_PROCESS_WAY_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call DEFECT_PROCESS_WAY_SEL(:V_DEPTCODE,:V_PERCODE,:RET )}");
+            cstmt.setString("V_DEPTCODE",V_DEPTCODE);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DEFECT_PROCESS_WAY_SEL");
+        return result;
+    }
 }

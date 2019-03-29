@@ -169,6 +169,9 @@ public class PM_07Controller {
     @ResponseBody
     public Map PRO_PM_07_DEFECT_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
                                     @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                    @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                    @RequestParam(value = "V_V_INPERCODE") String V_V_INPERCODE,
+                                    @RequestParam(value = "V_V_INPERNAME") String V_V_INPERNAME,
                                     @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
                                     @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
                                     @RequestParam(value = "V_V_SOURCEID") String V_V_SOURCEID,
@@ -178,11 +181,12 @@ public class PM_07Controller {
                                     @RequestParam(value = "V_V_EQUCHILDCODE") String V_V_EQUCHILDCODE,
                                     @RequestParam(value = "V_V_IDEA") String V_V_IDEA,
                                     @RequestParam(value = "V_V_LEVEL") String V_V_LEVEL,
+                                    @RequestParam(value = "V_V_PROWAY") String V_V_PROWAY,
                                     HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
-        Map result = pm_07Service.PRO_PM_07_DEFECT_SET(V_V_GUID, V_V_PERCODE, V_V_DEFECTLIST, V_V_SOURCECODE,
+        Map result = pm_07Service.PRO_PM_07_DEFECT_SET(V_V_GUID, V_V_PERCODE,V_V_PERNAME,V_V_INPERCODE,V_V_INPERNAME,V_V_DEFECTLIST, V_V_SOURCECODE,
                 V_V_SOURCEID, V_D_DEFECTDATE, V_V_DEPTCODE, V_V_EQUCODE, V_V_EQUCHILDCODE, V_V_IDEA,
-                V_V_LEVEL);
+                V_V_LEVEL,V_V_PROWAY);
         return result;
     }
 

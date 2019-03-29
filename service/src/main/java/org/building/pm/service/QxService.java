@@ -232,6 +232,52 @@ public class QxService {
         return result;
     }
 
+    //缺陷导出
+    public Map PRO_PM_07_DEFECT_VIEW_PERALL(String V_D_DEFECTDATE_B,String V_D_DEFECTDATE_E,String V_V_DEPTCODE,
+                                         String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_STATECODE,
+                                         String V_V_SOURCECODE,String V_V_DEFECTLIST,String X_PERSONCODE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PRO_PM_07_DEFECT_VIEW_PERALL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_VIEW_PERALL(:V_D_DEFECTDATE_B,:V_D_DEFECTDATE_E,:V_V_DEPTCODE," +
+                    ":V_V_EQUTYPECODE,:V_V_EQUCODE,:V_V_STATECODE,:V_V_SOURCECODE,:V_V_DEFECTLIST,:X_PERSONCODE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_D_DEFECTDATE_B", V_D_DEFECTDATE_B);
+            cstmt.setString("V_D_DEFECTDATE_E", V_D_DEFECTDATE_E);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+            cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
+            cstmt.setString("V_V_DEFECTLIST", V_V_DEFECTLIST);
+            cstmt.setString("X_PERSONCODE", X_PERSONCODE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total",  cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_VIEW_PERALL");
+        return result;
+    }
+
     public Map PRO_PM_07_DEFECT_GET(String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_GET");

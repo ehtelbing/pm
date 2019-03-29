@@ -34,7 +34,6 @@ public class TreeService {
     @Autowired
     private BasicService basicService;
 
-
     private List<HashMap> ResultHash(ResultSet rs) throws SQLException {
 
         List<HashMap> result = new ArrayList<HashMap>();
@@ -1169,6 +1168,123 @@ public class TreeService {
         logger.debug("result:" + result);
         logger.info("end GETADMIN_DEPTEQU_ADMIN_TREE");
         return result;
+    }
+//年计划分解查询
+
+public List<Map> PM_PLAN_YEAR_SEL_FJ(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERCODE,String V_V_ZY
+            ,String V_SDATE,String V_EDATE,String V_UPGRID) throws SQLException {
+    List<Map> result = PM_PLAN_YEAR_SEL_FJ_SEL(V_V_ORGCODE,V_V_DEPTCODE,V_V_PERCODE,V_V_ZY,V_SDATE,V_EDATE,V_UPGRID);
+    return result;
+}
+    /* chocie tree*/
+    public List<Map> PM_PLAN_YEAR_SEL_FJ_SEL(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERCODE,String V_V_ZY
+            ,String V_SDATE,String V_EDATE,String V_UPGRID) throws SQLException {
+        List<Map> list = new ArrayList<>();
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_SEL_FJ");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_SEL_FJ(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PERCODE,:V_V_ZY,:V_SDATE,:V_EDATE,:V_UPGRID,:RET)}");
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_PERCODE",V_V_PERCODE);
+            cstmt.setString("V_V_ZY",V_V_ZY);
+            cstmt.setString("V_SDATE",V_SDATE);
+            cstmt.setString("V_EDATE",V_EDATE);
+            cstmt.setString("V_UPGRID",V_UPGRID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+            List<Map> datalist = (List) result.get("list");
+            if (datalist.size() > 0) {
+                for (Map item : datalist) {
+                    Map temp = new HashMap();
+
+                    temp.put("ID_GUID",item.get("ID_GUID").toString());
+                    temp.put("PRO_NAME",item.get("PRO_NAME").toString());
+                    temp.put("UPYEARGUID",item.get("UPYEARGUID").toString());
+                    temp.put("YEARID", item.get("YEARID").toString());
+                    temp.put("STATE", item.get("STATE").toString());
+                    temp.put("V_BASENAME", item.get("V_BASENAME").toString());
+                    temp.put("V_YEAR", item.get("V_YEAR").toString());
+                    temp.put("V_MONTH", item.get("V_MONTH").toString());
+                    temp.put("ORGNAME", item.get("ORGNAME").toString());
+                    temp.put("ZYCODE", item.get("ZYCODE").toString());
+                    temp.put("ZYNAME", item.get("ZYNAME").toString());
+                    temp.put("V_EQUNAME", item.get("V_EQUNAME").toString());
+                    temp.put("V_EQUTYPENAME", item.get("V_EQUTYPENAME").toString());
+                    temp.put("REPAIRCONTENT", item.get("REPAIRCONTENT").toString());
+                    temp.put("PLANHOUR", item.get("PLANHOUR").toString());
+                    temp.put("REPAIRTYPENAME", item.get("REPAIRTYPENAME").toString());
+                    temp.put("INPERNAME", item.get("INPERNAME").toString());
+                    temp.put("INPERCODE", item.get("INPERCODE").toString());
+                    temp.put("INDATE", item.get("INDATE").toString());
+                    if (item.get("UPYEARGUID").toString().equals("-1")) {
+//                    if (item.get("ID_GUID").toString().equals("-1")) {ChildFalgMenu(item.get("ID_GUID").toString())
+                        temp.put("leaf", false);
+                        temp.put("expanded", true);
+                        temp.put("children", PM_PLAN_YEAR_SEL_FJ(V_V_ORGCODE,V_V_DEPTCODE,V_V_PERCODE,V_V_ZY,V_SDATE,V_EDATE,item.get("ID_GUID").toString()));
+                    }else {
+                        if (ChildFalgMenu(item.get("ID_GUID").toString())) {
+                            temp.put("leaf", false);
+                            temp.put("expanded", true);
+                            temp.put("children", PM_PLAN_YEAR_SEL_FJ(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY, V_SDATE, V_EDATE, item.get("ID_GUID").toString()));
+                        }
+                        else{
+                            temp.put("leaf", true);
+                            temp.put("expanded", false);
+                        }
+//                        temp.put("leaf", true);
+//                        temp.put("expanded", false);
+                    }
+                    list.add(temp);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("PM_PLAN_YEAR_SEL_FJ");
+        return list;
+    }
+    public boolean ChildFalgMenu(String parentCode) throws SQLException {
+        boolean flag = true;
+
+        List<Map> list = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_SEL_FJ_CHILE");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_SEL_FJ_CHILE(:UP_ID,:RET)}");
+            cstmt.setString("UP_ID", parentCode);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            String result=new String();
+            result=(String) cstmt.getObject("RET");
+            if (!result.equals("0")) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + list);
+        logger.info("end PM_PLAN_YEAR_SEL_FJ_CHILE");
+        return flag;
     }
 
 }

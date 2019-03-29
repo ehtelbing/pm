@@ -359,7 +359,7 @@ public class ExcelController {
 
         V_V_DEFECTLIST = new String(V_V_DEFECTLIST.getBytes("iso-8859-1"), "utf-8");
 
-        Map<String, Object> data = qxService.PRO_PM_07_DEFECT_VIEW_PER(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
+        Map<String, Object> data = qxService.PRO_PM_07_DEFECT_VIEW_PERALL(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
                 V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
 
         HSSFWorkbook wb = new HSSFWorkbook();

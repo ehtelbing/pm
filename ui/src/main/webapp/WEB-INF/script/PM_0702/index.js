@@ -516,8 +516,10 @@ function OnSaveButtonClicked() {
                 if (resp.list[0].V_INFO == "成功") {
                     alert("保存成功");
                     //window.opener.getReturnValue("yes");
-                    window.close();
-                    window.opener._selectOverhaulApply();
+                    Ext.getCmp('windowEqu').hide();
+                    _selectOverhaulApply();
+                    // window.close();
+                    // window.opener._selectOverhaulApply();
                 } else {
                     Ext.Msg.alert('提示', '保存失败');
                 }

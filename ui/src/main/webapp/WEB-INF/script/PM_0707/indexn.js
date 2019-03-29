@@ -175,6 +175,33 @@ Ext.onReady(function () {
             }
         }
     });
+//处理方式
+    var clfsStore = Ext.create('Ext.data.Store', {
+        autoLoad: true,
+        id: 'clfsStore',
+        fields: ['WAYID', 'WAYNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/DEFECT_PROCESS_WAY_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams:{
+                V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+                V_PERCODE:Ext.util.Cookies.get('v_personcode')
+            }
+        }
+        , listeners: {
+            load: function (store, records) {
+                Ext.getCmp('clfs').select(store.first());
+            }
+        }
+    });
 
     var djStore = Ext.create('Ext.data.Store', {
         autoLoad: true,
@@ -457,17 +484,27 @@ Ext.onReady(function () {
                 displayField: 'V_LEVELNAME',
                 valueField: 'V_LEVELCODE',
                 queryMode: 'local'
+            },
+            {    xtype: 'combo',
+                id: 'clfs',
+                store:clfsStore,
+                fieldLabel: '处理方式',
+                labelAlign: 'right',
+                editable: false,
+                margin: '5 0 5 5',
+                labelWidth: 75,
+                width: 255,
+                displayField: 'WAYNAME',
+                valueField: 'WAYID',
+                queryMode: 'local'
             }
             ,
             {
-                xtype: 'textfield',
+                xtype: 'textarea',
                 id: 'qxmc',
                 fieldLabel: '缺陷明细',
                 margin: '5 0 10 5',
-                labelAlign: 'right',
-                labelWidth: 75,
-                width: 255,
-                value: ''
+                labelAlign: 'right',labelWidth:75,width:255,height:80, value: ''
             },
             {
                 xtype: 'textarea',id:'clyj',fieldLabel: '处理意见',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,width:255,height:80, value: ''
@@ -488,7 +525,7 @@ Ext.onReady(function () {
                 xtype: 'datefield',
                 editable: false,
                 format: 'Y/m/d',
-                value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
                 fieldLabel: '发现时间',
                 labelAlign: 'right',
                 labelWidth: 75,
@@ -553,7 +590,7 @@ Ext.onReady(function () {
 
     });
     Ext.data.StoreManager.lookup('childEquStore').on('load',function(){
-        Ext.getCmp("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(1));
+        Ext.getCmp("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(0));
             });
 
     //厂矿改变
@@ -698,7 +735,10 @@ function OnButtonSave() {
         async: false,
         params: {
             V_V_GUID: defectguid,
-            V_V_PERCODE:  Ext.getCmp('inper').getValue(),//Ext.util.Cookies.get('v_personcode'),
+            V_V_PERCODE:'',//Ext.getCmp('inper').getValue(),
+            V_V_PERNAME:Ext.getCmp('inper').getValue(),
+            V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_INPERNAME:decodeURI(Ext.util.Cookies.get('v_personcode')),
             V_V_DEFECTLIST: Ext.getCmp('qxmc').getValue(),
             V_V_SOURCECODE: Ext.getCmp('qxlx').getValue(),//'defct01',
             V_V_SOURCEID: '',
@@ -707,7 +747,8 @@ function OnButtonSave() {
             V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
             V_V_EQUCHILDCODE: Ext.getCmp('zsbmc').getValue(),
             V_V_IDEA: Ext.getCmp('clyj').getValue(),
-            V_V_LEVEL: Ext.getCmp('qxdj').getValue()
+            V_V_LEVEL: Ext.getCmp('qxdj').getValue(),
+            V_V_PROWAY:Ext.getCmp('clfs').getValue()
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

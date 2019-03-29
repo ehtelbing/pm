@@ -3094,8 +3094,83 @@ public class Dx_fileController {
         Map data = dx_fileService.YEAR_TO_PROGUID_FX_INSERT(V_YEARGUID, V_PROGUID, V_INPERCODE);
         return data;
     }
+    // 年计划分解创建guid
+    @RequestMapping(value = "PM_PLAN_YEAR_GET_FJGUID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_GET_FJGUID(
+            @RequestParam(value="V_GUID") String V_GUID,
+            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
+            @RequestParam(value="V_UPGUID") String V_UPGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_GET_FJGUID(V_GUID,V_INPERCODE,V_INPERNAME,V_UPGUID);
+        return data;
+    }
+// 年计划fJ添加和修改
 
+    @RequestMapping(value = "PM_PLAN_YEAR_INSERT_FJ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_INSERT_FJ(
+            @RequestParam(value="V_GUID") String V_GUID,
+            @RequestParam(value="V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value="V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value="V_DEPTCODE") String V_DEPTCODE,
+            @RequestParam(value="V_DEPTNAME") String V_DEPTNAME,
 
+            @RequestParam(value="V_ZYCODE") String V_ZYCODE,
+            @RequestParam(value="V_ZYNAME") String V_ZYNAME,
+            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value="V_EQUTYPE") String V_EQUTYPE,
+            @RequestParam(value="V_REPAIRCONTENT") String V_REPAIRCONTENT,
+
+            @RequestParam(value="V_PLANHOUR") String V_PLANHOUR,
+            @RequestParam(value="V_REPAIRTYPE") String V_REPAIRTYPE,
+            @RequestParam(value="V_REPAIRTYPENAME") String V_REPAIRTYPENAME,
+            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
+
+            @RequestParam(value="V_REMARK") String V_REMARK,
+            @RequestParam(value="V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value="V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value="V_TGTIME") String V_TGTIME,
+            @RequestParam(value="V_JGTIME") String V_JGTIME,
+            @RequestParam(value="V_WXTYPECODE") String V_WXTYPECODE,
+            @RequestParam(value="V_WXTYPENAME") String V_WXTYPENAME,
+            @RequestParam(value="V_PTYPECODE") String V_PTYPECODE,
+            @RequestParam(value="V_PTYPENAME") String V_PTYPENAME,
+            @RequestParam(value="V_OLD_FLAG") String V_OLD_FLAG,
+
+            @RequestParam(value="V_REDEPTCODE") String V_REDEPTCODE,
+            @RequestParam(value="V_REDEPTNAME") String V_REDEPTNAME,
+            @RequestParam(value="V_PLANDAY") String V_PLANDAY,
+            @RequestParam(value="V_FZPERCODE") String V_FZPERCODE,
+            @RequestParam(value="V_FZPERNAME") String V_FZPERNAME,
+
+            @RequestParam(value="V_SGTYPECODE") String V_SGTYPECODE,
+            @RequestParam(value="V_SGTYPENAME") String V_SGTYPENAME,
+            @RequestParam(value="V_SCLBCODE") String V_SCLBCODE,
+            @RequestParam(value="V_SCLBNAME") String V_SCLBNAME,
+            @RequestParam(value="V_PRO_NAME") String V_PRO_NAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_INSERT_FJ(V_GUID,V_ORGCODE,V_ORGNAME,V_DEPTCODE,V_DEPTNAME,V_ZYCODE,V_ZYNAME,V_EQUCODE,V_EQUTYPE,V_REPAIRCONTENT,
+                V_PLANHOUR,V_REPAIRTYPE,V_REPAIRTYPENAME,V_INPERCODE,V_INPERNAME,V_REMARK,V_V_YEAR,V_V_MONTH,V_TGTIME,V_JGTIME,V_WXTYPECODE,V_WXTYPENAME,
+                V_PTYPECODE,V_PTYPENAME,V_OLD_FLAG,V_REDEPTCODE,V_REDEPTNAME,V_PLANDAY,V_FZPERCODE,V_FZPERNAME,V_SGTYPECODE,V_SGTYPENAME,V_SCLBCODE,V_SCLBNAME,V_PRO_NAME);
+        return data;
+    }
+    //--缺陷处理方式
+    @RequestMapping(value = "DEFECT_PROCESS_WAY_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_PROCESS_WAY_SEL(
+            @RequestParam(value = "V_DEPTCODE") String V_DEPTCODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map data = dx_fileService.DEFECT_PROCESS_WAY_SEL(V_DEPTCODE,V_PERCODE);
+        return data;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
