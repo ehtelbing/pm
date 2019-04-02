@@ -628,7 +628,8 @@ public class ActivitiController {
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
                 }
-                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
+                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+//                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
                 if (equIp_name.size() > 0) {
                     Map equmap = (Map) equIp_name.get(0);
                     taskmap.put("EQUNAME", equmap.get("V_EQUIP_NAME").toString());
@@ -667,8 +668,8 @@ public class ActivitiController {
                     }
                 }
                 else if (taskmap.get("flow_type").toString().indexOf("Fault")!=-1) {
-                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
-//                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+//                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
                         taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());

@@ -1,4 +1,4 @@
-﻿var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+﻿var V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var processKey = '';
 var V_V_CKTYPE = '';
 var V_EQUTYPECODE = '';
@@ -9,7 +9,7 @@ var V_V_DEPTCODE = '';
 var V_V_SPECIALTY = '';
 var taskId = '';
 var V_STEPCODE = '';
-var V_PERSONNAME ='';
+
 var ckStoreLoad = false;
 var zyqStoreLoad = false;
 var sblxStoreLoad = false;
@@ -199,15 +199,15 @@ Ext.onReady(function () {
                 'V_V_DEPTCODENEXT': '%',
                 'V_V_DEPTTYPE': '基层单位'
             }
-        }),
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('ck').select(store.first());
-                ckStoreLoad  = true;
-                _init();
-                // _ck_zyqload();
-            }
-        }
+        })
+        // listeners: {
+        //     load: function (store, records) {
+        //         Ext.getCmp('ck').select(store.first());
+        //         ckStoreLoad  = true;
+        //         _init();
+        //         // _ck_zyqload();
+        //     }
+        // }
     });
 
     var zyStore = Ext.create('Ext.data.Store', {
@@ -225,14 +225,14 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('zy').select(store.first());
-                zyStoreLoad = true;
-                _init();
-            }
-        }
+        })
+        // listeners: {
+        //     load: function (store, records) {
+        //         Ext.getCmp('zy').select(store.first());
+        //         zyStoreLoad = true;
+        //         _init();
+        //     }
+        // }
     });
 
     var zyqStore = Ext.create('Ext.data.Store', {
@@ -250,14 +250,14 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        }),
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('zyq').select(store.first());
-                zyqStoreLoad = true;
-                _init();
-            }
-        }
+        })
+        // listeners: {
+        //     load: function (store, records) {
+        //         Ext.getCmp('zyq').select(store.first());
+        //         zyqStoreLoad = true;
+        //         _init();
+        //     }
+        // }
     });
 
     var monthStore = Ext.create("Ext.data.Store", {
@@ -397,15 +397,15 @@ Ext.onReady(function () {
                     displayField: 'V_DEPTNAME',
                     valueField: 'V_DEPTCODE',
                     fieldLabel: '计划厂矿',
-                    labelWidth: 90,
-                    listeners: {
-                        change: function (field, newValue, oldValue) {
-                            _ck_zyqload();
-                            // _zyq_zy();
-                            _zyq_sblx();
-                            _zyq_sbmc();
-                        }
-                    }
+                    labelWidth: 90
+                    // listeners: {
+                    //     change: function (field, newValue, oldValue) {
+                    //         _ck_zyqload();
+                    //         // _zyq_zy();
+                    //         _zyq_sblx();
+                    //         _zyq_sbmc();
+                    //     }
+                    // }
                 }, {
                     id: 'zyq',
                     store: zyqStore,
@@ -413,14 +413,14 @@ Ext.onReady(function () {
                     displayField: 'V_DEPTNAME',
                     valueField: 'V_DEPTCODE',
                     allowBlank: false,
-                    labelWidth: 90,
-                    listeners: {
-                        select: function (field, newValue, oldValue) {
-                            // _zyq_zy();
-                            _zyq_sblx();
-                            _zyq_sbmc();
-                        }
-                    }
+                    labelWidth: 90
+                    // listeners: {
+                    //     select: function (field, newValue, oldValue) {
+                    //         // _zyq_zy();
+                    //         _zyq_sblx();
+                    //         _zyq_sbmc();
+                    //     }
+                    // }
                 }]
             }, {
                 layout: 'column',
@@ -450,12 +450,12 @@ Ext.onReady(function () {
                     displayField: 'V_EQUTYPENAME',
                     valueField: 'V_EQUTYPECODE',
                     allowBlank: false,
-                    labelWidth: 90,
-                    listeners: {
-                        change: function (field, newValue, oldValue) {
-                            _zyq_sbmc();
-                        }
-                    }
+                    labelWidth: 90
+                    // listeners: {
+                    //     change: function (field, newValue, oldValue) {
+                    //         _zyq_sbmc();
+                    //     }
+                    // }
                     // listConfig:{
                     //     minWidth:420
                     // }
@@ -742,8 +742,8 @@ function _selectNextPer() {
 
 function _init() {
 
-    if(ckStoreLoad && zyqStoreLoad && sblxStoreLoad && sbmcStoreLoad && equFaultLoad && initLoad){
-        initLoad = false;
+    // if(ckStoreLoad && zyqStoreLoad && sblxStoreLoad && sbmcStoreLoad && equFaultLoad && initLoad){
+    //     initLoad = false;
         Ext.Ajax.request({
             url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_GET',
             type: 'ajax',
@@ -762,14 +762,53 @@ function _init() {
                     V_PERSONCODE = data.RET[0].V_INPERCODE;
                     //alert(V_PERSONCODE);
                     // Ext.getCmp('year').setValue(data.RET[0].V_YEAR);
-                    Ext.getCmp('ck').setValue(data.RET[0].V_ORGCODE);
-                    Ext.getCmp('zyq').setValue(data.RET[0].V_DEPTCODE);
-                    Ext.getCmp('gzlx').setValue(data.RET[0].V_TYPECODE);
-                    Ext.getCmp('sblx').setValue(data.RET[0].V_EQUTYPECODE);
-                    Ext.getCmp('sbmc').setValue(data.RET[0].V_EQUCODE);
+                    // Ext.getCmp('ck').setValue(data.RET[0].V_ORGCODE);
+
+                    Ext.data.StoreManager.lookup('ckStore').on('load', function () {
+                        Ext.getCmp('ck').select(data.RET[0].V_ORGCODE);
+                        _ck_zyqload();
+                    });
+
+                    Ext.getCmp('ck').on('change', function () {
+                        _ck_zyqload();
+                    });
+
+                    Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
+                        Ext.getCmp('zyq').select(data.RET[0].V_DEPTCODE);
+                        _zyq_sblx();
+                        // _zyq_sbmc();
+                        _selectNextPer();
+                    });
+
+                    Ext.getCmp('zyq').on('change', function () {
+                        _zyq_sblx();
+                        _selectNextPer();
+                    });
+
+                    Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
+                        Ext.getCmp('sblx').select(data.RET[0].V_EQUTYPECODE);
+                        _zyq_sbmc();
+
+
+                    });
+
+                    Ext.getCmp('sblx').on('change', function () {
+                        _zyq_sbmc();
+
+                    });
+
+                    Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
+                        Ext.getCmp('sbmc').select(data.RET[0].V_EQUCODE);
+                        Ext.getBody().unmask();
+                    });
+
+
+                    // Ext.getCmp('zyq').setValue(data.RET[0].V_DEPTCODE);
+                    Ext.getCmp('gzlx').select(data.RET[0].V_TYPECODE);
+                    // Ext.getCmp('sblx').setValue(data.RET[0].V_EQUTYPECODE);
+
                     Ext.getCmp('fqr').setValue(data.RET[0].V_INPERNAME);
-                    Ext.getCmp('fqsj').setValue(data.RET[0].V_INTIME);
-                        // .substring(0, 19));
+                    Ext.getCmp('fqsj').setValue(data.RET[0].V_FINDTIME.substring(0, 19));
                     Ext.getCmp('gzyy').setValue(data.RET[0].V_FAULT_YY);
                     // Ext.getCmp('jhtgsj').setValue(data.RET[0].V_INTIME.substring(0, 7));
                     // Ext.getCmp('jhjgsj').setValue(data.RET[0].V_ENDTIME.substring(0, 7));
@@ -778,9 +817,10 @@ function _init() {
                     // Ext.getCmp('jhgshj').setValue(data.RET[0].V_TIME);
                     // Ext.getCmp('bz').setValue(data.RET[0].REMARK);
                     // _selectNextPer();
-                    _selectNextPer();
+                    // _selectNextPer();
                     _selectTaskId();
-                    Ext.getBody().unmask();
+
+
                 }
             },
             failure: function (response) {
@@ -794,7 +834,7 @@ function _init() {
         });
 
         //Ext.getBody().unmask();
-    }
+    // }
 
 
 }
@@ -877,7 +917,7 @@ function _agree() {
                                 async: false,
                                 params: {
                                     'V_V_ORDERID': V_ORDERGUID,
-                                    'V_V_PROCESS_NAMESPACE': 'YearPlan',
+                                    'V_V_PROCESS_NAMESPACE': 'Fault',
                                     'V_V_PROCESS_CODE': processKey,
                                     'V_V_STEPCODE': V_STEPCODE,
                                     'V_V_STEPNEXT_CODE': V_NEXT_SETP
@@ -885,11 +925,39 @@ function _agree() {
                                 success: function (ret) {
                                     var resp = Ext.JSON.decode(ret.responseText);
                                     if (resp.V_INFO == 'success') {
-                                        window.close();
-                                        window.opener.OnPageLoad();
+                                        Ext.Ajax.request({
+                                            url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
+                                            method: 'POST',
+                                            type: 'ajax',
+                                            params: {
+                                                V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                                                V_V_GUID: $.url().param("V_ORDERGUID"),
+                                                V_V_STATE: '1',//审核中
+                                                V_DEFECT_STATE:'50'//已计划
+
+                                            },
+                                            success: function (resp) {
+                                                var resp = Ext.decode(resp.responseText);
+                                                if (resp.RET == 'SUCCESS') {
+                                                    window.close();
+                                                    window.opener.OnPageLoad();
+                                                } else {
+                                                    Ext.Msg.alert('提示', '事故修改状态失败！');
+                                                }
+                                            },failure: function (resp) {//访问到后台时执行的方法。
+                                                Ext.MessageBox.show({
+                                                    title: '错误',
+                                                    msg: resp.responseText,
+                                                    buttons: Ext.MessageBox.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                })
+                                            }
+                                        });
+
                                     }
                                 }
                             });
+
                         } else {
                             Ext.MessageBox.alert('提示', '任务提交失败');
                         }

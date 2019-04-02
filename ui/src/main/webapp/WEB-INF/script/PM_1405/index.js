@@ -759,7 +759,9 @@ Ext.onReady(function () {
             xtype: 'button',
             text: '手动添加',
             icon: imgpath + '/add.png',
-            handler: _addFault
+            handler:
+            _addOpen
+            // _addFault
         }, {
             xtype: 'button',
             text: '模型添加',
@@ -790,6 +792,10 @@ Ext.onReady(function () {
         header : false,
         frame : true,
         layout : 'column',
+        layout : {
+            type:'table',
+            columns:5
+        },
         defaults : {
             labelAlign : 'right',
             // labelWidth : 100,
@@ -879,8 +885,8 @@ Ext.onReady(function () {
                 forceSelection: true,
                 fieldLabel: '子设备名称',
                 editable: false,
-                labelWidth: 70,
-                width: 280
+                labelWidth: 90,
+                width: 250
             }, {
                 xtype: 'combo',
                 id: 'equFaultname',
@@ -927,8 +933,8 @@ Ext.onReady(function () {
                 fieldLabel: '下一步接收人',
                 editable: false,
                 style: ' margin: 5px 0px 0px 10px',
-                labelWidth: 80,
-                width: 220,
+                labelWidth: 90,
+                width: 250,
                 value: '',
                 displayField: 'V_PERSONNAME',
                 valueField: 'V_PERSONCODE',
@@ -2205,10 +2211,10 @@ Ext.onReady(function () {
             function(view, rowIndex, colIndex, item, e) {
                 var data=Ext.getCmp('faultItemPanel').getStore().getAt(
                     colIndex).data;
-                if(data.V_STATE=='1') {
+                if(data.V_STATE=='11' || data.V_STATE=='2') {
                     var id = data.V_GUID;
                     window.open(AppUrl + "page/gz_gd1405/index.html?V_GUID=" + id,
-                        "", "dialogHeight:700px;dialogWidth:1100px");
+                        "", "dialogHeight:700px;dialogWidth:1100px;autoScroll: true");
                 }else if(data.V_STATE=='0'){
                     Ext.MessageBox.show({
                         title: '提示',
@@ -2216,10 +2222,19 @@ Ext.onReady(function () {
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.WARNING
                     });
-                }else if(data.V_STATE=='2'){
+                }
+                // else if(data.V_STATE=='2'){
+                //     Ext.MessageBox.show({
+                //         title: '提示',
+                //         msg: '已生成工单不能再次生成！',
+                //         buttons: Ext.MessageBox.OK,
+                //         icon: Ext.MessageBox.WARNING
+                //     });
+                // }
+                else{
                     Ext.MessageBox.show({
                         title: '提示',
-                        msg: '已生成工单不能再次生成！',
+                        msg: '审核完成后才能生成工单！',
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.WARNING
                     });
@@ -3120,12 +3135,13 @@ function _preUpdateFault() {
     if(records[0].get('V_STATE')!='0'){
         Ext.MessageBox.show({
             title: '提示',
-            msg: '上报后不能修改',
+            msg: '只有未上报的事故才能修改',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
     }else{
-        Ext.getCmp('updateFaultWindow').show();
+        // Ext.getCmp('updateFaultWindow').show();
+        _updateOpen(records[0].get('V_GUID'));
     }
 
     // Ext.Ajax.request({
@@ -3781,10 +3797,39 @@ function OnButtonSaveUp() {
     }
 
 }
-function _preViewProcess(ProcessInstanceId,value) {
+function _preViewProcess(ProcessInstanceId) {
 
     var owidth = window.screen.availWidth;
     var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+function _addOpen() {
+
+    if(Ext.getCmp('V_V_DEPTCODE').getValue()=='%'){
+        alert("请选择作业区！");
+        return;
+    }
+    var owidth = window.screen.availWidth-100;
+    var oheight = window.screen.availHeight-50;
+    window.open(AppUrl + 'page/PM_1405/insert.html?V_V_ORGCODE='
+        + Ext.getCmp('V_V_ORGCODE').getValue()+'&V_V_DEPTCODE='+Ext.getCmp('V_V_DEPTCODE').getValue()
+        +'&begintime='+encodeURI(Ext.getCmp("begintime").getSubmitValue())
+        +'&V_V_EQUTYPE='+encodeURI(Ext.getCmp('V_V_EQUTYPE').getValue())
+
+        +'&V_EQUNAME='+encodeURI(Ext.getCmp('V_EQUNAME').getValue())
+        +'&SUB_V_EQUNAME='+encodeURI(Ext.getCmp('SUB_V_EQUNAME').getValue())
+
+        +'&equFaultname='+encodeURI(Ext.getCmp('equFaultname').getValue()),
+            '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
+}
+function _updateOpen(value) {
+
+    if(Ext.getCmp('V_V_DEPTCODE').getValue()=='%'){
+        alert("请选择作业区！")
+        return;
+    }
+    var owidth = window.screen.availWidth-100;
+    var oheight = window.screen.availHeight-50;
+    window.open(AppUrl + 'page/PM_1405/update.html?V_V_GUID=' + value,'', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
 }

@@ -583,7 +583,7 @@ function refreshTree(pid) {
 
     Ext.getCmp('menutree').removeAll();
     Ext.Ajax.request({
-        url: AppUrl + 'tree/PRO_BASE_NEW_MENU_SELNEW',
+        url: AppUrl + 'cxy/PRO_BASE_NEW_MENU_SELNEW',
         params: {
             IS_V_ROLECODE: '00',
             IS_V_PID: pid

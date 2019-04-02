@@ -1,4 +1,4 @@
-﻿var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+﻿var V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 
 var V_V_CKTYPE = '';
 var V_EQUTYPECODE = '';
@@ -7,10 +7,11 @@ var V_ORDERGUID = '';
 var V_V_ORGCODE = '';
 var V_V_DEPTCODE = '';
 var V_V_SPECIALTY = '';
-var V_PERSONCODE = '';
+// var V_PERSONCODE = '';
 var taskId = '';
 var V_STEPCODE = '';
 var V_PERSONNAME ='';
+var V_SPR='';
 var processKey="";
 var V_STEPNAME="";
 var V_NEXT_SETP="";
@@ -344,8 +345,9 @@ function _init() {
                 V_V_ORGCODE = data.RET[0].V_ORGCODE;
                 V_V_DEPTCODE = data.RET[0].V_DEPTCODE;
                 // V_V_SPECIALTY = data.RET[0].ZYCODE;
-                V_PERSONNAME = data.RET[0].V_INPERNAME;
-                V_PERSONCODE = data.RET[0].V_INPERCODE;
+                // V_PERSONNAME = data.RET[0].V_INPERNAME;
+                // V_PERSONCODE = data.RET[0].V_INPERCODE;
+                V_SPR=data.RET[0].V_INPERCODE;
                 //alert(V_PERSONCODE);
                 // Ext.getCmp('year').setValue(data.RET[0].V_YEAR);
                 Ext.getCmp('ck').setValue(data.RET[0].V_ORGNAME);
@@ -354,7 +356,7 @@ function _init() {
                 Ext.getCmp('sblx').setValue(data.RET[0].V_EQUTYPENAME);
                 Ext.getCmp('sbmc').setValue(data.RET[0].V_EQUNAME);
                 Ext.getCmp('fqr').setValue(data.RET[0].V_INPERNAME);
-                Ext.getCmp('fqsj').setValue(data.RET[0].V_INTIME.substring(0, 19));
+                Ext.getCmp('fqsj').setValue(data.RET[0].V_FINDTIME.substring(0, 19));//
                 Ext.getCmp('gzyy').setValue(data.RET[0].V_FAULT_YY);
                 // Ext.getCmp('jhtgsj').setValue(data.RET[0].V_INTIME.substring(0, 7));
                 // Ext.getCmp('jhjgsj').setValue(data.RET[0].V_ENDTIME.substring(0, 7));
@@ -411,8 +413,10 @@ function _agree() {
                     method: 'POST',
                     type: 'ajax',
                     params: {
+                        V_V_PERCODE:V_PERSONCODE,
                         V_V_GUID: $.url().param("V_ORDERGUID"),
-                        V_STATE: '30'
+                        V_V_STATE: '11',//通过 状态为审核完成
+                        V_DEFECT_STATE:'50'
                     },
                     success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
@@ -461,13 +465,13 @@ function _reject() {
             taskId: taskId,
             idea: '不通过',
             parName: ['fqrxg', "flow_yj"],
-            parVal: [V_PERSONCODE, spyj],
+            parVal: [V_SPR, spyj],
             processKey: $.url().param("ProcessDefinitionKey"),
             businessKey: V_ORDERGUID,
             V_STEPCODE: 'fqrxg',
             V_STEPNAME: '发起人修改',
             V_IDEA: '不通过',
-            V_NEXTPER: V_PERSONCODE,
+            V_NEXTPER: V_SPR,
             V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
@@ -478,8 +482,10 @@ function _reject() {
                     method: 'POST',
                     type: 'ajax',
                     params: {
+                        V_V_PERCODE:V_PERSONCODE,
                         V_V_GUID: $.url().param("V_ORDERGUID"),
-                        V_STATE: '99'
+                        V_V_STATE: '10',//驳回
+                        V_DEFECT_STATE:'24'//驳回
                     },
                     success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
@@ -487,7 +493,7 @@ function _reject() {
                             window.close();
                             window.opener.OnPageLoad();
                         } else {
-                            Ext.Msg.alert('提示', 'state update fail！');
+                            Ext.Msg.alert('提示', '事故修改状态失败！');
                         }
                     },failure: function (resp) {//访问到后台时执行的方法。
                         Ext.MessageBox.show({

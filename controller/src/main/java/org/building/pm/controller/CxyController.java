@@ -7,11 +7,16 @@ package org.building.pm.controller;
 import org.building.pm.service.CxyService;
 import org.building.pm.service.LxmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -378,13 +383,15 @@ public class CxyController {
     @RequestMapping(value = "/PM_14_FAULT_ITEM_DATA_STATE_UPDATE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_14_FAULT_ITEM_DATA_STATE_UPDATE(
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
-            @RequestParam(value = "V_STATE") String V_STATE,
+            @RequestParam(value = "V_V_STATE") String V_V_STATE,
+            @RequestParam(value = "V_DEFECT_STATE") String V_DEFECT_STATE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = cService.PM_14_FAULT_ITEM_DATA_STATE_UPDATE(V_V_GUID,V_STATE);
+        HashMap data = cService.PM_14_FAULT_ITEM_DATA_STATE_UPDATE(V_V_PERCODE,V_V_GUID,V_V_STATE,V_DEFECT_STATE);
 
         String ss = (String) data.get("RET");
 
@@ -429,6 +436,82 @@ public class CxyController {
 
         String RET = (String) data.get("RET");
         result.put("RET", RET);
+        result.put("success", true);
+        return result;
+    }
+
+//   @RequestMapping(value = "/PRO_BASE_FILE_ADD", method = RequestMethod.POST)
+   @RequestMapping(value = "/PRO_BASE_FILE_ADD")
+   @ResponseBody
+//    public Map<String, Object> PRO_BASE_FILE_ADD(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+    public ResponseEntity<String> PRO_BASE_FILE_ADD(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                   @RequestParam(value = "V_V_FILENAME") String V_V_FILENAME,
+                                                   @RequestParam(value = "V_V_FILEBLOB") MultipartFile V_V_FILEBLOB,
+                                                   @RequestParam(value = "V_V_FILETYPECODE") String V_V_FILETYPECODE,
+                                                   @RequestParam(value = "V_V_PLANT") String V_V_PLANT,
+                                                   @RequestParam(value = "V_V_DEPT") String V_V_DEPT,
+                                                   @RequestParam(value = "V_V_PERSON") String V_V_PERSON,
+                                                   @RequestParam(value = "V_V_REMARK") String V_V_REMARK,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+       HttpHeaders responseHeaders = new HttpHeaders();
+
+       responseHeaders.setContentType(MediaType.TEXT_HTML);
+       Map<String, Object> result = cService.PRO_BASE_FILE_ADD(V_V_GUID, V_V_FILENAME, V_V_FILEBLOB.getInputStream(), V_V_FILETYPECODE, V_V_PLANT, V_V_DEPT, V_V_PERSON, V_V_REMARK);
+
+//        String pm = (String) result.get("RET");
+
+//        result.put("RET", pm);
+//        result.put("success", true);
+       String json= "{\"success\":true,\"message\":\""+result+"\"}";
+//        return result;
+       return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+
+    }
+    @RequestMapping(value = "/PRO_BASE_NEW_MENU_SELNEW", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PRO_BASE_NEW_MENU_SELNEW(
+            @RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
+            @RequestParam(value = "IS_V_PID") String IS_V_PID)
+            throws SQLException {
+        List<Map> result = cService.PRO_BASE_NEW_MENU_SELNEW(IS_V_ROLECODE, IS_V_PID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_WORKORDER_TO_FAULT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_WORKORDER_TO_FAULT_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+//        Map<String, Object> result = new HashMap<String, Object>();
+
+        Map result = cService.PM_WORKORDER_TO_FAULT_SEL(V_V_ORGCODE,V_V_DEPTCODE,V_V_PAGE,V_V_PAGESIZE);
+
+//        List<Map<String, Object>> list = (List) data.get("list");
+
+//        result.put("list", list);
+//        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_WORKORDER_FAULT_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_WORKORDER_FAULT_SET(
+            @RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
+            @RequestParam(value = "V_V_WORKORDER_ORDERID") String V_V_WORKORDER_ORDERID,
+            @RequestParam(value = "V_V_INPER_CODE") String V_V_INPER_CODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_WORKORDER_FAULT_SET(V_V_FAULT_GUID,V_V_WORKORDER_ORDERID,V_V_INPER_CODE);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
         result.put("success", true);
         return result;
     }
