@@ -676,9 +676,9 @@ Ext.onReady(function () {
         frame: true,
         id: 'uploadpanel2',
         region: 'center',
-        width: '300',
+        width: '100%',
         layout: 'vbox',
-        baseCls: 'my-panel-no-border',
+        // baseCls: 'my-panel-no-border',
         height: 597,
         bodyPadding: 10,
         fileUpload: true,
@@ -763,41 +763,7 @@ Ext.onReady(function () {
                 }]}
         ]
     });
-    var updateFaultWindow = Ext.create('Ext.Panel', {
-        id: 'updateFaultWindow',
-        title: "",
-        layout: 'hbox',
-        baseCls: 'my-panel-no-border',
-        // border:true,
-        // width: 1104,
-        // height: 688,
-        // modal: true,
-        // plain: true,
-        // bodyPadding: 15,
-        //frame : true,
-        //closeAction : 'hide',
-        //closable : true,
-        items: [{
-            columnWidth: 1,
-            baseCls: 'my-panel-no-border',
-            items: addPanel2,
-            height: 597,
-            width: 580
-        },uploadpanel2
-        ]
-        // buttons: [{
-        //     text: '保存',
-        //     handler: _saveBtnFault2,
-        //     width: 50
-        // }, {
-        //     text: '取消',
-        //     handler: _hideFault2,
-        //     width: 50
-        // }]
-        // closable: true,
-        // closeAction: 'close',
-        // model: true
-    });
+
 
     /*Ext.create('Ext.container.Viewport', {
      layout: 'border',
@@ -805,25 +771,28 @@ Ext.onReady(function () {
      });*/
 
     Ext.create('Ext.container.Viewport', {
-        // layout : {
-        //     type : 'border',
-        //     regionWeights : {
-        //         west : -1,
-        //         north : 1,
-        //         south : 1,
-        //         east : -1
-        //     }
-        // },
-        // items : [ {
-        //     region : 'center',
-        //     border : false,
-        //     items : [updateFaultWindow]}
-        // ]
-
-        layout: 'border',
-        items:[updateFaultWindow]
+        layout : {
+            type : 'border',
+            regionWeights : {
+                west : -1,
+                north : 1,
+                south : 1,
+                east : -1
+            }
+        },
+        items : [{
+            region : 'west',
+            width : '50%',
+            layout : 'fit',
+            border : false,
+            items : [ addPanel2 ]
+        }, {
+            region : 'center',
+            layout : 'fit',
+            border : false,
+            items : [ uploadpanel2]
+        } ]
     });
-
     _init();
 
     _selecteFaultStore2();

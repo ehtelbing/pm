@@ -18,7 +18,6 @@ var nextSprLoad1 = false;
 
 var init = true;
 var initadd = true;
-var code ="";
 var processKey2 = '';
 var V_STEPNAME2 = '';
 var V_NEXT_SETP2 = '';
@@ -696,7 +695,7 @@ Ext.onReady(function () {
     var filegridPanel = Ext.create("Ext.grid.Panel", {
         id: 'filegridPanel',
         region: 'center',
-        height: '100%',
+        // height: '100%',
         width: '100%',
         columnLines: true,
         store: fileGridStore,
@@ -718,19 +717,17 @@ Ext.onReady(function () {
         }]
     });
 
-
-
     var uploadpanel= Ext.create('Ext.form.FormPanel', {
-            border: false,
-            frame: true,
-            id: 'uploadpanel',
-            region: 'center',
-        baseCls: 'my-panel-no-border',
-            width: '300',
+        border: false,
+        frame: true,
+        id: 'uploadpanel',
+        region: 'center',
+        // baseCls: 'my-panel-no-border',
+        width: '100%',
         layout: 'vbox',
-            height: 597,
-            bodyPadding: 10,
-            fileUpload: true,
+        height: 595,
+        bodyPadding: 10,
+        fileUpload: true,
 
         items: [
             {
@@ -832,27 +829,27 @@ Ext.onReady(function () {
                 }]}
         ]
     });
-    var addFaultWindow = Ext.create('Ext.Panel', {
-        id: 'addFaultWindow',
-        title: "",
-        layout: 'hbox',
-        // width: '100%',
-        // height: '100%',
-
-        baseCls: 'my-panel-no-border',
-        // modal: true,
-        // plain: true,
-        // bodyPadding: 15,
-        autoScroll: true,
-        items: [{
-            columnWidth: 1,
-            baseCls: 'my-panel-no-border',
-            items: addPanel,
-            height: 597,
-            width: 580
-        }, uploadpanel
-
-        ]
+    // var addFaultWindow = Ext.create('Ext.Panel', {
+    //     id: 'addFaultWindow',
+    //     // title: "",
+    //     layout: 'hbox',
+    //     // width: '100%',
+    //     // height: '100%',
+    //
+    //     baseCls: 'my-panel-no-border',
+    //     // modal: true,
+    //     // plain: true,
+    //     // bodyPadding: 15,
+    //     autoScroll: true,
+    //     items: [{
+    //         columnWidth: 1,
+    //         baseCls: 'my-panel-no-border',
+    //         items: addPanel,
+    //         height: 597,
+    //         width: 580
+    //     }, uploadpanel
+    //
+    //     ]
         // buttons: [{
         //     text: '保存',
         //     handler: _saveBtnFault,
@@ -865,7 +862,7 @@ Ext.onReady(function () {
         // closable: true,
         // closeAction: 'close',
         // model: true
-    });
+    // });
 
 
     /*Ext.create('Ext.container.Viewport', {
@@ -873,15 +870,44 @@ Ext.onReady(function () {
      items: [panel]
      });*/
 
+    // Ext.create('Ext.container.Viewport', {
+    //
+    //     layout: 'border',
+    //     // items:[addFaultWindow]
+    //     baseCls: 'my-panel-no-border',
+    //     items : [{
+    //         region: 'west',
+    //         border: false,
+    //         baseCls: 'my-panel-no-border',
+    //         items: [addPanel]
+    //     },{
+    //             region : 'east',
+    //             border : false,
+    //             items : [uploadpanel]}
+    //     ]
+    // });
     Ext.create('Ext.container.Viewport', {
-
-        layout: 'border',
-        items:[addFaultWindow]
-        // items : [ {
-        //     region : 'center',
-        //     border : false,
-        //     items : [addFaultWindow]}
-        // ]
+        layout : {
+            type : 'border',
+            regionWeights : {
+                west : -1,
+                north : 1,
+                south : 1,
+                east : -1
+            }
+        },
+        items : [{
+            region : 'west',
+            width : '50%',
+            layout : 'fit',
+            border : false,
+            items : [ addPanel ]
+        }, {
+            region : 'center',
+            layout : 'fit',
+            border : false,
+            items : [ uploadpanel]
+        } ]
     });
 
     // _addFault();
