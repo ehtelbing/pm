@@ -2248,7 +2248,7 @@ var fsf = Ext.widget({
     id: 'fieldSetForm',
     border:false,
     // title: date.getFullYear()+'年鞍千有限责任公司年计划编制',
-    title: date.getFullYear()+'年--计划编制',
+    title: date.getFullYear()+'年年计划编制',
     titleAlign:'center'
 
 });
@@ -2494,6 +2494,8 @@ Ext.onReady(function () {
         title: '设备检修历史',
         items: [workgrid]
     });
+
+
 });
 
 //加载添加页面

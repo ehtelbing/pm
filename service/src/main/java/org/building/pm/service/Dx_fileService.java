@@ -3208,4 +3208,87 @@ public class Dx_fileService {
         logger.info("end MAINTAIN_RELEASE_POSTBACK_SEL");
         return result;
     }
+
+    //维修-计划选择删除原有缺陷
+    public HashMap PM_03_PLAN_YEAR_DEF_DEL(String V_V_PROJCET_GUID)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_PLAN_YEAR_DEF_DEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_PLAN_YEAR_DEF_DEL(:V_V_PROJCET_GUID,:V_INFO)}");
+            cstmt.setString("V_V_PROJCET_GUID",V_V_PROJCET_GUID);
+
+            cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("V_INFO"));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PM_03_PLAN_YEAR_DEF_DEL");
+        return result;
+    }
+    //计划添加-删除原有大修设备
+    public HashMap PM_03_PLAN_YEAR_EQU_BY_DEL(String V_V_PLANGUID)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_PLAN_YEAR_EQU_BY_DEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_PLAN_YEAR_EQU_BY_DEL(:V_V_PLANGUID,:V_INFO)}");
+            cstmt.setString("V_V_PLANGUID",V_V_PLANGUID);
+
+            cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("V_INFO"));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PM_03_PLAN_YEAR_EQU_BY_DEL");
+        return result;
+    }
+
+    //计划添加-删除原有大修模型
+    public HashMap PM_03_PLAN_YEAR_MOD_DEL(String V_V_PROJECT_GUID)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_PLAN_YEAR_MOD_DEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_PLAN_YEAR_MOD_DEL(:V_V_PROJECT_GUID,:V_INFO)}");
+            cstmt.setString("V_V_PROJECT_GUID",V_V_PROJECT_GUID);
+
+            cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("V_INFO"));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PM_03_PLAN_YEAR_MOD_DEL");
+        return result;
+    }
 }

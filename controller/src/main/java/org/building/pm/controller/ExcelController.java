@@ -3808,5 +3808,136 @@ public class ExcelController {
 //        result.put("success",true);
 //        return result;
 
+    @RequestMapping(value = "/FXGL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void FXGL_EXCEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                           @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                           @RequestParam(value = "V_SDATE") String V_SDATE,
+                           @RequestParam(value = "V_EDATE") String V_EDATE,
+                           @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                           @RequestParam(value = "V_V_DEFECT") String V_V_DEFECT,
+                           @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                           HttpServletResponse response)
+            throws //com.fasterxml.jackson.core.JsonProcessingException,
+            NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
+        List list = new ArrayList();
+        String zy=zy = V_V_ZY.equals("1") ? "%" : V_V_ZY;
+
+        V_V_DEFECT = new String(V_V_DEFECT.getBytes("iso-8859-1"), "utf-8");
+
+        Map<String, Object> data = dx_fileService.PM_03_PLAN_YEAR_FX_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,zy,
+                V_SDATE, V_EDATE, V_V_SPECIALTY, V_V_DEFECT, V_V_FLAG);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("是否关联放行计划");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("项目唯一值");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("项目编号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("项目名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("缺陷内容");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("计划开工日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("计划竣工日期");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("工程总预算(万元)");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("检修单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("申请厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
+        cell.setCellValue("申请作业区");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
+        cell.setCellValue("工程总预算(万元)");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("FX_GUID") == null ? "" :"查看详情");// map.get("FX_GUID").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_GUID") == null ? "" : map.get("V_GUID").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_PORJECT_CODE") == null ? "" : map.get("V_PORJECT_CODE").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_PORJECT_NAME") == null ? "" : map.get("V_PORJECT_NAME").toString());
+                row.createCell((short) 5).setCellValue(map.get("QXCONTEXT") == null ? "" : map.get("QXCONTEXT").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_BDATE") == null ? "" : map.get("V_BDATE").toString());
+                row.createCell((short) 7).setCellValue(map.get("V_EDATE") == null ? "" : map.get("V_EDATE").toString());
+                row.createCell((short) 8).setCellValue(map.get("V_SPECIALTYNAME") == null ? "" : map.get("V_SPECIALTYNAME").toString());
+                row.createCell((short) 9).setCellValue(map.get("V_MONEYBUDGET") == null ? "" : map.get("V_MONEYBUDGET").toString());
+                row.createCell((short) 10).setCellValue(map.get("V_REPAIR_DEPTNAME") == null ? "" : map.get("V_REPAIR_DEPTNAME").toString());
+                row.createCell((short) 11).setCellValue(map.get("V_INMAN") == null ? "" : map.get("V_INMAN").toString());
+                row.createCell((short) 12).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+                row.createCell((short) 13).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("放行计划Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

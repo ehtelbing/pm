@@ -1019,7 +1019,6 @@ var Toolpanel = Ext.create('Ext.grid.Panel', {
     width: '100%',
     tbar: [
         '相关设备',
-
         { xtype: 'tbfill' ,style:'background-color:red'},
         // { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
         {
@@ -3138,7 +3137,7 @@ function QueryQxByEqu(a, record){
 //单设备保存缺陷
 function SaveQx(){
     var selectedRecord = Ext.getCmp('qxAdd').getSelectionModel().getSelection();
-    var num=0
+    var num=0;
 
     for(var i=0;i<selectedRecord.length;i++){
         Ext.Ajax.request({
@@ -3717,7 +3716,7 @@ function btnSaveProject(){
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='成功'){
                 alert('保存成功！');
-
+                window.opener.selectGridTurn();
                 window.close();
             }
         }
@@ -4023,6 +4022,61 @@ function YearwinClose(){
                 // Ext.getCmp('ProjectName').setValue(resp.RET[0].PRO_NAME);  // 项目名称
                 Ext.getCmp('btime').setValue(Ext.Date.format(new Date(btime),'Y/m/d')); // 停工时间
                 Ext.getCmp('etime').setValue(Ext.Date.format(new Date(etime),'Y/m/d')); // 竣工时间
+                //清空原有添加设备
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_EQU_BY_DEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_PLANGUID:Guid
+                    },
+                    success: function (resp) {
+                        var resp=Ext.decode(resp.responseText);
+                        if(resp.RET=='成功'){
+                            QueryCGrid();
+                        }
+                        // else{
+                        //     alert("添加失败");
+                        // }
+                    }
+                });
+                //清空原有添加缺陷
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_DEF_DEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_PROJCET_GUID:Guid
+                    },
+                    success: function (resp) {
+                        var resp=Ext.decode(resp.responseText);
+                        if(resp.RET=='成功'){
+                            QueryCGrid();
+                        }
+                        // else{
+                        //     alert("添加失败");
+                        // }
+                    }
+                });
+                //清空原有添加模型
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_MOD_DEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_PROJECT_GUID:Guid
+                    },
+                    success: function (resp) {
+                        var resp=Ext.decode(resp.responseText);
+                        if(resp.RET=='成功'){
+                            QueryCGrid();
+                        }
+                        // else{
+                        //     alert("添加失败");
+                        // }
+                    }
+                });
+
                 //查询写入设备
                 Ext.Ajax.request({
                     url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_EQU_SET',
@@ -4037,12 +4091,13 @@ function YearwinClose(){
                         var resp=Ext.decode(resp.responseText);
                         if(resp.V_INFO=='成功'){
                             QueryCGrid();
-                        }else{
-                            alert("添加失败");
                         }
+                        // else{
+                        //     alert("添加失败");
+                        // }
                     }
                 });
-                //--查询返回明细
+                //--查询写入缺陷
                 Ext.Ajax.request({
                     url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_DEFECT_SEL',
                     method: 'POST',
@@ -4071,9 +4126,10 @@ function YearwinClose(){
                                     QueryDefect();
                                 }
                             }
-                        }else{
-                            alert("添加失败");
                         }
+                        // else{
+                        //     alert("添加失败");
+                        // }
                     }
                 });
                 //--查询返回模型
@@ -4148,9 +4204,10 @@ function YearwinClose(){
                                     QueryModel();
                                 }
                             }
-                        }else{
-                            alert("添加失败");
                         }
+                        // else{
+                        //     alert("添加失败");
+                        // }
                     }
                 });
 

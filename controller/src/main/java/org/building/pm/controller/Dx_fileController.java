@@ -3241,6 +3241,38 @@ public class Dx_fileController {
         return data;
     }
 
+    //维修-计划选择删除原有缺陷
+    @RequestMapping(value = "PM_03_PLAN_YEAR_DEF_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_DEF_DEL(
+            @RequestParam(value = "V_V_PROJCET_GUID") String V_V_PROJCET_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_03_PLAN_YEAR_DEF_DEL(V_V_PROJCET_GUID);
+        return data;
+    }
+
+    //计划添加-删除原有大修设备
+    @RequestMapping(value = "PM_03_PLAN_YEAR_EQU_BY_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_EQU_BY_DEL(
+            @RequestParam(value = "V_V_PLANGUID") String V_V_PLANGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_03_PLAN_YEAR_EQU_BY_DEL(V_V_PLANGUID);
+        return data;
+    }
+
+    //计划添加-删除原有大修模型
+    @RequestMapping(value = "PM_03_PLAN_YEAR_MOD_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_MOD_DEL(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_03_PLAN_YEAR_MOD_DEL(V_V_PROJECT_GUID);
+        return data;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
