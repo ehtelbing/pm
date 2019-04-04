@@ -720,7 +720,12 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             valueField: 'V_DEPTCODE',
             queryMode: 'local',
             // margin: '5 5 5 0',
-            labelAlign: 'right'
+            labelAlign: 'right',
+            listeners:{
+                change:function(){
+
+                }
+            }
         },
         {
             xtype: 'combo',
@@ -2310,7 +2315,7 @@ Ext.onReady(function () {
 
 
 
-    Ext.getCmp('ck').on('select', function () {
+    Ext.getCmp('ck').on('change', function () {
         Ext.data.StoreManager.lookup('zyqStore').load({
             params: {
                 'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
@@ -2321,7 +2326,7 @@ Ext.onReady(function () {
         });
     });
 
-    Ext.getCmp('zyq').on('select', function () {
+    Ext.getCmp('zyq').on('change', function () {
 
         Ext.data.StoreManager.lookup('repairDeptStore').load({
             params: {
@@ -2515,7 +2520,8 @@ function QueryPageLoad() {
     });
     Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
         if(flag == 'new'){
-            Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+            // Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+            Ext.getCmp('zyq').select(getzyq);
             Ext.data.StoreManager.lookup('fzPerStore').load({
                 params:{
                     V_V_ORGCODE: Ext.getCmp('ck').getValue(),

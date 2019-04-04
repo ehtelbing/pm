@@ -3227,6 +3227,20 @@ public class Dx_fileController {
         return data;
     }
 
+
+
+    @RequestMapping(value = "OVERHAUL_BY_MAINTAINRELEASE_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map OVERHAUL_BY_MAINTAINRELEASE_IN(
+            @RequestParam(value = "V_FXGUID") String V_FXGUID,
+            @RequestParam(value = "V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.OVERHAUL_BY_MAINTAINRELEASE_IN(V_FXGUID,V_YEARGUID,V_PERCODE);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

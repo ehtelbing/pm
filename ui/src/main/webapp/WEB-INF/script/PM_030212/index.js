@@ -244,6 +244,10 @@ function OnButtonQuery(){
 
 //手工添加
 function OnButtonPlanAddClicked(){
+    if(Ext.getCmp('zyq').getValue()=="%"){
+        Ext.Msg.alert("提示","请选择一个作业区");
+        return false;
+    }
     Ext.Ajax.request({
         url: AppUrl + 'dxfile/PM_PLAN_YEAR_GET_NEWGUID',
         method: 'POST',

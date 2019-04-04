@@ -3179,4 +3179,33 @@ public class Dx_fileService {
         }
         return result;
     }
+
+    //维修放行关联表写入
+    public HashMap OVERHAUL_BY_MAINTAINRELEASE_IN(String V_FXGUID,String V_YEARGUID,String V_PERCODE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin OVERHAUL_BY_MAINTAINRELEASE_IN");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call OVERHAUL_BY_MAINTAINRELEASE_IN(:V_FXGUID,:V_YEARGUID,:V_PERCODE,:RET)}");
+            cstmt.setString("V_FXGUID",V_FXGUID);
+            cstmt.setString("V_YEARGUID",V_YEARGUID);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end MAINTAIN_RELEASE_POSTBACK_SEL");
+        return result;
+    }
 }

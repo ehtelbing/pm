@@ -2,7 +2,8 @@ var gengxin = "";
 var mingtian = new Date();
 mingtian.setDate(mingtian.getDate()+1);
 var V_GUID = "" ;
-
+var FXGUID="";
+var gridList=[];
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -353,7 +354,7 @@ Ext.onReady(function () {
         autoScroll: true,
         selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
             selType: 'checkboxmodel',
-            mode: 'SINGLE'
+            mode: 'SIMPLE'
         },
         columns: [ {
             text: '是否关联放行计划',
@@ -474,18 +475,85 @@ Ext.onReady(function () {
          }],*/
     });
 
+    var fxpanel=Ext.create('Ext.panel.Panel',{
+        id:'fxpanel',
+        layout:'column',
+        region:'north',
+        defaults:{
+            margin:'10px 0px 5px 10px'
+        }
+        ,items:[
+            {
+                xtype:'button',
+                id:'saveBtn',
+                text:'确认返回',
+                icon:dxImgPath + '/tjsb.png',
+                /*iconCls: 'buy-button',*/
+                handler:saveClick
+            },
+            {xtype: 'button',text: '关闭',
+                icon:dxImgPath + '/close.png',listeners:{click:winQxClose}}
+        ]
+    });
+    var pxgrid=Ext.create('Ext.grid.Panel',{
+        id:'pxgrid',
+        region:'center',
+        columnLines:true,
+        store: fxgridStore,
+        autoScroll:true,
+        columns:[
+            {text:'放行计划编码',dataIndex:'V_GUID',align:'center',width:150,hidden:true},
+            {text:'放行计划编码',dataIndex:'V_PROJECT_CODE',align:'center',width:150},
+            {text:'放行计划名称',dataIndex:'V_PROJECT_NAME',align:'center',width:150},
+            {text:'放行计划内容',dataIndex:'V_CONTENT',align:'center',width:150},
+            {text:'放行建设单位',dataIndex:'V_DEPTNAME',align:'center',width:150},
+            {text:'放行计划开工时间',dataIndex:'V_DATE_B',align:'center',width:150,renderer:timeTurn},
+            {text:'工程额度(万元）',dataIndex:'V_MONEY',align:'center',width:150}
+        ],
+        listeners:{itemclick:function(a,record){
+                FXGUID=record.data.V_GUID;
+            }}
+    });
     var fxwin=Ext.create('Ext.window.Window',{
         id:'fxwin',
         closeAction:'hide',
         layout:'border',
+        width:650,
+        height:350,
         items:[fxpanel,pxgrid]
+    });
+    var viewfxgrid=Ext.create('Ext.grid.Panel',{
+        id:'viewfxgrid',
+        region:'center',
+        columnLines:true,
+        store: fxgridStore,
+        autoScroll:true,
+        columns:[
+            {text:'放行计划编码',dataIndex:'V_GUID',align:'center',width:150,hidden:true},
+            {text:'放行计划编码',dataIndex:'V_PROJECT_CODE',align:'center',width:150},
+            {text:'放行计划名称',dataIndex:'V_PROJECT_NAME',align:'center',width:150},
+            {text:'放行计划内容',dataIndex:'V_CONTENT',align:'center',width:150},
+            {text:'放行建设单位',dataIndex:'V_DEPTNAME',align:'center',width:150},
+            {text:'放行计划开工时间',dataIndex:'V_DATE_B',align:'center',width:150,renderer:timeTurn},
+            {text:'工程额度(万元）',dataIndex:'V_MONEY',align:'center',width:150}
+        ]
 
+    });
+    var viewFxWin=Ext.create('Ext.window.Window',{
+       id:'viewFxWin' ,
+        closeAction:'hide',
+        layout:'border',
+        width:650,
+        height:350,
+        items:[viewfxgrid]
     });
     Ext.create('Ext.container.Viewport', {
         id: "id",
         layout: 'border',
         items: [panel2, grid]
     });
+
+    queryGrid();
 });
 
 
@@ -496,20 +564,35 @@ function timeTurn(value,metaData,recode,store){
 }
 function viewFxDetails(value){
     queryFxGrid(value,'1');
-    Ext.getCmp('fxwin').show();
+    Ext.getCmp('viewFxWin').show();
 }
 function ExcelButton() {
     var V_V_IP = '';
     var V_V_FLAG = '审批通过';
-    document.location.href=AppUrl + 'excel/FXJH_EXCEL?V_V_IP='+V_V_IP+
-        '&V_V_PERCODE='+Ext.util.Cookies.get('v_personcode')
-       + '&V_V_ORGCODE='+Ext.getCmp("ck").getValue()
-       + '&V_V_DEPTCODE='+Ext.getCmp("zyq").getValue()
-       + '&V_D_INDATE_B='+Ext.getCmp("begintime").getSubmitValue()
-       + '&V_D_INDATE_E='+Ext.getCmp("endtime").getSubmitValue()
-       + '&V_V_SPECIALTY='+ Ext.getCmp('zy').getValue()
-       + '&V_V_DEFECT='+ Ext.getCmp('qxcontent').getValue()
-       + '&V_V_FLAG='+ V_V_FLAG;
+    var zy="";
+    // document.location.href=AppUrl + 'excel/FXJH_EXCEL?V_V_IP='+V_V_IP+
+    //     '&V_V_PERCODE='+Ext.util.Cookies.get('v_personcode')
+    //    + '&V_V_ORGCODE='+Ext.getCmp("ck").getValue()
+    //    + '&V_V_DEPTCODE='+Ext.getCmp("zyq").getValue()
+    //    + '&V_D_INDATE_B='+Ext.getCmp("begintime").getSubmitValue()
+    //    + '&V_D_INDATE_E='+Ext.getCmp("endtime").getSubmitValue()
+    //    + '&V_V_SPECIALTY='+ Ext.getCmp('zy').getValue()
+    //    + '&V_V_DEFECT='+ Ext.getCmp('qxcontent').getValue()
+    //    + '&V_V_FLAG='+ V_V_FLAG;
+    if(Ext.getCmp('zy').getValue()=='%'){
+        zy='1';
+    }else{
+        zy=Ext.getCmp('zy').getValue()
+    }
+    document.location.href=AppUrl + 'excel/FXGL_EXCEL?V_V_ORGCODE='+ Ext.getCmp("ck").getValue()+
+        '&V_V_DEPTCODE='+Ext.getCmp("zyq").getValue()
+        + '&V_V_PERCODE='+Ext.util.Cookies.get('v_personcode')
+        + '&V_V_ZY='+''
+        + '&V_SDATE='+Ext.getCmp("begintime").getSubmitValue()
+        + '&V_EDATE='+Ext.getCmp("endtime").getSubmitValue()
+        + '&V_V_SPECIALTY='+ zy
+        + '&V_V_DEFECT='+  Ext.getCmp('qxcontent').getValue()
+        + '&V_V_FLAG='+ '';
 }
 function queryFxGrid(value,sign){
     var fxgridStore = Ext.data.StoreManager.lookup('fxgridStore');
@@ -572,8 +655,10 @@ function _ck_zyqload() {
 function _fangxingjihua()
 {
     var records = Ext.getCmp('grid').getSelectionModel().getSelection();//获取选中的数据
+    // var fxgrid=records[0].get('FX_GUID');
+    var fxgrid;
 
-    if (records.length != 1) {//判断是否选中数据
+    if (records.length < 1) {//判断是否选中数据
         Ext.MessageBox.show({
             title: '提示',
             msg: '请选择一条要关联的数据',
@@ -582,12 +667,32 @@ function _fangxingjihua()
         });
         return false;
     }
-    V_GUID =  records[0].get('V_GUID');
+    else {
+        for(var i=0;i<records.length;i++){
+            fxgrid=records[i].get('FX_GUID');
+            if(fxgrid!=""){
+                Ext.MessageBox.show({
+                    title: '提示',
+                    msg: '已有关联的放行计划，不可以重新关联,请重新选择',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.WARNING
+                });
+                return false;
+            }
+        }
+        for(var k=0;k<records.length;k++){
+        gridList.push(records[k].get('V_GUID'));
+        }
+        queryFxGrid(fxgrid,'0');
+        Ext.getCmp('fxwin').show();
+    }
+    // V_GUID =  records[0].get('V_GUID');
     //console.log(V_GUID);
 
-    var owidth = window.document.body.offsetWidth ;
-    var oheight = window.document.body.offsetHeight ;
-    window.open(AppUrl + 'page/PM_22010501/index.html?V_GUID=' + V_GUID  + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+
+    // var owidth = window.document.body.offsetWidth ;
+    // var oheight = window.document.body.offsetHeight ;
+    // window.open(AppUrl + 'page/PM_22010501/index.html?V_GUID=' + V_GUID  + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
 
 
 }
@@ -597,3 +702,33 @@ function shuaxin()
     queryGrid();
 }
 
+function saveClick(){
+    for(var j=0;j<gridList.length;j++){
+        Ext.Ajax.request({
+            method:'POST',
+            url:AppUrl+'dxfile/OVERHAUL_BY_MAINTAINRELEASE_IN',
+            async:false,
+            params:{
+                V_FXGUID:FXGUID,//fxgridList[j],
+                V_YEARGUID:gridList[j],
+                V_PERCODE:Ext.util.Cookies.get('v_personcode')
+            },
+            success:function(response){
+                var resp = Ext.decode(response.responseText);
+                if (resp.RET == "SUCCESS") {
+                    Ext.Msg.alert("操作提示","保存成功");
+                    queryGrid();
+                } else {
+                    Ext.Msg.alert("操作提示","保存失败");
+                    queryGrid();
+                }
+            }
+        });
+    }
+}
+
+function winQxClose(){
+    Ext.getCmp('fxwin').close();
+    gridList.splice(0,gridList.length);
+    console.log(gridList);
+}
