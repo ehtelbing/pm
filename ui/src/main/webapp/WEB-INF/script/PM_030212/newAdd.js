@@ -707,6 +707,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             id: 'ProjectName',
             labelWidth: 80,
             width: 250
+            ,editable:false
             // ,margin: '5 5 5 0'
         },{
             id: 'ck',
@@ -745,7 +746,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'combo',
             id: "wxlx",
             store: wxlxStore,
-            editable: true,
+            editable: false,
             queryMode: 'local',
             fieldLabel: '维修类型',
             // margin: '5 5 5 0',
@@ -759,7 +760,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'combo',
             id: "zy",
             store: zyStore,
-            editable: true,
+            editable: false,
             queryMode: 'local',
             fieldLabel: '专 业',
             // margin: '5 5 5 0',
@@ -773,7 +774,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'combo',
             id: "jhlb",
             store: jhlbStore,
-            editable: true,
+            editable: false,
             queryMode: 'local',
             fieldLabel: '计划类别',
             // margin: '5 5 5 0',
@@ -786,7 +787,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'combo',
             id: "sclb",
             store: sclbStore,
-            editable: true,
+            editable: false,
             queryMode: 'local',
             fieldLabel: '生产类别',
             // margin: '5 5 5 0',
@@ -800,7 +801,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'combo',
             id: "sgfs",
             store: sgfsStore,
-            editable: true,
+            editable: false,
             queryMode: 'local',
             fieldLabel: '施工方式',
             // margin: '5 5 5 0',
@@ -813,7 +814,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'combo',
             id: 'jxtype',
             fieldLabel: '检修类别',
-            editable: true,
+            editable: false,
             // style : 'margin:5px 0px 5px 5px',
             labelWidth: 80,
             width: 250,
@@ -826,7 +827,7 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
             xtype: 'combo',
             id: "sfxj",
             store: [[0, '是'], [1, '否']],
-            editable: true,
+            editable: false,
             queryMode: 'local',
             value: 0,
             fieldLabel: '是否修旧',
@@ -2509,15 +2510,23 @@ function QueryPageLoad() {
         if (flag == 'new') {
             Ext.getCmp('ck').select(getck);
         }
+        Ext.data.StoreManager.lookup('zyqStore').load({
+            params:{
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            }
+        });
     });
-    Ext.data.StoreManager.lookup('zyqStore').load({
-        params:{
-            'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-            'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
-            'V_V_DEPTCODENEXT': '%',
-            'V_V_DEPTTYPE': '主体作业区'
-        }
-    });
+    // Ext.data.StoreManager.lookup('zyqStore').load({
+    //     params:{
+    //         'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+    //         'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+    //         'V_V_DEPTCODENEXT': '%',
+    //         'V_V_DEPTTYPE': '主体作业区'
+    //     }
+    // });
     Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
         if(flag == 'new'){
             // Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
