@@ -1,6 +1,7 @@
 package org.building.pm.service;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import oracle.jdbc.OracleTypes;
+import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.session.SqlSessionException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -3064,6 +3065,118 @@ public class Dx_fileService {
         }
         logger.debug("result:" + result);
         logger.info("end DEFECT_PROCESS_WAY_SEL");
+        return result;
+    }
+    //维修计划无设备查缺陷
+    public HashMap PRO_PM_DEFECT_SPECIL_SEL()throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_PM_DEFECT_SPECIL_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_PM_DEFECT_SPECIL_SEL(:RET )}");
+
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_SPECIL_SEL");
+        return result;
+    }
+    // 大修从年计划选择查询
+    public HashMap PM_PLAN_YEAR_SEL_BYWX(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERCODE,String V_V_ZY,String V_V_STATE)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_PLAN_YEAR_SEL_BYWX");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_PLAN_YEAR_SEL_BYWX(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PERCODE,:V_V_ZY,:V_V_STATE,:RET)}");
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_PERCODE",V_V_PERCODE);
+            cstmt.setString("V_V_ZY",V_V_ZY);
+            cstmt.setString("V_V_STATE",V_V_STATE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_SEL_BYWX");
+        return result;
+    }
+    //大修放行计划查询
+    public HashMap PM_03_PLAN_YEAR_FX_SEL(String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_PERCODE,String V_V_ZY,
+                                          String V_SDATE,String V_EDATE,String V_V_SPECIALTY,String V_V_DEFECT,String V_V_FLAG)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_PLAN_YEAR_FX_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_03_PLAN_YEAR_FX_SEL(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PERCODE,:V_V_ZY,:V_SDATE,:V_EDATE,:V_V_SPECIALTY,:V_V_DEFECT,:V_V_FLAG,:RET)}");
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("V_V_PERCODE",V_V_PERCODE);
+            cstmt.setString("V_V_ZY",V_V_ZY);
+            cstmt.setString("V_SDATE",V_SDATE);
+            cstmt.setString("V_EDATE",V_EDATE);
+            cstmt.setString("V_V_SPECIALTY",V_V_SPECIALTY);
+            cstmt.setString("V_V_DEFECT",V_V_DEFECT);
+            cstmt.setString("V_V_FLAG",V_V_FLAG);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally {
+             cstmt.close();
+             conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PM_03_PLAN_YEAR_FX_SEL");
+        return result;
+    }
+
+    // 根据放行编码插叙放行数据
+    public HashMap MAINTAIN_RELEASE_POSTBACK_SEL(String FX_GUID,String V_SIGN)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin MAINTAIN_RELEASE_POSTBACK_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call MAINTAIN_RELEASE_POSTBACK_SEL(:FX_GUID,:V_SIGN,:RET)}");
+            cstmt.setString("FX_GUID",FX_GUID);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }finally {
+            cstmt.close();
+            conn.close();
+            logger.debug("result:"+result);
+            logger.info("end MAINTAIN_RELEASE_POSTBACK_SEL");
+        }
         return result;
     }
 }

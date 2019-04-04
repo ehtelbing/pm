@@ -100,7 +100,27 @@ function _deleteDefect(DefectGuid){
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='SUCCESS'){
-                QueryPageLoad();
+                // QueryPageLoad();
+                //修改缺陷状态
+                Ext.Ajax.request({
+                    url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: DefectGuid,
+                        V_V_STATECODE: '10'//未处理
+
+                    },
+                    success: function (ret) {
+                        var resp = Ext.decode(ret.responseText);
+                        if(resp.V_INFO=='success'){
+                            QueryPageLoad();
+                        }else{
+                            alert("修改缺陷状态失败");
+                        }
+
+                    }
+                });
             }else{
                 alert("删除失败");
             }

@@ -3171,6 +3171,62 @@ public class Dx_fileController {
         Map data = dx_fileService.DEFECT_PROCESS_WAY_SEL(V_DEPTCODE,V_PERCODE);
         return data;
     }
+    //维修计划无设备查缺陷
+    @RequestMapping(value = "PRO_PM_DEFECT_SPECIL_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_DEFECT_SPECIL_SEL(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map data = dx_fileService.PRO_PM_DEFECT_SPECIL_SEL();
+        return data;
+    }
+    // 大修从年计划选择查询
+    @RequestMapping(value = "PM_PLAN_YEAR_SEL_BYWX", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_SEL_BYWX(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value="V_V_STATE") String V_V_STATE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_SEL_BYWX(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY,V_V_STATE);
+        return data;
+    }
+    //大修放行计划查询
+    @RequestMapping(value = "PM_03_PLAN_YEAR_FX_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YEAR_FX_SEL(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value="V_SDATE") String V_SDATE,
+            @RequestParam(value="V_EDATE") String V_EDATE,
+            @RequestParam(value="V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value="V_V_DEFECT") String V_V_DEFECT,
+            @RequestParam(value="V_V_FLAG") String V_V_FLAG,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_03_PLAN_YEAR_FX_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY,V_SDATE,V_EDATE,V_V_SPECIALTY,V_V_DEFECT,V_V_FLAG);
+        return data;
+    }
+
+
+    // 根据放行编码插叙放行数据
+    @RequestMapping(value = "MAINTAIN_RELEASE_POSTBACK_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map MAINTAIN_RELEASE_POSTBACK_SEL(
+            @RequestParam(value = "FX_GUID") String FX_GUID,
+            @RequestParam(value = "V_SIGN") String V_SIGN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.MAINTAIN_RELEASE_POSTBACK_SEL(FX_GUID,V_SIGN);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
