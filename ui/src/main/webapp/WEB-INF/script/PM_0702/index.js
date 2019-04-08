@@ -311,16 +311,17 @@ Ext.onReady(function () {
         }]
     });
 
-    // Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
-    //     store.proxy.extraParams = {
-    //         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
-    //         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-    //         PUT_PERNAME:"",
-    //         V_V_PAGE: Ext.getCmp('page').store.currentPage,
-    //         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
-    //         V_SIGN:0
-    //     }
-    // });
+    Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+            X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            PUT_PERNAME:Ext.getCmp('fzr').getValue()==""?"%":Ext.getCmp("fzr").getValue().toString(),
+            V_V_PAGE: Ext.getCmp('page').store.currentPage,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+            V_SIGN:1
+        }
+    });
+
     _init()
     // _selectOverhaulApply();
 
@@ -457,6 +458,7 @@ function _init() {
 
 function _selectOverhaulApply() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    Ext.getCmp('page').store.currentPage = 1;
     gridStore.proxy.extraParams = {
         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
@@ -466,11 +468,11 @@ function _selectOverhaulApply() {
         V_SIGN:0
 
     };
-    gridStore.currentPage = 1;
     gridStore.load();
 }
 function _selectOverhaulApply2() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    Ext.getCmp('page').store.currentPage = 1;
     gridStore.proxy.extraParams = {
         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
@@ -479,7 +481,6 @@ function _selectOverhaulApply2() {
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
         V_SIGN:1
     };
-    gridStore.currentPage = 1;
     gridStore.load();
 }
 

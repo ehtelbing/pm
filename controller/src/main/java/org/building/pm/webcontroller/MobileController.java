@@ -2,6 +2,11 @@ package org.building.pm.webcontroller;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
+import org.activiti.engine.TaskService;
+import org.building.pm.controller.CjyController;
+import org.building.pm.service.CjyService;
+import org.building.pm.service.CxyService;
+import org.building.pm.service.HpService;
 import org.building.pm.webpublic.*;
 import org.building.pm.webservice.MobileService;
 import org.codehaus.xfire.client.Client;
@@ -40,55 +45,161 @@ public class MobileController {
     @Autowired
     private MobileService mobileService;
 
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private CjyService cjyService;
+
+    @Autowired
+    private CxyService cxyService;
+
+    @Autowired
+    private HpService hpService;
+
     /*
-   * mes移动端--登录
-   * */
+     * mes移动端--登录
+     * */
     @RequestMapping(value = "mobile_login", method = RequestMethod.GET)
     @ResponseBody
     public void login(@RequestParam(value = "UserName") String UserName,
                       @RequestParam(value = "PassWord") String PassWord,
+                      @RequestParam(value = "UserIp") String UserIp,//地址
+                      @RequestParam(value = "OSNAME") String OSNAME,   //操作系统
+                      @RequestParam(value = "BROWN") String BROWN,   //浏览器
+                      @RequestParam(value = "LOCALHOST") String LOCALHOST,   //主机名
+                      @RequestParam(value = "SS") String SS,   //分辨率
                       HttpServletRequest request,
                       HttpServletResponse response)
             throws NoSuchAlgorithmException, SQLException, IOException {
-        List<PersonClass> item = new ArrayList<PersonClass>();
+        Map<String, Object> result = mobileService.mobile_login(UserName, PassWord, UserIp, OSNAME, BROWN, LOCALHOST, SS, "移动端");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        JSONArray json = JSONArray.fromObject(result);
+        out.print(json.toString());
+        out.close();
+    }
 
-        Map<String, Object> result = mobileService.mobile_login(UserName, PassWord);
+    /*
+     * 查询当前登录人代办数量
+     * */
 
-        if (result.size() > 0) {
-            List list = (List) result.get("list");
+    @RequestMapping(value = "MobileTaskSum", method = RequestMethod.GET)
+    @ResponseBody
+    public void MobileTaskSum(@RequestParam(value = "PersonCode") String PersonCode,
+                              HttpServletRequest request,
+                              HttpServletResponse response)
+            throws NoSuchAlgorithmException, SQLException, IOException {
 
-            for (int i = 0; i < list.size(); i++) {
-                Map map = (Map) list.get(i);
-                PersonClass per = new PersonClass();
-                per.setI_PERSONID(map.get("I_PERSONID") == null ? "" : map.get("I_PERSONID").toString());
-                per.setV_CLASS_CODE(map.get("V_CLASS_CODE") == null ? "" : map.get("V_CLASS_CODE").toString());
-                per.setV_DEPTCODE(map.get("V_DEPTCODE") == null ? "" : map.get("V_DEPTCODE").toString());
-                per.setV_DEPTNAME(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
-                per.setV_LOGINNAME(map.get("V_LOGINNAME") == null ? "" : map.get("V_LOGINNAME").toString());
-                per.setV_ORGCODE(map.get("V_ORGCODE") == null ? "" : map.get("V_ORGCODE").toString());
-                per.setV_ORGNAME(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
-                per.setV_POSTCODE(map.get("V_POSTCODE") == null ? "" : map.get("V_POSTCODE").toString());
-                per.setV_POSTNAME(map.get("V_POSTNAME") == null ? "" : map.get("V_POSTNAME").toString());
-                per.setV_ROLECODE(map.get("V_ROLECODE") == null ? "" : map.get("V_ROLECODE").toString());
-                per.setV_ROLENAME(map.get("V_ROLENAME") == null ? "" : map.get("V_ROLENAME").toString());
-                per.setV_WORKCSS(map.get("V_WORKCSS") == null ? "" : map.get("V_WORKCSS").toString());
-                item.add(per);
+
+        Map result = new HashMap();
+
+        try {
+            int total = 0;
+
+            if (PersonCode.equals("ActivitiManage")) {
+                total = (int) taskService.createTaskQuery().count();
+            } else {
+                total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).count();
             }
+
+            result.put("total", total);
+            result.put("msg", "Ok");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("msg", "Error");
         }
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        JSONArray json = JSONArray.fromObject(item);
+        JSONArray json = JSONArray.fromObject(result);
         out.print(json.toString());
         out.close();
     }
 
 
     /*
-    * mes移动端菜单
-    * */
+     * 当前登录人未处理缺陷数
+     * */
+
+    @RequestMapping(value = "MobileDefectNoSum", method = RequestMethod.GET)
+    @ResponseBody
+    public void MobileDefectNoSum(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                  @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws NoSuchAlgorithmException, SQLException, IOException {
+
+        Map<String, Object> result = cjyService.PRO_PM_07_DEFECT_VIEW_NOPAGE(V_V_STATECODE, X_PERSONCODE);
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        JSONArray json = JSONArray.fromObject(result);
+        out.print(json.toString());
+        out.close();
+    }
+
+    /*
+     * 创建抢修快捷工单
+     * */
+    @RequestMapping(value = "MobileFaultWorkorder", method = RequestMethod.GET)
+    @ResponseBody
+    public void MobileFaultWorkorder(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                     @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                     @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response)
+            throws NoSuchAlgorithmException, SQLException, IOException {
+
+        Map<String, Object> result = cxyService.PRO_PM_WORKORDER_SBGZ_CREATE(V_V_PERCODE, V_V_PERNAME, V_V_GUID);
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        JSONArray json = JSONArray.fromObject(result);
+        out.print(json.toString());
+        out.close();
+    }
+
+    /*
+     * 获取下一步审批人
+     * */
+
+    @RequestMapping(value = "MobileFlowNextPer", method = RequestMethod.GET)
+    @ResponseBody
+    public void MobileFlowNextPer(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                  @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
+                                  @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                                  @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
+                                  @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                  @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                                  @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws NoSuchAlgorithmException, SQLException, IOException {
+
+        Map<String, Object> result = hpService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        JSONArray json = JSONArray.fromObject(result);
+        out.print(json.toString());
+        out.close();
+    }
+
+    /*
+     * mes移动端菜单
+     * */
     @RequestMapping(value = "mobile_menu", method = RequestMethod.GET)
     @ResponseBody
     public void login(@RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
@@ -657,8 +768,8 @@ public class MobileController {
     }
 
     /*
-    * 故障字典查询
-    * */
+     * 故障字典查询
+     * */
     @RequestMapping(value = "PM_14_FAULT_ITEM_SEL", method = RequestMethod.GET)
     @ResponseBody
     public void PM_14_FAULT_ITEM_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
@@ -711,8 +822,8 @@ public class MobileController {
     }
 
     /*
-    * 故障字典查詢唯一数据
-    * */
+     * 故障字典查詢唯一数据
+     * */
     @RequestMapping(value = "PM_14_FAULT_ITEM_SELBYGUID", method = RequestMethod.GET)
     @ResponseBody
     public void PM_14_FAULT_ITEM_SELBYGUID(@RequestParam(value = "V_V_GUID") String V_V_ORGCODE,
@@ -759,8 +870,8 @@ public class MobileController {
     }
 
     /*
-  * 故障数据查询
-  * */
+     * 故障数据查询
+     * */
     @RequestMapping(value = "PM_14_FAULT_ITEM_DATA_GET", method = RequestMethod.GET)
     @ResponseBody
     public void PM_14_FAULT_ITEM_DATA_GET(@RequestParam(value = "V_V_GUID") String V_V_ORGCODE,
@@ -1151,10 +1262,10 @@ public class MobileController {
 //            Client client = new Client(new URL("http://10.101.10.19/MaterialManage/WebService_SB/WS_EquipService.asmx?WSDL"));
             Client client = new Client(new URL("http://192.168.1.250/MaterialManage/WebService_SB/WS_EquipService.asmx?WSDL"));
 
-			/*
+            /*
              * setNumber(1000); setCode(""); setName("");
-			 * setSap_plantcode(6300); setSap_departcode(63000003);
-			 */
+             * setSap_plantcode(6300); setSap_departcode(63000003);
+             */
 
 //            Object[] results = client.invoke("GetDepartKC_storeid",
 //                    new Object[] { number, code, name, sap_plantcode,

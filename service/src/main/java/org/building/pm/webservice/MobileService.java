@@ -30,12 +30,49 @@ public class MobileService {
     @Autowired
     private ComboPooledDataSource dataSources;
 
+    private List<HashMap> ResultHash(ResultSet rs) throws SQLException {
+
+        List<HashMap> result = new ArrayList<HashMap>();
+
+        ResultSetMetaData rsm = rs.getMetaData();
+
+        int colNum = 0;
+
+        colNum = rsm.getColumnCount();
+
+        while (rs.next()) {
+            HashMap model = new HashMap();
+            for (int i = 1; i <= rsm.getColumnCount(); i++) {
+                if (rsm.getColumnType(i) == 91) {
+                    model.put(rsm.getColumnName(i),
+                            rs.getString(i) == null ? "" : rs.getString(i)
+                                    .split("\\.")[0]);
+                } else {
+                    if (rsm.getColumnType(i) == 2) {
+                        if (rs.getString(i) == null) {
+                            model.put(rsm.getColumnName(i), "");
+                        } else {
+                            model.put(rsm.getColumnName(i), rs.getDouble(i));
+                        }
+                    } else {
+                        model.put(rsm.getColumnName(i),
+                                rs.getString(i) == null ? "" : rs.getString(i)
+                                        .toString().replaceAll("\\n", ""));
+                    }
+                }
+            }
+            result.add(model);
+        }
+        rs.close();
+
+        return result;
+    }
+
     /*
     * �ƶ��˵�¼
     * */
-    public Map mobile_login(String userName, String passWord) throws SQLException {
-        logger.info("begin PRO_BASE_PERSON_MOBILE_LOGIN");
-        logger.debug("params:V_V_LOGINNAME:" + userName + "params:V_V_PASSWORD:" + passWord);
+    public Map mobile_login(String UserName,String PassWord,String UserIp,String OSNAME,String BROWN,String LOCALHOST,String SS,String V_COMPUTER_TYPE) throws SQLException {
+        logger.info("begin PRO_BASE_PERSON_LOGIN_NEW");
 
         Map<String, Object> result = new HashMap<String, Object>();
         List<Map> resultList = new ArrayList<Map>();
@@ -44,41 +81,26 @@ public class MobileService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_MOBILE_LOGIN(:V_V_LOGINNAME,:V_V_PASSWORD,:V_CURSOR)}");
-            cstmt.setString("V_V_LOGINNAME", userName);
-            cstmt.setString("V_V_PASSWORD", passWord);
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN_NEW(:V_V_LOGINNAME,:V_V_PASSWORD,:V_V_IP,:V_OSNAME,:V_BROWN,:V_LOCALHOST,:V_SS,:V_COMPUTER_TYPE,:V_INFO,:V_CURSOR)}");
+            cstmt.setString("V_V_LOGINNAME", UserName);
+            cstmt.setString("V_V_PASSWORD", PassWord);
+            cstmt.setString("V_V_IP", UserIp);
+            cstmt.setString("V_OSNAME", OSNAME);
+            cstmt.setString("V_BROWN", BROWN);
+            cstmt.setString("V_LOCALHOST", LOCALHOST);
+            cstmt.setString("V_SS", SS);
+            cstmt.setString("V_COMPUTER_TYPE", V_COMPUTER_TYPE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("I_PERSONID", rs.getString("I_PERSONID"));
-                sledata.put("V_PERSONNAME", rs.getString("V_PERSONNAME"));
-                sledata.put("V_LOGINNAME", rs.getString("V_LOGINNAME"));
-                sledata.put("V_PASSWORD", rs.getString("V_PASSWORD"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_ROLECODE", rs.getString("V_ROLECODE"));
-                sledata.put("V_ROLENAME", rs.getString("V_ROLENAME"));
-                sledata.put("V_POSTCODE", rs.getString("V_POSTCODE"));
-                sledata.put("V_POSTNAME", rs.getString("V_POSTNAME"));
-                sledata.put("V_DEPTSMALLNAME", rs.getString("V_DEPTSMALLNAME"));
-                sledata.put("V_DEPTFULLNAME", rs.getString("V_DEPTFULLNAME"));
-                sledata.put("V_DEPTTYPE", rs.getString("V_DEPTTYPE"));
-                sledata.put("V_ORGCODE", rs.getString("V_ORGCODE"));
-                sledata.put("V_ORGNAME", rs.getString("V_ORGNAME"));
-                sledata.put("V_CLASS_CODE", rs.getString("V_CLASS_CODE"));
-                sledata.put("V_WORKCSS", rs.getString("V_WORKCSS"));
-
-                resultList.add(sledata);
-            }
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_PERSON_MOBILE_LOGIN");
         return result;
