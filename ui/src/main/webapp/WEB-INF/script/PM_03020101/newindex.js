@@ -3568,8 +3568,8 @@ function QueryGxMx(a, record){
     QueryJxgz(record.data.V_JXGX_CODE);
     QueryJxwl(record.data.V_JXGX_CODE);
     QueryJxaqcs(record.data.V_JXGX_CODE);
-    QueryJxjj(record.data.V_JXGX_CODE)
-    QueryJxgj(record.data.V_JXGX_CODE)
+    QueryJxjj(record.data.V_JXGX_CODE);
+    QueryJxgj(record.data.V_JXGX_CODE);
     QueryJxjsyq(record.data.V_JXGX_CODE)
 }
 //查询工种

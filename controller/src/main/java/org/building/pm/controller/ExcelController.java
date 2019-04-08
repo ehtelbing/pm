@@ -3895,9 +3895,6 @@ public class ExcelController {
         cell.setCellValue("申请作业区");
         cell.setCellStyle(style);
 
-        cell = row.createCell((short) 13);
-        cell.setCellValue("工程总预算(万元)");
-        cell.setCellStyle(style);
 
 
         if (data.size() > 0) {
@@ -3910,7 +3907,7 @@ public class ExcelController {
 
                 row.createCell((short) 0).setCellValue(i + 1);
 
-                row.createCell((short) 1).setCellValue(map.get("FX_GUID") == null ? "" :"查看详情");// map.get("FX_GUID").toString());
+                row.createCell((short) 1).setCellValue(map.get("FX_GUID").equals("")? "否" :"是");// map.get("FX_GUID").toString());
 
                 row.createCell((short) 2).setCellValue(map.get("V_GUID") == null ? "" : map.get("V_GUID").toString());
                 row.createCell((short) 3).setCellValue(map.get("V_PORJECT_CODE") == null ? "" : map.get("V_PORJECT_CODE").toString());
