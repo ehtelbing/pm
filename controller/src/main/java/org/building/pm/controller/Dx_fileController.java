@@ -3273,6 +3273,19 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_03_PLAN_YEAR_MOD_DEL(V_V_PROJECT_GUID);
         return data;
     }
+
+    //维修计划修旧缺陷查询
+    @RequestMapping(value = "/PM_03_PROJECT_DEFECT_SEL_O", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PROJECT_DEFECT_SEL_O(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID) throws Exception {
+
+        Map result = dx_fileService.PM_03_PROJECT_DEFECT_SEL_O(V_V_PROJECT_GUID);
+        return result;
+    }
+
+
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

@@ -3291,4 +3291,29 @@ public class Dx_fileService {
         logger.info("end PM_03_PLAN_YEAR_MOD_DEL");
         return result;
     }
+
+    //维修计划修旧缺陷查询
+    public Map PM_03_PROJECT_DEFECT_SEL_O(String V_V_PROJECT_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PROJECT_DEFECT_SEL_O" + "(:V_V_PROJECT_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",   ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PROJECT_DEFECT_SEL_O");
+        return result;
+    }
+
 }

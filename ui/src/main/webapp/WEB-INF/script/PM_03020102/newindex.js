@@ -470,7 +470,7 @@ var qxGridStore=Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+        url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL_O',
         actionMethods: {
             read: 'POST'
         },
@@ -649,7 +649,7 @@ var jxwlStore=Ext.create('Ext.data.Store', {
             root: 'list'
         }
     }
-})
+});
 var jxjjStore=Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'jxjjStore',
@@ -666,7 +666,7 @@ var jxjjStore=Ext.create('Ext.data.Store', {
             root: 'list'
         }
     }
-})
+});
 var jxgjStore=Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'jxgjStore',
@@ -823,16 +823,16 @@ var northPanel = Ext.create('Ext.form.Panel', {
             // icon: imgpath + '/search.png'
             handler:btnAdd_jxmx
         },
-        {
-            xtype: 'button',
-            text: '添加设备',
-            margin: '0 0 5 0',
-            bodyStyle:'float:right;',
-            // iconCls:'Tableadd',
-            iconCls: 'buy-button',
-            icon:dxImgPath + '/tjsb.png',
-            handler:btnAdd_jdsb
-        },
+        // {
+        //     xtype: 'button',
+        //     text: '添加设备',
+        //     margin: '0 0 5 0',
+        //     bodyStyle:'float:right;',
+        //     // iconCls:'Tableadd',
+        //     iconCls: 'buy-button',
+        //     icon:dxImgPath + '/tjsb.png',
+        //     handler:btnAdd_jdsb
+        // },
         {
             xtype: 'button',
             text: '添加缺陷',
@@ -1067,49 +1067,49 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
     ]
 });
 /*查看更多设备*/
-var Toolpanel = Ext.create('Ext.grid.Panel', {
-    region: 'north',
-    // frame: false,
-    // border: false,
-    // layout: 'column',
-    // height:32,
-    // width:'100%',
-    // margin:'0',
-    // // bodyStyle:'border:3px solid rgb(2,29,132)',
-    // bodyStyle:'background: #f2f2f2',
-    // // bodyStyle:'background:#f2f2f2; border-top:1px solid #d4d4d4 !important',
-    // defaults: {labelAlign: 'right'},
-    // collapsible: false,
-    store:cgridStore,
-    border:false,
-    // store: Ext.data.StoreManager.lookup('simpsonsStore'),
-    columns: [
-        {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-        {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
-        {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft},
-        {text: '设备检修历史',dataIndex:'V_EQUCODE',width:160,renderer:machistory}, //dataIndex:'cksbjxmx'
-        {text: '固定资产',dataIndex:'gdzc',width:160,renderer:gdzcdetail},
-        {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
-    ],
-    height: 150,
-    width: '100%',
-    tbar: [
-        '相关设备',
-        { xtype: 'tbfill' ,style:'background-color:red'},
-        // { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
-        {
-            xtype: 'button',
-            text: '查看更多',
-            // margin: '5 0 5 0',
-            bodyStyle:'float:right;',
-            // iconCls:'Magnifierzoomin',
-            // icon:APP + '/app/pm/css/images/search.png',
-            icon:dxImgPath + '/search.png',
-            listeners:{click:LookMoreEqu}
-        }
-    ]
-});
+// var Toolpanel = Ext.create('Ext.grid.Panel', {
+//     region: 'north',
+//     // frame: false,
+//     // border: false,
+//     // layout: 'column',
+//     // height:32,
+//     // width:'100%',
+//     // margin:'0',
+//     // // bodyStyle:'border:3px solid rgb(2,29,132)',
+//     // bodyStyle:'background: #f2f2f2',
+//     // // bodyStyle:'background:#f2f2f2; border-top:1px solid #d4d4d4 !important',
+//     // defaults: {labelAlign: 'right'},
+//     // collapsible: false,
+//     store:cgridStore,
+//     border:false,
+//     // store: Ext.data.StoreManager.lookup('simpsonsStore'),
+//     columns: [
+//         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+//         {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
+//         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
+//         {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft},
+//         {text: '设备检修历史',dataIndex:'V_EQUCODE',width:160,renderer:machistory}, //dataIndex:'cksbjxmx'
+//         {text: '固定资产',dataIndex:'gdzc',width:160,renderer:gdzcdetail},
+//         {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
+//     ],
+//     height: 150,
+//     width: '100%',
+//     tbar: [
+//         '相关设备',
+//         { xtype: 'tbfill' ,style:'background-color:red'},
+//         // { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
+//         {
+//             xtype: 'button',
+//             text: '查看更多',
+//             // margin: '5 0 5 0',
+//             bodyStyle:'float:right;',
+//             // iconCls:'Magnifierzoomin',
+//             // icon:APP + '/app/pm/css/images/search.png',
+//             icon:dxImgPath + '/search.png',
+//             listeners:{click:LookMoreEqu}
+//         }
+//     ]
+// });
 /*设备表格*/
 // var centerPanel = Ext.create('Ext.grid.Panel', {
 //     region: "north",
@@ -1150,23 +1150,22 @@ var ToolpanelB  = Ext.create('Ext.form.Panel', {
     height:85,
     width:'100%',
     margin:'0',
-
     // bodyStyle:'background-color:#f2f2f2',
     baseCls:'textareaStyle',
     defaults: {labelAlign: 'right'},
     collapsible: false,
     items: [
         {
-            xtype     : 'textareafield',
-            id:'content',
-            grow      : true,
-            name      : 'message',
+            xtype: 'textareafield',
+            id: 'content',
+            grow: true,
+            name: 'message',
             fieldLabel: '维修内容',
-            anchor    : '100%',
-            margin:'5 5 5 20',
-            labelWidth :60,
-            width:1000,
-            height:70
+            anchor: '100%',
+            margin: '5 5 5 20',
+            labelWidth: 60,
+            width: 1000,
+            height: 70
         }
     ]
 });
@@ -1377,7 +1376,7 @@ var ToolpanelD = Ext.create('Ext.panel.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     items: [TOPGIRDRIGHT]
-})
+});
 /*左上布局*/
 var Leftdivtop = Ext.create('Ext.panel.Panel', {
     region:'north',
@@ -1386,7 +1385,8 @@ var Leftdivtop = Ext.create('Ext.panel.Panel', {
     height:600,
 
     renderTo: Ext.getBody(),
-    items: [LTpanel,Toolpanel,ToolpanelB,ToolpanelC,ToolpanelD]
+    items: [LTpanel,ToolpanelB,ToolpanelC,ToolpanelD]
+    // items: [LTpanel,Toolpanel,ToolpanelB,ToolpanelC,ToolpanelD]
     // [LTpanel,Toolpanel,gcxmwlsgt,ToolpanelB,ToolpanelC,ToolpanelD]
 });
 //检修模型
@@ -1726,19 +1726,19 @@ var yxsbGrid = Ext.create('Ext.grid.Panel', {
         {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEquTj}
     ]
 });
-var btnAdd_jdsb = Ext.create('Ext.window.Window', {
-    id: 'btnAdd_jdsb',
-    width: 1700,
-    height: 675,
-    title: '大修计划设备添加',
-    modal: true,
-    frame: true,
-    border:false,
-    closeAction: 'hide',
-    closable: true,
-    layout: 'border',
-    items: [sbPanel,sbGrid,yxsbGrid]
-});
+// var btnAdd_jdsb = Ext.create('Ext.window.Window', {
+//     id: 'btnAdd_jdsb',
+//     width: 1700,
+//     height: 675,
+//     title: '大修计划设备添加',
+//     modal: true,
+//     frame: true,
+//     border:false,
+//     closeAction: 'hide',
+//     closable: true,
+//     layout: 'border',
+//     items: [sbPanel,sbGrid,yxsbGrid]
+// });
 //单设备缺陷添加
 var tjqxpanel=Ext.create('Ext.panel.Panel',{
     region:'north',
@@ -2661,14 +2661,48 @@ Ext.onReady(function () {
         'background-color':'rgb(45,60,137)',
         "height":"35px"
     };
-    Ext.get('toolbar-1030').setStyle(tbarStyle);
-    Ext.get('tbtext-1031').setStyle('color','white');
+    if(Ext.get('toolbar-1030')!=null){
+        Ext.get('toolbar-1030').setStyle(tbarStyle);
+        Ext.get('tbtext-1031').setStyle('color','white');
+    }else if(Ext.get('toolbar-1031')!=null){
+        Ext.get('toolbar-1031').setStyle(tbarStyle);
+        Ext.get('tbtext-1032').setStyle('color','white');
+    }else if(Ext.get('toolbar-1032')!=null){
+        Ext.get('toolbar-1032').setStyle(tbarStyle);
+        Ext.get('tbtext-1033').setStyle('color','white');
+    }else{
+        Ext.get('toolbar-1033').setStyle(tbarStyle);
+        Ext.get('tbtext-1034').setStyle('color','white');
+    }
 
-    Ext.get('toolbar-1046').setStyle(tbarStyle);
-    Ext.get('tbtext-1047').setStyle('color','white');
+    if(Ext.get('toolbar-1046')!=null){
+        Ext.get('toolbar-1046').setStyle(tbarStyle);
+        Ext.get('tbtext-1047').setStyle('color','white');
+    }else if(Ext.get('toolbar-1047')!=null){
+        Ext.get('toolbar-1047').setStyle(tbarStyle);
+        Ext.get('tbtext-1048').setStyle('color','white');
+    }else if(Ext.get('toolbar-1048')!=null){
+        Ext.get('toolbar-1048').setStyle(tbarStyle);
+        Ext.get('tbtext-1049').setStyle('color','white');
+    }else{
+        Ext.get('toolbar-1049').setStyle(tbarStyle);
+        Ext.get('tbtext-1050').setStyle('color','white');
+    }
 
-    Ext.get('toolbar-1062').setStyle(tbarStyle);
-    Ext.get('tbtext-1063').setStyle('color','white');
+    if(Ext.get('toolbar-1062')!=null){
+        Ext.get('toolbar-1062').setStyle(tbarStyle);
+        Ext.get('tbtext-1063').setStyle('color','white');
+    }else if(Ext.get('toolbar-1063')!=null){
+        Ext.get('toolbar-1063').setStyle(tbarStyle);
+        Ext.get('tbtext-1064').setStyle('color','white');
+    }else if(Ext.get('toolbar-1064')!=null){
+        Ext.get('toolbar-1064').setStyle(tbarStyle);
+        Ext.get('tbtext-1065').setStyle('color','white');
+    }else{
+        Ext.get('toolbar-1065').setStyle(tbarStyle);
+        Ext.get('tbtext-1066').setStyle('color','white');
+    }
+
 
     var yeartool = Ext.create('Ext.panel.Panel', {
         region:'north',
@@ -3044,7 +3078,7 @@ function QueryYxEquGrid(){
         params:{
             V_V_PLANGUID:Guid
         }
-    })
+    });
 }
 //选择设备
 function importEqu(a, record, item){
@@ -3135,11 +3169,11 @@ function _deleteEqu(equcode){
 
 }
 //查看更多设备
-function LookMoreEqu(){
-    var owidth = window.document.body.offsetWidth - 600;
-    var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03020101/MoreEqu.html?guid=' +Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
-}
+// function LookMoreEqu(){
+//     var owidth = window.document.body.offsetWidth - 600;
+//     var oheight = window.document.body.offsetHeight - 100;
+//     window.open(AppUrl + 'page/PM_03020101/MoreEqu.html?guid=' +Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+// }
 //查询已选中缺陷
 function QueryDefect(){
     Ext.data.StoreManager.lookup('qxGridStore').load({
@@ -3152,41 +3186,41 @@ function QueryDefect(){
 function btnAdd_tjqx(){
     var num=0;
     var sequ='';
-    var equleng=Ext.data.StoreManager.lookup('cgridStore').data.items;
-    if(equleng.length>0){
-
-        for(var i=0;i<equleng.length;i++){
-            if(i==0){
-                sequ=equleng[i].data.V_EQUCODE;
-            }else{
-                if(sequ.indexOf(equleng[i].data.V_EQUCODE)=='-1'){
-                    sequ=sequ+","+equleng[i].data.V_EQUCODE;
-                    num++;
-                }
-            }
-        }
-
-        if(num>0){
-            QueryQxEquGrid();
-            Ext.getCmp("dbtnAdd_tjqx").show();
-        }else{
-
-            Ext.data.StoreManager.lookup('qxAddStore').load({
-                params:{
-                    V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),//Ext.util.Cookies.get('v_deptcode')
-                    V_V_EQUCODE:sequ,
-                    V_V_STATECODE:'10'
-                }
-            });
-
-            Ext.getCmp("btnAdd_tjqx").show();
-        }
-
-    }else{
-        alert('请选择设备！');
-        // QueryQxGrid2();
-        // Ext.getCmp("dbtnAdd_tjqx2").show();
-    }
+    // var equleng=Ext.data.StoreManager.lookup('cgridStore').data.items;
+    // if(equleng.length>0){
+    //
+    //     for(var i=0;i<equleng.length;i++){
+    //         if(i==0){
+    //             sequ=equleng[i].data.V_EQUCODE;
+    //         }else{
+    //             if(sequ.indexOf(equleng[i].data.V_EQUCODE)=='-1'){
+    //                 sequ=sequ+","+equleng[i].data.V_EQUCODE;
+    //                 num++;
+    //             }
+    //         }
+    //     }
+    //
+    //     if(num>0){
+    //         QueryQxEquGrid();
+    //         Ext.getCmp("dbtnAdd_tjqx").show();
+    //     }else{
+    //
+    //         Ext.data.StoreManager.lookup('qxAddStore').load({
+    //             params:{
+    //                 V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),//Ext.util.Cookies.get('v_deptcode')
+    //                 V_V_EQUCODE:sequ,
+    //                 V_V_STATECODE:'10'
+    //             }
+    //         });
+    //
+    //         Ext.getCmp("btnAdd_tjqx").show();
+    //     }
+    //
+    // }else{
+        // alert('请选择设备！');
+        QueryQxGrid2();
+        Ext.getCmp("dbtnAdd_tjqx2").show();
+    // }
 }
 //查询大修设备用于选择缺陷
 function QueryQxEquGrid(){
@@ -3366,31 +3400,38 @@ function btnAdd_jxmx(){
 function QueryMobelAll(){
     var num=0;
     var sequ='';
-    var equleng=Ext.data.StoreManager.lookup('cgridStore').data.items;
-    if(equleng.length>0) {
-
-        for (var i = 0; i < equleng.length; i++) {
-            if (i == 0) {
-                sequ = equleng[i].data.V_EQUCODE;
-            } else {
-                if (sequ.indexOf(equleng[i].data.V_EQUCODE) == '-1') {
-                    sequ = sequ + "," + equleng[i].data.V_EQUCODE;
-                }
-            }
+    // var equleng=Ext.data.StoreManager.lookup('cgridStore').data.items;
+    // if(equleng.length>0) {
+    //
+    //     for (var i = 0; i < equleng.length; i++) {
+    //         if (i == 0) {
+    //             sequ = equleng[i].data.V_EQUCODE;
+    //         } else {
+    //             if (sequ.indexOf(equleng[i].data.V_EQUCODE) == '-1') {
+    //                 sequ = sequ + "," + equleng[i].data.V_EQUCODE;
+    //             }
+    //         }
+    //     }
+    //
+    //     Ext.data.StoreManager.lookup('mxAllStore').load({
+    //         params:{
+    //             V_V_ORGCODE:OrgCode,
+    //             V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),//Ext.util.Cookies.get('v_deptcode')
+    //             V_V_EQUTYPE:'',
+    //             V_V_EQUCODE:sequ
+    //         }
+    //     });
+    // }else{
+    //     alert('请选择设备！')
+    // }
+    Ext.data.StoreManager.lookup('mxAllStore').load({
+        params: {
+            V_V_ORGCODE: OrgCode,
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),//Ext.util.Cookies.get('v_deptcode')
+            V_V_EQUTYPE: '',
+            V_V_EQUCODE: sequ
         }
-
-        Ext.data.StoreManager.lookup('mxAllStore').load({
-            params:{
-                V_V_ORGCODE:OrgCode,
-                V_V_DEPTCODE:Ext.getCmp('zyq').getValue(),//Ext.util.Cookies.get('v_deptcode')
-                V_V_EQUTYPE:'',
-                V_V_EQUCODE:sequ
-            }
-        });
-    }else{
-        alert('请选择设备！')
-    }
-
+    });
 
 }
 //添加检修模型
