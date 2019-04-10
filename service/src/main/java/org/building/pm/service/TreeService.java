@@ -1,6 +1,5 @@
 package org.building.pm.service;
 
-import org.building.pm.service.DxService;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import oracle.jdbc.OracleTypes;
 import org.apache.log4j.Logger;
@@ -1287,5 +1286,121 @@ public List<Map> PM_PLAN_YEAR_SEL_FJ(String V_V_ORGCODE,String V_V_DEPTCODE,Stri
         return flag;
     }
 //维修计划 分解查询
+public List<Map> PRO_MAINTAIN_SEL_FJ(String V_V_YEAR,String V_UPGRID) throws SQLException {
+    List<Map> result = PRO_MAINTAIN_SEL_FJ_SEL(V_V_YEAR,V_UPGRID);
+    return result;
+}
+    /* chocie tree*/
+    public List<Map> PRO_MAINTAIN_SEL_FJ_SEL(String V_V_YEAR,String V_UPGRID) throws SQLException {
+        List<Map> list = new ArrayList<>();
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_MAINTAIN_SEL_FJ");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PRO_MAINTAIN_SEL_FJ(:V_V_YEAR,:V_UPGRID,:RET)}");
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_UPGRID",V_UPGRID);
 
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+            List<Map> datalist = (List) result.get("list");
+            if (datalist.size() > 0) {
+                for (Map item : datalist) {
+                    Map temp = new HashMap();
+
+                    temp.put("FX_GUID",item.get("FX_GUID").toString());
+//                    temp.put("",item.get("").toString());
+//                    temp.put("",item.get("").toString());
+                    temp.put("V_PROJECT_CODE", item.get("V_PROJECT_CODE").toString());
+                    temp.put("V_PROJECT_NAME", item.get("V_PROJECT_NAME").toString());
+                    temp.put("FX_MONEY", item.get("FX_MONEY").toString());
+                    temp.put("FX_CONTENT", item.get("FX_CONTENT").toString());
+                    temp.put("V_WBS_CODE", item.get("V_WBS_CODE").toString());
+                    temp.put("V_WBS_NAME", item.get("V_WBS_NAME").toString());
+                    temp.put("V_DATE_B", item.get("V_DATE_B").toString());
+                    temp.put("V_DATE_E", item.get("V_DATE_E").toString());
+                    temp.put("V_REPAIR_DEPT", item.get("V_REPAIR_DEPT").toString());
+                    temp.put("V_REPAIR_DEPT_TXT", item.get("V_REPAIR_DEPT_TXT").toString());
+                    temp.put("V_FZR", item.get("V_FZR").toString());
+                    temp.put("V_PERSONNAME", item.get("V_PERSONNAME").toString());
+
+//                    temp.put("V_DEPTNAME", item.get("V_DEPTNAME").toString());
+//                    temp.put("INPERNAME", item.get("INPERNAME").toString());
+//                    temp.put("INPERCODE", item.get("INPERCODE").toString());
+//                    temp.put("INDATE", item.get("INDATE").toString());
+                    if (item.get("FX_GUID_UP").toString().equals("-1")) {
+//                    if (item.get("ID_GUID").toString().equals("-1")) {ChildFalgMenu(item.get("ID_GUID").toString())
+//                        temp.put("leaf", false);
+//                        temp.put("expanded", true);
+//                        temp.put("children", PRO_MAINTAIN_SEL_FJ(V_V_YEAR,item.get("FX_GUID").toString()));
+                        if (MaintainChildFalgMenu(V_V_YEAR, item.get("FX_GUID").toString())) {
+                            temp.put("leaf", false);
+                            temp.put("expanded", true);
+                            temp.put("children", PRO_MAINTAIN_SEL_FJ(V_V_YEAR, item.get("FX_GUID").toString()));
+                        }else{
+                            temp.put("leaf", true);
+                            temp.put("expanded", false);
+                        }
+                    }else {
+                        if (MaintainChildFalgMenu(V_V_YEAR, item.get("FX_GUID").toString())) {
+                            temp.put("leaf", false);
+                            temp.put("expanded", true);
+                            temp.put("children", PRO_MAINTAIN_SEL_FJ(V_V_YEAR, item.get("FX_GUID").toString()));
+                        }
+                        else{
+                            temp.put("leaf", true);
+                            temp.put("expanded", false);
+                        }
+                    }
+                    list.add(temp);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_MAINTAIN_SEL_FJ");
+        return list;
+    }
+
+    public boolean MaintainChildFalgMenu(String yearid,String parentCode) throws SQLException {
+        boolean flag = true;
+
+        List<Map> list = new ArrayList<>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_MAINTAIN_SEL_FJ_CHILE");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_MAINTAIN_SEL_FJ_CHILE(:V_V_YEAR,:UP_ID,:RET)}");
+            cstmt.setString("V_V_YEAR", yearid);
+            cstmt.setString("UP_ID", parentCode);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+
+            String result=new String();
+            result=(String) cstmt.getObject("RET");
+            if (!result.equals("0")) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + list);
+        logger.info("end PRO_MAINTAIN_SEL_FJ_CHILE");
+        return flag;
+    }
 }

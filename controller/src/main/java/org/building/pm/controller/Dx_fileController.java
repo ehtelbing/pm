@@ -3275,7 +3275,7 @@ public class Dx_fileController {
     }
 
     //维修计划修旧缺陷查询
-    @RequestMapping(value = "/PM_03_PROJECT_DEFECT_SEL_O", method = RequestMethod.POST)
+    @RequestMapping(value = "PM_03_PROJECT_DEFECT_SEL_O", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_03_PROJECT_DEFECT_SEL_O(
             @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID) throws Exception {
@@ -3284,7 +3284,97 @@ public class Dx_fileController {
         return result;
     }
 
+    //放行-维修计划缺陷查询
 
+    @RequestMapping(value = "PRO_BY_MAINTAIN_SEL_DEFECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BY_MAINTAIN_SEL_DEFECT(
+            @RequestParam(value = "V_FXGUID") String V_FXGUID) throws Exception {
+
+        Map result = dx_fileService.PRO_BY_MAINTAIN_SEL_DEFECT(V_FXGUID);
+        return result;
+    }
+
+    //放行-缺陷写入
+    @RequestMapping(value = "MAINTAIN_BY_DEFECT_INSERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map MAINTAIN_BY_DEFECT_INSERT(
+            @RequestParam(value = "V_FXGUID") String V_FXGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_INPER") String V_INPER,
+            @RequestParam(value = "V_DEPT") String V_DEPT,
+            @RequestParam(value = "V_ORDCODE") String V_ORDCODE) throws Exception {
+        Map result = dx_fileService.MAINTAIN_BY_DEFECT_INSERT(V_FXGUID,V_DEFECTGUID,V_INPER,V_DEPT,V_ORDCODE);
+        return result;
+    }
+
+    // 分解放行计划创建guid
+    @RequestMapping(value = "PM_MAINTAIN_GET_FJGUID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_MAINTAIN_GET_FJGUID(
+            @RequestParam(value="V_GUID") String V_GUID,
+            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
+            @RequestParam(value="V_UPGUID") String V_UPGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_MAINTAIN_GET_FJGUID(V_GUID,V_INPERCODE,V_INPERNAME,V_UPGUID);
+        return data;
+    }
+
+    //获取放行计划数据
+    @RequestMapping(value = "PRO_MAINTAIN_REL_POST_GETONE_DATA", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_MAINTAIN_REL_POST_GETONE_DATA(
+            @RequestParam(value = "V_FXGUID") String V_FXGUID) throws Exception {
+
+        Map result = dx_fileService.PRO_MAINTAIN_REL_POST_GETONE_DATA(V_FXGUID);
+        return result;
+    }
+
+
+    //放行计划子计划写入
+    @RequestMapping(value = "MAINTAIN_RELEASE_POSTBACK_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map MAINTAIN_RELEASE_POSTBACK_IN(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "PROJECTCODE") String PROJECTCODE,
+            @RequestParam(value = "PROJECTNAME") String PROJECTNAME,
+            @RequestParam(value = "WBSCODE") String WBSCODE,
+            @RequestParam(value = "WBSNAME") String WBSNAME,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_MONEY") String V_V_MONEY,
+            @RequestParam(value = "REPAIR_DEPTCODE") String REPAIR_DEPTCODE,
+            @RequestParam(value = "REPAIR_DEPTNAME") String REPAIR_DEPTNAME,
+            @RequestParam(value = "V_V_FZR") String V_V_FZR,
+            @RequestParam(value = "V_STARTDATE") String V_STARTDATE,
+            @RequestParam(value = "V_ENDDATE") String V_ENDDATE,
+            @RequestParam(value = "IN_PERCODE") String IN_PERCODE ,
+            @RequestParam(value = "PROJECT_GUID") String PROJECT_GUID,
+            @RequestParam(value = "V_UPGUID") String V_UPGUID,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+
+        Map result = dx_fileService.MAINTAIN_RELEASE_POSTBACK_IN(V_V_YEAR, V_V_MONTH, V_V_ORGCODE,V_V_DEPTCODE,PROJECTCODE,
+                PROJECTNAME,WBSCODE,WBSNAME,V_V_CONTENT,V_V_MONEY,REPAIR_DEPTCODE,REPAIR_DEPTNAME,V_V_FZR,V_STARTDATE,
+                V_ENDDATE,IN_PERCODE,PROJECT_GUID,V_UPGUID,V_V_GUID);
+        return result;
+    }
+    //放行sap作业区
+    @RequestMapping(value = "PRO_BASE_DEPT_SAP_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_DEPT_SAP_SEL(
+            @RequestParam(value="V_V_PERSONCODE") String V_V_PERSONCODE,
+            @RequestParam(value="V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value="V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+            @RequestParam(value="V_V_DEPTTYPE") String V_V_DEPTTYPE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_BASE_DEPT_SAP_SEL(V_V_PERSONCODE,V_V_DEPTCODE,V_V_DEPTCODENEXT,V_V_DEPTTYPE);
+        return data;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

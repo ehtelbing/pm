@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 public class Dx_fileService {
-    private static final Logger logger = Logger.getLogger(BasicService.class.getName());
+    private static final Logger logger = Logger.getLogger(Dx_fileService.class.getName());
 
     @Value("#{configProperties['system.copyright']}")
     private String copyright;
@@ -3316,4 +3316,190 @@ public class Dx_fileService {
         return result;
     }
 
+    //放行-维修计划缺陷查询
+    public Map PRO_BY_MAINTAIN_SEL_DEFECT(String V_FXGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_BY_MAINTAIN_SEL_DEFECT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BY_MAINTAIN_SEL_DEFECT" + "(:V_FXGUID,:RET)}");
+            cstmt.setString("V_FXGUID", V_FXGUID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BY_MAINTAIN_SEL_DEFECT");
+        return result;
+    }
+
+    //放行-缺陷写入
+    public Map MAINTAIN_BY_DEFECT_INSERT(String V_FXGUID,String V_DEFECTGUID,String V_INPER,String V_DEPT,String V_ORDCODE)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin MAINTAIN_BY_DEFECT_INSERT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call MAINTAIN_BY_DEFECT_INSERT" + "(:V_FXGUID,:V_DEFECTGUID,:V_INPER,:V_DEPT,:V_ORDCODE,:RET)}");
+            cstmt.setString("V_FXGUID", V_FXGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_INPER", V_INPER);
+            cstmt.setString("V_DEPT", V_DEPT);
+            cstmt.setString("V_ORDCODE", V_ORDCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",  (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MAINTAIN_BY_DEFECT_INSERT");
+        return result;
+    }
+    // 分解放行计划创建guid
+    public HashMap PM_MAINTAIN_GET_FJGUID(String V_GUID,String V_INPERCODE ,String V_INPERNAME,String V_UPGUID)throws Exception,SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_MAINTAIN_GET_FJGUID");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_MAINTAIN_GET_FJGUID(:V_GUID,:V_INPERCODE ,:V_INPERNAME,:V_UPGUID,:RET )}");
+            cstmt.setString("V_GUID",V_GUID);
+            cstmt.setString("V_INPERCODE",V_INPERCODE);
+            cstmt.setString("V_INPERNAME",V_INPERNAME);
+            cstmt.setString("V_UPGUID",V_UPGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        }catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_MAINTAIN_GET_FJGUID");
+        return result;
+    }
+    //获取放行计划数据
+    public Map PRO_MAINTAIN_REL_POST_GETONE_DATA(String V_FXGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_MAINTAIN_REL_POST_GETONE_DATA");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_MAINTAIN_REL_POST_GETONE_DATA" + "(:V_FXGUID,:RET)}");
+            cstmt.setString("V_FXGUID", V_FXGUID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_MAINTAIN_REL_POST_GETONE_DATA");
+        return result;
+    }
+    //放行计划子计划写入
+    public HashMap MAINTAIN_RELEASE_POSTBACK_IN(String V_V_YEAR, String V_V_MONTH, String V_V_ORGCODE,
+          String V_V_DEPTCODE, String PROJECTCODE, String PROJECTNAME, String WBSCODE , String WBSNAME ,
+          String V_V_CONTENT, String V_V_MONEY, String REPAIR_DEPTCODE, String REPAIR_DEPTNAME, String V_V_FZR ,
+          String V_STARTDATE, String V_ENDDATE, String IN_PERCODE, String PROJECT_GUID, String V_UPGUID,
+           String V_V_GUID)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin MAINTAIN_RELEASE_POSTBACK_IN");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call MAINTAIN_RELEASE_POSTBACK_IN(:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_DEPTCODE,:PROJECTCODE,:PROJECTNAME," +
+                    ":WBSCODE,:WBSNAME,:V_V_CONTENT,:V_V_MONEY,:REPAIR_DEPTCODE,:REPAIR_DEPTNAME,:V_V_FZR,:V_STARTDATE,:V_ENDDATE,:IN_PERCODE," +
+                    ":PROJECT_GUID,:V_UPGUID,:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_YEAR",V_V_YEAR);
+            cstmt.setString("V_V_MONTH",V_V_MONTH);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE",V_V_DEPTCODE);
+            cstmt.setString("PROJECTCODE",PROJECTCODE);
+            cstmt.setString("PROJECTNAME",PROJECTNAME);
+
+            cstmt.setString("WBSCODE",WBSCODE);
+            cstmt.setString("WBSNAME",WBSNAME);
+            cstmt.setString("V_V_CONTENT",V_V_CONTENT);
+            cstmt.setString("V_V_MONEY",V_V_MONEY);
+            cstmt.setString("REPAIR_DEPTCODE",REPAIR_DEPTCODE);
+            cstmt.setString("REPAIR_DEPTNAME",REPAIR_DEPTNAME);
+
+            cstmt.setString("V_V_FZR",V_V_FZR);
+            cstmt.setString("V_STARTDATE",V_STARTDATE);
+            cstmt.setString("V_ENDDATE",V_ENDDATE);
+            cstmt.setString("IN_PERCODE",IN_PERCODE);
+            cstmt.setString("PROJECT_GUID",PROJECT_GUID);
+            cstmt.setString("V_UPGUID",V_UPGUID);
+
+            cstmt.setString("V_V_GUID",V_V_GUID);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end MAINTAIN_RELEASE_POSTBACK_IN");
+        return result;
+    }
+    //放行sap作业区
+    public Map PRO_BASE_DEPT_SAP_SEL(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTCODENEXT,String V_V_DEPTTYPE)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_BASE_DEPT_SAP_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_SAP_SEL" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTCODENEXT,:V_V_DEPTTYPE,:RET)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_SAP_SEL");
+        return result;
+    }
 }
