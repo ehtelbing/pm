@@ -518,13 +518,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon: imgpath + '/delete1.png',
             handler: OnButtonDelete
         }*/,
-        {
-            xtype: 'button',
-            text: '作废',
-            margin: '5 0 5 5',
-            icon: imgpath + '/delete1.png',
-            handler: OnButtonDelete
-        },
+        // {
+        //     xtype: 'button',
+        //     text: '作废',
+        //     margin: '5 0 5 5',
+        //     icon: imgpath + '/delete1.png',
+        //     handler: OnButtonDelete
+        // },
         {
             xtype: 'button',
             text: '删除',
