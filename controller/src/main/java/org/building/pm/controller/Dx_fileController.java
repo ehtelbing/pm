@@ -3389,6 +3389,19 @@ public class Dx_fileController {
         return data;
     }
 
+    //放行创建工单
+    @RequestMapping(value = "PRO_PM_WORKORDER_FX_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_FX_CREATE(
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_PERCODE, V_V_PERNAME,V_FX_GUID);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

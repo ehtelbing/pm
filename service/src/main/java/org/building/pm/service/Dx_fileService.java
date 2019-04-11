@@ -3530,4 +3530,31 @@ public class Dx_fileService {
         logger.info("end PM_DEFECTTOFX_SELBYPRO");
         return result;
     }
+    //放行创建工单
+    public Map PRO_PM_WORKORDER_FX_CREATE(String V_V_PERCODE,String V_V_PERNAME,String V_FX_GUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_PM_WORKORDER_FX_CREATE");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_FX_CREATE" + "(:V_V_PERCODE,:V_V_PERNAME,:V_FX_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_FX_GUID",V_FX_GUID);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_FX_CREATE");
+        return result;
+    }
 }
