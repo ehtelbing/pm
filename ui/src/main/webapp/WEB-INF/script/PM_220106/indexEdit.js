@@ -76,6 +76,13 @@ Ext.onReady(function(){
                 handler: _fenjie
                 ,style: 'margin: 5px 0px 0px 10px'
             }
+            , {
+                xtype: 'button',
+                text: '生成工单',
+                icon: imgpath + '/accordion_collapse.png',
+                handler: _workOCreate
+                ,style: 'margin: 5px 0px 0px 10px'
+            }
         ]
     });
     var grid=Ext.create('Ext.tree.Panel',{
@@ -94,8 +101,8 @@ Ext.onReady(function(){
         columns: [
             {xtype: 'rownumberer', text: '序号', align: 'center', width: 50},
             {text: '放行唯一编码', align: 'center', width: 100, dataIndex: 'FX_GUID', hidden: true},
-            {xtype: 'treecolumn', text: '工程编码', align: 'center', width: 100, dataIndex: 'V_PROJECT_CODE'},
-            {text: '工程名称', align: 'center', width: 100, dataIndex: 'V_PROJECT_NAME'},
+            {xtype: 'treecolumn', text: '工程编码', align: 'center', width: 100, dataIndex: 'V_PROJECT_CODE',renderer:atleft},
+            {text: '工程名称', align: 'center', width: 150, dataIndex: 'V_PROJECT_NAME',renderer:atleft},
             {text: '年度投资（万元）', align: 'center', width: 100, dataIndex: 'FX_MONEY'},
             {text: '放行计划主要内容', align: 'center', width: 120, dataIndex: 'FX_CONTENT'},
             {text: 'WBS编码', align: 'center', width: 100, dataIndex: 'V_WBS_CODE'},
@@ -165,12 +172,12 @@ Ext.onReady(function(){
             mode: 'SINGLE'
         },
         columns:[
-            {text: '缺陷guid', width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft},
-            {text: '缺陷内容', width: 200, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
+            {text: '缺陷guid', width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atCenter},
+            {text: '缺陷内容', width: 200, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atCenter},
             {text: '录入时间', width: 200, dataIndex: 'D_INDATE', align: 'center',renderer:timeTurn},
-            {text: '设备编码', width: 100, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
-            {text: '设备名称', width: 100, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-            {text: '维修计划guid', width: 300, dataIndex: 'V_YPRO_GUID', align: 'center',renderer:atleft}
+            {text: '设备编码', width: 100, dataIndex: 'V_EQUCODE', align: 'center',renderer:atCenter},
+            {text: '设备名称', width: 100, dataIndex: 'V_EQUNAME', align: 'center',renderer:atCenter},
+            {text: '维修计划guid', width: 300, dataIndex: 'V_YPRO_GUID', align: 'center',renderer:atCenter}
         ]
         // ,listeners:{
         //     itemclick:qxgridClick()
@@ -246,6 +253,10 @@ function _fenjie(){
 }
 
 function atleft(value,metaDate,recode){
+    metaDate.style="text-align:left";
+    return value;
+}
+function atCenter(value,metaDate,recode){
     metaDate.style="text-align:center";
     return value;
 }
@@ -310,4 +321,8 @@ function turnPage(){
 
 function selectGridTurn(){
     queryGrid();
+}
+
+function _workOCreate(){
+    window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
 }

@@ -3376,6 +3376,19 @@ public class Dx_fileController {
         return data;
     }
 
+    //维修计划查询缺陷
+    @RequestMapping(value = "PM_DEFECTTOFX_SELBYPRO", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECTTOFX_SELBYPRO(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_DEFECTTOFX_SELBYPRO(V_V_PROJECT_GUID, V_V_FLAG);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

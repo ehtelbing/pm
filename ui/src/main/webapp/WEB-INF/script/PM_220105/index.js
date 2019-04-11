@@ -703,7 +703,47 @@ function shuaxin()
 }
 
 function saveClick(){
-    for(var j=0;j<gridList.length;j++){
+    var num=0;
+    var flag=0;
+        for(var j=0;j<gridList.length;j++){
+        Ext.Ajax.request({
+            method:'POST',
+            url:AppUrl+'dxfile/PM_DEFECTTOFX_SELBYPRO',
+            async:false,
+            params:{
+                V_V_PROJECT_GUID:gridList[j],//fxgridList[j],
+                V_V_FLAG:'0'
+            },
+            success:function(response){
+                var resp = Ext.decode(response.responseText);
+                if (resp.RET != 0) {
+                    num=resp.RET;
+                    for(var k=0;k<resp.RET;k++){
+                        Ext.Ajax.request({
+                            url:AppUrl + 'dxfile/MAINTAIN_BY_DEFECT_INSERT',
+                            method:'POST',
+                            async: false,
+                            params: {
+                                V_FXGUID:FXGUID,
+                                V_DEFECTGUID:resp.list[k].V_DEFECT_GUID,
+                                V_INPER:Ext.util.Cookies.get('v_personcode'),
+                                V_DEPT: Ext.util.Cookies.get('v_deptcode'),
+                                V_ORDCODE:Ext.util.Cookies.get('v_orgCode')
+                            },
+                            success: function (resp) {
+                                var resp=Ext.decode(resp.responseText);
+                                if(resp.RET=='SUCCESS'){
+                                    flag++;
+                                }
+                            }
+                        });
+                    }
+                }
+                else{
+                    Ext.Msg.alert("提示","该计划没有缺陷，无法关联放行计划");
+                }
+            }
+        });
         Ext.Ajax.request({
             method:'POST',
             url:AppUrl+'dxfile/OVERHAUL_BY_MAINTAINRELEASE_IN',
@@ -717,9 +757,11 @@ function saveClick(){
                 var resp = Ext.decode(response.responseText);
                 if (resp.RET == "SUCCESS") {
                     Ext.Msg.alert("操作提示","保存成功");
+                    Ext.getCmp('fxwin').close();
                     queryGrid();
                 } else {
                     Ext.Msg.alert("操作提示","保存失败");
+                    Ext.getCmp('fxwin').close();
                     queryGrid();
                 }
             }
