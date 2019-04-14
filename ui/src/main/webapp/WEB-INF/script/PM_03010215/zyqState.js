@@ -88,7 +88,7 @@ var npanel = Ext.create('Ext.panel.Panel', {
         labelAlign: 'right',
         displayField: 'displayField',
         valueField: 'valueField',
-        value: date.getFullYear(),
+        value: '',//date.getFullYear(),
         store: yearStore,
         queryMode: 'local'
     },
@@ -103,7 +103,7 @@ var npanel = Ext.create('Ext.panel.Panel', {
             labelAlign: 'right',
             displayField: 'displayField',
             valueField: 'valueField',
-            value: date.getMonth() + 1,
+            value: '',//date.getMonth() + 1,
             store: monthStore,
             queryMode: 'local'
         }, {
@@ -160,6 +160,14 @@ Ext.onReady(function () {
         layout: 'border',
         items: [npanel, cpanel]
     });
+
+    if(new Date().getMonth()==0){
+        Ext.getCmp('nf').select(new Date().getFullYear()-1);
+        Ext.getCmp('yf').select(12);
+    }else{
+        Ext.getCmp('nf').select(new Date().getFullYear());
+        Ext.getCmp('yf').select(new Date().getMonth());
+    }
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
         // if(Ext.util.Cookies.get('v_deptcode').substring(0,4)=="9900"){
@@ -181,6 +189,8 @@ Ext.onReady(function () {
     Ext.getCmp('jhck').on('select', function () {
         Query();
     });
+
+
 });
 
 function Query() {

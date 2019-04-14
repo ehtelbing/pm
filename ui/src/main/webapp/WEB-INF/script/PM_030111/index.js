@@ -6,7 +6,7 @@ var dt = new Date();
 var thisYear = dt.getFullYear();
 var years = [];
 var weeks=[];
-for (var i=1;i<=6;i++) weeks.push([i,i]);
+for (var i=1;i<=5;i++) weeks.push([i,i]);
 for (var i = 2014; i <= thisYear + 1; i++) years.push([i,i]);
 var months=[];
 for (var i = 1; i <= 12; i++) months.push([i,i]);

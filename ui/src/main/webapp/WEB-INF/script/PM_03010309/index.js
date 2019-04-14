@@ -43,7 +43,7 @@ var monthStore = Ext.create("Ext.data.Store", {
 });
 //周
 var weeks = [];
-for (var i = 1; i <= 6; i++) {
+for (var i = 1; i <= 5; i++) {
     weeks.push({displayField: i, valueField: i});
 }
 var weekStore = Ext.create("Ext.data.Store", {

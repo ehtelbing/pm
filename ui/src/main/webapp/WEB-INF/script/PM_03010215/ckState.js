@@ -162,6 +162,13 @@ Ext.onReady(function () {
     Ext.getCmp('yf').on('select', function () {
         Query();
     });
+    if(new Date().getMonth()==0){
+        Ext.getCmp('nf').select(new Date().getFullYear()-1);
+        Ext.getCmp('yf').select(12);
+    }else{
+        Ext.getCmp('nf').select(new Date().getFullYear());
+        Ext.getCmp('yf').select(new Date().getMonth());
+    }
     Query();
 
 

@@ -30,7 +30,7 @@ var monthStore = Ext.create("Ext.data.Store", {
 });
 //周
 var weeks = [];
-for (var i = 1; i <= 6; i++) {
+for (var i = 1; i <= 5; i++) {
     weeks.push({displayField: i, valueField: i});
 }
 var weekStore = Ext.create("Ext.data.Store", {
@@ -209,9 +209,25 @@ Ext.onReady(function () {
         layout: 'border',
         items: [northPanel, gridPanel]
     });
-    Ext.getCmp('nf').select(new Date().getFullYear());
-    Ext.getCmp('yf').select(new Date().getMonth() + 1);
-    Ext.getCmp('zhou').select(getWeekOfMonth());
+
+    if(getWeekOfMonth()==0){
+        if(new Date().getMonth()==0){
+            Ext.getCmp('nf').select(new Date().getFullYear()-1);
+            Ext.getCmp('yf').select(12);
+            Ext.getCmp('zhou').select(5);
+        }else{
+            Ext.getCmp('nf').select(new Date().getFullYear());
+            Ext.getCmp('yf').select(new Date().getMonth());
+            Ext.getCmp('zhou').select(5);
+        }
+    }else{
+        Ext.getCmp('nf').select(new Date().getFullYear());
+        Ext.getCmp('yf').select(new Date().getMonth() + 1);
+        Ext.getCmp('zhou').select(getWeekOfMonth());
+    }
+    // Ext.getCmp('nf').select(new Date().getFullYear());
+    // Ext.getCmp('yf').select(new Date().getMonth() + 1);
+    // Ext.getCmp('zhou').select(getWeekOfMonth());
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
         //Ext.data.StoreManager.lookup('jhckStore').insert(0,{V_DEPTCODE:'',V_DEPTNAME:'全部' });
@@ -239,7 +255,8 @@ function getWeekOfMonth() {
     var date = new Date();
     var w = date.getDay();
     var d = date.getDate();
-    return Math.ceil((d + 6 - w) / 7);
+    // return Math.ceil((d + 6 - w) / 7);
+    return Math.ceil((d  - w) / 7);
 }
 
 
