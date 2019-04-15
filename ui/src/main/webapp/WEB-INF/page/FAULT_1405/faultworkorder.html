@@ -1,0 +1,654 @@
+﻿﻿
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>创建工单(抢修)</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
+	<link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>
+	<link rel="stylesheet" href="../../../pm/css/Default1/jquery.ui.all.css" type="text/css"></link>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-all.js"></script>
+	<script type="text/javascript" src="../../../../commons/extjs/script/ext-lang-zh_CN.js"></script>
+
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.ui.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.cookies.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.url.js"></script>
+	<script type="text/javascript" src="../../../../commons/jquery/jquery.tmpl.js"></script>
+
+
+	<script type="text/javascript" src="../../../pm/script/jquery-ui-timepicker-addon.js"></script>
+	<script type="text/javascript" src="../../../pm/script/newangel.js"></script>
+	<script type="text/javascript" src="../../../pm/script/FAULT_1405/faultworkorder.js"></script>
+	<style type="text/css">
+		.Tabel_p {
+			width: 1024px;
+			text-align: center;
+			border-collapse: collapse;
+			border: 1px solid #000;
+			padding: 0px;
+		}
+
+		.Tabel_p td {
+			border: 1px solid #000;
+			height: 25px;
+			padding: 0px;
+			font-size: 12px;
+		}
+
+		.Tabel_pl {
+			width: 100%;
+			text-align: center;
+			border-collapse: collapse;
+			border: 0px;
+			padding: 0px;
+		}
+
+		.Tabel_pl td {
+			border: 1px solid #000;
+			height: 25px;
+			padding: 0px;
+			font-size: 12px;
+		}
+
+		.btnprint {
+			width: 128px;
+			height: 26px;
+			background-image: url('../../../pm/images/gif/btnprint.png');
+			background-repeat: no-repeat;
+			border: 0px;
+		}
+
+		.btnWBS {
+			width: 16px;
+			height: 16px;
+			background-image: url('../../../pm/images/gif/add.png');
+			background-repeat: no-repeat;
+			border: 0px;
+		}
+	</style>
+
+
+</head>
+<body>
+<input type="hidden" id="V_ORGCODE"/>
+<input type="hidden" id="V_DEPTCODE"/>
+<input type="hidden" id="V_TYPE_ORDER"/>
+<input type="hidden" id="V_ORDERGUID"/>
+<input type="hidden" id="V_DEPTCODEREPARIR"/>
+<div style="margin: 30px 0 0 430px; font-size: x-large">
+	抢修工单创建
+</div>
+<br/>
+<div style="padding-bottom: 10px">
+	<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审批人: </span>
+	&nbsp;
+	<select id="selApprover" style="background-color: #FFFF99; width:150px; "></select>
+	&nbsp;&nbsp;&nbsp;
+	<input type="button" value="生成工单" id="btnCreateBill" class="btnprint"
+		   onclick="CreateBill();"/>
+	&nbsp;&nbsp;&nbsp;
+	<input type="button" value="获取模型" class="btnprint" id="btnGetModel"
+		   onclick="GetModel();"/>
+	&nbsp;&nbsp;&nbsp;
+	<input type="button" value="关联检修作业标准" class="btnprint" id="btnGetjxzy"
+		   onclick="Getjxzy();" />
+</div>
+<table class="Tabel_p">
+	<tr>
+		<td style="width: 570px; padding: 0px; vertical-align:top; height:130px">
+			<table class="Tabel_pl" style="border: 0px">
+				<tr>
+					<td colspan="4"
+						style="border-bottom: 1px solid #000; border-top: 0px; border-left: 0px; border-right: 0px; width: 100%; background-color: #F4F5F7">
+						①基本信息栏
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						工厂单位：
+					</td>
+					<td
+							style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+						<select id="selDW" style="background-color: #FFFF99; width:98%; height:20px"></select>
+						<!--<label id="V_ORGNAME">-->
+						</label>
+					</td>
+					<td
+							style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						工单类型：
+					</td>
+					<td
+							style="width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">
+						<select id="ORDER_TYP" style="background-color: #FFFF99; width:98%; height:20px">
+							<option selected="selected" value="AK06">抢修工单</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						作业区：
+					</td>
+					<td
+							style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+						<select id="selZYQ" style="background-color: #FFFF99; width:98%; height:20px"></select>
+						<!--<label id="V_DEPTNAME">-->
+						</label>
+					</td>
+					<td
+							style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						工 单 号：
+					</td>
+					<td
+							style="width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">
+						&nbsp;
+						<label id="V_ORDERID"></label>
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						设备名称：
+					</td>
+					<td
+							style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+						<input type="text" id="V_EQUIP_NAME" readonly="readonly"
+							   style="background-color: #FFFF99; height:20px; line-height:20px; width:100%"/>
+					</td>
+					<td style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF" rowspan="2">
+						工单描述：
+					</td>
+					<td style="border-bottom: 0; border-right: 0px;" rowspan="2">
+						<textarea id="V_SHORT_TXT"
+								  style="width: 97%; height:60px; background-color: #FFFF99;"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						设备编号：
+					</td>
+					<td
+							style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+
+						<input type="text" id="V_EQUIP_NO" readonly="readonly"
+							   style="background-color: #FFFF99; width:100%; height:20px; line-height:20px"/>
+					</td>
+
+				</tr>
+				<tr>
+					<td style="border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF">
+						功能位置：
+					</td>
+					<td style="border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left">
+						<input type="text" id="V_FUNC_LOC" readonly="readonly"
+							   style="background-color: #FFFF99; height:30px; width:100%; line-height:30px"/>
+					</td>
+					<td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						检修单位：
+					</td>
+					<td style="border-bottom: 1px solid #000; border-right: 0px;">
+						<select id="V_DEPTNAMEREPARI" onchange="loadSPR()"
+								style="background-color: #FFFF99; width:98%; height:30px"></select>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td style="width: 450px; padding: 0px; vertical-align:top; height:130px">
+			<table class="Tabel_pl" style="border: 0px">
+				<tr>
+					<td colspan="4"
+						style="border-bottom: 1px solid #000; border-top: 0px; border-left: 0px; border-right: 0px; background-color: #F4F5F7">
+						②任务信息栏
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						创建人：
+					</td>
+					<td
+							style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+						<label id="V_V_ENTERED_BY">
+						</label>
+					</td>
+					<td
+							style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						创建日期：
+					</td>
+					<td
+							style="width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">
+						&nbsp;
+						<label id="V_D_ENTER_DATE"></label>
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						WBS编码：
+					</td>
+					<td colspan="3"
+						style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">
+						<input type="text" id="V_V_WBS"  readonly="readonly"
+							   style="width:100%; background-color: #FFFF99;" />
+						<input type="hidden" id="wbsDesc" />
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						项目名称：
+					</td>
+					<td colspan="3"
+						style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">
+						<input type="hidden" id="proCode" />
+						<input type="text" id="V_V_WBS_TXT" readonly="readonly"
+							   style="width: 100%; background-color: #FFFF99;" />
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF" >
+						计划开始时间：
+					</td>
+					<td
+							style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left" >
+
+						<input type="text" id="V_D_START_DATE"
+							   style="width: 98%; height:30px; background-color: #FFFF99;"/>
+					</td>
+					<td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						实际开始时间：
+					</td>
+					<td style="border-bottom: 1px solid #000; border-right: 0px;">
+					</td>
+				</tr>
+				<tr>
+					<td style="border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF">
+						计划完成时间：
+					</td>
+					<td style="border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left" >
+						<input type="text" id="V_D_FINISH_DATE"
+							   style="width: 98%; height:25px; background-color: #FFFF99;"/>
+					</td>
+
+					<td style="border-bottom: 0; border-right: 1px solid #000; height:35px; border-left:0; text-align: right; background-color: #BFDFFF">
+						实际完成时间：
+					</td>
+					<td style="border-bottom: 0; border-right: 0px;" ></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="text-align: left; background-color: #F4F5F7">
+			③任务细节
+			<input type="button" id="btnTask" class="btnprint" value="编辑任务"/>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<table class="Tabel_pl" style="border: 0px">
+				<tr>
+					<td style="border: 0px; width: 666px">
+						<table class="Tabel_pl" style="border: 0px" id="TtableT">
+							<thead>
+							<tr>
+								<td
+										style="border-left: 0px; border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									工序编号
+								</td>
+								<td
+										style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									工作中心
+								</td>
+								<td
+										style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									工序内容
+								</td>
+								<td
+										style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									定额时间
+								</td>
+								<td
+										style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									定额人数
+								</td>
+								<td
+										style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									实际时间
+								</td>
+								<td
+										style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									实际人数
+								</td>
+								<td
+										style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									机具
+								</td>
+								<td
+										style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									工具
+								</td>
+								<td
+										style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+									技术要求
+								</td>
+								<td
+										style="border-bottom: 1px; border-top: 0px;border-right: 0px; width: 9%; background-color: #BFDFFF">
+									安全措施
+								</td>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td style="border-left: 0px; border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+							</tr>
+							<tr>
+								<td style="border-left: 0px; border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+							</tr>
+							<tr>
+								<td style="border-left: 0px; border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+								<td style="border-bottom: 0px;">
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="text-align: left; background-color: #F4F5F7">
+			④物料信息
+			<input type="button" class="btnprint" onclick="OpenEditMat();"
+				   value="编辑物料信息"/>
+		</td>
+
+	</tr>
+	<tr>
+		<td style="border: 0px" colspan="3">
+			<table class="Tabel_pl" style="border: 0px" id="TtableM">
+				<thead>
+				<tr>
+					<td
+							style="width: 10%; border-left: 0px; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						序号
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						工序
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						物料编码
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						物料描述
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						单位
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						计划数量
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						计划总金额
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						实际数量
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; background-color: #BFDFFF">
+						实际总金额
+					</td>
+					<td
+							style="width: 10%; border-top: 0px; border-bottom: 0px; border-right: 0px; background-color: #BFDFFF">
+						备注
+					</td>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td style="border-left: 0px; border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px">
+					</td>
+					<td style="border-bottom: 0px; border-right: 0px">
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="text-align: left; background-color: #F4F5F7">
+			⑤验收栏
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="width: 100%; border: 0px">
+			<table class="Tabel_pl" style="border: 0px">
+				<tr>
+					<td
+							style="width: 11%; border-left: 0px; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						验收日期：
+					</td>
+					<td
+							style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						提前、逾期时间：
+					</td>
+					<td
+							style="width: 22%; border-top: 0px; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-top: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						逾期原因：
+					</td>
+					<td
+							style="width: 23%; border-top: 0px; border-bottom: 0px; border-right: 0px; text-align: left">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						检修方说明：
+					</td>
+					<td style="width: 22%; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						检修方签字：
+					</td>
+					<td style="width: 22%; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						检修人员：
+					</td>
+					<td
+							style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						岗位签字：
+					</td>
+					<td style="width: 22%; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						点检员验收意见：
+					</td>
+					<td style="width: 22%; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						点检员签字：
+					</td>
+					<td
+							style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td
+							style="width: 11%; border-left: 0px; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						作业区验收：
+					</td>
+					<td style="width: 22%; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						库管员签字：
+					</td>
+					<td style="width: 22%; border-bottom: 0px; text-align: left">
+						&nbsp;
+					</td>
+					<td
+							style="width: 11%; border-bottom: 0px; text-align: right; background-color: #BFDFFF">
+						部门签字：
+					</td>
+					<td
+							style="width: 23%; border-bottom: 0px; border-right: 0px; text-align: left">
+						&nbsp;
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<script id="TtableTaskTemplate" type="text/x-jquery-tmpl">
+    <tr>
+        <td style="border-left:0px;border-bottom:0px;">${V_ACTIVITY}</td>
+        <td style="border-bottom:0px;">${V_WORK_CENTER}</td>
+        <td style="border-bottom:0px;">${V_DESCRIPTION}</td>
+        <td style="border-bottom:0px;">${I_WORK_ACTIVITY}</td>
+        <td style="border-bottom:0px;">${I_DURATION_NORMAL}</td>
+        <td style="border-bottom:0px;">&nbsp;</td>
+        <td style="border-bottom:0px;">&nbsp;</td>
+        <td style="border-bottom:0px;">${V_JJ_NAME}</td>
+        <td style="border-bottom:0px;">${V_GJ_NAME}</td>
+        <td style="border-bottom:0px;">${V_JSQY_NAME}</td>
+        <td style="border-bottom:0px;">${V_AQSC_NAME}</td>
+    </tr>
+
+
+
+</script>
+<script id="TtableMTemplate" type="text/x-jquery-tmpl">
+    <tr>
+    <td>${sid}</td>
+        <td>${V_ACTIVITY}</td>
+        <td>${V_MATERIALCODE}</td>
+        <td>${V_MATERIALNAME}</td>
+        <td>${V_UNIT}</td>
+        <td>${I_PLANAMOUNT}</td>
+        <td>${F_PLANMONEY}</td>
+        <td>${I_ACTUALAMOUNT}</td>
+        <td>${F_ACTUALMONEY}</td>
+        <td>${V_MEMO}</td>
+    </tr>
+
+
+
+</script>
+</body>
+</html>
