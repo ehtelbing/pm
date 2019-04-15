@@ -370,8 +370,52 @@ function OnButtonExcelClicked(){
 }
 
 function OnButtonSetupClicked(){
-	var year=Ext.getCmp('year').getValue();
-	var month=Ext.getCmp('month').getValue();
-	var week=Ext.getCmp('week').getValue();
-	window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR='+year+'&V_MONTH='+ month+'&V_WEEK='+week+'&V_TYPE=W'+'&V_ORGCODE='+Ext.getCmp('ck').getValue(),'', "dialogWidth=460px;dialogHeight=280px");
+    var year=Ext.getCmp('year').getValue();
+    var month=Ext.getCmp('month').getValue();
+    var week=Ext.getCmp('week').getValue();
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_03/PRO_PM_PLAN_LOCKING_DATE_GET',
+        method: 'POST',
+        params:{
+            V_I_YEAR:year,
+            V_I_MONTH:month,
+            V_I_WEEKNUM:week,
+            V_V_TYPE:'W',
+            V_V_DEPTCODE:Ext.getCmp('ck').getValue()
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if(resp.list.length==0){
+                var date=new Date();
+                var nowMonth=date.getMonth()+1;
+                var nowtime=date.getFullYear()+'/'+nowMonth+'/'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+                Ext.Ajax.request({
+                    url: AppUrl + 'PM_03/PRO_PM_PLAN_LOCKING_DATE_SET',
+                    method: 'POST',
+                    async: false,
+                    params:{
+                        'V_I_YEAR':year,
+                        'V_I_MONTH':month,
+                        'V_I_WEEKNUM':week,
+                        'V_V_TYPE':'W',
+                        'V_D_DATE_E':Ext.Date.format(new Date(nowtime),'Y/m/d h:i:s'),
+                        'V_I_LOCK':'1',
+                        'V_D_DATE_S':Ext.Date.format(new Date(nowtime),'Y/m/d h:i:s'),
+                        'V_V_ORGCODE':Ext.getCmp('ck').getValue()
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        if(resp.V_INFO=='成功'){
+                            window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR='+year+'&V_MONTH='+ month+'&V_WEEK='+week+'&V_TYPE=W'+'&V_ORGCODE='+Ext.getCmp('ck').getValue(),'', "dialogWidth=460px;dialogHeight=280px");
+                        }
+                        // else{
+                        //     Ext.Msg.alert('操作信息', '保存失败');
+                        // }
+                    }
+                });
+            }
+        }
+    });
+
+
 }

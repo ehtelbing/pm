@@ -3557,4 +3557,187 @@ public class Dx_fileService {
         logger.info("end PRO_PM_WORKORDER_FX_CREATE");
         return result;
     }
+    //缺陷解决方案写入
+    public Map DEFECT_BY_MAINTAINPLAN_IN(String V_PROGUID,String V_DEFECTGUID,String V_INPERCODE,
+                                         String V_INDEPT,String V_INORG,String V_DEF_SOLVE,String V_BJ_STUFF,String V_EQUCODE)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin DEFECT_BY_MAINTAINPLAN_IN");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call DEFECT_BY_MAINTAINPLAN_IN" + "(:V_PROGUID,:V_DEFECTGUID,:V_INPERCODE,:V_INDEPT,:V_INORG,:V_DEF_SOLVE,:V_BJ_STUFF,:V_EQUCODE,:RET)}");
+            cstmt.setString("V_PROGUID", V_PROGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_INPERCODE", V_INPERCODE);
+
+            cstmt.setString("V_INDEPT", V_INDEPT);
+            cstmt.setString("V_INORG", V_INORG);
+
+            cstmt.setString("V_DEF_SOLVE", V_DEF_SOLVE);
+            cstmt.setString("V_BJ_STUFF", V_BJ_STUFF);
+            cstmt.setString("V_EQUCODE", V_EQUCODE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DEFECT_BY_MAINTAINPLAN_IN");
+        return result;
+    }
+    //维修计划缺陷解决方案表删除
+    public Map DEFECT_BY_MAINTAINPLAN_EQU_DEL(String V_DEFGUID,String V_PROGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin DEFECT_BY_MAINTAINPLAN_EQU_DEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call DEFECT_BY_MAINTAINPLAN_EQU_DEL" + "(:V_DEFGUID,:V_PROGUID,:RET)}");
+            cstmt.setString("V_DEFGUID", V_DEFGUID);
+            cstmt.setString("V_PROGUID", V_PROGUID);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DEFECT_BY_MAINTAINPLAN_EQU_DEL");
+        return result;
+    }
+    //维修计划缺陷解决方案表删除--无设备
+    public Map DEFECT_BY_MAINTAINPLAN_UNEQU_DEL(String V_DEFGUID,String V_PROGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin DEFECT_BY_MAINTAINPLAN_UNEQU_DEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call DEFECT_BY_MAINTAINPLAN_UNEQU_DEL" + "(:V_DEFGUID,:V_PROGUID,:RET)}");
+            cstmt.setString("V_DEFGUID", V_DEFGUID);
+            cstmt.setString("V_PROGUID", V_PROGUID);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DEFECT_BY_MAINTAINPLAN_UNEQU_DEL");
+        return result;
+    }
+    //维修计划保存，缺陷日志写入
+    public Map PM_DEFECT_LOG_BY_PRO(String V_PERCODE,String V_PERNAME,String V_PROGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_DEFECT_LOG_BY_PRO");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECT_LOG_BY_PRO" + "(:V_PERCODE,:V_PERNAME,:V_PROGUID,:RET)}");
+            cstmt.setString("V_PERCODE", V_PERCODE);
+            cstmt.setString("V_PERNAME", V_PERNAME);
+            cstmt.setString("V_PROGUID", V_PROGUID);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECT_LOG_BY_PRO");
+        return result;
+    }
+    //计划添加维修计划删除原有缺陷方案
+    public Map DEFECT_BY_MAINTAINPLAN_DEL(String V_PROGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin DEFECT_BY_MAINTAINPLAN_DEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call DEFECT_BY_MAINTAINPLAN_DEL" + "(:V_PROGUID,:RET)}");
+            cstmt.setString("V_PROGUID", V_PROGUID);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end DEFECT_BY_MAINTAINPLAN_DEL");
+        return result;
+    }
+
+    //维修计划-新缺陷日志
+    public Map PM_DEFECT_LOG_FROMPRO_IN(String V_GUID,String V_PERCODE,String V_DEPTCODE,
+                                        String V_ORG,String V_PASS_STAT,String V_DEFECTGUID,
+                                        String V_DEF_TYPE,String V_DEF_LIST,String V_DEF_DATE,
+                                        String V_BJ,String V_SOLVE)throws SQLException{
+        Map result=new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_DEFECT_LOG_FROMPRO_IN");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECT_LOG_FROMPRO_IN" + "(:V_GUID,:V_PERCODE,:V_DEPTCODE," +
+                    ":V_ORG,:V_PASS_STAT,:V_PASS_STAT," +
+                    ":V_DEF_TYPE,:V_DEF_LIST,:V_DEF_DATE,:V_BJ,:V_SOLVE,:RET)}");
+            cstmt.setString("V_GUID", V_GUID);
+            cstmt.setString("V_PERCODE", V_PERCODE);
+            cstmt.setString("V_DEPTCODE", V_DEPTCODE);
+
+            cstmt.setString("V_ORG", V_ORG);
+            cstmt.setString("V_PASS_STAT", V_PASS_STAT);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+
+            cstmt.setString("V_DEF_TYPE", V_DEF_TYPE);
+            cstmt.setString("V_DEF_LIST", V_DEF_LIST);
+            cstmt.setString("V_DEF_DATE", V_DEF_DATE);
+
+            cstmt.setString("V_BJ", V_BJ);
+            cstmt.setString("V_SOLVE", V_SOLVE);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECT_LOG_FROMPRO_IN");
+        return result;
+    }
 }

@@ -20,12 +20,12 @@ Ext.onReady(function(){
     var gridStore = Ext.create('Ext.data.TreeStore', {
         id: 'gridStore',
         autoLoad: false,
-        fields: ['FX_GUID', 'V_PROJECT_CODE', 'V_PROJECT_NAME', 'FX_MONEY', 'FX_CONTENT', 'V_WBS_CODE', 'V_WBS_NAME',
+        fields: ['FX_GUID','WORKNUM','V_PROJECT_CODE', 'V_PROJECT_NAME', 'FX_MONEY', 'FX_CONTENT', 'V_WBS_CODE', 'V_WBS_NAME',
             'V_DATE_B', 'V_DATE_E', 'V_REPAIR_DEPT', 'V_REPAIR_DEPT_TXT', 'V_FZR', 'V_PERSONNAME'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'tree/PRO_MAINTAIN_SEL_FJ',
+            url: AppUrl + 'tree/PRO_MAINTAIN_SEL_WORK_FJ',
             actionMethods: {
                 read: 'POST'
             }
@@ -90,6 +90,7 @@ Ext.onReady(function(){
             {text: '放行唯一编码', align: 'center', width: 100, dataIndex: 'FX_GUID', hidden: true},
             {xtype: 'treecolumn', text: '工程编码', align: 'center', width: 100, dataIndex: 'V_PROJECT_CODE'},
             {text: '工程名称', align: 'center', width: 100, dataIndex: 'V_PROJECT_NAME'},
+            {text:'工单数量',align:'center',width:60,dataIndex:'WORKNUM'},
             {text: '年度投资（万元）', align: 'center', width: 100, dataIndex: 'FX_MONEY'},
             {text: '放行计划主要内容', align: 'center', width: 120, dataIndex: 'FX_CONTENT'},
             {text: 'WBS编码', align: 'center', width: 100, dataIndex: 'V_WBS_CODE'},

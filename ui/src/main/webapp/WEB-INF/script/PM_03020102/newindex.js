@@ -466,11 +466,11 @@ var qxGridStore=Ext.create('Ext.data.Store', {
         'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME',
         'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_IDEA', 'V_STATECODE',
         'V_STATENAME', 'V_STATECOLOR', 'V_GUID', 'V_EQUSITE1', 'D_DATE_EDITTIME', 'V_EDIT_GUID', 'V_SOURCE_GRADE', 'V_EQUCHILDCODE',
-        'V_INPERCODE', 'V_INPERNAME', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_FLAG'],
+        'V_INPERCODE', 'V_INPERNAME', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_FLAG','DEF_SOLVE','BJ_STUFF','PASSNUM','NOPASSNUM','DEFILENUM'],
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL_O',
+        url: AppUrl + 'dxfile/PM_03_PROJECT_DEFECT_SEL_O',
         actionMethods: {
             read: 'POST'
         },
@@ -791,6 +791,26 @@ var yearStore=Ext.create('Ext.data.Store', {
         //     V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         //     V_V_ZY: ''
         // }
+    }
+});
+var fileview=Ext.create("Ext.data.Store", {
+    autoLoad: false,
+    id: 'fileview',
+    fields: ['FILE_CODE', 'FILE_NAME', 'FILE_TYPE', 'INSERT_DATE', 'INSERT_PERSON'],
+    proxy: {
+        type: 'ajax',
+        async: false,
+        url: AppUrl + 'PM_07/DEFECT_UPFILE_SELECT',
+        actionMethods: {
+            read: 'POST'
+        },
+        extraParams: {
+            V_GUID: fjDefect
+        },
+        reader: {
+            type: 'json',
+            root: 'list'
+        }
     }
 });
 var northPanel = Ext.create('Ext.form.Panel', {
@@ -1309,18 +1329,43 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
     // bodyStyle:'background:#f2f2f2; border-top:1px solid #d4d4d4 !important; border-left:1px solid #d4d4d4 !important',
     // defaults: {labelAlign: 'right'},
     // collapsible: false,
-
+    id:'TOPGIRDRIGHTTtool',
+    columnLines:true,
     border:false,
     store: qxGridStore,
+    autoScroll:true,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
+        {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft,hidden:true},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft},
+        {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft,hidden:true},
         {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
         {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atleft},
-        {text: '删除',width: 120, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect}
+        {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atleft,
+            editor:{
+                xtype: 'textfield',id: 'defsove',labelAlign: 'right',allowBlank:false
+            }},
+        {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atleft,
+            editor:{
+                xtype: 'textfield',id: 'bjstuff',labelAlign: 'right',allowBlank:false
+            }
+        },
+        {text: '删除',width: 120, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect},
+        {text: '上传附件',width: 120, dataIndex: 'DEFILENUM',align: 'center',renderer:upfilefun}
     ],
-    height: 180,
+    plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
+        clicksToEdit: 1,
+        listeners: {
+            // beforeedit:function (editor, context, eOpts) {
+            //     if(context.record.get('D_MONTH')!=date.getMonth()+1&&context.record.get('D_YEAR')==date.getFullYear()){
+            //         alert("非本月数据无法修改");return false;
+            //     }
+            // },
+            edit: OnChangeEleData
+        }
+    })],
+    height: 240,//180,
     width: '100%',
     tbar: [
         '缺陷明细',
@@ -1421,10 +1466,12 @@ var jxmx2 = Ext.create('Ext.grid.Panel', {
     // bodyStyle:'background:#f2f2f2; border-top:1px solid #d4d4d4 !important',
     // defaults: {labelAlign: 'right'},
     // collapsible: false,
+    height:'40%',
     store:mxStore,
-    // columnLines: true,
-    region: 'center',
-    border: false,
+    columnLines: true,
+    region: 'north',
+    autoScroll:true,
+    // border: false,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
         {text: '模型名称',width: 200, dataIndex: 'V_MODEL_NAME', align: 'center',renderer:atleft},
@@ -1633,12 +1680,38 @@ var Rightdivbtm = Ext.create('Ext.tab.Panel', {
         }*/
     ]
 });
+var qsPanel=Ext.create('Ext.panel.Panel', {
+    id:'qsPanel',
+    height:'20%',
+    // bodyStyle:'border-top:1px solid #d4d4d4 !important',
+    renderTo: Ext.getBody(),
+    region: 'north',
+    layout: 'column',
+    width:'100%',
+    autoScroll:true,
+    baseCls:'textareaStyle',
+    defaults: {labelAlign: 'right'},
+    collapsible: false,
+    items: [
+        {
+            xtype     : 'textareafield',
+            id:'qstext',
+            grow      : true,
+            name      : 'message',
+            fieldLabel: '维修工程请示',
+            anchor    : '100%',
+            margin:'5 5 5 20',
+            labelWidth :60,
+            width:750,
+            height:150
+        }
+    ]
+});
 var Rightdivtop = Ext.create('Ext.panel.Panel', {
     layout: 'border',
     region:'north',
-    border:false,
-    frame:false,
-    height:'70%',
+    border:true,
+    height:'40%',
     bodyStyle:'border-top:1px solid #d4d4d4 !important',
     renderTo: Ext.getBody(),
     items: [Rightdivbtm]
@@ -1661,7 +1734,7 @@ var Leftdiv = Ext.create('Ext.panel.Panel', {
     border:'3px',
     bodyStyle:'border:3px solid rgb(2,29,132)',
     // items: [Leftdivtop,jxmx2,jxmx1],
-    items: [Leftdivtop,jxmx2],
+    items: [Leftdivtop],
     renderTo: Ext.getBody()
 });
 var Rightdiv = Ext.create('Ext.panel.Panel', {
@@ -1669,7 +1742,7 @@ var Rightdiv = Ext.create('Ext.panel.Panel', {
     region:'center',
     width:'43%',
     border:false,
-    items: [Rightdivtop,Rightdivbtm1],
+    items:[qsPanel,jxmx2,Rightdivtop],//,Rightdivbtm1],
     renderTo: Ext.getBody()
 });
 var centerPanel = Ext.create('Ext.panel.Panel', {
@@ -2462,6 +2535,110 @@ var MXclickW = Ext.create('Ext.window.Window', {
     // items: [gxgrid,dxjhsbright]
     items:[tebpanel]
 });
+var filegrid=Ext.create("Ext.grid.Panel", {
+    id: 'filegrid',
+    region: 'center',
+    height: '100%',
+    width: '100%',
+    columnLines: true,
+    store: fileview,
+    autoScroll: true,
+    margin: '10px 0px 0px 15px',
+    //colspan: 3,
+    columns: [{
+        text:'附件编码',
+        hide:true,
+        dataIndex:'FILE_CODE'
+    },{
+        text: '附件名称',
+        flex: 0.6,
+        width:340,
+        id : 'fjname',
+        align: 'center',
+        dataIndex: "FILE_NAME"
+        //renderer: _downloadRander
+    }, {
+        text: '操作',
+        flex: 0.4,
+        width:340,
+        align: 'center',
+        renderer: _delRander
+    }]
+});
+var win=Ext.create('Ext.window.Window',{
+    id:'win',
+    title:'附件添加窗口',
+    closeAction:'hide',
+    layout: 'vbox',
+    width: 880,
+    height: 400,
+    modal: true,
+    plain: true,
+    bodyPadding: 10,
+    items: [{
+        xtype: 'form',
+        id:'uploadFile',
+        region: 'north',
+        layout: 'hbox',
+        fileUpload:true,
+        baseCls: 'my-panel-no-border',
+        items: [{
+            xtype: "filefield",
+            name: 'V_V_BLOB',
+            id: "V_V_BLOB",
+            enctype: "multipart/form-data",
+            fieldLabel: "上传附件",
+            fileUpload: true,
+            allowBlank: false,
+            labelWidth: 100,
+            width: 440,
+            labelStyle: 'color:red;font-weight:bold',
+            margin: '5px 0px 5px 5px',
+            emptyText: '请选择文件',
+            buttonText: '浏览',
+            invalidText: '文件格式不正确'
+        }, {
+            id: 'insertFilesFj2',
+            xtype: 'button',
+            text: '上传',
+            style: ' margin: 5px 0px 0px 15px',
+            handler: _upLoadFile
+        }, {
+            xtype: 'hidden',
+            name: 'V_GUID',
+            id: 'V_GUID'
+        }, {
+            xtype: 'hidden',
+            name: 'V_FILENAME',
+            id: 'V_FILENAME'
+        },  {
+            xtype: 'hidden',
+            name: 'V_PLANT',
+            id: 'V_PLANT'
+        }, {
+            xtype: 'hidden',
+            name: 'V_DEPT',
+            id: 'V_DEPT'
+        }, {
+            xtype: 'hidden',
+            name: 'V_PERSONCODE',
+            id: 'V_PERSONCODE'
+        }/*, {
+                xtype: 'hidden',
+                name: 'V_V_REMARK',
+                id: 'V_V_REMARK'
+            }*/
+
+        ]
+    } ,{
+        columnWidth: 1,
+        height: 380,
+        width: 800,
+        items: filegrid
+    }],
+    closable: true,
+    model: true
+});
 Ext.onReady(function () {
     Ext.QuickTips.init();
     //border布局 最多可将页面划分为5个区域
@@ -2771,6 +2948,9 @@ Ext.onReady(function () {
         title:'年计划详情',
         items:[yeartool,yeargrid]
     });
+
+
+
 });
 
 
@@ -2906,6 +3086,7 @@ function QueryPageLoad(){
 
                 Ext.getCmp('jhgs').setValue(resp.list[0].V_SUMTIME==''?0:resp.list[0].V_SUMTIME);
                 Ext.getCmp('jhts').setValue(resp.list[0].V_SUMDATE==''?0:resp.list[0].V_SUMDATE);
+                Ext.getCmp("qstext").setValue(resp.list[0].V_QSTEXT);
 
                 if(resp.list[0].V_BDATE==''){
                     Ext.getCmp('btime').setValue(new Date());
@@ -3339,6 +3520,23 @@ function DelDefect(value, metaData, record){
     // return '<a href="#" onclick="_deleteDefect(\'' + record.data.V_GUID + '\')">' + '删除' + '</a>';
 }
 function _deleteDefect(DefectGuid){
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/DEFECT_BY_MAINTAINPLAN_UNEQU_DEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_DEFGUID:DefectGuid,
+            V_PROGUID:Guid
+        },
+        success: function (resp) {
+            var resp=Ext.decode(resp.responseText);
+            if(resp.RET=='SUCCESS'){
+
+            }else{
+                alert("方案删除失败");
+            }
+        }
+    });
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_DEFECT_DEL',
         method: 'POST',
@@ -3828,17 +4026,70 @@ function btnSaveProject(){
             V_V_SPECIALTY_ZXNAME:'',
             V_V_BJF:Ext.getCmp('bjf').getValue(),
             V_V_CLF:Ext.getCmp('clf').getValue(),
-            V_V_SGF:Ext.getCmp('sgfy').getValue()
+            V_V_SGF:Ext.getCmp('sgfy').getValue(),
+            V_V_QSTEXT:Ext.getCmp('qstext').getValue()
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='成功'){
-                alert('保存成功！');
-                window.opener.selectGridTurn();
-                window.close();
+                // alert('保存成功！');
+                //缺陷日志写入-new
+                newDefectLog();
+                //缺陷日志写入-old
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/PM_DEFECT_LOG_BY_PRO',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                        V_PERNAME:decodeURI(Ext.util.Cookies.get('v_personname')),
+                        V_PROGUID:Guid
+                    },
+                    success: function (resp) {
+                        var resp=Ext.decode(resp.responseText);
+                        if(resp.RET=='SUCCESS'){
+                            alert('保存成功！');
+                            window.opener.selectGridTurn();
+                            window.close();
+                        }
+                    }
+                });
             }
         }
     });
+}
+function newDefectLog(){
+    var records=Ext.data.StoreManager.lookup('qxGridStore').data.items;
+    if(records.length>0){
+        for(var i=0;i<records.length;i++){
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/PM_DEFECT_LOG_FROMPRO_IN',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_GUID:Guid,
+                    V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                    V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+                    V_ORG:Ext.util.Cookies.get('v_orgCode'),
+                    V_PASS_STAT:'IN',
+                    V_DEFECTGUID:records[i].get('V_GUID'),
+                    V_DEF_TYPE:records[i].get('V_SOURCECODE'),
+                    V_DEF_LIST:records[i].get('V_DEFECTLIST'),
+                    V_DEF_DATE:records[i].get('D_DEFECTDATE'),
+                    V_BJ:records[i].get('BJ_STUFF'),
+                    V_SOLVE:records[i].get('DEF_SOLVE')
+                },
+                success: function (resp) {
+                    var resp=Ext.decode(resp.responseText);
+                    if(resp.RET=='SUCCESS'){
+                        // alert('保存成功！');
+                        // window.opener.selectGridTurn();
+                        // window.close();
+                    }
+                }
+            });
+        }
+    }
 }
 function IndexShow(value, metaData, record) {
     if (gmxGuid == '') {
@@ -4158,6 +4409,24 @@ function YearwinClose(){
                         // }
                     }
                 });
+                //清空原有缺陷方案
+                Ext.Ajax.request({
+                    url: AppUrl + 'dxfile/DEFECT_BY_MAINTAINPLAN_DEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_PROGUID:Guid
+                    },
+                    success: function (resp) {
+                        var resp=Ext.decode(resp.responseText);
+                        if(resp.RET=='SUCCESS'){
+                            QueryCGrid();
+                        }
+                        // else{
+                        //     alert("方案删除失败");
+                        // }
+                    }
+                });
                 //清空原有添加缺陷
                 Ext.Ajax.request({
                     url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_DEF_DEL',
@@ -4335,3 +4604,130 @@ function YearwinClose(){
     Ext.getCmp('yearWindow').close();
 
 }
+function OnChangeEleData(e){
+    console.info(e.context.record);
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/DEFECT_BY_MAINTAINPLAN_IN',
+        method: 'POST',
+        params: {
+            V_PROGUID: Guid,
+            V_DEFECTGUID: e.context.record.data.V_GUID,
+            V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_INDEPT: Ext.util.Cookies.get('v_deptcode'),
+            V_INORG: Ext.util.Cookies.get('v_orgCode'),//decodeURI(Ext.util.Cookies.get('v_orgname').substring()),
+            V_DEF_SOLVE: e.context.record.data.DEF_SOLVE,
+            V_BJ_STUFF: e.context.record.data.BJ_STUFF,
+            V_EQUCODE:e.context.record.data.V_EQUCODE
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.RET == "SUCCESS") {
+                // alert("添加成功");
+            }
+        }
+    });
+
+//缺陷上传附件
+    function upfilefun(value, metaData, record){
+        metaData.style="text-align:center";
+        return '<a href="javascript:upfile(\''+record.data.V_GUID+'\')">'+"数量:"+value+"|"+"上传"+'</a>'
+    }
+    function upfile(value) {
+        fjDefect=value;
+        Ext.data.StoreManager.lookup('fileview').load();
+        Ext.getCmp('win').show();
+
+    }
+
+    function _upLoadFile() {
+        var uploadFile = Ext.getCmp('uploadFile');
+        var V_V_BLOB = Ext.getCmp('V_V_BLOB').getSubmitValue();
+        var V_V_FILENAME = V_V_BLOB.substring(0, V_V_BLOB.indexOf('.'));
+
+        Ext.getCmp('V_GUID').setValue(fjDefect);
+        Ext.getCmp('V_V_BLOB').setValue(V_V_BLOB);
+        Ext.getCmp('V_FILENAME').setValue(V_V_FILENAME);
+        //  Ext.getCmp('V_TYPE').setValue(V_TYPE);
+        Ext.getCmp('V_PLANT').setValue(Ext.util.Cookies.get('v_orgCode'));
+        Ext.getCmp('V_DEPT').setValue(Ext.util.Cookies.get('v_deptcode'));
+        Ext.getCmp('V_PERSONCODE').setValue(Ext.util.Cookies.get('v_personcode'));
+
+        //if(uploadFile.form.isValid()){
+        if (Ext.getCmp('V_V_BLOB').getValue() == '') {
+            Ext.Msg.alert('错误', '请选择你要上传的文件');
+            return;
+        }
+        Ext.MessageBox.show({
+            title: '请等待',
+            msg: '文件正在上传...',
+            progressText: '',
+            width: 300,
+            progress: true,
+            closable: false,
+            animEl: 'loding'
+
+        });
+
+        uploadFile.getForm().submit({
+            url: AppUrl + 'PM_07/DEFECT_UPFILE_INSERT',
+            method: 'POST',
+            async: false,
+            waitMsg: '上传中...',
+            success: function (form, action) {
+                var massage=action.result.message;
+                if(massage=="{list=Success}"){
+                    Ext.Msg.alert('成功', '上传成功');
+                    filequery(fjDefect);
+                    QueryDefect();
+                }
+            },
+            failure: function (resp) {
+                Ext.Msg.alert('错误', '上传失败');
+            }
+
+        });
+        //}
+
+    }
+
+    function _delRander(a, value, metaData) {
+        return '<a href="javascript:onDel(\'' + metaData.data.FILE_CODE + '\')">删除</a>';
+    }
+
+    function onDel(fileguid) {
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_07/DEFECT_UPFILE_DELETE',
+            method: 'POST',
+            async: false,
+            params: {
+                V_FILECODE: fileguid
+            },
+            success: function (response) {
+                var data = Ext.JSON.decode(response.responseText);
+
+                if (data.list == 'Success') {
+                    Ext.Msg.alert('成功', '删除附件成功');
+                    filequery(fjDefect);
+                    QueryDefect();
+                } else {
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: data.message,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR
+                    });
+                }
+            },
+            failure: function (resp) {
+                Ext.Msg.alert('提示信息', '删除失败');
+            }
+        });
+    }
+
+    function filequery(fjDefect) {
+        Ext.data.StoreManager.lookup('fileview').load({
+            params: {
+                V_GUID: fjDefect
+            }
+        });
+    }

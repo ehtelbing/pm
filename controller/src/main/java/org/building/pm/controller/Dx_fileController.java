@@ -3402,6 +3402,95 @@ public class Dx_fileController {
         return data;
     }
 
+    //缺陷解决方案写入
+    @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_BY_MAINTAINPLAN_IN(
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INDEPT") String V_INDEPT,
+            @RequestParam(value = "V_INORG") String V_INORG,
+            @RequestParam(value = "V_DEF_SOLVE") String V_DEF_SOLVE,
+            @RequestParam(value = "V_BJ_STUFF") String V_BJ_STUFF,
+            @RequestParam(value = "V_EQUCODE") String  V_EQUCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_IN(V_PROGUID,V_DEFECTGUID,V_INPERCODE,V_INDEPT,V_INORG,V_DEF_SOLVE,V_BJ_STUFF,V_EQUCODE);
+        return data;
+    }
+    //维修计划缺陷解决方案表删除
+    @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_EQU_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_BY_MAINTAINPLAN_EQU_DEL(
+            @RequestParam(value = "V_DEFGUID") String V_DEFGUID,
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_EQU_DEL(V_DEFGUID,V_PROGUID);
+        return data;
+    }
+    //无设备--维修计划缺陷解决方案表删除
+    @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_UNEQU_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_BY_MAINTAINPLAN_UNEQU_DEL(
+            @RequestParam(value = "V_DEFGUID") String V_DEFGUID,
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_UNEQU_DEL(V_DEFGUID,V_PROGUID);
+        return data;
+    }
+
+    //维修计划保存，缺陷日志写入
+    @RequestMapping(value = "PM_DEFECT_LOG_BY_PRO", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECT_LOG_BY_PRO(
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_PERNAME") String V_PERNAME,
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_DEFECT_LOG_BY_PRO(V_PERCODE,V_PERNAME,V_PROGUID);
+        return data;
+    }
+
+    //计划添加维修计划删除原有缺陷方案
+    @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_BY_MAINTAINPLAN_DEL(
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_DEL(V_PROGUID);
+        return data;
+    }
+
+    //维修计划-新缺陷日志
+    @RequestMapping(value = "PM_DEFECT_LOG_FROMPRO_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECT_LOG_FROMPRO_IN(
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_DEPTCODE") String V_DEPTCODE,
+
+            @RequestParam(value = "V_ORG") String V_ORG,
+            @RequestParam(value = "V_PASS_STAT") String V_PASS_STAT,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+
+            @RequestParam(value = "V_DEF_TYPE") String V_DEF_TYPE,
+            @RequestParam(value = "V_DEF_LIST") String V_DEF_LIST,
+            @RequestParam(value = "V_DEF_DATE") String V_DEF_DATE,
+            @RequestParam(value = "V_BJ") String V_BJ,
+            @RequestParam(value = "V_SOLVE") String V_SOLVE,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_IN(V_GUID,V_PERCODE,V_DEPTCODE,V_ORG,V_PASS_STAT,V_DEFECTGUID,V_DEF_TYPE,V_DEF_LIST,V_DEF_DATE,V_BJ,V_SOLVE);
+        return data;
+    }
+
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

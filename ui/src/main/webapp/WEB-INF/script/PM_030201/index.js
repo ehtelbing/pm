@@ -259,6 +259,18 @@ Ext.onReady(function () {
                 icon: imgpath + '/accordion_expand.png',
                 listeners: {click: OnButtonDR}
             }
+            ,{
+                xtype: 'button',
+                text: '新增2',
+                icon: imgpath + '/add.png',
+                listeners: {click: OnButtonAdd2}
+            },
+            {
+                xtype: 'button',
+                text: '编辑2',
+                icon: imgpath + '/edit.png',
+                listeners: {click: OnButtonEdit2}
+            }
             // ,{
             //     xtype:'button',
             //     text:'查看施工进度',
@@ -465,7 +477,47 @@ function OnButtonEdit(){
     }
 
 }
+function OnButtonAdd2(){
+    //if(Ext.getCmp("zyq").getValue()!="%"&&Ext.getCmp("zyq").getValue()!=""){
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID:'-1',
+            V_V_YEAR:Ext.getCmp("year").getValue(),
+            V_V_ORGCODE:Ext.getCmp("ck").getValue(),
+            V_V_DEPTCODE:"", // Ext.getCmp("zyq").getValue(),
+            V_V_INPER:Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+            var resp=Ext.decode(resp.responseText);
+            if(resp.V_INFO=='成功'){
+                var owidth = window.document.body.offsetWidth - 600;
+                var oheight = window.document.body.offsetHeight - 100;
+                // window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+                window.open(AppUrl + 'page/PM_03020102/newindex.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+            }else{
+                alert("添加失败");
+            }
+        }
+    });
 
+}
+
+function OnButtonEdit2(){
+    var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if(seldata.length!=1){
+        alert('请选择一条数据进行修改！');
+        return;
+    }else{
+        var owidth = window.document.body.offsetWidth - 600;
+        var oheight = window.document.body.offsetHeight - 100;
+        // window.open(AppUrl + 'page/PM_03020101/index.html?guid=' +seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+        window.open(AppUrl + 'page/PM_03020102/newindex.html?guid=' +seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    }
+
+}
 function OnButtonDel(){
     var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
     if(seldata.length==0){

@@ -833,7 +833,7 @@ Ext.onReady(function () {
                 }]
             }, {
                 layout: 'hbox',
-                defaults: {labelAlign: 'right',readOnly:true},
+                defaults: {labelAlign: 'right'},
                 frame: true,
                 border: false,
                 baseCls: 'my-panel-no-border',
@@ -850,6 +850,7 @@ Ext.onReady(function () {
                     id : 'iflag',
                     inputValue:1,
                     uncheckedValue:0
+                    // ,readOnly:true
                    //, margin: '5 0 5 30'
                 }]
             },

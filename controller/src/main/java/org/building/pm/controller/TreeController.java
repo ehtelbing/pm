@@ -233,5 +233,12 @@ public class TreeController {
         List<Map> map = treeService.PRO_MAINTAIN_SEL_FJ(V_V_YEAR, V_UPGRID);
         return map;
     }
-
+    //维修计划 分解查询页查询
+    @RequestMapping(value = "/PRO_MAINTAIN_SEL_WORK_FJ", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PRO_MAINTAIN_SEL_WORK_FJ(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                         @RequestParam(value = "V_UPGRID") String V_UPGRID) throws Exception {
+        List<Map> map = treeService.PRO_MAINTAIN_SEL_WORK_FJ(V_V_YEAR, V_UPGRID);
+        return map;
+    }
 }

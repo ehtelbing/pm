@@ -271,12 +271,13 @@ public class PM_03Controller {
             @RequestParam(value = "V_V_SPECIALTY_ZXNAME") String V_V_SPECIALTY_ZXNAME,
             @RequestParam(value = "V_V_BJF") String V_V_BJF,
             @RequestParam(value = "V_V_CLF") String V_V_CLF,
-            @RequestParam(value = "V_V_SGF") String V_V_SGF) throws Exception {
+            @RequestParam(value = "V_V_SGF") String V_V_SGF,
+            @RequestParam(value="V_V_QSTEXT") String V_V_QSTEXT) throws Exception {
 
         Map result = pm_03Service.PRO_PM_03_PLAN_YEAR_SET(V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_ORGNAME, V_V_DEPTCODE, V_V_DEPTNAME, V_V_PORJECT_CODE, V_V_PORJECT_NAME,
                 V_V_SPECIALTY, V_V_SPECIALTYNAME, V_V_SPECIALTYMANCODE, V_V_SPECIALTYMAN, V_V_WXTYPECODE, V_V_WXTYPENAME, V_V_CONTENT, V_V_MONEYBUDGET, V_V_REPAIRDEPTCODE,
                 V_V_BDATE, V_V_EDATE, V_V_INMAN, V_V_INMANCODE, V_V_JHLB, V_V_SCLB, V_V_CPZL, V_V_CPGX, V_V_SGFS, V_V_SFXJ, V_V_ZBFS, V_V_SZ, V_V_GUID_UP, V_V_WBS, V_V_WBS_TXT,
-                V_V_SUMTIME, V_V_SUMDATE,V_V_SPECIALTY_ZX,V_V_SPECIALTY_ZXNAME,V_V_BJF,V_V_CLF,V_V_SGF);
+                V_V_SUMTIME, V_V_SUMDATE,V_V_SPECIALTY_ZX,V_V_SPECIALTY_ZXNAME,V_V_BJF,V_V_CLF,V_V_SGF,V_V_QSTEXT);
         return result;
     }
 
