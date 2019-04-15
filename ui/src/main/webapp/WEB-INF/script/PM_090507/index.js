@@ -262,7 +262,7 @@ function Agree() {
                                     async: false,
                                     params: {
                                         'V_V_ORDERID': $("#V_ORDERGUID").val(),
-                                        'V_V_PROCESS_NAMESPACE': 'WORK',
+                                        'V_V_PROCESS_NAMESPACE': 'WorkOrder',
                                         'V_V_PROCESS_CODE': processKey,
                                         'V_V_STEPCODE': V_STEPCODE,
                                         'V_V_STEPNEXT_CODE': V_NEXT_SETP
@@ -323,7 +323,7 @@ function Agree() {
                         async: false,
                         params: {
                             'V_V_ORDERID': $("#V_ORDERGUID").val(),
-                            'V_V_PROCESS_NAMESPACE': 'WORK',
+                            'V_V_PROCESS_NAMESPACE': 'WorkOrder',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
                             'V_V_STEPNEXT_CODE': V_NEXT_SETP
@@ -391,7 +391,7 @@ function DisAgree() {
                         async: false,
                         params: {
                             'V_V_ORDERID': $("#V_ORDERGUID").val(),
-                            'V_V_PROCESS_NAMESPACE': 'WORK',
+                            'V_V_PROCESS_NAMESPACE': 'WorkOrder',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
                             'V_V_STEPNEXT_CODE': 'fqrxg'

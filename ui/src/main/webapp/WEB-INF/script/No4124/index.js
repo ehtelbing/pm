@@ -172,7 +172,8 @@ Ext.onReady(function() {
                  {id : 'djy',xtype : 'combo', store : sdjy,editable : false,fieldLabel : '点检员', labelWidth : 80,displayField : 'V_PERSONNAME',valueField : 'V_PERSONCODE',queryMode : 'local', baseCls : 'margin-bottom'},
                 {id : 'selshortTxt',xtype : 'textfield', width : 158,emptyText : '按工单描述模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'selmatDesc',xtype : 'textfield', width : 158,emptyText : '按使用物料模糊搜索',margin:'5px 0px 5px 90px'},
-                {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}}
+                {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}},
+            {id : 'qxgd',xtype : 'button', icon : '../../images/gif/add.png',text : '添加', width : 80,listeners: {click: _addqxgdOpen}}
                 // { xtype : 'button',text : '导出excel',icon : '../../images/gif/grid.png',width : 85, listeners : { click : OnClickExcelButton}}
 
                 ]
@@ -572,4 +573,11 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
 
 function _preViewFault(V_ORGCODE,V_DEPTCODE,V_ORDERGUID) {
     window.open(AppUrl + "page/No4124/fault.html?V_V_ORGCODE="+V_ORGCODE+'&V_V_DEPTCODE='+V_DEPTCODE+'&V_V_ORDERGUID='+V_ORDERGUID, '', "dialogHeight:500px;dialogWidth:900px");
+}
+function _addqxgdOpen() {
+
+
+    var owidth = window.screen.availWidth-100;
+    var oheight = window.screen.availHeight-50;
+    window.open(AppUrl + 'page/No4124/qxgd.html','', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
 }

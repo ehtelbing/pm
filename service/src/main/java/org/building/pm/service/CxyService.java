@@ -295,13 +295,13 @@ public class CxyService {
         return result;
     }
 
-    public HashMap PM_1405_FAULT_ITEM_DATA_SET(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE,
+    public HashMap PM_1405_FAULT_ITEM_DATA_SET_NEW(String V_V_GUID, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE, String V_V_EQUCODE,
                                              String V_V_EQUCHILD_CODE, String V_V_FAULT_GUID, String V_V_FAULT_TYPE, String V_V_FAULT_YY,
                                              String V_V_FINDTIME, String V_V_FAULT_XX,
                                              String V_V_JJBF,String V_V_FAULT_LEVEL, String V_V_FILE_GUID, String V_V_INTIME,
                                              String V_V_PERCODE, String V_V_IP,String V_V_FAULT_NAME,String V_V_FAULT_PART,String V_V_FAULT_CLGC,
                                                String V_V_FAULT_SS,String V_V_FAULT_XZ,String V_V_FAULT_ZGCS,String V_V_FZR_CL) throws SQLException {
-        logger.info("begin PM_1405_FAULT_ITEM_DATA_SET");
+        logger.info("begin PM_1405_FAULT_ITEM_DATA_SET_NEW");
 
         HashMap result = new HashMap();
         Connection conn = null;
@@ -309,7 +309,7 @@ public class CxyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_1405_FAULT_ITEM_DATA_SET" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE," +
+            cstmt = conn.prepareCall("{call PM_1405_FAULT_ITEM_DATA_SET_NEW" + "(:V_V_GUID,:V_V_ORGCODE,:V_V_DEPTCODE," +
                     ":V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_GUID,:V_V_FAULT_TYPE,:V_V_FAULT_YY,:V_V_FINDTIME," +
                     ":V_V_FAULT_XX,:V_V_JJBF,:V_V_FAULT_LEVEL," +
                     ":V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_V_FAULT_NAME,:V_V_FAULT_PART,:V_V_FAULT_CLGC," +
@@ -350,7 +350,7 @@ public class CxyService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PM_1405_FAULT_ITEM_DATA_SET");
+        logger.info("end PM_1405_FAULT_ITEM_DATA_SET_NEW");
         return result;
     }
     public HashMap PRO_PM_WORKORDER_SBGZ_CREATE(String V_V_PERCODE, String V_V_PERNAME, String V_V_GUID) throws SQLException {
@@ -1004,4 +1004,414 @@ public class CxyService {
         return result;
     }
 
+    public HashMap PRO_PM_07_DEPTEQU_PER_DROP(String V_V_PERSONCODE,String V_V_DEPTCODENEXT,String V_V_EQUTYPECODE) throws SQLException {
+
+        logger.info("begin PRO_PM_07_DEPTEQU_PER_DROP");
+        HashMap result = new HashMap();
+        List<Map> list = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEPTEQU_PER_DROP" + "(:V_V_PERSONCODE,:V_V_DEPTCODENEXT,:V_V_EQUTYPECODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()){
+                Map temp = new HashMap();
+                if(!rs.getString("V_EQUCODE").toString().equals("%")){
+                    temp.put("id", rs.getString("V_EQUCODE"));
+                    temp.put("text", rs.getString("V_EQUNAME"));
+//                    temp.put("leaf", true);
+                    temp.put("expanded", false);
+//                    temp.put("checked", false);
+                    temp.put("choose", true);
+                    temp.put("parentid",V_V_EQUTYPECODE);
+                    temp.put("treeid",rs.getString("V_EQUCODE"));
+                    temp.put("V_EQUSITE", rs.getString("V_EQUSITE"));
+                    temp.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
+                    temp.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
+                    temp.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
+                    temp.put("id", rs.getString("V_EQUCODE"));
+                    temp.put("text", rs.getString("V_EQUNAME"));
+                    list.add(temp);
+
+
+                }
+
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        result.put("children",list);
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEPTEQU_PER_DROP");
+        return result;
+    }
+    //tree
+    public HashMap PRO_SAP_EQU_VIEW(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+
+        logger.info("begin PRO_SAP_EQU_VIEW");
+        HashMap result = new HashMap();
+        List<Map> list = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_SAP_EQU_VIEW" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTNEXTCODE,:V_V_EQUTYPECODE,:V_V_EQUCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTNEXTCODE", V_V_DEPTNEXTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+//            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()){
+                Map temp = new HashMap();
+                if(!rs.getString("V_EQUCODE").toString().equals("%")){
+                    temp.put("id", rs.getString("V_EQUCODE")+"F");
+                    temp.put("text", rs.getString("V_EQUNAME"));
+                    temp.put("leaf", true);
+//                    temp.put("checked", false);
+                    temp.put("choose", true);
+                    temp.put("parentid",V_V_EQUTYPECODE);
+                    temp.put("treeid",rs.getString("V_EQUCODE")+"F");
+                    temp.put("V_EQUSITE", rs.getString("V_EQUSITE"));
+                    temp.put("V_EQUSITENAME", rs.getString("V_EQUSITENAME"));
+                    temp.put("V_EQUTYPECODE", rs.getString("V_EQUTYPECODE"));
+                    temp.put("V_EQUTYPENAME", rs.getString("V_EQUTYPENAME"));
+
+                    list.add(temp);
+                }
+
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        result.put("children",list);
+        logger.debug("result:" + result);
+        logger.info("end PRO_SAP_EQU_VIEW");
+        return result;
+    }
+
+    public HashMap PRO_FAULT_EQUIP_SET(String V_V_FAULTCODE,String V_V_EQUTYPECODE,String V_V_EQUUPCODE,String V_V_EQUCODE,String V_V_CREATER) throws SQLException {
+        logger.info("begin PRO_FAULT_EQUIP_SET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_FAULT_EQUIP_SET" + "(:V_V_FAULTCODE,:V_V_EQUTYPECODE,:V_V_EQUUPCODE,:V_V_EQUCODE,:V_V_CREATER,:V_INFO)}");
+
+            cstmt.setString("V_V_FAULTCODE", V_V_FAULTCODE);
+            cstmt.setString("V_V_EQUTYPECODE", V_V_EQUTYPECODE);
+            cstmt.setString("V_V_EQUUPCODE", V_V_EQUUPCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_CREATER", V_V_CREATER);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_FAULT_EQUIP_SET");
+        return result;
+    }
+    public HashMap PM_14_FAULT_ITEM_DATA_SEL_NEW(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE,
+                                             String V_V_EQUCODE, String V_V_EQUCHILD_CODE, String V_V_FAULT_TYPE,
+                                             String V_V_FAULT_YY, String V_V_FINDTIME_B, String V_V_FINDTIME_E) throws SQLException {
+        logger.info("begin PM_14_FAULT_ITEM_DATA_SEL_NEW");
+        logger.debug("params:V_V_ORGCODE:" + V_V_ORGCODE + ",V_V_DEPTCODE:" + V_V_DEPTCODE + ",V_V_EQUTYPE:" + V_V_EQUTYPE +
+                ",V_V_EQUCODE:" + V_V_EQUCODE + ",V_V_EQUCHILD_CODE:" + V_V_EQUCHILD_CODE + ",V_V_FAULT_TYPE:" + V_V_FAULT_TYPE +
+                ",V_V_FAULT_YY:" + V_V_FAULT_YY + ",V_V_FINDTIME_B:" + V_V_FINDTIME_B + ",V_V_FINDTIME_E:" + V_V_FINDTIME_E);
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_SEL_NEW" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_TYPE,:V_V_FAULT_YY,:V_V_FINDTIME_B,:V_V_FINDTIME_E,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCHILD_CODE", V_V_EQUCHILD_CODE);
+            cstmt.setString("V_V_FAULT_TYPE", V_V_FAULT_TYPE);
+            cstmt.setString("V_V_FAULT_YY", V_V_FAULT_YY);
+            cstmt.setString("V_V_FINDTIME_B", V_V_FINDTIME_B);
+            cstmt.setString("V_V_FINDTIME_E", V_V_FINDTIME_E);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_14_FAULT_ITEM_DATA_SEL_NEW");
+        return result;
+    }
+
+    public HashMap PRO_FAULT_EQUIP_SEL(String V_V_FAULTCODE) throws SQLException {
+
+        logger.info("begin PRO_FAULT_EQUIP_SEL");
+        HashMap result = new HashMap();
+        List<Map> list = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_FAULT_EQUIP_SEL" + "(:V_V_FAULTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_FAULTCODE", V_V_FAULTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_FAULT_EQUIP_SEL");
+        return result;
+    }
+
+    public HashMap PRO_FAULT_EQUIP_DEL(String V_V_FAULTCODE,String V_V_EQUCODE) throws SQLException {
+        logger.info("begin PRO_FAULT_EQUIP_DEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_FAULT_EQUIP_DEL" + "(:V_V_FAULTCODE,:V_V_EQUCODE,:V_INFO)}");
+            cstmt.setString("V_V_FAULTCODE", V_V_FAULTCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_FAULT_EQUIP_DEL");
+        return result;
+    }
+    public HashMap PRO_PM_WORKORDER_SBGZ_CREATE_NEW(String V_V_PERCODE, String V_V_PERNAME, String V_V_GUID,String V_V_EQUCODE) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_SBGZ_CREATE_NEW");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SBGZ_CREATE_NEW" + "(:V_V_PERCODE,:V_V_PERNAME,:V_V_GUID,:V_V_EQUCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SBGZ_CREATE_NEW");
+        return result;
+    }
+
+    public HashMap PRO_FAULT_EQUIP_OVER(String V_V_FAULTCODE) throws SQLException {
+
+        logger.info("begin PRO_FAULT_EQUIP_OVER");
+        HashMap result = new HashMap();
+        List<Map> list = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_FAULT_EQUIP_OVER" + "(:V_V_FAULTCODE,:V_INFO)}");
+            cstmt.setString("V_V_FAULTCODE", V_V_FAULTCODE);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_FAULT_EQUIP_OVER");
+        return result;
+    }
+
+    public HashMap PM_14_FAULT_ITEM_DATA_OVER_SEL(String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_EQUTYPE,
+                                                 String V_V_EQUCODE, String V_V_EQUCHILD_CODE, String V_V_FAULT_TYPE,
+                                                 String V_V_FAULT_YY, String V_V_FINDTIME_B, String V_V_FINDTIME_E) throws SQLException {
+        logger.info("begin PM_14_FAULT_ITEM_DATA_OVER_SEL");
+        logger.debug("params:V_V_ORGCODE:" + V_V_ORGCODE + ",V_V_DEPTCODE:" + V_V_DEPTCODE + ",V_V_EQUTYPE:" + V_V_EQUTYPE +
+                ",V_V_EQUCODE:" + V_V_EQUCODE + ",V_V_EQUCHILD_CODE:" + V_V_EQUCHILD_CODE + ",V_V_FAULT_TYPE:" + V_V_FAULT_TYPE +
+                ",V_V_FAULT_YY:" + V_V_FAULT_YY + ",V_V_FINDTIME_B:" + V_V_FINDTIME_B + ",V_V_FINDTIME_E:" + V_V_FINDTIME_E);
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_14_FAULT_ITEM_DATA_OVER_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_EQUTYPE,:V_V_EQUCODE,:V_V_EQUCHILD_CODE,:V_V_FAULT_TYPE,:V_V_FAULT_YY,:V_V_FINDTIME_B,:V_V_FINDTIME_E,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUTYPE", V_V_EQUTYPE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCHILD_CODE", V_V_EQUCHILD_CODE);
+            cstmt.setString("V_V_FAULT_TYPE", V_V_FAULT_TYPE);
+            cstmt.setString("V_V_FAULT_YY", V_V_FAULT_YY);
+            cstmt.setString("V_V_FINDTIME_B", V_V_FINDTIME_B);
+            cstmt.setString("V_V_FINDTIME_E", V_V_FINDTIME_E);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_14_FAULT_ITEM_DATA_OVER_SEL");
+        return result;
+    }
+    public HashMap PRO_PM_WORKORDER_FAULT_OVER_SEL(String V_V_FAULTCODE) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_FAULT_OVER_SEL");
+        HashMap result = new HashMap();
+        List<Map> list = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_FAULT_OVER_SEL" + "(:V_V_FAULTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_FAULTCODE", V_V_FAULTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_FAULT_OVER_SEL");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_F_SAVE(String V_V_PERCODE,String V_V_PERNAME,String V_V_EQUCODE,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_WORKORDER_TYPE,
+                                           String V_V_ORDERGUID,String V_V_SHORT_TXT,String V_V_DEPTCODEREPAIR,String V_D_START_DATE,
+                                           String V_D_FINISH_DATE,String V_V_WBS,String V_V_WBS_TXT) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_F_SAVE");
+        HashMap result = new HashMap();
+        List<Map> list = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_F_SAVE" + "(:V_V_PERCODE,:V_V_PERNAME,:V_V_EQUCODE,:V_V_ORGCODE,:V_V_DEPTCODE," +
+                    ":V_V_WORKORDER_TYPE,:V_V_ORDERGUID,:V_V_SHORT_TXT,:V_V_DEPTCODEREPAIR,:V_D_START_DATE,:V_D_FINISH_DATE," +
+                    ":V_V_WBS,:V_V_WBS_TXT,:V_INFO)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_WORKORDER_TYPE", V_V_WORKORDER_TYPE);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.setString("V_V_DEPTCODEREPAIR", V_V_DEPTCODEREPAIR);
+            cstmt.setString("V_D_START_DATE", V_D_START_DATE);
+            cstmt.setString("V_D_FINISH_DATE", V_D_FINISH_DATE);
+            cstmt.setString("V_V_WBS", V_V_WBS);
+            cstmt.setString("V_V_WBS_TXT", V_V_WBS_TXT);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_F_SAVE");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_SBGZ_CREATE_2(String V_V_PERCODE, String V_V_PERNAME, String V_V_ORDER_GUID) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_SBGZ_CREATE_2");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SBGZ_CREATE_2" + "(:V_V_PERCODE,:V_V_PERNAME,:V_V_ORDER_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_ORDER_GUID", V_V_ORDER_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SBGZ_CREATE_2");
+        return result;
+    }
 }

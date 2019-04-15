@@ -1034,7 +1034,7 @@ function _upLoadFile2() {
         });
 
         uploadForm2.getForm().submit({
-            url: AppUrl + 'cxy/PRO_BASE_FILE_ADDINSERT',
+            url: AppUrl + 'cxy/PRO_BASE_FILE_ADD',
             method: 'POST',
             async: false,
             waitMsg: '上传中...',
