@@ -682,4 +682,135 @@ public class QxService {
         return result;
     }
 
+    public Map PRO_DEFECT_PART_TYPE_SEL() throws SQLException {
+
+        logger.info("begin PRO_DEFECT_PART_TYPE_SEL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DEFECT_PART_TYPE_SEL(:V_CURSOR)}");
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DEFECT_PART_TYPE_SEL");
+        return result;
+    }
+
+    public Map PRO_DEFECT_PART_DATA_SEL(String V_V_TYPE,String V_V_INPER, String V_V_STATE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PRO_DEFECT_PART_DATA_SEL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DEFECT_PART_DATA_SEL(:V_V_TYPE,:V_V_INPER,:V_V_STATE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_TYPE", V_V_TYPE);
+            cstmt.setString("V_V_INPER", V_V_INPER);
+            cstmt.setString("V_V_STATE", V_V_STATE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total",(String) cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DEFECT_PART_DATA_SEL");
+        return result;
+    }
+
+    public Map PRO_DEFECT_PART_WORKORDER_C(String V_V_PERCODE,String V_V_GUID) throws SQLException {
+
+        logger.info("begin PRO_DEFECT_PART_WORKORDER_C");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_DEFECT_PART_WORKORDER_C(:V_V_GUID,:V_V_PERCODE,:V_RETSTR,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.registerOutParameter("V_RETSTR", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("str",(String) cstmt.getObject("V_RETSTR"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_DEFECT_PART_WORKORDER_C");
+        return result;
+    }
+
+    public List<Map> PRO_DEFECT_PART_WORKORDER_S(String V_V_PERCODE,String V_V_PERNAME,String V_V_GUID,String V_V_ORDERGUID,String V_V_SHORT_TXT,String V_V_DEPTCODEREPAIR,
+                                                 String V_D_START_DATE,String V_D_FINISH_DATE,String V_V_WBS,String V_V_WBS_TXT,String V_V_TOOL,String V_V_TECHNOLOGY,String V_V_SAFE) throws SQLException {
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_DEFECT_PART_WORKORDER_S" + "(:V_V_PERCODE,:V_V_PERNAME,:V_V_GUID,:V_V_ORDERGUID,:V_V_SHORT_TXT,:V_V_DEPTCODEREPAIR,:V_D_START_DATE" +
+                    ",:V_D_FINISH_DATE,:V_V_WBS,:V_V_WBS_TXT,:V_V_TOOL,:V_V_TECHNOLOGY,:V_V_SAFE,:V_CURSOR)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_SHORT_TXT", V_V_SHORT_TXT);
+            cstmt.setString("V_V_DEPTCODEREPAIR", V_V_DEPTCODEREPAIR);
+            cstmt.setString("V_D_START_DATE", V_D_START_DATE);
+            cstmt.setString("V_D_FINISH_DATE", V_D_FINISH_DATE);
+            cstmt.setString("V_V_WBS", V_V_WBS);
+            cstmt.setString("V_V_WBS_TXT", V_V_WBS_TXT);
+            cstmt.setString("V_V_TOOL", V_V_TOOL);
+            cstmt.setString("V_V_TECHNOLOGY", V_V_TECHNOLOGY);
+            cstmt.setString("V_V_SAFE", V_V_SAFE);
+            cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end //        logger.info(\"begin PRO_PM_07_DEFECT_EDIT\");\n");
+        return result;
+    }
+
 }

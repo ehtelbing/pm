@@ -278,4 +278,57 @@ public class QxController {
         result.put("success", true);
         return result;
     }
+
+    /*预装件，小机修，修旧类型查询*/
+    @RequestMapping(value = "PRO_DEFECT_PART_TYPE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_PART_TYPE_SEL()
+            throws SQLException {
+        Map<String, Object> result = qxService.PRO_DEFECT_PART_TYPE_SEL();
+        return result;
+    }
+
+    /*预装件，小机修，修旧数据查询*/
+    @RequestMapping(value = "PRO_DEFECT_PART_DATA_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_PART_DATA_SEL(@RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                                        @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                                        @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                                                        @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE )
+            throws SQLException {
+        Map<String, Object> result = qxService.PRO_DEFECT_PART_DATA_SEL(V_V_TYPE,V_V_INPER,V_V_STATE,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
+    /*预装件，小机修，修旧工单创建*/
+    @RequestMapping(value = "PRO_DEFECT_PART_WORKORDER_C", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_PART_WORKORDER_C(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                        @RequestParam(value = "V_V_GUID") String V_V_GUID)
+            throws SQLException {
+        Map<String, Object> result = qxService.PRO_DEFECT_PART_WORKORDER_C(V_V_PERCODE,V_V_GUID);
+        return result;
+    }
+
+    /*预装件，小机修，修旧工单保存*/
+    @RequestMapping(value = "PRO_DEFECT_PART_WORKORDER_S", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> PRO_DEFECT_PART_WORKORDER_S(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                           @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                           @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                           @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                           @RequestParam(value = "V_V_DEPTCODEREPAIR") String V_V_DEPTCODEREPAIR,
+                                                           @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                                           @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                                           @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                                           @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+                                                           @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                           @RequestParam(value = "V_V_TECHNOLOGY") String V_V_TECHNOLOGY,
+                                                           @RequestParam(value = "V_V_SAFE") String V_V_SAFE)
+            throws SQLException {
+        List<Map> result = qxService.PRO_DEFECT_PART_WORKORDER_S(V_V_PERCODE,V_V_PERNAME,V_V_GUID,V_V_ORDERGUID,V_V_SHORT_TXT,V_V_DEPTCODEREPAIR,V_D_START_DATE,V_D_FINISH_DATE,V_V_WBS,V_V_WBS_TXT,V_V_TOOL,V_V_TECHNOLOGY,V_V_SAFE);
+        return result;
+    }
 }

@@ -14,14 +14,6 @@ $(function () {
     loadMatList();
 
 
-    // $("#selPlant").on("input propertychange",function(){
-    //     if($("#selPlant").val()=="99170208"){
-    //         $("#selType").val("AK11");
-    //     }else{
-    //         $("#selType").val($("#selType").get(0).checked=true)
-    //     }
-    // });
-
     $("#btnTask").click(function () {
         if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null || $("#V_EQUIP_NAME").val() == "" || $("#V_EQUIP_NAME").val() == null || $("#V_FUNC_LOC").val() == "" || $("#V_FUNC_LOC").val() == null) {
             alert("请选择设备");
@@ -44,13 +36,12 @@ $(function () {
 function loadPageInfo() {
 
     $.ajax({
-        url: AppUrl + '/No4120/PRO_PM_WORKORDER_YZJ_CREATE',
+        url: AppUrl + 'qx/PRO_DEFECT_PART_WORKORDER_C',
         type: 'post',
         async: false,
         data: {
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
-            V_V_MODELNUMBER: $.url().param('V_MODELNUMBER')
+            V_V_GUID: $.url().param('V_GUID')
         },
         success: function (resp) {
             if (resp.list != "" && resp.list != null) {
@@ -254,7 +245,7 @@ function loadToolAndTxtList() {
         data: {
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_PERNAME: Ext.util.Cookies.get('v_personname2'),
-            V_V_MODELNUMBER: $.url().param('V_MODELNUMBER')
+            V_V_MODELNUMBER: $.url().param('V_GUID')
         },
         success: function (resp) {
             if (resp.list != "" && resp.list != null) {
@@ -330,14 +321,13 @@ function CreateBill() {
     } else {
 
         Ext.Ajax.request({
-            url: AppUrl + 'No4120/PRO_PM_WORKORDER_YZJ_SAVE',
+            url: AppUrl + 'qx/PRO_DEFECT_PART_WORKORDER_S',
             type: 'post',
             async: false,
             params: {
-
                 V_V_PERCODE: Ext.util.Cookies.get("v_personcode"),
                 V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
-                V_V_MODELNUMBER: $.url().param('V_MODELNUMBER'),
+                V_V_GUID: $.url().param('V_GUID'),
                 V_V_ORDERGUID: $("#V_ORDERGUID").val(),
                 V_V_SHORT_TXT: $("#V_SHORT_TXT").val(),
                 V_V_DEPTCODEREPAIR: $("#V_DEPTNAMEREPARI").val(),
@@ -351,7 +341,7 @@ function CreateBill() {
             },
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
-                if (resp.list == '成功') {
+                if (resp[0].V_INFO == '成功') {
                     if (V_NEXT_SETP.indexOf("sp") == -1) {//下一步没有审批字样
                         Ext.Ajax.request({
                             method: 'POST',

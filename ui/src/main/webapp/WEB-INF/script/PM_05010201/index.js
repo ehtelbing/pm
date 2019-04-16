@@ -204,7 +204,7 @@ Ext
             id: 'tabpanel',
             // xtype: 'tabpanel',
             height: "50%",
-            width: "50%",
+            width: "70%",
             activeTab: 0,
             region:"west",
             listeners: {
@@ -216,7 +216,7 @@ Ext
             id:'bomgrid',
             title:'BOM备件信息',
             height: "50%",
-            width: "50%",
+            width: "30%",
             // region:'center',
             region:"center",
             store:bomStore,
