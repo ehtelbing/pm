@@ -127,7 +127,8 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('V_V_EQUTYPE').select(store.last());
+                Ext.getCmp('V_V_EQUTYPE').select(store.first());
+                // Ext.getCmp('V_V_EQUTYPE').select(store.last());
                 sbtypeload = true;
                 _init();
             }
@@ -442,10 +443,10 @@ Ext.onReady(function () {
         header : false,
         frame : true,
         layout : 'column',
-        layout : {
-            type:'table',
-            columns:5
-        },
+        // layout : {
+        //     type:'table',
+        //     columns:5
+        // },
         defaults : {
             labelAlign : 'right',
             // labelWidth : 100,
@@ -783,7 +784,7 @@ Ext.onReady(function () {
                 var data=Ext.getCmp('faultItemPanel').getStore().getAt(
                     colIndex).data;
                 window.open(AppUrl + "page/FAULT_1405/equip.html?V_GUID=" + data.V_GUID,
-                    "", "dialogHeight:304px;dialogWidth:704px;top=50px,left=100px,autoScroll: true");
+                    "", "dialogHeight:600px;dialogWidth:1100px;top=50px,left=100px,autoScroll: true");
                 /*if(data.V_STATE=='2'){
                     Ext.MessageBox.show({
                                 title: '提示',

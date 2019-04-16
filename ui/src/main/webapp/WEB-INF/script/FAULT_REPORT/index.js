@@ -127,7 +127,9 @@ Ext.onReady(function () {
         },
         listeners: {
             load: function (store, records) {
-                Ext.getCmp('V_V_EQUTYPE').select(store.last());
+                // Ext.getCmp('V_V_EQUTYPE').select(store.last());
+                Ext.getCmp('V_V_EQUTYPE').select(store.first());
+
                 sbtypeload = true;
                 _init();
             }

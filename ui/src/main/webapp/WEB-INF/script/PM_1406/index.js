@@ -219,7 +219,8 @@ Ext.onReady(function () {
             'V_TYPENAME', 'V_EQUCHILD_NAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
         'V_ORDERID','V_ORDERGUID'],
         proxy: {
-            url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_SEL',
+            // url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_SEL',
+            url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_SEL_NEW',
             type: 'ajax',
             actionMethods: {
                 read: 'POST'
@@ -436,8 +437,8 @@ Ext.onReady(function () {
             width: 40,
             align: 'center'
         }, {
-            text: '工单号',
-            dataIndex: 'V_ORDERID',
+            text: '对应的工单',
+            dataIndex: 'V_GUID',
             align: 'center',
             flex: 1,
             renderer:rendererGD
@@ -506,11 +507,11 @@ Ext.onReady(function () {
 
 });
 function rendererGD(a, value, metaData){
-    return '<a href="javascript:goToGD(\'' + metaData.data.V_ORDERGUID + '\')">' + a + '</a>';
+    return '<a href="javascript:goToGD(\'' + metaData.data.V_GUID + '\')">详细</a>';
 }
-function goToGD(V_ORDERGUID){
-    window.open(AppUrl + "page/PM_090901/index.html?V_GUID="
-        + V_ORDERGUID,
+function goToGD(V_GUID){
+    window.open(AppUrl + "page/PM_1406/workorder.html?V_GUID="
+        + V_GUID,
         "", "dialogHeight:700px;dialogWidth:1100px");
 }
 function _init() {

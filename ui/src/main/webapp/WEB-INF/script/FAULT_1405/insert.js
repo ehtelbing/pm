@@ -295,8 +295,8 @@ Ext.onReady(function () {
         region: 'center',
         //title: '<div align="center"></div>',
         width: '100%',
-        // height: 595,
-        // baseCls: 'my-panel-no-border',
+        // height: 570,
+        baseCls: 'my-panel-no-border',
         bodyPadding: 10,
         fileUpload: true,
         items: [{
@@ -603,15 +603,15 @@ Ext.onReady(function () {
     });
 
     var uploadpanel= Ext.create('Ext.form.FormPanel', {
-        border: false,
+        // border: false,
         frame: true,
         id: 'uploadpanel',
         region: 'south',
-        // baseCls: 'my-panel-no-border',
+        baseCls: 'my-panel-no-border',
         width: '100%',
         layout: 'vbox',
-        // height: 595,
-        bodyPadding: 10,
+        // height: 300,
+        bodyPadding: 3,
         fileUpload: true,
 
         items: [
@@ -630,7 +630,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 labelAlign: 'right',
                 inputWidth: 201,
-                style: ' margin: 5px 0px 0px 0px',
+                style: ' margin: 5px 0px 0px -2px',
                 buttonText: '选择文件',
                 allowBlank: false
             }, {
@@ -638,6 +638,7 @@ Ext.onReady(function () {
                 xtype: 'button',
                 text: '上传',
                 style: ' margin: 5px 0px 0px 10px',
+                icon: imgpath + '/accordion_collapse.png',
                 handler: _upLoadFile
             }, {
                 xtype: 'hidden',
@@ -687,7 +688,13 @@ Ext.onReady(function () {
             //     clicksToEdit : 1
             // }) ],
             columns : [
+                {
+                    text : '删除',
+                    // dataIndex : 'NUMBER',
+                    align : 'center',
+                    width : 80, renderer :_delete
 
+                },
                 {
                     text : '设备分类',
                     dataIndex : 'V_EQUTYPENAME',
@@ -713,12 +720,6 @@ Ext.onReady(function () {
                     dataIndex : 'V_EQUSITENAME',
                     align : 'center',
                     width : 200
-                },{
-                    text : '删除',
-                    // dataIndex : 'NUMBER',
-                    align : 'center',
-                    width : 80, renderer :_delete
-
                 }
             ]
         });
@@ -755,7 +756,7 @@ Ext.onReady(function () {
                 region : 'west',
                 frame : true,
                 // border : false,
-                width : 350,
+                width : 260,
                 store : treeStore,
                 rootVisible : false,
                 listeners : {
@@ -764,8 +765,10 @@ Ext.onReady(function () {
             },
             {
             region : 'east',
-            border : false,
-            width : 650,
+            // border : false,
+            frame: true,
+            autoScroll:true,
+            width : 590,
             items : [ addPanel,uploadpanel]
         }
         ]
@@ -1031,7 +1034,7 @@ function filequery2(guid) {
 }
 
 function _hideFault() {
-    Ext.getCmp('addFaultWindow').close();
+    window.close();
 }
 
 function _hideFault2() {

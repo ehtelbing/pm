@@ -158,12 +158,14 @@
 						<input type="text" id="V_EQUIP_NAME" readonly="readonly"
 							   style="background-color: #FFFF99; height:20px; line-height:20px; width:100%"/>
 					</td>
-					<td style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF" rowspan="2">
-						工单描述：
+
+
+					<td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+						检修单位：
 					</td>
-					<td style="border-bottom: 0; border-right: 0px;" rowspan="2">
-						<textarea id="V_SHORT_TXT"
-								  style="width: 97%; height:60px; background-color: #FFFF99;"></textarea>
+					<td style="border-bottom: 1px solid #000; border-right: 0px;">
+						<select id="V_DEPTNAMEREPARI" onchange="loadSPR()"
+								style="background-color: #FFFF99; width:98%; height:30px"></select>
 					</td>
 				</tr>
 				<tr>
@@ -177,7 +179,13 @@
 						<input type="text" id="V_EQUIP_NO" readonly="readonly"
 							   style="background-color: #FFFF99; width:100%; height:20px; line-height:20px"/>
 					</td>
-
+					<td style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF" rowspan="2">
+						工单描述：
+					</td>
+					<td style="border-bottom: 0; border-right: 0px;" rowspan="2">
+						<textarea id="V_SHORT_TXT"
+								  style="width: 97%; height:60px; background-color: #FFFF99;"></textarea>
+					</td>
 				</tr>
 				<tr>
 					<td style="border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF">
@@ -187,13 +195,7 @@
 						<input type="text" id="V_FUNC_LOC" readonly="readonly"
 							   style="background-color: #FFFF99; height:30px; width:100%; line-height:30px"/>
 					</td>
-					<td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
-						检修单位：
-					</td>
-					<td style="border-bottom: 1px solid #000; border-right: 0px;">
-						<select id="V_DEPTNAMEREPARI" onchange="loadSPR()"
-								style="background-color: #FFFF99; width:98%; height:30px"></select>
-					</td>
+
 				</tr>
 			</table>
 		</td>

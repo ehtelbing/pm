@@ -26,7 +26,7 @@ Ext.onReady(function() {
         proxy : {
             type : 'ajax',
             async : false,
-            url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
+            url : AppUrl + 'cxy/PRO_PM_WORKORDER_ONLY',
             actionMethods : {
                 read : 'POST'
             },
@@ -173,7 +173,7 @@ Ext.onReady(function() {
                 {id : 'selshortTxt',xtype : 'textfield', width : 158,emptyText : '按工单描述模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'selmatDesc',xtype : 'textfield', width : 158,emptyText : '按使用物料模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}},
-            {id : 'qxgd',xtype : 'button', icon : '../../images/gif/add.png',text : '添加', width : 80,listeners: {click: _addqxgdOpen}}
+            // {id : 'qxgd',xtype : 'button', icon : '../../images/gif/add.png',text : '添加', width : 80,listeners: {click: _addqxgdOpen}}
                 // { xtype : 'button',text : '导出excel',icon : '../../images/gif/grid.png',width : 85, listeners : { click : OnClickExcelButton}}
 
                 ]
@@ -200,6 +200,16 @@ Ext.onReady(function() {
             align : 'center',
             renderer : left
         }, {
+            text: '关联事故',
+            dataIndex: 'V_ORDERGUID',
+            align: 'center',
+            width: 100,
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+
+                return '<a href="#" onclick="_preViewFault(\'' +record.data.V_ORGCODE+ '\',\''+record.data.V_DEPTCODE+'\',\''+record.data.V_ORDERGUID+'\')">关联事故</a>';
+            }
+        },
+            {
             text : '流程明细',
             dataIndex : 'V_ORDERGUID',
             width : 100,
@@ -294,15 +304,6 @@ Ext.onReady(function() {
             width : 100,
             align : 'center',
             renderer : left
-        },{
-            text: '关联事故',
-            dataIndex: 'V_ORDERGUID',
-            align: 'center',
-            width: 100,
-            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-
-                return '<a href="#" onclick="_preViewFault(\'' +record.data.V_ORGCODE+ '\',\''+record.data.V_DEPTCODE+'\',\''+record.data.V_ORDERGUID+'\')">关联事故</a>';
-            }
         } ],
         // listeners : {
         //     itemdblclick : itemClick
