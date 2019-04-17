@@ -13,31 +13,6 @@ if(usercode!=''){
 }
 
 Ext.onReady(function() {
-
-    var gridStore = Ext.create('Ext.data.Store', {
-        id : 'gridStore',
-        pageSize : 50,
-        autoLoad : false,
-        fields : [ 'V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
-            'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME','V_ORGCODE','V_DEPTCODE',
-            'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE',
-            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME','WORKORDERNUM','PLANTIME','FACTTIME'],
-
-        proxy : {
-            type : 'ajax',
-            async : false,
-            url : AppUrl + 'cxy/PRO_PM_WORKORDER_ONLY',
-            actionMethods : {
-                read : 'POST'
-            },
-            reader : {
-                type : 'json',
-                root : 'list',
-                total: 'total'
-            }
-        }
-    });
-
     var ckstore = Ext.create("Ext.data.Store", {
         autoLoad : true,
         storeId : 'ckstore',
@@ -151,6 +126,31 @@ Ext.onReady(function() {
             }
         }
     });
+    var gridStore = Ext.create('Ext.data.Store', {
+        id : 'gridStore',
+        pageSize : 50,
+        autoLoad : false,
+        fields : [ 'V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
+            'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME','V_ORGCODE','V_DEPTCODE',
+            'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE',
+            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME','WORKORDERNUM','PLANTIME','FACTTIME'],
+
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url : AppUrl + 'cxy/PRO_PM_WORKORDER_ONLY',
+            actionMethods : {
+                read : 'POST'
+            },
+            reader : {
+                type : 'json',
+                root : 'list',
+                total: 'total'
+            }
+        }
+    });
+
+
     var panel =Ext.create('Ext.panel.Panel',{
         id : 'panellow',
         region : 'north',
@@ -394,7 +394,7 @@ Ext.onReady(function() {
         // if(tabtool){
         //     addTab();
         // }
-
+        QueryGrid();
     });
 
     Ext.getCmp("ck").on("select",function() {
@@ -457,6 +457,7 @@ Ext.onReady(function() {
             store.proxy.extraParams.V_V_PAGE= Ext.getCmp('page').store.currentPage;
             store.proxy.extraParams.V_V_PAGESIZE= Ext.getCmp('page').store.pageSize;
         });
+
     //addTab();
 });
 

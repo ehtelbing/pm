@@ -414,10 +414,10 @@ Ext.onReady(function () {
         header : false,
         frame : true,
         layout : 'column',
-        layout : {
-            type:'table',
-            columns:5
-        },
+        // layout : {
+        //     type:'table',
+        //     columns:5
+        // },
         defaults : {
             labelAlign : 'right',
             // labelWidth : 100,

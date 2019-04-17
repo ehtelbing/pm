@@ -348,7 +348,7 @@ Ext.onReady(function () {
                 fieldLabel: '厂矿',
                 editable: false,
                 labelWidth: 70,
-                width: 280,
+                width: 270,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 listeners: {
@@ -373,8 +373,8 @@ Ext.onReady(function () {
                 fieldLabel: '作业区',
                 editable: false,
                 labelWidth: 70,
-                width: 280,
-                style: ' margin: 5px 0px 0px -8px',
+                width: 270,
+                style: ' margin: 5px 0px 0px -3px',
                 labelAlign: 'right'
                 // listeners: {
                 //     select: function (field, newValue, oldValue) {
@@ -401,7 +401,13 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 280
+                width: 270
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 0px 5px'
             },{
                 xtype: 'textfield',
                 id: 'faultpart2',
@@ -409,7 +415,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 280
+                width: 270
             }
 
             ]
@@ -431,7 +437,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 280
+                width: 270
 
             },{
 
@@ -445,9 +451,9 @@ Ext.onReady(function () {
                 fieldLabel: '故障等级',
                 editable: false,
                 labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
+                style: ' margin: 5px 0px 0px -3px',
                 labelAlign: 'right',
-                width: 280
+                width: 270
             }
 
             ]
@@ -467,16 +473,16 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 280,
+                width: 270,
                 baseCls: 'margin-bottom'
             },{
                 xtype: 'textfield',
                 id: 'faultxz2',
                 fieldLabel: '性质',
                 labelWidth: 70,
-                style: ' margin: 5px 0px 0px -6px',
+                style: ' margin: 5px 0px 0px -3px',
                 labelAlign: 'right',
-                width: 280 }
+                width: 270 }
 
             ]
         }, {
@@ -491,11 +497,23 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 250
+                nanText: "请输入有效数字",
+                minValue:'0',
+                validateOnBlur: false,
+                validateOnChange: false,
+                hideTrigger: true,
+                allowBlank: false,
+                width: 240
             }, {
                 xtype: 'label',
                 style: ' margin: 8px 0px 0px 4px',
                 text:'万元'
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
             }
 
             ]
@@ -510,7 +528,13 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 552
+                width: 537
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
             }
 
             ]
@@ -526,7 +550,13 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 552
+                width: 537
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
             }
 
             ]
@@ -542,7 +572,13 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 552
+                width: 537
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
             }
 
             ]
@@ -558,7 +594,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 552
+                width: 537
             }
 
             ]
@@ -574,7 +610,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 552
+                width: 537
             }
 
             ]
@@ -590,7 +626,7 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 552
+                width: 537
             }
 
             ]
@@ -695,7 +731,7 @@ Ext.onReady(function () {
                 }]},{
                     columnWidth: 1,
                     height: 225,
-                    width: 550,
+                    width: 540,
                     margin: '10px 0px 0px 0px',
                     items: filegridPanel2
             }
@@ -1112,15 +1148,19 @@ function _saveBtnFault2() {
         (parameters.V_V_IP == undefined) ? V_V_IP = '' : V_V_IP = parameters.V_V_IP;
     }
 
-    if (!_validate(Ext.getCmp('addPanel2'))) {
+    var htmlText = "请录入<font style=\"font-size:18px;font-weight:bold;color:red\">*</font >必填项!";
+    if(Ext.getCmp('faultname2').getValue()==''||Ext.getCmp('faultclgc2').getValue()==''
+        ||Ext.getCmp('faultRea2').getValue()==''||Ext.getCmp('faultDesc2').getValue()==''
+        ||Ext.getCmp('faultss2').getValue()==''||Ext.getCmp('faultss2').getValue()==null){
         Ext.MessageBox.show({
             title: '提示',
-            msg: '请录入这些必填项!',
+            msg: htmlText,
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.ERROR
         });
         return;
     }
+
 
     if (Ext.getCmp('V_V_ORGCODE2').getValue() != '%' && Ext.getCmp('V_V_DEPTCODE2').getValue() != '%' && Ext.getCmp('equFaultname2').getValue() != '%') {
         Ext.Ajax.request({
