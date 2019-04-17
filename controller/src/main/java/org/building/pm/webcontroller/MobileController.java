@@ -7,6 +7,7 @@ import org.building.pm.controller.CjyController;
 import org.building.pm.service.CjyService;
 import org.building.pm.service.CxyService;
 import org.building.pm.service.HpService;
+import org.building.pm.service.ZdhService;
 import org.building.pm.webpublic.*;
 import org.building.pm.webservice.MobileService;
 import org.codehaus.xfire.client.Client;
@@ -56,6 +57,9 @@ public class MobileController {
 
     @Autowired
     private HpService hpService;
+
+    @Autowired
+    private ZdhService zdhService;
 
     /*
      * mes移动端--登录
@@ -158,6 +162,48 @@ public class MobileController {
             throws NoSuchAlgorithmException, SQLException, IOException {
 
         Map<String, Object> result = cxyService.PRO_PM_WORKORDER_SBGZ_CREATE(V_V_PERCODE, V_V_PERNAME, V_V_GUID);
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        JSONArray json = JSONArray.fromObject(result);
+        out.print(json.toString());
+        out.close();
+    }
+
+    /*检修单位*/
+    @RequestMapping(value = "RepairDeptSel", method = RequestMethod.GET)
+    @ResponseBody
+    public void RepairDeptSel(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                              HttpServletRequest request,
+                              HttpServletResponse response)
+            throws SQLException, IOException {
+        Map<String, Object> result = zdhService.fixdept_sel(V_V_DEPTCODE);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        JSONArray json = JSONArray.fromObject(result);
+        out.print(json.toString());
+        out.close();
+    }
+
+
+    /*厂矿/作业区查询*/
+    @RequestMapping(value = "PRO_BASE_DEPT_VIEW_ROLE", method = RequestMethod.GET)
+    @ResponseBody
+    public void mobile_EquSel(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                              @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                              @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
+                              HttpServletRequest request,
+                              HttpServletResponse response)
+            throws NoSuchAlgorithmException, SQLException, IOException {
+
+
+        Map<String, Object> result = mobileService.PRO_BASE_DEPT_VIEW_ROLE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_DEPTTYPE);
+
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setCharacterEncoding("UTF-8");
@@ -285,41 +331,6 @@ public class MobileController {
         out.close();
     }
 
-    /*厂矿/作业区查询*/
-    @RequestMapping(value = "PRO_BASE_DEPT_VIEW_ROLE", method = RequestMethod.GET)
-    @ResponseBody
-    public void mobile_EquSel(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
-                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                              @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
-                              @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
-                              HttpServletRequest request,
-                              HttpServletResponse response)
-            throws NoSuchAlgorithmException, SQLException, IOException {
-
-        List<SelectClass> item = new ArrayList<SelectClass>();
-
-        Map<String, Object> result = mobileService.PRO_BASE_DEPT_VIEW_ROLE(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_DEPTTYPE);
-
-        if (result.size() > 0) {
-            List list = (List) result.get("list");
-
-            for (int i = 0; i < list.size(); i++) {
-                Map map = (Map) list.get(i);
-                SelectClass equInf = new SelectClass();
-
-                equInf.setCode(map.get("V_DEPTCODE") == null ? "" : map.get("V_DEPTCODE").toString());
-                equInf.setName(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
-                item.add(equInf);
-            }
-        }
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        JSONArray json = JSONArray.fromObject(item);
-        out.print(json.toString());
-        out.close();
-    }
 
     /*设备类型查询*/
     @RequestMapping(value = "PRO_GET_DEPTEQUTYPE_PER", method = RequestMethod.GET)

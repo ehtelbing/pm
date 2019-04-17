@@ -226,23 +226,14 @@ public class MobileService {
             cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
-            while (rs.next()) {
-                Map sledata = new HashMap();
-                sledata.put("V_DEPTNAME", rs.getString("V_DEPTNAME"));
-                sledata.put("V_DEPTCODE", rs.getString("V_DEPTCODE"));
-                sledata.put("V_SAP_DEPT", rs.getString("V_SAP_DEPT"));
-                sledata.put("V_SAP_JHGC", rs.getString("V_SAP_JHGC"));
-                sledata.put("V_SAP_WORK", rs.getString("V_SAP_WORK"));
-                resultList.add(sledata);
-            }
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+
         } catch (SQLException e) {
             logger.error(e);
         } finally {
             cstmt.close();
             conn.close();
         }
-        result.put("list", resultList);
         logger.debug("result:" + result);
         logger.info("end PRO_BASE_DEPT_VIEW_ROLE");
         return result;
