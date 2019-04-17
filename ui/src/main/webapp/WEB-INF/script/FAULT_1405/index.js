@@ -2078,7 +2078,7 @@ function _addModellFault() {
 //             buttons: Ext.MessageBox.OK,
 //             icon: Ext.MessageBox.ERROR
 //         });
-//         return;
+//         return;故障名称
 //     }
 //
 //     if (Ext.getCmp('V_V_ORGCODE1').getValue() != '%' && Ext.getCmp('V_V_DEPTCODE1').getValue() != '%' && Ext.getCmp('V_V_EQUTYPE1').getValue() != '%' && Ext.getCmp('V_EQUNAME1').getValue() != '%' && Ext.getCmp('SUB_V_EQUNAME1').getValue() != '%' && Ext.getCmp('equFaultname1').getValue() != '%') {
