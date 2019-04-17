@@ -3740,4 +3740,80 @@ public class Dx_fileService {
         logger.info("end PM_DEFECT_LOG_FROMPRO_IN");
         return result;
     }
+    // 年计划待办查找
+    public HashMap PM_PLAN_YEAR_GET(String V_V_GUID) throws SQLException {
+        logger.info("begin PM_PLAN_YEAR_GET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_GET" + "(:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_GET");
+        return result;
+    }
+    //维修计划待办查找
+    public HashMap PRO_PM_03_PLAN_PROJECT_GET(String V_V_GUID) throws SQLException {
+        logger.info("begin PRO_PM_03_PLAN_PROJECT_GET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_PROJECT_GET" + "(:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_PROJECT_GET");
+        return result;
+    }
+    //审批页缺陷待办
+
+    public HashMap PM_03_PROJECT_DEFECT_SEL_ALL(String V_V_PROJECT_GUID) throws SQLException {
+        logger.info("begin PM_03_PROJECT_DEFECT_SEL_ALL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PROJECT_DEFECT_SEL_ALL" + "(:V_V_PROJECT_GUID,:RET)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PROJECT_DEFECT_SEL_ALL");
+        return result;
+    }
 }

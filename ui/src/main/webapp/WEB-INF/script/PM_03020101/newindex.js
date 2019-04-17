@@ -875,15 +875,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon:dxImgPath + '/lsbc.png',
             handler:btnSaveProject
         },
+
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
-        {
-            xtype: 'button',
-            id:'startFlow',
-            text: '上报',
-            margin: '0 0 5 0',
-            iconCls:'Report',
-            handler:btnFlowStart
-        },
         {
             xtype: 'button',
             text: '计划选择',
@@ -918,7 +911,17 @@ var northPanel = Ext.create('Ext.form.Panel', {
         },{xtype:'label',id:'label11',width:55,text:'附件数量'},{xtype:'label',
             id:'fjsl',
             width:30,
-            margin: '5 0 5 0'}
+            margin: '5 0 5 0'},
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
+        {
+            xtype: 'button',
+            id:'startFlow',
+            text: '上报',
+            margin: '0 0 5 0',
+            iconCls: 'buy-button',
+            icon:dxImgPath + '/wlmx.png',
+            handler:btnFlowStart
+        }
     ]
 });
 /*项目信息*/
@@ -2841,14 +2844,48 @@ Ext.onReady(function () {
         'background-color':'rgb(45,60,137)',
         "height":"35px"
     };
-    Ext.get('toolbar-1030').setStyle(tbarStyle);
-    Ext.get('tbtext-1031').setStyle('color','white');
+    if(Ext.get('toolbar-1030')!=null){
+        Ext.get('toolbar-1030').setStyle(tbarStyle);
+        Ext.get('tbtext-1031').setStyle('color','white');
+    }else if(Ext.get('toolbar-1031')!=null){
+        Ext.get('toolbar-1031').setStyle(tbarStyle);
+        Ext.get('tbtext-1032').setStyle('color','white');
+    }else if(Ext.get('toolbar-1032')!=null){
+        Ext.get('toolbar-1032').setStyle(tbarStyle);
+        Ext.get('tbtext-1033').setStyle('color','white');
+    }else if(Ext.get('toolbar-1033')!=null){
+        Ext.get('toolbar-1033').setStyle(tbarStyle);
+        Ext.get('tbtext-1034').setStyle('color','white');
+    }
 
-    Ext.get('toolbar-1050').setStyle(tbarStyle);
-    Ext.get('tbtext-1051').setStyle('color','white');
+    if(Ext.get('toolbar-1050')!=null){
+        Ext.get('toolbar-1050').setStyle(tbarStyle);
+        Ext.get('tbtext-1051').setStyle('color','white');
+    }else if(Ext.get('toolbar-1051')!=null){
+        Ext.get('toolbar-1051').setStyle(tbarStyle);
+        Ext.get('tbtext-1052').setStyle('color','white');
+    }else if(Ext.get('toolbar-1051')!=null){
+        Ext.get('toolbar-1051').setStyle(tbarStyle);
+        Ext.get('tbtext-1052').setStyle('color','white');
+    }else if(Ext.get('toolbar-1052')!=null){
+        Ext.get('toolbar-1052').setStyle(tbarStyle);
+        Ext.get('tbtext-1053').setStyle('color','white');
+    }
 
-    Ext.get('toolbar-1066').setStyle(tbarStyle);
-    Ext.get('tbtext-1067').setStyle('color','white');
+    if(Ext.get('toolbar-1066')!=null){
+        Ext.get('toolbar-1066').setStyle(tbarStyle);
+        Ext.get('tbtext-1067').setStyle('color','white');
+    }else if(Ext.get('toolbar-1067')!=null){
+        Ext.get('toolbar-1067').setStyle(tbarStyle);
+        Ext.get('tbtext-1068').setStyle('color','white');
+    }else if(Ext.get('toolbar-1068')!=null){
+        Ext.get('toolbar-1068').setStyle(tbarStyle);
+        Ext.get('tbtext-1069').setStyle('color','white');
+    }else if(Ext.get('toolbar-1069')!=null){
+        Ext.get('toolbar-1069').setStyle(tbarStyle);
+        Ext.get('tbtext-1070').setStyle('color','white');
+    }
+
 
     var yeartool = Ext.create('Ext.panel.Panel', {
         region:'north',
@@ -3069,7 +3106,7 @@ function QueryPageLoad(){
                 }
                 Ext.getCmp('tzze').setValue(resp.list[0].V_MONEYBUDGET==''?'0':resp.list[0].V_MONEYBUDGET);
 
-                if(resp.list[0].V_MONEYBUDGET=='99'){
+                if(resp.list[0].V_STATE=='99'){
                     Ext.getCmp('startFlow').show();
                     /*Ext.getCmp('agreeFlow').hide();
                     Ext.getCmp('disAgreeFlow').hide();*/
@@ -3080,7 +3117,7 @@ function QueryPageLoad(){
                 }
 
                 QueryZYQ();
-                QueryDefect()
+                QueryDefect();
                 QueryModel();
 
                 QueryMxInfAll();
@@ -3942,6 +3979,10 @@ function CreateGaunttGrid(){
 }
 //临时保存
 function btnSaveProject(){
+    if(Ext.data.StoreManager.lookup("qxGridStore").data.items.length<=0){
+        alert("缺陷不可以为空");
+        return false;
+    }
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_SET',
         method: 'POST',
@@ -3978,7 +4019,7 @@ function btnSaveProject(){
 
             V_V_ZBFS:'',
             V_V_SZ:'',
-            V_V_GUID_UP:'',
+            V_V_GUID_UP:'-1',
             V_V_WBS:'',
             V_V_WBS_TXT:'',
             V_V_SUMTIME:Ext.getCmp('jhgs').getValue(),
@@ -4091,6 +4132,10 @@ function IndexShow(value, metaData, record) {
 }
 //上报
 function btnFlowStart(){
+    if(Ext.data.StoreManager.lookup("qxGridStore").data.items.length<=0){
+        alert("缺陷不可以为空");
+        return false;
+    }
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_SET',
         method: 'POST',
@@ -4124,6 +4169,7 @@ function btnFlowStart(){
             V_V_CPGX:Ext.getCmp('cpgx').getValue(),
             V_V_SGFS:Ext.getCmp('sgfs').getValue(),
             V_V_SFXJ:Ext.getCmp('sfxj').getValue(),
+
             V_V_ZBFS:'',
             V_V_SZ:'',
             V_V_GUID_UP:'',
@@ -4135,47 +4181,77 @@ function btnFlowStart(){
             V_V_SPECIALTY_ZXNAME:'',
             V_V_BJF:Ext.getCmp('bjf').getValue(),
             V_V_CLF:Ext.getCmp('clf').getValue(),
-            V_V_SGF:Ext.getCmp('sgfy').getValue()
+            V_V_SGF:Ext.getCmp('sgfy').getValue(),
+            V_V_QSTEXT:Ext.getCmp('qstext').getValue()
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='成功'){
+
+                //流程发起
                 Ext.Ajax.request({
-                    url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_STATE_SEND',
-                    method: 'POST',
+                    url: AppUrl + 'Activiti/StratProcess',
                     async: false,
+                    method: 'post',
                     params: {
-                        V_V_GUID:Guid,
-                        V_V_STATECODE:'1'
+                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                        parVal: [Ext.util.Cookies.get('v_personcode'), Guid, Ext.getCmp('fzPer').getValue(), "请审批!", Ext.getCmp('content').getValue(), Ext.getCmp('ProjectCode').getValue(), "请审批！", "MaintainPlan"],
+                        processKey: processKey,
+                        businessKey: Guid,
+                        V_STEPCODE: 'Start',
+                        V_STEPNAME: V_STEPNAME,
+                        V_IDEA: '请审批！',
+                        V_NEXTPER: Ext.getCmp('fzPer').getValue(),
+                        V_INPER: Ext.util.Cookies.get('v_personcode')
                     },
-                    success: function (resp) {
-                        var resp=Ext.decode(resp.responseText);
-                        if(resp.V_INFO=='SUCCESS'){
+                    success: function (response) {
+                        if (Ext.decode(response.responseText).ret == 'OK') {
+
                             Ext.Ajax.request({
-                                url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_FLOW_LOG_SET',
+                                url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_STATE_SEND',
                                 method: 'POST',
                                 async: false,
                                 params: {
-                                    V_V_GUID:Guid,
-                                    V_V_FLOWCODE:'1',
-                                    V_V_FLOWNAME:'上报',
-                                    V_V_IDEA:'请审批',
-                                    V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
-                                    V_V_INPERNAME:Ext.util.Cookies.get('v_personname2'),
-                                    V_V_NEXTPERCODE:'',
-                                    V_V_NEXTPERNAME:''
+                                    V_V_GUID: Guid,
+                                    V_V_STATECODE: '1'
                                 },
                                 success: function (resp) {
-                                    var resp=Ext.decode(resp.responseText);
-                                    if(resp.V_INFO=='SUCCESS'){
-                                        alert('上报成功！');
+                                    var resp = Ext.decode(resp.responseText);
+                                    if (resp.V_INFO == 'SUCCESS') {
+                                        Ext.Ajax.request({
+                                            url: AppUrl + '/PM_03/PM_03_PLAN_YEAR_FLOW_LOG_SET',
+                                            method: 'POST',
+                                            async: false,
+                                            params: {
+                                                V_V_GUID: Guid,
+                                                V_V_FLOWCODE: '1',
+                                                V_V_FLOWNAME: '上报',
+                                                V_V_IDEA: '请审批',
+                                                V_V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
+                                                V_V_INPERNAME: Ext.util.Cookies.get('v_personname2'),
+                                                V_V_NEXTPERCODE: '',
+                                                V_V_NEXTPERNAME: ''
+                                            },
+                                            success: function (resp) {
+                                                var resp = Ext.decode(resp.responseText);
+                                                if (resp.V_INFO == 'SUCCESS') {
+                                                    alert('上报成功！');
+                                                    window.opener.selectGridTurn();
+                                                    window.close();
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             });
+
+                        } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                            Ext.Msg.alert('提示', '该流程发起失败！');
                         }
                     }
                 });
             }
+
         }
     });
 }

@@ -390,7 +390,31 @@ function QueryTabY() {
         }
     });
 }
-
+function QueryTabMain() {
+    Ext.ComponentManager.get("tabpanel").removeAll();
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/QueryTaskTypeNum',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            PersonCode: Ext.util.Cookies.get('v_personcode'),
+            FlowCode: Ext.getCmp('lxbh').getValue(),
+            ZyType: Ext.getCmp('zy').getValue()
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
+                for (var i = 0; i < resp.list.length; i++) {
+                    Ext.ComponentManager.get("tabpanel").add({
+                        id: resp.list[i].code,
+                        title: resp.list[i].name
+                    });
+                }
+                Ext.ComponentManager.get("tabpanel").setActiveTab(tabpage = "MaintainPlan");
+            }
+        }
+    });
+}
 function QuerySum() {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/QueryTaskListSum',

@@ -3490,6 +3490,53 @@ public class Dx_fileController {
         return data;
     }
 
+    // 年计划待办查找
+    @RequestMapping(value = "/PM_PLAN_YEAR_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PLAN_YEAR_GET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = dx_fileService.PM_PLAN_YEAR_GET(V_V_GUID);
+
+        List<Map<String, Object>> yearlist = (List) data.get("list");
+
+        result.put("list", yearlist);
+        result.put("success", true);
+        return result;
+    }
+    //维修计划待办查找
+    @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECT_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_PROJECT_GET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = dx_fileService.PRO_PM_03_PLAN_PROJECT_GET(V_V_GUID);
+
+        List<Map<String, Object>> dxfilelist = (List) data.get("list");
+
+        result.put("list", dxfilelist);
+        result.put("success", true);
+        return result;
+    }
+
+    //维修计划审批页缺陷查找
+
+    @RequestMapping(value = "PM_03_PROJECT_DEFECT_SEL_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PROJECT_DEFECT_SEL_ALL(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_03_PROJECT_DEFECT_SEL_ALL(V_V_PROJECT_GUID);
+        return data;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

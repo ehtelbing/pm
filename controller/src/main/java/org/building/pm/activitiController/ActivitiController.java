@@ -86,6 +86,9 @@ public class ActivitiController {
     private CxyService cxyService;
 
     @Autowired
+    private Dx_fileService dx_fileService;
+
+    @Autowired
     private CjyController cjyController;
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
@@ -681,6 +684,37 @@ public class ActivitiController {
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                     }
                 }
+                //yearplan
+                else if (taskmap.get("flow_type").toString().indexOf("YearPlan")!=-1) {
+                    equIp_name = (List) dx_fileService.PM_PLAN_YEAR_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    if (equIp_name.size() > 0) {
+                        Map equmap = (Map) equIp_name.get(0);
+                        taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                        taskmap.put("PLANSTART", equmap.get("PLANTJMONTH").toString());
+                        taskmap.put("PLANEND", equmap.get("PLANJGMONTH").toString());
+                        taskmap.put("PLANHOUR", equmap.get("PLANHOUR").toString());
+                        taskmap.put("OPERANAME", equmap.get("INPERNAME").toString());
+                        taskmap.put("ORGNAME", equmap.get("ORGNAME").toString());
+                        taskmap.put("DEPTNAME", equmap.get("DEPTCODE").toString());
+                        taskmap.put("ZYNAME", equmap.get("ZYNAME").toString());
+                    }
+                }
+                //projectPlan
+                else if (taskmap.get("flow_type").toString().indexOf("MaintainPlan")!=-1) {
+                    equIp_name = (List) dx_fileService.PRO_PM_03_PLAN_PROJECT_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    if (equIp_name.size() > 0) {
+                        Map equmap = (Map) equIp_name.get(0);
+                        taskmap.put("EQUNAME", equmap.get("EQUNAME").toString());
+                        taskmap.put("PLANSTART", equmap.get("V_BDATE").toString());
+                        taskmap.put("PLANEND", equmap.get("V_EDATE").toString());
+                        taskmap.put("PLANHOUR", equmap.get("V_SUMTIME").toString());
+                        taskmap.put("OPERANAME", equmap.get("V_INMAN").toString());
+                        taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                        taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                        taskmap.put("ZYNAME", equmap.get("V_SPECIALTYNAME").toString());
+                    }
+                }
+
                 User user = identityService.createUserQuery()
                         .userId(taskmap.get("originator").toString()).singleResult();
 
@@ -1020,6 +1054,9 @@ public class ActivitiController {
             flowtype = "工单";
         }
         if (processKey.indexOf("Fault") != -1) {
+            flowtype = "事故";
+        }
+        if(processKey.indexOf("Fault") != -1) {
             flowtype = "事故";
         }
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);

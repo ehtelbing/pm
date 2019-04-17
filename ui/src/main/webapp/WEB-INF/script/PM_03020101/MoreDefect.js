@@ -14,6 +14,7 @@ var gridStore= Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
+        // url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
         url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
         actionMethods: {
             read: 'POST'
