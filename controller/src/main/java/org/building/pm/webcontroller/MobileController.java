@@ -296,7 +296,7 @@ public class MobileController {
     @RequestMapping(value="MobileFSelectWork",method=RequestMethod.GET)
     @ResponseBody
     public void MobileFSelectWork(@RequestParam(value = "PersonCode") String PersonCode,
-                                  @RequestParam(value = "FlowType") String FlowType,
+//                                  @RequestParam(value = "FlowType") String FlowType,
                                   @RequestParam(value = "FlowCode") String FlowCode,
                                   @RequestParam(value = "ZyType") String ZyType,
                                   @RequestParam(value = "Page") String Page,
@@ -305,7 +305,7 @@ public class MobileController {
                                   HttpServletResponse resp)throws NoSuchAlgorithmException, SQLException, IOException {
         Map result = new HashMap();
         List resultlist = new ArrayList();
-
+        String FlowType="Fault";
         int total = 0;
         int start = (Integer.valueOf(Page) - 1) * Integer.valueOf(PageSize);
         int limit = Integer.valueOf(PageSize);
