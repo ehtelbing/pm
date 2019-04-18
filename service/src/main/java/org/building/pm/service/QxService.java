@@ -809,7 +809,33 @@ public class QxService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end //        logger.info(\"begin PRO_PM_07_DEFECT_EDIT\");\n");
+        logger.info("end //        logger.info(\"begin PRO_DEFECT_PART_WORKORDER_S\");\n");
+        return result;
+    }
+
+    public List<Map> PRO_DEFECT_YZJ_CREATE(String V_V_PERCODE,String V_V_MODEL_GUID) throws SQLException {
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_DEFECT_YZJ_CREATE" + "(:V_V_PERCODE,:V_V_MODEL_GUID,:V_INFO)}");
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_MODEL_GUID", V_V_MODEL_GUID);
+            cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end //        logger.info(\"begin PRO_DEFECT_YZJ_CREATE\");\n");
         return result;
     }
 
