@@ -76,7 +76,7 @@ public class MobileController {
 
     @Autowired
     private IdentityService identityService;
-    @Autowired
+
 
     /*
      * mes移动端--登录
@@ -264,25 +264,25 @@ public class MobileController {
     update 2019/04/17
     */
     /*事故独立工单下达*/
-    @RequestMapping(value="MobileFSaveWork",method=RequestMethod.GET)
+    @RequestMapping(value = "MobileFSaveWork", method = RequestMethod.GET)
     @ResponseBody
-    public void MobileFSaveWork(@RequestParam(value="V_V_PERCODE") String V_V_PERCODE,
-                                @RequestParam(value="V_V_PERNAME") String V_V_PERNAME,
-                                @RequestParam(value="V_V_EQUCODE") String V_V_EQUCODE,
-                                @RequestParam(value="V_V_ORGCODE") String V_V_ORGCODE,
-                                @RequestParam(value="V_V_DEPTCODE") String V_V_DEPTCODE,
-                                @RequestParam(value="V_V_WORKORDER_TYPE") String V_V_WORKORDER_TYPE,
-                                @RequestParam(value="V_V_ORDERGUID") String V_V_ORDERGUID,
-                                @RequestParam(value="V_V_SHORT_TXT") String V_V_SHORT_TXT,
-                                @RequestParam(value="V_V_DEPTCODEREPAIR") String V_V_DEPTCODEREPAIR,
-                                @RequestParam(value="V_D_START_DATE") String V_D_START_DATE,
-                                @RequestParam(value="V_D_FINISH_DATE") String V_D_FINISH_DATE,
-                                @RequestParam(value="V_V_WBS") String V_V_WBS,
-                                @RequestParam(value="V_V_WBS_TXT") String V_V_WBS_TXT,
+    public void MobileFSaveWork(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                @RequestParam(value = "V_V_WORKORDER_TYPE") String V_V_WORKORDER_TYPE,
+                                @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                @RequestParam(value = "V_V_DEPTCODEREPAIR") String V_V_DEPTCODEREPAIR,
+                                @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
                                 HttpServletRequest request,
-                                HttpServletResponse resp)throws NoSuchAlgorithmException, SQLException, IOException {
-        Map data=cxyService.PRO_PM_WORKORDER_F_SAVE(V_V_PERCODE,V_V_PERNAME,V_V_EQUCODE,V_V_ORGCODE,V_V_DEPTCODE,
-                V_V_WORKORDER_TYPE,V_V_ORDERGUID,V_V_SHORT_TXT,V_V_DEPTCODEREPAIR,V_D_START_DATE,V_D_FINISH_DATE,V_V_WBS,V_V_WBS_TXT);
+                                HttpServletResponse resp) throws NoSuchAlgorithmException, SQLException, IOException {
+        Map data = cxyService.PRO_PM_WORKORDER_F_SAVE(V_V_PERCODE, V_V_PERNAME, V_V_EQUCODE, V_V_ORGCODE, V_V_DEPTCODE,
+                V_V_WORKORDER_TYPE, V_V_ORDERGUID, V_V_SHORT_TXT, V_V_DEPTCODEREPAIR, V_D_START_DATE, V_D_FINISH_DATE, V_V_WBS, V_V_WBS_TXT);
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
@@ -293,7 +293,7 @@ public class MobileController {
     }
 
     /*事故独立工单待办查询*/
-    @RequestMapping(value="MobileFSelectWork",method=RequestMethod.GET)
+    @RequestMapping(value = "MobileFSelectWork", method = RequestMethod.GET)
     @ResponseBody
     public void MobileFSelectWork(@RequestParam(value = "PersonCode") String PersonCode,
 //                                  @RequestParam(value = "FlowType") String FlowType,
@@ -302,28 +302,28 @@ public class MobileController {
                                   @RequestParam(value = "Page") String Page,
                                   @RequestParam(value = "PageSize") String PageSize,
                                   HttpServletRequest request,
-                                  HttpServletResponse resp)throws NoSuchAlgorithmException, SQLException, IOException {
+                                  HttpServletResponse resp) throws NoSuchAlgorithmException, SQLException, IOException {
         Map result = new HashMap();
         List resultlist = new ArrayList();
-        String FlowType="Fault";
+        String FlowType = "Fault";
         int total = 0;
         int start = (Integer.valueOf(Page) - 1) * Integer.valueOf(PageSize);
         int limit = Integer.valueOf(PageSize);
         List<Task> taskList = null;
         if (FlowCode.equals("")) {
             if (PersonCode.equals("ActivitiManage")) {
-                if(ZyType.equals("%") || ZyType.equals("")){
+                if (ZyType.equals("%") || ZyType.equals("")) {
                     taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").count();
-                }else{
+                } else {
                     taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                 }
             } else {
-                if(ZyType.equals("%") || ZyType.equals("")){
+                if (ZyType.equals("%") || ZyType.equals("")) {
                     taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").count();
-                }else{
+                } else {
                     taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                 }
@@ -331,19 +331,19 @@ public class MobileController {
             }
         } else {
             if (PersonCode.equals("ActivitiManage")) {
-                if(ZyType.equals("%") || ZyType.equals("")){
+                if (ZyType.equals("%") || ZyType.equals("")) {
                     taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
-                }else{
+                } else {
                     taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                 }
 
             } else {
-                if(ZyType.equals("%") || ZyType.equals("")){
+                if (ZyType.equals("%") || ZyType.equals("")) {
                     taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
-                }else{
+                } else {
                     taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                     total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                 }
@@ -383,9 +383,9 @@ public class MobileController {
                 taskmap.put(var.getVariableName(), var.getValue());
             }
 
-            if (taskmap.get("flow_type").toString().indexOf("Fault")!=-1) {
+            if (taskmap.get("flow_type").toString().indexOf("Fault") != -1) {
 //                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
-                List<Map> equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                List<Map> equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey") == null ? "" : taskmap.get("BusinessKey").toString()).get("list");
                 if (equIp_name.size() > 0) {
                     Map equmap = (Map) equIp_name.get(0);
                     taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
@@ -422,7 +422,7 @@ public class MobileController {
 
     /*
      * mes移动端菜单
-     * */
+     **/
     @RequestMapping(value = "mobile_menu", method = RequestMethod.GET)
     @ResponseBody
     public void login(@RequestParam(value = "IS_V_ROLECODE") String IS_V_ROLECODE,
