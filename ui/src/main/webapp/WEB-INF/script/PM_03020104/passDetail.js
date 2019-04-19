@@ -6,7 +6,7 @@ if(Ext.urlDecode(location.href.split("?")[1])!=null){
 }
 Ext.onReady(function(){
     var gridStore=Ext.create('Ext.data.Store',{
-       id:'gridStore',
+        id:'gridStore',
         fields:['INDATE','INPERCODE','V_PERSONNAME','PASS_STATE','PASS_STATENAME'],
         autoLoad:true,
         proxy: {
@@ -39,11 +39,11 @@ Ext.onReady(function(){
             {text: '审批状态',width: 160, dataIndex: 'PASS_STATENAME', align: 'center'}
         ]
     });
-   Ext.create('Ext.container.Viewport',{
-       id:'main',
-       layout:'border',
-       items:[girdPanel]
-   })
+    Ext.create('Ext.container.Viewport',{
+        id:'main',
+        layout:'border',
+        items:[girdPanel]
+    });
 });
 function timeTurn(value,mateData,records){
     mateData.style="text-align:center";

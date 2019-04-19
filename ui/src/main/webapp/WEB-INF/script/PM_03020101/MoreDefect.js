@@ -102,6 +102,22 @@ function _deleteDefect(DefectGuid){
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='SUCCESS'){
                 // QueryPageLoad();
+                //写入缺陷-维修计划日志
+                Ext.Ajax.request({
+                    url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
+                    method:'POST',
+                    params:{
+                        V_PROGUID:Guid,
+                        V_DEFECTGUID:DefectGuid,
+                        V_PERCODE:Ext.util.Cookies.get("v_personcode"),
+                        V_DEPT:Ext.util.Cookies.get("v_deptcode"),
+                        V_ORG:Ext.util.Cookies.get("v_orgCode"),
+                        V_STATE:'DEL'
+                    },
+                    success:function (response){
+                        var resp=Ext.decode(response.responseText);
+                    }
+                });
                 //修改缺陷状态
                 Ext.Ajax.request({
                     url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',

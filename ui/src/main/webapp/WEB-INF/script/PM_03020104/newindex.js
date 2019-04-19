@@ -20,6 +20,8 @@ var itemsPerpage=50;
 var fjDefect="";
 var ProcessInstanceId = '';
 var TaskDefinitionKey="";
+var PASS="PASS";
+var NOPASS="NOPASS";
 if(Ext.urlDecode(location.href.split('?')[1])!=null){
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
@@ -472,7 +474,7 @@ var qxGridStore=Ext.create('Ext.data.Store', {
         'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_IDEA', 'V_STATECODE',
         'V_STATENAME', 'V_STATECOLOR', 'V_GUID', 'V_EQUSITE1', 'D_DATE_EDITTIME', 'V_EDIT_GUID', 'V_SOURCE_GRADE', 'V_EQUCHILDCODE',
         'V_INPERCODE', 'V_INPERNAME', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_FLAG','DEF_SOLVE','BJ_STUFF','PASSNUM','NOPASSNUM'
-        ,'DEFILENUM'],
+        ,'DEFILENUM','PASS_STATE','PASS_STATENAME'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -1374,6 +1376,10 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
     // bodyStyle:'background:#f2f2f2; border-top:1px solid #d4d4d4 !important; border-left:1px solid #d4d4d4 !important',
     // defaults: {labelAlign: 'right'},
     // collapsible: false,
+    selModel: {
+        selType: 'checkboxmodel',
+        mode: 'SIMPLE'
+    },
     id:'TOPGIRDRIGHTTtool',
     columnLines:true,
     border:false,
@@ -1383,6 +1389,10 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
         {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft,hidden:true},
+        {text:'通过详情',width: 140, dataIndex: 'PASS_STATE', align: 'center',renderer:viewPDatail},
+        {text:'通过状态',width: 140, dataIndex: 'PASS_STATENAME', align: 'center',renderer:atleft},
+        // {text: '通过数量',width: 140, dataIndex: 'PASSNUM', align: 'center',renderer:clickPass},
+        // {text: '不通过数量',width: 140, dataIndex: 'NOPASSNUM', align: 'center',renderer:clickDisPass},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
         {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft,hidden:true},
         {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
@@ -1414,6 +1424,26 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
     width: '100%',
     tbar: [
         '缺陷明细',
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
+
+        {
+            xtype: 'button',
+            id:'qxpassbtn',
+            text: '通过',
+            // margin: '5 0 5 0',
+            bodyStyle:'float:right;',
+            icon:dxImgPath + '/search.png',
+            listeners:{click:passDefect}
+        },
+        {
+            xtype: 'button',
+            id:'qxdispassbtn',
+            text: '不通过',
+            bodyStyle:'float:right;',
+            icon:dxImgPath + '/search.png',
+            // margin: '5 0 5 0',
+            listeners:{click:disPassDefect}
+        },
         { xtype: 'tbfill' },
         // { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
         {
@@ -3495,6 +3525,41 @@ function SaveQx(){
                 num++;
             }
         });
+        Ext.Ajax.request({
+            url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
+            method:'POST',
+            params:{
+                V_PROGUID:Guid,
+                V_DEFECTGUID:selectedRecord[i].data.V_GUID,
+                V_PERCODE:Ext.util.Cookies.get("v_personcode"),
+                V_DEPT:Ext.util.Cookies.get("v_deptcode"),
+                V_ORG:Ext.util.Cookies.get("v_orgCode"),
+                V_STATE:'IN'
+            },
+            success:function (response){
+                var resp=Ext.decode(response.responseText);
+            }
+        });
+        //修改缺陷状态
+        Ext.Ajax.request({
+            url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: selectedRecord[i].data.V_GUID,
+                V_V_STATECODE: '50'//已计划
+
+            },
+            success: function (ret) {
+                var resp = Ext.decode(ret.responseText);
+                if(resp.V_INFO=='success'){
+                    QueryDefect();
+                }else{
+                    alert("修改缺陷状态失败");
+                }
+
+            }
+        });
     }
 
     if(num==selectedRecord.length){
@@ -3516,6 +3581,21 @@ function OnBtnAddQx(a, record){
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if(resp.V_INFO=='SUCCESS'){
+                Ext.Ajax.request({
+                    url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
+                    method:'POST',
+                    params:{
+                        V_PROGUID:Guid,
+                        V_DEFECTGUID:record.data.V_GUID,
+                        V_PERCODE:Ext.util.Cookies.get("v_personcode"),
+                        V_DEPT:Ext.util.Cookies.get("v_deptcode"),
+                        V_ORG:Ext.util.Cookies.get("v_orgCode"),
+                        V_STATE:'IN'
+                    },
+                    success:function (response){
+                        var resp=Ext.decode(response.responseText);
+                    }
+                });
                 //修改缺陷状态
                 Ext.Ajax.request({
                     url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
@@ -3599,6 +3679,22 @@ function _deleteDefect(DefectGuid){
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='SUCCESS'){
                 // QueryDefect();
+                //写入缺陷-维修计划日志
+                Ext.Ajax.request({
+                    url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
+                    method:'POST',
+                    params:{
+                        V_PROGUID:Guid,
+                        V_DEFECTGUID:DefectGuid,
+                        V_PERCODE:Ext.util.Cookies.get("v_personcode"),
+                        V_DEPT:Ext.util.Cookies.get("v_deptcode"),
+                        V_ORG:Ext.util.Cookies.get("v_orgCode"),
+                        V_STATE:'DEL'
+                    },
+                    success:function (response){
+                        var resp=Ext.decode(response.responseText);
+                    }
+                });
                 //修改缺陷状态
                 Ext.Ajax.request({
                     url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
@@ -4126,7 +4222,7 @@ function newDefectLog(){
                     V_DEFECTGUID:records[i].get('V_GUID'),
                     V_DEF_TYPE:records[i].get('V_SOURCECODE'),
                     V_DEF_LIST:records[i].get('V_DEFECTLIST'),
-                    V_DEF_DATE:records[i].get('D_DEFECTDATE').toString(),
+                    V_DEF_DATE:newdate.toString(),//records[i].get('D_DEFECTDATE').toString(),
                     V_BJ:records[i].get('BJ_STUFF'),
                     V_SOLVE:records[i].get('DEF_SOLVE')
                 },
@@ -4329,6 +4425,13 @@ function _selectTaskId() {
 
 //审批通过
 function btnFlowAgree(){
+    var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
+    for(var i=0;i<record.length;i++){
+        if(record[i].get('PASS_STATE')==""){
+            alert("请先审批缺陷");
+            return false;
+        }
+    }
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批通过';
@@ -4419,6 +4522,13 @@ function btnFlowAgree(){
 }
 //审批驳回
 function btnFlowDisAgree(){
+    var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
+    for(var i=0;i<record.length;i++){
+        if(record[i].get('PASS_STATE')==""){
+            alert("请先审批缺陷");
+            return false;
+        }
+    }
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批驳回';
@@ -4768,6 +4878,42 @@ function YearwinClose(){
                                         numdef++;
                                     }
                                 });
+                                //写入缺陷-维修计划日志
+                                Ext.Ajax.request({
+                                    url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
+                                    method:'POST',
+                                    params:{
+                                        V_PROGUID:Guid,
+                                        V_DEFECTGUID:respdef.list[i].DEFECT_GUID,
+                                        V_PERCODE:Ext.util.Cookies.get("v_personcode"),
+                                        V_DEPT:Ext.util.Cookies.get("v_deptcode"),
+                                        V_ORG:Ext.util.Cookies.get("v_orgCode"),
+                                        V_STATE:'IN'
+                                    },
+                                    success:function (response){
+                                        var resp=Ext.decode(response.responseText);
+                                    }
+                                });
+                                //修改缺陷状态
+                                Ext.Ajax.request({
+                                    url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                    method: 'POST',
+                                    async: false,
+                                    params: {
+                                        V_V_GUID: respdef.list[i].DEFECT_GUID,
+                                        V_V_STATECODE: '50'//已计划
+
+                                    },
+                                    success: function (ret) {
+                                        var resp = Ext.decode(ret.responseText);
+                                        if(resp.V_INFO=='success'){
+                                            // QueryDefect();
+                                        }else{
+                                            alert("修改缺陷状态失败");
+                                        }
+
+                                    }
+                                });
                                 if(numdef==respdef.list.length) {
                                     QueryDefect();
                                 }
@@ -4990,4 +5136,95 @@ function filequery(fjDefect) {
             V_GUID: fjDefect
         }
     });
+}
+
+function passDefect() {
+    var records = Ext.getCmp("TOPGIRDRIGHTTtool").getSelectionModel().getSelection();
+    for (var i = 0; i < records.length; i++) {
+        var retdate= records[i].get('D_DEFECTDATE').split(" ")[0];
+        var rethour=records[i].get('D_DEFECTDATE').split(" ")[1];
+        var newdate=retdate.split("-")[0]+retdate.split("-")[1]+retdate.split("-")[2]+rethour.split(":")[0]+rethour.split(":")[1]+rethour.split(":")[2];
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/PM_DEFECT_LOG_FROMPRO_IN',
+            method: 'POST',
+            async: false,
+            params: {
+                V_GUID: Guid,
+                V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+                V_ORG: Ext.util.Cookies.get('v_orgCode'),
+                V_PASS_STAT: PASS,
+                V_DEFECTGUID: records[i].get('V_GUID'),
+                V_DEF_TYPE: records[i].get('V_SOURCECODE'),
+                V_DEF_LIST: records[i].get('V_DEFECTLIST'),
+                V_DEF_DATE: newdate.toString(),//records[i].get('D_DEFECTDATE').toString(),
+                V_BJ: records[i].get('BJ_STUFF'),
+                V_SOLVE: records[i].get('DEF_SOLVE')
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.RET == 'SUCCESS') {
+                    QueryDefect();
+                    alert('保存成功！');
+                    // window.opener.selectGridTurn();
+                    // window.close();
+                }
+            }
+        });
+    }
+}
+function  disPassDefect(){
+    var records = Ext.getCmp("TOPGIRDRIGHTTtool").getSelectionModel().getSelection();
+    for (var i = 0; i < records.length; i++) {
+        var retdate= records[i].get('D_DEFECTDATE').split(" ")[0];
+        var rethour=records[i].get('D_DEFECTDATE').split(" ")[1];
+        var newdate=retdate.split("-")[0]+retdate.split("-")[1]+retdate.split("-")[2]+rethour.split(":")[0]+rethour.split(":")[1]+rethour.split(":")[2];
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/PM_DEFECT_LOG_FROMPRO_IN',
+            method: 'POST',
+            async: false,
+            params: {
+                V_GUID: Guid,
+                V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+                V_ORG: Ext.util.Cookies.get('v_orgCode'),
+                V_PASS_STAT: NOPASS,
+                V_DEFECTGUID: records[i].get('V_GUID'),
+                V_DEF_TYPE: records[i].get('V_SOURCECODE'),
+                V_DEF_LIST: records[i].get('V_DEFECTLIST'),
+                V_DEF_DATE: newdate.toString(),//records[i].get('D_DEFECTDATE').toString(),
+                V_BJ: records[i].get('BJ_STUFF'),
+                V_SOLVE: records[i].get('DEF_SOLVE')
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.RET == 'SUCCESS') {
+                    QueryDefect();
+                    alert('保存成功！');
+                    // window.opener.selectGridTurn();
+                    // window.close();
+                }
+            }
+        });
+    }
+}
+
+// function clickPass(value, metaData, record){
+//     metaData.style="text-align:center";
+//     return '<a href="javascript:viewPDatail(\''+record.data.V_GUID+'\')">'+value+'</a>'
+// }
+// function clickDisPass(value, metaData, record){
+//     metaData.style="text-align:center";
+//     return '<a href="javascript:viewPDatail(\''+record.data.V_GUID+'\')">'+value+'</a>'
+// }
+
+function clickPass(value, metaData, record){
+    metaData.style="text-align:center";
+    return '<a href="javascript:viewPDatail(\''+record.data.V_GUID+'\')">'+"审批详情"+'</a>';
+    // window.open(AppUrl + 'page/PM_03020103/passDetail.html?guid=' +Guid + '&Defectguid=' + record.data.V_GUID+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+}
+function viewPDatail(value){
+    var owidth = window.document.body.offsetWidth - 600;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_03020104/passDetail.html?guid=' +Guid + '&Defectguid=' + value+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
 }

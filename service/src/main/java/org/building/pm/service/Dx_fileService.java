@@ -3710,7 +3710,7 @@ public class Dx_fileService {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PM_DEFECT_LOG_FROMPRO_IN" + "(:V_GUID,:V_PERCODE,:V_DEPTCODE," +
-                    ":V_ORG,:V_PASS_STAT,:V_PASS_STAT," +
+                    ":V_ORG,:V_PASS_STAT,:V_DEFECTGUID," +
                     ":V_DEF_TYPE,:V_DEF_LIST,:V_DEF_DATE,:V_BJ,:V_SOLVE,:RET)}");
             cstmt.setString("V_GUID", V_GUID);
             cstmt.setString("V_PERCODE", V_PERCODE);
@@ -3800,7 +3800,7 @@ public class Dx_fileService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_03_PROJECT_DEFECT_SEL_ALL" + "(:V_V_PROJECT_GUID,:RET)}");
+            cstmt = conn.prepareCall("{call PM_03_PROJECT_DEFECT_SEL_ALL" + "(:V_V_PROJECT_GUID,:V_CURSOR)}");
             cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
@@ -3814,6 +3814,88 @@ public class Dx_fileService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_03_PROJECT_DEFECT_SEL_ALL");
+        return result;
+    }
+    //维修计划缺陷审批详情
+    public HashMap PM_DEFECT_LOG_FROMPRO_NEW_SEL(String V_PROGUID,String V_DEFECTGUID) throws SQLException {
+        logger.info("begin PM_DEFECT_LOG_FROMPRO_NEW_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECT_LOG_FROMPRO_NEW_SEL" + "(:V_PROGUID,:V_DEFECTGUID,:RET)}");
+            cstmt.setString("V_PROGUID", V_PROGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECT_LOG_FROMPRO_NEW_SEL");
+        return result;
+    }
+    //维修计划流程结束-修改缺陷状态
+    public HashMap PM_DEFECT_LOG_FROMPRO_LCJS(String V_PROGUID) throws SQLException {
+        logger.info("begin PM_DEFECT_LOG_FROMPRO_LCJS");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECT_LOG_FROMPRO_LCJS" + "(:V_PROGUID,:RET)}");
+            cstmt.setString("V_PROGUID", V_PROGUID);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECT_LOG_FROMPRO_LCJS");
+        return result;
+    }
+    //维修计划关联缺陷日志
+    public HashMap PROJECT_BY_DEFECT_LOG_IN(String V_PROGUID,String V_DEFECTGUID,String V_PERCODE,
+                                            String V_DEPT,String V_ORG,String V_STATE) throws SQLException {
+        logger.info("begin PROJECT_BY_DEFECT_LOG_IN");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PROJECT_BY_DEFECT_LOG_IN" + "(:V_PROGUID,:V_DEFECTGUID,:V_PERCODE,:V_DEPT," +
+                    ":V_ORG,:V_STATE,:RET)}");
+            cstmt.setString("V_PROGUID", V_PROGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_PERCODE", V_PERCODE);
+            cstmt.setString("V_DEPT", V_DEPT);
+            cstmt.setString("V_ORG", V_ORG);
+            cstmt.setString("V_STATE", V_STATE);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PROJECT_BY_DEFECT_LOG_IN");
         return result;
     }
 }

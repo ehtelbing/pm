@@ -3538,6 +3538,46 @@ public class Dx_fileController {
         return data;
     }
 
+    //维修计划缺陷审批详情
+    @RequestMapping(value = "PM_DEFECT_LOG_FROMPRO_NEW_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECT_LOG_FROMPRO_NEW_SEL(
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_NEW_SEL(V_PROGUID,V_DEFECTGUID);
+        return data;
+    }
+
+    //维修计划流程结束-修改缺陷状态
+    @RequestMapping(value = "PM_DEFECT_LOG_FROMPRO_LCJS", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECT_LOG_FROMPRO_LCJS(
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_LCJS(V_PROGUID);
+        return data;
+    }
+    //维修计划关联缺陷日志
+    @RequestMapping(value="PROJECT_BY_DEFECT_LOG_IN",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PROJECT_BY_DEFECT_LOG_IN(
+        @RequestParam(value = "V_PROGUID") String V_PROGUID,
+        @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+        @RequestParam(value = "V_PERCODE") String V_PERCODE,
+        @RequestParam(value = "V_DEPT") String V_DEPT,
+        @RequestParam(value = "V_ORG") String V_ORG,
+        @RequestParam(value = "V_STATE") String V_STATE,
+        HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+            Map data = dx_fileService.PROJECT_BY_DEFECT_LOG_IN(V_PROGUID,V_DEFECTGUID,V_PERCODE,V_DEPT,V_ORG,V_STATE);
+            return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
