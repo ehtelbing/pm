@@ -44,11 +44,6 @@
     <parameter name="allowedMethods" value="*"/>
   </service>
 
-  <service name="WxjhWebService" provider="java:RPC">
-    <parameter name="className" value="org.building.pm.webcontroller.WxjhController"/>
-    <parameter name="allowedMethods" value="*"/>
-  </service>
-
   <service name="SOAPMonitorService" provider="java:RPC">
     <parameter name="allowedMethods" value="publishMessage"/>
     <parameter name="scope" value="Application"/>
