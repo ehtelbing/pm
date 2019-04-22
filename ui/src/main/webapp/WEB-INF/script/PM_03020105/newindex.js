@@ -4440,7 +4440,7 @@ function btnFlowAgree(){
         spyj = Ext.getCmp('spyj').getValue();
     }
 
-
+    lcjsDefChange();
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
