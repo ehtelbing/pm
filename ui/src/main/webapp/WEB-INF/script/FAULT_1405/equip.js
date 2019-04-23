@@ -1,5 +1,8 @@
-﻿if (location.href.split('?')[1] != undefined) {
+﻿var V_V_GUID='';
+var V_V_STATE='';
+if (location.href.split('?')[1] != undefined) {
     V_V_GUID = Ext.urlDecode(location.href.split('?')[1]).V_GUID;
+    V_V_STATE= Ext.urlDecode(location.href.split('?')[1]).V_STATE;
 }
 
 var gridStore =Ext.create('Ext.data.Store', {
@@ -71,8 +74,11 @@ var grid = Ext.create('Ext.grid.Panel', {
 		   width: 100,
 		   renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                // record.
-			 return '<a href="#" onclick="_opengd(\'' + value + '\')">生成工单</a>';
-
+               if(V_V_STATE=='0'||V_V_STATE=='2'){
+                   return '<a href="#" onclick="_opengd(\'' + value + '\')">生成工单</a>';
+               }else{
+                   return '已完结';
+               }
 		   }
 	    },{text : '状态',
                 dataIndex : 'V_STUTE',
@@ -116,4 +122,8 @@ function _selectGridPanel() {
 function _opengd(value){
     window.open(AppUrl + "page/FAULT_1405/workorder.html?V_GUID=" + V_V_GUID+"&V_EQUCODE="+value,
         "", "dialogHeight:700px;dialogWidth:1100px;autoScroll: true");
+}
+function _flselectGridPanel() {
+    _selectGridPanel();
+    window.opener._seltctFault();
 }

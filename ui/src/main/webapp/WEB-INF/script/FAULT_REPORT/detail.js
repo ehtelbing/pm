@@ -56,125 +56,125 @@ Ext.onReady(function () {
 
 
 
-    var orgStore2 = Ext.create('Ext.data.Store', {
-        id: 'orgStore2',
-        autoLoad: true,
-        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': V_V_PERSONCODE,
-                'V_V_DEPTCODE': V_V_DEPTCODE,
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                orgLoad2 = true;
-                if (init) {
-                    //Ext.getCmp('V_V_ORGCODE2').select(store.first());
-                    //   _init2();
-                }
-
-            }
-        }
-    });
-
-
-
-    var deptStore2 = Ext.create('Ext.data.Store', {
-        id: 'deptStore2',
-        autoLoad: false,
-        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                if (init) {
-                    //Ext.getCmp('V_V_DEPTCODE2').select(store.first());
-                    //   _init2();
-                } else {
-                    //alert(1)
-                    Ext.getCmp('V_V_DEPTCODE2').select(store.first());
-                }
-
-            }
-        }
-    });
-
-    var equFaultStore2 = Ext.create('Ext.data.Store', {
-        id: 'equFaultStore2',
-        autoLoad: true,
-        fields: ['V_TYPECODE', 'V_TYPENAME'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'PM_14/PM_14_FAULT_TYPE_ITEM_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            async: false,
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                equFaultLoad2 = true;
-                store.insert(0, {V_TYPENAME: '全部', V_TYPECODE: '%'});
-                // Ext.getCmp('equFaultname2').select(store.first());
-                if (init) {
-                    _init2();
-                }
-            }
-        }
-    });
-
-    var faultStore2 = Ext.create('Ext.data.Store', {
-        id: 'faultStore2',
-        autoLoad: false,
-        fields: ['V_FAULTCODE', 'V_FAULTNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'cxy/PRO_BASE_FAULT_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('faultLevel2').select(store.first());
-            }
-        }
-    });
-
-
-
+    // var orgStore2 = Ext.create('Ext.data.Store', {
+    //     id: 'orgStore2',
+    //     autoLoad: true,
+    //     fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+    //     proxy: {
+    //         type: 'ajax',
+    //         async: false,
+    //         url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list'
+    //         },
+    //         extraParams: {
+    //             'V_V_PERSONCODE': V_V_PERSONCODE,
+    //             'V_V_DEPTCODE': V_V_DEPTCODE,
+    //             'V_V_DEPTCODENEXT': '%',
+    //             'V_V_DEPTTYPE': '基层单位'
+    //         }
+    //     },
+    //     listeners: {
+    //         load: function (store, records) {
+    //             orgLoad2 = true;
+    //             if (init) {
+    //                 //Ext.getCmp('V_V_ORGCODE2').select(store.first());
+    //                 //   _init2();
+    //             }
+    //
+    //         }
+    //     }
+    // });
+    //
+    //
+    //
+    // var deptStore2 = Ext.create('Ext.data.Store', {
+    //     id: 'deptStore2',
+    //     autoLoad: false,
+    //     fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+    //     proxy: {
+    //         type: 'ajax',
+    //         async: false,
+    //         url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list'
+    //         }
+    //     },
+    //     listeners: {
+    //         load: function (store, records) {
+    //             if (init) {
+    //                 //Ext.getCmp('V_V_DEPTCODE2').select(store.first());
+    //                 //   _init2();
+    //             } else {
+    //                 //alert(1)
+    //                 Ext.getCmp('V_V_DEPTCODE2').select(store.first());
+    //             }
+    //
+    //         }
+    //     }
+    // });
+    //
+    // var equFaultStore2 = Ext.create('Ext.data.Store', {
+    //     id: 'equFaultStore2',
+    //     autoLoad: true,
+    //     fields: ['V_TYPECODE', 'V_TYPENAME'],
+    //     proxy: {
+    //         type: 'ajax',
+    //         url: AppUrl + 'PM_14/PM_14_FAULT_TYPE_ITEM_SEL',
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         async: false,
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list'
+    //         }
+    //     },
+    //     listeners: {
+    //         load: function (store, records) {
+    //             equFaultLoad2 = true;
+    //             store.insert(0, {V_TYPENAME: '全部', V_TYPECODE: '%'});
+    //             // Ext.getCmp('equFaultname2').select(store.first());
+    //             if (init) {
+    //                 _init2();
+    //             }
+    //         }
+    //     }
+    // });
+    //
+    // var faultStore2 = Ext.create('Ext.data.Store', {
+    //     id: 'faultStore2',
+    //     autoLoad: false,
+    //     fields: ['V_FAULTCODE', 'V_FAULTNAME'],
+    //     proxy: {
+    //         type: 'ajax',
+    //         async: false,
+    //         url: AppUrl + 'cxy/PRO_BASE_FAULT_SEL',
+    //         actionMethods: {
+    //             read: 'POST'
+    //         },
+    //         reader: {
+    //             type: 'json',
+    //             root: 'list'
+    //         }
+    //     },
+    //     listeners: {
+    //         load: function (store, records) {
+    //             Ext.getCmp('faultLevel2').select(store.first());
+    //         }
+    //     }
+    // });
+    //
+    //
+    //
 
 
     var fileGridStore2 = Ext.create("Ext.data.Store", {
@@ -270,64 +270,31 @@ Ext.onReady(function () {
         // height: 595,
         bodyPadding: 10,
         fileUpload: true,
-        items: [{
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'combo',
-                id: 'V_V_ORGCODE2',
-                store: orgStore2,
-                queryMode: 'local',
-                valueField: 'V_DEPTCODE',
-                displayField: 'V_DEPTNAME',
-                forceSelection: true,
-                fieldLabel: '厂矿',
-                editable: false,
-                labelWidth: 70,
-                width: 280,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                readOnly:true
-                // listeners: {
-                //     select: function () {
-                //         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-                //         init = false;
-                //         _selectDept2();
-                //         /* _selecteType2();
-                //          _selectequName2();
-                //          _selectsubequName2();*/
-                //
-                //     }
-                // }
-            }, {
-                xtype: 'combo',
-                id: 'V_V_DEPTCODE2',
-                store: deptStore2,
-                queryMode: 'local',
-                valueField: 'V_DEPTCODE',
-                displayField: 'V_DEPTNAME',
-                forceSelection: true,
-                fieldLabel: '作业区',
-                editable: false,
-                labelWidth: 70,
-                width: 280,
-                style: ' margin: 5px 0px 0px -8px',
-                readOnly:true,
-                labelAlign: 'right'
-                // listeners: {
-                //     select: function (field, newValue, oldValue) {
-                //         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-                //         init = false;
-                //         // _selecteType2();
-                //         /* _selectequName2();
-                //          _selectsubequName2();*/
-                //
-                //     }
-                // }
-            }
-
+        items: [
+            {
+                xtype: 'panel',
+                region: 'north',
+                layout: 'column',
+                baseCls: 'my-panel-no-border',
+                items: [{
+                    xtype: 'textfield',
+                    id: 'V_V_ORGCODE2',
+                    fieldLabel: '厂矿',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    readOnly:true,
+                    width: 280
+                },{
+                    xtype: 'textfield',
+                    id: 'V_V_DEPTCODE2',
+                    fieldLabel: '作业区',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    readOnly:true,
+                    width: 280
+                }
             ]
         },  {
             xtype: 'panel',
@@ -360,39 +327,27 @@ Ext.onReady(function () {
             region: 'north',
             layout: 'column',
             baseCls: 'my-panel-no-border',
-            items: [ {
-                xtype: 'combo',
-                id: 'equFaultname2',
-                store: equFaultStore2,
-                queryMode: 'local',
-                valueField: 'V_TYPECODE',
-                displayField: 'V_TYPENAME',
-                forceSelection: true,
-                fieldLabel: '故障类型',
-                editable: false,
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                readOnly:true,
-                width: 280
-
-            },{
-
-                xtype: 'combo',
-                id: 'faultLevel2',
-                store: faultStore2,
-                queryMode: 'local',
-                valueField: 'V_FAULTCODE',
-                displayField: 'V_FAULTNAME',
-                forceSelection: true,
-                fieldLabel: '故障等级',
-                editable: false,
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                readOnly:true,
-                width: 280
-            }
+            items: [
+                {
+                    xtype: 'textfield',
+                    id: 'equFaultname2',
+                    fieldLabel: '故障类型',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    readOnly:true,
+                    width: 280
+                }
+                ,{
+                    xtype: 'textfield',
+                    id: 'faultLevel2',
+                    fieldLabel: '故障等级',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    readOnly:true,
+                    width: 280
+                }
 
             ]
         }, {
@@ -400,21 +355,17 @@ Ext.onReady(function () {
             region: 'north',
             layout: 'column',
             baseCls: 'my-panel-no-border',
-            items: [{
-                id: 'begintime2',
-                xtype: 'datefield',
-                editable: false,
-                format: 'Y-m-d',
-                //submitFormat: 'yyyy-mm-dd',
-                value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-                fieldLabel: '发现时间',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 280,
-                readOnly:true,
-                baseCls: 'margin-bottom'
-            },{
+            items: [
+                {
+                    xtype: 'textfield',
+                    id: 'begintime2',
+                    fieldLabel: '发现时间',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    readOnly:true,
+                    width: 280
+                },{
                 xtype: 'textfield',
                 id: 'faultxz2',
                 fieldLabel: '性质',
@@ -716,14 +667,14 @@ function _init() {
                     //     });
                     // });
 
-                    var deptStore2 = Ext.data.StoreManager.lookup('deptStore2');
-                    deptStore2.proxy.extraParams = {
-                        'V_V_PERSONCODE': V_V_PERSONCODE,
-                        'V_V_DEPTCODE': resp.RET[0].V_ORGCODE,
-                        'V_V_DEPTCODENEXT': "%",
-                        'V_V_DEPTTYPE': '[主体作业区]'
-                    };
-                    deptStore2.load();
+                    // var deptStore2 = Ext.data.StoreManager.lookup('deptStore2');
+                    // deptStore2.proxy.extraParams = {
+                    //     'V_V_PERSONCODE': V_V_PERSONCODE,
+                    //     'V_V_DEPTCODE': resp.RET[0].V_ORGCODE,
+                    //     'V_V_DEPTCODENEXT': "%",
+                    //     'V_V_DEPTTYPE': '[主体作业区]'
+                    // };
+                    // deptStore2.load();
 
                     // var eTypeStore2 = Ext.data.StoreManager.lookup('eTypeStore2');
                     // eTypeStore2.proxy.extraParams = {
@@ -754,16 +705,16 @@ function _init() {
                     //     }
                     // });
 
-                    Ext.getCmp('V_V_ORGCODE2').setValue(resp.RET[0].V_ORGCODE);
-                    Ext.getCmp('V_V_DEPTCODE2').setValue(resp.RET[0].V_DEPTCODE);
+                    Ext.getCmp('V_V_ORGCODE2').setValue(resp.RET[0].V_ORGNAME);
+                    Ext.getCmp('V_V_DEPTCODE2').setValue(resp.RET[0].V_DEPTNAME);
                     // Ext.getCmp('V_V_EQUTYPE2').setValue(resp.RET[0].V_EQUTYPECODE);
                     // Ext.getCmp('V_EQUNAME2').setValue(resp.RET[0].V_EQUCODE);
 
-                    Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPECODE);
+                    Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPENAME);
                     Ext.getCmp('begintime2').setValue(resp.RET[0].V_FINDTIME);
                     Ext.getCmp('faultRea2').setValue(resp.RET[0].V_FAULT_YY);
                     Ext.getCmp('faultDesc2').setValue(resp.RET[0].V_FAULT_XX);
-                    Ext.getCmp('faultLevel2').setValue(resp.RET[0].V_FAULT_LEVEL);
+                    Ext.getCmp('faultLevel2').setValue(resp.RET[0].V_FAULT_LEVELNAME);
                     Ext.getCmp('faultSol2').setValue(resp.RET[0].V_JJBF);
                     Ext.getCmp('faultname2').setValue(resp.RET[0].V_FAULT_NAME);
                     Ext.getCmp('faultpart2').setValue(resp.RET[0].V_FAULT_PART);

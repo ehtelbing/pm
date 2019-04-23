@@ -783,8 +783,10 @@ Ext.onReady(function () {
             function(view, rowIndex, colIndex, item, e) {
                 var data=Ext.getCmp('faultItemPanel').getStore().getAt(
                     colIndex).data;
-                window.open(AppUrl + "page/FAULT_1405/equip.html?V_GUID=" + data.V_GUID,
-                    "", "dialogHeight:600px;dialogWidth:1100px;top=50px,left=100px,autoScroll: true");
+                var owidth = window.screen.availWidth-200;
+                var oheight = window.screen.availHeight-150;
+                window.open(AppUrl + "page/FAULT_1405/equip.html?V_GUID=" + data.V_GUID+'&V_STATE='+data.V_STATE,
+                    "",  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
                 /*if(data.V_STATE=='2'){
                     Ext.MessageBox.show({
                                 title: '提示',
@@ -1604,16 +1606,16 @@ function _preUpdateFault() {
         });
         return false;
     }
-    if(records[0].get('V_STATE')=='3'){
+    if(records[0].get('V_STATE')=='0'||records[0].get('V_STATE')=='2'||records[0].get('V_STATE')=='10'){
+        // Ext.getCmp('updateFaultWindow').show();
+        _updateOpen(records[0].get('V_GUID'));
+    }else{
         Ext.MessageBox.show({
             title: '提示',
-            msg: '完成事故不能修改',
+            msg: '所选事故不能修改',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
-    }else{
-        // Ext.getCmp('updateFaultWindow').show();
-        _updateOpen(records[0].get('V_GUID'));
     }
 
     // Ext.Ajax.request({
@@ -1791,7 +1793,7 @@ function _deleteFaultData() {
                                                     } else {
                                                         Ext.MessageBox.show({
                                                             title: '错误',
-                                                            msg: data.message,
+                                                            msg: data.RET,
                                                             buttons: Ext.MessageBox.OK,
                                                             icon: Ext.MessageBox.ERROR
                                                         });
@@ -1831,7 +1833,7 @@ function _deleteFaultData() {
                                 }else{
                                     Ext.MessageBox.show({
                                         title: '提示',
-                                        msg: '已上报，不能删除',
+                                        msg: '已下票，不能删除',
                                         buttons: Ext.MessageBox.OK,
                                         icon: Ext.MessageBox.ERROR
                                     });
@@ -2296,6 +2298,8 @@ function OnButtonOver() {
                 var i_err = 0;
                 var info ='';
                 for (var i = 0; i < records.length; i++) {
+                    if(records[i].get('V_STATE')=='0'||records[i].get('V_STATE')=='2'){
+
                     Ext.Ajax.request({
                         url: AppUrl + 'cxy/PRO_FAULT_EQUIP_OVER',
                         type: 'ajax',
@@ -2340,6 +2344,14 @@ function OnButtonOver() {
                             });
                         }
                     });
+                    }else{
+                        Ext.MessageBox.show({
+                            title: '提示',
+                            msg: '所选事故不能完结',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    }
                 }
             }
         }

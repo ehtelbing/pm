@@ -1,59 +1,25 @@
-﻿var V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
-var processKey = '';
-var V_V_CKTYPE = '';
-var V_EQUTYPECODE = '';
-var V_EQUTYPENAME = '';
-var V_ORDERGUID = '';
-var V_V_ORGCODE = '';
-var V_V_DEPTCODE = '';
-var V_V_SPECIALTY = '';
+﻿var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
+var V_ORDERGUID = "";
 var taskId = '';
 var V_STEPCODE = '';
-
-var ckStoreLoad = false;
-var zyqStoreLoad = false;
-var sblxStoreLoad = false;
-var zyStoreLoad = false;
-var sbmcStoreLoad = false;
-var initLoad = true;
-var equFaultLoad= false;
+var deptLoad2 = false;
+var orgLoad2 = false;
+var equFaultLoad2 = false;
+var nextSprName2 = false;
+var equFaultLevel2=false;
+var init = true;
+var initadd = true;
+var code ="";
+var processKey = '';
+var V_STEPNAME = '';
+var V_NEXT_SETP = '';
+var V_V_FAULT_GUID='';
+var V_V_FILE_GUID='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
 }
-
-var orgLoad = false;
-var equTypeLoad = false;
-var today = new Date();
-var month = today.getMonth()+1;
-var YEAR = today.getFullYear();
-
-var hours = [];
-var minutes = [];
-//月份
-var months = [];
-for (var i = 1; i <= 12; i++) {
-    months.push({displayField: i, valueField: i});
-}
-
-for (var j = 0; j <= 23; j++) {
-    if (j< 10) {
-        j = '0' + j;
-    } else {
-        j = '' + j;
-    }
-    hours.push({displayField: j, valueField: j});
-}
-for (var k = 0; k <= 59; k++) {
-    if (k< 10) {
-        k = '0' + k;
-    } else {
-        k = '' + k;
-    }
-    minutes.push({displayField: k, valueField: k});
-}
-//var V_V_GUID = Ext.data.IdGenerator.get('uuid').generate();
-
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -80,109 +46,14 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
-    var dt = new Date();
-    var thisYear = dt.getFullYear();
-    var years = [];
-    for (var i = 2013; i <= thisYear + 1; i++) years.push({displayField: i, valueField: i});
 
-    var yearStore = Ext.create("Ext.data.Store", {
-        storeId: 'yearStore',
-        fields: ['displayField', 'valueField'],
-        data: years,
-        proxy: {
-            type: 'memory',
-            reader: {type: 'json'}
-        }
-    });
 
-    var monthStore = Ext.create("Ext.data.Store", {
-        storeId: 'monthStore',
-        fields: ['displayField', 'valueField'],
-        data: months,
-        proxy: {
-            type: 'memory',
-            reader: {type: 'json'}
-        }
-    });
-    var sblxStore = Ext.create('Ext.data.Store', {
+
+    var orgStore2 = Ext.create('Ext.data.Store', {
+        id: 'orgStore2',
         autoLoad: false,
-        storeId: 'sblxStore',
-        fields: ['V_EQUTYPECODE', 'V_EQUTYPENAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_GET_DEPTEQUTYPE_PER',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }),
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('sblx').select(store.first());
-                sblxStoreLoad = true;
-                _zyq_sbmc();
-                _init();
-            }
-        }
-    });
-
-    var sbmcStore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
-        storeId: 'sbmcStore',
-        fields: ['V_EQUCODE', 'V_EQUNAME'],
+        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
         proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/pro_get_deptequ_per',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                Ext.getCmp('sbmc').select(store.first());
-                sbmcStoreLoad = true;
-                _init();
-            }
-        }
-    });
-    var equFaultStore = Ext.create('Ext.data.Store', {
-        id: 'equFaultStore',
-        autoLoad: true,
-        fields: ['V_TYPECODE', 'V_TYPENAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_14/PM_14_FAULT_TYPE_ITEM_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                equFaultLoad = true;
-                Ext.getCmp('gzlx').select(store.first());
-                _init();
-            }
-        }
-    });
-    var ckStore = Ext.create('Ext.data.Store', {
-        autoLoad: true,
-        storeId: 'ckStore',
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
@@ -194,52 +65,32 @@ Ext.onReady(function () {
                 root: 'list'
             },
             extraParams: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
+                'V_V_PERSONCODE': V_V_PERSONCODE,
+                'V_V_DEPTCODE': V_V_DEPTCODE,
                 'V_V_DEPTCODENEXT': '%',
                 'V_V_DEPTTYPE': '基层单位'
             }
-        })
-        // listeners: {
-        //     load: function (store, records) {
-        //         Ext.getCmp('ck').select(store.first());
-        //         ckStoreLoad  = true;
-        //         _init();
-        //         // _ck_zyqload();
-        //     }
-        // }
-    });
+        },
+        listeners: {
+            load: function (store, records) {
+                orgLoad2 = true;
+                _selectDept2();
+                if (init) {
+                    //Ext.getCmp('V_V_ORGCODE2').select(store.first());
+                    //   _init2();
+                }
 
-    var zyStore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
-        storeId: 'zyStore',
-        fields: ['V_SPECIALTYCODE', 'V_BASENAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'basic/PRO_BASE_SPECIALTY_DEPT_SPECIN',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
             }
-        })
-        // listeners: {
-        //     load: function (store, records) {
-        //         Ext.getCmp('zy').select(store.first());
-        //         zyStoreLoad = true;
-        //         _init();
-        //     }
-        // }
+        }
     });
 
-    var zyqStore = Ext.create('Ext.data.Store', {
+
+
+    var deptStore2 = Ext.create('Ext.data.Store', {
+        id: 'deptStore2',
         autoLoad: false,
-        storeId: 'zyqStore',
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
+        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+        proxy: {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
@@ -250,49 +101,128 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        })
-        // listeners: {
-        //     load: function (store, records) {
-        //         Ext.getCmp('zyq').select(store.first());
-        //         zyqStoreLoad = true;
-        //         _init();
-        //     }
-        // }
-    });
+        },
+        listeners: {
+            load: function (store, records) {
+                deptLoad2 = true;
+                if (init) {
+                    //Ext.getCmp('V_V_DEPTCODE2').select(store.first());
+                    //   _init2();
+                    _selectNextPer();
+                } else {
+                    //alert(1)
+                    Ext.getCmp('V_V_DEPTCODE2').select(store.first());
+                    _selectNextPer();
+                }
 
-    var monthStore = Ext.create("Ext.data.Store", {
-        storeId: 'monthStore',
-        autoLoad: true,
-        fields: ['displayField', 'valueField'],
-        data: months,
-        proxy: {
-            type: 'memory',
-            reader: {type: 'json'}
+            }
         }
     });
 
-    var hourStore = Ext.create("Ext.data.Store", {
-        storeId: 'hourStore',
+    var equFaultStore2 = Ext.create('Ext.data.Store', {
+        id: 'equFaultStore2',
         autoLoad: true,
-        fields: ['displayField', 'valueField'],
-        data: hours,
+        fields: ['V_TYPECODE', 'V_TYPENAME'],
         proxy: {
-            type: 'memory',
-            reader: {type: 'json'}
+            type: 'ajax',
+            url: AppUrl + 'PM_14/PM_14_FAULT_TYPE_ITEM_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            async: false,
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                equFaultLoad2 = true;
+                store.insert(0, {V_TYPENAME: '全部', V_TYPECODE: '%'});
+                // Ext.getCmp('equFaultname2').select(store.first());
+                // if (init) {
+                //     _init2();
+                // }
+            }
         }
     });
 
-    var minuteStore = Ext.create("Ext.data.Store", {
-        storeId: 'minuteStore',
-        autoLoad: true,
-        fields: ['displayField', 'valueField'],
-        data: minutes,
+    var faultStore2 = Ext.create('Ext.data.Store', {
+        id: 'faultStore2',
+        autoLoad: false,
+        fields: ['V_FAULTCODE', 'V_FAULTNAME'],
         proxy: {
-            type: 'memory',
-            reader: {type: 'json'}
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'cxy/PRO_BASE_FAULT_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        },
+        listeners: {
+            load: function (store, records) {
+                equFaultLevel2 = true;
+                Ext.getCmp('faultLevel2').select(store.first());
+            }
         }
     });
 
+
+
+
+
+    var fileGridStore2 = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'fileGridStore2',
+        pageSize: 20,
+        fields: ['V_V_GUID', 'V_V_FILETYPECODE', 'V_FILEGUID', 'V_FILENAME', 'V_PERSON', 'V_FINDTIME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_14/PRO_BASE_FILE_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {
+                'V_V_FILETYPECODE': 'SBGZ'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+
+    var treeStore=Ext.create('Ext.data.TreeStore', {
+        id : 'treeStore',
+        autoLoad : true,
+        autoDestroy : true,
+        fields : ['id', 'text', 'parentid','V_EQUSITE','V_EQUSITENAME','choose','V_EQUTYPENAME','V_EQUTYPECODE'],
+        proxy : {
+            type : 'ajax',
+            async : false,
+            url: AppUrl + 'WorkOrder/PRO_BASE_DEPT_TREE',
+            extraParams : {
+                V_V_DEPTCODE:V_V_DEPTCODE
+            },
+            actionMethods : {
+                read : 'POST'
+            }
+        },
+        reader : {
+            type : 'json',
+            root : 'children'
+        },
+        root : {
+            text : 'root',
+            expanded : true
+            // "checked":false,
+        }
+    });
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStore',
@@ -313,6 +243,7 @@ Ext.onReady(function () {
         listeners: {
 
             load: function (store, records, success, eOpts) {
+                nextSprName2 = true;
                 var list = [];
                 if(store.getAt(0) != null){
                     processKey = store.getProxy().getReader().rawData.RET;
@@ -322,8 +253,8 @@ Ext.onReady(function () {
                         if(records[i].get('V_PERSONCODE')==Ext.util.Cookies.get('v_personcode')){
                             Ext.getCmp('nextPer').select(records[i].get('V_PERSONCODE'));
                             break;
-                        }else if(records[i].get('V_PERSONCODE')==V_PERSONCODE){
-                            Ext.getCmp('nextPer').select(V_PERSONCODE);
+                        }else if(records[i].get('V_PERSONCODE')==V_V_PERSONCODE){
+                            Ext.getCmp('nextPer').select(V_V_PERSONCODE);
                             break;
                         }else{
                             Ext.getCmp('nextPer').select(store.first());
@@ -334,368 +265,626 @@ Ext.onReady(function () {
             }
         }
     });
-
-    var inputPanel = Ext.create('Ext.form.Panel', {
-        id: 'inputPanel',
-        region: 'north',
-        padding: '10px 0px 0px 0px',
-        baseCls: 'my-panel-no-border',
-        style: 'background-color:#FFFFFF',
-        frame: true,
-        //border:false,
-        items: [{
-            xtype: 'fieldset',
-            height: 500,
-            width: 540,
-            style: 'margin-left:10px;',
-            defaults: {
-                frame: true,
-                baseCls: 'my-panel-no-border',
-                style: 'margin-top:12px'
+    var gridStore =Ext.create('Ext.data.Store', {
+        id : 'gridStore',
+        autoLoad : false,
+        fields : ['V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME','V_EQUTYPECODE','V_EQUUPCODE','V_FAULTCODE'],
+        proxy : {
+            type : 'ajax',
+            url: AppUrl + 'cxy/PRO_FAULT_EQUIP_SEL',
+            actionMethods : {
+                read : 'POST'
             },
-            items: [
-            //     {
-            //     layout: 'column',
-            //     defaults: {
-            //         xtype: 'combo',
-            //         labelAlign: 'right',
-            //         width: 250,
-            //         editable: false,
-            //         displayField: 'displayField',
-            //         valueField: 'valueField'
-            //     },
-            //     items: [{
-            //         id: 'year',
-            //         allowBlank: false,
-            //         fieldLabel: '年份',
-            //         store: yearStore,
-            //         value: YEAR,
-            //         labelWidth: 90
-            //     },{
-            //         xtype: 'combo',
-            //         id: 'yf',
-            //         fieldLabel: '月份',
-            //         editable: true,
-            //         labelWidth: 90,
-            //         store: monthStore,
-            //         queryMode: 'local'
-            //     }]
-            // },
-                {
-                layout: 'column',
-                defaults: {
-                    xtype: 'combo',
-                    labelAlign: 'right',
-                    editable: false,
-                    queryMode: 'local',
-                    width: 250
-                },
-                items: [{
-                    id: 'ck',
-                    allowBlank: false,
-                    store: ckStore,
-                    displayField: 'V_DEPTNAME',
-                    valueField: 'V_DEPTCODE',
-                    fieldLabel: '计划厂矿',
-                    labelWidth: 90
-                    // listeners: {
-                    //     change: function (field, newValue, oldValue) {
-                    //         _ck_zyqload();
-                    //         // _zyq_zy();
-                    //         _zyq_sblx();
-                    //         _zyq_sbmc();
-                    //     }
-                    // }
-                }, {
-                    id: 'zyq',
-                    store: zyqStore,
-                    fieldLabel: '作业区',
-                    displayField: 'V_DEPTNAME',
-                    valueField: 'V_DEPTCODE',
-                    allowBlank: false,
-                    labelWidth: 90
-                    // listeners: {
-                    //     select: function (field, newValue, oldValue) {
-                    //         // _zyq_zy();
-                    //         _zyq_sblx();
-                    //         _zyq_sbmc();
-                    //     }
-                    // }
-                }]
+            reader : {
+                type : 'json',
+                root : 'list'
+            }
+        }
+    });
+    var inputPanel = Ext.create('Ext.Panel', {
+        id : 'inputPanel',
+        header : false,
+        frame : true,
+        layout : 'column',
+        // layout : {
+        //     type:'table',
+        //     columns:5
+        // },
+        defaults : {
+            labelAlign : 'right',
+            // labelWidth : 100,
+            // inputWidth : 200,
+            margin : '4,0,0,0'
+        },
+        items : [
+            {
+                id: 'nextPer',
+                xtype: 'combo',
+                store: nextSprStore,
+                fieldLabel: '下一步接收人',
+                editable: false,
+                labelWidth: 80,
+                displayField: 'V_PERSONNAME',
+                valueField: 'V_PERSONCODE',
+                queryMode: 'local',
+                //baseCls: 'margin-bottom',
+                fieldStyle: 'background-color: #FFEBCD; background-image: none;',
+                style: ' margin: 5px 0px 0px 5px',
+                labelAlign: 'right',
+                width: 200
             }, {
-                layout: 'column',
-                defaults: {
-                    xtype: 'combo',
-                    labelAlign: 'right',
-                    width: 250
-                },
-                items: [{
-
-                    xtype: 'combo',
-                    id: 'gzlx',
-                    store: equFaultStore,
-                    queryMode: 'local',
-                    valueField: 'V_TYPECODE',
-                    displayField: 'V_TYPENAME',
-                    forceSelection: true,
-                    fieldLabel: '故障类型',
-                    editable: false,
-                    labelWidth: 90
-                }, {
-                    id: 'sblx',
-                    store: sblxStore,
-                    editable: false,
-                    queryMode: 'local',
-                    fieldLabel: '设备类型',
-                    displayField: 'V_EQUTYPENAME',
-                    valueField: 'V_EQUTYPECODE',
-                    allowBlank: false,
-                    labelWidth: 90
-                    // listeners: {
-                    //     change: function (field, newValue, oldValue) {
-                    //         _zyq_sbmc();
-                    //     }
-                    // }
-                    // listConfig:{
-                    //     minWidth:420
-                    // }
-                }]
+                id: 'spyj',
+                xtype: 'textfield',
+                fieldLabel: '审批意见',
+                labelWidth: 90,
+                //baseCls: 'margin-bottom',
+                fieldStyle: 'background-color: #FFEBCD; background-image: none;',
+                style: ' margin: 5px 0px 0px 5px',
+                labelAlign: 'right',
+                width: 250
             }, {
-                layout: 'column',
-                defaults: {
-                    labelAlign: 'right',
-                    width: 250
-                },
-                items: [{
-                    id: 'sbmc',
-                    xtype: 'combo',
-                    allowBlank: false,
-                    store: sbmcStore,
-                    editable: false,
-                    queryMode: 'local',
-                    fieldLabel: '设备名称',
-                    displayField: 'V_EQUNAME',
-                    valueField: 'V_EQUCODE',
-                    labelWidth: 90
-                    // listConfig:{
-                    //     minWidth:420
-                    // }
-                }, {
-                    id: 'fqr',
-                    xtype: 'textfield',
-                    allowBlank: false,
-                    fieldLabel: '发起人',
-                    readOnly : true,
-                    labelWidth: 90
-                }]
-            }, {
-                layout: 'column',
-                defaults: {
-                    xtype: 'textfield',
-                    labelAlign: 'right',
-                    width: 250,
-                    readOnly: true
-                },
-                items: [{
-                    id: 'fqsj',
-                    allowBlank: false,
-                    fieldLabel: '发起时间',
-                    labelWidth: 90
-                }]
-            }, {
-                layout: 'column',
-                items: [{
-                    xtype: 'textarea',
-                    id: 'gzyy',
-                    fieldLabel: '故障原因',
-                    labelAlign: 'right',
-                    labelWidth: 90,
-                    width: 500
-                }]
+                xtype: 'button',
+                text: '同意',
+                style: ' margin: 5px 20px 0px 20px',
+                icon: imgpath + '/saved.png',
+                handler: _agree
             }
             // , {
-            //     layout: 'column',
-            //     items: [{
-            //         id: 'jhtgsj',
-            //         labelAlign: 'right',
-            //         allowBlank: false,
-            //         xtype: 'datefield',
-            //         editable: false,
-            //         format: 'Y-m',
-            //         value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-            //         fieldLabel: '计划停工时间',
-            //         labelWidth: 90,
-            //         width: 250,
-            //         listeners: {
-            //             select: function (field, newValue, oldValue) {
-            //                 var date1 = Ext.getCmp('jhtgsj').getSubmitValue();// + " " + Ext.getCmp('tghour').getValue() + ":" + Ext.getCmp('tgminute').getValue() + ":00";
-            //                 var date11 = new Date(date1);
-            //                 var date2 = Ext.getCmp('jhjgsj').getSubmitValue();// + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
-            //                 var date22 = new Date(date2);
-            //                 var gongshicha = date22.getTime() - date11.getTime();
-            //                 var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-            //                 if(gongshicha2 >= 0)
-            //                 {
-            //                     _gongshiheji();
-            //                 }else{
-            //                     Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-            //                     function callBack(id) {
-            //                         Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-            //                         // Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-            //                         // Ext.getCmp('tgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-            //                         Ext.getCmp('jhjgsj').setValue(new Date());       //编辑窗口计划竣工时间默认值
-            //                         // Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-            //                         // Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-            //                         Ext.getCmp('jhgshj').setValue(0);
-            //                         return ;
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     } ]
-            // }, {
-            //     layout: 'column',
-            //     items: [{
-            //         id: 'jhjgsj',
-            //         labelAlign: 'right',
-            //         allowBlank: false,
-            //         xtype: 'datefield',
-            //         editable: false,
-            //         format: 'Y-m',
-            //         value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-            //         fieldLabel: '计划竣工时间',
-            //         labelWidth: 90,
-            //         width: 250,
-            //         listeners: {
-            //             select: function (field, newValue, oldValue) {
-            //                 var date1 = Ext.getCmp('jhtgsj').getSubmitValue(); //+ " " + Ext.getCmp('tghour').getValue() + ":" + Ext.getCmp('tgminute').getValue() + ":00";
-            //                 var date11 = new Date(date1);
-            //                 var date2 = Ext.getCmp('jhjgsj').getSubmitValue(); //+ " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
-            //                 var date22 = new Date(date2);
-            //                 var gongshicha = date22.getTime() - date11.getTime();
-            //                 var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-            //                 if(gongshicha2 >= 0)
-            //                 {
-            //                     _gongshiheji();
-            //                 }else{
-            //                     Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-            //                     function callBack(id) {
-            //                         Ext.getCmp('jhtgsj').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-            //                         // Ext.getCmp('tghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-            //                         // Ext.getCmp('tgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-            //                         Ext.getCmp('jhjgsj').setValue(new Date());       //编辑窗口计划竣工时间默认值
-            //                         // Ext.getCmp('jghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-            //                         // Ext.getCmp('jgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-            //                         Ext.getCmp('jhgshj').setValue(0);
-            //                         return ;
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }]
-            // }, {
-            //     layout: 'column',
-            //     defaults: {
-            //         xtype: 'textfield',
-            //         labelAlign: 'right',
-            //         width: 250,
-            //         readOnly: false
-            //     },
-            //     items: [{
-            //         id: 'jhgshj',
-            //         allowBlank: false,
-            //         fieldLabel: '计划工时合计',
-            //         labelWidth: 90
-            //     }]
+            //     xtype: 'button',
+            //     text: '驳回',
+            //     style: ' margin: 5px 20px 0px 0px',
+            //     icon: imgpath + '/cross.png',
+            //     handler: _reject
             // }
-            // , {
-            //     layout: 'column',
-            //     items: [{
-            //         xtype: 'textarea',
-            //         id: 'bz',
-            //         fieldLabel: '备注',
-            //         labelAlign: 'right',
-            //         labelWidth: 90,
-            //         width: 500
-            //     }]
-            // }
+        ]
+    });
+
+    var equGridpanel = Ext.create('Ext.grid.Panel', {
+        id : 'equGridpanel',
+        region : 'center',
+        store : gridStore,
+        columnLines : true,
+        // selType: 'checkboxmodel',
+        // plugins : [ Ext.create('Ext.grid.plugin.CellEditing', {
+        //     clicksToEdit : 1
+        // }) ],
+        columns : [
+            // {
+            //     text : '删除',
+            //     dataIndex : 'V_FAULTCODE',
+            //     align : 'center',
+            //     width : 80, renderer :_delete
+            //
+            // },
+            {
+                text : '设备分类',
+                dataIndex : 'V_EQUTYPENAME',
+                align : 'center',
+                width : 100
+            }, {
+                text : '设备编号',
+                dataIndex : 'V_EQUCODE',
+                align : 'center',
+                width : 100
+            }, {
+                text : '设备名称',
+                dataIndex : 'V_EQUNAME',
+                align : 'center',
+                width : 100
+            }, {
+                text : '设备位置编码',
+                dataIndex : 'V_EQUSITE',
+                align : 'center',
+                width : 100
+            }, {
+                text : '设备位置',
+                dataIndex : 'V_EQUSITENAME',
+                align : 'center',
+                width : 200
+            }
+        ]
+    });
+
+    var addPanel2 = Ext.create('Ext.form.FormPanel', {
+        border: false,
+        frame: true,
+        id: 'addPanel2',
+        region: 'center',
+        //title: '<div align="center"></div>',
+        baseCls: 'my-panel-no-border',
+        width: '100%',
+        // height: 595,
+        bodyPadding: 10,
+        fileUpload: true,
+        items: [{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'combo',
+                id: 'V_V_ORGCODE2',
+                store: orgStore2,
+                queryMode: 'local',
+                valueField: 'V_DEPTCODE',
+                displayField: 'V_DEPTNAME',
+                forceSelection: true,
+                fieldLabel: '厂矿',
+                editable: false,
+                labelWidth: 70,
+                width: 270,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                listeners: {
+                    select: function () {
+                        Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
+                        init = false;
+                        _selectDept2();
+                        /* _selecteType2();
+                         _selectequName2();
+                         _selectsubequName2();*/
+
+                    }
+                }
+            }, {
+                xtype: 'combo',
+                id: 'V_V_DEPTCODE2',
+                store: deptStore2,
+                queryMode: 'local',
+                valueField: 'V_DEPTCODE',
+                displayField: 'V_DEPTNAME',
+                forceSelection: true,
+                fieldLabel: '作业区',
+                editable: false,
+                labelWidth: 70,
+                width: 270,
+                style: ' margin: 5px 0px 0px -3px',
+                labelAlign: 'right'
+                // listeners: {
+                //     select: function (field, newValue, oldValue) {
+                //         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
+                //         init = false;
+                //         // _selecteType2();
+                //         /* _selectequName2();
+                //          _selectsubequName2();*/
+                //
+                //     }
+                // }
+            }
+
+            ]
+        },  {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textfield',
+                id: 'faultname2',
+                fieldLabel: '故障名称',
+                readOnly:true,
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 270
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 0px 5px'
+            },{
+                xtype: 'textfield',
+                id: 'faultpart2',
+                fieldLabel: '故障部位',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 270
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                xtype: 'combo',
+                id: 'equFaultname2',
+                store: equFaultStore2,
+                queryMode: 'local',
+                valueField: 'V_TYPECODE',
+                displayField: 'V_TYPENAME',
+                forceSelection: true,
+                fieldLabel: '故障类型',
+                editable: false,
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 270
+
+            },{
+
+                xtype: 'combo',
+                id: 'faultLevel2',
+                store: faultStore2,
+                queryMode: 'local',
+                valueField: 'V_FAULTCODE',
+                displayField: 'V_FAULTNAME',
+                forceSelection: true,
+                fieldLabel: '故障等级',
+                editable: false,
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -3px',
+                labelAlign: 'right',
+                width: 270
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                id: 'begintime2',
+                xtype: 'datefield',
+                editable: false,
+                format: 'Y-m-d',
+                //submitFormat: 'yyyy-mm-dd',
+                value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                fieldLabel: '发现时间',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 270,
+                baseCls: 'margin-bottom'
+            },{
+                xtype: 'textfield',
+                id: 'faultxz2',
+                fieldLabel: '性质',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -3px',
+                labelAlign: 'right',
+                width: 270 }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textfield',
+                id: 'faultss2',
+                fieldLabel: '损失',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                nanText: "请输入有效数字",
+                minValue:'0',
+                validateOnBlur: false,
+                validateOnChange: false,
+                hideTrigger: true,
+                allowBlank: false,
+                width: 240
+            }, {
+                xtype: 'label',
+                style: ' margin: 8px 0px 0px 4px',
+                text:'万元'
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
+            }
+
+            ]
+        },{xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultclgc2',
+                fieldLabel: '处理过程',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
+            }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultRea2',
+                fieldLabel: '故障原因',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultDesc2',
+                fieldLabel: '故障现象',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            },{
+                xtype: 'label',
+                width: 5,
+                text: '*',
+                style: 'color:red',
+                margin : ' margin: 5px 0px 5px 5px'
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultSol2',
+                fieldLabel: '故障解决',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultzgcs2',
+                fieldLabel: '整改措施',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'fzrcl2',
+                fieldLabel: '对相关负责人的处理',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
+
             ]
         }]
     });
 
-    var buttonPanel = Ext.create('Ext.panel.Panel', {
-        id: 'buttonPanel',
-        layout: 'column',
-        region: 'north',
-        padding: '0 0 0 0',
-        height: 30,
-        style: 'margin-bottom:1px',
+
+    var filegridPanel2 = Ext.create("Ext.grid.Panel", {
+        id: 'filegridPanel2',
+        region: 'center',
+        // height: 200,
+        width: '100%',
+        columnLines: true,
+        store: fileGridStore2,
+        autoScroll: true,
+        // margin: '10px 0 0 125px',
+        //colspan: 3,
+        columns: [{
+            text: '附件名称',
+            id: 'F_V_V_FILENAME',
+            flex: 0.7,
+            align: 'center',
+            dataIndex: "V_FILENAME",
+            renderer: _downloadRander
+        }, {
+            text: '操作',
+            flex: 0.3,
+            align: 'center',
+            renderer: _delRander
+        }]
+    });
+
+
+
+
+    var uploadpanel2= Ext.create('Ext.form.FormPanel', {
+        border: false,
         frame: true,
+        id: 'uploadpanel2',
+        region: 'south',
+        width: '100%',
+        layout: 'vbox',
         baseCls: 'my-panel-no-border',
-        items: [{
-            id: 'nextPer',
-            xtype: 'combo',
-            store: nextSprStore,
-            fieldLabel: '下一步接收人',
-            editable: false,
-            labelWidth: 80,
-            displayField: 'V_PERSONNAME',
-            valueField: 'V_PERSONCODE',
-            queryMode: 'local',
-            //baseCls: 'margin-bottom',
-            fieldStyle: 'background-color: #FFEBCD; background-image: none;',
-            style: ' margin: 5px 0px 0px 5px',
-            labelAlign: 'right',
-            width: 200
-        }, {
-            id: 'spyj',
-            xtype: 'textfield',
-            fieldLabel: '审批意见',
-            labelWidth: 90,
-            //baseCls: 'margin-bottom',
-            fieldStyle: 'background-color: #FFEBCD; background-image: none;',
-            style: ' margin: 5px 0px 0px 5px',
-            labelAlign: 'right',
-            width: 250
-        }, {
-            xtype: 'button',
-            text: '同意',
-            style: ' margin: 5px 20px 0px 20px',
-            icon: imgpath + '/saved.png',
-            handler: _agree
-        }
-        // , {
-        //     xtype: 'button',
-        //     text: '驳回',
-        //     style: ' margin: 5px 20px 0px 0px',
-        //     icon: imgpath + '/cross.png',
-        //     handler: _reject
-        // }
+        // height: 597,
+        bodyPadding: 3,
+        fileUpload: true,
+
+        items: [
+            {
+                xtype: 'form',
+                id:'uploadForm2',
+                region: 'north',
+                layout: 'hbox',
+                baseCls: 'my-panel-no-border',
+                items: [{
+                    xtype: 'filefield',
+                    id: 'V_V_FILEBLOB2',
+                    name: 'V_V_FILEBLOB2',
+                    enctype: "multipart/form-data",
+                    fieldLabel: '故障附件',
+                    labelWidth: 70,
+                    labelAlign: 'right',
+                    inputWidth: 201,
+                    style: ' margin: 5px 0px 0px -2px',
+                    buttonText: '选择文件',
+                    allowBlank: false
+                }, {
+                    id: 'insertFilesFj2',
+                    xtype: 'button',
+                    text: '上传',
+                    style: ' margin: 5px 0px 0px 15px',
+                    icon: imgpath + '/accordion_collapse.png',
+                    handler: _upLoadFile2
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_GUID2',
+                    id: 'V_V_GUID2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_FILENAME2',
+                    id: 'V_V_FILENAME2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_FILETYPECODE2',
+                    id: 'V_V_FILETYPECODE2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_PLANT2',
+                    id: 'V_V_PLANT2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_DEPT2',
+                    id: 'V_V_DEPT2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_PERSON2',
+                    id: 'V_V_PERSON2'
+                }, {
+                    xtype: 'hidden',
+                    name: 'V_V_REMARK2',
+                    id: 'V_V_REMARK2'
+                }]},{
+                columnWidth: 1,
+                height: 225,
+                width: 540,
+                margin: '10px 0px 0px 0px',
+                items: filegridPanel2
+            }
         ]
     });
 
+
+
     Ext.create('Ext.container.Viewport', {
-        layout: {
-            type: 'border',
-            regionWeights: {
-                west: -1,
-                north: 1,
-                south: 1,
-                east: -1
+        layout : {
+            type : 'border',
+            regionWeights : {
+                west : -1,
+                north : 1,
+                south : 1,
+                east : -1
             }
         },
-        items: [{
-            region: 'north',
-            border: false,
-            items: [buttonPanel]
-        }, {
-            region: 'center',
-            //layout: 'fit',
-            border: false,
-            items: [inputPanel]
-        }]
+        items : [
+            {
+                region : 'north',
+                border : false,
+                layout : 'fit',
+                items : [inputPanel]
+            },
+            {
+                region : 'west',
+                border : false,
+                layout : 'fit',
+                width : 450,
+                items : [equGridpanel]
+            },
+            // {
+            //     xtype : 'treepanel',
+            //     id : 'sectTree',
+            //     region : 'west',
+            //     frame : true,
+            //     // border : false,
+            //     width : 260,
+            //     store : treeStore,
+            //     rootVisible : false,
+            //     listeners : {
+            //         itemclick : OnClickTreeItem
+            //     }
+            // },
+            {
+                region : 'center',
+                // border : false,
+                frame: true,
+                width : 590,
+                autoScroll:true,
+                items : [ addPanel2,uploadpanel2]
+            }
+
+        ]
     });
+    //点击加号加载
+    // Ext.getCmp("sectTree").on("beforeload",function(store,operation){
+    //     if(operation.node.data.parentid==-1){
+    //         Ext.apply(store.proxy.extraParams,{
+    //                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+    //                 V_V_DEPTCODENEXT:operation.node.data.id
+    //             },
+    //             store.proxy.url=AppUrl + 'tree/PRO_GET_DEPTEQUTYPE_PER')
+    //     }else if(operation.node.data.parentid.length==8){
+    //         Ext.apply(store.proxy.extraParams,{
+    //                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+    //                 V_V_DEPTCODENEXT:operation.node.data.parentid,//车间编码
+    //                 V_V_EQUTYPECODE:operation.node.data.id //设备类型编码
+    //             },
+    //             store.proxy.url=AppUrl + 'cxy/PRO_PM_07_DEPTEQU_PER_DROP')//cxy
+    //     }else{
+    //         Ext.apply(store.proxy.extraParams,{
+    //
+    //                 V_V_PERSONCODE:Ext.util.Cookies.get('v_personcode'),
+    //                 V_V_DEPTCODE:V_V_DEPTCODE.substr(0,4),
+    //                 V_V_DEPTNEXTCODE:V_V_DEPTCODE,
+    //                 V_V_EQUTYPECODE:operation.node.parentNode.data.id, //设备类型编码
+    //                 V_V_EQUCODE:operation.node.data.id//设备编码
+    //             },
+    //             store.proxy.url=AppUrl + 'cxy/PRO_SAP_EQU_VIEW')
+    //     }
+    //
+    // });
     _init();
+
+    _selecteFaultStore2();
+
 });
 
 function _selectTaskId() {
@@ -722,12 +911,11 @@ function _selectTaskId() {
         }
     })
 }
-
 function _selectNextPer() {
     var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
     nextSprStore.proxy.extraParams = {
-        V_V_ORGCODE: V_V_ORGCODE,
-        V_V_DEPTCODE: V_V_DEPTCODE,
+        V_V_ORGCODE: Ext.getCmp('V_V_ORGCODE2').getValue(),
+        V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE2').getValue(),
         V_V_REPAIRCODE: '',
         V_V_FLOWTYPE: 'Fault',
         V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
@@ -737,108 +925,429 @@ function _selectNextPer() {
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
+    Ext.getBody().unmask();
     // selNextPer();
 }
-
 function _init() {
+    Ext.Ajax.request({
+        url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_GET',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_GUID': V_ORDERGUID
 
-    // if(ckStoreLoad && zyqStoreLoad && sblxStoreLoad && sbmcStoreLoad && equFaultLoad && initLoad){
-    //     initLoad = false;
-        Ext.Ajax.request({
-            url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_GET',
-            type: 'ajax',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID: V_ORDERGUID
-            },
-            success: function (response) {
-                var data = Ext.decode(response.responseText);
-                if (data.RET != null) {
-                    V_V_ORGCODE = data.RET[0].V_ORGCODE;
-                    V_V_DEPTCODE = data.RET[0].V_DEPTCODE;
-                    // V_V_SPECIALTY = data.RET[0].ZYCODE;
-                    V_PERSONNAME = data.RET[0].V_INPERNAME;
-                    V_PERSONCODE = data.RET[0].V_INPERCODE;
-                    //alert(V_PERSONCODE);
-                    // Ext.getCmp('year').setValue(data.RET[0].V_YEAR);
-                    // Ext.getCmp('ck').setValue(data.RET[0].V_ORGCODE);
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.success!='true') {//成功，会传回true
 
-                    Ext.data.StoreManager.lookup('ckStore').on('load', function () {
-                        Ext.getCmp('ck').select(data.RET[0].V_ORGCODE);
-                        _ck_zyqload();
-                    });
+                _selectOrg2();
+                _selectDept2();
+                // var deptStore2 = Ext.data.StoreManager.lookup('deptStore2');
+                // deptStore2.proxy.extraParams = {
+                //     'V_V_PERSONCODE': V_V_PERSONCODE,
+                //     'V_V_DEPTCODE': resp.RET[0].V_ORGCODE,
+                //     'V_V_DEPTCODENEXT': "%",
+                //     'V_V_DEPTTYPE': '[主体作业区]'
+                // };
+                // deptStore2.load();
 
-                    Ext.getCmp('ck').on('change', function () {
-                        _ck_zyqload();
-                    });
+                // var eTypeStore2 = Ext.data.StoreManager.lookup('eTypeStore2');
+                // eTypeStore2.proxy.extraParams = {
+                //     'V_V_PERSONCODE': V_V_PERSONCODE,
+                //     'V_V_DEPTCODENEXT': resp.RET[0].V_DEPTCODE
+                //
+                // };
+                // eTypeStore2.load();
 
-                    Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
-                        Ext.getCmp('zyq').select(data.RET[0].V_DEPTCODE);
-                        _zyq_sblx();
-                        // _zyq_sbmc();
-                        _selectNextPer();
-                    });
-
-                    Ext.getCmp('zyq').on('change', function () {
-                        _zyq_sblx();
-                        _selectNextPer();
-                    });
-
-                    Ext.data.StoreManager.lookup('sblxStore').on('load', function () {
-                        Ext.getCmp('sblx').select(data.RET[0].V_EQUTYPECODE);
-                        _zyq_sbmc();
+                // var equNameStore2 = Ext.data.StoreManager.lookup('equNameStore2');
+                // equNameStore2.proxy.extraParams = {
+                //     'V_V_PERSONCODE': V_V_PERSONCODE,
+                //     'V_V_DEPTCODENEXT': resp.RET[0].V_DEPTCODE,
+                //     'V_V_EQUTYPECODE': resp.RET[0].V_EQUTYPECODE
+                //
+                // };
+                // equNameStore2.load();
 
 
-                    });
+                // var subequNameStore2 = Ext.data.StoreManager.lookup('subequNameStore2');
+                // Ext.data.StoreManager.lookup('subequNameStore2').load({
+                //     params: {
+                //         V_V_PERSONCODE: V_V_PERSONCODE,
+                //         V_V_DEPTCODE: resp.RET[0].V_ORGCODE,
+                //         V_V_DEPTNEXTCODE: resp.RET[0].V_DEPTCODE,
+                //         V_V_EQUTYPECODE: resp.RET[0].V_EQUTYPECODE,
+                //         V_V_EQUCODE: resp.RET[0].V_EQUCODE
+                //     }
+                // });
+                Ext.getCmp('V_V_ORGCODE2').setValue(resp.RET[0].V_ORGCODE);
+                Ext.getCmp('V_V_DEPTCODE2').setValue(resp.RET[0].V_DEPTCODE);
+                // Ext.getCmp('V_V_EQUTYPE2').setValue(resp.RET[0].V_EQUTYPECODE);
+                // Ext.getCmp('V_EQUNAME2').setValue(resp.RET[0].V_EQUCODE);
 
-                    Ext.getCmp('sblx').on('change', function () {
-                        _zyq_sbmc();
-
-                    });
-
-                    Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
-                        Ext.getCmp('sbmc').select(data.RET[0].V_EQUCODE);
-                        Ext.getBody().unmask();
-                    });
-
-
-                    // Ext.getCmp('zyq').setValue(data.RET[0].V_DEPTCODE);
-                    Ext.getCmp('gzlx').select(data.RET[0].V_TYPECODE);
-                    // Ext.getCmp('sblx').setValue(data.RET[0].V_EQUTYPECODE);
-
-                    Ext.getCmp('fqr').setValue(data.RET[0].V_INPERNAME);
-                    Ext.getCmp('fqsj').setValue(data.RET[0].V_FINDTIME.substring(0, 19));
-                    Ext.getCmp('gzyy').setValue(data.RET[0].V_FAULT_YY);
-                    // Ext.getCmp('jhtgsj').setValue(data.RET[0].V_INTIME.substring(0, 7));
-                    // Ext.getCmp('jhjgsj').setValue(data.RET[0].V_ENDTIME.substring(0, 7));
-                    // // Ext.getCmp('jhtgsj').setValue(data.RET[0].PLANTJMONTH.substring(0, 19));
-                    // // Ext.getCmp('jhjgsj').setValue(data.RET[0].PLANJGMONTH.substring(0, 19));
-                    // Ext.getCmp('jhgshj').setValue(data.RET[0].V_TIME);
-                    // Ext.getCmp('bz').setValue(data.RET[0].REMARK);
-                    // _selectNextPer();
-                    // _selectNextPer();
-                    _selectTaskId();
+                Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPECODE);
+                Ext.getCmp('begintime2').setValue(resp.RET[0].V_FINDTIME);
+                Ext.getCmp('faultRea2').setValue(resp.RET[0].V_FAULT_YY);
+                Ext.getCmp('faultDesc2').setValue(resp.RET[0].V_FAULT_XX);
+                Ext.getCmp('faultLevel2').setValue(resp.RET[0].V_FAULT_LEVEL);
+                Ext.getCmp('faultSol2').setValue(resp.RET[0].V_JJBF);
+                Ext.getCmp('faultname2').setValue(resp.RET[0].V_FAULT_NAME);
+                Ext.getCmp('faultpart2').setValue(resp.RET[0].V_FAULT_PART);
+                Ext.getCmp('faultclgc2').setValue(resp.RET[0].V_FAULT_CLGC);
+                Ext.getCmp('faultss2').setValue(resp.RET[0].V_FAULT_SS);
+                Ext.getCmp('faultxz2').setValue(resp.RET[0].V_FAULT_XZ);
+                Ext.getCmp('faultzgcs2').setValue(resp.RET[0].V_FAULT_ZGCS);
+                Ext.getCmp('fzrcl2').setValue(resp.RET[0].V_FZR_CL);
+                _selectTaskId();
+                V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
+                V_V_FILE_GUID=resp.RET[0].V_FILE_GUID;
+                filequery2(V_ORDERGUID);
+                _selectGridPanel();
+                // _selectsubequName2();
+                // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
 
 
-                }
-            },
-            failure: function (response) {
+
+            } else {
                 Ext.MessageBox.show({
                     title: '错误',
-                    msg: response.responseText,
+                    msg: '加载错误',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR,
+                    fn: function () {
+                        _seltctFault();
+                    }
+                });
+            }
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: '数据错误',
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+}
+function _init2(){
+    if (orgLoad2 && deptLoad2 && equFaultLoad2 && equFaultLevel2 && nextSprName2) {
+        Ext.getBody().unmask();//去除页面笼罩
+    }
+}
+function _selectGridPanel() {
+    var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    gridStore.proxy.extraParams = {
+        'V_V_FAULTCODE': V_ORDERGUID
+    };
+    gridStore.load();
+}
+function _selectOrg2() {
+    var orgStore2 = Ext.data.StoreManager.lookup('orgStore2');
+
+    orgStore2.proxy.extraParams = {
+        'V_V_PERSONCODE': V_V_PERSONCODE,
+        'V_V_DEPTCODE': V_V_DEPTCODE,
+        'V_V_DEPTCODENEXT': '%',
+        'V_V_DEPTTYPE': '基层单位'
+    };
+
+    orgStore2.currentPage = 1;
+    orgStore2.load();
+
+}
+function _selectDept2() {
+    var deptStore2 = Ext.data.StoreManager.lookup('deptStore2');
+
+    deptStore2.proxy.extraParams = {
+        'V_V_PERSONCODE': V_V_PERSONCODE,
+        'V_V_DEPTCODE': Ext.getCmp('V_V_ORGCODE2').getValue(),
+        'V_V_DEPTCODENEXT': '%',
+        'V_V_DEPTTYPE': '[主体作业区]'
+    };
+
+    deptStore2.currentPage = 1;
+    deptStore2.load();
+}
+
+
+function _selecteFaultStore2() {
+    var faultStore2 = Ext.data.StoreManager.lookup('faultStore2');
+    faultStore2.proxy.extraParams = {
+
+    };
+    faultStore2.load();
+}
+function _seltctFault() {
+    var faultItemStore = Ext.data.StoreManager.lookup('faultItemStore');
+
+    faultItemStore.proxy.extraParams = {
+        'V_V_ORGCODE': Ext.getCmp('V_V_ORGCODE').getSubmitValue(),
+        'V_V_DEPTCODE': Ext.getCmp('V_V_DEPTCODE').getSubmitValue(),
+        'V_V_EQUTYPE': Ext.getCmp('V_V_EQUTYPE').getSubmitValue(),
+        'V_V_EQUCODE': Ext.getCmp('V_EQUNAME').getSubmitValue(),
+        'V_V_EQUCHILD_CODE': Ext.getCmp('SUB_V_EQUNAME').getSubmitValue(),
+        'V_V_FAULT_TYPE': Ext.getCmp('equFaultname').getSubmitValue(),
+        'V_V_FAULT_YY': Ext.getCmp('faulttext').getSubmitValue(),
+        'V_V_FINDTIME_B': Ext.getCmp("begintime").getSubmitValue(),
+        'V_V_FINDTIME_E': Ext.getCmp("endtime").getSubmitValue()
+    };
+
+    // faultItemStore.currentPage = 1;
+    faultItemStore.load();
+}
+
+
+
+
+
+function _upLoadFile2() {
+    // var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
+    var uploadForm2 = Ext.getCmp('uploadForm2');
+
+    var V_V_FILEBLOB = Ext.getCmp('V_V_FILEBLOB2').getSubmitValue();
+    var V_V_FILENAME = V_V_FILEBLOB.split("\\")[V_V_FILEBLOB.split("\\").length - 1].split(".")[0];
+    Ext.getCmp('V_V_GUID2').setValue(V_ORDERGUID);//records[0].data.V_GUID);
+    Ext.getCmp('V_V_FILENAME2').setValue(V_V_FILENAME);
+    Ext.getCmp('V_V_FILEBLOB2').setValue(V_V_FILEBLOB);
+    Ext.getCmp('V_V_FILETYPECODE2').setValue('SBGZ');
+    Ext.getCmp('V_V_PLANT2').setValue(Ext.getCmp('V_V_ORGCODE2').getValue());
+    Ext.getCmp('V_V_DEPT2').setValue(Ext.getCmp('V_V_DEPTCODE2').getValue());
+    Ext.getCmp('V_V_PERSON2').setValue(V_V_PERSONCODE);
+    Ext.getCmp('V_V_REMARK2').setValue(Ext.getCmp('V_V_REMARK2').getValue());
+
+    if (uploadForm2.form.isValid()) {
+        if (Ext.getCmp('V_V_FILEBLOB2').getValue() == '') {
+            Ext.Msg.alert('错误', '请选择你要上传的文件');
+            return;
+        }
+
+        Ext.MessageBox.show({
+            title: '请等待',
+            msg: '文件正在上传...',
+            progressText: '',
+            width: 300,
+            progress: true,
+            closable: false,
+            animEl: 'loding'
+
+        });
+
+        uploadForm2.getForm().submit({
+            url: AppUrl + 'cxy/PRO_BASE_FILE_ADD2',
+            method: 'POST',
+            async: false,
+            waitMsg: '上传中...',
+            success: function (form, action) {
+                var massage=action.result.message;
+                if(massage=="{RET=SUCCESS}"){
+                    Ext.Msg.alert('成功', '上传成功');
+                    // alert(records[0].get('V_GUID'))
+                    //if(records[0].get('V_GUID') == "" || records[0].get('V_GUID') == null)
+                    // filequery2(records[0].get('V_GUID'));
+                    filequery2(V_ORDERGUID);
+                }
+            },
+            failure: function (form, action) {
+                Ext.Msg.alert('错误', '上传失败');
+            }
+
+        })
+
+    }
+
+}
+
+function _downloadRander(a, value, metaData) {
+    return '<a href="javascript:onDownload(\'' + metaData.data.V_FILEGUID + ',' + metaData.data.V_FILENAME + '\')">' + a + '</a>';
+}
+
+function _delRander(a, value, metaData) {
+    return '<a href="javascript:onDel(\'' + metaData.data.V_FILEGUID + '\')">删除</a>';
+}
+function onDel(fileguid) {
+
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_14/PRO_BASE_FILE_DEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_FILEGUID: fileguid
+        },
+        success: function (response) {
+            var data = Ext.JSON.decode(response.responseText);
+
+            if (data.RET == 'SUCCESS') {
+                Ext.Msg.alert('成功', '删除附件成功');
+                filequery2(V_ORDERGUID);
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: data.message,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.ERROR
                 });
             }
-        });
-
-        //Ext.getBody().unmask();
-    // }
-
-
+        },
+        failure: function (resp) {
+            Ext.Msg.alert('提示信息', '删除失败');
+        }
+    });
 }
 
+function onDownload(fileguid) {
+    // alert(fileguid)
+    var guid = fileguid.substring(0,36);
+    var fujianname = fileguid.substring(37 );
+    //alert(guid);
+    //console.log(Ext.getCmp("V_V_GUID").getValue())
+    //alert(fujianname)
+    var form = Ext.getCmp('addPanel');
+    location.href = AppUrl+"qk/downloadFile?V_V_FILEGUID="+guid+"&V_V_FILENAME="+fujianname;//下载页面弹窗
+}
+
+
+
+
+
+function filequery2(guid) {
+    Ext.data.StoreManager.lookup('fileGridStore2').load({
+        params: {
+            V_V_GUID: guid
+        }
+    });
+}
+
+// function _hideFault() {
+//     Ext.getCmp('addFaultWindow').close();
+// }
+//
+// function _hideFault2() {
+//     window.close();
+// }
+//
+
+
+
+function _validate(obj) {
+    var valid = true;
+    for (var i = 0; i < obj.items.length; i++) {
+        if (obj.items.getAt(i).xtype != 'button' && obj.items.getAt(i).xtype != 'panel' && !obj.items.getAt(i).validate()) {
+            valid = false;
+        }
+    }
+    return valid;
+}
+
+
+function OnClickTreeItem(aa, record, item, index, e, eOpts) {
+    if (record.data.choose == true) {
+        var id=record.data.id;
+        var parentid=record.data.parentId;
+        var pid="";
+        if(record.data.leaf == true){
+            id=id.substr(0, id.length - 1);
+            pid=parentid;
+        }else{
+            pid=id;
+        }
+        var flag=0;
+        var records=Ext.getCmp('equGridpanel').getStore().data;
+        for (var i = 0; i < records.length; i++) {
+            var temp=records.items[i].data.V_EQUCODE;
+            if(temp==id){
+                flag=1;
+                return false;
+            }
+        }
+        if(flag==0){
+            // var data = {
+            //     'V_EQUTYPENAME' : record.data.V_EQUTYPENAME,
+            //     'V_EQUCODE' : id,
+            //     'V_EQUNAME' : record.data.text,
+            //     'V_EQUSITE' : record.data.V_EQUSITE,
+            //     'V_EQUSITENAME' : record.data.V_EQUSITENAME,
+            //     'V_EQUTYPECODE' : record.data.V_EQUTYPECODE,
+            //     'V_EQUUPCODE':parentid
+            // };
+            // addEquip(data);
+            Ext.Ajax.request({
+                url: AppUrl + 'cxy/PRO_FAULT_EQUIP_SET',
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    'V_V_FAULTCODE': V_ORDERGUID,
+                    'V_V_EQUTYPECODE': record.data.V_EQUTYPECODE,
+                    'V_V_EQUUPCODE':pid,
+                    'V_V_EQUCODE':id,
+                    'V_V_CREATER':V_V_PERSONCODE
+                },
+                success: function (response) {
+                    var resp=Ext.decode(response.responseText);
+                    if(resp.RET='SUCCESS'){
+                        _selectGridPanel();
+                    }else{
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.RET,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                    }
+
+
+                }
+            });
+        }
+    }
+}
+function _delete(value, metaData, record, rowIdx,colIdx, store, view) {
+
+    return '<a href="javascript:delFixContent(\'' + value + '\',\''+record.data.V_EQUCODE +'\')">删除</a>';
+}
+function delFixContent(faultguid,equcode) {
+
+    // var store = Ext.getCmp('equGridpanel').getStore();
+    // var sm = Ext.getCmp('equGridpanel').getSelectionModel().getSelection(); //得到表格的选择模型
+    // store.remove(sm[0]);
+
+    Ext.Ajax.request({
+        url: AppUrl + 'cxy/PRO_FAULT_EQUIP_DEL',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            'V_V_FAULTCODE': faultguid,
+            'V_V_EQUCODE':equcode
+
+        },
+        success: function (response) {
+
+            var resp=Ext.decode(response.responseText);
+            if(resp.RET='SUCCESS'){
+                _selectGridPanel();
+            }else{
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: resp.RET,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+
+
+        },failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.RET,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+}
 function _agree() {
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
@@ -863,30 +1372,29 @@ function _agree() {
         method: 'POST',
         params: {
             'V_V_GUID': V_ORDERGUID,
-            'V_V_ORGCODE': Ext.getCmp('ck').getValue(),
-            'V_V_DEPTCODE': Ext.getCmp('zyq').getValue(),
-            'V_V_EQUTYPE': Ext.getCmp('sblx').getValue(),
-            'V_V_EQUCODE': Ext.getCmp('sbmc').getValue(),
-            'V_V_EQUCHILD_CODE': '',
-            'V_V_FAULT_GUID': '',
-            'V_V_FAULT_TYPE': Ext.getCmp("gzlx").getValue(),
-            'V_V_FAULT_YY': Ext.getCmp("gzyy").getValue(),
-            'V_V_FINDTIME': '',
-            'V_V_FAULT_XX': '',
-            'V_V_JJBF': '',
-            'V_V_FAULT_LEVEL': '',
-            'V_V_FILE_GUID': '',
-            'V_V_INTIME': '',
-            'V_V_PERCODE': Ext.util.Cookies.get('v_personcode'),
-            'V_V_IP': '',
-            'V_V_FAULT_NAME':'',
-            'V_V_FAULT_PART':'',
-            'V_V_FAULT_CLGC':'',
-            'V_V_FAULT_SS':'',
-            'V_V_FAULT_XZ':'',
-            'V_V_FAULT_ZGCS':'',
-            'V_V_FZR_CL':''
-
+            'V_V_ORGCODE': Ext.getCmp("V_V_ORGCODE2").getValue(),
+            'V_V_DEPTCODE': Ext.getCmp("V_V_DEPTCODE2").getValue(),
+            'V_V_EQUTYPE': '',//Ext.getCmp("V_V_EQUTYPE2").getValue(),
+            'V_V_EQUCODE': '',//Ext.getCmp("V_EQUNAME2").getValue(),
+            'V_V_EQUCHILD_CODE': '',//Ext.getCmp("SUB_V_EQUNAME2").getValue(),
+            'V_V_FAULT_GUID': V_V_FAULT_GUID,
+            'V_V_FAULT_TYPE': Ext.getCmp("equFaultname2").getValue(),
+            'V_V_FAULT_YY': Ext.getCmp("faultRea2").getValue(),
+            'V_V_FINDTIME': Ext.getCmp("begintime2").getSubmitValue(),
+            'V_V_FAULT_XX': Ext.getCmp("faultDesc2").getValue(),
+            'V_V_JJBF': Ext.getCmp("faultSol2").getValue(),
+            'V_V_FAULT_LEVEL': Ext.getCmp("faultLevel2").getValue(),
+            'V_V_FILE_GUID': V_V_FILE_GUID,
+            'V_V_INTIME': Ext.Date.format(new Date(), 'Y-m-d'),
+            'V_V_PERCODE': V_V_PERSONCODE,
+            'V_V_IP': V_V_IP,
+            'V_V_FAULT_NAME':Ext.getCmp("faultname2").getValue(),
+            'V_V_FAULT_PART':Ext.getCmp("faultpart2").getValue(),
+            'V_V_FAULT_CLGC':Ext.getCmp("faultclgc2").getValue(),
+            'V_V_FAULT_SS':Ext.getCmp("faultss2").getValue(),
+            'V_V_FAULT_XZ':Ext.getCmp("faultxz2").getValue(),
+            'V_V_FAULT_ZGCS':Ext.getCmp("faultzgcs2").getValue(),
+            'V_V_FZR_CL':Ext.getCmp("fzrcl2").getValue()
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值
@@ -990,7 +1498,6 @@ function _agree() {
         }
     })
 }
-
 function _reject() {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
@@ -1022,62 +1529,4 @@ function _reject() {
             })
         }
     })
-}
-
-function _close() {
-    window.close();
-}
-
-function _ck_zyqload() {
-    var zyqStore = Ext.data.StoreManager.lookup('zyqStore');
-    zyqStore.proxy.extraParams = {
-        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-        'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
-        'V_V_DEPTCODENEXT': '%',
-        'V_V_DEPTTYPE': '主体作业区'
-    };
-    //matGroupSecondStore.currentPage = 1;
-    zyqStore.load();
-}
-
-// function _zyq_zy() {
-//     var zyStore = Ext.data.StoreManager.lookup('zyStore');
-//     zyStore.proxy.extraParams = {
-//         V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-//         V_V_DEPTNEXTCODE: V_V_DEPTCODE//Ext.getCmp('zyq').getValue()
-//     };
-//     //matGroupSecondStore.currentPage = 1;
-//     zyStore.load();
-// }
-
-function _zyq_sblx() {
-    var sblxStore = Ext.data.StoreManager.lookup('sblxStore');
-    sblxStore.proxy.extraParams = {
-        V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_DEPTCODENEXT: V_V_DEPTCODE//Ext.getCmp('zyq').getValue()
-    };
-    //matGroupSecondStore.currentPage = 1;
-    sblxStore.load();
-}
-
-function _zyq_sbmc() {
-    var sbmcStore = Ext.data.StoreManager.lookup('sbmcStore');
-    sbmcStore.proxy.extraParams = {
-        v_v_personcode: Ext.util.Cookies.get('v_personcode'),
-        v_v_deptcodenext: V_V_DEPTCODE,//Ext.getCmp('zyq').getValue(),
-        v_v_equtypecode: Ext.getCmp('sblx').getValue()
-    };
-    //matGroupSecondStore.currentPage = 1;
-    sbmcStore.load();
-
-}
-
-function _gongshiheji() {
-    var date1 = Ext.getCmp('jhtgsj').getSubmitValue() ;//+ " " + Ext.getCmp('tghour').getValue() + ":" + Ext.getCmp('tgminute').getValue() + ":00";
-    var date11 = new Date(date1);
-    var date2 = Ext.getCmp('jhjgsj').getSubmitValue();// + " " + Ext.getCmp('jghour').getValue() + ":" + Ext.getCmp('jgminute').getValue() + ":00";
-    var date22 = new Date(date2);
-    var gongshicha = date22.getTime() - date11.getTime();
-    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
-    Ext.getCmp('jhgshj').setValue(gongshicha2);
 }

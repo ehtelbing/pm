@@ -77,17 +77,17 @@ Ext.onReady(function () {
                 'V_V_DEPTCODENEXT': '%',
                 'V_V_DEPTTYPE': '基层单位'
             }
-        },
-        listeners: {
-            load: function (store, records) {
-                orgLoad2 = true;
-                if (init) {
-                    //Ext.getCmp('V_V_ORGCODE2').select(store.first());
-                    //   _init2();
-                }
-
-            }
         }
+        // listeners: {
+        //     load: function (store, records) {
+        //         orgLoad2 = true;
+        //         if (init) {
+        //             //Ext.getCmp('V_V_ORGCODE2').select(store.first());
+        //             //   _init2();
+        //         }
+        //
+        //     }
+        // }
     });
 
 
@@ -350,18 +350,18 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 width: 270,
                 style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                listeners: {
-                    select: function () {
-                        Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
-                        init = false;
-                        _selectDept2();
-                        /* _selecteType2();
-                         _selectequName2();
-                         _selectsubequName2();*/
-
-                    }
-                }
+                labelAlign: 'right'
+                // listeners: {
+                //     select: function () {
+                //         Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
+                //         init = false;
+                //         _selectDept2();
+                //         /* _selecteType2();
+                //          _selectequName2();
+                //          _selectsubequName2();*/
+                //
+                //     }
+                // }
             }, {
                 xtype: 'combo',
                 id: 'V_V_DEPTCODE2',
@@ -839,49 +839,22 @@ function _init() {
                 var resp = Ext.decode(response.responseText);
                 if (resp.success!='true') {//成功，会传回true
 
+                    Ext.data.StoreManager.lookup('orgStore2').on('load', function () {
+                        // Ext.getCmp('V_V_ORGCODE1').select(V_V_ORGCODE);
+                        Ext.getCmp('V_V_ORGCODE2').setValue(resp.RET[0].V_ORGCODE);
+                        _selectDept2();
+                    });
 
-                    var deptStore2 = Ext.data.StoreManager.lookup('deptStore2');
-                    deptStore2.proxy.extraParams = {
-                        'V_V_PERSONCODE': V_V_PERSONCODE,
-                        'V_V_DEPTCODE': resp.RET[0].V_ORGCODE,
-                        'V_V_DEPTCODENEXT': "%",
-                        'V_V_DEPTTYPE': '[主体作业区]'
-                    };
-                    deptStore2.load();
-
-                    // var eTypeStore2 = Ext.data.StoreManager.lookup('eTypeStore2');
-                    // eTypeStore2.proxy.extraParams = {
-                    //     'V_V_PERSONCODE': V_V_PERSONCODE,
-                    //     'V_V_DEPTCODENEXT': resp.RET[0].V_DEPTCODE
-                    //
-                    // };
-                    // eTypeStore2.load();
-
-                    // var equNameStore2 = Ext.data.StoreManager.lookup('equNameStore2');
-                    // equNameStore2.proxy.extraParams = {
-                    //     'V_V_PERSONCODE': V_V_PERSONCODE,
-                    //     'V_V_DEPTCODENEXT': resp.RET[0].V_DEPTCODE,
-                    //     'V_V_EQUTYPECODE': resp.RET[0].V_EQUTYPECODE
-                    //
-                    // };
-                    // equNameStore2.load();
+                    Ext.getCmp('V_V_ORGCODE2').on('change', function () {
+                        _selectDept2();
+                    });
 
 
-                    // var subequNameStore2 = Ext.data.StoreManager.lookup('subequNameStore2');
-                    // Ext.data.StoreManager.lookup('subequNameStore2').load({
-                    //     params: {
-                    //         V_V_PERSONCODE: V_V_PERSONCODE,
-                    //         V_V_DEPTCODE: resp.RET[0].V_ORGCODE,
-                    //         V_V_DEPTNEXTCODE: resp.RET[0].V_DEPTCODE,
-                    //         V_V_EQUTYPECODE: resp.RET[0].V_EQUTYPECODE,
-                    //         V_V_EQUCODE: resp.RET[0].V_EQUCODE
-                    //     }
-                    // });
-
-                    Ext.getCmp('V_V_ORGCODE2').setValue(resp.RET[0].V_ORGCODE);
-                    Ext.getCmp('V_V_DEPTCODE2').setValue(resp.RET[0].V_DEPTCODE);
-                    // Ext.getCmp('V_V_EQUTYPE2').setValue(resp.RET[0].V_EQUTYPECODE);
-                    // Ext.getCmp('V_EQUNAME2').setValue(resp.RET[0].V_EQUCODE);
+                    Ext.data.StoreManager.lookup('deptStore2').on('load', function () {
+                        // Ext.getCmp('V_V_DEPTCODE2').select(V_V_DEPTCODE);
+                        Ext.getCmp('V_V_DEPTCODE2').setValue(resp.RET[0].V_DEPTCODE);
+                        Ext.getBody().unmask();
+                    });
 
                     Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPECODE);
                     Ext.getCmp('begintime2').setValue(resp.RET[0].V_FINDTIME);
@@ -900,9 +873,14 @@ function _init() {
                     V_V_FILE_GUID=resp.RET[0].V_FILE_GUID;
                     filequery2(V_V_GUID);
                     _selectGridPanel();
+                    if(resp.RET[0].V_STATE !='' && resp.RET[0].V_STATE=='10'){
+                        Ext.getCmp('equGridpanel').disable();
+                        Ext.getCmp('sectTree').disable();
+                        Ext.getCmp('faultname2').setReadOnly(true);
+                    }
                     // _selectsubequName2();
                     // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
-                    Ext.getBody().unmask();//去除页面笼罩
+                    // Ext.getBody().unmask();//去除页面笼罩
 
 
                 } else {
@@ -1094,6 +1072,35 @@ function _downloadRander(a, value, metaData) {
 
 function _delRander(a, value, metaData) {
     return '<a href="javascript:onDel(\'' + metaData.data.V_FILEGUID + '\')">删除</a>';
+}
+function onDel(fileguid) {
+
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_14/PRO_BASE_FILE_DEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_FILEGUID: fileguid
+        },
+        success: function (response) {
+            var data = Ext.JSON.decode(response.responseText);
+
+            if (data.RET == 'SUCCESS') {
+                Ext.Msg.alert('成功', '删除附件成功');
+                filequery2(V_V_GUID);
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: data.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (resp) {
+            Ext.Msg.alert('提示信息', '删除失败');
+        }
+    });
 }
 
 function onDownload(fileguid) {

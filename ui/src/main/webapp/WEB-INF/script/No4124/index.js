@@ -133,7 +133,7 @@ Ext.onReady(function() {
         fields : [ 'V_ORDERGUID', 'V_ORDERID', 'V_SHORT_TXT', 'V_EQUIP_NO',
             'V_EQUIP_NAME', 'V_EQUSITENAME', 'V_SPARE', 'V_ORGNAME','V_ORGCODE','V_DEPTCODE',
             'V_DEPTNAME', 'V_PERSONNAME', 'D_ENTER_DATE',
-            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME','WORKORDERNUM','PLANTIME','FACTTIME'],
+            'V_DEPTNAMEREPARIR', 'V_ORDER_TYP_TXT', 'V_STATENAME','WORKORDERNUM','PLANTIME','FACTTIME','V_GL_FAULT'],
 
         proxy : {
             type : 'ajax',
@@ -172,7 +172,7 @@ Ext.onReady(function() {
                  {id : 'djy',xtype : 'combo', store : sdjy,editable : false,fieldLabel : '点检员', labelWidth : 80,displayField : 'V_PERSONNAME',valueField : 'V_PERSONCODE',queryMode : 'local', baseCls : 'margin-bottom'},
                 {id : 'selshortTxt',xtype : 'textfield', width : 158,emptyText : '按工单描述模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'selmatDesc',xtype : 'textfield', width : 158,emptyText : '按使用物料模糊搜索',margin:'5px 0px 5px 90px'},
-                {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}},
+                {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}}
             // {id : 'qxgd',xtype : 'button', icon : '../../images/gif/add.png',text : '添加', width : 80,listeners: {click: _addqxgdOpen}}
                 // { xtype : 'button',text : '导出excel',icon : '../../images/gif/grid.png',width : 85, listeners : { click : OnClickExcelButton}}
 
@@ -205,8 +205,24 @@ Ext.onReady(function() {
             align: 'center',
             width: 100,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                if(value=='0'){
+                    return '<a href="#" onclick="_preViewFault(\'' +record.data.V_ORGCODE+ '\',\''+record.data.V_DEPTCODE+'\',\''+record.data.V_ORDERGUID+'\')">关联事故</a>';
+                }else if(value=='1') {
+                    return '已关联';
+                }
 
-                return '<a href="#" onclick="_preViewFault(\'' +record.data.V_ORGCODE+ '\',\''+record.data.V_DEPTCODE+'\',\''+record.data.V_ORDERGUID+'\')">关联事故</a>';
+            }
+        },{
+            text: '关联状态',
+            dataIndex: 'V_GL_FAULT',
+            align: 'center',
+            width: 100,
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                if(value=='0'){
+                    return '未关联';
+                }else if(value=='1') {
+                    return '已关联';
+                }
             }
         },
             {

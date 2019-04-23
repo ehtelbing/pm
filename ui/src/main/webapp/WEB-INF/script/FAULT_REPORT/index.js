@@ -598,10 +598,18 @@ Ext.onReady(function () {
                 return '<a href="#" onclick="_preViewWorkOrder(\'' + value + '\')">至工单列表</a>';
             }
         },{
+            text: '流程',
+            dataIndex: 'V_GUID',
+            width: 80,
+            align: 'center',
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                return '<a href="#" onclick="_preViewProcess(\'' + value + '\')">' + '查看流程' + '</a>';
+            }
+        },{
             text: '详细',
             dataIndex: 'V_GUID',
             align: 'center',
-            width: 100,
+            width: 80,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href="#" onclick="_detailOpen(\'' + value + '\')">详细</a>';
             }
@@ -1047,5 +1055,27 @@ function OnButtonUp() {
         }
     });
 
+
+}
+function _preViewProcess(value) {
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetInstanceFromBusinessId',
+        methon:'POST',
+        async:false,
+        params:{
+            businessKey: value
+        },
+        success:function (resp) {
+            var res=Ext.decode(resp.responseText);
+            if (res.InstanceId != "" && res.InstanceId != null) {
+                var owidth = window.screen.availWidth;
+                var oheight = window.screen.availHeight - 50;
+                window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+                    + res.InstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+            }else{
+                Ext.Msg.alert('提示', '没有查到对应流程');
+            }
+        }
+    });
 
 }
