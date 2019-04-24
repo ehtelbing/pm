@@ -14,6 +14,21 @@ var V_V_ORDER_TYP = '';
 var REPAIRSIGN="";
 var REPAIRPERSON="";
 var action_time;
+var V_ORDERGUID = null;
+var V_DBGUID = null;
+var V_FLOWSTEP = null;
+var ProcessInstanceId = '';
+var ProcessDefinitionKey="";
+var processKey="";
+var MATSIGN=0;
+var returnMatSign="";
+if (location.href.split('?')[1] != undefined) {
+    V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
+    V_DBGUID = Ext.urlDecode(location.href.split('?')[1]).V_DBGUID;
+    V_FLOWSTEP = Ext.urlDecode(location.href.split('?')[1]).V_FLOWSTEP;
+    ProcessInstanceId = Ext.urlDecode(location.href.split('?')[1]).ProcessInstanceId;
+    ProcessDefinitionKey=Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey;
+}
 $(function () {
 
     var nextSprStore = Ext.create("Ext.data.Store", {
@@ -342,7 +357,7 @@ $(function () {
     loadPageInfo();
     loadTaskGrid();
     GetBillMatByOrder2();
-    GetBillMatByOrder();
+    loadMatList();
     loadSPR();
 
     $("#btnTask").click(function () {
@@ -529,6 +544,24 @@ function loadTaskGrid() {
         }
     });
 }
+function OpenEditMat() {
+    Ext.Ajax.request({
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+        type: "post",
+        async: false,
+        params: {
+            V_V_ORDERGUID: V_ORDERGUID
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            var owidth = window.document.body.offsetWidth - 200;
+            var oheight = window.document.body.offsetHeight - 100;
+            var ret = window.open(AppUrl + 'page/PM_050103/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            loadMatList();
+        }
+    });
+}
+
 function loadOrder() {
     Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',
@@ -558,6 +591,7 @@ function valueChange(field, newvalue, oldvalue) {
     }
 
 }
+//确认验收弹出窗口确认
 function comboConfirm() {
     if (Ext.getCmp('radiotypesc').getValue().sctypename == '1') {
         if (Ext.getCmp('qxmx').getValue() == '') {
@@ -918,149 +952,153 @@ function changefactnum(){
 }
 //--end upd
 function ActivitiConfirmAccept() {//确定验收
-
-    if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
-        Ext.MessageBox.alert('提示', '请填写验收日期');
-        return false;
-    }
-
-    if ($("#V_REPAIRSIGN").val() == "这个判断不执行") {
-        Ext.MessageBox.alert('提示', '请先填写检修方签字');
-        return false;
-    }
-
-    if ($("#V_CHECKMANCONTENT").val() == "") {
-        Ext.MessageBox.alert('提示', '请填写点检员验收意见');
-        return false;
-    }
-    changefactnum();
-    Ext.getCmp('valuepanel').removeAll();
-    $.ajax({
-        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
-        type: 'post',
-        async: false,
-        data: {
-            V_V_ORDERGUID: $.url().param("V_ORDERGUID")
-        },
-        dataType: "json",
-        traditional: true,
-        success: function (resp) {
-            QRYS();
-
-            Ext.getCmp('combowindow').show();
-            // var fnum = resp.list.length;
-            //
-            // if (resp.list.length == 0) {
-            //     // QRYS();
-            // } else {
-            //     for (var i = 0; i < resp.list.length; i++) {
-            //         if (resp.list[i].V_JXBZ_VALUE_DOWN == '' || resp.list[i].V_JXBZ_VALUE_DOWN == null || resp.list[i].V_JXBZ_VALUE_UP == '' || resp.list[i].V_JXBZ_VALUE_UP == null) {
-            //             fnum--;
-            //         } else {
-            //             var khpanel = [{
-            //                 xtype: 'displayfield',
-            //                 id: 'gxcode' + i,
-            //                 fieldLabel: '工序编号',
-            //                 labelAlign: 'right',
-            //                 labelWidth: 80,
-            //                 style: {
-            //                     margin: '5px 0 5px 0px'
-            //                 },
-            //                 value: resp.list[i].V_ACTIVITY,
-            //                 width: 200
-            //             }, {
-            //                 xtype: 'displayfield',
-            //                 id: 'gxname' + i,
-            //                 fieldLabel: '工序内容',
-            //                 labelAlign: 'right',
-            //                 labelWidth: 80,
-            //                 style: {
-            //                     margin: '5px 0 5px 0px'
-            //                 },
-            //                 value: resp.list[i].V_DESCRIPTION,
-            //                 width: 200
-            //             }, {
-            //                 xtype: 'displayfield',
-            //                 id: 'svaluedown' + i,
-            //                 fieldLabel: '标准值(下限)',
-            //                 labelAlign: 'right',
-            //                 labelWidth: 80,
-            //                 style: {
-            //                     margin: '5px 0 5px 0px'
-            //                 },
-            //                 value: resp.list[i].V_JXBZ_VALUE_DOWN,
-            //                 width: 150
-            //             }, {
-            //                 xtype: 'displayfield',
-            //                 id: 'svalueup' + i,
-            //                 fieldLabel: '标准值(上限)',
-            //                 labelAlign: 'right',
-            //                 labelWidth: 80,
-            //                 style: {
-            //                     margin: '5px 0 5px 0px'
-            //                 },
-            //                 value: resp.list[i].V_JXBZ_VALUE_UP,
-            //                 width: 150
-            //             }, {
-            //                 xtype: 'textfield',
-            //                 id: 'fvlaue' + i,
-            //                 fieldStyle: 'background :#FFFF99;',
-            //                 fieldLabel: '实际值',
-            //                 labelAlign: 'right',
-            //                 labelWidth: 80,
-            //                 style: {
-            //                     margin: '5px 0 5px 0px'
-            //                 },
-            //                 listeners: {
-            //                     change: valueChange
-            //                 },
-            //                 width: 200
-            //             }, {
-            //                 xtype: 'textfield',
-            //                 id: 'gxguid' + i,
-            //                 fieldStyle: 'background :#FFFF99;',
-            //                 fieldLabel: '工序guid',
-            //                 hidden: true,
-            //                 labelAlign: 'right',
-            //                 labelWidth: 80,
-            //                 width: 200,
-            //                 value: resp.list[i].V_GUID
-            //             }];
-            //
-            //             Ext.getCmp('valuepanel').add(khpanel);
-            //         }
-            //     }
-            //
-            //     var bpanel = {
-            //         xtype: 'button',
-            //         text: '确定',
-            //         icon: imgpath + '/saved.png',
-            //         style: ' margin: 5px 0px 0px 35px',
-            //         handler: ValueConfirm
-            //     };
-            //
-            //     if (fnum == 0) {
-            //         Ext.getCmp('combowindow').show();
-            //         Ext.getCmp('qxmx').disable();
-            //     } else {
-            //         if (fnum == 1 || fnum == 2) {
-            //             winheight = fnum * 140;
-            //         } else {
-            //             winheight = fnum * 70;
-            //         }
-            //
-            //         GXlength = fnum;
-            //         Ext.getCmp('valuepanel').add(bpanel);
-            //         Ext.getCmp('valuewindow').setHeight(winheight);
-            //         Ext.getCmp('valuepanel').setHeight(winheight);
-            //         // --Ext.getCmp('valuepanel').add(panel);
-            //         Ext.getCmp('valuewindow').show();
-            //         // --OpenDiv('VDiv','Vfade');
-            //     }
-            // }
-
+    workMatChangeSel();
+    if(MATSIGN==1||returnMatSign=="1"){
+        matChangeFlow();
+    }else {
+        if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
+            Ext.MessageBox.alert('提示', '请填写验收日期');
+            return false;
         }
-    });
+
+        if ($("#V_REPAIRSIGN").val() == "这个判断不执行") {
+            Ext.MessageBox.alert('提示', '请先填写检修方签字');
+            return false;
+        }
+
+        if ($("#V_CHECKMANCONTENT").val() == "") {
+            Ext.MessageBox.alert('提示', '请填写点检员验收意见');
+            return false;
+        }
+        changefactnum();
+        Ext.getCmp('valuepanel').removeAll();
+        $.ajax({
+            url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
+            type: 'post',
+            async: false,
+            data: {
+                V_V_ORDERGUID: $.url().param("V_ORDERGUID")
+            },
+            dataType: "json",
+            traditional: true,
+            success: function (resp) {
+                QRYS();
+
+                Ext.getCmp('combowindow').show();
+                // var fnum = resp.list.length;
+                //
+                // if (resp.list.length == 0) {
+                //     // QRYS();
+                // } else {
+                //     for (var i = 0; i < resp.list.length; i++) {
+                //         if (resp.list[i].V_JXBZ_VALUE_DOWN == '' || resp.list[i].V_JXBZ_VALUE_DOWN == null || resp.list[i].V_JXBZ_VALUE_UP == '' || resp.list[i].V_JXBZ_VALUE_UP == null) {
+                //             fnum--;
+                //         } else {
+                //             var khpanel = [{
+                //                 xtype: 'displayfield',
+                //                 id: 'gxcode' + i,
+                //                 fieldLabel: '工序编号',
+                //                 labelAlign: 'right',
+                //                 labelWidth: 80,
+                //                 style: {
+                //                     margin: '5px 0 5px 0px'
+                //                 },
+                //                 value: resp.list[i].V_ACTIVITY,
+                //                 width: 200
+                //             }, {
+                //                 xtype: 'displayfield',
+                //                 id: 'gxname' + i,
+                //                 fieldLabel: '工序内容',
+                //                 labelAlign: 'right',
+                //                 labelWidth: 80,
+                //                 style: {
+                //                     margin: '5px 0 5px 0px'
+                //                 },
+                //                 value: resp.list[i].V_DESCRIPTION,
+                //                 width: 200
+                //             }, {
+                //                 xtype: 'displayfield',
+                //                 id: 'svaluedown' + i,
+                //                 fieldLabel: '标准值(下限)',
+                //                 labelAlign: 'right',
+                //                 labelWidth: 80,
+                //                 style: {
+                //                     margin: '5px 0 5px 0px'
+                //                 },
+                //                 value: resp.list[i].V_JXBZ_VALUE_DOWN,
+                //                 width: 150
+                //             }, {
+                //                 xtype: 'displayfield',
+                //                 id: 'svalueup' + i,
+                //                 fieldLabel: '标准值(上限)',
+                //                 labelAlign: 'right',
+                //                 labelWidth: 80,
+                //                 style: {
+                //                     margin: '5px 0 5px 0px'
+                //                 },
+                //                 value: resp.list[i].V_JXBZ_VALUE_UP,
+                //                 width: 150
+                //             }, {
+                //                 xtype: 'textfield',
+                //                 id: 'fvlaue' + i,
+                //                 fieldStyle: 'background :#FFFF99;',
+                //                 fieldLabel: '实际值',
+                //                 labelAlign: 'right',
+                //                 labelWidth: 80,
+                //                 style: {
+                //                     margin: '5px 0 5px 0px'
+                //                 },
+                //                 listeners: {
+                //                     change: valueChange
+                //                 },
+                //                 width: 200
+                //             }, {
+                //                 xtype: 'textfield',
+                //                 id: 'gxguid' + i,
+                //                 fieldStyle: 'background :#FFFF99;',
+                //                 fieldLabel: '工序guid',
+                //                 hidden: true,
+                //                 labelAlign: 'right',
+                //                 labelWidth: 80,
+                //                 width: 200,
+                //                 value: resp.list[i].V_GUID
+                //             }];
+                //
+                //             Ext.getCmp('valuepanel').add(khpanel);
+                //         }
+                //     }
+                //
+                //     var bpanel = {
+                //         xtype: 'button',
+                //         text: '确定',
+                //         icon: imgpath + '/saved.png',
+                //         style: ' margin: 5px 0px 0px 35px',
+                //         handler: ValueConfirm
+                //     };
+                //
+                //     if (fnum == 0) {
+                //         Ext.getCmp('combowindow').show();
+                //         Ext.getCmp('qxmx').disable();
+                //     } else {
+                //         if (fnum == 1 || fnum == 2) {
+                //             winheight = fnum * 140;
+                //         } else {
+                //             winheight = fnum * 70;
+                //         }
+                //
+                //         GXlength = fnum;
+                //         Ext.getCmp('valuepanel').add(bpanel);
+                //         Ext.getCmp('valuewindow').setHeight(winheight);
+                //         Ext.getCmp('valuepanel').setHeight(winheight);
+                //         // --Ext.getCmp('valuepanel').add(panel);
+                //         Ext.getCmp('valuewindow').show();
+                //         // --OpenDiv('VDiv','Vfade');
+                //     }
+                // }
+
+            }
+        });
+    }
 }
 
 function QRYS() {
@@ -1531,49 +1569,54 @@ function ConfirmAccept() {
  });*/
 
 function print() {
-    $.ajax({
-        url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_EDIT',
-        type: 'post',
-        async: false,
-        data: {
-            V_V_PERCODE: $.cookies.get('v_personcode'),
-            V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
-            V_V_ORDERGUID: $("#V_ORDERGUID").val(),
-            V_V_SHORT_TXT: $("#V_SHORT_TXT").html(),
-            V_V_FUNC_LOC: $("#V_FUNC_LOC").val(),
-            V_V_EQUIP_NO: $("#V_EQUIP_NO").html(),
-            V_V_EQUIP_NAME: $("#V_EQUIP_NAME").html(),
-            V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val(),
-            V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val(),
-            V_V_WBS: $("#V_WBS").html(),
+    workMatChangeSel();
+    if(MATSIGN==1||returnMatSign=="1"){
+        matChangeFlow();
+    }else {
+        $.ajax({
+            url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_EDIT',
+            type: 'post',
+            async: false,
+            data: {
+                V_V_PERCODE: $.cookies.get('v_personcode'),
+                V_V_PERNAME: Ext.util.Cookies.get("v_personname2"),
+                V_V_ORDERGUID: $("#V_ORDERGUID").val(),
+                V_V_SHORT_TXT: $("#V_SHORT_TXT").html(),
+                V_V_FUNC_LOC: $("#V_FUNC_LOC").val(),
+                V_V_EQUIP_NO: $("#V_EQUIP_NO").html(),
+                V_V_EQUIP_NAME: $("#V_EQUIP_NAME").html(),
+                V_D_FACT_START_DATE: $("#D_FACT_START_DATE").val(),
+                V_D_FACT_FINISH_DATE: $("#D_FACT_FINISH_DATE").val(),
+                V_V_WBS: $("#V_WBS").html(),
 
-            V_V_WBS_TXT: $("#V_WBS_TXT").html(),
-            V_V_DEPTCODEREPARIR: V_V_DEPTCODEREPARIR,//$("#selPlant").val(),
-            V_V_TOOL: '',
-            V_V_TECHNOLOGY: ' ',
-            V_V_SAFE: ' ',
-            V_D_DATE_ACP: $("#D_DATE_ACP").val(),
-            V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
-            V_V_OTHERREASON: $("#V_OTHERREASON").val(),
-            V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
-            V_V_REPAIRSIGN: REPAIRSIGN ,  //$("#V_REPAIRSIGN").val(),
-            V_V_REPAIRPERSON: REPAIRPERSON ,  //$("#V_REPAIRPERSON").val(),
-            V_V_POSTMANSIGN: $("#V_POSTMANSIGN").val(),
-            V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
-            V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
-            V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
-            V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").val(),
-            V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
-        },
-        dataType: "json",
-        traditional: true,
-        success: function (resp) {
-            //alert(resp[0]);
-        }
-    });
-    selectID.push($("#V_ORDERGUID").val());
-    window.open(AppUrl + "page/No410101/indexn.html", selectID,
-        "dialogHeight:700px;dialogWidth:1100px");
+                V_V_WBS_TXT: $("#V_WBS_TXT").html(),
+                V_V_DEPTCODEREPARIR: V_V_DEPTCODEREPARIR,//$("#selPlant").val(),
+                V_V_TOOL: '',
+                V_V_TECHNOLOGY: ' ',
+                V_V_SAFE: ' ',
+                V_D_DATE_ACP: $("#D_DATE_ACP").val(),
+                V_I_OTHERHOUR: $("#I_OTHERHOUR").val(),
+                V_V_OTHERREASON: $("#V_OTHERREASON").val(),
+                V_V_REPAIRCONTENT: $("#V_REPAIRCONTENT").val(),
+                V_V_REPAIRSIGN: REPAIRSIGN,  //$("#V_REPAIRSIGN").val(),
+                V_V_REPAIRPERSON: REPAIRPERSON,  //$("#V_REPAIRPERSON").val(),
+                V_V_POSTMANSIGN: $("#V_POSTMANSIGN").val(),
+                V_V_CHECKMANCONTENT: $("#V_CHECKMANCONTENT").val(),
+                V_V_CHECKMANSIGN: Ext.util.Cookies.get("v_personname2"),
+                V_V_WORKSHOPCONTENT: $("#V_WORKSHOPCONTENT").val(),
+                V_V_WORKSHOPSIGN: $("#V_WORKSHOPSIGN").val(),
+                V_V_DEPTSIGN: $("#V_DEPTSIGN").val()
+            },
+            dataType: "json",
+            traditional: true,
+            success: function (resp) {
+                //alert(resp[0]);
+            }
+        });
+        selectID.push($("#V_ORDERGUID").val());
+        window.open(AppUrl + "page/No410101/indexn.html", selectID,
+            "dialogHeight:700px;dialogWidth:1100px");
+    }
 }
 
 function onClickSave() {
@@ -1701,7 +1744,7 @@ function OnBtnLookClicked() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + 'page/PM_091107/index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-    GetBillMatByOrder();
+    loadMatList();
 }
 
 function loadGJJJ() {
@@ -1840,7 +1883,7 @@ $(".numlimit").live(
         }
     });
 
-function GetBillMatByOrder() {
+function loadMatList() {
     Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
@@ -2018,5 +2061,177 @@ function guid() {
 
 
 
+function loadSetMat(){
+    MATSIGN=1;
+
+}
+
+function matChangeFlow(){
+    var FistSpPerCode="";
+    var FistSpPerName="";
+    Ext.Ajax.request({//流程第一审批人
+        url: AppUrl + 'dxfile/PM_ACTIVITI_STEP_LOG_SEL',
+        type: 'post',
+        async: false,
+        params: {
+            V_GUID: V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_PRO_GUID: ProcessDefinitionKey,
+            V_BEFORE_STEP: 'start'
+
+        },
+        success: function (response) {
+            var resp=Ext.decode(response.responseText);
+            if (resp.list.length>0) {
+                FistSpPerCode=resp.list[0].V_NEXTPER;
+                FistSpPerName=resp.list[0].V_PERSONNAME;
+            }
+        }
+    });
+
+    Ext.Ajax.request({//下一步流程和审批步骤
+        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+        type: 'post',
+        async: false,
+        params: {
+            V_V_ORGCODE:V_V_ORGCODE,// $("#V_ORGCODE").val(),
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_REPAIRCODE: V_V_DEPTCODEREPARIR,
+            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE: '修改'
+        },
+        success: function (response) {
+            var resp=Ext.decode(response.responseText);
+            if (resp.list.length>0) {
+                // FistSpPerCode=resp.list[0].V_PERSONCODE;
+                // FistSpPerName=resp.list[0].V_PERSONNAME;
+                processKey = resp.RET;
+                V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
+            }
+        }
+    });
+    Ext.Ajax.request({
+        method: 'POST',
+        async: false,
+        url: AppUrl + 'mm/SetMat',
+        params: {
+            V_V_ORDERGUID:V_ORDERGUID,// $("#V_ORDERGUID").val(),
+            x_personcode: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.V_CURSOR == '1') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'Activiti/TaskComplete',
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        taskId: taskId,
+                        idea: '修改',
+                        parName: [V_NEXT_SETP, "flow_yj"],
+                        parVal: [FistSpPerCode, '物料修改重新审批'],//$("#selApprover").val()
+                        processKey: processKey,
+                        businessKey:V_ORDERGUID,// $.url().param("V_ORDERGUID"),
+                        V_STEPCODE: V_STEPCODE,
+                        V_STEPNAME: V_STEPNAME,
+                        V_IDEA: '物料修改重新审批',
+                        V_NEXTPER: FistSpPerCode,//$("#selApprover").val(),
+                        V_INPER: Ext.util.Cookies.get('v_personcode')
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp.ret == '任务提交成功') {
+                            Ext.Ajax.request({
+                                url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                                method: 'POST',
+                                async: false,
+                                params: {
+                                    'V_V_ORDERID': V_ORDERGUID,//$("#V_ORDERGUID").val(),
+                                    'V_V_PROCESS_NAMESPACE': 'WorkOrder',
+                                    'V_V_PROCESS_CODE': processKey,
+                                    'V_V_STEPCODE': V_STEPCODE,
+                                    'V_V_STEPNEXT_CODE': V_NEXT_SETP
+                                },
+                                success: function (ret) {
+                                    var resp = Ext.JSON.decode(ret.responseText);
+                                    if (resp.V_INFO == 'success') {
+                                        workMatChangeUpdt();
+                                        window.opener.QueryTab();
+                                        window.opener.QuerySum();
+                                        window.opener.QueryGrid();
+                                        window.close();
+                                        window.opener.OnPageLoad();
+                                    }
+                                }
+                            });
+                        } else {
+                            Ext.MessageBox.alert('提示', '任务提交失败');
+                        }
+                    },
+                    failure: function (response) {//访问到后台时执行的方法。
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: response.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        })
+                    }
+                });
+            }
+            else {
+                Ext.Ajax.request({
+                    method: 'POST',
+                    async: false,
+                    url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
+                    params: {
+                        V_V_ORDERGUID: V_ORDERGUID,//$("#V_ORDERGUID").val(),
+                        V_V_SEND_STATE: "失败"
+                    },
+                    success: function (response) {
+                        alert("工单创建失败：" + $("#V_ORDERID").html());
+                        history.go(0);
+                    }
+                });
+            }
+        }
+    });
+}
+//查找是否物料有改变
+function workMatChangeSel(){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_SEL',
+        type:'POST',
+        async:false,
+        params:{
+            V_WORKGUID:V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_SIGN:''
+        },
+        success:function(ret){
+            var resp=Ext.decode(ret.responseText);
+            if(resp.RET!=undefined){
+                returnMatSign=resp.RET;
+            }
+        }
+    });
+}
+//物料改变值状态
+function workMatChangeUpdt(){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_UPD',
+        type:'POST',
+        async:false,
+        params:{
+            V_WORKGUID:V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_SIGN:'0'
+        },
+        success:function(ret){
+            var resp=Ext.decode(ret.responseText);
+
+        }
+    });
+}
 
 

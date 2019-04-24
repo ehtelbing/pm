@@ -3898,4 +3898,231 @@ public class Dx_fileService {
         logger.info("end PROJECT_BY_DEFECT_LOG_IN");
         return result;
     }
+    // 工单物料日志明细
+    public HashMap PM_WORKORDER_SPARE_LOG_IN(String ID,String ORDERGUID,String FETCHORDERGUID,
+                                            String ACTIVITY,String MATERIALCODE,String MATERIALNAME,
+                                             String SPEC,String UNIT,String I_F_UNITPRICE,
+                                             String I_I_PLANAMOUNT,String I_F_PLANMONEY,String I_I_ACTUALAMOUNT,
+                                             String I_F_ACTUALMONEY,String I_V_TYPE,String I_V_MEMO,
+                                             String I_V_SUBTYPE,String I_V_STATUS,String I_I_ABANDONEDAMOUNT,
+                                             String I_I_RECLAIMEDAMOUNT,String I_I_FIXEDAMOUNT,String I_V_ID,
+                                             String KC_ID,String MAT_STATE,String INPERCODE,
+                                             String INDEPT,String INORG) throws SQLException {
+        logger.info("begin PM_WORKORDER_SPARE_LOG_IN");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_WORKORDER_SPARE_LOG_IN" + "(:ID,:ORDERGUID,:FETCHORDERGUID,:ACTIVITY,:MATERIALCODE,:MATERIALNAME," +
+                    ":SPEC,:UNIT,:I_F_UNITPRICE,:I_I_PLANAMOUNT,:I_F_PLANMONEY,:I_I_ACTUALAMOUNT,:I_F_ACTUALMONEY,:I_V_TYPE,:I_V_MEMO,:I_V_SUBTYPE," +
+                    ":I_V_STATUS,:I_I_ABANDONEDAMOUNT,:I_I_RECLAIMEDAMOUNT,:I_I_FIXEDAMOUNT,:I_V_ID,:KC_ID,:MAT_STATE,:INPERCODE,:INDEPT,:INORG,:RET)}");
+            cstmt.setString("ID", ID);
+            cstmt.setString("ORDERGUID", ORDERGUID);
+            cstmt.setString("FETCHORDERGUID", FETCHORDERGUID);
+            cstmt.setString("ACTIVITY", ACTIVITY);
+            cstmt.setString("MATERIALCODE", MATERIALCODE);
+            cstmt.setString("MATERIALNAME", MATERIALNAME);
+
+            cstmt.setString("SPEC", SPEC);
+            cstmt.setString("UNIT", UNIT);
+            cstmt.setString("I_F_UNITPRICE", I_F_UNITPRICE);
+            cstmt.setString("I_I_PLANAMOUNT", I_I_PLANAMOUNT);
+            cstmt.setString("I_F_PLANMONEY", I_F_PLANMONEY);
+            cstmt.setString("I_I_ACTUALAMOUNT", I_I_ACTUALAMOUNT);
+
+            cstmt.setString("I_F_ACTUALMONEY", I_F_ACTUALMONEY);
+            cstmt.setString("I_V_TYPE", I_V_TYPE);
+            cstmt.setString("I_V_MEMO", I_V_MEMO);
+            cstmt.setString("I_V_SUBTYPE", I_V_SUBTYPE);
+            cstmt.setString("I_V_STATUS", I_V_STATUS);
+            cstmt.setString("I_I_ABANDONEDAMOUNT", I_I_ABANDONEDAMOUNT);
+
+            cstmt.setString("I_I_RECLAIMEDAMOUNT", I_I_RECLAIMEDAMOUNT);
+            cstmt.setString("I_I_FIXEDAMOUNT", I_I_FIXEDAMOUNT);
+            cstmt.setString("I_V_ID", I_V_ID);
+            cstmt.setString("KC_ID", KC_ID);
+            cstmt.setString("MAT_STATE", MAT_STATE);
+            cstmt.setString("INPERCODE", INPERCODE);
+
+            cstmt.setString("INDEPT", INDEPT);
+            cstmt.setString("INORG", INORG);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PROJECT_BY_DEFECT_LOG_IN");
+        return result;
+    }
+    //工单，删除物料写入日志
+    public Map PM_WORKORDER_SPARE_SEL_INLOG(String V_I_ID,String V_INPERCODE,String V_INDEPT,
+                                            String V_ORG) throws SQLException {
+        logger.info("begin PM_WORKORDER_SPARE_SEL_INLOG");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_WORKORDER_SPARE_SEL_INLOG" + "(:V_I_ID,:V_INPERCODE,:V_INDEPT,:V_ORG,:RET)}");
+            cstmt.setString("V_I_ID", V_I_ID);
+            cstmt.setString("V_INPERCODE", V_INPERCODE);
+            cstmt.setString("V_INDEPT", V_INDEPT);
+            cstmt.setString("V_ORG", V_ORG);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_WORKORDER_SPARE_SEL_INLOG");
+        return result;
+    }
+    //工单查找第一步审批人
+    public Map PM_ACTIVITI_STEP_LOG_SEL(String V_GUID,String V_PRO_GUID,String V_BEFORE_STEP)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_ACTIVITI_STEP_LOG_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_ACTIVITI_STEP_LOG_SEL(:V_GUID,:V_PRO_GUID,:V_BEFORE_STEP,:RET)}");
+            cstmt.setString("V_GUID",V_GUID);
+            cstmt.setString("V_PRO_GUID",V_PRO_GUID);
+            cstmt.setString("V_BEFORE_STEP",V_BEFORE_STEP);
+            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PM_ACTIVITI_STEP_LOG_SEL");
+        return result;
+    }
+    //设备编码查找设备类型
+    public Map PRO_SAP_EQU_P_SEL_TYPEC(String V_V_EQUCODE)throws SQLException{
+        HashMap result=new HashMap();
+         Connection conn=null;
+         CallableStatement cstmt=null;
+         try{
+             logger.info("begin PRO_SAP_EQU_P_SEL_TYPEC");
+             conn=dataSources.getConnection();
+              conn.setAutoCommit(false);
+              cstmt=conn.prepareCall("{call PRO_SAP_EQU_P_SEL_TYPEC(:V_V_EQUCODE,:V_V_EQUTYPE)}");
+              cstmt.setString("V_V_EQUCODE",V_V_EQUCODE);
+              cstmt.registerOutParameter("V_V_EQUTYPE",OracleTypes.VARCHAR);
+              cstmt.execute();
+              result.put("V_V_EQUTYPE",(String) cstmt.getObject("V_V_EQUTYPE"));
+         }
+         catch(SQLException E){
+             logger.error(E);
+         }
+         finally {
+             cstmt.close();
+             conn.close();
+         }
+         logger.debug("result:"+result);
+         logger.info("end PRO_SAP_EQU_P_SEL_TYPEC");
+         return result;
+    }
+    //工单物料改变写入
+    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_IN(String V_WORKGUID,String V_SIGN)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_WORKORDER_MAT_CHANGE_SIGN_IN");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_SIGN_IN(:V_WORKGUID,:V_SIGN,:RET)}");
+            cstmt.setString("V_WORKGUID",V_WORKGUID);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }
+        catch(SQLException E){
+            logger.error(E);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PRO_WORKORDER_MAT_CHANGE_SIGN_IN");
+        return result;
+    }
+    //工单物料是否改变查询
+    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(String V_WORKGUID,String V_SIGN)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_WORKORDER_MAT_CHANGE_SIGN_SEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(:V_WORKGUID,:V_SIGN,:RET)}");
+            cstmt.setString("V_WORKGUID",V_WORKGUID);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }
+        catch(SQLException E){
+            logger.error(E);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PRO_WORKORDER_MAT_CHANGE_SIGN_SEL");
+        return result;
+    }
+    //工单物料状态修改
+    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(String V_WORKGUID,String V_SIGN)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_WORKORDER_MAT_CHANGE_SIGN_UPD");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(:V_WORKGUID,:V_SIGN,:RET)}");
+            cstmt.setString("V_WORKGUID",V_WORKGUID);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }
+        catch(SQLException E){
+            logger.error(E);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PRO_WORKORDER_MAT_CHANGE_SIGN_UPD");
+        return result;
+    }
 }

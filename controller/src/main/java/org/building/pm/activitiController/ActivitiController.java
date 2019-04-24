@@ -1056,8 +1056,8 @@ public class ActivitiController {
         if (processKey.indexOf("Fault") != -1) {
             flowtype = "事故";
         }
-        if(processKey.indexOf("Fault") != -1) {
-            flowtype = "事故";
+        if(processKey.indexOf("MaintainPlan") != -1) {
+            flowtype = "维修计划";
         }
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 

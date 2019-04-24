@@ -692,3 +692,7 @@ function loadWorkDesc(mxcode){ //获取模型工单描述
         }
     });
 }
+
+function loadSetMat(){
+
+}

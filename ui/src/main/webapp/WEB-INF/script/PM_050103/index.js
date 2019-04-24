@@ -295,12 +295,32 @@ function OnClickDeleteButton() {
                                 .decode(response.responseText);
                             Ext.MessageBox.alert('操作信息',
                                 '删除成功', resp);
+                            //物料删除--写入日志
+                            Ext.Ajax.request({
+                                url:AppUrl+'dxfile/PM_WORKORDER_SPARE_SEL_INLOG',
+                                async:false,
+                                params:{
+                                    V_I_ID:selectModel.getSelection()[i].data.I_ID,
+                                    V_INPERCODE:Ext.util.Cookies.get("v_personcode"),
+                                    V_INDEPT:Ext.util.Cookies.get("v_deptcode"),
+                                    V_ORG:Ext.util.Cookies.get("v_orgCode")
+                                },
+                                success:function(response){
+                                    var resp=Ext.decode(response.responseText);
+                                    if(resp.RET=='SUCCESS'){
+
+                                    }else{
+                                        alert(resp.RET);
+                                    }
+                                }
+                            });
                         }
                     });
             }
             Ext.ComponentManager.get('grid').getStore().load();
             Ext.ComponentManager.get('grid2').getStore().load();
         });
+
     var selectModel = Ext.getCmp('grid').getSelectionModel();
     if (!selectModel.hasSelection()) {
         Ext.MessageBox.alert('操作信息', '请选择要删除的信息.');
@@ -332,7 +352,8 @@ function OnClickDeleteButton() {
                 success:function(response){
                         var resp=Ext.decode(response.responseText);
                         if(resp.RET=='SUCCESS'){
-
+                            // setMatSign=1;
+                            // matSignChange();
                         }else{
                             alert(resp.RET);
                         }
@@ -356,6 +377,8 @@ function OnClickDeleteButton() {
                         }
                     });
             }
+            setMatSign=1;
+            matSignChange();
             Ext.ComponentManager.get('grid').getStore().load();
             Ext.ComponentManager.get('grid2').getStore().load();
         });
@@ -397,6 +420,7 @@ function OnClickMatCodeText(threeParams) {
                 V_V_ID: ''
             },
             success: function (response) {
+                setMatSign=1;
                 Ext.getCmp('grid').getStore().load();
                 Ext.getCmp('grid2').getStore().load();
             }
@@ -593,6 +617,8 @@ function OnClickKCText(moreParams) {
                         },
                         success: function (response) {
                             var resp = Ext.decode(response.responseText);
+                            setMatSign=1;
+                            matSignChange();
                         }
                     });
                 }
@@ -605,6 +631,10 @@ function OnClickKCText(moreParams) {
 }
 
 function OnClickAddFinishButton() {
+    if(setMatSign==1){
+        window.opener.loadSetMat();
+
+    }
     window.opener.loadMatList();
     window.close();
 }
@@ -761,10 +791,37 @@ function WatchOrder() {
 }
 function OnCompareElem ( editor, context, eOpts ){
 
-    if(context.originalValue==context.value){
+    if(context.originalValue==context.value&&setMatSign==0){
         setMatSign=0;
     }else{
         setMatSign=1;
     }
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_IN',
+        type:'POST',
+        async:false,
+        params:{
+            V_WORKGUID:V_ORDERGUID,
+            V_SIGN:setMatSign
+        },
+        success:function(ret){
+            var resp=Ext.decode(ret.responseText);
+        }
+    });
 
+}
+
+function matSignChange(){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_IN',
+        type:'POST',
+        async:false,
+        params:{
+            V_WORKGUID:V_ORDERGUID,
+            V_SIGN:setMatSign
+        },
+        success:function(ret){
+            var resp=Ext.decode(ret.responseText);
+        }
+    });
 }

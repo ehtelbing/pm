@@ -14,12 +14,16 @@ var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var wuliaochaxunlist = [];
 var ProcessInstanceId = '';
+var ProcessDefinitionKey="";
 var Assignee = '';
+var MATSIGN=0;
+var returnMatSign="";
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_DBGUID = Ext.urlDecode(location.href.split('?')[1]).V_DBGUID;
     V_FLOWSTEP = Ext.urlDecode(location.href.split('?')[1]).V_FLOWSTEP;
     ProcessInstanceId = Ext.urlDecode(location.href.split('?')[1]).ProcessInstanceId;
+    ProcessDefinitionKey=Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey;
 }
 var selectID = [];
 $(function () {
@@ -626,7 +630,7 @@ function OpenEditMat() {
             var resp = Ext.JSON.decode(ret.responseText);
             var owidth = window.document.body.offsetWidth - 200;
             var oheight = window.document.body.offsetHeight - 100;
-            var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            var ret = window.open(AppUrl + 'page/PM_050103/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
             loadMatList();
         }
     });
@@ -1196,22 +1200,27 @@ function OrderBooked2() {
 }
 
 function _preOrderissued() {
+    selectID.push(V_ORDERGUID);
+    workMatChangeSel();
+    if(MATSIGN==1||returnMatSign=="1"){
+        matChangeFlow();
+    }else {
+        var nextSprStore2 = Ext.data.StoreManager.lookup('nextSprStore2');
+        nextSprStore2.proxy.extraParams = {
+            V_V_ORGCODE: V_V_ORGCODE,
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_REPAIRCODE: V_V_REPAIRCODE,
+            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOW_STEP: V_STEPCODE,
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE: '已接收'
 
-    var nextSprStore2 = Ext.data.StoreManager.lookup('nextSprStore2');
-    nextSprStore2.proxy.extraParams = {
-        V_V_ORGCODE: V_V_ORGCODE,
-        V_V_DEPTCODE: V_V_DEPTCODE,
-        V_V_REPAIRCODE: V_V_REPAIRCODE,
-        V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP: V_STEPCODE,
-        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_SPECIALTY: '%',
-        V_V_WHERE:  '已接收'
-
-    };
-    nextSprStore2.currentPage = 1;
-    nextSprStore2.load();
-    Ext.getCmp('window2').show();
+        };
+        nextSprStore2.currentPage = 1;
+        nextSprStore2.load();
+        Ext.getCmp('window2').show();
+    }
 }
 
 function activitiOrderissued() {
@@ -1473,22 +1482,28 @@ function ReturnIsToTask() {
 }
 
 function feedBack() {
-    var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
-    nextSprStoreb.proxy.extraParams = {
-        V_V_ORGCODE: V_V_ORGCODE,
-        V_V_DEPTCODE: V_V_DEPTCODE,
-        V_V_REPAIRCODE: V_V_REPAIRCODE,
-        V_V_FLOWTYPE: 'WORK',
-        V_V_FLOW_STEP: V_STEPCODE,
-        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_SPECIALTY: '%',
-        V_V_WHERE:  '已反馈'
+    selectID.push(V_ORDERGUID);
+    workMatChangeSel();
+    if(MATSIGN==1||returnMatSign=="1"){
+        matChangeFlow();
+    }else {
+        var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
+        nextSprStoreb.proxy.extraParams = {
+            V_V_ORGCODE: V_V_ORGCODE,
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_REPAIRCODE: V_V_REPAIRCODE,
+            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOW_STEP: V_STEPCODE,
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE: '已反馈'
 
-    };
+        };
 
-    nextSprStoreb.currentPage = 1;
-    nextSprStoreb.load();
-    Ext.getCmp('windowb').show();
+        nextSprStoreb.currentPage = 1;
+        nextSprStoreb.load();
+        Ext.getCmp('windowb').show();
+    }
 }
 
 function ConfirmAccept() {
@@ -1652,8 +1667,13 @@ function ConfirmAccept() {
 
 function print() {
     selectID.push(V_ORDERGUID);
-    window.open(AppUrl + "page/No410101/indexn.html", selectID,
-        "dialogHeight:700px;dialogWidth:1100px");
+    workMatChangeSel();
+    if(MATSIGN==1||returnMatSign=="1"){
+        matChangeFlow();
+    }else {
+        window.open(AppUrl + "page/No410101/indexn.html", selectID,
+            "dialogHeight:700px;dialogWidth:1100px");
+    }
 }
 
 function GetBillMatByOrder() {
@@ -1672,3 +1692,175 @@ function GetBillMatByOrder() {
     });
 }
 
+function loadSetMat(){
+    MATSIGN=1;
+
+}
+
+function matChangeFlow(){
+    var FistSpPerCode="";
+    var FistSpPerName="";
+    Ext.Ajax.request({//流程第一审批人
+        url: AppUrl + 'dxfile/PM_ACTIVITI_STEP_LOG_SEL',
+        type: 'post',
+        async: false,
+        params: {
+            V_GUID: V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_PRO_GUID: ProcessDefinitionKey,
+            V_BEFORE_STEP: 'start'
+
+        },
+        success: function (response) {
+            var resp=Ext.decode(response.responseText);
+            if (resp.list.length>0) {
+                FistSpPerCode=resp.list[0].V_NEXTPER;
+                FistSpPerName=resp.list[0].V_PERSONNAME;
+            }
+        }
+    });
+
+    Ext.Ajax.request({//下一步流程和审批步骤
+        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+        type: 'post',
+        async: false,
+        params: {
+            V_V_ORGCODE:V_V_ORGCODE,// $("#V_ORGCODE").val(),
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_REPAIRCODE: V_V_REPAIRCODE,
+            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE: '修改'
+        },
+        success: function (response) {
+            var resp=Ext.decode(response.responseText);
+            if (resp.list.length>0) {
+                // FistSpPerCode=resp.list[0].V_PERSONCODE;
+                // FistSpPerName=resp.list[0].V_PERSONNAME;
+                processKey = resp.RET;
+                V_STEPNAME = resp.list[0].V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = resp.list[0].V_V_NEXT_SETP;
+            }
+        }
+    });
+    Ext.Ajax.request({
+        method: 'POST',
+        async: false,
+        url: AppUrl + 'mm/SetMat',
+        params: {
+            V_V_ORDERGUID:V_ORDERGUID,// $("#V_ORDERGUID").val(),
+            x_personcode: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.V_CURSOR == '1') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'Activiti/TaskComplete',
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        taskId: taskId,
+                        idea: '修改',
+                        parName: [V_NEXT_SETP, "flow_yj"],
+                        parVal: [FistSpPerCode, '物料修改重新审批'],//$("#selApprover").val()
+                        processKey: processKey,
+                        businessKey:V_ORDERGUID,// $.url().param("V_ORDERGUID"),
+                        V_STEPCODE: V_STEPCODE,
+                        V_STEPNAME: V_STEPNAME,
+                        V_IDEA: '物料修改重新审批',
+                        V_NEXTPER: FistSpPerCode,//$("#selApprover").val(),
+                        V_INPER: Ext.util.Cookies.get('v_personcode')
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        if (resp.ret == '任务提交成功') {
+                            Ext.Ajax.request({
+                                url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                                method: 'POST',
+                                async: false,
+                                params: {
+                                    'V_V_ORDERID': V_ORDERGUID,//$("#V_ORDERGUID").val(),
+                                    'V_V_PROCESS_NAMESPACE': 'WorkOrder',
+                                    'V_V_PROCESS_CODE': processKey,
+                                    'V_V_STEPCODE': V_STEPCODE,
+                                    'V_V_STEPNEXT_CODE': V_NEXT_SETP
+                                },
+                                success: function (ret) {
+                                    var resp = Ext.JSON.decode(ret.responseText);
+                                    if (resp.V_INFO == 'success') {
+                                        workMatChangeUpdt();
+                                        window.opener.QueryTab();
+                                        window.opener.QuerySum();
+                                        window.opener.QueryGrid();
+                                        window.close();
+                                        window.opener.OnPageLoad();
+                                    }
+                                }
+                            });
+                        } else {
+                            Ext.MessageBox.alert('提示', '任务提交失败');
+                        }
+                    },
+                    failure: function (response) {//访问到后台时执行的方法。
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: response.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        })
+                    }
+                });
+            }
+            else {
+                Ext.Ajax.request({
+                    method: 'POST',
+                    async: false,
+                    url: AppUrl + 'zdh/PRO_PM_WORKORDER_SEND_UPDATE',
+                    params: {
+                        V_V_ORDERGUID: V_ORDERGUID,//$("#V_ORDERGUID").val(),
+                        V_V_SEND_STATE: "失败"
+                    },
+                    success: function (response) {
+                        alert("工单创建失败：" + $("#V_ORDERID").html());
+                        history.go(0);
+                    }
+                });
+            }
+        }
+    });
+}
+//查找是否物料有改变
+function workMatChangeSel(){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_SEL',
+        type:'POST',
+        async:false,
+        params:{
+            V_WORKGUID:V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_SIGN:''
+        },
+        success:function(ret){
+            var resp=Ext.decode(ret.responseText);
+            if(resp.RET!=undefined){
+                returnMatSign=resp.RET;
+            }
+        }
+    });
+}
+//物料改变值状态
+function workMatChangeUpdt(){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_UPD',
+        type:'POST',
+        async:false,
+        params:{
+            V_WORKGUID:V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_SIGN:'0'
+        },
+        success:function(ret){
+            var resp=Ext.decode(ret.responseText);
+
+        }
+    });
+}

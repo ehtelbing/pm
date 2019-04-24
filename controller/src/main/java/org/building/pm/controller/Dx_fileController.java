@@ -3578,6 +3578,120 @@ public class Dx_fileController {
             return data;
     }
 
+    //工单物料日志明细
+    @RequestMapping(value="PM_WORKORDER_SPARE_LOG_IN",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PM_WORKORDER_SPARE_LOG_IN(
+            @RequestParam(value = "ID") String ID,
+            @RequestParam(value = "ORDERGUID") String ORDERGUID,
+            @RequestParam(value = "FETCHORDERGUID") String FETCHORDERGUID,
+            @RequestParam(value = "ACTIVITY") String ACTIVITY,
+            @RequestParam(value = "MATERIALCODE") String MATERIALCODE,
+            @RequestParam(value = "MATERIALNAME") String MATERIALNAME,
+
+            @RequestParam(value = "SPEC") String SPEC,
+            @RequestParam(value = "UNIT") String UNIT,
+            @RequestParam(value = "I_F_UNITPRICE") String I_F_UNITPRICE,
+            @RequestParam(value = "I_I_PLANAMOUNT") String I_I_PLANAMOUNT,
+            @RequestParam(value = "I_F_PLANMONEY") String I_F_PLANMONEY,
+            @RequestParam(value = "I_I_ACTUALAMOUNT") String I_I_ACTUALAMOUNT,
+
+            @RequestParam(value = "I_F_ACTUALMONEY") String I_F_ACTUALMONEY,
+            @RequestParam(value = "I_V_TYPE") String I_V_TYPE,
+            @RequestParam(value = "I_V_MEMO") String I_V_MEMO,
+            @RequestParam(value = "I_V_SUBTYPE") String I_V_SUBTYPE,
+            @RequestParam(value = "I_V_STATUS") String I_V_STATUS,
+            @RequestParam(value = "I_I_ABANDONEDAMOUNT") String I_I_ABANDONEDAMOUNT,
+
+            @RequestParam(value = "I_I_RECLAIMEDAMOUNT") String I_I_RECLAIMEDAMOUNT,
+            @RequestParam(value = "I_I_FIXEDAMOUNT") String I_I_FIXEDAMOUNT,
+            @RequestParam(value = "I_V_ID") String I_V_ID,
+            @RequestParam(value = "KC_ID") String KC_ID,
+
+            @RequestParam(value = "MAT_STATE") String MAT_STATE,
+            @RequestParam(value = "INPERCODE") String INPERCODE,
+            @RequestParam(value = "INDEPT") String INDEPT,
+            @RequestParam(value = "INORG") String INORG,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_WORKORDER_SPARE_LOG_IN(ID,ORDERGUID,FETCHORDERGUID,ACTIVITY,MATERIALCODE,MATERIALNAME,
+                SPEC,UNIT,I_F_UNITPRICE,I_I_PLANAMOUNT,I_F_PLANMONEY,I_I_ACTUALAMOUNT,I_F_ACTUALMONEY,I_V_TYPE,I_V_MEMO,I_V_SUBTYPE,
+                I_V_STATUS,I_I_ABANDONEDAMOUNT,I_I_RECLAIMEDAMOUNT,I_I_FIXEDAMOUNT,I_V_ID,KC_ID,MAT_STATE,INPERCODE,INDEPT,INORG);
+        return data;
+    }
+
+    //工单，删除物料写入日志
+    @RequestMapping(value="PM_WORKORDER_SPARE_SEL_INLOG",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PM_WORKORDER_SPARE_SEL_INLOG(
+            @RequestParam(value = "V_I_ID") String V_I_ID,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INDEPT") String V_INDEPT,
+            @RequestParam(value = "V_ORG") String V_ORG,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_WORKORDER_SPARE_SEL_INLOG(V_I_ID,V_INPERCODE,V_INDEPT,V_ORG);
+        return data;
+    }
+
+    //工单查找第一步审批人
+    @RequestMapping(value="PM_ACTIVITI_STEP_LOG_SEL",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PM_ACTIVITI_STEP_LOG_SEL(
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_PRO_GUID") String V_PRO_GUID,
+            @RequestParam(value = "V_BEFORE_STEP") String V_BEFORE_STEP,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_ACTIVITI_STEP_LOG_SEL(V_GUID,V_PRO_GUID,V_BEFORE_STEP);
+        return data;
+    }
+
+    //设备编码查找设备类型
+    @RequestMapping(value="PRO_SAP_EQU_P_SEL_TYPEC",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_SAP_EQU_P_SEL_TYPEC(
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_SAP_EQU_P_SEL_TYPEC(V_V_EQUCODE);
+        return data;
+    }
+
+    //工单物料改变写入
+    @RequestMapping(value="PRO_WORKORDER_MAT_CHANGE_SIGN_IN",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_IN(
+            @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
+            @RequestParam(value = "V_SIGN") String V_SIGN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_IN(V_WORKGUID,V_SIGN);
+        return data;
+    }
+    //工单物料是否改变查询
+    @RequestMapping(value="PRO_WORKORDER_MAT_CHANGE_SIGN_SEL",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(
+            @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
+            @RequestParam(value = "V_SIGN") String V_SIGN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(V_WORKGUID,V_SIGN);
+        return data;
+    }
+    //工单物料状态修改
+    @RequestMapping(value="PRO_WORKORDER_MAT_CHANGE_SIGN_UPD",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(
+            @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
+            @RequestParam(value = "V_SIGN") String V_SIGN,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(V_WORKGUID,V_SIGN);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
