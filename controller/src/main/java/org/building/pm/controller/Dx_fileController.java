@@ -3692,6 +3692,19 @@ public class Dx_fileController {
         return data;
     }
 
+    //工单生成新的 缺陷，原数据生成
+    @RequestMapping(value="PRO_PM_DEFECT_AUTO_NEW_IN",method =RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_DEFECT_AUTO_NEW_IN(
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_PERNAME") String V_PERNAME,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PRO_PM_DEFECT_AUTO_NEW_IN(V_DEFECTGUID,V_PERCODE,V_PERNAME);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

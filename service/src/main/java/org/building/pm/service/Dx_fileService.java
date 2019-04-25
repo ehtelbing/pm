@@ -4125,4 +4125,33 @@ public class Dx_fileService {
         logger.info("end PRO_WORKORDER_MAT_CHANGE_SIGN_UPD");
         return result;
     }
+    //工单生成新的 缺陷，原数据生成
+    public Map PRO_PM_DEFECT_AUTO_NEW_IN(String V_DEFECTGUID,String V_PERCODE,String V_PERNAME)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_PM_DEFECT_AUTO_NEW_IN");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_PM_DEFECT_AUTO_NEW_IN(:V_DEFECTGUID,:V_PERCODE,:V_PERNAME,:RET)}");
+            cstmt.setString("V_DEFECTGUID",V_DEFECTGUID);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.setString("V_PERNAME",V_PERNAME);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("RET"));
+        }
+        catch(SQLException E){
+            logger.error(E);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PRO_PM_DEFECT_AUTO_NEW_IN");
+        return result;
+    }
 }
