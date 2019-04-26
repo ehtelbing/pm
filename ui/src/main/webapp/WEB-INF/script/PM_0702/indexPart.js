@@ -184,10 +184,15 @@ Ext.onReady(function () {
     })
 
     Ext.getCmp('foundview').on('click',function(view, rowIndex, colIndex){
-        var id = Ext.getCmp('overhaulApplyPanel').getStore().getAt(colIndex).data.V_GUID;
-        var owidth = window.document.body.offsetWidth - 500;
-        var oheight = window.document.body.offsetHeight - 500;
-        window.open(AppUrl + 'page/No41050601/index_aq.html?V_GUID=' + id  , '备件问题工单创建', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        if(Ext.getCmp('overhaulApplyPanel').getStore().getAt(colIndex).data.V_SOURCECODE!='defct14'){
+            var id = Ext.getCmp('overhaulApplyPanel').getStore().getAt(colIndex).data.V_GUID;
+            var owidth = window.document.body.offsetWidth - 500;
+            var oheight = window.document.body.offsetHeight - 500;
+            window.open(AppUrl + 'page/No41050601/index_aq.html?V_GUID=' + id  , '备件问题工单创建', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        }else{
+            alert('小机修备件问题无法生成工单！');
+        }
+
     });
 });
 

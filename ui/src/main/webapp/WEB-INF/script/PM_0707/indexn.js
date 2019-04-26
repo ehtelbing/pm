@@ -361,7 +361,6 @@ Ext.onReady(function () {
         frame: true,
         width: '100%',
         items: [
-
             {xtype:'panel',frame:true,layout:'column',width:255,border:false,
                 items:[
                     {xtype: 'button',id:'btn3', text: '上传附件', margin : '0px 0px 0px 15px',handler:upfile},
