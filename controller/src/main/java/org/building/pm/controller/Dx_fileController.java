@@ -3705,6 +3705,190 @@ public class Dx_fileController {
         return data;
     }
 
+    //放行挂链页面放行计划查询
+    @RequestMapping(value = "MAINTAIN_RELEASE_BY_DEFECT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map MAINTAIN_RELEASE_BY_DEFECT_SEL(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value="V_SDATE") String V_SDATE,
+            @RequestParam(value="V_EDATE") String V_EDATE,
+            @RequestParam(value="V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value="V_V_DEFECT") String V_V_DEFECT,
+            @RequestParam(value="V_V_FLAG") String V_V_FLAG,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.MAINTAIN_RELEASE_BY_DEFECT_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY,V_SDATE,V_EDATE,V_V_SPECIALTY,V_V_DEFECT,V_V_FLAG);
+        return data;
+    }
+
+    //查询已关联放行计划的缺陷
+    @RequestMapping(value="DEFECT_BY_MAINTAINPLAN_SEL",method=RequestMethod.POST)
+        @ResponseBody
+        public Map DEFECT_BY_MAINTAINPLAN_SEL(
+                @RequestParam(value="V_PROGUID") String V_PROGUID,
+                @RequestParam(value="V_PERCODE") String V_PERCODE,
+                @RequestParam(value="V_DEPTCODE") String V_DEPTCODE,
+                @RequestParam(value="V_DATE") String V_DATE,
+        HttpServletRequest request,
+        HttpServletResponse response
+                )throws Exception{
+        Map data=dx_fileService.DEFECT_BY_MAINTAINPLAN_SEL(V_PROGUID,V_PERCODE,V_DEPTCODE,V_DATE);
+        return data;
+    }
+
+    //维修计划审批完成且未上报查询
+    @RequestMapping(value="PRO_PROPLAN_SP_FINISH_SELECT",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PROPLAN_SP_FINISH_SELECT(
+            @RequestParam(value="V_SBSIGN") String V_SBSIGN,
+            @RequestParam(value="V_SCODE") String V_SCODE,
+            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            @RequestParam(value="V_ORGCODE") String V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.PRO_PROPLAN_SP_FINISH_SELECT(V_SBSIGN,V_SCODE,V_PERCODE,V_ORGCODE);
+        return data;
+    }
+
+    //维修计划查找缺陷
+    @RequestMapping(value="PM_DEFECT_BY_PROPASS_SEL",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECT_BY_PROPASS_SEL(
+            @RequestParam(value="V_V_PROGUID") String V_V_PROGUID,
+
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.PM_DEFECT_BY_PROPASS_SEL(V_V_PROGUID);
+        return data;
+    }
+
+    //缺陷跟踪明细写入
+    @RequestMapping(value="PRO_PM_07_DEFECT_LOG_SET",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_07_DEFECT_LOG_SET(
+            @RequestParam(value="V_V_GUID") String V_V_GUID,
+            @RequestParam(value="V_V_LOGREMARK") String V_V_LOGREMARK,
+            @RequestParam(value="V_V_FINISHCODE") String V_V_FINISHCODE,
+            @RequestParam(value="V_V_KEY") String V_V_KEY,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.PRO_PM_07_DEFECT_LOG_SET(V_V_GUID,V_V_LOGREMARK,V_V_FINISHCODE,V_V_KEY);
+        return data;
+    }
+    //放行关联缺陷导出
+    @RequestMapping(value = "MAINTAIN_DEFECT_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void MAINTAIN_DEFECT_EXCEL(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value="V_SDATE") String V_SDATE,
+            @RequestParam(value="V_EDATE") String V_EDATE,
+            @RequestParam(value="V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value="V_V_DEFECT") String V_V_DEFECT,
+            @RequestParam(value="V_V_FLAG") String V_V_FLAG,
+            HttpServletRequest request,
+            HttpServletResponse response) throws SQLException {
+
+        String V_ORGCODE = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
+        String V_ZY = V_V_ZY.equals("0") ? "%" : V_V_ZY;
+        String  V_DEPTCODE =V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
+        String V_SPECIALTY =V_V_SPECIALTY.equals("0") ? "%" : V_V_SPECIALTY;
+        String V_FLAG = V_V_FLAG.equals("0") ? "%" : V_V_FLAG;
+        List list = new ArrayList();
+
+        Map<String, Object> data = dx_fileService.MAINTAIN_RELEASE_BY_DEFECT_SEL(V_V_ORGCODE, V_DEPTCODE, V_V_PERCODE,V_ZY,V_SDATE,V_EDATE,V_SPECIALTY,V_V_DEFECT,V_FLAG);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+//        cell = row.createCell((short) 1);
+//        cell.setCellValue("放行计划编码");
+//        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("关联缺陷数量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("放行计划编码");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("放行计划名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("放行计划内容");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("放行建设单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("放行计划开工时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("工程额度(万元）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("缺陷内容");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+//                row.createCell((short) 1).setCellValue(map.get("V_GUID").equals(" ")  ? "" : map.get("V_GUID").toString());
+                row.createCell((short) 1).setCellValue(map.get("DEFNUM").equals(" ")? "" :map.get("DEFNUM").toString());
+                row.createCell((short) 2).setCellValue(map.get("V_PROJECT_CODE").equals(" ") ? "" : map.get("V_PROJECT_CODE").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_PROJECT_NAME").equals(" ")  ? "" : map.get("V_PROJECT_NAME").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_CONTENT").equals(" ")  ? "" : map.get("V_CONTENT").toString());
+                row.createCell((short) 5).setCellValue(map.get("V_DEPTNAME").equals(" ")  ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_DATE_B").equals(" ")  ? "" : map.get("V_DATE_B").toString().substring(0,10));
+                row.createCell((short) 7).setCellValue(map.get("V_MONEY").equals(" ")  ? "" : map.get("V_MONEY").toString());
+                row.createCell((short) 8).setCellValue(map.get("QXCONTEXT").equals(" ") ? "" : map.get("QXCONTEXT").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename="
+                        + URLEncoder.encode("厂外申请对放行计划Excel.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

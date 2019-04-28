@@ -4428,7 +4428,7 @@ function _selectTaskId() {
 function btnFlowAgree(){
     var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
     for(var i=0;i<record.length;i++){
-        if(record[i].get('PASS_STATE')==""){
+        if(record[i].get("PASS_STATE")!="PASS"&&record[i].get("PASS_STATE")!="NOPASS"){
             alert("请先审批缺陷");
             return false;
         }
@@ -4525,7 +4525,7 @@ function btnFlowAgree(){
 function btnFlowDisAgree(){
     var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
     for(var i=0;i<record.length;i++){
-        if(record[i].get('PASS_STATE')==""){
+        if(record[i].get("PASS_STATE")!="PASS"&&record[i].get("PASS_STATE")!="NOPASS"){
             alert("请先审批缺陷");
             return false;
         }

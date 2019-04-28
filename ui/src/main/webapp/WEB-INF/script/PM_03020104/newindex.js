@@ -3679,6 +3679,21 @@ function _deleteDefect(DefectGuid){
             var resp=Ext.decode(resp.responseText);
             if(resp.V_INFO=='SUCCESS'){
                 // QueryDefect();
+                // //写入缺陷跟踪明细
+                // Ext.Ajax.request({
+                //     url:AppUrl+'dxfile/PRO_PM_07_DEFECT_LOG_SET',
+                //     method:'POST',
+                //     params:{
+                //         V_V_GUID:records[i].get('V_GUID'),
+                //         V_V_LOGREMARK:Ext.util.Cookies.get("v_personcode")+'审批维修计划（'+Guid+')中删除缺陷',
+                //         V_V_FINISHCODE:'10',
+                //         V_V_KEY:Guid
+                //     },
+                //     success:function (response){
+                //         var resp=Ext.decode(response.responseText);
+                //         if(resp.RET=='成功');
+                //     }
+                // });
                 //写入缺陷-维修计划日志
                 Ext.Ajax.request({
                     url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
@@ -4427,7 +4442,7 @@ function _selectTaskId() {
 function btnFlowAgree(){
     var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
     for(var i=0;i<record.length;i++){
-        if(record[i].get('PASS_STATE')==""){
+        if(record[i].get("PASS_STATE")!="PASS"&&record[i].get("PASS_STATE")!="NOPASS"){
             alert("请先审批缺陷");
             return false;
         }
@@ -4524,7 +4539,7 @@ function btnFlowAgree(){
 function btnFlowDisAgree(){
     var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
     for(var i=0;i<record.length;i++){
-        if(record[i].get('PASS_STATE')==""){
+        if(record[i].get("PASS_STATE")!="PASS"&&record[i].get("PASS_STATE")!="NOPASS"){
             alert("请先审批缺陷");
             return false;
         }
@@ -5164,6 +5179,57 @@ function passDefect() {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.RET == 'SUCCESS') {
+                    //修改缺陷状态
+                    Ext.Ajax.request({
+                        url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].get('V_GUID'),
+                            V_V_STATECODE: '50'//已计划
+
+                        },
+                        success: function (ret) {
+                            var resp = Ext.decode(ret.responseText);
+                            if(resp.V_INFO=='success'){
+                                QueryDefect();
+                            }else{
+                                alert("修改缺陷状态失败");
+                            }
+
+                        }
+                    });
+                    //写入缺陷-维修计划日志
+                    Ext.Ajax.request({
+                        url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
+                        method:'POST',
+                        params:{
+                            V_PROGUID:Guid,
+                            V_DEFECTGUID:records[i].get('V_GUID'),
+                            V_PERCODE:Ext.util.Cookies.get("v_personcode"),
+                            V_DEPT:Ext.util.Cookies.get("v_deptcode"),
+                            V_ORG:Ext.util.Cookies.get("v_orgCode"),
+                            V_STATE:'PASS'
+                        },
+                        success:function (response){
+                            var resp=Ext.decode(response.responseText);
+                        }
+                    });
+                    //写入缺陷-跟踪日志
+                    Ext.Ajax.request({
+                        url:AppUrl+'dxfile/PRO_PM_07_DEFECT_LOG_SET',
+                        method:'POST',
+                        params:{
+                            V_V_GUID:records[i].get('V_GUID'),
+                            V_V_LOGREMARK:Ext.util.Cookies.get("v_personcode")+'审批维修计划（'+Guid+')结束缺陷通过',
+                            V_V_FINISHCODE:'50',
+                            V_V_KEY:Guid
+                        },
+                        success:function (response){
+                            var resp=Ext.decode(response.responseText);
+                            if(resp.RET=='成功');
+                        }
+                    });
                     QueryDefect();
                     alert('保存成功！');
                     // window.opener.selectGridTurn();
@@ -5199,6 +5265,57 @@ function  disPassDefect(){
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.RET == 'SUCCESS') {
+                    //修改缺陷状态
+                    Ext.Ajax.request({
+                        url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].get('V_GUID'),
+                            V_V_STATECODE: '10'//已计划
+
+                        },
+                        success: function (ret) {
+                            var resp = Ext.decode(ret.responseText);
+                            if(resp.V_INFO=='success'){
+                                QueryDefect();
+                            }else{
+                                alert("修改缺陷状态失败");
+                            }
+
+                        }
+                    });
+                    //写入缺陷-维修计划日志
+                    Ext.Ajax.request({
+                        url:AppUrl+'dxfile/PROJECT_BY_DEFECT_LOG_IN',
+                        method:'POST',
+                        params:{
+                            V_PROGUID:Guid,
+                            V_DEFECTGUID:records[i].get('V_GUID'),
+                            V_PERCODE:Ext.util.Cookies.get("v_personcode"),
+                            V_DEPT:Ext.util.Cookies.get("v_deptcode"),
+                            V_ORG:Ext.util.Cookies.get("v_orgCode"),
+                            V_STATE:'PASS'
+                        },
+                        success:function (response){
+                            var resp=Ext.decode(response.responseText);
+                        }
+                    });
+                    //写入缺陷-跟踪日志
+                    Ext.Ajax.request({
+                        url:AppUrl+'dxfile/PRO_PM_07_DEFECT_LOG_SET',
+                        method:'POST',
+                        params:{
+                            V_V_GUID:records[i].get('V_GUID'),
+                            V_V_LOGREMARK:Ext.util.Cookies.get("v_personcode")+'审批维修计划（'+Guid+')结束缺陷不通过',
+                            V_V_FINISHCODE:'10',
+                            V_V_KEY:Guid
+                        },
+                        success:function (response){
+                            var resp=Ext.decode(response.responseText);
+                            if(resp.RET=='成功');
+                        }
+                    });
                     QueryDefect();
                     alert('保存成功！');
                     // window.opener.selectGridTurn();
