@@ -15,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -230,6 +233,29 @@ public ResponseEntity<String> DEFECT_UPFILE_INSERT(@RequestParam(value = "V_V_BL
                                     HttpServletResponse response) throws Exception {
         Map result = pm_07Service.DEFECT_UPFILE_DELETE(V_FILECODE);
         return result;
+    }
+
+    @RequestMapping(value = "/DEFECT_UPFILE_DOWN_NTKO", method = RequestMethod.GET)
+    @ResponseBody
+    public void DEFECT_UPFILE_DOWN_NTKO(@RequestParam(value = "V_V_FILECODE") String V_V_FILECODE,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = pm_07Service.DEFECT_UPFILE_DOWN_NTKO(V_V_FILECODE);
+
+
+        Blob fileblob = (Blob) result.get("V_V_BLOB");
+
+        InputStream is = fileblob.getBinaryStream();
+
+
+        OutputStream fos = response.getOutputStream();
+        byte[] b = new byte[20480];
+        int length;
+        while ((length = is.read(b)) > 0) {
+            fos.write(b, 0, length);
+        }
+        is.close();
+        fos.close();
     }
 
 }
