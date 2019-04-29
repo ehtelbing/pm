@@ -58,7 +58,7 @@ $(function () {
     });
 
     $("#selType").change(function () {
-        $("#ORDER_TYP").html($("#selType").val());
+        $("#ORDER_TYP").val("AK05");
     });
 
     $("#selDW").change(function () {
@@ -73,13 +73,13 @@ $(function () {
     $("#selPlant").change(function () {
         createDD();
     });
-    $("#selPlant").on("input propertychange",function(){
-        if($("#selPlant").val()=="99170208"){
-            $("#selType").val("AK11");
-        }else{
-            $("#selType").val($("#selType").get(0).checked=true)
-        }
-    });
+    // $("#selPlant").on("input propertychange",function(){
+    //     if($("#selPlant").val()=="99170208"){
+    //         $("#selType").val("AK11");
+    //     }else{
+    //         $("#selType").val($("#selType").get(0).checked=true)
+    //     }
+    // });
 
     //WBS编码选择页面
     $("#wbsCode").click(function () {
@@ -120,7 +120,7 @@ function loadPageInfo() {
 
                 $("#selDW").val(resp.list[0].V_ORGCODE);
                 $("#selZYQ").val(resp.list[0].V_DEPTCODE);
-                $("selType").val(resp.list[0].V_ORDER_TYP);
+                $("selType").val("AK05");
 
                 // $("#V_EQUIP_NAME").val(resp.list[0].V_EQUIP_NAME);
                 // $("#V_EQUIP_NO").val(resp.list[0].V_EQUIP_NO);
@@ -245,7 +245,12 @@ function loadTypelist() {
         success: function (resp) {
             var result = [];
             $.each(resp.list, function (index, item) {
-                result.push("<option value=\"" + item.ORDER_TYP + "\">" + item.ORDER_TYP_TXT + "</option>");
+                if(item.ORDER_TYP=="AK05"){
+                    result.push("<option selected=\"selected\" value=\"" + item.ORDER_TYP + "\">" + item.ORDER_TYP_TXT + "</option>");
+                }
+                else{
+                    result.push("<option value=\"" + item.ORDER_TYP + "\">" + item.ORDER_TYP_TXT + "</option>");
+                }
             });
             $("#selType").html(result.join(""));
         }

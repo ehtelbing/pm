@@ -259,18 +259,18 @@ Ext.onReady(function () {
                 icon: imgpath + '/accordion_expand.png',
                 listeners: {click: OnButtonDR}
             }
-            ,{
-                xtype: 'button',
-                text: '新增2',
-                icon: imgpath + '/add.png',
-                listeners: {click: OnButtonAdd2}
-            },
-            {
-                xtype: 'button',
-                text: '编辑2',
-                icon: imgpath + '/edit.png',
-                listeners: {click: OnButtonEdit2}
-            }
+            // ,{
+            //     xtype: 'button',
+            //     text: '新增2',
+            //     icon: imgpath + '/add.png',
+            //     listeners: {click: OnButtonAdd2}
+            // },
+            // {
+            //     xtype: 'button',
+            //     text: '编辑2',
+            //     icon: imgpath + '/edit.png',
+            //     listeners: {click: OnButtonEdit2}
+            // }
             // ,{
             //     xtype:'button',
             //     text:'查看施工进度',
