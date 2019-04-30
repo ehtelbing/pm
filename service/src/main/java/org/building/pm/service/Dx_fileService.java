@@ -4379,4 +4379,29 @@ public class Dx_fileService {
         logger.info("end PRO_PM_07_DEFECT_LOG_SET");
         return result;
     }
+    //月计划选择年计划查询
+    public HashMap PM_PLAN_YEAR_BASIC_TO_MON_SEL(String V_V_YEAR) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_BASIC_TO_MON_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_BASIC_TO_MON_SEL(:V_V_YEAR,:RET)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_BASIC_TO_MON_SEL");
+        return result;
+    }
 }

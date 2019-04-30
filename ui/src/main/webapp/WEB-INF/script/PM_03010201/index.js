@@ -488,7 +488,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
             text: '添加',
             margin: '5 0 5 5',
             icon: imgpath + '/add.png',
-            handler: OnButtonAddClicked
+            // handler: OnButtonAddClicked --原手动添加
+            handler:OnButtonAddFYear
+
         },
         {
             xtype: 'button',
@@ -634,6 +636,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
@@ -1348,3 +1351,10 @@ function OnButtonDR(){
     });
 
 }
+//从年计划添加
+function OnButtonAddFYear(){
+    var owidth = window.document.body.offsetWidth - 600;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_03010201/finishyear.html?' + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+}
+

@@ -3889,6 +3889,18 @@ public class Dx_fileController {
         }
     }
 
+    //月计划选择年计划查询
+    @RequestMapping(value="PM_PLAN_YEAR_BASIC_TO_MON_SEL",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_BASIC_TO_MON_SEL(
+            @RequestParam(value="V_V_YEAR") String V_V_YEAR,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.PM_PLAN_YEAR_BASIC_TO_MON_SEL(V_V_YEAR);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
