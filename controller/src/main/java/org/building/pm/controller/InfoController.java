@@ -79,6 +79,21 @@ public class InfoController {
     }
 
     /*
+     * 单点登录
+     * */
+    @RequestMapping(value = "login_dddl_n", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> login_dddl_n(@RequestParam(value = "USERID") String USERID,
+                                     @RequestParam(value = "PASSWORD") String PASSWORD,
+                                     HttpServletRequest request)
+            throws  SQLException {
+
+        Map<String, Object> result = infoService.login_dddl_n(USERID, PASSWORD);
+        return result;
+    }
+
+
+    /*
      * 登录日志
      * */
     @RequestMapping(value = "log_text", method = RequestMethod.POST)
