@@ -72,13 +72,13 @@ $(function () {
     $("#selPlant").change(function () {
         createDD();
     });
-    $("#selPlant").on("input propertychange",function(){
-        if($("#selPlant").val()=="99170208"){
-            $("#selType").val("AK11");
-        }else{
-            $("#selType").val($("#selType").get(0).checked=true)
-        }
-    });
+    // $("#selPlant").on("input propertychange",function(){
+    //     if($("#selPlant").val()=="99170208"){
+    //         $("#selType").val("AK11");
+    //     }else{
+    //         $("#selType").val($("#selType").get(0).checked=true)
+    //     }
+    // });
 
     //WBS编码选择页面
     $("#wbsCode").click(function () {

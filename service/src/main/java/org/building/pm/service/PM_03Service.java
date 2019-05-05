@@ -659,8 +659,8 @@ public class PM_03Service {
         return result;
     }
 
-    public Map PRO_PM_03_PLAN_PROJECT_SEL(String V_V_GUID) throws SQLException {
-        Map result = new HashMap();
+    public HashMap PRO_PM_03_PLAN_PROJECT_SEL(String V_V_GUID) throws SQLException {
+        HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {

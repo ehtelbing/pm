@@ -169,7 +169,7 @@ $(function () {
     });
 
     $("#selType").change(function () {
-        $("#ORDER_TYP").html($("#selType").val());
+        $("#ORDER_TYP").html("AK05");
     });
     $("#selDW").change(function () {
         loadZYQ($("#selDW").val());
@@ -179,13 +179,13 @@ $(function () {
         loadRepairList();
 
     });
-    $("#selPlant").on("input propertychange",function(){
-        if($("#selPlant").val()=="99170208"){
-            $("#selType").val("AK11");
-        }else{
-            $("#selType").val($("#selType").get(0).checked=true)
-        }
-    });
+    // $("#selPlant").on("input propertychange",function(){
+    //     if($("#selPlant").val()=="99170208"){
+    //         $("#selType").val("AK11");
+    //     }else{
+    //         $("#selType").val($("#selType").get(0).checked=true)
+    //     }
+    // });
     //WBS编码选择页面
     $("#wbsCode").click(function () {
         var owidth = window.document.body.offsetWidth - 200;
@@ -300,8 +300,11 @@ function loadPageInfo() {
 
                 $("#ORDER_TYP").html(resp.list[0].V_ORDER_TYP);
                 $("#selType").empty();
-                $("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">"
-                    + resp.list[0].V_ORDER_TYP_TXT + "</option>")
+                // $("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">"
+                //     + resp.list[0].V_ORDER_TYP_TXT + "</option>")
+                //     .appendTo("#selType");
+                $("<option value=\"" + "AK05" + "\">"
+                    + "计划修工单" + "</option>")
                     .appendTo("#selType");
                 $("#V_ORDERGUID").val(resp.list[0].V_ORDERGUID);
                 $("#V_DEFECTLIST").val(resp.list[0].V_SHORT_TXT);
@@ -322,22 +325,25 @@ function loadPageInfo() {
 }
 
 function loadTypelist() {
-    Ext.Ajax.request({
-        url: AppUrl + 'WorkOrder/PM_WORKORDER_TYPE_SEL',
-        type: "post",
-        async: false,
-        params: {
-            V_V_SOURCECODE: 'defct12'
-        },
-        success: function (resp) {
-            var resp = Ext.JSON.decode(resp.responseText);
-            var result = [];
-            $.each(resp.list, function (index, item) {
-                result.push("<option value=\"" + item.ORDER_TYP + "\">" + item.ORDER_TYP_TXT + "</option>");
-            });
-            $("#selType").html(result.join(""));
-        }
-    });
+    // Ext.Ajax.request({
+    //     url: AppUrl + 'WorkOrder/PM_WORKORDER_TYPE_SEL',
+    //     type: "post",
+    //     async: false,
+    //     params: {
+    //         V_V_SOURCECODE: 'defct12'
+    //     },
+    //     success: function (resp) {
+    //         var resp = Ext.JSON.decode(resp.responseText);
+    //         var result = [];
+    //         $.each(resp.list, function (index, item) {
+    //             result.push("<option value=\"" + item.ORDER_TYP + "\">" + item.ORDER_TYP_TXT + "</option>");
+    //         });
+    //         $("#selType").html(result.join(""));
+    //     }
+    // });
+    var result=[];
+    result.push("<option value=\"" + "AK05" + "\">" + "计划修工单" + "</option>");
+    $("#selType").html(result.join(""));
 }
 
 function loadRepairList() {

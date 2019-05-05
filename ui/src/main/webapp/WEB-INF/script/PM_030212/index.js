@@ -138,8 +138,8 @@ var npanel=Ext.create('Ext.panel.Panel',{
         // {xtype: 'button',text: '模型选择',icon: imgpath + '/add.png',style: ' margin: 5px 0px 0px 10px',handler: OnButtonSelectClicked},
         {xtype: 'button', text: '修改',icon: imgpath + '/edit.png',style: ' margin: 5px 0px 0px 10px', handler: OnButtonEditClicked},
         {xtype: 'button', text: '作废',icon: imgpath + '/delete1.png',style: ' margin: 5px 0px 0px 10px', handler: OnButtonDelete},
-        {xtype: 'button',text: '上报',icon: imgpath + '/accordion_collapse.png',style: ' margin: 5px 0px 0px 10px',handler: OnButtonUp},
-        {xtype: 'button',text: '导出Excel',icon: imgpath + '/accordion_collapse.png',style: ' margin: 5px 0px 0px 10px',handler: OnButtonExportClicked}
+        {xtype: 'button',text: '上报',icon: imgpath + '/accordion_collapse.png',style: ' margin: 5px 0px 0px 10px',handler: OnButtonUp}
+        // ,{xtype: 'button',text: '导出Excel',icon: imgpath + '/accordion_collapse.png',style: ' margin: 5px 0px 0px 10px',handler: OnButtonExportClicked}
     ]
 
 });
