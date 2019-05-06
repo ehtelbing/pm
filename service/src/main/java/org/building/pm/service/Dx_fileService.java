@@ -4404,4 +4404,111 @@ public class Dx_fileService {
         logger.info("end PM_PLAN_YEAR_BASIC_TO_MON_SEL");
         return result;
     }
+    //月计划填报-查询年计划单条数据
+    public HashMap PM_PLAN_YEAR_BASIC_TOMON_GETONE(String V_YEAEGUID) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_BASIC_TOMON_GETONE");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_BASIC_TOMON_GETONE(:V_YEAEGUID,:RET)}");
+            cstmt.setString("V_YEAEGUID", V_YEAEGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_BASIC_TOMON_GETONE");
+        return result;
+    }
+    //月计划创建guid
+    public HashMap PM_03_PLAN_MONTH_CREATE(String V_PERCODE,String V_V_ORGCODE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_03_PLAN_MONTH_CREATE");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_MONTH_CREATE(:V_PERCODE,:V_V_ORGCODE,:RET)}");
+            cstmt.setString("V_PERCODE", V_PERCODE);
+            cstmt.setString("V_V_ORGCODE",V_V_ORGCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_MONTH_CREATE");
+        return result;
+    }
+    //月计划缺陷关联写入
+    public HashMap YEAR_TO_MONTH_IN(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PERCODE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin YEAR_TO_MONTH_IN");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_IN(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PERCODE,:RET)}");
+            cstmt.setString("V_YEARGUID", V_YEARGUID);
+            cstmt.setString("V_MONTHGUID",V_MONTHGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_IN");
+        return result;
+    }
+    //年计划无缺陷时月计划缺陷内容查找
+    public HashMap YEAR_TO_MONTH_SEL(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PERCODE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin YEAR_TO_MONTH_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_SEL(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PERCODE,:RET)}");
+            cstmt.setString("V_YEARGUID", V_YEARGUID);
+            cstmt.setString("V_MONTHGUID",V_MONTHGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_SEL");
+        return result;
+    }
 }

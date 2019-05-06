@@ -3901,6 +3901,61 @@ public class Dx_fileController {
         return data;
     }
 
+    //月计划填报-查询年计划单条数据
+    @RequestMapping(value="PM_PLAN_YEAR_BASIC_TOMON_GETONE",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_BASIC_TOMON_GETONE(
+            @RequestParam(value="V_YEAEGUID") String V_YEAEGUID,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.PM_PLAN_YEAR_BASIC_TOMON_GETONE(V_YEAEGUID);
+        return data;
+    }
+
+    //月计划创建guid
+    @RequestMapping(value="PM_03_PLAN_MONTH_CREATE",method=RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_MONTH_CREATE(
+            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            @RequestParam(value="V_V_ORGCODE") String V_V_ORGCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.PM_03_PLAN_MONTH_CREATE(V_PERCODE,V_V_ORGCODE);
+        return data;
+    }
+
+    //月计划缺陷关联写入
+    @RequestMapping(value="YEAR_TO_MONTH_IN",method=RequestMethod.POST)
+    @ResponseBody
+    public Map YEAR_TO_MONTH_IN(
+            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.YEAR_TO_MONTH_IN(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PERCODE);
+        return data;
+    }
+
+    //年计划无缺陷时月计划缺陷内容查找
+    @RequestMapping(value="YEAR_TO_MONTH_SEL",method=RequestMethod.POST)
+    @ResponseBody
+    public Map YEAR_TO_MONTH_SEL(
+            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.YEAR_TO_MONTH_SEL(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PERCODE);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

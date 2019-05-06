@@ -1023,7 +1023,12 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             width: 230,
             labelAlign: 'right',
             format: 'Y/m',
-            value: new Date()
+            value: new Date(),
+            listeners:{
+                select:function(){
+                    PlanHours();
+                }
+            }
         }
     ]
 });
@@ -3578,4 +3583,12 @@ function FlowStart(){
                         }
                     }
                 });
+}
+
+function PlanHours(){
+    var date11=new Date(Ext.getCmp('btime').getValue());
+    var date22=new Date(Ext.getCmp('etime').getValue());
+    var gongshicha = date22.getTime() - date11.getTime();
+    var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
+    Ext.getCmp('jhgs').setValue(gongshicha2);
 }

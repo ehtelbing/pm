@@ -1353,8 +1353,12 @@ function OnButtonDR(){
 }
 //从年计划添加
 function OnButtonAddFYear(){
+    var year=Ext.getCmp("nf").getValue();
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03010201/finishyear.html?' + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
+        + Ext.getCmp('yf').getValue()
+        +"&MainYEAR=" + year
+        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
 }
 
