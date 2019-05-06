@@ -2702,6 +2702,32 @@ public class Dx_fileService {
         return result;
     }
 
+    public Map PM_07_DEFECT_STAT_N(String V_V_YEAR,  String V_V_PERCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_07_DEFECT_STAT_N");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_07_DEFECT_STAT_N(:V_V_YEAR,:V_V_PERCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result" + result);
+        logger.info("end PM_07_DEFECT_STAT_N");
+        return result;
+    }
+
     //sbb导入week_plan  设备部周计划管理页面
     public HashMap PRO_PM_03_PLAN_WEEK_IMPORT(String V_V_SBBGUID, String V_V_STARTTIME, String V_V_ENDTIME, String V_V_HOUR, String V_LOCKPER, String V_LOCKPERNAME) throws SQLException {
         HashMap result = new HashMap();

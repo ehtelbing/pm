@@ -2935,6 +2935,17 @@ public class Dx_fileController {
         return data;
     }
 
+    //根据人员查询厂矿缺陷
+    @RequestMapping(value = "PM_07_DEFECT_STAT_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_07_DEFECT_STAT_N(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
+        Map data = dx_fileService.PM_07_DEFECT_STAT_N(V_V_YEAR,V_V_PERCODE);
+        return data;
+    }
+
+
     //周月计划添加模型
     @RequestMapping(value = "PM_1921_PLAN_IN_MX_SET", method = RequestMethod.POST)
     @ResponseBody
