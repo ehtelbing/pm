@@ -3959,11 +3959,41 @@ public class Dx_fileController {
             @RequestParam(value="V_YEARGUID") String V_YEARGUID,
             @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
             @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
-            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
             HttpServletRequest request,
             HttpServletResponse response
     )throws Exception{
-        Map data=dx_fileService.YEAR_TO_MONTH_SEL(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PERCODE);
+        Map data=dx_fileService.YEAR_TO_MONTH_SEL(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+        return data;
+    }
+
+    //月计划保存-无缺陷年计划修改状态
+    @RequestMapping(value="YEAR_TO_MONTH_UPDATE",method=RequestMethod.POST)
+    @ResponseBody
+    public Map YEAR_TO_MONTH_UPDATE(
+            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.YEAR_TO_MONTH_UPDATE(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+        return data;
+    }
+
+    //月计划删除-无缺陷年计划修改状态
+    @RequestMapping(value="YEAR_TO_MONTH_DEL",method=RequestMethod.POST)
+    @ResponseBody
+    public Map YEAR_TO_MONTH_DEL(
+            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.YEAR_TO_MONTH_DEL(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
         return data;
     }
 

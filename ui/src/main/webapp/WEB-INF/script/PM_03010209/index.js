@@ -6,11 +6,12 @@ var V_DEPTCODE="";
 var MONTH = null;
 var YEAR = null;
 var V_MONTHPLAN_GUID="";
+var P_MONTH="";
 if (location.href.split('?')[1] != undefined) {
     yearGuid = Ext.urlDecode(location.href.split('?')[1]).yearGuid;
-    V_MONTH=Ext.urlDecode(location.href.split('?')[1]).MainMONTH;
+    MONTH=Ext.urlDecode(location.href.split('?')[1]).MainMONTH;
     YEAR=Ext.urlDecode(location.href.split('?')[1]).MainYEAR;
-    V_MONTHPLAN_GUID==Ext.urlDecode(location.href.split('?')[1]).monthGuid;
+    V_MONTHPLAN_GUID=Ext.urlDecode(location.href.split('?')[1]).monthGuid;
 }
 
 
@@ -1128,7 +1129,7 @@ function loadData(){
                 var V_HOUR = resp.list[0].PLANHOUR;
                 var V_BZ = resp.list[0].REMARK;
                 V_YEAR = resp.list[0].V_YEAR;                 //年
-                V_MONTH = resp.list[0].V_MONTH;            //季度
+                P_MONTH = resp.list[0].V_MONTH;            //季度
                 V_ORGCODE = resp.list[0].ORGCODE;          //厂矿编码
                 V_DEPTCODE = resp.list[0].DEPTCODE;        //作业区编码
                 var V_REPAIRMAJOR_CODE = resp.list[0].ZYCODE;        //专业编码
@@ -1146,7 +1147,7 @@ function loadData(){
                 var V_ENDTIME_MINUTE = '00';//PLANJGMONTH.split(" ")[1].split(":")[1];
 
                 Ext.getCmp('year').select(V_YEAR);  //Ext.getCmp('year').setReadOnly(true);//年
-                Ext.getCmp('month').select(V_MONTH); //Ext.getCmp('month').setReadOnly(true); //月
+                Ext.getCmp('month').select(P_MONTH); //Ext.getCmp('month').setReadOnly(true); //月
                 Ext.getCmp('ck').select(V_ORGCODE);  //Ext.getCmp('ck').setReadOnly(true);//厂矿编码
                 Ext.getCmp('zyq').select(V_DEPTCODE);  //Ext.getCmp('zyq').setReadOnly(true);//作业区编码
                 Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE); //Ext.getCmp('zy').setReadOnly(true); //专业编码
@@ -1166,13 +1167,16 @@ function loadData(){
             }
         }
     });
-    if(monthGuid!="0"){ //年计划无缺陷时，查找关联主要缺陷
+    if(V_MONTHPLAN_GUID!="0"){ //年计划无缺陷时，查找关联主要缺陷
         Ext.Ajax.request({
             url: AppUrl + 'dxfile/YEAR_TO_MONTH_SEL',
             method: 'POST',
             async: false,
             params: {
-                V_YEAEGUID: yearGuid
+                V_YEARGUID:yearGuid,
+                V_MONTHGUID:V_MONTHPLAN_GUID,
+                V_DEFECTGUID:'',
+                V_PER_CODE:Ext.util.Cookies.get('v_personcode')
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
@@ -1305,6 +1309,17 @@ function OnButtonSaveClick() {
     //     Ext.Msg.alert('消息','主要缺陷不可为空，请选择相关信息');
     //     return;
     // }
+    if(Ext.getCmp('month').getValue()!=MONTH){
+        msgShow();
+    }
+    else{
+        OnButtonSaveDate();
+    }
+}
+
+function OnButtonSaveDate(){
+
+
     if(Ext.getCmp('expectage').getValue()=="0"){
         Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
         return;
@@ -1313,24 +1328,12 @@ function OnButtonSaveClick() {
         Ext.Msg.alert('消息','维修人数不可为0，请选择相关信息');
         return;
     }
+
     if(Ext.getCmp('gx').getValue()==""){
         Ext.Msg.alert('消息','请选择工序');
         return false;
     }
-    if(Ext.getCmp('month').getValue()!=V_MONTH){
-        Ext.MessageBox.show({
-            title: '提示', msg: '提示', buttons: Ext.MessageBox.OKCANCEL,
-            icon: Ext.MessageBox.QUESTION, fn: function (response, opts) {
-                if (opts == "OK") {
 
-                }
-                else {
-                    return false;
-                }return false;
-            }
-
-        });
-    }
     // if(Ext.getCmp('jxnr').getValue()==""){
     //     Ext.Msg.alert('消息','检修内容不可为空，请输入后保存');
     //     return;
@@ -1339,6 +1342,7 @@ function OnButtonSaveClick() {
     //     Ext.Msg.alert('消息','专业不可为空，请选择相关信息');
     //     return;
     // }
+
     //计划停工时间
     var jhtghour = Ext.getCmp('jhtghour').getValue();
     var jhtgminute = Ext.getCmp('jhtgminute').getValue();
@@ -1361,7 +1365,23 @@ function OnButtonSaveClick() {
     }
 
     //修改为关联年计划的缺陷状态
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/YEAR_TO_MONTH_UPDATE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_YEARGUID:yearGuid,
+            V_MONTHGUID:V_MONTHPLAN_GUID,
+            V_DEFECTGUID:'',
+            V_PER_CODE:Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.RET!=undefined) {
 
+            }
+        }
+    });
 
 
     //模型
@@ -1610,6 +1630,24 @@ function onModeOKBtn(){
                 Ext.MessageBox.alert('提示', '模型保存失败');
             }
             Ext.getCmp('modeWin').hide();
+        }
+    });
+}
+function msgShow(){
+    Ext.Msg.show({
+        title:'消息提示',
+        id:'choice',
+        msg: '当前月份的计划，不可上报，是否修改月份',
+        buttons: Ext.Msg.OKCANCEL,
+        buttonText: {ok:'确认',cancel:'取消'},
+        fn: function(btn,text) {
+            if (btn === 'ok') {
+
+                return false;
+            }
+            else{
+                OnButtonSaveDate();
+            }
         }
     });
 }

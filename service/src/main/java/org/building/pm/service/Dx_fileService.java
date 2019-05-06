@@ -4510,7 +4510,7 @@ public class Dx_fileService {
         return result;
     }
     //年计划无缺陷时月计划缺陷内容查找
-    public HashMap YEAR_TO_MONTH_SEL(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PERCODE) throws SQLException {
+    public HashMap YEAR_TO_MONTH_SEL(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PER_CODE) throws SQLException {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -4518,11 +4518,11 @@ public class Dx_fileService {
             logger.info("begin YEAR_TO_MONTH_SEL");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_SEL(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PERCODE,:RET)}");
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_SEL(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PER_CODE,:RET)}");
             cstmt.setString("V_YEARGUID", V_YEARGUID);
             cstmt.setString("V_MONTHGUID",V_MONTHGUID);
             cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
-            cstmt.setString("V_PERCODE",V_PERCODE);
+            cstmt.setString("V_PER_CODE",V_PER_CODE);
 
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
@@ -4535,6 +4535,62 @@ public class Dx_fileService {
         }
         logger.debug("result:" + result);
         logger.info("end YEAR_TO_MONTH_SEL");
+        return result;
+    }
+    //月计划保存-无缺陷年计划修改状态
+    public HashMap YEAR_TO_MONTH_UPDATE(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PER_CODE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin YEAR_TO_MONTH_UPDATE");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_UPDATE(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PER_CODE,:RET)}");
+            cstmt.setString("V_YEARGUID", V_YEARGUID);
+            cstmt.setString("V_MONTHGUID",V_MONTHGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_PER_CODE",V_PER_CODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_UPDATE");
+        return result;
+    }
+    //月计划删除-无缺陷年计划修改状态
+    public HashMap YEAR_TO_MONTH_DEL(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PER_CODE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin YEAR_TO_MONTH_DEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_DEL(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PER_CODE,:RET)}");
+            cstmt.setString("V_YEARGUID", V_YEARGUID);
+            cstmt.setString("V_MONTHGUID",V_MONTHGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_PER_CODE",V_PER_CODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_DEL");
         return result;
     }
 }

@@ -247,7 +247,7 @@ function saveMonth(){
         });
         //
         Ext.Ajax.request({
-            url:'dxfile/PM_03_PLAN_MONTH_CREATE',
+            url:AppUrl+'dxfile/PM_03_PLAN_MONTH_CREATE',
             method: 'POST',
             async:false,
             params:{
@@ -258,16 +258,16 @@ function saveMonth(){
                 var resp = Ext.decode(ret.responseText);
                 if (resp.RET !=undefined) {
                     monthGuid=resp.RET;
+                    Ext.getCmp("btnAdd_tjqx").show();
                 }
             }
         });
-        Ext.getCmp("btnAdd_tjqx").show();
 
     }else{
         var owidth = window.screen.availWidth-300;
         var oheight =  window.screen.availHeight - 500;
-        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH'+MainMONTH
-            +'&MainYEAR'+MainYEAR+'&monthGuid'+'0', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
+            +'&MainYEAR='+MainYEAR+'&monthGuid='+'0', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
     }
 
 }
@@ -299,7 +299,7 @@ function SaveQx(){
           params:{
               V_YEARGUID:YEARGUID,
               V_MONTHGUID:monthGuid,
-              V_DEFECTGUID:selectedRecord[i].data.V_GUID,
+              V_DEFECTGUID:qxDdefect[i].data.V_GUID,
               V_PERCODE:Ext.util.Cookies.get('v_personcode')
           },
           success:function(response){
@@ -313,8 +313,8 @@ function SaveQx(){
     if(snum==qxDdefect.length){
         var owidth = window.screen.availWidth-300;
         var oheight =  window.screen.availHeight - 500;
-        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH'+MainMONTH
-            +'&MainYEAR'+MainYEAR+'&monthGuid'+monthGuid, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
+            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
     }
 
 }

@@ -979,6 +979,25 @@ function OnButtonDeleteData(){
             if (btn == 'yes') {
                 var i_err = 0;
                 for (var i = 0; i < records.length; i++) {
+                    //修改年计划添加未关联关联缺陷状态
+                    Ext.Ajax.request({
+                        url: AppUrl + 'dxfile/YEAR_TO_MONTH_DEL',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_YEARGUID:'',
+                            V_MONTHGUID: records[i].get('V_GUID'),
+                            V_DEFECTGUID:'',
+                            V_PER_CODE:Ext.util.Cookies.get('v_personcode')
+                        },
+                        success: function (response) {
+                            var resp = Ext.decode(response.responseText);//后台返回的值
+                            if (resp.RET == 'SUCCESS') {
+
+                            }
+                        }
+                    });
+
                     Ext.Ajax.request({
                         url: AppUrl + 'hp/PRO_PM_03_PLAN_MONTH_DELDATA',
                         method: 'POST',
