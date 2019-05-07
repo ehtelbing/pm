@@ -4012,6 +4012,18 @@ public class Dx_fileController {
         HashMap data = dx_fileService.PRO_PM_03_PLAN_YEAR_SP_FINISH(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
+
+    //根据工单编码查找放行唯一码
+    @RequestMapping(value = "MAINTAIN_TO_WORKORDER_NUM_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map MAINTAIN_TO_WORKORDER_NUM_SEL(
+            @RequestParam(value = "V_WORKGUID") String V_WORKGUID) throws Exception {
+
+        Map result = dx_fileService.MAINTAIN_TO_WORKORDER_NUM_SEL(V_WORKGUID);
+        return result;
+    }
+
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

@@ -32,6 +32,9 @@ public class WxjhController {
     @Value("#{configProperties['DefectPicUrl']}")
     private String DefectPicUrl;
 
+    @Value("#{configProperties['infopub.username']}")
+    private String infopubusername;
+
 
     /*
      * 检修完成结果下传
@@ -48,11 +51,12 @@ public class WxjhController {
                                                         @RequestParam(value = "V_STR04") String V_STR04,
                                                         @RequestParam(value = "V_STR05") String V_STR05) throws SQLException {
         Map result = new HashMap();
+
         try {
             DTJXWCJG dtjxwcjg = new DTJXWCJG();
             List<DTJXWCJG.Items> list = new ArrayList<DTJXWCJG.Items>();
             DTJXWCJG.Items items = new DTJXWCJG.Items();
-
+            V_SYSTEM=infopubusername;
 
             String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_JXWCJG_Out_Syn_PM0014.wsdl";
 

@@ -873,6 +873,7 @@ function comboConfirm() {
 }
 //执行验收过程
 function confirmYS(){
+
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -942,6 +943,7 @@ function confirmYS(){
                             if (respl.list.length > 0) {
                                 for (var i = 0; i < respl.list.length; i++) {
                                     defguidOld=respl.list[0].V_DEFECT_GUID;
+
                                     /*Ext.Ajax.request({//修改周计划状态
                                      method: 'POST',
                                      async: false,
@@ -961,6 +963,45 @@ function confirmYS(){
 
                                      }
                                      });*/
+                                    // wbs不为空（即放行生成工单)
+                                    if( $("#wbsCode").val()!=""){
+                                        Ext.Ajax.request({ //检修完成结果下传
+                                            url: AppUrl + 'dxfile/MAINTAIN_TO_WORKORDER_NUM_SEL',
+                                            method: 'POST',
+                                            async: false,
+                                            params: {
+                                                V_WORKGUID:$.url().param("V_ORDERGUID"),
+                                            },
+                                            success: function (ret) {
+                                                var resp=Ext.decode(ret.responseText);
+                                                if(resp.RET!=null){
+                                                    Ext.Ajax.request({ //检修完成结果下传
+                                                        url: AppUrl + 'wxjh/SI_JXWCJG_Out_Syn_PM0014',
+                                                        method: 'POST',
+                                                        async: false,
+                                                        params: {
+                                                            V_DEFECT_GUID: defguidOld,//缺陷guid
+                                                            V_DEFECT_TYPE:'1',
+                                                            V_SYSTEM: 'AKSB',
+                                                            V_GUID: '',
+                                                            V_STR01:'',
+                                                            V_STR02:'',
+                                                            V_STR03:'',
+                                                            V_STR04:'',
+                                                            V_STR05:''
+                                                        },
+                                                        success: function (ret) {
+                                                            var resp=Ext.decode(ret.responseText);
+                                                            if(resp.type='S'){
+
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+
                                     Ext.Ajax.request({ //保存缺陷详细日志
                                         url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
                                         method: 'POST',

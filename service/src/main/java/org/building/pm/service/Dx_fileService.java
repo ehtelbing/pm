@@ -4630,4 +4630,30 @@ public class Dx_fileService {
         logger.info("end PRO_PM_03_PLAN_YEAR_SP_FINISH");
         return result;
     }
+    //根据工单编码查找放行唯一码
+    public HashMap MAINTAIN_TO_WORKORDER_NUM_SEL(String V_WORKGUID) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin MAINTAIN_TO_WORKORDER_NUM_SEL");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call MAINTAIN_TO_WORKORDER_NUM_SEL(:V_WORKGUID,:RET)}");
+            cstmt.setString("V_WORKGUID", V_WORKGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MAINTAIN_TO_WORKORDER_NUM_SEL");
+        return result;
+    }
+
 }
