@@ -177,6 +177,24 @@ var zyStore = Ext.create('Ext.data.Store', {
         }
     }
 });
+//专业
+var gxStore=Ext.create('Ext.data.Store',{
+    id:'gxStore',
+    autoLoad:false,
+    fields:[ 'OPERA_NAME','ID'],
+    proxy:{
+        type:'ajax',
+        async:false,
+        url:AppUrl+'dxfile/BASE_OPERATION_SEL',
+        actionMethods:{
+            read:'POST'
+        },
+        reader:{
+            type:'json',
+            root:'RET'
+        }
+    }
+});
 //设备类型
 var sblxStore = Ext.create('Ext.data.Store', {
     autoLoad: false,
@@ -797,6 +815,20 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     value: '0'
                 },
                 {
+                    xtype: 'combo',
+                    id: 'gx',
+                    fieldLabel: '工序',
+                    editable: false,
+                    margin: '5 0 0 5',
+                    labelWidth: 80,
+                    width: 280,
+                    displayField: 'OPERA_NAME',
+                    valueField: 'OPERA_NAME',
+                    value: '',
+                    store: gxStore,
+                    queryMode: 'local'
+                },
+                {
                     xtype: 'textarea',
                     id: 'bz',
                     fieldLabel: '备注',
@@ -874,7 +906,15 @@ function pageLoadInfo() {
                 Ext.getCmp('zyq').select(V_DEPTCODE);
             }
         }
-
+        //工序
+        Ext.data.StoreManager.lookup('gxStore').load({
+            params: {
+                V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                V_DPPTCODE: Ext.util.Cookies.get('v_deptcode'),
+                V_ORGCODE: Ext.util.Cookies.get('v_orgCode'),
+                V_FLAG: '0'
+            }
+        });
         //加载专业
         Ext.data.StoreManager.lookup('zyStore').load({
             params: {
@@ -938,6 +978,9 @@ function pageLoadInfo() {
 
         Ext.getCmp("zy").select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
 
+    });
+    Ext.data.StoreManager.lookup('gxStore').on('load',function(){
+        Ext.getCmp('gx').select(Ext.data.StoreManager.lookup('gxStore').getAt(0));
     });
 
     Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
@@ -1015,6 +1058,10 @@ function OnButtonSaveClick() {
         Ext.Msg.alert('消息','检修内容不可为空，请输入后保存');
         return;
     }
+    if(Ext.getCmp('gx').getValue()==""){
+        Ext.Msg.alert('消息','工序不可为空，请输入后保存');
+        return;
+    }
 
     //计划停工时间
     var jhtghour = Ext.getCmp('jhtghour').getValue();
@@ -1063,7 +1110,8 @@ function OnButtonSaveClick() {
             V_V_REPAIR_PER: Ext.getCmp('repairper').getValue(),//维修人数
             V_V_SGWAY: Ext.getCmp('sgfs').getValue(),  //施工方式
             V_V_SGWAYNAME: Ext.getCmp('sgfs').getDisplayValue(),  //施工方式名称
-            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue//施工准备是否已落实 (1)是 (0)否
+            V_V_FLAG: Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,//施工准备是否已落实 (1)是 (0)否
+            V_V_OPERANAME:Ext.getCmp('gx').getValue() //工序
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
