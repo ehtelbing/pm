@@ -1277,6 +1277,13 @@ function _agree() {
                 });
                 // window.close();
                 // window.opener.OnPageLoad();
+            }else{
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: resp.ret,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                })
             }
         },
         failure: function (response) {//访问到后台时执行的方法。
