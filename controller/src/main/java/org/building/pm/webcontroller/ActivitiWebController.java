@@ -43,7 +43,7 @@ public class ActivitiWebController implements BeanFactoryAware {
 
             count = (int) taskService.createTaskQuery().taskAssignee(Usercode).count();
 
-            XML = "<DBSL><V_USERCODE>" + V_USERCODE + "</V_USERCODE><V_SYSTEM>AKSB</V_SYSTEM><N_COUNT>" + count + "</N_COUNT><V_URL>http:10.101.2.45:8080/pm/app/pm/page/PM_2103/index.html</V_URL></DBSL>";
+            XML = "<DBSL><V_USERCODE>" + V_USERCODE + "</V_USERCODE><V_SYSTEM>" + activitiWebService.RetInfName() + "</V_SYSTEM><N_COUNT>" + count + "</N_COUNT><V_URL>" + activitiWebService.RetPmUrl() + "/page/PM_2103/index.html</V_URL></DBSL>";
 
 
         } catch (Exception e) {
