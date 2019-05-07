@@ -4593,4 +4593,41 @@ public class Dx_fileService {
         logger.info("end YEAR_TO_MONTH_DEL");
         return result;
     }
+    //维修计划审批完成-上报页查询
+    public HashMap PRO_PM_03_PLAN_YEAR_SP_FINISH(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY, String V_V_WXLX, String V_V_CONTENT,  String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_YEAR_SP_FINISH");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_SP_FINISH" + "(:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_ZY,:V_V_WXLX," +
+                    ":V_V_CONTENT,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_YEAR", V_V_YEAR);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_ZY", V_V_ZY);
+            cstmt.setString("V_V_WXLX", V_V_WXLX);
+            cstmt.setString("V_V_CONTENT", V_V_CONTENT);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("V_V_SNUM");
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_YEAR_SP_FINISH");
+        return result;
+    }
 }

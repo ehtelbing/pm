@@ -3996,7 +3996,22 @@ public class Dx_fileController {
         Map data=dx_fileService.YEAR_TO_MONTH_DEL(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
         return data;
     }
+    //维修计划审批完成-上报页查询
+    @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_SP_FINISH", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_YEAR_SP_FINISH(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_WXLX") String V_V_WXLX,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
 
+        HashMap data = dx_fileService.PRO_PM_03_PLAN_YEAR_SP_FINISH(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
