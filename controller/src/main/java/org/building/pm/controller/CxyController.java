@@ -4,6 +4,7 @@ package org.building.pm.controller;
  * Created by cxy on 2019/1/24.
  */
 
+import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.CxyService;
 import org.building.pm.service.LxmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -771,6 +776,174 @@ public class CxyController {
                                                      HttpServletResponse response) throws Exception {
         Map result = cService.PM_GET_WORKORDER_BY_FAULT(V_GUID);
         return result;
+    }
+    /*事故EXCEL*/
+    @RequestMapping(value = "/PM_14_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void PM_14_EXCEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                            @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+                            @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+                            @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+                            @RequestParam(value = "V_V_FINDTIME_B") String V_V_FINDTIME_B,
+                            @RequestParam(value = "V_V_FINDTIME_E") String V_V_FINDTIME_E,
+                            HttpServletResponse response)
+            throws //com.fasterxml.jackson.core.JsonProcessingException,
+            NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+
+        V_V_FAULT_YY = new String(V_V_FAULT_YY.getBytes("iso-8859-1"), "utf-8");
+        Map<String, Object> data = cService.PM_14_FAULT_ITEM_DATA_SEL_NEW(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE,
+                V_V_EQUCODE, V_V_EQUCHILD_CODE, V_V_FAULT_TYPE,V_V_FAULT_YY, V_V_FINDTIME_B, V_V_FINDTIME_E);
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for(int i=0;i<=1;i++){
+            sheet.setColumnWidth(i,3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("事故状态");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("发现时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("设备类型");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("作业区");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("部件");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("故障类型");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("故障原因");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("故障现象");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("故障等级");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("解决办法");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("故障名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 13);
+        cell.setCellValue("故障部位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 14);
+        cell.setCellValue("处理过程");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 15);
+        cell.setCellValue("损失");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 16);
+        cell.setCellValue("性质");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 17);
+        cell.setCellValue("整改措施");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 18);
+        cell.setCellValue("对相关负责人的处理");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i+1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_STATENAME") == null ? "" : map.get("V_STATENAME").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_FINDTIME") == null ? "" : map.get("V_FINDTIME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_EQUTYPENAME") == null ? "" : map.get("V_EQUTYPENAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("V_EQUCHILD_NAME") == null ? "" : map.get("V_EQUCHILD_NAME").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("V_TYPENAME") == null ? "" : map.get("V_TYPENAME").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("V_FAULT_YY") == null ? "" : map.get("V_FAULT_YY").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_FAULT_XX") == null ? "" : map.get("V_FAULT_XX").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_FAULT_LEVEL") == null ? "" : map.get("V_FAULT_LEVEL").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("V_JJBF") == null ? "" : map.get("V_JJBF").toString());
+
+                row.createCell((short) 12).setCellValue(map.get("V_FAULT_NAME") == null ? "" : map.get("V_FAULT_NAME").toString());
+
+                row.createCell((short) 13).setCellValue(map.get("V_FAULT_PART") == null ? "" : map.get("V_FAULT_PART").toString());
+
+                row.createCell((short) 14).setCellValue(map.get("V_FAULT_CLGC") == null ? "" : map.get("V_FAULT_CLGC").toString());
+
+                row.createCell((short) 15).setCellValue(map.get("V_FAULT_SS") == null ? "" : map.get("V_FAULT_SS").toString());
+
+                row.createCell((short) 16).setCellValue(map.get("V_FAULT_XZ") == null ? "" : map.get("V_FAULT_XZ").toString());
+
+                row.createCell((short) 17).setCellValue(map.get("V_FAULT_ZGCS") == null ? "" : map.get("V_FAULT_ZGCS").toString());
+
+                row.createCell((short) 18).setCellValue(map.get("V_FZR_CL") == null ? "" : map.get("V_FZR_CL").toString());
+
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("设备故障查询表.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

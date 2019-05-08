@@ -783,8 +783,10 @@ Ext.onReady(function () {
             function(view, rowIndex, colIndex, item, e) {
                 var data=Ext.getCmp('faultItemPanel').getStore().getAt(
                     colIndex).data;
-                var owidth = window.screen.availWidth-200;
-                var oheight = window.screen.availHeight-150;
+                var owidth = window.document.body.offsetWidth;
+                var oheight = window.document.body.offsetHeight;
+                // var owidth = window.screen.availWidth-200;
+                // var oheight = window.screen.availHeight-150;
                 window.open(AppUrl + "page/FAULT_1405/equip.html?V_GUID=" + data.V_GUID+'&V_STATE='+data.V_STATE,
                     "",  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
                 /*if(data.V_STATE=='2'){

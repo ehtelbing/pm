@@ -777,6 +777,7 @@ Ext.onReady(function () {
                 region : 'center',
                 border : false,
                 layout : 'fit',
+                height: '100%',
                 // width : 450,
                 items : [equGridpanel]
             },
@@ -787,6 +788,7 @@ Ext.onReady(function () {
                 frame : true,
                 // border : false,
                 width : 260,
+                height: '100%',
                 store : treeStore,
                 rootVisible : false,
                 listeners : {
@@ -798,7 +800,7 @@ Ext.onReady(function () {
             // border : false,
             frame: true,
             autoScroll:true,
-            width : 590,
+            width : 590, height: '100%',
             items : [ addPanel,uploadpanel]
         }
         ]

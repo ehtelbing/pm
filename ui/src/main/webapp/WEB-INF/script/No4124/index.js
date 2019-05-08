@@ -201,7 +201,7 @@ Ext.onReady(function() {
             renderer : left
         }, {
             text: '关联事故',
-            dataIndex: 'V_ORDERGUID',
+            dataIndex: 'V_GL_FAULT',
             align: 'center',
             width: 100,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {

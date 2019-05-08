@@ -122,7 +122,7 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 sblxLoad = true;
-                Ext.getCmp('V_V_EQUTYPE').select(store.last());
+                Ext.getCmp('V_V_EQUTYPE').select(store.first());
                 _init();
             }
         }
@@ -216,8 +216,10 @@ Ext.onReady(function () {
         fields: ['V_TIME', 'V_EQUTYPE', 'V_EQUNAME', 'V_EQUCHILD_CODE', 'V_FAULT_TYPE',
             'V_FAULT_YY', 'V_FAULT_XX', 'V_FAULT_LEVEL', 'V_JJBF', 'V_GUID', 'V_FILE_GUID',
             'V_ORGCODE', 'I_ID', 'V_DEPTNAME', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_TYPECODE',
-            'V_TYPENAME', 'V_EQUCHILD_NAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
-        'V_ORDERID','V_ORDERGUID'],
+            'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
+            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
+            'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
+            'V_FAULTID','V_PROCESSINSTANCEID'],
         proxy: {
             // url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_SEL',
             url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_SEL_NEW',
@@ -440,54 +442,115 @@ Ext.onReady(function () {
             text: '对应的工单',
             dataIndex: 'V_GUID',
             align: 'center',
-            flex: 1,
+            width: 100,
             renderer:rendererGD
+        },  {
+            text: '事故状态',
+            dataIndex: 'V_STATENAME',
+            align: 'center',
+            width: 100
+            // renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+            //     // if(value!="未处理") {
+            //     //     return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_PROCESSINSTANCEID + '\')">' + value + '</a>';
+            //     // }else{
+            //     //     return value;
+            //     // }
+            // }
         }, {
             text: '发现时间',
             dataIndex: 'V_FINDTIME',
             align: 'center',
-            flex: 1
+            width: 100
         }, {
             text: '设备类型',
             dataIndex: 'V_EQUTYPENAME',
             align: 'center',
-            flex: 1
+            width: 100
+            /*renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+             var index = faultItemStore.find('V_EQUTYPECODE', value);
+             if (index != -1) {
+             return faultItemStore.getAt(index).get('V_EQUTYPENAME');
+             }
+             return null;
+             }*/
         }, {
             text: '设备名称',
             dataIndex: 'V_EQUNAME',
             align: 'center',
-            flex: 1
+            width: 100
+        }, {
+            text: '作业区',
+            dataIndex: 'V_DEPTNAME',
+            align: 'center',
+            width: 100
         }, {
             text: '部件',
             dataIndex: 'V_EQUCHILD_NAME',
             align: 'center',
-            flex: 1
+            width: 180
         }, {
             text: '故障类型',
             dataIndex: 'V_TYPENAME',
             align: 'center',
-            flex: 1
+            width: 100
         }, {
             text: '故障原因',
             dataIndex: 'V_FAULT_YY',
             align: 'center',
-            flex: 1
+            width: 100
         }, {
             text: '故障现象',
             dataIndex: 'V_FAULT_XX',
             align: 'center',
-            flex: 1
+            width: 100
         }, {
             text: '故障等级',
             dataIndex: 'V_FAULT_LEVEL',
             align: 'center',
-            flex: 1
+            width: 100
         }, {
             text: '解决办法',
             dataIndex: 'V_JJBF',
             align: 'center',
-            flex: 1
-        }]
+            width: 100
+        }, {
+            text: '故障名称',
+            dataIndex: 'V_FAULT_NAME',
+            align: 'center',
+            width: 100
+        }, {
+            text: '故障部位',
+            dataIndex: 'V_FAULT_PART',
+            align: 'center',
+            width: 100
+        }, {
+            text: '处理过程',
+            dataIndex: 'V_FAULT_CLGC',
+            align: 'center',
+            width: 100
+        }, {
+            text: '损失',
+            dataIndex: 'V_FAULT_SS',
+            align: 'center',
+            width: 100
+        }, {
+            text: '性质',
+            dataIndex: 'V_FAULT_XZ',
+            align: 'center',
+            width: 100
+        }, {
+            text: '整改措施',
+            dataIndex: 'V_FAULT_ZGCS',
+            align: 'center',
+            width: 100
+        }, {
+            text: '对相关负责人的处理',
+            dataIndex: 'V_FZR_CL',
+            align: 'center',
+            width: 100
+        }
+
+        ]
 
     });
 
@@ -543,8 +606,8 @@ function _seltctFault() {
     //faultItemStore.currentPage=1;
     faultItemStore.load();
 }
-function _exportExcel() {
-    document.location.href = AppUrl + 'PM_14/PM_14_EXCEL?V_V_ORGCODE=' + Ext.ComponentManager.get("V_V_ORGCODE").getValue() + '&V_V_DEPTCODE=' +
+function _exportExcel() {//PM_14
+    document.location.href = AppUrl + 'cxy/PM_14_EXCEL?V_V_ORGCODE=' + Ext.ComponentManager.get("V_V_ORGCODE").getValue() + '&V_V_DEPTCODE=' +
         encodeURI(Ext.ComponentManager.get("V_V_DEPTCODE").getValue()) + '&V_V_EQUTYPE=' + encodeURI(Ext.ComponentManager.get("V_V_EQUTYPE").getValue()) + '&V_V_EQUCODE='
         + encodeURI(Ext.ComponentManager.get("V_EQUNAME").getValue()) + '&V_V_EQUCHILD_CODE=' + encodeURI(Ext.ComponentManager.get("SUB_V_EQUNAME").getValue())
         + '&V_V_FAULT_TYPE=' + encodeURI(Ext.ComponentManager.get("equFaultname").getValue()) + '&V_V_FAULT_YY=' + Ext.ComponentManager.get('faulttext').getValue()
