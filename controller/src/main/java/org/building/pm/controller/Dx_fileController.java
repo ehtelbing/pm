@@ -4023,6 +4023,20 @@ public class Dx_fileController {
         return result;
     }
 
+    //月计划保存-无缺陷年计划修改状态
+    @RequestMapping(value="YEAR_TO_MONTH_UPDATE2",method=RequestMethod.POST)
+    @ResponseBody
+    public Map YEAR_TO_MONTH_UPDATE2(
+            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    )throws Exception{
+        Map data=dx_fileService.YEAR_TO_MONTH_UPDATE2(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+        return data;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

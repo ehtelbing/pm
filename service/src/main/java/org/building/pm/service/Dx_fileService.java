@@ -4655,5 +4655,32 @@ public class Dx_fileService {
         logger.info("end MAINTAIN_TO_WORKORDER_NUM_SEL");
         return result;
     }
+    //月计划修改页-日志记录
+    public HashMap YEAR_TO_MONTH_UPDATE2(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PER_CODE) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin YEAR_TO_MONTH_UPDATE2");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_UPDATE2(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PER_CODE,:RET)}");
+            cstmt.setString("V_YEARGUID", V_YEARGUID);
+            cstmt.setString("V_MONTHGUID",V_MONTHGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_PER_CODE",V_PER_CODE);
 
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getString("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_UPDATE2");
+        return result;
+    }
 }

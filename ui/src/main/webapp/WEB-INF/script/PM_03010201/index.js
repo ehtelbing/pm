@@ -874,7 +874,9 @@ function OnButtonEditClicked() {
     console.log(seldata[0].data.V_STATE);
     if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100) {
         V_MONTHPLAN_GUID = seldata[0].data.V_GUID;
-        var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
+        // var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
+        var ret = window.open(AppUrl + 'page/PM_03010209/upMData.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID+'&MainMONTH='+Ext.getCmp("yf").getValue()
+            +'&MainYEAR='+Ext.getCmp("nf").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
     }else {
         Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
     }
