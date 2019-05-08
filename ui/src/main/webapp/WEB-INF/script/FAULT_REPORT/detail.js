@@ -727,6 +727,12 @@ function _init() {
                     V_V_FILE_GUID=resp.RET[0].V_FILE_GUID;
                     filequery2(V_V_GUID);
                     _selectGridPanel();
+                    if(resp.RET[0].V_STATE=='3'){
+                        Ext.getCmp('insertFilesFj2').disable();
+                        Ext.getCmp('V_V_FILEBLOB2').disable();
+                        Ext.getCmp('filegridPanel2').disable();
+
+                    }
                     // _selectsubequName2();
                     // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                     Ext.getBody().unmask();//去除页面笼罩

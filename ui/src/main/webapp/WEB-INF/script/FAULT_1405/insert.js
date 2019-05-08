@@ -440,7 +440,7 @@ Ext.onReady(function () {
                 editable: false,
                 format: 'Y-m-d',
                 //submitFormat: 'yyyy-mm-dd',
-                value: V_begintime,//new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                value: new Date(),//,V_begintime,new Date(new Date().getFullYear(), new Date().getMonth(), 1)
                 fieldLabel: '发现时间',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
