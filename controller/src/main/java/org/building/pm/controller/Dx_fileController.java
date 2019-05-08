@@ -4022,8 +4022,7 @@ public class Dx_fileController {
         Map result = dx_fileService.MAINTAIN_TO_WORKORDER_NUM_SEL(V_WORKGUID);
         return result;
     }
-
-    //月计划保存-无缺陷年计划修改状态
+    //月计划修改页-日志记录
     @RequestMapping(value="YEAR_TO_MONTH_UPDATE2",method=RequestMethod.POST)
     @ResponseBody
     public Map YEAR_TO_MONTH_UPDATE2(
