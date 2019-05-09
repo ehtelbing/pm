@@ -778,7 +778,7 @@ var yearStore=Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'dxfile/PM_PLAN_YEAR_SEL',
+        url: AppUrl + 'dxfile/PM_PLAN_YEAR_SEL_SPFINISH',
         actionMethods: {
             read: 'POST'
         },
@@ -4051,6 +4051,14 @@ function btnSaveProject(){
         alert("缺陷不可以为空");
         return false;
     }
+    if(Ext.getCmp('ProjectName').getValue()==""){
+        Ext.Msg.alert("消息","项目名称不可以为空");
+        return false;
+    }
+    if(Ext.getCmp("content").getValue()==""){
+        Ext.Msg.alert("消息","维修内容不可以为空");
+        return false;
+    }
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_SET',
         method: 'POST',
@@ -4203,6 +4211,14 @@ function IndexShow(value, metaData, record) {
 function btnFlowStart(){
     if(Ext.data.StoreManager.lookup("qxGridStore").data.items.length<=0){
         alert("缺陷不可以为空");
+        return false;
+    }
+    if(Ext.getCmp('ProjectName').getValue()==""){
+        Ext.Msg.alert("消息","项目名称不可以为空");
+        return false;
+    }
+    if(Ext.getCmp("content").getValue()==""){
+        Ext.Msg.alert("消息","维修内容不可以为空");
         return false;
     }
     Ext.Ajax.request({

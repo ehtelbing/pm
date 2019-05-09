@@ -4037,6 +4037,61 @@ public class Dx_fileController {
         return data;
     }
 
+    // 年计划审批完成查询
+    @RequestMapping(value = "PM_PLAN_YEAR_SEL_SPFINISH", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_SEL_SPFINISH(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_SEL_SPFINISH(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY);
+        return data;
+    }
+
+    //    维修计划查询
+    @RequestMapping(value = "PRO_PM_03_PLAN_YEAR_VIEW_TB", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_YEAR_VIEW_TB(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_WXLX") String V_V_WXLX,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        HashMap data = dx_fileService.PRO_PM_03_PLAN_YEAR_VIEW_TB(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_ZY, V_V_WXLX, V_V_CONTENT, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
+    //维修计划批量上报-缺陷日志状态修改
+    @RequestMapping(value = "PM_DEFECT_LOG_FROMPRO_PLIN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECT_LOG_FROMPRO_PLIN(
+            @RequestParam(value = "V_WXGUID") String V_WXGUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_DEPTCODE") String V_DEPTCODE,
+
+            @RequestParam(value = "V_ORG") String V_ORG,
+            @RequestParam(value = "V_PASS_STAT") String V_PASS_STAT,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+
+            @RequestParam(value = "V_DEF_TYPE") String V_DEF_TYPE,
+            @RequestParam(value = "V_DEF_LIST") String V_DEF_LIST,
+            @RequestParam(value = "V_DEF_DATE") String V_DEF_DATE,
+            @RequestParam(value = "V_BJ") String V_BJ,
+            @RequestParam(value = "V_SOLVE") String V_SOLVE,
+
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_PLIN(V_WXGUID,V_PERCODE,V_DEPTCODE,V_ORG,V_PASS_STAT,V_DEFECTGUID,V_DEF_TYPE,V_DEF_LIST,V_DEF_DATE,V_BJ,V_SOLVE);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
