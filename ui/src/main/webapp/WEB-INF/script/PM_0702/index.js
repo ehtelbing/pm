@@ -216,7 +216,7 @@ Ext.onReady(function () {
             width: 100,
             tpl: '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
         }, {
-            text: '单位',
+            text: '作业区',
             dataIndex: 'V_DEPTNAME',
             align: 'center',
             width: 100,

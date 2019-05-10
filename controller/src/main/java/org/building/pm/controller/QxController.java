@@ -343,4 +343,34 @@ public class QxController {
         List<Map> result = qxService.PRO_DEFECT_YZJ_CREATE(V_V_PERCODE, V_V_MODEL_GUID);
         return result;
     }
+
+
+    @RequestMapping(value = "PRO_PM_07_DEFECT_PART_COUNT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_07_DEFECT_PART_COUNT(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                                           @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                           @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                           @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE)
+            throws SQLException {
+        Map result = qxService.PRO_PM_07_DEFECT_PART_COUNT(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE, V_V_DEFECTLIST, X_PERSONCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "PRO_PM_07_DEFECT_PART_PER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_07_DEFECT_PART_PER(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                                         @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                         @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+                                         @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE)
+            throws SQLException {
+        Map result = qxService.PRO_PM_07_DEFECT_PART_PER(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+
 }

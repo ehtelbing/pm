@@ -65,7 +65,7 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_PM_07_DEPTEQUTYPE_PER(String V_V_PERSONCODE,String V_V_DEPTCODENEXT) throws SQLException {
+    public Map PRO_PM_07_DEPTEQUTYPE_PER(String V_V_PERSONCODE, String V_V_DEPTCODENEXT) throws SQLException {
 
         logger.info("begin PRO_GET_DEPTEQUTYPE_PER");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -93,7 +93,7 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_PM_07_DEPTEQU_PER_DROP(String V_V_PERSONCODE,String V_V_DEPTCODENEXT,String V_V_EQUTYPECODE) throws SQLException {
+    public Map PRO_PM_07_DEPTEQU_PER_DROP(String V_V_PERSONCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEPTEQU_PER_DROP");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -148,9 +148,9 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_PM_07_DEFECT_SOURCE_COUNT(String V_D_DEFECTDATE_B,String V_D_DEFECTDATE_E,String V_V_DEPTCODE,
-                                             String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_STATECODE,
-                                             String V_V_DEFECTLIST,String X_PERSONCODE) throws SQLException {
+    public Map PRO_PM_07_DEFECT_SOURCE_COUNT(String V_D_DEFECTDATE_B, String V_D_DEFECTDATE_E, String V_V_DEPTCODE,
+                                             String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_STATECODE,
+                                             String V_V_DEFECTLIST, String X_PERSONCODE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_SOURCE_COUNT");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -187,9 +187,9 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_PM_07_DEFECT_VIEW_PER(String V_D_DEFECTDATE_B,String V_D_DEFECTDATE_E,String V_V_DEPTCODE,
-                                         String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_STATECODE,
-                                         String V_V_SOURCECODE,String V_V_DEFECTLIST,String X_PERSONCODE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public Map PRO_PM_07_DEFECT_VIEW_PER(String V_D_DEFECTDATE_B, String V_D_DEFECTDATE_E, String V_V_DEPTCODE,
+                                         String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_STATECODE,
+                                         String V_V_SOURCECODE, String V_V_DEFECTLIST, String X_PERSONCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_VIEW_PER");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -217,7 +217,7 @@ public class QxService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",  cstmt.getObject("V_V_SNUM"));
+            result.put("total", cstmt.getObject("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
 
 
@@ -233,9 +233,9 @@ public class QxService {
     }
 
     //缺陷导出
-    public Map PRO_PM_07_DEFECT_VIEW_PERALL(String V_D_DEFECTDATE_B,String V_D_DEFECTDATE_E,String V_V_DEPTCODE,
-                                         String V_V_EQUTYPECODE,String V_V_EQUCODE,String V_V_STATECODE,
-                                         String V_V_SOURCECODE,String V_V_DEFECTLIST,String X_PERSONCODE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public Map PRO_PM_07_DEFECT_VIEW_PERALL(String V_D_DEFECTDATE_B, String V_D_DEFECTDATE_E, String V_V_DEPTCODE,
+                                            String V_V_EQUTYPECODE, String V_V_EQUCODE, String V_V_STATECODE,
+                                            String V_V_SOURCECODE, String V_V_DEFECTLIST, String X_PERSONCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_VIEW_PERALL");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -263,7 +263,7 @@ public class QxService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",  cstmt.getObject("V_V_SNUM"));
+            result.put("total", cstmt.getObject("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
 
 
@@ -306,7 +306,7 @@ public class QxService {
         return result;
     }
 
-    public List<Map> PRO_PM_07_DEFECT_SET_XQ(String V_V_GUID,String V_V_PERCODE,String V_V_XQYY) throws SQLException {
+    public List<Map> PRO_PM_07_DEFECT_SET_XQ(String V_V_GUID, String V_V_PERCODE, String V_V_XQYY) throws SQLException {
 //        logger.info("begin PRO_PM_07_DEFECT_SET_XQ");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -318,7 +318,7 @@ public class QxService {
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
             cstmt.setString("V_V_XQYY", V_V_XQYY);
-            cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
             sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
@@ -361,8 +361,8 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_PM_07_DEFECT_TJ_VIEW(String V_D_DEFECTDATE_B,String V_D_DEFECTDATE_E,String V_V_DEPTCODE2,
-                                        String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE,String V_V_EQUCODE,
+    public Map PRO_PM_07_DEFECT_TJ_VIEW(String V_D_DEFECTDATE_B, String V_D_DEFECTDATE_E, String V_V_DEPTCODE2,
+                                        String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE, String V_V_EQUCODE,
                                         String V_V_SOURCECODE) throws SQLException {
 
         logger.info("begin PRO_PM_07_DEFECT_TJ_VIEW");
@@ -423,7 +423,7 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_PM_07_GET_DEPTEQU_PER(String V_V_PERSONCODE,String V_V_DEPTCODENEXT,String V_V_EQUTYPECODE) throws SQLException {
+    public Map PRO_PM_07_GET_DEPTEQU_PER(String V_V_PERSONCODE, String V_V_DEPTCODENEXT, String V_V_EQUTYPECODE) throws SQLException {
 
         logger.info("begin PRO_PM_07_GET_DEPTEQU_PER");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -451,8 +451,6 @@ public class QxService {
         logger.info("end PRO_PM_07_GET_DEPTEQU_PER");
         return result;
     }
-
-
 
 
     public Map PRO_PM_07_BASEDIC_LIST(String IS_V_BASETYPE) throws SQLException {
@@ -483,10 +481,8 @@ public class QxService {
     }
 
 
-
-
-    public Map PRO_PM_07_SAP_EQU_GET(String V_V_PERSONCODE,String V_V_DEPTCODE,String V_V_DEPTNEXTCODE,
-                                     String V_V_EQUTYPECODE,String V_V_EQUCODE) throws SQLException {
+    public Map PRO_PM_07_SAP_EQU_GET(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTNEXTCODE,
+                                     String V_V_EQUTYPECODE, String V_V_EQUCODE) throws SQLException {
 
         logger.info("begin PRO_PM_07_SAP_EQU_GET");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -518,10 +514,10 @@ public class QxService {
         return result;
     }
 
-    public List<Map> PRO_PM_07_PP_DEFECT_SET(String V_I_ID,String V_V_EQUCODE,String V_V_EQUTYPE,
-                                             String V_V_CHILDEQUCODE,String V_V_CLASS,String V_V_CLASSTYPE,
-                                             String V_D_DEFECTDATE,String V_D_INDATE,String V_V_DESCRIPTION,
-                                             String V_V_SUGGESTION,String V_V_PERSONCODE,String V_V_PERSONNAME,
+    public List<Map> PRO_PM_07_PP_DEFECT_SET(String V_I_ID, String V_V_EQUCODE, String V_V_EQUTYPE,
+                                             String V_V_CHILDEQUCODE, String V_V_CLASS, String V_V_CLASSTYPE,
+                                             String V_D_DEFECTDATE, String V_D_INDATE, String V_V_DESCRIPTION,
+                                             String V_V_SUGGESTION, String V_V_PERSONCODE, String V_V_PERSONNAME,
                                              String V_V_DEPTCODE) throws SQLException {
 //        logger.info("begin PRO_PM_07_PP_DEFECT_SET");
         List<Map> result = new ArrayList<Map>();
@@ -546,7 +542,7 @@ public class QxService {
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_PERSONNAME", V_V_PERSONNAME);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
             sledata.put("V_INFO", (String) cstmt.getObject("RET"));
@@ -562,8 +558,8 @@ public class QxService {
         return result;
     }
 
-    public List<Map> PRO_PM_07_DEFECTDESCRIBE_SET(String V_I_ID,String V_V_EQUCODE,String V_V_DESCRIPTION,
-                                                  String V_V_SUGGESTION,String V_V_PERSONCODE,String V_V_PERSONNAME,
+    public List<Map> PRO_PM_07_DEFECTDESCRIBE_SET(String V_I_ID, String V_V_EQUCODE, String V_V_DESCRIPTION,
+                                                  String V_V_SUGGESTION, String V_V_PERSONCODE, String V_V_PERSONNAME,
                                                   String V_V_DEPTCODE) throws SQLException {
 //        logger.info("begin PRO_PM_07_DEFECTDESCRIBE_SET");
         List<Map> result = new ArrayList<Map>();
@@ -581,7 +577,7 @@ public class QxService {
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_PERSONNAME", V_V_PERSONNAME);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
-            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
             sledata.put("V_INFO", (String) cstmt.getObject("RET"));
@@ -625,7 +621,7 @@ public class QxService {
         return result;
     }
 
-    public List<Map> PRO_PM_07_DEFECT_EDIT(String V_V_GUID,String V_V_PERCODE,String V_V_DEFECTLIST) throws SQLException {
+    public List<Map> PRO_PM_07_DEFECT_EDIT(String V_V_GUID, String V_V_PERCODE, String V_V_DEFECTLIST) throws SQLException {
 //        logger.info("begin PRO_PM_07_DEFECT_EDIT");
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
@@ -637,7 +633,7 @@ public class QxService {
             cstmt.setString("V_I_ID", V_V_GUID);
             cstmt.setString("V_V_EQUCODE", V_V_PERCODE);
             cstmt.setString("V_V_DESCRIPTION", V_V_DEFECTLIST);
-            cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
             sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
@@ -653,7 +649,7 @@ public class QxService {
         return result;
     }
 
-    public HashMap PRO_PM_07_WORKORDER_DEFECT(String V_V_PERNAME,String V_V_DEFECT_GUID) throws SQLException {
+    public HashMap PRO_PM_07_WORKORDER_DEFECT(String V_V_PERNAME, String V_V_DEFECT_GUID) throws SQLException {
 
         logger.info("begin PRO_PM_07_WORKORDER_DEFECT");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -709,7 +705,7 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_DEFECT_PART_DATA_SEL(String V_V_TYPE,String V_V_INPER, String V_V_STATE,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+    public Map PRO_DEFECT_PART_DATA_SEL(String V_V_TYPE, String V_V_INPER, String V_V_STATE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
 
         logger.info("begin PRO_DEFECT_PART_DATA_SEL");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -730,7 +726,7 @@ public class QxService {
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("total",(String) cstmt.getObject("V_V_SNUM"));
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -743,7 +739,7 @@ public class QxService {
         return result;
     }
 
-    public Map PRO_DEFECT_PART_WORKORDER_C(String V_V_PERCODE,String V_V_GUID) throws SQLException {
+    public Map PRO_DEFECT_PART_WORKORDER_C(String V_V_PERCODE, String V_V_GUID) throws SQLException {
 
         logger.info("begin PRO_DEFECT_PART_WORKORDER_C");
 //        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
@@ -761,7 +757,7 @@ public class QxService {
             cstmt.registerOutParameter("V_RETSTR", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("str",(String) cstmt.getObject("V_RETSTR"));
+            result.put("str", (String) cstmt.getObject("V_RETSTR"));
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
@@ -774,8 +770,8 @@ public class QxService {
         return result;
     }
 
-    public List<Map> PRO_DEFECT_PART_WORKORDER_S(String V_V_PERCODE,String V_V_PERNAME,String V_V_GUID,String V_V_ORDERGUID,String V_V_SHORT_TXT,String V_V_DEPTCODEREPAIR,
-                                                 String V_D_START_DATE,String V_D_FINISH_DATE,String V_V_WBS,String V_V_WBS_TXT,String V_V_TOOL,String V_V_TECHNOLOGY,String V_V_SAFE) throws SQLException {
+    public List<Map> PRO_DEFECT_PART_WORKORDER_S(String V_V_PERCODE, String V_V_PERNAME, String V_V_GUID, String V_V_ORDERGUID, String V_V_SHORT_TXT, String V_V_DEPTCODEREPAIR,
+                                                 String V_D_START_DATE, String V_D_FINISH_DATE, String V_V_WBS, String V_V_WBS_TXT, String V_V_TOOL, String V_V_TECHNOLOGY, String V_V_SAFE) throws SQLException {
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -797,7 +793,7 @@ public class QxService {
             cstmt.setString("V_V_TOOL", V_V_TOOL);
             cstmt.setString("V_V_TECHNOLOGY", V_V_TECHNOLOGY);
             cstmt.setString("V_V_SAFE", V_V_SAFE);
-            cstmt.registerOutParameter("V_CURSOR",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
             sledata.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
@@ -813,7 +809,7 @@ public class QxService {
         return result;
     }
 
-    public List<Map> PRO_DEFECT_YZJ_CREATE(String V_V_PERCODE,String V_V_MODEL_GUID) throws SQLException {
+    public List<Map> PRO_DEFECT_YZJ_CREATE(String V_V_PERCODE, String V_V_MODEL_GUID) throws SQLException {
         List<Map> result = new ArrayList<Map>();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -823,7 +819,7 @@ public class QxService {
             cstmt = conn.prepareCall("{call PRO_DEFECT_YZJ_CREATE" + "(:V_V_PERCODE,:V_V_MODEL_GUID,:V_INFO)}");
             cstmt.setString("V_V_PERCODE", V_V_PERCODE);
             cstmt.setString("V_V_MODEL_GUID", V_V_MODEL_GUID);
-            cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             Map sledata = new HashMap();
             sledata.put("V_INFO", (String) cstmt.getObject("V_INFO"));
@@ -839,4 +835,66 @@ public class QxService {
         return result;
     }
 
+    public Map PRO_PM_07_DEFECT_PART_COUNT(String v_d_defectdate_b, String v_d_defectdate_e, String v_v_deptcode, String v_v_defectlist, String x_personcode) throws SQLException {
+        logger.info("begin PRO_DEFECT_PART_WORKORDER_C");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_PART_COUNT(:V_D_DEFECTDATE_B,:V_D_DEFECTDATE_E,:V_V_DEPTCODE,:V_V_DEFECTLIST,:X_PERSONCODE,:V_CURSOR)}");
+            cstmt.setString("V_D_DEFECTDATE_B", v_d_defectdate_b);
+            cstmt.setString("V_D_DEFECTDATE_E", v_d_defectdate_e);
+            cstmt.setString("V_V_DEPTCODE", v_v_deptcode);
+            cstmt.setString("V_V_DEFECTLIST", v_v_defectlist);
+            cstmt.setString("X_PERSONCODE", x_personcode);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_PART_COUNT");
+        return result;
+    }
+
+    public Map PRO_PM_07_DEFECT_PART_PER(String v_d_defectdate_b, String v_d_defectdate_e, String v_v_deptcode, String v_v_sourcecode, String v_v_defectlist, String x_personcode, String v_v_page, String v_v_pagesize) throws SQLException {
+        logger.info("begin PRO_DEFECT_PART_WORKORDER_C");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_PART_PER(:V_D_DEFECTDATE_B,:V_D_DEFECTDATE_E,:V_V_DEPTCODE,:V_V_SOURCECODE,:V_V_DEFECTLIST,:X_PERSONCODE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_D_DEFECTDATE_B", v_d_defectdate_b);
+            cstmt.setString("V_D_DEFECTDATE_E", v_d_defectdate_e);
+            cstmt.setString("V_V_DEPTCODE", v_v_deptcode);
+            cstmt.setString("V_V_SOURCECODE", v_v_sourcecode);
+            cstmt.setString("V_V_DEFECTLIST", v_v_defectlist);
+            cstmt.setString("X_PERSONCODE", x_personcode);
+            cstmt.setString("V_V_PAGE", v_v_page);
+            cstmt.setString("V_V_PAGESIZE", v_v_pagesize);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_PART_COUNT");
+        return result;
+    }
 }
