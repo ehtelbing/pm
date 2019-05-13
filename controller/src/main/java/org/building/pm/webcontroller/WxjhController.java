@@ -43,6 +43,9 @@ public class WxjhController {
     @Value("#{configProperties['PM0014.retunUrl']}")
     private String Pm0014Url;
 
+    @Value("#{configProperties['PM0010.retunUrl']}")
+    private String Pm0010Url;
+
     @Value("#{configProperties['pmservice.url']}")
     private String serviceUrl;
     /*
@@ -140,6 +143,54 @@ public class WxjhController {
 
     }
 
+    /*
+     * 点检缺陷处理结果
+     * */
+    @RequestMapping(value = "SI_DJQXCLJG_Out_Syn_PM0010", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> SI_DJQXCLJG_Out_Syn_PM0010(@RequestParam(value = "V_V_DEFECTGUID") String  V_V_DEFECTGUID) throws SQLException {
+
+        Map<String, Object> mapEle = new HashMap<String, Object>();
+
+     /*   String V_V_GUID="";
+
+        for(int i=0;i<V_V_DEFECTGUID.length;i++){
+            if(i==0){
+                V_V_GUID=V_V_DEFECTGUID[i];
+            }else{
+                V_V_GUID=V_V_GUID+","+V_V_DEFECTGUID[i];
+            }
+        }*/
+
+        try {
+            String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_DJQXCLJG_Out_Syn_PM0010.wsdl";
+            Document root = DocumentHelper.createDocument();
+            Element WriteDataRequest = root.addElement("Items");
+            WriteDataRequest.addElement("GUID").setText(V_V_DEFECTGUID);
+            WriteDataRequest.addElement("WsdlUrl").setText(path);
+            WriteDataRequest.addElement("piusername").setText(piusername);
+            WriteDataRequest.addElement("pipassword").setText(pipassword);
+            WriteDataRequest.addElement("Pm0010Url").setText(Pm0010Url);
+
+            Client client = new Client(new URL(serviceUrl+"/pmService?WSDL"));
+            System.out.println(root.asXML());
+            Object[] results = client.invoke("PM0010", new Object[]{root.asXML()});
+
+            Document doc = DocumentHelper.parseText(results[0].toString());
+            Element rootElt = doc.getRootElement();
+            List<Element> childElements = rootElt.elements();
+
+            mapEle = getAllElements(childElements, mapEle);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapEle;
+
+    }
+
+
+
     private Map<String, Object> getAllElements(List<Element> childElements, Map<String, Object> mapEle) {
         for (Element ele : childElements) {
             mapEle.put(ele.getName(), ele.getText());
@@ -149,5 +200,7 @@ public class WxjhController {
         }
         return mapEle;
     }
+
+
 
 }
