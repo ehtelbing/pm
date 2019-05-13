@@ -48,6 +48,10 @@ public class WxjhController {
 
     @Value("#{configProperties['pmservice.url']}")
     private String serviceUrl;
+
+    @Value("#{configProperties['ProjectUrl']}")
+    private String ProjectUrl;
+
     /*
      * 检修完成结果下传
      * */
@@ -121,6 +125,7 @@ public class WxjhController {
             Element WriteDataRequest = root.addElement("Items");
             WriteDataRequest.addElement("XML").setText(V_V_PROJECT_GUID);
             WriteDataRequest.addElement("Url").setText(DefectPicUrl);
+            WriteDataRequest.addElement("ProjectUrl").setText(ProjectUrl);
             WriteDataRequest.addElement("WsdlUrl").setText(path);
             WriteDataRequest.addElement("piusername").setText(piusername);
             WriteDataRequest.addElement("pipassword").setText(pipassword);
