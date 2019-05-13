@@ -324,5 +324,9 @@ function selectGridTurn(){
 }
 
 function _workOCreate(){
+    if(fxguid==""){
+        alert('请选择一条放行计划');
+        return false;
+    }
     window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
 }
