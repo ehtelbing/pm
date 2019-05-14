@@ -539,7 +539,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon: imgpath + '/add.png',
             handler: OnButtonDefectAddClicked
         },
-        {xtype: 'button', text: '手工添加', margin: '5 0 5 5', icon: imgpath + '/add.png', handler: OnButtonPlanAddClicked},
+        {xtype: 'button', text: '手工添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
+            handler: OnButtonPlanAddClicked},
+        {xtype: 'button', text: '添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
+            handler: OnButtonFromMonth},
         {
             xtype: 'button',
             text: '模型选择',
@@ -1014,8 +1017,10 @@ function OnButtonEditClicked() {
     }
     if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100|| seldata[0].data.V_STATE == 99) {
         V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
-        window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
-            + "&endUpTime=" + Ext.getCmp("endtime").getValue() + '', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+        // window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
+        //     + "&endUpTime=" + Ext.getCmp("endtime").getValue()  +'&WSIGN='+1+'', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+        window.open(AppUrl + 'page/PM_03010318/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
+            + "&endUpTime=" + Ext.getCmp("endtime").getValue()  +'&WSIGN='+1+'', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
     }else {
         Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
     }
@@ -1623,4 +1628,51 @@ function _preViewProcess(businessKey) {
     var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
+}
+// 添加、月计划选择
+function OnButtonFromMonth(){
+    var equtype=0;
+    var equcode=0;
+    var zy=0;
+    if(Ext.getCmp("jhck").getValue()==""||Ext.getCmp("jhck").getValue()=="%"){
+        alert('请先选择厂矿');
+        return false;
+    }
+    if(Ext.getCmp("jhzyq").getValue()==""||Ext.getCmp("jhzyq").getValue()=="%"){
+        alert('请先选择作业区');
+        return false;
+    }
+    // if(Ext.getCmp("sblx").getValue()==""){
+    //     alert('请先选择设备类型');
+    //     return false;
+    // }
+    // if(Ext.getCmp("sbmc").getValue()==""||Ext.getCmp("sbmc").getValue()=="%"){
+    //     alert('请先选择设备名称');
+    //     return false;
+    // }
+    // if(Ext.getCmp("zy").getValue()==""||Ext.getCmp("zy").getValue()=="%"){
+    //     alert('请先选择专业');
+    //     return false;
+    // }
+    if(Ext.getCmp("sblx").getValue()=="%"){
+        equtype=0;
+    }
+    if(Ext.getCmp("sbmc").getValue()=="%"){
+        equcode=0;
+    }
+    if(Ext.getCmp("zy").getValue()=="%"){
+        zy=0;
+    }
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_03010317/index.html?Oyear='
+        + Ext.getCmp("nf").getValue()+'&Omonth='+Ext.getCmp('yf').getValue()
+        +'&V_V_ORGCODE='+Ext.getCmp("jhck").getValue()
+        +'&V_V_DEPTCODE='+Ext.getCmp("jhzyq").getValue()
+        +'&V_V_EQUTYPE='+equtype
+        +'&V_V_EQUCODE='+equcode
+        +'&V_V_ZY='+zy
+        +"&WEEK=" + Ext.getCmp("zhou").getValue()
+        +'&startUpTime='+ Ext.getCmp("zks").getValue()
+        +'&endUpTime='+Ext.getCmp("zjs").getValue(),'','_blank','height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }

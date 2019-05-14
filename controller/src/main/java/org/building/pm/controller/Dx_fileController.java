@@ -4091,6 +4091,110 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_PLIN(V_WXGUID,V_PERCODE,V_DEPTCODE,V_ORG,V_PASS_STAT,V_DEFECTGUID,V_DEF_TYPE,V_DEF_LIST,V_DEF_DATE,V_BJ,V_SOLVE);
         return data;
     }
+//    查找周计划填报页未处理缺陷
+    @RequestMapping(value = "PRO_PM_07_DEFECT_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_SELECT(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_PM_07_DEFECT_SELECT(V_V_STATECODE, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+    //查月计划关联缺陷
+    @RequestMapping(value = "PRO_PM_07_DEFECT_SEL_RE_MONTH", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_SEL_RE_MONTH(@RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                       @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                       HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_PM_07_DEFECT_SEL_RE_MONTH(V_MONTHGUID,V_V_STATECODE, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+    //    周计划guid创建
+    @RequestMapping(value = "PM_03_PLAN_WEEK_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_WEEK_CREATE(@RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+                                                      @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+                                                      @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                      @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                      HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_03_PLAN_WEEK_CREATE(V_V_MONTHGUID,V_V_DEFECTGUID,V_V_ORGCODE,V_V_PERCODE);
+        return result;
+    }
+
+//    周计划缺陷关联写入
+@RequestMapping(value = "PM_DEFECTTOWEEK_IN", method = RequestMethod.POST)
+@ResponseBody
+public Map<String, Object> PM_DEFECTTOWEEK_IN(@RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+                                              @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
+                                                  @RequestParam(value = "V_N_DEFECTGUID") String V_N_DEFECTGUID,
+                                                  @RequestParam(value = "V_INPER") String V_INPER,
+                                              @RequestParam(value = "V_DEFECTSTATE") String V_DEFECTSTATE,
+                                                  HttpServletRequest request)
+        throws SQLException {
+    Map<String, Object> result = dx_fileService.PM_DEFECTTOWEEK_IN(V_V_MONTHGUID,V_V_WEEKGUID,V_N_DEFECTGUID,V_INPER,V_DEFECTSTATE);
+    return result;
+}
+
+    //查询月计划填入周计划数据
+    @RequestMapping(value = "PM_03_PLAN_WEEK_GETONE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_WEEK_GETONE(@RequestParam(value = "MONGUID") String MONGUID,
+                                                  @RequestParam(value = "WEEKGUID") String WEEKGUID,
+                                                  HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_03_PLAN_WEEK_GETONE(MONGUID,WEEKGUID);
+        return result;
+    }
+
+    //修改周计划缺陷状态  PM_DEFECT_RE_WEEK_UPDATE
+    @RequestMapping(value = "PM_DEFECT_RE_WEEK_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECT_RE_WEEK_UPDATE(@RequestParam(value = "WEEK_GUID") String WEEK_GUID,
+                                                      @RequestParam(value = "MONTH_GUID") String MONTH_GUID,
+                                                        @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+                                                      HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_DEFECT_RE_WEEK_UPDATE(WEEK_GUID,MONTH_GUID,V_INPERCODE);
+        return result;
+    }
+
+//    周计划添加页面月计划查询
+@RequestMapping(value = "/PM_03_PLAN_SEL_TOWEEK", method = RequestMethod.POST)
+@ResponseBody
+public Map<String, Object> PM_03_PLAN_SEL_TOWEEK(
+        @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+        @RequestParam(value = "V_V_QUARTER") String V_V_QUARTER,
+        @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+        @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+
+        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+        @RequestParam(value = "V_V_ZY") String V_V_ZY,
+        @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+
+        @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
+        @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+        HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+    Map result = dx_fileService.PM_03_PLAN_SEL_TOWEEK(V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_PLANTYPE, V_V_ORGCODE,
+            V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT,
+            V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+    return result;
+}
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

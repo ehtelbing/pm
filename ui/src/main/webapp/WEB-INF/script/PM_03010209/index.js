@@ -1162,7 +1162,7 @@ function loadData(){
                 Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
                 Ext.getCmp('jhgshj').setValue(V_HOUR);  //合计工时
                 Ext.getCmp('bz').setValue(V_BZ);   //Ext.getCmp('bz').setReadOnly(true); //备注
-                Ext.getCmp('maindefect').setValue(resp.list[0].QXCONTEXT); //Ext.getCmp('maindefect').setReadOnly(true);//主要缺陷
+                Ext.getCmp('maindefect').setValue(resp.list[0].QXCONTEXT); Ext.getCmp('maindefect').setReadOnly(true);//主要缺陷
                 Ext.getCmp('sgfs').select(resp.list[0].SGTYPECODE); //Ext.getCmp('sgfs').setReadOnly(true); //施工方式
             }
         }
