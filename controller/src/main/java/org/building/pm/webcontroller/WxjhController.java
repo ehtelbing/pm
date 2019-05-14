@@ -156,17 +156,6 @@ public class WxjhController {
     public Map<String, Object> SI_DJQXCLJG_Out_Syn_PM0010(@RequestParam(value = "V_V_DEFECTGUID") String  V_V_DEFECTGUID) throws SQLException {
 
         Map<String, Object> mapEle = new HashMap<String, Object>();
-
-     /*   String V_V_GUID="";
-
-        for(int i=0;i<V_V_DEFECTGUID.length;i++){
-            if(i==0){
-                V_V_GUID=V_V_DEFECTGUID[i];
-            }else{
-                V_V_GUID=V_V_GUID+","+V_V_DEFECTGUID[i];
-            }
-        }*/
-
         try {
             String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_DJQXCLJG_Out_Syn_PM0010.wsdl";
             Document root = DocumentHelper.createDocument();
@@ -193,6 +182,12 @@ public class WxjhController {
         return mapEle;
 
     }
+
+
+
+    /*
+    *人员对应菜单权限
+    * */
 
 
 
