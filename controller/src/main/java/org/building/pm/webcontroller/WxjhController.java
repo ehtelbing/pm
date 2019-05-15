@@ -1,6 +1,7 @@
 package org.building.pm.webcontroller;
 
 
+import org.apache.ibatis.jdbc.SQL;
 import org.building.pm.webservice.WxjhService;
 import org.codehaus.xfire.client.Client;
 import org.dom4j.Document;
@@ -14,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -51,6 +56,7 @@ public class WxjhController {
 
     @Value("#{configProperties['ProjectUrl']}")
     private String ProjectUrl;
+
 
     /*
      * 检修完成结果下传
@@ -183,6 +189,47 @@ public class WxjhController {
 
     }
 
+//PMPERPOW
+    @RequestMapping(value="SI_RYQX_Out_Syn1_PMPERPOW",method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> SI_RYQX_Out_Syn1_PMPERPOW(@RequestParam(value="ROLECODE") String ROLECODE,
+                                                        @RequestParam(value="ORG") String ORG,
+                                                        HttpServletResponse response,
+                                                        HttpServletRequest request)
+            throws SQLException, UnknownHostException {
+        Map<String,Object> mapEle=new HashMap<>();
+//        InetAddress address = InetAddress.getLocalHost();
+        String hostAddress=request.getRemoteAddr();
+        int v_port=request.getRemotePort();
+        String port=""+v_port;
+        String v_url=request.getRequestURI();
+        try{
+            String path=this.getClass().getClassLoader().getResource("").getPath().toString()+"fwsdl/SI_RYQX_Out_Syn1_PMPERPOW.wsdl";
+            Document root=DocumentHelper.createDocument();
+            Element WriteDataRequest = root.addElement("Items");
+            WriteDataRequest.addElement("ROLECODE").setText(ROLECODE);
+            WriteDataRequest.addElement("ORG").setText(ORG);
+            WriteDataRequest.addElement("SYSTEM").setText(infopubusername);
+            WriteDataRequest.addElement("V_IP").setText(hostAddress);
+            WriteDataRequest.addElement("V_PORT").setText(port);
+            WriteDataRequest.addElement("V_URL").setText(v_url);
+            WriteDataRequest.addElement("WsdlUrl").setText(path);
+
+            Client client = new Client(new URL(serviceUrl+"/pmService?WSDL"));
+            System.out.println(root.asXML());
+            Object[] results = client.invoke("PMPERPOW", new Object[]{root.asXML()});
+
+            Document doc = DocumentHelper.parseText(results[0].toString());
+            Element rootElt = doc.getRootElement();
+            List<Element> childElements = rootElt.elements();
+
+            mapEle = getAllElements(childElements, mapEle);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapEle;
+    }
 
 
     /*

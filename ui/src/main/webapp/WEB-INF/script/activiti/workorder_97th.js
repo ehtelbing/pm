@@ -943,7 +943,36 @@ function confirmYS(){
                             if (respl.list.length > 0) {
                                 for (var i = 0; i < respl.list.length; i++) {
                                     defguidOld=respl.list[0].V_DEFECT_GUID;
+                                    Ext.Ajax.request({ //缺陷查找system 标识数据值
+                                        method:'POST',
+                                        async:false,
+                                        url:AppUrl+'dxfile/PM_DEFECT_SYSTEM_SIGN_SEL',
+                                        params:{
+                                            DEFECTGUID:defguidOld
+                                        },
+                                        success:function(ret){
+                                            var resp=Ext.decode(ret.responseText);
+                                            if(resp.RET!=null){
+                                                if(resp.RET=='XSTDJ'||resp.RET=="JJDJ"){
+                                                    // 点检缺陷处理结果
+                                                    Ext.Ajax.request({
+                                                        method:'POST',
+                                                        async:false,
+                                                        url:AppUrl+'wxjh/SI_DJQXCLJG_Out_Syn_PM0010',
+                                                        params:{
+                                                            V_V_DEFECTGUID:defguidOld
+                                                        },
+                                                        success:function(ret){
+                                                            var resp=Ext.decode(ret.responseText);
+                                                            if(resp.type='S'){
 
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
                                     /*Ext.Ajax.request({//修改周计划状态
                                      method: 'POST',
                                      async: false,

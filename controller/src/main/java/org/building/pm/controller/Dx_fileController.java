@@ -891,7 +891,7 @@ public class Dx_fileController {
 
 
         HashMap data = dx_fileService.PRO_PM_03_PLAN_WEEK_VIEW2(V_V_YEAR, V_V_MONTH, V_V_WEEK, V_V_ORGCODE, V_V_DEPTCODE,
-                V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PERSONCODE, V_V_DEPTTYPE, V_V_INPER,V_V_PAGE, V_V_PAGESIZE);
+                V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PERSONCODE, V_V_DEPTTYPE, V_V_INPER, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
@@ -982,7 +982,7 @@ public class Dx_fileController {
                 V_V_RDEPATCODE,
                 V_V_RDEPATNAME,
                 V_V_SGWAY,
-                V_V_SGWAYNAME,V_V_OPERANAME);
+                V_V_SGWAYNAME, V_V_OPERANAME);
 
         return result;
     }
@@ -1015,7 +1015,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_SGWAY") String V_V_SGWAY,
             @RequestParam(value = "V_V_SGWAYNAME") String V_V_SGWAYNAME,
             @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
-            @RequestParam(value="V_V_OPERANAME") String V_V_OPERANAME,
+            @RequestParam(value = "V_V_OPERANAME") String V_V_OPERANAME,
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -1524,6 +1524,7 @@ public class Dx_fileController {
         Map data = dx_fileService.PRO_PM_DEPT_SORT(V_D_ENTER_DATE_B, V_D_ENTER_DATE_E, V_V_ORGCODE);
         return data;
     }
+
     // 计划模型修改
     @RequestMapping(value = "PM_1921_PLAN_MX_DATA_UPDATE", method = RequestMethod.POST)
     @ResponseBody
@@ -1537,6 +1538,7 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_1921_PLAN_MX_DATA_UPDATE(V_V_MX_CODE, V_V_PERNUM, V_V_LIFELONG);
         return data;
     }
+
     //-年计划检修类别下拉列表
     @RequestMapping(value = "PM_YEAR_REPARI_SELECT", method = RequestMethod.POST)
     @ResponseBody
@@ -1546,6 +1548,7 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_YEAR_REPARI_SELECT();
         return data;
     }
+
     // 年计划-计划模型选择
     @RequestMapping(value = "PM_PLAN_YEAR_GETMX_INSERT", method = RequestMethod.POST)
     @ResponseBody
@@ -1561,9 +1564,10 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_SUNTIME") String V_V_SUNTIME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_GETMX_INSERT(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE,V_V_REPAIRTYPE, V_V_PLANTYPE, V_V_PERCODE,V_V_YEAR, V_V_MONTH, V_V_SUNTIME);
+        Map data = dx_fileService.PM_PLAN_YEAR_GETMX_INSERT(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRTYPE, V_V_PLANTYPE, V_V_PERCODE, V_V_YEAR, V_V_MONTH, V_V_SUNTIME);
         return data;
     }
+
     // 年计划查询
     @RequestMapping(value = "PM_PLAN_YEAR_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -1574,7 +1578,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY);
+        Map data = dx_fileService.PM_PLAN_YEAR_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY);
         return data;
     }
 
@@ -1591,7 +1595,7 @@ public class Dx_fileController {
 
         List list = new ArrayList();
 
-        Map<String, Object> data = dx_fileService.PM_PLAN_YEAR_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY);
+        Map<String, Object> data = dx_fileService.PM_PLAN_YEAR_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -1716,51 +1720,51 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_PLAN_YEAR_INSERT", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_INSERT(
-            @RequestParam(value="V_GUID") String V_GUID,
-            @RequestParam(value="V_ORGCODE") String V_ORGCODE,
-            @RequestParam(value="V_ORGNAME") String V_ORGNAME,
-            @RequestParam(value="V_DEPTCODE") String V_DEPTCODE,
-            @RequestParam(value="V_DEPTNAME") String V_DEPTNAME,
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value = "V_DEPTCODE") String V_DEPTCODE,
+            @RequestParam(value = "V_DEPTNAME") String V_DEPTNAME,
 
-            @RequestParam(value="V_ZYCODE") String V_ZYCODE,
-            @RequestParam(value="V_ZYNAME") String V_ZYNAME,
-            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
-            @RequestParam(value="V_EQUTYPE") String V_EQUTYPE,
-            @RequestParam(value="V_REPAIRCONTENT") String V_REPAIRCONTENT,
+            @RequestParam(value = "V_ZYCODE") String V_ZYCODE,
+            @RequestParam(value = "V_ZYNAME") String V_ZYNAME,
+            @RequestParam(value = "V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value = "V_EQUTYPE") String V_EQUTYPE,
+            @RequestParam(value = "V_REPAIRCONTENT") String V_REPAIRCONTENT,
 
-            @RequestParam(value="V_PLANHOUR") String V_PLANHOUR,
-            @RequestParam(value="V_REPAIRTYPE") String V_REPAIRTYPE,
-            @RequestParam(value="V_REPAIRTYPENAME") String V_REPAIRTYPENAME,
-            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
-            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
+            @RequestParam(value = "V_PLANHOUR") String V_PLANHOUR,
+            @RequestParam(value = "V_REPAIRTYPE") String V_REPAIRTYPE,
+            @RequestParam(value = "V_REPAIRTYPENAME") String V_REPAIRTYPENAME,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
 
-            @RequestParam(value="V_REMARK") String V_REMARK,
-            @RequestParam(value="V_V_YEAR") String V_V_YEAR,
-            @RequestParam(value="V_V_MONTH") String V_V_MONTH,
-            @RequestParam(value="V_TGTIME") String V_TGTIME,
-            @RequestParam(value="V_JGTIME") String V_JGTIME,
-            @RequestParam(value="V_WXTYPECODE") String V_WXTYPECODE,
-            @RequestParam(value="V_WXTYPENAME") String V_WXTYPENAME,
-            @RequestParam(value="V_PTYPECODE") String V_PTYPECODE,
-            @RequestParam(value="V_PTYPENAME") String V_PTYPENAME,
-            @RequestParam(value="V_OLD_FLAG") String V_OLD_FLAG,
+            @RequestParam(value = "V_REMARK") String V_REMARK,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_TGTIME") String V_TGTIME,
+            @RequestParam(value = "V_JGTIME") String V_JGTIME,
+            @RequestParam(value = "V_WXTYPECODE") String V_WXTYPECODE,
+            @RequestParam(value = "V_WXTYPENAME") String V_WXTYPENAME,
+            @RequestParam(value = "V_PTYPECODE") String V_PTYPECODE,
+            @RequestParam(value = "V_PTYPENAME") String V_PTYPENAME,
+            @RequestParam(value = "V_OLD_FLAG") String V_OLD_FLAG,
 
-            @RequestParam(value="V_REDEPTCODE") String V_REDEPTCODE,
-            @RequestParam(value="V_REDEPTNAME") String V_REDEPTNAME,
-            @RequestParam(value="V_PLANDAY") String V_PLANDAY,
-            @RequestParam(value="V_FZPERCODE") String V_FZPERCODE,
-            @RequestParam(value="V_FZPERNAME") String V_FZPERNAME,
+            @RequestParam(value = "V_REDEPTCODE") String V_REDEPTCODE,
+            @RequestParam(value = "V_REDEPTNAME") String V_REDEPTNAME,
+            @RequestParam(value = "V_PLANDAY") String V_PLANDAY,
+            @RequestParam(value = "V_FZPERCODE") String V_FZPERCODE,
+            @RequestParam(value = "V_FZPERNAME") String V_FZPERNAME,
 
-            @RequestParam(value="V_SGTYPECODE") String V_SGTYPECODE,
-            @RequestParam(value="V_SGTYPENAME") String V_SGTYPENAME,
-            @RequestParam(value="V_SCLBCODE") String V_SCLBCODE,
-            @RequestParam(value="V_SCLBNAME") String V_SCLBNAME,
-            @RequestParam(value="V_PRO_NAME") String V_PRO_NAME,
+            @RequestParam(value = "V_SGTYPECODE") String V_SGTYPECODE,
+            @RequestParam(value = "V_SGTYPENAME") String V_SGTYPENAME,
+            @RequestParam(value = "V_SCLBCODE") String V_SCLBCODE,
+            @RequestParam(value = "V_SCLBNAME") String V_SCLBNAME,
+            @RequestParam(value = "V_PRO_NAME") String V_PRO_NAME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_INSERT(V_GUID,V_ORGCODE,V_ORGNAME,V_DEPTCODE,V_DEPTNAME,V_ZYCODE,V_ZYNAME,V_EQUCODE,V_EQUTYPE,V_REPAIRCONTENT,
-                V_PLANHOUR,V_REPAIRTYPE,V_REPAIRTYPENAME,V_INPERCODE,V_INPERNAME,V_REMARK,V_V_YEAR,V_V_MONTH,V_TGTIME,V_JGTIME,V_WXTYPECODE,V_WXTYPENAME,
-                V_PTYPECODE,V_PTYPENAME,V_OLD_FLAG,V_REDEPTCODE,V_REDEPTNAME,V_PLANDAY,V_FZPERCODE,V_FZPERNAME,V_SGTYPECODE,V_SGTYPENAME,V_SCLBCODE,V_SCLBNAME,V_PRO_NAME);
+        Map data = dx_fileService.PM_PLAN_YEAR_INSERT(V_GUID, V_ORGCODE, V_ORGNAME, V_DEPTCODE, V_DEPTNAME, V_ZYCODE, V_ZYNAME, V_EQUCODE, V_EQUTYPE, V_REPAIRCONTENT,
+                V_PLANHOUR, V_REPAIRTYPE, V_REPAIRTYPENAME, V_INPERCODE, V_INPERNAME, V_REMARK, V_V_YEAR, V_V_MONTH, V_TGTIME, V_JGTIME, V_WXTYPECODE, V_WXTYPENAME,
+                V_PTYPECODE, V_PTYPENAME, V_OLD_FLAG, V_REDEPTCODE, V_REDEPTNAME, V_PLANDAY, V_FZPERCODE, V_FZPERNAME, V_SGTYPECODE, V_SGTYPENAME, V_SCLBCODE, V_SCLBNAME, V_PRO_NAME);
         return data;
     }
 
@@ -1768,7 +1772,7 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_PLAN_YEAR_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_DEL(
-            @RequestParam(value="V_GUID") String V_GUID,
+            @RequestParam(value = "V_GUID") String V_GUID,
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -1803,9 +1807,9 @@ public class Dx_fileController {
             @RequestParam(value = "V_PERCODE") String V_PERCODE,
             @RequestParam(value = "V_DPPTCODE") String V_DPPTCODE,
             @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
-                    @RequestParam(value = "V_FLAG") String V_FLAG)
+            @RequestParam(value = "V_FLAG") String V_FLAG)
             throws SQLException {
-        Map<String, Object> result = dx_fileService.BASE_OPERATION_SEL(V_PERCODE,V_DPPTCODE,V_ORGCODE,V_FLAG);
+        Map<String, Object> result = dx_fileService.BASE_OPERATION_SEL(V_PERCODE, V_DPPTCODE, V_ORGCODE, V_FLAG);
         return result;
     }
 
@@ -1813,12 +1817,12 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_PLAN_YEAR_GET_NEWGUID", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_GET_NEWGUID(
-            @RequestParam(value="V_GUID") String V_GUID,
-            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
-            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_GET_NEWGUID(V_GUID,V_INPERCODE,V_INPERNAME);
+        Map data = dx_fileService.PM_PLAN_YEAR_GET_NEWGUID(V_GUID, V_INPERCODE, V_INPERNAME);
         return data;
     }
 
@@ -1826,17 +1830,18 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_PLAN_YEAR_RE_JXMOD_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_RE_JXMOD_IN(
-            @RequestParam(value="V_GUID") String V_GUID,
-            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
-            @RequestParam(value="V_MODCODE") String V_MODCODE,
-            @RequestParam(value="V_MODNAME") String V_MODNAME,
-            @RequestParam(value="V_MODBBH") String V_MODBBH,
-            @RequestParam(value="V_MODBZ") String V_MODBZ,
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value = "V_MODCODE") String V_MODCODE,
+            @RequestParam(value = "V_MODNAME") String V_MODNAME,
+            @RequestParam(value = "V_MODBBH") String V_MODBBH,
+            @RequestParam(value = "V_MODBZ") String V_MODBZ,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_RE_JXMOD_IN(V_GUID,V_EQUCODE ,V_MODCODE,V_MODNAME,V_MODBBH,V_MODBZ);
+        Map data = dx_fileService.PM_PLAN_YEAR_RE_JXMOD_IN(V_GUID, V_EQUCODE, V_MODCODE, V_MODNAME, V_MODBBH, V_MODBZ);
         return data;
     }
+
     // 年计划查询相关物料、机具等信息
     @RequestMapping(value = "PRO_YEAR_PLAN_MXUSE_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -1853,16 +1858,16 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_PLAN_YEAR_RE_DEFECT_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_RE_DEFECT_IN(
-            @RequestParam(value="V_GUID") String V_GUID,
-            @RequestParam(value="V_DEFECTCODE") String V_DEFECTCODE,
-            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
-            @RequestParam(value="V_EQUNAME") String V_EQUNAME,
-            @RequestParam(value="V_DEFECT_TYPE") String V_DEFECT_TYPE,
-            @RequestParam(value="V_DEFECT_CONTENT") String V_DEFECT_CONTENT,
-            @RequestParam(value="V_DEFECT_DATE") String V_DEFECT_DATE,
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_DEFECTCODE") String V_DEFECTCODE,
+            @RequestParam(value = "V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value = "V_EQUNAME") String V_EQUNAME,
+            @RequestParam(value = "V_DEFECT_TYPE") String V_DEFECT_TYPE,
+            @RequestParam(value = "V_DEFECT_CONTENT") String V_DEFECT_CONTENT,
+            @RequestParam(value = "V_DEFECT_DATE") String V_DEFECT_DATE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_RE_DEFECT_IN(V_GUID,V_DEFECTCODE ,V_EQUCODE,V_EQUNAME,V_DEFECT_TYPE,V_DEFECT_CONTENT,V_DEFECT_DATE);
+        Map data = dx_fileService.PM_PLAN_YEAR_RE_DEFECT_IN(V_GUID, V_DEFECTCODE, V_EQUCODE, V_EQUNAME, V_DEFECT_TYPE, V_DEFECT_CONTENT, V_DEFECT_DATE);
         return data;
     }
 
@@ -1885,22 +1890,25 @@ public class Dx_fileController {
         Map result = dx_fileService.PM_PLAN_YEAR_RE_JXMOD_SEL(V_GUID);
         return result;
     }
+
     //年计划缺陷删除
-    @RequestMapping(value="PM_PLAN_YEAR_RE_DEFECT_DEL",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_PLAN_YEAR_RE_DEFECT_DEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PM_PLAN_YEAR_RE_DEFECT_DEL(@RequestParam(value="V_GUID") String V_GUID,
-                                         @RequestParam(value="V_DEFECTCODE") String V_DEFECTCODE)throws Exception{
-        Map result=dx_fileService.PM_PLAN_YEAR_RE_DEFECT_DEL(V_GUID,V_DEFECTCODE);
+    public Map PM_PLAN_YEAR_RE_DEFECT_DEL(@RequestParam(value = "V_GUID") String V_GUID,
+                                          @RequestParam(value = "V_DEFECTCODE") String V_DEFECTCODE) throws Exception {
+        Map result = dx_fileService.PM_PLAN_YEAR_RE_DEFECT_DEL(V_GUID, V_DEFECTCODE);
         return result;
     }
+
     //年计划模型删除
-    @RequestMapping(value="PM_PLAN_YEAR_RE_JXMOD_DEL",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_PLAN_YEAR_RE_JXMOD_DEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PM_PLAN_YEAR_RE_JXMOD_DEL(@RequestParam(value="V_GUID") String V_GUID,
-                                         @RequestParam(value="V_MODCODE") String V_MODCODE)throws Exception{
-        Map result=dx_fileService.PM_PLAN_YEAR_RE_JXMOD_DEL(V_GUID,V_MODCODE);
+    public Map PM_PLAN_YEAR_RE_JXMOD_DEL(@RequestParam(value = "V_GUID") String V_GUID,
+                                         @RequestParam(value = "V_MODCODE") String V_MODCODE) throws Exception {
+        Map result = dx_fileService.PM_PLAN_YEAR_RE_JXMOD_DEL(V_GUID, V_MODCODE);
         return result;
     }
+
     //大修作业区查看上报数量
     @RequestMapping(value = "PRO_PM_YEAR_GROUPEBY_DEPT", method = RequestMethod.POST)
     @ResponseBody
@@ -1918,6 +1926,7 @@ public class Dx_fileController {
         Map result = dx_fileService.PRO_PM_YEAR_GROUPEBY_ZY();
         return result;
     }
+
     //-月计划统计表1查询
     @RequestMapping(value = "PRO_MONTH_EQU_STATIS_IN_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -1929,24 +1938,25 @@ public class Dx_fileController {
                                            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
                                            @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
 
-        Map result = dx_fileService.PRO_MONTH_EQU_STATIS_IN_SEL(V_EOS_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME);
+        Map result = dx_fileService.PRO_MONTH_EQU_STATIS_IN_SEL(V_EOS_GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_INPERCODE, V_INPERNAME);
         return result;
     }
+
     //-月计划统计表1增加
     @RequestMapping(value = "PRO_MONTH_EQU_STATIS_IN_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_MONTH_EQU_STATIS_IN_IN(@RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
-                                          @RequestParam(value = "V_YEAR") String  V_YEAR,
-                                          @RequestParam(value = "V_MONTH") String  V_MONTH,
-                                          @RequestParam(value = "V_ORGCODE") String  V_ORGCODE,
-                                          @RequestParam(value = "V_ORGNAME") String  V_ORGNAME,
-                                          @RequestParam(value = "V_EFPLAN") String  V_EFPLAN,
-                                          @RequestParam(value = "V_EFHOUR") String  V_EFHOUR,
-                                          @RequestParam(value = "V_EFACTUAL") String  V_EFACTUAL,
-                                          @RequestParam(value = "V_CPLAN") String  V_CPLAN,
-                                          @RequestParam(value = "V_CSNUM") String  V_CSNUM,
-                                          @RequestParam(value = "V_CCNUM") String  V_CCNUM,
-                                          @RequestParam(value = "V_CACT") String  V_CACT,
+                                          @RequestParam(value = "V_YEAR") String V_YEAR,
+                                          @RequestParam(value = "V_MONTH") String V_MONTH,
+                                          @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                          @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+                                          @RequestParam(value = "V_EFPLAN") String V_EFPLAN,
+                                          @RequestParam(value = "V_EFHOUR") String V_EFHOUR,
+                                          @RequestParam(value = "V_EFACTUAL") String V_EFACTUAL,
+                                          @RequestParam(value = "V_CPLAN") String V_CPLAN,
+                                          @RequestParam(value = "V_CSNUM") String V_CSNUM,
+                                          @RequestParam(value = "V_CCNUM") String V_CCNUM,
+                                          @RequestParam(value = "V_CACT") String V_CACT,
                                           @RequestParam(value = "V_CUSEPLAN") String V_CUSEPLAN,
                                           @RequestParam(value = "V_CUSEACTUAL") String V_CUSEACTUAL,
                                           @RequestParam(value = "V_DXPFPLAN") String V_DXPFPLAN,
@@ -1967,25 +1977,27 @@ public class Dx_fileController {
                                           @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
                                           @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
 
-        Map result = dx_fileService.PRO_MONTH_EQU_STATIS_IN_IN(V_EOS_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_EFPLAN,V_EFHOUR,V_EFACTUAL,V_CPLAN,V_CSNUM,V_CCNUM,
-                V_CACT,V_CUSEPLAN,V_CUSEACTUAL,V_DXPFPLAN,V_DXPFACTUAL,V_DXPFRATE,V_DXTPLAN,V_DXTACT,V_DXTRATE,V_COPTPLAN,V_COPTACT ,V_XKOPTPLAN ,V_XKOPTACT,V_SJSPLAN,
-                V_SJSACT,V_QTSPLAN,V_QTSACT,V_INERTDATE,V_INPERCODE,V_INPERNAME);
+        Map result = dx_fileService.PRO_MONTH_EQU_STATIS_IN_IN(V_EOS_GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_EFPLAN, V_EFHOUR, V_EFACTUAL, V_CPLAN, V_CSNUM, V_CCNUM,
+                V_CACT, V_CUSEPLAN, V_CUSEACTUAL, V_DXPFPLAN, V_DXPFACTUAL, V_DXPFRATE, V_DXTPLAN, V_DXTACT, V_DXTRATE, V_COPTPLAN, V_COPTACT, V_XKOPTPLAN, V_XKOPTACT, V_SJSPLAN,
+                V_SJSACT, V_QTSPLAN, V_QTSACT, V_INERTDATE, V_INPERCODE, V_INPERNAME);
         return result;
     }
+
     //-月计划统计表2查询
     @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS2_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_MONTH_EQU_ORG_STATIS2_SEL(@RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
-                                           @RequestParam(value = "V_YEAR") String V_YEAR,
-                                           @RequestParam(value = "V_MONTH") String V_MONTH,
-                                           @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
-                                           @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
-                                           @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
-                                           @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
+                                            @RequestParam(value = "V_YEAR") String V_YEAR,
+                                            @RequestParam(value = "V_MONTH") String V_MONTH,
+                                            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+                                            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+                                            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+                                            @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
 
-        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_SEL(V_EOS_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME);
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_SEL(V_EOS_GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_INPERCODE, V_INPERNAME);
         return result;
     }
+
     //-月计划统计表2增加
     @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS2_IN", method = RequestMethod.POST)
     @ResponseBody
@@ -2012,10 +2024,11 @@ public class Dx_fileController {
                                            @RequestParam(value = "V_DX_TRATE") String V_DX_TRATE,
                                            @RequestParam(value = "V_REMARK") String V_REMARK) throws Exception {
 
-        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_IN(V_MAIN_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_PERCODE,V_PERNAME,V_DQ_PLAN,V_DQ_HNUM,V_DQ_CNUM,V_DQ_ACT,
-                V_DL_PLAN,V_DL_ACTUAL,V_GD_PLAN,V_GD_ACT,V_DX_FPLAN,V_DX_FACT,V_DX_FRATE,V_DX_TPLAN,V_DX_TACT,V_DX_TRATE,V_REMARK);
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_IN(V_MAIN_GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_PERCODE, V_PERNAME, V_DQ_PLAN, V_DQ_HNUM, V_DQ_CNUM, V_DQ_ACT,
+                V_DL_PLAN, V_DL_ACTUAL, V_GD_PLAN, V_GD_ACT, V_DX_FPLAN, V_DX_FACT, V_DX_FRATE, V_DX_TPLAN, V_DX_TACT, V_DX_TRATE, V_REMARK);
         return result;
     }
+
     //-月计划统计表3查询
     @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS3_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -2027,9 +2040,10 @@ public class Dx_fileController {
                                             @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
                                             @RequestParam(value = "V_INPERNAME") String V_INPERNAME) throws Exception {
 
-        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_SEL(V_V_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME);
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_SEL(V_V_GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_INPERCODE, V_INPERNAME);
         return result;
     }
+
     //-月计划统计表3增加
     @RequestMapping(value = "PM_MONTH_EQU_ORG_STATIS3_IN", method = RequestMethod.POST)
     @ResponseBody
@@ -2044,7 +2058,7 @@ public class Dx_fileController {
                                            @RequestParam(value = "V_PRO_Q_ACT") String V_PRO_Q_ACT,
                                            @RequestParam(value = "V_RAMARK") String V_RAMARK) throws Exception {
 
-        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_IN(V_MAIN_GUID,V_YEAR,V_MONTH,V_ORGCODE,V_ORGNAME,V_INPERCODE,V_INPERNAME,V_PRO_Q_PLAN,V_PRO_Q_ACT,V_RAMARK);
+        Map result = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_IN(V_MAIN_GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_INPERCODE, V_INPERNAME, V_PRO_Q_PLAN, V_PRO_Q_ACT, V_RAMARK);
         return result;
     }
 
@@ -2056,9 +2070,10 @@ public class Dx_fileController {
                                         @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
                                         @RequestParam(value = "V_PERCODE") String V_PERCODE,
                                         @RequestParam(value = "V_SIGN") String V_SIGN) throws SQLException {
-        Map result = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR,V_MONTH,V_ORGCODE,V_PERCODE,V_SIGN);
+        Map result = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR, V_MONTH, V_ORGCODE, V_PERCODE, V_SIGN);
         return result;
     }
+
     // MONTH 分解状态修改
     @RequestMapping(value = "PM_03_PLAN_MONTH_SIGN_UPDT", method = RequestMethod.POST)
     @ResponseBody
@@ -2068,7 +2083,7 @@ public class Dx_fileController {
     }
 
     //monthStatis 03 export excel
-    @RequestMapping(value="monthStatis3",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @RequestMapping(value = "monthStatis3", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void monthStatis3(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
@@ -2083,9 +2098,9 @@ public class Dx_fileController {
 
         List list = new ArrayList();
         String GUID = V_V_GUID.equals("0") ? "" : V_V_GUID;
-        String[] head0 = new String[] { "序号", "单位", "年份", "月份", "产品合格率（%）"};
-        String[] head1=new String[]{"计划","实际（%）"};
-        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_SEL(GUID, V_YEAR, V_MONTH,V_ORGCODE, V_ORGNAME, V_INPERCODE,V_INPERNAME);
+        String[] head0 = new String[]{"序号", "单位", "年份", "月份", "产品合格率（%）"};
+        String[] head1 = new String[]{"计划", "实际（%）"};
+        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORG_STATIS3_SEL(GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_INPERCODE, V_INPERNAME);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -2096,16 +2111,15 @@ public class Dx_fileController {
         HSSFFont font2 = wb.createFont();
         font2.setFontName("宋体");
         font2.setFontHeightInPoints((short) 10);
-         HSSFCellStyle style2 = wb.createCellStyle();
-         style2.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
-         style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
-         style2.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
-         style2.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
-         style2.setFont(font2);
-         style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
-         style2.setWrapText(true); // 换行
-         style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
-
+        HSSFCellStyle style2 = wb.createCellStyle();
+        style2.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+        style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+        style2.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+        style2.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+        style2.setFont(font2);
+        style2.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+        style2.setWrapText(true); // 换行
+        style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
 
 
         HSSFRow row = sheet.createRow(0);
@@ -2123,18 +2137,18 @@ public class Dx_fileController {
         }
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, head0.length));
         row = sheet.createRow(1);
-        for (int i = 0; i < head0.length+1; i++) {
+        for (int i = 0; i < head0.length + 1; i++) {
             cell = row.createCell(i);
             cell.setCellStyle(style2);
-            if(i>3&&i<6) {
-                for (int j = 0; j <head1.length; j++) {
+            if (i > 3 && i < 6) {
+                for (int j = 0; j < head1.length; j++) {
                     cell = row.createCell(j + 4);
                     cell.setCellValue(head1[j]);
                     cell.setCellStyle(style2);
                 }
             }
         }
-        for(int k=0;k<4;k++){
+        for (int k = 0; k < 4; k++) {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
         }
 
@@ -2169,7 +2183,7 @@ public class Dx_fileController {
     }
 
     // month statis2 export excel
-    @RequestMapping(value="monthStatis2",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @RequestMapping(value = "monthStatis2", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void monthStatis2(
             @RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
@@ -2184,14 +2198,14 @@ public class Dx_fileController {
 
         List list = new ArrayList();
         String GUID = V_EOS_GUID.equals("0") ? "" : V_EOS_GUID;
-        String[] head = new String[] { "序号", "单位", "年份", "月份", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率","电网力率","电网力率","供电损失率（%）","供电损失率（%）","定修计划完成率","定修计划完成率","定修计划完成率","定修时间准确率","定修时间准确率","定修时间准确率"};
-        String[] coList1=new String[]{"计划（%）","在册设备数量","可开动设备数量","实际（%）"};
-        String[] coList2=new String[]{"计划（%）","实际（%）"};
-        String[] coList3=new String[]{"计划","实际"};
-        String[] coList4=new String[]{"计划项目","实际完成项目","定修计划完成率（%）"};
-        String[] coList5=new String[]{"计划定修时间(h)","实际完成时间(h)","定修时间准确率(%)"};
-        int allLength=coList1.length+coList2.length+coList3.length+coList4.length+coList5.length+4;
-        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_SEL(GUID, V_YEAR, V_MONTH,V_ORGCODE, V_ORGNAME, V_INPERCODE,V_INPERNAME);
+        String[] head = new String[]{"序号", "单位", "年份", "月份", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率", "电网力率", "电网力率", "供电损失率（%）", "供电损失率（%）", "定修计划完成率", "定修计划完成率", "定修计划完成率", "定修时间准确率", "定修时间准确率", "定修时间准确率"};
+        String[] coList1 = new String[]{"计划（%）", "在册设备数量", "可开动设备数量", "实际（%）"};
+        String[] coList2 = new String[]{"计划（%）", "实际（%）"};
+        String[] coList3 = new String[]{"计划", "实际"};
+        String[] coList4 = new String[]{"计划项目", "实际完成项目", "定修计划完成率（%）"};
+        String[] coList5 = new String[]{"计划定修时间(h)", "实际完成时间(h)", "定修时间准确率(%)"};
+        int allLength = coList1.length + coList2.length + coList3.length + coList4.length + coList5.length + 4;
+        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORG_STATIS2_SEL(GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_INPERCODE, V_INPERNAME);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -2224,19 +2238,19 @@ public class Dx_fileController {
             cell = row.createCell(i);
             cell.setCellValue(head[i]);
             cell.setCellStyle(style2);
-            if(i==4){
+            if (i == 4) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 7));
             }
-            if(i==5){
+            if (i == 5) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
             }
-            if(i==6){
+            if (i == 6) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 11));
             }
-            if(i==7){
+            if (i == 7) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 14));
             }
-            if(i==8){
+            if (i == 8) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 17));
             }
         }
@@ -2245,43 +2259,43 @@ public class Dx_fileController {
         for (int i = 0; i < head.length; i++) {
             cell = row.createCell(i);
             cell.setCellStyle(style2);
-            if(i>3&&i<8) {
-                for (int j = 0; j <coList1.length; j++) {
+            if (i > 3 && i < 8) {
+                for (int j = 0; j < coList1.length; j++) {
                     cell = row.createCell(j + 4);
                     cell.setCellValue(coList1[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>7&&i<10) {
-                for (int j = 0; j <coList2.length; j++) {
+            if (i > 7 && i < 10) {
+                for (int j = 0; j < coList2.length; j++) {
                     cell = row.createCell(j + 8);
                     cell.setCellValue(coList2[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>9&&i<12) {
-                for (int j = 0; j <coList3.length; j++) {
+            if (i > 9 && i < 12) {
+                for (int j = 0; j < coList3.length; j++) {
                     cell = row.createCell(j + 10);
                     cell.setCellValue(coList3[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>11&&i<15) {
-                for (int j = 0; j <coList4.length; j++) {
+            if (i > 11 && i < 15) {
+                for (int j = 0; j < coList4.length; j++) {
                     cell = row.createCell(j + 12);
                     cell.setCellValue(coList4[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>14&&i<18) {
-                for (int j = 0; j <coList5.length; j++) {
+            if (i > 14 && i < 18) {
+                for (int j = 0; j < coList5.length; j++) {
                     cell = row.createCell(j + 15);
                     cell.setCellValue(coList5[j]);
                     cell.setCellStyle(style2);
                 }
             }
         }
-        for(int k=0;k<4;k++){
+        for (int k = 0; k < 4; k++) {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
         }
         if (data.size() > 0) {
@@ -2305,10 +2319,10 @@ public class Dx_fileController {
                 row.createCell((short) 11).setCellValue(map.get("GD_LOSS_ACT") == null ? "" : map.get("GD_LOSS_ACT").toString());
                 row.createCell((short) 12).setCellValue(map.get("DX_FINISH_PLAN") == null ? "" : map.get("DX_FINISH_PLAN").toString());
                 row.createCell((short) 13).setCellValue(map.get("DX_FINISH_ACT") == null ? "" : map.get("DX_FINISH_ACT").toString());
-                row.createCell((short) 14).setCellValue(map.get("DX_FINISH_RATE").equals("") ? "0" : map.get("DX_FINISH_RATE").equals("NaN")?"0":map.get("DX_FINISH_RATE").toString());
+                row.createCell((short) 14).setCellValue(map.get("DX_FINISH_RATE").equals("") ? "0" : map.get("DX_FINISH_RATE").equals("NaN") ? "0" : map.get("DX_FINISH_RATE").toString());
                 row.createCell((short) 15).setCellValue(map.get("DX_TIME_PLAN") == null ? "" : map.get("DX_TIME_PLAN").toString());
                 row.createCell((short) 16).setCellValue(map.get("DX_TIME_ACT") == null ? "" : map.get("DX_TIME_ACT").toString());
-                row.createCell((short) 17).setCellValue(map.get("DX_TIME_RATE").equals("")? "0" : map.get("DX_TIME_RATE").equals("NaN")?"0":map.get("DX_TIME_RATE").toString());
+                row.createCell((short) 17).setCellValue(map.get("DX_TIME_RATE").equals("") ? "0" : map.get("DX_TIME_RATE").equals("NaN") ? "0" : map.get("DX_TIME_RATE").toString());
 
             }
             try {
@@ -2327,10 +2341,8 @@ public class Dx_fileController {
     }
 
 
-
-
     // month statis1 export excel
-    @RequestMapping(value="monthStatis1",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @RequestMapping(value = "monthStatis1", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void monthStatis1(
             @RequestParam(value = "V_EOS_GUID") String V_EOS_GUID,
@@ -2345,15 +2357,15 @@ public class Dx_fileController {
 
         List list = new ArrayList();
         String GUID = V_EOS_GUID.equals("0") ? "" : V_EOS_GUID;
-        String[] head = new String[] { "序号", "单位", "年份", "月份","设备故障率","设备故障率","设备故障率","采矿单体设备完好率","采矿单体设备完好率","采矿单体设备完好率","采矿单体设备完好率","可开动率","可开动率","定修计划完成率","定修计划完成率","定修计划完成率","定修时间准确率","定修时间准确率","定修时间准确率","开矿工序能耗","开矿工序能耗","选矿/精铁矿工序能耗","选矿/精铁矿工序能耗","烧结综合能耗","烧结综合能耗","球团综合能耗","球团综合能耗"};
-        String[] coList1=new String[]{"计划率（%）","故障时间(h)","实际（%）"};
-        String[] coList2=new String[]{"计划（%）","在册设备数量","可开动设备数量","实际（%）"};
-        String[] coList3=new String[]{"计划（%）","实际（%）"};
-        String[] coList4=new String[]{"计划项目","实际完成项目","定修计划完成率（%）"};
-        String[] coList5=new String[]{"计划定修时间(h)","实际完成时间(h)","定修时间准确率(%)"};
-        int[] sint=new int[]{4,7,11,13,16,19,21,23,25};
-        int[] eint=new int[]{6,10,12,15,18,20,22,24,26};
-        Map<String, Object> data = dx_fileService.PRO_MONTH_EQU_STATIS_IN_SEL(GUID, V_YEAR, V_MONTH,V_ORGCODE, V_ORGNAME, V_INPERCODE,V_INPERNAME);
+        String[] head = new String[]{"序号", "单位", "年份", "月份", "设备故障率", "设备故障率", "设备故障率", "采矿单体设备完好率", "采矿单体设备完好率", "采矿单体设备完好率", "采矿单体设备完好率", "可开动率", "可开动率", "定修计划完成率", "定修计划完成率", "定修计划完成率", "定修时间准确率", "定修时间准确率", "定修时间准确率", "开矿工序能耗", "开矿工序能耗", "选矿/精铁矿工序能耗", "选矿/精铁矿工序能耗", "烧结综合能耗", "烧结综合能耗", "球团综合能耗", "球团综合能耗"};
+        String[] coList1 = new String[]{"计划率（%）", "故障时间(h)", "实际（%）"};
+        String[] coList2 = new String[]{"计划（%）", "在册设备数量", "可开动设备数量", "实际（%）"};
+        String[] coList3 = new String[]{"计划（%）", "实际（%）"};
+        String[] coList4 = new String[]{"计划项目", "实际完成项目", "定修计划完成率（%）"};
+        String[] coList5 = new String[]{"计划定修时间(h)", "实际完成时间(h)", "定修时间准确率(%)"};
+        int[] sint = new int[]{4, 7, 11, 13, 16, 19, 21, 23, 25};
+        int[] eint = new int[]{6, 10, 12, 15, 18, 20, 22, 24, 26};
+        Map<String, Object> data = dx_fileService.PRO_MONTH_EQU_STATIS_IN_SEL(GUID, V_YEAR, V_MONTH, V_ORGCODE, V_ORGNAME, V_INPERCODE, V_INPERNAME);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -2386,31 +2398,31 @@ public class Dx_fileController {
             cell = row.createCell(i);
             cell.setCellValue(head[i]);
             cell.setCellStyle(style2);
-            if(i==4){
+            if (i == 4) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 6));
             }
-            if(i==5){
+            if (i == 5) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 10));
             }
-            if(i==6){
+            if (i == 6) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 11, 12));
             }
-            if(i==7){
+            if (i == 7) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 13, 15));
             }
-            if(i==8){
+            if (i == 8) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 16, 18));
             }
-            if(i==9){
+            if (i == 9) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 19, 20));
             }
-            if(i==10){
+            if (i == 10) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 21, 22));
             }
-            if(i==11){
+            if (i == 11) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 23, 24));
             }
-            if(i==12){
+            if (i == 12) {
                 sheet.addMergedRegion(new CellRangeAddress(0, 0, 25, 26));
             }
         }
@@ -2419,71 +2431,71 @@ public class Dx_fileController {
         for (int i = 0; i < head.length; i++) {
             cell = row.createCell(i);
             cell.setCellStyle(style2);
-            if(i>3&&i<7) {
-                for (int j = 0; j <coList1.length; j++) {
+            if (i > 3 && i < 7) {
+                for (int j = 0; j < coList1.length; j++) {
                     cell = row.createCell(j + 4);
                     cell.setCellValue(coList1[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>6&&i<11) {
-                for (int j = 0; j <coList2.length; j++) {
+            if (i > 6 && i < 11) {
+                for (int j = 0; j < coList2.length; j++) {
                     cell = row.createCell(j + 7);
                     cell.setCellValue(coList2[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>10&&i<13) {
-                for (int j = 0; j <coList3.length; j++) {
+            if (i > 10 && i < 13) {
+                for (int j = 0; j < coList3.length; j++) {
                     cell = row.createCell(j + 11);
                     cell.setCellValue(coList3[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>12&&i<16) {
-                for (int j = 0; j <coList4.length; j++) {
+            if (i > 12 && i < 16) {
+                for (int j = 0; j < coList4.length; j++) {
                     cell = row.createCell(j + 13);
                     cell.setCellValue(coList4[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>15&&i<19) {
-                for (int j = 0; j <coList5.length; j++) {
+            if (i > 15 && i < 19) {
+                for (int j = 0; j < coList5.length; j++) {
                     cell = row.createCell(j + 16);
                     cell.setCellValue(coList5[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>18&&i<21) {
-                for (int j = 0; j <coList3.length; j++) {
+            if (i > 18 && i < 21) {
+                for (int j = 0; j < coList3.length; j++) {
                     cell = row.createCell(j + 19);
                     cell.setCellValue(coList3[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>20&&i<23) {
-                for (int j = 0; j <coList3.length; j++) {
+            if (i > 20 && i < 23) {
+                for (int j = 0; j < coList3.length; j++) {
                     cell = row.createCell(j + 21);
                     cell.setCellValue(coList3[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>22&&i<25) {
-                for (int j = 0; j <coList3.length; j++) {
+            if (i > 22 && i < 25) {
+                for (int j = 0; j < coList3.length; j++) {
                     cell = row.createCell(j + 23);
                     cell.setCellValue(coList3[j]);
                     cell.setCellStyle(style2);
                 }
             }
-            if(i>24&&i<27) {
-                for (int j = 0; j <coList3.length; j++) {
+            if (i > 24 && i < 27) {
+                for (int j = 0; j < coList3.length; j++) {
                     cell = row.createCell(j + 25);
                     cell.setCellValue(coList3[j]);
                     cell.setCellStyle(style2);
                 }
             }
         }
-        for(int k=0;k<4;k++){
+        for (int k = 0; k < 4; k++) {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
         }
 
@@ -2494,7 +2506,7 @@ public class Dx_fileController {
                 row = sheet.createRow((int) i + 2);
                 Map map = (Map) list.get(i);
 
-                String DXPFINISH_PRO_RATE_V=map.get("DXT_EXACT_HOUR_RATE").equals("NaN")?"0":map.get("DXT_EXACT_HOUR_RATE").toString();
+                String DXPFINISH_PRO_RATE_V = map.get("DXT_EXACT_HOUR_RATE").equals("NaN") ? "0" : map.get("DXT_EXACT_HOUR_RATE").toString();
                 row.createCell((short) 0).setCellValue(i + 1);
                 row.createCell((short) 1).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
                 row.createCell((short) 2).setCellValue(map.get("D_YEAR") == null ? "" : map.get("D_YEAR").toString());
@@ -2513,7 +2525,7 @@ public class Dx_fileController {
                 row.createCell((short) 15).setCellValue(map.get("DXPFINISH_PRO_RATE").equals("") ? "0" : DXPFINISH_PRO_RATE_V);
                 row.createCell((short) 16).setCellValue(map.get("DXT_EXACT_HOUR_PLAN") == null ? "" : map.get("DXT_EXACT_HOUR_PLAN").toString());
                 row.createCell((short) 17).setCellValue(map.get("DXT_EXACT_HOUR_ACT") == null ? "" : map.get("DXT_EXACT_HOUR_ACT").toString());
-                row.createCell((short) 18).setCellValue(map.get("DXT_EXACT_HOUR_RATE").equals("")  ? "0" : map.get("DXT_EXACT_HOUR_RATE").equals("NaN")?"0":map.get("DXT_EXACT_HOUR_RATE").toString());
+                row.createCell((short) 18).setCellValue(map.get("DXT_EXACT_HOUR_RATE").equals("") ? "0" : map.get("DXT_EXACT_HOUR_RATE").equals("NaN") ? "0" : map.get("DXT_EXACT_HOUR_RATE").toString());
                 row.createCell((short) 19).setCellValue(map.get("COPT_CSENERGY_PLAN") == null ? "" : map.get("COPT_CSENERGY_PLAN").toString());
                 row.createCell((short) 20).setCellValue(map.get("COPT_CSENERGY_ACT") == null ? "" : map.get("COPT_CSENERGY_ACT").toString());
                 row.createCell((short) 21).setCellValue(map.get("XKOPT_CSENERGY_PLAN") == null ? "" : map.get("XKOPT_CSENERGY_PLAN").toString());
@@ -2544,7 +2556,7 @@ public class Dx_fileController {
     }
 
     //月统计页sbbtab1
-    @RequestMapping(value="exportExDate01",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @RequestMapping(value = "exportExDate01", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void exportExDate01(
             @RequestParam(value = "V_YEAR") String V_YEAR,
@@ -2556,10 +2568,10 @@ public class Dx_fileController {
             HttpServletResponse response) throws SQLException {
 
         List list = new ArrayList();
-        String[] head = new String[] { "序号", "单位", "年份", "月份","设备故障率","设备故障率","设备故障率","采矿单体设备完好率","采矿单体设备完好率","采矿单体设备完好率","采矿单体设备完好率","可开动率","可开动率","定修计划完成率","定修计划完成率","定修计划完成率","定修时间准确率","定修时间准确率","定修时间准确率","开矿工序能耗","开矿工序能耗","选矿/精铁矿工序能耗","选矿/精铁矿工序能耗","烧结综合能耗","烧结综合能耗","球团综合能耗","球团综合能耗"};
-        String[] coList=new String[]{"计划率（%）","故障时间(h)","实际（%）","计划（%）","在册设备数量","可开动设备数量","实际（%）","计划（%）","实际（%）","计划项目","实际完成项目","定修计划完成率（%）",
-                "计划定修时间(h)","实际完成时间(h)","定修时间准确率(%)","计划（%）","实际（%）","计划（%）","实际（%）","计划（%）","实际（%）","计划（%）","实际（%）"};
-        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR, V_MONTH, V_ORGCODE,V_PERCODE, V_SIGN);
+        String[] head = new String[]{"序号", "单位", "年份", "月份", "设备故障率", "设备故障率", "设备故障率", "采矿单体设备完好率", "采矿单体设备完好率", "采矿单体设备完好率", "采矿单体设备完好率", "可开动率", "可开动率", "定修计划完成率", "定修计划完成率", "定修计划完成率", "定修时间准确率", "定修时间准确率", "定修时间准确率", "开矿工序能耗", "开矿工序能耗", "选矿/精铁矿工序能耗", "选矿/精铁矿工序能耗", "烧结综合能耗", "烧结综合能耗", "球团综合能耗", "球团综合能耗"};
+        String[] coList = new String[]{"计划率（%）", "故障时间(h)", "实际（%）", "计划（%）", "在册设备数量", "可开动设备数量", "实际（%）", "计划（%）", "实际（%）", "计划项目", "实际完成项目", "定修计划完成率（%）",
+                "计划定修时间(h)", "实际完成时间(h)", "定修时间准确率(%)", "计划（%）", "实际（%）", "计划（%）", "实际（%）", "计划（%）", "实际（%）", "计划（%）", "实际（%）"};
+        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR, V_MONTH, V_ORGCODE, V_PERCODE, V_SIGN);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -2607,8 +2619,8 @@ public class Dx_fileController {
         for (int i = 0; i < head.length; i++) {
             cell = row.createCell(i);
             cell.setCellStyle(style2);
-            if(i>3) {
-                for (int j = 0; j <coList.length; j++) {
+            if (i > 3) {
+                for (int j = 0; j < coList.length; j++) {
                     cell = row.createCell(j + 4);
                     cell.setCellValue(coList[j]);
                     cell.setCellStyle(style2);
@@ -2616,7 +2628,7 @@ public class Dx_fileController {
             }
 
         }
-        for(int k=0;k<4;k++){
+        for (int k = 0; k < 4; k++) {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
         }
 
@@ -2627,7 +2639,7 @@ public class Dx_fileController {
                 row = sheet.createRow((int) i + 2);
                 Map map = (Map) list.get(i);
 
-                String DXPFINISH_PRO_RATE_V=map.get("DXT_EXACT_HOUR_RATE").equals("NaN")?"0":map.get("DXT_EXACT_HOUR_RATE").toString();
+                String DXPFINISH_PRO_RATE_V = map.get("DXT_EXACT_HOUR_RATE").equals("NaN") ? "0" : map.get("DXT_EXACT_HOUR_RATE").toString();
                 row.createCell((short) 0).setCellValue(i + 1);
                 row.createCell((short) 1).setCellValue(map.get("ORGNAME") == null ? "" : map.get("ORGNAME").toString());
                 row.createCell((short) 2).setCellValue(map.get("D_YEAR") == null ? "" : map.get("D_YEAR").toString());
@@ -2646,7 +2658,7 @@ public class Dx_fileController {
                 row.createCell((short) 15).setCellValue(map.get("DXPFINISH_PRO_RATE").equals("") ? "0" : DXPFINISH_PRO_RATE_V);
                 row.createCell((short) 16).setCellValue(map.get("DXT_EXACT_HOUR_PLAN") == null ? "" : map.get("DXT_EXACT_HOUR_PLAN").toString());
                 row.createCell((short) 17).setCellValue(map.get("DXT_EXACT_HOUR_ACT") == null ? "" : map.get("DXT_EXACT_HOUR_ACT").toString());
-                row.createCell((short) 18).setCellValue(map.get("DXT_EXACT_HOUR_RATE").equals("")  ? "0" : map.get("DXT_EXACT_HOUR_RATE").equals("NaN")?"0":map.get("DXT_EXACT_HOUR_RATE").toString());
+                row.createCell((short) 18).setCellValue(map.get("DXT_EXACT_HOUR_RATE").equals("") ? "0" : map.get("DXT_EXACT_HOUR_RATE").equals("NaN") ? "0" : map.get("DXT_EXACT_HOUR_RATE").toString());
                 row.createCell((short) 19).setCellValue(map.get("COPT_CSENERGY_PLAN") == null ? "" : map.get("COPT_CSENERGY_PLAN").toString());
                 row.createCell((short) 20).setCellValue(map.get("COPT_CSENERGY_ACT") == null ? "" : map.get("COPT_CSENERGY_ACT").toString());
                 row.createCell((short) 21).setCellValue(map.get("XKOPT_CSENERGY_PLAN") == null ? "" : map.get("XKOPT_CSENERGY_PLAN").toString());
@@ -2674,7 +2686,7 @@ public class Dx_fileController {
     }
 
     //月统计页sbbtab2
-    @RequestMapping(value="exportExDate02",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @RequestMapping(value = "exportExDate02", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void exportExDate02(
             @RequestParam(value = "V_YEAR") String V_YEAR,
@@ -2687,13 +2699,13 @@ public class Dx_fileController {
 
         List list = new ArrayList();
 
-        String[] head = new String[] { "序号", "单位", "年份", "月份", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率","电网力率","电网力率","供电损失率（%）","供电损失率（%）","定修计划完成率","定修计划完成率","定修计划完成率","定修时间准确率","定修时间准确率","定修时间准确率"};
-        String[] coList=new String[]{"计划（%）","在册设备数量","可开动设备数量","实际（%）","计划（%）","实际（%）","计划","实际","计划项目","实际完成项目","定修计划完成率（%）","计划定修时间(h)","实际完成时间(h)","定修时间准确率(%)"};
+        String[] head = new String[]{"序号", "单位", "年份", "月份", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率", "电气单体设备完好率", "电网力率", "电网力率", "供电损失率（%）", "供电损失率（%）", "定修计划完成率", "定修计划完成率", "定修计划完成率", "定修时间准确率", "定修时间准确率", "定修时间准确率"};
+        String[] coList = new String[]{"计划（%）", "在册设备数量", "可开动设备数量", "实际（%）", "计划（%）", "实际（%）", "计划", "实际", "计划项目", "实际完成项目", "定修计划完成率（%）", "计划定修时间(h)", "实际完成时间(h)", "定修时间准确率(%)"};
 //        String[] coList2=new String[]{"计划（%）","实际（%）"};
 //        String[] coList3=new String[]{"计划","实际"};
 //        String[] coList4=new String[]{"计划项目","实际完成项目","定修计划完成率（%）"};
 //        String[] coList5=new String[]{"计划定修时间(h)","实际完成时间(h)","定修时间准确率(%)"};
-        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR, V_MONTH, V_ORGCODE,V_PERCODE, V_SIGN);
+        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR, V_MONTH, V_ORGCODE, V_PERCODE, V_SIGN);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -2727,25 +2739,25 @@ public class Dx_fileController {
             cell.setCellValue(head[i]);
             cell.setCellStyle(style2);
 
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 7));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 11));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 14));
-                sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 17));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, 7));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 9));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 10, 11));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 12, 14));
+            sheet.addMergedRegion(new CellRangeAddress(0, 0, 15, 17));
         }
         row = sheet.createRow(1);
         for (int i = 0; i < head.length; i++) {
             cell = row.createCell(i);
             cell.setCellStyle(style2);
-            if(i>3) {
-                for (int j = 0; j <coList.length; j++) {
+            if (i > 3) {
+                for (int j = 0; j < coList.length; j++) {
                     cell = row.createCell(j + 4);
                     cell.setCellValue(coList[j]);
                     cell.setCellStyle(style2);
                 }
             }
         }
-        for(int k=0;k<4;k++){
+        for (int k = 0; k < 4; k++) {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
         }
         if (data.size() > 0) {
@@ -2769,10 +2781,10 @@ public class Dx_fileController {
                 row.createCell((short) 11).setCellValue(map.get("GD_LOSS_ACT") == null ? "" : map.get("GD_LOSS_ACT").toString());
                 row.createCell((short) 12).setCellValue(map.get("DX_FINISH_PLAN") == null ? "" : map.get("DX_FINISH_PLAN").toString());
                 row.createCell((short) 13).setCellValue(map.get("DX_FINISH_ACT") == null ? "" : map.get("DX_FINISH_ACT").toString());
-                row.createCell((short) 14).setCellValue(map.get("DX_FINISH_RATE").equals("") ? "0" : map.get("DX_FINISH_RATE").equals("NaN")?"0":map.get("DX_FINISH_RATE").toString());
+                row.createCell((short) 14).setCellValue(map.get("DX_FINISH_RATE").equals("") ? "0" : map.get("DX_FINISH_RATE").equals("NaN") ? "0" : map.get("DX_FINISH_RATE").toString());
                 row.createCell((short) 15).setCellValue(map.get("DX_TIME_PLAN") == null ? "" : map.get("DX_TIME_PLAN").toString());
                 row.createCell((short) 16).setCellValue(map.get("DX_TIME_ACT") == null ? "" : map.get("DX_TIME_ACT").toString());
-                row.createCell((short) 17).setCellValue(map.get("DX_TIME_RATE").equals("")? "0" : map.get("DX_TIME_RATE").equals("NaN")?"0":map.get("DX_TIME_RATE").toString());
+                row.createCell((short) 17).setCellValue(map.get("DX_TIME_RATE").equals("") ? "0" : map.get("DX_TIME_RATE").equals("NaN") ? "0" : map.get("DX_TIME_RATE").toString());
 
             }
             try {
@@ -2792,7 +2804,7 @@ public class Dx_fileController {
 
 
     //月统计页sbbtab3
-    @RequestMapping(value="exportExDate03",method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @RequestMapping(value = "exportExDate03", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void exportExDate03(
             @RequestParam(value = "V_YEAR") String V_YEAR,
@@ -2804,9 +2816,9 @@ public class Dx_fileController {
             HttpServletResponse response) throws SQLException {
 
         List list = new ArrayList();
-        String[] head0 = new String[] { "序号", "单位", "年份", "月份", "产品合格率（%）"};
-        String[] head1=new String[]{"计划","实际（%）"};
-        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR, V_MONTH, V_ORGCODE,V_PERCODE, V_SIGN);
+        String[] head0 = new String[]{"序号", "单位", "年份", "月份", "产品合格率（%）"};
+        String[] head1 = new String[]{"计划", "实际（%）"};
+        Map<String, Object> data = dx_fileService.PM_MONTH_EQU_ORGCODE_SEL(V_YEAR, V_MONTH, V_ORGCODE, V_PERCODE, V_SIGN);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -2840,18 +2852,18 @@ public class Dx_fileController {
         }
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 4, head0.length));
         row = sheet.createRow(1);
-        for (int i = 0; i < head0.length+1; i++) {
+        for (int i = 0; i < head0.length + 1; i++) {
             cell = row.createCell(i);
             cell.setCellStyle(style2);
-            if(i>3&&i<6) {
-                for (int j = 0; j <head1.length; j++) {
+            if (i > 3 && i < 6) {
+                for (int j = 0; j < head1.length; j++) {
                     cell = row.createCell(j + 4);
                     cell.setCellValue(head1[j]);
                     cell.setCellStyle(style2);
                 }
             }
         }
-        for(int k=0;k<4;k++){
+        for (int k = 0; k < 4; k++) {
             sheet.addMergedRegion(new CellRangeAddress(0, 1, k, k));
         }
 
@@ -2884,17 +2896,18 @@ public class Dx_fileController {
             }
         }
     }
- //月计划、年计划找周计划详情  PM_03_PLAN_MONTH_SEL_WEEKVIEW
-   @RequestMapping(value="PM_03_PLAN_MONTH_SEL_WEEKVIEW",method=RequestMethod.POST)
-   @ResponseBody
-   public Map PM_03_PLAN_MONTH_SEL_WEEKVIEW(
-           @RequestParam(value = "V_OTHERGRID") String V_OTHERGRID,
-           @RequestParam(value = "V_TYPE") String V_TYPE,
-           HttpServletRequest request,
-           HttpServletResponse response) throws Exception {
-       Map data = dx_fileService.PM_03_PLAN_MONTH_SEL_WEEKVIEW(V_OTHERGRID,V_TYPE);
-       return data;
-   }
+
+    //月计划、年计划找周计划详情  PM_03_PLAN_MONTH_SEL_WEEKVIEW
+    @RequestMapping(value = "PM_03_PLAN_MONTH_SEL_WEEKVIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_MONTH_SEL_WEEKVIEW(
+            @RequestParam(value = "V_OTHERGRID") String V_OTHERGRID,
+            @RequestParam(value = "V_TYPE") String V_TYPE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_03_PLAN_MONTH_SEL_WEEKVIEW(V_OTHERGRID, V_TYPE);
+        return data;
+    }
 
     //预装件备件信息修改
     @RequestMapping(value = "PRO_PRELOADWARECOMPONENT_SET", method = RequestMethod.POST)
@@ -2931,7 +2944,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_PERCODE") String V_PERCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_07_DEFECT_STAT(V_YEAR,V_CKCODE,V_PERCODE);
+        Map data = dx_fileService.PM_07_DEFECT_STAT(V_YEAR, V_CKCODE, V_PERCODE);
         return data;
     }
 
@@ -2941,7 +2954,7 @@ public class Dx_fileController {
     public Map PM_07_DEFECT_STAT_N(
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
-        Map data = dx_fileService.PM_07_DEFECT_STAT_N(V_V_YEAR,V_V_PERCODE);
+        Map data = dx_fileService.PM_07_DEFECT_STAT_N(V_V_YEAR, V_V_PERCODE);
         return data;
     }
 
@@ -2971,9 +2984,10 @@ public class Dx_fileController {
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_1921_PLAN_IN_MX_SET(V_V_MX_NAME,V_V_ORGCODE,V_V_DEPTCODE,V_V_SPECIALTY,V_V_MENO,V_V_INPER,V_V_EQUTYPE,V_V_EQUCODE,V_V_CONTEXT,V_V_JXMX_CODE,V_V_PERNUM,V_V_LIFELONG,V_V_MAIN_DEFECT,V_V_SGWAY);
+        Map data = dx_fileService.PM_1921_PLAN_IN_MX_SET(V_V_MX_NAME, V_V_ORGCODE, V_V_DEPTCODE, V_V_SPECIALTY, V_V_MENO, V_V_INPER, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTEXT, V_V_JXMX_CODE, V_V_PERNUM, V_V_LIFELONG, V_V_MAIN_DEFECT, V_V_SGWAY);
         return data;
     }
+
     // 事故统计分析
     @RequestMapping(value = "PM_14_FAULT_ITEM_DATA_STAT", method = RequestMethod.POST)
     @ResponseBody
@@ -2992,9 +3006,10 @@ public class Dx_fileController {
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_14_FAULT_ITEM_DATA_STAT(V_V_ORGCODE,V_V_DEPTCODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_EQUCHILD_CODE,V_V_FAULT_TYPE,V_V_FAULT_YY,V_STAR_DATE,V_END_DATE);
+        Map data = dx_fileService.PM_14_FAULT_ITEM_DATA_STAT(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_EQUCHILD_CODE, V_V_FAULT_TYPE, V_V_FAULT_YY, V_STAR_DATE, V_END_DATE);
         return data;
     }
+
     // 事故、故障月-设备类型统计
     @RequestMapping(value = "PM_14_FAULT_ITEM_STAT_NUM", method = RequestMethod.POST)
     @ResponseBody
@@ -3014,8 +3029,8 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception {
-        Map data = dx_fileService.PM_14_FAULT_ITEM_STAT_NUM(V_V_ORGCODE,V_V_DEPTCODE,V_V_PERSONCODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_EQUCHILD_CODE,V_V_FAULT_TYPE,V_V_FAULT_YY,V_V_YEAR,V_V_MONTH);
+    ) throws Exception {
+        Map data = dx_fileService.PM_14_FAULT_ITEM_STAT_NUM(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERSONCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_EQUCHILD_CODE, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_YEAR, V_V_MONTH);
         return data;
     }
 
@@ -3056,8 +3071,8 @@ public class Dx_fileController {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_UPDATE(V_GUID,V_V_YEAR,V_V_MONTH,V_ORGCODE,V_ORGNAME,V_DEPTCODE,V_DEPTNAME,
-                V_EQUTYPE,V_EQUCODE,V_ZYCODE,V_ZYMANE,V_CONTENT,V_TGDATE,V_JGDATE,V_HOUR,V_BZ,V_INPERCODE);
+        Map data = dx_fileService.PM_PLAN_YEAR_UPDATE(V_GUID, V_V_YEAR, V_V_MONTH, V_ORGCODE, V_ORGNAME, V_DEPTCODE, V_DEPTNAME,
+                V_EQUTYPE, V_EQUCODE, V_ZYCODE, V_ZYMANE, V_CONTENT, V_TGDATE, V_JGDATE, V_HOUR, V_BZ, V_INPERCODE);
         return data;
     }
 
@@ -3077,6 +3092,7 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_PLAN_YEAR_SEL_FX(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY, V_SDATE, V_EDATE);
         return data;
     }
+
     //年计划大修查询
     @RequestMapping(value = "PRO_PM_03_PLAN_PROJECT_BYFX", method = RequestMethod.POST)
     @ResponseBody
@@ -3105,17 +3121,18 @@ public class Dx_fileController {
         Map data = dx_fileService.YEAR_TO_PROGUID_FX_INSERT(V_YEARGUID, V_PROGUID, V_INPERCODE);
         return data;
     }
+
     // 年计划分解创建guid
     @RequestMapping(value = "PM_PLAN_YEAR_GET_FJGUID", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_GET_FJGUID(
-            @RequestParam(value="V_GUID") String V_GUID,
-            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
-            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
-            @RequestParam(value="V_UPGUID") String V_UPGUID,
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
+            @RequestParam(value = "V_UPGUID") String V_UPGUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_GET_FJGUID(V_GUID,V_INPERCODE,V_INPERNAME,V_UPGUID);
+        Map data = dx_fileService.PM_PLAN_YEAR_GET_FJGUID(V_GUID, V_INPERCODE, V_INPERNAME, V_UPGUID);
         return data;
     }
 // 年计划fJ添加和修改
@@ -3123,53 +3140,54 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_PLAN_YEAR_INSERT_FJ", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_INSERT_FJ(
-            @RequestParam(value="V_GUID") String V_GUID,
-            @RequestParam(value="V_ORGCODE") String V_ORGCODE,
-            @RequestParam(value="V_ORGNAME") String V_ORGNAME,
-            @RequestParam(value="V_DEPTCODE") String V_DEPTCODE,
-            @RequestParam(value="V_DEPTNAME") String V_DEPTNAME,
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value = "V_ORGNAME") String V_ORGNAME,
+            @RequestParam(value = "V_DEPTCODE") String V_DEPTCODE,
+            @RequestParam(value = "V_DEPTNAME") String V_DEPTNAME,
 
-            @RequestParam(value="V_ZYCODE") String V_ZYCODE,
-            @RequestParam(value="V_ZYNAME") String V_ZYNAME,
-            @RequestParam(value="V_EQUCODE") String V_EQUCODE,
-            @RequestParam(value="V_EQUTYPE") String V_EQUTYPE,
-            @RequestParam(value="V_REPAIRCONTENT") String V_REPAIRCONTENT,
+            @RequestParam(value = "V_ZYCODE") String V_ZYCODE,
+            @RequestParam(value = "V_ZYNAME") String V_ZYNAME,
+            @RequestParam(value = "V_EQUCODE") String V_EQUCODE,
+            @RequestParam(value = "V_EQUTYPE") String V_EQUTYPE,
+            @RequestParam(value = "V_REPAIRCONTENT") String V_REPAIRCONTENT,
 
-            @RequestParam(value="V_PLANHOUR") String V_PLANHOUR,
-            @RequestParam(value="V_REPAIRTYPE") String V_REPAIRTYPE,
-            @RequestParam(value="V_REPAIRTYPENAME") String V_REPAIRTYPENAME,
-            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
-            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
+            @RequestParam(value = "V_PLANHOUR") String V_PLANHOUR,
+            @RequestParam(value = "V_REPAIRTYPE") String V_REPAIRTYPE,
+            @RequestParam(value = "V_REPAIRTYPENAME") String V_REPAIRTYPENAME,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
 
-            @RequestParam(value="V_REMARK") String V_REMARK,
-            @RequestParam(value="V_V_YEAR") String V_V_YEAR,
-            @RequestParam(value="V_V_MONTH") String V_V_MONTH,
-            @RequestParam(value="V_TGTIME") String V_TGTIME,
-            @RequestParam(value="V_JGTIME") String V_JGTIME,
-            @RequestParam(value="V_WXTYPECODE") String V_WXTYPECODE,
-            @RequestParam(value="V_WXTYPENAME") String V_WXTYPENAME,
-            @RequestParam(value="V_PTYPECODE") String V_PTYPECODE,
-            @RequestParam(value="V_PTYPENAME") String V_PTYPENAME,
-            @RequestParam(value="V_OLD_FLAG") String V_OLD_FLAG,
+            @RequestParam(value = "V_REMARK") String V_REMARK,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_TGTIME") String V_TGTIME,
+            @RequestParam(value = "V_JGTIME") String V_JGTIME,
+            @RequestParam(value = "V_WXTYPECODE") String V_WXTYPECODE,
+            @RequestParam(value = "V_WXTYPENAME") String V_WXTYPENAME,
+            @RequestParam(value = "V_PTYPECODE") String V_PTYPECODE,
+            @RequestParam(value = "V_PTYPENAME") String V_PTYPENAME,
+            @RequestParam(value = "V_OLD_FLAG") String V_OLD_FLAG,
 
-            @RequestParam(value="V_REDEPTCODE") String V_REDEPTCODE,
-            @RequestParam(value="V_REDEPTNAME") String V_REDEPTNAME,
-            @RequestParam(value="V_PLANDAY") String V_PLANDAY,
-            @RequestParam(value="V_FZPERCODE") String V_FZPERCODE,
-            @RequestParam(value="V_FZPERNAME") String V_FZPERNAME,
+            @RequestParam(value = "V_REDEPTCODE") String V_REDEPTCODE,
+            @RequestParam(value = "V_REDEPTNAME") String V_REDEPTNAME,
+            @RequestParam(value = "V_PLANDAY") String V_PLANDAY,
+            @RequestParam(value = "V_FZPERCODE") String V_FZPERCODE,
+            @RequestParam(value = "V_FZPERNAME") String V_FZPERNAME,
 
-            @RequestParam(value="V_SGTYPECODE") String V_SGTYPECODE,
-            @RequestParam(value="V_SGTYPENAME") String V_SGTYPENAME,
-            @RequestParam(value="V_SCLBCODE") String V_SCLBCODE,
-            @RequestParam(value="V_SCLBNAME") String V_SCLBNAME,
-            @RequestParam(value="V_PRO_NAME") String V_PRO_NAME,
+            @RequestParam(value = "V_SGTYPECODE") String V_SGTYPECODE,
+            @RequestParam(value = "V_SGTYPENAME") String V_SGTYPENAME,
+            @RequestParam(value = "V_SCLBCODE") String V_SCLBCODE,
+            @RequestParam(value = "V_SCLBNAME") String V_SCLBNAME,
+            @RequestParam(value = "V_PRO_NAME") String V_PRO_NAME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_INSERT_FJ(V_GUID,V_ORGCODE,V_ORGNAME,V_DEPTCODE,V_DEPTNAME,V_ZYCODE,V_ZYNAME,V_EQUCODE,V_EQUTYPE,V_REPAIRCONTENT,
-                V_PLANHOUR,V_REPAIRTYPE,V_REPAIRTYPENAME,V_INPERCODE,V_INPERNAME,V_REMARK,V_V_YEAR,V_V_MONTH,V_TGTIME,V_JGTIME,V_WXTYPECODE,V_WXTYPENAME,
-                V_PTYPECODE,V_PTYPENAME,V_OLD_FLAG,V_REDEPTCODE,V_REDEPTNAME,V_PLANDAY,V_FZPERCODE,V_FZPERNAME,V_SGTYPECODE,V_SGTYPENAME,V_SCLBCODE,V_SCLBNAME,V_PRO_NAME);
+        Map data = dx_fileService.PM_PLAN_YEAR_INSERT_FJ(V_GUID, V_ORGCODE, V_ORGNAME, V_DEPTCODE, V_DEPTNAME, V_ZYCODE, V_ZYNAME, V_EQUCODE, V_EQUTYPE, V_REPAIRCONTENT,
+                V_PLANHOUR, V_REPAIRTYPE, V_REPAIRTYPENAME, V_INPERCODE, V_INPERNAME, V_REMARK, V_V_YEAR, V_V_MONTH, V_TGTIME, V_JGTIME, V_WXTYPECODE, V_WXTYPENAME,
+                V_PTYPECODE, V_PTYPENAME, V_OLD_FLAG, V_REDEPTCODE, V_REDEPTNAME, V_PLANDAY, V_FZPERCODE, V_FZPERNAME, V_SGTYPECODE, V_SGTYPENAME, V_SCLBCODE, V_SCLBNAME, V_PRO_NAME);
         return data;
     }
+
     //--缺陷处理方式
     @RequestMapping(value = "DEFECT_PROCESS_WAY_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -3179,9 +3197,10 @@ public class Dx_fileController {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws Exception {
-        Map data = dx_fileService.DEFECT_PROCESS_WAY_SEL(V_DEPTCODE,V_PERCODE);
+        Map data = dx_fileService.DEFECT_PROCESS_WAY_SEL(V_DEPTCODE, V_PERCODE);
         return data;
     }
+
     //维修计划无设备查缺陷
     @RequestMapping(value = "PRO_PM_DEFECT_SPECIL_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -3192,6 +3211,7 @@ public class Dx_fileController {
         Map data = dx_fileService.PRO_PM_DEFECT_SPECIL_SEL();
         return data;
     }
+
     // 大修从年计划选择查询
     @RequestMapping(value = "PM_PLAN_YEAR_SEL_BYWX", method = RequestMethod.POST)
     @ResponseBody
@@ -3200,12 +3220,13 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
-            @RequestParam(value="V_V_STATE") String V_V_STATE,
+            @RequestParam(value = "V_V_STATE") String V_V_STATE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_SEL_BYWX(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY,V_V_STATE);
+        Map data = dx_fileService.PM_PLAN_YEAR_SEL_BYWX(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY, V_V_STATE);
         return data;
     }
+
     //大修放行计划查询
     @RequestMapping(value = "PM_03_PLAN_YEAR_FX_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -3214,14 +3235,14 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
-            @RequestParam(value="V_SDATE") String V_SDATE,
-            @RequestParam(value="V_EDATE") String V_EDATE,
-            @RequestParam(value="V_V_SPECIALTY") String V_V_SPECIALTY,
-            @RequestParam(value="V_V_DEFECT") String V_V_DEFECT,
-            @RequestParam(value="V_V_FLAG") String V_V_FLAG,
+            @RequestParam(value = "V_SDATE") String V_SDATE,
+            @RequestParam(value = "V_EDATE") String V_EDATE,
+            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value = "V_V_DEFECT") String V_V_DEFECT,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_03_PLAN_YEAR_FX_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY,V_SDATE,V_EDATE,V_V_SPECIALTY,V_V_DEFECT,V_V_FLAG);
+        Map data = dx_fileService.PM_03_PLAN_YEAR_FX_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY, V_SDATE, V_EDATE, V_V_SPECIALTY, V_V_DEFECT, V_V_FLAG);
         return data;
     }
 
@@ -3234,10 +3255,9 @@ public class Dx_fileController {
             @RequestParam(value = "V_SIGN") String V_SIGN,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.MAINTAIN_RELEASE_POSTBACK_SEL(FX_GUID,V_SIGN);
+        Map data = dx_fileService.MAINTAIN_RELEASE_POSTBACK_SEL(FX_GUID, V_SIGN);
         return data;
     }
-
 
 
     @RequestMapping(value = "OVERHAUL_BY_MAINTAINRELEASE_IN", method = RequestMethod.POST)
@@ -3245,10 +3265,10 @@ public class Dx_fileController {
     public Map OVERHAUL_BY_MAINTAINRELEASE_IN(
             @RequestParam(value = "V_FXGUID") String V_FXGUID,
             @RequestParam(value = "V_YEARGUID") String V_YEARGUID,
-            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.OVERHAUL_BY_MAINTAINRELEASE_IN(V_FXGUID,V_YEARGUID,V_PERCODE);
+        Map data = dx_fileService.OVERHAUL_BY_MAINTAINRELEASE_IN(V_FXGUID, V_YEARGUID, V_PERCODE);
         return data;
     }
 
@@ -3315,7 +3335,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_INPER") String V_INPER,
             @RequestParam(value = "V_DEPT") String V_DEPT,
             @RequestParam(value = "V_ORDCODE") String V_ORDCODE) throws Exception {
-        Map result = dx_fileService.MAINTAIN_BY_DEFECT_INSERT(V_FXGUID,V_DEFECTGUID,V_INPER,V_DEPT,V_ORDCODE);
+        Map result = dx_fileService.MAINTAIN_BY_DEFECT_INSERT(V_FXGUID, V_DEFECTGUID, V_INPER, V_DEPT, V_ORDCODE);
         return result;
     }
 
@@ -3323,13 +3343,13 @@ public class Dx_fileController {
     @RequestMapping(value = "PM_MAINTAIN_GET_FJGUID", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_MAINTAIN_GET_FJGUID(
-            @RequestParam(value="V_GUID") String V_GUID,
-            @RequestParam(value="V_INPERCODE") String V_INPERCODE,
-            @RequestParam(value="V_INPERNAME") String V_INPERNAME,
-            @RequestParam(value="V_UPGUID") String V_UPGUID,
+            @RequestParam(value = "V_GUID") String V_GUID,
+            @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
+            @RequestParam(value = "V_INPERNAME") String V_INPERNAME,
+            @RequestParam(value = "V_UPGUID") String V_UPGUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_MAINTAIN_GET_FJGUID(V_GUID,V_INPERCODE,V_INPERNAME,V_UPGUID);
+        Map data = dx_fileService.PM_MAINTAIN_GET_FJGUID(V_GUID, V_INPERCODE, V_INPERNAME, V_UPGUID);
         return data;
     }
 
@@ -3363,27 +3383,28 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_FZR") String V_V_FZR,
             @RequestParam(value = "V_STARTDATE") String V_STARTDATE,
             @RequestParam(value = "V_ENDDATE") String V_ENDDATE,
-            @RequestParam(value = "IN_PERCODE") String IN_PERCODE ,
+            @RequestParam(value = "IN_PERCODE") String IN_PERCODE,
             @RequestParam(value = "PROJECT_GUID") String PROJECT_GUID,
             @RequestParam(value = "V_UPGUID") String V_UPGUID,
             @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
 
-        Map result = dx_fileService.MAINTAIN_RELEASE_POSTBACK_IN(V_V_YEAR, V_V_MONTH, V_V_ORGCODE,V_V_DEPTCODE,PROJECTCODE,
-                PROJECTNAME,WBSCODE,WBSNAME,V_V_CONTENT,V_V_MONEY,REPAIR_DEPTCODE,REPAIR_DEPTNAME,V_V_FZR,V_STARTDATE,
-                V_ENDDATE,IN_PERCODE,PROJECT_GUID,V_UPGUID,V_V_GUID);
+        Map result = dx_fileService.MAINTAIN_RELEASE_POSTBACK_IN(V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_DEPTCODE, PROJECTCODE,
+                PROJECTNAME, WBSCODE, WBSNAME, V_V_CONTENT, V_V_MONEY, REPAIR_DEPTCODE, REPAIR_DEPTNAME, V_V_FZR, V_STARTDATE,
+                V_ENDDATE, IN_PERCODE, PROJECT_GUID, V_UPGUID, V_V_GUID);
         return result;
     }
+
     //放行sap作业区
     @RequestMapping(value = "PRO_BASE_DEPT_SAP_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_BASE_DEPT_SAP_SEL(
-            @RequestParam(value="V_V_PERSONCODE") String V_V_PERSONCODE,
-            @RequestParam(value="V_V_DEPTCODE") String V_V_DEPTCODE,
-            @RequestParam(value="V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
-            @RequestParam(value="V_V_DEPTTYPE") String V_V_DEPTTYPE,
+            @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+            @RequestParam(value = "V_V_DEPTTYPE") String V_V_DEPTTYPE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_BASE_DEPT_SAP_SEL(V_V_PERSONCODE,V_V_DEPTCODE,V_V_DEPTCODENEXT,V_V_DEPTTYPE);
+        Map data = dx_fileService.PRO_BASE_DEPT_SAP_SEL(V_V_PERSONCODE, V_V_DEPTCODE, V_V_DEPTCODENEXT, V_V_DEPTTYPE);
         return data;
     }
 
@@ -3409,7 +3430,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_PERCODE, V_V_PERNAME,V_FX_GUID);
+        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_PERCODE, V_V_PERNAME, V_FX_GUID);
         return data;
     }
 
@@ -3424,12 +3445,13 @@ public class Dx_fileController {
             @RequestParam(value = "V_INORG") String V_INORG,
             @RequestParam(value = "V_DEF_SOLVE") String V_DEF_SOLVE,
             @RequestParam(value = "V_BJ_STUFF") String V_BJ_STUFF,
-            @RequestParam(value = "V_EQUCODE") String  V_EQUCODE,
+            @RequestParam(value = "V_EQUCODE") String V_EQUCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_IN(V_PROGUID,V_DEFECTGUID,V_INPERCODE,V_INDEPT,V_INORG,V_DEF_SOLVE,V_BJ_STUFF,V_EQUCODE);
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_IN(V_PROGUID, V_DEFECTGUID, V_INPERCODE, V_INDEPT, V_INORG, V_DEF_SOLVE, V_BJ_STUFF, V_EQUCODE);
         return data;
     }
+
     //维修计划缺陷解决方案表删除
     @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_EQU_DEL", method = RequestMethod.POST)
     @ResponseBody
@@ -3438,9 +3460,10 @@ public class Dx_fileController {
             @RequestParam(value = "V_PROGUID") String V_PROGUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_EQU_DEL(V_DEFGUID,V_PROGUID);
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_EQU_DEL(V_DEFGUID, V_PROGUID);
         return data;
     }
+
     //无设备--维修计划缺陷解决方案表删除
     @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_UNEQU_DEL", method = RequestMethod.POST)
     @ResponseBody
@@ -3449,7 +3472,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_PROGUID") String V_PROGUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_UNEQU_DEL(V_DEFGUID,V_PROGUID);
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_UNEQU_DEL(V_DEFGUID, V_PROGUID);
         return data;
     }
 
@@ -3462,7 +3485,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_PROGUID") String V_PROGUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_DEFECT_LOG_BY_PRO(V_PERCODE,V_PERNAME,V_PROGUID);
+        Map data = dx_fileService.PM_DEFECT_LOG_BY_PRO(V_PERCODE, V_PERNAME, V_PROGUID);
         return data;
     }
 
@@ -3497,7 +3520,7 @@ public class Dx_fileController {
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_IN(V_GUID,V_PERCODE,V_DEPTCODE,V_ORG,V_PASS_STAT,V_DEFECTGUID,V_DEF_TYPE,V_DEF_LIST,V_DEF_DATE,V_BJ,V_SOLVE);
+        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_IN(V_GUID, V_PERCODE, V_DEPTCODE, V_ORG, V_PASS_STAT, V_DEFECTGUID, V_DEF_TYPE, V_DEF_LIST, V_DEF_DATE, V_BJ, V_SOLVE);
         return data;
     }
 
@@ -3518,6 +3541,7 @@ public class Dx_fileController {
         result.put("success", true);
         return result;
     }
+
     //维修计划待办查找
     @RequestMapping(value = "/PRO_PM_03_PLAN_PROJECT_GET", method = RequestMethod.POST)
     @ResponseBody
@@ -3554,11 +3578,11 @@ public class Dx_fileController {
     @ResponseBody
     public Map PM_DEFECT_LOG_FROMPRO_NEW_SEL(
             @RequestParam(value = "V_PROGUID") String V_PROGUID,
-            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_NEW_SEL(V_PROGUID,V_DEFECTGUID);
+        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_NEW_SEL(V_PROGUID, V_DEFECTGUID);
         return data;
     }
 
@@ -3573,24 +3597,25 @@ public class Dx_fileController {
         Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_LCJS(V_PROGUID);
         return data;
     }
+
     //维修计划关联缺陷日志
-    @RequestMapping(value="PROJECT_BY_DEFECT_LOG_IN",method =RequestMethod.POST)
+    @RequestMapping(value = "PROJECT_BY_DEFECT_LOG_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map PROJECT_BY_DEFECT_LOG_IN(
-        @RequestParam(value = "V_PROGUID") String V_PROGUID,
-        @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
-        @RequestParam(value = "V_PERCODE") String V_PERCODE,
-        @RequestParam(value = "V_DEPT") String V_DEPT,
-        @RequestParam(value = "V_ORG") String V_ORG,
-        @RequestParam(value = "V_STATE") String V_STATE,
-        HttpServletRequest request,
-        HttpServletResponse response) throws Exception {
-            Map data = dx_fileService.PROJECT_BY_DEFECT_LOG_IN(V_PROGUID,V_DEFECTGUID,V_PERCODE,V_DEPT,V_ORG,V_STATE);
-            return data;
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_DEPT") String V_DEPT,
+            @RequestParam(value = "V_ORG") String V_ORG,
+            @RequestParam(value = "V_STATE") String V_STATE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PROJECT_BY_DEFECT_LOG_IN(V_PROGUID, V_DEFECTGUID, V_PERCODE, V_DEPT, V_ORG, V_STATE);
+        return data;
     }
 
     //工单物料日志明细
-    @RequestMapping(value="PM_WORKORDER_SPARE_LOG_IN",method =RequestMethod.POST)
+    @RequestMapping(value = "PM_WORKORDER_SPARE_LOG_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_WORKORDER_SPARE_LOG_IN(
             @RequestParam(value = "ID") String ID,
@@ -3625,14 +3650,14 @@ public class Dx_fileController {
             @RequestParam(value = "INORG") String INORG,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_WORKORDER_SPARE_LOG_IN(ID,ORDERGUID,FETCHORDERGUID,ACTIVITY,MATERIALCODE,MATERIALNAME,
-                SPEC,UNIT,I_F_UNITPRICE,I_I_PLANAMOUNT,I_F_PLANMONEY,I_I_ACTUALAMOUNT,I_F_ACTUALMONEY,I_V_TYPE,I_V_MEMO,I_V_SUBTYPE,
-                I_V_STATUS,I_I_ABANDONEDAMOUNT,I_I_RECLAIMEDAMOUNT,I_I_FIXEDAMOUNT,I_V_ID,KC_ID,MAT_STATE,INPERCODE,INDEPT,INORG);
+        Map data = dx_fileService.PM_WORKORDER_SPARE_LOG_IN(ID, ORDERGUID, FETCHORDERGUID, ACTIVITY, MATERIALCODE, MATERIALNAME,
+                SPEC, UNIT, I_F_UNITPRICE, I_I_PLANAMOUNT, I_F_PLANMONEY, I_I_ACTUALAMOUNT, I_F_ACTUALMONEY, I_V_TYPE, I_V_MEMO, I_V_SUBTYPE,
+                I_V_STATUS, I_I_ABANDONEDAMOUNT, I_I_RECLAIMEDAMOUNT, I_I_FIXEDAMOUNT, I_V_ID, KC_ID, MAT_STATE, INPERCODE, INDEPT, INORG);
         return data;
     }
 
     //工单，删除物料写入日志
-    @RequestMapping(value="PM_WORKORDER_SPARE_SEL_INLOG",method =RequestMethod.POST)
+    @RequestMapping(value = "PM_WORKORDER_SPARE_SEL_INLOG", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_WORKORDER_SPARE_SEL_INLOG(
             @RequestParam(value = "V_I_ID") String V_I_ID,
@@ -3641,12 +3666,12 @@ public class Dx_fileController {
             @RequestParam(value = "V_ORG") String V_ORG,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_WORKORDER_SPARE_SEL_INLOG(V_I_ID,V_INPERCODE,V_INDEPT,V_ORG);
+        Map data = dx_fileService.PM_WORKORDER_SPARE_SEL_INLOG(V_I_ID, V_INPERCODE, V_INDEPT, V_ORG);
         return data;
     }
 
     //工单查找第一步审批人
-    @RequestMapping(value="PM_ACTIVITI_STEP_LOG_SEL",method =RequestMethod.POST)
+    @RequestMapping(value = "PM_ACTIVITI_STEP_LOG_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_ACTIVITI_STEP_LOG_SEL(
             @RequestParam(value = "V_GUID") String V_GUID,
@@ -3654,12 +3679,12 @@ public class Dx_fileController {
             @RequestParam(value = "V_BEFORE_STEP") String V_BEFORE_STEP,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_ACTIVITI_STEP_LOG_SEL(V_GUID,V_PRO_GUID,V_BEFORE_STEP);
+        Map data = dx_fileService.PM_ACTIVITI_STEP_LOG_SEL(V_GUID, V_PRO_GUID, V_BEFORE_STEP);
         return data;
     }
 
     //设备编码查找设备类型
-    @RequestMapping(value="PRO_SAP_EQU_P_SEL_TYPEC",method =RequestMethod.POST)
+    @RequestMapping(value = "PRO_SAP_EQU_P_SEL_TYPEC", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_SAP_EQU_P_SEL_TYPEC(
             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
@@ -3670,41 +3695,43 @@ public class Dx_fileController {
     }
 
     //工单物料改变写入
-    @RequestMapping(value="PRO_WORKORDER_MAT_CHANGE_SIGN_IN",method =RequestMethod.POST)
+    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_SIGN_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WORKORDER_MAT_CHANGE_SIGN_IN(
             @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
             @RequestParam(value = "V_SIGN") String V_SIGN,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_IN(V_WORKGUID,V_SIGN);
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_IN(V_WORKGUID, V_SIGN);
         return data;
     }
+
     //工单物料是否改变查询
-    @RequestMapping(value="PRO_WORKORDER_MAT_CHANGE_SIGN_SEL",method =RequestMethod.POST)
+    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_SIGN_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(
             @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
             @RequestParam(value = "V_SIGN") String V_SIGN,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(V_WORKGUID,V_SIGN);
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(V_WORKGUID, V_SIGN);
         return data;
     }
+
     //工单物料状态修改
-    @RequestMapping(value="PRO_WORKORDER_MAT_CHANGE_SIGN_UPD",method =RequestMethod.POST)
+    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_SIGN_UPD", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(
             @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
             @RequestParam(value = "V_SIGN") String V_SIGN,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(V_WORKGUID,V_SIGN);
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(V_WORKGUID, V_SIGN);
         return data;
     }
 
     //工单生成新的 缺陷，原数据生成
-    @RequestMapping(value="PRO_PM_DEFECT_AUTO_NEW_IN",method =RequestMethod.POST)
+    @RequestMapping(value = "PRO_PM_DEFECT_AUTO_NEW_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_DEFECT_AUTO_NEW_IN(
             @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
@@ -3712,7 +3739,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_PERNAME") String V_PERNAME,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_PM_DEFECT_AUTO_NEW_IN(V_DEFECTGUID,V_PERCODE,V_PERNAME);
+        Map data = dx_fileService.PRO_PM_DEFECT_AUTO_NEW_IN(V_DEFECTGUID, V_PERCODE, V_PERNAME);
         return data;
     }
 
@@ -3724,74 +3751,75 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
-            @RequestParam(value="V_SDATE") String V_SDATE,
-            @RequestParam(value="V_EDATE") String V_EDATE,
-            @RequestParam(value="V_V_SPECIALTY") String V_V_SPECIALTY,
-            @RequestParam(value="V_V_DEFECT") String V_V_DEFECT,
-            @RequestParam(value="V_V_FLAG") String V_V_FLAG,
+            @RequestParam(value = "V_SDATE") String V_SDATE,
+            @RequestParam(value = "V_EDATE") String V_EDATE,
+            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value = "V_V_DEFECT") String V_V_DEFECT,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.MAINTAIN_RELEASE_BY_DEFECT_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY,V_SDATE,V_EDATE,V_V_SPECIALTY,V_V_DEFECT,V_V_FLAG);
+        Map data = dx_fileService.MAINTAIN_RELEASE_BY_DEFECT_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY, V_SDATE, V_EDATE, V_V_SPECIALTY, V_V_DEFECT, V_V_FLAG);
         return data;
     }
 
     //查询已关联放行计划的缺陷
-    @RequestMapping(value="DEFECT_BY_MAINTAINPLAN_SEL",method=RequestMethod.POST)
-        @ResponseBody
-        public Map DEFECT_BY_MAINTAINPLAN_SEL(
-                @RequestParam(value="V_PROGUID") String V_PROGUID,
-                @RequestParam(value="V_PERCODE") String V_PERCODE,
-                @RequestParam(value="V_DEPTCODE") String V_DEPTCODE,
-                @RequestParam(value="V_DATE") String V_DATE,
-        HttpServletRequest request,
-        HttpServletResponse response
-                )throws Exception{
-        Map data=dx_fileService.DEFECT_BY_MAINTAINPLAN_SEL(V_PROGUID,V_PERCODE,V_DEPTCODE,V_DATE);
+    @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map DEFECT_BY_MAINTAINPLAN_SEL(
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_DEPTCODE") String V_DEPTCODE,
+            @RequestParam(value = "V_DATE") String V_DATE,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws Exception {
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_SEL(V_PROGUID, V_PERCODE, V_DEPTCODE, V_DATE);
         return data;
     }
 
     //维修计划审批完成且未上报查询
-    @RequestMapping(value="PRO_PROPLAN_SP_FINISH_SELECT",method=RequestMethod.POST)
+    @RequestMapping(value = "PRO_PROPLAN_SP_FINISH_SELECT", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PROPLAN_SP_FINISH_SELECT(
-            @RequestParam(value="V_SBSIGN") String V_SBSIGN,
-            @RequestParam(value="V_SCODE") String V_SCODE,
-            @RequestParam(value="V_PERCODE") String V_PERCODE,
-            @RequestParam(value="V_ORGCODE") String V_ORGCODE,
+            @RequestParam(value = "V_SBSIGN") String V_SBSIGN,
+            @RequestParam(value = "V_SCODE") String V_SCODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_ORGCODE") String V_ORGCODE,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.PRO_PROPLAN_SP_FINISH_SELECT(V_SBSIGN,V_SCODE,V_PERCODE,V_ORGCODE);
+    ) throws Exception {
+        Map data = dx_fileService.PRO_PROPLAN_SP_FINISH_SELECT(V_SBSIGN, V_SCODE, V_PERCODE, V_ORGCODE);
         return data;
     }
 
     //维修计划查找缺陷
-    @RequestMapping(value="PM_DEFECT_BY_PROPASS_SEL",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_DEFECT_BY_PROPASS_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_DEFECT_BY_PROPASS_SEL(
-            @RequestParam(value="V_V_PROGUID") String V_V_PROGUID,
+            @RequestParam(value = "V_V_PROGUID") String V_V_PROGUID,
 
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.PM_DEFECT_BY_PROPASS_SEL(V_V_PROGUID);
+    ) throws Exception {
+        Map data = dx_fileService.PM_DEFECT_BY_PROPASS_SEL(V_V_PROGUID);
         return data;
     }
 
     //缺陷跟踪明细写入
-    @RequestMapping(value="PRO_PM_07_DEFECT_LOG_SET",method=RequestMethod.POST)
+    @RequestMapping(value = "PRO_PM_07_DEFECT_LOG_SET", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_PM_07_DEFECT_LOG_SET(
-            @RequestParam(value="V_V_GUID") String V_V_GUID,
-            @RequestParam(value="V_V_LOGREMARK") String V_V_LOGREMARK,
-            @RequestParam(value="V_V_FINISHCODE") String V_V_FINISHCODE,
-            @RequestParam(value="V_V_KEY") String V_V_KEY,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_LOGREMARK") String V_V_LOGREMARK,
+            @RequestParam(value = "V_V_FINISHCODE") String V_V_FINISHCODE,
+            @RequestParam(value = "V_V_KEY") String V_V_KEY,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.PRO_PM_07_DEFECT_LOG_SET(V_V_GUID,V_V_LOGREMARK,V_V_FINISHCODE,V_V_KEY);
+    ) throws Exception {
+        Map data = dx_fileService.PRO_PM_07_DEFECT_LOG_SET(V_V_GUID, V_V_LOGREMARK, V_V_FINISHCODE, V_V_KEY);
         return data;
     }
+
     //放行关联缺陷导出
     @RequestMapping(value = "MAINTAIN_DEFECT_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -3800,22 +3828,22 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
-            @RequestParam(value="V_SDATE") String V_SDATE,
-            @RequestParam(value="V_EDATE") String V_EDATE,
-            @RequestParam(value="V_V_SPECIALTY") String V_V_SPECIALTY,
-            @RequestParam(value="V_V_DEFECT") String V_V_DEFECT,
-            @RequestParam(value="V_V_FLAG") String V_V_FLAG,
+            @RequestParam(value = "V_SDATE") String V_SDATE,
+            @RequestParam(value = "V_EDATE") String V_EDATE,
+            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value = "V_V_DEFECT") String V_V_DEFECT,
+            @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
             HttpServletRequest request,
             HttpServletResponse response) throws SQLException {
 
         String V_ORGCODE = V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE;
         String V_ZY = V_V_ZY.equals("0") ? "%" : V_V_ZY;
-        String  V_DEPTCODE =V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
-        String V_SPECIALTY =V_V_SPECIALTY.equals("0") ? "%" : V_V_SPECIALTY;
+        String V_DEPTCODE = V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE;
+        String V_SPECIALTY = V_V_SPECIALTY.equals("0") ? "%" : V_V_SPECIALTY;
         String V_FLAG = V_V_FLAG.equals("0") ? "%" : V_V_FLAG;
         List list = new ArrayList();
 
-        Map<String, Object> data = dx_fileService.MAINTAIN_RELEASE_BY_DEFECT_SEL(V_V_ORGCODE, V_DEPTCODE, V_V_PERCODE,V_ZY,V_SDATE,V_EDATE,V_SPECIALTY,V_V_DEFECT,V_FLAG);
+        Map<String, Object> data = dx_fileService.MAINTAIN_RELEASE_BY_DEFECT_SEL(V_V_ORGCODE, V_DEPTCODE, V_V_PERCODE, V_ZY, V_SDATE, V_EDATE, V_SPECIALTY, V_V_DEFECT, V_FLAG);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
@@ -3875,13 +3903,13 @@ public class Dx_fileController {
 
                 row.createCell((short) 0).setCellValue(i + 1);
 //                row.createCell((short) 1).setCellValue(map.get("V_GUID").equals(" ")  ? "" : map.get("V_GUID").toString());
-                row.createCell((short) 1).setCellValue(map.get("DEFNUM").equals(" ")? "" :map.get("DEFNUM").toString());
+                row.createCell((short) 1).setCellValue(map.get("DEFNUM").equals(" ") ? "" : map.get("DEFNUM").toString());
                 row.createCell((short) 2).setCellValue(map.get("V_PROJECT_CODE").equals(" ") ? "" : map.get("V_PROJECT_CODE").toString());
-                row.createCell((short) 3).setCellValue(map.get("V_PROJECT_NAME").equals(" ")  ? "" : map.get("V_PROJECT_NAME").toString());
-                row.createCell((short) 4).setCellValue(map.get("V_CONTENT").equals(" ")  ? "" : map.get("V_CONTENT").toString());
-                row.createCell((short) 5).setCellValue(map.get("V_DEPTNAME").equals(" ")  ? "" : map.get("V_DEPTNAME").toString());
-                row.createCell((short) 6).setCellValue(map.get("V_DATE_B").equals(" ")  ? "" : map.get("V_DATE_B").toString().substring(0,10));
-                row.createCell((short) 7).setCellValue(map.get("V_MONEY").equals(" ")  ? "" : map.get("V_MONEY").toString());
+                row.createCell((short) 3).setCellValue(map.get("V_PROJECT_NAME").equals(" ") ? "" : map.get("V_PROJECT_NAME").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_CONTENT").equals(" ") ? "" : map.get("V_CONTENT").toString());
+                row.createCell((short) 5).setCellValue(map.get("V_DEPTNAME").equals(" ") ? "" : map.get("V_DEPTNAME").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_DATE_B").equals(" ") ? "" : map.get("V_DATE_B").toString().substring(0, 10));
+                row.createCell((short) 7).setCellValue(map.get("V_MONEY").equals(" ") ? "" : map.get("V_MONEY").toString());
                 row.createCell((short) 8).setCellValue(map.get("QXCONTEXT").equals(" ") ? "" : map.get("QXCONTEXT").toString());
 
             }
@@ -3901,101 +3929,102 @@ public class Dx_fileController {
     }
 
     //月计划选择年计划查询
-    @RequestMapping(value="PM_PLAN_YEAR_BASIC_TO_MON_SEL",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_PLAN_YEAR_BASIC_TO_MON_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_BASIC_TO_MON_SEL(
-            @RequestParam(value="V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.PM_PLAN_YEAR_BASIC_TO_MON_SEL(V_V_YEAR);
+    ) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_BASIC_TO_MON_SEL(V_V_YEAR);
         return data;
     }
 
     //月计划填报-查询年计划单条数据
-    @RequestMapping(value="PM_PLAN_YEAR_BASIC_TOMON_GETONE",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_PLAN_YEAR_BASIC_TOMON_GETONE", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_PLAN_YEAR_BASIC_TOMON_GETONE(
-            @RequestParam(value="V_YEAEGUID") String V_YEAEGUID,
+            @RequestParam(value = "V_YEAEGUID") String V_YEAEGUID,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.PM_PLAN_YEAR_BASIC_TOMON_GETONE(V_YEAEGUID);
+    ) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_BASIC_TOMON_GETONE(V_YEAEGUID);
         return data;
     }
 
     //月计划创建guid
-    @RequestMapping(value="PM_03_PLAN_MONTH_CREATE",method=RequestMethod.POST)
+    @RequestMapping(value = "PM_03_PLAN_MONTH_CREATE", method = RequestMethod.POST)
     @ResponseBody
     public Map PM_03_PLAN_MONTH_CREATE(
-            @RequestParam(value="V_PERCODE") String V_PERCODE,
-            @RequestParam(value="V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.PM_03_PLAN_MONTH_CREATE(V_PERCODE,V_V_ORGCODE);
+    ) throws Exception {
+        Map data = dx_fileService.PM_03_PLAN_MONTH_CREATE(V_PERCODE, V_V_ORGCODE);
         return data;
     }
 
     //月计划缺陷关联写入
-    @RequestMapping(value="YEAR_TO_MONTH_IN",method=RequestMethod.POST)
+    @RequestMapping(value = "YEAR_TO_MONTH_IN", method = RequestMethod.POST)
     @ResponseBody
     public Map YEAR_TO_MONTH_IN(
-            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
-            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
-            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
-            @RequestParam(value="V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.YEAR_TO_MONTH_IN(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PERCODE);
+    ) throws Exception {
+        Map data = dx_fileService.YEAR_TO_MONTH_IN(V_YEARGUID, V_MONTHGUID, V_DEFECTGUID, V_PERCODE);
         return data;
     }
 
     //年计划无缺陷时月计划缺陷内容查找
-    @RequestMapping(value="YEAR_TO_MONTH_SEL",method=RequestMethod.POST)
+    @RequestMapping(value = "YEAR_TO_MONTH_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map YEAR_TO_MONTH_SEL(
-            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
-            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
-            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
-            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
+            @RequestParam(value = "V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_PER_CODE") String V_PER_CODE,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.YEAR_TO_MONTH_SEL(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+    ) throws Exception {
+        Map data = dx_fileService.YEAR_TO_MONTH_SEL(V_YEARGUID, V_MONTHGUID, V_DEFECTGUID, V_PER_CODE);
         return data;
     }
 
     //月计划保存-无缺陷年计划修改状态
-    @RequestMapping(value="YEAR_TO_MONTH_UPDATE",method=RequestMethod.POST)
+    @RequestMapping(value = "YEAR_TO_MONTH_UPDATE", method = RequestMethod.POST)
     @ResponseBody
     public Map YEAR_TO_MONTH_UPDATE(
-            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
-            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
-            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
-            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
+            @RequestParam(value = "V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_PER_CODE") String V_PER_CODE,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.YEAR_TO_MONTH_UPDATE(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+    ) throws Exception {
+        Map data = dx_fileService.YEAR_TO_MONTH_UPDATE(V_YEARGUID, V_MONTHGUID, V_DEFECTGUID, V_PER_CODE);
         return data;
     }
 
     //月计划删除-无缺陷年计划修改状态
-    @RequestMapping(value="YEAR_TO_MONTH_DEL",method=RequestMethod.POST)
+    @RequestMapping(value = "YEAR_TO_MONTH_DEL", method = RequestMethod.POST)
     @ResponseBody
     public Map YEAR_TO_MONTH_DEL(
-            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
-            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
-            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
-            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
+            @RequestParam(value = "V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_PER_CODE") String V_PER_CODE,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.YEAR_TO_MONTH_DEL(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+    ) throws Exception {
+        Map data = dx_fileService.YEAR_TO_MONTH_DEL(V_YEARGUID, V_MONTHGUID, V_DEFECTGUID, V_PER_CODE);
         return data;
     }
+
     //维修计划审批完成-上报页查询
     @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_SP_FINISH", method = RequestMethod.POST)
     @ResponseBody
@@ -4022,18 +4051,19 @@ public class Dx_fileController {
         Map result = dx_fileService.MAINTAIN_TO_WORKORDER_NUM_SEL(V_WORKGUID);
         return result;
     }
+
     //月计划修改页-日志记录
-    @RequestMapping(value="YEAR_TO_MONTH_UPDATE2",method=RequestMethod.POST)
+    @RequestMapping(value = "YEAR_TO_MONTH_UPDATE2", method = RequestMethod.POST)
     @ResponseBody
     public Map YEAR_TO_MONTH_UPDATE2(
-            @RequestParam(value="V_YEARGUID") String V_YEARGUID,
-            @RequestParam(value="V_MONTHGUID") String V_MONTHGUID,
-            @RequestParam(value="V_DEFECTGUID") String V_DEFECTGUID,
-            @RequestParam(value="V_PER_CODE") String V_PER_CODE,
+            @RequestParam(value = "V_YEARGUID") String V_YEARGUID,
+            @RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_PER_CODE") String V_PER_CODE,
             HttpServletRequest request,
             HttpServletResponse response
-    )throws Exception{
-        Map data=dx_fileService.YEAR_TO_MONTH_UPDATE2(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+    ) throws Exception {
+        Map data = dx_fileService.YEAR_TO_MONTH_UPDATE2(V_YEARGUID, V_MONTHGUID, V_DEFECTGUID, V_PER_CODE);
         return data;
     }
 
@@ -4047,7 +4077,7 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_PLAN_YEAR_SEL_SPFINISH(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,V_V_ZY);
+        Map data = dx_fileService.PM_PLAN_YEAR_SEL_SPFINISH(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY);
         return data;
     }
 
@@ -4088,17 +4118,18 @@ public class Dx_fileController {
 
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_PLIN(V_WXGUID,V_PERCODE,V_DEPTCODE,V_ORG,V_PASS_STAT,V_DEFECTGUID,V_DEF_TYPE,V_DEF_LIST,V_DEF_DATE,V_BJ,V_SOLVE);
+        Map data = dx_fileService.PM_DEFECT_LOG_FROMPRO_PLIN(V_WXGUID, V_PERCODE, V_DEPTCODE, V_ORG, V_PASS_STAT, V_DEFECTGUID, V_DEF_TYPE, V_DEF_LIST, V_DEF_DATE, V_BJ, V_SOLVE);
         return data;
     }
-//    查找周计划填报页未处理缺陷
+
+    //    查找周计划填报页未处理缺陷
     @RequestMapping(value = "PRO_PM_07_DEFECT_SELECT", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_07_DEFECT_SELECT(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
-                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                         HttpServletRequest request)
+                                                       @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                       HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = dx_fileService.PRO_PM_07_DEFECT_SELECT(V_V_STATECODE, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
@@ -4108,13 +4139,13 @@ public class Dx_fileController {
     @RequestMapping(value = "PRO_PM_07_DEFECT_SEL_RE_MONTH", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_07_DEFECT_SEL_RE_MONTH(@RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
-            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                       @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
-                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                       HttpServletRequest request)
+                                                             @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                             @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                             HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = dx_fileService.PRO_PM_07_DEFECT_SEL_RE_MONTH(V_MONTHGUID,V_V_STATECODE, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
+        Map<String, Object> result = dx_fileService.PRO_PM_07_DEFECT_SEL_RE_MONTH(V_MONTHGUID, V_V_STATECODE, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
 
@@ -4127,32 +4158,32 @@ public class Dx_fileController {
                                                       @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
                                                       HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = dx_fileService.PM_03_PLAN_WEEK_CREATE(V_V_MONTHGUID,V_V_DEFECTGUID,V_V_ORGCODE,V_V_PERCODE);
+        Map<String, Object> result = dx_fileService.PM_03_PLAN_WEEK_CREATE(V_V_MONTHGUID, V_V_DEFECTGUID, V_V_ORGCODE, V_V_PERCODE);
         return result;
     }
 
-//    周计划缺陷关联写入
-@RequestMapping(value = "PM_DEFECTTOWEEK_IN", method = RequestMethod.POST)
-@ResponseBody
-public Map<String, Object> PM_DEFECTTOWEEK_IN(@RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
-                                              @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
+    //    周计划缺陷关联写入
+    @RequestMapping(value = "PM_DEFECTTOWEEK_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWEEK_IN(@RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+                                                  @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
                                                   @RequestParam(value = "V_N_DEFECTGUID") String V_N_DEFECTGUID,
                                                   @RequestParam(value = "V_INPER") String V_INPER,
-                                              @RequestParam(value = "V_DEFECTSTATE") String V_DEFECTSTATE,
+                                                  @RequestParam(value = "V_DEFECTSTATE") String V_DEFECTSTATE,
                                                   HttpServletRequest request)
-        throws SQLException {
-    Map<String, Object> result = dx_fileService.PM_DEFECTTOWEEK_IN(V_V_MONTHGUID,V_V_WEEKGUID,V_N_DEFECTGUID,V_INPER,V_DEFECTSTATE);
-    return result;
-}
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_DEFECTTOWEEK_IN(V_V_MONTHGUID, V_V_WEEKGUID, V_N_DEFECTGUID, V_INPER, V_DEFECTSTATE);
+        return result;
+    }
 
     //查询月计划填入周计划数据
     @RequestMapping(value = "PM_03_PLAN_WEEK_GETONE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_03_PLAN_WEEK_GETONE(@RequestParam(value = "MONGUID") String MONGUID,
-                                                  @RequestParam(value = "WEEKGUID") String WEEKGUID,
-                                                  HttpServletRequest request)
+                                                      @RequestParam(value = "WEEKGUID") String WEEKGUID,
+                                                      HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = dx_fileService.PM_03_PLAN_WEEK_GETONE(MONGUID,WEEKGUID);
+        Map<String, Object> result = dx_fileService.PM_03_PLAN_WEEK_GETONE(MONGUID, WEEKGUID);
         return result;
     }
 
@@ -4160,41 +4191,51 @@ public Map<String, Object> PM_DEFECTTOWEEK_IN(@RequestParam(value = "V_V_MONTHGU
     @RequestMapping(value = "PM_DEFECT_RE_WEEK_UPDATE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_DEFECT_RE_WEEK_UPDATE(@RequestParam(value = "WEEK_GUID") String WEEK_GUID,
-                                                      @RequestParam(value = "MONTH_GUID") String MONTH_GUID,
+                                                        @RequestParam(value = "MONTH_GUID") String MONTH_GUID,
                                                         @RequestParam(value = "V_INPERCODE") String V_INPERCODE,
-                                                      HttpServletRequest request)
+                                                        HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = dx_fileService.PM_DEFECT_RE_WEEK_UPDATE(WEEK_GUID,MONTH_GUID,V_INPERCODE);
+        Map<String, Object> result = dx_fileService.PM_DEFECT_RE_WEEK_UPDATE(WEEK_GUID, MONTH_GUID, V_INPERCODE);
         return result;
     }
 
-//    周计划添加页面月计划查询
-@RequestMapping(value = "/PM_03_PLAN_SEL_TOWEEK", method = RequestMethod.POST)
-@ResponseBody
-public Map<String, Object> PM_03_PLAN_SEL_TOWEEK(
-        @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
-        @RequestParam(value = "V_V_QUARTER") String V_V_QUARTER,
-        @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
-        @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
-        @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+    //    周计划添加页面月计划查询
+    @RequestMapping(value = "/PM_03_PLAN_SEL_TOWEEK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_SEL_TOWEEK(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_QUARTER") String V_V_QUARTER,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_PLANTYPE") String V_V_PLANTYPE,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
 
-        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-        @RequestParam(value = "V_V_ZY") String V_V_ZY,
-        @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
 
-        @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
-        @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-        @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-        HttpServletRequest request,
-        HttpServletResponse response) throws Exception {
-    Map result = dx_fileService.PM_03_PLAN_SEL_TOWEEK(V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_PLANTYPE, V_V_ORGCODE,
-            V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT,
-            V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
-    return result;
-}
+            @RequestParam(value = "V_V_PEROCDE") String V_V_PEROCDE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_PLAN_SEL_TOWEEK(V_V_YEAR, V_V_QUARTER, V_V_MONTH, V_V_PLANTYPE, V_V_ORGCODE,
+                V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_ZY, V_V_CONTENT,
+                V_V_PEROCDE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
 
+    //缺陷system标识查询
+    @RequestMapping(value = "PM_DEFECT_SYSTEM_SIGN_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECT_SYSTEM_SIGN_SEL(
+            @RequestParam(value = "DEFECTGUID") String DEFECTGUID,
+            HttpServletRequest req,
+            HttpServletResponse resp) throws Exception {
+        Map result = dx_fileService.PM_DEFECT_SYSTEM_SIGN_SEL(DEFECTGUID);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
