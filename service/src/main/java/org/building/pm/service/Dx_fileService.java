@@ -5081,4 +5081,30 @@ public class Dx_fileService {
         logger.info("end PM_DEFECT_SYSTEM_SIGN_SEL");
         return result;
     }
+    //工单验收费用添加
+    public Map PRO_PM_WORKORDER_MONEY_UPDATE(String V_WORKORDER,String V_V_MONEY)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;CallableStatement cstmt=null;
+        try{
+            logger.info("begin PRO_PM_WORKORDER_MONEY_UPDATE");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PRO_PM_WORKORDER_MONEY_UPDATE(:V_WORKORDER,:V_V_MONEY,:RET)}");
+            cstmt.setString("V_WORKORDER",V_WORKORDER);
+            cstmt.setString("V_V_MONEY",V_V_MONEY);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",cstmt.getString("RET"));
+        }
+        catch(SQLException ex){
+            logger.error(ex);
+        }
+        finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PRO_PM_WORKORDER_MONEY_UPDATE");
+        return result;
+    }
 }

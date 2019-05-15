@@ -4226,6 +4226,8 @@ public class Dx_fileController {
         return result;
     }
 
+
+
     //缺陷system标识查询
     @RequestMapping(value = "PM_DEFECT_SYSTEM_SIGN_SEL", method = RequestMethod.POST)
     @ResponseBody
@@ -4234,6 +4236,18 @@ public class Dx_fileController {
             HttpServletRequest req,
             HttpServletResponse resp) throws Exception {
         Map result = dx_fileService.PM_DEFECT_SYSTEM_SIGN_SEL(DEFECTGUID);
+        return result;
+    }
+
+    //工单验收费用添加
+    @RequestMapping(value = "PRO_PM_WORKORDER_MONEY_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_MONEY_UPDATE(
+            @RequestParam(value = "V_WORKORDER") String V_WORKORDER,
+            @RequestParam(value = "V_V_MONEY") String V_V_MONEY,
+            HttpServletRequest req,
+            HttpServletResponse resp) throws Exception {
+        Map result = dx_fileService.PRO_PM_WORKORDER_MONEY_UPDATE(V_WORKORDER,V_V_MONEY);
         return result;
     }
 
