@@ -57,6 +57,9 @@ public class WxjhController {
     @Value("#{configProperties['ProjectUrl']}")
     private String ProjectUrl;
 
+    @Value("#{configProperties['PMPERPOW.returnUrl']}")
+    private String PmperpowUrl;
+
 
     /*
      * 检修完成结果下传
@@ -204,7 +207,7 @@ public class WxjhController {
         String port=""+v_port;
         String v_url=request.getRequestURI();
         try{
-            String path=this.getClass().getClassLoader().getResource("").getPath().toString()+"fwsdl/SI_RYQX_Out_Syn1_PMPERPOW.wsdl";
+            String path=this.getClass().getClassLoader().getResource("").getPath().toString()+"fwsdl/SI_RYQX_Out_Syn1.wsdl";
             Document root=DocumentHelper.createDocument();
             Element WriteDataRequest = root.addElement("Items");
             WriteDataRequest.addElement("ROLECODE").setText(ROLECODE);
@@ -214,6 +217,9 @@ public class WxjhController {
             WriteDataRequest.addElement("V_PORT").setText(port);
             WriteDataRequest.addElement("V_URL").setText(v_url);
             WriteDataRequest.addElement("WsdlUrl").setText(path);
+            WriteDataRequest.addElement("piusername").setText(piusername);
+            WriteDataRequest.addElement("pipassword").setText(pipassword);
+            WriteDataRequest.addElement("Pm0010Url").setText(PmperpowUrl);
 
             Client client = new Client(new URL(serviceUrl+"/pmService?WSDL"));
             System.out.println(root.asXML());
