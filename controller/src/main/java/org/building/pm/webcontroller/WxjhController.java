@@ -60,6 +60,9 @@ public class WxjhController {
     @Value("#{configProperties['PMPERPOW.returnUrl']}")
     private String PmperpowUrl;
 
+    @Value("#{configProperties['pmurl']}")
+    private String pmurl;
+
 
     /*
      * 检修完成结果下传
@@ -205,7 +208,6 @@ public class WxjhController {
         String hostAddress=request.getRemoteAddr();
         int v_port=request.getRemotePort();
         String port=""+v_port;
-        String v_url=request.getRequestURI();
         try{
             String path=this.getClass().getClassLoader().getResource("").getPath().toString()+"fwsdl/SI_RYQX_Out_Syn1.wsdl";
             Document root=DocumentHelper.createDocument();
@@ -215,7 +217,7 @@ public class WxjhController {
             WriteDataRequest.addElement("SYSTEM").setText(infopubusername);
             WriteDataRequest.addElement("V_IP").setText(hostAddress);
             WriteDataRequest.addElement("V_PORT").setText(port);
-            WriteDataRequest.addElement("V_URL").setText(v_url);
+            WriteDataRequest.addElement("V_URL").setText(pmurl);
             WriteDataRequest.addElement("WsdlUrl").setText(path);
             WriteDataRequest.addElement("piusername").setText(piusername);
             WriteDataRequest.addElement("pipassword").setText(pipassword);
