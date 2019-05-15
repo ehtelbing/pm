@@ -505,7 +505,7 @@ function loadPageInfo() {
                 REPAIRPERSON=resp.list[0].V_REPAIRPERSON;
                 $("#V_REPAIRSIGN").html(resp.list[0].V_REPAIRSIGN);
                 $("#V_REPAIRPERSON").html(resp.list[0].V_REPAIRPERSON);
-
+                $("#totalMoney").val(0);
             } else {
             }
         }
@@ -930,6 +930,25 @@ function confirmYS(){
                 dataType: "json",
                 traditional: true,
                 success: function (resp) {
+                    // if(jQuery.isNumeric($("#totalMoney").val())){ //判断数字类型
+                    //工单费用填报
+                    Ext.Ajax.request({
+                        method:'POST',
+                        async:false,
+                        url:AppUrl+'dxfile/' +
+                            '',
+                        params:{
+                            V_WORKORDER:$.url().param("V_ORDERGUID"),
+                            V_V_MONEY:$("#totalMoney").val()
+                        },
+                        success:function(response){
+                            var resp=Ext.decode(response.responseText);
+                            if(resp.RET=='SUCCESS'){
+
+                            }
+                        }
+                    });
+                    // }
                     Ext.Ajax.request({//查找所需修改状态的周计划及缺陷
                         method: 'POST',
                         async: false,
@@ -1583,6 +1602,25 @@ function QRYS() {
                     dataType: "json",
                     traditional: true,
                     success: function (resp) {
+                        // if(jQuery.isNumeric($("#totalMoney").val())){ //判断数字类型
+                            //工单费用填报
+                            // Ext.Ajax.request({
+                            //     method:'POST',
+                            //     async:false,
+                            //     url:AppUrl+'dxfile/PRO_PM_WORKORDER_MONEY_UPDATE',
+                            //     params:{
+                            //         V_WORKORDER:$.url().param("V_ORDERGUID"),
+                            //         V_V_MONEY:$("#totalMoney").val()
+                            //     },
+                            //     success:function(response){
+                            //         var resp=Ext.decode(response.responseText);
+                            //         if(resp.RET=='SUCCESS'){
+                            //
+                            //         }
+                            //     }
+                            // });
+                        // }
+
                         // $.ajax({
                         //         url: APP + 'mm/SetMat',
                         //         type: 'post',
