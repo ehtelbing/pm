@@ -98,7 +98,7 @@ public class WxjhController {
             WriteDataRequest.addElement("pipassword").setText(pipassword);
             WriteDataRequest.addElement("Pm0014Url").setText(Pm0014Url);
 
-            Client client = new Client(new URL(serviceUrl+"/pmService?WSDL"));
+            Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
             System.out.println(root.asXML());
             Object[] results = client.invoke("PM0014", new Object[]{root.asXML()});
 
@@ -143,7 +143,7 @@ public class WxjhController {
             WriteDataRequest.addElement("pipassword").setText(pipassword);
             WriteDataRequest.addElement("Pm0011Url").setText(Pm0011Url);
 
-            Client client = new Client(new URL(serviceUrl+"/pmService?WSDL"));
+            Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
             System.out.println(root.asXML());
             Object[] results = client.invoke("PM0011", new Object[]{root.asXML()});
 
@@ -165,7 +165,7 @@ public class WxjhController {
      * */
     @RequestMapping(value = "SI_DJQXCLJG_Out_Syn_PM0010", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> SI_DJQXCLJG_Out_Syn_PM0010(@RequestParam(value = "V_V_DEFECTGUID") String  V_V_DEFECTGUID) throws SQLException {
+    public Map<String, Object> SI_DJQXCLJG_Out_Syn_PM0010(@RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID) throws SQLException {
 
         Map<String, Object> mapEle = new HashMap<String, Object>();
         try {
@@ -178,7 +178,7 @@ public class WxjhController {
             WriteDataRequest.addElement("pipassword").setText(pipassword);
             WriteDataRequest.addElement("Pm0010Url").setText(Pm0010Url);
 
-            Client client = new Client(new URL(serviceUrl+"/pmService?WSDL"));
+            Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
             System.out.println(root.asXML());
             Object[] results = client.invoke("PM0010", new Object[]{root.asXML()});
 
@@ -195,22 +195,20 @@ public class WxjhController {
 
     }
 
-//PMPERPOW
-    @RequestMapping(value="SI_RYQX_Out_Syn1_PMPERPOW",method=RequestMethod.POST)
+    //PMPERPOW
+    @RequestMapping(value = "SI_RYQX_Out_Syn1_PMPERPOW", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> SI_RYQX_Out_Syn1_PMPERPOW(@RequestParam(value="ROLECODE") String ROLECODE,
-                                                        @RequestParam(value="ORG") String ORG,
-                                                        HttpServletResponse response,
-                                                        HttpServletRequest request)
+    public Map<String, Object> SI_RYQX_Out_Syn1_PMPERPOW(@RequestParam(value = "ROLECODE") String ROLECODE,
+                                                         @RequestParam(value = "ORG") String ORG,
+                                                         HttpServletResponse response,
+                                                         HttpServletRequest request)
             throws SQLException, UnknownHostException {
-        Map<String,Object> mapEle=new HashMap<>();
-//        InetAddress address = InetAddress.getLocalHost();
-        String hostAddress=request.getRemoteAddr();
-        int v_port=request.getRemotePort();
-        String port=""+v_port;
-        try{
-            String path=this.getClass().getClassLoader().getResource("").getPath().toString()+"fwsdl/SI_RYQX_Out_Syn1.wsdl";
-            Document root=DocumentHelper.createDocument();
+        Map<String, Object> mapEle = new HashMap<>();
+        String hostAddress = request.getServerName();
+        String port = "" + request.getServerPort();
+        try {
+            String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_RYQX_Out_Syn1.wsdl";
+            Document root = DocumentHelper.createDocument();
             Element WriteDataRequest = root.addElement("Items");
             WriteDataRequest.addElement("ROLECODE").setText(ROLECODE);
             WriteDataRequest.addElement("ORG").setText(ORG);
@@ -221,9 +219,9 @@ public class WxjhController {
             WriteDataRequest.addElement("WsdlUrl").setText(path);
             WriteDataRequest.addElement("piusername").setText(piusername);
             WriteDataRequest.addElement("pipassword").setText(pipassword);
-            WriteDataRequest.addElement("Pm0010Url").setText(PmperpowUrl);
+            WriteDataRequest.addElement("PmperpowUrl").setText(PmperpowUrl);
 
-            Client client = new Client(new URL(serviceUrl+"/pmService?WSDL"));
+            Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
             System.out.println(root.asXML());
             Object[] results = client.invoke("PMPERPOW", new Object[]{root.asXML()});
 
@@ -241,9 +239,8 @@ public class WxjhController {
 
 
     /*
-    *人员对应菜单权限
-    * */
-
+     *人员对应菜单权限
+     * */
 
 
     private Map<String, Object> getAllElements(List<Element> childElements, Map<String, Object> mapEle) {
@@ -255,7 +252,6 @@ public class WxjhController {
         }
         return mapEle;
     }
-
 
 
 }
