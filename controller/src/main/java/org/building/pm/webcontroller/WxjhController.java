@@ -33,8 +33,8 @@ public class WxjhController {
     @Value("#{configProperties['DefectPicUrl']}")
     private String DefectPicUrl;
 
-    @Value("#{configProperties['infopub.username']}")
-    private String infopubusername;
+    @Value("#{configProperties['ninfopub.username']}")
+    private String ninfopubusername;
 
     @Value("#{configProperties['piusername']}")
     private String piusername;
@@ -57,8 +57,8 @@ public class WxjhController {
     @Value("#{configProperties['ProjectUrl']}")
     private String ProjectUrl;
 
-    @Value("#{configProperties['PMPERPOW.returnUrl']}")
-    private String PmperpowUrl;
+    @Value("#{configProperties['PR1003.returnUrl']}")
+    private String PR1003;
 
     @Value("#{configProperties['pmurl']}")
     private String pmurl;
@@ -196,9 +196,9 @@ public class WxjhController {
     }
 
     //PMPERPOW
-    @RequestMapping(value = "SI_RYQX_Out_Syn1_PMPERPOW", method = RequestMethod.POST)
+    @RequestMapping(value = "SI_RYQX_Out_Syn_PR1003", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> SI_RYQX_Out_Syn1_PMPERPOW(@RequestParam(value = "ROLECODE") String ROLECODE,
+    public Map<String, Object> SI_RYQX_Out_Syn_PR1003(@RequestParam(value = "ROLECODE") String ROLECODE,
                                                          @RequestParam(value = "ORG") String ORG,
                                                          HttpServletResponse response,
                                                          HttpServletRequest request)
@@ -207,23 +207,23 @@ public class WxjhController {
         String hostAddress = request.getServerName();
         String port = "" + request.getServerPort();
         try {
-            String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_RYQX_Out_Syn1.wsdl";
+            String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_RYQX_Out_Syn_PR1003.wsdl";
             Document root = DocumentHelper.createDocument();
             Element WriteDataRequest = root.addElement("Items");
             WriteDataRequest.addElement("ROLECODE").setText(ROLECODE);
             WriteDataRequest.addElement("ORG").setText(ORG);
-            WriteDataRequest.addElement("SYSTEM").setText(infopubusername);
+            WriteDataRequest.addElement("SYSTEM").setText(ninfopubusername);
             WriteDataRequest.addElement("V_IP").setText(hostAddress);
             WriteDataRequest.addElement("V_PORT").setText(port);
             WriteDataRequest.addElement("V_URL").setText(pmurl);
             WriteDataRequest.addElement("WsdlUrl").setText(path);
             WriteDataRequest.addElement("piusername").setText(piusername);
             WriteDataRequest.addElement("pipassword").setText(pipassword);
-            WriteDataRequest.addElement("PmperpowUrl").setText(PmperpowUrl);
+            WriteDataRequest.addElement("PR1003Url").setText(PR1003);
 
             Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
             System.out.println(root.asXML());
-            Object[] results = client.invoke("PMPERPOW", new Object[]{root.asXML()});
+            Object[] results = client.invoke("PR1003", new Object[]{root.asXML()});
 
             Document doc = DocumentHelper.parseText(results[0].toString());
             Element rootElt = doc.getRootElement();
