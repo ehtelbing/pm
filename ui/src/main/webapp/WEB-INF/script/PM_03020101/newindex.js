@@ -834,17 +834,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
     defaults: {labelAlign: 'right'},
     collapsible: false,
     tbar: [
+
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
-        {
-            xtype: 'button',
-            text: '检修模型',
-            margin: '0 0 5 0',
-            // iconCls:'Tablegear',
-            iconCls:'buttonmenu',
-            icon:dxImgPath + '/jxmx.png',
-            // icon: imgpath + '/search.png'
-            handler:btnAdd_jxmx
-        },
         {
             xtype: 'button',
             text: '添加设备',
@@ -855,6 +846,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon:dxImgPath + '/tjsb.png',
             handler:btnAdd_jdsb
         },
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
         {
             xtype: 'button',
             text: '添加缺陷',
@@ -868,22 +860,45 @@ var northPanel = Ext.create('Ext.form.Panel', {
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
         {
             xtype: 'button',
+            text: '计划选择',
+            iconCls: 'buy-button',
+            // icon:dxImgPath + '/tjsb.png',
+            icon: imgpath + '/add.png',
+            listeners: {click: OnButtonPlanAddClicked}
+        },
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
+        {
+            xtype: 'button',
+            text: '附件',
+            margin: '5 10 5 0',
+            iconCls:'Tablegear',
+            iconCls: 'buy-button',
+            icon:dxImgPath + '/fj.png',
+            handler:btnAdd_file
+        },{xtype:'label',id:'label11',width:55,text:'附件数量'},{xtype:'label',
+            id:'fjsl',
+            width:30,
+            margin: '5 0 5 0'},
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
+        {
+            xtype: 'button',
+            text: '检修模型',
+            margin: '0 0 5 0',
+            // iconCls:'Tablegear',
+            iconCls:'buttonmenu',
+            icon:dxImgPath + '/jxmx.png',
+            // icon: imgpath + '/search.png'
+            handler:btnAdd_jxmx
+        },
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
+        {
+            xtype: 'button',
             text: '临时保存',
             margin: '0 0 5 0',
             // iconCls:'Tablesave',
             iconCls: 'buy-button',
             icon:dxImgPath + '/lsbc.png',
             handler:btnSaveProject
-        },
-
-        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
-        {
-            xtype: 'button',
-            text: '计划选择',
-            iconCls: 'buy-button',
-            // icon:dxImgPath + '/tjsb.png',
-            icon: imgpath + '/add.png',
-            listeners: {click: OnButtonPlanAddClicked}
         },
         /*{
             xtype: 'button',
@@ -900,18 +915,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 0',
             iconCls:'Report',
             handler:btnFlowDisAgree
-        },*/{
-            xtype: 'button',
-            text: '附件',
-            margin: '5 10 5 0',
-            iconCls:'Tablegear',
-            iconCls: 'buy-button',
-            icon:dxImgPath + '/fj.png',
-            handler:btnAdd_file
-        },{xtype:'label',id:'label11',width:55,text:'附件数量'},{xtype:'label',
-            id:'fjsl',
-            width:30,
-            margin: '5 0 5 0'},
+        },*/
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
         {
             xtype: 'button',
@@ -922,6 +926,21 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon:dxImgPath + '/wlmx.png',
             handler:btnFlowStart
         }
+        ,
+        {
+            xtype : 'combo',
+            id:'fzPer',
+            store:fzPerStore,
+            editable : false,
+            queryMode : 'local',
+            fieldLabel : '负责人',
+            displayField: 'V_PERSONNAME',
+            valueField: 'V_PERSONCODE',
+            margin:'5 5 5 10',
+            labelWidth :60,
+            width:170,
+            labelAlign : 'right'
+        }
     ]
 });
 /*项目信息*/
@@ -931,7 +950,9 @@ var LTpanel = Ext.create('Ext.panel.Panel', {
     frame: false,
     border:false,
     layout: 'column',
-
+    // height:110,
+    height:'10%',
+    autoScroll:true,
     defaults: {labelAlign: 'right'},
     // bodyStyle:"background:#f2f2f2",
     collapsible: false,
@@ -1107,6 +1128,7 @@ var Toolpanel = Ext.create('Ext.grid.Panel', {
     // collapsible: false,
     store:cgridStore,
     border:false,
+    autoScroll:true,
     // store: Ext.data.StoreManager.lookup('simpsonsStore'),
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
@@ -1117,7 +1139,8 @@ var Toolpanel = Ext.create('Ext.grid.Panel', {
         {text: '固定资产',dataIndex:'gdzc',width:160,renderer:gdzcdetail},
         {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
     ],
-    height: 150,
+    height: 250,
+    // height:'35%',
     width: '100%',
     tbar: [
         '相关设备',
@@ -1175,7 +1198,7 @@ var ToolpanelB  = Ext.create('Ext.form.Panel', {
     height:85,
     width:'100%',
     margin:'0',
-
+    autoScroll:true,
     // bodyStyle:'background-color:#f2f2f2',
     baseCls:'textareaStyle',
     defaults: {labelAlign: 'right'},
@@ -1191,7 +1214,8 @@ var ToolpanelB  = Ext.create('Ext.form.Panel', {
             margin:'5 5 5 20',
             labelWidth :60,
             width:1000,
-            height:70
+            height:'10%'
+            // height:70
         }
     ]
 });
@@ -1201,9 +1225,11 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
     frame: false,
     border: false,
     layout: 'column',
-    height:70,
+    // height:70,
     width:'100%',
+    height:'10%',
     margin:'0',
+    autoScroll:true,
     // bodyStyle:'background:#f2f2f2 !important;',
     defaults: {labelAlign: 'right'},
     collapsible: false,
@@ -1245,7 +1271,8 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             labelWidth :60,
             width:240,
             labelAlign : 'right'
-        },
+        }
+        /*,
         {
             xtype : 'combo',
             id:'fzPer',
@@ -1259,7 +1286,8 @@ var ToolpanelC  = Ext.create('Ext.form.Panel', {
             labelWidth :60,
             width:170,
             labelAlign : 'right'
-        },{
+        }*/
+        ,{
             xtype: 'numberfield',
             id:'bjf',
             fieldLabel: '备件费',
@@ -1371,7 +1399,8 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
         edit: OnChangeEleData
     }
 })],
-    height:240, //'100%',//132,
+    // height:250, //'100%',//132,
+    height:'35%',
     width: '100%',
     tbar: [
         '缺陷明细',
@@ -1430,10 +1459,12 @@ var ToolpanelD = Ext.create('Ext.panel.Panel', {
 });
 /*左上布局*/
 var Leftdivtop = Ext.create('Ext.panel.Panel', {
+    id:'Leftdivtop',
     region:'north',
     border:false,
     frame: false,
     height:'100%',
+    autoScroll:true,
     renderTo: Ext.getBody(),
     items: [LTpanel,Toolpanel,ToolpanelB,ToolpanelC,ToolpanelD]
     // [LTpanel,Toolpanel,gcxmwlsgt,ToolpanelB,ToolpanelC,ToolpanelD]
@@ -2844,46 +2875,46 @@ Ext.onReady(function () {
         'background-color':'rgb(45,60,137)',
         "height":"35px"
     };
-    if(Ext.get('toolbar-1030')!=null){
-        Ext.get('toolbar-1030').setStyle(tbarStyle);
-        Ext.get('tbtext-1031').setStyle('color','white');
-    }else if(Ext.get('toolbar-1031')!=null){
-        Ext.get('toolbar-1031').setStyle(tbarStyle);
-        Ext.get('tbtext-1032').setStyle('color','white');
-    }else if(Ext.get('toolbar-1032')!=null){
-        Ext.get('toolbar-1032').setStyle(tbarStyle);
-        Ext.get('tbtext-1033').setStyle('color','white');
-    }else if(Ext.get('toolbar-1033')!=null){
-        Ext.get('toolbar-1033').setStyle(tbarStyle);
-        Ext.get('tbtext-1034').setStyle('color','white');
+    if(Ext.get('toolbar-1034')!=null){
+        Ext.get('toolbar-1034').setStyle(tbarStyle);
+        Ext.get('tbtext-1035').setStyle('color','white');
+    }else if(Ext.get('toolbar-1035')!=null){
+        Ext.get('toolbar-1035').setStyle(tbarStyle);
+        Ext.get('tbtext-1036').setStyle('color','white');
+    }else if(Ext.get('toolbar-1036')!=null){
+        Ext.get('toolbar-1036').setStyle(tbarStyle);
+        Ext.get('tbtext-1037').setStyle('color','white');
+    }else if(Ext.get('toolbar-1037')!=null){
+        Ext.get('toolbar-1037').setStyle(tbarStyle);
+        Ext.get('tbtext-1038').setStyle('color','white');
     }
 
-    if(Ext.get('toolbar-1050')!=null){
-        Ext.get('toolbar-1050').setStyle(tbarStyle);
-        Ext.get('tbtext-1051').setStyle('color','white');
-    }else if(Ext.get('toolbar-1051')!=null){
-        Ext.get('toolbar-1051').setStyle(tbarStyle);
-        Ext.get('tbtext-1052').setStyle('color','white');
-    }else if(Ext.get('toolbar-1051')!=null){
-        Ext.get('toolbar-1051').setStyle(tbarStyle);
-        Ext.get('tbtext-1052').setStyle('color','white');
-    }else if(Ext.get('toolbar-1052')!=null){
-        Ext.get('toolbar-1052').setStyle(tbarStyle);
-        Ext.get('tbtext-1053').setStyle('color','white');
+    if(Ext.get('toolbar-1054')!=null){
+        Ext.get('toolbar-1054').setStyle(tbarStyle);
+        Ext.get('tbtext-1055').setStyle('color','white');
+    }else if(Ext.get('toolbar-1055')!=null){
+        Ext.get('toolbar-1055').setStyle(tbarStyle);
+        Ext.get('tbtext-1056').setStyle('color','white');
+    }else if(Ext.get('toolbar-1056')!=null){
+        Ext.get('toolbar-1056').setStyle(tbarStyle);
+        Ext.get('tbtext-1057').setStyle('color','white');
+    }else if(Ext.get('toolbar-1057')!=null){
+        Ext.get('toolbar-1057').setStyle(tbarStyle);
+        Ext.get('tbtext-1058').setStyle('color','white');
     }
 
-    if(Ext.get('toolbar-1066')!=null){
-        Ext.get('toolbar-1066').setStyle(tbarStyle);
-        Ext.get('tbtext-1067').setStyle('color','white');
-    }else if(Ext.get('toolbar-1067')!=null){
-        Ext.get('toolbar-1067').setStyle(tbarStyle);
-        Ext.get('tbtext-1068').setStyle('color','white');
-    }else if(Ext.get('toolbar-1068')!=null){
-        Ext.get('toolbar-1068').setStyle(tbarStyle);
-        Ext.get('tbtext-1069').setStyle('color','white');
-    }else if(Ext.get('toolbar-1069')!=null){
+    if(Ext.get('toolbar-1069')!=null){
         Ext.get('toolbar-1069').setStyle(tbarStyle);
         Ext.get('tbtext-1070').setStyle('color','white');
+    }else if(Ext.get('toolbar-1070')!=null){
+        Ext.get('toolbar-1070').setStyle(tbarStyle);
+        Ext.get('tbtext-1071').setStyle('color','white');
+    }else if(Ext.get('toolbar-1071')!=null){
+        Ext.get('toolbar-1071').setStyle(tbarStyle);
+        Ext.get('tbtext-1072').setStyle('color','white');
+    }else if(Ext.get('toolbar-1072')!=null){
+        Ext.get('toolbar-1072').setStyle(tbarStyle);
+        Ext.get('tbtext-1073').setStyle('color','white');
     }
 
 
@@ -3128,6 +3159,7 @@ function QueryPageLoad(){
     });
 
     QueryCGrid();
+
 }
 //加载专业负责人
 function QueryZyFzr(){

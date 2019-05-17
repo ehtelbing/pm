@@ -539,8 +539,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon: imgpath + '/add.png',
             handler: OnButtonDefectAddClicked
         },
-        {xtype: 'button', text: '手工添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
-            handler: OnButtonPlanAddClicked},
+        // {xtype: 'button', text: '手工添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
+        //     handler: OnButtonPlanAddClicked},
         {xtype: 'button', text: '添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
             handler: OnButtonFromMonth},
         {
@@ -662,6 +662,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+    Ext.getBody().mask();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
@@ -752,6 +753,7 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
         query();
+        Ext.getBody().unmask();
     });
     Ext.data.StoreManager.lookup('zyStore').on('load', function () {
         Ext.data.StoreManager.lookup('zyStore').insert(0, {V_BASENAME: '全部', V_SPECIALTYCODE: '%'});
@@ -762,6 +764,7 @@ Ext.onReady(function () {
         Ext.getCmp("state").select(Ext.data.StoreManager.lookup('stateStore').getAt(0));
 
         Ext.data.StoreManager.lookup('gridStore').load();
+
     });
 
     Ext.getCmp('zks').setValue(getWeekStartDate());

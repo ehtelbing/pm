@@ -21,6 +21,7 @@ var yearStore = Ext.create("Ext.data.Store", {
 
 Ext.onReady(function () {
     Ext.QuickTips.init();
+    Ext.getBody().mask('<p>页面加载中...</p>');
 
     //厂矿计划数据加载
     var ckStore = Ext.create('Ext.data.Store', {
@@ -347,7 +348,10 @@ Ext.onReady(function () {
             // }
         ]
     });
-
+    // var myMask = new Ext.LoadMask({
+    //     msg    : 'Please wait...',
+    //     target : panel
+    // }).show();
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
         region: 'center',
@@ -424,7 +428,9 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('zyStore').on('load',function(){
         Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
         OnButtonQuery();
+        Ext.getBody().unmask();
     });
+    // Ext.getBody().unmask();
 
 
     Ext.getCmp('ck').on('select',function(){
@@ -437,7 +443,7 @@ Ext.onReady(function () {
             }
         });
     });
-
+    // myMask.hide();
     Ext.getCmp('zyq').on('select',function(){
         OnButtonQuery();
         QueryZyFzr();

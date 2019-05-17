@@ -189,7 +189,7 @@ Ext.onReady(function(){
         frame:true,
         region:'north',
         border:false,
-        height:'5%',
+        height:'15%',
         items:[
             {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
             {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
@@ -249,7 +249,8 @@ Ext.onReady(function(){
         height:'35%',
         border:false,
         title:'月计划审批完成查找',
-        items:[mGridPanel]
+        // items:[mGridPanel]
+        items:[toolPanel,mGridPanel]
     });
     //缺陷表格
     var dtoolPanel=Ext.create('Ext.panel.Panel',{
@@ -258,9 +259,10 @@ Ext.onReady(function(){
         region:'north',
         frame:true,
         border:false,
-        height:'5%',
+        height:'15%',
         defaults:{
-            labelAlign:'right'
+            labelAlign:'right',
+            margin:'5 5 5 10'
         },
         items:[
             {
@@ -423,7 +425,7 @@ Ext.onReady(function(){
         id:'mDefPanel',
         layout:'border',
         region:'south',
-        height:'60%',
+        height:'50%',
         frame:true,
         border:false,
         items:[dtoolPanel,dGridPanel]
@@ -433,8 +435,8 @@ Ext.onReady(function(){
     Ext.create('Ext.container.Viewport',{
         id:'main',
         layout:'border',
-        items:[toolPanel,monthPanel,mDefPanel]
-        // items:[monthPanel,mDefPanel]
+        // items:[toolPanel,monthPanel,mDefPanel]
+        items:[monthPanel,mDefPanel]
     });
     loadStore();
     // Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -503,6 +505,7 @@ function defsel(monthGuid){
 function OtherDefselect(){
     selesign=1;
     //月计划关联缺陷查找
+    Ext.data.StoreManager.lookup("sqxzt").load();
     mdefsel();
     Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('gridStore'));
     var  chgrid=Ext.getCmp('dGridPanel');
@@ -573,10 +576,20 @@ function Select(){
                 if (button == "ok") {
                     return false;
                 }
+                else{
+                    newCreatWeek(org);
+                }
 
             }
         });
     }
+    else{
+        newCreatWeek(org);
+    }
+
+}
+
+function newCreatWeek(org){
     Ext.Ajax.request({
         url:AppUrl+'dxfile/PM_03_PLAN_WEEK_CREATE',
         type: 'ajax',
@@ -645,10 +658,9 @@ function Select(){
             });
         }
     }
-
-
 }
 function retClose(){
-    window.opener.query();
     window.close;
+    window.opener.query();
+    this.window.close()
 }

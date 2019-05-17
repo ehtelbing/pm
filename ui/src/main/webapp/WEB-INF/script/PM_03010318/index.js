@@ -1829,6 +1829,7 @@ function OnButtonSaveClick() {
                                     // window.opener.query();
                                     window.opener.retClose();
                                     window.close();
+                                    window.opener.retClose();
                                 }
                             }
                         });

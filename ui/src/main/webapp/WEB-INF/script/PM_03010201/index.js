@@ -636,7 +636,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
-
+   Ext.getBody().mask();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
@@ -729,6 +729,7 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
         query();
+        Ext.getBody().unmask();
     });
     Ext.data.StoreManager.lookup('zyStore').on('load', function () {
         Ext.data.StoreManager.lookup('zyStore').insert(0,{V_SPECIALTYCODE:'%', V_BASENAME:'全部'});
