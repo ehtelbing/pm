@@ -4250,6 +4250,18 @@ public class Dx_fileController {
         Map result = dx_fileService.PRO_PM_WORKORDER_MONEY_UPDATE(V_WORKORDER,V_V_MONEY);
         return result;
     }
+    //维修计划缺陷审批状态表格，缺陷删除
+    @RequestMapping(value = "PM_DEFECT_LOG_FROMPRO_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECT_LOG_FROMPRO_DEL(
+            @RequestParam(value = "V_PROGUID") String V_PROGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            HttpServletRequest req,
+            HttpServletResponse resp) throws Exception {
+        Map result = dx_fileService.PM_DEFECT_LOG_FROMPRO_DEL(V_PROGUID,V_DEFECTGUID);
+        return result;
+    }
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

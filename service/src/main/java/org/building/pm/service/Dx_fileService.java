@@ -5107,4 +5107,30 @@ public class Dx_fileService {
         logger.info("end PRO_PM_WORKORDER_MONEY_UPDATE");
         return result;
     }
+    //维修计划缺陷审批状态表格，缺陷删除
+    public Map PM_DEFECT_LOG_FROMPRO_DEL(String V_PROGUID,String V_DEFECTGUID)throws SQLException{
+        HashMap result=new HashMap();
+        Connection conn=null;CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_DEFECT_LOG_FROMPRO_DEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt=conn.prepareCall("{call PM_DEFECT_LOG_FROMPRO_DEL(:V_PROGUID,:V_DEFECTGUID,:RET)}");
+            cstmt.setString("V_PROGUID",V_PROGUID);
+            cstmt.setString("V_DEFECTGUID",V_DEFECTGUID);
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET",cstmt.getString("RET"));
+        }
+        catch(SQLException ex){
+            logger.error(ex);
+        }
+        finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:"+result);
+        logger.info("end PM_DEFECT_LOG_FROMPRO_DEL");
+        return result;
+    }
 }

@@ -3621,6 +3621,19 @@ function _deleteDefect(DefectGuid){
                         var resp=Ext.decode(response.responseText);
                     }
                 });
+                //删除维修日志审批表格关联
+                Ext.Ajax.request({
+                    url:AppUrl+'dxfile/PM_DEFECT_LOG_FROMPRO_DEL',
+                    method:'POST',
+                    params:{
+                        V_PROGUID:Guid,
+                        V_DEFECTGUID:DefectGuid
+                    },
+                    success:function (response){
+                        var resp=Ext.decode(response.responseText);
+                        if(resp.RET=="SUCCESS"){}
+                    }
+                });
                 //修改缺陷状态
                 Ext.Ajax.request({
                     url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',

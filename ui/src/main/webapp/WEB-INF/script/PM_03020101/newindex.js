@@ -866,7 +866,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon: imgpath + '/add.png',
             listeners: {click: OnButtonPlanAddClicked}
         },
-        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
+        { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8',hidden:true },
         {
             xtype: 'button',
             text: '附件',
@@ -874,11 +874,12 @@ var northPanel = Ext.create('Ext.form.Panel', {
             iconCls:'Tablegear',
             iconCls: 'buy-button',
             icon:dxImgPath + '/fj.png',
-            handler:btnAdd_file
-        },{xtype:'label',id:'label11',width:55,text:'附件数量'},{xtype:'label',
+            handler:btnAdd_file,hidden:true
+        },{xtype:'label',id:'label11',width:55,text:'附件数量',hidden:true },
+        {xtype:'label',
             id:'fjsl',
             width:30,
-            margin: '5 0 5 0'},
+            margin: '5 0 5 0',hidden:true },
         { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'3 8 5 8' },
         {
             xtype: 'button',
@@ -1132,12 +1133,13 @@ var Toolpanel = Ext.create('Ext.grid.Panel', {
     // store: Ext.data.StoreManager.lookup('simpsonsStore'),
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu},
         {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
         {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft},
         {text: '设备检修历史',dataIndex:'V_EQUCODE',width:160,renderer:machistory}, //dataIndex:'cksbjxmx'
-        {text: '固定资产',dataIndex:'gdzc',width:160,renderer:gdzcdetail},
-        {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEqu}
+        {text: '固定资产',dataIndex:'gdzc',width:160,renderer:gdzcdetail}
+
     ],
     height: 250,
     // height:'35%',
@@ -1367,9 +1369,12 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
     columnLines:true,
     border:false,
     store: qxGridStore,
+    // bodyStyle :'overflow-x:scroll;overflow-y:scroll',
     autoScroll:true,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text: '删除',width: 120, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect},
+        {text: '上传附件',width: 120, dataIndex: 'DEFILENUM',align: 'center',renderer:upfilefun},
         {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft,hidden:true},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
@@ -1384,9 +1389,8 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
             editor:{
                 xtype: 'textfield',id: 'bjstuff',labelAlign: 'right',allowBlank:false
             }
-        },
-        {text: '删除',width: 120, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect},
-        {text: '上传附件',width: 120, dataIndex: 'DEFILENUM',align: 'center',renderer:upfilefun}
+        }
+
     ],
     plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
     clicksToEdit: 1,
@@ -1399,8 +1403,8 @@ var TOPGIRDRIGHTTtool = Ext.create('Ext.grid.Panel', {//form
         edit: OnChangeEleData
     }
 })],
-    // height:250, //'100%',//132,
-    height:'35%',
+    height:395, //'100%',//132,
+    // height:'35%',
     width: '100%',
     tbar: [
         '缺陷明细',
@@ -1444,6 +1448,7 @@ var TOPGIRDRIGHT = Ext.create('Ext.panel.Panel', {
     layout: 'vbox',
     defaults: {labelAlign: 'right'},
     collapsible: false,
+    autoScroll:true,
     // items: [TOPGIRDRIGHTTtool,TOPGIRDRIGHTtable]
     items: [TOPGIRDRIGHTTtool]
 });
@@ -1465,8 +1470,10 @@ var Leftdivtop = Ext.create('Ext.panel.Panel', {
     frame: false,
     height:'100%',
     autoScroll:true,
+    bodyStyle :'overflow-x:hidden;overflow-y:scroll',
     renderTo: Ext.getBody(),
-    items: [LTpanel,Toolpanel,ToolpanelB,ToolpanelC,ToolpanelD]
+    // items: [LTpanel,Toolpanel,ToolpanelB,ToolpanelC,ToolpanelD]
+    items: [LTpanel,Toolpanel,ToolpanelB,ToolpanelC,TOPGIRDRIGHTTtool]
     // [LTpanel,Toolpanel,gcxmwlsgt,ToolpanelB,ToolpanelC,ToolpanelD]
 });
 //检修模型
@@ -1508,13 +1515,14 @@ var jxmx2 = Ext.create('Ext.grid.Panel', {
     // border: false,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text: '删除',width: 120, dataIndex: 'V_MODEL_GUID',  align: 'center',renderer:DelModel},
         {text: '模型名称',width: 200, dataIndex: 'V_MODEL_NAME', align: 'center',renderer:atleft},
         {text: '版本号',width: 140, dataIndex: 'V_MODEL_BBH', align: 'center',renderer:atleft},
         {text: '备注',width: 300, dataIndex: 'V_BZ', align: 'center',renderer:atleft},
         {text: '查看明细',renderer:function(value,metaData,record){
                 return '<a href="#" onclick="MXclick(\'' + record.data.V_MODEL_GUID +','+record.data.V_MODEL_NAME+','+record.data.V_MODEL_BBH+'\')">'+'查看详细'+'</a>'
-            }},
-        {text: '删除',width: 120, dataIndex: 'V_MODEL_GUID',  align: 'center',renderer:DelModel}
+            }}
+
     ],
     // height: 300,
     width: '100%',
@@ -1829,10 +1837,11 @@ var yxsbGrid = Ext.create('Ext.grid.Panel', {
     border: true,
     columns: [
         {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+        {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEquTj},
         {text: '设备编码',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft},
         {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
-        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft},
-        {text: '删除',width: 120, dataIndex: 'V_EQUCODE', align: 'center',renderer:DelEquTj}
+        {text: '功能位置',width: 300, dataIndex: 'V_EQUSITENAME', align: 'center',renderer:atleft}
+
     ]
 });
 var btnAdd_jdsb = Ext.create('Ext.window.Window', {
@@ -2875,46 +2884,46 @@ Ext.onReady(function () {
         'background-color':'rgb(45,60,137)',
         "height":"35px"
     };
-    if(Ext.get('toolbar-1034')!=null){
+    if(Ext.get('toolbar-1032')!=null){
+        Ext.get('toolbar-1032').setStyle(tbarStyle);
+        Ext.get('tbtext-1033').setStyle('color','white');
+    }else if(Ext.get('toolbar-1033')!=null){
+        Ext.get('toolbar-1033').setStyle(tbarStyle);
+        Ext.get('tbtext-1034').setStyle('color','white');
+    }else if(Ext.get('toolbar-1034')!=null){
         Ext.get('toolbar-1034').setStyle(tbarStyle);
         Ext.get('tbtext-1035').setStyle('color','white');
     }else if(Ext.get('toolbar-1035')!=null){
         Ext.get('toolbar-1035').setStyle(tbarStyle);
         Ext.get('tbtext-1036').setStyle('color','white');
-    }else if(Ext.get('toolbar-1036')!=null){
-        Ext.get('toolbar-1036').setStyle(tbarStyle);
-        Ext.get('tbtext-1037').setStyle('color','white');
-    }else if(Ext.get('toolbar-1037')!=null){
-        Ext.get('toolbar-1037').setStyle(tbarStyle);
-        Ext.get('tbtext-1038').setStyle('color','white');
     }
 
-    if(Ext.get('toolbar-1054')!=null){
+    if(Ext.get('toolbar-1052')!=null){
+        Ext.get('toolbar-1052').setStyle(tbarStyle);
+        Ext.get('tbtext-1053').setStyle('color','white');
+    }else if(Ext.get('toolbar-1053')!=null){
+        Ext.get('toolbar-1053').setStyle(tbarStyle);
+        Ext.get('tbtext-1054').setStyle('color','white');
+    }else if(Ext.get('toolbar-1054')!=null){
         Ext.get('toolbar-1054').setStyle(tbarStyle);
         Ext.get('tbtext-1055').setStyle('color','white');
     }else if(Ext.get('toolbar-1055')!=null){
         Ext.get('toolbar-1055').setStyle(tbarStyle);
         Ext.get('tbtext-1056').setStyle('color','white');
-    }else if(Ext.get('toolbar-1056')!=null){
-        Ext.get('toolbar-1056').setStyle(tbarStyle);
-        Ext.get('tbtext-1057').setStyle('color','white');
-    }else if(Ext.get('toolbar-1057')!=null){
-        Ext.get('toolbar-1057').setStyle(tbarStyle);
-        Ext.get('tbtext-1058').setStyle('color','white');
     }
 
-    if(Ext.get('toolbar-1069')!=null){
+    if(Ext.get('toolbar-1067')!=null){
+        Ext.get('toolbar-1067').setStyle(tbarStyle);
+        Ext.get('tbtext-1068').setStyle('color','white');
+    }else if(Ext.get('toolbar-1068')!=null){
+        Ext.get('toolbar-1068').setStyle(tbarStyle);
+        Ext.get('tbtext-1069').setStyle('color','white');
+    }else if(Ext.get('toolbar-1069')!=null){
         Ext.get('toolbar-1069').setStyle(tbarStyle);
         Ext.get('tbtext-1070').setStyle('color','white');
     }else if(Ext.get('toolbar-1070')!=null){
         Ext.get('toolbar-1070').setStyle(tbarStyle);
         Ext.get('tbtext-1071').setStyle('color','white');
-    }else if(Ext.get('toolbar-1071')!=null){
-        Ext.get('toolbar-1071').setStyle(tbarStyle);
-        Ext.get('tbtext-1072').setStyle('color','white');
-    }else if(Ext.get('toolbar-1072')!=null){
-        Ext.get('toolbar-1072').setStyle(tbarStyle);
-        Ext.get('tbtext-1073').setStyle('color','white');
     }
 
 
@@ -3672,6 +3681,19 @@ function _deleteDefect(DefectGuid){
                     },
                     success:function (response){
                         var resp=Ext.decode(response.responseText);
+                    }
+                });
+                //删除维修日志审批表格关联
+                Ext.Ajax.request({
+                    url:AppUrl+'dxfile/PM_DEFECT_LOG_FROMPRO_DEL',
+                    method:'POST',
+                    params:{
+                        V_PROGUID:Guid,
+                        V_DEFECTGUID:DefectGuid
+                    },
+                    success:function (response){
+                        var resp=Ext.decode(response.responseText);
+                        if(resp.RET=="SUCCESS"){}
                     }
                 });
             }else{
