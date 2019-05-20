@@ -327,7 +327,8 @@ Ext.onReady(function () {
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
             'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
-            'V_FAULTID','V_PROCESSINSTANCEID'],
+            'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
+            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
         proxy: {
             url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_SEL_NEW',
             type: 'ajax',
@@ -427,6 +428,12 @@ Ext.onReady(function () {
             // width: 90,
             icon: imgpath + '/accordion_collapse.png',
             handler: OnButtonOver
+        },{
+            xtype: 'button',
+            text: '撤销完结',
+            // width: 90,
+            icon: imgpath + '/accordion_expand.png',
+            handler: OnButtonNoOver
         }
         /*,{
             xtype: 'button',
@@ -637,6 +644,11 @@ Ext.onReady(function () {
             dataIndex: 'V_FINDTIME',
             align: 'center',
             width: 100
+        },{
+            text: '排除时间',
+            dataIndex: 'V_ENDTIME',
+            align: 'center',
+            width: 100
         }, {
             text: '设备类型',
             dataIndex: 'V_EQUTYPENAME',
@@ -654,6 +666,11 @@ Ext.onReady(function () {
             dataIndex: 'V_EQUNAME',
             align: 'center',
             width: 100
+        },{
+            text: '规格型号',
+            dataIndex: 'V_GGXH',
+            align: 'center',
+            width: 100
         }, {
             text: '作业区',
             dataIndex: 'V_DEPTNAME',
@@ -664,63 +681,94 @@ Ext.onReady(function () {
             dataIndex: 'V_EQUCHILD_NAME',
             align: 'center',
             width: 180
-        }, {
-            text: '故障类型',
+        },
+            {
+            text: '事故类别',
             dataIndex: 'V_TYPENAME',
             align: 'center',
             width: 100
-        }, {
-            text: '故障原因',
+        },
+            {
+            text: '事故原因',
             dataIndex: 'V_FAULT_YY',
             align: 'center',
             width: 100
-        }, {
+        },
+            /*{
             text: '故障现象',
             dataIndex: 'V_FAULT_XX',
             align: 'center',
             width: 100
-        }, {
+        }, */
+            {
             text: '故障等级',
             dataIndex: 'V_FAULT_LEVEL',
             align: 'center',
             width: 100
-        }, {
-            text: '解决办法',
-            dataIndex: 'V_JJBF',
-            align: 'center',
-            width: 100
-        }, {
-            text: '故障名称',
-            dataIndex: 'V_FAULT_NAME',
-            align: 'center',
-            width: 100
-        }, {
-            text: '故障部位',
-            dataIndex: 'V_FAULT_PART',
-            align: 'center',
-            width: 100
-        }, {
-            text: '处理过程',
-            dataIndex: 'V_FAULT_CLGC',
-            align: 'center',
-            width: 100
-        }, {
-            text: '损失',
-            dataIndex: 'V_FAULT_SS',
-            align: 'center',
-            width: 100
-        }, {
-            text: '性质',
-            dataIndex: 'V_FAULT_XZ',
-            align: 'center',
-            width: 100
-        }, {
-            text: '整改措施',
+        },{
+                text: '停机时间',
+                dataIndex: 'V_STOPTIME',
+                align: 'center',
+                width: 100
+            },{
+                text: '修理时间',
+                dataIndex: 'V_REPAIRTIME',
+                align: 'center',
+                width: 100
+            },{
+                text: '上报日期',
+                dataIndex: 'V_REPROTTIME',
+                align: 'center',
+                width: 100
+            },{
+                text: '事故报告人',
+                dataIndex: 'V_REPORTER',
+                align: 'center',
+                width: 100
+            },{
+                text: '事故直接责任人',
+                dataIndex: 'V_FZR',
+                align: 'center',
+                width: 100
+            },
+            /* {
+             text: '解决办法',
+             dataIndex: 'V_JJBF',
+             align: 'center',
+             width: 100
+         }, {
+             text: '故障名称',
+             dataIndex: 'V_FAULT_NAME',
+             align: 'center',
+             width: 100
+         }, {
+             text: '故障部位',
+             dataIndex: 'V_FAULT_PART',
+             align: 'center',
+             width: 100
+         },
+             {
+             text: '处理过程',
+             dataIndex: 'V_FAULT_CLGC',
+             align: 'center',
+             width: 100
+         }, {
+             text: '损失',
+             dataIndex: 'V_FAULT_SS',
+             align: 'center',
+             width: 100
+         }, {
+             text: '性质',
+             dataIndex: 'V_FAULT_XZ',
+             align: 'center',
+             width: 100
+         },*/ {
+            text: '采取防范措施',
             dataIndex: 'V_FAULT_ZGCS',
             align: 'center',
             width: 100
         }, {
-            text: '对相关负责人的处理',
+            text: '责任者处理',
             dataIndex: 'V_FZR_CL',
             align: 'center',
             width: 100
@@ -1713,7 +1761,7 @@ function _preUpdateFault() {
     // //         }
     // //     }
     // // });
-    //
+    //PRO_SAP_EQU_VIEW
     // filequery2(records[0].get('V_GUID'));
     // _selectsubequName2();
     // Ext.getCmp('SUB_V_EQUNAME2').setValue(records[0].get('V_EQUCHILD_CODE'));
@@ -2300,7 +2348,7 @@ function OnButtonOver() {
                 var i_err = 0;
                 var info ='';
                 for (var i = 0; i < records.length; i++) {
-                    if(records[i].get('V_STATE')=='0'||records[i].get('V_STATE')=='2'){
+                    if(records[i].get('V_STATE')=='2'){//状态为已下票records[i].get('V_STATE')=='0'||
 
                     Ext.Ajax.request({
                         url: AppUrl + 'cxy/PRO_FAULT_EQUIP_OVER',
@@ -2350,6 +2398,88 @@ function OnButtonOver() {
                         Ext.MessageBox.show({
                             title: '提示',
                             msg: '所选事故不能完结',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    }
+                }
+            }
+        }
+    });
+}
+function OnButtonNoOver() {
+    var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请至少选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+
+
+    Ext.MessageBox.show({
+        title: '确认',
+        msg: '请确认是否撤销完结！',
+        buttons: Ext.MessageBox.YESNO,
+        icon: Ext.MessageBox.QUESTION,
+        fn: function (btn) {
+            if (btn == 'yes') {
+                var i_err = 0;
+                var info ='';
+                for (var i = 0; i < records.length; i++) {
+                    if(records[i].get('V_STATE')=='3'||records[i].get('V_STATE')=='10'){
+
+                        Ext.Ajax.request({
+                            url: AppUrl + 'cxy/PRO_FAULT_EQUIP_CANCEL_OVER',
+                            type: 'ajax',
+                            method: 'POST',
+                            params: {
+                                'V_V_FAULTCODE': records[i].get('V_GUID')
+                            },
+                            success: function (response) {
+
+                                var resp=Ext.decode(response.responseText);
+                                if(resp.RET=='SUCCESS'){
+                                    if(i==records.length){
+                                        Ext.MessageBox.show({
+                                            title: '提示',
+                                            msg: '所选事故成功撤销完结',
+                                            buttons: Ext.MessageBox.OK,
+                                            fn: function () {
+                                                _seltctFault();
+                                            }
+                                        });
+
+                                    }
+
+                                }else{
+
+                                    Ext.MessageBox.show({
+                                        title: '错误',
+                                        msg: resp.RET,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+
+                                }
+
+
+                            },failure: function (response) {
+                                Ext.MessageBox.show({
+                                    title: '错误',
+                                    msg: response.RET,
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.ERROR
+                                });
+                            }
+                        });
+                    }else{
+                        Ext.MessageBox.show({
+                            title: '提示',
+                            msg: '所选事故不能撤销完结！',
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.WARNING
                         });

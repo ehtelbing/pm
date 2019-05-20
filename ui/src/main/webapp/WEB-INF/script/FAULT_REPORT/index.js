@@ -328,7 +328,9 @@ Ext.onReady(function () {
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
             'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
-            'V_FAULTID','V_PROCESSINSTANCEID'],
+            'V_FAULTID','V_PROCESSINSTANCEID',
+            'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
+            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
         proxy: {
             url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_OVER_SEL',
             type: 'ajax',
@@ -619,6 +621,16 @@ Ext.onReady(function () {
             align: 'center',
             width: 100
         }, {
+            text: '发现时间',
+            dataIndex: 'V_FINDTIME',
+            align: 'center',
+            width: 100
+        },{
+            text: '排除时间',
+            dataIndex: 'V_ENDTIME',
+            align: 'center',
+            width: 100
+        }, {
             text: '设备类型',
             dataIndex: 'V_EQUTYPENAME',
             align: 'center',
@@ -635,6 +647,11 @@ Ext.onReady(function () {
             dataIndex: 'V_EQUNAME',
             align: 'center',
             width: 100
+        },{
+            text: '规格型号',
+            dataIndex: 'V_GGXH',
+            align: 'center',
+            width: 100
         }, {
             text: '作业区',
             dataIndex: 'V_DEPTNAME',
@@ -645,67 +662,98 @@ Ext.onReady(function () {
             dataIndex: 'V_EQUCHILD_NAME',
             align: 'center',
             width: 180
-        }, {
-            text: '故障类型',
-            dataIndex: 'V_TYPENAME',
-            align: 'center',
-            width: 100
-        }, {
-            text: '故障原因',
-            dataIndex: 'V_FAULT_YY',
-            align: 'center',
-            width: 100
-        }, {
+        },
+            {
+                text: '事故类别',
+                dataIndex: 'V_TYPENAME',
+                align: 'center',
+                width: 100
+            },
+            {
+                text: '事故原因',
+                dataIndex: 'V_FAULT_YY',
+                align: 'center',
+                width: 100
+            },
+            /*{
             text: '故障现象',
             dataIndex: 'V_FAULT_XX',
             align: 'center',
             width: 100
-        }, {
-            text: '故障等级',
-            dataIndex: 'V_FAULT_LEVEL',
-            align: 'center',
-            width: 100
-        }, {
-            text: '解决办法',
-            dataIndex: 'V_JJBF',
-            align: 'center',
-            width: 100
-        }, {
-            text: '故障名称',
-            dataIndex: 'V_FAULT_NAME',
-            align: 'center',
-            width: 100
-        }, {
-            text: '故障部位',
-            dataIndex: 'V_FAULT_PART',
-            align: 'center',
-            width: 100
-        }, {
-            text: '处理过程',
-            dataIndex: 'V_FAULT_CLGC',
-            align: 'center',
-            width: 100
-        }, {
-            text: '损失',
-            dataIndex: 'V_FAULT_SS',
-            align: 'center',
-            width: 100
-        }, {
-            text: '性质',
-            dataIndex: 'V_FAULT_XZ',
-            align: 'center',
-            width: 100
-        }, {
-            text: '整改措施',
-            dataIndex: 'V_FAULT_ZGCS',
-            align: 'center',
-            width: 100
-        }, {
-            text: '对相关负责人的处理',
-            dataIndex: 'V_FZR_CL',
-            align: 'center',
-            width: 100
-        }
+        }, */
+            {
+                text: '故障等级',
+                dataIndex: 'V_FAULT_LEVEL',
+                align: 'center',
+                width: 100
+            },{
+                text: '停机时间',
+                dataIndex: 'V_STOPTIME',
+                align: 'center',
+                width: 100
+            },{
+                text: '修理时间',
+                dataIndex: 'V_REPAIRTIME',
+                align: 'center',
+                width: 100
+            },{
+                text: '上报日期',
+                dataIndex: 'V_REPROTTIME',
+                align: 'center',
+                width: 100
+            },{
+                text: '事故报告人',
+                dataIndex: 'V_REPORTER',
+                align: 'center',
+                width: 100
+            },{
+                text: '事故直接责任人',
+                dataIndex: 'V_FZR',
+                align: 'center',
+                width: 100
+            },
+            /* {
+             text: '解决办法',
+             dataIndex: 'V_JJBF',
+             align: 'center',
+             width: 100
+         }, {
+             text: '故障名称',
+             dataIndex: 'V_FAULT_NAME',
+             align: 'center',
+             width: 100
+         }, {
+             text: '故障部位',
+             dataIndex: 'V_FAULT_PART',
+             align: 'center',
+             width: 100
+         },
+             {
+             text: '处理过程',
+             dataIndex: 'V_FAULT_CLGC',
+             align: 'center',
+             width: 100
+         }, {
+             text: '损失',
+             dataIndex: 'V_FAULT_SS',
+             align: 'center',
+             width: 100
+         }, {
+             text: '性质',
+             dataIndex: 'V_FAULT_XZ',
+             align: 'center',
+             width: 100
+         },*/ {
+                text: '采取防范措施',
+                dataIndex: 'V_FAULT_ZGCS',
+                align: 'center',
+                width: 100
+            }, {
+                text: '责任者处理',
+                dataIndex: 'V_FZR_CL',
+                align: 'center',
+                width: 100
+            }
 
         ]
 

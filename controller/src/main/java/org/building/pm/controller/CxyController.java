@@ -154,20 +154,32 @@ public class CxyController {
                                                          @RequestParam(value = "V_V_INTIME") String V_V_INTIME,
                                                          @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
                                                          @RequestParam(value = "V_V_IP") String V_V_IP,
-                                                           @RequestParam(value = "V_V_FAULT_NAME") String V_V_FAULT_NAME,
-                                                           @RequestParam(value = "V_V_FAULT_PART") String V_V_FAULT_PART,
-                                                           @RequestParam(value = "V_V_FAULT_CLGC") String V_V_FAULT_CLGC,
-                                                           @RequestParam(value = "V_V_FAULT_SS") String V_V_FAULT_SS,
-                                                           @RequestParam(value = "V_V_FAULT_XZ") String V_V_FAULT_XZ,
-                                                           @RequestParam(value = "V_V_FAULT_ZGCS") String V_V_FAULT_ZGCS,
-                                                           @RequestParam(value = "V_V_FZR_CL") String V_V_FZR_CL,
+                                                         @RequestParam(value = "V_V_FAULT_NAME") String V_V_FAULT_NAME,
+                                                         @RequestParam(value = "V_V_FAULT_PART") String V_V_FAULT_PART,
+                                                         @RequestParam(value = "V_V_FAULT_CLGC") String V_V_FAULT_CLGC,
+                                                         @RequestParam(value = "V_V_FAULT_SS") String V_V_FAULT_SS,
+                                                         @RequestParam(value = "V_V_FAULT_XZ") String V_V_FAULT_XZ,
+                                                         @RequestParam(value = "V_V_FAULT_ZGCS") String V_V_FAULT_ZGCS,
+                                                         @RequestParam(value = "V_V_FZR_CL") String V_V_FZR_CL,
+                                                       @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
+                                                       @RequestParam(value = "V_V_REPORTER") String V_V_REPORTER,
+                                                       @RequestParam(value = "V_V_FZR") String V_V_FZR,
+                                                       @RequestParam(value = "V_V_STOPTIME") String V_V_STOPTIME,
+                                                       @RequestParam(value = "V_V_REPAIRTIME") String V_V_REPAIRTIME,
+                                                       @RequestParam(value = "V_V_REPAIRCOST") String V_V_REPAIRCOST,
+                                                       @RequestParam(value = "V_V_REPROTTIME") String V_V_REPROTTIME,
+                                                       @RequestParam(value = "V_V_FAULT_PASS") String V_V_FAULT_PASS,
+                                                       @RequestParam(value = "V_CAUSEANALYSIS") String V_CAUSEANALYSIS,
+                                                       @RequestParam(value = "V_REPAIR_PLAN") String V_REPAIR_PLAN,
                                                          HttpServletRequest request,
                                                          HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = cService.PM_1405_FAULT_ITEM_DATA_SET_NEW(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
                 V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX,V_V_JJBF, V_V_FAULT_LEVEL,
-                V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL);
+                V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,
+                V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL,
+                V_V_ENDTIME,V_V_REPORTER,V_V_FZR,V_V_STOPTIME,V_V_REPAIRTIME,V_V_REPAIRCOST,V_V_REPROTTIME,V_V_FAULT_PASS,V_CAUSEANALYSIS,V_REPAIR_PLAN);
 
         String RET = (String) data.get("RET");
         String FAULTID = (String) data.get("FAULTID");
@@ -665,6 +677,21 @@ public class CxyController {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = cService.PRO_FAULT_EQUIP_OVER(V_V_FAULTCODE);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_FAULT_EQUIP_CANCEL_OVER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_FAULT_EQUIP_CANCEL_OVER(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_FAULT_EQUIP_CANCEL_OVER(V_V_FAULTCODE);
 
         String ss = (String) data.get("RET");
 

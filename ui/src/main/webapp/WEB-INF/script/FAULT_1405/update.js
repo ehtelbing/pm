@@ -228,7 +228,7 @@ Ext.onReady(function () {
     var gridStore =Ext.create('Ext.data.Store', {
         id : 'gridStore',
         autoLoad : false,
-        fields : ['V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME','V_EQUTYPECODE','V_EQUUPCODE','V_FAULTCODE'],
+        fields : ['V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME','V_EQUTYPECODE','V_EQUUPCODE','V_FAULTCODE','V_GGXH'],
         proxy : {
             type : 'ajax',
             url: AppUrl + 'cxy/PRO_FAULT_EQUIP_SEL',
@@ -307,6 +307,11 @@ Ext.onReady(function () {
                 dataIndex : 'V_EQUNAME',
                 align : 'center',
                 width : 100
+            },{
+                text : '规格型号',
+                dataIndex : 'V_GGXH',
+                align : 'center',
+                width : 100
             }, {
                 text : '设备位置编码',
                 dataIndex : 'V_EQUSITE',
@@ -346,6 +351,7 @@ Ext.onReady(function () {
                 displayField: 'V_DEPTNAME',
                 forceSelection: true,
                 fieldLabel: '厂矿',
+                readOnly:true,
                 editable: false,
                 labelWidth: 70,
                 width: 270,
@@ -371,6 +377,7 @@ Ext.onReady(function () {
                 displayField: 'V_DEPTNAME',
                 forceSelection: true,
                 fieldLabel: '作业区',
+                readOnly:true,
                 editable: false,
                 labelWidth: 70,
                 width: 270,
@@ -401,18 +408,21 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
+                hidden:true,
                 width: 270
             },{
                 xtype: 'label',
                 width: 5,
                 text: '*',
                 style: 'color:red',
+                hidden:true,
                 margin : ' margin: 5px 0px 0px 5px'
             },{
                 xtype: 'textfield',
                 id: 'faultpart2',
                 fieldLabel: '故障部位',
                 labelWidth: 70,
+                hidden:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 270
@@ -432,7 +442,7 @@ Ext.onReady(function () {
                 valueField: 'V_TYPECODE',
                 displayField: 'V_TYPENAME',
                 forceSelection: true,
-                fieldLabel: '故障类型',
+                fieldLabel: '事故类别',
                 editable: false,
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
@@ -448,7 +458,7 @@ Ext.onReady(function () {
                 valueField: 'V_FAULTCODE',
                 displayField: 'V_FAULTNAME',
                 forceSelection: true,
-                fieldLabel: '故障等级',
+                fieldLabel: '事故等级',
                 editable: false,
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -3px',
@@ -476,16 +486,130 @@ Ext.onReady(function () {
                 width: 270,
                 baseCls: 'margin-bottom'
             },{
+                id: 'endtime2',
+                xtype: 'datefield',
+                editable: false,
+                format: 'Y-m-d',
+                //submitFormat: 'yyyy-mm-dd',
+                value: new Date(),//,V_begintime,new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+                fieldLabel: '排除时间',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -3px',
+                labelAlign: 'right',
+                width: 270,
+                baseCls: 'margin-bottom'
+            },{
                 xtype: 'textfield',
                 id: 'faultxz2',
                 fieldLabel: '性质',
+                hidden:true,
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -3px',
                 labelAlign: 'right',
                 width: 270 }
 
             ]
-        }, {
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [
+                {
+                    xtype: 'textfield',
+                    id: 'faultbgr2',
+                    fieldLabel: '事故报告人',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    width: 270
+                },
+                {
+                    xtype: 'textfield',
+                    id: 'faultzjzrr2',
+                    fieldLabel: '直接责任人',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -3px',
+                    labelAlign: 'right',
+                    width: 270
+                }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                id: 'stoptime2',
+                xtype: 'datefield',
+                editable: false,
+                format: 'Y-m-d',
+                //submitFormat: 'yyyy-mm-dd',
+                value: new Date(),//,V_begintime,new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+                fieldLabel: '停机时间',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 270,
+                baseCls: 'margin-bottom'
+            },{
+                id: 'repairtime2',
+                xtype: 'datefield',
+                editable: false,
+                format: 'Y-m-d',
+                //submitFormat: 'yyyy-mm-dd',
+                value: new Date(),//,V_begintime,new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+                fieldLabel: '修理时间',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -3px',
+                labelAlign: 'right',
+                width: 270,
+                baseCls: 'margin-bottom'
+            }
+            ]
+        } , {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [
+                {
+                    xtype: 'numberfield',
+                    id: 'faultxffy2',
+                    fieldLabel: '修复费用',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    minValue:'0',
+                    nanText: "请输入有效数字",
+                    validateOnBlur: false,
+                    validateOnChange: false,
+                    hideTrigger: true,
+                    allowBlank: false,
+                    width: 240
+                },{
+                    xtype: 'label',
+                    style: ' margin: 8px 0px 0px 4px',
+                    text:'万元'
+                },
+                {
+                    id: 'touptime2',
+                    xtype: 'datefield',
+                    editable: false,
+                    format: 'Y-m-d',
+                    //submitFormat: 'yyyy-mm-dd',
+                    value: new Date(),//,V_begintime,new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+                    fieldLabel: '上报时间',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px -1px',
+                    labelAlign: 'right',
+                    width: 270,
+                    baseCls: 'margin-bottom'
+                }
+
+            ]
+        },{
             xtype: 'panel',
             region: 'north',
             layout: 'column',
@@ -499,6 +623,7 @@ Ext.onReady(function () {
                 labelAlign: 'right',
                 nanText: "请输入有效数字",
                 minValue:'0',
+                hidden:true,
                 validateOnBlur: false,
                 validateOnChange: false,
                 hideTrigger: true,
@@ -507,12 +632,14 @@ Ext.onReady(function () {
             }, {
                 xtype: 'label',
                 style: ' margin: 8px 0px 0px 4px',
+                hidden:true,
                 text:'万元'
             },{
                 xtype: 'label',
                 width: 5,
                 text: '*',
                 style: 'color:red',
+                hidden:true,
                 margin : ' margin: 5px 0px 5px 5px'
             }
 
@@ -523,18 +650,94 @@ Ext.onReady(function () {
             baseCls: 'my-panel-no-border',
             items: [{
                 xtype: 'textarea',
-                id: 'faultclgc2',
-                fieldLabel: '处理过程',
+                id: 'faultjg2',
+                fieldLabel: '事故经过',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
-            },{
+            }
+            /*,{
                 xtype: 'label',
                 width: 5,
                 text: '*',
                 style: 'color:red',
                 margin : ' margin: 5px 0px 5px 5px'
+            }*/
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultReafx2',
+                fieldLabel: '原因分析',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'vbox',
+            baseCls: 'my-panel-no-border',
+            items: [
+                {   id:'faultRea2',
+                    xtype: 'checkboxgroup',
+                    name: 'faultRea2',
+                    labelAlign: 'right',
+                    style: ' margin: 5px 0px 0px -8px',
+                    width: 557,  //宽度220
+                    labelWidth: 70,
+                    columns: 4,  //在上面定义的宽度上展示3列
+                    fieldLabel: '事故原因',
+                    items: [
+                        {boxLabel: '指挥失当', name: 'zhsd'},
+                        {boxLabel: '违规操作', name: 'wgcz'},
+                        {boxLabel: '超负荷运转', name: 'cfhyz'},
+                        {boxLabel: '润滑原因', name: 'rhyy'},
+                        {boxLabel: '检修原因', name: 'jxyy'},
+                        {boxLabel: '点检原因', name: 'djyy'},
+                        {boxLabel: '材料备件质量', name: 'clbjzl'},
+                        {boxLabel: '设计原因', name: 'sjyy'},
+                        {boxLabel: '安装原因', name: 'azyy'},
+                        {boxLabel: '制造质量', name: 'zzzl'},
+                        {boxLabel: '自然因素', name: 'zryy'},
+                        {boxLabel: '其他因素', name: 'qtyy'}
+
+                    ]
+                },{
+                    xtype: 'textfield',
+                    id: 'faultRea22',
+                    column:2,
+                    fieldLabel: '其他因素',
+                    labelWidth: 70,
+                    style: ' margin: 5px 0px 0px 52px',
+                    labelAlign: 'right',
+                    width: 477
+                }
+
+
+            ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'faultclgc2',
+                fieldLabel: '抢修经过',//处理过程
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
             }
 
             ]
@@ -545,22 +748,14 @@ Ext.onReady(function () {
             baseCls: 'my-panel-no-border',
             items: [{
                 xtype: 'textarea',
-                id: 'faultRea2',
-                fieldLabel: '故障原因',
+                id: 'faultqxfa2',
+                fieldLabel: '抢修方案',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
-            },{
-                xtype: 'label',
-                width: 5,
-                text: '*',
-                style: 'color:red',
-                margin : ' margin: 5px 0px 5px 5px'
-            }
-
-            ]
-        }, {
+            }]
+        },{
             xtype: 'panel',
             region: 'north',
             layout: 'column',
@@ -570,6 +765,7 @@ Ext.onReady(function () {
                 id: 'faultDesc2',
                 fieldLabel: '故障现象',
                 labelWidth: 70,
+                hidden:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
@@ -577,6 +773,7 @@ Ext.onReady(function () {
                 xtype: 'label',
                 width: 5,
                 text: '*',
+                hidden:true,
                 style: 'color:red',
                 margin : ' margin: 5px 0px 5px 5px'
             }
@@ -592,6 +789,7 @@ Ext.onReady(function () {
                 id: 'faultSol2',
                 fieldLabel: '故障解决',
                 labelWidth: 70,
+                hidden:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
@@ -606,14 +804,12 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textarea',
                 id: 'faultzgcs2',
-                fieldLabel: '整改措施',
+                fieldLabel: '防范措施',//整改措施
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
-            }
-
-            ]
+            }]
         },{
             xtype: 'panel',
             region: 'north',
@@ -622,7 +818,7 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textarea',
                 id: 'fzrcl2',
-                fieldLabel: '对相关负责人的处理',
+                fieldLabel: '负责者处理',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
@@ -848,9 +1044,9 @@ function _init() {
                         _selectDept2();
                     });
 
-                    Ext.getCmp('V_V_ORGCODE2').on('change', function () {
+                   /* Ext.getCmp('V_V_ORGCODE2').on('change', function () {
                         _selectDept2();
-                    });
+                    });*/
 
 
                     Ext.data.StoreManager.lookup('deptStore2').on('load', function () {
@@ -861,7 +1057,8 @@ function _init() {
 
                     Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPECODE);
                     Ext.getCmp('begintime2').setValue(resp.RET[0].V_FINDTIME);
-                    Ext.getCmp('faultRea2').setValue(resp.RET[0].V_FAULT_YY);
+
+
                     Ext.getCmp('faultDesc2').setValue(resp.RET[0].V_FAULT_XX);
                     Ext.getCmp('faultLevel2').setValue(resp.RET[0].V_FAULT_LEVEL);
                     Ext.getCmp('faultSol2').setValue(resp.RET[0].V_JJBF);
@@ -872,6 +1069,48 @@ function _init() {
                     Ext.getCmp('faultxz2').setValue(resp.RET[0].V_FAULT_XZ);
                     Ext.getCmp('faultzgcs2').setValue(resp.RET[0].V_FAULT_ZGCS);
                     Ext.getCmp('fzrcl2').setValue(resp.RET[0].V_FZR_CL);
+
+                    Ext.getCmp('endtime2').setValue(resp.RET[0].V_ENDTIME);
+                    Ext.getCmp('faultbgr2').setValue(resp.RET[0].V_REPORTER);
+                    Ext.getCmp('faultzjzrr2').setValue(resp.RET[0].V_FZR);
+                    Ext.getCmp('stoptime2').setValue(resp.RET[0].V_STOPTIME);
+                    Ext.getCmp('repairtime2').setValue(resp.RET[0].V_REPAIRTIME);
+                    Ext.getCmp('faultxffy2').setValue(resp.RET[0].V_REPAIRCOST);
+                    Ext.getCmp('touptime2').setValue(resp.RET[0].V_REPROTTIME);
+
+                    Ext.getCmp('faultjg2').setValue(resp.RET[0].V_FAULT_PASS);
+                    Ext.getCmp('faultReafx2').setValue(resp.RET[0].V_CAUSEANALYSIS);
+                    Ext.getCmp('faultqxfa2').setValue(resp.RET[0].V_REPAIR_PLAN);
+                    /*var arr=[];
+                    if(resp.RET[0].V_FAULT_YY!=''){
+                        arr=resp.RET[0].V_FAULT_YY.split(",");
+                        for(var i=0;i<arr.length;i++){
+                            Ext.getCmp('faultRea2').items.each(function(c){
+                                //debugger;
+
+                                if(c.boxLabel==val[i]){
+
+                                    c.setValue(true);
+                                }
+                            });
+                        }
+                    }*/
+                    if(resp.RET[0].V_FAULT_YY!='') {
+                        var str = resp.RET[0].V_FAULT_YY;
+                        var i=0;
+                        Ext.getCmp('faultRea2').items.each(function (c) {
+                            if (str.indexOf(c.boxLabel) != -1) {
+                                c.setValue(true);
+                                i+=1;
+                            }
+                        });
+                        var arr=resp.RET[0].V_FAULT_YY.split(",");
+                        if(arr.length>i){
+                            Ext.getCmp('faultRea22').setValue(arr[arr.length-1]);
+                        }
+
+                    }
+                    // Ext.getCmp('faultRea2').setValue(resp.RET[0].V_FAULT_YY);
                     V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
                     V_V_FILE_GUID=resp.RET[0].V_FILE_GUID;
                     filequery2(V_V_GUID);
@@ -1158,7 +1397,7 @@ function _saveBtnFault2() {
         (parameters.V_V_IP == undefined) ? V_V_IP = '' : V_V_IP = parameters.V_V_IP;
     }
 
-    var htmlText = "请录入<font style=\"font-size:18px;font-weight:bold;color:red\">*</font >必填项!";
+    /*var htmlText = "请录入<font style=\"font-size:18px;font-weight:bold;color:red\">*</font >必填项!";
     if(Ext.getCmp('faultname2').getValue()==''||Ext.getCmp('faultclgc2').getValue()==''
         ||Ext.getCmp('faultRea2').getValue()==''||Ext.getCmp('faultDesc2').getValue()==''
         ||Ext.getCmp('faultss2').getValue()==''||Ext.getCmp('faultss2').getValue()==null){
@@ -1169,9 +1408,20 @@ function _saveBtnFault2() {
             icon: Ext.MessageBox.ERROR
         });
         return;
+    }*/
+
+    var faultR='';
+    var cbitems = Ext.getCmp('faultRea2').items;
+    for (var i = 0; i < cbitems.length; i++) {
+        if (cbitems.items[i].checked) {
+            faultR += cbitems.items[i].boxLabel+',';
+        }
     }
-
-
+    if(Ext.getCmp('faultRea22').getValue()!=null && Ext.getCmp('faultRea22').getValue()!=''){
+        faultR+=Ext.getCmp('faultRea22').getValue();
+    }else if(faultR.length>0){
+        faultR=faultR.substring(0,faultR.length-1);
+    }
     if (Ext.getCmp('V_V_ORGCODE2').getValue() != '%' && Ext.getCmp('V_V_DEPTCODE2').getValue() != '%' && Ext.getCmp('equFaultname2').getValue() != '%') {
         Ext.Ajax.request({
             url: AppUrl + 'cxy/PM_1405_FAULT_ITEM_DATA_SET_NEW',
@@ -1187,7 +1437,7 @@ function _saveBtnFault2() {
                 'V_V_EQUCHILD_CODE': '',//Ext.getCmp("SUB_V_EQUNAME2").getValue(),
                 'V_V_FAULT_GUID': V_V_FAULT_GUID,
                 'V_V_FAULT_TYPE': Ext.getCmp("equFaultname2").getValue(),
-                'V_V_FAULT_YY': Ext.getCmp("faultRea2").getValue(),
+                'V_V_FAULT_YY': faultR,//Ext.getCmp("faultRea2").getValue(),
                 'V_V_FINDTIME': Ext.getCmp("begintime2").getSubmitValue(),
                 'V_V_FAULT_XX': Ext.getCmp("faultDesc2").getValue(),
                 'V_V_JJBF': Ext.getCmp("faultSol2").getValue(),
@@ -1202,7 +1452,18 @@ function _saveBtnFault2() {
                 'V_V_FAULT_SS':Ext.getCmp("faultss2").getValue(),
                 'V_V_FAULT_XZ':Ext.getCmp("faultxz2").getValue(),
                 'V_V_FAULT_ZGCS':Ext.getCmp("faultzgcs2").getValue(),
-                'V_V_FZR_CL':Ext.getCmp("fzrcl2").getValue()
+                'V_V_FZR_CL':Ext.getCmp("fzrcl2").getValue(),
+
+                'V_V_ENDTIME':Ext.getCmp("endtime2").getSubmitValue(),
+                'V_V_REPORTER':Ext.getCmp("faultbgr2").getValue(),
+                'V_V_FZR':Ext.getCmp("faultzjzrr2").getValue(),
+                'V_V_STOPTIME':Ext.getCmp("stoptime2").getSubmitValue(),
+                'V_V_REPAIRTIME':Ext.getCmp("repairtime2").getSubmitValue(),
+                'V_V_REPAIRCOST':Ext.getCmp("faultxffy2").getValue(),
+                'V_V_REPROTTIME': Ext.getCmp("touptime2").getSubmitValue(),
+                'V_V_FAULT_PASS': Ext.getCmp("faultjg2").getValue(),
+                'V_CAUSEANALYSIS': Ext.getCmp("faultReafx2").getValue(),
+                'V_REPAIR_PLAN':Ext.getCmp("faultqxfa2").getValue()
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
