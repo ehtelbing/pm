@@ -158,9 +158,9 @@ function createDD() {
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
                 $("#V_DEPTCODE").val(resp.list[0].V_DEPTCODE);
                 $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME)
-                var data = new Date(resp.list[0].D_ENTER_DATE);
+                //var data = new Date(resp.list[0].D_ENTER_DATE);
 
-                $("#createDate").html(Ext.Date.format(data, "Y-m-d"));
+                $("#createDate").html(resp.list[0].D_ENTER_DATE.split(" ")[0]);
                 //  $("#createDate").html(resp.list[0].D_ENTER_DATE);//update 2018-08+25
                 $("#V_EQUNAME").val(resp.list[0].V_EQUIP_NAME);
                 $("#V_EQUCODE").val(resp.list[0].V_EQUIP_NO);
@@ -269,7 +269,7 @@ function loadSPR() {
                 processKey = resp.RET;
                 //-----2018-10-31 当默认加载审批人不存在时
                 if(resp.list.length==0){
-                    Ext.MessageBox.alert('消息','当前流程不存在，请从新选择');
+                    alert('当前流程不存在，请从新选择');
                     // V_STEPNAME="";
                     // V_NEXT_SETP="";
                 }else{
@@ -303,7 +303,7 @@ function loadSPR() {
             // }
             // else {
             //     $("#selApprover").val($.cookies.get('v_personcode'));
-            // }
+            // }.。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
 
 
         }
@@ -495,7 +495,7 @@ function BillGo() {
                                                     alert("工单创建成功：" + $("#V_ORDERID").html());
                                                     history.go(0);
                                                 } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                                    Ext.Msg.alert('提示', '该流程发起失败！');
+                                                    alert( '该流程发起失败！');
                                                     history.go(0);
                                                 }
                                             }
@@ -540,7 +540,7 @@ function BillGo() {
                                         alert("工单创建成功：" + $("#V_ORDERID").html());
                                         history.go(0);
                                     } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                        Ext.Msg.alert('提示', '该流程发起失败！');
+                                        alert( '该流程发起失败！');
                                         history.go(0);
                                     }
                                 }

@@ -450,7 +450,7 @@ function _CreateSidebar(accordions) {
                 title: '个人信息',
                 titleAlign: 'center',
                 region: 'south',
-                layout: 'column',
+                layout: 'vbox',
                 height: 180,
                 border: false,
                 collapsed: true,
