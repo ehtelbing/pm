@@ -327,7 +327,7 @@ Ext.onReady(function () {
 
     var windowEqu = Ext.create('Ext.window.Window', {
         id: 'windowEqu',
-        width: 900,
+        width: 400,
         height: 500,
         title: '手工消缺',
         modal: true,//弹出窗口时后面背景不可编辑
@@ -343,7 +343,7 @@ Ext.onReady(function () {
             margin: '5 0 2 10',
             labelWidth: 80,
             labelAlign: 'right',
-            width: 230
+            width: 300
         }, {
             xtype: 'textfield',
             id: 'qxrq',
@@ -351,7 +351,7 @@ Ext.onReady(function () {
             margin: '5 0 2 10',
             labelWidth: 80,
             labelAlign: 'right',
-            width: 230
+            width: 300
         },{
             xtype: 'textfield',
             id: 'fzr',
@@ -359,7 +359,7 @@ Ext.onReady(function () {
             margin: '5 0 2 10',
             labelWidth: 80,
             labelAlign: 'right',
-            width: 230
+            width: 300
         },{
             xtype: 'textfield',
             id: 'dw',
@@ -367,7 +367,7 @@ Ext.onReady(function () {
             margin: '5 0 2 10',
             labelWidth: 80,
             labelAlign: 'right',
-            width: 230
+            width: 300
         },{
             xtype: 'textareafield',
             id: 'qxmx',
@@ -375,7 +375,7 @@ Ext.onReady(function () {
             margin: '5 0 2 10',
             labelWidth: 80,
             labelAlign: 'right',
-            width: 600
+            width: 300
         },{
             xtype: 'textfield',
             id: 'sb',
@@ -383,7 +383,7 @@ Ext.onReady(function () {
             margin: '5 0 2 10',
             labelWidth: 80,
             labelAlign: 'right',
-            width: 230
+            width: 300
         },
             {
                 xtype: 'textfield',
@@ -392,7 +392,7 @@ Ext.onReady(function () {
                 margin: '5 0 2 10',
                 labelWidth: 80,
                 labelAlign: 'right',
-                width: 230
+                width: 300
             }, {
                 xtype: 'textfield',
                 id: 'clyj',
@@ -400,7 +400,7 @@ Ext.onReady(function () {
                 margin: '5 0 2 10',
                 labelWidth: 80,
                 labelAlign: 'right',
-                width: 230
+                width: 300
             }, {
                 xtype: 'textfield',
                 id: 'qxzt1',
@@ -408,22 +408,14 @@ Ext.onReady(function () {
                 margin: '5 0 2 10',
                 labelWidth: 80,
                 labelAlign: 'right',
-                width: 230
-            },
-            // ,{
-            //     xtype: 'label',
-            //     text: '消缺原因：',
-            //     style:'margin: 5 0 2 10'
-            // },
-            // {xtype: 'label', text: '*', style: 'color:red'},
-            {
+                width: 300
+            }, {
                 xtype: 'textareafield',
                 fieldLabel:'消缺原因(*)',
-                height: 110,
                 labelWidth: 80,
-                width: 600,
+                width: 300,
                 labelStyle:'color:#ff0000',
-                margin:'5 0 2 2',
+                margin:'5 0 2 10',
                 id: 'xqyy',
                 labelAlign: 'right',
                 style:'color:red'

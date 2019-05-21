@@ -3,7 +3,7 @@
 <head>
     <title>工单审批</title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
     <link rel="stylesheet" href="../../../pm/css/ext-cn.css"/>
@@ -58,32 +58,31 @@
         .btnprint {
             width: 128px;
             height: 26px;
-            background-image:
-                    url('../../../pm/images/gif/btnprint.png');
+            background-image: url('../../../pm/images/gif/btnprint.png');
             background-repeat: no-repeat;
             border: 0px;
         }
+
         .btnWBS {
             width: 16px;
             height: 16px;
-            background-image:
-                    url('../../../pm/images/gif/add.png');
+            background-image: url('../../../pm/images/gif/add.png');
             background-repeat: no-repeat;
             border: 0px;
         }
     </style>
 </head>
 <body>
-<input type="hidden" id="V_ORGCODE" />
-<input type="hidden" id="V_DEPTCODE" />
-<input type="hidden" id="V_TYPE_ORDER" />
-<input type="hidden" id="V_ORDERGUID" />
-<input type="hidden" id="V_DEPTCODEREPARIR" />
+<input type="hidden" id="V_ORGCODE"/>
+<input type="hidden" id="V_DEPTCODE"/>
+<input type="hidden" id="V_TYPE_ORDER"/>
+<input type="hidden" id="V_ORDERGUID"/>
+<input type="hidden" id="V_DEPTCODEREPARIR"/>
 
 <div style="margin: 10px 0px 10px 430px;font-size: x-large;">工单审批</div>
 
 <div style="padding-bottom: 10px">
-    <label style="padding-left:20px;">审批意见：</label><input class="text"  type="text" id="spyj" style="width:250px"/>
+    <label style="padding-left:20px;">审批意见：</label><input class="text" type="text" id="spyj" style="width:250px"/>
     <!--update start-->
     <!--<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下一步审批人: </span>-->
     <!--&nbsp;-->
@@ -91,8 +90,8 @@
     <!--&nbsp;&nbsp;&nbsp;-->
     <!--update-end-->
 
-    <input type="button" value="同意" id="btnAgree" class="btnprint" onclick="AgreeShowPer();" />
-    <input type="button" value="驳回" id="btnDisAgree" class="btnprint" onclick="DisAgreeShowPer();" />
+    <input type="button" value="同意" id="btnAgree" class="btnprint" onclick="AgreeShowPer();"/>
+    <input type="button" value="驳回" id="btnDisAgree" class="btnprint" onclick="DisAgreeShowPer();"/>
     &nbsp;&nbsp;&nbsp;
 </div>
 <table class="Tabel_p">
@@ -151,11 +150,11 @@
                         <label id="V_EQUIP_NAME"></label>
                     </td>
                     <!--<td-->
-                            <!--style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">-->
-                        <!--预 留 号：-->
+                    <!--style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">-->
+                    <!--预 留 号：-->
                     <!--</td>-->
                     <!--<td-->
-                            <!--style="width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">-->
+                    <!--style="width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">-->
 
                     <!--</td>-->
                     <td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
@@ -175,12 +174,13 @@
                         <label id="V_EQUIP_NO"></label>
                     </td>
                     <!--<td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">-->
-                        <!--检修单位：-->
+                    <!--检修单位：-->
                     <!--</td>-->
                     <!--<td style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">-->
-                        <!--<label id="V_DEPTNAMEREPARIR"></label>-->
+                    <!--<label id="V_DEPTNAMEREPARIR"></label>-->
                     <!--</td>-->
-                    <td rowspan="2" style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF">
+                    <td rowspan="2"
+                        style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF">
                         工单描述：
                     </td>
                     <td rowspan="2" style="border-bottom: 0; border-right: 0px; text-align: left">
@@ -195,10 +195,10 @@
                         <label id="V_FUNC_LOC"></label>
                     </td>
                     <!--<td style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF">-->
-                        <!--工单描述：-->
+                    <!--工单描述：-->
                     <!--</td>-->
                     <!--<td style="border-bottom: 0; border-right: 0px; text-align: left">-->
-                        <!--<label id="V_SHORT_TXT"></label>-->
+                    <!--<label id="V_SHORT_TXT"></label>-->
                     <!--</td>-->
                 </tr>
             </table>
@@ -238,7 +238,7 @@
                     <td colspan="3"
                         style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">
                         <label id="V_WBS"></label>
-                        <input type="hidden" id="V_WBS_TXT" />
+                        <input type="hidden" id="V_WBS_TXT"/>
                     </td>
                 </tr>
                 <tr>
@@ -248,7 +248,7 @@
                     </td>
                     <td colspan="3"
                         style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">
-                        <input type="hidden" id="proCode" />
+                        <input type="hidden" id="proCode"/>
                         <label id="proName"></label>
                     </td>
                 </tr>
@@ -285,140 +285,134 @@
     <tr>
         <td colspan="3" style="text-align: left; background-color: #F4F5F7">
             ③任务细节
-            <input type="button" id="btnTask" class="btnprint" value="人员与工时查看" onclick="ViewTask()" />
+            <input type="button" id="btnTask" class="btnprint" value="人员与工时查看" onclick="ViewTask()"/>
         </td>
     </tr>
     <tr>
-        <td colspan="3">
-            <table class="Tabel_pl" style="border: 0px">
+        <td style="border: 0px" colspan="3">
+            <table class="Tabel_pl" style="border: 0px" id="TtableT">
+                <thead>
                 <tr>
-                    <td style="border: 0px; width: 666px">
-                        <table class="Tabel_pl" style="border: 0px" id="TtableT">
-                            <thead>
-                            <tr>
-                                <td
-                                        style="border-left: 0px; border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    工序编号
-                                </td>
-                                <td
-                                        style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    工作中心
-                                </td>
-                                <td
-                                        style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    工序内容
-                                </td>
-                                <td
-                                        style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    定额时间
-                                </td>
-                                <td
-                                        style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    定额人数
-                                </td>
-                                <td
-                                        style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    实际时间
-                                </td>
-                                <td
-                                        style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    实际人数
-                                </td>
-                                <td
-                                        style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    机具
-                                </td>
-                                <td
-                                        style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    工具
-                                </td>
-                                <td
-                                        style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
-                                    技术要求
-                                </td>
-                                <td
-                                        style="border-bottom: 1px; border-top: 0px;border-right: 0px; width: 9%; background-color: #BFDFFF">
-                                    安全措施
-                                </td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td style="border-left: 0px; border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border-left: 0px; border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border-left: 0px; border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                                <td style="border-bottom: 0px;">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <td
+                            style="border-left: 0px; border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        工序编号
+                    </td>
+                    <td
+                            style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        工作中心
+                    </td>
+                    <td
+                            style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        工序内容
+                    </td>
+                    <td
+                            style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        定额时间
+                    </td>
+                    <td
+                            style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        定额人数
+                    </td>
+                    <td
+                            style="border-bottom: 0px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        实际时间
+                    </td>
+                    <td
+                            style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        实际人数
+                    </td>
+                    <td
+                            style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        机具
+                    </td>
+                    <td
+                            style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        工具
+                    </td>
+                    <td
+                            style="border-bottom: 1px; border-top: 0px; width: 9%; background-color: #BFDFFF">
+                        技术要求
+                    </td>
+                    <td
+                            style="border-bottom: 1px; border-top: 0px;border-right: 0px; width: 9%; background-color: #BFDFFF">
+                        安全措施
                     </td>
                 </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="border-left: 0px; border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-left: 0px; border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-left: 0px; border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                    <td style="border-bottom: 0px;">
+                    </td>
+                </tr>
+                </tbody>
             </table>
         </td>
     </tr>
@@ -426,7 +420,7 @@
         <td colspan="3" style="text-align: left; background-color: #F4F5F7">
             ④物料信息
             <input type="button" class="btnprint" onclick="ViewLook();"
-                   value="物料信息查看" />
+                   value="物料信息查看"/>
         </td>
 
     </tr>
@@ -614,7 +608,8 @@
         <td style="border-bottom:0px;">${V_JSQY_NAME}</td>
         <td style="border-bottom:0px;">${V_AQSC_NAME}</td>
     </tr>
-    </script>
+
+</script>
 <script id="TtableMTemplate" type="text/x-jquery-tmpl">
     <tr>
     <td>${sid}</td>
@@ -628,7 +623,8 @@
         <td>${F_ACTUALMONEY}</td>
         <td>${V_MEMO}</td>
     </tr>
-    </script>
+
+</script>
 </body>
 </html>
 

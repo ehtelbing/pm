@@ -176,7 +176,6 @@ function showTab(){
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.list.length>0) {
-
                 var sq = '';
                 for(var i = 0; i < resp.list.length; i++)
                 {
@@ -188,8 +187,8 @@ function showTab(){
                     }
                 }
                 $("#ywglq").append(sq);
+                showList(resp.list[0].V_TABLECODE,'0');
             }
-            showList(resp.list[0].V_TABLECODE,'0');
             // Ext.getBody().unmask();//去除页面笼罩
         }
     });
