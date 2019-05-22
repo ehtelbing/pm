@@ -323,7 +323,7 @@ Ext.onReady(function () {
         autoLoad: false,
         //pageSize: -1,
         fields: ['V_TIME', 'V_EQUTYPE', 'V_EQUNAME', 'V_EQUCHILD_CODE', 'V_FAULT_TYPE',
-            'V_FAULT_YY', 'V_FAULT_XX', 'V_FAULT_LEVEL', 'V_JJBF', 'V_GUID', 'V_FILE_GUID',
+            'V_FAULT_YY', 'V_FAULT_XX', 'V_FAULT_LEVEL', 'V_FAULT_LEVELNAME','V_JJBF', 'V_GUID', 'V_FILE_GUID',
             'V_ORGCODE', 'I_ID', 'V_DEPTNAME', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_TYPECODE',
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
             'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
@@ -683,7 +683,7 @@ Ext.onReady(function () {
         }, */
             {
                 text: '故障等级',
-                dataIndex: 'V_FAULT_LEVEL',
+                dataIndex: 'V_FAULT_LEVELNAME',
                 align: 'center',
                 width: 100
             },{

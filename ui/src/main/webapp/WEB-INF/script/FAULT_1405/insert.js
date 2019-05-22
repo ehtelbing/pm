@@ -793,7 +793,7 @@ Ext.onReady(function () {
         baseCls: 'my-panel-no-border',
         width: '100%',
         layout: 'vbox',
-        // height: 300,
+        height: 300,
         bodyPadding: 3,
         fileUpload: true,
 

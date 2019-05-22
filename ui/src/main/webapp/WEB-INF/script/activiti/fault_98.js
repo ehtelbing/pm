@@ -324,7 +324,7 @@ Ext.onReady(function () {
                 width: 250
             }, {
                 xtype: 'button',
-                text: '同意',
+                text: '提交',
                 style: ' margin: 5px 20px 0px 20px',
                 icon: imgpath + '/saved.png',
                 handler: _agree
@@ -1545,16 +1545,27 @@ function _agree() {
         spyj = Ext.getCmp('spyj').getValue();
     }
 
-    if (Ext.getCmp('gzyy').getValue() == "") {
+    /*if (Ext.getCmp('gzyy').getValue() == "") {
         Ext.MessageBox.alert('提示', '请先输入检修内容');
         return;
-    }
+    }*/
 
     // if (Ext.getCmp('jhgshj').getValue() < 0) {
     //     Ext.MessageBox.alert('提示', '竣工时间必须大于停工时间');
     //     return;
     // }
-
+    var faultR='';
+    var cbitems = Ext.getCmp('faultRea2').items;
+    for (var i = 0; i < cbitems.length; i++) {
+        if (cbitems.items[i].checked) {
+            faultR += cbitems.items[i].boxLabel+',';
+        }
+    }
+    if(Ext.getCmp('faultRea22').getValue()!=null && Ext.getCmp('faultRea22').getValue()!=''){
+        faultR+=Ext.getCmp('faultRea22').getValue();
+    }else if(faultR.length>0){
+        faultR=faultR.substring(0,faultR.length-1);
+    }
     Ext.Ajax.request({
         url: AppUrl + 'cxy/PM_1405_FAULT_ITEM_DATA_UPDATE',
         type: 'ajax',
@@ -1568,7 +1579,7 @@ function _agree() {
             'V_V_EQUCHILD_CODE': '',//Ext.getCmp("SUB_V_EQUNAME2").getValue(),
             'V_V_FAULT_GUID': V_V_FAULT_GUID,
             'V_V_FAULT_TYPE': Ext.getCmp("equFaultname2").getValue(),
-            'V_V_FAULT_YY': Ext.getCmp("faultRea2").getValue(),
+            'V_V_FAULT_YY': faultR,
             'V_V_FINDTIME': Ext.getCmp("begintime2").getSubmitValue(),
             'V_V_FAULT_XX': Ext.getCmp("faultDesc2").getValue(),
             'V_V_JJBF': Ext.getCmp("faultSol2").getValue(),
@@ -1576,7 +1587,7 @@ function _agree() {
             'V_V_FILE_GUID': V_V_FILE_GUID,
             'V_V_INTIME': Ext.Date.format(new Date(), 'Y-m-d'),
             'V_V_PERCODE': V_V_PERSONCODE,
-            'V_V_IP': V_V_IP,
+            'V_V_IP': '',
             'V_V_FAULT_NAME':Ext.getCmp("faultname2").getValue(),
             'V_V_FAULT_PART':Ext.getCmp("faultpart2").getValue(),
             'V_V_FAULT_CLGC':Ext.getCmp("faultclgc2").getValue(),
@@ -1600,26 +1611,22 @@ function _agree() {
             var data = Ext.decode(response.responseText);//后台返回的值
             if (data.RET=='Success') {//成功，会传回true
                 Ext.Ajax.request({
-                    url: AppUrl + 'Activiti/TaskComplete',
-                    type: 'ajax',
+                    url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
                     method: 'POST',
+                    type: 'ajax',
                     params: {
-                        taskId: taskId,
-                        idea: '通过',
-                        parName: [V_NEXT_SETP, "flow_yj"],
-                        parVal: [Ext.getCmp('nextPer').getValue(), spyj],
-                        processKey: processKey,
-                        businessKey: V_ORDERGUID,
-                        V_STEPCODE: V_STEPCODE,
-                        V_STEPNAME: V_STEPNAME,
-                        V_IDEA: '请审批！',
-                        V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                        V_INPER: Ext.util.Cookies.get('v_personcode')
+                        V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                        V_V_GUID: $.url().param("V_ORDERGUID"),
+                        V_V_STATE: '1',//审核中
+                        V_DEFECT_STATE:'50'//已计划
+
                     },
-                    success: function (response) {
-                        var resp = Ext.decode(response.responseText);
-                        if (resp.ret == '任务提交成功') {
-                            Ext.Ajax.request({
+
+                    success: function (ret) {
+                        var resp = Ext.decode(ret.responseText);
+                        if (resp.RET == 'SUCCESS') {
+
+                           /* Ext.Ajax.request({
                                 url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
                                 method: 'POST',
                                 async: false,
@@ -1630,55 +1637,74 @@ function _agree() {
                                     'V_V_STEPCODE': V_STEPCODE,
                                     'V_V_STEPNEXT_CODE': V_NEXT_SETP
                                 },
-                                success: function (ret) {
-                                    var resp = Ext.JSON.decode(ret.responseText);
-                                    if (resp.V_INFO == 'success') {
+                                success: function (resp) {
+                                    var resp = Ext.JSON.decode(resp.responseText);
+                                    if (resp.V_INFO == 'success') {*/
                                         Ext.Ajax.request({
-                                            url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
-                                            method: 'POST',
+                                            url: AppUrl + 'Activiti/TaskComplete',
                                             type: 'ajax',
+                                            method: 'POST',
                                             params: {
-                                                V_V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-                                                V_V_GUID: $.url().param("V_ORDERGUID"),
-                                                V_V_STATE: '1',//审核中
-                                                V_DEFECT_STATE:'50'//已计划
-
+                                                taskId: taskId,
+                                                idea: '通过',
+                                                parName: [V_NEXT_SETP, "flow_yj"],
+                                                parVal: [Ext.getCmp('nextPer').getValue(), spyj],
+                                                processKey: processKey,
+                                                businessKey: V_ORDERGUID,
+                                                V_STEPCODE: V_STEPCODE,
+                                                V_STEPNAME: V_STEPNAME,
+                                                V_IDEA: '请审批！',
+                                                V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                                                V_INPER: Ext.util.Cookies.get('v_personcode')
                                             },
-                                            success: function (resp) {
-                                                var resp = Ext.decode(resp.responseText);
-                                                if (resp.RET == 'SUCCESS') {
+                                            success: function (response) {
+                                                var resp = Ext.decode(response.responseText);
+                                                if (resp.ret == '任务提交成功') {
                                                     window.close();
                                                     window.opener.OnPageLoad();
                                                 } else {
-                                                    Ext.Msg.alert('提示', '事故修改状态失败！');
+                                                    Ext.MessageBox.alert('提示', '任务提交失败');
                                                 }
-                                            },failure: function (resp) {//访问到后台时执行的方法。
+                                            },
+                                            failure: function (response) {//访问到后台时执行的方法。
                                                 Ext.MessageBox.show({
                                                     title: '错误',
-                                                    msg: resp.responseText,
+                                                    msg: response.responseText,
                                                     buttons: Ext.MessageBox.OK,
                                                     icon: Ext.MessageBox.ERROR
                                                 })
                                             }
                                         });
 
+                                   /* } else {
+                                        Ext.Msg.alert('提示', '事故修改状态失败！');
                                     }
+                                },failure: function (resp) {//访问到后台时执行的方法。
+                                    Ext.MessageBox.show({
+                                        title: '错误',
+                                        msg: resp.responseText,
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.ERROR
+                                    })
                                 }
-                            });
+                            });*/
 
-                        } else {
-                            Ext.MessageBox.alert('提示', '任务提交失败');
+                        }else{
+                            Ext.Msg.alert('提示', '事故修改状态失败！');
                         }
-                    },
-                    failure: function (response) {//访问到后台时执行的方法。
+                    },failure: function (ret) {//访问到后台时执行的方法。
+
                         Ext.MessageBox.show({
                             title: '错误',
-                            msg: response.responseText,
+                            msg: ret.responseText,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.ERROR
                         })
                     }
-                })
+                });
+
+
+
             } else {
                 Ext.MessageBox.show({
                     title: '错误',
@@ -1691,7 +1717,7 @@ function _agree() {
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
                 title: '错误',
-                msg: response.responseText,
+                msg: '修改内容失败',//response.responseText
                 buttons: Ext.MessageBox.OK,
                 icon: Ext.MessageBox.ERROR
             })
@@ -1717,8 +1743,16 @@ function _reject() {
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
-            window.close();
-            window.opener.OnPageLoad();
+            Ext.MessageBox.show({
+                title: '提示',
+                msg: '已撤销完结',
+                buttons: Ext.MessageBox.OK,
+                fn: function () {
+                    window.close();
+                    window.opener.OnPageLoad();
+                }
+            });
+
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
@@ -1751,15 +1785,7 @@ function OnButtonNoOver() {
                                 var resp=Ext.decode(response.responseText);
                                 if(resp.RET=='SUCCESS'){
                                     _reject();
-                                    Ext.MessageBox.show({
-                                        title: '提示',
-                                        msg: '已撤销完结',
-                                        buttons: Ext.MessageBox.OK,
-                                        fn: function () {
 
-                                            _seltctFault();
-                                        }
-                                    });
                                 }else{
 
                                     Ext.MessageBox.show({

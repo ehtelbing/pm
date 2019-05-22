@@ -28,9 +28,23 @@ if (location.href.split('?')[1] != undefined) {
     V_V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_V_ORDERGUID;
 
 }
-
+var today = new Date();
+var YEAR = today.getFullYear();
 Ext.onReady(function () {
+    var dt = new Date();
+    var thisYear = dt.getFullYear();
+    var years = [];
+    for (var i = 2013; i <= thisYear + 1; i++) years.push({displayField: i, valueField: i});
 
+    var yearStore = Ext.create("Ext.data.Store", {
+        storeId: 'yearStore',
+        fields: ['displayField', 'valueField'],
+        data: years,
+        proxy: {
+            type: 'memory',
+            reader: {type: 'json'}
+        }
+    });
     var buttonPanel = Ext.create('Ext.Panel', {
         id : 'buttonPanel',
         border: false,
@@ -39,6 +53,13 @@ Ext.onReady(function () {
             style : 'margin:2px'
         },
         items : [ {
+            id: 'year',
+            allowBlank: false,
+            fieldLabel: '年份',
+            store: yearStore,
+            value: YEAR,
+            labelWidth: 90
+        },{
             xtype: 'button',
             text: '选择',
             icon: imgpath + '/saved.png',
@@ -233,7 +254,7 @@ Ext.onReady(function () {
     Ext.data.StoreManager.lookup('faultItemStore').on('beforeload',function(store) {
         store.proxy.extraParams.V_V_ORGCODE = V_V_ORGCODE;
         store.proxy.extraParams.V_V_DEPTCODE = V_V_DEPTCODE;
-
+        store.proxy.extraParams.V_V_YEAR = Ext.getCmp('year').getSubmitValue();
         store.proxy.extraParams.V_V_PAGE= Ext.getCmp('page').store.currentPage;
         store.proxy.extraParams.V_V_PAGESIZE= Ext.getCmp('page').store.pageSize;
     });

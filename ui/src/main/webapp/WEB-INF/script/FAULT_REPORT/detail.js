@@ -284,16 +284,16 @@ Ext.onReady(function () {
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
                     readOnly:true,
-                    width: 280
+                    width: 270
                 },{
                     xtype: 'textfield',
                     id: 'V_V_DEPTCODE2',
                     fieldLabel: '作业区',
                     labelWidth: 70,
-                    style: ' margin: 5px 0px 0px -8px',
+                    style: ' margin: 5px 0px 0px -3px',
                     labelAlign: 'right',
                     readOnly:true,
-                    width: 280
+                    width: 270
                 }
 
                 ]
@@ -311,7 +311,7 @@ Ext.onReady(function () {
                     labelAlign: 'right',
                     hidden:true,
                     readOnly:true,
-                    width: 270
+                    width: 260
                 },{
                     xtype: 'label',
                     width: 5,
@@ -329,7 +329,7 @@ Ext.onReady(function () {
                     readOnly:true,
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
-                    width: 280
+                    width: 270
                 }
 
                 ]
@@ -347,17 +347,17 @@ Ext.onReady(function () {
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
                     readOnly:true,
-                    width: 280
+                    width: 270
 
                 },{
                     xtype: 'textfield',
                     id: 'faultLevel2',
                     fieldLabel: '事故等级',
                     labelWidth: 70,
-                    style: ' margin: 5px 0px 0px -8px',
+                    style: ' margin: 5px 0px 0px -3px',
                     labelAlign: 'right',
                     readOnly:true,
-                    width: 280
+                    width: 270
 
                 }
 
@@ -379,7 +379,7 @@ Ext.onReady(function () {
                     labelWidth: 70,
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
-                    width: 280,
+                    width: 270,
                     baseCls: 'margin-bottom'
                 },{
                     id: 'endtime2',
@@ -393,7 +393,7 @@ Ext.onReady(function () {
                     labelWidth: 70,
                     style: ' margin: 5px 0px 0px -3px',
                     labelAlign: 'right',
-                    width: 280,
+                    width: 270,
                     baseCls: 'margin-bottom'
                 },{
                     xtype: 'textfield',
@@ -404,7 +404,7 @@ Ext.onReady(function () {
                     labelWidth: 70,
                     style: ' margin: 5px 0px 0px -3px',
                     labelAlign: 'right',
-                    width: 280 }
+                    width: 270 }
 
                 ]
             },{
@@ -421,7 +421,7 @@ Ext.onReady(function () {
                         labelWidth: 70,
                         style: ' margin: 5px 0px 0px -8px',
                         labelAlign: 'right',
-                        width: 280
+                        width: 270
                     },
                     {
                         xtype: 'textfield',
@@ -431,7 +431,7 @@ Ext.onReady(function () {
                         readOnly:true,
                         style: ' margin: 5px 0px 0px -3px',
                         labelAlign: 'right',
-                        width: 280
+                        width: 270
                     }
 
                 ]
@@ -452,7 +452,7 @@ Ext.onReady(function () {
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
                     readOnly:true,
-                    width: 280,
+                    width: 270,
                     baseCls: 'margin-bottom'
                 },{
                     id: 'repairtime2',
@@ -466,7 +466,7 @@ Ext.onReady(function () {
                     readOnly:true,
                     style: ' margin: 5px 0px 0px -3px',
                     labelAlign: 'right',
-                    width: 280,
+                    width: 270,
                     baseCls: 'margin-bottom'
                 }
                 ]
@@ -490,7 +490,7 @@ Ext.onReady(function () {
                         readOnly:true,
                         hideTrigger: true,
                         allowBlank: false,
-                        width: 280
+                        width: 240
                     },{
                         xtype: 'label',
                         style: ' margin: 8px 0px 0px 4px',
@@ -508,7 +508,7 @@ Ext.onReady(function () {
                         labelWidth: 70,
                         style: ' margin: 5px 0px 0px -1px',
                         labelAlign: 'right',
-                        width: 240,
+                        width: 270,
                         baseCls: 'margin-bottom'
                     }
 
@@ -600,7 +600,7 @@ Ext.onReady(function () {
                         name: 'faultRea2',
                         labelAlign: 'right',
                         style: ' margin: 5px 0px 0px -8px',
-                        readOnly:true,
+                        disabled :true,
                         width: 557,  //宽度220
                         labelWidth: 70,
                         columns: 4,  //在上面定义的宽度上展示3列
@@ -841,7 +841,7 @@ Ext.onReady(function () {
                 }]},{
                     columnWidth: 1,
                     height: 225,
-                    width: 550,
+                    width: 530,
                     margin: '10px 0px 0px 0px',
                     items: filegridPanel2
             }
@@ -873,7 +873,7 @@ Ext.onReady(function () {
             {
                 region : 'east',
                 border : false,
-                width : 650,
+                width : 600,
                 items : [ addPanel2,uploadpanel2]
             }
 
@@ -910,7 +910,7 @@ function _init() {
 
                     Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPENAME);
                     Ext.getCmp('begintime2').setValue(resp.RET[0].V_FINDTIME);
-                    Ext.getCmp('faultRea2').setValue(resp.RET[0].V_FAULT_YY);
+                    // Ext.getCmp('faultRea2').setValue(resp.RET[0].V_FAULT_YY);
                     Ext.getCmp('faultDesc2').setValue(resp.RET[0].V_FAULT_XX);
                     Ext.getCmp('faultLevel2').setValue(resp.RET[0].V_FAULT_LEVELNAME);
                     Ext.getCmp('faultSol2').setValue(resp.RET[0].V_JJBF);
@@ -932,15 +932,34 @@ function _init() {
                     Ext.getCmp('faultjg2').setValue(resp.RET[0].V_FAULT_PASS);
                     Ext.getCmp('faultReafx2').setValue(resp.RET[0].V_CAUSEANALYSIS);
                     Ext.getCmp('faultqxfa2').setValue(resp.RET[0].V_REPAIR_PLAN);
+
+                    if(resp.RET[0].V_FAULT_YY!='') {
+                        var str = resp.RET[0].V_FAULT_YY;
+                        var i=0;
+                        Ext.getCmp('faultRea2').items.each(function (c) {
+                            if (str.indexOf(c.boxLabel) != -1) {
+                                c.setValue(true);
+                                i+=1;
+                            }
+                        });
+                        var arr=resp.RET[0].V_FAULT_YY.split(",");
+                        if(arr.length>i){
+                            Ext.getCmp('faultRea22').setValue(arr[arr.length-1]);
+                        }
+
+                    }
+
+
                     V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
                     V_V_FILE_GUID=resp.RET[0].V_FILE_GUID;
                     filequery2(V_V_GUID);
                     _selectGridPanel();
-                    if(resp.RET[0].V_STATE=='3'){
+                    if(resp.RET[0].V_STATE=='11'){
                         Ext.getCmp('insertFilesFj2').disable();
                         Ext.getCmp('V_V_FILEBLOB2').disable();
                         Ext.getCmp('filegridPanel2').disable();
-
+                        Ext.getCmp('equGridpanel').disable();
+                        Ext.getCmp('faultname2').setReadOnly(true);
                     }
                     // _selectsubequName2();
                     // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);

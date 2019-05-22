@@ -120,8 +120,8 @@ function _selectGridPanel() {
     gridStore.load();
 }
 function _opengd(value){
-    var owidth = window.document.body.offsetWidth;
-    var oheight = window.document.body.offsetHeight;
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight;
     window.open(AppUrl + "page/FAULT_1405/workorder.html?V_GUID=" + V_V_GUID+"&V_EQUCODE="+value,
         "", 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
