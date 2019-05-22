@@ -5198,5 +5198,95 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
     logger.info("end YEAR_TO_MONTH_CH_WEEK_SIGN");
     return result;
 }
+  //工单附件上传
+    public Map WORK_FILE_INSERT(String V_WORKGUID, String V_FILEGUID,String V_FILENAME, InputStream V_FILEBLOB, String V_FILETYPE,
+                                String V_INTIME, String V_INPER, String V_REMARK, String V_BLANK, String V_FROMPAGE) throws SQLException {
+        logger.info("begin WORK_FILE_INSERT");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call WORK_FILE_INSERT" + "(:V_WORKGUID,:V_FILEGUID,:V_FILENAME,:V_FILEBLOB,:V_FILETYPE," +
+                    ":V_INTIME,:V_INPER,:V_REMARK,:V_BLANK,:V_FROMPAGE,:RET)}");
+            cstmt.setString("V_WORKGUID", V_WORKGUID);
+            cstmt.setString("V_FILEGUID", V_FILEGUID);
+            cstmt.setString("V_FILENAME",V_FILENAME);
+            cstmt.setBlob("V_FILEBLOB", V_FILEBLOB);
+            cstmt.setString("V_FILETYPE", V_FILETYPE);
+            cstmt.setString("V_INTIME", V_INTIME);
+            cstmt.setString("V_INPER", V_INPER);
+            cstmt.setString("V_REMARK", V_REMARK);
 
+            cstmt.setString("V_BLANK", V_BLANK);
+            cstmt.setString("V_FROMPAGE", V_FROMPAGE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end WORK_FILE_INSERT");
+        return result;
+    }
+    //工单附件查找
+    public Map WORK_FILE_SELECT(String V_WOEKGUID,String V_PERCODE)throws  SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin WORK_FILE_INSERT");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call WORK_FILE_SELECT(:V_WOEKGUID,:V_PERCODE,:RET)}");
+            cstmt.setString("V_WOEKGUID",V_WOEKGUID);
+            cstmt.setString("V_PERCODE",V_PERCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end WORK_FILE_INSERT");
+        return result;
+    }
+    //工单附件删除 WORK_FILE_DEL
+    public Map WORK_FILE_DEL(String V_WORKGUID,String V_FILEGUID)throws  SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin WORK_FILE_DEL");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call WORK_FILE_DEL(:V_WORKGUID,:V_FILEGUID,:RET)}");
+            cstmt.setString("V_WORKGUID",V_WORKGUID);
+            cstmt.setString("V_FILEGUID",V_FILEGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        }
+        catch(SQLException e){
+            logger.error(e);
+        }finally{
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end WORK_FILE_DEL");
+        return result;
+    }
 }

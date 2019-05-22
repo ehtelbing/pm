@@ -142,7 +142,143 @@ $(function () {
     $("#btnGS").click(function () {
         ReturnIsToTask();
     });
+//附件查找  //--UPDATE 2019-5-22
+    var fileview=Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'fileview',
+        fields: ['FILEGUID', 'FILENAME', 'FILETYPECODE', 'FINTIME', 'FINPER','FPAGESIGN'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/WORK_FILE_SELECT',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams: {
+                V_WOEKGUID: V_ORDERGUID,
+                V_PERCODE:Ext.util.Cookies.get("v_personcode")
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
 
+    var filegrid=Ext.create("Ext.grid.Panel", {
+        id: 'filegrid',
+        region: 'center',
+        height: '100%',
+        width: '100%',
+        columnLines: true,
+        store: fileview,
+        autoScroll: true,
+        margin: '10px 0px 0px 15px',
+        //colspan: 3,
+        columns: [{
+            text:'附件编码',
+            hide:true,
+            dataIndex:'FILEGUID'
+        },{
+            text: '附件名称',
+            flex: 0.6,
+            width:340,
+            id : 'fjname',
+            align: 'center',
+            dataIndex: "FILENAME"
+            //renderer: _downloadRander
+        }, {
+            text: '操作',
+            flex: 0.4,
+            width:340,
+            align: 'center',
+            renderer: _delRander
+        }]
+    });
+
+
+    var fileUpwin=Ext.create('Ext.window.Window',{
+        id:'fileUpwin',
+        title:'附件添加窗口',
+        closeAction:'hide',
+        layout: 'vbox',
+        width: 880,
+        height: 400,
+        modal: true,
+        plain: true,
+        bodyPadding: 10,
+        items: [{
+            xtype: 'form',
+            id:'uploadFile',
+            region: 'north',
+            layout: 'hbox',
+            fileUpload:true,
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: "filefield",
+                name: 'FIEL',
+                id: "FIEL",
+                enctype: "multipart/form-data",
+                fieldLabel: "上传附件",
+                fileUpload: true,
+                allowBlank: false,
+                labelWidth: 100,
+                width: 440,
+                labelStyle: 'color:red;font-weight:bold',
+                margin: '5px 0px 5px 5px',
+                emptyText: '请选择文件',
+                buttonText: '浏览',
+                invalidText: '文件格式不正确'
+            }, {
+                id: 'insertFilesFj2',
+                xtype: 'button',
+                text: '上传',
+                style: ' margin: 5px 0px 0px 15px',
+                handler: _upLoadFile
+            }, {
+                xtype: 'hidden',
+                name: 'V_WORKGUID',
+                id: 'V_WORKGUID'
+            }, {
+                xtype: 'hidden',
+                name: 'V_FILEGUID',
+                id: 'V_FILEGUID'
+            },  {
+                xtype: 'hidden',
+                name: 'V_FILENAME',
+                id: 'V_FILENAME'
+            }, {
+                xtype: 'hidden',
+                name: 'V_INTIME',
+                id: 'V_INTIME'
+            }, {
+                xtype: 'hidden',
+                name: 'V_INPER',
+                id: 'V_INPER'
+            }, {
+                xtype: 'hidden',
+                name: 'V_REMARK',
+                id: 'V_REMARK'
+            }, {
+                xtype: 'hidden',
+                name: 'V_BLANK',
+                id: 'V_BLANK'
+            }, {
+                xtype: 'hidden',
+                name: 'V_FROMPAGE',
+                id: 'V_FROMPAGE'
+            }
+
+            ]
+        } ,{
+            columnWidth: 1,
+            height: 380,
+            width: 800,
+            items: filegrid
+        }],
+        closable: true,
+        model: true
+    });
 });
 
 function getAssignee() {
@@ -849,4 +985,99 @@ function ConfirmAccept() {
             })
         }
     })
+}
+//附件上传
+function _fjsc(){
+    Ext.data.StoreManager.lookup("fileview").load();
+    Ext.getCmp("fileUpwin").show();
+}
+function _delRander(a, value, metaData) {
+    return '<a href="javascript:onDel(\'' + metaData.data.FILEGUID + '\')">删除</a>';
+}
+function onDel(fileguid) {
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/WORK_FILE_DEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_WORKGUID:V_ORDERGUID,
+            V_FILEGUID: fileguid
+        },
+        success: function (response) {
+            var data = Ext.JSON.decode(response.responseText);
+
+            if (data.RET == 'SUCCESS') {
+                Ext.Msg.alert('成功', '删除附件成功');
+                filequery(V_ORDERGUID);
+            } else {
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: data.message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                });
+            }
+        },
+        failure: function (resp) {
+            Ext.Msg.alert('提示信息', '删除失败');
+        }
+    });
+}
+function _upLoadFile() {
+    var uploadFile = Ext.getCmp('uploadFile');
+    var V_FIEL = Ext.getCmp('FIEL').getSubmitValue();
+    var V_V_FILENAME = V_FIEL.substring(0, V_FIEL.indexOf('.'));
+
+    Ext.getCmp('V_WORKGUID').setValue(V_ORDERGUID);
+    Ext.getCmp('FIEL').setValue(V_FIEL);
+    Ext.getCmp('V_FILENAME').setValue(V_V_FILENAME);
+    //  Ext.getCmp('V_TYPE').setValue(V_TYPE);
+    Ext.getCmp('V_INTIME').setValue(Ext.Date.format(new Date(),'Y/m/d'));
+    // Ext.getCmp('V_INPER').setValue(Ext.util.Cookies.get('v_deptcode'));
+    Ext.getCmp('V_INPER').setValue(Ext.util.Cookies.get('v_personcode'));
+    Ext.getCmp('V_REMARK').setValue("");
+    Ext.getCmp('V_BLANK').setValue("");
+    Ext.getCmp('V_FROMPAGE').setValue(decodeURI(Ext.util.Cookies.get("v_orgname"))+document.title);
+
+    //if(uploadFile.form.isValid()){
+    if (Ext.getCmp('FIEL').getValue() == '') {
+        Ext.Msg.alert('错误', '请选择你要上传的文件');
+        return;
+    }
+    Ext.MessageBox.show({
+        title: '请等待',
+        msg: '文件正在上传...',
+        progressText: '',
+        width: 300,
+        progress: true,
+        closable: false,
+        animEl: 'loding'
+
+    });
+
+    uploadFile.getForm().submit({
+        url: AppUrl + 'dxfile/WORK_FILE_INSERT',
+        method: 'POST',
+        async: false,
+        waitMsg: '上传中...',
+        success: function (form, action) {
+            var massage = action.result.message;
+            if (massage == "{RET=SUCCESS}") {
+                Ext.Msg.alert('成功', '上传成功');
+                filequery(V_ORDERGUID);
+            }
+        },
+        failure: function (resp) {
+            Ext.Msg.alert('错误', '上传失败');
+        }
+
+    });
+}
+function filequery(V_ORDERGUID) {
+    Ext.data.StoreManager.lookup('fileview').load({
+        params: {
+            V_WOEKGUID: V_ORDERGUID,
+            V_PERCODE:Ext.util.Cookies.get("v_personcode")
+        }
+    });
 }

@@ -14,6 +14,10 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -4283,6 +4287,51 @@ public class Dx_fileController {
                                                            HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = dx_fileService.YEAR_TO_MONTH_CH_WEEK_SIGN(V_WEEKGUID);
+        return result;
+    }
+
+    @RequestMapping(value = "WORK_FILE_INSERT")
+    @ResponseBody
+    public ResponseEntity<String> WORK_FILE_INSERT(@RequestParam(value = "FIEL") MultipartFile FILE,
+                                                       @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
+                                                       @RequestParam(value = "V_FILEGUID") String V_FILEGUID,
+                                                       @RequestParam(value = "V_FILENAME") String V_FILENAME,
+                                                       @RequestParam(value = "V_INTIME") String V_INTIME ,
+                                                       @RequestParam(value = "V_INPER") String V_INPER ,
+                                                       @RequestParam(value = "V_REMARK") String V_REMARK,
+                                                       @RequestParam(value = "V_BLANK") String V_BLANK,
+                                                       @RequestParam(value = "V_FROMPAGE") String V_FROMPAGE,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_HTML);
+        String filename=FILE.getOriginalFilename();
+
+        Map<String, Object> result = dx_fileService.WORK_FILE_INSERT(V_WORKGUID,V_FILEGUID,filename, FILE.getInputStream(), FILE.getContentType(),V_INTIME, V_INPER, V_REMARK,V_BLANK,V_FROMPAGE);
+        String list = (String) result.get("RET");
+        String json= "{\"success\":true,\"message\":\""+result+"\"}";
+        return new ResponseEntity<String>(json, responseHeaders, HttpStatus.OK);
+    }
+
+    //工单附件查找
+    @RequestMapping(value = "WORK_FILE_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> WORK_FILE_SELECT(@RequestParam(value = "V_WOEKGUID") String V_WOEKGUID,
+                                                          @RequestParam(value="V_PERCODE") String V_PERCODE,
+                                                          HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.WORK_FILE_SELECT(V_WOEKGUID,V_PERCODE);
+        return result;
+    }
+
+    //工单附件删除
+    @RequestMapping(value = "WORK_FILE_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> WORK_FILE_DEL(@RequestParam(value = "V_WORKGUID") String V_WORKGUID,
+                                                @RequestParam(value="V_FILEGUID") String V_FILEGUID,
+                                                HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.WORK_FILE_DEL(V_WORKGUID,V_FILEGUID);
         return result;
     }
 
