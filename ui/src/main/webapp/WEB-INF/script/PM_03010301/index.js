@@ -1022,8 +1022,9 @@ function OnButtonEditClicked() {
         V_WEEKPLAN_GUID = seldata[0].data.V_GUID;
         // window.open(AppUrl + 'page/PM_03010310/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
         //     + "&endUpTime=" + Ext.getCmp("endtime").getValue()  +'&WSIGN='+1+'', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
-        window.open(AppUrl + 'page/PM_03010318/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("starttime").getValue()
-            + "&endUpTime=" + Ext.getCmp("endtime").getValue()  +'&WSIGN='+1+'', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+        window.open(AppUrl + 'page/PM_03010318/index.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID + "&startUpTime=" + Ext.getCmp("zks").getValue() //Ext.getCmp("starttime").getValue()
+            + "&endUpTime=" + Ext.getCmp("zjs").getValue() //Ext.getCmp("endtime").getValue()
+            +'&WSIGN='+1+'', 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
     }else {
         Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
     }

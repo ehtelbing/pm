@@ -981,7 +981,8 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
         },{
             xtype: 'numberfield',
             id: 'jhgs',
-            fieldLabel: '计划工时',
+            // fieldLabel: '计划工时',
+            fieldLabel:'计划工期',
             // margin: '5 5 5 10',
             labelWidth: 60,
             width: 160,
@@ -990,6 +991,10 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             minValue:0
         },
 
+        {xtype:'label',
+        id:"dw",
+            width:'7',
+        text:'（小时）'},
         {
             xtype: 'numberfield',
             id: 'jhts',
@@ -999,7 +1004,8 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             // margin: '5 5 5 10',
             labelAlign: 'right',
             value: 0,
-            minValue:0
+            minValue:0,
+            hidden:true
         } ,
         {
             xtype: 'datefield',

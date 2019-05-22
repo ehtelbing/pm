@@ -29,7 +29,6 @@ if (location.href.split('?')[1] != undefined) {
     WEEK=Ext.urlDecode(location.href.split('?')[1]).WEEK;
     startUpTime=Ext.urlDecode(location.href.split('?')[1]).startUpTime;
     endUpTime=Ext.urlDecode(location.href.split('?')[1]).endUpTime;
-
 }
 if(location.href.split('?')[1]!=undefined){
     V_WEEKPLAN_GUID=Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID;
@@ -1680,10 +1679,10 @@ function OnButtonSaveClick() {
         return;
     }
 
-    if(Ext.getCmp('expectage').getValue()=="0"){
-        Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
-        return;
-    }
+    // if(Ext.getCmp('expectage').getValue()=="0"){
+    //     Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
+    //     return;
+    // }
     if(Ext.getCmp('repairper').getValue()=="0"){
         Ext.Msg.alert('消息','维修人数不可为0，请选择相关信息');
         return;
@@ -1758,6 +1757,20 @@ function OnButtonSaveClick() {
     }
 
 
+    //修改月计划缺陷标记
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/YEAR_TO_MONTH_CH_WEEK_SIGN',
+        method:'POST',
+        params:{
+            V_WEEKGUID:wguid
+        },
+        success:function(response){
+            var resp=Ext.decode(response.responseText);
+            if(resp.RET=='SUCCESS'){
+
+            }
+        }
+    });
     //保存
     Ext.Ajax.request({
         url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_NSET',

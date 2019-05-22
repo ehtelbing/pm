@@ -4262,6 +4262,29 @@ public class Dx_fileController {
         return result;
     }
 
+    //月计划设备关联其他缺陷查找
+    @RequestMapping(value = "PRO_PM_07_DEFECT_SELECT_EQU", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_SELECT_EQU(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                       @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                           @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                       HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_PM_07_DEFECT_SELECT_EQU(V_V_STATECODE, X_PERSONCODE,V_V_EQUCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+    //生成周计划的月计划关联缺陷标记
+    @RequestMapping(value = "YEAR_TO_MONTH_CH_WEEK_SIGN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> YEAR_TO_MONTH_CH_WEEK_SIGN(@RequestParam(value = "V_WEEKGUID") String V_WEEKGUID,
+                                                           HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.YEAR_TO_MONTH_CH_WEEK_SIGN(V_WEEKGUID);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

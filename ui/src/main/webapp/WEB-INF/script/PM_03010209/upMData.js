@@ -1317,11 +1317,11 @@ function OnButtonSaveClick() {
 
 function OnButtonSaveDate(){
 
-
-    if(Ext.getCmp('expectage').getValue()=="0"){
-        Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
-        return;
-    }
+    //
+    // if(Ext.getCmp('expectage').getValue()=="0"){
+    //     Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
+    //     return;
+    // }
     if(Ext.getCmp('repairper').getValue()=="0"){
         Ext.Msg.alert('消息','维修人数不可为0，请选择相关信息');
         return;

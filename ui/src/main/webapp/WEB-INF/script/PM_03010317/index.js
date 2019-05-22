@@ -11,6 +11,7 @@ var WEEKGUID="";
 var startUpTime="";
 var endUpTime="";
 var MGUID="";
+var MEQUCODE="";
 if(location.href.split('?')[1]!=undefined){
     WeekYear=Ext.urlDecode(location.href.split("?")[1]).Oyear;
     WeekMonth=Ext.urlDecode(location.href.split("?")[1]).Omonth;
@@ -156,6 +157,32 @@ Ext.onReady(function(){
             }
         }
     });
+    //缺陷按月计划设备查询
+    var mEgridStore = Ext.create('Ext.data.Store', {
+        id: 'mEgridStore',
+        pageSize: 15,
+        autoLoad: false,
+        fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
+            'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
+            'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
+            'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE'],
+
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/PRO_PM_07_DEFECT_SELECT_EQU',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list',
+                total: 'total'
+            }
+        }
+    });
+
 
     //月计划缺陷 PRO_PM_07_DEFECT_SEL_RE_MONTH
     var mdefStore= Ext.create('Ext.data.Store', {
@@ -190,6 +217,7 @@ Ext.onReady(function(){
         region:'north',
         border:false,
         height:'15%',
+        autoScroll:true,
         items:[
             {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
             {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
@@ -224,6 +252,7 @@ Ext.onReady(function(){
                 defPanelLoad(record.data.V_GUID);
                 MGUID=record.data.V_GUID;
                 MCK=record.data.V_ORGCODE;
+                MEQUCODE=record.data.V_EQUCODE;
             }
         }
         ,
@@ -260,6 +289,7 @@ Ext.onReady(function(){
         frame:true,
         border:false,
         height:'15%',
+        autoScroll:true,
         defaults:{
             labelAlign:'right',
             margin:'5 5 5 10'
@@ -483,8 +513,8 @@ function defPanelLoad(monthGuid){
     selesign=0;
     //缺陷查找下拉条件加载
   Ext.data.StoreManager.lookup("sqxzt").load();
+    //月计划关联缺陷查找
     defsel(monthGuid);
-
     Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('mdefStore'));
     var  chgrid=Ext.getCmp('dGridPanel');
     chgrid.store.reload();
@@ -504,14 +534,27 @@ function defsel(monthGuid){
 //其他缺陷查找
 function OtherDefselect(){
     selesign=1;
-    //月计划关联缺陷查找
+
     Ext.data.StoreManager.lookup("sqxzt").load();
-    mdefsel();
-    Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('gridStore'));
-    var  chgrid=Ext.getCmp('dGridPanel');
-    chgrid.store.reload();
-    Ext.getCmp('dGridPanel').getView().refresh();
+    if(MGUID==""){
+        //所有未处理缺陷查找
+        mdefsel();
+        Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('gridStore'));
+        var  chgrid=Ext.getCmp('dGridPanel');
+        chgrid.store.reload();
+        Ext.getCmp('dGridPanel').getView().refresh();
+    }
+    else{
+        //月计划设备下其他未处理缺陷
+        mEDefSel();
+        Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('mEgridStore'));
+        var  chgrid=Ext.getCmp('dGridPanel');
+        chgrid.store.reload();
+        Ext.getCmp('dGridPanel').getView().refresh();
+    }
+
 }
+//其他缺陷查找
 function mdefsel(){
     var agridStore =Ext.data.StoreManager.lookup('gridStore');
     agridStore.proxy.extraParams = {
@@ -520,6 +563,19 @@ function mdefsel(){
         V_V_PAGE: '',//Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: ''//Ext.getCmp('page').store.pageSize
     };
+}
+// 其他缺陷月计划设备下
+function mEDefSel(){
+
+    var agridStore =Ext.data.StoreManager.lookup('mEgridStore');
+    agridStore.proxy.extraParams = {
+        V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
+        X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+        V_V_EQUCODE:MEQUCODE,
+        V_V_PAGE: '',//Ext.getCmp('page').store.currentPage,
+        V_V_PAGESIZE:''//Ext.getCmp('page').store.pageSize
+    };
+
 }
 function itemclick(s, record, item, index, e, eOpts) {
 
@@ -545,7 +601,12 @@ function _selectOverhaulApply(){
         defsel();
     }
     else{
-        mdefsel();
+        if(MGUID=="") {
+            mdefsel();
+        }
+        else{
+            mEDefSel();
+        }
     }
 }
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
