@@ -84,11 +84,11 @@ public class InfoController {
     @RequestMapping(value = "login_dddl_n", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> login_dddl_n(@RequestParam(value = "USERID") String USERID,
-                                     @RequestParam(value = "PASSWORD") String PASSWORD,
+                                     @RequestParam(value = "V_V_IP") String V_V_IP,
                                      HttpServletRequest request)
             throws  SQLException {
 
-        Map<String, Object> result = infoService.login_dddl_n(USERID, PASSWORD);
+        Map<String, Object> result = infoService.login_dddl_n(USERID, V_V_IP);
         return result;
     }
 

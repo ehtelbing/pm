@@ -132,7 +132,7 @@ Ext.onReady(function () {
                 xtype: 'datefield',
                 editable: false,
                 format: 'Y/m/d',
-                value: new Date(new Date().getFullYear(), 0, 1),
+                value: Ext.Date.getFirstDateOfMonth(new Date()),
                 fieldLabel: '时间段选择',
                 labelWidth: 100,
                 baseCls: 'margin-bottom'
@@ -310,7 +310,7 @@ Ext.onReady(function () {
             hidden: true
         },*/ {
             text: '缺陷日期',
-            dataIndex: 'D_DEFECTDATE',
+            dataIndex: 'D_INDATE',
             align: 'center',
             width: 200,
             renderer: CreateGridColumnTd

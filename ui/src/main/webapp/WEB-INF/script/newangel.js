@@ -1,3 +1,8 @@
+var usercodeTemp = null;
+if (location.href.split('?')[1] != null) {
+    usercodeTemp = Ext.urlDecode(location.href.split('?')[1]).USERID;
+}
+
 function getPath() {
     var _location = document.location.toString();
     var applicationNameIndex = _location.indexOf('/',
@@ -29,6 +34,74 @@ var imgpath = APP + '/app/pm/images/gif';
 var dxImgPath=APP+'/app/pm/css/images';
 
 document.write('<script type="text/javascript" charset="UTF-8" src="../../../pm/resources/shared/examples.js"></script>');
+
+
+if (!(usercodeTemp == null)) {
+    Ext.Ajax.request({
+        url: AppUrl + 'info/login_dddl_n',
+        params: {
+            USERID: usercodeTemp,
+            V_V_IP: '设备平台单点登陆'
+        }, success: function (respon) {
+            var resp = Ext.decode(respon.responseText);
+            if (resp.list.length > 0) {
+                Ext.util.Cookies.set("v_class_code",
+                    encodeURI(resp.list[0].V_CLASS_CODE));
+                Ext.util.Cookies.set("v_orgname",
+                    encodeURI(resp.list[0].V_ORGNAME));
+                Ext.util.Cookies.set("v_rolename",
+                    encodeURI(resp.list[0].V_ROLENAME));
+                Ext.util.Cookies.set("v_loginname",
+                    encodeURI(resp.list[0].V_LOGINNAME));
+                Ext.util.Cookies.set("v_deptname",
+                    encodeURI(resp.list[0].V_DEPTNAME));
+                Ext.util.Cookies.set("v_rolecode",
+                    resp.list[0].V_ROLECODE);
+                Ext.util.Cookies.set("v_personcode",
+                    resp.list[0].I_PERSONID);
+                Ext.util.Cookies.set("v_postname",
+                    encodeURI(resp.list[0].V_POSTNAME));
+                Ext.util.Cookies.set("v_depttypecode",
+                    encodeURI(resp.list[0].V_DEPTTYPE));
+                Ext.util.Cookies.set("v_postcode",
+                    resp.list[0].V_POSTCODE);
+                Ext.util.Cookies.set("v_password",
+                    resp.list[0].V_PASSWORD);
+                Ext.util.Cookies.set("v_orgCode",
+                    resp.list[0].V_ORGCODE);
+                Ext.util.Cookies.set("v_personname2",
+                    resp.list[0].V_PERSONNAME);
+                Ext.util.Cookies.set("v_personname",
+                    encodeURI(resp.list[0].V_PERSONNAME));
+                Ext.util.Cookies.set("v_deptcode",
+                    resp.list[0].V_DEPTCODE);
+                Ext.util.Cookies.set("v_deptfullname",
+                    encodeURI(resp.list[0].V_DEPTFULLNAME));
+                Ext.util.Cookies.set("v_deptsmallname",
+                    encodeURI(resp.list[0].V_DEPTSMALLNAME));
+                Ext.util.Cookies.set("v_orgname2",
+                    resp.list[0].V_ORGNAME);
+                Ext.util.Cookies.set("v_deptname2",
+                    resp.list[0].V_DEPTNAME);
+                Ext.util.Cookies.set("v_personname2",
+                    resp.list[0].V_PERSONNAME);
+                Ext.util.Cookies.set('v_workcss',
+                    resp.list[0].V_WORKCSS);
+            }
+            else{
+                Ext.Msg.alert('提示消息','用户不存在');
+            }
+        }
+    });
+
+}
+else{
+    if(Ext.util.Cookies.get('v_personcode')==undefined||Ext.util.Cookies.get('v_personcode')==''){
+        var currentUrl = window.location.href;
+        var eam_singlelogin_url = 'http://10.103.5.70:8080/oauth/authorize?client_id=e1fe5be3291e42bd9d350285074f0e2d&response_type=code&scope=user_info&redirect_uri=http%3A%2F%2F10.103.5.54%3A8080%2FORG_LDAP%2Fhuidiao.action&Referer='+currentUrl;
+        location.href = eam_singlelogin_url;
+    }
+}
 
 // Excel
 function createElement(elName, elValue) {

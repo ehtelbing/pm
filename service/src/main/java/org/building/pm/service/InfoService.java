@@ -251,7 +251,7 @@ public class InfoService {
         return result;
     }
 
-    public Map<String,Object> login_dddl_n(String userid, String password) throws SQLException {
+    public Map<String,Object> login_dddl_n(String userid, String V_V_IP) throws SQLException {
         logger.info("begin PRO_BASE_PERSON_LOGIN_DDDL_N");
         logger.debug("params:V_V_USERID:" + userid);
 
@@ -262,9 +262,9 @@ public class InfoService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN_DDDL_N(:V_V_USERID,:V_V_PASSWORD,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_BASE_PERSON_LOGIN_DDDL_N(:V_V_USERID,:V_V_IP,:V_CURSOR)}");
             cstmt.setString("V_V_USERID", userid);
-            cstmt.setString("V_V_PASSWORD",password);
+            cstmt.setString("V_V_IP",V_V_IP);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));

@@ -13,13 +13,13 @@ function Login() {
     if (location.href.split('?')[1] != null) {
 
         if (Ext.urlDecode(location.href.split('?')[1]).USERID != null && Ext.urlDecode(location.href.split('?')[1]).USERID != '') {
-            if (Ext.urlDecode(location.href.split('?')[1]).PASSWORD != null && Ext.urlDecode(location.href.split('?')[1]).PASSWORD != '') {
+            if (Ext.urlDecode(location.href.split('?')[1]).IP != null && Ext.urlDecode(location.href.split('?')[1]).IP != '') {
 
                 Ext.Ajax.request({
                     url: AppUrl + 'info/login_dddl_n',
                     params: {
                         USERID: Ext.urlDecode(location.href.split('?')[1]).USERID,
-                        PASSWORD: Ext.urlDecode(location.href.split('?')[1]).PASSWORD
+                        V_V_IP: Ext.urlDecode(location.href.split('?')[1]).IP
                     }, success: function (respon) {
                         var resp = Ext.decode(respon.responseText);
                         if (resp.list.length > 0) {
