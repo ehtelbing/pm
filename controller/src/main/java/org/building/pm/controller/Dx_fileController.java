@@ -1586,10 +1586,26 @@ public class Dx_fileController {
         return data;
     }
 
+    // 年计划查询
+    @RequestMapping(value = "PM_PLAN_YEAR_SEL_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_SEL_N(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map data = dx_fileService.PM_PLAN_YEAR_SEL_N(V_V_YEAR,V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY);
+        return data;
+    }
+
     // 年计划查询导出
     @RequestMapping(value = "YEAR_EXPORT_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void YEAR_EXPORT_EXCEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
@@ -1599,7 +1615,7 @@ public class Dx_fileController {
 
         List list = new ArrayList();
 
-        Map<String, Object> data = dx_fileService.PM_PLAN_YEAR_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY);
+        Map<String, Object> data = dx_fileService.PM_PLAN_YEAR_SEL_N(V_V_YEAR,V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, V_V_ZY);
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();

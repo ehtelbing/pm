@@ -9,7 +9,7 @@ if(location.href.split("?")[1]!=undefined){
     MainMONTH=Ext.urlDecode(location.href.split('?')[1]).MainMONTH;
     MainYEAR=Ext.urlDecode(location.href.split('?')[1]).MainYEAR;
 }
-for(var i=0;i<date.getFullYear()+3;i++){
+for(var i=date.getFullYear();i<date.getFullYear()+2;i++){
     years.push({id:i,value:i});
 }
 var yearStore=Ext.create('Ext.data.Store',{

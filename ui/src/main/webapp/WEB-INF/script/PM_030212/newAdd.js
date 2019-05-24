@@ -897,7 +897,6 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             fieldLabel: '检修单位',
             displayField: 'V_DEPTREPAIRNAME',
             valueField: 'V_DEPTREPAIRCODE',
-            // margin: '5 5 5 10',
             labelWidth: 60,
             width: 230,
             labelAlign: 'right'
@@ -911,7 +910,6 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             fieldLabel: '负责人',
             displayField: 'V_PERSONNAME',
             valueField: 'V_PERSONCODE',
-            // margin: '5 5 5 10',
             labelWidth: 60,
             width: 230,
             labelAlign: 'right'
@@ -921,9 +919,8 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             id: 'nf',
             fieldLabel: '年份',
             editable: false,
-            // margin: '5 5 5 10',
             labelWidth: 60,
-            width: 160,
+            width: 230,
             displayField: 'displayField',
             valueField: 'valueField',
             value: '',
@@ -934,9 +931,8 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             id: 'yf',
             fieldLabel: '月份',
             editable: false,
-            // margin: '5 5 5 10',
             labelWidth: 60,
-            width: 160,
+            width: 230,
             displayField: 'displayField',
             valueField: 'valueField',
             value: '',
@@ -948,7 +944,6 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             id: 'sblx',
             fieldLabel: '设备类型',
             editable: false,
-            // margin: '5 5 5 10',
             labelWidth: 60,
             width: 230,
             value: '',
@@ -966,7 +961,6 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             fieldLabel: '设备名称',
             editable: false,
             labelAlign: 'right',
-            // margin: '5 5 5 10',
             labelWidth: 60,
             width: 230,
             matchFieldWidth: false,
@@ -978,30 +972,13 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             listConfig: {
                 minWidth: 400
             }
-        },{
-            xtype: 'numberfield',
-            id: 'jhgs',
-            // fieldLabel: '计划工时',
-            fieldLabel:'计划工期',
-            // margin: '5 5 5 10',
-            labelWidth: 60,
-            width: 160,
-            labelAlign: 'right',
-            value: 0,
-            minValue:0
         },
-
-        {xtype:'label',
-        id:"dw",
-            width:'7',
-        text:'（小时）'},
         {
             xtype: 'numberfield',
             id: 'jhts',
             fieldLabel: '计划天数',
             labelWidth: 60,
-            width: 160,
-            // margin: '5 5 5 10',
+            width: 230,
             labelAlign: 'right',
             value: 0,
             minValue:0,
@@ -1012,7 +989,6 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             id: 'btime',
             editable: false,
             fieldLabel: '开工时间',
-            // margin: '5 5 5 10',
             labelWidth: 60,
             width: 230,
             labelAlign: 'right',
@@ -1024,7 +1000,6 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
             id: 'etime',
             editable: false,
             fieldLabel: '竣工时间',
-            // margin: '5 5 5 10',
             labelWidth: 60,
             width: 230,
             labelAlign: 'right',
@@ -1035,7 +1010,16 @@ var ToolpanelC = Ext.create('Ext.form.Panel', {
                     PlanHours();
                 }
             }
-        }
+        },{
+            xtype: 'numberfield',
+            id: 'jhgs',
+            fieldLabel:'计划工期',
+            labelWidth: 60,
+            width: 200,
+            labelAlign: 'right',
+            value: 0,
+            minValue:0
+        }, {xtype:'label',text:'（小时）'}
     ]
 });
 /*查看更多缺陷*/
@@ -3385,8 +3369,8 @@ function getYearDate() {
 
                 Ext.getCmp('sclb').setValue(resp.RET[0].SCLBCODE); //生产类别
                 Ext.getCmp('ProjectName').setValue(resp.RET[0].PRO_NAME);  // 项目名称
-                Ext.getCmp('btime').setValue(Ext.Date.format(new Date(btime),'Y/m')); // 停工时间
-                Ext.getCmp('etime').setValue(Ext.Date.format(new Date(etime),'Y/m')); // 竣工时间
+                Ext.getCmp('btime').setValue(btime); // 停工时间
+                Ext.getCmp('etime').setValue(etime); // 竣工时间
                 yearstate=resp.RET[0].STATE; //计划状态
                 yearid=resp.RET[0].YEARID;// 年计划单号
 

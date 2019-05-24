@@ -1817,6 +1817,35 @@ public class Dx_fileService {
         return result;
     }
 
+    public HashMap PM_PLAN_YEAR_SEL_N(String v_v_year, String v_v_orgcode, String v_v_deptcode, String v_v_percode, String v_v_zy) throws SQLException {
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_SEL_N");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_SEL_N(:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_PERCODE,:V_V_ZY,:RET)}");
+            cstmt.setString("V_V_YEAR", v_v_year);
+            cstmt.setString("V_V_ORGCODE", v_v_orgcode);
+            cstmt.setString("V_V_DEPTCODE", v_v_deptcode);
+            cstmt.setString("V_V_PERCODE", v_v_percode);
+            cstmt.setString("V_V_ZY", v_v_zy);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_SEL");
+        return result;
+    }
+
     // 年计划单条数据返回
     public HashMap PM_PLAN_YEAR_GETONE_SEL(String V_GUID) throws Exception, SQLException {
         HashMap result = new HashMap();
@@ -5289,4 +5318,6 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORK_FILE_DEL");
         return result;
     }
+
+
 }
