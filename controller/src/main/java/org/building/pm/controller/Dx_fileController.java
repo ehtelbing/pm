@@ -4350,6 +4350,22 @@ public class Dx_fileController {
         Map<String, Object> result = dx_fileService.WORK_FILE_DEL(V_WORKGUID,V_FILEGUID);
         return result;
     }
+    //维修简版查询
+    @RequestMapping(value = "PRO_PM_03_PLAN_YEAR_VIEW_E", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_YEAR_VIEW_E(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_QSTEXT") String V_V_QSTEXT,
+
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_03_PLAN_YEAR_VIEW_E(V_V_YEAR, V_V_ORGCODE,V_V_DEPTCODE,V_V_ZY,V_V_QSTEXT,V_V_PAGE,V_V_PAGESIZE);
+        return data;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

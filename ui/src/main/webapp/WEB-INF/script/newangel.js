@@ -36,7 +36,7 @@ var dxImgPath=APP+'/app/pm/css/images';
 document.write('<script type="text/javascript" charset="UTF-8" src="../../../pm/resources/shared/examples.js"></script>');
 
 
-if (!(usercodeTemp == null)) {
+/*if (!(usercodeTemp == null)) {
     Ext.Ajax.request({
         url: AppUrl + 'info/login_dddl_n',
         params: {
@@ -101,7 +101,7 @@ else{
         var eam_singlelogin_url = 'http://10.103.5.70:8080/oauth/authorize?client_id=e1fe5be3291e42bd9d350285074f0e2d&response_type=code&scope=user_info&redirect_uri=http%3A%2F%2F10.103.5.54%3A8080%2FORG_LDAP%2Fhuidiao.action&Referer='+currentUrl;
         location.href = eam_singlelogin_url;
     }
-}
+}*/
 
 // Excel
 function createElement(elName, elValue) {

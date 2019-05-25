@@ -1488,6 +1488,80 @@ public List<Map> PRO_MAINTAIN_SEL_FJ(String V_V_YEAR,String V_UPGRID) throws SQL
         logger.info("end PRO_MAINTAIN_SEL_FJ");
         return list;
     }
+    //维修计划 设备树
+    public List<Map> EQU_SELECT_FROM_DEPT_TO_WX(String V_V_PERSONCODE,String V_V_DEPTCODENEXT) throws SQLException {
+
+        logger.info("begin EQU_SELECT_FROM_DEPT_TO_WX");
+        HashMap result = new HashMap();
+        List<Map> list = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_GET_DEPTEQUTYPE_PER" + "(:V_V_PERSONCODE,:V_V_DEPTCODENEXT,:V_CURSOR)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            ResultSet rs = (ResultSet) cstmt.getObject("V_CURSOR");
+            while (rs.next()){
+                Map temp = new HashMap();
+                if(!rs.getString("V_EQUTYPECODE").toString().equals("%")) {
+                    temp.put("id", rs.getString("V_EQUTYPECODE"));
+                    temp.put("text", rs.getString("V_EQUTYPENAME"));
+                    temp.put("parentid", V_V_DEPTCODENEXT);
+                    temp.put("treeid", rs.getString("V_EQUTYPECODE"));
+                    String equtype=rs.getString("V_EQUTYPECODE").toString();
+                    Map child=PRO_PM_07_DEPTEQU_PER_DROP(V_V_PERSONCODE,V_V_DEPTCODENEXT,equtype);
+                    if(getEquTypeChild(child,equtype).size()>0){
+                    temp.put("expanded",false);
+                    temp.put("leaf", false);
+                    temp.put("children",getEquTypeChild(child,equtype));
+                    }
+                    else {
+                        temp.put("expanded",false);
+                        temp.put("leaf", true);
+                    }
+                    list.add(temp);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end EQU_SELECT_FROM_DEPT_TO_WX");
+        return list;
+    }
+
+    public List<Map> getEquTypeChild(Map map,String ParentCode){
+        List<Map> childlist=new ArrayList<>();
+        List<Map> child=new ArrayList<>();
+        if(map.size()>0) {
+            child = (List) map.get("children");
+            for(int i=0;i<child.size();i++) {
+                Map cmap = (Map) child.get(i);
+                Map childMap =new HashMap();
+                if((!cmap.get("id").equals("%"))&&cmap.get("parentid").equals(ParentCode)){
+                    childMap.put("id", cmap.get("id")); //V_EQUCODE
+                    childMap.put("text", cmap.get("text")); //V_EQUNAME
+                    childMap.put("expanded",false);
+                    childMap.put("leaf", true);
+                    childMap.put("parentid",ParentCode);
+                    childMap.put("treeid",cmap.get("treeid")); //V_EQUCODE
+                    childMap.put("V_EQUSITE", cmap.get("V_EQUSITE"));
+                    childMap.put("V_EQUSITENAME", cmap.get("V_EQUSITENAME"));
+                    childMap.put("V_EQUTYPECODE", cmap.get("V_EQUTYPECODE"));
+                    childMap.put("V_EQUTYPENAME", cmap.get("V_EQUTYPENAME"));
+                    childlist.add(childMap);
+                }
+            }
+        }
+        return childlist;
+    }
 
 
 }
