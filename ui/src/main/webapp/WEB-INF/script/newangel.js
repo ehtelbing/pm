@@ -38,7 +38,7 @@ var dxImgPath=APP+'/app/pm/css/images';
 document.write('<script type="text/javascript" charset="UTF-8" src="../../../pm/resources/shared/examples.js"></script>');
 
 var b=new Base64()
-if (!(usercodeTemp == null)) {
+if (usercodeTemp != null && usercodeTemp!='') {
 
     Ext.Ajax.request({
         url: AppUrl + 'info/login_dddl_n',
