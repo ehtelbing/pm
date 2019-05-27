@@ -214,6 +214,7 @@ Ext.onReady(function () {
             xtype: 'templatecolumn',
             align: 'center',
             width: 100,
+            hidden:true,
             tpl: '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
         }, {
             text: '作业区',

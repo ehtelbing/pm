@@ -241,4 +241,13 @@ public class TreeController {
         List<Map> map = treeService.PRO_MAINTAIN_SEL_WORK_FJ(V_V_YEAR, V_UPGRID);
         return map;
     }
+
+    ////维修计划 设备树
+    @RequestMapping(value = "/EQU_SELECT_FROM_DEPT_TO_WX", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Map> EQU_SELECT_FROM_DEPT_TO_WX(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                              @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT) throws Exception {
+        List<Map> map = treeService.EQU_SELECT_FROM_DEPT_TO_WX(V_V_PERSONCODE, V_V_DEPTCODENEXT);
+        return map;
+    }
 }

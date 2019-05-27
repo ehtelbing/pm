@@ -36,7 +36,7 @@ var dxImgPath=APP+'/app/pm/css/images';
 document.write('<script type="text/javascript" charset="UTF-8" src="../../../pm/resources/shared/examples.js"></script>');
 
 
-if (!(usercodeTemp == null)) {
+/*if (!(usercodeTemp == null)) {
     Ext.Ajax.request({
         url: AppUrl + 'info/login_dddl_n',
         params: {
@@ -110,7 +110,7 @@ function subSomething() {
     if(document.readyState == "complete") {
         location.href = "../../page/login/login.html";
     }
-}
+}*/
 
 // Excel
 function createElement(elName, elValue) {
