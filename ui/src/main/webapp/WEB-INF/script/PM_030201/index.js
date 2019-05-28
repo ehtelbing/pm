@@ -860,7 +860,7 @@ function btnFlowStart() {
                 }
             });
     }
-    if(num==chodata.length){
+    if(snum==chodata.length){
         alert('上报成功！');
         OnButtonQuery();
     }

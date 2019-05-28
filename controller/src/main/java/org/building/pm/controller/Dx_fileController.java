@@ -4367,6 +4367,71 @@ public class Dx_fileController {
         return data;
     }
 
+    //维修计划简版缺陷解决方案返回值
+    @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_JJFA_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> DEFECT_BY_MAINTAINPLAN_JJFA_SEL(
+            @RequestParam(value = "V_DEFGUID") String V_DEFGUID,
+            @RequestParam(value = "V_PRO_GUID") String V_PRO_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_JJFA_SEL(V_DEFGUID, V_PRO_GUID);
+        return data;
+    }
+
+    @RequestMapping(value = "PRO_PM_03_PLAN_YEAR_SAVE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_03_PLAN_YEAR_SAVE(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_MONTH") String V_V_MONTH,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_ORGNAME") String V_V_ORGNAME,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_DEPTNAME") String V_V_DEPTNAME,
+            @RequestParam(value = "V_V_PORJECT_CODE") String V_V_PORJECT_CODE,
+            @RequestParam(value = "V_V_PORJECT_NAME") String V_V_PORJECT_NAME,
+            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+            @RequestParam(value = "V_V_SPECIALTYNAME") String V_V_SPECIALTYNAME,
+            @RequestParam(value = "V_V_SPECIALTYMANCODE") String V_V_SPECIALTYMANCODE,
+            @RequestParam(value = "V_V_SPECIALTYMAN") String V_V_SPECIALTYMAN,
+            @RequestParam(value = "V_V_WXTYPECODE") String V_V_WXTYPECODE,
+            @RequestParam(value = "V_V_WXTYPENAME") String V_V_WXTYPENAME,
+            @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
+            @RequestParam(value = "V_V_MONEYBUDGET") String V_V_MONEYBUDGET,
+            @RequestParam(value = "V_V_REPAIRDEPTCODE") String V_V_REPAIRDEPTCODE,
+            @RequestParam(value = "V_V_BDATE") String V_V_BDATE,
+            @RequestParam(value = "V_V_EDATE") String V_V_EDATE,
+            @RequestParam(value = "V_V_INMAN") String V_V_INMAN,
+            @RequestParam(value = "V_V_INMANCODE") String V_V_INMANCODE,
+            @RequestParam(value = "V_V_JHLB") String V_V_JHLB,
+            @RequestParam(value = "V_V_SCLB") String V_V_SCLB,
+            @RequestParam(value = "V_V_CPZL") String V_V_CPZL,
+            @RequestParam(value = "V_V_CPGX") String V_V_CPGX,
+            @RequestParam(value = "V_V_SGFS") String V_V_SGFS,
+            @RequestParam(value = "V_V_SFXJ") String V_V_SFXJ,
+            @RequestParam(value = "V_V_ZBFS") String V_V_ZBFS,
+            @RequestParam(value = "V_V_SZ") String V_V_SZ,
+            @RequestParam(value = "V_V_GUID_UP") String V_V_GUID_UP,
+            @RequestParam(value = "V_V_WBS") String V_V_WBS,
+            @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+            @RequestParam(value = "V_V_SUMTIME") String V_V_SUMTIME,
+            @RequestParam(value = "V_V_SUMDATE") String V_V_SUMDATE,
+            @RequestParam(value = "V_V_SPECIALTY_ZX") String V_V_SPECIALTY_ZX,
+            @RequestParam(value = "V_V_SPECIALTY_ZXNAME") String V_V_SPECIALTY_ZXNAME,
+            @RequestParam(value = "V_V_BJF") String V_V_BJF,
+            @RequestParam(value = "V_V_CLF") String V_V_CLF,
+            @RequestParam(value = "V_V_SGF") String V_V_SGF,
+            @RequestParam(value="V_V_QSTEXT") String V_V_QSTEXT) throws Exception {
+
+        Map result = dx_fileService.PRO_PM_03_PLAN_YEAR_SAVE(V_V_GUID, V_V_YEAR, V_V_MONTH, V_V_ORGCODE, V_V_ORGNAME, V_V_DEPTCODE, V_V_DEPTNAME, V_V_PORJECT_CODE, V_V_PORJECT_NAME,
+                V_V_SPECIALTY, V_V_SPECIALTYNAME, V_V_SPECIALTYMANCODE, V_V_SPECIALTYMAN, V_V_WXTYPECODE, V_V_WXTYPENAME, V_V_CONTENT, V_V_MONEYBUDGET, V_V_REPAIRDEPTCODE,
+                V_V_BDATE, V_V_EDATE, V_V_INMAN, V_V_INMANCODE, V_V_JHLB, V_V_SCLB, V_V_CPZL, V_V_CPGX, V_V_SGFS, V_V_SFXJ, V_V_ZBFS, V_V_SZ, V_V_GUID_UP, V_V_WBS, V_V_WBS_TXT,
+                V_V_SUMTIME, V_V_SUMDATE,V_V_SPECIALTY_ZX,V_V_SPECIALTY_ZXNAME,V_V_BJF,V_V_CLF,V_V_SGF,V_V_QSTEXT);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

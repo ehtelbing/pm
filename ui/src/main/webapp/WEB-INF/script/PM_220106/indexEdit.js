@@ -74,6 +74,7 @@ Ext.onReady(function(){
                 text: '分解',
                 icon: imgpath + '/accordion_collapse.png',
                 handler: _fenjie
+                ,hidden:true
                 ,style: 'margin: 5px 0px 0px 10px'
             }
             , {

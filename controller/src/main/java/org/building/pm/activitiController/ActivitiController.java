@@ -712,6 +712,7 @@ public class ActivitiController {
                         taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                         taskmap.put("ZYNAME", equmap.get("V_SPECIALTYNAME").toString());
+                        taskmap.put("remark",equmap.get("V_QSTEXT").toString());
                     }
                 }
 
