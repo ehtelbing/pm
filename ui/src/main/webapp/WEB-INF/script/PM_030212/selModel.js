@@ -411,7 +411,6 @@ Ext.onReady(function(){
         id: 'window',
         width: 400,
         height: 400,
-        bodyPadding: 15,
         layout: 'vbox',
         title: '时间编辑',
         modal: true,//弹出窗口时后面背景不可编辑

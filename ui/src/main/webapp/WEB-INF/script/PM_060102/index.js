@@ -722,7 +722,6 @@ Ext.onReady(function () {
         id: 'windowYc',
         width: 200,
         height: 200,
-        bodyPadding: 15,
         layout: 'vbox',
         title: '请选择',
         modal: true,//弹出窗口时后面背景不可编辑

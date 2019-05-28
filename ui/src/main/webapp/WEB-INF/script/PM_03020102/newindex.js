@@ -2578,7 +2578,6 @@ var win=Ext.create('Ext.window.Window',{
     height: 400,
     modal: true,
     plain: true,
-    bodyPadding: 10,
     items: [{
         xtype: 'form',
         id:'uploadFile',

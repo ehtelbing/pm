@@ -123,8 +123,8 @@ $(function () {
     bindDate("D_FACT_START_DATE");
     bindDate("D_FACT_FINISH_DATE");
 
-    NowDate_b("D_FACT_START_DATE");
-    NowDate_e("D_FACT_FINISH_DATE");
+    /*NowDate_b("D_FACT_START_DATE");
+    NowDate_e("D_FACT_FINISH_DATE");*/
 
     loadOrder();
 
@@ -222,7 +222,7 @@ function loadOrder(){
                 $("#V_SHORT_TXT").html(resp.list[0].V_SHORT_TXT);
                 $("#D_START_DATE").html((resp.list[0].D_START_DATE).split('.0')[0]);
                 $("#D_FINISH_DATE").html((resp.list[0].D_FINISH_DATE).split('.0')[0]);
-                $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
+              //  $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
                 $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
                 $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
                 $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
@@ -232,8 +232,10 @@ function loadOrder(){
 
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
 
-                planDate("D_FACT_START_DATE","D_START_DATE");
-                planDate("D_FACT_FINISH_DATE","D_FINISH_DATE");
+                $("#D_FACT_START_DATE").val($("#D_START_DATE").html());
+                $("#D_FACT_FINISH_DATE").val($("#D_FINISH_DATE").html());
+               /* planDate("D_FACT_START_DATE","D_START_DATE");
+                planDate("D_FACT_FINISH_DATE","D_FINISH_DATE");*/
 
                 GetBillMatByOrder();
             }

@@ -331,7 +331,7 @@ Ext.onReady(function () {
                                     },
                                     {text: '加油人员', width: 80, dataIndex: 'V_OPERATEPERSON', align: 'center'},
                                     {text: '加油原因', width: 150, dataIndex: 'V_OPERATEREASON', align: 'center'},
-                                    {text: '类型', width: 100, dataIndex: 'V_ADDORCHANGE', align: 'center'},
+                                   /* {text: '类型', width: 100, dataIndex: 'V_ADDORCHANGE', align: 'center'},*/
                                     {width: 0, dataIndex: 'V_LUBRICATIONCODE', align: 'center'},
                                     {width: 0, dataIndex: 'V_DEPTCODE', align: 'center'},
                                     {width: 0, dataIndex: 'V_EQUTYPECODE', align: 'center'},

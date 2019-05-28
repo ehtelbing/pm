@@ -1513,7 +1513,6 @@ Ext.onReady(function () {
         id: 'lrwindow',
         width: 700,
         height: 600,
-        bodyPadding: 15,
         layout: 'vbox',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,

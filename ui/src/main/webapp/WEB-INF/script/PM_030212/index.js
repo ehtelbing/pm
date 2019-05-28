@@ -337,9 +337,11 @@ function OnButtonPlanAddClicked() {
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.RET != '') {
-                // window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
+
+                var owidth = window.document.body.offsetWidth - 200;
+                var oheight = window.document.body.offsetHeight - 100;
                 window.open(AppUrl + 'page/PM_030212/newAdd.html?CK=' + Ext.getCmp("ck").getValue() +
-                    "&ZYQ=" + Ext.getCmp("zyq").getValue() + '&YEARGUID=' + resp.RET + '&FLAG=' + 'new', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+                    "&ZYQ=" + Ext.getCmp("zyq").getValue() + '&YEARGUID=' + resp.RET + '&FLAG=' + 'new', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
             }
         }
     });

@@ -77,7 +77,7 @@
                 deptLoad = true;
 
                 Ext.getCmp('equname').select(store.first());
-                if(Ext.getCmp('equname').getValue()!="%"){
+                if (Ext.getCmp('equname').getValue() != "%") {
                     store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
                 }
                 _init();
@@ -119,7 +119,7 @@
         month = date.getMonth() + 1;
     }
 
-    var nextDate = new Date(date.getTime() + 24*60*60*1000);
+    var nextDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
     var sdate = date.getFullYear() + "-" + month + "-01";
 
     var panel = Ext.create('Ext.form.Panel', {
@@ -223,7 +223,11 @@
                 }
             },
             {
-                xtype: 'button', text: '导出Excel', width: 100, style: 'margin:5px 0px 5px 20px', icon: imgpath + '/search.png',
+                xtype: 'button',
+                text: '导出Excel',
+                width: 100,
+                style: 'margin:5px 0px 5px 20px',
+                icon: imgpath + '/search.png',
                 listeners: {
                     click: OnExcelButtonClicked
                 }
@@ -258,8 +262,8 @@
                 }
             },
             {text: '加油人员', dataIndex: 'V_OPERATEPERSON', width: 100, align: 'center', width: 100},
-            {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 300},
-            {text: '类型', dataIndex:'V_ADDORCHANGE',align: 'center', width: 100}
+            {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 300}/*,
+            {text: '类型', dataIndex: 'V_ADDORCHANGE', align: 'center', width: 100}*/
 
 
         ],
@@ -267,7 +271,7 @@
             autoLoad: true,
             storeId: 'gridStore',
             pageSize: 10,
-            fields: ['I_ID', 'V_LUBRICATIONCODE','V_SETNAME' ,'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE',
+            fields: ['I_ID', 'V_LUBRICATIONCODE', 'V_SETNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE',
                 'V_EQUTYPENAME', 'V_EQUCODE', 'V_EQUNAME', 'V_LUBADDRESS', 'V_LUBMODE',
                 'V_LUBTRADEMARK', 'F_LUBCOUNT', 'F_OILAMOUNT', 'V_ADDORCHANGE', 'D_OPERATEDATE',
                 'V_OPERATEPERSON', 'V_OPERATEREASON', 'I_UNIT'],
@@ -307,36 +311,30 @@ function _init() {
 function OnGridQueryButtonClicked() {
     Ext.ComponentManager.get('grid').getStore().load();
 }
-function OnExcelButtonClicked(){
 
-    var X_DEPTCODE='0';
-    var X_EQUTYPECODE='0';
-    var X_EQUCODE='0';
-    if(Ext.getCmp('V_V_DEPTCODE').getValue()!='%'){
-        X_DEPTCODE=Ext.getCmp('V_V_DEPTCODE').getValue();
+function OnExcelButtonClicked() {
+
+    var X_DEPTCODE = '0';
+    var X_EQUTYPECODE = '0';
+    var X_EQUCODE = '0';
+    if (Ext.getCmp('V_V_DEPTCODE').getValue() != '%') {
+        X_DEPTCODE = Ext.getCmp('V_V_DEPTCODE').getValue();
     }
-    if(Ext.getCmp('equtype').getValue()!='%'){
-        X_EQUTYPECODE=Ext.getCmp('equtype').getValue();
+    if (Ext.getCmp('equtype').getValue() != '%') {
+        X_EQUTYPECODE = Ext.getCmp('equtype').getValue();
     }
-    if(Ext.getCmp('subequname').getValue()!='%'){
-        X_EQUCODE=Ext.getCmp('subequname').getValue();
+    if (Ext.getCmp('subequname').getValue() != '%') {
+        X_EQUCODE = Ext.getCmp('subequname').getValue();
     }
 
 
+    document.location.href = AppUrl + 'excel/RHQuery_EXCEL?X_TIMELOWERLIMIT=' + Ext.util.Format.date(Ext.getCmp("x_timelowerlimit").getValue(), "Y-m-d") +
+        '&X_TIMEUPPERLIMIT=' + Ext.util.Format.date(Ext.getCmp("x_timeupperlimit").getValue(), "Y-m-d") +
+        '&X_DEPTCODE=' + X_DEPTCODE +//Ext.getCmp('V_V_DEPTCODE').getValue()=='%'?'0':Ext.getCmp("V_V_DEPTCODE").getValue()+
+        '&X_EQUTYPECODE=' + X_EQUTYPECODE +//Ext.getCmp('equtype').getValue()=='%'?'0':Ext.getCmp("equtype").getValue()+
+        '&X_EQUCODE=' + X_EQUCODE +//Ext.getCmp('subequname').getValue()=='%'?'0':Ext.getCmp("subequname").getValue()+
+        '&X_LUBRICATIONCODE= &V_V_PERSONCODE=' + Ext.util.Cookies.get('v_personcode') + '&V_V_DEPTCODE=' + Ext.util.Cookies.get('v_orgCode') + '&V_V_DEPTTYPE=主体作业区';
 
-    document.location.href = AppUrl + 'excel/RHQuery_EXCEL?X_TIMELOWERLIMIT=' +Ext.util.Format.date(Ext.getCmp("x_timelowerlimit").getValue(), "Y-m-d")+
-        '&X_TIMEUPPERLIMIT=' +Ext.util.Format.date(Ext.getCmp("x_timeupperlimit").getValue(), "Y-m-d")+
-        '&X_DEPTCODE=' +X_DEPTCODE+//Ext.getCmp('V_V_DEPTCODE').getValue()=='%'?'0':Ext.getCmp("V_V_DEPTCODE").getValue()+
-        '&X_EQUTYPECODE=' +X_EQUTYPECODE+//Ext.getCmp('equtype').getValue()=='%'?'0':Ext.getCmp("equtype").getValue()+
-        '&X_EQUCODE=' +X_EQUCODE+//Ext.getCmp('subequname').getValue()=='%'?'0':Ext.getCmp("subequname").getValue()+
-        '&X_LUBRICATIONCODE= ';
-
-    /*document.location.href=AppUrl + 'excel/RHQuery_EXCEL?X_TIMELOWERLIMIT='+'2018-05-01'+//Ext.util.Format.date(Ext.getCmp("x_timelowerlimit").getValue(), "Y-m-d")+
-        '&X_TIMEUPPERLIMIT='+'2018-05-26'+//Ext.util.Format.date(Ext.getCmp("x_timeupperlimit").getValue(), "Y-m-d")+
-        '&X_DEPTCODE='+Ext.getCmp('V_V_DEPTCODE').getValue()=='%'?'0':Ext.getCmp("V_V_DEPTCODE").getValue()+
-        '&X_EQUTYPECODE='+Ext.getCmp('equtype').getValue()=='%'?'0':Ext.getCmp("equtype").getValue()+
-        '&X_EQUCODE='+Ext.getCmp('subequname').getValue()=='%'?'0':Ext.getCmp("subequname").getValue()+
-        '&X_LUBRICATIONCODE='+'';*/
 
 }
 
@@ -347,9 +345,9 @@ function BeforeGridStoreLoad(store) {
     store.proxy.extraParams.X_DEPTCODE = Ext.getCmp("V_V_DEPTCODE").getValue();
     store.proxy.extraParams.X_EQUTYPECODE = Ext.getCmp("equtype").getValue();
     store.proxy.extraParams.X_EQUCODE = Ext.getCmp("subequname").getValue();
-    store.proxy.extraParams.V_V_PERSONCODE=Ext.util.Cookies.get('v_personcode');
-    store.proxy.extraParams.V_V_DEPTCODE=Ext.util.Cookies.get('v_orgCode');
-    store.proxy.extraParams.V_V_DEPTTYPE='主体作业区';
+    store.proxy.extraParams.V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+    store.proxy.extraParams.V_V_DEPTCODE = Ext.util.Cookies.get('v_orgCode');
+    store.proxy.extraParams.V_V_DEPTTYPE = '主体作业区';
 
-store.proxy.extraParams.X_LUBRICATIONCODE = '';
+    store.proxy.extraParams.X_LUBRICATIONCODE = '';
 }

@@ -49,6 +49,7 @@ Ext.onReady(function() {
         });
         Ext.getCmp('f_type').select(Ext.data.StoreManager.lookup('ftypeStore').data.getAt(0));
     });
+
     var panel = Ext.create('Ext.Panel', {
         id :'panel',
         region: 'north',

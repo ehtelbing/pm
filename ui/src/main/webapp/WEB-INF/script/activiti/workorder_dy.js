@@ -8,22 +8,22 @@ var taskId = '';
 var V_V_ORGCODE = '';
 var V_V_DEPTCODE = '';
 var V_V_REPAIRCODE = '';
-var V_STEPCODE ='';
+var V_STEPCODE = '';
 var processKey = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
-var wuliaochaxunlist=[];
+var wuliaochaxunlist = [];
 var ProcessInstanceId = '';
-var ProcessDefinitionKey="";
-var Assignee='';
-var MATSIGN=0;
-var returnMatSign="";
+var ProcessDefinitionKey = "";
+var Assignee = '';
+var MATSIGN = 0;
+var returnMatSign = "";
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_DBGUID = Ext.urlDecode(location.href.split('?')[1]).V_DBGUID;
     V_FLOWSTEP = Ext.urlDecode(location.href.split('?')[1]).V_FLOWSTEP;
     ProcessInstanceId = Ext.urlDecode(location.href.split('?')[1]).ProcessInstanceId;
-    ProcessDefinitionKey=Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey;
+    ProcessDefinitionKey = Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey;
 }
 var selectID = [];
 $(function () {
@@ -31,8 +31,8 @@ $(function () {
     var nextSprStoreb = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'nextSprStoreb',
-        fields: ['V_PERSONCODE', 'V_PERSONNAME','V_V_NEXT_SETP','V_V_FLOW_STEPNAME'],
-        proxy:{
+        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
+        proxy: {
             type: 'ajax',
             async: false,
             url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -43,14 +43,13 @@ $(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {
-            }
+            extraParams: {}
         },
         listeners: {
-            load: function (store, records,success,eOpts) {
+            load: function (store, records, success, eOpts) {
                 processKey = store.getProxy().getReader().rawData.RET;
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
                 Ext.getCmp('nextSprb').select(store.first());
                 var list = Ext.getCmp("nextSprb").getStore().data.items;
                 for (var i = 0; i < list.length; i++) {
@@ -72,44 +71,32 @@ $(function () {
         layout: 'vbox',
         frame: true,
         border: false,
-        baseCls: 'my-panel-no-border',
-        items: [
-            {
-                xtype: 'panel',
-                region: 'center',
-                layout: 'column',
-                border:false,
-                frame: true,
-                baseCls: 'my-panel-no-border',
-                items: [{
-                    id: 'nextSprb',
-                    xtype: 'combo',
-                    store: nextSprStoreb,
-                    fieldLabel: '下一步接收人',
-                    editable: false,
-                    labelWidth: 100,
-                    displayField: 'V_PERSONNAME',
-                    valueField: 'V_PERSONCODE',
-                    queryMode: 'local',
-                    style: ' margin: 5px 0px 0px 0px',
-                    labelAlign: 'right',
-                    width: 250
-                },{
-                    xtype : 'button',
-                    text : '确定',
-                    icon: imgpath + '/saved.png',
-                    style: ' margin: 5px 0px 0px 15px',
-                    handler : ConfirmAccept
-                }  ]
-            }
-        ]
+        items: [{
+            id: 'nextSprb',
+            xtype: 'combo',
+            store: nextSprStoreb,
+            fieldLabel: '下一步接收人',
+            editable: false,
+            labelWidth: 100,
+            displayField: 'V_PERSONNAME',
+            valueField: 'V_PERSONCODE',
+            queryMode: 'local',
+            style: ' margin: 5px 0px 0px 0px',
+            labelAlign: 'right',
+            width: 250
+        }
+        ], buttons: [{
+            text: '确定',
+            icon: imgpath + '/saved.png',
+            style: ' margin: 5px 0px 0px 15px',
+            handler: ConfirmAccept
+        }]
     });
 
     var windowb = Ext.create('Ext.window.Window', {
         id: 'windowb',
         width: 370,
-        height: 150,
-        bodyPadding: 15,
+        height: 300,
         layout: 'vbox',
         title: '选择接收人',
         modal: true,//弹出窗口时后面背景不可编辑
@@ -121,8 +108,8 @@ $(function () {
     bindDate("D_FACT_START_DATE");
     bindDate("D_FACT_FINISH_DATE");
 
-    NowDate_b("D_FACT_START_DATE");
-    NowDate_e("D_FACT_FINISH_DATE");
+   /* NowDate_b("D_FACT_START_DATE");
+    NowDate_e("D_FACT_FINISH_DATE");*/
 
     loadOrder();
 
@@ -136,7 +123,7 @@ $(function () {
 
     getAssignee();
     $("#btnTask").click(function () {
-        var V_EQUTYPE='';
+        var V_EQUTYPE = '';
         Ext.Ajax.request({
             url: AppUrl + 'pm_19/PRO_SAP_PM_EQU_P_GET',
             method: 'POST',
@@ -147,13 +134,13 @@ $(function () {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.list.length != 0) {
-                    V_EQUTYPE=resp.list[0].V_EQUTYPECODE;//设备类型编码
+                    V_EQUTYPE = resp.list[0].V_EQUTYPECODE;//设备类型编码
                 }
             }
         });
-        var owidth = window.document.body.offsetWidth-200;
-        var oheight = window.document.body.offsetHeight-100 ;
-        window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID
+        var owidth = window.document.body.offsetWidth - 200;
+        var oheight = window.document.body.offsetHeight - 100;
+        window.open(AppUrl + 'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID
             + '&V_DEPTREPAIRCODE=' + V_V_REPAIRCODE
             + '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
             + '&V_V_ORGCODE=' + V_V_ORGCODE
@@ -171,7 +158,7 @@ $(function () {
     });
 });
 
-function getAssignee(){
+function getAssignee() {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/InstanceState',
         method: 'POST',
@@ -181,18 +168,18 @@ function getAssignee(){
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee=resp.list[0].Assignee;
+            Assignee = resp.list[0].Assignee;
         }
     });
 }
 
-function loadOrder(){
+function loadOrder() {
     Ext.Ajax.request({
         url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',
         method: 'POST',
         async: false,
         params: {
-            V_V_ORDERGUID:  V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -213,7 +200,7 @@ function loadOrder(){
                 $("#V_SHORT_TXT").html(resp.list[0].V_SHORT_TXT);
                 $("#D_START_DATE").html((resp.list[0].D_START_DATE).split('.0')[0]);
                 $("#D_FINISH_DATE").html((resp.list[0].D_FINISH_DATE).split('.0')[0]);
-                $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
+                //$("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
                 $("#I_OTHERHOUR").html(resp.list[0].I_OTHERHOUR);
                 $("#V_OTHERREASON").html(resp.list[0].V_OTHERREASON);
                 $("#V_REPAIRCONTENT").html(resp.list[0].V_REPAIRCONTENT);
@@ -221,9 +208,10 @@ function loadOrder(){
                 $("#V_WBS_TXT").html(resp.list[0].V_WBS_TXT);
 
                 V_TEAMCODE = resp.list[0].V_WXTEAM;
-
-                planDate("D_FACT_START_DATE","D_START_DATE");
-                planDate("D_FACT_FINISH_DATE","D_FINISH_DATE");
+                $("#D_FACT_START_DATE").val($("#D_START_DATE").html());
+                $("#D_FACT_FINISH_DATE").val($("#D_FINISH_DATE").html());
+                /*planDate("D_FACT_START_DATE", "D_START_DATE");
+                planDate("D_FACT_FINISH_DATE", "D_FINISH_DATE");*/
 
                 GetBillMatByOrder();
             }
@@ -231,7 +219,7 @@ function loadOrder(){
     });
 }
 
-function getEquipReturnValue(ret){
+function getEquipReturnValue(ret) {
     var str = [];
     str = ret.split('^');
     $("#V_EQUIP_NAME").val(str[1]);
@@ -279,11 +267,11 @@ function loadRepairList() {
  */
 function loadTaskGrid() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_OPERATIONS',
         type: 'post',
         async: false,
         params: {
-               V_V_ORDERGUID: V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -310,48 +298,52 @@ function loadTaskGrid() {
 
 function OpenEditMat() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
         type: "post",
         async: false,
         params: {
-            V_V_ORDERGUID : V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-                var owidth = window.document.body.offsetWidth-200;
-                var oheight = window.document.body.offsetHeight-100 ;
-                var ret = window.open(AppUrl+'page/PM_050103/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID +'', '',  '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-                loadMatList();
+            var owidth = window.document.body.offsetWidth - 200;
+            var oheight = window.document.body.offsetHeight - 100;
+            var ret = window.open(AppUrl + 'page/PM_050103/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            loadMatList();
         }
     });
 }
 
 $('#btnGJJJ').live('click', function () {
-   window.showModalDialog(AppUrl+'/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
+    window.showModalDialog(AppUrl + '/No41070103/Index.html?V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '41070103', 'dialogHeight:500px;dialogWidth:800px');
 });
 
 function loadMatList() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
         params: {
-              V_V_ORDERGUID: V_ORDERGUID
+            V_V_ORDERGUID: V_ORDERGUID
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             if (resp.list != null && resp.list != "") {
                 $("#TtableM tbody").empty();
-                $.each(resp.list, function (index, item) { item["sid"] = index + 1; });
+                $.each(resp.list, function (index, item) {
+                    item["sid"] = index + 1;
+                });
                 wuliaochaxunlist = resp.list;
                 $("#TtableMTemplate").tmpl(resp.list).appendTo("#TtableM tbody");
-            } else { $("#TtableM tbody").empty(); }
+            } else {
+                $("#TtableM tbody").empty();
+            }
         }
     });
 }
 
-function loadOther(){
+function loadOther() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SEL',
+        url: AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SEL',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID
@@ -370,15 +362,15 @@ function loadOther(){
     });
 }
 
-function orderAccept(){
+function orderAccept() {
     OrderSave();
     orderaccept1();
 }
 
-function orderaccept1(){
-    var flag=1;
+function orderaccept1() {
+    var flag = 1;
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+        url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID
@@ -388,17 +380,17 @@ function orderaccept1(){
             if (resp.list == null || resp.list == "") {
                 accept();
             }
-            else{
-                var temp=0;
+            else {
+                var temp = 0;
                 var number = 0;
-                for(var i=0;i<resp.list.length;i++){
+                for (var i = 0; i < resp.list.length; i++) {
                     Ext.Ajax.request({
-                        url : AppUrl + 'zdh/WX_INF_FILE_SEL',
+                        url: AppUrl + 'zdh/WX_INF_FILE_SEL',
                         type: 'post',
                         params: {
-                            V_V_ORDERGUID : V_ORDERGUID,
-                            V_V_MATERIALGUID : resp.list[i].V_MATERIALCODE,
-                            V_V_FILENAME : '%'
+                            V_V_ORDERGUID: V_ORDERGUID,
+                            V_V_MATERIALGUID: resp.list[i].V_MATERIALCODE,
+                            V_V_FILENAME: '%'
                         },
                         success: function (ret) {
                             number++;
@@ -406,11 +398,11 @@ function orderaccept1(){
                             if (resp1.list != null && resp1.list != "") {
                                 temp++;
                             }
-                            if(number == i){
-                                if(temp == i){
+                            if (number == i) {
+                                if (temp == i) {
                                     accept();
                                 }
-                                else{
+                                else {
                                     alert("每个物料需要上传至少一张图片,请检查您上传的文件!");
                                 }
                             }
@@ -422,7 +414,7 @@ function orderaccept1(){
     });
 }
 
-function accept(){
+function accept() {
     Ext.Ajax.request({
         method: 'POST',
         async: false,
@@ -446,14 +438,14 @@ function accept(){
 
 function OrderSave() {
     Ext.Ajax.request({
-        url : AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SAVE',
+        url: AppUrl + 'zdh/PRO_WX_WORKORDER_OTHER_SAVE',
         type: 'post',
         params: {
             V_V_ORDERGUID: V_ORDERGUID,
-            D_DATE_ACP:  "",
+            D_DATE_ACP: "",
             D_DATE_OVERDUE: $("#I_OTHERHOUR").val(),
             V_REASON_OVERDUE: $("#V_OTHERREASON").val(),
-            V_FIX_EXPLAIN:  $("#V_REPAIRCONTENT").val()
+            V_FIX_EXPLAIN: $("#V_REPAIRCONTENT").val()
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
@@ -515,7 +507,7 @@ var fjgrid = Ext.create('Ext.grid.Panel', {
             text: '附件查询',
             width: 80,
             align: 'center',
-            renderer : function () {
+            renderer: function () {
                 return "<img src=" + imgpath + "/add.png>"
             },
             listeners: {
@@ -525,50 +517,53 @@ var fjgrid = Ext.create('Ext.grid.Panel', {
 });
 
 var fjwindow = Ext.create('Ext.window.Window', {
-    id : 'fjwindow',
-    width : 460,
-    height : 300,
-    layout : 'border',
-    title : '附件查询',
-    modal : true,//弹出窗口时后面背景不可编辑
-    frame : true,
-    closeAction : 'hide',
-    closable : true,
-    items : [fjgrid],
-    buttons : [{
-        xtype : 'button',
-        text : '取消',
-        width : 40,
-        handler : function() {
+    id: 'fjwindow',
+    width: 460,
+    height: 300,
+    layout: 'border',
+    title: '附件查询',
+    modal: true,//弹出窗口时后面背景不可编辑
+    frame: true,
+    closeAction: 'hide',
+    closable: true,
+    items: [fjgrid],
+    buttons: [{
+        xtype: 'button',
+        text: '取消',
+        width: 40,
+        handler: function () {
             Ext.getCmp('fjwindow').hide();
-        }}]
+        }
+    }]
 });
 
 function OrderFile() {
     Ext.data.StoreManager.lookup('fjgridStore').load({
-        params : {
-            V_V_ORDERGUID : V_ORDERGUID
+        params: {
+            V_V_ORDERGUID: V_ORDERGUID
         }
     });
     Ext.getCmp('fjwindow').show();
 }
 
 function OrderFile1(V_MATERIALGUID) {
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-     window.open(AppUrl+'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_050901/index.html?V_ORDERGUID=' + V_ORDERGUID + '&V_MATERIALGUID=' + V_MATERIALGUID + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
-function fileadd(){
+function fileadd() {
     var seldata = Ext.getCmp('fjgrid').getSelectionModel().getSelection();
-    var owidth = window.document.body.offsetWidth-200;
-    var oheight = window.document.body.offsetHeight-100 ;
-    window.open(AppUrl+'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID +  '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_050902/index.html?V_ORDERGUID=' + V_ORDERGUID + '&V_MATERIALGUID=' + seldata[0].data.V_MATERIALCODE + '', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function GetModel() {
-    if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) { alert("请先选择设备!"); } else {
-        window.showModalDialog(AppUrl+'/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE='+ $('#V_DEPTNAMEREPARIR').val() + '','', 'dialogHeight:500px;dialogWidth:800px');
+    if ($("#V_EQUIP_NO").val() == "" || $("#V_EQUIP_NO").val() == null) {
+        alert("请先选择设备!");
+    } else {
+        window.showModalDialog(AppUrl + '/No41070106/Index.html?V_EQUIP_NO=' + $("#V_EQUIP_NO").val() + '&V_ORDERGUID=' + $('#V_ORDERGUID').val() + '&V_DEPTREPAIRCODE=' + $('#V_DEPTNAMEREPARIR').val() + '', '', 'dialogHeight:500px;dialogWidth:800px');
     }
 }
 
@@ -581,7 +576,7 @@ function NowDate_b(id) {
     var hou = d.getHours().toString();
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00" ;
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 08:30:00";
     $("#" + id + "").val(s);
 }
 
@@ -594,13 +589,13 @@ function NowDate_e(id) {
     var hou = d.getHours().toString();
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00" ;
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) + " 16:30:00";
     $("#" + id + "").val(s);
 }
 
-function planDate(id,jhid) {
+function planDate(id, jhid) {
     var d, s;
-    d = new Date($("#"+jhid+"").html());
+    d = new Date($("#" + jhid + "").html());
     var year = d.getFullYear().toString();
     var month = (d.getMonth() + 1).toString();
     var date = d.getDate().toString();
@@ -620,14 +615,14 @@ function NowDate2(id) {
     var hou = d.getHours().toString();
     var min = d.getMinutes().toString();
     var sen = d.getSeconds().toString();
-    s = year + "-" + dateFomate(month) + "-" + dateFomate(date) ;
+    s = year + "-" + dateFomate(month) + "-" + dateFomate(date);
     $("#" + id + "").html(s);
 }
 
-function dateFomate(val){
-    if(parseInt(val) <=9){
-        return "0"+val;
-    }else{
+function dateFomate(val) {
+    if (parseInt(val) <= 9) {
+        return "0" + val;
+    } else {
         return val;
     }
 }
@@ -644,11 +639,11 @@ function bindDate(fid) {
         dateFormat: 'yy-mm-dd',
         timeFormat: 'hh:mm:ss',
         stepMinute: 30,
-        controlType:'select'
+        controlType: 'select'
     });
 }
 
-var agridStore = Ext.create('Ext.data.Store',{
+var agridStore = Ext.create('Ext.data.Store', {
     autoLoad: false,
     storeId: 'agridStore',
     fields: ['V_PERSONCODE', 'V_PERSONNAME'],
@@ -727,7 +722,7 @@ var agrid = Ext.create('Ext.grid.Panel', {
     }]
 });
 
-function orderonPrint(){
+function orderonPrint() {
     selectID.push(V_ORDERGUID);
     window.open(AppUrl + "page/No410101/indexn.html", selectID,
         "dialogHeight:700px;dialogWidth:1100px");
@@ -776,7 +771,7 @@ function todel(view, item, colIndex, rowIndex, e) {
 function p_query() {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart='+V_DEPTREPAIRCODE+'&classcode='+V_TEAMCODE+'&V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/Basic/addperson.html?depart=' + V_DEPTREPAIRCODE + '&classcode=' + V_TEAMCODE + '&V_ORDERGUID=' + V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function saved_btn() {
@@ -798,7 +793,7 @@ function saved_btn() {
             IN_CLASSNAME: Ext.getCmp('addmzmc').getValue(),
             IN_WORKCODE: Ext.getCmp('addgzzx').getValue(),
             IN_PERSONCODE: arr.toString(),
-            IN_ORDERGUID : V_ORDERGUID
+            IN_ORDERGUID: V_ORDERGUID
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
@@ -809,7 +804,7 @@ function saved_btn() {
     Ext.getCmp('awindow').hide();
 }
 
-function OrderBooked(){
+function OrderBooked() {
     OrderSave();
     Ext.Ajax.request({
         method: 'POST',
@@ -841,7 +836,7 @@ function getPersonReturnValue(retdata) {
     }
 }
 
-function orderissued(){
+function orderissued() {
     $.ajax({
         url: AppUrl + 'WorkOrder/PRO_PM_WORKORDER_DY',
         type: 'post',
@@ -871,7 +866,7 @@ function orderissued(){
                     async: false,
                     params: {
                         V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
-                        V_V_FLAG:'1'
+                        V_V_FLAG: '1'
                     },
                     success: function (resp) {
                         var respguid = Ext.decode(resp.responseText);
@@ -889,7 +884,7 @@ function orderissued(){
     });
 }
 
-function closeWin(){
+function closeWin() {
     window.close();
     window.opener.OnPageLoad();
     window.opener.QueryGrid();
@@ -911,7 +906,7 @@ function getTaskId() {
     });
 }
 
-function OrderBooked(){
+function OrderBooked() {
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -921,13 +916,13 @@ function OrderBooked(){
             idea: '预留工单',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [$("#selApprover").val(), '请审批'],
-            processKey :processKey,
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : V_STEPCODE,
-            V_STEPNAME : V_STEPNAME,
-            V_IDEA : '请审批！',
-            V_NEXTPER : $("#selApprover").val(),
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            processKey: processKey,
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: V_STEPCODE,
+            V_STEPNAME: V_STEPNAME,
+            V_IDEA: '请审批！',
+            V_NEXTPER: $("#selApprover").val(),
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             window.opener.QueryTab();
@@ -972,11 +967,11 @@ function ReturnIsToTask() {
     });
 }
 
-function Receive(){
+function Receive() {
     workMatChangeSel();
-    if(MATSIGN==1||returnMatSign=="1"){
+    if (MATSIGN == 1 || returnMatSign == "1") {
         matChangeFlow();
-    }else {
+    } else {
         var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
         nextSprStoreb.proxy.extraParams = {
             V_V_ORGCODE: V_V_ORGCODE,
@@ -1014,13 +1009,13 @@ function ConfirmAccept() {
             idea: '已打印',
             parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [Ext.getCmp('nextSprb').getValue(), '已打印'],
-            processKey :processKey,
-            businessKey : $.url().param("V_ORDERGUID"),
-            V_STEPCODE : V_STEPCODE,
-            V_STEPNAME : V_STEPNAME,
-            V_IDEA : '请审批！',
-            V_NEXTPER : Ext.getCmp('nextSprb').getValue(),
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            processKey: processKey,
+            businessKey: $.url().param("V_ORDERGUID"),
+            V_STEPCODE: V_STEPCODE,
+            V_STEPNAME: V_STEPNAME,
+            V_IDEA: '请审批！',
+            V_NEXTPER: Ext.getCmp('nextSprb').getValue(),
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
             $.ajax({
@@ -1053,7 +1048,7 @@ function ConfirmAccept() {
                             async: false,
                             params: {
                                 V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
-                                V_V_FLAG:'1'
+                                V_V_FLAG: '1'
                             },
                             success: function (resp) {
                                 var respguid = Ext.decode(resp.responseText);
@@ -1084,15 +1079,15 @@ function ConfirmAccept() {
 function print() {
     selectID.push(V_ORDERGUID);
     workMatChangeSel();
-    if(MATSIGN==1||returnMatSign=="1"){
+    if (MATSIGN == 1 || returnMatSign == "1") {
         matChangeFlow();
-    }else {
+    } else {
         window.open(AppUrl + "page/No410101/indexn.html", selectID,
             "dialogHeight:700px;dialogWidth:1100px");
     }
 }
 
-function GetBillMatByOrder(){
+function GetBillMatByOrder() {
     Ext.Ajax.request({
         url: AppUrl + 'mm/WS_EquipGetBillMaterialByOrderService',
         method: 'POST',
@@ -1100,21 +1095,21 @@ function GetBillMatByOrder(){
         params: {
             V_V_ORDERGUID: V_ORDERGUID,
             V_V_ORDERID: $("#V_ORDERID").html(),
-            x_personcode : Ext.util.Cookies.get('v_personcode')
+            x_personcode: Ext.util.Cookies.get('v_personcode')
         },
         success: function (resp) {
         }
     });
 }
 
-function loadSetMat(){
-    MATSIGN=1;
+function loadSetMat() {
+    MATSIGN = 1;
 
 }
 
-function matChangeFlow(){
-    var FistSpPerCode="";
-    var FistSpPerName="";
+function matChangeFlow() {
+    var FistSpPerCode = "";
+    var FistSpPerName = "";
     Ext.Ajax.request({//流程第一审批人
         url: AppUrl + 'dxfile/PM_ACTIVITI_STEP_LOG_SEL',
         type: 'post',
@@ -1126,10 +1121,10 @@ function matChangeFlow(){
 
         },
         success: function (response) {
-            var resp=Ext.decode(response.responseText);
-            if (resp.list.length>0) {
-                FistSpPerCode=resp.list[0].V_NEXTPER;
-                FistSpPerName=resp.list[0].V_PERSONNAME;
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
+                FistSpPerCode = resp.list[0].V_NEXTPER;
+                FistSpPerName = resp.list[0].V_PERSONNAME;
             }
         }
     });
@@ -1139,7 +1134,7 @@ function matChangeFlow(){
         type: 'post',
         async: false,
         params: {
-            V_V_ORGCODE:V_V_ORGCODE,// $("#V_ORGCODE").val(),
+            V_V_ORGCODE: V_V_ORGCODE,// $("#V_ORGCODE").val(),
             V_V_DEPTCODE: V_V_DEPTCODE,
             V_V_REPAIRCODE: V_V_REPAIRCODE,
             V_V_FLOWTYPE: 'WORK',
@@ -1149,8 +1144,8 @@ function matChangeFlow(){
             V_V_WHERE: '修改'
         },
         success: function (response) {
-            var resp=Ext.decode(response.responseText);
-            if (resp.list.length>0) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.list.length > 0) {
                 // FistSpPerCode=resp.list[0].V_PERSONCODE;
                 // FistSpPerName=resp.list[0].V_PERSONNAME;
                 processKey = resp.RET;
@@ -1164,7 +1159,7 @@ function matChangeFlow(){
         async: false,
         url: AppUrl + 'mm/SetMat',
         params: {
-            V_V_ORDERGUID:V_ORDERGUID,// $("#V_ORDERGUID").val(),
+            V_V_ORDERGUID: V_ORDERGUID,// $("#V_ORDERGUID").val(),
             x_personcode: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
@@ -1180,7 +1175,7 @@ function matChangeFlow(){
                         parName: [V_NEXT_SETP, "flow_yj"],
                         parVal: [FistSpPerCode, '物料修改重新审批'],//$("#selApprover").val()
                         processKey: processKey,
-                        businessKey:V_ORDERGUID,// $.url().param("V_ORDERGUID"),
+                        businessKey: V_ORDERGUID,// $.url().param("V_ORDERGUID"),
                         V_STEPCODE: V_STEPCODE,
                         V_STEPNAME: V_STEPNAME,
                         V_IDEA: '物料修改重新审批',
@@ -1245,36 +1240,38 @@ function matChangeFlow(){
         }
     });
 }
+
 //查找是否物料有改变
-function workMatChangeSel(){
+function workMatChangeSel() {
     Ext.Ajax.request({
-        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_SEL',
-        type:'POST',
-        async:false,
-        params:{
-            V_WORKGUID:V_ORDERGUID,//$("#V_ORDERGUID").val(),
-            V_SIGN:''
+        url: AppUrl + 'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_SEL',
+        type: 'POST',
+        async: false,
+        params: {
+            V_WORKGUID: V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_SIGN: ''
         },
-        success:function(ret){
-            var resp=Ext.decode(ret.responseText);
-            if(resp.RET!=undefined){
-                returnMatSign=resp.RET;
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.RET != undefined) {
+                returnMatSign = resp.RET;
             }
         }
     });
 }
+
 //物料改变值状态
-function workMatChangeUpdt(){
+function workMatChangeUpdt() {
     Ext.Ajax.request({
-        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_UPD',
-        type:'POST',
-        async:false,
-        params:{
-            V_WORKGUID:V_ORDERGUID,//$("#V_ORDERGUID").val(),
-            V_SIGN:'0'
+        url: AppUrl + 'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_UPD',
+        type: 'POST',
+        async: false,
+        params: {
+            V_WORKGUID: V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_SIGN: '0'
         },
-        success:function(ret){
-            var resp=Ext.decode(ret.responseText);
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
 
         }
     });

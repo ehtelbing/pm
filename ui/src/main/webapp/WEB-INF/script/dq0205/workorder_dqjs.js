@@ -216,7 +216,6 @@ $(function () {
         id: 'window1',
         width: 370,
         height: 150,
-        bodyPadding: 15,
         layout: 'vbox',
         title: '选择下一步接收人',
         modal: true,//弹出窗口时后面背景不可编辑
@@ -230,7 +229,6 @@ $(function () {
         id: 'window2',
         width: 370,
         height: 150,
-        bodyPadding: 15,
         layout: 'vbox',
         title: '选择下一步接收人',
         modal: true,//弹出窗口时后面背景不可编辑
@@ -283,7 +281,6 @@ $(function () {
         id: 'windowb',
         width: 370,
         height: 150,
-        bodyPadding: 15,
         layout: 'vbox',
         title: '选择反馈接收人',
         modal: true,//弹出窗口时后面背景不可编辑
@@ -408,7 +405,6 @@ $(function () {
         height: 400,
         modal: true,
         plain: true,
-        bodyPadding: 10,
         items: [{
             xtype: 'form',
             id:'uploadFile',
