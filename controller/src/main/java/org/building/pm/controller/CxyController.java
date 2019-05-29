@@ -1034,6 +1034,54 @@ public class CxyController {
         result.put("success", true);
         return result;
     }
+    @RequestMapping(value = "/PM_FAULT_PLAN_STATE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_FAULT_PLAN_STATE_UPDATE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                                  @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                                  @RequestParam(value = "V_V_STAUTS") String V_V_STAUTS,
+                                                                  HttpServletRequest request,
+                                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
 
+        HashMap data = cService.PM_FAULT_PLAN_STATE_UPDATE(V_V_PERCODE,V_V_GUID,V_V_STAUTS);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_FAULT_PLAN_UP", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_FAULT_PLAN_UP(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                        @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_FAULT_PLAN_UP(V_V_PERCODE,V_V_GUID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_FAULT_PLAN_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_FAULT_PLAN_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_FAULT_PLAN_SET(V_V_GUID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
 }
 

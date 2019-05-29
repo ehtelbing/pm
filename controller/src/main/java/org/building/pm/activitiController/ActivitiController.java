@@ -672,6 +672,7 @@ public class ActivitiController {
                 }
                 else if (taskmap.get("flow_type").toString().indexOf("Fault")!=-1) {
 //                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    if(taskmap.get("flow_type").equals("Fault")){
                     equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
@@ -682,6 +683,20 @@ public class ActivitiController {
                         taskmap.put("OPERANAME", "");
                         taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                    }
+                    }else{
+                        equIp_name = (List) cxyService.PM_FAULT_PLAN_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                        if (equIp_name.size() > 0) {
+                            Map equmap = (Map) equIp_name.get(0);
+                            taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                            taskmap.put("PLANSTART",  "");
+                            taskmap.put("PLANEND",  "");
+                            taskmap.put("PLANHOUR",  "");
+                            taskmap.put("OPERANAME", "");
+                            taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                            taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                        }
+
                     }
                 }
                 //yearplan

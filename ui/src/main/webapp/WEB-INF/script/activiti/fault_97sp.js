@@ -17,9 +17,14 @@ var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var V_V_FAULT_GUID='';
 var V_V_FILE_GUID='';
+var V_V_ORGCODE_TEMP='';
+var V_V_DEPTCODE_TEMP='';
+var Assignee = '';
+var ProcessInstanceId = '';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
+    (parameters.ProcessInstanceId == undefined) ? ProcessInstanceId = '' : ProcessInstanceId = parameters.ProcessInstanceId;
 }
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
@@ -96,11 +101,12 @@ Ext.onReady(function () {
             // "checked":false,
         }
     });
-    var nextSprStore = Ext.create("Ext.data.Store", {
+
+    var nextSprStoreb = Ext.create("Ext.data.Store", {
         autoLoad: false,
-        storeId: 'nextSprStore',
-        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
-        proxy: {
+        storeId: 'nextSprStoreb',
+        fields: ['V_PERSONCODE', 'V_PERSONNAME','V_V_NEXT_SETP','V_V_FLOW_STEPNAME'],
+        proxy:{
             type: 'ajax',
             async: false,
             url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
@@ -111,33 +117,30 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {}
+            extraParams: {
+            }
         },
         listeners: {
-
-            load: function (store, records, success, eOpts) {
-                nextSprName2 = true;
-                var list = [];
-                if(store.getAt(0) != null){
-                    processKey = store.getProxy().getReader().rawData.RET;
-                    V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                    V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
-                    for(var i=0;i<records.length;i++){
-                        if(records[i].get('V_PERSONCODE')==Ext.util.Cookies.get('v_personcode')){
-                            Ext.getCmp('nextPer').select(records[i].get('V_PERSONCODE'));
-                            break;
-                        }else if(records[i].get('V_PERSONCODE')==V_V_PERSONCODE){
-                            Ext.getCmp('nextPer').select(V_V_PERSONCODE);
-                            break;
-                        }else{
-                            Ext.getCmp('nextPer').select(store.first());
-                        }
+            load: function (store, records,success,eOpts) {
+                processKey = store.getProxy().getReader().rawData.RET;
+                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+                V_NEXT_SETP =  store.getAt(0).data.V_V_NEXT_SETP;
+                // V_STEPCODE = resp.TaskDefinitionKey;
+                Ext.getCmp('nextSprb').select(store.first());
+                var list = Ext.getCmp("nextSprb").getStore().data.items;
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i].raw.V_PERSONCODE == Assignee) {
+                        Ext.getCmp("nextSprb").setValue(Assignee);
                     }
-                    // Ext.getCmp('nextPer').select(store.first());
+                    if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+
+                        Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
+                    }
                 }
             }
         }
     });
+
     var gridStore =Ext.create('Ext.data.Store', {
         id : 'gridStore',
         autoLoad : false,
@@ -180,7 +183,22 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px 5px',
                 labelAlign: 'right',
                 width: 250
-            }, {
+            },
+            {
+                id: 'nextSprb',
+                xtype: 'combo',
+                store: nextSprStoreb,
+                fieldLabel: '下一步接收人',
+                editable: false,
+                labelWidth: 100,
+                displayField: 'V_PERSONNAME',
+                valueField: 'V_PERSONCODE',
+                queryMode: 'local',
+                style: ' margin: 5px 0px 0px 0px',
+                labelAlign: 'right',
+                width: 250
+            },
+            {
                 xtype: 'button',
                 text: '确认通过',
                 style: ' margin: 5px 20px 0px 20px',
@@ -325,25 +343,25 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [
-            {
-                xtype: 'textfield',
-                id: 'equFaultname2',
-                fieldLabel: '事故类别',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 270
-            }, {
-                xtype: 'textfield',
-                id: 'faultLevel2',
-                fieldLabel: '事故等级',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
-            }
+                {
+                    xtype: 'textfield',
+                    id: 'equFaultname2',
+                    fieldLabel: '事故类别',
+                    labelWidth: 70,
+                    readOnly:true,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    width: 270
+                }, {
+                    xtype: 'textfield',
+                    id: 'faultLevel2',
+                    fieldLabel: '事故等级',
+                    labelWidth: 70,
+                    readOnly:true,
+                    style: ' margin: 5px 0px 0px -3px',
+                    labelAlign: 'right',
+                    width: 270
+                }
 
             ]
         }, {
@@ -912,7 +930,7 @@ Ext.onReady(function () {
     //
     // });
     _init();
-
+    getAssignee();
     // _selecteFaultStore2();
 
 });
@@ -930,6 +948,7 @@ function _selectTaskId() {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
+            _selectNextPer();
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -942,13 +961,13 @@ function _selectTaskId() {
     })
 }
 function _selectNextPer() {
-    var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
+    var nextSprStore = Ext.data.StoreManager.lookup('nextSprStoreb');
     nextSprStore.proxy.extraParams = {
-        V_V_ORGCODE: Ext.getCmp('V_V_ORGCODE2').getValue(),
-        V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE2').getValue(),
+        V_V_ORGCODE: V_V_ORGCODE_TEMP,
+        V_V_DEPTCODE: V_V_DEPTCODE_TEMP,
         V_V_REPAIRCODE: '',
         V_V_FLOWTYPE: 'Fault',
-        V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP: V_STEPCODE,//$.url().param("TaskDefinitionKey"),
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '',
         V_V_WHERE: '通过'
@@ -957,7 +976,9 @@ function _selectNextPer() {
     nextSprStore.load();
     Ext.getBody().unmask();
     // selNextPer();
+
 }
+
 function _init() {
     Ext.Ajax.request({
         url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_GET',
@@ -976,8 +997,8 @@ function _init() {
 
                 Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPENAME);
                 Ext.getCmp('begintime2').setValue(resp.RET[0].V_FINDTIME);
-
-
+                V_V_ORGCODE_TEMP=resp.RET[0].V_ORGCODE;
+                V_V_DEPTCODE_TEMP=resp.RET[0].V_DEPTCODE;
                 // Ext.getCmp('faultRea2').setValue(resp.RET[0].V_FAULT_YY);
                 Ext.getCmp('faultDesc2').setValue(resp.RET[0].V_FAULT_XX);
                 Ext.getCmp('faultLevel2').setValue(resp.RET[0].V_FAULT_LEVELNAME);
@@ -1015,6 +1036,7 @@ function _init() {
                     }
 
                 }
+
                 _selectTaskId();
                 V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
                 V_V_FILE_GUID=resp.RET[0].V_FILE_GUID;
@@ -1023,7 +1045,7 @@ function _init() {
                 // _selectsubequName2();
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();
-
+                // _selectNextPer();
 
             } else {
                 Ext.MessageBox.show({
@@ -1054,6 +1076,7 @@ function _init2(){
         Ext.getBody().unmask();//去除页面笼罩
     }
 }
+
 function _selectGridPanel() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
@@ -1213,7 +1236,20 @@ function onDel(fileguid) {
         }
     });
 }
-
+function getAssignee() {
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/InstanceState',
+        method: 'POST',
+        async: false,
+        params: {
+            instanceId: ProcessInstanceId
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            Assignee = resp.list[0].Assignee;
+        }
+    });
+}
 function onDownload(fileguid) {
     // alert(fileguid)
     var guid = fileguid.substring(0,36);
@@ -1372,87 +1408,72 @@ function _agree() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
+    // Ext.Ajax.request({
+    //     url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
+    //     method: 'POST',
+    //     type: 'ajax',
+    //     params: {
+    //         V_V_PERCODE:V_PERSONCODE,
+    //         V_V_GUID: $.url().param("V_ORDERGUID"),
+    //         V_V_STATE: '11',//通过 状态为审核完成
+    //         V_DEFECT_STATE:'50'
+    //     },
+    //     success: function (resp) {
+    //         var resp = Ext.decode(resp.responseText);
+    //         if (resp.RET == 'SUCCESS') {
     Ext.Ajax.request({
-        url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
-        method: 'POST',
+        url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
+        method: 'POST',
         params: {
-            V_V_PERCODE:V_PERSONCODE,
-            V_V_GUID: $.url().param("V_ORDERGUID"),
-            V_V_STATE: '11',//通过 状态为审核完成
-            V_DEFECT_STATE:'50'
+            taskId: taskId,
+            idea: '通过',
+            parName: [V_NEXT_SETP, "flow_yj",'shtgtime'],
+            parVal: [Ext.getCmp('nextSprb').getValue(),spyj,Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s') ],
+            processKey :processKey,//$.url().param("ProcessDefinitionKey"),
+            businessKey : $.url().param("V_ORDERGUID"),
+            V_STEPCODE : V_STEPCODE,
+            V_STEPNAME : V_STEPNAME,
+            V_IDEA : '请审批！',
+            V_NEXTPER : Ext.getCmp('nextSprb').getValue(),
+            V_INPER : Ext.util.Cookies.get('v_personcode')
         },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if (resp.RET == 'SUCCESS') {
-                Ext.Ajax.request({
-                    url: AppUrl + 'cxy/PM_FAULT_PLAN_SET',
-                    method: 'POST',
-                    type: 'ajax',
-                    params: {
-                        V_V_GUID: $.url().param("V_ORDERGUID")
-                    }, success: function (resp) {
-                        var resp = Ext.decode(resp.responseText);
-                        if (resp.RET == 'SUCCESS') {
-                            Ext.Ajax.request({
-                                url: AppUrl + 'Activiti/TaskComplete',
-                                type: 'ajax',
-                                method: 'POST',
-                                params: {
-                                    taskId: taskId,
-                                    idea: '通过',
-                                    parName: ['lcjs', "flow_yj", 'shtgtime'],
-                                    parVal: ['lcjs', spyj, Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'Y-m-d') + 'T' + Ext.Date.format(Ext.Date.add(new Date(), Ext.Date.DAY, 30), 'H:i:s')],
-                                    processKey: $.url().param("ProcessDefinitionKey"),
-                                    businessKey: $.url().param("V_ORDERGUID"),
-                                    V_STEPCODE: 'lcjs',
-                                    V_STEPNAME: '流程结束',
-                                    V_IDEA: '通过',
-                                    V_NEXTPER: 'lcjs',
-                                    V_INPER: Ext.util.Cookies.get('v_personcode')
-                                },
-                                success: function (response) {
-                                    var resp = Ext.decode(response.responseText);
-                                    if (resp.ret == '任务提交成功') {
+        success: function (response) {
+            var resp = Ext.decode(response.responseText);
+            if (resp.ret == '任务提交成功') {
 
-                                        window.close();
-                                        window.opener.OnPageLoad();
-                                    } else {
-                                        Ext.MessageBox.show({
-                                            title: '错误',
-                                            msg: resp.ret,
-                                            buttons: Ext.MessageBox.OK,
-                                            icon: Ext.MessageBox.ERROR
-                                        })
-                                    }
-                                },
-                                failure: function (response) {//访问到后台时执行的方法。
-                                    Ext.MessageBox.show({
-                                        title: '错误',
-                                        msg: response.responseText,
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.ERROR
-                                    })
-                                }
-                            });
-                        }else{
-                            Ext.Msg.alert('提示', '事故预案分析失败');
-                        }
-                    }
-                });
-
-            } else {
-                Ext.Msg.alert('提示', 'state update fail！');
+                window.close();
+                window.opener.OnPageLoad();
+            }else{
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: resp.ret,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                })
             }
-        },failure: function (resp) {//访问到后台时执行的方法。
+        },
+        failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
                 title: '错误',
-                msg: resp.responseText,
+                msg: response.responseText,
                 buttons: Ext.MessageBox.OK,
                 icon: Ext.MessageBox.ERROR
             })
         }
-    });
+    })
+    // } else {
+    //     Ext.Msg.alert('提示', 'state update fail！');
+    // }
+    // },failure: function (resp) {//访问到后台时执行的方法。
+    //     Ext.MessageBox.show({
+    //         title: '错误',
+    //         msg: resp.responseText,
+    //         buttons: Ext.MessageBox.OK,
+    //         icon: Ext.MessageBox.ERROR
+    //     })
+    // }
+    // });
 
 }
 
