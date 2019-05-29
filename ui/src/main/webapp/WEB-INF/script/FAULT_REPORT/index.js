@@ -18,9 +18,7 @@ var code ="";
 var processKey = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
-var processKey2 = '';
-var V_STEPNAME2 = '';
-var V_NEXT_SETP2 = '';
+var selectID = [];
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -407,6 +405,12 @@ Ext.onReady(function () {
             // width: 90,
             icon: imgpath + '/accordion_collapse.png',
             handler: OnButtonUp
+        },{
+            xtype: 'button',
+            text: '打印',
+            // width: 90,
+            icon: imgpath + '/accordion_collapse.png',
+            handler: OnButtonPrint
         }
         ]
     });
@@ -566,7 +570,7 @@ Ext.onReady(function () {
                 queryMode: 'local'
             }
 
-            ]
+        ]
     });
 
 
@@ -938,6 +942,33 @@ function _detailOpen(value) {
     var owidth = 1300;
     var oheight = 850;
     window.open(AppUrl + 'page/FAULT_REPORT/detail.html?V_V_GUID=' + value,'', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
+}
+function OnButtonPrint() {
+    var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
+
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    if (records.length > 1) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '只能选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    var owidth = window.screen.availWidth-200;
+    var oheight = window.screen.availHeight - 150;
+    selectID.push(records[0].get('V_GUID'));
+    window.open(AppUrl + 'page/FAULT_REPORT/print.html', 'selectID', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }
 //上报
 function OnButtonUp() {

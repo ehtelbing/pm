@@ -1541,4 +1541,87 @@ public class CxyService {
         logger.info("end PM_GET_WORKORDER_BY_FAULT");
         return result;
     }
+    public HashMap PM_FAULT_PLAN_SEL(String V_V_ORGCODE, String V_V_DEPTCODE) throws SQLException {
+        logger.info("begin PM_FAULT_PLAN_SEL");
+        logger.debug("params:V_V_ORGCODE:" + V_V_ORGCODE + ",V_V_DEPTCODE:" + V_V_DEPTCODE);
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_FAULT_PLAN_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_FAULT_PLAN_SEL");
+        return result;
+    }
+
+    public HashMap PM_FAULT_PLAN_GET(String V_V_GUID) throws SQLException {
+
+        logger.info("begin PM_FAULT_PLAN_GET");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_FAULT_PLAN_GET" + "(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_FAULT_PLAN_GET");
+        return result;
+    }
+    public HashMap PM_FAULT_PLAN_UPDATE(String V_V_GUID, String V_V_PROGRAM, String V_V_MODE, String V_V_PLAN, String V_V_PREVENT) throws SQLException {
+        logger.info("begin PM_FAULT_PLAN_UPDATE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_FAULT_PLAN_UPDATE" + "(:V_V_GUID,:V_V_PROGRAM,:V_V_MODE," +
+                    ":V_V_PLAN,:V_V_PREVENT,:V_INFO)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PROGRAM", V_V_PROGRAM);
+            cstmt.setString("V_V_MODE", V_V_MODE);
+            cstmt.setString("V_V_PLAN", V_V_PLAN);
+            cstmt.setString("V_V_PREVENT", V_V_PREVENT);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", cstmt.getString("V_INFO"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_FAULT_PLAN_UPDATE");
+        return result;
+    }
 }
