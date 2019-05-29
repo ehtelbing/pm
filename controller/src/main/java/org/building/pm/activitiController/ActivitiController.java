@@ -679,7 +679,7 @@ public class ActivitiController {
                         taskmap.put("PLANSTART", equmap.get("V_FINDTIME").toString());
                         taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
                         taskmap.put("PLANHOUR", equmap.get("V_TIME").toString());
-                        taskmap.put("OPERANAME", equmap.get("V_FZR").toString());
+                        taskmap.put("OPERANAME", "");
                         taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                     }
@@ -693,7 +693,7 @@ public class ActivitiController {
                         taskmap.put("PLANSTART", equmap.get("PLANTJMONTH").toString());
                         taskmap.put("PLANEND", equmap.get("PLANJGMONTH").toString());
                         taskmap.put("PLANHOUR", equmap.get("PLANHOUR").toString());
-                        taskmap.put("OPERANAME", equmap.get("INPERNAME").toString());
+                        taskmap.put("OPERANAME", equmap.get("SCLBNAME").toString());
                         taskmap.put("ORGNAME", equmap.get("ORGNAME").toString());
                         taskmap.put("DEPTNAME", equmap.get("DEPTCODE").toString());
                         taskmap.put("ZYNAME", equmap.get("ZYNAME").toString());

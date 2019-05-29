@@ -154,12 +154,6 @@ Ext.onReady(function () {
                 dataIndex: 'OPERANAME',
                 align: 'center',
                 width: 82
-                // ,renderer:function(){ if(Ext.getCmp('tabpanel').getActiveTab().id=='WORK'){
-                // grid.columns[10].hide();
-                // }}
-                // ,renderer:function(){ if(Ext.getCmp('tabpanel').getActiveTab().id=='WORK'){
-                //         this.hidden=true;
-                //     }}
             }
             , {
                 text: '开始时间',
