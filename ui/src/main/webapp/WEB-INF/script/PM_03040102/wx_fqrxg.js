@@ -281,8 +281,18 @@ Ext.onReady(function(){
                 text: '驳回',
                 margin: '0 0 5 8',
                 iconCls: 'buy-button',
+                hidden:true,
                 icon:dxImgPath + '/back.png',
                 handler:btnFlowDisAgree
+            },{
+                xtype: 'button',
+                id:'disagreeFlow',
+                text: '作废',
+                margin: '0 0 5 8',
+                iconCls: 'buy-button',
+                hidden:true,
+                icon:dxImgPath + '/back.png',
+                handler:btnFlowZF
             }
         ]
     });
@@ -1922,4 +1932,85 @@ function  disPassDefect(){
             }
         });
     }
+}
+//作废
+function btnFlowZF(){
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/TaskComplete',
+        type: 'ajax',
+        method: 'POST',
+        params: {
+            taskId: taskId,
+            idea: '不通过',
+            parName: ["flow_yj"],
+            parVal: ['驳回'],
+            processKey: processKey,
+            businessKey: Guid,
+            V_STEPCODE: 'end',
+            V_STEPNAME: '驳回',
+            V_IDEA: '驳回',
+            V_NEXTPER: '',
+            V_INPER: Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (response) {
+            // 维修计划状态修改
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/PM_03_PLAN_PROJECT_STAT_SET',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_GUID: Guid,
+                    V_STATE:'-1'
+                },
+                success: function (response) {
+                    var resp = Ext.decode(response.responseText);//后台返回的值
+                    if (resp.RET == 'SUCCESS') {//成功，会传回true
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
+                        window.opener.QueryTabMain();
+                        window.close();
+                        window.opener.OnPageLoad();
+
+                    } else {
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: resp.V_INFO,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR,
+                            fn: function () {
+
+                            }
+                        });
+                    }
+                },
+                failure: function (response) {//访问到后台时执行的方法。
+                    Ext.MessageBox.show({
+                        title: '错误',
+                        msg: response.responseText,
+                        buttons: Ext.MessageBox.OK,
+                        icon: Ext.MessageBox.ERROR,
+                        fn: function () {
+
+                        }
+                    })
+                }
+            });
+            window.opener.QueryTabY();
+            window.opener.QuerySum();
+            window.opener.QueryGrid();
+            window.close();
+            window.opener.OnPageLoad();
+
+
+        },
+        failure: function (response) {//访问到后台时执行的方法。
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            })
+        }
+
+    });
 }

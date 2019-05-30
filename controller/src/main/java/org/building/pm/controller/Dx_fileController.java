@@ -4432,6 +4432,114 @@ public class Dx_fileController {
         return result;
     }
 
+    //简版维修计划导出
+   @RequestMapping(value="/WXEXPORTEXCEL",method=RequestMethod.GET,produces = "application/html;charset=UTF-8")
+   @ResponseBody
+   public void WXEXPORTEXCEL( @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                              @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                              @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                              @RequestParam(value = "V_V_ZY") String V_V_ZY,
+                              @RequestParam(value = "V_V_QSTEXT") String V_V_QSTEXT,
+                              HttpServletResponse res,
+                              HttpServletRequest req)throws SQLException{
+        String ORGCODE=V_V_ORGCODE.equals("0")?"%":V_V_ORGCODE;
+       String DEPTCODE=V_V_DEPTCODE.equals("0")?"%":V_V_DEPTCODE;
+       String ZY=V_V_ZY.equals("0")?"%":V_V_ZY;
+       List list =new ArrayList();
+
+       Map<String, Object> data=dx_fileService.PRO_PM_03_PLAN_YEAR_VIEW_ED(V_V_YEAR,ORGCODE,DEPTCODE,ZY,V_V_QSTEXT);
+
+       HSSFWorkbook wb=new HSSFWorkbook();
+       HSSFSheet sheet = wb.createSheet();
+       for (int i = 0; i <= 1; i++) {
+           sheet.setColumnWidth(i, 3000);
+       }
+       HSSFRow row = sheet.createRow((int) 0);
+       HSSFCellStyle style = wb.createCellStyle();
+       style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+       HSSFCell cell = row.createCell((short) 0);
+       cell.setCellValue("序号");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 1);
+       cell.setCellValue("工程状态");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 2);
+       cell.setCellValue("工程编码");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 3);
+       cell.setCellValue("工程名称");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 4);
+       cell.setCellValue("专业");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 5);
+       cell.setCellValue("工程请示内容");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 6);
+       cell.setCellValue("开工时间");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 7);
+       cell.setCellValue("竣工时间");
+       cell.setCellStyle(style);
+
+       cell = row.createCell((short) 8);
+       cell.setCellValue("缺陷详情");
+       cell.setCellStyle(style);
+
+       if (data.size() > 0) {
+           list = (List) data.get("list");
+
+
+           for (int i = 0; i < list.size(); i++) {
+               row = sheet.createRow((int) i + 1);
+               Map map = (Map) list.get(i);
+
+               row.createCell((short) 0).setCellValue(i + 1);
+               row.createCell((short) 1).setCellValue(map.get("V_STATENAME").equals(" ") ? "" : map.get("V_STATENAME").toString());
+               row.createCell((short) 2).setCellValue(map.get("V_PORJECT_CODE").equals(" ") ? "" : map.get("V_PORJECT_CODE").toString());
+               row.createCell((short) 3).setCellValue(map.get("V_PORJECT_NAME").equals(" ") ? "" : map.get("V_PORJECT_NAME").toString());
+               row.createCell((short) 4).setCellValue(map.get("V_SPECIALTYNAME").equals(" ") ? "" : map.get("V_SPECIALTYNAME").toString());
+               row.createCell((short) 5).setCellValue(map.get("V_QSTEXT").equals(" ") ? "" : map.get("V_QSTEXT").toString());
+               row.createCell((short) 6).setCellValue(map.get("V_BDATE").equals(" ") ? "" : map.get("V_BDATE").toString().substring(0, 10));
+               row.createCell((short) 7).setCellValue(map.get("V_EDATE").equals(" ") ? "" : map.get("V_EDATE").toString().substring(0, 10));
+               row.createCell((short) 8).setCellValue(map.get("DEFNUM").equals(" ") ? "" : map.get("DEFNUM").toString());
+
+           }
+           try {
+               res.setContentType("application/vnd.ms-excel;charset=UTF-8");
+               res.setHeader("Content-Disposition", "attachment; filename="
+                       + URLEncoder.encode("维修计划导出Excel.xls", "UTF-8"));
+               OutputStream out = res.getOutputStream();
+
+               wb.write(out);
+               out.flush();
+               out.close();
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+       }
+   }
+    //    维修计划状态修改
+    @RequestMapping(value = "PM_03_PLAN_PROJECT_STAT_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_PROJECT_STAT_SET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_STATE") String V_STATE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.PM_03_PLAN_PROJECT_STAT_SET(V_V_GUID, V_STATE);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

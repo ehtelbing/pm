@@ -133,7 +133,8 @@ Ext.onReady(function(){
         fields: ['I_ID','V_GUID','V_GUID_UP','V_YEAR','V_MONTH','V_ORGCODE','V_ORGNAME',
             'V_DEPTCODE','V_DEPTNAME','V_PORJECT_CODE','V_PORJECT_NAME','V_SPECIALTY','V_SPECIALTYNAME',
             'V_SPECIALTYMANCODE','V_SPECIALTYMAN','V_WXTYPECODE','V_WXTYPENAME','V_CONTENT','V_MONEYBUDGET',
-            'V_REPAIRDEPTCODE','V_BDATE','V_EDATE','V_STATE','V_FLAG','V_INMAN','V_INMANCODE','V_INDATE','V_STATENAME','V_QSTEXT'],
+            'V_REPAIRDEPTCODE','V_BDATE','V_EDATE','V_STATE','V_FLAG','V_INMAN','V_INMANCODE','V_INDATE',
+            'V_STATENAME','V_QSTEXT','DEFNUM'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -443,7 +444,7 @@ function timelfet(value, metaDate, record, rowIndex, colIndex, store){
 //缺陷详情
 function OperaTion(value,metaDate,record,rowIndex,colIndex,store){
     metaDate.style="text-align:center;";
-    return '<a href="#" onclick="_delDetail(\''+value+'\')">'+'缺陷详情'+'</a>';
+    return '<a href="#" onclick="_delDetail(\''+value+'\')">'+record.data.DEFNUM+'</a>';
 }
 
 function pageLoad(){
@@ -556,12 +557,56 @@ function OnButtonEdit(){
 }
 //删除
 function OnButtonDel(){
+    var chodata = Ext.getCmp('mainpanel').getSelectionModel().getSelection();
+
+    if(chodata.length<=0){
+        alert('请选择至少一条数据！');
+        return;
+    }else {
+
+        for (var k = 0; k < chodata.length; k++) {
+            if (chodata[k].data.V_STATE != '99' && chodata[k].data.V_STATE != '-1') {
+                alert('不是编辑和作废状态的数据，无法删除');
+                return false;
+            }
+        }
+        for(var j = 0; j < chodata.length; j++){
+
+               var num=0;
+               Ext.Ajax.request({
+                   url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_DEL',
+                   method: 'POST',
+                   async: false,
+                   params: {
+                       V_V_GUID:chodata[j].data.V_GUID
+                   },
+                   success: function (resp) {
+                       var resp=Ext.decode(resp.responseText);
+                       if(resp.V_CURSOR=='SUCCESS'){
+                           num++;
+                       }
+                   }
+               });
+
+               if(num==seldata.length){
+                   OnButtonQuery();
+               }
+           }
+    }
 
 
 }
 //导出
 function OnButtonOut(){
+    var ck=Ext.getCmp('ck').getValue()=="%"?"0":Ext.getCmp('ck').getValue();
+    var zyq=Ext.getCmp('zyq').getValue()=="%"?"0":Ext.getCmp('zyq').getValue();
+    var zy=Ext.getCmp('zy').getValue()=="%"?"0":Ext.getCmp('zy').getValue();
 
+    document.location.href=AppUrl + 'dxfile/WXEXPORTEXCEL?V_V_YEAR='+Ext.getCmp('year').getValue()+
+        '&V_V_ORGCODE='+ck+
+        '&V_V_DEPTCODE='+ zyq+
+        '&V_V_ZY='+zy+
+        '&V_V_QSTEXT='+Ext.getCmp('gcqs').getValue();
 
 }
 //上报
