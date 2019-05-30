@@ -810,6 +810,10 @@ function btnSaveProject(){
         Ext.Msg.alert("消息","项目名称不可以为空");
         return false;
     }
+    if(Ext.getCmp('qstext').getValue()==""){
+        Ext.Msg.alert("消息","工程请示不可以为空");
+        return false;
+    }
     Ext.Ajax.request({
         url: AppUrl + 'dxfile/PRO_PM_03_PLAN_YEAR_SAVE',
         method: 'POST',
@@ -940,6 +944,10 @@ function btnFlowStart(){
     }
     if(Ext.getCmp('ProjectName').getValue()==""){
         Ext.Msg.alert("消息","项目名称不可以为空");
+        return false;
+    }
+    if(Ext.getCmp('qstext').getValue()==""){
+        Ext.Msg.alert("消息","工程请示不可以为空");
         return false;
     }
     Ext.Ajax.request({
