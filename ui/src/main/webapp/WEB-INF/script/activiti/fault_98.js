@@ -1162,7 +1162,7 @@ function _init() {
                 Ext.getCmp('fzrcl2').setValue(resp.RET[0].V_FZR_CL);
 
                 Ext.getCmp('endtime2').setValue(resp.RET[0].V_ENDTIME);
-                Ext.getCmp('faultbgr2').setValue(resp.RET[0].V_REPORTER);
+                // Ext.getCmp('faultbgr2').setValue(resp.RET[0].V_REPORTER);
                 Ext.getCmp('faultzjzrr2').setValue(resp.RET[0].V_FZR);
                 Ext.getCmp('stoptime2').setValue(resp.RET[0].V_STOPTIME);
                 Ext.getCmp('repairtime2').setValue(resp.RET[0].V_REPAIRTIME);
@@ -1597,7 +1597,7 @@ function _agree() {
             'V_V_FZR_CL':Ext.getCmp("fzrcl2").getValue(),
 
             'V_V_ENDTIME':Ext.getCmp("endtime2").getSubmitValue(),
-            'V_V_REPORTER':Ext.getCmp("faultbgr2").getValue(),
+            'V_V_REPORTER':Ext.util.Cookies.get('v_personcode'),
             'V_V_FZR':Ext.getCmp("faultzjzrr2").getValue(),
             'V_V_STOPTIME':Ext.getCmp("stoptime2").getSubmitValue(),
             'V_V_REPAIRTIME':Ext.getCmp("repairtime2").getSubmitValue(),

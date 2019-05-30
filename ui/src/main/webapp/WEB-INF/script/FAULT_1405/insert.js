@@ -338,7 +338,8 @@ Ext.onReady(function () {
             }
 
             ]
-        }, {
+        },
+            /*{
             xtype: 'panel',
             region: 'north',
             layout: 'column',
@@ -375,7 +376,7 @@ Ext.onReady(function () {
                 }
 
             ]
-        },
+        },*/
 
             {
             xtype: 'panel',
@@ -465,8 +466,8 @@ Ext.onReady(function () {
                 items: [
                         {
                         xtype: 'textfield',
-                        id: 'faultbgr',
-                        fieldLabel: '事故报告人',
+                        id: 'faulname',//faultbgr
+                        fieldLabel: '事故名称',//事故报告人
                         labelWidth: 70,
                         style: ' margin: 5px 0px 0px -8px',
                         labelAlign: 'right',
@@ -1322,7 +1323,7 @@ function _saveBtnFault() {
                 'V_V_FAULT_ZGCS':Ext.getCmp("faultzgcs").getValue(),
                 'V_V_FZR_CL':Ext.getCmp("fzrcl").getValue(),
                 'V_V_ENDTIME':Ext.getCmp("endtime1").getSubmitValue(),
-                'V_V_REPORTER':Ext.getCmp("faultbgr").getValue(),
+                'V_V_REPORTER':Ext.util.Cookies.get('v_personcode'),//faultbgr
                 'V_V_FZR':Ext.getCmp("faultzjzrr").getValue(),
                 'V_V_STOPTIME':Ext.getCmp("stoptime1").getSubmitValue(),
                 'V_V_REPAIRTIME':Ext.getCmp("repairtime1").getSubmitValue(),

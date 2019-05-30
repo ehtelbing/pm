@@ -581,7 +581,7 @@ Ext.onReady(function () {
             ,{
                 xtype: 'textfield',
                 id: 'faulttext',
-                fieldLabel: '故障原因',
+                fieldLabel: '事故原因',
                 labelWidth: 70,
                 width: 250
             }
@@ -631,14 +631,15 @@ Ext.onReady(function () {
             text: '状态',
             dataIndex: 'V_STATENAME',
             align: 'center',
-            width: 100
-            // renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-            //     // if(value!="未处理") {
-            //     //     return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_PROCESSINSTANCEID + '\')">' + value + '</a>';
-            //     // }else{
-            //     //     return value;
-            //     // }
-            // }
+            width: 100,
+            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                if(value!="未下票") {
+                    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + value + '</a>';
+                }else{
+                    return value;
+                }
+            }
+
         }, {
             text: '发现时间',
             dataIndex: 'V_FINDTIME',
@@ -701,7 +702,7 @@ Ext.onReady(function () {
             width: 100
         }, */
             {
-            text: '故障等级',
+            text: '事故等级',
             dataIndex: 'V_FAULT_LEVELNAME',
             align: 'center',
             width: 100
@@ -833,10 +834,8 @@ Ext.onReady(function () {
                     colIndex).data;
                 var owidth = window.document.body.offsetWidth;
                 var oheight = window.document.body.offsetHeight;
-                // var owidth = window.screen.availWidth-200;
-                // var oheight = window.screen.availHeight-150;
                 window.open(AppUrl + "page/FAULT_1405/equip.html?V_GUID=" + data.V_GUID+'&V_STATE='+data.V_STATE,
-                    "",  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+                    "",  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
                 /*if(data.V_STATE=='2'){
                     Ext.MessageBox.show({
                                 title: '提示',
@@ -1917,382 +1916,30 @@ function _addModellFault() {
     var oheight = 600;
 
     window.open(AppUrl + 'page/PM_1404/index.html?V_V_ORGCODE=' + Ext.getCmp("V_V_ORGCODE").getValue() + '&V_V_DEPTCODE=' + Ext.getCmp("V_V_DEPTCODE").getValue() + '&V_V_EQUTYPE=' + encodeURI(Ext.getCmp("V_V_EQUTYPE").getValue()) + '&V_V_EQUCODE=' + encodeURI(Ext.getCmp("V_EQUNAME").getValue()) + '&V_V_EQUCHILD_CODE=' + encodeURI(Ext.getCmp("SUB_V_EQUNAME").getValue()) + '&V_V_FAULT_TYPE=' + encodeURI(Ext.getCmp("equFaultname").getValue()) + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' )
-    // var matStockLevel = window.showModalDialog(AppUrl + 'page/PM_140701/index.html?IN_DEPARTCODE=' + Ext.getCmp("zyq").getValue() + '&V_V_GUID=' + records[0].get("V_GUID") + '&random=' + Math.random(), window, 'resizable=yes;  dialogWidth=1200px; dialogHeight=1000px');
-    /*if (b) {
-     _seltctFault();
-     alert(b);
-     Ext.example.msg('操作信息', '操作成功');
-
-     //  Ext.data.StoreManager.lookup('faultItemStore').add(matStockLevel);
-     //_seltctFault();
-     }*/
 
 }
 
+function _preViewProcess(value) {
 
-//上报
-// function OnButtonUp() {
-//     var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
-//
-//     var V_V_IP = '';
-//     if (location.href.split('?')[0] != undefined) {
-//         var parameters = Ext.urlDecode(location.href.split('?')[0]);
-//         (parameters.V_V_IP == undefined) ? V_V_IP = '' : V_V_IP = parameters.V_V_IP;
-//     }
-//
-//     if (records.length == 0) {
-//         Ext.MessageBox.show({
-//             title: '提示',
-//             msg: '请至少选择一条数据',
-//             buttons: Ext.MessageBox.OK,
-//             icon: Ext.MessageBox.WARNING
-//         });
-//         return false;
-//     }
-//
-//
-//     Ext.MessageBox.show({
-//         title: '确认',
-//         msg: '请确认是否上报！',
-//         buttons: Ext.MessageBox.YESNO,
-//         icon: Ext.MessageBox.QUESTION,
-//         fn: function (btn) {
-//             if (btn == 'yes') {
-//                 var i_err = 0;
-//                 for (var i = 0; i < records.length; i++) {
-//                     var vguid=records[i].get('V_GUID');
-//                     var vfaultxx=records[i].get('V_FAULT_XX');
-//                     var vfaultid=records[i].get('V_FAULTID');
-//                     Ext.Ajax.request({
-//                         url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_UP',
-//                         type: 'ajax',
-//                         method: 'POST',
-//                         params: {
-//                             'V_V_PERCODE': V_V_PERSONCODE,
-//                             'V_V_IP': V_V_IP,
-//                             'V_V_GUID': vguid
-//                         },
-//                         success: function (response) {
-//                             var resp = Ext.decode(response.responseText);
-//                             if (resp.RET == 'success') {//成功，会传回true
-//                                 Ext.Ajax.request({
-//                                     url: AppUrl + 'Activiti/StratProcess',
-//                                     async: false,
-//                                     method: 'post',
-//                                     params: {
-//                                         parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-//                                         parVal: [V_V_PERSONCODE, vguid, Ext.getCmp('nextPer').getValue(),
-//                                             "请审批!", vfaultxx, vfaultid, "请审批！", "Fault"],
-//                                         processKey: processKey,
-//                                         businessKey: vguid,
-//                                         V_STEPCODE: 'Start',
-//                                         V_STEPNAME: V_STEPNAME,
-//                                         V_IDEA: '请审批！',
-//                                         V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-//                                         V_INPER: Ext.util.Cookies.get('v_personcode')
-//                                     },
-//                                     success: function (response) {
-//                                         if (Ext.decode(response.responseText).ret == 'OK') {
-//                                             Ext.Ajax.request({
-//                                                 url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_INSTANCEID_SET',
-//                                                 type: 'ajax',
-//                                                 method: 'POST',
-//                                                 params: {
-//                                                     'V_V_GUID': vguid,
-//                                                     'V_V_INSTANCEID': Ext.decode(response.responseText).InstanceId
-//                                                 },
-//                                                 success: function (response) {
-//                                                 }
-//                                             });
-//                                             i_err++;
-//                                             if (i_err == records.length) {
-//                                                 Ext.MessageBox.show({
-//                                                     title: '提示',
-//                                                     msg: '上报成功!',
-//                                                     buttons: Ext.MessageBox.OK,
-//                                                     fn: function () {
-//                                                         _seltctFault();
-//                                                     }
-//                                                 });
-//                                             }
-//                                         } else if (Ext.decode(response.responseText).ret == 'ERROR') {
-//                                             Ext.Msg.alert('提示', Ext.decode(response.responseText).msg);
-//                                         }
-//                                     }
-//                                 });
-//                             } else {
-//                                 Ext.MessageBox.show({
-//                                     title: '错误',
-//                                     msg: resp.RET,
-//                                     buttons: Ext.MessageBox.OK,
-//                                     icon: Ext.MessageBox.ERROR,
-//                                     fn: function () {
-//                                         _seltctFault();
-//                                     }
-//                                 });
-//                             }
-//
-//                         },
-//                         failure: function (response) {
-//                             Ext.MessageBox.show({
-//                                 title: '错误',
-//                                 msg: response.responseText,
-//                                 buttons: Ext.MessageBox.OK,
-//                                 icon: Ext.MessageBox.ERROR
-//                             });
-//                         }
-//                     });
-//
-//                     // Ext.Ajax.request({
-//                     //     url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_UP',
-//                     //     type: 'ajax',
-//                     //     method: 'POST',
-//                     //     params: {
-//                     //         'V_V_PERCODE': V_V_PERSONCODE,
-//                     //         'V_V_IP': V_V_IP,
-//                     //         'V_V_GUID': records[i].get('V_GUID')
-//                     //     },
-//                     //     success: function (response) {
-//                     //         var resp = Ext.decode(response.responseText);
-//                     //         if (resp.RET == 'success') {//成功，会传回true
-//                     //             i_err++;
-//                     //             if (i_err == records.length) {
-//                     //                 _seltctFault();
-//                     //                 Ext.MessageBox.show({
-//                     //                     title: '提示',
-//                     //                     msg: '上报成功!',
-//                     //                     buttons: Ext.MessageBox.OK,
-//                     //                     fn: function () {
-//                     //                         _seltctFault();
-//                     //                     }
-//                     //                 });
-//                     //             }
-//                     //         } else {
-//                     //             Ext.MessageBox.show({
-//                     //                 title: '错误',
-//                     //                 msg: resp.RET,
-//                     //                 buttons: Ext.MessageBox.OK,
-//                     //                 icon: Ext.MessageBox.ERROR,
-//                     //                 fn: function () {
-//                     //                     _seltctFault();
-//                     //                 }
-//                     //             });
-//                     //         }
-//                     //
-//                     //     },
-//                     //     failure: function (response) {
-//                     //         Ext.MessageBox.show({
-//                     //             title: '错误',
-//                     //             msg: response.responseText,
-//                     //             buttons: Ext.MessageBox.OK,
-//                     //             icon: Ext.MessageBox.ERROR
-//                     //         });
-//                     //     }
-//                     // });
-//                 }
-//             }
-//         }
-//     });
-//
-//
-// }
-//保存+上报
-// function OnButtonSaveUp() {
-//     var V_V_IP = '';
-//     if (location.href.split('?')[0] != undefined) {
-//         var parameters = Ext.urlDecode(location.href.split('?')[0]);
-//         (parameters.V_V_IP == undefined) ? V_V_IP = '' : V_V_IP = parameters.V_V_IP;
-//     }
-//
-//     var fileguid = '';
-//     for (var i = 1; i <= 32; i++) {
-//         var n = Math.floor(Math.random() * 16.0).toString(16);
-//         fileguid += n;
-//         if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
-//             fileguid += "-";
-//     }
-//
-//     var faultguid = '';
-//     for (var i = 1; i <= 32; i++) {
-//         var n = Math.floor(Math.random() * 16.0).toString(16);
-//         faultguid += n;
-//         if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
-//             faultguid += "-";
-//     }
-//
-//     var intime = Ext.Date.format(new Date(), 'Y-m-d');
-//
-//
-//     if (!_validate(Ext.getCmp('addPanel'))) {
-//         Ext.MessageBox.show({
-//             title: '提示',
-//             msg: '请录入这些必填项!',
-//             buttons: Ext.MessageBox.OK,
-//             icon: Ext.MessageBox.ERROR
-//         });
-//         return;故障名称
-//     }
-//
-//     if (Ext.getCmp('V_V_ORGCODE1').getValue() != '%' && Ext.getCmp('V_V_DEPTCODE1').getValue() != '%' && Ext.getCmp('V_V_EQUTYPE1').getValue() != '%' && Ext.getCmp('V_EQUNAME1').getValue() != '%' && Ext.getCmp('SUB_V_EQUNAME1').getValue() != '%' && Ext.getCmp('equFaultname1').getValue() != '%') {
-//         Ext.Ajax.request({
-//             url: AppUrl + 'cxy/PM_1405_FAULT_ITEM_DATA_SET',
-//             type: 'ajax',
-//             method: 'POST',
-//             params: {
-//                 'V_V_GUID': V_V_GUID,
-//                 'V_V_ORGCODE': Ext.getCmp("V_V_ORGCODE1").getValue(),
-//                 'V_V_DEPTCODE': Ext.getCmp("V_V_DEPTCODE1").getValue(),
-//                 'V_V_EQUTYPE': Ext.getCmp("V_V_EQUTYPE1").getValue(),
-//                 'V_V_EQUCODE': Ext.getCmp("V_EQUNAME1").getValue(),
-//                 'V_V_EQUCHILD_CODE': Ext.getCmp("SUB_V_EQUNAME1").getValue(),
-//                 'V_V_FAULT_GUID': faultguid,
-//                 'V_V_FAULT_TYPE': Ext.getCmp("equFaultname1").getValue(),
-//                 'V_V_FAULT_YY': Ext.getCmp("faultRea1").getValue(),
-//                 'V_V_FINDTIME': Ext.getCmp("begintime1").getSubmitValue(),
-//                 'V_V_FAULT_XX': Ext.getCmp("faultDesc1").getValue(),
-//                 'V_V_JJBF': Ext.getCmp("faultSol1").getValue(),
-//                 'V_V_FAULT_LEVEL': Ext.getCmp("faultLevel1").getValue(),
-//                 'V_V_FILE_GUID': fileguid,
-//                 'V_V_INTIME': intime,
-//                 'V_V_PERCODE': V_V_PERSONCODE,
-//                 'V_V_IP': V_V_IP,
-//                 'V_V_FAULT_NAME':Ext.getCmp("faultname").getValue(),
-//                 'V_V_FAULT_PART':Ext.getCmp("faultpart").getValue(),
-//                 'V_V_FAULT_CLGC':Ext.getCmp("faultclgc").getValue(),
-//                 'V_V_FAULT_SS':Ext.getCmp("faultss").getValue(),
-//                 'V_V_FAULT_XZ':Ext.getCmp("faultxz").getValue(),
-//                 'V_V_FAULT_ZGCS':Ext.getCmp("faultzgcs").getValue(),
-//                 'V_V_FZR_CL':Ext.getCmp("fzrcl").getValue()
-//             },
-//             success: function (response) {
-//                 var data = Ext.JSON.decode(response.responseText);
-//
-//                 // var data = Ext.decode(response.responseText);
-//                 if (data.RET == 'Success') {
-//                     var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
-//
-//                     var V_V_IP = '';
-//                     if (location.href.split('?')[0] != undefined) {
-//                         var parameters = Ext.urlDecode(location.href.split('?')[0]);
-//                         (parameters.V_V_IP == undefined) ? V_V_IP = '' : V_V_IP = parameters.V_V_IP;
-//                     }
-//
-//                     Ext.Ajax.request({
-//                         url: AppUrl + 'Activiti/StratProcess',
-//                         async: false,
-//                         method: 'post',
-//                         params: {
-//                             parName: ["originator", "flow_businesskey", V_NEXT_SETP2, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-//                             parVal: [V_V_PERSONCODE, V_V_GUID, Ext.getCmp('winnextPer').getValue(),
-//                                 "请审批!", Ext.getCmp("faultDesc1").getValue(), data.FAULTID, "请审批！", "Fault"],
-//                             processKey: processKey2,
-//                             businessKey: V_V_GUID,
-//                             V_STEPCODE: 'Start',
-//                             V_STEPNAME: V_STEPNAME2,
-//                             V_IDEA: '请审批！',
-//                             V_NEXTPER: Ext.getCmp('winnextPer').getValue(),
-//                             V_INPER: Ext.util.Cookies.get('v_personcode')
-//                         },
-//                         success: function (response) {
-//                             if (Ext.decode(response.responseText).ret == 'OK') {
-//                                 Ext.Ajax.request({
-//                                     url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_UP',
-//                                     type: 'ajax',
-//                                     method: 'POST',
-//                                     params: {
-//                                         'V_V_PERCODE': V_V_PERSONCODE,
-//                                         'V_V_IP': V_V_IP,
-//                                         'V_V_GUID': V_V_GUID
-//                                     },
-//                                     success: function (response) {
-//                                         var resp = Ext.decode(response.responseText);
-//                                         if (resp.RET == 'success') {//成功，会传回true
-//                                                 _seltctFault();
-//                                                 Ext.MessageBox.show({
-//                                                     title: '提示',
-//                                                     msg: '保存及上报成功!',
-//                                                     buttons: Ext.MessageBox.OK,
-//                                                     fn: function () {
-//                                                         _seltctFault();
-//                                                     }
-//                                                 });
-//                                         } else {
-//                                             Ext.MessageBox.show({
-//                                                 title: '错误',
-//                                                 msg: resp.RET,
-//                                                 buttons: Ext.MessageBox.OK,
-//                                                 icon: Ext.MessageBox.ERROR,
-//                                                 fn: function () {
-//                                                     _seltctFault();
-//                                                 }
-//                                             });
-//                                         }
-//
-//                                     },
-//                                     failure: function (response) {
-//                                         Ext.MessageBox.show({
-//                                             title: '错误',
-//                                             msg: response.responseText,
-//                                             buttons: Ext.MessageBox.OK,
-//                                             icon: Ext.MessageBox.ERROR
-//                                         });
-//                                     }
-//                                 });
-//                                 Ext.Ajax.request({
-//                                     url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_INSTANCEID_SET',
-//                                     type: 'ajax',
-//                                     method: 'POST',
-//                                     params: {
-//                                         'V_V_GUID': V_V_GUID,
-//                                         'V_V_INSTANCEID': Ext.decode(response.responseText).InstanceId
-//                                     },
-//                                     success: function (response) {
-//                                     }
-//                                 });
-//                             } else if (Ext.decode(response.responseText).ret == 'ERROR') {
-//                                 Ext.Msg.alert('提示', Ext.decode(response.responseText).msg);
-//                             }
-//                         }
-//                     });
-//
-//
-//                 } else {
-//                     Ext.MessageBox.show({
-//                         title: '错误',
-//                         msg: data.message,
-//                         buttons: Ext.MessageBox.OK,
-//                         icon: Ext.MessageBox.ERROR
-//                     });
-//                     _seltctFault();
-//                 }
-//             },
-//             failure: function (response) {
-//                 Ext.MessageBox.show({
-//                     title: '错误',
-//                     msg: response.responseText,
-//                     buttons: Ext.MessageBox.OK,
-//                     icon: Ext.MessageBox.ERROR
-//                 });
-//                 _seltctFault();
-//             }
-//         });
-//     } else {
-//         Ext.MessageBox.show({
-//             title: '提示',
-//             msg: '下拉选项不能为全部',
-//             buttons: Ext.MessageBox.OK,
-//             icon: Ext.MessageBox.ERROR
-//         });
-//         return;
-//     }
-//
-// }
-function _preViewProcess(ProcessInstanceId) {
-
-    var owidth = window.screen.availWidth;
-    var oheight = window.screen.availHeight;
-    window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
-        + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetInstanceFromBusinessId',
+        methon:'POST',
+        async:false,
+        params:{
+            businessKey: value
+        },
+        success:function (resp) {
+            var res=Ext.decode(resp.responseText);
+            if (res.InstanceId != "" && res.InstanceId != null) {
+                var owidth = window.screen.availWidth;
+                var oheight = window.screen.availHeight - 50;
+                window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+                    + res.InstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+            }else{
+                Ext.Msg.alert('提示', '没有查到对应流程');
+            }
+        }
+    });
 }
 function _addOpen() {
 

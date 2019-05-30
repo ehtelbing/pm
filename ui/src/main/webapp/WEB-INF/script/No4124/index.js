@@ -590,12 +590,15 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
 
 
 function _preViewFault(V_ORGCODE,V_DEPTCODE,V_ORDERGUID) {
-    window.open(AppUrl + "page/No4124/fault.html?V_V_ORGCODE="+V_ORGCODE+'&V_V_DEPTCODE='+V_DEPTCODE+'&V_V_ORDERGUID='+V_ORDERGUID, '', "dialogHeight:500px;dialogWidth:900px");
+    var owidth = window.screen.availWidth-100;
+    var oheight = window.screen.availHeight-50;
+    window.open(AppUrl + "page/No4124/fault.html?V_V_ORGCODE="+V_ORGCODE+'&V_V_DEPTCODE='+V_DEPTCODE+'&V_V_ORDERGUID='+V_ORDERGUID, '',  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
 }
+/*
 function _addqxgdOpen() {
 
 
     var owidth = window.screen.availWidth-100;
     var oheight = window.screen.availHeight-50;
     window.open(AppUrl + 'page/No4124/qxgd.html','', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
-}
+}*/
