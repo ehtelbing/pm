@@ -615,13 +615,23 @@ function LogOut() {
 
 function Return() {
     //if (confirm('您确定退出系统吗？')) {
+    clearAllCookie();
     window.close();
+
     location.href = AppUrl + 'page/home/findex' + ".html";
     // 日志说明 ,日志类型 ,日志详细信息 ,操作人员账号,操作人编码 ,操作人名称 ,操作状态(0:失败/1:成功),日志对象类型
     /* sys_log_insert_noip("退出系统", "退出系统", "退出系统", Ext.util.Cookies
      .get('v_loginname'), Ext.util.Cookies.get('v_personcode'),
      Ext.util.Cookies.get('v_personname2'), 1, "退出系统");*/
     //}
+}
+//清除cookie
+function clearAllCookie() {
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+    if(keys) {
+        for(var i = keys.length; i--;) {Ext.util.Cookies.set(keys[i],"")}
+
+    }
 }
 
 function HomePage() {
