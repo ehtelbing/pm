@@ -486,7 +486,7 @@ function _init() {
                 Ext.getCmp('pernum').setValue(resp.RET[0].V_PERSON_NUM);
                 Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
                 Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
-                Ext.getCmp('euqip').setValue(resp.RET[0].V_SPARE_PART);
+                Ext.getCmp('euqip').setValue(resp.RET[0].V_SPARE_PARTNAME);
                 Ext.getCmp('program').setValue(resp.RET[0].V_PROGRAM);
                 Ext.getCmp('mode').setValue(resp.RET[0].V_MODE);
                 Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);

@@ -142,7 +142,7 @@ Ext.onReady(function () {
         fields: ['V_GUID', 'V_FAULT_NAME', 'V_DEPTCODE','V_DEPTNAME',
             'V_PROGRAM', 'V_MODE','V_WORK_TYPE','V_PERSON_NUM',
             'V_EQUIP','V_TOOLS','V_MATERIAL','V_SPARE_PART',
-            'V_PLAN','V_ORGCODE','V_ORGNAME','V_EQUNAME',
+            'V_PLAN','V_ORGCODE','V_ORGNAME','V_EQUNAME','V_FAULTYNID',
             'V_SPARE_PARTNAME','V_PREVENT','V_STAUTSNAME','V_STAUTS'],
         proxy: {
             url: AppUrl + 'cxy/PM_FAULT_PLAN_SEL',
@@ -624,7 +624,7 @@ function OnButtonUp() {
                 var i_err = 0;
                 for (var i = 0; i < records.length; i++) {
                     var vguid=records[i].get('V_GUID');
-                    var vfaultxx=records[i].get('V_FAULT_XX');
+                    var vfaultxx=records[i].get('V_PLAN');
                     var vfaultid=records[i].get('V_FAULTYNID');
                     Ext.Ajax.request({
                         url: AppUrl + 'cxy/PM_FAULT_PLAN_UP',
@@ -642,9 +642,9 @@ function OnButtonUp() {
                                     async: false,
                                     method: 'post',
                                     params: {
-                                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "flow_code", "flow_yj", "flow_type"],
+                                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark","flow_code", "flow_yj", "flow_type"],
                                         parVal: [V_V_PERSONCODE, vguid, Ext.getCmp('nextPer').getValue(),
-                                            "请审批!",  vfaultid, "请审批！", "FaultYn"],
+                                            "请审批!", vfaultxx, vfaultid, "请审批！", "FaultYn"],
                                         processKey: processKey,
                                         businessKey: vguid,
                                         V_STEPCODE: 'Start',

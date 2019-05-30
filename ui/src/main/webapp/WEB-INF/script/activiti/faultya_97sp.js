@@ -492,10 +492,10 @@ Ext.onReady(function () {
 
         ]
     });
-
+    _selectTaskId();
     _init();
     getAssignee();
-    _selectTaskId();
+
     // _selecteFaultStore2();
 
 });
@@ -513,7 +513,7 @@ function _selectTaskId() {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-            _selectNextPer();
+            // _selectNextPer();
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -566,7 +566,7 @@ function _init() {
                 Ext.getCmp('pernum').setValue(resp.RET[0].V_PERSON_NUM);
                 Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
                 Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
-                Ext.getCmp('euqip').setValue(resp.RET[0].V_SPARE_PART);
+                Ext.getCmp('euqip').setValue(resp.RET[0].V_SPARE_PARTNAME);
                 Ext.getCmp('program').setValue(resp.RET[0].V_PROGRAM);
                 Ext.getCmp('mode').setValue(resp.RET[0].V_MODE);
                 Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);
@@ -579,7 +579,7 @@ function _init() {
                 // _selectsubequName2();
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();//去除页面笼罩
-
+                _selectNextPer();
 
             } else {
                 Ext.MessageBox.show({
