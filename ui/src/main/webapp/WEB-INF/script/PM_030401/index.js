@@ -287,13 +287,13 @@ Ext.onReady(function(){
                 id:'startFlow',
                 handler:btnFlowStart
             }
-            ,{
-                xtype: 'button',
-                text: '查看详情',
-                icon: imgpath + '/accordion_collapse.png',
-                id:'viewBtn',
-                handler:btnView
-            }
+            // ,{
+            //     xtype: 'button',
+            //     text: '查看详情',
+            //     icon: imgpath + '/accordion_collapse.png',
+            //     id:'viewBtn',
+            //     handler:btnView
+            // }
         ]
     });
 
@@ -557,9 +557,11 @@ function OnButtonEdit(){
 //删除
 function OnButtonDel(){
 
+
 }
 //导出
 function OnButtonOut(){
+
 
 }
 //上报

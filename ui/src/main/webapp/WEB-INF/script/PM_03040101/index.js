@@ -1001,7 +1001,7 @@ function btnFlowStart(){
                     method: 'post',
                     params: {
                         parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                        parVal: [Ext.util.Cookies.get('v_personcode'), Guid, Ext.getCmp('fzPer').getValue(), "请审批!", Ext.getCmp('content').getValue(), Ext.getCmp('ProjectCode').getValue(), "请审批！", "MaintainPlan"],
+                        parVal: [Ext.util.Cookies.get('v_personcode'), Guid, Ext.getCmp('fzPer').getValue(), "请审批!", Ext.getCmp('qstext').getValue(), Ext.getCmp('ProjectCode').getValue(), "请审批！", "MaintainPlan"],
                         processKey: processKey,
                         businessKey: Guid,
                         V_STEPCODE: 'Start',
