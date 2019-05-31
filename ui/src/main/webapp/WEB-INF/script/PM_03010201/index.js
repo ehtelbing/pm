@@ -1195,50 +1195,50 @@ function _weekPlanDetail(monthGuid)
 }
 //缺陷添加
 function OnButtonDefectAddClicked() {
-    var weekguid=guid();
-    //清空表
-    Ext.Ajax.request({
-        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_DEFECT_DEL',
-        method: 'POST',
-        async: false,
-        params: {
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if (resp.V_INFO=='success') {
-                Ext.Ajax.request({//新增空数据
-                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_GUID',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        V_V_GUID:weekguid,
-                        V_V_ORGCODE: Ext.getCmp("jhck").getValue()
-                    },
-                    success: function (resp) {
-                        var resp = Ext.decode(resp.responseText);
-                        if (resp.V_INFO=='success') {
-                            V_WEEKPLAN_GUID = 0;
+    // var weekguid=guid();
+    // //清空表
+    // Ext.Ajax.request({
+    //     url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_DEFECT_DEL',
+    //     method: 'POST',
+    //     async: false,
+    //     params: {
+    //     },
+    //     success: function (resp) {
+    //         var resp = Ext.decode(resp.responseText);
+    //         if (resp.V_INFO=='success') {
+    //             Ext.Ajax.request({//新增空数据
+    //                 url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_GUID',
+    //                 method: 'POST',
+    //                 async: false,
+    //                 params: {
+    //                     V_V_GUID:weekguid,
+    //                     V_V_ORGCODE: Ext.getCmp("jhck").getValue()
+    //                 },
+    //                 success: function (resp) {
+    //                     var resp = Ext.decode(resp.responseText);
+    //                     if (resp.V_INFO=='success') {
+    //                         V_WEEKPLAN_GUID = 0;
                             V_PLANTYPE = 'DEFECT';
-                            if(Ext.getCmp("jhzyq").getValue()=="%"){
-                                alert("作业区不可以为全部，请重新选择"); return;
-                            }else {
-                                var ret = window.open(AppUrl + 'page/PM_03010218/index.html?V_WEEKPLAN_GUID=' + weekguid +
+    //                         if(Ext.getCmp("jhzyq").getValue()=="%"){
+    //                             alert("作业区不可以为全部，请重新选择"); return;
+    //                         }else {
+                                var ret = window.open(AppUrl + 'page/PM_03010218/index.html?Month=' + "" +
                                     "&V_PLANTYPE=" + V_PLANTYPE +
                                     "&YEAR=" + Ext.getCmp("nf").getValue() +
                                     "&MONTH=" + Ext.getCmp("yf").getValue() +
                                     "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
                                     "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
-                            }
-                        } else {
-                            alert("初始数据保存失败");
-                        }
-                    }
-                });
-            } else {
-                alert("数据清理错误");
-            }
-        }
-    });
+    //                         }
+    //                     } else {
+    //                         alert("初始数据保存失败");
+    //                     }
+    //                 }
+    //             });
+    //         } else {
+    //             alert("数据清理错误");
+    //         }
+    //     }
+    // });
 
 
 }

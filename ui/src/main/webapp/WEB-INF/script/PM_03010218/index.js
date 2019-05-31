@@ -11,10 +11,7 @@ for (var i = 2012; i <= tomorrowYear; i++)
         displayField : i,
         valueField : i
     });
-var V_WEEKPLAN_GUID = null;
-if (location.href.split('?')[1] != undefined) {
-    V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
-}
+var monthGuid="";
 var V_PLANTYPE = null;
 if (location.href.split('?')[1] != undefined) {
     V_PLANTYPE = Ext.urlDecode(location.href.split('?')[1]).V_PLANTYPE;
@@ -482,13 +479,28 @@ function Select(){
         }
 
     }
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PM_03_PLAN_MONTH_CREATE',
+        method: 'POST',
+        async:false,
+        params:{
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_ORGCODE:V_ORGCODE
+        },
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.RET !=undefined) {
+                monthGuid=resp.RET;
+            }
+        }
+    });
     var num = 0;
     Ext.Ajax.request({
         url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_DEL',
         method: 'POST',
         async: false,
         params: {
-            V_V_WEEK_GUID: V_WEEKPLAN_GUID
+            V_V_WEEK_GUID: monthGuid
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
@@ -501,7 +513,7 @@ function Select(){
                         async: false,
                         params: {
                             V_V_DEFECT_GUID: seldata[i].data.V_GUID,
-                            V_V_WEEK_GUID: V_WEEKPLAN_GUID
+                            V_V_WEEK_GUID: monthGuid
                         },
                         success: function (resp) {
                             var resp = Ext.decode(resp.responseText);
@@ -518,13 +530,27 @@ function Select(){
 
         }
     });
-
-    var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PM_03_PLAN_MONTH_CREATE',
+        method: 'POST',
+        async:false,
+        params:{
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_ORGCODE:V_ORGCODE
+        },
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.RET !=undefined) {
+                monthGuid=resp.RET;
+            }
+        }
+    });
+    var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;
     var V_EQUCODE=seldata[0].raw.V_EQUCODE;
     if (num == seldata.length) {
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + "page/PM_03010219/index.html?V_WEEKPLAN_GUID=" + V_WEEKPLAN_GUID +
+        var ret = window.open(AppUrl + "page/PM_03010219/monthFromDel.html?monthGuid=" + monthGuid +
             "&V_PLANTYPE=" + V_PLANTYPE +
             "&YEAR=" + YEAR +
             "&MONTH=" + MONTH +

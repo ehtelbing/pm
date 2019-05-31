@@ -210,6 +210,32 @@ Ext.onReady(function(){
         }
     });
 
+    //月计划缺陷 PRO_PM_07_DEFECT_SEL_RE_MONTH
+    var mfromdefStore= Ext.create('Ext.data.Store', {
+        id: 'mfromdefStore',
+        pageSize: 15,
+        autoLoad: false,
+        fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
+            'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
+            'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
+            'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE'],
+
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/PRO_PM_07_DEFECT_SEL_RE_MONTH2',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list',
+                total: 'total'
+            }
+        }
+    });
+
     var toolPanel=Ext.create("Ext.panel.Panel",{
        id:'toolPanel' ,
         layout:'column',
@@ -512,13 +538,25 @@ function rendererTime(value, metaData){
 function defPanelLoad(monthGuid){
     selesign=0;
     //缺陷查找下拉条件加载
-  Ext.data.StoreManager.lookup("sqxzt").load();
+     Ext.data.StoreManager.lookup("sqxzt").load();
     //月计划关联缺陷查找
     defsel(monthGuid);
-    Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('mdefStore'));
-    var  chgrid=Ext.getCmp('dGridPanel');
-    chgrid.store.reload();
-    Ext.getCmp('dGridPanel').getView().refresh();
+    if(Ext.data.StoreManager.lookup('mdefStore').data.length==0){
+        mfromDefSel(monthGuid);
+        Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('mfromdefStore'));
+        var  chgrid=Ext.getCmp('dGridPanel');
+        chgrid.store.reload();
+        Ext.getCmp('dGridPanel').getView().refresh();
+    }else{
+        Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('mdefStore'));
+        var  chgrid=Ext.getCmp('dGridPanel');
+        chgrid.store.reload();
+        Ext.getCmp('dGridPanel').getView().refresh();
+    }
+    // Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('mdefStore'));
+    // var  chgrid=Ext.getCmp('dGridPanel');
+    // chgrid.store.reload();
+    // Ext.getCmp('dGridPanel').getView().refresh();
 }
 function defsel(monthGuid){
     var MdefStore=Ext.data.StoreManager.lookup('mdefStore');
@@ -539,6 +577,7 @@ function OtherDefselect(){
     if(MGUID==""){
         //所有未处理缺陷查找
         mdefsel();
+
         Ext.getCmp('dGridPanel').reconfigure(Ext.data.StoreManager.lookup('gridStore'));
         var  chgrid=Ext.getCmp('dGridPanel');
         chgrid.store.reload();
@@ -574,6 +613,14 @@ function mEDefSel(){
         V_V_EQUCODE:MEQUCODE,
         V_V_PAGE: '',//Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE:''//Ext.getCmp('page').store.pageSize
+    };
+
+}
+//月计划下缺陷来源缺陷添加 的缺陷查找
+function mfromDefSel(mguid){
+    var MdefStore=Ext.data.StoreManager.lookup('mfromdefStore');
+    MdefStore.proxy.extraParams = {
+        V_MONTHGUID:mguid
     };
 
 }
