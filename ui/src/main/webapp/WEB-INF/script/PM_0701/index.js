@@ -308,7 +308,15 @@ Ext.onReady(function () {
             width: 150,
             renderer: ReadGD,
             hidden: true
-        },*/ {
+        },*/
+            {
+                text : '工单详情',
+                dataIndex : 'V_GUID',
+                width : 100,
+                align : 'center',
+                renderer : _WorkDetail
+            },
+        {
             text: '缺陷日期',
             dataIndex: 'D_INDATE',
             align: 'center',
@@ -735,4 +743,17 @@ function print_btn() {
 
     window.open(AppUrl + "page/No210101/Index.html?retarr=" + arr.toString().replace(/%/g, '@'),
         "", "dialogHeight:700px;dialogWidth:1100px");
+}
+//工单明细
+function _WorkDetail(value, metaData, record, rowIndex, colIndex, store){
+
+    metaData.style = "text-align:center";
+    return '<a href="#" onclick="onClickDef(\''+value+'\')">'+"工单详情"+'</a>';
+
+
+}
+function onClickDef(delguid){
+    window.open(AppUrl + "page/PM_0701/workDet.html?V_GUID="+delguid+
+        // + Ext.getStore("gridStore").getAt(index).get("V_ORDERGUID"),
+        "", "dialogHeight:600px;dialogWidth:800px");
 }

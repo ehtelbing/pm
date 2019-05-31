@@ -1,8 +1,8 @@
 
 
-var workguid="";
+var defguid="";
 if(Ext.urlDecode(location.href.split("?")[1])!=undefined){
-    workguid=Ext.urlDecode(location.href.split('?')[1]).V_GUID==null?"":Ext.urlDecode(location.href.split('?')[1]).V_GUID;
+    defguid=Ext.urlDecode(location.href.split('?')[1]).V_GUID==null?"":Ext.urlDecode(location.href.split('?')[1]).V_GUID;
 }
 
 Ext.onReady(function(){
@@ -11,49 +11,69 @@ Ext.onReady(function(){
         autoLoad: true,
         storeId: 'gridStore',
         fields: ['I_ID',
-            'V_DEFECTLIST',
-            'V_SOURCECODE',
-            'V_SOURCENAME',
-            'V_SOURCEID',
-            'D_DEFECTDATE',
-            'D_INDATE',
-            'V_PERCODE',
-            'V_PERNAME',
+            'V_ORDERGUID',
+            'V_ORDERID',
+            'V_ORDER_TYP',
+            'V_ORDER_TYP_TXT',
+            'V_FUNC_LOC',
+            'V_EQUIP_NO',
+            'V_EQUIP_NAME',
+            'V_PLANT',
+            'V_IWERK',
+            'D_START_DATE',
+            'D_FINISH_DATE',
+            'V_ACT_TYPE',
+            'V_PLANNER',
+            'V_WORK_CTR',
+            'V_SHORT_TXT',
+            'V_GSBER',
+            'V_GSBER_TXT',
+            'V_WORK_AREA',
+            'V_WBS',
+            'V_WBS_TXT',
+            'V_ENTERED_BY',
+            'D_ENTER_DATE',
+            'V_SYSTEM_STATUS',
+            'V_SYSNAME',
             'V_DEPTCODE',
-            'V_DEPTNAME',
-            'V_EQUCODE',
-            'V_EQUNAME',
-            'V_EQUSITE',
-            'V_EQUSITENAME',
-            'V_EQUTYPECODE',
-            'V_EQUTYPENAME',
-            'V_IDEA',
+            'V_DEPTCODEREPARIR',
+            'V_DEFECTGUID',
             'V_STATECODE',
-            'V_STATENAME',
-            'V_GUID',
-            'V_EQUSITE',
+            'D_FACT_START_DATE',
+            'D_FACT_FINISH_DATE',
+            'V_WPCODE',
+            'V_MODELNUMBER',
+            'V_SEND_STATE',
             'D_DATE_EDITTIME',
             'V_EDIT_GUID',
-            'V_SOURCE_GRADE',
-            'V_EQUCHILDCODE',
-            'V_INPERCODE',
-            'V_INPERNAME',
-            'V_EQUTYPECODE',
-            'V_ORGCODE',
-            'V_DEPTNAME',
-            'V_HOUR',
-            'V_BZ',
-            'V_REPAIRMAJOR_CODE',
+            'D_RECEIVE_DATE',
+            'V_SEND_JX',
+            'V_JXCLASS_CODE',
+            'V_WXPERSON',
+            'V_WXTEAM',
+            'V_WXPLANTCODE',
+            'V_STATE',
+            'V_SENDMATERIAL',
+            'V_ORDERGUID_UP',
+            'V_GUID_DX',
             'V_PROJECT_CODE',
             'V_PROJECT_NAME',
-            'V_FLAG',
-            'V_PROC_WAY',
-            'UP_GUID',
-            'V_SYSTEM'],
+            'V_SUM_REPAIR',
+            'V_SUM_MONEY',
+            'V_TYPE_S',
+            'V_MONEY',
+            'V_GL_FAULT',
+            'V_EQUSITENAME',
+            'V_ORGNAME',
+            'V_DEPTNAME',
+            'V_PERSONNAME',
+            'V_DEPTNAMEREPARIR',
+            'PLANTIME',
+            'FACTTIME','V_STATENAME'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'dxfile/PRO_PM_DEFECT_SEL_FROM_WORK',
+            url: AppUrl + 'dxfile/PRO_PM_WORKORDER_SEL_FROM_DEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -62,7 +82,7 @@ Ext.onReady(function(){
                 root: 'list'
             },
             extraParams:{
-                V_WORK_GUID:workguid
+                V_DEL_GUID:defguid
             }
         }
     });
@@ -75,31 +95,22 @@ Ext.onReady(function(){
         columnLines:true,
         store:gridStore,
         region:'center',
-        // selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
-        //     selType: 'checkboxmodel',
-        //     mode: 'SIMPLE'
-        // },
+
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '缺陷日期', width: 140, dataIndex: 'D_INDATE', align: 'center', renderer: timelfet},
-            {text: '缺陷明细', width: 250, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft},
-            {text: '设备名称', width: 120, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
-            {text: '设备位置', width: 200, dataIndex: 'V_EQUSITE', align: 'center', renderer: atleft},
-            {text: '单位', width: 120, dataIndex: 'V_DEPTNAME', align: 'center', renderer: atleft},
-            {text: '负责人', width: 120, dataIndex: 'V_PERNAME', align: 'center', renderer: atleft},
-            {text: '处理意见', width: 150, dataIndex: 'V_IDEA', align: 'center', renderer: atleft},
-            {text:'缺陷来源',width:90,dataIndex:'V_SOURCENAME',align:'center',renderer:atleft}
+            {text: '工单号', width: 140, dataIndex: 'V_ORDERID', align: 'center', renderer: atleft},
+            {text: '工单描述', width: 250, dataIndex: 'V_SHORT_TXT', align: 'center', renderer: atleft},
+            {text: '备件消耗', width: 120, dataIndex: 'V_EQUSITENAME', align: 'center', renderer: atleft},
+            {text: '委托单位', width: 200, dataIndex: 'V_DEPTNAME', align: 'center', renderer: atleft},
+            {text: '委托人', width: 120, dataIndex: 'V_PERSONNAME', align: 'center', renderer: atleft},
+            {text: '委托时间', width: 120, dataIndex: 'D_ENTER_DATE', align: 'center', renderer: timelfet},
+            {text: '检修单位', width: 150, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: atleft},
+            {text: '工单类型描述', width: 90, dataIndex: 'V_ORDER_TYP_TXT', align: 'center', renderer: atleft},
+            {text: '工单状态', width: 120, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
+            {text: '计划工时', width: 120, dataIndex: 'PLANTIME', align: 'center', renderer: atleft},
+            {text: '实际工时', width: 150, dataIndex: 'FACTTIME', align: 'center', renderer: atleft}
         ]
-        /*,
-       bbar: [{
-           id: 'page',
-           xtype: 'pagingtoolbar',
-           dock: 'bottom',
-           displayInfo: true,
-           displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-           emptyMsg: '没有记录',
-           store: 'gridStore'
-       }]*/
+
     });
     Ext.create('Ext.container.Viewport',{
         id:'main',

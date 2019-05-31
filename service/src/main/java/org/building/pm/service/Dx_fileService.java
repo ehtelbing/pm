@@ -5614,4 +5614,35 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_DEFECT_SEL_FROM_WORK");
         return result;
     }
+
+    //缺陷查找工单
+    public Map PRO_PM_WORKORDER_SEL_FROM_DEL(String V_DEL_GUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_SEL_FROM_DEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SEL_FROM_DEL" + "(:V_DEL_GUID,:RET)}");
+            cstmt.setString("V_DEL_GUID", V_DEL_GUID);
+
+//            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+//            String sunm = (String) cstmt.getObject("RET");
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+//            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SEL_FROM_DEL");
+        return result;
+    }
 }

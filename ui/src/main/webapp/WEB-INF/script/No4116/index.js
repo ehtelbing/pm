@@ -200,7 +200,7 @@ Ext.onReady(function() {
             renderer : left
         },
             {
-                text : '工单号',
+                text : '缺陷详情',
                 dataIndex : 'V_ORDERGUID',
                 width : 100,
                 align : 'center',

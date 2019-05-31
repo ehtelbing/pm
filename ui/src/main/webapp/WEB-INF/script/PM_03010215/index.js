@@ -265,7 +265,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_STATENAME',
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
-        'V_REPAIR_PER','V_WEEKNUM'],
+        'V_REPAIR_PER','V_WEEKNUM','V_MONTHID'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -540,6 +540,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
                 return '<a href="#" onclick="OnClickWeekGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
             }
         },
+        {text: '月单号', align: 'center', width: 100, dataIndex: 'V_MONTHID'},
         /*{text: '流程步骤', align: 'center', width: 100, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
         {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
