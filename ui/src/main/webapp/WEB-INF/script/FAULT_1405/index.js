@@ -641,6 +641,11 @@ Ext.onReady(function () {
             }
 
         }, {
+            text: '事故名称',
+            dataIndex: 'V_FAULT_NAME',
+            align: 'center',
+            width: 100
+        }, {
             text: '发现时间',
             dataIndex: 'V_FINDTIME',
             align: 'center',
@@ -735,11 +740,6 @@ Ext.onReady(function () {
             /* {
              text: '解决办法',
              dataIndex: 'V_JJBF',
-             align: 'center',
-             width: 100
-         }, {
-             text: '故障名称',
-             dataIndex: 'V_FAULT_NAME',
              align: 'center',
              width: 100
          }, {

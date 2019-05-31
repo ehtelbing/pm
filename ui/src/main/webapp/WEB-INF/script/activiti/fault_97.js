@@ -1384,7 +1384,7 @@ function _agree() {
                         V_V_GUID: $.url().param("V_ORDERGUID")
                     }, success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
-                        if (resp.RET == 'SUCCESS') {
+                        if (resp.RET == 'Success') {
                             Ext.Ajax.request({
                                 url: AppUrl + 'Activiti/TaskComplete',
                                 type: 'ajax',

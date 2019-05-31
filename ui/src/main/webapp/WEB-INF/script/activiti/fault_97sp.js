@@ -413,7 +413,7 @@ Ext.onReady(function () {
                     readOnly:true,
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
-                    hidden:true,
+                    // hidden:true,
                     width: 270
                 },
                 {

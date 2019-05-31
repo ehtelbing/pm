@@ -339,7 +339,7 @@ Ext.onReady(function () {
 
             ]
         },
-            /*{
+            {
             xtype: 'panel',
             region: 'north',
             layout: 'column',
@@ -347,7 +347,7 @@ Ext.onReady(function () {
             baseCls: 'my-panel-no-border',
             items: [
 
-                {
+                /*{
 
                     xtype: 'textfield',
                     id: 'faultname',
@@ -357,7 +357,8 @@ Ext.onReady(function () {
                     labelAlign: 'right',
                     hidden:true,
                     width: 270
-                },{
+                },*/
+                {
                     xtype: 'label',
                     width: 5,
                     text: '*',
@@ -376,7 +377,7 @@ Ext.onReady(function () {
                 }
 
             ]
-        },*/
+        },
 
             {
             xtype: 'panel',
@@ -466,7 +467,7 @@ Ext.onReady(function () {
                 items: [
                         {
                         xtype: 'textfield',
-                        id: 'faulname',//faultbgr
+                        id: 'faultname',//faultbgr
                         fieldLabel: '事故名称',//事故报告人
                         labelWidth: 70,
                         style: ' margin: 5px 0px 0px -8px',
