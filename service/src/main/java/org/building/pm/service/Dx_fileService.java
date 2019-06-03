@@ -5554,4 +5554,95 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PLAN_PROJECT_STAT_SET");
         return result;
     }
+    //月计划查找缺陷添加缺陷  PRO_PM_07_DEFECT_SEL_RE_MONTH2
+    public Map PRO_PM_07_DEFECT_SEL_RE_MONTH2(String V_MONTHGUID) throws SQLException {
+
+        logger.info("begin PRO_PM_07_DEFECT_SEL_RE_MONTH2");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_SEL_RE_MONTH2" + "(:V_MONTHGUID,:V_CURSOR)}");
+            cstmt.setString("V_MONTHGUID", V_MONTHGUID);
+
+//            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+//            String sunm = (String) cstmt.getObject("RET");
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+//            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_SEL_RE_MONTH2");
+        return result;
+    }
+    //    工单查询  缺陷详情
+    public Map PRO_PM_DEFECT_SEL_FROM_WORK(String V_WORK_GUID) throws SQLException {
+
+        logger.info("begin PRO_PM_DEFECT_SEL_FROM_WORK");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_SEL_FROM_WORK" + "(:V_WORK_GUID,:RET)}");
+            cstmt.setString("V_WORK_GUID", V_WORK_GUID);
+
+//            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+//            String sunm = (String) cstmt.getObject("RET");
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+//            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_SEL_FROM_WORK");
+        return result;
+    }
+
+    //缺陷查找工单
+    public Map PRO_PM_WORKORDER_SEL_FROM_DEL(String V_DEL_GUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_SEL_FROM_DEL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SEL_FROM_DEL" + "(:V_DEL_GUID,:RET)}");
+            cstmt.setString("V_DEL_GUID", V_DEL_GUID);
+
+//            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+//            String sunm = (String) cstmt.getObject("RET");
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+//            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SEL_FROM_DEL");
+        return result;
+    }
 }

@@ -4540,6 +4540,40 @@ public class Dx_fileController {
         return data;
     }
 
+    ////月计划查找缺陷添加缺陷  PRO_PM_07_DEFECT_SEL_RE_MONTH2
+    @RequestMapping(value = "PRO_PM_07_DEFECT_SEL_RE_MONTH2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_SEL_RE_MONTH2(
+            @RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_07_DEFECT_SEL_RE_MONTH2(V_MONTHGUID);
+        return data;
+    }
+    //    工单查询  缺陷详情
+    @RequestMapping(value = "PRO_PM_DEFECT_SEL_FROM_WORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_DEFECT_SEL_FROM_WORK(
+            @RequestParam(value = "V_WORK_GUID") String V_WORK_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_DEFECT_SEL_FROM_WORK(V_WORK_GUID);
+        return data;
+    }
+    //缺陷查找工单
+    @RequestMapping(value = "PRO_PM_WORKORDER_SEL_FROM_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_SEL_FROM_DEL(
+            @RequestParam(value = "V_DEL_GUID") String V_DEL_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_WORKORDER_SEL_FROM_DEL(V_DEL_GUID);
+        return data;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

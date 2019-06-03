@@ -244,7 +244,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
         'V_REPAIR_PER',
-        'V_OTHERPLAN_GUID','V_OTHERPLAN_TYPE','WORKORDERNUM','DRSIGN'],
+        'V_OTHERPLAN_GUID','V_OTHERPLAN_TYPE','WORKORDERNUM','DRSIGN','V_WEEKID'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -520,6 +520,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
 
             }
         },
+        {text: '周单号', align: 'center', width: 100, dataIndex: 'V_WEEKID',renderer: dataCss },
         {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME', renderer: dataCss},
         {text: '车间名称', align: 'center', width: 100, dataIndex: 'V_DEPTNAME', renderer: dataCss},
         {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: dataCss},

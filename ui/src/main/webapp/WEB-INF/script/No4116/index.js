@@ -198,7 +198,15 @@ Ext.onReady(function() {
             width : 100,
             align : 'center',
             renderer : left
-        }, {
+        },
+            {
+                text : '缺陷详情',
+                dataIndex : 'V_ORDERGUID',
+                width : 100,
+                align : 'center',
+                renderer : _defDetail
+            },
+            {
             text : '流程明细',
             dataIndex : 'V_ORDERGUID',
             width : 100,
@@ -687,4 +695,17 @@ function OnButtonCreateBillClicked() {
     }
 
 
+}
+//缺陷明细
+function _defDetail(value, metaData, record, rowIndex, colIndex, store){
+
+    metaData.style = "text-align:center";
+    return '<a href="#" onclick="onClickDef(\''+value+'\')">'+"缺陷详情"+'</a>';
+
+
+}
+function onClickDef(workguid){
+    window.open(AppUrl + "page/No4116/defView.html?V_GUID="+workguid+
+        // + Ext.getStore("gridStore").getAt(index).get("V_ORDERGUID"),
+        "", "dialogHeight:600px;dialogWidth:800px");
 }
