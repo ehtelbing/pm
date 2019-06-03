@@ -237,7 +237,7 @@ Ext.onReady(function(){
                 editable: false,
                 queryMode: 'local',
                 fieldLabel: '工程请示内容',
-                labelWidth: 80,
+                labelWidth: 100,
                 width: 250
             }, {
                 xtype : 'combo',
@@ -248,7 +248,7 @@ Ext.onReady(function(){
                 fieldLabel : '下一步审批人',
                 displayField: 'V_PERSONNAME',
                 valueField: 'V_PERSONCODE',
-                labelWidth :80,
+                labelWidth :100,
                 width:170,
                 labelAlign : 'right'
             },{
@@ -311,6 +311,10 @@ Ext.onReady(function(){
         },
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text: '流程详细', width: 140, dataIndex: 'V_GUID', align: 'center',
+                renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+                }},
             {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
             {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
             {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
@@ -746,4 +750,40 @@ function btnView(){
 //添加页面返回查找
 function selectGridTurn(){
     OnButtonQuery();
+}
+
+function _preViewProcess(businessKey) {
+
+    var ProcessInstanceId = '';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if (data.msg == 'Ok') {
+                ProcessInstanceId = data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    })
+
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }
