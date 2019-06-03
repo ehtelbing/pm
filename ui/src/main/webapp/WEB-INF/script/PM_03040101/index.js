@@ -134,8 +134,7 @@ Ext.onReady(function(){
             reader: {
                 type: 'json',
                 root: 'list'
-            },
-            extraParams: {}
+            }
         },
         listeners: {
             load: function (store, records, success, eOpts) {

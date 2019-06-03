@@ -961,7 +961,7 @@ function confirmYS(){
                             var respl = Ext.decode(response.responseText);
                             if (respl.list.length > 0) {
                                 for (var i = 0; i < respl.list.length; i++) {
-                                    defguidOld=respl.list[0].V_DEFECT_GUID;
+                                    defguidOld=respl.list[i].V_DEFECT_GUID;
                                     Ext.Ajax.request({ //缺陷查找system 标识数据值
                                         method:'POST',
                                         async:false,
