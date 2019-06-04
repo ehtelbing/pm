@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title> 检修工单创建(放行)</title>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <link rel="stylesheet" href="../../../pm/css/ext-all-neptune-debug.css"/>
@@ -21,8 +20,8 @@
 
     <script type="text/javascript" src="../../../pm/script/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript" src="../../../pm/script/newangel.js"></script>
-    <script type="text/javascript" src="../../../pm/script/PM_220106/fx_workorder.js"></script>
-    <!--<script type="text/javascript" src="../../../pm/script/PM_0901/0901_1.js"></script>-->
+    <script type="text/javascript" src="../../../pm/script/PM_090201/index.js"></script>
+    <!--<script type="text/javascript" src="../../../pm/script/PM_090201/090201_1.js"></script>-->
     <style type="text/css">
         .Tabel_p {
             width: 1024px;
@@ -60,7 +59,7 @@
             background-image:
                     url('../../../pm/images/gif/btnprint.png');
             background-repeat: no-repeat;
-            border: 0px;
+            border: 0 px;
         }
 
         .btnWBS {
@@ -90,7 +89,7 @@
 <input type="hidden" id="V_ORDERGUID" />
 <input type="hidden" id="V_DEPTCODEREPARIR" />
 <div style="margin: 30px 0 0 430px; font-size: x-large">
-    检修工单创建(放行)
+    检修工单创建
 </div>
 <br />
 <div style="padding-bottom: 10px">
@@ -124,8 +123,7 @@
                     </td>
                     <td
                             style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
-                        <select id="selDW" style="background-color: #FFFF99; width:98%; height:20px"></select>
-                        <!--<label id="V_ORGNAME">-->
+                        <label id="V_ORGNAME">
                         </label>
                     </td>
                     <td
@@ -144,8 +142,7 @@
                     </td>
                     <td
                             style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
-                        <select id="selZYQ" style="background-color: #FFFF99; width:98%; height:20px"></select>
-                        <!--<label id="V_DEPTNAME">-->
+                        <label id="V_DEPTNAME">
                         </label>
                     </td>
                     <td
@@ -163,14 +160,16 @@
                             style="width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
                         设备名称：
                     </td>
-                    <td style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+                    <td
+                            style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
                         <input type="text" id="V_EQUNAME" readonly="readonly" style="background-color: #FFFF99; height:20px; line-height:20px; width:100%" />
                     </td>
-
-                    <!--<td style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">-->
+                    <!--<td-->
+                    <!--style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">-->
                     <!--预 留 号：-->
                     <!--</td>-->
-                    <!--<td style="width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">-->
+                    <!--<td-->
+                    <!--style="width: 33%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">-->
                     <!--<td style="border-right: 0px; text-align: left">-->
                     <!--</td>-->
                     <!--</td>-->
@@ -205,6 +204,8 @@
 						<textarea id="V_DEFECTLIST" cols="2"
                                   style="width: 97%; height:97%; background-color: #FFFF99;"></textarea>
                     </td>
+
+
                 </tr>
                 <tr>
                     <td style="border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF">
@@ -213,10 +214,10 @@
                     <td style="border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left">
                         <input type="text" id="V_EQUSITE" readonly="readonly" style="background-color: #FFFF99; height:30px; width:100%; line-height:30px" />
                     </td>
-                    <!--<td style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF"  rowspan=2>-->
+                    <!--<td style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF">-->
                     <!--工单描述：-->
                     <!--</td>-->
-                    <!--<td style="border-bottom: 0; border-right: 0px;"  rowspan=2>-->
+                    <!--<td style="border-bottom: 0; border-right: 0px;">-->
                     <!--<textarea id="V_DEFECTLIST" cols="2"-->
                     <!--style="width: 97%; height:30px; background-color: #FFFF99;"></textarea>-->
                     <!--</td>-->

@@ -3442,17 +3442,18 @@ public class Dx_fileController {
     }
 
     //放行创建工单
-    @RequestMapping(value = "PRO_PM_WORKORDER_FX_CREATE", method = RequestMethod.POST)
-    @ResponseBody
-    public Map PRO_PM_WORKORDER_FX_CREATE(
-            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
-            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_PERCODE, V_V_PERNAME, V_FX_GUID);
-        return data;
-    }
+//    @RequestMapping(value = "PRO_PM_WORKORDER_FX_CREATE", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map PRO_PM_WORKORDER_FX_CREATE(
+//            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+//            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+//            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
+////            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
+//            HttpServletRequest request,
+//            HttpServletResponse response) throws Exception {
+//        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_PERCODE, V_V_PERNAME, V_FX_GUID);
+//        return data;
+//    }
 
     //缺陷解决方案写入
     @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_IN", method = RequestMethod.POST)
@@ -4571,6 +4572,33 @@ public class Dx_fileController {
             HttpServletResponse response) throws Exception {
 
         Map data = dx_fileService.PRO_PM_WORKORDER_SEL_FROM_DEL(V_DEL_GUID);
+        return data;
+    }
+
+    //放行计划查找缺陷
+    @RequestMapping(value = "MAINTAIN_BY_DEFECT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MAINTAIN_BY_DEFECT_SEL(
+            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.MAINTAIN_BY_DEFECT_SEL(V_FX_GUID);
+        return data;
+    }
+
+    //放行计划查找缺陷
+    @RequestMapping(value = "PRO_PM_WORKORDER_FX_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_FX_CREATE(
+            @RequestParam(value = "V_V_ORG_CODE") String V_V_ORG_CODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_FXGUID") String V_FXGUID,
+            @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_ORG_CODE,V_PERCODE,V_FXGUID,V_V_DEFECTLIST);
         return data;
     }
 

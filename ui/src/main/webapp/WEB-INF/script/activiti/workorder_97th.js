@@ -935,8 +935,7 @@ function confirmYS(){
                     Ext.Ajax.request({
                         method:'POST',
                         async:false,
-                        url:AppUrl+'dxfile/' +
-                            '',
+                        url:AppUrl+'dxfile/PRO_PM_WORKORDER_MONEY_UPDATE',
                         params:{
                             V_WORKORDER:$.url().param("V_ORDERGUID"),
                             V_V_MONEY:$("#totalMoney").val()
