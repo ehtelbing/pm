@@ -84,9 +84,10 @@ public class WxjhController {
             String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_JXWCJG_Out_Syn_PM0014.wsdl";
             Document root = DocumentHelper.createDocument();
             Element WriteDataRequest = root.addElement("Items");
+
             WriteDataRequest.addElement("V_DEFECT_GUID").setText(V_DEFECT_GUID);
             WriteDataRequest.addElement("V_DEFECT_TYPE").setText(V_DEFECT_TYPE);
-            WriteDataRequest.addElement("V_SYSTEM").setText(V_SYSTEM);
+            WriteDataRequest.addElement("V_SYSTEM").setText(ninfopubusername);
             WriteDataRequest.addElement("V_GUID").setText(V_GUID);
             WriteDataRequest.addElement("V_STR01").setText(V_STR01);
             WriteDataRequest.addElement("V_STR02").setText(V_STR02);
@@ -199,9 +200,9 @@ public class WxjhController {
     @RequestMapping(value = "SI_RYQX_Out_Syn_PR1003", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> SI_RYQX_Out_Syn_PR1003(@RequestParam(value = "ROLECODE") String ROLECODE,
-                                                         @RequestParam(value = "ORG") String ORG,
-                                                         HttpServletResponse response,
-                                                         HttpServletRequest request)
+                                                      @RequestParam(value = "ORG") String ORG,
+                                                      HttpServletResponse response,
+                                                      HttpServletRequest request)
             throws SQLException, UnknownHostException {
         Map<String, Object> mapEle = new HashMap<>();
         String hostAddress = request.getServerName();

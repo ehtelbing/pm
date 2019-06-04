@@ -1111,6 +1111,19 @@ public class HpController {
         return result;
     }
 
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_NEW_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_NEW_N(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = hpService.PRO_PM_07_DEFECT_VIEW_NEW_N(V_V_STATECODE, X_PERSONCODE, V_V_PAGE,
+                V_V_PAGESIZE);
+        return result;
+    }
+
     @RequestMapping(value = "PRO_PM_09_REPAIROLD_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_09_REPAIROLD_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,

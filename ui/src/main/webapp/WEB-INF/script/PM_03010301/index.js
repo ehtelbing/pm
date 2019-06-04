@@ -941,7 +941,7 @@ function OnButtonDefectAddClicked() {
                                 alert("作业区不可以为全部，请重新选择");
                                 return;
                             } else {
-                                var ret = window.open(AppUrl + 'page/PM_03010313/index.html?V_WEEKPLAN_GUID=' + weekguid +
+                                var ret = window.open(AppUrl + 'page/PM_03010313/indexC.html?V_WEEKPLAN_GUID=' + weekguid +
                                     "&V_PLANTYPE=" + V_PLANTYPE +
                                     "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
                                     "&YEAR=" + Ext.getCmp("nf").getValue() +

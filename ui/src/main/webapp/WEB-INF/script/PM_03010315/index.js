@@ -514,7 +514,8 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             labelAlign: 'right',
                             margin: '5 0 5 5',
                             labelWidth: 80,
-                            width: 280
+                            width: 280,
+                            readOnly:true
                         }
                     ]
                 },
@@ -1240,6 +1241,8 @@ Ext.onReady(function () {
 
                 }
                 Ext.getCmp('jxnr').setValue(str);
+                Ext.getCmp('maindefect').setValue(str);
+
             }
 
         }
