@@ -937,7 +937,7 @@ function OnButtonSelectClicked(){
 	"&QUARTER=" +Ext.getCmp("jd").getValue() +
 	"&MONTH=0" +
 	"&WEEK=0" +
-	"&PLANTYPE=QUARTER", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+	"&PLANTYPE=QUARTER", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 function query(){
 	OnButtonQueryClicked();

@@ -1196,5 +1196,5 @@ function _butongyi() {
 function _spupdate() {
     var owidth = window.document.body.offsetWidth;
     var oheight = window.document.body.offsetHeight;
-    window.open(AppUrl + 'page/PM_22010103/index.html?V_GUID=' + V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    window.open(AppUrl + 'page/PM_22010103/index.html?V_GUID=' + V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }

@@ -211,7 +211,7 @@ function action1(tab){
 }
 
 function openEin(code,name){
-    window.open(AppUrl+'page/PM_030212/index.html?ZYQ=' + code , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+    window.open(AppUrl+'page/PM_030212/index.html?ZYQ=' + code , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 
 }
 function openEinZy(code,name){

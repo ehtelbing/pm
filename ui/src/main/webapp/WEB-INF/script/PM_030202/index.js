@@ -418,7 +418,7 @@ function OnButtonAdd() {
             if (resp.V_INFO == '成功') {
                 var owidth = window.document.body.offsetWidth - 600;
                 var oheight = window.document.body.offsetHeight - 100;
-                window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+                window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
             } else {
                 alert("添加失败");
             }
@@ -446,7 +446,7 @@ function OnButtonOtherAdd(){
             if (resp.V_INFO == '成功') {
                 var owidth = window.document.body.offsetWidth - 600;
                 var oheight = window.document.body.offsetHeight - 100;
-                window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+                window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
             } else {
                 alert("添加失败");
             }
@@ -462,7 +462,7 @@ function OnButtonEdit() {
     } else {
         var owidth = window.document.body.offsetWidth - 600;
         var oheight = window.document.body.offsetHeight - 100;
-        window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+        window.open(AppUrl + 'page/PM_030202/indexM.html?guid=' + seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     }
 }
 

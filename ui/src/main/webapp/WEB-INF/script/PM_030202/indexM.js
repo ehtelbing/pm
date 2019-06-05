@@ -2667,7 +2667,7 @@ function _deleteEqu(equcode) {
 function LookMoreEqu() {
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03020101/MoreEqu.html?guid=' + Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    window.open(AppUrl + 'page/PM_03020101/MoreEqu.html?guid=' + Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 //查询已选中缺陷
@@ -2821,7 +2821,7 @@ function _deleteDefect(DefectGuid) {
 function OnLookMoreDefect() {
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03020101/MoreDefect.html?guid=' + Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    window.open(AppUrl + 'page/PM_03020101/MoreDefect.html?guid=' + Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 //查询已选检修模型
@@ -3334,7 +3334,7 @@ function btnFlowStart() {
 function btnYear() {
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_030202/indexY.html?guid=' + Guid + '&type=YEAR&Orgcode=' + OrgCode + '&Year=' + Year + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    window.open(AppUrl + 'page/PM_030202/indexY.html?guid=' + Guid + '&type=YEAR&Orgcode=' + OrgCode + '&Year=' + Year + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function QueryFlow() {
@@ -3349,14 +3349,14 @@ function QueryFlow() {
 function LookMoreModel() {
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03020101/MoreModel.html?guid=' + Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    window.open(AppUrl + 'page/PM_03020101/MoreModel.html?guid=' + Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 //附件管理
 function btnAdd_file() {
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03020101/file.html?guid=' + Guid + '&type=YEAR&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    window.open(AppUrl + 'page/PM_03020101/file.html?guid=' + Guid + '&type=YEAR&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {

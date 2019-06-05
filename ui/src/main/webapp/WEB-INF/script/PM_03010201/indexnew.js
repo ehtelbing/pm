@@ -952,7 +952,7 @@ function OnButtonAddClicked() {
         "&YEAR=" + Ext.getCmp("nf").getValue() +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 
 function OnButtonSelectClicked() {
@@ -960,7 +960,7 @@ function OnButtonSelectClicked() {
         "&QUARTER=0" +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&WEEK=0" +
-        "&PLANTYPE=MONTH", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&PLANTYPE=MONTH", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 //修改
 function OnButtonEditClicked() {
@@ -972,7 +972,7 @@ function OnButtonEditClicked() {
     console.log(seldata[0].data.V_STATE);
     if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100) {
         V_MONTHPLAN_GUID = seldata[0].data.V_GUID;
-         window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
+         window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
     }else {
         Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
     }

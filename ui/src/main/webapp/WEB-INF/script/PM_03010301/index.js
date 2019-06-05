@@ -1004,7 +1004,7 @@ function OnButtonSelectClicked() {
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&WEEK=" + Ext.getCmp("zhou").getValue() +
         "&PLANTYPE=WEEK&startUpTime="+Ext.getCmp("zks").getValue()+
-        "&endUpTime="+ Ext.getCmp("zjs").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&endUpTime="+ Ext.getCmp("zjs").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 
 //修改

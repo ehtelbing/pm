@@ -528,7 +528,7 @@ function _onBtnmxxz()
 {
     var owidth = window.document.body.offsetWidth ;
     var oheight = window.document.body.offsetHeight;
-    window.open(AppUrl + 'page/PM_03010212/index.html?&random=' + Math.random(), '', 'height=600PX,width=1200px,top=10px,left=10px,resizable=no' );
+    window.open(AppUrl + 'page/PM_03010212/index.html?&random=' + Math.random(), '', 'height=600PX,width=1200px,top=10px,left=10px,resizable=yes' );
 
 }
 
