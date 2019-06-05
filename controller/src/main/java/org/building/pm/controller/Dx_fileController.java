@@ -4601,6 +4601,16 @@ public class Dx_fileController {
         Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_ORG_CODE,V_PERCODE,V_FXGUID,V_V_DEFECTLIST);
         return data;
     }
+    //工单查找缺陷
+    @RequestMapping(value = "PM_DEFECT_SEL_TO_WORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECT_SEL_TO_WORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                              @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                                              HttpServletRequest request,
+                                                              HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_DEFECT_SEL_TO_WORK(V_V_WORKORDER_GUID, V_V_FLAG);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
