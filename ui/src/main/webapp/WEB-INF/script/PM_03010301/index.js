@@ -539,6 +539,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon: imgpath + '/add.png',
             handler: OnButtonDefectAddClicked
         },
+        {
+            xtype: 'button',
+            text: '从备件添加',
+            margin: '5 0 5 5',
+            icon: imgpath + '/add.png',
+            handler: OnButtonDefPartAddClicked
+        },
         // {xtype: 'button', text: '手工添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
         //     handler: OnButtonPlanAddClicked},
         {xtype: 'button', text: '添加', margin: '5 0 5 5', icon: imgpath + '/add.png',
@@ -1679,4 +1686,54 @@ function OnButtonFromMonth(){
         +"&WEEK=" + Ext.getCmp("zhou").getValue()
         +'&startUpTime='+ Ext.getCmp("zks").getValue()
         +'&endUpTime='+Ext.getCmp("zjs").getValue(),'','_blank','height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+}
+//从备件添加周计划
+function OnButtonDefPartAddClicked(){
+    var weekguid = guid();
+    //清空表
+    Ext.Ajax.request({
+        url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_DEFECT_DEL',
+        method: 'POST',
+        async: false,
+        params: {},
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO == 'success') {
+                Ext.Ajax.request({//新增空数据
+                    url: AppUrl + 'cjy/PRO_PM_03_PLAN_WEEK_SET_GUID',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_GUID: weekguid,
+                        V_V_ORGCODE: Ext.getCmp("jhck").getValue()
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
+                        if (resp.V_INFO == 'success') {
+                            V_WEEKPLAN_GUID = 0;
+                            V_PLANTYPE = 'DEFECT';
+                            if (Ext.getCmp("jhzyq").getValue() == "%") {
+                                alert("作业区不可以为全部，请重新选择");
+                                return;
+                            } else {
+                                var ret = window.open(AppUrl + 'page/PM_03010313/indexBJDef.html?V_WEEKPLAN_GUID=' + weekguid +
+                                    "&V_PLANTYPE=" + V_PLANTYPE +
+                                    "&V_WEEKPLAN_TYPE=" + V_WEEKPLAN_TYPE +
+                                    "&YEAR=" + Ext.getCmp("nf").getValue() +
+                                    "&MONTH=" + Ext.getCmp("yf").getValue() +
+                                    "&WEEK=" + Ext.getCmp("zhou").getValue() +
+                                    "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+                                    "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue()+
+                                    "&KSTIME="+Ext.getCmp("zks").getValue() , '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+                            }
+                        } else {
+                            alert("初始数据保存失败");
+                        }
+                    }
+                });
+            } else {
+                alert("数据清理错误");
+            }
+        }
+    });
 }

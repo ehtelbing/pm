@@ -4612,6 +4612,21 @@ public class Dx_fileController {
         return result;
     }
 
+    //周计划--备件查找
+    @RequestMapping(value = "PRO_DEFECT_PART_DATA_SEL_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_PART_DATA_SEL_N(@RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                                     @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                                     @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                                                     @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                     @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_DEFECT_PART_DATA_SEL_N(V_V_TYPE,V_V_INPER,V_V_STATE,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
