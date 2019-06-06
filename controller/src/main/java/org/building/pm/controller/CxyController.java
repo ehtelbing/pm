@@ -1083,5 +1083,537 @@ public class CxyController {
         result.put("success", true);
         return result;
     }
+
+    @RequestMapping(value = "/PM_BUG_DATA_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_DATA_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                             @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                             @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+                                                             @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+                                                             @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+                                                             @RequestParam(value = "V_V_FINDTIME_B") String V_V_FINDTIME_B,
+                                                             @RequestParam(value = "V_V_FINDTIME_E") String V_V_FINDTIME_E,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_DATA_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE,
+                V_V_EQUCODE, V_V_EQUCHILD_CODE, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME_B, V_V_FINDTIME_E);
+        List<Map<String, Object>> pm_1407list = (List) data.get("list");
+        result.put("list", pm_1407list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_TYPE_ITEM_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_TYPE_ITEM_SEL(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_TYPE_ITEM_SEL();
+
+        List<Map<String, Object>> pm_06list = (List) data.get("list");
+
+        result.put("list", pm_06list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_BUG_DATA_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_DATA_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                               @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                               @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                               @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                               @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                               @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+                                               @RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
+                                               @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+                                               @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+                                               @RequestParam(value = "V_V_FINDTIME") String V_V_FINDTIME,
+                                               @RequestParam(value = "V_V_FAULT_XX") String V_V_FAULT_XX,
+                                               @RequestParam(value = "V_V_JJBF") String V_V_JJBF,
+                                               @RequestParam(value = "V_V_FAULT_LEVEL") String V_V_FAULT_LEVEL,
+                                               @RequestParam(value = "V_V_FILE_GUID") String V_V_FILE_GUID,
+                                               @RequestParam(value = "V_V_INTIME") String V_V_INTIME,
+                                               @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                               @RequestParam(value = "V_V_IP") String V_V_IP,
+                                               @RequestParam(value = "V_V_FAULT_NAME") String V_V_FAULT_NAME,
+                                               @RequestParam(value = "V_V_FAULT_PART") String V_V_FAULT_PART,
+                                               @RequestParam(value = "V_V_FAULT_CLGC") String V_V_FAULT_CLGC,
+                                               @RequestParam(value = "V_V_FAULT_SS") String V_V_FAULT_SS,
+                                               @RequestParam(value = "V_V_FAULT_XZ") String V_V_FAULT_XZ,
+                                               @RequestParam(value = "V_V_FAULT_ZGCS") String V_V_FAULT_ZGCS,
+                                               @RequestParam(value = "V_V_FZR_CL") String V_V_FZR_CL,
+                                               @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
+                                               @RequestParam(value = "V_V_REPORTER") String V_V_REPORTER,
+                                               @RequestParam(value = "V_V_FZR") String V_V_FZR,
+                                               @RequestParam(value = "V_V_STOPTIME") String V_V_STOPTIME,
+                                               @RequestParam(value = "V_V_REPAIRTIME") String V_V_REPAIRTIME,
+                                               @RequestParam(value = "V_V_REPAIRCOST") String V_V_REPAIRCOST,
+                                               @RequestParam(value = "V_V_REPROTTIME") String V_V_REPROTTIME,
+                                               @RequestParam(value = "V_V_FAULT_PASS") String V_V_FAULT_PASS,
+                                               @RequestParam(value = "V_CAUSEANALYSIS") String V_CAUSEANALYSIS,
+                                               @RequestParam(value = "V_REPAIR_PLAN") String V_REPAIR_PLAN,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_DATA_SET(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
+                V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX,V_V_JJBF, V_V_FAULT_LEVEL,
+                V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,
+                V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL,
+                V_V_ENDTIME,V_V_REPORTER,V_V_FZR,V_V_STOPTIME,V_V_REPAIRTIME,V_V_REPAIRCOST,V_V_REPROTTIME,V_V_FAULT_PASS,V_CAUSEANALYSIS,V_REPAIR_PLAN);
+
+        String RET = (String) data.get("RET");
+        String FAULTID = (String) data.get("FAULTID");
+
+        result.put("RET", RET);
+        result.put("FAULTID", FAULTID);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_BUG_EQUIP_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_EQUIP_SET(
+            @RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+            @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+            @RequestParam(value = "V_V_EQUUPCODE") String V_V_EQUUPCODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_CREATER") String V_V_CREATER,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_EQUIP_SET(V_V_FAULTCODE,V_V_EQUTYPECODE,V_V_EQUUPCODE,V_V_EQUCODE,V_V_CREATER);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_BUG_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_BUG_SEL(HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_BASE_BUG_SEL();
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+//        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BUG_EQUIP_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BUG_EQUIP_SEL(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        Map map = cService.PRO_BUG_EQUIP_SEL(V_V_FAULTCODE);
+        return map;
+    }
+    @RequestMapping(value = "/PM_BUG_ITEM_DATA_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_ITEM_DATA_GET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_ITEM_DATA_GET(V_V_GUID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("RET", list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BUG_EQUIP_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BUG_EQUIP_DEL(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+                                                   @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_BUG_EQUIP_DEL(V_V_FAULTCODE,V_V_EQUCODE);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_BUG_DATA_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_DATA_DEL(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                         @RequestParam(value = "V_V_IP") String V_V_IP,
+                                                         @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+
+        HashMap data = cService.PM_BUG_DATA_DEL(V_V_PERCODE, V_V_IP, V_V_GUID);
+
+        String pm_06 = (String) data.get("RET");
+
+        result.put("RET", pm_06);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_BUG_EQUIP_OVER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BUG_EQUIP_OVER(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_BUG_EQUIP_OVER(V_V_FAULTCODE);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_BUG_EQUIP_CANCEL_OVER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BUG_EQUIP_CANCEL_OVER(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_BUG_EQUIP_CANCEL_OVER(V_V_FAULTCODE);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_PM_WORKORDER_GZ_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_GZ_CREATE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                                @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                                @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                                @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                                HttpServletRequest request,
+                                                                HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_PM_WORKORDER_GZ_CREATE(V_V_PERCODE, V_V_PERNAME,V_V_GUID,V_V_EQUCODE);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_PM_WORKORDER_BUG_SAVE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_BUG_SAVE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                           @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                           @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                           @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                           @RequestParam(value = "V_V_DEPTCODEREPAIR") String V_V_DEPTCODEREPAIR,
+                                                           @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                                           @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                                           @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                                           @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+                                                           @RequestParam(value = "V_V_TOOL") String V_V_TOOL,
+                                                           @RequestParam(value = "V_V_TECHNOLOGY") String V_V_TECHNOLOGY,
+                                                           @RequestParam(value = "V_V_SAFE") String V_V_SAFE,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_PM_WORKORDER_BUG_SAVE(V_V_PERCODE,V_V_PERNAME,V_V_GUID,V_V_ORDERGUID,V_V_SHORT_TXT,
+                V_V_DEPTCODEREPAIR,V_D_START_DATE,V_D_FINISH_DATE,V_V_WBS,V_V_WBS_TXT,V_V_TOOL,V_V_TECHNOLOGY,V_V_SAFE);
+
+        String list =  data.get("list").toString();
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_GZ_DL_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_GZ_DL_CREATE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                              @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                              @RequestParam(value = "V_V_ORDER_GUID") String V_V_ORDER_GUID,
+                                                              HttpServletRequest request,
+                                                              HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_PM_WORKORDER_GZ_DL_CREATE(V_V_PERCODE, V_V_PERNAME,V_V_ORDER_GUID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_BUG_DL_SAVE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_BUG_DL_SAVE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                       @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                       @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                       @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                       @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                       @RequestParam(value = "V_V_WORKORDER_TYPE") String V_V_WORKORDER_TYPE,
+                                                       @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                       @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                       @RequestParam(value = "V_V_DEPTCODEREPAIR") String V_V_DEPTCODEREPAIR,
+                                                       @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                                       @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                                       @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                                       @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_PM_WORKORDER_BUG_DL_SAVE(V_V_PERCODE,V_V_PERNAME,V_V_EQUCODE,V_V_ORGCODE,V_V_DEPTCODE,
+                V_V_WORKORDER_TYPE,V_V_ORDERGUID,V_V_SHORT_TXT,V_V_DEPTCODEREPAIR,V_D_START_DATE,V_D_FINISH_DATE,V_V_WBS,V_V_WBS_TXT);
+        String ss = (String) data.get("RET");
+        result.put("RET", ss);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_BUG_DATA_OVER_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_DATA_OVER_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                  @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                  @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                  @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                  @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+                                                  @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+                                                  @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+                                                  @RequestParam(value = "V_V_FINDTIME_B") String V_V_FINDTIME_B,
+                                                  @RequestParam(value = "V_V_FINDTIME_E") String V_V_FINDTIME_E,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_DATA_OVER_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE,
+                V_V_EQUCODE, V_V_EQUCHILD_CODE, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME_B, V_V_FINDTIME_E);
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+//        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_DATA_UP", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_DATA_UP(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                            @RequestParam(value = "V_V_IP") String V_V_IP,
+                                            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_DATA_UP(V_V_PERCODE,V_V_IP,V_V_GUID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_DATA_INSTANCEID_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_DATA_INSTANCEID_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                        @RequestParam(value = "V_V_INSTANCEID") String V_V_INSTANCEID,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = cService.PM_BUG_DATA_INSTANCEID_SET(V_V_GUID,V_V_INSTANCEID);
+        String ss = (String) data.get("RET");
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PRO_PM_WORKORDER_BUG_OVER_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_BUG_OVER_SEL(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) throws Exception {
+        Map map = cService.PRO_PM_WORKORDER_BUG_OVER_SEL(V_V_FAULTCODE);
+        return map;
+    }
+
+    @RequestMapping(value = "/PM_BUG_PLAN_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_PLAN_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                 @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_PLAN_SEL(V_V_ORGCODE, V_V_DEPTCODE);
+        List<Map<String, Object>> pm_1407list = (List) data.get("list");
+        result.put("list", pm_1407list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_PLAN_UP", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_PLAN_UP(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_PLAN_UP(V_V_PERCODE,V_V_GUID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_PLAN_GET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_PLAN_GET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_PLAN_GET(V_V_GUID);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        result.put("RET", list);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_PLAN_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_PLAN_UPDATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                    @RequestParam(value = "V_V_PROGRAM") String V_V_PROGRAM,
+                                                    @RequestParam(value = "V_V_MODE") String V_V_MODE,
+                                                    @RequestParam(value = "V_V_PLAN") String V_V_PLAN,
+                                                    @RequestParam(value = "V_V_PREVENT") String V_V_PREVENT,
+
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = cService.PM_BUG_PLAN_UPDATE(V_V_GUID, V_V_PROGRAM, V_V_MODE, V_V_PLAN, V_V_PREVENT);
+        String RET = (String) data.get("RET");
+        result.put("RET", RET);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_DATA_STATE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_DATA_STATE_UPDATE(
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_STATE") String V_V_STATE,
+            @RequestParam(value = "V_DEFECT_STATE") String V_DEFECT_STATE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_DATA_STATE_UPDATE(V_V_PERCODE,V_V_GUID,V_V_STATE,V_DEFECT_STATE);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_BUG_PLAN_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_PLAN_SET(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_PLAN_SET(V_V_GUID);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_ITEM_DATA_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_ITEM_DATA_UPDATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                      @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                      @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                      @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                      @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+                                                      @RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
+                                                      @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+                                                      @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+                                                      @RequestParam(value = "V_V_FINDTIME") String V_V_FINDTIME,
+                                                      @RequestParam(value = "V_V_FAULT_XX") String V_V_FAULT_XX,
+                                                      @RequestParam(value = "V_V_JJBF") String V_V_JJBF,
+                                                      @RequestParam(value = "V_V_FAULT_LEVEL") String V_V_FAULT_LEVEL,
+                                                      @RequestParam(value = "V_V_FILE_GUID") String V_V_FILE_GUID,
+                                                      @RequestParam(value = "V_V_INTIME") String V_V_INTIME,
+                                                      @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                      @RequestParam(value = "V_V_IP") String V_V_IP,
+                                                      @RequestParam(value = "V_V_FAULT_NAME") String V_V_FAULT_NAME,
+                                                      @RequestParam(value = "V_V_FAULT_PART") String V_V_FAULT_PART,
+                                                      @RequestParam(value = "V_V_FAULT_CLGC") String V_V_FAULT_CLGC,
+                                                      @RequestParam(value = "V_V_FAULT_SS") String V_V_FAULT_SS,
+                                                      @RequestParam(value = "V_V_FAULT_XZ") String V_V_FAULT_XZ,
+                                                      @RequestParam(value = "V_V_FAULT_ZGCS") String V_V_FAULT_ZGCS,
+                                                      @RequestParam(value = "V_V_FZR_CL") String V_V_FZR_CL,
+                                                      @RequestParam(value = "V_V_ENDTIME") String V_V_ENDTIME,
+                                                      @RequestParam(value = "V_V_REPORTER") String V_V_REPORTER,
+                                                      @RequestParam(value = "V_V_FZR") String V_V_FZR,
+                                                      @RequestParam(value = "V_V_STOPTIME") String V_V_STOPTIME,
+                                                      @RequestParam(value = "V_V_REPAIRTIME") String V_V_REPAIRTIME,
+                                                      @RequestParam(value = "V_V_REPAIRCOST") String V_V_REPAIRCOST,
+                                                      @RequestParam(value = "V_V_REPROTTIME") String V_V_REPROTTIME,
+                                                      @RequestParam(value = "V_V_FAULT_PASS") String V_V_FAULT_PASS,
+                                                      @RequestParam(value = "V_CAUSEANALYSIS") String V_CAUSEANALYSIS,
+                                                      @RequestParam(value = "V_REPAIR_PLAN") String V_REPAIR_PLAN,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_ITEM_DATA_UPDATE(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
+                V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX,V_V_JJBF, V_V_FAULT_LEVEL,
+                V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL,
+                V_V_ENDTIME,V_V_REPORTER,V_V_FZR,V_V_STOPTIME,V_V_REPAIRTIME,V_V_REPAIRCOST,V_V_REPROTTIME,V_V_FAULT_PASS,V_CAUSEANALYSIS,V_REPAIR_PLAN);
+
+        String RET = (String) data.get("RET");
+        result.put("RET", RET);
+        result.put("success", true);
+        return result;
+    }
+    @RequestMapping(value = "/PM_BUG_PLAN_STATE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_PLAN_STATE_UPDATE(@RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                      @RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                      @RequestParam(value = "V_V_STAUTS") String V_V_STAUTS,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_PLAN_STATE_UPDATE(V_V_PERCODE,V_V_GUID,V_V_STAUTS);
+
+        String ss = (String) data.get("RET");
+
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
 }
 

@@ -730,7 +730,35 @@ public class ActivitiController {
                         taskmap.put("remark",equmap.get("V_QSTEXT").toString());
                     }
                 }
+                else if (taskmap.get("flow_type").toString().indexOf("Hitch")!=-1) {
+//                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    if(taskmap.get("flow_type").equals("Hitch")){
+                        equIp_name = (List) cxyService.PM_BUG_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                        if (equIp_name.size() > 0) {
+                            Map equmap = (Map) equIp_name.get(0);
+                            taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                            taskmap.put("PLANSTART", equmap.get("V_FINDTIME").toString());
+                            taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
+                            taskmap.put("PLANHOUR", equmap.get("V_TIME").toString());
+                            taskmap.put("OPERANAME", "");
+                            taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                            taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                        }
+                    }else{
+                        equIp_name = (List) cxyService.PM_BUG_PLAN_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                        if (equIp_name.size() > 0) {
+                            Map equmap = (Map) equIp_name.get(0);
+                            taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                            taskmap.put("PLANSTART",  "");
+                            taskmap.put("PLANEND",  "");
+                            taskmap.put("PLANHOUR",  "");
+                            taskmap.put("OPERANAME", "");
+                            taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                            taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                        }
 
+                    }
+                }
                 User user = identityService.createUserQuery()
                         .userId(taskmap.get("originator").toString()).singleResult();
 
