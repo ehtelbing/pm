@@ -391,7 +391,7 @@ function turnPage(){
     }
     if(num==flag){
         Ext.getCmp("qxWin").close();
-        window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid+'&newguid='+newfxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid+'&newguid='+newfxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
     }
 }
 

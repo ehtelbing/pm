@@ -4424,9 +4424,9 @@ function LookMoreModel(){
     window.open(AppUrl + 'page/PM_03020101/MoreModel.html?guid=' +Guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 //附件管理
-function btnAdd_file(){
-    var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
+    function btnAdd_file(){
+        var owidth = window.document.body.offsetWidth - 600;
     window.open(AppUrl + 'page/PM_03020101/file.html?guid=' +Guid +'&type=YEAR&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 

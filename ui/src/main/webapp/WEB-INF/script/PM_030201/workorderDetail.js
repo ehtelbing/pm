@@ -645,7 +645,7 @@ function OnButtonWorkorder(){  //生成工单
    //  }else{
         var owidth = window.document.body.offsetWidth - 600;
         var oheight = window.document.body.offsetHeight - 100;
-        window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?guid=' +v_guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+        window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?guid=' +v_guid + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
         // window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?guid=' +chodata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
     // }
 }
