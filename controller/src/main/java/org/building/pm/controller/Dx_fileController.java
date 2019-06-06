@@ -4627,6 +4627,17 @@ public class Dx_fileController {
         return result;
     }
 
+    //周计划生成工单webcode判断
+    @RequestMapping(value = "PM_03_PLAN_WBS_COMPARE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_WBS_COMPARE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_PLAN_WBS_COMPARE(V_V_GUID);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

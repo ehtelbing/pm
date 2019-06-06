@@ -1517,6 +1517,7 @@ function createWorkorder() {
         }
     }
 
+    //设备判别
     Ext.Ajax.request({
         url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDERBEF',
         method: 'POST',
@@ -1527,66 +1528,84 @@ function createWorkorder() {
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.v_info == "SUCCESS") {
+                //WEBCODE判别
                 Ext.Ajax.request({
-                    url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDER',
+                    url: AppUrl + 'dxfile/PM_03_PLAN_WBS_COMPARE',
                     method: 'POST',
                     async: false,
                     params: {
-                        V_V_GUID: V_GUIDList,
-                        V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
+                        V_V_GUID: V_GUIDList
                     },
                     success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
-                        var V_V_ORDERGUID = resp.V_V_ORDERGUID;
-                        var V_V_SOURCECODE = resp.V_V_SOURCECODE;
-                        var V_V_EQUTYPE = resp.V_V_EQUTYPE;
-                        if (url_guid != undefined) {
+                        if (resp.RET == "SUCCESS") {
+
                             Ext.Ajax.request({
-                                url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
-                                type: 'post',
+                                url: AppUrl + 'lxm/PM_03_PLAN_CREATE_WORKORDER',
+                                method: 'POST',
                                 async: false,
                                 params: {
-                                    V_V_IP: GetIP().ip,
-                                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-                                    V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
-                                    V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
-                                    V_V_GUID: url_guid
+                                    V_V_GUID: V_GUIDList,
+                                    V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
                                 },
-                                success: function (response) {
-                                    var resp = Ext.decode(response.responseText);
-                                    if (resp.v_info == "success") {
-                                        for (var i = 0; i < record.length; i++) {//录入关系表
-                                            Ext.Ajax.request({//
-                                                method: 'POST',
-                                                async: false,
-                                                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_W',
-                                                params: {
-                                                    V_V_WORKORDER_GUID: V_V_ORDERGUID,
-                                                    V_V_WEEK_GUID: record[i].data.V_GUID
-                                                },
-                                                success: function (response) {
-                                                    var respm = Ext.decode(response.responseText);
-                                                    if (respm.V_INFO == 'success') {
+                                success: function (resp) {
+                                    var resp = Ext.decode(resp.responseText);
+                                    var V_V_ORDERGUID = resp.V_V_ORDERGUID;
+                                    var V_V_SOURCECODE = resp.V_V_SOURCECODE;
+                                    var V_V_EQUTYPE = resp.V_V_EQUTYPE;
+                                    if (url_guid != undefined) {
+                                        Ext.Ajax.request({
+                                            url: AppUrl + 'lxm/PRO_PM_EQUREPAIRPLAN_TOWORK_U',
+                                            type: 'post',
+                                            async: false,
+                                            params: {
+                                                V_V_IP: GetIP().ip,
+                                                V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+                                                V_V_PERNAME: Ext.util.Cookies.get('v_personname'),
+                                                V_V_ORDERGUID: resp.list[0].V_ORDERGUID,
+                                                V_V_GUID: url_guid
+                                            },
+                                            success: function (response) {
+                                                var resp = Ext.decode(response.responseText);
+                                                if (resp.v_info == "success") {
+                                                    for (var i = 0; i < record.length; i++) {//录入关系表
+                                                        Ext.Ajax.request({//
+                                                            method: 'POST',
+                                                            async: false,
+                                                            url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SET_W',
+                                                            params: {
+                                                                V_V_WORKORDER_GUID: V_V_ORDERGUID,
+                                                                V_V_WEEK_GUID: record[i].data.V_GUID
+                                                            },
+                                                            success: function (response) {
+                                                                var respm = Ext.decode(response.responseText);
+                                                                if (respm.V_INFO == 'success') {
 
-                                                    } else {
-                                                        alert("关系数据保存错误,工单生成失败");
-                                                        return;
+                                                                } else {
+                                                                    alert("关系数据保存错误,工单生成失败");
+                                                                    return;
+                                                                }
+
+                                                            }
+                                                        });
+
                                                     }
-
+                                                    window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
+                                                        "", "dialogHeight:700px;dialogWidth:1100px");
                                                 }
-                                            });
-
-                                        }
-                                        window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
-                                            "", "dialogHeight:700px;dialogWidth:1100px");
+                                            }
+                                        });
+                                    } else {
+                                        alert(resp.v_info);
                                     }
                                 }
                             });
                         } else {
-                            alert(resp.v_info);
+                            alert(resp.RET);
                         }
                     }
                 });
+
             } else {
                 alert(resp.v_info);
             }

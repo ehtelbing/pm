@@ -1591,13 +1591,14 @@ function OnButtonSaveClick() {
                                                 async: false,
                                                 params: {
                                                     V_V_GUID: respguid.list[i].V_DEFECT_GUID,
-                                                    V_V_STATECODE: '50',//已计划
+                                                    V_V_STATECODE: '50'//,已计划
 
                                                 },
                                                 success: function (ret) {
                                                     var resp = Ext.decode(ret.responseText);
                                                     if(resp.V_INFO=='success'){
-
+                                                        window.opener.Winclose();
+                                                        window.close();
 
                                                     }else{
                                                         alert("修改缺陷状态失败");
