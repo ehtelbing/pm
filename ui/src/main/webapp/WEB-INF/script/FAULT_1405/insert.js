@@ -788,23 +788,20 @@ Ext.onReady(function () {
     });
 
     var uploadpanel= Ext.create('Ext.form.FormPanel', {
-        // border: false,
         frame: true,
         id: 'uploadpanel',
         region: 'south',
         baseCls: 'my-panel-no-border',
         width: '100%',
-        layout: 'vbox',
         height: 300,
         bodyPadding: 3,
         fileUpload: true,
-
         items: [
             {
             xtype: 'form',
             id:'uploadForm',
             region: 'north',
-            layout: 'hbox',
+            layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [{
                 xtype: 'filefield',
