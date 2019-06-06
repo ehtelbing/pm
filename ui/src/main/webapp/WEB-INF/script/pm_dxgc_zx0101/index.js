@@ -606,7 +606,7 @@ function _savezuizhong() {
                 RETURNV_ORDERGUID = data.list[0].V_ORDERGUID;
                 var owidth = window.document.body.offsetWidth;
                 var oheight = window.document.body.offsetHeight;
-                window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=' + RETURNV_ORDERGUID + '&V_V_EQUTYPE=' + Ext.getCmp('equtype').getValue() + '&V_V_SOURCECODE=defct12&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+                window.open(AppUrl + 'page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=' + RETURNV_ORDERGUID + '&V_V_EQUTYPE=' + Ext.getCmp('equtype').getValue() + '&V_V_SOURCECODE=defct12&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 //jykload = false;
                 _close();
             } else {
@@ -772,7 +772,7 @@ function _close() {
 function _jyk() {
     var owidth = window.document.body.offsetWidth;
     var oheight = window.document.body.offsetHeight;
-    window.open(AppUrl + 'page/pm_dxgc_zx010101/index.html?V_ORGCODE=' + ck + '&v_equtypecode=' + v_equtypecode + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+    window.open(AppUrl + 'page/pm_dxgc_zx010101/index.html?V_ORGCODE=' + ck + '&v_equtypecode=' + v_equtypecode + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }
 

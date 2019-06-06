@@ -462,10 +462,10 @@ function dealWith(URL, V_ORDERID, V_DBGUID, V_ORDERGUID, V_FLOWSTEP, V_FLOWTYPE)
     var oheight = window.document.body.offsetHeight - 200;
     if (V_FLOWTYPE == 'WORK') {
         window.open(AppUrl + "page" + URL + "?V_ORDERID=" + V_ORDERID + "&V_DBGUID=" + V_DBGUID + "&V_ORDERGUID=" + V_ORDERGUID + "&V_FLOWSTEP=" + V_FLOWSTEP,
-                "", 'height=' + 600 + ',width=' + 1000 + ',top=10px,left=10px,resizable=no');
+                "", 'height=' + 600 + ',width=' + 1000 + ',top=10px,left=10px,resizable=yes');
     } else {
         window.open(AppUrl + "page" + URL + "?V_GUID=" + V_ORDERGUID + '&random=' + Math.random(),
-                "", 'height=' + 600 + ',width=' + 1000 + ',top=10px,left=10px,resizable=no');
+                "", 'height=' + 600 + ',width=' + 1000 + ',top=10px,left=10px,resizable=yes');
     }
 }
 

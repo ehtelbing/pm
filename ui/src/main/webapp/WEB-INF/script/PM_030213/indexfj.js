@@ -334,7 +334,7 @@ function _fenjie() {
             if (resp.RET != '') {
                 // window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
                 window.open(AppUrl+'page/PM_030213/fjAddYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
-                    "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+resp.RET+'&UPGUID='+yearguid+'&FLAG='+'update', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+                    "&ZYQ=" + Ext.getCmp("zyq").getValue()+'&YEARGUID='+resp.RET+'&UPGUID='+yearguid+'&FLAG='+'update', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes')
             }
         }
     });

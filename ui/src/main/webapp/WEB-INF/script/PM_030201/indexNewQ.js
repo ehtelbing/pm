@@ -372,7 +372,7 @@ function turnOpen(value, metaDate, record, rowIndex, colIndex, store){
     var owidth = 1374;//window.document.body.offsetWidth - 600;
     var oheight =799;// window.document.body.offsetHeight - 100;
    // window.open(AppUrl + 'page/PM_030201/workorderDetail.html?guid=' +metaDate.get('V_GUID')+ '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
-    window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +metaDate.get('V_GUID') +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +metaDate.get('V_GUID') +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 
 function OnButtonSgjd(){
@@ -385,6 +385,6 @@ function OnButtonSgjd(){
         var enddate=(chodata[0].data.V_EDATE).toString().substring(0,10);
         var owidth = 1374;//window.document.body.offsetWidth - 600;
         var oheight =799;// window.document.body.offsetHeight - 100;
-        window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +chodata[0].data.V_GUID +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+        window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +chodata[0].data.V_GUID +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
     }
 }

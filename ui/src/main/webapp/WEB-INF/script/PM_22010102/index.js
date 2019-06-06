@@ -1503,7 +1503,7 @@ function save() {
                 Ext.Msg.alert('提示信息', '成功');
                 var owidth = window.document.body.offsetWidth - 800;
                 var oheight = window.document.body.offsetHeight - 200;
-                window.open(AppUrl + 'page/PM_1403/index.html?V_GUID=' + V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+                window.open(AppUrl + 'page/PM_1403/index.html?V_GUID=' + V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 _close();
             } else {
                 Ext.MessageBox.show({

@@ -773,7 +773,7 @@ function OnButtonSelectClicked() {
         "&QUARTER=0" +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&WEEK=0"  +
-        "&PLANTYPE=DXPlan", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&PLANTYPE=DXPlan", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 //修改
 function OnButtonEditClicked() {

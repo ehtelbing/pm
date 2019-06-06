@@ -276,7 +276,7 @@ function OnButtonPlanAddClicked() {
             if (resp.RET != '') {
                 // window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
                 window.open(AppUrl + 'page/PM_030212/newAdd.html?CK=' + Ext.getCmp("ck").getValue() +
-                    "&ZYQ=" + Ext.getCmp("zyq").getValue() + '&YEARGUID=' + resp.RET + '&FLAG=' + 'new', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+                    "&ZYQ=" + Ext.getCmp("zyq").getValue() + '&YEARGUID=' + resp.RET + '&FLAG=' + 'new', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes')
             }
         }
     });
@@ -285,7 +285,7 @@ function OnButtonPlanAddClicked() {
 //模型选择
 function OnButtonSelectClicked() {
     window.open(AppUrl + 'page/PM_030212/selModel.html?CK=' + Ext.getCmp("ck").getValue() +
-        "&ZYQ=" + Ext.getCmp("zyq").getValue() + '', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&ZYQ=" + Ext.getCmp("zyq").getValue() + '', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 
 //修改
@@ -305,7 +305,7 @@ function OnButtonEditClicked() {
     } else {
         // window.open(AppUrl+'page/PM_030212/addYearPlan.html?CK=' + Ext.getCmp("ck").getValue() +
         window.open(AppUrl + 'page/PM_030212/newAdd.html?CK=' + Ext.getCmp("ck").getValue() +
-            "&ZYQ=" + Ext.getCmp("zyq").getValue() + '&YEARGUID=' + record[0].get('ID_GUID') + '&FLAG=' + 'update', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+            "&ZYQ=" + Ext.getCmp("zyq").getValue() + '&YEARGUID=' + record[0].get('ID_GUID') + '&FLAG=' + 'update', '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes')
     }
 }
 

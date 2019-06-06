@@ -745,7 +745,7 @@ function OnButtonEditClicked() {
     }
     console.log(seldata[0].data.V_STATE);
     V_MONTHPLAN_GUID = seldata[0].data.V_GUID;
-    var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
+    var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 
 
 }

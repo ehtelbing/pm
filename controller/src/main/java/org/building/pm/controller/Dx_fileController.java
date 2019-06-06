@@ -3442,17 +3442,18 @@ public class Dx_fileController {
     }
 
     //放行创建工单
-    @RequestMapping(value = "PRO_PM_WORKORDER_FX_CREATE", method = RequestMethod.POST)
-    @ResponseBody
-    public Map PRO_PM_WORKORDER_FX_CREATE(
-            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
-            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_PERCODE, V_V_PERNAME, V_FX_GUID);
-        return data;
-    }
+//    @RequestMapping(value = "PRO_PM_WORKORDER_FX_CREATE", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map PRO_PM_WORKORDER_FX_CREATE(
+//            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+//            @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+//            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
+////            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
+//            HttpServletRequest request,
+//            HttpServletResponse response) throws Exception {
+//        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_PERCODE, V_V_PERNAME, V_FX_GUID);
+//        return data;
+//    }
 
     //缺陷解决方案写入
     @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_IN", method = RequestMethod.POST)
@@ -4572,6 +4573,58 @@ public class Dx_fileController {
 
         Map data = dx_fileService.PRO_PM_WORKORDER_SEL_FROM_DEL(V_DEL_GUID);
         return data;
+    }
+
+    //放行计划查找缺陷
+    @RequestMapping(value = "MAINTAIN_BY_DEFECT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MAINTAIN_BY_DEFECT_SEL(
+            @RequestParam(value = "V_FX_GUID") String V_FX_GUID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.MAINTAIN_BY_DEFECT_SEL(V_FX_GUID);
+        return data;
+    }
+
+    //放行计划查找缺陷
+    @RequestMapping(value = "PRO_PM_WORKORDER_FX_CREATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_FX_CREATE(
+            @RequestParam(value = "V_V_ORG_CODE") String V_V_ORG_CODE,
+            @RequestParam(value = "V_PERCODE") String V_PERCODE,
+            @RequestParam(value = "V_FXGUID") String V_FXGUID,
+            @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_WORKORDER_FX_CREATE(V_V_ORG_CODE,V_PERCODE,V_FXGUID,V_V_DEFECTLIST);
+        return data;
+    }
+    //工单查找缺陷
+    @RequestMapping(value = "PM_DEFECT_SEL_TO_WORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECT_SEL_TO_WORK(@RequestParam(value = "V_V_WORKORDER_GUID") String V_V_WORKORDER_GUID,
+                                                              @RequestParam(value = "V_V_FLAG") String V_V_FLAG,
+                                                              HttpServletRequest request,
+                                                              HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_DEFECT_SEL_TO_WORK(V_V_WORKORDER_GUID, V_V_FLAG);
+        return result;
+    }
+
+    //周计划--备件查找
+    @RequestMapping(value = "PRO_DEFECT_PART_DATA_SEL_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_PART_DATA_SEL_N(@RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                                     @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                                     @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                                                     @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                     @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_DEFECT_PART_DATA_SEL_N(V_V_TYPE,V_V_INPER,V_V_STATE,V_V_PAGE,V_V_PAGESIZE);
+        return result;
     }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)

@@ -444,8 +444,8 @@ Ext.onReady(function(){
             },
             {text:'备件材料',width:80,dataIndex:'V_GUID',align:'center',renderer:Onbjcl//OnChangeEleData//atleft
             },
-            {text:'通过详情',width: 140, dataIndex: 'PASS_STATE', align: 'center',renderer:clickPass},
-            {text:'通过状态',width: 140, dataIndex: 'PASS_STATENAME', align: 'center',renderer:atleft},
+            /*{text:'通过详情',width: 140, dataIndex: 'PASS_STATE', align: 'center',renderer:clickPass},
+            {text:'通过状态',width: 140, dataIndex: 'PASS_STATENAME', align: 'center',renderer:atleft},*/
             {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atleft},
             {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atleft},
             {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
@@ -462,7 +462,7 @@ Ext.onReady(function(){
         tbar: [
             '缺陷明细'
             ,{ xtype: 'tbfill' },
-            { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'},
+            { xtype: 'tbseparator',baseCls:'x-toolbar-separator-horizontal', margin:'8 8 5 8'}/*,
 
             {
                 xtype: 'button',
@@ -491,7 +491,7 @@ Ext.onReady(function(){
                 icon:dxImgPath + '/search.png',
                 // iconCls:'Magnifierzoomin',
                 listeners:{click:OnLookMoreDefect}
-            }
+            }*/
         ]
     });
 
@@ -1621,13 +1621,13 @@ function QueryDefect(){
 //审批通过
 function btnFlowAgree(){
     btnSaveProject();
-    var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
+   /* var record=Ext.data.StoreManager.lookup('qxGridStore').data.items;
     for(var i=0;i<record.length;i++){
         if(record[i].get("PASS_STATE")!="PASS"&&record[i].get("PASS_STATE")!="NOPASS"){
             alert("请先审批缺陷");
             return false;
         }
-    }
+    }*/
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批通过';
@@ -1835,7 +1835,7 @@ function clickPass(value, metaData, record){
 function viewPDatail(value){
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03040102/passDetail.html?guid=' +Guid + '&Defectguid=' + value+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    window.open(AppUrl + 'page/PM_03040102/passDetail.html?guid=' +Guid + '&Defectguid=' + value+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 function _selectTaskId() {
     Ext.Ajax.request({

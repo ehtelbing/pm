@@ -855,7 +855,7 @@ function OnButtonAddClicked() {
         "&YEAR=" + Ext.getCmp("nf").getValue() +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 
 function OnButtonSelectClicked() {
@@ -863,7 +863,7 @@ function OnButtonSelectClicked() {
         "&QUARTER=0" +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&WEEK=0" +
-        "&PLANTYPE=MONTH", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+        "&PLANTYPE=MONTH", '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
 }
 //修改
 function OnButtonEditClicked() {
@@ -877,7 +877,7 @@ function OnButtonEditClicked() {
         V_MONTHPLAN_GUID = seldata[0].data.V_GUID;
         // var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
         var ret = window.open(AppUrl + 'page/PM_03010209/upMData.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID+'&MainMONTH='+Ext.getCmp("yf").getValue()
-            +'&MainYEAR='+Ext.getCmp("nf").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
+            +'&MainYEAR='+Ext.getCmp("nf").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
     }else {
         Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
     }
@@ -1381,6 +1381,6 @@ function OnButtonAddFYear(){
     window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
         + Ext.getCmp('yf').getValue()
         +"&MainYEAR=" + year
-        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 

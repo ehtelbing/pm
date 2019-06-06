@@ -134,8 +134,7 @@ Ext.onReady(function(){
             reader: {
                 type: 'json',
                 root: 'list'
-            },
-            extraParams: {}
+            }
         },
         listeners: {
             load: function (store, records, success, eOpts) {
@@ -386,12 +385,12 @@ Ext.onReady(function(){
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             {text: '删除',width: 80, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect},
             {text: '上传附件',width: 120, dataIndex: 'DEFILENUM',align: 'center',renderer:upfilefun},
-            {text:'解决方案',width:80,dataIndex:'V_GUID',align:'center',renderer:Onjjfa//OnChangeEleData//atleft
+            {text:'解决方案',width:120,dataIndex:'V_GUID',align:'center',renderer:Onjjfa//OnChangeEleData//atleft
                 // ,editor:{
                 //     xtype: 'textfield',id: 'defsove',labelAlign: 'right',allowBlank:false
                 // }
             },
-            {text:'备件材料',width:80,dataIndex:'V_GUID',align:'center',renderer:Onbjcl//OnChangeEleData//atleft
+            {text:'备件材料',width:120,dataIndex:'V_GUID',align:'center',renderer:Onbjcl//OnChangeEleData//atleft
                 // ,editor:{
                 //     xtype: 'textfield',id: 'bjstuff',labelAlign: 'right',allowBlank:false
                 // }
@@ -1152,10 +1151,43 @@ function OnLookMoreDefect(){
 
 }
 function Onjjfa(value, metaDate, record, rowIndex, colIndex, store){
-    return '<a href="javascript:onJjfa(\'' + record.data.V_GUID +'\',\''+record.data.V_EQUCODE+'\')">解决方案</a>';
+    // return '<a href="javascript:onJjfa(\'' + record.data.V_GUID +'\',\''+record.data.V_EQUCODE+'\')">解决方案</a>';
+    // return '<button  onclick="onJjfa(\'' + record.data.V_GUID +'\',\''+record.data.V_EQUCODE+'\')">解决方案</button>';
+    var id = 'jjfa'+value;
+    Ext.defer(function () {
+        Ext.widget('button', {
+            icon:dxImgPath+'/accept.png',
+            renderTo: id,
+            //value: value / 100,
+            height: 25,
+            width: 110,
+            text: '解决方案',
+            margin:'padding:10px 50px 10px 10px;',
+            handler: function () {
+                onJjfa(record.data.V_GUID,record.data.V_EQUCODE);
+            }
+        });
+    }, 50);
+    return Ext.String.format('<div id="{0}"></div>', id);
 }
 function Onbjcl(value, metaDate, record, rowIndex, colIndex, store){
-    return '<a href="javascript:onBjcl(\'' + record.data.V_GUID +'\',\''+record.data.V_EQUCODE+'\')">备件材料</a>';
+    // return '<a href="javascript:onBjcl(\'' + record.data.V_GUID +'\',\''+record.data.V_EQUCODE+'\')">备件材料</a>';
+    var id = 'bjcl'+value;
+    Ext.defer(function () {
+        Ext.widget('button', {
+            icon:dxImgPath+'/accept.png',
+            renderTo: id,
+            //value: value / 100,
+            height: 25,
+            width: 110,
+            text: '备件材料',
+            margin:'padding:10px 50px 10px 10px;',
+            handler: function () {
+                onBjcl(record.data.V_GUID,record.data.V_EQUCODE);
+            }
+        });
+    }, 50);
+    return Ext.String.format('<div id="{0}"></div>', id);
 }
 //缺陷解决编辑
 function OnChangeEleData(def_guid){

@@ -2223,7 +2223,7 @@ function _procedualDetail() {
     var owidth = window.document.body.offsetWidth;
     var oheight = window.document.body.offsetHeight;
     if (jxmxPanel[0].data.V_MX_CODE != null && records[0].data.sid != null) {
-        window.open(AppUrl + 'page/PM_1917/indexDetailNew.html?V_JXMX_CODE=' + jxmxPanel[0].data.V_MX_CODE + '&V_V_ORGCODE=' + Ext.getCmp('plant').getValue() + '&V_V_DEPTCODE=' + Ext.getCmp('dept').getValue() + '&V_V_EQUCODE=' + records[0].data.sid + '&V_V_EQUTYPECODE=' + Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection()[0].raw.V_EQUTYPECODE, '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no');
+        window.open(AppUrl + 'page/PM_1917/indexDetailNew.html?V_JXMX_CODE=' + jxmxPanel[0].data.V_MX_CODE + '&V_V_ORGCODE=' + Ext.getCmp('plant').getValue() + '&V_V_DEPTCODE=' + Ext.getCmp('dept').getValue() + '&V_V_EQUCODE=' + records[0].data.sid + '&V_V_EQUTYPECODE=' + Ext.getCmp('sblxTreePanel').getSelectionModel().getSelection()[0].raw.V_EQUTYPECODE, '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     }
 }
 
