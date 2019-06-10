@@ -353,14 +353,14 @@ Ext.onReady(function(){
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             {text: '附件详情',width: 120, dataIndex: 'V_GUID',align: 'center',renderer:OnLookDefect},
-            {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atcenter},
-            {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atcenter},
-            {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atcenter,hidden:true},
-            {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atcenter,hidden:true},
-            {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atcenter},
-            {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atcenter,hidden:true},
-            {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atcenter},
-            {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atcenter}
+            {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atleft},
+            {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atleft},
+            {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
+            {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft,hidden:true},
+            {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
+            {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft,hidden:true},
+            {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
+            {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atleft}
 
         ]
         ,

@@ -277,7 +277,7 @@ function QueryBudget() {
             var resp = Ext.decode(resp.responseText);
             if (resp.list != null) {
              //   Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份' + Ext.getCmp('ck').rawValue + '大修年计划查询');
-                Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份大修年计划查询');
+                Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份外委计划查询');
                 Ext.getCmp('budget').setText('年预算费用：' + resp.list[0].V_BUDGET_CK + '万元；已用费用：' + resp.list[0].V_BUDGET_USE + '万元；剩余费用：' + resp.list[0].V_BUDGET_Y + '万元；')
             }
         }

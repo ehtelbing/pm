@@ -99,6 +99,30 @@ Ext.onReady(function () {
         }
     });
 
+    //缺陷明细store
+    var qxGridStore=Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'qxGridStore',
+        fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE', 'V_SOURCENAME', 'V_SOURCETABLE', 'V_SOURCEREMARK', 'V_SOURCEID',
+            'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME',
+            'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_IDEA', 'V_STATECODE',
+            'V_STATENAME', 'V_STATECOLOR', 'V_GUID', 'V_EQUSITE1', 'D_DATE_EDITTIME', 'V_EDIT_GUID', 'V_SOURCE_GRADE', 'V_EQUCHILDCODE',
+            'V_INPERCODE', 'V_INPERNAME', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_FLAG','DEF_SOLVE','BJ_STUFF','PASSNUM','NOPASSNUM'
+            ,'DEFILENUM','PASS_STATE','PASS_STATENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+
     //表格信息加载
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -107,7 +131,7 @@ Ext.onReady(function () {
         fields: ['I_ID','V_GUID','V_GUID_UP','V_YEAR','V_MONTH','V_ORGCODE','V_ORGNAME',
             'V_DEPTCODE','V_DEPTNAME','V_PORJECT_CODE','V_PORJECT_NAME','V_SPECIALTY','V_SPECIALTYNAME',
             'V_SPECIALTYMANCODE','V_SPECIALTYMAN','V_WXTYPECODE','V_WXTYPENAME','V_CONTENT','V_MONEYBUDGET',
-            'V_REPAIRDEPTCODE','V_BDATE','V_EDATE','V_STATE','V_FLAG','V_INMAN','V_INMANCODE','V_INDATE','V_STATENAME'],
+            'V_REPAIRDEPTCODE','V_BDATE','V_EDATE','V_STATE','V_FLAG','V_INMAN','V_INMANCODE','V_INDATE','V_STATENAME','DEFNUM'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -242,6 +266,7 @@ Ext.onReady(function () {
             mode: 'SIMPLE'
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text:'缺陷详情',width:140,dataIndex:'V_GUID',align:'center',renderer:OperaTion},
             {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center',renderer:atleft},
             {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center',renderer:atleft},
             {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center',renderer:atleft},
@@ -260,6 +285,48 @@ Ext.onReady(function () {
             emptyMsg: '没有记录',
             store: 'gridStore'
         }]
+    });
+
+    /*缺陷明细窗口*/
+    //缺陷
+    var delgrid=Ext.create('Ext.grid.Panel',{
+        id:'delgrid',
+        region:'center',
+        columnLines:true,
+        border:false,
+        store: qxGridStore,
+        autoScroll:true,
+        columns: [
+            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text: '附件详情',width: 120, dataIndex: 'V_GUID',align: 'center',renderer:OnLookDefect},
+            {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atleft},
+            {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atleft},
+            {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
+            {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft,hidden:true},
+            {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
+            {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft,hidden:true},
+            {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
+            {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atleft}
+
+        ]
+        ,
+        height:395,
+        width: '100%',
+        tbar: [
+            '缺陷明细'
+            ,{ xtype: 'tbfill' }
+        ]
+    });
+    var defDetWin=Ext.create('Ext.window.Window',{
+        id:'defDetWin',
+        width:560,
+        height:450,
+        title:'缺陷明细',
+        frame:true,
+        closeAction:'hide',
+        closable:true,
+        layout:'border',
+        items:[delgrid]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -330,6 +397,22 @@ Ext.onReady(function () {
 
 });
 
+//缺陷详情
+function OperaTion(value,metaDate,record,rowIndex,colIndex,store){
+    metaDate.style="text-align:center;";
+    return '<a href="javascript:_delDetail(\''+value+'\')" >'+record.data.DEFNUM+'</a>';
+}
+
+//缺陷详情查找
+function _delDetail(wxguid){
+    Ext.data.StoreManager.lookup('qxGridStore').load({
+        params:{
+            V_V_PROJECT_GUID:wxguid
+        }
+    });
+    Ext.getCmp('defDetWin').show();
+}
+
 function beforeloadStore(store) {
     store.proxy.extraParams.V_V_YEAR =Ext.getCmp('year').getValue();
     store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
@@ -397,6 +480,19 @@ function OnButtonWorkorder(){
         window.open(AppUrl + 'page/pm_dxgc_orderEdit/dxWorkOrder.html?guid=' +chodata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
     }
 }
+
+//查看缺陷附件详情
+function OnLookDefect(value,metaDate,record){
+    metaDate.style="text-align:center;";
+    return '<a href="javascript:LookDefect(\''+value+'\')" >'+record.data.DEFILENUM+'</a>';
+}
+
+function LookDefect(guid){
+    var owidth = window.document.body.offsetWidth - 600;
+    var oheight = window.document.body.offsetHeight + 100;
+    window.open(AppUrl + 'page/DefectPic/index.html?V_V_GUID=' + guid , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+}
+
 
 function selectGridTurn(){
     OnButtonQuery();
