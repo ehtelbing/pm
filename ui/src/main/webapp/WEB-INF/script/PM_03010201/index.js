@@ -570,48 +570,17 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATE',hidden:true},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
-        {
-            text: '详细',
-            dataIndex: 'V_ORDERID',
-            width: 55,
-            align: 'center',
-            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
-            }
-        },
-        {
-            text: '对应周计划',
-            dataIndex: 'V_WEEKNUM',
-            width: 80,
-            align: 'center',
-            renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                // return '<a href="#" onclick="_weekPlanDetail(\'' + record.data.V_GUID + '\')">明细</a>';
-                // return '<a href="#" onclick="_weekPlanDetail(\'' + record.data.V_GUID + '\')">'+record.data.V_WEEKNUM+' 条</a>';
-                return record.data.V_WEEKNUM+' 条';
-            }
-        },
-        /*{text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
+        {text: '流程详细', dataIndex: 'V_ORDERID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:_preViewProcess(\'' + record.data.V_GUID + '\')" >' + '详细' + '</a>';}},
+        {text: '缺陷详细', dataIndex: 'V_GUID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:OnLookDefect(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';}},
+        {text: '对应周计划', dataIndex: 'V_WEEKNUM', width: 80, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return record.data.V_WEEKNUM+' 条';}},
         {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
         {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
         {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME'},
         {xtype: 'linebreakcolumn', text: '检修内容', align: 'center', width: 280, dataIndex: 'V_CONTENT'},
-        {
-            text: '计划停机日期',
-            align: 'center',
-            width: 200,
-            dataIndex: 'V_STARTTIME',
-            renderer: rendererTime/*Ext.util.Format.dateRenderer('Y-m-d H:m:s')*/
-        },
-        {
-            text: '计划竣工日期',
-            align: 'center',
-            width: 200,
-            dataIndex: 'V_ENDTIME',
-            renderer: rendererTime/*Ext.util.Format.dateRenderer('Y-m-d H:m:s')*/
-        },
+        {text: '计划停机日期', align: 'center', width: 200, dataIndex: 'V_STARTTIME', renderer: rendererTime},
+        {text: '计划竣工日期', align: 'center', width: 200, dataIndex: 'V_ENDTIME', renderer: rendererTime },
         {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
-
         {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
         {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
         {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
@@ -781,6 +750,12 @@ Ext.onReady(function () {
 
 
 });
+
+function OnLookDefect(MonthGuid){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_03010201/LookDefet.html?V_V_GUID='+MonthGuid, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+}
 
 function getMonth(){
     if(date.getMonth()+1==12){

@@ -173,9 +173,6 @@ Ext.onReady(function(){
             actionMethods: {
                 read: 'POST'
             },
-            extraParams: {
-                V_GUID: fjDefect
-            },
             reader: {
                 type: 'json',
                 root: 'list'
@@ -406,7 +403,7 @@ Ext.onReady(function(){
             margin:'5 5 5 20',
             position: 'absolute',
             width:750,
-            labelWidth :50,
+            labelWidth :100,
             height:90
         }]
     });
@@ -549,7 +546,7 @@ Ext.onReady(function(){
     var JJFAWIN=Ext.create('Ext.window.Window',{
         id:'JJFAWIN',
         width:348,
-        height:170,
+        height:300,
         title:'解决方案',
         frame:true,
         closeAction:'hide',
@@ -581,7 +578,7 @@ Ext.onReady(function(){
     var BJCLWIN=Ext.create('Ext.window.Window',{
         id:'BJCLWIN',
         width:348,
-        height:170,
+        height:300,
         title:'备件材料',
         frame:true,
         closeAction:'hide',
@@ -621,11 +618,11 @@ Ext.onReady(function(){
         autoScroll: true,
         margin: '10px 0px 0px 15px',
         //colspan: 3,
-        columns: [{
+        columns: [/*{
             text:'附件编码',
             hide:true,
             dataIndex:'FILE_CODE'
-        },{
+        },*/{
             text: '附件名称',
             flex: 0.6,
             width:340,
@@ -645,7 +642,7 @@ Ext.onReady(function(){
         id:'win',
         title:'附件添加窗口',
         closeAction:'hide',
-        layout: 'vbox',
+        layout: 'border',
         width: 880,
         height: 400,
         modal: true,
@@ -1426,7 +1423,11 @@ function upfilefun(value, metaData, record){
 }
 function upfile(value) {
     fjDefect=value;
-    Ext.data.StoreManager.lookup('fileview').load();
+    Ext.data.StoreManager.lookup('fileview').load({
+        params: {
+            V_GUID: fjDefect
+        }
+    });
     Ext.getCmp('win').show();
 
 }

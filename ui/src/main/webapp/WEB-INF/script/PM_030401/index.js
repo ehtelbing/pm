@@ -346,7 +346,7 @@ Ext.onReady(function(){
         autoScroll:true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '附件数量',width: 120, dataIndex: 'DEFILENUM',align: 'center',renderer:atcenter},
+            {text: '附件详情',width: 120, dataIndex: 'V_GUID',align: 'center',renderer:OnLookDefect},
             {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atcenter},
             {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atcenter},
             {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atcenter,hidden:true},
@@ -369,7 +369,7 @@ Ext.onReady(function(){
        id:'defDetWin',
         width:560,
         height:450,
-        title:'备件材料',
+        title:'缺陷明细',
         frame:true,
         closeAction:'hide',
         closable:true,
@@ -448,7 +448,19 @@ function timelfet(value, metaDate, record, rowIndex, colIndex, store){
 //缺陷详情
 function OperaTion(value,metaDate,record,rowIndex,colIndex,store){
     metaDate.style="text-align:center;";
-    return '<a href="#" onclick="_delDetail(\''+value+'\')">'+record.data.DEFNUM+'</a>';
+    return '<a href="javascript:_delDetail(\''+value+'\')" >'+record.data.DEFNUM+'</a>';
+}
+
+//查看缺陷附件详情
+function OnLookDefect(value,metaDate,record){
+    metaDate.style="text-align:center;";
+    return '<a href="javascript:LookDefect(\''+value+'\')" >'+record.data.DEFILENUM+'</a>';
+}
+
+function LookDefect(guid){
+    var owidth = window.document.body.offsetWidth - 600;
+    var oheight = window.document.body.offsetHeight + 100;
+    window.open(AppUrl + 'page/DefectPic/index.html?V_V_GUID=' + guid , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 
 function pageLoad(){

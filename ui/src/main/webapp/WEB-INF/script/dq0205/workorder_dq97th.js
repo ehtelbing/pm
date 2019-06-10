@@ -234,7 +234,7 @@ $(function () {
             {
                 xtype: "radiogroup",
                 id: 'radiotypexc',
-                fieldLabel: '是否消除缺陷',
+                fieldLabel: '当前缺陷是否消缺',
                 labelAlign: 'right',
                 columns: 2,
                 width: 290,

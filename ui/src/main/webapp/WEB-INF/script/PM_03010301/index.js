@@ -589,14 +589,15 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATE',hidden:true},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
         {
-            text: '详细',
+            text: '流程详细',
             dataIndex: 'V_ORDERID',
-            width: 55,
+            width: 90,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
             }
         },
+        {text: '缺陷详细', dataIndex: 'V_GUID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:OnLookDefect(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';}},
         {
             text: '关联工单数量',
             dataIndex: 'WORKORDERNUM',
@@ -824,6 +825,12 @@ Ext.onReady(function () {
 
 
 });
+
+function OnLookDefect(MonthGuid){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    window.open(AppUrl + 'page/PM_03010201/LookDefet.html?V_V_GUID='+MonthGuid, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+}
 
 function _selectNextSprStore() {
     var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');

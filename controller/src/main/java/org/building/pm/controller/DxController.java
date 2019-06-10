@@ -263,4 +263,13 @@ public class DxController {
         Map result = dxService.PRO_PM_EQUREPAIRPLAN_JJ_VIEW(V_V_GUID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_MONTH_WEEK_DEFECT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_MONTH_WEEK_DEFECT_SEL(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) throws Exception {
+        Map result = dxService.PRO_MONTH_WEEK_DEFECT_SEL(V_V_GUID);
+        return result;
+    }
 }

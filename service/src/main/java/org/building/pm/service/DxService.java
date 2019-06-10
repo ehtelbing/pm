@@ -650,4 +650,28 @@ public class DxService {
         logger.info("end PRO_PM_EQUREPAIRPLAN_JJ_VIEW");
         return result;
     }
+
+    public Map PRO_MONTH_WEEK_DEFECT_SEL(String V_V_GUID) throws SQLException {
+        logger.info("begin PRO_MONTH_WEEK_DEFECT_SEL");
+        Map result = new HashMap();
+        CallableStatement cstmt = null;
+        Connection conn = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_MONTH_WEEK_DEFECT_SEL(:V_V_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_MONTH_WEEK_DEFECT_SEL");
+        return result;
+    }
 }

@@ -540,16 +540,15 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             xtype: 'datefield',
                             id: 'jhtgdate',
                             format: 'Y-m-d',
-                            fieldLabel: '计划停工时间',
+                            fieldLabel: '计划开工时间',
                             editable: false,
                             labelAlign: 'right',
                             margin: '5 0 0 5',
                             labelWidth: 80,
                             width: 280,
-                            value: '',
-                            // minValue:new Date(starttime),//new Date(starttime),
                             listeners: {
                                 select: function () {
+                                    Ext.getCmp('jhjgdate').setValue(Ext.getCmp('jhtgdate').getSubmitValue());
                                     Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
                                     _gongshiheji();
                                 }
@@ -582,21 +581,6 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     {
                                         _gongshiheji();
                                     }
-                                    // else{
-                                    //     Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                    //     function callBack(id) {
-                                    //         Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                    //         Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                    //         Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhgshj').setValue(0);
-                                    //         return ;
-                                    //
-                                    //     }
-                                    //
-                                    // }
                                 }
                             }
                         },
@@ -627,20 +611,6 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     {
                                         _gongshiheji();
                                     }
-                                    // else{
-                                    //     Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                    //     function callBack(id) {
-                                    //         Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                    //         Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                    //         Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhgshj').setValue(0);
-                                    //         return ;
-                                    //
-                                    //     }
-                                    // }
                                 }
                             }
                         }
@@ -663,7 +633,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 0 5',
                             labelWidth: 80,
                             width: 280,
-                            value: '',
+                            minValue: new Date(),
                             listeners: {
                                 select: function () {
                                     _gongshiheji();
@@ -690,28 +660,12 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
 
-
                                     var gongshicha = date22.getTime() - date11.getTime();
                                     var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
                                     if(gongshicha2 >= 0)
                                     {
                                         _gongshiheji();
                                     }
-                                    // else{
-                                    //     Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                    //     function callBack(id) {
-                                    //         Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                    //         Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                    //         Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhgshj').setValue(0);
-                                    //         return ;
-                                    //
-                                    //     }
-                                    //
-                                    // }
                                 }
                             }
                         },
@@ -742,21 +696,6 @@ var editPanel = Ext.create('Ext.form.Panel', {
                                     {
                                         _gongshiheji();
                                     }
-                                    // else{
-                                    //     Ext.MessageBox.alert('提示', '停工时间不能大于竣工时间', callBack);
-                                    //     function callBack(id) {
-                                    //         Ext.getCmp('jhtgdate').setValue(new Date()); 		//编辑窗口计划停工时间默认值
-                                    //         Ext.getCmp('jhtghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhtgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhjgdate').setValue(new Date());       //编辑窗口计划竣工时间默认值
-                                    //         Ext.getCmp('jhjghour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
-                                    //         Ext.getCmp('jhjgminute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
-                                    //         Ext.getCmp('jhgshj').setValue(0);
-                                    //         return ;
-                                    //
-                                    //     }
-                                    //
-                                    // }
                                 }
                             }
                         }

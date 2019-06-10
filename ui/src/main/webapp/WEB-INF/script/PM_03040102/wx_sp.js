@@ -420,16 +420,14 @@ Ext.onReady(function(){
         border:false,
         store: qxGridStore,
         autoScroll:true,
-        selModel: {
+       /* selModel: {
             selType: 'checkboxmodel',
             mode: 'SIMPLE'
-        },
+        },*/
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '删除',width: 80, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect},
+            /*{text: '删除',width: 80, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect},*/
             {text: '附件数量',width: 120, dataIndex: 'DEFILENUM',align: 'center',renderer:upfilefun},
-           /* {text:'通过详情',width: 140, dataIndex: 'PASS_STATE', align: 'center',renderer:clickPass},
-            {text:'通过状态',width: 140, dataIndex: 'PASS_STATENAME', align: 'center',renderer:atleft},*/
             {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atleft},
             {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atleft},
             {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
@@ -1391,9 +1389,16 @@ function _deleteDefect(v_equcode,DefectGuid){
 //缺陷上传附件
 function upfilefun(value, metaData, record){
     metaData.style="text-align:center";
-    // return '<a href="javascript:upfile(\''+record.data.V_GUID+'\')">'+"数量:"+value+"|"+"上传"+'</a>'
-    return '<div date-qtip="'+value + '" >' +"数量:"+value+'</div>';
+    return '<a href="javascript:LookDefect(\''+record.data.V_GUID+'\')" >'+value+'</a>';
 }
+
+function LookDefect(guid){
+    var owidth = window.document.body.offsetWidth - 600;
+    var oheight = window.document.body.offsetHeight + 100;
+    window.open(AppUrl + 'page/DefectPic/index.html?V_V_GUID=' + guid , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+}
+
+
 function upfile(value) {
     fjDefect=value;
     Ext.data.StoreManager.lookup('fileview').load();
