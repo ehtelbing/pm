@@ -5794,4 +5794,59 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PLAN_WBS_COMPARE");
         return result;
     }
+    //周计划关联缺陷
+    public HashMap PM_DEFECTTOWEEK_SEL(String V_WEEKGUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWEEK_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_SEL(:V_WEEKGUID,:RET)}");
+            cstmt.setString("V_WEEKGUID", V_WEEKGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWEEK_SEL");
+        return result;
+    }
+
+    //周计划关联缺陷删除 PM_DEFECTTOWEEK_DEL
+    public HashMap PM_DEFECTTOWEEK_DEL(String V_WEEKGUID,String DEF_GUID) throws SQLException {
+
+        logger.info("begin PM_DEFECTTOWEEK_DEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DEL(:V_WEEKGUID,:DEF_GUID,:RET)}");
+            cstmt.setString("V_WEEKGUID", V_WEEKGUID);
+            cstmt.setString("DEF_GUID",DEF_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("RET");
+            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWEEK_DEL");
+        return result;
+    }
 }

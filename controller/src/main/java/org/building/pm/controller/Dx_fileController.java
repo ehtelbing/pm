@@ -4638,6 +4638,28 @@ public class Dx_fileController {
         return result;
     }
 
+    //周计划关联缺陷
+    @RequestMapping(value = "PM_DEFECTTOWEEK_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWEEK_SEL(@RequestParam(value = "V_WEEKGUID") String V_WEEKGUID,
+
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_DEFECTTOWEEK_SEL(V_WEEKGUID);
+        return result;
+    }
+
+    //周计划关联缺陷删除 PM_DEFECTTOWEEK_DEL
+    @RequestMapping(value = "PM_DEFECTTOWEEK_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWEEK_DEL(@RequestParam(value = "V_WEEKGUID") String V_WEEKGUID,
+                                                   @RequestParam(value = "DEF_GUID") String DEF_GUID,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_DEFECTTOWEEK_DEL(V_WEEKGUID,DEF_GUID);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
