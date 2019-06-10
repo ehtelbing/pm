@@ -403,16 +403,10 @@ Ext.onReady(function(){
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             {text: '删除',width: 80, dataIndex: 'I_ID',  align: 'center',renderer:DelDefect},
             {text: '上传附件',width: 120, dataIndex: 'DEFILENUM',align: 'center',renderer:upfilefun},
-            {text:'解决方案',width:120,dataIndex:'V_GUID',align:'center',renderer:Onjjfa//OnChangeEleData//atleft
-                // ,editor:{
-                //     xtype: 'textfield',id: 'defsove',labelAlign: 'right',allowBlank:false
-                // }
-            },
-            {text:'备件材料',width:120,dataIndex:'V_GUID',align:'center',renderer:Onbjcl//OnChangeEleData//atleft
-                // ,editor:{
-                //     xtype: 'textfield',id: 'bjstuff',labelAlign: 'right',allowBlank:false
-                // }
-            },
+            {text:'解决方案',width:120,dataIndex:'V_GUID',align:'center',renderer:Onjjfa},
+            {text:'备件材料',width:120,dataIndex:'V_GUID',align:'center',renderer:Onbjcl},
+            {text: '解决方案', width: 280, dataIndex: 'DEF_SOLVE', align: 'center', renderer: atleft},
+            {text: '备件材料', width: 280, dataIndex: 'BJ_STUFF', align: 'center', renderer: atleft},
             {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
             {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft,hidden:true},
             {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
@@ -584,11 +578,13 @@ Ext.onReady(function(){
         autoScroll: true,
         margin: '10px 0px 0px 15px',
         //colspan: 3,
-        columns: [{
-            text:'附件编码',
-            hide:true,
-            dataIndex:'FILE_CODE'
-        },{
+        columns: [
+        //     {
+        //     text:'附件编码',
+        //     hide:true,
+        //     dataIndex:'FILE_CODE'
+        // },
+        {
             text: '附件名称',
             flex: 0.6,
             width:340,
@@ -605,10 +601,10 @@ Ext.onReady(function(){
         }]
     });
     var win=Ext.create('Ext.window.Window',{
-        id:'win',
-        title:'附件添加窗口',
-        closeAction:'hide',
-        layout: 'vbox',
+        id: 'win',
+        title: '附件添加窗口',
+        closeAction: 'hide',
+        layout: 'border',
         width: 880,
         height: 400,
         modal: true,
@@ -616,10 +612,10 @@ Ext.onReady(function(){
         bodyPadding: 10,
         items: [{
             xtype: 'form',
-            id:'uploadFile',
+            id: 'uploadFile',
             region: 'north',
             layout: 'hbox',
-            fileUpload:true,
+            fileUpload: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 xtype: "filefield",
@@ -1147,7 +1143,7 @@ function Onjjfa(value, metaDate, record, rowIndex, colIndex, store){
             height: 25,
             width: 110,
             text: '解决方案',
-            margin:'padding:10px 50px 10px 10px;',
+            margin: 'padding:10px 50px 10px 10px;',
             handler: function () {
                 onJjfa(record.data.V_GUID,record.data.V_EQUCODE);
             }
