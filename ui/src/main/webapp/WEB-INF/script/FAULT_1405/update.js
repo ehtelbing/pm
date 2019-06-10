@@ -402,15 +402,6 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [{
-                xtype: 'textfield',
-                id: 'faultname2',
-                fieldLabel: '故障名称',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                hidden:true,
-                width: 270
-            },{
                 xtype: 'label',
                 width: 5,
                 text: '*',
@@ -517,11 +508,12 @@ Ext.onReady(function () {
             items: [
                 {
                     xtype: 'textfield',
-                    id: 'faultbgr2',
-                    fieldLabel: '事故报告人',
+                    id: 'faultname2',
+                    fieldLabel: '事故名称',
                     labelWidth: 70,
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
+                    hidden:true,
                     width: 270
                 },
                 {
@@ -867,9 +859,7 @@ Ext.onReady(function () {
         layout: 'vbox',
         baseCls: 'my-panel-no-border',
         // height: 597,
-        bodyPadding: 3,
         fileUpload: true,
-
         items: [
             {
                 xtype: 'form',
@@ -1455,7 +1445,7 @@ function _saveBtnFault2() {
                 'V_V_FZR_CL':Ext.getCmp("fzrcl2").getValue(),
 
                 'V_V_ENDTIME':Ext.getCmp("endtime2").getSubmitValue(),
-                'V_V_REPORTER':Ext.getCmp("faultbgr2").getValue(),
+                'V_V_REPORTER':Ext.util.Cookies.get('v_personcode'),
                 'V_V_FZR':Ext.getCmp("faultzjzrr2").getValue(),
                 'V_V_STOPTIME':Ext.getCmp("stoptime2").getSubmitValue(),
                 'V_V_REPAIRTIME':Ext.getCmp("repairtime2").getSubmitValue(),

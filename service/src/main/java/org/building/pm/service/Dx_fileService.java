@@ -5767,4 +5767,31 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_DEFECT_PART_DATA_SEL_N");
         return result;
     }
+    //周计划生成工单webcode判断
+    public HashMap PM_03_PLAN_WBS_COMPARE(String V_V_GUID) throws SQLException {
+
+        logger.info("begin PM_03_PLAN_WBS_COMPARE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_WBS_COMPARE(:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("RET");
+            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_WBS_COMPARE");
+        return result;
+    }
 }

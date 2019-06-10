@@ -523,7 +523,7 @@ Ext.onReady(function () {
                 valueField: 'V_TYPECODE',
                 displayField: 'V_TYPENAME',
                 forceSelection: true,
-                fieldLabel: '故障类型',
+                fieldLabel: '事故类型',
                 editable: false,
                 labelWidth: 70,
                 width: 250
@@ -551,7 +551,7 @@ Ext.onReady(function () {
             ,{
                 xtype: 'textfield',
                 id: 'faulttext',
-                fieldLabel: '故障原因',
+                fieldLabel: '事故原因',
                 labelWidth: 70,
                 width: 250
             }
@@ -620,6 +620,11 @@ Ext.onReady(function () {
                 return '<a href="#" onclick="_detailOpen(\'' + value + '\')">详细</a>';
             }
         },{
+            text: '事故名称',
+            dataIndex: 'V_FAULT_NAME',
+            align: 'center',
+            width: 100
+        }, {
             text: '发现时间',
             dataIndex: 'V_FINDTIME',
             align: 'center',
@@ -686,7 +691,7 @@ Ext.onReady(function () {
             width: 100
         }, */
             {
-                text: '故障等级',
+                text: '事故等级',
                 dataIndex: 'V_FAULT_LEVELNAME',
                 align: 'center',
                 width: 100
@@ -719,11 +724,6 @@ Ext.onReady(function () {
             /* {
              text: '解决办法',
              dataIndex: 'V_JJBF',
-             align: 'center',
-             width: 100
-         }, {
-             text: '故障名称',
-             dataIndex: 'V_FAULT_NAME',
              align: 'center',
              width: 100
          }, {
@@ -939,8 +939,8 @@ function _preViewWorkOrder(value) {
         + value, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
 function _detailOpen(value) {
-    var owidth = 1300;
-    var oheight = 850;
+    var owidth = window.screen.availWidth-100;
+    var oheight = window.screen.availHeight - 50;
     window.open(AppUrl + 'page/FAULT_REPORT/detail.html?V_V_GUID=' + value,'', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
 }
 function OnButtonPrint() {

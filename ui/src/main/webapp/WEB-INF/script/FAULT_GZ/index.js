@@ -537,18 +537,17 @@ function _preUpdateFault() {
         });
         return false;
     }
-    _updateOpen(records[0].get('V_GUID'));
-   /* if(records[0].get('V_STATE')=='0'||records[0].get('V_STATE')=='2'||records[0].get('V_STATE')=='10'){
-        // Ext.getCmp('updateFaultWindow').show();
-        _updateOpen(records[0].get('V_GUID'));
+
+   if(records[0].get('V_STAUTS')=='0'||records[0].get('V_STAUTS')=='10'){
+       _updateOpen(records[0].get('V_GUID'));
     }else{
         Ext.MessageBox.show({
             title: '提示',
-            msg: '所选事故不能修改',
+            msg: '所选预案不能修改',
             buttons: Ext.MessageBox.OK,
             icon: Ext.MessageBox.WARNING
         });
-    }*/
+    }
 
 
 }

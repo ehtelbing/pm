@@ -16,6 +16,8 @@ var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var V_V_FAULT_GUID='';
 var V_V_FILE_GUID='';
+var V_V_ORGCODE_TEMP='';
+var V_V_DEPTCODE_TEMP='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
@@ -159,6 +161,12 @@ Ext.onReady(function () {
                 style: ' margin: 5px 20px 0px 20px',
                 icon: imgpath + '/saved.png',
                 handler: _agree
+            } , {
+                xtype: 'button',
+                text: '驳回',
+                style: ' margin: 5px 20px 0px 0px',
+                icon: imgpath + '/cross.png',
+                handler: _reject
             }
         ]
     });
@@ -216,8 +224,8 @@ Ext.onReady(function () {
                 width: 270
             },{
                 xtype: 'textfield',
-                id: 'worktype',
-                fieldLabel: '工种',
+                id: 'pernum',
+                fieldLabel: '人数',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -3px',
@@ -225,6 +233,22 @@ Ext.onReady(function () {
                 width: 270
             }
 
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                xtype: 'textfield',
+                id: 'equname',
+                fieldLabel: '设备名称',
+                labelWidth: 70,
+                readOnly:true,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
             ]
         }, {
             xtype: 'panel',
@@ -233,49 +257,58 @@ Ext.onReady(function () {
             baseCls: 'my-panel-no-border',
             items: [ {
                 xtype: 'textfield',
-                id: 'pernum',
-                fieldLabel: '人数',
+                id: 'worktype',
+                fieldLabel: '工种',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 270
-            },{
-                xtype: 'textfield',
-                id: 'tools',
-                fieldLabel: '机具',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
+                width: 537
             }
-
             ]
         }, {
             xtype: 'panel',
             region: 'north',
             layout: 'column',
             baseCls: 'my-panel-no-border',
-            items: [{
+            items: [ {
                 xtype: 'textfield',
-                id: 'mat',
-                fieldLabel: '材料',
+                id: 'tools',
+                fieldLabel: '机具',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 270
-            },{
-                xtype: 'textfield',
-                id: 'euqip',
-                fieldLabel: '备件',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
+                width: 537
             }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [
+                /*  {
+                  xtype: 'textfield',
+                  id: 'mat',
+                  fieldLabel: '材料',
+                  labelWidth: 70,
+                  readOnly:true,
+                  style: ' margin: 5px 0px 0px -8px',
+                  labelAlign: 'right',
+                  width: 270
+              },*/
+                {
+                    xtype: 'textfield',
+                    id: 'spare',
+                    fieldLabel: '备件',
+                    labelWidth: 70,
+                    readOnly:true,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    width: 537
+                }
 
             ]
         },{
@@ -479,11 +512,9 @@ Ext.onReady(function () {
 
         ]
     });
-
-    _init();
     _selectTaskId();
+    _init();
     // _selecteFaultStore2();
-
 });
 
 function _selectTaskId() {
@@ -499,6 +530,7 @@ function _selectTaskId() {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
+
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -513,8 +545,8 @@ function _selectTaskId() {
 function _selectNextPer() {
     var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
     nextSprStore.proxy.extraParams = {
-        V_V_ORGCODE: Ext.getCmp('V_V_ORGCODE2').getValue(),
-        V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE2').getValue(),
+        V_V_ORGCODE: V_V_ORGCODE_TEMP,
+        V_V_DEPTCODE: V_V_DEPTCODE_TEMP,
         V_V_REPAIRCODE: '',
         V_V_FLOWTYPE: 'FaultYn',
         V_V_FLOW_STEP: $.url().param("TaskDefinitionKey"),
@@ -524,7 +556,7 @@ function _selectNextPer() {
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
-    Ext.getBody().unmask();
+    // Ext.getBody().unmask();
     // selNextPer();
 }
 function _init() {
@@ -548,8 +580,9 @@ function _init() {
                 Ext.getCmp('worktype').setValue(resp.RET[0].V_WORK_TYPE);
                 Ext.getCmp('pernum').setValue(resp.RET[0].V_PERSON_NUM);
                 Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
-                Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
-                Ext.getCmp('euqip').setValue(resp.RET[0].V_SPARE_PARTNAME);
+                // Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
+                Ext.getCmp('spare').setValue(resp.RET[0].V_SPARE_PARTNAME);//备件
+                Ext.getCmp('equname').setValue(resp.RET[0].V_EQUNAME);
                 Ext.getCmp('program').setValue(resp.RET[0].V_PROGRAM);
                 Ext.getCmp('mode').setValue(resp.RET[0].V_MODE);
                 Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);
@@ -557,7 +590,7 @@ function _init() {
                 V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
                 filequery2(V_ORDERGUID);
 
-
+                _selectNextPer();
                 // _selectsubequName2();
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();//去除页面笼罩
@@ -798,67 +831,7 @@ function _validate(obj) {
 }
 
 
-function OnClickTreeItem(aa, record, item, index, e, eOpts) {
-    if (record.data.choose == true) {
-        var id=record.data.id;
-        var parentid=record.data.parentId;
-        var pid="";
-        if(record.data.leaf == true){
-            id=id.substr(0, id.length - 1);
-            pid=parentid;
-        }else{
-            pid=id;
-        }
-        var flag=0;
-        var records=Ext.getCmp('equGridpanel').getStore().data;
-        for (var i = 0; i < records.length; i++) {
-            var temp=records.items[i].data.V_EQUCODE;
-            if(temp==id){
-                flag=1;
-                return false;
-            }
-        }
-        if(flag==0){
-            // var data = {
-            //     'V_EQUTYPENAME' : record.data.V_EQUTYPENAME,
-            //     'V_EQUCODE' : id,
-            //     'V_EQUNAME' : record.data.text,
-            //     'V_EQUSITE' : record.data.V_EQUSITE,
-            //     'V_EQUSITENAME' : record.data.V_EQUSITENAME,
-            //     'V_EQUTYPECODE' : record.data.V_EQUTYPECODE,
-            //     'V_EQUUPCODE':parentid
-            // };
-            // addEquip(data);
-            Ext.Ajax.request({
-                url: AppUrl + 'cxy/PRO_FAULT_EQUIP_SET',
-                type: 'ajax',
-                method: 'POST',
-                params: {
-                    'V_V_FAULTCODE': V_ORDERGUID,
-                    'V_V_EQUTYPECODE': record.data.V_EQUTYPECODE,
-                    'V_V_EQUUPCODE':pid,
-                    'V_V_EQUCODE':id,
-                    'V_V_CREATER':V_V_PERSONCODE
-                },
-                success: function (response) {
-                    var resp=Ext.decode(response.responseText);
-                    if(resp.RET='SUCCESS'){
-                        _selectGridPanel();
-                    }else{
-                        Ext.MessageBox.show({
-                            title: '错误',
-                            msg: resp.RET,
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.ERROR
-                        });
-                    }
 
-
-                }
-            });
-        }
-    }
-}
 function _delete(value, metaData, record, rowIdx,colIdx, store, view) {
 
     return '<a href="javascript:delFixContent(\'' + value + '\',\''+record.data.V_EQUCODE +'\')">删除</a>';
@@ -932,7 +905,7 @@ function _agree() {
                     method: 'POST',
                     type: 'ajax',
                     params: {
-                    V_V_PERCODE:V_PERSONCODE,
+                    V_V_PERCODE:V_V_PERSONCODE,
                         V_V_GUID: $.url().param("V_ORDERGUID"),
                         V_V_STAUTS: '1'//审核中
                 },
@@ -1027,43 +1000,68 @@ function _agree() {
 }
 function _reject() {
     Ext.Ajax.request({
-        url: AppUrl + 'Activiti/TaskComplete',
-        type: 'ajax',
+        url: AppUrl + 'cxy/PM_FAULT_PLAN_STATE_UPDATE',
         method: 'POST',
+        type: 'ajax',
         params: {
-            taskId: taskId,
-            idea: '不通过',
-            parName: [ "flow_yj"],
-            parVal: [ '驳回'],
-            processKey :processKey,
-            businessKey : V_ORDERGUID,
-            V_STEPCODE : 'end',
-            V_STEPNAME : '驳回',
-            V_IDEA : '驳回',
-            V_NEXTPER : '',
-            V_INPER : Ext.util.Cookies.get('v_personcode')
+            V_V_PERCODE: V_V_PERSONCODE,
+            V_V_GUID: $.url().param("V_ORDERGUID"),
+            V_V_STAUTS: '0'//审核中
         },
-        success: function (response) {
-            Ext.MessageBox.show({
-                title: '提示',
-                msg: '已撤销完结',
-                buttons: Ext.MessageBox.OK,
-                fn: function () {
-                    window.close();
-                    window.opener.OnPageLoad();
-                }
-            });
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.RET == 'SUCCESS') {
+                Ext.Ajax.request({
+                    url: AppUrl + 'Activiti/TaskComplete',
+                    type: 'ajax',
+                    method: 'POST',
+                    params: {
+                        taskId: taskId,
+                        idea: '不通过',
+                        parName: [V_NEXT_SETP, "flow_yj"],
+                        parVal: [Ext.getCmp('nextPer').getValue(), '作废'],
+                        processKey: processKey,
+                        businessKey: V_ORDERGUID,
+                        V_STEPCODE: 'end',
+                        V_STEPNAME: '',
+                        V_IDEA: '作废',
+                        V_NEXTPER: '',
+                        V_INPER: Ext.util.Cookies.get('v_personcode')
 
-        },
-        failure: function (response) {//访问到后台时执行的方法。
+
+                    },
+                    success: function (response) {
+                        Ext.MessageBox.show({
+                            title: '提示',
+                            msg: '已驳回',
+                            buttons: Ext.MessageBox.OK,
+                            fn: function () {
+                                window.close();
+                                window.opener.OnPageLoad();
+                            }
+                        });
+
+                    },
+                    failure: function (response) {//访问到后台时执行的方法。
+                        Ext.MessageBox.show({
+                            title: '错误',
+                            msg: response.responseText,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.ERROR
+                        });
+                    }
+                });
+            }
+        },failure: function (response) {//访问到后台时执行的方法。
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,
                 buttons: Ext.MessageBox.OK,
                 icon: Ext.MessageBox.ERROR
-            })
+            });
         }
-    })
+    });
+
 }
 function OnButtonNoOver() {
 

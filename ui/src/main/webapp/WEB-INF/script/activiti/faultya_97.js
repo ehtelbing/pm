@@ -17,6 +17,8 @@ var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var V_V_FAULT_GUID='';
 var V_V_FILE_GUID='';
+var V_V_ORGCODE_TEMP='';
+var V_V_DEPTCODE_TEMP='';
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
@@ -167,8 +169,8 @@ Ext.onReady(function () {
                 width: 270
             },{
                 xtype: 'textfield',
-                id: 'worktype',
-                fieldLabel: '工种',
+                id: 'pernum',
+                fieldLabel: '人数',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -3px',
@@ -176,6 +178,22 @@ Ext.onReady(function () {
                 width: 270
             }
 
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                xtype: 'textfield',
+                id: 'equname',
+                fieldLabel: '设备名称',
+                labelWidth: 70,
+                readOnly:true,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
             ]
         }, {
             xtype: 'panel',
@@ -184,49 +202,58 @@ Ext.onReady(function () {
             baseCls: 'my-panel-no-border',
             items: [ {
                 xtype: 'textfield',
-                id: 'pernum',
-                fieldLabel: '人数',
+                id: 'worktype',
+                fieldLabel: '工种',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 270
-            },{
-                xtype: 'textfield',
-                id: 'tools',
-                fieldLabel: '机具',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
+                width: 537
             }
-
             ]
         }, {
             xtype: 'panel',
             region: 'north',
             layout: 'column',
             baseCls: 'my-panel-no-border',
-            items: [{
+            items: [ {
                 xtype: 'textfield',
-                id: 'mat',
-                fieldLabel: '材料',
+                id: 'tools',
+                fieldLabel: '机具',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 270
-            },{
-                xtype: 'textfield',
-                id: 'euqip',
-                fieldLabel: '备件',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
+                width: 537
             }
+
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [
+                /*  {
+                  xtype: 'textfield',
+                  id: 'mat',
+                  fieldLabel: '材料',
+                  labelWidth: 70,
+                  readOnly:true,
+                  style: ' margin: 5px 0px 0px -8px',
+                  labelAlign: 'right',
+                  width: 270
+              },*/
+                {
+                    xtype: 'textfield',
+                    id: 'spare',
+                    fieldLabel: '备件',
+                    labelWidth: 70,
+                    readOnly:true,
+                    style: ' margin: 5px 0px 0px -8px',
+                    labelAlign: 'right',
+                    width: 537
+                }
 
             ]
         },{
@@ -255,8 +282,8 @@ Ext.onReady(function () {
                 id: 'mode',
                 column:2,
                 fieldLabel: '联络方式',
-                readOnly:true,
                 labelWidth: 70,
+                readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
@@ -273,8 +300,8 @@ Ext.onReady(function () {
                 xtype: 'textarea',
                 id: 'plan',
                 fieldLabel: '抢修方案',
-                labelWidth: 70,
                 readOnly:true,
+                labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
@@ -287,14 +314,13 @@ Ext.onReady(function () {
                 xtype: 'textarea',
                 id: 'prevent',
                 fieldLabel: '事故预防',
-                labelWidth: 70,
                 readOnly:true,
+                labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
             }
-
-            ]
+                ]
         }]
     });
 
@@ -476,7 +502,7 @@ function _init() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.success!='true') {//成功，会传回true
-
+                V_SPR=resp.RET[0].V_SPR;
                 V_V_DEPTCODE_TEMP=resp.RET[0].V_DEPTCODE;
                 V_V_ORGCODE_TEMP=resp.RET[0].V_ORGCODE;
                 Ext.getCmp('orgname').setValue(resp.RET[0].V_ORGNAME);
@@ -485,8 +511,9 @@ function _init() {
                 Ext.getCmp('worktype').setValue(resp.RET[0].V_WORK_TYPE);
                 Ext.getCmp('pernum').setValue(resp.RET[0].V_PERSON_NUM);
                 Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
-                Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
-                Ext.getCmp('euqip').setValue(resp.RET[0].V_SPARE_PARTNAME);
+                // Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
+                Ext.getCmp('spare').setValue(resp.RET[0].V_SPARE_PARTNAME);//备件
+                Ext.getCmp('equname').setValue(resp.RET[0].V_EQUNAME);
                 Ext.getCmp('program').setValue(resp.RET[0].V_PROGRAM);
                 Ext.getCmp('mode').setValue(resp.RET[0].V_MODE);
                 Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);

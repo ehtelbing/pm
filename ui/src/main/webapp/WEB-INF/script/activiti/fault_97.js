@@ -290,16 +290,6 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [{
-                xtype: 'textfield',
-                id: 'faultname2',
-                fieldLabel: '故障名称',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                hidden:true,
-                width: 270
-            },{
                 xtype: 'label',
                 width: 5,
                 text: '*',
@@ -399,12 +389,13 @@ Ext.onReady(function () {
             items: [
                 {
                     xtype: 'textfield',
-                    id: 'faultbgr2',
-                    fieldLabel: '事故报告人',
-                    readOnly:true,
+                    id: 'faultname2',
+                    fieldLabel: '事故名称',
                     labelWidth: 70,
+                    readOnly:true,
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
+                    hidden:true,
                     width: 270
                 },
                 {
@@ -990,7 +981,7 @@ function _init() {
                 Ext.getCmp('faultzgcs2').setValue(resp.RET[0].V_FAULT_ZGCS);
                 Ext.getCmp('fzrcl2').setValue(resp.RET[0].V_FZR_CL);
                 Ext.getCmp('endtime2').setValue(resp.RET[0].V_ENDTIME);
-                Ext.getCmp('faultbgr2').setValue(resp.RET[0].V_REPORTER);
+                // Ext.getCmp('faultbgr2').setValue(resp.RET[0].V_REPORTER);
                 Ext.getCmp('faultzjzrr2').setValue(resp.RET[0].V_FZR);
                 Ext.getCmp('stoptime2').setValue(resp.RET[0].V_STOPTIME);
                 Ext.getCmp('repairtime2').setValue(resp.RET[0].V_REPAIRTIME);
@@ -1393,7 +1384,7 @@ function _agree() {
                         V_V_GUID: $.url().param("V_ORDERGUID")
                     }, success: function (resp) {
                         var resp = Ext.decode(resp.responseText);
-                        if (resp.RET == 'SUCCESS') {
+                        if (resp.RET == 'Success') {
                             Ext.Ajax.request({
                                 url: AppUrl + 'Activiti/TaskComplete',
                                 type: 'ajax',

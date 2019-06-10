@@ -494,3 +494,6 @@ function guid() {
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
+function Winclose(){
+    window.close();
+}

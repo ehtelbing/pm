@@ -1,27 +1,7 @@
 var V_V_ORGCODE = '';
 var V_V_DEPTCODE = '';
 var V_V_ORDERGUID='';
-// var V_V_GUID = "";
-// var orgLoad = false;
-// var zyqload = false;
-// var sbtypeload = false;
-// var sbnameload = false;
-// var zsbnameload = false;
-// var orgLoad1 = false;
-// var orgLoad2 = false;
-// var equFaultLoad = false;
-// var equFaultLoad1 = false;
-// var equFaultLoad2 = false;
-// var nextSprLoad = false;
-// var init = true;
-// var initadd = true;
-// var code ="";
-// var processKey = '';
-// var V_STEPNAME = '';
-// var V_NEXT_SETP = '';
-// var processKey2 = '';
-// var V_STEPNAME2 = '';
-// var V_NEXT_SETP2 = '';
+
 if (location.href.split('?')[1] != undefined) {
     V_V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
     V_V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
@@ -30,15 +10,16 @@ if (location.href.split('?')[1] != undefined) {
 }
 var today = new Date();
 var YEAR = today.getFullYear();
+var dt = new Date();
+var thisYear = dt.getFullYear();
+var years = [];
+for (var i = 2013; i <= thisYear + 1; i++) years.push({name: i, value: i});
 Ext.onReady(function () {
-    var dt = new Date();
-    var thisYear = dt.getFullYear();
-    var years = [];
-    for (var i = 2013; i <= thisYear + 1; i++) years.push({displayField: i, valueField: i});
+
 
     var yearStore = Ext.create("Ext.data.Store", {
         storeId: 'yearStore',
-        fields: ['displayField', 'valueField'],
+        fields: ['name', 'value'],
         data: years,
         proxy: {
             type: 'memory',
@@ -52,13 +33,25 @@ Ext.onReady(function () {
         defaults : {
             style : 'margin:2px'
         },
+        layout : 'column',
         items : [ {
+            xtype: 'combo',
             id: 'year',
-            allowBlank: false,
-            fieldLabel: '年份',
             store: yearStore,
-            value: YEAR,
-            labelWidth: 90
+            queryMode: 'local',
+            valueField: 'name',
+            displayField: 'value',
+            forceSelection: true,
+            fieldLabel: '年份',
+            value:YEAR,
+            editable: false,
+            labelWidth: 70,
+            width: 200
+        },{
+            xtype: 'button',
+            text: '查询',
+            icon: imgpath + '/search.png',
+            handler: _search
         },{
             xtype: 'button',
             text: '选择',
@@ -264,16 +257,11 @@ Ext.onReady(function () {
 
 
 function _init() {
-    // var faultItemStore = Ext.data.StoreManager.lookup('faultItemStore');
-    //
-    // faultItemStore.proxy.extraParams = {
-    //     'V_V_ORGCODE': V_V_ORGCODE,
-    //     'V_V_DEPTCODE':V_V_DEPTCODE
-    //
-    // };
-    //
-    // // faultItemStore.currentPage = 1;
-    // faultItemStore.load();
+
+    Ext.getCmp('page').store.currentPage = 1;
+    Ext.data.StoreManager.lookup('faultItemStore').load();
+}
+function _search() {
     Ext.getCmp('page').store.currentPage = 1;
     Ext.data.StoreManager.lookup('faultItemStore').load();
 }

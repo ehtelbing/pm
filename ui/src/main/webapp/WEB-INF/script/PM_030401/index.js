@@ -265,6 +265,12 @@ Ext.onReady(function(){
             },
             {
                 xtype: 'button',
+                text: '备件新增',
+                icon: imgpath + '/add.png',
+                listeners: {click: OnButtonAdd2}
+            },
+            {
+                xtype: 'button',
                 text: '编辑',
                 icon: imgpath + '/edit.png',
                 listeners: {click: OnButtonEdit}
@@ -554,7 +560,37 @@ function OnButtonAdd(){
             }
         }
     });
-
+}
+function OnButtonAdd2(){
+    if(Ext.getCmp("zyq").getValue()=="%"){
+        alert('请选择一个作业区');
+        return false;
+    }
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID:'-1',
+            V_V_YEAR:Ext.getCmp("year").getValue(),
+            V_V_ORGCODE:Ext.getCmp("ck").getValue(),
+            V_V_DEPTCODE:"", // Ext.getCmp("zyq").getValue(),
+            V_V_INPER:Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+            var resp=Ext.decode(resp.responseText);
+            if(resp.V_INFO=='成功'){
+                var owidth = window.document.body.offsetWidth - 600;
+                var oheight = window.document.body.offsetHeight + 100;
+                // window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+                window.open(AppUrl + 'page/PM_03040103/index.html?guid=' + resp.V_OUT_GUID +'&year='+Ext.getCmp("year").getValue()+'&V_DEPTCODE=' + Ext.getCmp("zyq").getValue()
+                    +'&sign='+'IN'
+                    + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+            }else{
+                alert("添加失败");
+            }
+        }
+    });
 }
 //编辑
 function OnButtonEdit(){
