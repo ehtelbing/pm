@@ -5849,4 +5849,115 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_DEFECTTOWEEK_DEL");
         return result;
     }
+    //周计划关联月计划写入-修改
+    public HashMap PM_03_PLAN_WEEK_UPDATE(String V_V_MONTHGUID,String V_V_DEFECTGUID,String V_WEEKGUID) throws SQLException {
+
+        logger.info("begin PM_03_PLAN_WEEK_UPDATE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_WEEK_UPDATE(:V_V_MONTHGUID,:V_V_DEFECTGUID,:V_WEEKGUID,:RET)}");
+            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+            cstmt.setString("V_V_DEFECTGUID",V_V_DEFECTGUID);
+            cstmt.setString("V_WEEKGUID",V_WEEKGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("RET");
+            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_WEEK_UPDATE");
+        return result;
+    }
+   //清除未保存 的周计划关联缺陷 PM_DEFECTTOWEEK_DELALL_OLD
+   public HashMap PM_DEFECTTOWEEK_DELALL_OLD(String V_V_MONTHGUID,String V_V_WEEKGUID,String V_INPER) throws SQLException {
+
+       logger.info("begin PM_DEFECTTOWEEK_DELALL_OLD");
+       HashMap result = new HashMap();
+       Connection conn = null;
+       CallableStatement cstmt = null;
+       try {
+           conn = dataSources.getConnection();
+           conn.setAutoCommit(false);
+           cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DELALL_OLD(:V_V_MONTHGUID,:V_V_WEEKGUID,:V_INPER,:RET)}");
+           cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
+           cstmt.setString("V_V_WEEKGUID",V_V_WEEKGUID);
+           cstmt.setString("V_INPER",V_INPER);
+
+           cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+           cstmt.execute();
+           String sunm = (String) cstmt.getObject("RET");
+           result.put("RET", sunm);
+       } catch (SQLException e) {
+           logger.error(e);
+       } finally {
+           cstmt.close();
+           conn.close();
+       }
+       logger.debug("result:" + result);
+       logger.info("end PM_DEFECTTOWEEK_DELALL_OLD");
+       return result;
+   }
+   //查找未关联月计划的周计划关联缺陷
+   public HashMap PM_03_PLAN_WEEK_GET_DEF(String WEEKGUID) throws SQLException {
+
+       logger.info("begin PM_03_PLAN_WEEK_GET_DEF");
+       HashMap result = new HashMap();
+       Connection conn = null;
+       CallableStatement cstmt = null;
+       try {
+           conn = dataSources.getConnection();
+           conn.setAutoCommit(false);
+           cstmt = conn.prepareCall("{call PM_03_PLAN_WEEK_GET_DEF(:WEEKGUID,:RET)}");
+           cstmt.setString("WEEKGUID", WEEKGUID);
+
+           cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+           cstmt.execute();
+           result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+       } catch (SQLException e) {
+           logger.error(e);
+       } finally {
+           cstmt.close();
+           conn.close();
+       }
+       logger.debug("result:" + result);
+       logger.info("end PM_03_PLAN_WEEK_GET_DEF");
+       return result;
+   }
+   //修改周计划表格中主要缺陷
+    public HashMap PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(String WEEK_GUID) throws SQLException {
+
+        logger.info("begin PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(:WEEK_GUID,:RET)}");
+            cstmt.setString("WEEK_GUID", WEEK_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String sunm = (String) cstmt.getObject("RET");
+            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE");
+        return result;
+    }
 }

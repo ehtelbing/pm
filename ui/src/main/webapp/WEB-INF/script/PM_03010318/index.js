@@ -319,6 +319,7 @@ Ext.onReady(function () {
                             // },
                             {
                                 xtype: 'button',
+                                id:'bc',
                                 text: '保存',
                                 icon: imgpath + '/saved.png',
                                 margin: '10px 0px 0px 10px',
@@ -326,10 +327,20 @@ Ext.onReady(function () {
                             },
                             {
                                 xtype: 'button',
+                                id:'closebtn',
                                 text: '关闭',
                                 icon: imgpath + '/cross.png',
                                 margin: '10px 0px 0px 10px',
                                 handler: OnButtonCancelClick
+                            },
+                            {
+                                xtype: 'button',
+                                id:'xgqxbtn',
+                                text: '修改缺陷',
+                                hidden:true,
+                                icon: imgpath + '/accordion_collapse.png',
+                                margin: '10px 0px 0px 10px',
+                                handler: OnButtonChangeDef
                             }
                         ]
                     },
@@ -1013,209 +1024,252 @@ Ext.onReady(function () {
     pageLoadInfo();
     if (WSIGN=="0") {
         V_JXGX_CODE = guid();
+        if(MONGUID!=""){
         // 月计划data带回
-        Ext.Ajax.request({
-            url: AppUrl + 'dxfile/PM_03_PLAN_WEEK_GETONE',
-            method: 'POST',
-            async: false,
-            params: {
-                MONGUID:MONGUID,
-                WEEKGUID:WEEKGUID
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText);
-                if (resp.list.length == 1) {
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/PM_03_PLAN_WEEK_GETONE',
+                method: 'POST',
+                async: false,
+                params: {
+                    MONGUID: MONGUID,
+                    WEEKGUID: WEEKGUID
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.list.length == 1) {
 
-                    // V_JXGX_CODE = resp.list[0].V_JXGX_CODE;      //检修工序编码
-                    // V_JXMX_CODE = resp.list[0].V_JXMX_CODE;      //检修模型编码
-                    // var V_FLOWCODE = resp.list[0].V_FLOWCODE;        //流动编码
-                    // var V_MONTHPLAN_CODE = resp.list[0].V_MONTHPLAN_CODE; //月计划编码
-                    // var V_DEFECTPLAN_CODE = resp.list[0].V_DEFECTPLAN_CODE;//缺陷计划编码
-                    // var V_MONTH_PLANNAME = resp.list[0].V_MONTH_PLANNAME;        //月计划名称
-                    // var V_DEFECT_PLANNAME = resp.list[0].V_DEFECT_PLANNAME;   //缺陷计划名称
-                    var V_HOUR = resp.list[0].V_HOUR;
-                    var V_BZ = resp.list[0].V_BZ;
-                    //---
-                    var A_YEAR = resp.list[0].V_YEAR;                 //年
-                    var A_MONTH = resp.list[0].V_MONTH;              //月
-                    // var A_WEEK = resp.list[0].V_WEEK;                //季度
-                    var A_ORGCODE = resp.list[0].V_ORGCODE;          //厂矿编码
-                    var A_DEPTCODE = resp.list[0].V_DEPTCODE;        //作业区编码
-                    //--
-                    var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;        //专业编码
-                    var V_EQUTYPECODE = resp.list[0].V_EQUTYPECODE;        //设备类型编码
-                    var V_EQUCODE = resp.list[0].V_EQUCODE;        //设备名称编码
-                    var V_CONTENT = resp.list[0].V_CONTENT;        //检修内容
-                    // var V_JXMX_NAME = resp.list[0].V_MX_NAME;      //检修模型名称
-                    var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
-                    var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
-                    var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
-                    var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
-                    var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
-                    var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
-                    var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
-                    var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
+                        // V_JXGX_CODE = resp.list[0].V_JXGX_CODE;      //检修工序编码
+                        // V_JXMX_CODE = resp.list[0].V_JXMX_CODE;      //检修模型编码
+                        // var V_FLOWCODE = resp.list[0].V_FLOWCODE;        //流动编码
+                        // var V_MONTHPLAN_CODE = resp.list[0].V_MONTHPLAN_CODE; //月计划编码
+                        // var V_DEFECTPLAN_CODE = resp.list[0].V_DEFECTPLAN_CODE;//缺陷计划编码
+                        // var V_MONTH_PLANNAME = resp.list[0].V_MONTH_PLANNAME;        //月计划名称
+                        // var V_DEFECT_PLANNAME = resp.list[0].V_DEFECT_PLANNAME;   //缺陷计划名称
+                        var V_HOUR = resp.list[0].V_HOUR;
+                        var V_BZ = resp.list[0].V_BZ;
+                        //---
+                        var A_YEAR = resp.list[0].V_YEAR;                 //年
+                        var A_MONTH = resp.list[0].V_MONTH;              //月
+                        // var A_WEEK = resp.list[0].V_WEEK;                //季度
+                        var A_ORGCODE = resp.list[0].V_ORGCODE;          //厂矿编码
+                        var A_DEPTCODE = resp.list[0].V_DEPTCODE;        //作业区编码
+                        //--
+                        var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;        //专业编码
+                        var V_EQUTYPECODE = resp.list[0].V_EQUTYPECODE;        //设备类型编码
+                        var V_EQUCODE = resp.list[0].V_EQUCODE;        //设备名称编码
+                        var V_CONTENT = resp.list[0].V_CONTENT;        //检修内容
+                        // var V_JXMX_NAME = resp.list[0].V_MX_NAME;      //检修模型名称
+                        var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
+                        var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
+                        var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
+                        var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
+                        var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
+                        var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
+                        var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
+                        var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
 
 
-                    Ext.getCmp('year').select(A_YEAR); //年
-                    Ext.getCmp('month').select(A_MONTH);  //月
-                    // Ext.getCmp('week').select(A_WEEK);  //周
-                    Ext.getCmp('ck').select(A_ORGCODE);  //厂矿编码
-                    Ext.getCmp('zyq').select(A_DEPTCODE);  //作业区编码
-                    Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
-                    Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
-                    Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
-                    Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
-                    // var a_s=new Date(resp.list[0].V_STARTTIME)
-                    // Ext.getCmp('jhtgdate').setValue(a_s); //停工时间
-                    Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
-                    Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
-                    Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
-                    Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
-                    Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
-                    Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
-                    Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
-                    Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
+                        Ext.getCmp('year').select(A_YEAR); //年
+                        Ext.getCmp('month').select(A_MONTH);  //月
+                        // Ext.getCmp('week').select(A_WEEK);  //周
+                        Ext.getCmp('ck').select(A_ORGCODE);  //厂矿编码
+                        Ext.getCmp('zyq').select(A_DEPTCODE);  //作业区编码
+                        Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
+                        Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
+                        Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
+                        Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+                        // var a_s=new Date(resp.list[0].V_STARTTIME)
+                        // Ext.getCmp('jhtgdate').setValue(a_s); //停工时间
+                        Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
+                        Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
+                        Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
+                        Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
+                        Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
+                        Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+                        Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
+                        Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
 
-                    Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT); Ext.getCmp('maindefect').setReadOnly(true); //主要缺陷
-                    Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
-                    Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
+                        Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);
+                        Ext.getCmp('maindefect').setReadOnly(true); //主要缺陷
+                        Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
+                        Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
 
-                    //---update 2018-0910
-                    // Ext.getCmp('pdc').setValue(resp.list[0].V_PDC); //皮带周长
-                    // Ext.getCmp('gyyq').setValue(resp.list[0].V_GYYQ); //工艺要求
-                    // Ext.getCmp('pdgg').setValue(resp.list[0].V_PDGG);//皮带规格
-                    // Ext.getCmp('changpdc').setValue(resp.list[0].V_CHANGPDC);//更换皮带长度（米）
-                    // Ext.getCmp('jxhour').setValue(resp.list[0].V_JXHOUR); //检修时间（小时）
-                    // Ext.getCmp('jjhour').setValue(resp.list[0].V_JJHOUR);//胶接时间（小时）
-                    // Ext.getCmp('telname').setValue(resp.list[0].V_TELNAME);//联系人姓名
-                    // Ext.getCmp('telnumb').setValue(resp.list[0].V_TELNUMB);//联系人电话
-                    //----2018-10-26
-                    // Ext.getCmp('sgyy').setValue(resp.list[0].V_THICKNESS); //--施工原因
-                    // Ext.getCmp('hd').setValue(resp.list[0].V_REASON);  //厚度
-                    // if(resp.list[0].V_EVERTIME!=""){
-                    //     var V_EVERTIME=resp.list[0].V_EVERTIME;
-                    //     var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
-                    //     Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
-                    // }else
-                    // {Ext.getCmp('evertime').setValue("");  }
-                    //end up
-                    //20181113
-                    Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);  //施工准备是否已落实
-                    Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //施工方式
-                    // Ext.getCmp('repairDept').select(resp.list[0].V_REPAIRDEPATCODE); //检修单位
-                    Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
-                    getOtherguid=MONGUID;
-                    getOtherType='MONTH';
-                    // if (V_MONTHPLAN_CODE != '') {
+                        //---update 2018-0910
+                        // Ext.getCmp('pdc').setValue(resp.list[0].V_PDC); //皮带周长
+                        // Ext.getCmp('gyyq').setValue(resp.list[0].V_GYYQ); //工艺要求
+                        // Ext.getCmp('pdgg').setValue(resp.list[0].V_PDGG);//皮带规格
+                        // Ext.getCmp('changpdc').setValue(resp.list[0].V_CHANGPDC);//更换皮带长度（米）
+                        // Ext.getCmp('jxhour').setValue(resp.list[0].V_JXHOUR); //检修时间（小时）
+                        // Ext.getCmp('jjhour').setValue(resp.list[0].V_JJHOUR);//胶接时间（小时）
+                        // Ext.getCmp('telname').setValue(resp.list[0].V_TELNAME);//联系人姓名
+                        // Ext.getCmp('telnumb').setValue(resp.list[0].V_TELNUMB);//联系人电话
+                        //----2018-10-26
+                        // Ext.getCmp('sgyy').setValue(resp.list[0].V_THICKNESS); //--施工原因
+                        // Ext.getCmp('hd').setValue(resp.list[0].V_REASON);  //厚度
+                        // if(resp.list[0].V_EVERTIME!=""){
+                        //     var V_EVERTIME=resp.list[0].V_EVERTIME;
+                        //     var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
+                        //     Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
+                        // }else
+                        // {Ext.getCmp('evertime').setValue("");  }
+                        //end up
+                        //20181113
+                        Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);  //施工准备是否已落实
+                        Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //施工方式
+                        // Ext.getCmp('repairDept').select(resp.list[0].V_REPAIRDEPATCODE); //检修单位
+                        Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
+                        getOtherguid = MONGUID;
+                        getOtherType = 'MONTH';
+                        // if (V_MONTHPLAN_CODE != '') {
                         V_PLANTYPE = 'PLAN';
-                    // } else if (V_DEFECTPLAN_CODE != '') {
-                    //     V_PLANTYPE = 'DEFECT';
-                    // }
-                }
-            }
-        });
-        return false;
-    } else {
-        Ext.Ajax.request({
-            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText);
-                if (resp.list.length == 1) {
-                    V_JXGX_CODE = resp.list[0].V_JXGX_CODE;      //检修工序编码
-                    V_JXMX_CODE = resp.list[0].V_JXMX_CODE;      //检修模型编码
-                    var V_FLOWCODE = resp.list[0].V_FLOWCODE;        //流动编码
-                    var V_MONTHPLAN_CODE = resp.list[0].V_MONTHPLAN_CODE; //月计划编码
-                    var V_DEFECTPLAN_CODE = resp.list[0].V_DEFECTPLAN_CODE;//缺陷计划编码
-                    var V_MONTH_PLANNAME = resp.list[0].V_MONTH_PLANNAME;        //月计划名称
-                    var V_DEFECT_PLANNAME = resp.list[0].V_DEFECT_PLANNAME;   //缺陷计划名称
-                    var V_HOUR = resp.list[0].V_HOUR;
-                    var V_BZ = resp.list[0].V_BZ;
-                    //---
-                    var A_YEAR = resp.list[0].V_YEAR;                 //年
-                    var A_MONTH = resp.list[0].V_MONTH;              //月
-                    var A_WEEK = resp.list[0].V_WEEK;                //季度
-                    var A_ORGCODE = resp.list[0].V_ORGCODE;          //厂矿编码
-                    var A_DEPTCODE = resp.list[0].V_DEPTCODE;        //作业区编码
-                    //--
-                    var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;        //专业编码
-                    var V_EQUTYPECODE = resp.list[0].V_EQUTYPECODE;        //设备类型编码
-                    var V_EQUCODE = resp.list[0].V_EQUCODE;        //设备名称编码
-                    var V_CONTENT = resp.list[0].V_CONTENT;        //检修内容
-                    // var V_JXMX_NAME = resp.list[0].V_MX_NAME;      //检修模型名称
-                    var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
-                    var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
-                    var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
-                    var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
-                    var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
-                    var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
-                    var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
-                    var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
-
-
-                    Ext.getCmp('year').select(A_YEAR); //年
-                    Ext.getCmp('month').select(A_MONTH);  //月
-                    Ext.getCmp('week').select(A_WEEK);  //周
-                    Ext.getCmp('ck').select(A_ORGCODE);  //厂矿编码
-                    Ext.getCmp('zyq').select(A_DEPTCODE);  //作业区编码
-                    Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
-                    Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
-                    Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
-                    Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
-                    // var a_s=new Date(resp.list[0].V_STARTTIME)
-                    // Ext.getCmp('jhtgdate').setValue(a_s); //停工时间
-                    Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
-                    Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
-                    Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
-                    Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
-                    Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
-                    Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
-                    Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
-                    Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
-
-                    Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT); Ext.getCmp('maindefect').setReadOnly(true);  //主要缺陷
-                    Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
-                    Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
-
-                    //---update 2018-0910
-                    Ext.getCmp('pdc').setValue(resp.list[0].V_PDC); //皮带周长
-                    Ext.getCmp('gyyq').setValue(resp.list[0].V_GYYQ); //工艺要求
-                    Ext.getCmp('pdgg').setValue(resp.list[0].V_PDGG);//皮带规格
-                    Ext.getCmp('changpdc').setValue(resp.list[0].V_CHANGPDC);//更换皮带长度（米）
-                    Ext.getCmp('jxhour').setValue(resp.list[0].V_JXHOUR); //检修时间（小时）
-                    Ext.getCmp('jjhour').setValue(resp.list[0].V_JJHOUR);//胶接时间（小时）
-                    Ext.getCmp('telname').setValue(resp.list[0].V_TELNAME);//联系人姓名
-                    Ext.getCmp('telnumb').setValue(resp.list[0].V_TELNUMB);//联系人电话
-                    //----2018-10-26
-                    Ext.getCmp('sgyy').setValue(resp.list[0].V_THICKNESS); //--施工原因
-                    Ext.getCmp('hd').setValue(resp.list[0].V_REASON);  //厚度
-                    if(resp.list[0].V_EVERTIME!=""){
-                        var V_EVERTIME=resp.list[0].V_EVERTIME;
-                        var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
-                        Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
-                    }else
-                    {Ext.getCmp('evertime').setValue("");  }
-                    //end up
-                    //20181113
-                    Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);  //施工准备是否已落实
-                    Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //施工方式
-                    Ext.getCmp('repairDept').select(resp.list[0].V_REPAIRDEPATCODE); //检修单位
-                    Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
-
-                    if (V_MONTHPLAN_CODE != '') {
-                        V_PLANTYPE = 'PLAN';
-                    } else if (V_DEFECTPLAN_CODE != '') {
-                        V_PLANTYPE = 'DEFECT';
+                        // } else if (V_DEFECTPLAN_CODE != '') {
+                        //     V_PLANTYPE = 'DEFECT';
+                        // }
                     }
                 }
-            }
-        });
+            });
+        }
+        else{
+            //为关联月计划新创建的周计划取返回值
+            Ext.Ajax.request({
+                url:AppUrl+'dxfile/PM_03_PLAN_WEEK_GET_DEF',
+                method:'POST',
+                async:false,
+                params:{
+                    WEEKGUID:WEEKGUID
+                },
+                success:function(respo){
+                    var resp=Ext.decode(respo.responseText);
+                    if(resp.list.length>0){
+                        Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);
+                        Ext.getCmp('maindefect').setReadOnly(true); //主要缺陷
+                        Ext.getCmp('year').select(WeekYear); //年
+                        Ext.getCmp('month').select(WeekMonth);  //月
+                        Ext.getCmp('week').select(WEEK);  //周
+                        Ext.getCmp('jhtgdate').setValue(Ext.Date.format(new Date(startUpTime),'Y-m-d'));  //停工时间
+                        Ext.getCmp('jhtghour').select("0");  //停工时间小时
+                        Ext.getCmp('jhtgminute').select("0");  //停工时间分钟
+                        Ext.getCmp('jhjgdate').setValue(Ext.Date.format(new Date(endUpTime),'Y-m-d'));  //竣工时间
+                        Ext.getCmp('jhjghour').select("0");  //竣工时间小时
+                        Ext.getCmp('jhjgminute').select("0");  //竣工时间分钟
+                        Ext.getCmp('jhgshj').setValue("0");  //竣工时间分钟
+                        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
+                        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+                        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+                        Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
+                        Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
+                    }
+                }
+            });
+        }
+        return false;
+    } else {
+        //修改周计划页面取返回值
+        retEditWDate(V_WEEKPLAN_GUID);
+        // Ext.Ajax.request({
+        //     url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
+        //     method: 'POST',
+        //     async: false,
+        //     params: {
+        //         V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
+        //     },
+        //     success: function (resp) {
+        //         var resp = Ext.decode(resp.responseText);
+        //         if (resp.list.length == 1) {
+        //             V_JXGX_CODE = resp.list[0].V_JXGX_CODE;      //检修工序编码
+        //             V_JXMX_CODE = resp.list[0].V_JXMX_CODE;      //检修模型编码
+        //             var V_FLOWCODE = resp.list[0].V_FLOWCODE;        //流动编码
+        //             var V_MONTHPLAN_CODE = resp.list[0].V_MONTHPLAN_CODE; //月计划编码
+        //             var V_DEFECTPLAN_CODE = resp.list[0].V_DEFECTPLAN_CODE;//缺陷计划编码
+        //             var V_MONTH_PLANNAME = resp.list[0].V_MONTH_PLANNAME;        //月计划名称
+        //             var V_DEFECT_PLANNAME = resp.list[0].V_DEFECT_PLANNAME;   //缺陷计划名称
+        //             var V_HOUR = resp.list[0].V_HOUR;
+        //             var V_BZ = resp.list[0].V_BZ;
+        //             //---
+        //             var A_YEAR = resp.list[0].V_YEAR;                 //年
+        //             var A_MONTH = resp.list[0].V_MONTH;              //月
+        //             var A_WEEK = resp.list[0].V_WEEK;                //季度
+        //             var A_ORGCODE = resp.list[0].V_ORGCODE;          //厂矿编码
+        //             var A_DEPTCODE = resp.list[0].V_DEPTCODE;        //作业区编码
+        //             //--
+        //             var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;        //专业编码
+        //             var V_EQUTYPECODE = resp.list[0].V_EQUTYPECODE;        //设备类型编码
+        //             var V_EQUCODE = resp.list[0].V_EQUCODE;        //设备名称编码
+        //             var V_CONTENT = resp.list[0].V_CONTENT;        //检修内容
+        //             // var V_JXMX_NAME = resp.list[0].V_MX_NAME;      //检修模型名称
+        //             var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
+        //             var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
+        //             var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
+        //             var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
+        //             var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
+        //             var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
+        //             var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
+        //             var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
+        //
+        //
+        //             Ext.getCmp('year').select(A_YEAR); //年
+        //             Ext.getCmp('month').select(A_MONTH);  //月
+        //             Ext.getCmp('week').select(A_WEEK);  //周
+        //             Ext.getCmp('ck').select(A_ORGCODE);  //厂矿编码
+        //             Ext.getCmp('zyq').select(A_DEPTCODE);  //作业区编码
+        //             Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
+        //             Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
+        //             Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
+        //             Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+        //             // var a_s=new Date(resp.list[0].V_STARTTIME)
+        //             // Ext.getCmp('jhtgdate').setValue(a_s); //停工时间
+        //             Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
+        //             Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
+        //             Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
+        //             Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
+        //             Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
+        //             Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+        //             Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
+        //             Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
+        //
+        //             Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT); Ext.getCmp('maindefect').setReadOnly(true);  //主要缺陷
+        //             Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
+        //             Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
+        //
+        //             //---update 2018-0910
+        //             Ext.getCmp('pdc').setValue(resp.list[0].V_PDC); //皮带周长
+        //             Ext.getCmp('gyyq').setValue(resp.list[0].V_GYYQ); //工艺要求
+        //             Ext.getCmp('pdgg').setValue(resp.list[0].V_PDGG);//皮带规格
+        //             Ext.getCmp('changpdc').setValue(resp.list[0].V_CHANGPDC);//更换皮带长度（米）
+        //             Ext.getCmp('jxhour').setValue(resp.list[0].V_JXHOUR); //检修时间（小时）
+        //             Ext.getCmp('jjhour').setValue(resp.list[0].V_JJHOUR);//胶接时间（小时）
+        //             Ext.getCmp('telname').setValue(resp.list[0].V_TELNAME);//联系人姓名
+        //             Ext.getCmp('telnumb').setValue(resp.list[0].V_TELNUMB);//联系人电话
+        //             //----2018-10-26
+        //             Ext.getCmp('sgyy').setValue(resp.list[0].V_THICKNESS); //--施工原因
+        //             Ext.getCmp('hd').setValue(resp.list[0].V_REASON);  //厚度
+        //             if(resp.list[0].V_EVERTIME!=""){
+        //                 var V_EVERTIME=resp.list[0].V_EVERTIME;
+        //                 var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
+        //                 Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
+        //             }else
+        //             {Ext.getCmp('evertime').setValue("");  }
+        //             //end up
+        //             //20181113
+        //             Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);  //施工准备是否已落实
+        //             Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //施工方式
+        //             Ext.getCmp('repairDept').select(resp.list[0].V_REPAIRDEPATCODE); //检修单位
+        //             Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
+        //
+        //             if (V_MONTHPLAN_CODE != '') {
+        //                 V_PLANTYPE = 'PLAN';
+        //             } else if (V_DEFECTPLAN_CODE != '') {
+        //                 V_PLANTYPE = 'DEFECT';
+        //             }
+        //         }
+        //     }
+        // });
+        // if(WSIGN=="1"){
+        //     Ext.getCmp('xgqxbtn').setHiddenState(false);
+        //     Ext.getCmp('xgqxbtn').onShow()
+        // }
     }
+
 
     Ext.getCmp('jhjgdate').setMinValue(Ext.getCmp('jhtgdate').getSubmitValue());
 
@@ -1249,7 +1303,111 @@ Ext.onReady(function () {
         ]
     });
 });
+//编辑周计划取值
+function retEditWDate(V_WEEKPLAN_GUID){
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.list.length == 1) {
+                V_JXGX_CODE = resp.list[0].V_JXGX_CODE;      //检修工序编码
+                V_JXMX_CODE = resp.list[0].V_JXMX_CODE;      //检修模型编码
+                var V_FLOWCODE = resp.list[0].V_FLOWCODE;        //流动编码
+                var V_MONTHPLAN_CODE = resp.list[0].V_MONTHPLAN_CODE; //月计划编码
+                var V_DEFECTPLAN_CODE = resp.list[0].V_DEFECTPLAN_CODE;//缺陷计划编码
+                var V_MONTH_PLANNAME = resp.list[0].V_MONTH_PLANNAME;        //月计划名称
+                var V_DEFECT_PLANNAME = resp.list[0].V_DEFECT_PLANNAME;   //缺陷计划名称
+                var V_HOUR = resp.list[0].V_HOUR;
+                var V_BZ = resp.list[0].V_BZ;
+                //---
+                var A_YEAR = resp.list[0].V_YEAR;                 //年
+                var A_MONTH = resp.list[0].V_MONTH;              //月
+                var A_WEEK = resp.list[0].V_WEEK;                //季度
+                var A_ORGCODE = resp.list[0].V_ORGCODE;          //厂矿编码
+                var A_DEPTCODE = resp.list[0].V_DEPTCODE;        //作业区编码
+                //--
+                var V_REPAIRMAJOR_CODE = resp.list[0].V_REPAIRMAJOR_CODE;        //专业编码
+                var V_EQUTYPECODE = resp.list[0].V_EQUTYPECODE;        //设备类型编码
+                var V_EQUCODE = resp.list[0].V_EQUCODE;        //设备名称编码
+                var V_CONTENT = resp.list[0].V_CONTENT;        //检修内容
+                // var V_JXMX_NAME = resp.list[0].V_MX_NAME;      //检修模型名称
+                var V_STARTTIME = resp.list[0].V_STARTTIME;     //开始时间
+                var V_STARTTIME_DATE = V_STARTTIME.split(" ")[0];
+                var V_STARTTIME_HOUR = V_STARTTIME.split(" ")[1].split(":")[0];
+                var V_STARTTIME_MINUTE = V_STARTTIME.split(" ")[1].split(":")[1];
+                var V_ENDTIME = resp.list[0].V_ENDTIME;         //结束时间
+                var V_ENDTIME_DATE = V_ENDTIME.split(" ")[0];
+                var V_ENDTIME_HOUR = V_ENDTIME.split(" ")[1].split(":")[0];
+                var V_ENDTIME_MINUTE = V_ENDTIME.split(" ")[1].split(":")[1];
 
+
+                Ext.getCmp('year').select(A_YEAR); //年
+                Ext.getCmp('month').select(A_MONTH);  //月
+                Ext.getCmp('week').select(A_WEEK);  //周
+                Ext.getCmp('ck').select(A_ORGCODE);  //厂矿编码
+                Ext.getCmp('zyq').select(A_DEPTCODE);  //作业区编码
+                Ext.getCmp('zy').select(V_REPAIRMAJOR_CODE);  //专业编码
+                Ext.getCmp('sblx').select(V_EQUTYPECODE);  //设备类型编码
+                Ext.getCmp('sbmc').select(V_EQUCODE);  //设备名称编码
+                Ext.getCmp('jxnr').setValue(V_CONTENT);  //检修内容
+                // var a_s=new Date(resp.list[0].V_STARTTIME)
+                // Ext.getCmp('jhtgdate').setValue(a_s); //停工时间
+                Ext.getCmp('jhtgdate').setValue(V_STARTTIME_DATE);  //停工时间
+                Ext.getCmp('jhtghour').select(V_STARTTIME_HOUR);  //停工时间小时
+                Ext.getCmp('jhtgminute').select(V_STARTTIME_MINUTE);  //停工时间分钟
+                Ext.getCmp('jhjgdate').setValue(V_ENDTIME_DATE);  //竣工时间
+                Ext.getCmp('jhjghour').select(V_ENDTIME_HOUR);  //竣工时间小时
+                Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
+                Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
+                Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
+
+                Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT); Ext.getCmp('maindefect').setReadOnly(true);  //主要缺陷
+                Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
+                Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
+
+                //---update 2018-0910
+                Ext.getCmp('pdc').setValue(resp.list[0].V_PDC); //皮带周长
+                Ext.getCmp('gyyq').setValue(resp.list[0].V_GYYQ); //工艺要求
+                Ext.getCmp('pdgg').setValue(resp.list[0].V_PDGG);//皮带规格
+                Ext.getCmp('changpdc').setValue(resp.list[0].V_CHANGPDC);//更换皮带长度（米）
+                Ext.getCmp('jxhour').setValue(resp.list[0].V_JXHOUR); //检修时间（小时）
+                Ext.getCmp('jjhour').setValue(resp.list[0].V_JJHOUR);//胶接时间（小时）
+                Ext.getCmp('telname').setValue(resp.list[0].V_TELNAME);//联系人姓名
+                Ext.getCmp('telnumb').setValue(resp.list[0].V_TELNUMB);//联系人电话
+                //----2018-10-26
+                Ext.getCmp('sgyy').setValue(resp.list[0].V_THICKNESS); //--施工原因
+                Ext.getCmp('hd').setValue(resp.list[0].V_REASON);  //厚度
+                if(resp.list[0].V_EVERTIME!=""){
+                    var V_EVERTIME=resp.list[0].V_EVERTIME;
+                    var V_EVERTIME_DATE = V_EVERTIME.split(" ")[0]; //上次时间
+                    Ext.getCmp('evertime').setValue(V_EVERTIME_DATE);//上次施工时间
+                }else
+                {Ext.getCmp('evertime').setValue("");  }
+                //end up
+                //20181113
+                Ext.getCmp('iflag').setValue(resp.list[0].V_FLAG);  //施工准备是否已落实
+                Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //施工方式
+                Ext.getCmp('repairDept').select(resp.list[0].V_REPAIRDEPATCODE); //检修单位
+                Ext.getCmp('gx').select(resp.list[0].V_OPERANAME);// 工序
+
+                if (V_MONTHPLAN_CODE != '') {
+                    V_PLANTYPE = 'PLAN';
+                } else if (V_DEFECTPLAN_CODE != '') {
+                    V_PLANTYPE = 'DEFECT';
+                }
+            }
+        }
+    });
+    if(WSIGN=="1"){
+        Ext.getCmp('xgqxbtn').setHiddenState(false);
+        Ext.getCmp('xgqxbtn').onShow()
+    }
+}
 function pageLoadInfo() {
     // if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
     //     if (YEAR == null || YEAR == '') {
@@ -1270,6 +1428,9 @@ function pageLoadInfo() {
     // }
 
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
+        if(WSIGN=="0"&&MONGUID==""){
+            Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
+        }
         // if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
         // if(WSIGN=="0"){
         //     if (V_ORGCODE == null || V_ORGCODE == '') {
@@ -1295,6 +1456,9 @@ function pageLoadInfo() {
         });
     });
     Ext.getCmp('ck').on('change', function () {
+        if(WSIGN=="0"&&MONGUID==""){
+            Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
+        }
         Ext.data.StoreManager.lookup('zyqStore').load({
             params: {
                 'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
@@ -1303,8 +1467,12 @@ function pageLoadInfo() {
                 'V_V_DEPTTYPE': '主体作业区'
             }
         });
+        // Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
     });
     Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
+        if(WSIGN=="0"&&MONGUID==""){
+            Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+        }
         // if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
         //     if (V_DEPTCODE == null || V_DEPTCODE == '') {
         //         Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
@@ -1351,6 +1519,12 @@ function pageLoadInfo() {
     Ext.data.StoreManager.lookup('repairDeptStore').on('load', function () {
         Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
     });
+    //专业
+    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
+        if(WSIGN=="0"&&MONGUID=="") {
+            Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+        }
+    });
     //作业区改变
     Ext.getCmp('zyq').on('change', function () {
         Ext.data.StoreManager.lookup('zyStore').load({
@@ -1373,6 +1547,9 @@ function pageLoadInfo() {
     });
     //设备类型改变
     Ext.getCmp('sblx').on('change', function () {
+        if(WSIGN=="0"&&MONGUID==""){
+            Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
+        }
         Ext.data.StoreManager.lookup('sbmcStore').load({
             params: {
                 v_v_personcode: Ext.util.Cookies.get('v_personcode'),
@@ -1386,6 +1563,9 @@ function pageLoadInfo() {
         // if (V_WEEKPLAN_GUID == '0'&&returnSing=="0") {
         //     Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
         // }
+        if(WSIGN=="0"&&MONGUID==""){
+            Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
+        }
         Ext.data.StoreManager.lookup('sbmcStore').load({
             params: {
                 v_v_personcode: Ext.util.Cookies.get('v_personcode'),
@@ -1393,6 +1573,12 @@ function pageLoadInfo() {
                 v_v_equtypecode: Ext.getCmp('sblx').getValue()
             }
         });
+    });
+    //设备名称加载监听
+    Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
+        if(WSIGN=="0"&&MONGUID==""){
+            Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
+        }
     });
     //设备名称加载监听
     // Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
@@ -1627,26 +1813,32 @@ function getReturnJHXZ(retdata, type) {
  });
  }*/
 function tempSave(){
-    if( Ext.getCmp('year').getValue()!=WeekYear||Ext.getCmp('month').getValue()!=WeekMonth ){
-        Ext.Msg.show({
-            title: '消息提示',
-            id: 'warm',
-            msg: '当前年月与填报年月不符，是否修改',
-            buttons: Ext.Msg.OKCANCEL,
-            buttonText: {ok: '确认', cancel: '取消'},
-            fn: function (btn, text) {
-                if (btn === 'ok') {
-                    return false;
+
+    if( WeekYear!=undefined && WeekMonth!=undefined ){
+        if( Ext.getCmp('year').getValue()!=WeekYear||Ext.getCmp('month').getValue()!=WeekMonth ){
+            Ext.Msg.show({
+                title: '消息提示',
+                id: 'warm',
+                msg: '当前年月与填报年月不符，是否修改',
+                buttons: Ext.Msg.OKCANCEL,
+                buttonText: {ok: '确认', cancel: '取消'},
+                fn: function (btn, text) {
+                    if (btn === 'ok') {
+                        return false;
+                    }
+                    else {
+                        timeCompare();
+                    }
                 }
-                else {
-                    timeCompare();
-                }
-            }
-        });
-    }
-    else{
+            });
+        }
+        else{
+            timeCompare();
+        }
+    }else{
         timeCompare();
     }
+
 
 }
 function timeCompare(){
@@ -1824,7 +2016,7 @@ function OnButtonSaveClick() {
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
             if (resp.V_INFO == '成功') {
-                if (MONGUID != "") {
+                if (MONGUID != ""&&MONGUID != undefined) {
                     //缺陷修改
                     if(Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID==undefined) {
                         Ext.Ajax.request({
@@ -1847,6 +2039,15 @@ function OnButtonSaveClick() {
                             }
                         });
                     }
+                }
+                else{
+                    if(WSIGN=="1"){
+                        Ext.Msg.alert('操作信息', resp.V_INFO);
+                        window.opener.query();
+                        window.close();
+                        window.opener.retClose();
+                    }
+
                 }
                 //检修模型管理
                 /*Ext.Ajax.request({
@@ -1992,6 +2193,37 @@ function onModeOKBtn(){
                 Ext.MessageBox.alert('提示', '模型保存失败');
             }
             Ext.getCmp('modeWin').hide();
+        }
+    });
+}
+//修改缺陷页面
+function OnButtonChangeDef(){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret =window.open(AppUrl + 'page/PM_03010318/defUpdate.html?V_WEEKPLAN_GUID=' + V_WEEKPLAN_GUID +'&Oyear='+Ext.getCmp("year").getValue()
+        +'&Omonth='+Ext.getCmp("month").getValue()+'&V_V_ORGCODE='+Ext.getCmp("ck").getValue()+'&V_V_DEPTCODE='+Ext.getCmp("zyq").getValue()
+        +'&V_V_EQUTYPE='+Ext.getCmp("sblx").getValue()+'&V_V_EQUCODE='+Ext.getCmp("sbmc").getValue()+'&V_V_ZY='+Ext.getCmp("zy").getValue()
+        +'&WSIGN='+1+'',"newwindow", 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+}
+
+//新缺陷返回值
+function getNewDefDate(WEEKGUID){
+    retEditWDate(WEEKGUID);
+    Ext.getCmp('maindefect').setReadOnly(false);
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PM_03_PLAN_WEEK_GET_DEF',
+        method:'POST',
+        async:false,
+        params:{
+            WEEKGUID:WEEKGUID
+        },
+        success:function(respo){
+            var resp=Ext.decode(respo.responseText);
+            if(resp.list.length>0){
+                Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);
+                Ext.getCmp('maindefect').setReadOnly(true); //主要缺陷
+
+            }
         }
     });
 }

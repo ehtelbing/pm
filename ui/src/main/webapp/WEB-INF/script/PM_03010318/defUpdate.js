@@ -15,6 +15,7 @@ var MEQUCODE="";
 var MONUPDATE="";
 var CLEARDATE="";
 if(location.href.split('?')[1]!=undefined){
+    V_WEEKPLAN_GUID=Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID;
     WeekYear=Ext.urlDecode(location.href.split("?")[1]).Oyear;
     WeekMonth=Ext.urlDecode(location.href.split("?")[1]).Omonth;
     V_V_ORGCODE=Ext.urlDecode(location.href.split("?")[1]).V_V_ORGCODE;
@@ -22,9 +23,9 @@ if(location.href.split('?')[1]!=undefined){
     V_V_EQUTYPE=Ext.urlDecode(location.href.split("?")[1]).V_V_EQUTYPE=="0"?'%':Ext.urlDecode(location.href.split("?")[1]).V_V_EQUTYPE;
     V_V_EQUCODE=Ext.urlDecode(location.href.split("?")[1]).V_V_EQUCODE=="0"?'%':Ext.urlDecode(location.href.split("?")[1]).V_V_EQUCODE;
     V_V_ZY=Ext.urlDecode(location.href.split("?")[1]).V_V_ZY=="0"?'%':Ext.urlDecode(location.href.split("?")[1]).V_V_ZY;
-    WEEK=Ext.urlDecode(location.href.split("?")[1]).WEEK;
-    startUpTime=Ext.urlDecode(location.href.split("?")[1]).startUpTime;
-    endUpTime=Ext.urlDecode(location.href.split("?")[1]).endUpTime;
+    // WEEK=Ext.urlDecode(location.href.split("?")[1]).WEEK;
+    // startUpTime=Ext.urlDecode(location.href.split("?")[1]).startUpTime;
+    // endUpTime=Ext.urlDecode(location.href.split("?")[1]).endUpTime;
 }
 //年份
 var date=new Date();
@@ -280,7 +281,7 @@ Ext.onReady(function(){
             {text : '设备位置',dataIndex : 'V_EQUSITE',align : 'center',width : 300,renderer : CreateGridColumnTd},
             {text : '负责人',dataIndex : 'V_PERNAME',align : 'center',width : 100,renderer : CreateGridColumnTd},
             {text : '处理意见',dataIndex : 'V_IDEA',align : 'center',renderer : CreateGridColumnTd}
-            ]
+        ]
         // ,listeners : {
         //     itemclick: AddmDef //itemdblclick
         // }
@@ -525,8 +526,8 @@ Ext.onReady(function(){
     });
     loadStore();
     query();
-    var org_code=Ext.util.Cookies.get("v_orgCode");
-    createWGuid(org_code);
+    haveChLoad(V_WEEKPLAN_GUID);
+    // createWGuid(org_code);
 });
 function loadStore(){
     Ext.getCmp("mnf").select(WeekYear);
@@ -589,7 +590,7 @@ function createWGuid(org){
             var data = Ext.decode(resp.responseText);//后台返回的值
             if (data.RET != ""||data.RET!=undefined) {
                 WEEKGUID=data.RET;
-                clear_def_old(WEEKGUID,org);
+                // clear_def_old(WEEKGUID,org);
             }
         },
         failure: function (response) {
@@ -701,8 +702,8 @@ function Select(){
 }
 function newCreatWeek(org){
 
-    if(WEEKGUID!=""){
-        if (CLEARDATE == 'SUCCESS') {
+    if(V_WEEKPLAN_GUID!=""){
+        // if (CLEARDATE == 'SUCCESS') {
             var defrecord = Ext.getCmp("dGridPanel").getSelectionModel().getSelection();
             if (defrecord.length == 0) {
                 alert('请选择至少一条缺陷记录');
@@ -716,7 +717,7 @@ function newCreatWeek(org){
                     async: false,
                     params: {
                         V_V_MONTHGUID: MGUID,
-                        V_V_WEEKGUID: WEEKGUID,
+                        V_V_WEEKGUID: V_WEEKPLAN_GUID,
                         V_N_DEFECTGUID: defrecord[i].data.V_GUID,
                         V_INPER: Ext.util.Cookies.get("v_personcode"),
                         V_DEFECTSTATE: defrecord[i].data.V_STATECODE
@@ -724,7 +725,7 @@ function newCreatWeek(org){
                     success: function (resp) {
                         var data = Ext.decode(resp.responseText);//后台返回的值
                         if (data.RET == 'SUCCESS') {
-                            haveChLoad(WEEKGUID);
+                            haveChLoad(V_WEEKPLAN_GUID);
                         }
                     },
                     failure: function (response) {
@@ -737,7 +738,7 @@ function newCreatWeek(org){
                     }
                 });
             }
-        }
+        // }
     }
 }
 
@@ -769,8 +770,8 @@ function AddmDef(){
 }
 function newCreatWeek2(org){
 
-    if (WEEKGUID != "") {
-        if (CLEARDATE == 'SUCCESS') {
+    if (V_WEEKPLAN_GUID != "") {
+        // if (CLEARDATE == 'SUCCESS') {
 
             var defrecord = Ext.getCmp("mdGridPanel").getSelectionModel().getSelection();
             if (defrecord.length == 0) {
@@ -785,7 +786,7 @@ function newCreatWeek2(org){
                     async: false,
                     params: {
                         V_V_MONTHGUID: MGUID,
-                        V_V_WEEKGUID: WEEKGUID,
+                        V_V_WEEKGUID: V_WEEKPLAN_GUID,
                         V_N_DEFECTGUID: defrecord[i].data.V_GUID,
                         V_INPER: Ext.util.Cookies.get("v_personcode"),
                         V_DEFECTSTATE: defrecord[i].data.V_STATECODE
@@ -793,7 +794,7 @@ function newCreatWeek2(org){
                     success: function (resp) {
                         var data = Ext.decode(resp.responseText);//后台返回的值
                         if (data.RET == 'SUCCESS') {
-                            haveChLoad(WEEKGUID);
+                            haveChLoad(V_WEEKPLAN_GUID);
                         }
                     },
                     failure: function (response) {
@@ -806,7 +807,7 @@ function newCreatWeek2(org){
                     }
                 });
             }
-        }
+        // }
     }
 }
 function weekReMonth(){
@@ -819,7 +820,7 @@ function weekReMonth(){
         params: {
             V_V_MONTHGUID: MGUID,
             V_V_DEFECTGUID:'',
-            V_WEEKGUID:WEEKGUID
+            V_WEEKGUID:V_WEEKPLAN_GUID
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
@@ -837,14 +838,7 @@ function weekReMonth(){
         }
     });
 }
-function turnPage(){
-    var owidth = window.document.body.offsetWidth - 200;
-    var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
-        +"&WEEK=" + WEEK
-        +'&startUpTime='+ startUpTime
-        +'&endUpTime='+endUpTime,'','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-}
+
 function _selectOverhaulApply(){
     if(selesign==0){
         defsel();
@@ -883,8 +877,6 @@ function mEDefSel(){
     egridStore.load();
 }
 function itemclick(s, record, item, index, e, eOpts) {
-
-
 
 }
 function tbitemclick(s, record, item, index, e, eOpts) {
@@ -937,13 +929,13 @@ function delCorDefect(defGuid){
         method: 'POST',
         async: false,
         params: {
-            V_WEEKGUID:WEEKGUID,
+            V_WEEKGUID:V_WEEKPLAN_GUID,
             DEF_GUID: defGuid
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
             if (data.RET =='SUCCESS') {
-                haveChLoad(WEEKGUID);
+                haveChLoad(V_WEEKPLAN_GUID);
                 // turnPage();
             }
         },
@@ -956,4 +948,31 @@ function delCorDefect(defGuid){
             });
         }
     });
+}
+function turnPage(){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            WEEK_GUID:V_WEEKPLAN_GUID
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if (data.RET =='SUCCESS') {
+                window.opener.getNewDefDate(V_WEEKPLAN_GUID);
+                window.close();
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
 }

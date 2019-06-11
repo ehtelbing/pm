@@ -4660,6 +4660,50 @@ public class Dx_fileController {
         return result;
     }
 
+    //周计划关联月计划写入-修改
+    @RequestMapping(value = "PM_03_PLAN_WEEK_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_WEEK_UPDATE(@RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+                                                   @RequestParam(value = "V_V_DEFECTGUID") String V_V_DEFECTGUID,
+                                                      @RequestParam(value = "V_WEEKGUID") String V_WEEKGUID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_PLAN_WEEK_UPDATE(V_V_MONTHGUID,V_V_DEFECTGUID,V_WEEKGUID);
+        return result;
+    }
+    ////清除未保存 的周计划关联缺陷 PM_DEFECTTOWEEK_DELALL_OLD
+    @RequestMapping(value = "PM_DEFECTTOWEEK_DELALL_OLD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWEEK_DELALL_OLD(@RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
+                                                      @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
+                                                      @RequestParam(value = "V_INPER") String V_INPER,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_DEFECTTOWEEK_DELALL_OLD(V_V_MONTHGUID,V_V_WEEKGUID,V_INPER);
+        return result;
+    }
+    //查找未关联月计划的周计划关联缺陷
+    @RequestMapping(value = "PM_03_PLAN_WEEK_GET_DEF", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_WEEK_GET_DEF(@RequestParam(value = "WEEKGUID") String WEEKGUID,
+
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PM_03_PLAN_WEEK_GET_DEF(WEEKGUID);
+        return result;
+    }
+
+    //修改周计划表格中主要缺陷
+    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(@RequestParam(value = "WEEK_GUID") String WEEK_GUID,
+
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(WEEK_GUID);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
