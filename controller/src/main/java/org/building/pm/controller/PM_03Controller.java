@@ -1448,4 +1448,17 @@ public class PM_03Controller {
                 V_V_ZY, V_V_EQUTYPE, V_V_EQUCODE, V_V_CONTENT, V_V_STATE, V_V_PAGE, V_V_PAGESIZE,V_V_INPER);
         return data;
     }
+
+    @RequestMapping(value = "/PRO_PM_03_PLAN_YEAR_ROLE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_03_PLAN_YEAR_ROLE(@RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                                           @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+
+        HashMap data = pm_03Service.PRO_PM_03_PLAN_YEAR_ROLE(V_V_YEAR, V_V_ORGCODE, V_V_PERCODE, V_V_PAGE, V_V_PAGESIZE);
+        return data;
+    }
+
 }

@@ -102,16 +102,17 @@ Ext.onReady(function () {
     //表格信息加载
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize: 50,
+        pageSize: 100,
         autoLoad: false,
-        fields: ['I_ID', 'V_GUID', 'V_GUID_UP', 'V_YEAR', 'V_MONTH', 'V_ORGCODE', 'V_ORGNAME',
-            'V_DEPTCODE', 'V_DEPTNAME', 'V_PORJECT_CODE', 'V_PORJECT_NAME', 'V_SPECIALTY', 'V_SPECIALTYNAME',
-            'V_SPECIALTYMANCODE', 'V_SPECIALTYMAN', 'V_WXTYPECODE', 'V_WXTYPENAME', 'V_CONTENT', 'V_MONEYBUDGET',
-            'V_REPAIRDEPTCODE', 'V_BDATE', 'V_EDATE', 'V_STATE', 'V_FLAG', 'V_INMAN', 'V_INMANCODE', 'V_INDATE', 'V_STATENAME'],
+        fields: ['I_ID','V_GUID','V_GUID_UP','V_YEAR','V_MONTH','V_ORGCODE','V_ORGNAME',
+            'V_DEPTCODE','V_DEPTNAME','V_PORJECT_CODE','V_PORJECT_NAME','V_SPECIALTY','V_SPECIALTYNAME',
+            'V_SPECIALTYMANCODE','V_SPECIALTYMAN','V_WXTYPECODE','V_WXTYPENAME','V_CONTENT','V_MONEYBUDGET',
+            'V_REPAIRDEPTCODE','V_BDATE','V_EDATE','V_STATE','V_FLAG','V_INMAN','V_INMANCODE','V_INDATE',
+            'V_STATENAME','V_QSTEXT','DEFNUM'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'cjy/PRO_PM_03_PLAN_YEAR_VIEW',
+            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_YEAR_ROLE',
             actionMethods: {
                 read: 'POST'
             },
@@ -123,6 +124,30 @@ Ext.onReady(function () {
         },
         listeners: {
             beforeload: beforeloadStore
+        }
+    });
+
+    //缺陷明细store
+    var qxGridStore=Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'qxGridStore',
+        fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE', 'V_SOURCENAME', 'V_SOURCETABLE', 'V_SOURCEREMARK', 'V_SOURCEID',
+            'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_ORGCODE', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME',
+            'V_EQUCODE', 'V_EQUNAME', 'V_EQUSITE', 'V_EQUSITENAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_IDEA', 'V_STATECODE',
+            'V_STATENAME', 'V_STATECOLOR', 'V_GUID', 'V_EQUSITE1', 'D_DATE_EDITTIME', 'V_EDIT_GUID', 'V_SOURCE_GRADE', 'V_EQUCHILDCODE',
+            'V_INPERCODE', 'V_INPERNAME', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_HOUR', 'V_FLAG','DEF_SOLVE','BJ_STUFF','PASSNUM','NOPASSNUM'
+            ,'DEFILENUM','PASS_STATE','PASS_STATENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
         }
     });
 
@@ -179,12 +204,12 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 0px 10px',
             icon: imgpath + '/search.png',
             listeners: {click: OnButtonQuery}
-        }, {
+        }, /*{
             xtype: 'button',
             text: '查看甘特图',
             icon: imgpath + '/search.png',
             listeners: {click: OnBtnGauntt}
-        }, {
+        },*/ {
             xtype: 'button',
             text: '导出',
             icon: imgpath + '/accordion_collapse.png',
@@ -220,13 +245,18 @@ Ext.onReady(function () {
         style: 'text-align:center',
         height: 400,
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text: '流程详细', width: 140, dataIndex: 'V_GUID', align: 'center',
+                renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
+                    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
+                }},
+            {text:'缺陷详情',width:140,dataIndex:'V_GUID',align:'center',renderer:OperaTion},
             {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
             {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
             {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
-            {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center', renderer: atleft},
+           /* {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center', renderer: atleft},*/
             {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
-            {text: '维修内容', width: 300, dataIndex: 'V_CONTENT', align: 'center', renderer: atleft},
-            {text: '维修费用', width: 100, dataIndex: 'V_MONEYBUDGET', align: 'center', renderer: atright},
+            {text: '工程请示内容', width: 300, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
+            /*{text: '维修费用', width: 100, dataIndex: 'V_MONEYBUDGET', align: 'center', renderer: atright},*/
             {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
             {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}],
         bbar: [{
@@ -238,6 +268,48 @@ Ext.onReady(function () {
             emptyMsg: '没有记录',
             store: 'gridStore'
         }]
+    });
+
+    /*缺陷明细窗口*/
+    //缺陷
+    var delgrid=Ext.create('Ext.grid.Panel',{
+        id:'delgrid',
+        region:'center',
+        columnLines:true,
+        border:false,
+        store: qxGridStore,
+        autoScroll:true,
+        columns: [
+            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text: '附件详情',width: 120, dataIndex: 'V_GUID',align: 'center',renderer:OnLookDefect},
+            {text:'解决方案',width:140,dataIndex:'DEF_SOLVE',align:'center',renderer:atleft},
+            {text:'备件材料',width:140,dataIndex:'BJ_STUFF',align:'center',renderer:atleft},
+            {text: '缺陷code',width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atleft,hidden:true},
+            {text: '设备名称',width: 140, dataIndex: 'V_EQUCODE', align: 'center',renderer:atleft,hidden:true},
+            {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
+            {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft,hidden:true},
+            {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
+            {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atleft}
+
+        ]
+        ,
+        height:395,
+        width: '100%',
+        tbar: [
+            '缺陷明细'
+            ,{ xtype: 'tbfill' }
+        ]
+    });
+    var defDetWin=Ext.create('Ext.window.Window',{
+        id:'defDetWin',
+        width:560,
+        height:450,
+        title:'缺陷明细',
+        frame:true,
+        closeAction:'hide',
+        closable:true,
+        layout:'border',
+        items:[delgrid]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -264,6 +336,70 @@ Ext.onReady(function () {
     })
 });
 
+//缺陷详情
+function OperaTion(value,metaDate,record,rowIndex,colIndex,store){
+    metaDate.style="text-align:center;";
+    return '<a href="javascript:_delDetail(\''+value+'\')" >'+record.data.DEFNUM+'</a>';
+}
+
+//缺陷详情查找
+function _delDetail(wxguid){
+    Ext.data.StoreManager.lookup('qxGridStore').load({
+        params:{
+            V_V_PROJECT_GUID:wxguid
+        }
+    });
+    Ext.getCmp('defDetWin').show();
+}
+
+//查看缺陷附件详情
+function OnLookDefect(value,metaDate,record){
+    metaDate.style="text-align:center;";
+    return '<a href="javascript:LookDefect(\''+value+'\')" >'+record.data.DEFILENUM+'</a>';
+}
+
+function LookDefect(guid){
+    var owidth = window.document.body.offsetWidth - 600;
+    var oheight = window.document.body.offsetHeight + 100;
+    window.open(AppUrl + 'page/DefectPic/index.html?V_V_GUID=' + guid , '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+}
+
+function _preViewProcess(businessKey) {
+
+    var ProcessInstanceId = '';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if (data.msg == 'Ok') {
+                ProcessInstanceId = data.InstanceId;
+            }
+
+
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    })
+
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+
+}
+
 function QueryBudget() {
     Ext.Ajax.request({
         url: AppUrl + '/PM_03/PM_PLAN_BUDGETANDUSE_YEAR_SEL',
@@ -287,10 +423,7 @@ function QueryBudget() {
 function beforeloadStore(store) {
     store.proxy.extraParams.V_V_YEAR = Ext.getCmp('year').getValue();
     store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
-    store.proxy.extraParams.V_V_DEPTCODE = '%';
-    store.proxy.extraParams.V_V_ZY = '%';
-    store.proxy.extraParams.V_V_WXLX = '%';
-    store.proxy.extraParams.V_V_CONTENT = '%';
+    store.proxy.extraParams.V_V_PERCODE =  Ext.util.Cookies.get('v_personcode');
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
@@ -307,10 +440,7 @@ function OnButtonQuery() {
         params: {
             V_V_YEAR: Ext.getCmp('year').getValue(),
             V_V_ORGCODE: Ext.getCmp('ck').getValue(),
-            V_V_DEPTCODE: '%',
-            V_V_ZY: '%',
-            V_V_WXLX: '%',
-            V_V_CONTENT: '%',
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -333,6 +463,7 @@ function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
+
 function timelfet(value, metaDate, record, rowIndex, colIndex, store){
     metaDate.style="text-align:right;";
     return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';

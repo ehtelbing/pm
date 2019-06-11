@@ -485,6 +485,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             labelAlign: 'right',
                             margin: '5 0 5 5',
                             labelWidth: 55,
+                            minValue:0,
                             width: 255,
                             value: 0
                         }

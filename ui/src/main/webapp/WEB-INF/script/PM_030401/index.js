@@ -321,14 +321,14 @@ Ext.onReady(function(){
                 renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                     return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
                 }},
+            {text:'缺陷详情',width:140,dataIndex:'V_GUID',align:'center',renderer:OperaTion},
             {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
             {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
             {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
             {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
             {text: '工程请示内容', width: 300, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
             {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
-            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet},
-            {text:'缺陷详情',width:140,dataIndex:'V_GUID',align:'center',renderer:OperaTion}
+            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}
         ],
         bbar: [{
             id: 'page',
