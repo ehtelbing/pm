@@ -244,6 +244,42 @@ public class WxjhController {
      * */
 
 
+    /*
+     * Sap工单上传
+     * */
+    @RequestMapping(value = "SI_SpotChkProj_in", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> SI_SpotChkProj_in(@RequestParam(value = "V_V_ORDERID") String V_V_ORDERID) throws SQLException {
+
+        Map<String, Object> mapEle = new HashMap<String, Object>();
+        try {
+            String path = this.getClass().getClassLoader().getResource("").getPath().toString() + "fwsdl/SI_SpotChkProj_in.wsdl";
+            Document root = DocumentHelper.createDocument();
+            Element WriteDataRequest = root.addElement("Items");
+            WriteDataRequest.addElement("ORDERGUID").setText(V_V_ORDERID);
+            WriteDataRequest.addElement("WsdlUrl").setText(path);
+            WriteDataRequest.addElement("piusername").setText(piusername);
+            WriteDataRequest.addElement("pipassword").setText(pipassword);
+            WriteDataRequest.addElement("Pm1001Url").setText(Pm0011Url);
+
+            Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
+            System.out.println(root.asXML());
+            Object[] results = client.invoke("PM1001", new Object[]{root.asXML()});
+
+            Document doc = DocumentHelper.parseText(results[0].toString());
+            Element rootElt = doc.getRootElement();
+            List<Element> childElements = rootElt.elements();
+
+            mapEle = getAllElements(childElements, mapEle);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapEle;
+
+    }
+
+
     private Map<String, Object> getAllElements(List<Element> childElements, Map<String, Object> mapEle) {
         for (Element ele : childElements) {
             mapEle.put(ele.getName(), ele.getText());
