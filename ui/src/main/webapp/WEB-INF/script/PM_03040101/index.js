@@ -736,9 +736,21 @@ function QueryZyFzr() {
 
 //临时保存
 function btnSaveProject() {
-    if (Ext.data.StoreManager.lookup("qxGridStore").data.items.length <= 0) {
+    var defguid=Ext.data.StoreManager.lookup("qxGridStore").data.items;
+    if (defguid.length <= 0) {
         alert("缺陷不可以为空");
         return false;
+    }
+    for(var i =0;i<defguid.length;i++){
+        if(defguid[i].get("BJ_STUFF")==""){
+            alert("解决方案不可为空");
+            return false;
+        }
+        if(defguid[i].get("DEF_SOLVE")==""){
+            alert("备件材料不可为空");
+            return false;
+        }
+
     }
     if (Ext.getCmp('ProjectName').getValue() == "") {
         Ext.Msg.alert("消息", "项目名称不可以为空");
@@ -874,9 +886,21 @@ function btnFlowStart() {
         alert("下一步审批人不可为空");
         return false;
     }
-    if (Ext.data.StoreManager.lookup("qxGridStore").data.items.length <= 0) {
+    var defguid=Ext.data.StoreManager.lookup("qxGridStore").data.items;
+    if (defguid.length <= 0) {
         alert("缺陷不可以为空");
         return false;
+    }
+    for(var i =0;i<defguid.length;i++){
+        if(defguid[i].get("BJ_STUFF")==""){
+            alert("解决方案不可为空");
+            return false;
+        }
+        if(defguid[i].get("DEF_SOLVE")==""){
+            alert("备件材料不可为空");
+            return false;
+        }
+
     }
     if (Ext.getCmp('ProjectName').getValue() == "") {
         Ext.Msg.alert("消息", "项目名称不可以为空");
