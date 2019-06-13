@@ -13,6 +13,7 @@ var endUpTime=null;
 var getOtherguid="";
 var getOtherType="";
 var returnSing="0";
+var V_V_DEFECTPLAN_CODE="";
 
 var MONGUID = "";
 var WEEKGUID = "";
@@ -1949,6 +1950,22 @@ function OnButtonSaveClick() {
     }
 
 
+    //修改月计划分解标识
+    if(MONGUID!=""){
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/PM_03_PLAN_MONTH_SIGN_UPDT',
+            method:'POST',
+            async: false,
+            params: {
+                V_V_GUID: MONGUID
+            },
+            success: function (response) {
+                var resp=Ext.decode(response.responseText);
+                if(resp.RET=='SUCCESS'){
+                }
+            }
+        });
+    }
     //修改月计划缺陷标记
     Ext.Ajax.request({
         url:AppUrl+'dxfile/YEAR_TO_MONTH_CH_WEEK_SIGN',

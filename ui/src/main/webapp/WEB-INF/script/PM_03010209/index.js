@@ -7,11 +7,13 @@ var MONTH = null;
 var YEAR = null;
 var V_MONTHPLAN_GUID = "";
 var P_MONTH = "";
+var WXQX="";
 if (location.href.split('?')[1] != undefined) {
     yearGuid = Ext.urlDecode(location.href.split('?')[1]).yearGuid;
     MONTH = Ext.urlDecode(location.href.split('?')[1]).MainMONTH;
     YEAR = Ext.urlDecode(location.href.split('?')[1]).MainYEAR;
     V_MONTHPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).monthGuid;
+    WXQX = Ext.urlDecode(location.href.split('?')[1]).wxqx;
 }
 
 
@@ -1132,30 +1134,56 @@ function loadData() {
                 Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
                 Ext.getCmp('jhgshj').setValue(V_HOUR);  //合计工时
                 Ext.getCmp('bz').setValue(V_BZ);   //Ext.getCmp('bz').setReadOnly(true); //备注
-                Ext.getCmp('maindefect').setValue(resp.list[0].QXCONTEXT);
-                Ext.getCmp('maindefect').setReadOnly(true);//主要缺陷
+                Ext.getCmp('maindefect').setValue(resp.list[0].QXCONTEXT);//主要缺陷
+                // Ext.getCmp('maindefect').setReadOnly(true);//主要缺陷
                 Ext.getCmp('sgfs').select(resp.list[0].SGTYPECODE); //Ext.getCmp('sgfs').setReadOnly(true); //施工方式
             }
         }
     });
     if (V_MONTHPLAN_GUID != "0") { //年计划无缺陷时，查找关联主要缺陷
-        Ext.Ajax.request({
-            url: AppUrl + 'dxfile/YEAR_TO_MONTH_SEL',
-            method: 'POST',
-            async: false,
-            params: {
-                V_YEARGUID: yearGuid,
-                V_MONTHGUID: V_MONTHPLAN_GUID,
-                V_DEFECTGUID: '',
-                V_PER_CODE: Ext.util.Cookies.get('v_personcode')
-            },
-            success: function (resp) {
-                var resp = Ext.decode(resp.responseText);
-                if (resp.RET != undefined) {
-                    Ext.getCmp('maindefect').setValue(resp.RET);
+        if(WXQX=="0"){
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/YEAR_TO_MONTH_SEL',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_YEARGUID: yearGuid,
+                    V_MONTHGUID: V_MONTHPLAN_GUID,
+                    V_DEFECTGUID: '',
+                    V_PER_CODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.RET != undefined) {
+                        Ext.getCmp('maindefect').setValue(resp.RET);
+                        Ext.getCmp('maindefect').setReadOnly(true);
+                    }
                 }
-            }
-        });
+            });
+        }
+
+    }
+    if (V_MONTHPLAN_GUID != "0") {
+        if (WXQX == "1") {
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/YEAR_TO_MONTH_SEL',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_YEARGUID: yearGuid,
+                    V_MONTHGUID: V_MONTHPLAN_GUID,
+                    V_DEFECTGUID: '',
+                    V_PER_CODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.RET != undefined) {
+                        Ext.getCmp('maindefect').setValue(resp.RET);
+                        Ext.getCmp('maindefect').setReadOnly(true);
+                    }
+                }
+            });
+        }
     }
 
 }

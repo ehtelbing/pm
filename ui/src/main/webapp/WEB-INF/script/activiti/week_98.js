@@ -582,6 +582,13 @@ Ext.onReady(function () {
                             labelWidth: 90,
                             width: 250
                         }
+                        , {
+                            xtype: 'button',
+                            text: '+',
+                            handler: choiceDef,
+                            width: 25,
+                            margin: '0px 0px 0px 5px'
+                        }
                     ]
                 }, {
                 layout: 'column',
@@ -1612,4 +1619,35 @@ function _repairDept(){
     // Ext.data.StoreManager.lookup('repairDeptStore').on('load', function () {
     //     Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
     // });
+}
+function choiceDef(){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret =window.open(AppUrl + 'page/activiti/weekDefChoice.html?V_WEEKPLAN_GUID=' + V_ORDERGUID +'&Oyear='+Ext.getCmp("year").getValue()
+        +'&Omonth='+Ext.getCmp("month").getValue()+'&V_V_ORGCODE='+Ext.getCmp("ck").getValue()+'&V_V_DEPTCODE='+Ext.getCmp("zyq").getValue()
+        +'&V_V_EQUTYPE='+Ext.getCmp("sblx").getValue()+'&V_V_EQUCODE='+Ext.getCmp("sbmc").getValue()+'&V_V_ZY='+Ext.getCmp("zy").getValue()
+        +'&WSIGN='+1+'',"newwindow", 'height=450px,width=650px,top=50px,left=100px,resizable=yes');
+}
+
+function getNewDefDate() {
+    //新缺陷返回值
+    // retEditWDate(WEEKGUID);
+    _init();
+    Ext.getCmp('maindefect').setReadOnly(false);
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_03_PLAN_WEEK_GET_DEF',
+        method: 'POST',
+        async: false,
+        params: {
+            WEEKGUID: V_ORDERGUID
+        },
+        success: function (respo) {
+            var resp = Ext.decode(respo.responseText);
+            if (resp.list.length > 0) {
+                Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);
+                Ext.getCmp('maindefect').setReadOnly(true); //主要缺陷
+
+            }
+        }
+    });
 }

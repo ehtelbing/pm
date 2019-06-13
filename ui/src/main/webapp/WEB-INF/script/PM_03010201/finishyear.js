@@ -66,6 +66,23 @@ Ext.onReady(function(){
             }
         }
     });
+    var wxqxGridStore = Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        storeId: 'wxqxGridStore',
+        fields: ['YEAR_GUID', 'DEFECT_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_SOURCENAME', 'V_DEFECTLIST', 'D_DEFECTDATE'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/PM_PLAN_YEAR_RE_DEFECT_SEL2',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
     var npanel=Ext.create('Ext.panel.Panel',{
         id:'npanel',
         layout:'column',
@@ -207,6 +224,64 @@ Ext.onReady(function(){
         layout: 'border',
         items: [tjqxgrid]
     });
+    // 维修计划关联缺陷
+    var wxqxpanel=Ext.create("Ext.toolbar.Toolbar", {
+        id:'wxqxpanel',
+        frame: true,
+        border:false,
+        width: '100%',
+        bodyCls:'border_wid',
+        items: [{
+            xtype: 'button',
+            text: '确认返回',
+            // bodyStyle: 'float:center;',
+            // iconCls: 'buy-button',
+            icon:dxImgPath+'/back.png',
+            listeners: {click: SaveWxQx}
+        },
+            {
+                xtype: 'button',
+                text: '关闭',
+                // bodyStyle: 'float:center;',
+                // iconCls: 'buy-button',
+                icon:dxImgPath+'/close.png',
+                listeners: {click: winQxClose}
+            }]
+    });
+    var wxgrid=Ext.create('Ext.grid.Panel', {
+        region: "center",
+        id: 'wxgrid',
+        store: wxqxGridStore,
+        split: true,
+        width: '100%',
+        margin: '0px',
+        columnLines: true,
+        border: true,
+        selType: 'checkboxmodel',
+        columns: [
+            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text:'设备code',width:140,dataIndex:'V_EQUCODE',hidden:true},
+            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center'},
+
+            {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'center'},
+            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center'},
+            {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center'}
+        ],
+        tbar:[wxqxpanel]
+    });
+    var qx_win=Ext.create('Ext.window.Window', {
+        id: 'qx_win',
+        width: 850,
+        height: 400,
+        title: '缺陷选择',
+        modal: true,
+        frame: true,
+        closeAction: 'hide',
+        closable: true,
+        layout: 'border',
+        items: [wxgrid]
+    });
+
     Ext.create('Ext.container.Viewport',{
         id:'main',
         layout:'border',
@@ -237,6 +312,21 @@ function saveMonth(){
     //创建月计划
     var planCk=record[0].get("ORGCODE");
 
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PM_03_PLAN_MONTH_CREATE',
+        method: 'POST',
+        async:false,
+        params:{
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_V_ORGCODE:planCk
+        },
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.RET !=undefined) {
+                monthGuid=resp.RET;
+            }
+        }
+    });
     if(record[0].get("QXCONTEXT")==""){
         Ext.data.StoreManager.lookup('qxAddStore').load({
             params: {
@@ -245,31 +335,51 @@ function saveMonth(){
                 V_V_STATECODE: '10'
             }
         });
-        //
-        Ext.Ajax.request({
-            url:AppUrl+'dxfile/PM_03_PLAN_MONTH_CREATE',
-            method: 'POST',
-            async:false,
-            params:{
-                V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-                V_V_ORGCODE:planCk
-            },
-            success: function (ret) {
-                var resp = Ext.decode(ret.responseText);
-                if (resp.RET !=undefined) {
-                    monthGuid=resp.RET;
+        //无缺陷维修计划关联
+        // Ext.getCmp('tjqxgrid').reconfigure(Ext.data.StoreManager.lookup('qxAddStore'));
+        // var  chgrid=Ext.getCmp('tjqxgrid');
+        // chgrid.store.reload();
+        // Ext.getCmp('tjqxgrid').getView().refresh();
+
+        // Ext.Ajax.request({
+        //     url:AppUrl+'dxfile/PM_03_PLAN_MONTH_CREATE',
+        //     method: 'POST',
+        //     async:false,
+        //     params:{
+        //         V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+        //         V_V_ORGCODE:planCk
+        //     },
+        //     success: function (ret) {
+        //         var resp = Ext.decode(ret.responseText);
+        //         if (resp.RET !=undefined) {
+        //             monthGuid=resp.RET;
                     Ext.getCmp("btnAdd_tjqx").show();
-                }
-            }
-        });
+        //         }
+        //     }
+        // });
 
     }else{
-        var owidth = window.screen.availWidth-300;
-        var oheight =  window.screen.availHeight - 500;
-        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-            +'&MainYEAR='+MainYEAR+'&monthGuid='+'0', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+        wxqxLoad(YEARGUID);
+        //维修计划关联
+        // Ext.getCmp('tjqxgrid').reconfigure(Ext.data.StoreManager.lookup('wxqxGridStore'));
+        // var  chgrid=Ext.getCmp('tjqxgrid');
+        // chgrid.store.reload();
+        // Ext.getCmp('tjqxgrid').getView().refresh();
+
+        Ext.getCmp("qx_win").show();
+        // var owidth = window.screen.availWidth-300;
+        // var oheight =  window.screen.availHeight - 500;
+        // var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
+        //     +'&MainYEAR='+MainYEAR+'&monthGuid='+'0', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
     }
 
+}
+function wxqxLoad(YEARGUID){
+    Ext.data.StoreManager.lookup('wxqxGridStore').load({
+        params: {
+            V_WX_GUID: YEARGUID
+        }
+    });
 }
 function confirmBtn(){
     var record=Ext.getCmp("cpanel").getSelectionModel().getSelection();
@@ -314,7 +424,37 @@ function SaveQx(){
         var owidth = window.screen.availWidth-300;
         var oheight =  window.screen.availHeight - 500;
         var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+'0', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
     }
 
+}
+ //保存维修计划缺陷跳转页面
+function SaveWxQx(){
+    var snum=0;
+    var qxDdefect = Ext.getCmp('wxgrid').getSelectionModel().getSelection();
+    for(var i=0;i<qxDdefect.length;i++){
+        Ext.Ajax.request({
+            url:AppUrl+'dxfile/YEAR_TO_MONTH_IN',
+            method:'POST',
+            async:false,
+            params:{
+                V_YEARGUID:YEARGUID,
+                V_MONTHGUID:monthGuid,
+                V_DEFECTGUID:qxDdefect[i].data.DEFECT_GUID,
+                V_PERCODE:Ext.util.Cookies.get('v_personcode')
+            },
+            success:function(response){
+                var resp = Ext.decode(response.responseText);
+                if (resp.RET =="SUCCESS") {
+                    snum++;
+                }
+            }
+        });
+    }
+    if(snum==qxDdefect.length){
+        var owidth = window.screen.availWidth-300;
+        var oheight =  window.screen.availHeight - 500;
+        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
+            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+'1', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+    }
 }

@@ -283,7 +283,17 @@ Ext.onReady(function () {
                                 icon: imgpath + '/saved.png',
                                 margin: '10px 0px 0px 90px',
                                 handler: OnButtonSaveClick
+                            },
+                            {
+                                xtype: 'button',
+                                text: '修改缺陷',
+                                width: 60,
+                                icon: imgpath + '/saved.png',
+                                margin: '10px 0px 0px 90px',
+                                hidden:true,
+                                handler: OnButtonUpdateClick
                             }
+
                             // {
                             //     xtype: 'button',
                             //     text: '计划选择',
@@ -1648,4 +1658,7 @@ function msgShow(){
             }
         }
     });
+}
+function OnButtonUpdateClick(){
+
 }

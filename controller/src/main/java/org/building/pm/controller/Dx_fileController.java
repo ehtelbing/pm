@@ -4729,7 +4729,15 @@ public class Dx_fileController {
                 V_V_LEVEL,V_V_PROWAY,V_STATE);
         return result;
     }
+    //年计划缺陷查询
+    @RequestMapping(value = "PM_PLAN_YEAR_RE_DEFECT_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_PLAN_YEAR_RE_DEFECT_SEL2(
+            @RequestParam(value = "V_WX_GUID") String V_WX_GUID) throws Exception {
 
+        Map result = dx_fileService.PM_PLAN_YEAR_RE_DEFECT_SEL2(V_WX_GUID);
+        return result;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

@@ -6002,4 +6002,29 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEFECT_SET_STAT");
         return result;
     }
+    //年计划缺陷查询
+    public Map PM_PLAN_YEAR_RE_DEFECT_SEL2(String V_WX_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_PLAN_YEAR_RE_DEFECT_SEL2");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_PLAN_YEAR_RE_DEFECT_SEL2" + "(:V_WX_GUID,:RET)}");
+            cstmt.setString("V_WX_GUID", V_WX_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_PLAN_YEAR_RE_DEFECT_SEL2");
+        return result;
+    }
 }

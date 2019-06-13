@@ -3,6 +3,7 @@ var V_MONTHPLAN_GUID = '';
 var processKey = '';
 var V_STEPNAME = '';
 var V_NEXT_SETP = '';
+var V_PLANTYPE="";
 //年份
 var years = [];
 for (var i = date.getFullYear() - 4; i <= date.getFullYear() + 1; i++) {
@@ -498,6 +499,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 5',
             icon: imgpath + '/add.png',
             handler: OnButtonDefectAddClicked
+        },
+        {
+            xtype: 'button',
+            text: '从备件添加',
+            margin: '5 0 5 5',
+            icon: imgpath + '/add.png',
+            handler: OnButtonBJAddClicked
         },
         {
             xtype: 'button',
@@ -1359,3 +1367,14 @@ function OnButtonAddFYear(){
         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 
+//从备件添加缺陷
+function OnButtonBJAddClicked(){
+
+    V_PLANTYPE = 'BJ';
+    var ret = window.open(AppUrl + 'page/PM_03010220/index.html?Month=' + "" +
+        "&V_PLANTYPE=" + V_PLANTYPE +
+        "&YEAR=" + Ext.getCmp("nf").getValue() +
+        "&MONTH=" + Ext.getCmp("yf").getValue() +
+        "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
+        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+}
