@@ -4703,6 +4703,32 @@ public class Dx_fileController {
         Map result = dx_fileService.PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(WEEK_GUID);
         return result;
     }
+    //缺陷保存过程-状态手动添加
+    @RequestMapping(value = "/PRO_PM_07_DEFECT_SET_STAT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_07_DEFECT_SET_STAT(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                    @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                    @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                    @RequestParam(value = "V_V_INPERCODE") String V_V_INPERCODE,
+                                    @RequestParam(value = "V_V_INPERNAME") String V_V_INPERNAME,
+                                    @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                    @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+                                    @RequestParam(value = "V_V_SOURCEID") String V_V_SOURCEID,
+                                    @RequestParam(value = "V_D_DEFECTDATE") String V_D_DEFECTDATE,
+                                    @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                    @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                    @RequestParam(value = "V_V_EQUCHILDCODE") String V_V_EQUCHILDCODE,
+                                    @RequestParam(value = "V_V_IDEA") String V_V_IDEA,
+                                    @RequestParam(value = "V_V_LEVEL") String V_V_LEVEL,
+                                    @RequestParam(value = "V_V_PROWAY") String V_V_PROWAY,
+                                    @RequestParam(value = "V_STATE") String V_STATE,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.PRO_PM_07_DEFECT_SET_STAT(V_V_GUID, V_V_PERCODE,V_V_PERNAME,V_V_INPERCODE,V_V_INPERNAME,V_V_DEFECTLIST, V_V_SOURCECODE,
+                V_V_SOURCEID, V_D_DEFECTDATE, V_V_DEPTCODE, V_V_EQUCODE, V_V_EQUCHILDCODE, V_V_IDEA,
+                V_V_LEVEL,V_V_PROWAY,V_STATE);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

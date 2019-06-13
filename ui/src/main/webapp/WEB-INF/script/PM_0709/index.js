@@ -25,6 +25,13 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
         return request;
     }
 });
+var defect="";
+var defState="";
+if(location.href.split("?")[1]!=undefined){
+    defect=Ext.urlDecode(location.href.split("?")[1]).defect;
+    defState=Ext.urlDecode(location.href.split("?")[1]).defState;
+}
+
 Ext.onReady(function () {
     // Ext.getBody().mask('<p>页面载入中...</p>');
 
@@ -730,7 +737,7 @@ function OnButtonSave() {
         return;
     }
     Ext.Ajax.request({
-        url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_SET',
+        url: AppUrl + 'dxfile/PRO_PM_07_DEFECT_SET_STAT',
         method: 'POST',
         async: false,
         params: {
@@ -748,7 +755,8 @@ function OnButtonSave() {
             V_V_EQUCHILDCODE: Ext.getCmp('zsbmc').getValue(),
             V_V_IDEA: Ext.getCmp('clyj').getValue(),
             V_V_LEVEL: Ext.getCmp('qxdj').getValue(),
-            V_V_PROWAY:Ext.getCmp('clfs').getValue()
+            V_V_PROWAY:Ext.getCmp('clfs').getValue(),
+            V_STATE:defState
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

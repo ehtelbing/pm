@@ -253,6 +253,7 @@ $(function () {
                 fieldLabel: '当前缺陷是否消缺',
                 labelAlign: 'right',
                 columns: 2,
+                hidden:true,
                 width: 290,
                 margin: '5 10 5 10',
                 items: [
@@ -306,7 +307,7 @@ $(function () {
             //             }
             //         }
             //     }
-            }
+            },
             // , {
             //     id: 'qxmx',
             //     xtype: 'textarea',
@@ -319,7 +320,31 @@ $(function () {
             //     labelAlign: 'right',
             //     width: 360
             // }
-            , {
+            {
+                xtype: "radiogroup",
+                id: 'radiotypexqx',
+                fieldLabel: '新缺陷是否消缺',
+                labelAlign: 'right',
+                columns: 2,
+                width: 290,
+                margin: '5 10 5 10',
+                items: [
+                    {
+                        boxLabel: "是",
+                        name: "xqxtypename",
+                        inputValue: "1",
+                        margin: '0 10 0 10'
+                    },
+                    {
+                        boxLabel: "否",
+                        name: "xqxtypename",
+                        inputValue: "0",
+                        margin: '0 10 0 10',
+                        checked: true
+                    }
+                ]
+            },
+            {
                 xtype: 'button',
                 text: '确定',
                 icon: imgpath + '/saved.png',
@@ -603,12 +628,16 @@ function comboConfirm() {
     //     }
     //
     // }
+    var newQxState="10";
+    if (Ext.getCmp('radiotypexqx').getValue().xqxtypename == '1') { //新缺陷是否消缺
+        newQxState="30";
+    }
 
     if (Ext.getCmp('radiotypesc').getValue().sctypename == '1') { //生成新的缺陷
         var owidth = window.document.body.offsetWidth;
         var oheight = window.document.body.offsetHeight;
-        var ret = window.open(AppUrl + 'page/PM_0709/index.html?&defect=' + '' +
-            '','_blank','height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        var ret = window.open(AppUrl + 'page/PM_0709/index.html?&defect=' + '' +'&defState='+newQxState+
+            '','newwindow','_blank','height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
     }
     else{
@@ -1143,25 +1172,25 @@ function confirmYS(){
                                                 });
                                             }
                                             //六并行-5 重生缺陷
-                                            if(Ext.getCmp('radiotypexc').getValue().xctypename != '1'){ //重生一条缺陷
-                                                //原数据生成新的 缺陷
-                                                Ext.Ajax.request({
-                                                    url:AppUrl + 'dxfile/PRO_PM_DEFECT_AUTO_NEW_IN',
-                                                    method:'POST',
-                                                    async: false,
-                                                    params: {
-                                                        V_DEFECTGUID: defguidOld,//respl.list[i].V_DEFECT_GUID,
-                                                        V_PERCODE: Ext.util.Cookies.get("v_personcode"),
-                                                        V_PERNAME: decodeURI(Ext.util.Cookies.get("v_personname"))
-                                                    },
-                                                    success:function(response){
-                                                        var resp = Ext.decode(response.responseText);
-                                                        if (resp.RET == "SUCCESS") {
-
-                                                        }
-                                                    }
-                                                });
-                                            }
+                                            // if(Ext.getCmp('radiotypexc').getValue().xctypename != '1'){ //重生一条缺陷
+                                            //     //原数据生成新的 缺陷
+                                            //     Ext.Ajax.request({
+                                            //         url:AppUrl + 'dxfile/PRO_PM_DEFECT_AUTO_NEW_IN',
+                                            //         method:'POST',
+                                            //         async: false,
+                                            //         params: {
+                                            //             V_DEFECTGUID: defguidOld,//respl.list[i].V_DEFECT_GUID,
+                                            //             V_PERCODE: Ext.util.Cookies.get("v_personcode"),
+                                            //             V_PERNAME: decodeURI(Ext.util.Cookies.get("v_personname"))
+                                            //         },
+                                            //         success:function(response){
+                                            //             var resp = Ext.decode(response.responseText);
+                                            //             if (resp.RET == "SUCCESS") {
+                                            //
+                                            //             }
+                                            //         }
+                                            //     });
+                                            // }
                                             //六并行-6 缺陷日志
                                             Ext.Ajax.request({//保存缺陷详细日志
                                                 url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
