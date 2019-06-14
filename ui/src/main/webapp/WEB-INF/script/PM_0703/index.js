@@ -290,7 +290,7 @@ Ext.onReady(function () {
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID'],
+            'V_STATECOLOR', 'V_ORDERID','WEBCODE'],
 
         proxy: {
             type: 'ajax',
@@ -329,6 +329,14 @@ Ext.onReady(function () {
                 width : 150,
                 renderer : ReadGD,
                 hidden:true
+            },
+            {
+                text:'WBS编码',
+                id:'wbscodeid',
+                align:'center',
+                width:'90',
+                dataIndex:'WEBCODE'
+
             },
             {
                 text : '缺陷日期',

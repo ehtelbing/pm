@@ -172,6 +172,7 @@ Ext.onReady(function(){
             selType: 'checkboxmodel',
             mode: 'SINGLE'
         },
+        //selType : 'checkboxmodel',
         columns:[
             {text: '缺陷guid', width: 140, dataIndex: 'V_GUID', align: 'center',renderer:atCenter},
             {text: '缺陷内容', width: 200, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atCenter},
@@ -179,6 +180,13 @@ Ext.onReady(function(){
             {text: '设备编码', width: 100, dataIndex: 'V_EQUCODE', align: 'center',renderer:atCenter},
             {text: '设备名称', width: 100, dataIndex: 'V_EQUNAME', align: 'center',renderer:atCenter},
             {text: '维修计划guid', width: 300, dataIndex: 'V_YPRO_GUID', align: 'center',renderer:atCenter}
+        ]
+        ,tbar: [
+            ,{ xtype:'button',
+                text:'确认返回',
+                width : 80,
+                icon: imgpath + '/add.png',
+                handler:turnPage}
         ]
         // ,listeners:{
         //     itemclick:qxgridClick()
@@ -191,7 +199,8 @@ Ext.onReady(function(){
         closeAction:'hide',
         width:560,
         height:450,
-        items:[qxpanel,qxgrid]
+        // items:[qxpanel,qxgrid]
+        items:[qxgrid]
 
     });
 //生成工单缺陷窗口store

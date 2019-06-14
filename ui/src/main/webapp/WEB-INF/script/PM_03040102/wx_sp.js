@@ -290,6 +290,7 @@ Ext.onReady(function(){
         id:'combpanel',
         region:'north',
         layout:'column',
+        split:true,
         // height:'50%',
         autoScroll:true,
         collapsible: true,
@@ -382,6 +383,7 @@ Ext.onReady(function(){
         id:'textPanel',
         region:'center',
         layout:'border',
+        split:true,
         // height:'50%',
         height:155,
         // autoScroll:true,
@@ -1714,7 +1716,11 @@ function btnFlowDisAgree(){
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee = resp.list[0].Assignee;
+            for(var i=0;i<resp.list.length;i++){
+                if(resp.list[i].ActivityName=="Start"){
+                    Assignee=resp.list[i].Assignee;break;
+                }
+            }
         }
     });
     if (Assignee != '') {

@@ -6028,4 +6028,33 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_PLAN_YEAR_RE_DEFECT_SEL2");
         return result;
     }
+    //放行生成工单缺陷表写入
+    public Map MAINTAIN_BY_DEFECT_INSERT_TOWORK(String V_FXGUID, String V_DEFECTGUID, String V_INPER, String V_DEPT, String V_ORDCODE) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin MAINTAIN_BY_DEFECT_INSERT_TOWORK");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call MAINTAIN_BY_DEFECT_INSERT_TOWORK" + "(:V_FXGUID,:V_DEFECTGUID,:V_INPER,:V_DEPT,:V_ORDCODE,:RET)}");
+            cstmt.setString("V_FXGUID", V_FXGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_INPER", V_INPER);
+            cstmt.setString("V_DEPT", V_DEPT);
+            cstmt.setString("V_ORDCODE", V_ORDCODE);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end MAINTAIN_BY_DEFECT_INSERT_TOWORK");
+        return result;
+    }
 }

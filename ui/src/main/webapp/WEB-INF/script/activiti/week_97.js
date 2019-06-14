@@ -692,63 +692,84 @@ function _reject() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-
+    var Assignee = '';
     Ext.Ajax.request({
-        url: AppUrl + 'Activiti/TaskComplete',
-        type: 'ajax',
+        url: AppUrl + 'Activiti/InstanceState',
         method: 'POST',
+        async: false,
         params: {
-            taskId: taskId,
-            idea: '不通过',
-            parName: ['fqrxg', "flow_yj"],
-            parVal: [V_PERSONCODE, spyj],
-            processKey: $.url().param("ProcessDefinitionKey"),
-            businessKey: V_ORDERGUID,
-            V_STEPCODE: 'fqrxg',
-            V_STEPNAME: '发起人修改',
-            V_IDEA: '不通过',
-            V_NEXTPER: V_PERSONCODE,
-            V_INPER: Ext.util.Cookies.get('v_personcode')
+            instanceId: $.url().param("ProcessInstanceId")
         },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);
-            if (resp.ret == '任务提交成功') {
-                Ext.Ajax.request({
-                    //url: AppUrl + 'zdh/PRO_WO_FLOW_AGREE',
-                    url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        'V_V_ORDERID': V_ORDERGUID,
-                        'V_V_PROCESS_NAMESPACE': 'WeekPlan',
-                        'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
-                        'V_V_STEPCODE': V_STEPCODE,
-                        'V_V_STEPNEXT_CODE': 'fqrxg'
-                    },
-                    success: function (ret) {
-                        var resp = Ext.JSON.decode(ret.responseText);
-                        if (resp.V_INFO == 'success') {
-                            window.opener.QueryTabW();
-                            window.opener.QuerySum();
-                            window.opener.QueryGrid();
-                            window.close();
-                            window.opener.OnPageLoad();
-                        }
-                    }
-                });
-            } else {
-                Ext.MessageBox.alert('提示', '任务提交失败');
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+            for (var i = 0; i < resp.list.length; i++) {
+                if (resp.list[i].ActivityName == "Start") {
+                    Assignee = resp.list[i].Assignee;
+                    break;
+                }
             }
-        },
-        failure: function (response) {//访问到后台时执行的方法。
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            })
         }
-    })
+    });
+    if (Assignee != '') {
+        Ext.Ajax.request({
+            url: AppUrl + 'Activiti/TaskComplete',
+            type: 'ajax',
+            method: 'POST',
+            params: {
+                taskId: taskId,
+                idea: '不通过',
+                parName: ['fqrxg', "flow_yj"],
+                parVal: [Assignee, spyj],// [V_PERSONCODE, spyj],
+                processKey: $.url().param("ProcessDefinitionKey"),
+                businessKey: V_ORDERGUID,
+                V_STEPCODE: 'fqrxg',
+                V_STEPNAME: '发起人修改',
+                V_IDEA: '不通过',
+                V_NEXTPER: V_PERSONCODE,
+                V_INPER: Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if (resp.ret == '任务提交成功') {
+                    Ext.Ajax.request({
+                        //url: AppUrl + 'zdh/PRO_WO_FLOW_AGREE',
+                        url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            'V_V_ORDERID': V_ORDERGUID,
+                            'V_V_PROCESS_NAMESPACE': 'WeekPlan',
+                            'V_V_PROCESS_CODE': $.url().param("ProcessDefinitionKey"),
+                            'V_V_STEPCODE': V_STEPCODE,
+                            'V_V_STEPNEXT_CODE': 'fqrxg'
+                        },
+                        success: function (ret) {
+                            var resp = Ext.JSON.decode(ret.responseText);
+                            if (resp.V_INFO == 'success') {
+                                window.opener.QueryTabW();
+                                window.opener.QuerySum();
+                                window.opener.QueryGrid();
+                                window.close();
+                                window.opener.OnPageLoad();
+                            }
+                        }
+                    });
+                } else {
+                    Ext.MessageBox.alert('提示', '任务提交失败');
+                }
+            },
+            failure: function (response) {//访问到后台时执行的方法。
+                Ext.MessageBox.show({
+                    title: '错误',
+                    msg: response.responseText,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.ERROR
+                })
+            }
+        });
+    } else {
+        alert("发起人信息错误，无法驳回");
+    }
 }
 
 function _close() {

@@ -4739,6 +4739,19 @@ public class Dx_fileController {
         Map result = dx_fileService.PM_PLAN_YEAR_RE_DEFECT_SEL2(V_WX_GUID);
         return result;
     }
+
+    //放行生成工单缺陷表写入
+    @RequestMapping(value = "MAINTAIN_BY_DEFECT_INSERT_TOWORK", method = RequestMethod.POST)
+    @ResponseBody
+    public Map MAINTAIN_BY_DEFECT_INSERT_TOWORK(
+            @RequestParam(value = "V_FXGUID") String V_FXGUID,
+            @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+            @RequestParam(value = "V_INPER") String V_INPER,
+            @RequestParam(value = "V_DEPT") String V_DEPT,
+            @RequestParam(value = "V_ORDCODE") String V_ORDCODE) throws Exception {
+        Map result = dx_fileService.MAINTAIN_BY_DEFECT_INSERT_TOWORK(V_FXGUID, V_DEFECTGUID, V_INPER, V_DEPT, V_ORDCODE);
+        return result;
+    }
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

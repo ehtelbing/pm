@@ -716,7 +716,11 @@ function _reject() {
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee=resp.list[0].Assignee;
+            for(var i=0;i<resp.list.length;i++){
+                if(resp.list[i].ActivityName=="Start"){
+                    Assignee=resp.list[i].Assignee;break;
+                }
+            }
         }
     });
     if(Assignee!=''){
