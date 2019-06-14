@@ -176,7 +176,7 @@ Ext.onReady(function(){
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE'],
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE','V_EQUCODE'],
 
         proxy: {
             type: 'ajax',
@@ -440,7 +440,10 @@ Ext.onReady(function(){
             }, {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'center', width : 100, renderer : CreateGridColumnTd
             }, {text : '缺陷日期', dataIndex : 'D_DEFECTDATE', align : 'center', width : 200, renderer : CreateGridColumnTime
             }, {text : '缺陷明细', dataIndex : 'V_DEFECTLIST', align : 'center', width : 700, renderer : CreateGridColumnTd
-            }, {text : '设备', dataIndex : 'V_EQUNAME', align : 'center', width : 200, renderer : CreateGridColumnTd
+            },
+            {text : '缺陷明细', dataIndex : 'V_EQUCODE', hidden:true,align : 'center', width : 700, renderer : CreateGridColumnTd
+            }
+            , {text : '设备', dataIndex : 'V_EQUNAME', align : 'center', width : 200, renderer : CreateGridColumnTd
             }, {text : '设备位置', dataIndex : 'V_EQUSITE', align : 'center', width : 300, renderer : CreateGridColumnTd
             }, {text : '负责人', dataIndex : 'V_PERNAME', align : 'center', width : 100, renderer : CreateGridColumnTd
             }, {text : '处理意见', dataIndex : 'V_IDEA', align : 'center', renderer : CreateGridColumnTd
@@ -613,8 +616,8 @@ function clear_def_old(WEEK_GUID,org_code){
         params: {
             V_V_MONTHGUID: MGUID,
             V_V_WEEKGUID:WEEK_GUID,
-            V_INPER:org_code,
-            V_DEFECTSTATE:Ext.util.Cookies.get("v_personcode")
+            V_INPER:Ext.util.Cookies.get("v_personcode"),
+            V_DEFECTSTATE:""
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
@@ -674,6 +677,16 @@ function defsel(monthGuid){ //关联表 YEAR_TO_MONTH
 }
 //缺陷选择
 function Select(){
+    var defitem=Ext.getCmp("dGridPanel").getSelectionModel().getSelection();
+    if(defitem.length<=0){
+        alert("请选择至少一条缺陷"); return false;
+    }
+    var equdef=defitem[0].data.V_EQUCODE;
+    for(var i=0;i<defitem.length;i++){
+       if(defitem[i].data.V_EQUCODE!=equdef){
+           alert("请选择设备相同的缺陷"); return false;
+       }
+    }
     var org=MCK==""?Ext.util.Cookies.get("v_orgCode"):MCK;
     if(MGUID==""){
         Ext.Msg.show({

@@ -613,8 +613,8 @@ function clear_def_old(WEEK_GUID,org_code){
         params: {
             V_V_MONTHGUID: MGUID,
             V_V_WEEKGUID:WEEK_GUID,
-            V_INPER:org_code,
-            V_DEFECTSTATE:Ext.util.Cookies.get("v_personcode")
+            V_INPER:Ext.util.Cookies.get("v_personcode"),
+            V_DEFECTSTATE:""
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值

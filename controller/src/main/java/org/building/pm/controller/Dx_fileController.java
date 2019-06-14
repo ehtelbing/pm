@@ -4677,9 +4677,10 @@ public class Dx_fileController {
     public Map<String, Object> PM_DEFECTTOWEEK_DELALL_OLD(@RequestParam(value = "V_V_MONTHGUID") String V_V_MONTHGUID,
                                                       @RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
                                                       @RequestParam(value = "V_INPER") String V_INPER,
+                                                      @RequestParam(value="V_DEFECTSTATE") String V_DEFECTSTATE,
                                                       HttpServletRequest request,
                                                       HttpServletResponse response) throws Exception {
-        Map result = dx_fileService.PM_DEFECTTOWEEK_DELALL_OLD(V_V_MONTHGUID,V_V_WEEKGUID,V_INPER);
+        Map result = dx_fileService.PM_DEFECTTOWEEK_DELALL_OLD(V_V_MONTHGUID,V_V_WEEKGUID,V_INPER,V_DEFECTSTATE);
         return result;
     }
     //查找未关联月计划的周计划关联缺陷

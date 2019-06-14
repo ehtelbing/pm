@@ -5879,7 +5879,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         return result;
     }
    //清除未保存 的周计划关联缺陷 PM_DEFECTTOWEEK_DELALL_OLD
-   public HashMap PM_DEFECTTOWEEK_DELALL_OLD(String V_V_MONTHGUID,String V_V_WEEKGUID,String V_INPER) throws SQLException {
+   public HashMap PM_DEFECTTOWEEK_DELALL_OLD(String V_V_MONTHGUID,String V_V_WEEKGUID,String V_INPER,String V_DEFECTSTATE) throws SQLException {
 
        logger.info("begin PM_DEFECTTOWEEK_DELALL_OLD");
        HashMap result = new HashMap();
@@ -5888,10 +5888,11 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
        try {
            conn = dataSources.getConnection();
            conn.setAutoCommit(false);
-           cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DELALL_OLD(:V_V_MONTHGUID,:V_V_WEEKGUID,:V_INPER,:RET)}");
+           cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DELALL_OLD(:V_V_MONTHGUID,:V_V_WEEKGUID,:V_INPER,:V_DEFECTSTATE,:RET)}");
            cstmt.setString("V_V_MONTHGUID", V_V_MONTHGUID);
            cstmt.setString("V_V_WEEKGUID",V_V_WEEKGUID);
            cstmt.setString("V_INPER",V_INPER);
+           cstmt.setString("V_DEFECTSTATE",V_DEFECTSTATE);
 
            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
            cstmt.execute();
