@@ -102,7 +102,7 @@ Ext.onReady(function () {
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
             'V_STATECOLOR', 'V_ORDERID', 'V_EQUTYPECODE', 'V_SOURCECODE',
-            'D_BE_SJ', 'D_EN_SJ','V_SOURCE_GRADE'],
+            'D_BE_SJ', 'D_EN_SJ','V_SOURCE_GRADE','WBSCODE'],
 
         proxy: {
             type: 'ajax',
@@ -217,6 +217,12 @@ Ext.onReady(function () {
             hidden:true,
             tpl: '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
         }, {
+            text: 'WBS编码',
+            dataIndex: 'WBSCODE',
+            align: 'center',
+            width: 100,
+            renderer: CreateGridColumnTd
+        },{
             text: '作业区',
             dataIndex: 'V_DEPTNAME',
             align: 'center',
@@ -578,7 +584,7 @@ function createWorkorder() {
         return false;
     }
 
-    if (Ext.getCmp('qxzt').getValue() == 'defct02') {
+  /*  if (Ext.getCmp('qxzt').getValue() == 'defct02') {
         if (seldata.length != '1') {
             alert('请选择1条专业点检缺陷进行处理');
             return;
@@ -610,10 +616,25 @@ function createWorkorder() {
                 }
             });
         }
-    } else {
+    } else {*/
         var D_BE_SJ = seldata[0].data.D_BE_SJ;
         var D_EN_SJ = seldata[0].data.D_EN_SJ;
         var V_GUIDList = '';
+        var wbs="";
+
+        for(var z=0;z<seldata.length;z++){
+            if(seldata[z].data.WBSCODE!=''){
+                if(wbs==''){
+                    wbs=seldata[z].data.WBSCODE;
+                }else{
+                    if(wbs!=seldata[z].data.WBSCODE){
+                        alert("请选择同一WBS编码计划进行操作")
+                        return;
+                    }
+                }
+            }
+        }
+
         for (var j = 0; j < seldata.length; j++) {
             if (seldata[0].data.V_EQUNAME != seldata[j].data.V_EQUNAME) {
                 alert("请选择同一设备缺陷");
@@ -656,7 +677,7 @@ function createWorkorder() {
 
             }
         });
-    }
+    //}
 }
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
