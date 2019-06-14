@@ -1555,7 +1555,7 @@ function OnBtnAddQx(a, record) {
                         var resp = Ext.decode(ret.responseText);
                         if (resp.V_INFO == 'success') {
                             QueryDefect();
-                            Ext.getCmp("dbtnAdd_tjqx").close();
+                            Ext.getCmp("dbtnAdd_tjqx").hide();
                             equcode = "";
                             equname = "";
                             equtype = "";
