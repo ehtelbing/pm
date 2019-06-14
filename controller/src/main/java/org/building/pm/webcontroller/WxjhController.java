@@ -51,14 +51,19 @@ public class WxjhController {
     @Value("#{configProperties['PM0010.retunUrl']}")
     private String Pm0010Url;
 
+    @Value("#{configProperties['PR1003.returnUrl']}")
+    private String PR1003;
+
+    @Value("#{configProperties['PM1001.returnUrl']}")
+    private String PM1001;
+
     @Value("#{configProperties['pmservice.url']}")
     private String serviceUrl;
 
     @Value("#{configProperties['ProjectUrl']}")
     private String ProjectUrl;
 
-    @Value("#{configProperties['PR1003.returnUrl']}")
-    private String PR1003;
+
 
     @Value("#{configProperties['pmurl']}")
     private String pmurl;
@@ -260,7 +265,7 @@ public class WxjhController {
             WriteDataRequest.addElement("WsdlUrl").setText(path);
             WriteDataRequest.addElement("piusername").setText(piusername);
             WriteDataRequest.addElement("pipassword").setText(pipassword);
-            WriteDataRequest.addElement("Pm1001Url").setText(Pm0011Url);
+            WriteDataRequest.addElement("Pm1001Url").setText(PM1001);
 
             Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
             System.out.println(root.asXML());
