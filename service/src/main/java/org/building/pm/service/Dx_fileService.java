@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Callable;
 
 
 @Service
@@ -6055,6 +6056,41 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         }
         logger.debug("result:" + result);
         logger.info("end MAINTAIN_BY_DEFECT_INSERT_TOWORK");
+        return result;
+    }
+    //放行计划上报人调取
+    public Map PM_WX_SBTABLE_SELECT(String V_ORG,String V_DEPT,String V_PER,String TEMP_1,String TEMP_2)throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+       CallableStatement cstmt=null;
+       try{
+           logger.info("begin PM_WX_SBTABLE_SELECT");
+           conn=dataSources.getConnection();
+           conn.setAutoCommit(true);
+           cstmt=conn.prepareCall("{call PM_WX_SBTABLE_SELECT(:V_ORG,:V_DEPT,:V_PER,:TEMP_1,:TEMP_2,:V_INFO,:RET)}");
+           cstmt.setString("V_ORG",V_ORG);
+           cstmt.setString("V_DEPT",V_DEPT);
+           cstmt.setString("V_PER",V_PER);
+           cstmt.setString("TEMP_1",TEMP_1);
+           cstmt.setString("TEMP_2",TEMP_2);
+
+           cstmt.registerOutParameter("V_INFO",OracleTypes.VARCHAR);
+           cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+           cstmt.execute();
+           String V_V_INFO=(String) cstmt.getString("V_INFO") ;
+           result.put("V_INFO",V_V_INFO);
+           result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+
+            }
+            catch(SQLException ex) {
+                logger.error(ex);
+            }
+            finally {
+           cstmt.close();
+           conn.close();
+       }
+        logger.debug("result:" + result);
+        logger.info("end PM_WX_SBTABLE_SELECT");
         return result;
     }
 }

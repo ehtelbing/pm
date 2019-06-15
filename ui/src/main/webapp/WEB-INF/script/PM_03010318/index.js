@@ -20,6 +20,7 @@ var WEEKGUID = "";
 var WeekYear = "";
 var WeekMonth= "";
 var WSIGN= "";
+var UPLOAD=1;
 var V_WEEKPLAN_GUID="";
 if (location.href.split('?')[1] != undefined) {
     MONGUID = Ext.urlDecode(location.href.split('?')[1]).MONGUID;
@@ -1457,9 +1458,9 @@ function pageLoadInfo() {
         });
     });
     Ext.getCmp('ck').on('change', function () {
-        if(WSIGN=="0"&&MONGUID==""){
+        // if(WSIGN=="0"&&MONGUID==""){
             Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
-        }
+        // }
         Ext.data.StoreManager.lookup('zyqStore').load({
             params: {
                 'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
@@ -1548,9 +1549,9 @@ function pageLoadInfo() {
     });
     //设备类型改变
     Ext.getCmp('sblx').on('change', function () {
-        if(WSIGN=="0"&&MONGUID==""){
-            Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
-        }
+        // if(WSIGN=="0"&&MONGUID==""){
+        //     Ext.getCmp("sblx").select(Ext.data.StoreManager.lookup('sblxStore').getAt(0));
+        // }
         Ext.data.StoreManager.lookup('sbmcStore').load({
             params: {
                 v_v_personcode: Ext.util.Cookies.get('v_personcode'),
@@ -2033,9 +2034,10 @@ function OnButtonSaveClick() {
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);
             if (resp.V_INFO == '成功') {
-                if (MONGUID != ""&&MONGUID != undefined) {
+                // if (MONGUID != ""&&MONGUID != undefined) {
+                if(wguid!=""){
                     //缺陷修改
-                    if(Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID==undefined) {
+                    // if(Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID==undefined) {
                         Ext.Ajax.request({
                             url: AppUrl + 'dxfile/PM_DEFECT_RE_WEEK_UPDATE',
                             method: 'POST',
@@ -2055,7 +2057,7 @@ function OnButtonSaveClick() {
                                 }
                             }
                         });
-                    }
+                    // }
                 }
                 else{
                     if(WSIGN=="1"){

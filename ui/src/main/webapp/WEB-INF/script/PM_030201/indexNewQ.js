@@ -148,7 +148,7 @@ Ext.onReady(function(){
             }),
             xtype: 'combo',
             fieldLabel: '年份',
-            value: new Date().getFullYear()+1,
+            value: new Date().getFullYear(),//+1,
             labelWidth: 80,
             width: 250,
             labelAlign: 'right',
