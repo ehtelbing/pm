@@ -1872,7 +1872,14 @@ function OnButtonSaveClick() {
         Ext.Msg.alert('消息','设备类型和设备名称不可以为全部，请选择相关名称');
         return;
     }
-
+    if(Ext.getCmp("expectage").getValue()<0){
+        Ext.Msg.alert('消息','预计寿命不可为负数');
+        return;
+    }
+    if(Ext.getCmp("repairper").getValue()<0){
+        Ext.Msg.alert('消息','维修人数不可为负数');
+        return;
+    }
     // if(Ext.getCmp('expectage').getValue()=="0"){
     //     Ext.Msg.alert('消息','预计寿命不可为0，请选择相关信息');
     //     return;

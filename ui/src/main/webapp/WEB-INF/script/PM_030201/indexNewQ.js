@@ -148,7 +148,7 @@ Ext.onReady(function(){
             }),
             xtype: 'combo',
             fieldLabel: '年份',
-            value: new Date().getFullYear(),//+1,
+            value: new Date().getFullYear()+1,
             labelWidth: 80,
             width: 250,
             labelAlign: 'right',
@@ -258,7 +258,7 @@ Ext.onReady(function(){
             emptyMsg: '没有记录',
             store: 'gridStore'
         }
-       ]
+        ]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -352,14 +352,14 @@ function OnButtonQuery (){
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     // return  '<a href="javascript:turnOpen(\''+record.get('V_GUID')+'\'">'+value+'</a>';
-   //  store.data.items[rowIndex].get('V_GUID');
-   //  record.get('V_GUID');
+    //  store.data.items[rowIndex].get('V_GUID');
+    //  record.get('V_GUID');
     return '<div date-qtip="'+value + '" >' +value+ '</div>';
 }
 
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
-   return '<div date-qtip="'+value + '" >' +value+ '</div>';
+    return '<div date-qtip="'+value + '" >' +value+ '</div>';
     //  return  '<a href="javascript:turnOpen(\''+record.get('V_GUID')+'\'">'+value+'</a>';
 }
 function timelfet(value, metaDate, record, rowIndex, colIndex, store){
@@ -371,7 +371,7 @@ function turnOpen(value, metaDate, record, rowIndex, colIndex, store){
     var enddate=(metaDate.get('V_EDATE')).toString().substring(0,10);
     var owidth = 1374;//window.document.body.offsetWidth - 600;
     var oheight =799;// window.document.body.offsetHeight - 100;
-   // window.open(AppUrl + 'page/PM_030201/workorderDetail.html?guid=' +metaDate.get('V_GUID')+ '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+    // window.open(AppUrl + 'page/PM_030201/workorderDetail.html?guid=' +metaDate.get('V_GUID')+ '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
     window.open(AppUrl + 'page/PM_030201/modelDetail.html?guid=' +metaDate.get('V_GUID') +'&indate='+indate+'&endate='+enddate+'&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
 }
 
