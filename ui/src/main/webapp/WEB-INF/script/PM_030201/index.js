@@ -134,42 +134,7 @@ Ext.onReady(function () {
 
         }
     });
-    var sbPerStore=Ext.create("Ext.data.Store", {
-        autoLoad: true,
-        storeId: 'fzPerStore',
-        fields: ['PERCODE', 'PERNAME', 'ORGCODE', 'ORGNAME','DEPTCODE','DEPTNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'dxfile/PM_WX_SBTABLE_SELECT',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                V_ORG:Ext.util.Cookies.get('v_orgCode'),
-                V_DEPT:Ext.util.Cookies.get('v_deptcode'),
-                V_PER:Ext.util.Cookies.get('v_personcode'),
-                TEMP_1:'',
-                TEMP_2:''
-            }
-        },
-        listeners: {
-            load: function (store, records, success, eOpts) {
-                // if( store.getAt(0)==undefined){
-                    Ext.getCmp('sbPer').select(Ext.util.Cookies.get('v_personcode'));
-                //     return;
-                // }else{
-                //
-                // }
 
-            }
-
-        }
-    });
     //表格信息加载
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -221,7 +186,7 @@ Ext.onReady(function () {
             }),
             xtype: 'combo',
             fieldLabel: '年份',
-            value: new Date().getFullYear(),//+1,
+            value: new Date().getFullYear()+1,
             labelWidth: 80,
             width: 250,
             labelAlign: 'right',
@@ -240,49 +205,49 @@ Ext.onReady(function () {
             labelWidth: 80,
             width: 250
         }
-        , {
-            xtype: 'combo',
-            id: "zyq",
-            store: zyqStore,
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '作业区',
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            labelWidth: 80,
-            width: 250
-        }
-        ,{
-            xtype: 'combo',
-            id: "wxlx",
-            store: wxlxStore,
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '维修类型',
-            displayField: 'V_BASENAME',
-            valueField: 'V_BASECODE',
-            labelWidth: 80,
-            width: 250
-        }, {
-            xtype: 'combo',
-            id: "zy",
-            store: zyStore,
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '专业',
-            displayField: 'V_ZYMC',
-            valueField: 'V_GUID',
-            labelWidth: 80,
-            width: 250
-        }, {
-            xtype: 'textfield',
-            id: "jxnr",
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '检修内容',
-            labelWidth: 80,
-            width: 250
-        }, {
+            , {
+                xtype: 'combo',
+                id: "zyq",
+                store: zyqStore,
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '作业区',
+                displayField: 'V_DEPTNAME',
+                valueField: 'V_DEPTCODE',
+                labelWidth: 80,
+                width: 250
+            }
+            ,{
+                xtype: 'combo',
+                id: "wxlx",
+                store: wxlxStore,
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '维修类型',
+                displayField: 'V_BASENAME',
+                valueField: 'V_BASECODE',
+                labelWidth: 80,
+                width: 250
+            }, {
+                xtype: 'combo',
+                id: "zy",
+                store: zyStore,
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '专业',
+                displayField: 'V_ZYMC',
+                valueField: 'V_GUID',
+                labelWidth: 80,
+                width: 250
+            }, {
+                xtype: 'textfield',
+                id: "jxnr",
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '检修内容',
+                labelWidth: 80,
+                width: 250
+            }, {
                 xtype : 'combo',
                 id:'fzPer',
                 store:fzPerStore,
@@ -295,28 +260,13 @@ Ext.onReady(function () {
                 labelWidth :60,
                 width:170,
                 labelAlign : 'right'
-            },
-            {
-                xtype : 'combo',
-                id:'sbPer',
-                store:sbPerStore,
-                editable : false,
-                queryMode : 'local',
-                fieldLabel : '上报人',
-                displayField: 'PERNAME',
-                valueField: 'PERCODE',
-                margin:'5 5 5 10',
-                labelWidth :60,
-                width:170,
-                labelAlign : 'right'
-            },
-            {
-            xtype: 'button',
-            text: '查询',
-            style: ' margin: 5px 0px 0px 10px',
-            icon: imgpath + '/search.png',
-            listeners: {click: OnButtonQuery}
-        },/*{
+            },{
+                xtype: 'button',
+                text: '查询',
+                style: ' margin: 5px 0px 0px 10px',
+                icon: imgpath + '/search.png',
+                listeners: {click: OnButtonQuery}
+            },/*{
             xtype: 'button',
             text: '获取年预算',
             style: ' margin: 5px 0px 0px 10px',
@@ -471,8 +421,8 @@ Ext.onReady(function () {
     });
 
     Ext.data.StoreManager.lookup('wxlxStore').on('load',function(){
-       Ext.getCmp('wxlx').select(Ext.data.StoreManager.lookup('wxlxStore').getAt(0));
-       Ext.data.StoreManager.lookup('zyStore').load()
+        Ext.getCmp('wxlx').select(Ext.data.StoreManager.lookup('wxlxStore').getAt(0));
+        Ext.data.StoreManager.lookup('zyStore').load()
     });
 
     Ext.data.StoreManager.lookup('zyStore').on('load',function(){
@@ -568,29 +518,29 @@ function OnButtonOut(){
 }
 function OnButtonAdd(){
     //if(Ext.getCmp("zyq").getValue()!="%"&&Ext.getCmp("zyq").getValue()!=""){
-        Ext.Ajax.request({
-            url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
-            method: 'POST',
-            async: false,
-            params: {
-                V_V_GUID:'-1',
-                V_V_YEAR:Ext.getCmp("year").getValue(),
-                V_V_ORGCODE:Ext.getCmp("ck").getValue(),
-                V_V_DEPTCODE:"", // Ext.getCmp("zyq").getValue(),
-                V_V_INPER:Ext.util.Cookies.get('v_personcode')
-            },
-            success: function (resp) {
-                var resp=Ext.decode(resp.responseText);
-                if(resp.V_INFO=='成功'){
-                    var owidth = window.document.body.offsetWidth - 600;
-                    var oheight = window.document.body.offsetHeight - 100;
-                    // window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
-                    window.open(AppUrl + 'page/PM_03020101/newindex.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
-                }else{
-                    alert("添加失败");
-                }
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_CREATE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID:'-1',
+            V_V_YEAR:Ext.getCmp("year").getValue(),
+            V_V_ORGCODE:Ext.getCmp("ck").getValue(),
+            V_V_DEPTCODE:"", // Ext.getCmp("zyq").getValue(),
+            V_V_INPER:Ext.util.Cookies.get('v_personcode')
+        },
+        success: function (resp) {
+            var resp=Ext.decode(resp.responseText);
+            if(resp.V_INFO=='成功'){
+                var owidth = window.document.body.offsetWidth - 600;
+                var oheight = window.document.body.offsetHeight - 100;
+                // window.open(AppUrl + 'page/PM_03020101/index.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=no' );
+                window.open(AppUrl + 'page/PM_03020101/newindex.html?guid=' + resp.V_OUT_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+            }else{
+                alert("添加失败");
             }
-        });
+        }
+    });
     // }
     // else{
     //     alert("作业区不可为空");
@@ -688,7 +638,7 @@ function OnButtonDel(){
                 success: function (resp) {
                     var resp=Ext.decode(resp.responseText);
                     if(resp.V_CURSOR=='SUCCESS'){
-                       num++;
+                        num++;
                     }
                 }
             });
@@ -909,40 +859,40 @@ function btnFlowStart() {
                     }
                 }
             });
+        }
+        if(snum==chodata.length){
+            alert('上报成功！');
+            OnButtonQuery();
+        }
     }
-    if(snum==chodata.length){
-        alert('上报成功！');
-        OnButtonQuery();
-    }
-}
 }
 
 function newDefectLog(wxguid,STAT){
 
-            Ext.Ajax.request({
-                url: AppUrl + 'dxfile/PM_DEFECT_LOG_FROMPRO_PLIN',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_WXGUID:wxguid,
-                    V_PERCODE:Ext.util.Cookies.get('v_personcode'),
-                    V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-                    V_ORG:Ext.util.Cookies.get('v_orgCode'),
-                    V_PASS_STAT:STAT,
-                    V_DEFECTGUID:'',
-                    V_DEF_TYPE:'',
-                    V_DEF_LIST:'',
-                    V_DEF_DATE:'',//records[i].get('D_DEFECTDATE').toString(),
-                    V_BJ:'',
-                    V_SOLVE:''
-                },
-                success: function (resp) {
-                    var resp=Ext.decode(resp.responseText);
-                    if(resp.RET=='SUCCESS'){
-                        // alert('保存成功！');
-                        // window.opener.selectGridTurn();
-                        // window.close();
-                    }
-                }
-            });
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_DEFECT_LOG_FROMPRO_PLIN',
+        method: 'POST',
+        async: false,
+        params: {
+            V_WXGUID:wxguid,
+            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+            V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
+            V_ORG:Ext.util.Cookies.get('v_orgCode'),
+            V_PASS_STAT:STAT,
+            V_DEFECTGUID:'',
+            V_DEF_TYPE:'',
+            V_DEF_LIST:'',
+            V_DEF_DATE:'',//records[i].get('D_DEFECTDATE').toString(),
+            V_BJ:'',
+            V_SOLVE:''
+        },
+        success: function (resp) {
+            var resp=Ext.decode(resp.responseText);
+            if(resp.RET=='SUCCESS'){
+                // alert('保存成功！');
+                // window.opener.selectGridTurn();
+                // window.close();
+            }
+        }
+    });
 }
