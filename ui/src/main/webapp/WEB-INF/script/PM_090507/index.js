@@ -145,7 +145,12 @@ function loadPageInfo() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             if (resp.list != null && resp.list.length != 0) {
-                Assignee = resp.list[0].Assignee;
+                for(var i=0;i<=resp.list.length;i++){
+                    if(resp.list[i].ActivityName=="Start"){
+                        Assignee = resp.list[i].Assignee;
+                        break;
+                    }
+                }
             }
         }
     });
@@ -513,11 +518,11 @@ function loadSPR() {
 
             Ext.getBody().unmask();//去除页面笼罩
             for (var i = 0; i < resp.list.length; i++) {
-                if (resp.list[i].V_PERSONCODE == Assignee) {
-                    $("#selApprover").val(Assignee);
-                }
                 if (resp.list[i].V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
                     $("#selApprover").val(Ext.util.Cookies.get('v_personcode'));
+                }
+                if (resp.list[i].V_PERSONCODE == Assignee) {
+                    $("#selApprover").val(Assignee);
                 }
             }
             //createDD();

@@ -118,15 +118,16 @@ $(function () {
                 Ext.getCmp('nextSprb').select(store.first());
                 var list = Ext.getCmp("nextSprb").getStore().data.items;
                 for (var i = 0; i < list.length; i++) {
+                    if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+
+                        Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
+                    }
                     if (list[i].raw.V_PERSONCODE == Assignee) {
 
                         Ext.getCmp("nextSprb").setValue(Assignee);
 
                     }
-                    if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
 
-                        Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
-                    }
 
                 }
             }
@@ -497,7 +498,13 @@ function getAssignee() {
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee = resp.list[0].Assignee;
+            for(var i=0;i<=resp.list.length;i++){
+                if(resp.list[i].ActivityName=="Start"){
+                    Assignee = resp.list[i].Assignee;
+                    break;
+                }
+            }
+            // Assignee = resp.list[0].Assignee;
         }
     });
 }
