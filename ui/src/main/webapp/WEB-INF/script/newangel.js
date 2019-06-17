@@ -100,10 +100,11 @@ if (usercodeTemp != null && usercodeTemp!='') {
 }
 else{
     if(Ext.util.Cookies.get('v_personcode')==undefined||Ext.util.Cookies.get('v_personcode')==''){
-        var currentUrl = window.location.href;
-        var eam_singlelogin_url = 'http://10.103.5.70:8080/oauth/authorize?client_id=e1fe5be3291e42bd9d350285074f0e2d&response_type=code&scope=user_info&redirect_uri=http%3A%2F%2F10.103.5.54%3A8080%2FORG_LDAP%2Fhuidiao.action%3FReferer='+currentUrl;
-
-        parent.location.href = eam_singlelogin_url;
+        // var currentUrl = window.location.href;
+        // var eam_singlelogin_url = 'http://10.103.5.70:8080/oauth/authorize?client_id=e1fe5be3291e42bd9d350285074f0e2d&response_type=code&scope=user_info&redirect_uri=http%3A%2F%2F10.103.5.54%3A8080%2FORG_LDAP%2Fhuidiao.action%3FReferer='+currentUrl;
+        //
+        // parent.location.href = eam_singlelogin_url;
+        location.href = "../../page/login/login.html";
         setTimeout("subSomething()",10000);
     }
 }
