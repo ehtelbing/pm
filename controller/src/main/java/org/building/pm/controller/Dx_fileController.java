@@ -4752,6 +4752,19 @@ public class Dx_fileController {
         Map result = dx_fileService.MAINTAIN_BY_DEFECT_INSERT_TOWORK(V_FXGUID, V_DEFECTGUID, V_INPER, V_DEPT, V_ORDCODE);
         return result;
     }
+    //放行计划上报人调取
+    @RequestMapping(value = "PM_WX_SBTABLE_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_WX_SBTABLE_SELECT(
+            @RequestParam(value = "V_ORG") String V_ORG,
+            @RequestParam(value = "V_DEPT") String V_DEPT,
+            @RequestParam(value = "V_PER") String V_PER,
+            @RequestParam(value = "TEMP_1") String TEMP_1,
+            @RequestParam(value = "TEMP_2") String TEMP_2) throws Exception {
+        Map result = dx_fileService.PM_WX_SBTABLE_SELECT(V_ORG, V_DEPT, V_PER, TEMP_1, TEMP_2);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

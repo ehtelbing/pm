@@ -134,7 +134,42 @@ Ext.onReady(function () {
 
         }
     });
+    var sbPerStore=Ext.create("Ext.data.Store", {
+        autoLoad: true,
+        storeId: 'fzPerStore',
+        fields: ['PERCODE', 'PERNAME', 'ORGCODE', 'ORGNAME','DEPTCODE','DEPTNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/PM_WX_SBTABLE_SELECT',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {
+                V_ORG:Ext.util.Cookies.get('v_orgCode'),
+                V_DEPT:Ext.util.Cookies.get('v_deptcode'),
+                V_PER:Ext.util.Cookies.get('v_personcode'),
+                TEMP_1:'',
+                TEMP_2:''
+            }
+        },
+        listeners: {
+            load: function (store, records, success, eOpts) {
+                // if( store.getAt(0)==undefined){
+                    Ext.getCmp('sbPer').select(Ext.util.Cookies.get('v_personcode'));
+                //     return;
+                // }else{
+                //
+                // }
 
+            }
+
+        }
+    });
     //表格信息加载
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -186,7 +221,7 @@ Ext.onReady(function () {
             }),
             xtype: 'combo',
             fieldLabel: '年份',
-            value: new Date().getFullYear()+1,
+            value: new Date().getFullYear(),//+1,
             labelWidth: 80,
             width: 250,
             labelAlign: 'right',
@@ -260,7 +295,22 @@ Ext.onReady(function () {
                 labelWidth :60,
                 width:170,
                 labelAlign : 'right'
-            },{
+            },
+            {
+                xtype : 'combo',
+                id:'sbPer',
+                store:sbPerStore,
+                editable : false,
+                queryMode : 'local',
+                fieldLabel : '上报人',
+                displayField: 'PERNAME',
+                valueField: 'PERCODE',
+                margin:'5 5 5 10',
+                labelWidth :60,
+                width:170,
+                labelAlign : 'right'
+            },
+            {
             xtype: 'button',
             text: '查询',
             style: ' margin: 5px 0px 0px 10px',
