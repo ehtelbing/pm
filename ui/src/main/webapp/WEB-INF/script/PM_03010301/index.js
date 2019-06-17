@@ -1711,7 +1711,7 @@ function OnButtonFromMonth(){
         +'&V_V_ZY='+zy
         +"&WEEK=" + Ext.getCmp("zhou").getValue()
         +'&startUpTime='+ Ext.getCmp("zks").getValue()
-        +'&endUpTime='+Ext.getCmp("zjs").getValue(),'','_blank','height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+        +'&endUpTime='+Ext.getCmp("zjs").getValue(),'', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }
 //从备件添加周计划
 function OnButtonDefPartAddClicked(){
