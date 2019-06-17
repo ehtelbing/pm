@@ -500,14 +500,14 @@ Ext.onReady(function () {
         },
         items : [
             {
-                region : 'north',
+                region : 'center',
                 border : false,
                 layout : 'fit',
                 items : [inputPanel]
             },
 
             {
-                region : 'center',
+                region : 'south',
                 // border : false,
                 frame: true,
                 width : 590,
@@ -581,7 +581,7 @@ function _init() {
         success: function (response) {
             var resp = Ext.decode(response.responseText);
             if (resp.success!='true') {//成功，会传回true
-                V_SPR=resp.RET[0].V_SPR;
+                // V_SPR=resp.RET[0].V_SPR;
                 V_V_DEPTCODE_TEMP=resp.RET[0].V_DEPTCODE;
                 V_V_ORGCODE_TEMP=resp.RET[0].V_ORGCODE;
                 Ext.getCmp('orgname').setValue(resp.RET[0].V_ORGNAME);
@@ -606,7 +606,23 @@ function _init() {
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();//去除页面笼罩
                 _selectNextPer();
-
+                Ext.Ajax.request({
+                    url: AppUrl + 'Activiti/InstanceState',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        instanceId: $.url().param("ProcessInstanceId")
+                    },
+                    success: function (ret) {
+                        var resp = Ext.JSON.decode(ret.responseText);
+                        for (var i = 0; i < resp.list.length; i++) {
+                            if (resp.list[i].ActivityName == "Start") {
+                                V_SPR = resp.list[i].Assignee;
+                                break;
+                            }
+                        }
+                    }
+                });
             } else {
                 Ext.MessageBox.show({
                     title: '错误',

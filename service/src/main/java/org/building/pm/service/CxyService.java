@@ -301,7 +301,8 @@ public class CxyService {
                                              String V_V_JJBF,String V_V_FAULT_LEVEL, String V_V_FILE_GUID, String V_V_INTIME,
                                              String V_V_PERCODE, String V_V_IP,String V_V_FAULT_NAME,String V_V_FAULT_PART,String V_V_FAULT_CLGC, String V_V_FAULT_SS,String V_V_FAULT_XZ,String V_V_FAULT_ZGCS,String V_V_FZR_CL,
                                              String V_V_ENDTIME,String V_V_REPORTER,String V_V_FZR,String V_V_STOPTIME,String V_V_REPAIRTIME,String V_V_REPAIRCOST,
-                                             String V_V_REPROTTIME,String V_V_FAULT_PASS,String V_CAUSEANALYSIS,String V_REPAIR_PLAN) throws SQLException {
+                                             String V_V_REPROTTIME,String V_V_FAULT_PASS,String V_V_CAUSEANALYSIS,String V_V_REPAIR_PLAN,
+                                             String V_V_ASSENT_CODE,String V_V_STOPHOURS,String V_V_REPAIRHOURS) throws SQLException {
         logger.info("begin PM_1405_FAULT_ITEM_DATA_SET_NEW");
 
         HashMap result = new HashMap();
@@ -315,8 +316,8 @@ public class CxyService {
                     ":V_V_FAULT_XX,:V_V_JJBF,:V_V_FAULT_LEVEL," +
                     ":V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_V_FAULT_NAME,:V_V_FAULT_PART,:V_V_FAULT_CLGC," +
                     ":V_V_FAULT_SS,:V_V_FAULT_XZ,:V_V_FAULT_ZGCS,:V_V_FZR_CL," +
-                    ":V_V_ENDTIME,:V_V_REPORTER,:V_V_FZR,:V_V_STOPTIME,:V_V_REPAIRTIME,:V_V_REPAIRCOST,:V_V_REPROTTIME,:V_V_FAULT_PASS,:V_CAUSEANALYSIS," +
-                    ":V_REPAIR_PLAN," +
+                    ":V_V_ENDTIME,:V_V_REPORTER,:V_V_FZR,:V_V_STOPTIME,:V_V_REPAIRTIME,:V_V_REPAIRCOST,:V_V_REPROTTIME,:V_V_FAULT_PASS,:V_V_CAUSEANALYSIS," +
+                    ":V_V_REPAIR_PLAN,:V_V_ASSENT_CODE,:V_V_STOPHOURS,:V_V_REPAIRHOURS," +
                     ":V_INFO,:FAULTID)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -350,9 +351,11 @@ public class CxyService {
             cstmt.setString("V_V_REPAIRCOST", V_V_REPAIRCOST);
             cstmt.setString("V_V_REPROTTIME", V_V_REPROTTIME);
             cstmt.setString("V_V_FAULT_PASS", V_V_FAULT_PASS);
-            cstmt.setString("V_CAUSEANALYSIS", V_CAUSEANALYSIS);
-            cstmt.setString("V_REPAIR_PLAN", V_REPAIR_PLAN);
-            cstmt.setString("V_V_FZR_CL", V_V_FZR_CL);
+            cstmt.setString("V_V_CAUSEANALYSIS", V_V_CAUSEANALYSIS);
+            cstmt.setString("V_V_REPAIR_PLAN", V_V_REPAIR_PLAN);
+            cstmt.setString("V_V_ASSENT_CODE", V_V_ASSENT_CODE);
+            cstmt.setString("V_V_STOPHOURS", V_V_STOPHOURS);
+            cstmt.setString("V_V_REPAIRHOURS", V_V_REPAIRHOURS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("FAULTID", OracleTypes.VARCHAR);
             cstmt.execute();
@@ -814,7 +817,8 @@ public class CxyService {
                                                String V_V_PERCODE, String V_V_IP,String V_V_FAULT_NAME,String V_V_FAULT_PART,String V_V_FAULT_CLGC,
                                                String V_V_FAULT_SS,String V_V_FAULT_XZ,String V_V_FAULT_ZGCS,String V_V_FZR_CL,
                                                   String V_V_ENDTIME,String V_V_REPORTER,String V_V_FZR,String V_V_STOPTIME,String V_V_REPAIRTIME,String V_V_REPAIRCOST,
-                                                  String V_V_REPROTTIME,String V_V_FAULT_PASS,String V_CAUSEANALYSIS,String V_REPAIR_PLAN) throws SQLException {
+                                                  String V_V_REPROTTIME,String V_V_FAULT_PASS,String V_V_CAUSEANALYSIS,String V_V_REPAIR_PLAN,
+                                                  String V_V_ASSENT_CODE,String V_V_STOPHOURS,String V_V_REPAIRHOURS) throws SQLException {
         logger.info("begin PM_1405_FAULT_ITEM_DATA_UPDATE");
 
         HashMap result = new HashMap();
@@ -828,8 +832,8 @@ public class CxyService {
                     ":V_V_FAULT_XX,:V_V_JJBF,:V_V_FAULT_LEVEL," +
                     ":V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_V_FAULT_NAME,:V_V_FAULT_PART,:V_V_FAULT_CLGC," +
                     ":V_V_FAULT_SS,:V_V_FAULT_XZ,:V_V_FAULT_ZGCS,:V_V_FZR_CL," +
-                    ":V_V_ENDTIME,:V_V_REPORTER,:V_V_FZR,:V_V_STOPTIME,:V_V_REPAIRTIME,:V_V_REPAIRCOST,:V_V_REPROTTIME,:V_V_FAULT_PASS,:V_CAUSEANALYSIS," +
-                    ":V_REPAIR_PLAN," +
+                    ":V_V_ENDTIME,:V_V_REPORTER,:V_V_FZR,:V_V_STOPTIME,:V_V_REPAIRTIME,:V_V_REPAIRCOST,:V_V_REPROTTIME,:V_V_FAULT_PASS,:V_V_CAUSEANALYSIS," +
+                    ":V_V_REPAIR_PLAN,:V_V_ASSENT_CODE,:V_V_STOPHOURS,:V_V_REPAIRHOURS," +
                     ":V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -863,8 +867,11 @@ public class CxyService {
             cstmt.setString("V_V_REPAIRCOST", V_V_REPAIRCOST);
             cstmt.setString("V_V_REPROTTIME", V_V_REPROTTIME);
             cstmt.setString("V_V_FAULT_PASS", V_V_FAULT_PASS);
-            cstmt.setString("V_CAUSEANALYSIS", V_CAUSEANALYSIS);
-            cstmt.setString("V_REPAIR_PLAN", V_REPAIR_PLAN);
+            cstmt.setString("V_CAUSEANALYSIS", V_V_CAUSEANALYSIS);
+            cstmt.setString("V_REPAIR_PLAN", V_V_REPAIR_PLAN);
+            cstmt.setString("V_V_ASSENT_CODE", V_V_ASSENT_CODE);
+            cstmt.setString("V_V_STOPHOURS", V_V_STOPHOURS);
+            cstmt.setString("V_V_REPAIRHOURS", V_V_REPAIRHOURS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("RET", cstmt.getString("V_INFO"));
