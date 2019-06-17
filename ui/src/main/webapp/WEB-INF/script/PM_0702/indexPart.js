@@ -32,7 +32,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'qx/PRO_DEFECT_PART_DATA_SEL',
+            url: AppUrl +  'dxfile/PRO_DEFECT_PART_DATA_SEL_N',
             actionMethods: {
                 read: 'POST'
             },

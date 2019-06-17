@@ -126,15 +126,12 @@ Ext.onReady(function () {
 
     var inputPanel = Ext.create('Ext.Panel', {
         id : 'inputPanel',
-        header : false,
+        region:'north',
         frame : true,
+        width:'100%',
         layout : 'column',
-        style: 'background-color:#FFFFFF',
-        baseCls: 'my-panel-no-border',
         defaults : {
             labelAlign : 'right',
-            //labelWidth : 100,
-            //inputWidth : 240,
             margin : '4,0,0,0'
         },
         items : [ {
@@ -166,10 +163,8 @@ Ext.onReady(function () {
         frame : true,
         border: false,
         columnLines: true,
-        /*selModel : {
-         selType : 'checkboxmodel',
-         mode : 'SINGLE'
-         },*/
+        autoScroll: true,
+        region:'center',
         selType: 'checkboxmodel',
         columns : [ {
             text : '序号',
@@ -260,16 +255,7 @@ Ext.onReady(function () {
                 east : -1
             }
         },
-        items : [ {
-            region : 'north',
-            border : false,
-            items : [ inputPanel]
-        }, {
-            region : 'center',
-            layout : 'fit',
-            border : false,
-            items : [ overhaulApplyPanel ]
-        } ]
+        items : [ inputPanel,overhaulApplyPanel ]
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
@@ -390,6 +376,7 @@ function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store
 
 
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 
