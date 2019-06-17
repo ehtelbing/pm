@@ -2043,8 +2043,15 @@ function OnButtonSaveClick() {
             if (resp.V_INFO == '成功') {
                 // if (MONGUID != ""&&MONGUID != undefined) {
                 if(wguid!=""){
-                    //缺陷修改
-                    // if(Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID==undefined) {
+                    if(WSIGN=="1"){
+                        Ext.Msg.alert('操作信息', resp.V_INFO);
+                        window.opener.query();
+                        window.close();
+                        // window.opener.retClose();
+                    }
+                    else{
+                        //缺陷修改
+                        // if(Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID==undefined) {
                         Ext.Ajax.request({
                             url: AppUrl + 'dxfile/PM_DEFECT_RE_WEEK_UPDATE',
                             method: 'POST',
@@ -2064,17 +2071,20 @@ function OnButtonSaveClick() {
                                 }
                             }
                         });
-                    // }
-                }
-                else{
-                    if(WSIGN=="1"){
-                        Ext.Msg.alert('操作信息', resp.V_INFO);
-                        window.opener.query();
-                        window.close();
-                        window.opener.retClose();
+                        // }
                     }
 
+
                 }
+                // else{
+                //     if(WSIGN=="1"){
+                //         Ext.Msg.alert('操作信息', resp.V_INFO);
+                //         window.opener.query();
+                //         window.close();
+                //         window.opener.retClose();
+                //     }
+                //
+                // }
                 //检修模型管理
                 /*Ext.Ajax.request({
                  method: 'POST',
