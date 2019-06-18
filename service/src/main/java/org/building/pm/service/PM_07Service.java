@@ -438,12 +438,16 @@ public class PM_07Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call DEFECT_UPFILE_DOWN" + "(:V_V_FIELCODE,:V_V_BLOB,:V_INFO)}");
+            cstmt = conn.prepareCall("{call DEFECT_UPFILE_DOWN" + "(:V_V_FIELCODE,:V_V_BLOB,:V_V_FILENAME,:V_V_FILETYPE,:V_INFO)}");
             cstmt.setString("V_V_FIELCODE", V_FILECODE);
             cstmt.registerOutParameter("V_V_BLOB", OracleTypes.BLOB);
+            cstmt.registerOutParameter("V_V_FILENAME", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_FILETYPE", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+            result.put("V_V_FILETYPE", (String) cstmt.getObject("V_V_FILETYPE"));
+            result.put("V_V_FILENAME", (String) cstmt.getObject("V_V_FILENAME"));
             result.put("V_V_BLOB", cstmt.getBlob("V_V_BLOB"));
         } catch (SQLException e) {
             logger.error(e);
