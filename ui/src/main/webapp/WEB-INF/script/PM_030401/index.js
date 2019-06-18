@@ -128,7 +128,7 @@ Ext.onReady(function(){
     //上报人Store
     var sbPerStore=Ext.create("Ext.data.Store", {
         autoLoad: true,
-        storeId: 'fzPerStore',
+        storeId: 'sbPerStore',
         fields: ['PERCODE', 'PERNAME', 'ORGCODE', 'ORGNAME','DEPTCODE','DEPTNAME'],
         proxy: {
             type: 'ajax',
