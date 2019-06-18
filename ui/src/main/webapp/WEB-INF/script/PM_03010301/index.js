@@ -1763,3 +1763,6 @@ function OnButtonDefPartAddClicked(){
         }
     });
 }
+function Winclose(){
+    query();
+}

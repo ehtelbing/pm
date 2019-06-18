@@ -1,3 +1,4 @@
+/*备件生成周计划页面*/
 var V_WEEKPLAN_GUID = 0;
 if (location.href.split('?')[1] != undefined) {
     V_WEEKPLAN_GUID = Ext.urlDecode(location.href.split('?')[1]).V_WEEKPLAN_GUID;
@@ -485,7 +486,8 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 5 5',
                             labelWidth: 80,
                             width: 280,
-                            value: 0
+                            value: 0,
+                            minValue: 0
                         },{
                             xtype: 'numberfield',
                             id: 'repairper',
@@ -494,7 +496,8 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 5 5',
                             labelWidth: 55,
                             width: 255,
-                            value: 0
+                            value: 0,
+                            minValue: 0
                         }
                     ]
                 },
