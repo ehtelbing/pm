@@ -1108,7 +1108,7 @@ function confirmYS(){
                                                 }
                                             });
                                             //六并行-2 webcode
-                                            if( $("#wbsCode").val()!=""){
+                                            if( $("#V_WBS").html()!=""){
                                                 // Ext.Ajax.request({ //检修完成结果下传
                                                 //     url: AppUrl + 'dxfile/MAINTAIN_TO_WORKORDER_NUM_SEL',
                                                 //     method: 'POST',
