@@ -1068,41 +1068,57 @@ function confirmYS(){
                                             });
                                             //六并行-2 webcode   wbs不为空（即放行生成工单)
                                             if(  $("#V_WBS").val()!=""){
+                                                // Ext.Ajax.request({ //检修完成结果下传
+                                                //     url: AppUrl + 'dxfile/MAINTAIN_TO_WORKORDER_NUM_SEL',
+                                                //     method: 'POST',
+                                                //     async: false,
+                                                //     params: {
+                                                //         V_WORKGUID:$.url().param("V_ORDERGUID"),
+                                                //     },
+                                                //     success: function (ret) {
+                                                //         var resp=Ext.decode(ret.responseText);
+                                                //         if(resp.RET!=null){
+
                                                 Ext.Ajax.request({ //检修完成结果下传
-                                                    url: AppUrl + 'dxfile/MAINTAIN_TO_WORKORDER_NUM_SEL',
+                                                    url: AppUrl + 'wxjh/SI_JXWCJG_Out_Syn_PM0014',
                                                     method: 'POST',
                                                     async: false,
                                                     params: {
-                                                        V_WORKGUID:$.url().param("V_ORDERGUID"),
+                                                        V_V_WORKORDER: $.url().param("V_ORDERGUID"),
+                                                        V_V_DEFECT_TYPE:'1'
                                                     },
                                                     success: function (ret) {
                                                         var resp=Ext.decode(ret.responseText);
-                                                        if(resp.RET!=null){
-                                                            Ext.Ajax.request({ //检修完成结果下传
-                                                                url: AppUrl + 'wxjh/SI_JXWCJG_Out_Syn_PM0014',
-                                                                method: 'POST',
-                                                                async: false,
-                                                                params: {
-                                                                    V_DEFECT_GUID: defguidOld,//缺陷guid
-                                                                    V_DEFECT_TYPE:'1',
-                                                                    V_SYSTEM: 'AKSB',
-                                                                    V_GUID: '',
-                                                                    V_STR01:'',
-                                                                    V_STR02:'',
-                                                                    V_STR03:'',
-                                                                    V_STR04:'',
-                                                                    V_STR05:''
-                                                                },
-                                                                success: function (ret) {
-                                                                    var resp=Ext.decode(ret.responseText);
-                                                                    if(resp.type='S'){
+                                                        if(resp.type='S'){
 
-                                                                    }
-                                                                }
-                                                            });
                                                         }
                                                     }
                                                 });
+                                                            // Ext.Ajax.request({ //检修完成结果下传
+                                                            //     url: AppUrl + 'wxjh/SI_JXWCJG_Out_Syn_PM0014',
+                                                            //     method: 'POST',
+                                                            //     async: false,
+                                                            //     params: {
+                                                            //         V_DEFECT_GUID: defguidOld,//缺陷guid
+                                                            //         V_DEFECT_TYPE:'1',
+                                                            //         V_SYSTEM: 'AKSB',
+                                                            //         V_GUID: '',
+                                                            //         V_STR01:'',
+                                                            //         V_STR02:'',
+                                                            //         V_STR03:'',
+                                                            //         V_STR04:'',
+                                                            //         V_STR05:''
+                                                            //     },
+                                                            //     success: function (ret) {
+                                                            //         var resp=Ext.decode(ret.responseText);
+                                                            //         if(resp.type='S'){
+                                                            //
+                                                            //         }
+                                                            //     }
+                                                            // });
+                                                //         }
+                                                //     }
+                                                // });
                                             }
                                             //六并行-3 setmat
                                             // --update 2018--9-18
