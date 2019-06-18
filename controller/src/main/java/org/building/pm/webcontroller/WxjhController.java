@@ -74,15 +74,8 @@ public class WxjhController {
      * */
     @RequestMapping(value = "SI_JXWCJG_Out_Syn_PM0014", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> SI_JXWCJG_Out_Syn_PM0014(@RequestParam(value = "V_DEFECT_GUID") String V_DEFECT_GUID,
-                                                        @RequestParam(value = "V_DEFECT_TYPE") String V_DEFECT_TYPE,
-                                                        @RequestParam(value = "V_SYSTEM") String V_SYSTEM,
-                                                        @RequestParam(value = "V_GUID") String V_GUID,
-                                                        @RequestParam(value = "V_STR01") String V_STR01,
-                                                        @RequestParam(value = "V_STR02") String V_STR02,
-                                                        @RequestParam(value = "V_STR03") String V_STR03,
-                                                        @RequestParam(value = "V_STR04") String V_STR04,
-                                                        @RequestParam(value = "V_STR05") String V_STR05) throws SQLException {
+    public Map<String, Object> SI_JXWCJG_Out_Syn_PM0014(@RequestParam(value = "V_V_WORKORDER") String V_V_WORKORDER,
+                                                        @RequestParam(value="V_V_DEFECT_TYPE") String V_V_DEFECT_TYPE) throws SQLException {
         Map mapEle = new HashMap();
 
         try {
@@ -90,15 +83,9 @@ public class WxjhController {
             Document root = DocumentHelper.createDocument();
             Element WriteDataRequest = root.addElement("Items");
 
-            WriteDataRequest.addElement("V_DEFECT_GUID").setText(V_DEFECT_GUID);
-            WriteDataRequest.addElement("V_DEFECT_TYPE").setText(V_DEFECT_TYPE);
+            WriteDataRequest.addElement("V_V_WORKORDER").setText(V_V_WORKORDER);
+            WriteDataRequest.addElement("V_V_DEFECT_TYPE").setText(V_V_DEFECT_TYPE);
             WriteDataRequest.addElement("V_SYSTEM").setText(ninfopubusername);
-            WriteDataRequest.addElement("V_GUID").setText(V_GUID);
-            WriteDataRequest.addElement("V_STR01").setText(V_STR01);
-            WriteDataRequest.addElement("V_STR02").setText(V_STR02);
-            WriteDataRequest.addElement("V_STR03").setText(V_STR03);
-            WriteDataRequest.addElement("V_STR04").setText(V_STR04);
-            WriteDataRequest.addElement("V_STR05").setText(V_STR05);
             WriteDataRequest.addElement("WsdlUrl").setText(path);
             WriteDataRequest.addElement("piusername").setText(piusername);
             WriteDataRequest.addElement("pipassword").setText(pipassword);
