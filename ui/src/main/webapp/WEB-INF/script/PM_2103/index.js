@@ -453,7 +453,8 @@ function _dealWith(ProcessDefinitionKey, TaskDefinitionKey, BusinessKey, Process
         method: 'POST',
         params: {
             V_V_PROCESS_KEY: ProcessDefinitionKey,
-            V_V_FLOW_STEP: TaskDefinitionKey
+            V_V_FLOW_STEP: TaskDefinitionKey,
+            V_V_BUSINESSGUID:BusinessKey
         },
         success: function (response) {
             var data = Ext.decode(response.responseText);//后台返回的值

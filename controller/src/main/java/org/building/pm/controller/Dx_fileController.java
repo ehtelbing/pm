@@ -4765,6 +4765,25 @@ public class Dx_fileController {
         return result;
     }
 
+    //是否为备件生成维修缺陷判别
+    @RequestMapping(value = "PM_03_PLAN_YEAR_EQU_SELNUM", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PLAN_YAEAR_EQU_SELNUM(
+            @RequestParam(value = "V_V_PROGUID") String V_V_PROGUID) throws Exception {
+        Map result = dx_fileService.PM_03_PLAN_YEAR_EQU_SELNUM(V_V_PROGUID);
+        return result;
+    }
+
+    //维修查看所有类别关联缺陷详情列表
+    @RequestMapping(value = "PM_03_PROJECT_DEFECT_SEL_Q", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_03_PROJECT_DEFECT_SEL_Q(
+            @RequestParam(value = "V_V_PROJECT_GUID") String V_V_PROJECT_GUID) throws Exception {
+
+        Map result = dx_fileService.PM_03_PROJECT_DEFECT_SEL_Q(V_V_PROJECT_GUID);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

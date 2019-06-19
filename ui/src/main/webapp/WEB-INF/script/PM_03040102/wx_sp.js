@@ -118,7 +118,8 @@ Ext.onReady(function(){
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+            // url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+            url: AppUrl + 'dxfile/PM_03_PROJECT_DEFECT_SEL_Q',
             actionMethods: {
                 read: 'POST'
             },
@@ -1147,9 +1148,9 @@ function updateLoad(){
                     //     }
                     // });
 
-                    Ext.getCmp('ProjectCode').setValue(resp.list[0].V_PORJECT_CODE);
-                    Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);
-                    Ext.getCmp("qstext").setValue(resp.list[0].V_QSTEXT);
+                    Ext.getCmp('ProjectCode').setValue(resp.list[0].V_PORJECT_CODE);Ext.getCmp("ProjectCode").setReadOnly(true);
+                    Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);Ext.getCmp("ProjectName").setReadOnly(true);
+                    Ext.getCmp("qstext").setValue(resp.list[0].V_QSTEXT);Ext.getCmp("qstext").setReadOnly(true);
 
                     if(resp.list[0].V_BDATE==''){
                         Ext.getCmp('btime').setValue(new Date());Ext.getCmp("btime").setReadOnly(true);

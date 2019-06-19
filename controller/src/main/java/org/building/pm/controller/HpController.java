@@ -1287,10 +1287,11 @@ public class HpController {
     public Map<String, Object> PM_EQU_REPAIR_FLOW_MENU_SEL(
             @RequestParam(value = "V_V_PROCESS_KEY") String V_V_PROCESS_KEY,
             @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
+            @RequestParam(value = "V_V_BUSINESSGUID") String V_V_BUSINESSGUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        Map result = hpService.PM_EQU_REPAIR_FLOW_MENU_SEL(V_V_PROCESS_KEY, V_V_FLOW_STEP);
+        Map result = hpService.PM_EQU_REPAIR_FLOW_MENU_SEL(V_V_PROCESS_KEY, V_V_FLOW_STEP,V_V_BUSINESSGUID);
 
         result.put("success", true);
         return result;

@@ -1602,7 +1602,7 @@ public class HpService {
         return result;
     }
 
-    public HashMap PM_EQU_REPAIR_FLOW_MENU_SEL(String V_V_PROCESS_KEY,String V_V_FLOW_STEP) throws SQLException {
+    public HashMap PM_EQU_REPAIR_FLOW_MENU_SEL(String V_V_PROCESS_KEY,String V_V_FLOW_STEP,String V_V_BUSINESSGUID) throws SQLException {
 
         logger.info("begin PM_EQU_REPAIR_FLOW_MENU_SEL");
         // logger.debug("params:V_V_PERSONCODE:" + V_V_PERSONCODE + "params:V_V_DEPTCODE:" + V_V_DEPTCODE+ "params:V_V_DEPTCODENEXT:" + V_V_DEPTCODENEXT+ "params:V_V_DEPTTYPE:" + V_V_DEPTTYPE);
@@ -1613,9 +1613,10 @@ public class HpService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_EQU_REPAIR_FLOW_MENU_SEL" + "(:V_V_PROCESS_KEY,:V_V_FLOW_STEP,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_EQU_REPAIR_FLOW_MENU_SEL" + "(:V_V_PROCESS_KEY,:V_V_FLOW_STEP,:V_V_BUSINESSGUID,:V_CURSOR)}");
             cstmt.setString("V_V_PROCESS_KEY", V_V_PROCESS_KEY);
             cstmt.setString("V_V_FLOW_STEP", V_V_FLOW_STEP);
+            cstmt.setString("V_V_BUSINESSGUID", V_V_BUSINESSGUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
 

@@ -613,6 +613,7 @@ function OnButtonAdd(){
         }
     });
 }
+//备件添加
 function OnButtonAdd2(){
     if(Ext.getCmp("zyq").getValue()=="%"){
         alert('请选择一个作业区');
@@ -649,13 +650,38 @@ function OnButtonEdit(){
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight + 100;
     var seldata = Ext.getCmp('mainpanel').getSelectionModel().getSelection();
+
+    //非备件查询页面
     if(seldata.length!=1){
         alert('请选择一条数据进行修改！');
         return;
     }else{
-        window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") +'&year='+seldata[0].get("V_YEAR")+'&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
-            +'&sign='+'UPDATE'
-            + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+        // 是否备件生成维修计划判别
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_EQU_SELNUM',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_PROGUID:seldata[0].get("V_GUID")
+            },
+            success: function (resp) {
+                var resp=Ext.decode(resp.responseText);
+                if(resp.RET=="0"){
+                    window.open(AppUrl + 'page/PM_03040104/index.html?guid=' + seldata[0].get("V_GUID") +'&year='+seldata[0].get("V_YEAR")+'&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+                        +'&sign='+'UPDATE'
+                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+                }
+                else{
+                    window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") +'&year='+seldata[0].get("V_YEAR")+'&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+                        +'&sign='+'UPDATE'
+                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
+                }
+            }
+        });
+
+        // window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") +'&year='+seldata[0].get("V_YEAR")+'&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+        //     +'&sign='+'UPDATE'
+        //     + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
     }
 
 }

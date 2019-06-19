@@ -6093,4 +6093,58 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_WX_SBTABLE_SELECT");
         return result;
     }
+    //是否为备件生成维修缺陷判别
+    public Map PM_03_PLAN_YEAR_EQU_SELNUM(String V_V_PROGUID)throws SQLException{
+        Map result=new HashMap();
+        Connection conn=null;
+        CallableStatement cstmt=null;
+        try{
+            logger.info("begin PM_03_PLAN_YEAR_EQU_SELNUM");
+            conn=dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt=conn.prepareCall("{call PM_03_PLAN_YEAR_EQU_SELNUM(:V_V_PROGUID,:RET)}");
+            cstmt.setString("V_V_PROGUID",V_V_PROGUID);
+
+            cstmt.registerOutParameter("RET",OracleTypes.VARCHAR);
+//            cstmt.registerOutParameter("RET",OracleTypes.CURSOR);
+            cstmt.execute();
+            String RET=(String) cstmt.getString("RET") ;
+            result.put("RET",RET);
+//            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
+
+        }
+        catch(SQLException ex) {
+            logger.error(ex);
+        }
+        finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_YEAR_EQU_SELNUM");
+        return result;
+    }
+    //维修查看所有类别关联缺陷详情列表
+    public Map PM_03_PROJECT_DEFECT_SEL_Q(String V_V_PROJECT_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_03_PROJECT_DEFECT_SEL_Q" + "(:V_V_PROJECT_GUID,:V_CURSOR)}");
+            cstmt.setString("V_V_PROJECT_GUID", V_V_PROJECT_GUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PROJECT_DEFECT_SEL_Q");
+        return result;
+    }
 }
