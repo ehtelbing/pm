@@ -723,7 +723,7 @@ public class ActivitiController {
                         taskmap.put("PLANSTART", equmap.get("V_BDATE").toString());
                         taskmap.put("PLANEND", equmap.get("V_EDATE").toString());
                         taskmap.put("PLANHOUR", equmap.get("V_SUMTIME").toString());
-                        taskmap.put("OPERANAME", equmap.get("V_INMAN").toString());
+//                        taskmap.put("OPERANAME", equmap.get("V_INMAN").toString());
                         taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                         taskmap.put("ZYNAME", equmap.get("V_SPECIALTYNAME").toString());
