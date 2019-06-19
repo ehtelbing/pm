@@ -937,4 +937,33 @@ public class WorkOrderController {
                 V_V_REPAIRSIGN, V_V_REPAIRPERSON, V_V_POSTMANSIGN, V_V_CHECKMANCONTENT, V_V_CHECKMANSIGN, V_V_WORKSHOPCONTENT, V_V_WORKSHOPSIGN, V_V_DEPTSIGN);
         return result;
     }
+    /**
+     * 周计划生成工单保存
+     */
+    @RequestMapping(value = "/PRO_PM_WORK_FWEEK_DEFECT_SAVE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORK_FWEEK_DEFECT_SAVE(@RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                            @RequestParam(value = "V_V_DEFECT_GUID") String V_V_DEFECT_GUID,
+                                                            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                            @RequestParam(value = "V_V_WORKORDER_TYPE") String V_V_WORKORDER_TYPE,
+                                                            @RequestParam(value = "V_V_DEPTCODEREPARIR") String V_V_DEPTCODEREPARIR,
+                                                            @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
+                                                            @RequestParam(value = "V_V_WBS") String V_V_WBS,
+                                                            @RequestParam(value = "V_V_WBS_TXT") String V_V_WBS_TXT,
+                                                            @RequestParam(value = "V_D_START_DATE") String V_D_START_DATE,
+                                                            @RequestParam(value = "V_D_FINISH_DATE") String V_D_FINISH_DATE,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = workOrderService.PRO_PM_WORK_FWEEK_DEFECT_SAVE(V_V_PERNAME, V_V_DEFECT_GUID, V_V_ORDERGUID, V_V_EQUCODE,
+                V_V_WORKORDER_TYPE,V_V_DEPTCODEREPARIR,V_V_SHORT_TXT,V_V_WBS,V_V_WBS_TXT,V_D_START_DATE,V_D_FINISH_DATE);
+
+        String ret = (String) data.get("V_INFO");
+
+        result.put("RET", ret);
+        result.put("success", true);
+        return result;
+    }
 }

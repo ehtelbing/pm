@@ -482,3 +482,9 @@ function guid() {
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
+
+function Winclose(){
+    // query();
+    window.opener.Winclose();
+    window.close();
+}

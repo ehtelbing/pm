@@ -1443,6 +1443,8 @@ function OnButtonSaveClick() {
     } else if (V_PLANTYPE == 'DEFECT') {
         V_V_DEFECTPLAN_CODE = V_PLANCODE;
     }
+    var retlen=0;
+    var sdefnum=0;
     //模型
     V_JXMX_CODE = guid();
     //保存
@@ -1570,7 +1572,7 @@ function OnButtonSaveClick() {
                         var respguid = Ext.decode(resp.responseText);
 
                         if (respguid.list.length >0) {
-
+                            retlen=respguid.list.length;
                             for(var i=0;i<respguid.list.length;i++)
                             {
                                 Ext.Ajax.request({//保存缺陷详细日志
@@ -1600,8 +1602,7 @@ function OnButtonSaveClick() {
                                                 success: function (ret) {
                                                     var resp = Ext.decode(ret.responseText);
                                                     if(resp.V_INFO=='success'){
-                                                        window.opener.Winclose();
-                                                        window.close();
+                                                        sdefnum++;
 
                                                     }else{
                                                         alert("修改缺陷状态失败");
@@ -1617,6 +1618,12 @@ function OnButtonSaveClick() {
                                     }
                                 });
                             }
+                            if(sdefnum==retlen){
+                                alert('周计划保存成功');
+                                window.opener.Winclose();
+                                window.close();
+                            }
+
                         }else{
 
                             alert("缺陷日志添加错误");
