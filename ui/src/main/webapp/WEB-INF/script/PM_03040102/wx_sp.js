@@ -1182,7 +1182,7 @@ function Onbjcl(value, metaDate, record, rowIndex, colIndex, store){
 function OnChangeEleData(def_guid){
 
     Ext.Ajax.request({
-        url:AppUrl+"dxfile/DEFECT_BY_MAINTAINPLAN_JJFA_SEL",
+        url:AppUrl+"dxfile/DEFECT_BY_MAINTAIN_JJFA_SEL",
         method:'POST',
         params:{
             V_DEFGUID:def_guid,//record.data.V_GUID,

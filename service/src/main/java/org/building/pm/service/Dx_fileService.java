@@ -5358,15 +5358,15 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         return result;
     }
     //维修计划简版缺陷解决方案返回值
-    public Map DEFECT_BY_MAINTAINPLAN_JJFA_SEL(String V_DEFGUID,String V_PRO_GUID)throws SQLException{
+    public Map DEFECT_BY_MAINTAIN_JJFA_SEL(String V_DEFGUID,String V_PRO_GUID)throws SQLException{
         Map result=new HashMap();
         Connection conn=null;
         CallableStatement cstmt=null;
         try{
-            logger.info("begin DEFECT_BY_MAINTAINPLAN_JJFA_SEL");
+            logger.info("begin DEFECT_BY_MAINTAIN_JJFA_SEL");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call DEFECT_BY_MAINTAINPLAN_JJFA_SEL" + "(:V_DEFGUID,:V_PRO_GUID,:V_V_DEPTCODE,:V_V_ZY,:V_V_QSTEXT)}");
+            cstmt = conn.prepareCall("{call DEFECT_BY_MAINTAIN_JJFA_SEL" + "(:V_DEFGUID,:V_PRO_GUID,:V_V_DEPTCODE,:V_V_ZY,:V_V_QSTEXT)}");
             cstmt.setString("V_DEFGUID", V_DEFGUID);
             cstmt.setString("V_PRO_GUID", V_PRO_GUID);
 
@@ -5384,7 +5384,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end DEFECT_BY_MAINTAINPLAN_JJFA_SEL");
+        logger.info("end DEFECT_BY_MAINTAIN_JJFA_SEL");
         return result;
     }
     //简版维修计划保存

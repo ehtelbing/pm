@@ -4369,15 +4369,15 @@ public class Dx_fileController {
     }
 
     //维修计划简版缺陷解决方案返回值
-    @RequestMapping(value = "DEFECT_BY_MAINTAINPLAN_JJFA_SEL", method = RequestMethod.POST)
+    @RequestMapping(value = "DEFECT_BY_MAINTAIN_JJFA_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> DEFECT_BY_MAINTAINPLAN_JJFA_SEL(
+    public Map<String, Object> DEFECT_BY_MAINTAIN_JJFA_SEL(
             @RequestParam(value = "V_DEFGUID") String V_DEFGUID,
             @RequestParam(value = "V_PRO_GUID") String V_PRO_GUID,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        Map data = dx_fileService.DEFECT_BY_MAINTAINPLAN_JJFA_SEL(V_DEFGUID, V_PRO_GUID);
+        Map data = dx_fileService.DEFECT_BY_MAINTAIN_JJFA_SEL(V_DEFGUID, V_PRO_GUID);
         return data;
     }
 
