@@ -1589,16 +1589,19 @@ function ActivitiConfirmAccept() {//确定验收
         matChangeFlow();
     }else {
         if ($("#D_DATE_ACP").val() == "" || $("#D_DATE_ACP").val() == null) {
+            Ext.getBody().unmask();
             Ext.MessageBox.alert('提示', '请填写验收日期');
             return false;
         }
 
         if ($("#V_REPAIRSIGN").val() == "这个判断不执行") {
+            Ext.getBody().unmask();
             Ext.MessageBox.alert('提示', '请先填写检修方签字');
             return false;
         }
 
         if ($("#V_CHECKMANCONTENT").val() == "") {
+            Ext.getBody().unmask();
             Ext.MessageBox.alert('提示', '请填写点检员验收意见');
             return false;
         }
