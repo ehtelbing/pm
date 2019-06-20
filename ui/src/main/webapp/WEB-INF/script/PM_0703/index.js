@@ -217,7 +217,7 @@ Ext.onReady(function () {
                         X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
                     }
                 });*/
-               /* Ext.ComponentManager.get('tabpanel').removeAll();
+                Ext.ComponentManager.get('tabpanel').removeAll();
                 Ext.Ajax.request({
                     url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_COUNT',
                     method: 'POST',
@@ -249,7 +249,7 @@ Ext.onReady(function () {
                         }
                         Ext.ComponentManager.get("tabpanel").setActiveTab(tabIndex);
                     }
-                });*/
+                });/* */
             }
         }, {
             xtype: 'hidden',
