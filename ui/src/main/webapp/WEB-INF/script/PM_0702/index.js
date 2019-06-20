@@ -102,7 +102,7 @@ Ext.onReady(function () {
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
             'V_STATECOLOR', 'V_ORDERID', 'V_EQUTYPECODE', 'V_SOURCECODE',
-            'D_BE_SJ', 'D_EN_SJ','V_SOURCE_GRADE','WBSCODE'],
+            'D_BE_SJ', 'D_EN_SJ','V_SOURCE_GRADE','WBSCODE','WBSNAME'],
 
         proxy: {
             type: 'ajax',
@@ -223,6 +223,12 @@ Ext.onReady(function () {
             width: 100,
             renderer: CreateGridColumnTd
         },{
+            text: 'WBS名称',
+            dataIndex: 'WBSNAME',
+            align: 'center',
+            width: 100,
+            renderer: CreateGridColumnTd
+        }, {
             text: '作业区',
             dataIndex: 'V_DEPTNAME',
             align: 'center',

@@ -290,7 +290,7 @@ Ext.onReady(function () {
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID','WEBCODE'],
+            'V_STATECOLOR', 'V_ORDERID','WEBCODE','WBSNAME'],
 
         proxy: {
             type: 'ajax',
@@ -336,6 +336,13 @@ Ext.onReady(function () {
                 align:'center',
                 width:'90',
                 dataIndex:'WEBCODE'
+
+            }, {
+                text:'WBS名称',
+                id:'wbsnameid',
+                align:'center',
+                width:'90',
+                dataIndex:'WBSNAME'
 
             },
             {

@@ -602,7 +602,7 @@ Ext.onReady(function () {
                                 xtype: 'datefield',
                                 id: 'jhtgdate',
                                 format: 'Y-m-d',
-                                fieldLabel: '计划停工时间',
+                                fieldLabel: '计划开工时间',
                                 editable: false,
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
