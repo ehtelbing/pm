@@ -543,25 +543,15 @@ Ext.onReady(function () {
                         //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
-                            {
-                                xtype: 'textfield',
-                                id: 'maindefect',
-                                fieldLabel: '主要缺陷',
-                                labelAlign: 'right',
-                                allowBlank:false,
-                                margin: '5 0 0 5',
-                                labelWidth: 80,
-                                width: 280,
-                                fieldStyle:'background-color: #FFEFD5;border-color: #FFEFD5; background-image: none;'
-                            },{
+                           {
                                 xtype: 'combo',
                                 id: 'gx',
                                 fieldLabel: '工序',
                                 editable: false,
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
-                                labelWidth: 70,
-                                width: 255,
+                                labelWidth: 80,
+                                width: 280,
                                 matchFieldWidth: false,
                                 value: '',
                                 displayField: 'OPERA_NAME',
@@ -577,6 +567,20 @@ Ext.onReady(function () {
                     },
                     {
                         xtype: 'textarea',
+                        id: 'maindefect',
+                        fieldLabel: '主要缺陷',
+                        labelAlign: 'right',
+                        allowBlank:false,
+                        margin: '5 0 0 5',
+                        labelWidth: 80,
+                        width: 540,
+                        height: 44,
+                        fieldStyle:'background-color: #FFEFD5;border-color: #FFEFD5; background-image: none;',
+                        readOnly: true
+
+                    },
+                    {
+                        xtype: 'textarea',
                         id: 'jxnr',
                         fieldLabel: '检修内容',
                         labelAlign: 'right',
@@ -584,6 +588,7 @@ Ext.onReady(function () {
                         labelWidth: 80,
                         allowBlank:false,
                         width: 540,
+                        height: 44,
                         value: ''
                     },
                     {

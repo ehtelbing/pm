@@ -112,11 +112,13 @@ var nextSprStore = Ext.create("Ext.data.Store", {
     },
     listeners: {
         load: function (store, records, success, eOpts) {
-            processKey = store.getProxy().getReader().rawData.RET;
-            V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-            V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+            if(store.getAt(0)!=undefined){
+                processKey = store.getProxy().getReader().rawData.RET;
+                V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+                V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
+                Ext.getCmp('nextPer').select(store.first());
+            }
 
-            Ext.getCmp('nextPer').select(store.first());
 
         }
 

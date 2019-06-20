@@ -222,7 +222,24 @@ var sbmcStore = Ext.create('Ext.data.Store', {
         }
     }
 });
-
+//工序
+var gxStore=Ext.create('Ext.data.Store',{
+    id:'gxStore',
+    autoLoad:false,
+    fields:[ 'OPERA_NAME','ID'],
+    proxy:{
+        type:'ajax',
+        async:false,
+        url:AppUrl+'dxfile/BASE_OPERATION_SEL',
+        actionMethods:{
+            read:'POST'
+        },
+        reader:{
+            type:'json',
+            root:'RET'
+        }
+    }
+});
 //施工方式
 var sgfsStore = Ext.create("Ext.data.Store", {
     storeId: 'sgfsStore',
@@ -510,27 +527,49 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     items: [
 
                         {
-                            xtype: 'textfield',
-                            id: 'maindefect',
-                            fieldLabel: '主要缺陷',
-                            allowBlank:false,
+                            xtype: 'combo',
+                            id: 'gx',
+                            fieldLabel: '工序',
+                            editable: false,
                             labelAlign: 'right',
-                            margin: '5 0 5 5',
+                            margin: '5 0 0 5',
                             labelWidth: 80,
                             width: 280,
-                            readOnly:true
+                            matchFieldWidth: false,
+                            value: '',
+                            displayField: 'OPERA_NAME',
+                            valueField: 'OPERA_NAME',
+                            store: gxStore,
+                            queryMode: 'local',
+                            listConfig:{
+                                minWidth:400
+                            }
                         }
                     ]
+                },
+                {
+                    xtype: 'textarea',
+                    id: 'maindefect',
+                    fieldLabel: '主要缺陷',
+                    labelAlign: 'right',
+                    allowBlank: false,
+                    margin: '5 0 5 5',
+                    labelWidth: 80,
+                    width: 540,
+                    height: 44,
+                    fieldStyle:'background-color: #FFEFD5;border-color: #FFEFD5; background-image: none;'
+                    // readOnly: true
                 },
                 {
                     xtype: 'textarea',
                     id: 'jxnr',
                     fieldLabel: '检修内容',
                     labelAlign: 'right',
-                    allowBlank:false,
+                    allowBlank: false,
                     margin: '5 0 5 5',
                     labelWidth: 80,
                     width: 540,
+                    height: 44,
                     value: ''
                 },
                 {
@@ -1148,6 +1187,14 @@ function pageLoadInfo() {
                 V_V_DEPTCODE:Ext.getCmp('zyq').getValue()
             }
         });
+        Ext.data.StoreManager.lookup('gxStore').load({
+            params:{
+                V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                V_DPPTCODE:Ext.util.Cookies.get('v_deptcode'),
+                V_ORGCODE:Ext.util.Cookies.get('v_orgCode'),
+                V_FLAG:'0'
+            }
+        });
     });
     Ext.data.StoreManager.lookup('repairDeptStore').on('load', function () {
         Ext.getCmp('repairDept').select(Ext.data.StoreManager.lookup('repairDeptStore').getAt(0));
@@ -1244,7 +1291,7 @@ Ext.onReady(function () {
 
                 }
                 Ext.getCmp('jxnr').setValue(str);
-                Ext.getCmp('maindefect').setValue(str);
+                Ext.getCmp('maindefect').setValue(str); Ext.getCmp('maindefect').setReadOnly(true);
 
             }
 
@@ -1496,7 +1543,7 @@ function OnButtonSaveClick() {
             V_V_SGWAY:Ext.getCmp('repairDept').getValue(),
             V_V_SGWAYNAME:Ext.getCmp('repairDept').getDisplayValue(),
             //cxy2019/2/26
-            V_V_OPERANAME:''  //工序
+            V_V_OPERANAME:Ext.getCmp('gx').getValue()  //工序
         },
         success: function (ret) {
             var resp = Ext.decode(ret.responseText);

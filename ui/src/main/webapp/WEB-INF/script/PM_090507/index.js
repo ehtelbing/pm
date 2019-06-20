@@ -255,6 +255,7 @@ function GetBillMatByOrder() {
 }
 
 function Agree() {
+    Ext.getBody().mask('<p>审批中...请稍后</p>');
     workMatChangeSel();
     if(MATSIGN==1||returnMatSign=="1"){
         matChangeFlow();
@@ -315,6 +316,7 @@ function Agree() {
                                 var resp = Ext.JSON.decode(ret.responseText);
                                 if (resp.V_INFO == 'success') {
                                     workMatChangeUpdt();
+                                    Ext.getBody().unmask();//去除页面笼罩
                                     window.opener.QueryTab();
                                     window.opener.QuerySum();
                                     window.opener.QueryGrid();
@@ -328,6 +330,7 @@ function Agree() {
                     }
                 },
                 failure: function (response) {//访问到后台时执行的方法。
+                    Ext.getBody().unmask();//去除页面笼罩
                     Ext.MessageBox.show({
                         title: '错误',
                         msg: response.responseText,
@@ -337,6 +340,7 @@ function Agree() {
                 }
             })
                     } else {
+                        Ext.getBody().unmask();//去除页面笼罩
                         alert("失败");
                     }
                 }
@@ -376,6 +380,7 @@ function Agree() {
                             success: function (ret) {
                                 var resp = Ext.JSON.decode(ret.responseText);
                                 if (resp.V_INFO == 'success') {
+                                    Ext.getBody().unmask();//去除页面笼罩
                                     window.opener.QueryTab();
                                     window.opener.QuerySum();
                                     window.opener.QueryGrid();
@@ -385,10 +390,12 @@ function Agree() {
                             }
                         });
                     } else {
+                        Ext.getBody().unmask();//去除页面笼罩
                         Ext.MessageBox.alert('提示', '任务提交失败');
                     }
                 },
                 failure: function (response) {//访问到后台时执行的方法。
+                    Ext.getBody().unmask();//去除页面笼罩
                     Ext.MessageBox.show({
                         title: '错误',
                         msg: response.responseText,
@@ -402,6 +409,7 @@ function Agree() {
 }
 
 function DisAgree() {
+    Ext.getBody().mask('<p>驳回中...请稍后</p>');
     var spyj = '';
     if ($("#spyj").val() == '' || $("#spyj").val() == null) {
         spyj = '审批驳回';
@@ -445,6 +453,7 @@ function DisAgree() {
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);
                             if (resp.V_INFO == 'success') {
+                                Ext.getBody().unmask();//去除页面笼罩
                                 window.opener.QueryTab();
                                 window.opener.QuerySum();
                                 window.opener.QueryGrid();
@@ -454,10 +463,12 @@ function DisAgree() {
                         }
                     });
                 } else {
+                    Ext.getBody().unmask();//去除页面笼罩
                     Ext.MessageBox.alert('提示', '任务提交失败');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
+                Ext.getBody().unmask();//去除页面笼罩
                 Ext.MessageBox.show({
                     title: '错误',
                     msg: response.responseText,
@@ -467,6 +478,7 @@ function DisAgree() {
             }
         })
     } else {
+        Ext.getBody().unmask();//去除页面笼罩
         alert("发起人信息错误，无法驳回");
     }
 }

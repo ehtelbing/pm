@@ -311,7 +311,8 @@ Ext.onReady(function(){
                 listeners: {click: OnButtonQuery}
             },{
                 xtype: 'button',
-                text: '新增工程项目',
+                // text: '新增工程项目',
+                text: '新增外委工程',
                 icon: imgpath + '/add.png',
                 listeners: {click: OnButtonAdd}
             },
@@ -329,7 +330,8 @@ Ext.onReady(function(){
             },
             {
                 xtype: 'button',
-                text: '删除工程项目',
+                // text: '删除工程项目',
+                text:'删除外委工程',
                 icon: imgpath + '/delete.png',
                 listeners: {click: OnButtonDel}
             },

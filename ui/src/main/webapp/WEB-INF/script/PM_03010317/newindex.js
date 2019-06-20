@@ -435,19 +435,16 @@ Ext.onReady(function(){
         selType: 'checkboxmodel',
         columns : [
             {text : '序号',xtype : 'rownumberer',width : 50,sortable : false}
-            , {text : '单位',dataIndex : 'V_DEPTNAME',align : 'center',width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷日期', dataIndex : 'D_DEFECTDATE', align : 'center', width : 200, renderer : CreateGridColumnTime
-            }, {text : '缺陷明细', dataIndex : 'V_DEFECTLIST', align : 'center', width : 700, renderer : CreateGridColumnTd
-            },
-            {text : '缺陷明细', dataIndex : 'V_EQUCODE', hidden:true,align : 'center', width : 700, renderer : CreateGridColumnTd
-            }
-            , {text : '设备', dataIndex : 'V_EQUNAME', align : 'center', width : 200, renderer : CreateGridColumnTd
-            }, {text : '设备位置', dataIndex : 'V_EQUSITE', align : 'center', width : 300, renderer : CreateGridColumnTd
-            }, {text : '负责人', dataIndex : 'V_PERNAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '处理意见', dataIndex : 'V_IDEA', align : 'center', renderer : CreateGridColumnTd
-            }],
+            , {text : '单位',dataIndex : 'V_DEPTNAME',align : 'center',width : 100, renderer : CreateGridColumnTd},
+            {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'center', width : 100, renderer : CreateGridColumnTd},
+            {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'center', width : 100, renderer : CreateGridColumnTd},
+            {text : '缺陷日期', dataIndex : 'D_DEFECTDATE', align : 'center', width : 200, renderer : CreateGridColumnTime},
+            {text : '设备', dataIndex : 'V_EQUNAME', align : 'center', width : 200, renderer : CreateGridColumnTd},
+            {text : '缺陷明细', dataIndex : 'V_DEFECTLIST', align : 'center', width : 700, renderer : CreateGridColumnTd},
+            {text : '设备编码', dataIndex : 'V_EQUCODE', hidden:true,align : 'center', width : 700, renderer : CreateGridColumnTd},
+            {text : '设备位置', dataIndex : 'V_EQUSITE', align : 'center', width : 300, renderer : CreateGridColumnTd},
+            {text : '负责人', dataIndex : 'V_PERNAME', align : 'center', width : 100, renderer : CreateGridColumnTd},
+            {text : '处理意见', dataIndex : 'V_IDEA', align : 'center', renderer : CreateGridColumnTd}],
         listeners : {
             itemdblclick :tbitemclick
             // ,itemclick: Select

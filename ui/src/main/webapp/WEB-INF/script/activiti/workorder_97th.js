@@ -628,6 +628,7 @@ function comboConfirm() {
     //     }
     //
     // }
+    Ext.getBody().mask('<p>驳回中...请稍后</p>');
     var newQxState="10";
     if (Ext.getCmp('radiotypexqx').getValue().xqxtypename == '1') { //新缺陷是否消缺
         newQxState="30";
@@ -902,6 +903,7 @@ function comboConfirm() {
 }
 //执行验收过程
 function confirmYS(){
+    Ext.getBody().mask('<p>验收中...请稍后</p>');
    var defExeNum=0;
    var defRetNum=0;
     //一、工作流
@@ -1234,6 +1236,7 @@ function confirmYS(){
                                 }
                             });
                             if(defRetNum==defExeNum){
+                                Ext.getBody().unmask();//去除页面笼罩
                                 window.opener.QueryTab();
                                 window.opener.QuerySum();
                                 window.opener.QueryGrid();
@@ -1249,6 +1252,7 @@ function confirmYS(){
                              });*/
                         },
                         error: function (response, opts) {
+                            Ext.getBody().unmask();//去除页面笼罩
                             Ext.Msg.alert('提示', '验收工单失败,请联系管理员');
                         }
                     });
@@ -1473,6 +1477,7 @@ function confirmYS(){
 
         },//流程验收结束
         failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();//去除页面笼罩
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,
@@ -1578,6 +1583,7 @@ function changefactnum(){
 }
 //--end upd
 function ActivitiConfirmAccept() {//确定验收
+    Ext.getBody().mask('<p>验收跳转中...请稍后</p>');
     workMatChangeSel();
     if(MATSIGN==1||returnMatSign=="1"){
         matChangeFlow();
@@ -1609,7 +1615,7 @@ function ActivitiConfirmAccept() {//确定验收
             traditional: true,
             success: function (resp) {
                 // QRYS();
-
+                Ext.getBody().unmask();//去除页面笼罩
                 Ext.getCmp('combowindow').show();
                 // var fnum = resp.list.length;
                 //
