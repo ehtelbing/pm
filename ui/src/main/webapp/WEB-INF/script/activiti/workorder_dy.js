@@ -1244,7 +1244,7 @@ function matChangeFlow() {
 //查找是否物料有改变
 function workMatChangeSel() {
     Ext.Ajax.request({
-        url: AppUrl + 'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_SEL',
+        url: AppUrl + 'dxfile/PRO_MAT_CHANGE_SIGN_SEL',
         type: 'POST',
         async: false,
         params: {

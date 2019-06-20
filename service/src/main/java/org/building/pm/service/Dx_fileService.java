@@ -4209,15 +4209,15 @@ public class Dx_fileService {
     }
 
     //工单物料是否改变查询
-    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(String V_WORKGUID, String V_SIGN) throws SQLException {
+    public Map PRO_MAT_CHANGE_SIGN_SEL(String V_WORKGUID, String V_SIGN) throws SQLException {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
-            logger.info("begin PRO_WORKORDER_MAT_CHANGE_SIGN_SEL");
+            logger.info("begin PRO_MAT_CHANGE_SIGN_SEL");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(:V_WORKGUID,:V_SIGN,:RET)}");
+            cstmt = conn.prepareCall("{call PRO_MAT_CHANGE_SIGN_SEL(:V_WORKGUID,:V_SIGN,:RET)}");
             cstmt.setString("V_WORKGUID", V_WORKGUID);
             cstmt.setString("V_SIGN", V_SIGN);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
@@ -4230,7 +4230,7 @@ public class Dx_fileService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_WORKORDER_MAT_CHANGE_SIGN_SEL");
+        logger.info("end PRO_MAT_CHANGE_SIGN_SEL");
         return result;
     }
 

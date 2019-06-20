@@ -3728,14 +3728,14 @@ public class Dx_fileController {
     }
 
     //工单物料是否改变查询
-    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_SIGN_SEL", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_MAT_CHANGE_SIGN_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(
+    public Map PRO_MAT_CHANGE_SIGN_SEL(
             @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
             @RequestParam(value = "V_SIGN") String V_SIGN,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_SEL(V_WORKGUID, V_SIGN);
+        Map data = dx_fileService.PRO_MAT_CHANGE_SIGN_SEL(V_WORKGUID, V_SIGN);
         return data;
     }
 
