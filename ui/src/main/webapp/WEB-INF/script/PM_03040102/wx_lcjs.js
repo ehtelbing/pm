@@ -218,7 +218,7 @@ Ext.onReady(function(){
         id:'tpanel',
         titleAlign:'center',
         defaults: {labelAlign: 'right'},
-        collapsible: false,
+        // collapsible: false,
         tbar: [
             /*{
                 xtype: 'button',
@@ -294,7 +294,7 @@ Ext.onReady(function(){
         split:true,
         // height:'50%',
         autoScroll:true,
-        collapsible: true,
+        // collapsible: true,
         items:[
             {
                 xtype: 'textfield',
@@ -388,7 +388,7 @@ Ext.onReady(function(){
         // height:'50%',
         height:155,
         // autoScroll:true,
-        collapsible: true,
+        // collapsible: true,
         items:[{
             xtype     : 'textareafield',
             id:'qstext',
