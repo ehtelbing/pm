@@ -382,7 +382,7 @@ Ext.onReady(function(){
         split: true,
         height:'45%',
         border:false,
-        collapsible: true,
+        // collapsible: true,
         items:[monthPanel,mfGridPanel]
     });
     //其他缺陷模块
@@ -392,7 +392,7 @@ Ext.onReady(function(){
         region:'north',
         frame:true,
         border:false,
-        height:'10%',
+        height:'15%',
         autoScroll:true,
         defaults:{
             labelAlign:'right',
@@ -515,7 +515,7 @@ Ext.onReady(function(){
         split: true,
         frame:true,
         border:false,
-        collapsible: true,
+        // collapsible: true,
         items:[otherDefPanel,haveChoDef]
     });
     //main

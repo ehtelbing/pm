@@ -106,12 +106,13 @@ Ext.onReady(function () {
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID', 'V_EQUTYPECODE', 'V_SOURCECODE'],
+            'V_STATECOLOR', 'V_ORDERID', 'V_EQUTYPECODE', 'V_SOURCECODE','WBSCODE','WBSNAME'],
 
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PRO_PM_07_DEFECT_VIEW_NEW',
+            // url: AppUrl + 'hp/PRO_PM_07_DEFECT_VIEW_NEW',
+            url: AppUrl + 'hp/PRO_PM_07_DEFECT_VIEW_NEW_N',
             actionMethods: {
                 read: 'POST'
             },
@@ -171,14 +172,30 @@ Ext.onReady(function () {
             xtype: 'rownumberer',
             width: 50,
             sortable: false
-        }, {
+        },
+            {
+                text: 'WBS编码',
+                dataIndex: 'WBSCODE',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            },
+            {
+                text: 'WBS名称',
+                dataIndex: 'WBSNAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            },
+           /* {
             text: '手工消缺',
             id: 'sgxq',
             xtype: 'templatecolumn',
             align: 'center',
             width: 100,
             tpl: '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
-        }, {
+        }, */
+            {
             text: '单位',
             dataIndex: 'V_DEPTNAME',
             align: 'center',
@@ -243,46 +260,6 @@ Ext.onReady(function () {
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
             store: 'gridStore'
-        }, {
-            xtype: 'label',
-            text: '已计划',
-            style: ' margin: 0px 0px 0px 10px;color:#FFCC00'
-        }, {
-            xtype: 'label',
-            text: '已接收',
-            style: ' margin: 0px 0px 0px 10px;color:#009933'
-        }, {
-            xtype: 'label',
-            text: '已反馈',
-            style: ' margin: 0px 0px 0px 10px;color:#6666FF'
-        }, {
-            xtype: 'label',
-            text: '已验收',
-            style: ' margin: 0px 0px 0px 10px;color:#333300'
-        }, {
-            xtype: 'label',
-            text: '遗留缺陷',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '工单驳回',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '未处理',
-            style: ' margin: 0px 0px 0px 10px;color:#FF0000'
-        }, {
-            xtype: 'label',
-            text: '已下票',
-            style: ' margin: 0px 0px 0px 10px;color:#FF33CC'
-        }, {
-            xtype: 'label',
-            text: '已消缺',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
-        }, {
-            xtype: 'label',
-            text: '手工消缺',
-            style: ' margin: 0px 0px 0px 10px;color:#000000'
         }]
     });
 
@@ -416,7 +393,7 @@ function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store
 
 
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
+    // metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
     if (value == null) {
         return '<div data-qtip="' + value + '" ></div>';
     }

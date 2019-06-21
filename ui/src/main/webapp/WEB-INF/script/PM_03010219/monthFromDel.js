@@ -450,6 +450,20 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             queryMode: 'local'
                         },
                         {
+                            xtype: 'combo',
+                            id: 'gx',
+                            fieldLabel: '工序',
+                            editable: false,
+                            margin: '5 0 0 5',
+                            labelWidth: 55,
+                            width: 255,
+                            displayField: 'OPERA_NAME',
+                            valueField: 'OPERA_NAME',
+                            value: '',
+                            store: gxStore,
+                            queryMode: 'local'
+                        },
+                        /*{
                             xtype: 'textfield',
                             id: 'maindefect',
                             fieldLabel: '主要缺陷',
@@ -458,7 +472,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 5 5',
                             labelWidth: 55,
                             width: 255
-                        }
+                        }*/
                     ]
                 },
                 {
@@ -522,12 +536,25 @@ var editPanel = Ext.create('Ext.form.Panel', {
                 },
                 {
                     xtype: 'textarea',
+                    id: 'maindefect',
+                    fieldLabel: '主要缺陷',
+                    labelAlign: 'right',
+                    allowBlank:false,
+                    margin: '5 0 5 5',
+                    labelWidth: 80,
+                    height:44,
+                    width: 540,
+                    fieldStyle:'background-color: #FFEFD5;border-color: #FFEFD5; background-image: none;'
+                },
+                {
+                    xtype: 'textarea',
                     id: 'jxnr',
                     fieldLabel: '检修内容',
                     labelAlign: 'right',
                     margin: '5 0 5 5',
                     labelWidth: 80,
                     width: 540,
+                    height:44,
                     value: ''
                 },
                 {
@@ -712,7 +739,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     width: 280,
                     value: '0'
                 },
-                {
+                /*{
                     xtype: 'combo',
                     id: 'gx',
                     fieldLabel: '工序',
@@ -725,7 +752,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     value: '',
                     store: gxStore,
                     queryMode: 'local'
-                },
+                },*/
                 {
                     xtype: 'textarea',
                     id: 'bz',
