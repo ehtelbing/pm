@@ -984,6 +984,22 @@ function OnButtonDeleteData(){
                         }
                     });
 
+                    //月计划缺陷状态关联删除
+                    Ext.Ajax.request({
+                        url: AppUrl + 'dxfile/PRO_PM_DEL_MONTH_RE_DEF',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID:records[i].get('V_GUID')
+                        },
+                        success: function (response) {
+                            var resp = Ext.decode(response.responseText);//后台返回的值
+                            if (resp.RET == 'SUCCESS') {
+
+                            }
+                        }
+                    });
+
                     Ext.Ajax.request({
                         url: AppUrl + 'hp/PRO_PM_03_PLAN_MONTH_DELDATA',
                         method: 'POST',

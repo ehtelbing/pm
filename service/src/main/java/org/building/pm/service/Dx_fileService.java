@@ -5271,7 +5271,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         Connection conn=null;
         CallableStatement cstmt=null;
         try{
-            logger.info("begin WORK_FILE_INSERT");
+            logger.info("begin WORK_FILE_SELECT");
             conn=dataSources.getConnection();
             conn.setAutoCommit(true);
             cstmt=conn.prepareCall("{call WORK_FILE_SELECT(:V_WOEKGUID,:V_PERCODE,:RET)}");
@@ -5289,7 +5289,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end WORK_FILE_INSERT");
+        logger.info("end WORK_FILE_SELECT");
         return result;
     }
     //工单附件删除 WORK_FILE_DEL
@@ -6147,4 +6147,60 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_03_PROJECT_DEFECT_SEL_Q");
         return result;
     }
+
+    //   月计划删除缺陷修改 PRO_PM_DEL_MONTH_RE_DEF
+    public Map PRO_PM_DEL_MONTH_RE_DEF(String V_V_GUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PRO_PM_DEL_MONTH_RE_DEF");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_DEL_MONTH_RE_DEF(:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET = (String) cstmt.getString("RET");
+            result.put("RET", RET);
+
+        } catch (SQLException ex) {
+            logger.error(ex);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEL_MONTH_RE_DEF");
+        return result;
+    }
+
+    //工单验收-缺陷关联工单 PM_DEFECT_RE_WORK_INSERT
+    public Map PM_DEFECT_RE_WORK_INSERT(String V_V_WGUID,String V_DEFGUID) throws SQLException {
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            logger.info("begin PM_DEFECT_RE_WORK_INSERT");
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_DEFECT_RE_WORK_INSERT(:V_V_WGUID,:V_DEFGUID,:RET)}");
+            cstmt.setString("V_V_WGUID", V_V_WGUID);
+            cstmt.setString("V_DEFGUID", V_DEFGUID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET = (String) cstmt.getString("RET");
+            result.put("RET", RET);
+        } catch (SQLException ex) {
+            logger.error(ex);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECT_RE_WORK_INSERT");
+        return result;
+    }
+
 }

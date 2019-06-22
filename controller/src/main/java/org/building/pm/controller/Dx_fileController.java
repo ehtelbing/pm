@@ -4784,6 +4784,26 @@ public class Dx_fileController {
         return result;
     }
 
+    //   月计划删除缺陷修改 PRO_PM_DEL_MONTH_RE_DEF
+    @RequestMapping(value = "PRO_PM_DEL_MONTH_RE_DEF", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_DEL_MONTH_RE_DEF(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+
+        Map result = dx_fileService.PRO_PM_DEL_MONTH_RE_DEF(V_V_GUID);
+        return result;
+    }
+   //工单验收-缺陷关联工单 PM_DEFECT_RE_WORK_INSERT
+   @RequestMapping(value = "PM_DEFECT_RE_WORK_INSERT", method = RequestMethod.POST)
+   @ResponseBody
+   public Map PM_DEFECT_RE_WORK_INSERT(
+           @RequestParam(value = "V_V_WGUID") String V_V_WGUID,
+           @RequestParam(value = "V_DEFGUID") String V_DEFGUID) throws Exception {
+
+       Map result = dx_fileService.PM_DEFECT_RE_WORK_INSERT(V_V_WGUID,V_DEFGUID);
+       return result;
+   }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

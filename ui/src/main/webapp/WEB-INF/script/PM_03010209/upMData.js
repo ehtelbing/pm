@@ -257,6 +257,7 @@ Ext.onReady(function () {
         border: false,
         // width: '100%',
         autoScroll: true,
+        style:'background-color:rgba(255, 255, 255, 1);',
         baseCls: 'my-panel-no-border',
         items: [
             {
@@ -266,7 +267,7 @@ Ext.onReady(function () {
                 defaults: {labelAlign: 'right'},
                 frame: true,
                 border: false,
-                baseCls: 'my-panel-no-border',
+                /*baseCls: 'my-panel-no-border',*/
                 autoScroll: true,
                 items: [
                     {
@@ -774,12 +775,24 @@ Ext.onReady(function () {
                                 labelWidth: 80,
                                 width: 280
                                 // readOnly:true
-                                // ,value: '',
-                                //     listeners: {
-                                //         select: function () {
-                                //             _gongshiheji();
-                                //         }
-                                //     }
+                                ,value: '',
+                                    listeners: {
+                                        select: function () {
+                                            var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                            var date11 = new Date(date1);
+                                            var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                            var date22 = new Date(date2);
+
+
+                                            var gongshicha = date22.getTime() - date11.getTime();
+                                            var gongshicha2 = Ext.util.Format.round(gongshicha / 1000 / 60 / 60, 1);
+                                            if(gongshicha2 >= 0)
+                                            {
+                                                _gongshiheji();
+                                            }
+                                            // _gongshiheji();
+                                        }
+                                    }
                             },
                             {
                                 xtype: 'combo',

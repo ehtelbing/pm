@@ -27,9 +27,11 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 var defect="";
 var defState="";
+var wguid="";
 if(location.href.split("?")[1]!=undefined){
     defect=Ext.urlDecode(location.href.split("?")[1]).defect;
     defState=Ext.urlDecode(location.href.split("?")[1]).defState;
+    wguid=Ext.urlDecode(location.href.split("?")[1]).wguid;
 }
 
 Ext.onReady(function () {
@@ -735,6 +737,23 @@ function OnButtonSave() {
     if (Ext.getCmp('sblx').getValue() == '%' || Ext.getCmp('sbmc').getValue() == '%') {
         Ext.Msg.alert('操作信息', '设备类型或设备名称不可以为空');
         return;
+    }
+    if(defState=="30"){
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/PRO_PM_DEL_MONTH_RE_DEF',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_WGUID: wguid,
+                V_DEFGUID:defectguid
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.V_INFO == '成功') {
+
+                }
+            }
+        });
     }
     Ext.Ajax.request({
         url: AppUrl + 'dxfile/PRO_PM_07_DEFECT_SET_STAT',
