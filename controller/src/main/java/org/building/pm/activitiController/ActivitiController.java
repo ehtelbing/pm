@@ -167,7 +167,7 @@ public class ActivitiController {
             int minute = c.get(Calendar.MINUTE);
             int second = c.get(Calendar.SECOND);*/
 //            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
-            String time=getShtgtime.Shtgtime();
+            String time = getShtgtime.Shtgtime();
 
             try {
                 for (int i = 0; i < parName.length; i++) {
@@ -552,18 +552,18 @@ public class ActivitiController {
             List<Task> taskList = null;
             if (FlowCode.equals("")) {
                 if (PersonCode.equals("ActivitiManage")) {
-                    if(ZyType.equals("%") || ZyType.equals("")){
+                    if (ZyType.equals("%") || ZyType.equals("")) {
                         taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").count();
-                    }else{
+                    } else {
                         taskList = taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                     }
                 } else {
-                    if(ZyType.equals("%") || ZyType.equals("")){
+                    if (ZyType.equals("%") || ZyType.equals("")) {
                         taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").count();
-                    }else{
+                    } else {
                         taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                     }
@@ -571,19 +571,19 @@ public class ActivitiController {
                 }
             } else {
                 if (PersonCode.equals("ActivitiManage")) {
-                    if(ZyType.equals("%") || ZyType.equals("")){
+                    if (ZyType.equals("%") || ZyType.equals("")) {
                         taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
-                    }else{
+                    } else {
                         taskList = taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                     }
 
                 } else {
-                    if(ZyType.equals("%") || ZyType.equals("")){
+                    if (ZyType.equals("%") || ZyType.equals("")) {
                         taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").count();
-                    }else{
+                    } else {
                         taskList = taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).orderByTaskCreateTime().desc().listPage(start, limit);
                         total = (int) taskService.createTaskQuery().taskAssignee(PersonCode).processVariableValueLike("flow_code", "%" + FlowCode + "%").processVariableValueLike("flow_type", FlowType + "%").processVariableValueLike("zyName", ZyType).count();
                     }
@@ -631,7 +631,7 @@ public class ActivitiController {
                         taskmap.put("MATERIALNAME", map.get("V_MATERIALNAME").toString());
                     }
                 }
-                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey") == null ? "" : taskmap.get("BusinessKey").toString()).get("list");
 //                List<Map> equIp_name = (List) workOrderService.PRO_PM_WORKORDER_GET(taskmap.get("BusinessKey").toString()).get("list");
                 if (equIp_name.size() > 0) {
                     Map equmap = (Map) equIp_name.get(0);
@@ -641,7 +641,7 @@ public class ActivitiController {
                     taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                     taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                 }   //---add 3 columns on NONTH
-                else if (taskmap.get("flow_type").toString().indexOf("MonthPlan")!=-1) {
+                else if (taskmap.get("flow_type").toString().indexOf("MonthPlan") != -1) {
                     equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_MONTH_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
@@ -656,7 +656,7 @@ public class ActivitiController {
 
                     }
                 }//---add 3 columns on week
-                else if (taskmap.get("flow_type").toString().indexOf("WeekPlan")!=-1) {
+                else if (taskmap.get("flow_type").toString().indexOf("WeekPlan") != -1) {
                     equIp_name = (List) pm_03Service.PRO_PM_03_PLAN_WEEK_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
@@ -669,29 +669,28 @@ public class ActivitiController {
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                         taskmap.put("ZYNAME", equmap.get("V_REPAIRMAJOR_CODE").toString());
                     }
-                }
-                else if (taskmap.get("flow_type").toString().indexOf("Fault")!=-1) {
+                } else if (taskmap.get("flow_type").toString().indexOf("Fault") != -1) {
 //                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
-                    if(taskmap.get("flow_type").equals("Fault")){
-                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
-                    if (equIp_name.size() > 0) {
-                        Map equmap = (Map) equIp_name.get(0);
-                        taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
-                        taskmap.put("PLANSTART", equmap.get("V_FINDTIME").toString());
-                        taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
-                        taskmap.put("PLANHOUR", equmap.get("V_TIME").toString());
-                        taskmap.put("OPERANAME", "");
-                        taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
-                        taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
-                    }
-                    }else{
-                        equIp_name = (List) cxyService.PM_FAULT_PLAN_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                    if (taskmap.get("flow_type").equals("Fault")) {
+                        equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey") == null ? "" : taskmap.get("BusinessKey").toString()).get("list");
                         if (equIp_name.size() > 0) {
                             Map equmap = (Map) equIp_name.get(0);
                             taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
-                            taskmap.put("PLANSTART",  "");
-                            taskmap.put("PLANEND",  "");
-                            taskmap.put("PLANHOUR",  "");
+                            taskmap.put("PLANSTART", equmap.get("V_FINDTIME").toString());
+                            taskmap.put("PLANEND", equmap.get("V_ENDTIME").toString());
+                            taskmap.put("PLANHOUR", equmap.get("V_TIME").toString());
+                            taskmap.put("OPERANAME", "");
+                            taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                            taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
+                        }
+                    } else {
+                        equIp_name = (List) cxyService.PM_FAULT_PLAN_GET(taskmap.get("BusinessKey") == null ? "" : taskmap.get("BusinessKey").toString()).get("list");
+                        if (equIp_name.size() > 0) {
+                            Map equmap = (Map) equIp_name.get(0);
+                            taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
+                            taskmap.put("PLANSTART", "");
+                            taskmap.put("PLANEND", "");
+                            taskmap.put("PLANHOUR", "");
                             taskmap.put("OPERANAME", "");
                             taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                             taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
@@ -700,7 +699,7 @@ public class ActivitiController {
                     }
                 }
                 //yearplan
-                else if (taskmap.get("flow_type").toString().indexOf("YearPlan")!=-1) {
+                else if (taskmap.get("flow_type").toString().indexOf("YearPlan") != -1) {
                     equIp_name = (List) dx_fileService.PM_PLAN_YEAR_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
@@ -715,7 +714,7 @@ public class ActivitiController {
                     }
                 }
                 //projectPlan
-                else if (taskmap.get("flow_type").toString().indexOf("MaintainPlan")!=-1) {
+                else if (taskmap.get("flow_type").toString().indexOf("MaintainPlan") != -1) {
                     equIp_name = (List) dx_fileService.PRO_PM_03_PLAN_PROJECT_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
@@ -727,13 +726,12 @@ public class ActivitiController {
                         taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                         taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                         taskmap.put("ZYNAME", equmap.get("V_SPECIALTYNAME").toString());
-                        taskmap.put("remark",equmap.get("V_QSTEXT").toString());
+                        taskmap.put("remark", equmap.get("V_QSTEXT").toString());
                     }
-                }
-                else if (taskmap.get("flow_type").toString().indexOf("Hitch")!=-1) {
+                } else if (taskmap.get("flow_type").toString().indexOf("Hitch") != -1) {
 //                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
-                    if(taskmap.get("flow_type").equals("Hitch")){
-                        equIp_name = (List) cxyService.PM_BUG_ITEM_DATA_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                    if (taskmap.get("flow_type").equals("Hitch")) {
+                        equIp_name = (List) cxyService.PM_BUG_ITEM_DATA_GET(taskmap.get("BusinessKey") == null ? "" : taskmap.get("BusinessKey").toString()).get("list");
                         if (equIp_name.size() > 0) {
                             Map equmap = (Map) equIp_name.get(0);
                             taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
@@ -744,14 +742,14 @@ public class ActivitiController {
                             taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                             taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
                         }
-                    }else{
-                        equIp_name = (List) cxyService.PM_BUG_PLAN_GET(taskmap.get("BusinessKey")==null?"":taskmap.get("BusinessKey").toString()).get("list");
+                    } else {
+                        equIp_name = (List) cxyService.PM_BUG_PLAN_GET(taskmap.get("BusinessKey") == null ? "" : taskmap.get("BusinessKey").toString()).get("list");
                         if (equIp_name.size() > 0) {
                             Map equmap = (Map) equIp_name.get(0);
                             taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
-                            taskmap.put("PLANSTART",  "");
-                            taskmap.put("PLANEND",  "");
-                            taskmap.put("PLANHOUR",  "");
+                            taskmap.put("PLANSTART", "");
+                            taskmap.put("PLANEND", "");
+                            taskmap.put("PLANHOUR", "");
                             taskmap.put("OPERANAME", "");
                             taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
                             taskmap.put("DEPTNAME", equmap.get("V_DEPTNAME").toString());
@@ -1100,7 +1098,7 @@ public class ActivitiController {
         if (processKey.indexOf("Fault") != -1) {
             flowtype = "事故";
         }
-        if(processKey.indexOf("MaintainPlan") != -1) {
+        if (processKey.indexOf("MaintainPlan") != -1) {
             flowtype = "维修计划";
         }
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
@@ -1121,7 +1119,7 @@ public class ActivitiController {
 //            c.add(Calendar.MONTH, 2);
 //            c.set(Calendar.DAY_OF_MONTH, 0);
 //            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
-            String time=getShtgtime.Shtgtime();
+            String time = getShtgtime.Shtgtime();
             map.put("shtgtime", time);
 
             map.put("idea", idea);
@@ -1177,7 +1175,7 @@ public class ActivitiController {
             c.add(Calendar.MONTH, 2);
             c.set(Calendar.DAY_OF_MONTH, 0);
 //            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
-            String time=getShtgtime.Shtgtime();
+            String time = getShtgtime.Shtgtime();
             map.put("shtgtime", time);
             map.put("idea", idea);
             taskService.complete(taskId, map);
@@ -1440,7 +1438,7 @@ public class ActivitiController {
             c.add(Calendar.MONTH, 2);
             c.set(Calendar.DAY_OF_MONTH, 0);
 //            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
-            String time=getShtgtime.Shtgtime();
+            String time = getShtgtime.Shtgtime();
             param.put("shtgtime", time);
 
             try {
@@ -1480,6 +1478,58 @@ public class ActivitiController {
         } else {
             result.put("ret", "ERROR");
             result.put("msg", "流程发起失败,流程businesskey重复");
+        }
+
+        return result;
+    }
+
+    // 完成任务
+    @RequestMapping(value = "TaskCompleteHQ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> TaskCompleteHQ(@RequestParam(value = "taskId") String taskId,
+                                              @RequestParam(value = "idea") String idea,
+                                              @RequestParam(value = "parName") String[] parName,
+                                              @RequestParam(value = "parVal") String[] parVal,
+                                              @RequestParam(value = "V_NEXTPER") String[] V_NEXTPER) throws SQLException {
+        Map result = new HashMap();
+        Map map = new HashMap();
+
+        Map param = new HashMap();
+
+        List list = new ArrayList();
+        for (int i = 0; i < V_NEXTPER.length; i++) {
+            list.add(V_NEXTPER[i]);
+        }
+
+        String perList = "";
+        for (int i = 0; i < parName.length; i++) {
+            map.put(parName[i], parVal[i]);
+            if (parName[i].equals("flow_yj")) {
+                map.put(taskId, parVal[i]);
+            } else if (parName[i].toString().equals("Next_StepCode")) {
+                perList = parVal[i].toString();
+            } else {
+                map.put(parName[i], parVal[i]);
+            }
+        }
+
+        map.put(perList, list);
+
+        try {
+            Date date = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.MONTH, 2);
+            c.set(Calendar.DAY_OF_MONTH, 0);
+            String time = getShtgtime.Shtgtime();
+            map.put("shtgtime", time);
+            map.put("idea", idea);
+            taskService.complete(taskId, map);
+            result.put("ret", "任务提交成功");
+            result.put("msg", "OK");
+        } catch (Exception e) {
+            result.put("ret", "任务提交失败");
+            result.put("msg", "Error");
         }
 
         return result;
