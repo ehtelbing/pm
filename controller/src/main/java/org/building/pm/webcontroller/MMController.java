@@ -1,6 +1,7 @@
 package org.building.pm.webcontroller;
 
 import org.building.pm.service.ZdhService;
+import org.building.pm.service.CxyService;
 import org.building.pm.webservice.MMService;
 import org.codehaus.xfire.client.Client;
 import org.dom4j.Document;
@@ -33,6 +34,10 @@ public class MMController {
     private MMService mmService;
     @Autowired
     private ZdhService zdhService;
+    @Autowired
+    private CxyService cxyService;
+    @Autowired
+    private WxjhController wxjhController;
 
     @Value("#{configProperties['MMEqu.url']}")
     private String MMEquurl;
@@ -344,10 +349,43 @@ public class MMController {
                       @RequestParam(value = "x_personcode") String x_personcode,
                       HttpServletRequest request,
                       HttpServletResponse response) throws Exception {
+
+
         Map test = new HashMap();
         List<Map> result = null;
         String resJson;
         try {
+            String id=V_V_ORDERGUID.toString();
+            String str= id.substring(0,2);
+            if(!str.equals("88")){
+                List<Map> list = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
+                if(list.size()>0) {
+                    Map map = list.get(0);
+                    List listfirst = (List) map.get("list");
+                    if (listfirst.size() > 0) {
+                        Map fmap = (Map) listfirst.get(0);
+                        String state = fmap.get("SYSTEM_STATUS").toString();  //状态
+                        if (!state.equals("TECO")) {// 已发的 不在发送
+                            boolean bs = valicate(V_V_ORDERGUID, x_personcode, request, response);
+
+                            System.out.println("=====================输出发送SAP工单接口 Stsrt===========================");
+                            System.out.println("=====================输出发送SAP工单接口 :" + bs + "===========================");
+                            System.out.println("=====================输出发送SAP工单接口 End===========================");
+
+                        }
+                        List<Map> list11 = zdhService.PRO_PM_WORKORDER_SPARE_VIEW1(V_V_ORDERGUID);
+                        if(list11.size()>0) {
+                            Map map11 = list11.get(0);
+                            List list13 = (List) map11.get("list");
+                            if (list13.size() == 0) {
+                                test.put("V_CURSOR", '1');
+                                return test;
+                            }
+                        }
+                    }
+                }
+            }
+
             Client client = new Client(new URL(MMSapurl));
 
             System.out.println("=====================输出WebService信息 Stsrt===========================");
@@ -381,7 +419,37 @@ public class MMController {
 
         return test;
     }
+    private boolean  valicate(String orderguid,String personcode,HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
+        List<Map> viewlist = cxyService.PRO_PM_WORKORDER_SPARE_TOSAP_VIEW(orderguid);
+        Map viewmap = viewlist.get(0);
+        List list = (List) viewmap.get("list");
 
+        for (int i = 0; i < list.size(); i++) {
+            Double sum=0.0;
+            Map map = (Map) list.get(i);
+            String materialcode=map.get("V_MATERIALCODE").toString();
+            String plant=map.get("V_PLANT").toString();
+            String workarea=map.get("V_WORK_AREA").toString();
+            String mid=map.get("I_ID").toString();
+            Map listmaps=this.GetDepartKC_storeid( 1000, materialcode, "", plant, workarea, "", "0", personcode, request, response);
+            List mylist=(List)listmaps.get("list");
+            for (int j = 0; j < mylist.size(); j++) {
+                Map map6 = (Map) mylist.get(i);
+                sum+=Double.parseDouble(map6.get("ABLECOUNT").toString()==null?"0":map6.get("ABLECOUNT").toString());
+            }
+            cxyService.PRO_PM_WORKORDER_SPARE_MMORSAP(orderguid, mid, materialcode, sum);//?合计有问题
+        }
+        Map maplast = (Map)cxyService.PRO_PM_WORKORDER_IS_TOSAP(orderguid);
+        String info=maplast.get("V_INFO").toString();
+        String tosap=maplast.get("V_IS_TOSAP").toString();
+        if(info.equals("success")&&tosap.equals("是")){
+            wxjhController.SI_SpotChkProj_in(orderguid);
+           //调用（SAP工单接收）接口,发送工单主体信息（不带工序和物料信息）到SAP系统
+            return true;
+        }
+        return false;
+    }
     private String xmlData(String V_V_ORDERGUID) throws ParseException, SQLException {
 
         List<Map> flist = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);

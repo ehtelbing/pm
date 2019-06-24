@@ -172,10 +172,7 @@ public class CxyController {
                                                        @RequestParam(value = "V_V_CAUSEANALYSIS") String V_V_CAUSEANALYSIS,
                                                        @RequestParam(value = "V_V_REPAIR_PLAN") String V_V_REPAIR_PLAN,
                                                        @RequestParam(value = "V_V_ASSENT_CODE") String V_V_ASSENT_CODE,
-                                                       @RequestParam(value = "V_V_STOPHOURS") String V_V_STOPHOURS,
-                                                       @RequestParam(value = "V_V_REPAIRHOURS") String V_V_REPAIRHOURS,
-
-                                                                           HttpServletRequest request,
+                                                        HttpServletRequest request,
                                                          HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
@@ -184,7 +181,7 @@ public class CxyController {
                 V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,
                 V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL,
                 V_V_ENDTIME,V_V_REPORTER,V_V_FZR,V_V_STOPTIME,V_V_REPAIRTIME,V_V_REPAIRCOST,V_V_REPROTTIME,
-                V_V_FAULT_PASS,V_V_CAUSEANALYSIS,V_V_REPAIR_PLAN,V_V_ASSENT_CODE,V_V_STOPHOURS,V_V_REPAIRHOURS);
+                V_V_FAULT_PASS,V_V_CAUSEANALYSIS,V_V_REPAIR_PLAN,V_V_ASSENT_CODE);
 
         String RET = (String) data.get("RET");
         String FAULTID = (String) data.get("FAULTID");
@@ -1621,6 +1618,21 @@ public class CxyController {
 
         result.put("RET", ss);
         result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_SAP_ISCLOSE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_SAP_ISCLOSE(@RequestParam(value = "V_V_WORKORDERID") String V_V_WORKORDERID,
+                                                               HttpServletRequest request,
+                                                               HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PRO_PM_WORKORDER_SAP_ISCLOSE(V_V_WORKORDERID);
+        List<Map<String, Object>> list = (List) data.get("list");
+        String V_INFO = (String) data.get("V_INFO");
+        result.put("list", list);
+        result.put("ret", V_INFO);
         return result;
     }
 }

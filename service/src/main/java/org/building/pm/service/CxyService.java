@@ -302,7 +302,7 @@ public class CxyService {
                                              String V_V_PERCODE, String V_V_IP,String V_V_FAULT_NAME,String V_V_FAULT_PART,String V_V_FAULT_CLGC, String V_V_FAULT_SS,String V_V_FAULT_XZ,String V_V_FAULT_ZGCS,String V_V_FZR_CL,
                                              String V_V_ENDTIME,String V_V_REPORTER,String V_V_FZR,String V_V_STOPTIME,String V_V_REPAIRTIME,String V_V_REPAIRCOST,
                                              String V_V_REPROTTIME,String V_V_FAULT_PASS,String V_V_CAUSEANALYSIS,String V_V_REPAIR_PLAN,
-                                             String V_V_ASSENT_CODE,String V_V_STOPHOURS,String V_V_REPAIRHOURS) throws SQLException {
+                                             String V_V_ASSENT_CODE) throws SQLException {
         logger.info("begin PM_1405_FAULT_ITEM_DATA_SET_NEW");
 
         HashMap result = new HashMap();
@@ -317,7 +317,7 @@ public class CxyService {
                     ":V_V_FILE_GUID,:V_V_INTIME,:V_V_PERCODE,:V_V_IP,:V_V_FAULT_NAME,:V_V_FAULT_PART,:V_V_FAULT_CLGC," +
                     ":V_V_FAULT_SS,:V_V_FAULT_XZ,:V_V_FAULT_ZGCS,:V_V_FZR_CL," +
                     ":V_V_ENDTIME,:V_V_REPORTER,:V_V_FZR,:V_V_STOPTIME,:V_V_REPAIRTIME,:V_V_REPAIRCOST,:V_V_REPROTTIME,:V_V_FAULT_PASS,:V_V_CAUSEANALYSIS," +
-                    ":V_V_REPAIR_PLAN,:V_V_ASSENT_CODE,:V_V_STOPHOURS,:V_V_REPAIRHOURS," +
+                    ":V_V_REPAIR_PLAN,:V_V_ASSENT_CODE," +
                     ":V_INFO,:FAULTID)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
@@ -354,8 +354,6 @@ public class CxyService {
             cstmt.setString("V_V_CAUSEANALYSIS", V_V_CAUSEANALYSIS);
             cstmt.setString("V_V_REPAIR_PLAN", V_V_REPAIR_PLAN);
             cstmt.setString("V_V_ASSENT_CODE", V_V_ASSENT_CODE);
-            cstmt.setString("V_V_STOPHOURS", V_V_STOPHOURS);
-            cstmt.setString("V_V_REPAIRHOURS", V_V_REPAIRHOURS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("FAULTID", OracleTypes.VARCHAR);
             cstmt.execute();
@@ -2569,6 +2567,119 @@ public class CxyService {
         }
         logger.debug("result:" + result);
         logger.info("end PM_BUG_PLAN_STATE_UPDATE");
+        return result;
+    }
+    public   List<Map> PRO_PM_WORKORDER_SPARE_TOSAP_VIEW(String V_V_ORDERGUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_SPARE_TOSAP_V");
+
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_TOSAP_V(:V_V_ORDERGUID,:V_CURSOR)}");
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            resultList.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.info("end PRO_PM_WORKORDER_SPARE_TOSAP_V");
+        return resultList;
+    }
+    public HashMap PRO_PM_WORKORDER_SPARE_MMORSAP(String V_V_ORDERGUID,String V_I_ID_SPARE,String V_V_MATERIALCODE,Double V_V_KC_NUM) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_SPARE_MMORSAP");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_MMORSAP(:V_V_ORDERGUID,:V_I_ID_SPARE,:V_V_MATERIALCODE,:V_V_KC_NUM,:V_INFO,:V_V_MATERIAL_NUM,:V_V_CURSOR)}");
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_I_ID_SPARE", V_I_ID_SPARE);
+            cstmt.setString("V_V_MATERIALCODE", V_V_MATERIALCODE);
+            cstmt.setDouble("V_V_KC_NUM", V_V_KC_NUM);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_V_MATERIAL_NUM", OracleTypes.NUMBER);
+            cstmt.registerOutParameter("V_V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_V_CURSOR", ResultHash((ResultSet) cstmt.getObject("V_V_CURSOR")));
+            result.put("V_V_MATERIAL_NUM", cstmt.getInt("V_V_MATERIAL_NUM"));
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SPARE_MMORSAP");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_IS_TOSAP(String V_V_ORDERGUID) throws SQLException {
+
+        logger.info("begin PRO_PM_WORKORDER_IS_TOSAP");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_IS_TOSAP(:V_V_ORDERGUID,:V_INFO,:V_IS_TOSAP)}");
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_IS_TOSAP", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+            result.put("V_IS_TOSAP", cstmt.getString("V_IS_TOSAP"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_IS_TOSAP");
+        return result;
+    }
+
+    public HashMap PRO_PM_WORKORDER_SAP_ISCLOSE(String V_V_WORKORDERID) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_SAP_ISCLOSE");
+        logger.debug("params:V_V_WORKORDERID:" + V_V_WORKORDERID);
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SAP_ISCLOSE" + "(:V_V_WORKORDERID,:V_INFO,:V_CURSOR)}");
+            cstmt.setString("V_V_WORKORDERID", V_V_WORKORDERID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("V_INFO", cstmt.getString("V_INFO"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SAP_ISCLOSE");
         return result;
     }
 }

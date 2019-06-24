@@ -253,9 +253,9 @@ public class WxjhController {
             WriteDataRequest.addElement("piusername").setText(piusername);
             WriteDataRequest.addElement("pipassword").setText(pipassword);
             WriteDataRequest.addElement("Pm1001Url").setText(PM1001);
-
-            Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
             System.out.println(root.asXML());
+            Client client = new Client(new URL(serviceUrl + "/pmService?WSDL"));
+
             Object[] results = client.invoke("PM1001", new Object[]{root.asXML()});
 
             Document doc = DocumentHelper.parseText(results[0].toString());

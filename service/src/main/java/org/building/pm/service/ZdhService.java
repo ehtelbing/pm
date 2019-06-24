@@ -1068,7 +1068,7 @@ public class ZdhService {
 
     public   List<Map> PRO_PM_WORKORDER_SPARE_VIEW1(String V_V_ORDERGUID) throws SQLException {
 
-        logger.info("begin PRO_PM_WORKORDER_SPARE_VIEW");
+        logger.info("begin PRO_PM_WORKORDER_SPARE_VIEW_N");
 
         List<Map> resultList = new ArrayList<Map>();
         Connection conn = null;
@@ -1076,7 +1076,7 @@ public class ZdhService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_VIEW(:V_V_ORDERGUID,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_VIEW_N(:V_V_ORDERGUID,:V_CURSOR)}");
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
@@ -1089,7 +1089,7 @@ public class ZdhService {
             cstmt.close();
             conn.close();
         }
-        logger.info("end PRO_PM_WORKORDER_SPARE_VIEW");
+        logger.info("end PRO_PM_WORKORDER_SPARE_VIEW_N");
         return resultList;
     }
 
