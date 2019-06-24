@@ -255,7 +255,7 @@ function GetBillMatByOrder() {
 }
 
 function Agree() {
-    Ext.getBody().mask('<p>审批中...请稍后</p>');
+    Ext.getBody().mask('<p>审批中...请稍候</p>');
     workMatChangeSel();
     if(MATSIGN==1||returnMatSign=="1"){
         matChangeFlow();
@@ -409,7 +409,7 @@ function Agree() {
 }
 
 function DisAgree() {
-    Ext.getBody().mask('<p>驳回中...请稍后</p>');
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
     var spyj = '';
     if ($("#spyj").val() == '' || $("#spyj").val() == null) {
         spyj = '审批驳回';

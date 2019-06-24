@@ -766,7 +766,7 @@ function comboConfirm() {
     //     }
     //
     // }
-    Ext.getBody().mask('<p>驳回中...请稍后</p>');
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
     var newQxState="10";
     if (Ext.getCmp('radiotypexqx').getValue().xqxtypename == '1') { //新缺陷是否消缺
         newQxState="30";
@@ -1043,7 +1043,7 @@ function comboConfirm() {
 }
 //执行验收过程
 function confirmYS(){
-    Ext.getBody().mask('<p>验收中...请稍后</p>');
+    Ext.getBody().mask('<p>验收中...请稍候</p>');
    var defExeNum=0;
    var defRetNum=0;
     //一、工作流
@@ -1723,7 +1723,7 @@ function changefactnum(){
 }
 //--end upd
 function ActivitiConfirmAccept() {//确定验收
-    Ext.getBody().mask('<p>验收跳转中...请稍后</p>');
+    Ext.getBody().mask('<p>验收跳转中...请稍候</p>');
     workMatChangeSel();
     if(MATSIGN==1||returnMatSign=="1"){
         matChangeFlow();
@@ -1759,7 +1759,7 @@ function ActivitiConfirmAccept() {//确定验收
             success: function (resp) {
                 // QRYS();
                 Ext.getBody().unmask();//去除页面笼罩
-                if($("#V_WBS").html()!=""){
+                if($("#V_WBS").html()==""){
                     Ext.getCmp('combowindow').show();
                 } else{
                     confirmYS();

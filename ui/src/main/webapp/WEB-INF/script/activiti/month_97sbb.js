@@ -26,6 +26,7 @@ var equTypeLoad = false;
 var basedicLoad = false;
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
+/*
 
     var nextSprStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
@@ -56,6 +57,7 @@ Ext.onReady(function () {
             }
         }
     });
+*/
 
     var inputPanel = Ext.create('Ext.form.Panel', {
         id: 'inputPanel',
@@ -269,7 +271,7 @@ Ext.onReady(function () {
         style: 'margin-bottom:1px',
         frame: true,
         baseCls: 'my-panel-no-border',
-        items: [{
+        items: [/*{
             id: 'nextPer',
             xtype: 'combo',
             store: nextSprStore,
@@ -284,7 +286,7 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 0px 5px',
             labelAlign: 'right',
             width: 200
-        }, {
+        }, */{
             id: 'spyj',
             xtype: 'textfield',
             fieldLabel: '审批意见',
@@ -300,15 +302,7 @@ Ext.onReady(function () {
             style: ' margin: 5px 20px 0px 20px',
             icon: imgpath + '/saved.png',
             handler: _agree
-        }
-            // , {
-            //     xtype: 'button',
-            //     text: '驳回',
-            //     style: ' margin: 5px 20px 0px 0px',
-            //     icon: imgpath + '/cross.png',
-            //     handler: _reject
-            // }
-        ]
+        }]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -438,6 +432,8 @@ function _agree() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
+
+
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
