@@ -1,7 +1,7 @@
-var usercodeTemp = '';
+﻿var usercodeTemp = '';
 var ip='';
 if (location.href.split('?')[1] != null) {
-    usercodeTemp = Ext.urlDecode(location.href.split('?')[1]).LogUser;
+    usercodeTemp = Ext.urlDecode(location.href.split('?')[1]).USERID;
     IP = Ext.urlDecode(location.href.split('?')[1]).IP;
 }
 
@@ -43,7 +43,7 @@ if (usercodeTemp != null && usercodeTemp!='') {
     Ext.Ajax.request({
         url: AppUrl + 'info/login_dddl_n',
         params: {
-            USERID: b.decode(usercodeTemp),
+            USERID: usercodeTemp,
             V_V_IP: ip?"":'设备单点登录'
         }, success: function (respon) {
             var resp = Ext.decode(respon.responseText);
@@ -101,10 +101,11 @@ if (usercodeTemp != null && usercodeTemp!='') {
 else{
     if(Ext.util.Cookies.get('v_personcode')==undefined||Ext.util.Cookies.get('v_personcode')==''){
         var currentUrl = window.location.href;
-        var eam_singlelogin_url = 'http://10.103.5.70:8080/oauth/authorize?client_id=e1fe5be3291e42bd9d350285074f0e2d&response_type=code&scope=user_info&redirect_uri=http%3A%2F%2F10.103.5.54%3A8080%2FORG_LDAP%2Fhuidiao.action%3FReferer='+currentUrl;
+       // var eam_singlelogin_url = 'http://10.103.5.70:8080/oauth/authorize?client_id=e1fe5be3291e42bd9d350285074f0e2d&response_type=code&scope=user_info&redirect_uri=http%3A%2F%2F10.103.5.54%3A8080%2FORG_LDAP%2Fhuidiao.action%3FReferer='+currentUrl;
+        var eam_singlelogin_url = 'http://10.101.7.90:8080/oauth/authorize?client_id=e1fe5be3291e42bd9d350285074f0e2d&response_type=code&scope=user_info&redirect_uri=http%3A%2F%2F10.101.7.72%2FORG_LDAP%2Fhuidiao.action%3FReferer='+currentUrl;
 
-        parent.location.href = eam_singlelogin_url;
-        setTimeout("subSomething()",10000);
+       location.href = eam_singlelogin_url;
+        //setTimeout("subSomething()",10000);
     }
 }
 

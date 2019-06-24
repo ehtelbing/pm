@@ -1605,7 +1605,7 @@ function btnFlowAgree(){
             return false;
         }
     }*/
-    Ext.getBody().mask('<p>审批中...请稍后</p>');
+    Ext.getBody().mask('<p>审批中...请稍候</p>');
 
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
@@ -1705,7 +1705,7 @@ function btnFlowDisAgree(){
             return false;
         }
     }*/
-    Ext.getBody().mask('<p>驳回中...请稍后</p>');
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批驳回';

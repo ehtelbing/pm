@@ -372,7 +372,7 @@ function CreateBill() {
     if (!confirm("确定下达工单?")) {
         return;
     } else {
-        Ext.getBody().mask('<p>工单生成中请稍后...</p>');//页面笼罩效果
+        Ext.getBody().mask('<p>工单生成中请稍候...</p>');//页面笼罩效果
         setTimeout(BillGo, 500);
     }
 }

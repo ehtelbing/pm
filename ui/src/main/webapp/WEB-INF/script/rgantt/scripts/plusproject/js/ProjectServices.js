@@ -52,7 +52,7 @@ function LoadProject(params, project, callback) {
 
 function SaveProject(project, callback, params) {
 
-    project.mask("数据保存中，请稍后...");
+    project.mask("数据保存中，请稍候...");
     var dataProject = project.getData();
     dataProject.RemovedTasks = project.getRemovedTasks();
     var json = mini.encode(dataProject);
