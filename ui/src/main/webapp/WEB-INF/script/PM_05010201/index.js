@@ -90,7 +90,7 @@ Ext
             autoLoad: false,
             fields: ['MAT_NO', 'MAT_DESC', 'UNIT', 'PLAN_PRICE',
                 'DICTNAME', 'BEIJIANPORPERTY', 'MAT_GROUP',
-                'MAT_OLD_NO', 'DAYS'],
+                'MAT_OLD_NO', 'DAYS','mat_no','mat_desc','unit','plan_price','ltext'],
             proxy: {
                 type: 'ajax',
                 async: false,
@@ -606,29 +606,32 @@ Ext
                         fieldLabel: '物料编码',
                         id: 'matCode',
                         labelAlign: 'right',
-                        labelWidth: 60
+                        labelWidth: 80
                     }, {
                         xtype: 'textfield',
                         fieldLabel: '物料名称',
                         id: 'matDesc',
                         labelAlign: 'right',
-                        labelWidth: 60
-                    }, {
+                        labelWidth: 100
+                    },
+                        {
                         xtype: 'combo',
                         fieldLabel: '物资类别',
                         id: 'selType',
                         editable: false,
+                            hidden:true,
                         store: [['材料', '材料'], ['备件', '备件']],
                         labelAlign: 'right',
-                        labelWidth: 60
-                    }, {
+                        labelWidth: 80
+                    },
+                        {
                         xtype: 'combo',
                         fieldLabel: '工序',
                         id: 'selActivity',
                         editable: false,
                         store: activityStore,
                         labelAlign: 'right',
-                        labelWidth: 30, // queryMode: 'local',
+                        labelWidth: 60, // queryMode: 'local',
                         displayField: 'V_ACTIVITY',
                         valueField: 'V_ACTIVITY'
                     }, {
@@ -652,31 +655,36 @@ Ext
                     columns: [{
                         text: '物料编码',
                         id: 'codeClick',
-                        dataIndex: 'MAT_NO',
-                        width: 100,
+                        dataIndex: 'mat_no',
+                        //dataIndex: 'MAT_NO',
+                        width: 180,
                         align: 'center',
                         renderer: AddFloat
                     }, {
                         text: '物料描述',
-                        dataIndex: 'MAT_DESC',
-                        width: 160,
+                        dataIndex: 'mat_desc',
+                        //dataIndex: 'MAT_DESC',
+                        width: 240,
                         align: 'center',
                         renderer: AddFloat
                     }, {
                         text: '单位',
-                        dataIndex: 'UNIT',
-                        width: 40,
+                        dataIndex: 'unit',
+                        //dataIndex: 'UNIT',
+                        width: 100,
                         align: 'center'
                     }, {
                         text: '计划价',
-                        dataIndex: 'PLAN_PRICE',
-                        width: 60,
+                        //dataIndex: 'PLAN_PRICE',
+                        dataIndex: 'plan_price',
+                        width: 100,
                         align: 'center',
                         renderer: AddRight
                     }, {
                         text: '规格型号',
-                        dataIndex: 'MAT_OLD_NO',
-                        width: 80,
+                        //dataIndex: 'MAT_OLD_NO',
+                        dataIndex: 'ltext',
+                        width: 200,
                         align: 'center',
                         renderer: AddFloat
                     }],
@@ -693,14 +701,30 @@ Ext
             if (Ext.getCmp('matCode').getValue() == '') {
                 Ext.MessageBox.alert('操作信息', '物料编码不能为空');
             } else {
-                gridStore.proxy.extraParams.x_code = Ext.getCmp('matCode')
+
+                /*gridStore.proxy.extraParams.x_code = Ext.getCmp('matCode')
                     .getValue();
                 gridStore.proxy.extraParams.x_name = Ext.getCmp('matDesc')
                     .getValue();
                 gridStore.proxy.extraParams.x_type = Ext.getCmp('selType')
                     .getValue();
-                gridStore.proxy.extraParams.x_personcode = Ext.util.Cookies.get('v_personcode');
-                Ext.ComponentManager.get('grid').getStore().load();
+                gridStore.proxy.extraParams.x_personcode = Ext.util.Cookies.get('v_personcode');*/
+                //Ext.ComponentManager.get('grid').getStore().load();
+                Ext.Ajax.request({
+                    url: AppUrl + 'mm/GetMatTable',
+                    async: false,
+                    method: 'post',
+                    params: {
+                        code: Ext.getCmp('matCode').getValue()==""?"%":Ext.getCmp('matCode').getValue(),
+                        name:Ext.getCmp('matDesc').getValue()==""?"%":Ext.getCmp('matDesc').getValue(),
+                        x_personcode:Ext.util.Cookies.get('v_personcode')
+                    },
+                    success: function (response) {
+                        var resp = Ext.decode(response.responseText);
+                        gridStore.loadData(resp.list);
+                    }
+                });
+
             }
         }
 

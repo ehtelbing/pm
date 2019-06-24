@@ -145,11 +145,11 @@ function loadPageInfo() {
                             result.push('                        <td><b>检修单位：</b></td><td><b>');
                             result.push(resp.list[0].V_DEPTNAMEREPARIR);
                             result.push('                         &nbsp;</b></td></tr>');
-                            result.push(' <tr rowspan="2">');
+                           /* result.push(' <tr rowspan="2">');
                             result.push(' <td colspan="2" style="vertical-align: top;text-align:left;"><b>工单描述：</b><b>');
                             result.push('&nbsp;&nbsp;&nbsp;'+descBill(resp.list[0].V_SHORT_TXT));
                             result.push('&nbsp;</b></td>');
-                            result.push(' </tr>');
+                            result.push(' </tr>');*/
                             result.push(' </table>');
 
                             result.push('                    </td>');
@@ -269,6 +269,12 @@ function loadPageInfo() {
                             result.push('<span>');
                             result.push(resp.list[0].D_FACT_FINISH_DATE);
                             result.push('&nbsp;</span>');
+                            result.push('</td>');
+                            result.push('                </tr>');
+                            result.push('                <tr>');
+                            result.push(' <td class="border_r_b">工单描述</td>');
+                            result.push(' <td colspan="7" style="vertical-align: top;text-align:left;" class="border_b">');
+                            result.push( resp.list[0].V_SHORT_TXT);
                             result.push('</td>');
                             result.push('                </tr>');
                             result.push('            </table>');
@@ -392,6 +398,14 @@ function loadPageInfo() {
                                     cur_max_operation++;
                                 }
                             }
+                          /*  if(1){
+                                var content=resp.list[0].V_SHORT_TXT;
+                                var kay =(content.length-74)/12;
+                                for(var i=0;i<kay;i++){
+                                    cur_max_material--;
+                                    //cur_max_operation++;
+                                }
+                            }*/
                             result.push('            </table>');
                             result.push('            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="Ttable">');
                             result.push('                <tr>');
@@ -657,7 +671,7 @@ function NowTime() {
 function descBill(content){
     var temp = [];
     for(var i=0;i<content.length;i++){
-        if(i<70){
+        if(i<74){//74,86
             temp.push(content.charAt(i));
         }
     }
