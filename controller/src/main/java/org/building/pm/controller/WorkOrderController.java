@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -964,6 +965,18 @@ public class WorkOrderController {
 
         result.put("RET", ret);
         result.put("success", true);
+        return result;
+    }
+    /**
+     * 缺陷guid查找工单guid create by hrb 2019/6/24
+     */
+    @RequestMapping(value = "/PRO_WORKDET_BY_DEFEECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_WORKDET_BY_DEFEECT(@RequestParam(value = "DEFGUID") String DEFGUID,
+
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = workOrderService.PRO_WORKDET_BY_DEFEECT(DEFGUID);
         return result;
     }
 }

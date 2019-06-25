@@ -2452,4 +2452,37 @@ public class WorkOrderService {
         return result;
     }
 
+    /**
+     * 缺陷guid查找工单guid create by hrb 2019/6/24
+     */
+    public Map PRO_WORKDET_BY_DEFEECT(String DEFGUID) throws SQLException {
+
+        logger.info("begin PRO_WORKDET_BY_DEFEECT");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_WORKDET_BY_DEFEECT(:DEFGUID,:RET,:V_INFO)}");
+            cstmt.setString("DEFGUID", DEFGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end PRO_WORKDET_BY_DEFEECT");
+        return result;
+    }
 }
