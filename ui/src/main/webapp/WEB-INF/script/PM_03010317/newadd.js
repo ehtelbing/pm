@@ -1,3 +1,7 @@
+
+/**
+ * create by hrb 2019/6/24
+ */
 var WeekYear="";
 var WeekMonth="";
 var V_V_ORGCODE="";
@@ -14,8 +18,9 @@ var MGUID="";
 var MEQUCODE="";
 var MONUPDATE="";
 var CLEARDATE="";
+var retEquDif;
+/*新版的从月计划添加周计划*/
 if(location.href.split('?')[1]!=undefined){
-    V_WEEKPLAN_GUID=Ext.urlDecode(location.href.split("?")[1]).V_WEEKPLAN_GUID;
     WeekYear=Ext.urlDecode(location.href.split("?")[1]).Oyear;
     WeekMonth=Ext.urlDecode(location.href.split("?")[1]).Omonth;
     V_V_ORGCODE=Ext.urlDecode(location.href.split("?")[1]).V_V_ORGCODE;
@@ -23,10 +28,11 @@ if(location.href.split('?')[1]!=undefined){
     V_V_EQUTYPE=Ext.urlDecode(location.href.split("?")[1]).V_V_EQUTYPE=="0"?'%':Ext.urlDecode(location.href.split("?")[1]).V_V_EQUTYPE;
     V_V_EQUCODE=Ext.urlDecode(location.href.split("?")[1]).V_V_EQUCODE=="0"?'%':Ext.urlDecode(location.href.split("?")[1]).V_V_EQUCODE;
     V_V_ZY=Ext.urlDecode(location.href.split("?")[1]).V_V_ZY=="0"?'%':Ext.urlDecode(location.href.split("?")[1]).V_V_ZY;
-    // WEEK=Ext.urlDecode(location.href.split("?")[1]).WEEK;
-    // startUpTime=Ext.urlDecode(location.href.split("?")[1]).startUpTime;
-    // endUpTime=Ext.urlDecode(location.href.split("?")[1]).endUpTime;
+    WEEK=Ext.urlDecode(location.href.split("?")[1]).WEEK;
+    startUpTime=Ext.urlDecode(location.href.split("?")[1]).startUpTime;
+    endUpTime=Ext.urlDecode(location.href.split("?")[1]).endUpTime;
 }
+
 //年份
 var date=new Date();
 var yearList=[];
@@ -60,7 +66,9 @@ var monthStore = Ext.create("Ext.data.Store", {
         reader: {type: 'json'}
     }
 });
+
 Ext.onReady(function(){
+    //store
     //月计划gridStore
     var mgridStore = Ext.create('Ext.data.Store', {
         id : 'mgridStore',
@@ -193,12 +201,13 @@ Ext.onReady(function(){
             }
         }
     });
+
     //周计划已关联缺陷
     var hChoGridStore= Ext.create('Ext.data.Store', {
         id: 'hChoGridStore',
         pageSize: 15,
         autoLoad: false,
-        fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
+        fields: ['D_DEFECTDATE', 'V_DEFECTLIST','V_EQUCODE','V_EQUNAME',
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
@@ -217,7 +226,6 @@ Ext.onReady(function(){
             }
         }
     });
-
     var hChoGrid= Ext.create('Ext.grid.Panel', {
         id : 'hChoGrid',
         store : hChoGridStore,
@@ -230,7 +238,7 @@ Ext.onReady(function(){
         columns : [
             {text : '序号',xtype : 'rownumberer',width : 50,sortable : false}
             ,{text : '删除',dataIndex : 'V_GUID',align : 'left',width : 100, renderer : delCorDef}
-            ,{text : '单位',dataIndex : 'V_DEPTNAME',align : 'left',width : 100, renderer : CreateGridColumnTd},
+            , {text : '单位',dataIndex : 'V_DEPTNAME',align : 'left',width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '设备', dataIndex : 'V_EQUNAME', align : 'left', width : 200, renderer : CreateGridColumnTd},
@@ -442,22 +450,76 @@ Ext.onReady(function(){
     });
     loadStore();
     query();
-    haveChLoad(V_WEEKPLAN_GUID);
-    // createWGuid(org_code);
+    var org_code=Ext.util.Cookies.get("v_orgCode");
+    createWGuid(org_code);
 });
-function loadStore(){
-    Ext.getCmp("mnf").select(WeekYear);
-    Ext.getCmp("myf").select(WeekMonth);
+
+function turnPage(){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
+        +"&WEEK=" + WEEK
+        +'&startUpTime='+ startUpTime
+        +'&endUpTime='+endUpTime,'','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+}
+function delCorDef(value, metaDate, record, rowIndex, colIndex, store) {
+
+    var id = 'ddef' + value;
+    Ext.defer(function () {
+        Ext.widget('button', {
+            icon: dxImgPath + '/accept.png',
+            renderTo: id,
+            //value: value / 100,
+            height: 25,
+            width: 110,
+            text: '删除',
+            margin: 'padding:10px 50px 10px 10px;',
+            handler: function () {
+                // onJjfa(record.data.V_GUID, record.data.V_EQUCODE);
+                delCorDefect(value);
+            }
+        });
+    }, 50);
+    return Ext.String.format('<div id="{0}"></div>', id);
+}
+//已选中关联周计划缺陷删除
+function delCorDefect(defGuid){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PM_DEFECTTOWEEK_DEL',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            V_WEEKGUID:WEEKGUID,
+            DEF_GUID: defGuid
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if (data.RET =='SUCCESS') {
+                haveChLoad(WEEKGUID);
+                // turnPage();
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
 }
 function rendererTime(value, metaData){
+    metaData.style="text-align:right";
     return value.split(".")[0];
 }
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style="text-align:right";
     var time=value.split('.')[0];
     return time;
 }
-
-
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
     if(value == null){
@@ -466,6 +528,10 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
     else{
         return '<div data-qtip="' + value + '" >' + value + '</div>';
     }
+}
+function loadStore(){
+    Ext.getCmp("mnf").select(WeekYear);
+    Ext.getCmp("myf").select(WeekMonth);
 }
 //月计划查找
 function query() {
@@ -506,7 +572,7 @@ function createWGuid(org){
             var data = Ext.decode(resp.responseText);//后台返回的值
             if (data.RET != ""||data.RET!=undefined) {
                 WEEKGUID=data.RET;
-                // clear_def_old(WEEKGUID,org);
+                clear_def_old(WEEKGUID,org);
             }
         },
         failure: function (response) {
@@ -632,8 +698,8 @@ function Select(){
 }
 function newCreatWeek(org){
 
-    if(V_WEEKPLAN_GUID!=""){
-        // if (CLEARDATE == 'SUCCESS') {
+    if(WEEKGUID!=""){
+        if (CLEARDATE == 'SUCCESS') {
             var defrecord = Ext.getCmp("dGridPanel").getSelectionModel().getSelection();
             if (defrecord.length == 0) {
                 alert('请选择至少一条缺陷记录');
@@ -647,7 +713,7 @@ function newCreatWeek(org){
                     async: false,
                     params: {
                         V_V_MONTHGUID: MGUID,
-                        V_V_WEEKGUID: V_WEEKPLAN_GUID,
+                        V_V_WEEKGUID: WEEKGUID,
                         V_N_DEFECTGUID: defrecord[i].data.V_GUID,
                         V_INPER: Ext.util.Cookies.get("v_personcode"),
                         V_DEFECTSTATE: defrecord[i].data.V_STATECODE
@@ -655,7 +721,7 @@ function newCreatWeek(org){
                     success: function (resp) {
                         var data = Ext.decode(resp.responseText);//后台返回的值
                         if (data.RET == 'SUCCESS') {
-                            haveChLoad(V_WEEKPLAN_GUID);
+                            haveChLoad(WEEKGUID);
                         }
                     },
                     failure: function (response) {
@@ -668,7 +734,7 @@ function newCreatWeek(org){
                     }
                 });
             }
-        // }
+        }
     }
 }
 
@@ -704,8 +770,8 @@ function AddmDef(){
 }
 function newCreatWeek2(org){
 
-    if (V_WEEKPLAN_GUID != "") {
-        // if (CLEARDATE == 'SUCCESS') {
+    if (WEEKGUID != "") {
+        if (CLEARDATE == 'SUCCESS') {
 
             var defrecord = Ext.getCmp("mdGridPanel").getSelectionModel().getSelection();
             if (defrecord.length == 0) {
@@ -720,7 +786,7 @@ function newCreatWeek2(org){
                     async: false,
                     params: {
                         V_V_MONTHGUID: MGUID,
-                        V_V_WEEKGUID: V_WEEKPLAN_GUID,
+                        V_V_WEEKGUID: WEEKGUID,
                         V_N_DEFECTGUID: defrecord[i].data.V_GUID,
                         V_INPER: Ext.util.Cookies.get("v_personcode"),
                         V_DEFECTSTATE: defrecord[i].data.V_STATECODE
@@ -728,7 +794,7 @@ function newCreatWeek2(org){
                     success: function (resp) {
                         var data = Ext.decode(resp.responseText);//后台返回的值
                         if (data.RET == 'SUCCESS') {
-                            haveChLoad(V_WEEKPLAN_GUID);
+                            haveChLoad(WEEKGUID);
                         }
                     },
                     failure: function (response) {
@@ -741,7 +807,7 @@ function newCreatWeek2(org){
                     }
                 });
             }
-        // }
+        }
     }
 }
 function weekReMonth(){
@@ -754,7 +820,7 @@ function weekReMonth(){
         params: {
             V_V_MONTHGUID: MGUID,
             V_V_DEFECTGUID:'',
-            V_WEEKGUID:V_WEEKPLAN_GUID
+            V_WEEKGUID:WEEKGUID
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
@@ -772,7 +838,14 @@ function weekReMonth(){
         }
     });
 }
-
+function turnPage(){
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
+        +"&WEEK=" + WEEK
+        +'&startUpTime='+ startUpTime
+        +'&endUpTime='+endUpTime,'','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+}
 function _selectOverhaulApply(){
     if(selesign==0){
         defsel();
@@ -812,6 +885,8 @@ function mEDefSel(){
     egridStore.load();
 }
 function itemclick(s, record, item, index, e, eOpts) {
+
+
 
 }
 function tbitemclick(s, record, item, index, e, eOpts) {
@@ -864,13 +939,13 @@ function delCorDefect(defGuid){
         method: 'POST',
         async: false,
         params: {
-            V_WEEKGUID:V_WEEKPLAN_GUID,
+            V_WEEKGUID:WEEKGUID,
             DEF_GUID: defGuid
         },
         success: function (resp) {
             var data = Ext.decode(resp.responseText);//后台返回的值
             if (data.RET =='SUCCESS') {
-                haveChLoad(V_WEEKPLAN_GUID);
+                haveChLoad(WEEKGUID);
                 // turnPage();
             }
         },
@@ -883,33 +958,6 @@ function delCorDefect(defGuid){
             });
         }
     });
-}
-function turnPage(){
-    Ext.Ajax.request({
-        url:AppUrl+'dxfile/PRO_PLAN_WEEK_MAINDEF_UPDATE',
-        type: 'ajax',
-        method: 'POST',
-        async: false,
-        params: {
-            WEEK_GUID:V_WEEKPLAN_GUID
-        },
-        success: function (resp) {
-            var data = Ext.decode(resp.responseText);//后台返回的值
-            if (data.RET =='SUCCESS') {
-                window.opener.getNewDefDate(V_WEEKPLAN_GUID);
-                window.close();
-            }
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
-        }
-    });
-
 }
 function choequ(equcode){
     retEquDif=0;
@@ -932,317 +980,3 @@ function action2(tab){
 
     });
 }
-
-/**
- *old pandl
- */
-/*
-//月计划关联缺陷gird+tool
-
-    //月计划缺陷表格tool
-    var mdtoolPanel=Ext.create('Ext.panel.Panel',{
-        id:'mdtoolPanel',
-        layout:'column',
-        region:'north',
-        frame:true,
-        border:false,
-        height:'18%',
-        autoScroll:true,
-        defaults:{
-            labelAlign:'right',
-            margin:'5 5 5 10'
-        },
-        items:[
-            // {
-            //     id: 'qxzt',
-            //     xtype: 'combo',
-            //     store: sqxzt,
-            //     editable: false,
-            //     fieldLabel: '缺陷类型',
-            //     labelWidth:70,
-            //     width: 180,
-            //     displayField: 'V_SOURCENAME',
-            //     valueField: 'V_SOURCECODE',
-            //     queryMode: 'local',
-            //     baseCls: 'margin-bottom'
-            // },{
-            //     xtype : 'button',
-            //     text : '查询',
-            //     handler : _selectOverhaulApply
-            // },
-            {
-                xtype: 'button',
-                text: '选择',
-                handler : AddmDef
-            }
-        ]
-    });
-    //月计划关联缺陷grid
-    var mdGridPanel = Ext.create('Ext.grid.Panel', {
-        id : 'mdGridPanel',
-        // store : mgridStore,
-        region:'center',
-        split: true,
-        border: true,
-        columnLines: true,
-        autoScroll:true,
-        selType: 'checkboxmodel',
-        columns : [ {
-            text : '序号',
-            xtype : 'rownumberer',
-            width : 50,
-            sortable : false
-        },
-            {text : '单位',dataIndex : 'V_DEPTNAME',align : 'center',width : 100,renderer : CreateGridColumnTd},
-            {text : '缺陷状态',dataIndex : 'V_STATENAME',align : 'center',width : 100,renderer : CreateGridColumnTd},
-            {text : '缺陷类型',dataIndex : 'V_SOURCENAME',align : 'center',width : 100,renderer : CreateGridColumnTd},
-            {text : '缺陷日期',dataIndex : 'D_DEFECTDATE',align : 'center',width : 200,renderer : CreateGridColumnTime},
-            {text : '缺陷明细',dataIndex : 'V_DEFECTLIST',align : 'center',width : 700,renderer : CreateGridColumnTd},
-            {text : '设备',dataIndex : 'V_EQUNAME',align : 'center',width : 200,renderer : CreateGridColumnTd},
-            {text : '设备位置',dataIndex : 'V_EQUSITE',align : 'center',width : 300,renderer : CreateGridColumnTd},
-            {text : '负责人',dataIndex : 'V_PERNAME',align : 'center',width : 100,renderer : CreateGridColumnTd},
-            {text : '处理意见',dataIndex : 'V_IDEA',align : 'center',renderer : CreateGridColumnTd}
-        ]
-        // ,listeners : {
-        //     itemclick: AddmDef //itemdblclick
-        // }
-    });
-
-    //月计划缺陷查询模版
-    var mfGridPanel=Ext.create('Ext.panel.Panel',{
-        id:'mfGridPanel',
-        layout:'border',
-        region:'center',
-        width:'45%',
-        split: true,
-        frame:true,
-        border:false,
-        title:'月计划关联的缺陷',
-        // items:[mdGridPanel]
-        items:[mdtoolPanel,mdGridPanel]
-    });
-
-    //月计划grid_tool
-    var toolPanel=Ext.create("Ext.panel.Panel",{
-        id:'toolPanel' ,
-        layout:'column',
-        frame:true,
-        region:'north',
-        border:false,
-        height:'18%',
-        autoScroll:true,
-        items:[
-            {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
-            {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
-            {xtype: 'textfield',id:'jhmc',fieldLabel: '计划名称',editable: false, margin: '10 0 0 5',labelWidth:55,width:205,value:''},
-            {xtype: 'button', id:'monthsel',text: '查询', margin: '10 0 5 10',icon:imgpath + '/search.png',handler:query}
-            // ,{xtype: 'button', text: '其他缺陷选择', margin: '10 0 5 10',icon: imgpath +'/add.png', handler:OtherDefselect}
-        ]
-    });
-    var mGridPanel = Ext.create('Ext.grid.Panel', {
-        id:'mGridPanel',
-        region: 'center',
-        border: false,
-        store:mgridStore,
-        autoScroll:true,
-        selType:'checkboxmodel',
-        columns:[
-            {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
-            {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
-            {text: '车间名称', align: 'center', width: 100, dataIndex: 'V_DEPTNAME'},
-            {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
-            {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME'},
-            {text: '检修内容', align: 'center', width: 100, dataIndex: 'V_CONTENT'},
-            {text: '计划停机日期', align: 'center', width: 100, dataIndex: 'V_STARTTIME',
-                renderer: rendererTime},
-            {text: '计划竣工日期', align: 'center', width: 100, dataIndex: 'V_ENDTIME',
-                renderer: rendererTime},
-            {text: '计划工期（小时）', align: 'center', width: 100, dataIndex: 'V_HOUR'}
-        ],
-        listeners: {
-            itemclick: function (panel, record, item, index, e, eOpts) {
-                defPanelLoad(record.data.V_GUID);
-                MGUID=record.data.V_GUID;
-                MCK=record.data.V_ORGCODE;
-                MEQUCODE=record.data.V_EQUCODE;
-            }
-        }
-        ,
-        bbar:["->",
-            {
-                id:'page',
-                xtype: 'pagingtoolbar',
-                store:mgridStore,
-                width:'100%',
-                dock: 'bottom',
-                displayInfo: true,
-                displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-                emptyMsg: '没有记录'
-            }
-        ]
-    });
-
-    //月查找模块
-    var monthPanel=Ext.create('Ext.panel.Panel',{
-        id:'monthPanel',
-        layout:'border',
-        region:'west',
-        frame:true,
-        split: true,
-        width:'65%',
-        border:false,
-        title:'月计划审批完成查找',
-        items:[toolPanel,mGridPanel]
-    });
-    //上模块
-    var topPanel=Ext.create('Ext.panel.Panel',{
-        id:'topPanel',
-        layout:'border',
-        region:'north',
-        frame:true,
-        split: true,
-        height:'45%',
-        border:false,
-        collapsible: true,
-        items:[monthPanel,mfGridPanel]
-    });
-    //其他缺陷模块
-    var otherDeftool=Ext.create('Ext.panel.Panel',{
-        id:'otherDeftool',
-        layout:'column',
-        region:'north',
-        frame:true,
-        border:false,
-        height:'10%',
-        autoScroll:true,
-        defaults:{
-            labelAlign:'right',
-            margin:'5 5 5 10'
-        },
-        items:[
-            {
-                id: 'qxzt',
-                xtype: 'combo',
-                store: sqxzt,
-                editable: false,
-                fieldLabel: '缺陷类型',
-                labelWidth:70,
-                width: 180,
-                displayField: 'V_SOURCENAME',
-                valueField: 'V_SOURCECODE',
-                queryMode: 'local',
-                baseCls: 'margin-bottom'
-            },{
-                xtype : 'button',
-                id:'otherdefsel',
-                text : '查询',
-                handler :otherdefsel// _selectOverhaulApply
-            }
-            ,{
-                xtype : 'button',
-                id:'addotherdef',
-                text : '缺陷添加',
-                handler :Select// _selectOverhaulApply
-            }
-        ]
-    });
-    var dGridPanel = Ext.create('Ext.grid.Panel', {
-        id : 'dGridPanel',
-        store : gridStore,
-        region:'center',
-        border: true,
-        columnLines: true,
-        autoScroll:true,
-        selType: 'checkboxmodel',
-        columns : [
-            {text : '序号',xtype : 'rownumberer',width : 50,sortable : false}
-            , {text : '单位',dataIndex : 'V_DEPTNAME',align : 'center',width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷日期', dataIndex : 'D_DEFECTDATE', align : 'center', width : 200, renderer : CreateGridColumnTime
-            }, {text : '缺陷明细', dataIndex : 'V_DEFECTLIST', align : 'center', width : 700, renderer : CreateGridColumnTd
-            }, {text : '设备', dataIndex : 'V_EQUNAME', align : 'center', width : 200, renderer : CreateGridColumnTd
-            }, {text : '设备位置', dataIndex : 'V_EQUSITE', align : 'center', width : 300, renderer : CreateGridColumnTd
-            }, {text : '负责人', dataIndex : 'V_PERNAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '处理意见', dataIndex : 'V_IDEA', align : 'center', renderer : CreateGridColumnTd
-            }],
-        listeners : {
-            itemdblclick :tbitemclick
-            // ,itemclick: Select
-        }
-    });
-    var otherDefPanel=Ext.create('Ext.panel.Panel',{
-        id:'otherDefPanel',
-        layout:'border',
-        region:'west',
-        split: true,
-        width:'55%',
-        frame:true,
-        border:false,
-        title:'其他缺陷查找',
-        items:[otherDeftool,dGridPanel]
-    });
-    var hChoGrid= Ext.create('Ext.grid.Panel', {
-        id : 'hChoGrid',
-        store : hChoGridStore,
-        region:'center',
-        border: true,
-        columnLines: true,
-        autoScroll:true,
-        // selType: 'checkboxmodel',
-        columns : [
-            {text : '序号',xtype : 'rownumberer',width : 50,sortable : false}
-            ,{text : '删除',dataIndex : 'V_GUID',align : 'center',width : 100, renderer : delCorDef}
-            , {text : '单位',dataIndex : 'V_DEPTNAME',align : 'center',width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '缺陷日期', dataIndex : 'D_DEFECTDATE', align : 'center', width : 200, renderer : CreateGridColumnTime
-            }, {text : '缺陷明细', dataIndex : 'V_DEFECTLIST', align : 'center', width : 700, renderer : CreateGridColumnTd
-            }, {text : '设备', dataIndex : 'V_EQUNAME', align : 'center', width : 200, renderer : CreateGridColumnTd
-            }, {text : '设备位置', dataIndex : 'V_EQUSITE', align : 'center', width : 300, renderer : CreateGridColumnTd
-            }, {text : '负责人', dataIndex : 'V_PERNAME', align : 'center', width : 100, renderer : CreateGridColumnTd
-            }, {text : '处理意见', dataIndex : 'V_IDEA', align : 'center', renderer : CreateGridColumnTd
-            }]
-        // ,listeners : {
-        //     itemdblclick : itemclick
-        // }
-        ,tbar:[
-            {
-                xtype:'button',
-                text:'确定选择',
-                handler:turnPage
-            }
-        ]
-
-    });
-    //已选择模块
-    var haveChoDef=Ext.create('Ext.panel.Panel',{
-        id:'haveChoDef',
-        layout:'border',
-        region:'center',
-        split: true,
-        width:'45%',
-        frame:true,
-        border:false,
-        title:'已选择缺陷',
-        items:[hChoGrid]
-    });
-    //下模块
-    var downPanel=Ext.create('Ext.panel.Panel',{
-        id:'downPanel',
-        layout:'border',
-        region:'center',
-        height:'55%',
-        split: true,
-        frame:true,
-        border:false,
-        collapsible: true,
-        items:[otherDefPanel,haveChoDef]
-    });
-    main
-    Ext.create('Ext.container.Viewport',{
-        id:'main',
-        layout:'border',
-        items:[topPanel,downPanel]
-    });
-*/

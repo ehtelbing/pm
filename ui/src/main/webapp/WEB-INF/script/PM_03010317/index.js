@@ -146,7 +146,8 @@ Ext.onReady(function(){
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'dxfile/PRO_PM_07_DEFECT_SELECT',
+            // url: AppUrl + 'dxfile/PRO_PM_07_DEFECT_SELECT',
+            url: AppUrl + 'dxfile/PRO_PM_07_DEFECT_SELECT_N',
             actionMethods: {
                 read: 'POST'
             },
@@ -599,6 +600,7 @@ function mdefsel(){
     agridStore.proxy.extraParams = {
         V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+        V_V_EQUCODE:MEQUCODE,
         V_V_PAGE: '',//Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: ''//Ext.getCmp('page').store.pageSize
     };

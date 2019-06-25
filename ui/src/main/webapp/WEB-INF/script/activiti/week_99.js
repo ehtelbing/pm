@@ -250,6 +250,7 @@ Ext.onReady(function () {
                     id: 'sgfs',
                     fieldLabel: '施工方式',
                     allowBlank: false,
+                    hidden:true,
                     labelWidth: 90
                 }, {
                     id: 'repairDept',

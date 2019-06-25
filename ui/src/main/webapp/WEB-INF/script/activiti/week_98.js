@@ -879,6 +879,7 @@ Ext.onReady(function () {
                             valueField: 'V_BH',
                             labelWidth: 90,
                             width: 250,
+                            hidden:true,
                             labelAlign : 'right'
                         },{
                             xtype : 'combo',

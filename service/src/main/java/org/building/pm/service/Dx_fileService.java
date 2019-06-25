@@ -5936,16 +5936,16 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
        return result;
    }
    //修改周计划表格中主要缺陷
-    public HashMap PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(String WEEK_GUID) throws SQLException {
+    public HashMap PRO_PLAN_WEEK_MAINDEF_UPDATE(String WEEK_GUID) throws SQLException {
 
-        logger.info("begin PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE");
+        logger.info("begin PRO_PLAN_WEEK_MAINDEF_UPDATE");
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(:WEEK_GUID,:RET)}");
+            cstmt = conn.prepareCall("{call PRO_PLAN_WEEK_MAINDEF_UPDATE(:WEEK_GUID,:RET)}");
             cstmt.setString("WEEK_GUID", WEEK_GUID);
 
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
@@ -5959,7 +5959,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE");
+        logger.info("end PRO_PLAN_WEEK_MAINDEF_UPDATE");
         return result;
     }
     //缺陷保存过程-状态手动添加
@@ -6200,6 +6200,42 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         }
         logger.debug("result:" + result);
         logger.info("end PM_DEFECT_RE_WORK_INSERT");
+        return result;
+    }
+    //周计划-按月计划设备查找其他缺陷
+    public Map PRO_PM_07_DEFECT_SELECT_N(String V_V_STATECODE,
+                                       String X_PERSONCODE,String V_V_EQUCODE,String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+
+        logger.info("begin PRO_PM_07_DEFECT_SELECT_N");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_SELECT_N(:V_V_STATECODE,:X_PERSONCODE,:V_V_EQUCODE,:V_V_PAGE," +
+                    ":V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+            cstmt.setString("X_PERSONCODE", X_PERSONCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_PAGE", V_V_PAGE);
+            cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_SELECT_N");
         return result;
     }
 

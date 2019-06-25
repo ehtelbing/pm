@@ -4695,13 +4695,13 @@ public class Dx_fileController {
     }
 
     //修改周计划表格中主要缺陷
-    @RequestMapping(value = "PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_PLAN_WEEK_MAINDEF_UPDATE", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(@RequestParam(value = "WEEK_GUID") String WEEK_GUID,
+    public Map<String, Object> PRO_PLAN_WEEK_MAINDEF_UPDATE(@RequestParam(value = "WEEK_GUID") String WEEK_GUID,
 
                                                        HttpServletRequest request,
                                                        HttpServletResponse response) throws Exception {
-        Map result = dx_fileService.PRO_PM_03_PLAN_WEEK_MAINDEF_UPDATE(WEEK_GUID);
+        Map result = dx_fileService.PRO_PLAN_WEEK_MAINDEF_UPDATE(WEEK_GUID);
         return result;
     }
     //缺陷保存过程-状态手动添加
@@ -4803,6 +4803,20 @@ public class Dx_fileController {
        Map result = dx_fileService.PM_DEFECT_RE_WORK_INSERT(V_V_WGUID,V_DEFGUID);
        return result;
    }
+
+    //周计划-按月计划设备查找其他缺陷
+    @RequestMapping(value = "PRO_PM_07_DEFECT_SELECT_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_SELECT_N(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                       @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                       @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                       @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                       HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_PM_07_DEFECT_SELECT_N(V_V_STATECODE, X_PERSONCODE, V_V_EQUCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

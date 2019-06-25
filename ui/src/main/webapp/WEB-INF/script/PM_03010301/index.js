@@ -1515,6 +1515,10 @@ function createWorkorder() {
             alert("该计划状态无法生成工单");
             return;
         }
+        if (record[i].data.V_STATE  == '31') {
+            alert("存在一下票工单，请重新选择");
+            return false;
+        }
         // if(record[i].get('V_INPER')!==Ext.util.Cookies.get('v_personcode')){
         //     alert("该计划录入人非本人，无法生成工单");
         //     return;
@@ -1706,7 +1710,8 @@ function OnButtonFromMonth(){
     }
     var owidth = window.screen.availWidth;
     var oheight = window.screen.availHeight - 50;
-    var ret = window.open(AppUrl + 'page/PM_03010317/index.html?Oyear='
+    // var ret = window.open(AppUrl + 'page/PM_03010317/index.html?Oyear='
+    var ret = window.open(AppUrl + 'page/PM_03010317/newadd.html?Oyear='
         + Ext.getCmp("nf").getValue()+'&Omonth='+Ext.getCmp('yf').getValue()
         +'&V_V_ORGCODE='+Ext.getCmp("jhck").getValue()
         +'&V_V_DEPTCODE='+Ext.getCmp("jhzyq").getValue()
