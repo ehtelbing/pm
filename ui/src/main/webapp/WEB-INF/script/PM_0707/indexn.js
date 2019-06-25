@@ -1,7 +1,7 @@
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
-var V_V_PERSONNAME=Ext.util.Cookies.get('v_personname');
+var V_V_PERSONNAME = Ext.util.Cookies.get('v_personname');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
-var defectguid=guid();
+var defectguid = guid();
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -132,7 +132,7 @@ Ext.onReady(function () {
         id: 'childEquStore',
         autoLoad: false,
         fields: ['V_EQUCODE', 'V_EQUNAME'],
-        proxy: Ext.create("Ext.ux.data.proxy.Ajax",{
+        proxy: Ext.create("Ext.ux.data.proxy.Ajax", {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_14/PRO_SAP_EQU_VIEW',
@@ -191,9 +191,9 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams:{
-                V_DEPTCODE:Ext.util.Cookies.get('v_deptcode'),
-                V_PERCODE:Ext.util.Cookies.get('v_personcode')
+            extraParams: {
+                V_DEPTCODE: Ext.util.Cookies.get('v_deptcode'),
+                V_PERCODE: Ext.util.Cookies.get('v_personcode')
             }
         }
         , listeners: {
@@ -227,7 +227,7 @@ Ext.onReady(function () {
 
     });
 
-    var fileview=Ext.create("Ext.data.Store", {
+    var fileview = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'fileview',
         fields: ['FILE_CODE', 'FILE_NAME', 'FILE_TYPE', 'INSERT_DATE', 'INSERT_PERSON'],
@@ -248,7 +248,7 @@ Ext.onReady(function () {
         }
     });
 
-    var filegrid=Ext.create("Ext.grid.Panel", {
+    var filegrid = Ext.create("Ext.grid.Panel", {
         id: 'filegrid',
         region: 'center',
         height: '100%',
@@ -259,31 +259,31 @@ Ext.onReady(function () {
         margin: '10px 0px 0px 15px',
         //colspan: 3,
         columns: [{
-            text:'附件编码',
-            hide:true,
-            dataIndex:'FILE_CODE'
-        },{
+            text: '附件编码',
+            hide: true,
+            dataIndex: 'FILE_CODE'
+        }, {
             text: '附件名称',
             flex: 0.6,
-            width:340,
-            id : 'fjname',
+            width: 340,
+            id: 'fjname',
             align: 'center',
             dataIndex: "FILE_NAME"
             //renderer: _downloadRander
         }, {
             text: '操作',
             flex: 0.4,
-            width:340,
+            width: 340,
             align: 'center',
             renderer: _delRander
         }]
     });
 
     //--UPDATE 2018-09-27
-    var win=Ext.create('Ext.window.Window',{
-        id:'win',
-        title:'附件添加窗口',
-        closeAction:'hide',
+    var win = Ext.create('Ext.window.Window', {
+        id: 'win',
+        title: '附件添加窗口',
+        closeAction: 'hide',
         layout: 'vbox',
         width: 880,
         height: 400,
@@ -292,10 +292,10 @@ Ext.onReady(function () {
         bodyPadding: 10,
         items: [{
             xtype: 'form',
-            id:'uploadFile',
+            id: 'uploadFile',
             region: 'north',
             layout: 'hbox',
-            fileUpload:true,
+            fileUpload: true,
             baseCls: 'my-panel-no-border',
             items: [{
                 xtype: "filefield",
@@ -326,7 +326,7 @@ Ext.onReady(function () {
                 xtype: 'hidden',
                 name: 'V_FILENAME',
                 id: 'V_FILENAME'
-            },  {
+            }, {
                 xtype: 'hidden',
                 name: 'V_PLANT',
                 id: 'V_PLANT'
@@ -345,7 +345,7 @@ Ext.onReady(function () {
             }*/
 
             ]
-        } ,{
+        }, {
             columnWidth: 1,
             height: 380,
             width: 800,
@@ -357,34 +357,31 @@ Ext.onReady(function () {
 
     var panel = Ext.create('Ext.panel.Panel', {
         region: 'center',
-        layout: 'vbox',
+        layout: {
+            type: 'table',
+            columns: '3'
+        },
         frame: true,
         width: '100%',
-        items: [
-            {xtype:'panel',frame:true,layout:'column',width:255,border:false,
-                items:[
-                    {xtype: 'button',id:'btn3', text: '上传附件', margin : '0px 0px 0px 15px',handler:upfile},
-                    {xtype: 'button',id:'btn1', text: '保存',icon: imgpath +'/add.png', margin : '0px 0px 0px 15px',handler :OnButtonSave}  //,
-                ]},
-            {
-                xtype: 'combo',
-                id: 'ck',
-                store: ckStore,
-                fieldLabel: '计划厂矿',
-                labelAlign: 'right',
-                editable: false,
-                margin: '5 0 5 5',
-                labelWidth: 75,
-                width: 255,
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                queryMode: 'local'
-                , listeners: {
-                    change: function () {
-                        zyqload();
-                    }
+        items: [ {
+            xtype: 'combo',
+            id: 'ck',
+            store: ckStore,
+            fieldLabel: '计划厂矿',
+            labelAlign: 'right',
+            editable: false,
+            margin: '5 0 5 5',
+            labelWidth: 75,
+            width: 255,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local'
+            , listeners: {
+                change: function () {
+                    zyqload();
                 }
-            },
+            }
+        },
             {
                 xtype: 'combo',
                 id: 'zyq',
@@ -484,41 +481,21 @@ Ext.onReady(function () {
                 valueField: 'V_LEVELCODE',
                 queryMode: 'local'
             },
-            {    xtype: 'combo',
+            {
+                xtype: 'combo',
                 id: 'clfs',
-                store:clfsStore,
+                store: clfsStore,
                 fieldLabel: '处理方式',
                 labelAlign: 'right',
                 editable: false,
+                hidden:true,
                 margin: '5 0 5 5',
                 labelWidth: 75,
                 width: 255,
                 displayField: 'WAYNAME',
                 valueField: 'WAYID',
                 queryMode: 'local'
-            }
-            ,
-            {
-                xtype: 'textarea',
-                id: 'qxmc',
-                fieldLabel: '缺陷明细',
-                margin: '5 0 10 5',
-                labelAlign: 'right',labelWidth:75,width:255,height:80, value: ''
             },
-            {
-                xtype: 'textarea',id:'clyj',fieldLabel: '处理意见',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,width:255,height:80, value: ''
-            }
-            ,{
-                xtype: 'textfield',
-                id: 'inper',
-                fieldLabel: '录入名字',
-                margin: '5 0 10 5',
-                labelAlign: 'right',
-                labelWidth: 75,
-                width: 255,
-                value: decodeURI(V_V_PERSONNAME)
-            }
-            ,
             {
                 id: 'begintime',
                 xtype: 'datefield',
@@ -530,7 +507,47 @@ Ext.onReady(function () {
                 labelWidth: 75,
                 width: 255,
                 baseCls: 'margin-bottom'
+            } , {
+                xtype: 'textfield',
+                id: 'inper',
+                fieldLabel: '录入名字',
+                margin: '5 0 10 5',
+                labelAlign: 'right',
+                labelWidth: 75,
+                width: 255,
+                value: decodeURI(V_V_PERSONNAME)
             }
+            ,
+            {
+                xtype: 'textarea',
+                id: 'qxmc',
+                fieldLabel: '缺陷明细',
+                margin: '5 0 10 5',
+                labelAlign: 'right', labelWidth: 75, width: 255, height: 80, value: ''
+            },
+            {
+                xtype: 'textarea',
+                id: 'clyj',
+                fieldLabel: '处理意见',
+                margin: '5 0 10 5',
+                labelAlign: 'right',
+                labelWidth: 75,
+                width: 255,
+                height: 80,
+                value: ''
+            }
+
+            ,{xtype:'panel',frame:true,width:'100%',layout:'column',baseCls : 'my-panel-noborder',
+                items:[{xtype: 'button', id: 'btn3', text: '上传附件', margin: '0px 0px 0px 15px', handler: upfile},
+                    {
+                        xtype: 'button',
+                        id: 'btn1',
+                        text: '保存',
+                        icon: imgpath + '/add.png',
+                        margin: '0px 0px 0px 15px',
+                        handler: OnButtonSave
+                    }]}
+
 
 
         ]
@@ -588,9 +605,9 @@ Ext.onReady(function () {
         });
 
     });
-    Ext.data.StoreManager.lookup('childEquStore').on('load',function(){
+    Ext.data.StoreManager.lookup('childEquStore').on('load', function () {
         Ext.getCmp("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(0));
-            });
+    });
 
     //厂矿改变
     Ext.getCmp('ck').on('select', function () {
@@ -734,10 +751,10 @@ function OnButtonSave() {
         async: false,
         params: {
             V_V_GUID: defectguid,
-            V_V_PERCODE:'',//Ext.getCmp('inper').getValue(),
-            V_V_PERNAME:Ext.getCmp('inper').getValue(),
-            V_V_INPERCODE:Ext.util.Cookies.get('v_personcode'),
-            V_V_INPERNAME:decodeURI(Ext.util.Cookies.get('v_personcode')),
+            V_V_PERCODE: '',//Ext.getCmp('inper').getValue(),
+            V_V_PERNAME: Ext.getCmp('inper').getValue(),
+            V_V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_INPERNAME: decodeURI(Ext.util.Cookies.get('v_personcode')),
             V_V_DEFECTLIST: Ext.getCmp('qxmc').getValue(),
             V_V_SOURCECODE: Ext.getCmp('qxlx').getValue(),//'defct01',
             V_V_SOURCEID: '',
@@ -747,7 +764,7 @@ function OnButtonSave() {
             V_V_EQUCHILDCODE: Ext.getCmp('zsbmc').getValue(),
             V_V_IDEA: Ext.getCmp('clyj').getValue(),
             V_V_LEVEL: Ext.getCmp('qxdj').getValue(),
-            V_V_PROWAY:Ext.getCmp('clfs').getValue()
+            V_V_PROWAY: Ext.getCmp('clfs').getValue()
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
@@ -772,6 +789,7 @@ function guid() {
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
+
 //--update 2018-9-27
 function upfile() {
     Ext.data.StoreManager.lookup('fileview').load();
@@ -813,11 +831,11 @@ function _upLoadFile() {
         async: false,
         waitMsg: '上传中...',
         success: function (form, action) {
-             var massage=action.result.message;
-             if(massage=="{list=Success}"){
-                 Ext.Msg.alert('成功', '上传成功');
-                 filequery(defectguid);
-             }
+            var massage = action.result.message;
+            if (massage == "{list=Success}") {
+                Ext.Msg.alert('成功', '上传成功');
+                filequery(defectguid);
+            }
         },
         failure: function (resp) {
             Ext.Msg.alert('错误', '上传失败');

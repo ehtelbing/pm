@@ -2,7 +2,7 @@ var GridModel = Ext.create('Ext.selection.RowModel', {});
 
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
-var tabIndex=0;
+var tabIndex = 0;
 Ext.onReady(function () {
     Ext.QuickTips.init();
 
@@ -13,7 +13,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl +'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
             actionMethods: {
                 read: 'POST'
             },
@@ -99,9 +99,7 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             },
-            extraParams: {
-
-            }
+            extraParams: {}
         }
     });
 
@@ -115,7 +113,7 @@ Ext.onReady(function () {
         layout: {
             type: 'column'
         },
-        frame:true,
+        frame: true,
         items: [{
             id: 'begintime',
             xtype: 'datefield',
@@ -193,7 +191,7 @@ Ext.onReady(function () {
             xtype: 'textfield',
             width: 158,
             emptyText: '缺陷明细模糊搜索',
-            margin:'5px 0px 5px 110px'
+            margin: '5px 0px 5px 110px'
         }, {
             id: 'query',
             xtype: 'button',
@@ -201,7 +199,7 @@ Ext.onReady(function () {
             text: '查询',
             width: 80,
             handler: function () {
-                tabIndex=parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
+                tabIndex = parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
                 Ext.getCmp('page').store.currentPage = 1;
                 Ext.data.StoreManager.lookup('gridStore').load();
                 /*gridStore.load({
@@ -223,14 +221,14 @@ Ext.onReady(function () {
                     method: 'POST',
                     async: false,
                     params: {
-                        V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-                        V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-                        V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-                        V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-                        V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-                        V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-                        V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-                        X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
+                        V_D_DEFECTDATE_B: Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
+                        V_D_DEFECTDATE_E: Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
+                        V_V_DEPTCODE: Ext.ComponentManager.get("zyq").getValue(),
+                        V_V_EQUTYPECODE: Ext.ComponentManager.get("sbtype").getValue(),
+                        V_V_EQUCODE: Ext.ComponentManager.get("sbname").getValue(),
+                        V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+                        V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
+                        X_PERSONCODE: Ext.util.Cookies.get('v_personcode')
                     },
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
@@ -239,7 +237,7 @@ Ext.onReady(function () {
 
                         for (i = 0; i < resp.length; i++) {
                             Ext.ComponentManager.get("tabpanel").add({
-                                id : 'tabpanel'+i,
+                                id: 'tabpanel' + i,
                                 title: resp[i].V_SOURCENAME,
                                 items: [{
                                     xtype: 'hidden',
@@ -249,7 +247,8 @@ Ext.onReady(function () {
                         }
                         Ext.ComponentManager.get("tabpanel").setActiveTab(tabIndex);
                     }
-                });/* */
+                });
+                /* */
             }
         }, {
             xtype: 'hidden',
@@ -261,7 +260,7 @@ Ext.onReady(function () {
             listeners: {
                 click: GoToBad
             },
-            hidden : true
+            hidden: true
         }, {
             xtype: 'button',
             text: '打印',
@@ -270,7 +269,7 @@ Ext.onReady(function () {
             listeners: {
                 click: print_btn
             },
-            hidden : true
+            hidden: true
         }, {
             xtype: 'button',
             text: '导出excel',
@@ -279,18 +278,18 @@ Ext.onReady(function () {
             listeners: {
                 click: OnClickExcelButton
             },
-            hidden : true
+            hidden: true
         }]
     });
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
-        pageSize:20,
+        pageSize: 20,
         autoLoad: false,
         fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID','WEBCODE','WBSNAME'],
+            'V_STATECOLOR', 'V_ORDERID', 'WEBCODE', 'WBSNAME'],
 
         proxy: {
             type: 'ajax',
@@ -317,96 +316,88 @@ Ext.onReady(function () {
         autoScroll: true,
         height: 400,
         columns: [{
-            xtype : 'rownumberer',
-            width : 30,
-            sortable : false
+            xtype: 'rownumberer',
+            width: 30,
+            sortable: false
         },
             {
-                text : '工单号',
-                id : 'gdh',
-                dataIndex : 'V_ORDERID',
-                align : 'center',
-                width : 150,
-                renderer : ReadGD,
-                hidden:true
+                text: '工单号',
+                id: 'gdh',
+                dataIndex: 'V_ORDERID',
+                align: 'center',
+                width: 150,
+                renderer: ReadGD,
+                hidden: true
             },
             {
-                text:'WBS编码',
-                id:'wbscodeid',
-                align:'center',
-                width:'90',
-                dataIndex:'WEBCODE'
-
+                text: 'WBS编码',
+                id: 'wbscodeid',
+                align: 'center',
+                width: 160,
+                dataIndex: 'WEBCODE',
+                renderer: CreateGridColumnTd
             }, {
-                text:'WBS名称',
-                id:'wbsnameid',
-                align:'center',
-                width:'90',
-                dataIndex:'WBSNAME'
-
-            },
-            {
-                text : '缺陷日期',
-                dataIndex : 'D_DEFECTDATE',
-                align : 'center',
-                width : 200,
-                renderer : CreateGridColumnTd
-            },
-            {
-                text : '缺陷明细',
-                dataIndex : 'V_DEFECTLIST',
-                align : 'center',
-                width : 300,
-                renderer : CreateGridColumnTd
-            },
-            {
-                text : '设备',
-                dataIndex : 'V_EQUNAME',
-                align : 'center',
-                width : 200,
-                renderer : CreateGridColumnTd
-            },
-            {
-                text : '设备位置',
-                dataIndex : 'V_EQUSITE',
-                align : 'center',
-                width : 250,
-                renderer : CreateGridColumnTd
-            },
-            {
-                text : '单位',
-                dataIndex : 'V_DEPTNAME',
-                align : 'center',
-                width : 100,
-                renderer : CreateGridColumnTd
-            },
-            {
-                text : '负责人',
-                dataIndex : 'V_PERNAME',
-                align : 'center',
-                width : 100,
-                renderer : CreateGridColumnTd
-            },
-            {
-                text : '处理意见',
-                dataIndex : 'V_IDEA',
-                align : 'center',
-                renderer : CreateGridColumnTd
+                text: 'WBS名称',
+                id: 'wbsnameid',
+                align: 'center',
+                width: 160,
+                dataIndex: 'WBSNAME',
+                renderer: CreateGridColumnTd
+            },{
+                text: '设备',
+                dataIndex: 'V_EQUNAME',
+                align: 'center',
+                width: 160,
+                renderer: CreateGridColumnTd
             }, {
-                text : '缺陷状态',
-                dataIndex : 'V_STATENAME',
-                align : 'center',
-                width : 100,
-                renderer : CreateGridColumnTd
+                text: '缺陷明细',
+                dataIndex: 'V_DEFECTLIST',
+                align: 'center',
+                width: 300,
+                renderer: CreateGridColumnTd
             }, {
-                text : '缺陷来源',
-                dataIndex : 'V_SOURCENAME',
-                align : 'center',
-                width : 100,
-                renderer : CreateGridColumnTd
+                text: '处理意见',
+                dataIndex: 'V_IDEA',
+                align: 'center',
+                width: 200,
+                renderer: CreateGridColumnTd
+            },
+            {
+                text: '缺陷日期',
+                dataIndex: 'D_DEFECTDATE',
+                align: 'center',
+                width: 160,
+                renderer: CreateGridColumnTd
+            },
+            {
+                text: '单位',
+                dataIndex: 'V_DEPTNAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            },
+            {
+                text: '负责人',
+                dataIndex: 'V_PERNAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            },
+           {
+                text: '缺陷状态',
+                dataIndex: 'V_STATENAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '缺陷来源',
+                dataIndex: 'V_SOURCENAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
             }],
-        listeners : {
-            itemdblclick : itemclick
+        listeners: {
+            itemdblclick: itemclick
         },
         bbar: [{
             id: 'page',
@@ -472,15 +463,15 @@ Ext.onReady(function () {
                 Ext.getCmp('page').store.currentPage = 1;
                 gridStore.load({
                     params: {
-                        V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-                        V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-                        V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-                        V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-                        V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-                        V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-                        V_V_SOURCECODE : Ext.ComponentManager.get("tabid").getValue(),
-                        V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-                        X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+                        V_D_DEFECTDATE_B: Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
+                        V_D_DEFECTDATE_E: Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
+                        V_V_DEPTCODE: Ext.ComponentManager.get("zyq").getValue(),
+                        V_V_EQUTYPECODE: Ext.ComponentManager.get("sbtype").getValue(),
+                        V_V_EQUCODE: Ext.ComponentManager.get("sbname").getValue(),
+                        V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+                        V_V_SOURCECODE: Ext.ComponentManager.get("tabid").getValue(),
+                        V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
+                        X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
                         V_V_PAGE: Ext.getCmp('page').store.currentPage,
                         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
                     }
@@ -531,8 +522,8 @@ Ext.onReady(function () {
         Ext.ComponentManager.get('sbtype').getStore().removeAll();
         ssbtype.load({
             params: {
-                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue()
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODENEXT: Ext.getCmp("zyq").getValue()
                 //parName: ['V_V_PERSONCODE', 'V_V_DEPTCODENEXT'],
                 //parType: ['s', 's'],
                 //parVal: [Ext.util.Cookies.get('v_personcode'),
@@ -555,9 +546,9 @@ Ext.onReady(function () {
                 //    Ext.getCmp("sbtype").getValue()],
                 //proName: 'pro_get_deptequ_per_drop',
                 //cursorName: 'V_CURSOR'
-                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue(),
-                V_V_EQUTYPECODE : Ext.getCmp("sbtype").getValue()
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODENEXT: Ext.getCmp("zyq").getValue(),
+                V_V_EQUTYPECODE: Ext.getCmp("sbtype").getValue()
 
             }
         });
@@ -567,9 +558,9 @@ Ext.onReady(function () {
         Ext.ComponentManager.get('sbname').getStore().removeAll();
         ssbname.load({
             params: {
-                V_V_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
-                V_V_DEPTCODENEXT : Ext.getCmp("zyq").getValue(),
-                V_V_EQUTYPECODE : Ext.getCmp("sbtype").getValue()
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                V_V_DEPTCODENEXT: Ext.getCmp("zyq").getValue(),
+                V_V_EQUTYPECODE: Ext.getCmp("sbtype").getValue()
                 //parName: ['V_V_PERSONCODE', 'V_V_DEPTCODENEXT',
                 //    'V_V_EQUTYPECODE'],
                 //parType: ['s', 's', 's'],
@@ -585,7 +576,7 @@ Ext.onReady(function () {
     var flag = 1;
     ssbname.on("load", function () {
         Ext.getCmp("sbname").select(ssbname.getAt(0));
-        if(flag == 1){
+        if (flag == 1) {
             addTab();
             flag++;
         }
@@ -624,14 +615,14 @@ function addTab() {
         method: 'POST',
         async: false,
         params: {
-            V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-            V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-            V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-            V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-            V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-            V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-            V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-            X_PERSONCODE : Ext.util.Cookies.get('v_personcode')
+            V_D_DEFECTDATE_B: Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
+            V_D_DEFECTDATE_E: Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
+            V_V_DEPTCODE: Ext.ComponentManager.get("zyq").getValue(),
+            V_V_EQUTYPECODE: Ext.ComponentManager.get("sbtype").getValue(),
+            V_V_EQUCODE: Ext.ComponentManager.get("sbname").getValue(),
+            V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+            V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
+            X_PERSONCODE: Ext.util.Cookies.get('v_personcode')
             //parName: ['v_d_defectdate_b', 'v_d_defectdate_e',
             //    'v_v_deptcode', 'v_v_equtypecode', 'v_v_equcode',
             //    'v_v_statecode', 'v_v_defectlist', 'x_personcode'],
@@ -658,7 +649,7 @@ function addTab() {
 
             for (i = 0; i < resp.length; i++) {
                 Ext.ComponentManager.get("tabpanel").add({
-                    id : 'tabpanel'+i,
+                    id: 'tabpanel' + i,
                     title: resp[i].V_SOURCENAME,
                     items: [{
                         xtype: 'hidden',
@@ -673,15 +664,15 @@ function addTab() {
     Ext.data.StoreManager.lookup('gridStore').on('beforeload', function (store) {
 
         store.proxy.extraParams = {
-            V_D_DEFECTDATE_B : Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
-            V_D_DEFECTDATE_E : Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
-            V_V_DEPTCODE : Ext.ComponentManager.get("zyq").getValue(),
-            V_V_EQUTYPECODE :  Ext.ComponentManager.get("sbtype").getValue(),
-            V_V_EQUCODE :  Ext.ComponentManager.get("sbname").getValue(),
-            V_V_STATECODE : Ext.ComponentManager.get("qxzt").getValue(),
-            V_V_SOURCECODE : Ext.ComponentManager.get("tabid").getValue(),
-            V_V_DEFECTLIST : Ext.ComponentManager.get("seltext").getValue(),
-            X_PERSONCODE : Ext.util.Cookies.get('v_personcode'),
+            V_D_DEFECTDATE_B: Ext.Date.format(Ext.ComponentManager.get("begintime").getValue(), 'Y/m/d'),
+            V_D_DEFECTDATE_E: Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y/m/d'),
+            V_V_DEPTCODE: Ext.ComponentManager.get("zyq").getValue(),
+            V_V_EQUTYPECODE: Ext.ComponentManager.get("sbtype").getValue(),
+            V_V_EQUCODE: Ext.ComponentManager.get("sbname").getValue(),
+            V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+            V_V_SOURCECODE: Ext.ComponentManager.get("tabid").getValue(),
+            V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
+            X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
 
@@ -695,10 +686,10 @@ function GoToBad() {
 
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
-    if(value == null){
+    if (value == null) {
         return '<div data-qtip="' + value + '" ></div>';
     }
-    else{
+    else {
         return '<div data-qtip="' + value + '" >' + value + '</div>';
     }
 }
@@ -790,6 +781,7 @@ function OnClickExcelButton() {
         parVal, proName, returnStr, returnStrType, returnStrName,
         cursorName, "title", "缺陷浏览");
 }
+
 function print_btn() {
 //	gridStore.load({
 //		params : {

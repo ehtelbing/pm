@@ -127,25 +127,28 @@ Ext.onReady(function () {
 
     var panel = Ext.create('Ext.panel.Panel', {
         region: 'center',
-        layout: 'vbox',
+        layout: {
+            type: 'table',
+            columns: '3'
+        },
         frame: true,
         width: '100%',
         items: [
-            {xtype:'panel',frame:true,layout:'column',width:255,border:false,
-                items:[
-                    {xtype: 'button',id:'btn3', text: '上传附件', margin : '0px 0px 0px 15px',handler:upfile},
-                    {xtype: 'button',id:'btn1', text: '保存',icon: imgpath +'/add.png', margin : '0px 0px 0px 15px',handler :OnButtonSave}]},
             {xtype: 'combo', id: 'ck', store: ckStore, fieldLabel: '计划厂矿', labelAlign: 'right', editable: false, margin: '5 0 5 5', labelWidth: 75, width:300,displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE', queryMode: 'local' },
             {xtype: 'combo', id: 'zyq', store: zyqStore, fieldLabel: '作业区', labelAlign: 'right', editable: false, margin: '5 0 5 5', labelWidth: 75,  width:300,displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE', queryMode: 'local' },
             {xtype: 'combo', id: 'sblx', store: [['X0003','小机修']], fieldLabel: '设备类型', labelAlign: 'right', editable: false, margin: '5 0 5 5', width:300,labelWidth: 75,   queryMode: 'local',value:'X0003'},
             {xtype: 'combo', id: 'sbmc', store: [['000000000000000003','小机修设备']], fieldLabel: '设备名称', labelAlign: 'right', editable: false, margin: '5 0 5 5', width:300,labelWidth: 75,   queryMode: 'local',value:'000000000000000003' },
             {xtype: 'combo', id: 'qxlx', store: [['defct14','小机修']], fieldLabel: '问题类型', labelAlign: 'right', editable: false, margin: '5 0 5 5',width:300, labelWidth: 75, queryMode: 'local',value:'defct14'},
             //{xtype: 'combo', id: 'qxdj', store: djStore, fieldLabel: '问题等级', labelAlign: 'right', editable: false, margin: '5 0 5 5', labelWidth: 75, width: 255, displayField: 'V_LEVELNAME', valueField: 'V_LEVELCODE', queryMode: 'local'},
-            {xtype: 'combo', id: 'clfs', store:[['JHX','计划修']], fieldLabel: '处理方式', labelAlign: 'right', editable: false, margin: '5 0 5 5', width:300,labelWidth: 75,  queryMode: 'local',value:'JHX'},
+            {xtype: 'combo', id: 'clfs', store:[['JHX','计划修']],hidden:true, fieldLabel: '处理方式', labelAlign: 'right', editable: false, margin: '5 0 5 5', width:300,labelWidth: 75,  queryMode: 'local',value:'JHX'},
+            {xtype: 'textfield', id: 'inper', fieldLabel: '录入名字', margin: '5 0 10 5', labelAlign: 'right', labelWidth: 75,  width:300,value: decodeURI(V_V_PERSONNAME)},
+            {id: 'begintime', xtype: 'datefield', editable: false, format: 'Y/m/d', value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), fieldLabel: '发现时间', labelAlign: 'right', labelWidth: 75, width:300, baseCls: 'margin-bottom'},
             {xtype: 'textarea', id: 'qxmc', fieldLabel: '问题明细', margin: '5 0 10 5', labelAlign: 'right',labelWidth:75,height:80, width:300,value: ''},
             {xtype: 'textarea',id:'clyj',fieldLabel: '处理意见',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,height:80,width:300, value: ''},
-            {xtype: 'textfield', id: 'inper', fieldLabel: '录入名字', margin: '5 0 10 5', labelAlign: 'right', labelWidth: 75,  width:300,value: decodeURI(V_V_PERSONNAME)},
-            {id: 'begintime', xtype: 'datefield', editable: false, format: 'Y/m/d', value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), fieldLabel: '发现时间', labelAlign: 'right', labelWidth: 75, width:300, baseCls: 'margin-bottom'}]
+            {xtype:'panel',frame:true,layout:'column',width:255,baseCls : 'my-panel-noborder',
+                items:[
+                    {xtype: 'button',id:'btn3', text: '上传附件', margin : '0px 0px 0px 15px',handler:upfile},
+                    {xtype: 'button',id:'btn1', text: '保存',icon: imgpath +'/add.png', margin : '0px 0px 0px 15px',handler :OnButtonSave}]}]
     });
 
     Ext.create('Ext.container.Viewport', {

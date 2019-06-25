@@ -207,7 +207,7 @@ public class MMController {
                 M.put("VCH_FROMNAME", recordEle.elementTextTrim("vch_fromName"));
                 M.put("ID", recordEle.elementTextTrim("ID"));
 
-                M.put("INPUT_DATE",recordEle.elementTextTrim("input_date"));
+                M.put("INPUT_DATE", recordEle.elementTextTrim("input_date"));
 
                 list.add(M);
             }
@@ -355,15 +355,17 @@ public class MMController {
         List<Map> result = null;
         String resJson;
         try {
-            String id=V_V_ORDERGUID.toString();
-            String str= id.substring(0,2);
-            if(!str.equals("88")){
-                List<Map> list = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
-                if(list.size()>0) {
-                    Map map = list.get(0);
-                    List listfirst = (List) map.get("list");
-                    if (listfirst.size() > 0) {
-                        Map fmap = (Map) listfirst.get(0);
+            String id = "";
+            String str = "";
+            List<Map> list = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
+            if (list.size() > 0) {
+                Map map = list.get(0);
+                List listfirst = (List) map.get("list");
+                if (listfirst.size() > 0) {
+                    Map fmap = (Map) listfirst.get(0);
+                    id = fmap.get("V_ORDERID").toString();
+                    str = id.substring(0, 2);
+                    if (!str.equals("88")) {
                         String state = fmap.get("SYSTEM_STATUS").toString();  //状态
                         if (!state.equals("TECO")) {// 已发的 不在发送
                             boolean bs = valicate(V_V_ORDERGUID, x_personcode, request, response);
@@ -374,7 +376,7 @@ public class MMController {
 
                         }
                         List<Map> list11 = zdhService.PRO_PM_WORKORDER_SPARE_VIEW1(V_V_ORDERGUID);
-                        if(list11.size()>0) {
+                        if (list11.size() > 0) {
                             Map map11 = list11.get(0);
                             List list13 = (List) map11.get("list");
                             if (list13.size() == 0) {
@@ -419,37 +421,39 @@ public class MMController {
 
         return test;
     }
-    private boolean  valicate(String orderguid,String personcode,HttpServletRequest request,
+
+    private boolean valicate(String orderguid, String personcode, HttpServletRequest request,
                              HttpServletResponse response) throws Exception {
         List<Map> viewlist = cxyService.PRO_PM_WORKORDER_SPARE_TOSAP_VIEW(orderguid);
         Map viewmap = viewlist.get(0);
         List list = (List) viewmap.get("list");
 
         for (int i = 0; i < list.size(); i++) {
-            Double sum=0.0;
+            Double sum = 0.0;
             Map map = (Map) list.get(i);
-            String materialcode=map.get("V_MATERIALCODE").toString();
-            String plant=map.get("V_PLANT").toString();
-            String workarea=map.get("V_WORK_AREA").toString();
-            String mid=map.get("I_ID").toString();
-            Map listmaps=this.GetDepartKC_storeid( 1000, materialcode, "", plant, workarea, "", "0", personcode, request, response);
-            List mylist=(List)listmaps.get("list");
+            String materialcode = map.get("V_MATERIALCODE").toString();
+            String plant = map.get("V_PLANT").toString();
+            String workarea = map.get("V_WORK_AREA").toString();
+            String mid = map.get("I_ID").toString();
+            Map listmaps = this.GetDepartKC_storeid(1000, materialcode, "", plant, workarea, "", "0", personcode, request, response);
+            List mylist = (List) listmaps.get("list");
             for (int j = 0; j < mylist.size(); j++) {
-                Map map6 = (Map) mylist.get(i);
-                sum+=Double.parseDouble(map6.get("ABLECOUNT").toString()==null?"0":map6.get("ABLECOUNT").toString());
+                Map map6 = (Map) mylist.get(j);
+                sum += Double.parseDouble(map6.get("ABLECOUNT").toString() == null ? "0" : map6.get("ABLECOUNT").toString());
             }
             cxyService.PRO_PM_WORKORDER_SPARE_MMORSAP(orderguid, mid, materialcode, sum);//?合计有问题
         }
-        Map maplast = (Map)cxyService.PRO_PM_WORKORDER_IS_TOSAP(orderguid);
-        String info=maplast.get("V_INFO").toString();
-        String tosap=maplast.get("V_IS_TOSAP").toString();
-        if(info.equals("success")&&tosap.equals("是")){
+        Map maplast = (Map) cxyService.PRO_PM_WORKORDER_IS_TOSAP(orderguid);
+        String info = maplast.get("V_INFO").toString();
+        String tosap = maplast.get("V_IS_TOSAP").toString();
+        if (info.equals("success") && tosap.equals("是")) {
             wxjhController.SI_SpotChkProj_in(orderguid);
-           //调用（SAP工单接收）接口,发送工单主体信息（不带工序和物料信息）到SAP系统
+            //调用（SAP工单接收）接口,发送工单主体信息（不带工序和物料信息）到SAP系统
             return true;
         }
         return false;
     }
+
     private String xmlData(String V_V_ORDERGUID) throws ParseException, SQLException {
 
         List<Map> flist = zdhService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID);
@@ -507,7 +511,7 @@ public class MMController {
 
         List<Map> listsecond = zdhService.PRO_PM_WORKORDER_ET_OPERATIONS1(V_V_ORDERGUID);
 
-        if(listsecond.size()>0){
+        if (listsecond.size() > 0) {
             Map smap = listsecond.get(0);
 
             List slrst = (List) smap.get("list");
@@ -541,7 +545,7 @@ public class MMController {
         System.out.print("---------------------------物料信息开始----------------------------");
         System.out.println("第三段长度 : " + listthird.size());
 
-        if(listthird.size()>0){
+        if (listthird.size() > 0) {
             Map tmap = listthird.get(0);
 
             List tlrst = (List) tmap.get("list");

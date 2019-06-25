@@ -32,7 +32,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl +  'dxfile/PRO_DEFECT_PART_DATA_SEL_N',
+            url: AppUrl + 'dxfile/PRO_DEFECT_PART_DATA_SEL_N',
             actionMethods: {
                 read: 'POST'
             },
@@ -83,13 +83,55 @@ Ext.onReady(function () {
             xtype: 'rownumberer',
             width: 50,
             sortable: false
-        },{
-            text : '生成工单',
-            xtype : 'templatecolumn',
-            id : 'foundview',
-            width : 100,
-            align : 'center',
-            tpl : '<a href="#" >生成工单</a>'
+        }, {
+            text: '生成工单',
+            xtype: 'templatecolumn',
+            id: 'foundview',
+            width: 100,
+            align: 'center',
+            tpl: '<a href="#" >生成工单</a>'
+        }, {
+            text: 'WBS编码',
+            dataIndex: 'WBSCODE',
+            align: 'center',
+            width: 160,
+            renderer: CreateGridColumnTd
+        }, {
+            text: 'WBS名称',
+            dataIndex: 'WBSNAME',
+            align: 'center',
+            width: 180,
+            renderer: CreateGridColumnTd
+        }, {
+            text: '备件类型',
+            dataIndex: 'V_SOURCENAME',
+            align: 'center',
+            width: 70,
+            renderer: CreateGridColumnTd
+        }, {
+            text: '备件状态',
+            dataIndex: 'V_STATENAME',
+            align: 'center',
+            width: 70,
+            renderer: CreateGridColumnTd
+        }, {
+            text: '创建时间',
+            dataIndex: 'D_DEFECTDATE',
+            align: 'center',
+            width: 160,
+            renderer: CreateGridColumnTime
+        }, {
+            text: '问题明细',
+            dataIndex: 'V_DEFECTLIST',
+            align: 'center',
+            width: 300,
+            renderer: CreateGridColumnTd
+        }, {
+            text: '处理意见',
+            dataIndex: 'V_IDEA',
+            align: 'center',
+            width: 200,
+            renderer: CreateGridColumnTd
         }, {
             text: '单位',
             dataIndex: 'V_DEPTNAME',
@@ -97,39 +139,10 @@ Ext.onReady(function () {
             width: 100,
             renderer: CreateGridColumnTd
         }, {
-            text: '备件状态',
-            dataIndex: 'V_STATENAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '备件类型',
-            dataIndex: 'V_SOURCENAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '创建时间',
-            dataIndex: 'D_DEFECTDATE',
-            align: 'center',
-            width: 200,
-            renderer: CreateGridColumnTime
-        }, {
-            text: '问题明细',
-            dataIndex: 'V_DEFECTLIST',
-            align: 'center',
-            width: 700,
-            renderer: CreateGridColumnTd
-        }, {
             text: '负责人',
             dataIndex: 'V_PERNAME',
             align: 'center',
             width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '处理意见',
-            dataIndex: 'V_IDEA',
-            align: 'center',
             renderer: CreateGridColumnTd
         }],
         bbar: [{
@@ -183,13 +196,13 @@ Ext.onReady(function () {
         _selectOverhaulApply();
     })
 
-    Ext.getCmp('foundview').on('click',function(view, rowIndex, colIndex){
-        if(Ext.getCmp('overhaulApplyPanel').getStore().getAt(colIndex).data.V_SOURCECODE!='defct14'){
+    Ext.getCmp('foundview').on('click', function (view, rowIndex, colIndex) {
+        if (Ext.getCmp('overhaulApplyPanel').getStore().getAt(colIndex).data.V_SOURCECODE != 'defct14') {
             var id = Ext.getCmp('overhaulApplyPanel').getStore().getAt(colIndex).data.V_GUID;
             var owidth = window.document.body.offsetWidth - 500;
             var oheight = window.document.body.offsetHeight - 500;
-            window.open(AppUrl + 'page/No41050601/index_aq.html?V_GUID=' + id  , '备件问题工单创建', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-        }else{
+            window.open(AppUrl + 'page/No41050601/index_aq.html?V_GUID=' + id, '备件问题工单创建', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        } else {
             alert('小机修备件问题无法生成工单！');
         }
 
@@ -225,6 +238,7 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
 }
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
     var time = value.split('.')[0];
     return time;
 }

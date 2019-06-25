@@ -198,28 +198,13 @@ Ext.onReady(function(){
     var tpanel=Ext.create('Ext.panel.Panel', {
         region: 'north',
         frame: true,
-        layout: 'column',
+        layout: {type:'table',columns:'3'},
         id: 'tpanel',
         width:'100%',
         titleAlign: 'center',
         defaults: {labelAlign: 'right'},
         items: [
             {
-                xtype: 'button',
-                text: '临时保存',
-                margin: '0 0 5 0',
-                iconCls: 'buy-button',
-                icon: dxImgPath + '/lsbc.png',
-                handler: btnSaveProject
-            },{
-                xtype: 'button',
-                id: 'startFlow',
-                text: '上报',
-                margin: '0 0 5 0',
-                iconCls: 'buy-button',
-                icon: dxImgPath + '/wlmx.png',
-                handler: btnFlowStart
-            }, {
                 xtype: 'combo',
                 id: 'fzPer',
                 store: fzPerStore,
@@ -228,17 +213,15 @@ Ext.onReady(function(){
                 fieldLabel: '负责人',
                 displayField: 'V_PERSONNAME',
                 valueField: 'V_PERSONCODE',
-                margin: '5 5 5 10',
-                labelWidth: 60,
-                width: 170,
+                margin: '5 5 5 5',
+                labelWidth: 100,
                 labelAlign: 'right'
             },{
                 xtype: 'textfield',
                 fieldLabel: '项目编码',
                 id: 'ProjectCode',
-                labelWidth: 60,
-                width: 250,
-                margin: '5 5 5 15',
+                labelWidth: 100,
+                margin: '5 5 5 5',
                 readOnly: true,
                 hidden: true
             },
@@ -246,9 +229,8 @@ Ext.onReady(function(){
                 xtype: 'textfield',
                 fieldLabel: '项目名称',
                 id: 'ProjectName',
-                labelWidth: 60,
-                width: 250,
-                margin: '5 5 5 15'
+                labelWidth: 100,
+                margin: '5 5 5 5'
             }, {
                 xtype: 'combo',
                 id: "zyq",
@@ -256,13 +238,11 @@ Ext.onReady(function(){
                 editable: false,
                 queryMode: 'local',
                 fieldLabel: '计划作业区',
-                margin: '5 5 5 0',
+                margin: '5 5 5 5',
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
-                labelWidth: 80,
-                width: 250,
+                labelWidth: 100,
                 labelAlign: 'right'
-                // ,hidden:true
             }, {
                 xtype: 'combo',
                 id: "zy",
@@ -270,11 +250,10 @@ Ext.onReady(function(){
                 editable: false,
                 queryMode: 'local',
                 fieldLabel: '专 业',
-                margin: '5 5 5 0',
+                margin: '5 5 5 5',
                 displayField: 'V_ZYMC',
                 valueField: 'V_GUID',
-                width: 265,
-                labelWidth: 75,
+                labelWidth: 100,
                 labelAlign: 'right'
             },
             {
@@ -282,9 +261,8 @@ Ext.onReady(function(){
                 id: 'btime',
                 editable: false,
                 fieldLabel: '开工时间',
-                margin: '5 5 5 0',
-                labelWidth: 60,
-                width: 170,
+                margin: '5 5 5 5',
+                labelWidth: 100,
                 labelAlign: 'right',
                 format: 'Y/m/d',
                 value: new Date()
@@ -294,9 +272,8 @@ Ext.onReady(function(){
                 id: 'etime',
                 editable: false,
                 fieldLabel: '竣工时间',
-                margin: '5 5 5 0',
-                labelWidth: 60,
-                width: 170,
+                margin: '5 5 5 5',
+                labelWidth: 100,
                 labelAlign: 'right',
                 format: 'Y/m/d',
                 value: new Date()
@@ -306,12 +283,29 @@ Ext.onReady(function(){
                 id: 'qstext',
                 name: 'message',
                 fieldLabel: '维修工程请示',
-                margin: '5 5 5 20',
+                margin: '5 5 5 5',
                 position: 'absolute',
-                width: 750,
                 labelWidth: 100,
-                height: 90
-            }
+                width:600,
+                height: 90,
+                colspan:2
+            },{xtype:'panel',frame:true,width:'100%',layout:'column',  baseCls: 'my-panel-no-border',
+                items:[{
+                    xtype: 'button',
+                    text: '临时保存',
+                    margin: '5 5 5 5',
+                    iconCls: 'buy-button',
+                    icon: dxImgPath + '/lsbc.png',
+                    handler: btnSaveProject
+                },{
+                    xtype: 'button',
+                    id: 'startFlow',
+                    text: '上报',
+                    margin: '5 5 5 5',
+                    iconCls: 'buy-button',
+                    icon: dxImgPath + '/wlmx.png',
+                    handler: btnFlowStart
+                }]}
         ]
     });
 
@@ -337,15 +331,15 @@ Ext.onReady(function(){
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             {text: '删除', width: 80, dataIndex: 'I_ID', align: 'center', renderer: DelDefect},
             {text: '上传附件', width: 120, dataIndex: 'DEFILENUM', align: 'center', renderer: upfilefun},
+            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
+            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft},
             {text: '解决方案', width: 120, dataIndex: 'V_GUID', align: 'center', renderer: Onjjfa},
             {text: '备件材料', width: 120, dataIndex: 'V_GUID', align: 'center', renderer: Onbjcl},
             {text: '解决方案', width: 280, dataIndex: 'DEF_SOLVE', align: 'center', renderer: atleft},
             {text: '备件材料', width: 280, dataIndex: 'BJ_STUFF', align: 'center', renderer: atleft},
             {text: '缺陷code', width: 140, dataIndex: 'V_GUID', align: 'center', renderer: atleft, hidden: true},
             {text: '设备名称', width: 140, dataIndex: 'V_EQUCODE', align: 'center', renderer: atleft, hidden: true},
-            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
             {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'center', renderer: atleft, hidden: true},
-            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft},
             {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft}]
     });
 

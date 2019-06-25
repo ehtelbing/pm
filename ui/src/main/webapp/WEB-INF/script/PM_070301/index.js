@@ -342,6 +342,7 @@ Ext.onReady(function() {
             renderer : left,
             renderer : function(value, metadata, record,
                                 rowIndex, columnIndex, store) {
+                metadata.style = "text-align:left";
                 return '<div data-qtip="' + value + '" >'
                     + value + '</div>';
             }

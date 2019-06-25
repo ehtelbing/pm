@@ -220,13 +220,49 @@ Ext.onReady(function () {
             text: 'WBS编码',
             dataIndex: 'WBSCODE',
             align: 'center',
-            width: 100,
+            width: 160,
             renderer: CreateGridColumnTd
         },{
             text: 'WBS名称',
             dataIndex: 'WBSNAME',
             align: 'center',
-            width: 100,
+            width: 180,
+            renderer: CreateGridColumnTd
+        },{
+            text: '设备名称',
+            dataIndex: 'V_EQUNAME',
+            align: 'center',
+            width: 160,
+            renderer: CreateGridColumnTd
+        },  {
+            text: '缺陷状态',
+            dataIndex: 'V_STATENAME',
+            align: 'center',
+            width: 80,
+            renderer: CreateGridColumnTd
+        },  {
+            text: '缺陷日期',
+            dataIndex: 'D_DEFECTDATE',
+            align: 'center',
+            width: 180,
+            renderer: CreateGridColumnTime
+        }, {
+            text:'缺陷等级',
+            dataIndex:'V_SOURCE_GRADE',
+            align:'center',
+            width:70,
+            renderer:AtRight
+        },{
+            text: '缺陷明细',
+            dataIndex: 'V_DEFECTLIST',
+            align: 'center',
+            width: 300,
+            renderer: CreateGridColumnTd
+        }, {
+            text: '处理意见',
+            dataIndex: 'V_IDEA',
+            align: 'center',
+            width:200,
             renderer: CreateGridColumnTd
         }, {
             text: '作业区',
@@ -234,58 +270,17 @@ Ext.onReady(function () {
             align: 'center',
             width: 100,
             renderer: CreateGridColumnTd
-        }, {
-            text: '缺陷状态',
-            dataIndex: 'V_STATENAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
+        },{
             text: '缺陷类型',
             dataIndex: 'V_SOURCENAME',
             align: 'center',
             width: 100,
             renderer: CreateGridColumnTd
-        }, {
-            text: '缺陷日期',
-            dataIndex: 'D_DEFECTDATE',
-            align: 'center',
-            width: 200,
-            renderer: CreateGridColumnTime
-        }, {
-            text:'缺陷等级',
-            dataIndex:'V_SOURCE_GRADE',
-            align:'center',
-            width:75,
-            renderer:CreateGridColumnTime
-        },{
-            text: '缺陷明细',
-            dataIndex: 'V_DEFECTLIST',
-            align: 'center',
-            width: 700,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '设备',
-            dataIndex: 'V_EQUNAME',
-            align: 'center',
-            width: 200,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '设备位置',
-            dataIndex: 'V_EQUSITE',
-            align: 'center',
-            width: 300,
-            renderer: CreateGridColumnTd
-        }, {
+        },  {
             text: '负责人',
             dataIndex: 'V_PERNAME',
             align: 'center',
             width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '处理意见',
-            dataIndex: 'V_IDEA',
-            align: 'center',
             renderer: CreateGridColumnTd
         }],
         listeners: {
@@ -687,6 +682,13 @@ function createWorkorder() {
 }
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
+    var time = value.split('.')[0];
+    return time;
+}
+
+function AtRight(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:right;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
     var time = value.split('.')[0];
     return time;
 }
