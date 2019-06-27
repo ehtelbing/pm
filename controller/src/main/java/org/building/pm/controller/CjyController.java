@@ -2826,7 +2826,7 @@ public class CjyController {
 //
 //                        complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
 //                        if (complresult.get("ret").toString().equals("任务提交成功")) {
-//                            flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
+//                            flowresult = dx_fileService.PRO_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
 //                            if (flowresult.get("V_INFO").toString().equals("success")) {
 //                                sucNum++;
 //                            }
@@ -3954,9 +3954,9 @@ public class CjyController {
                             complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "sbblcjs", "流程结束", "通过", "sbblcjs", V_V_PERSONCODE);
                             if (complresult.get("ret").toString().equals("任务提交成功")) {
                                 if(V_V_STATE.equals("90")){
-                                    flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "90");
+                                    flowresult = dx_fileService.PRO_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "90");
                                 }else{
-                                    flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
+                                    flowresult = dx_fileService.PRO_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
                                 }
 //                                flowresult = dx_fileService.PRO_PM_03_PLAN_MONTH_SET_STATESBB(V_ORDERGUID[i], "80");
                                 if (flowresult.get("V_INFO").toString().equals("success")) {

@@ -1373,16 +1373,16 @@ public class Dx_fileService {
     }
 
     // 月计划上报设备部修改状态
-    public HashMap PRO_PM_03_PLAN_MONTH_SET_STATESBB(String V_V_GUID, String V_V_STATECODE) throws SQLException {
+    public HashMap PRO_PLAN_MONTH_SET_STATESBB(String V_V_GUID, String V_V_STATECODE) throws SQLException {
 
-        logger.info("begin PRO_PM_03_PLAN_WEEK_SET_STATESBB");
+        logger.info("begin PRO_PLAN_MONTH_SET_STATESBB");
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_MONTH_SET_STATESBB" + "(:V_V_GUID,:V_V_STATECODE,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_PLAN_MONTH_SET_STATESBB" + "(:V_V_GUID,:V_V_STATECODE,:V_INFO)}");
 
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_STATECODE", V_V_STATECODE);
@@ -1397,7 +1397,7 @@ public class Dx_fileService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_PM_03_PLAN_MONTH_SET_STATESBB");
+        logger.info("end PRO_PLAN_MONTH_SET_STATESBB");
         return result;
     }
 
