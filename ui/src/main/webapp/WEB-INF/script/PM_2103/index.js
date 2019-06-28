@@ -111,84 +111,98 @@ Ext.onReady(function () {
                 dataIndex: 'ProcessDefinitionName',
                 align: 'center',
                 width: 150,
-                hidden: true
+                hidden: true,
+                renderer:AtLeft
             }
             , {
                 text: '流程步骤',
                 dataIndex: 'Name',
                 align: 'center',
-                width: 150
+                width: 130,
+                renderer:AtLeft
             }
             , {
                 text: '流程编号',
                 dataIndex: 'flow_code',
                 align: 'center',
-                width: 120
+                width: 150,
+                renderer:AtLeft
             }
             , {
                 text: '厂矿',
                 dataIndex: 'ORGNAME',
                 align: 'center',
-                width: 150
+                width: 140,
+                renderer:AtLeft
             }
             , {
                 text: '设备名称',
                 dataIndex: 'EQUNAME',
                 align: 'center',
-                width: 200
+                width: 160,
+                renderer:AtLeft
             }
             , {
                 text: '计划内容',
                 dataIndex: 'remark',
                 align: 'center',
-                width: 300
+                width: 300,
+                renderer:AtLeft
             }
             , {
                 text: '专业',
                 dataIndex: 'ZYNAME',
                 align: 'center',
-                width: 82
+                width: 70,
+                renderer:AtLeft
             },
             {
                 text: '工序',
                 dataIndex: 'OPERANAME',
                 align: 'center',
-                width: 82
+                width: 70,
+                renderer:AtLeft
             }
             , {
                 text: '开始时间',
                 dataIndex: 'PLANSTART',
                 align: 'center',
-                width: 200
+                width: 160,
+                renderer:AtLeft
             }, {
                 text: '结束时间',
                 dataIndex: 'PLANEND',
                 align: 'center',
-                width: 200
+                width: 160,
+                renderer:AtLeft
             }, {
                 text: '计划工期（h)',
                 dataIndex: 'PLANHOUR',
                 align: 'center',
-                width: 100
+                width: 80,
+                renderer:AtRight
             }
             , {
                 text: '发起人',
                 dataIndex: 'startName',
                 align: 'center',
-                width: 100
+                width: 70,
+                renderer:AtLeft
             },
             {
                 text: '作业区',
                 dataIndex: 'DEPTNAME',
                 align: 'center',
-                width: 300
+                width: 100,
+                renderer:AtLeft
             }
             , {
                 text: '发起时间',
                 dataIndex: 'CreateTime',
                 align: 'center',
-                width: 200,
+                width: 160,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
+                    metaData.style = "text-align:left;";
                     return value.substring(0, 10);
                 }
             }
@@ -196,7 +210,7 @@ Ext.onReady(function () {
                 text: '备件消耗',
                 dataIndex: 'MATERIALNAME',
                 align: 'center',
-                width: 100
+                width: 140
             }
             , {
                 text: '流程类型',
@@ -266,6 +280,15 @@ Ext.onReady(function () {
 
 });
 
+function AtLeft(value, metaData, record){
+    metaData.style = "text-align:left;";
+    return value;
+}
+
+function AtRight(value, metaData, record){
+    metaData.style = "text-align:right;";
+    return value;
+}
 
 function QueryTab() {
     Ext.ComponentManager.get("tabpanel").removeAll();

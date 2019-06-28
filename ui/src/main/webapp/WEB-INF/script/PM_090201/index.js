@@ -186,12 +186,12 @@ $(function () {
     //     }
     // });
     //WBS编码选择页面
-    $("#wbsCode").click(function () {
+    /*$("#wbsCode").click(function () {
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
         var ret = window.open(AppUrl + 'page/PM_04/index.html?V_ORGCODE=' + $("#V_ORGCODE").val() + '&V_DEPTCODE=' + $("#V_DEPTCODE").val() +
             '&V_EQUTYPECODE=' + V_EQUTYPECODE + '&V_EQUCODE=' + $("#V_EQUCODE").val() + '&wbsCode=' + $("#wbsCode").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-    });
+    });*/
 });
 
 function loadPageInfo() {
