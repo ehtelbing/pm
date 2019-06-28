@@ -4818,6 +4818,57 @@ public class Dx_fileController {
         return result;
     }
 
+    //月计划已选择缺陷查看
+    @RequestMapping(value = "YEAR_TO_MONTH_LIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> YEAR_TO_MONTH_LIST(@RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+                                                         @RequestParam(value = "V_PERCODE") String V_PERCODE,
+
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.YEAR_TO_MONTH_LIST(V_MONTHGUID, V_PERCODE);
+        return result;
+    }
+
+    //月计划缺陷关联删除
+    @RequestMapping(value = "YEAR_TO_MONTH_SDEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> YEAR_TO_MONTH_SDEL(@RequestParam(value = "V_MONTH_GUID") String V_MONTH_GUID,
+                                                  @RequestParam(value = "V_DEF_GUID") String V_DEF_GUID,
+
+                                                  HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.YEAR_TO_MONTH_SDEL(V_MONTH_GUID, V_DEF_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "MONTH_ADDDEF_EQUCODE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> MONTH_ADDDEF_EQUCODE_SEL(@RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+                                                  HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.MONTH_ADDDEF_EQUCODE_SEL(V_MONTHGUID);
+        return result;
+    }
+
+    @RequestMapping(value = "PM_MONTH_DEL_CHVALUE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_MONTH_DEL_CHVALUE(@RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+                                                        HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_MONTH_DEL_CHVALUE(V_MONTHGUID);
+        return result;
+    }
+
+    @RequestMapping(value = "PM_MONTH_OTHERDEL_STATCH", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_MONTH_OTHERDEL_STATCH(@RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+                                                    HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_MONTH_OTHERDEL_STATCH(V_MONTHGUID);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

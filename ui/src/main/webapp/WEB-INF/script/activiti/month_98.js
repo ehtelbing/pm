@@ -530,6 +530,7 @@ Ext.onReady(function () {
                         editable : false,
                         queryMode : 'local',
                         fieldLabel : '施工方式',
+                        hidden:true,
                         margin: '5 0 5 5',
                         displayField: 'V_SGFS',
                         valueField: 'V_BH',

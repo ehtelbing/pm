@@ -6238,5 +6238,147 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEFECT_SELECT_N");
         return result;
     }
+    //月计划已选择缺陷查看
+    public Map YEAR_TO_MONTH_LIST(String V_MONTHGUID,String V_PERCODE)throws SQLException{
+        logger.info("begin YEAR_TO_MONTH_LIST");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_LIST(:V_MONTHGUID,:V_PERCODE,:RET)}");
+            cstmt.setString("V_MONTHGUID", V_MONTHGUID);
+            cstmt.setString("V_PERCODE", V_PERCODE);
 
+//            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+//            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_LIST");
+        return result;
+    }
+    //月计划缺陷关联删除
+    public Map YEAR_TO_MONTH_SDEL(String V_MONTH_GUID,String V_DEF_GUID)throws SQLException{
+        logger.info("begin YEAR_TO_MONTH_SDEL");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_SDEL(:V_MONTH_GUID,:V_DEF_GUID," +
+                    ":RET)}");
+            cstmt.setString("V_MONTH_GUID", V_MONTH_GUID);
+            cstmt.setString("V_DEF_GUID", V_DEF_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+//            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+//            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_SDEL");
+        return result;
+    }
+    //
+    public Map MONTH_ADDDEF_EQUCODE_SEL(String V_MONTHGUID)throws SQLException{
+        logger.info("begin MONTH_ADDDEF_EQUCODE_SEL");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call MONTH_ADDDEF_EQUCODE_SEL(:V_MONTHGUID," +
+                    ":RET)}");
+            cstmt.setString("V_MONTHGUID", V_MONTHGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end MONTH_ADDDEF_EQUCODE_SEL");
+        return result;
+    }
+    public Map PM_MONTH_DEL_CHVALUE(String V_MONTHGUID)throws SQLException{
+        logger.info("begin PM_MONTH_DEL_CHVALUE");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_MONTH_DEL_CHVALUE(:V_MONTHGUID,:RET)}");
+            cstmt.setString("V_MONTHGUID", V_MONTHGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end PM_MONTH_DEL_CHVALUE");
+        return result;
+    }
+    //PM_MONTH_OTHERDEL_STATCH
+    public Map PM_MONTH_OTHERDEL_STATCH(String V_MONTHGUID)throws SQLException{
+        logger.info("begin PM_MONTH_OTHERDEL_STATCH");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_MONTH_OTHERDEL_STATCH(:V_MONTHGUID,:RET)}");
+            cstmt.setString("V_MONTHGUID", V_MONTHGUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end PM_MONTH_OTHERDEL_STATCH");
+        return result;
+    }
 }
+

@@ -580,7 +580,8 @@ Ext.onReady(function () {
                             fieldLabel: '主要缺陷',
                             labelAlign: 'right',
                             labelWidth: 90,
-                            width: 250
+                            width: 460,
+                            height:44
                         }
                         , {
                             xtype: 'button',
@@ -598,7 +599,8 @@ Ext.onReady(function () {
                     fieldLabel: '检修内容',
                     labelAlign: 'right',
                     labelWidth: 90,
-                    width: 500
+                    width: 500,
+                    height:44
                 }]
             }, {
                 layout: 'column',

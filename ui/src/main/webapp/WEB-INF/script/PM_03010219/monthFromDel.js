@@ -521,8 +521,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             displayField: 'V_SGFS',
                             valueField: 'V_BH',
                             labelWidth: 80,
-                            width: 280,
-                            labelAlign : 'right'
+                            hidden:true,
+                            width:280,
+                            labelAlign: 'right'
                         },
                         {
                             xtype:'checkboxfield',

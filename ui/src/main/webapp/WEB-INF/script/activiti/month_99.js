@@ -163,6 +163,7 @@ Ext.onReady(function () {
                     id: 'sgfs',
                     allowBlank: false,
                     fieldLabel: '施工方式',
+                    hidden:true,
                     labelWidth: 90
                 }, {
                     xtype:'checkboxfield',

@@ -284,8 +284,8 @@ Ext.onReady(function () {
                                 icon: imgpath + '/saved.png',
                                 margin: '10px 0px 0px 90px',
                                 handler: OnButtonSaveClick
-                            },
-                            {
+                            }
+                            /*,{
                                 xtype: 'button',
                                 text: '修改缺陷',
                                 width: 60,
@@ -293,7 +293,7 @@ Ext.onReady(function () {
                                 margin: '10px 0px 0px 90px',
                                 hidden:true,
                                 handler: OnButtonUpdateClick
-                            }
+                            }*/
 
                             // {
                             //     xtype: 'button',
@@ -478,9 +478,9 @@ Ext.onReady(function () {
                                 valueField: 'V_SPECIALTYCODE',
                                 store: zyStore,
                                 queryMode: 'local'
-                            },
+                            }
 
-                            {
+                            /*,{
                                 xtype: 'textfield',
                                 id: 'maindefect',
                                 fieldLabel: '主要缺陷',
@@ -489,7 +489,7 @@ Ext.onReady(function () {
                                 margin: '5 0 0 5',
                                 labelWidth: 70,
                                 width: 255
-                            }
+                            }*/
                         ]
                     },
                     {layout: 'hbox',
@@ -505,6 +505,7 @@ Ext.onReady(function () {
                                 editable : false,
                                 queryMode : 'local',
                                 fieldLabel : '施工方式',
+                                hidden:true,
                                 margin: '5 0 5 5',
                                 displayField: 'V_SGFS',
                                 valueField: 'V_BH',
@@ -532,6 +533,33 @@ Ext.onReady(function () {
                         ]
                     },
                     {
+                        layout: 'hbox',
+                        defaults: {labelAlign: 'right'},
+                        frame: true,
+                        border: false,
+                        baseCls: 'my-panel-no-border',
+                        items: [{
+                            xtype: 'textarea',
+                            id: 'maindefect',
+                            fieldLabel: '主要缺陷',
+                            allowBlank: false,
+                            labelAlign: 'right',
+                            margin: '5 0 0 5',
+                            labelWidth: 80,
+                            width: 545,
+                            height: 44,
+                            fieldStyle: 'background-color: #FFEFD5;border-color: #FFEFD5; background-image: none;'
+                        },
+                            {
+                                xtype: 'button',
+                                text: '+',
+                                handler: choiceDef,
+                                width: 25,
+                                margin: '0px 0px 0px 5px'
+                            }
+                        ]
+                    },
+                    {
                         xtype: 'textarea',
                         id: 'jxnr',
                         fieldLabel: '检修内容',
@@ -540,6 +568,7 @@ Ext.onReady(function () {
                         labelWidth: 80,
                         allowBlank:false,
                         width: 550,
+                        height:44,
                         value: ''
                     },
                     {
@@ -1190,7 +1219,7 @@ function loadData(){
                 Ext.getCmp('jhjgminute').select(V_ENDTIME_MINUTE);  //竣工时间分钟
                 Ext.getCmp('jhgshj').setValue(V_HOUR);  //竣工时间分钟
                 Ext.getCmp('bz').setValue(V_BZ);  //竣工时间分钟
-                Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);  //主要缺陷
+                Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);Ext.getCmp('maindefect').setReadOnly(true);  //主要缺陷
                 Ext.getCmp('expectage').setValue(resp.list[0].V_EXPECT_AGE);  //预计寿命
                 Ext.getCmp('repairper').setValue(resp.list[0].V_REPAIR_PER);  //维修人数
                 Ext.getCmp('sgfs').select(resp.list[0].V_SGWAY);  //--实施方式
@@ -1399,6 +1428,21 @@ function OnButtonSaveDate(){
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.RET!=undefined) {
+
+            }
+        }
+    });
+    // 其他缺陷状态修改
+    Ext.Ajax.request({
+        url: AppUrl + 'dxfile/PM_MONTH_OTHERDEL_STATCH',
+        method: 'POST',
+        async: false,
+        params: {
+            V_MONTHGUID:V_MONTHPLAN_GUID
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.RET=='SUCCESS') {
 
             }
         }
@@ -1673,5 +1717,33 @@ function msgShow(){
     });
 }
 function OnButtonUpdateClick(){
-
+    // retEditWDate(WEEKGUID);
+    Ext.getCmp('maindefect').setReadOnly(false);
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PM_MONTH_DEL_CHVALUE',
+        method:'POST',
+        async:false,
+        params:{
+            V_MONTHGUID:V_MONTHPLAN_GUID
+        },
+        success:function(respo){
+            var resp=Ext.decode(respo.responseText);
+            if(resp.list.length>0){
+                Ext.getCmp('maindefect').setValue(resp.list[0].V_MAIN_DEFECT);
+                Ext.getCmp('maindefect').setReadOnly(true); //主要缺陷
+                // Ext.getCmp('sblx').select(resp.list[0].V_EQUTYPECODE);//设备类型编码
+                // Ext.getCmp('sblx').setReadOnly(true);
+                // Ext.getCmp('sbmc').select(resp.list[0].V_EQUCODE);//设备名称编码
+                // Ext.getCmp('sbmc').setReadOnly(true);
+            }
+        }
+    });
+}
+function choiceDef(){
+    var owidth = window.screen.availWidth-300;
+    var oheight =  window.screen.availHeight - 500;
+    var ret = window.open(AppUrl + 'page/PM_03010209/changeMonDel.html?mguid='+V_MONTHPLAN_GUID+
+        '&MainMONTH='+Ext.getCmp('year').getValue()
+        +'&MainYEAR='+Ext.getCmp('month').getValue()+'&wxqx='+'1', '',
+        'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }

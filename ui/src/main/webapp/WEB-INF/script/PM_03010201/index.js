@@ -1377,7 +1377,8 @@ function OnButtonAddFYear(){
     var year=Ext.getCmp("nf").getValue();
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
+    // window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
+    window.open(AppUrl + 'page/PM_03010201/newmadd.html?MainMONTH='
         + Ext.getCmp('yf').getValue()
         +"&MainYEAR=" + year
         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
@@ -1385,6 +1386,7 @@ function OnButtonAddFYear(){
 
 //从备件添加缺陷
 function OnButtonBJAddClicked(){
+
 
     V_PLANTYPE = 'BJ';
     var ret = window.open(AppUrl + 'page/PM_03010220/index.html?Month=' + "" +

@@ -389,6 +389,9 @@ Ext.onReady(function () {
                 width : 50,
                 align : 'center' },
             {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
+            {text: '流程详细', dataIndex: 'V_SBB_GUID', width: 90, align: 'center', renderer:
+                    function (value, metaData, record, rowIdx, colIdx, store, view)
+                {return '<a href="javascript:_preViewProcess(\'' + record.data.V_SBB_GUID + '\')" >' + '详细' + '</a>';}},
             { text: '厂矿',width:200,dataIndex:'V_ORGNAME', align: 'center',renderer:Atleft },
             { text: '机台（机组）名称',width:200,dataIndex:'V_EQUTYPENAME', align: 'center',renderer:Atleft },
             { text: '检修内容',width:200,dataIndex:'V_CONTENT', align: 'center',renderer:Atleft },
@@ -1031,4 +1034,39 @@ function OnButtonUp() {
         }
     }
     Ext.Array.erase(nextper,0,nextper.length);
+}
+//流程详情查看
+function _preViewProcess(businessKey)
+{
+
+    var ProcessInstanceId='';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if(data.msg == 'Ok'){
+                ProcessInstanceId=data.InstanceId;
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+    var owidth = window.screen.availWidth;
+    var oheight =  window.screen.availHeight - 50;
+    var ret = window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        +  ProcessInstanceId, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }
