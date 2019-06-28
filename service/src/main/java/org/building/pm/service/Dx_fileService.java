@@ -6380,5 +6380,33 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_MONTH_OTHERDEL_STATCH");
         return result;
     }
+    //周计划删除状态修改
+    public Map PM_DEFECTTOWEEK_DEL_ALL(String V_V_WEEKGUID,String V_INPER)throws SQLException{
+        logger.info("begin PM_DEFECTTOWEEK_DEL_ALL");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_DEFECTTOWEEK_DEL_ALL(:V_V_WEEKGUID,:V_INPER,:RET)}");
+            cstmt.setString("V_V_WEEKGUID", V_V_WEEKGUID);
+            cstmt.setString("V_INPER", V_INPER);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECTTOWEEK_DEL_ALL");
+        return result;
+    }
 }
 

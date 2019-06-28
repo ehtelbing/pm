@@ -4869,6 +4869,16 @@ public class Dx_fileController {
         return result;
     }
 
+    @RequestMapping(value = "PM_DEFECTTOWEEK_DEL_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_DEFECTTOWEEK_DEL_ALL(@RequestParam(value = "V_V_WEEKGUID") String V_V_WEEKGUID,
+                                                        @RequestParam(value = "V_INPER") String V_INPER,
+                                                        HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_DEFECTTOWEEK_DEL_ALL(V_V_WEEKGUID,V_INPER);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

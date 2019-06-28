@@ -1124,8 +1124,8 @@ function OnButtonDeleteData(){
         return false;
     }
     for (var i = 0; i < records.length; i++) {
-        if (records[i].get('V_STATE') != 100) {
-            alert('此计划非作废计划，无法删除');
+        if (records[i].get('V_STATE') != "100"&&records[i].get('V_STATE') !="10") {
+            alert('此计划非作废或未发起计划，无法删除');
             return false;
         }
     }
@@ -1150,7 +1150,21 @@ function OnButtonDeleteData(){
                             if (resp.V_INFO == '成功') {//成功，会传回true
                                 i_err++;
                                 if (i_err == records.length) {
-                                    query();
+                                    Ext.Ajax.request({
+                                        url: AppUrl + 'dxfile/PM_DEFECTTOWEEK_DEL_ALL',
+                                        method: 'POST',
+                                        async: false,
+                                        params: {
+                                            V_V_WEEKGUID: records[i].get('V_GUID'),
+                                            V_INPER:Ext.util.Cookies.get('v_personcode')
+                                        },
+                                        success: function (response) {
+                                            var resp = Ext.decode(response.responseText);
+                                            if(resp.RET=='SUCCESS'){
+                                                query();
+                                            }
+                                        }
+                                    });
                                 }
                             } else {
                                 Ext.MessageBox.show({
