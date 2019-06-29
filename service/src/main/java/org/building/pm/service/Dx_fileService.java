@@ -5393,7 +5393,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
                                        String V_V_MONEYBUDGET,String V_V_REPAIRDEPTCODE,String V_V_BDATE,String V_V_EDATE,String V_V_INMAN,String V_V_INMANCODE,
                                        String V_V_JHLB,String V_V_SCLB,String V_V_CPZL,String V_V_CPGX,String V_V_SGFS,String V_V_SFXJ,String V_V_ZBFS,
                                        String V_V_SZ,String V_V_GUID_UP,String V_V_WBS,String V_V_WBS_TXT,String V_V_SUMTIME,String V_V_SUMDATE,String V_V_SPECIALTY_ZX,
-                                       String V_V_SPECIALTY_ZXNAME,String V_V_BJF,String V_V_CLF,String V_V_SGF,String V_V_QSTEXT)throws SQLException {
+                                       String V_V_SPECIALTY_ZXNAME,String V_V_BJF,String V_V_CLF,String V_V_SGF,String V_V_QSTEXT,String V_V_WXCLASS)throws SQLException {
         Map result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -5404,7 +5404,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_SAVE" + "(:V_V_GUID,:V_V_YEAR,:V_V_MONTH,:V_V_ORGCODE,:V_V_ORGNAME,:V_V_DEPTCODE,:V_V_DEPTNAME,:V_V_PORJECT_CODE,:V_V_PORJECT_NAME,:V_V_SPECIALTY,:V_V_SPECIALTYNAME,:V_V_SPECIALTYMANCODE" +
                     ",:V_V_SPECIALTYMAN,:V_V_WXTYPECODE,:V_V_WXTYPENAME,:V_V_CONTENT,:V_V_MONEYBUDGET,:V_V_REPAIRDEPTCODE,:V_V_BDATE,:V_V_EDATE,:V_V_INMAN,:V_V_INMANCODE" +
                     ",:V_V_JHLB,:V_V_SCLB,:V_V_CPZL,:V_V_CPGX,:V_V_SGFS,:V_V_SFXJ,:V_V_ZBFS,:V_V_SZ,:V_V_GUID_UP,:V_V_WBS,:V_V_WBS_TXT,:V_V_SUMTIME,:V_V_SUMDATE,:V_V_SPECIALTY_ZX,:V_V_SPECIALTY_ZXNAME," +
-                    ":V_V_BJF,:V_V_CLF,:V_V_SGF,:V_V_QSTEXT,:V_INFO,:V_V_PROCODE)}");
+                    ":V_V_BJF,:V_V_CLF,:V_V_SGF,:V_V_QSTEXT,:V_V_WXCLASS,:V_INFO,:V_V_PROCODE)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_MONTH", V_V_MONTH);
@@ -5446,6 +5446,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             cstmt.setString("V_V_CLF", V_V_CLF);
             cstmt.setString("V_V_SGF", V_V_SGF);
             cstmt.setString("V_V_QSTEXT",V_V_QSTEXT);
+            cstmt.setString("V_V_WXCLASS",V_V_WXCLASS);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_V_PROCODE",OracleTypes.VARCHAR);
             cstmt.execute();

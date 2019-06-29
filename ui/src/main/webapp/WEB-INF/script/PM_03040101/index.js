@@ -744,14 +744,14 @@ function btnSaveProject() {
         return false;
     }
     for(var i =0;i<defguid.length;i++){
-        if(defguid[i].get("BJ_STUFF")==""){
+        if(defguid[i].get("DEF_SOLVE")==""){
             alert("解决方案不可为空");
             return false;
         }
-        if(defguid[i].get("DEF_SOLVE")==""){
+       /* if(defguid[i].get("BJ_STUFF")==""){
             alert("备件材料不可为空");
             return false;
-        }
+        }*/
 
     }
     if (Ext.getCmp('ProjectName').getValue() == "") {
@@ -808,7 +808,8 @@ function btnSaveProject() {
             V_V_BJF: '',//Ext.getCmp('bjf').getValue(),
             V_V_CLF: '',//Ext.getCmp('clf').getValue(),
             V_V_SGF: '',//Ext.getCmp('sgfy').getValue(),
-            V_V_QSTEXT: Ext.getCmp('qstext').getValue()
+            V_V_QSTEXT: Ext.getCmp('qstext').getValue(),
+            V_V_WXCLASS:'QX'
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
@@ -894,14 +895,14 @@ function btnFlowStart() {
         return false;
     }
     for(var i =0;i<defguid.length;i++){
-        if(defguid[i].get("BJ_STUFF")==""){
+        if(defguid[i].get("DEF_SOLVE")==""){
             alert("解决方案不可为空");
             return false;
         }
-        if(defguid[i].get("DEF_SOLVE")==""){
+       /* if(defguid[i].get("BJ_STUFF")==""){
             alert("备件材料不可为空");
             return false;
-        }
+        }*/
 
     }
     if (Ext.getCmp('ProjectName').getValue() == "") {
@@ -958,7 +959,8 @@ function btnFlowStart() {
             V_V_BJF: '',//Ext.getCmp('bjf').getValue(),
             V_V_CLF: '',//Ext.getCmp('clf').getValue(),
             V_V_SGF: '',//Ext.getCmp('sgfy').getValue(),
-            V_V_QSTEXT: Ext.getCmp('qstext').getValue()
+            V_V_QSTEXT: Ext.getCmp('qstext').getValue(),
+            V_V_WXCLASS:'QX'
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

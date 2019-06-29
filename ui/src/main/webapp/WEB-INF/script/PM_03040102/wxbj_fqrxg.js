@@ -916,6 +916,7 @@ function btnSaveProject(){
             V_V_CLF:'',//Ext.getCmp('clf').getValue(),
             V_V_SGF:'',//Ext.getCmp('sgfy').getValue(),
             V_V_QSTEXT:Ext.getCmp('qstext').getValue()
+            ,V_V_WXCLASS:'BJ'
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);
@@ -1064,6 +1065,7 @@ function btnFlowStart(){
             V_V_CLF:'',//Ext.getCmp('clf').getValue(),
             V_V_SGF:'',//Ext.getCmp('sgfy').getValue(),
             V_V_QSTEXT:Ext.getCmp('qstext').getValue()
+            ,V_V_WXCLASS:'BJ'
         },
         success: function (resp) {
             var resp=Ext.decode(resp.responseText);

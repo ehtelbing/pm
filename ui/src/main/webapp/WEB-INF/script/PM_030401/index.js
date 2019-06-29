@@ -448,7 +448,7 @@ Ext.onReady(function () {
 
 
     Ext.data.StoreManager.lookup('zyStore').on('load', function () {
-        Ext.data.StoreManager.lookup('zyStore').insert(0,{V_SPECIALTYCODE:'%', V_BASENAME:'全部'});
+        Ext.data.StoreManager.lookup('zyStore').insert(0,{V_GUID:'%', V_ZYMC:'全部'});
         Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
         // OnButtonQuery();
 
@@ -679,14 +679,19 @@ function OnButtonEdit() {
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
                 if (resp.RET == "0") {
+                    //备件修改页跳转
                     window.open(AppUrl + 'page/PM_03040104/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
                         + '&sign=' + 'UPDATE'
                         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 }
                 else {
-                    window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+                    //缺陷修改页跳转
+                    window.open(AppUrl + 'page/PM_03040101/newindex.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
                         + '&sign=' + 'UPDATE'
                         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                   /* window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+                        + '&sign=' + 'UPDATE'
+                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');*/
                 }
             }
         });
