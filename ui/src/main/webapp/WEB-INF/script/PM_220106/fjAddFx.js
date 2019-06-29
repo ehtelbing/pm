@@ -246,7 +246,7 @@ Ext.onReady(function(){
                     {
                         xtype: 'textfield',
                         id: 'wbsmc',
-                        fieldLabel: 'WBS名称',
+                        fieldLabel: '维修工程项目名称',
                         labelAlign: 'right',
                         allowBlank: true,
                         margin: '5 15 0 35',

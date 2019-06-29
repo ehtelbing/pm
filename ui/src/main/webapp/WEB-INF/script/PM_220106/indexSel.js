@@ -94,7 +94,7 @@ Ext.onReady(function(){
             {text: '年度投资（万元）', align: 'center', width: 100, dataIndex: 'FX_MONEY'},
             {text: '放行计划主要内容', align: 'center', width: 120, dataIndex: 'FX_CONTENT'},
             {text: 'WBS编码', align: 'center', width: 100, dataIndex: 'V_WBS_CODE'},
-            {text: 'WBS名称', align: 'center', width: 100, dataIndex: 'V_WBS_NAME'},
+            {text: '维修工程项目名称', align: 'center', width: 100, dataIndex: 'V_WBS_NAME'},
             {text: '开工时间', align: 'center', width: 120, dataIndex: 'V_DATE_B',renderer:timeTurn},
             {text: '竣工时间', align: 'center', width: 150, dataIndex: 'V_DATE_E',renderer:timeTurn},
             {text: '建设单位编码', align: 'center', width: 100, dataIndex: 'V_REPAIR_DEPT', hidden: true},

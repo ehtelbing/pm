@@ -540,7 +540,7 @@ var win = Ext.create('Ext.window.Window', {
         {xtype:'panel',frame:true,width:'100%', baseCls: 'my-panel-no-border',layout:'hbox',
             items:[
                 {xtype: 'textfield', id: 'winwbscode', margin: '5 0 5 5', labelAlign:'right',labelWidth: 150,width: 330, fieldLabel: 'WBS编码'},
-                {xtype: 'textfield', id: 'winwbsname', margin: '5 0 5 5', labelAlign:'right',labelWidth: 150,width: 330, fieldLabel: 'WBS名称'}
+                {xtype: 'textfield', id: 'winwbsname', margin: '5 0 5 5', labelAlign:'right',labelWidth: 150,width: 330, fieldLabel: '维修工程项目名称'}
                 ]},
         {xtype:'panel',frame:true,width:'100%', baseCls: 'my-panel-no-border',layout:'hbox',
             items:[

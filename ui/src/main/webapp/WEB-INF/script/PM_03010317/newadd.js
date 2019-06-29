@@ -402,7 +402,7 @@ Ext.onReady(function(){
             {text : '序号',xtype : 'rownumberer',width : 50,sortable : false}
             , {text : '单位',dataIndex : 'V_DEPTNAME',align : 'left',width : 100, renderer : CreateGridColumnTd},
             {text : 'WBS编码', dataIndex : 'WBSCODE', align : 'left', width : 100, renderer : CreateGridColumnTd},
-            {text : 'WBS名称', dataIndex : 'WBSNAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
+            {text : '维修工程项目名称', dataIndex : 'WBSNAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷日期', dataIndex : 'D_DEFECTDATE', align : 'left', width : 200, renderer : CreateGridColumnTime},

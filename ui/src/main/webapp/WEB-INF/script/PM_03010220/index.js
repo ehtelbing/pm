@@ -176,7 +176,7 @@ Ext.onReady(function () {
                 renderer : CreateGridColumnTd
             },
             {
-                text : 'WBS名称',
+                text : '维修工程项目名称',
                 dataIndex : 'WBSNAME',
                 align : 'center',
                 width : 100,

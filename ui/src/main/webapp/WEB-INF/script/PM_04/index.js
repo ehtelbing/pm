@@ -155,7 +155,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '工程项目编码', align: 'center', width: 150,dataIndex: 'V_PROJECT_CODE'},
         {text: '工程项目名称', align: 'center', width: 100,dataIndex: 'V_PROJECT_NAME'},
         {text: 'WBS编码', align: 'center', width: 150,dataIndex: 'V_WBS_CODE'},
-        {text: 'WBS名称', align: 'center', width: 100,dataIndex: 'V_WBS_NAME'},
+        {text: '维修工程项目名称', align: 'center', width: 100,dataIndex: 'V_WBS_NAME'},
         {text: '主要修理内容', align: 'center', width:200,dataIndex: 'V_CONTENT'},
         {text: '实施计划额（万元）', align: 'center', width: 100,dataIndex: 'V_BUDGET_MONEY'},
         {text: '施工单位名称', align: 'center', width: 100,dataIndex: 'V_REPAIR_DEPTNAME'},

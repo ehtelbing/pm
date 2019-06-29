@@ -252,7 +252,7 @@ Ext.onReady(function(){
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'right'},
             {text:'设备code',width:140,dataIndex:'V_EQUCODE',hidden:true},
             {text: 'WBS编码', width: 140, dataIndex: 'V_EQUNAME', align: 'left'},
-            {text: 'WBS名称', width: 140, dataIndex: 'V_EQUNAME', align: 'left'},
+            {text: '维修工程项目名称', width: 140, dataIndex: 'V_EQUNAME', align: 'left'},
             {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'left'},
             {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'left'},
             {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'left'},
