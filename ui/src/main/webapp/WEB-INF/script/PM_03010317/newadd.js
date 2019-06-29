@@ -184,7 +184,7 @@ Ext.onReady(function(){
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE','V_EQUCODE'],
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE','V_EQUCODE','WBSCODE','WBSNAME'],
 
         proxy: {
             type: 'ajax',
@@ -401,6 +401,8 @@ Ext.onReady(function(){
         columns : [
             {text : '序号',xtype : 'rownumberer',width : 50,sortable : false}
             , {text : '单位',dataIndex : 'V_DEPTNAME',align : 'left',width : 100, renderer : CreateGridColumnTd},
+            {text : 'WBS编码', dataIndex : 'WBSCODE', align : 'left', width : 100, renderer : CreateGridColumnTd},
+            {text : 'WBS名称', dataIndex : 'WBSNAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷日期', dataIndex : 'D_DEFECTDATE', align : 'left', width : 200, renderer : CreateGridColumnTime},
@@ -434,7 +436,7 @@ Ext.onReady(function(){
 
             },{
                 id:'otherdef',
-                title:'其他缺陷',
+                title:'其它缺陷',
                 border:false,
                 frame:true,
                 autoScroll:true,

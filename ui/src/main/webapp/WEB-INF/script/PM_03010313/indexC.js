@@ -107,7 +107,7 @@ Ext.onReady(function () {
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
-            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE','WBSCODE'],
+            'V_STATECOLOR', 'V_ORDERID','V_EQUTYPECODE','V_SOURCECODE','WBSCODE','WBSNAME'],
 
         proxy: {
             type: 'ajax',
@@ -178,6 +178,12 @@ Ext.onReady(function () {
             width : 100,
             renderer : CreateGridColumnTd
         }, {
+            text : 'WBS名称',
+            dataIndex : 'WBSNAME',
+            align : 'center',
+            width : 100,
+            renderer : CreateGridColumnTd
+        },{
             text : '单位',
             dataIndex : 'V_DEPTNAME',
             align : 'center',

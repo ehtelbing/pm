@@ -77,7 +77,7 @@ Ext.onReady(function(){
     var wxqxGridStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'wxqxGridStore',
-        fields: ['YEAR_GUID', 'DEFECT_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_SOURCENAME', 'V_DEFECTLIST', 'D_DEFECTDATE'],
+        fields: ['YEAR_GUID', 'DEFECT_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_SOURCENAME', 'V_DEFECTLIST', 'D_DEFECTDATE','WBSCODE','WBSNAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -251,8 +251,9 @@ Ext.onReady(function(){
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'right'},
             {text:'设备code',width:140,dataIndex:'V_EQUCODE',hidden:true},
+            {text: 'WBS编码', width: 140, dataIndex: 'V_EQUNAME', align: 'left'},
+            {text: 'WBS名称', width: 140, dataIndex: 'V_EQUNAME', align: 'left'},
             {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'left'},
-
             {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'left'},
             {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'left'},
             {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'right'}
@@ -412,10 +413,11 @@ Ext.onReady(function(){
 
             },{
                 id:'otherdef',
-                title:'其他缺陷',
+                title:'其它缺陷',
                 border:false,
                 frame:true,
                 autoScroll:true,
+                layout:'border',
                 items:[otherGridPanel],
                 listeners: { activate: action2 }
             }
