@@ -229,6 +229,7 @@ function loadPageInfo() {
                 $("#safe").val(resp.list[0].V_SAFE);
                 $("#wbsCode").val(resp.list[0].V_WBS);
                 $("#wbsDesc").val(resp.list[0].V_WBS_TXT);
+                $("#proName").val(resp.list[0].V_WBS_TXT);
                 Defectguid=resp.list[0].V_DEFECTGUID;
 
 

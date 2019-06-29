@@ -679,6 +679,8 @@ function btnSaveProject() {
         return false;
     }
     if (Ext.getCmp('qstext').getValue() == "") {
+
+
         Ext.Msg.alert("消息", "工程请示不可以为空");
         return false;
     }
