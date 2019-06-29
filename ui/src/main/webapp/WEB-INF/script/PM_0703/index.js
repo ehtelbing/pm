@@ -337,7 +337,7 @@ Ext.onReady(function () {
                 dataIndex: 'WEBCODE',
                 renderer: CreateGridColumnTd
             }, {
-                text: 'WBS名称',
+                text: '维修工程项目名称',//WBS名称',
                 id: 'wbsnameid',
                 align: 'center',
                 width: 160,
