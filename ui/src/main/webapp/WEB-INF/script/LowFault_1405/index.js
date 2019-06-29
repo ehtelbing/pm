@@ -492,7 +492,7 @@ Ext.onReady(function () {
             align: 'center',
             width: 100,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                if(value!="未下票") {
+                if(value=="审批中") {
                     return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + value + '</a>';
                 }else{
                     return value;
@@ -558,19 +558,19 @@ Ext.onReady(function () {
             dataIndex: 'V_FAULT_YY',
             align: 'center',
             width: 100
-        },
-            /*{
+        }, {
             text: '故障现象',
             dataIndex: 'V_FAULT_XX',
             align: 'center',
             width: 100
-        }, */
-            {
+        },
+            /*{
             text: '故障等级',
             dataIndex: 'V_FAULT_LEVELNAME',
             align: 'center',
             width: 100
-        },{
+        },*/
+            {
                 text: '停机时间',
                 dataIndex: 'V_STOPTIME',
                 align: 'center',

@@ -19,6 +19,22 @@ var V_V_FAULT_GUID='';
 var V_V_FILE_GUID='';
 var V_V_ORGCODE_TEMP='';
 var V_V_DEPTCODE_TEMP='';
+//小时
+var hours = [];
+for (var i = 0; i < 24; i++) {
+    if (i < 10) {
+        i = '0' + i;
+    } else {
+        i = '' + i;
+    }
+    hours.push({displayField: i, valueField: i});
+}
+var nowhours ='';
+if (new Date().getHours() < 10) {
+    nowhours = '0' + new Date().getHours();
+} else {
+    nowhours = new Date().getHours();
+}
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
@@ -49,7 +65,15 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
-
+    var hourStore = Ext.create("Ext.data.Store", {
+        storeId: 'hourStore',
+        fields: ['displayField', 'valueField'],
+        data: hours,
+        proxy: {
+            type: 'memory',
+            reader: {type: 'json'}
+        }
+    });
     var fileGridStore2 = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'fileGridStore2',

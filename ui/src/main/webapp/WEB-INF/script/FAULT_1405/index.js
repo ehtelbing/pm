@@ -328,7 +328,8 @@ Ext.onReady(function () {
             'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
             'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
-            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
+            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN',
+            'V_INPERCODE','V_INPERNAME'],
         proxy: {
             url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_SEL_NEW',
             type: 'ajax',
@@ -633,7 +634,7 @@ Ext.onReady(function () {
             align: 'center',
             width: 100,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                if(value!="未下票") {
+                if(value=="审批中") {
                     return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + value + '</a>';
                 }else{
                     return value;
@@ -706,12 +707,12 @@ Ext.onReady(function () {
             align: 'center',
             width: 100
         }, */
-            {
+           /* {
             text: '事故等级',
             dataIndex: 'V_FAULT_LEVELNAME',
             align: 'center',
             width: 100
-        },{
+        },*/{
                 text: '停机时间',
                 dataIndex: 'V_STOPTIME',
                 align: 'center',
@@ -728,7 +729,7 @@ Ext.onReady(function () {
                 width: 100
             },{
                 text: '事故报告人',
-                dataIndex: 'V_REPORTER',
+                dataIndex: 'V_INPERNAME',
                 align: 'center',
                 width: 100
             },{
@@ -1655,7 +1656,7 @@ function _preUpdateFault() {
         });
         return false;
     }
-    if(records[0].get('V_STATE')=='0'||records[0].get('V_STATE')=='2'||records[0].get('V_STATE')=='10'){
+    if(records[0].get('V_STATE')=='0'||records[0].get('V_STATE')=='2'){//||records[0].get('V_STATE')=='10'
         // Ext.getCmp('updateFaultWindow').show();
         _updateOpen(records[0].get('V_GUID'));
     }else{
@@ -1920,7 +1921,25 @@ function _addModellFault() {
 }
 
 function _preViewProcess(value) {
-
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetInstanceFromBusinessId',
+        methon:'POST',
+        async:false,
+        params:{
+            businessKey: value
+        },
+        success:function (resp) {
+            var res=Ext.decode(resp.responseText);
+            if (res.InstanceId != "" && res.InstanceId != null) {
+                var owidth = window.screen.availWidth;
+                var oheight = window.screen.availHeight - 50;
+                window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+                    + res.InstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+            }else{
+                Ext.Msg.alert('提示', '没有查到对应流程');
+            }
+        }
+    });
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/GetInstanceFromBusinessId',
         methon:'POST',

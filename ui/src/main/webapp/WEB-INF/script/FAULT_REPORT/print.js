@@ -125,7 +125,9 @@ function loadPageInfo() {
                             result.push('   <div id="'+index.toString()+x.toString()+'">');
                             result.push('    <div style="height: 21cm;width: 18cm">');
                             result.push('      <table class="outbox" width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">');
-                            result.push('               <caption style="font-size:22px">设备事故报告单</caption>');
+                            result.push('               <caption style="font-size:22px">');
+                            result.push(resp.RET[0].V_FAULT_NAME==""?"设备事故报告单":resp.RET[0].V_FAULT_NAME);
+                            result.push('               </caption>');
                             result.push('        <tr>');
                             result.push('        <td valign="top">');
                             result.push('            <table class="Ttable" width="100%" border="0" cellspacing="0" cellpadding="0">');

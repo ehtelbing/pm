@@ -1037,23 +1037,7 @@ function _init() {
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();
                 // _selectNextPer();
-                Ext.Ajax.request({
-                    url: AppUrl + 'Activiti/InstanceState',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        instanceId: $.url().param("ProcessInstanceId")
-                    },
-                    success: function (ret) {
-                        var resp = Ext.JSON.decode(ret.responseText);
-                        for (var i = 0; i < resp.list.length; i++) {
-                            if (resp.list[i].ActivityName == "Start") {
-                                V_SPR = resp.list[i].Assignee;
-                                break;
-                            }
-                        }
-                    }
-                });
+
 
             } else {
                 Ext.MessageBox.show({
@@ -1255,6 +1239,12 @@ function getAssignee() {
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
             Assignee = resp.list[0].Assignee;
+            for (var i = 0; i < resp.list.length; i++) {
+                if (resp.list[i].ActivityName == "Start") {
+                    V_SPR = resp.list[i].Assignee;
+                    break;
+                }
+            }
         }
     });
 }

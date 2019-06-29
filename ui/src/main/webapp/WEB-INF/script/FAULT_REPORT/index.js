@@ -191,38 +191,6 @@ Ext.onReady(function () {
     });
 
 
-    // var subequNameStore2 = Ext.create('Ext.data.Store', {
-    //     id: 'subequNameStore2',
-    //     autoLoad: false,
-    //     fields: ['V_EQUCODE', 'V_EQUNAME'],
-    //     proxy: Ext.create("Ext.ux.data.proxy.Ajax",  {
-    //         type: 'ajax',
-    //         async: false,
-    //         url: AppUrl + 'PM_14/PRO_SAP_EQU_VIEW',
-    //         actionMethods: {
-    //             read: 'POST'
-    //         },
-    //         reader: {
-    //             type: 'json',
-    //             root: 'list'
-    //         }
-    //     }),
-    //     listeners: {
-    //         load: function (store, records) {
-    //             store.insert(0, {V_EQUNAME: '全部', V_EQUCODE: '%'});
-    //             Ext.getBody().unmask();
-    //             Ext.getCmp('SUB_V_EQUNAME2').select(store.first());
-    //             /*if (init) {
-    //              //Ext.getCmp('SUB_V_EQUNAME2').select(store.first());
-    //              // _init2();
-    //              } else {
-    //              Ext.getCmp('SUB_V_EQUNAME2').select(store.first());
-    //              }*/
-    //         }
-    //     }
-    // });
-
-
     var equFaultStore = Ext.create('Ext.data.Store', {
         id: 'equFaultStore',
         autoLoad: true,
@@ -284,47 +252,16 @@ Ext.onReady(function () {
 
         }
     });
-    // var winnextSprStore = Ext.create("Ext.data.Store", {
-    //     autoLoad: false,
-    //     storeId: 'winnextSprStore',
-    //     fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
-    //     proxy: {
-    //         type: 'ajax',
-    //         async: false,
-    //         url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
-    //         actionMethods: {
-    //             read: 'POST'
-    //         },
-    //         reader: {
-    //             type: 'json',
-    //             root: 'list'
-    //         },
-    //         extraParams: {}
-    //     },
-    //     listeners: {
-    //         load: function (store, records, success, eOpts) {
-    //             if( store.getAt(0)==undefined){
-    //                 Ext.getCmp('winnextPer').select(''); return;
-    //             }else{
-    //                 processKey2 = store.getProxy().getReader().rawData.RET;
-    //                 V_STEPNAME2 = store.getAt(0).data.V_V_FLOW_STEPNAME;
-    //                 V_NEXT_SETP2 = store.getAt(0).data.V_V_NEXT_SETP;
-    //                 Ext.getCmp('winnextPer').select(store.first());
-    //             }
-    //
-    //         }
-    //
-    //     }
-    // });
+
     var faultItemStore = Ext.create('Ext.data.Store', {
         storeId: 'faultItemStore',
         autoLoad: false,
         //pageSize: -1,
         fields: ['V_TIME', 'V_EQUTYPE', 'V_EQUNAME', 'V_EQUCHILD_CODE', 'V_FAULT_TYPE',
             'V_FAULT_YY', 'V_FAULT_XX', 'V_FAULT_LEVEL', 'V_FAULT_LEVELNAME','V_JJBF', 'V_GUID', 'V_FILE_GUID',
-            'V_ORGCODE', 'I_ID', 'V_DEPTNAME', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_TYPECODE',
+            'V_ORGCODE', 'I_ID', 'V_DEPTNAME', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME',
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
-            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
+            'V_TYPECODE','V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
             'V_FAULTID','V_PROCESSINSTANCEID',
             'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
@@ -462,8 +399,7 @@ Ext.onReady(function () {
             listeners: {
                 change: function (field, newValue, oldValue) {
                     _selecteType();
-                    _selectNextSprStore();
-                    // _selectNextSprStore2();
+                    _selectNextSprStore(newValue);
                 }
             }
         }, {
@@ -759,7 +695,17 @@ Ext.onReady(function () {
                 width: 100
             }
 
-        ]
+        ],listeners : {
+            itemclick: function (panel, record, item, index, e, eOpts) {
+                if(record.data.V_TYPECODE=='1'||record.data.V_TYPECODE=='2'){
+                    _selectNextSprStore(Ext.getCmp('V_V_DEPTCODE').getValue());
+                }else{
+                    _selectNextSprStore('99000101');
+
+                }
+
+            }
+        }
 
     });
 
@@ -797,7 +743,12 @@ function _init() {
         // _selectNextSprStore()
         Ext.getBody().unmask();
 
+        /*Ext.data.StoreManager.lookup('nextSprStore').on('load', function () {
+            processKey = store.getProxy().getReader().rawData.RET;
+            V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
+            V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
 
+        });*/
     }
 }
 
@@ -805,6 +756,7 @@ function _init2() {
     if (orgLoad2 && equFaultLoad2 && init) {
         init = false;
     }
+
 }
 
 
@@ -903,12 +855,12 @@ function _seltctFault() {
 }
 
 // 审批人
-function _selectNextSprStore() {
+function _selectNextSprStore(code) {
     var nextSprStore = Ext.data.StoreManager.lookup('nextSprStore');
     nextSprStore.proxy.extraParams = {
         V_V_ORGCODE: Ext.getCmp('V_V_ORGCODE').getValue(),
         V_V_DEPTCODE: Ext.getCmp('V_V_DEPTCODE').getValue(),
-        V_V_REPAIRCODE: '',
+        V_V_REPAIRCODE: code,
         V_V_FLOWTYPE: 'Fault',
         V_V_FLOW_STEP: 'start',
         V_V_PERCODE: V_V_PERSONCODE,
@@ -918,6 +870,7 @@ function _selectNextSprStore() {
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
+
 }
 
 function _validate(obj) {

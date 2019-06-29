@@ -20,6 +20,22 @@ var V_V_ORGCODE_TEMP='';
 var V_V_DEPTCODE_TEMP='';
 var Assignee = '';
 var ProcessInstanceId = '';
+//小时
+var hours = [];
+for (var i = 0; i < 24; i++) {
+    if (i < 10) {
+        i = '0' + i;
+    } else {
+        i = '' + i;
+    }
+    hours.push({displayField: i, valueField: i});
+}
+var nowhours ='';
+if (new Date().getHours() < 10) {
+    nowhours = '0' + new Date().getHours();
+} else {
+    nowhours = new Date().getHours();
+}
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_ORDERGUID == undefined) ? V_ORDERGUID = '' : V_ORDERGUID = parameters.V_ORDERGUID;
@@ -51,7 +67,15 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
-
+    var hourStore = Ext.create("Ext.data.Store", {
+        storeId: 'hourStore',
+        fields: ['displayField', 'valueField'],
+        data: hours,
+        proxy: {
+            type: 'memory',
+            reader: {type: 'json'}
+        }
+    });
     var fileGridStore2 = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'fileGridStore2',
@@ -538,7 +562,7 @@ function _selectTaskId() {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-            // _selectNextPer();
+            _selectNextPer();
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -605,7 +629,7 @@ function _init() {
                 // _selectsubequName2();
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();//去除页面笼罩
-                _selectNextPer();
+                // _selectNextPer();
                 Ext.Ajax.request({
                     url: AppUrl + 'Activiti/InstanceState',
                     method: 'POST',

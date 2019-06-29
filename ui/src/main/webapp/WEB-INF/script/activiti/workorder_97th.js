@@ -1745,6 +1745,28 @@ function ActivitiConfirmAccept() {//确定验收
             Ext.MessageBox.alert('提示', '请填写点检员验收意见');
             return false;
         }
+        //c
+        Ext.Ajax.request({
+            url: AppUrl + 'cxy/PRO_PM_WORKORDER_SAP_ISCLOSE',
+            type: 'post',
+            async: false,
+            params: {
+                V_V_WORKORDERID: $.url().param("V_ORDERGUID")
+            },
+            success: function (response) {
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.ret == 'success') {
+                    var date=resp.list;
+                    if(date.length!=1&&date[0].V_SAPFLAG!="TECO"){
+                        Ext.MessageBox.alert('提示', '不能验收');
+                        return false;
+                    }
+                }else{
+                    Ext.MessageBox.alert('提示', '不能验收');
+                    return false;
+                }
+            }
+        });
         changefactnum();
         Ext.getCmp('valuepanel').removeAll();
         $.ajax({

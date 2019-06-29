@@ -538,7 +538,7 @@ function _preUpdateFault() {
         return false;
     }
 
-   if(records[0].get('V_STAUTS')=='0'||records[0].get('V_STAUTS')=='10'){
+   if(records[0].get('V_STAUTS')=='0'){//||records[0].get('V_STAUTS')=='10'
        _updateOpen(records[0].get('V_GUID'));
     }else{
         Ext.MessageBox.show({

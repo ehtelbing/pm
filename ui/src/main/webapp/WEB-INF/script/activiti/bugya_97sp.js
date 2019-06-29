@@ -538,7 +538,7 @@ function _selectTaskId() {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-            // _selectNextPer();
+            _selectNextPer();
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -605,7 +605,7 @@ function _init() {
                 // _selectsubequName2();
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();//去除页面笼罩
-                _selectNextPer();
+                // _selectNextPer();
                 Ext.Ajax.request({
                     url: AppUrl + 'Activiti/InstanceState',
                     method: 'POST',
