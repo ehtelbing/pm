@@ -72,7 +72,7 @@ Ext.onReady(function(){
     //月计划gridStore
     var mgridStore = Ext.create('Ext.data.Store', {
         id : 'mgridStore',
-        pageSize : 15,
+        pageSize : 50,
         autoLoad : false,
         fields :['I_ID', 'V_GUID', 'V_YEAR', 'V_ORGCODE', 'V_ORGNAME',
             'V_DEPTCODE', 'V_DEPTNAME', 'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE',
@@ -454,6 +454,25 @@ Ext.onReady(function(){
     query();
     var org_code=Ext.util.Cookies.get("v_orgCode");
     createWGuid(org_code);
+
+    Ext.data.StoreManager.lookup('mgridStore').on('beforeload', function (store) {
+        store.proxy.extraParams = {
+            V_V_YEAR: Ext.getCmp('mnf').getValue(),//V_V_YEAR,
+            V_V_QUARTER: '%',
+            V_V_MONTH:Ext.getCmp('myf').getValue(),//'%',
+            V_V_PLANTYPE: 'MONTH',
+            V_V_ORGCODE: V_V_ORGCODE,
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_EQUTYPE: V_V_EQUTYPE,
+            V_V_EQUCODE: V_V_EQUCODE,
+            V_V_ZY: V_V_ZY,
+            V_V_CONTENT: '',//V_V_JXNR,
+            V_V_PEROCDE: Ext.util.Cookies.get('v_personcode'),
+            V_V_PAGE: 1,
+            V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
+        }
+    });
+
 });
 
 function turnPage(){
