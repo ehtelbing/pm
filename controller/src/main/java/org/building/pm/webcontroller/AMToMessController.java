@@ -72,7 +72,7 @@ public class AMToMessController {
         if (jstcode.equals("")) {
             result = "noperson";
         } else {
-            String messtxt = "PM系统待办提醒";
+            String messtxt = "EAM系统待办提醒";
             String MSG = "<SendMessage><AM_Name>" + jstcode + "</AM_Name><PhoneNum></PhoneNum><UserId></UserId><MessageTxt>" + messtxt + "</MessageTxt><SystemName>设备管理系统</SystemName><Type>即时通</Type><Access></Access><Email></Email><IsBack></IsBack><IsEncrypt></IsEncrypt><ISPriority></ISPriority><Ohter1></Ohter1><Ohter2></Ohter2></SendMessage>";
             String loginurl = pmlogin + "?v_mancode=" + nexPer + "&v_type=newangel";
 
