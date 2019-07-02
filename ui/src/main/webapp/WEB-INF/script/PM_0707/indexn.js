@@ -108,7 +108,7 @@ Ext.onReady(function () {
     var sbmcStore = Ext.create('Ext.data.Store', {
         id: 'sbmcStore',
         autoLoad: false,
-        fields: ['V_EQUCODE', 'V_EQUNAME'],
+        fields: ['V_EQUCODE', 'V_EQUNAME','V_EQUSITE','V_EQUSITENAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -439,6 +439,23 @@ Ext.onReady(function () {
                 //     }
                 // }
             },
+            // {
+            //   xtype:'label',
+            //   id:'equsite',
+            //   width:75,
+            //   textAlign: 'right',
+            //   margin: '5 0 5 15',
+            //   text:'主设备位置:',
+            //   readOnly:true
+            // },
+            {
+                xtype:'label',
+                textAlign: 'left',
+                id:'mainequsite',
+                width:255,
+                margin: '5 0 5 10',
+                editable:false
+            },
             {
                 xtype: 'combo',
                 id: 'zsbmc',
@@ -594,6 +611,7 @@ Ext.onReady(function () {
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
+        Ext.getCmp("mainequsite").setText("主设备位置:"+Ext.data.StoreManager.lookup('sbmcStore').data.items[0].get("V_EQUSITENAME"));
         Ext.data.StoreManager.lookup('childEquStore').load({
             params: {
                 V_V_PERSONCODE: V_V_PERSONCODE,
@@ -639,7 +657,8 @@ Ext.onReady(function () {
             }
         });
     });
-    Ext.getCmp('sbmc').on('select', function () {
+    Ext.getCmp('sbmc').on('select', function (store) {
+        Ext.getCmp("mainequsite").setText("主设备位置:"+store.lastSelection[0].get("V_EQUSITENAME"));
         Ext.data.StoreManager.lookup('childEquStore').load({
             params: {
                 V_V_PERSONCODE: V_V_PERSONCODE,
