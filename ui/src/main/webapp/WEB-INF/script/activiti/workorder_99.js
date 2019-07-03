@@ -21,7 +21,7 @@ $(function () {
     NowDate_b("planStartDate");
     NowDate_e("planFinDate");
 
-    loadTypelist();
+    // loadTypelist();
 
     loadDEPT();
     loadPageInfo();
@@ -89,6 +89,9 @@ function loadPageInfo() {
         traditional: true,
         success: function (resp) {
             if (resp.list != "" && resp.list != null) {
+                var result = [];
+                result.push("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">" + resp.list[0].V_ORDER_TYP_TXT+ "</option>");
+                $("#selType").html(result.join(""));
                 V_PERSONNAME = resp.list[0].V_PERSONNAME
                 V_V_REPAIRCODE = resp.list[0].V_DEPTCODEREPARIR
                 $("#V_ORGCODE").val(resp.list[0].V_ORGCODE);
@@ -159,6 +162,9 @@ function loadPageInfo() {
                 $("#D_FACT_START_DATE").html(resp.list[0].D_FACT_START_DATE);
                 $("#D_FACT_FINISH_DATE").html(resp.list[0].D_FACT_FINISH_DATE);
 
+              /*  var result = [];
+                result.push("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">" + resp.list[0].V_ORDER_TYP_TXT+ "</option>");
+                 $("#selType").html(result.join(""));*/
             } else {
             }
         }
