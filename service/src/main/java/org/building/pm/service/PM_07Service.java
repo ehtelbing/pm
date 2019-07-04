@@ -460,4 +460,115 @@ public class PM_07Service {
         return result;
     }
 
+    /*手工录入缺陷保存过程*/
+    public Map PRO_PM_07_DEFECT_SET_H(String V_V_GUID, String V_V_PERCODE, String V_V_PERNAME, String V_V_INPERCODE, String V_V_INPERNAME, String V_V_DEFECTLIST, String V_V_SOURCECODE,
+                                    String V_V_SOURCEID, String V_D_DEFECTDATE, String V_V_DEPTCODE, String V_V_EQUCODE,
+                                    String V_V_EQUCHILDCODE, String V_V_IDEA, String V_V_LEVEL, String V_V_PROWAY,String V_V_HANDSIGN) throws SQLException {
+        logger.info("begin PRO_PM_07_DEFECT_SET_H");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_SET_H" + "(:V_V_GUID,:V_V_PERCODE,:V_V_PERNAME,:V_V_INPERCODE,:V_V_INPERNAME,:V_V_DEFECTLIST,:V_V_SOURCECODE," +
+                    ":V_V_SOURCEID,:V_D_DEFECTDATE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUCHILDCODE,:V_V_IDEA,:V_V_LEVEL,:V_V_PROWAY,:V_V_HANDSIGN,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_INPERCODE", V_V_INPERCODE);
+            cstmt.setString("V_V_INPERNAME", V_V_INPERNAME);
+            cstmt.setString("V_V_DEFECTLIST", V_V_DEFECTLIST);
+            cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
+            cstmt.setString("V_V_SOURCEID", V_V_SOURCEID);
+            cstmt.setString("V_D_DEFECTDATE", V_D_DEFECTDATE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCHILDCODE", V_V_EQUCHILDCODE);
+            cstmt.setString("V_V_IDEA", V_V_IDEA);
+            cstmt.setString("V_V_LEVEL", V_V_LEVEL);
+            cstmt.setString("V_V_PROWAY", V_V_PROWAY);
+            cstmt.setString("V_V_HANDSIGN", V_V_HANDSIGN);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_SET_H");
+        return result;
+    }
+    /*缺陷手工录入修改*/
+    public Map PRO_PM_07_DEFECT_UPDATE(String V_V_GUID, String V_V_PERCODE, String V_V_PERNAME, String V_V_INPERCODE, String V_V_INPERNAME, String V_V_DEFECTLIST, String V_V_SOURCECODE,
+                                      String V_V_SOURCEID, String V_D_DEFECTDATE, String V_V_DEPTCODE, String V_V_EQUCODE,
+                                      String V_V_EQUCHILDCODE, String V_V_IDEA, String V_V_LEVEL, String V_V_PROWAY,String V_V_HANDSIGN) throws SQLException {
+        logger.info("begin PRO_PM_07_DEFECT_UPDATE");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_UPDATE" + "(:V_V_GUID,:V_V_PERCODE,:V_V_PERNAME,:V_V_INPERCODE,:V_V_INPERNAME,:V_V_DEFECTLIST,:V_V_SOURCECODE," +
+                    ":V_V_SOURCEID,:V_D_DEFECTDATE,:V_V_DEPTCODE,:V_V_EQUCODE,:V_V_EQUCHILDCODE,:V_V_IDEA,:V_V_LEVEL,:V_V_PROWAY,:V_V_HANDSIGN,:V_CURSOR)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_PERNAME", V_V_PERNAME);
+            cstmt.setString("V_V_INPERCODE", V_V_INPERCODE);
+            cstmt.setString("V_V_INPERNAME", V_V_INPERNAME);
+            cstmt.setString("V_V_DEFECTLIST", V_V_DEFECTLIST);
+            cstmt.setString("V_V_SOURCECODE", V_V_SOURCECODE);
+            cstmt.setString("V_V_SOURCEID", V_V_SOURCEID);
+            cstmt.setString("V_D_DEFECTDATE", V_D_DEFECTDATE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_EQUCHILDCODE", V_V_EQUCHILDCODE);
+            cstmt.setString("V_V_IDEA", V_V_IDEA);
+            cstmt.setString("V_V_LEVEL", V_V_LEVEL);
+            cstmt.setString("V_V_PROWAY", V_V_PROWAY);
+            cstmt.setString("V_V_HANDSIGN", V_V_HANDSIGN);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_CURSOR"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_UPDATE");
+        return result;
+    }
+    /*缺陷是否可修改查找*/
+
+    public Map PRO_PM_07_DEFECT_UPDT_SEL(String V_V_GUID) throws SQLException {
+        logger.info("begin PRO_PM_07_DEFECT_UPDT_SEL");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_UPDT_SEL" + "(:V_V_GUID,:RET)}");
+            cstmt.setString("V_V_GUID", V_V_GUID);
+
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("list", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_UPDT_SEL");
+        return result;
+    }
+
 }

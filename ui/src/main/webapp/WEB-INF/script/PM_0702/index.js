@@ -189,7 +189,11 @@ Ext.onReady(function () {
             xtype: 'button',
             text: '生成工单',
             handler: createWorkorder
-        }]
+        }, {
+                xtype: 'button',
+                text: '缺陷修改',
+                handler: updateDefData
+            }]
     });
 
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
@@ -731,4 +735,48 @@ function guid() {
     }
 
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+function updateDefData(){
+    var seldata = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection();
+    if (seldata.length != 1) {
+        Ext.Msg.alert('操作提示', '请选择一条数据！');
+        return false;
+    }
+    else{
+        var defguid=seldata[0].data.V_GUID;
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_UPDT_SEL',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: seldata[0].data.V_GUID
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.RET =='1') {
+                    var owidth = window.document.body.offsetWidth - 200;
+                    var oheight = window.document.body.offsetHeight - 100;
+                    var ret = window.open(AppUrl + "page/PM_0702/indexUpdt.html?v_guid="
+                        + defguid, 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                }
+                /*else if(resp.RET =='1') {
+                    alert("该缺陷不是手动录入或者状态不是未处理，故无法修改");
+                }*/
+            }
+        });
+    }
+
+}
+function getSel(){
+    var gridStore = Ext.data.StoreManager.lookup('gridStore');
+    Ext.getCmp('page').store.currentPage = 1;
+    gridStore.proxy.extraParams = {
+        V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
+        X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+        PUT_PERNAME:Ext.getCmp('fzr').getValue()==""?"%":Ext.getCmp("fzr").getValue().toString(),
+        V_V_PAGE: Ext.getCmp('page').store.currentPage,
+        V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
+        V_SIGN:1
+    };
+    gridStore.load();
 }

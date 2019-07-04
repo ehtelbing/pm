@@ -7,6 +7,7 @@ var MainYEAR="";
 var monthGuid="";
 var retEquDif="";
 var YCK="";
+var wxqx="";
 if(location.href.split("?")[1]!=undefined){
     MainMONTH=Ext.urlDecode(location.href.split('?')[1]).MainMONTH;
     MainYEAR=Ext.urlDecode(location.href.split('?')[1]).MainYEAR;
@@ -826,10 +827,11 @@ function otherdefsel(){
     gridStore.load();
 }
 function turnPage(){
+    wxqx="1";
     var owidth = window.screen.availWidth-300;
         var oheight =  window.screen.availHeight - 500;
         var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+'1', '',
+            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+wxqx, '',
             'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }
 function action1(tab) {

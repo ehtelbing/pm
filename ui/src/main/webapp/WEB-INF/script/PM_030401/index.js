@@ -685,13 +685,13 @@ function OnButtonEdit() {
                         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 }
                 else {
-                    //缺陷修改页跳转
+                    /*缺陷修改页跳转
                     window.open(AppUrl + 'page/PM_03040101/newindex.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
                         + '&sign=' + 'UPDATE'
-                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-                   /* window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
-                        + '&sign=' + 'UPDATE'
                         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');*/
+                    window.open(AppUrl + 'page/PM_03040101/index.html?guid=' + seldata[0].get("V_GUID") + '&year=' + seldata[0].get("V_YEAR") + '&V_DEPTCODE=' + seldata[0].get("V_DEPTCODE")
+                        + '&sign=' + 'UPDATE'
+                        + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 }
             }
         });
@@ -706,43 +706,58 @@ function OnButtonEdit() {
 //删除
 function OnButtonDel() {
     var chodata = Ext.getCmp('mainpanel').getSelectionModel().getSelection();
-
     if (chodata.length <= 0) {
         alert('请选择至少一条数据！');
         return;
     } else {
-
         for (var k = 0; k < chodata.length; k++) {
             if (chodata[k].data.V_STATE != '99' && chodata[k].data.V_STATE != '-1') {
                 alert('不是编辑和作废状态的数据，无法删除');
                 return false;
             }
         }
-        for (var j = 0; j < chodata.length; j++) {
-
-            var num = 0;
-            Ext.Ajax.request({
-                url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_DEL',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_GUID: chodata[j].data.V_GUID
-                },
-                success: function (resp) {
-                    var resp = Ext.decode(resp.responseText);
-                    if (resp.V_CURSOR == 'SUCCESS') {
-                        num++;
-                    }
+        Ext.Msg.show({
+            title: '提示',
+            msg: '是否确认删除该计划?',
+            buttons: Ext.Msg.OKCANCEL,
+            icon: Ext.Msg.OKCANCEL,
+            fn: function (button) {
+                if (button == "ok") {
+                    deleteData();
                 }
-            });
+                else{
+                    return false;
+                }
 
-            if (num == seldata.length) {
-                OnButtonQuery();
             }
+        });
+    }
+}
+function deleteData(){
+    var chodata = Ext.getCmp('mainpanel').getSelectionModel().getSelection();
+    for (var j = 0; j < chodata.length; j++) {
+
+        var num = 0;
+        Ext.Ajax.request({
+            url: AppUrl + '/PM_03/PRO_PM_03_PLAN_YEAR_DEL',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: chodata[j].data.V_GUID
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.V_CURSOR == 'SUCCESS') {
+                    num++;
+                }
+            }
+        });
+
+        if (num == chodata.length) {
+            alert("删除成功");
+            OnButtonQuery();
         }
     }
-
-
 }
 
 //导出

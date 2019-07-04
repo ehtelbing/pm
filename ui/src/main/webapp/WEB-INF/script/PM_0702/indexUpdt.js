@@ -1,7 +1,13 @@
+/*缺陷修改页面*/
+
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_PERSONNAME = Ext.util.Cookies.get('v_personname');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
-var defectguid = guid();
+var selectnum=1;
+var defectguid = " ";
+if (location.href.split('?')[1] != undefined) {
+    defectguid = Ext.urlDecode(location.href.split('?')[1]).v_guid;
+}
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -26,7 +32,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
     }
 });
 Ext.onReady(function () {
-    // Ext.getBody().mask('<p>页面载入中...</p>');
+    Ext.getBody().mask('<p>页面载入中...</p>');
 
     var ckStore = Ext.create('Ext.data.Store', {
         id: 'ckStore',
@@ -625,6 +631,11 @@ Ext.onReady(function () {
     });
     Ext.data.StoreManager.lookup('childEquStore').on('load', function () {
         Ext.getCmp("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(0));
+        Ext.getBody().unmask();//页面笼罩效果
+        if (selectnum==1){
+            dataLoad();
+        }
+
     });
 
     //厂矿改变
@@ -637,6 +648,7 @@ Ext.onReady(function () {
                 'V_V_DEPTTYPE': '主体作业区'
             }
         });
+        selectnum=0;
     });
     //作业区改变
     Ext.getCmp('zyq').on('select', function () {
@@ -646,6 +658,7 @@ Ext.onReady(function () {
                 V_V_DEPTCODENEXT: Ext.getCmp('zyq').getValue()
             }
         });
+        selectnum=0;
     });
     //设备类型改变
     Ext.getCmp('sblx').on('select', function () {
@@ -656,6 +669,7 @@ Ext.onReady(function () {
                 v_v_equtypecode: Ext.getCmp('sblx').getValue()
             }
         });
+        selectnum=0;
     });
     Ext.getCmp('sbmc').on('select', function (store) {
         Ext.getCmp("mainequsite").setText("主设备位置:"+store.lastSelection[0].get("V_EQUSITENAME"));
@@ -668,7 +682,9 @@ Ext.onReady(function () {
                 V_V_EQUCODE: Ext.getCmp('sbmc').getValue()
             }
         });
+        selectnum=0;
     });
+
 });
 
 
@@ -745,7 +761,37 @@ function _selectsubequName1() {
 
 }
 
-//
+//缺陷值返回
+function dataLoad() {
+    Ext.Ajax.request({
+        url: AppUrl + 'qx/PRO_PM_07_DEFECT_GET',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID: defectguid
+        },
+        success: function (ret) {
+            var resp = Ext.JSON.decode(ret.responseText);
+
+            var list = resp.list;
+            if (list.length > 0) {
+                // Ext.getCmp('inper').setValue();
+                Ext.getCmp('qxmc').setValue(list[0].V_DEFECTLIST);
+                Ext.getCmp('qxlx').select(list[0].V_SOURCECODE);//'defct01',
+                //Ext.util.Format.date(new Date(list[0].D_DEFECTDATE), 'Y/m/d H:m:s');//Ext.getCmp("begintime").getSubmitValue(),//Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),
+                Ext.getCmp('zyq').select(list[0].V_DEPTCODE);
+                Ext.getCmp('sbmc').select(list[0].V_EQUCODE);
+                Ext.getCmp('zsbmc').select(list[0].V_EQUCHILDCODE);
+                Ext.getCmp('clyj').setValue(list[0].V_IDEA);
+                Ext.getCmp('qxdj').select(list[0].V_SOURCE_GRADE);
+                Ext.getCmp('clfs').select(list[0].V_PROC_WAY);
+                // Ext.getCmp('inper').getValue(decodeURI(Ext.util.Cookies.get('v_personcode')));
+                selectnum=0;
+            }
+
+        }
+    });
+}
 //保存
 function OnButtonSave() {
     if (Ext.getCmp('qxmc').getValue() == null || Ext.getCmp('qxmc').getValue() == '' || Ext.getCmp('qxmc').getValue() == undefined) {
@@ -765,7 +811,7 @@ function OnButtonSave() {
         return;
     }
     Ext.Ajax.request({
-        url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_SET_H',
+        url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_UPDATE',
         method: 'POST',
         async: false,
         params: {
@@ -790,7 +836,9 @@ function OnButtonSave() {
             var resp = Ext.decode(resp.responseText);
             if (resp.V_INFO == '成功') {
                 Ext.Msg.alert('操作信息', '保存成功', function () {
-                    window.location.reload();
+                    window.close();
+                    // window.location.reload();
+                    window.opener.getSel();
                 });
             }
         }
