@@ -795,6 +795,7 @@ Ext.onReady(function () {
                     },
                     {layout: 'hbox',
                         defaults: {labelAlign: 'right'},
+                        hidden:true,
                         frame: true,
                         border: false,
                         baseCls: 'my-panel-no-border',
@@ -825,6 +826,7 @@ Ext.onReady(function () {
                                 margin: '5 0 5 5',
                                 labelWidth: 55,
                                 width: 255,
+                                hidden:true,
                                 labelAlign : 'right',
                                 listConfig:{
                                     minWidth:420

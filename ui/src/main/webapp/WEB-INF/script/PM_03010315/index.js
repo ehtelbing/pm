@@ -875,6 +875,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     ]
                 },
                 {layout: 'hbox',
+                    hidden:true,
                     defaults: {labelAlign: 'right'},
                     frame: true,
                     border: false,
@@ -892,6 +893,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             valueField: 'V_BH',
                             labelWidth: 80,
                             width: 280,
+                            hidden:true,
                             labelAlign : 'right'
                         },{
                             xtype : 'combo',
@@ -905,6 +907,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 5 5',
                             labelWidth: 55,
                             width: 255,
+                            hidden:true,
                             labelAlign : 'right',
                             listConfig:{
                                 minWidth:420

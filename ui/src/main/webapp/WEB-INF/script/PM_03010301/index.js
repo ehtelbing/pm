@@ -644,7 +644,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
         {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
         {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
-        {text:'施工方式',align:'center',width:'70',dataIndex:'V_SGWAYNAME'},
+        {text:'施工方式',align:'center',width:'70',dataIndex:'V_SGWAYNAME',hidden:true},
         {
             text: '录入时间',
             align: 'center',
