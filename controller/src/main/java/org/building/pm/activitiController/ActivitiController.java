@@ -1425,59 +1425,63 @@ public class ActivitiController {
 
         int num = (int) taskService.createTaskQuery().processVariableValueLike("flow_businesskey", businessKey).count();
 
-        if (num == 0) {
-            List list = new ArrayList();
-            for (int i = 0; i < V_NEXTPER.length; i++) {
-                list.add(V_NEXTPER[i]);
-                activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER[i], V_INPER);
-            }
-
-            Date date = new Date();
-            Calendar c = Calendar.getInstance();
-            c.setTime(date);
-            c.add(Calendar.MONTH, 2);
-            c.set(Calendar.DAY_OF_MONTH, 0);
-//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
-            String time = getShtgtime.Shtgtime();
-            param.put("shtgtime", time);
-
-            try {
-                for (int i = 0; i < parName.length; i++) {
-                    if (parName[i].toString().equals("Next_StepCode")) {
-                        perList = parVal[i].toString();
-                    } else {
-                        param.put(parName[i].toString(), parVal[i].toString());
-                    }
+        if (!businessKey.equals("")) {
+            if (num == 0) {
+                List list = new ArrayList();
+                for (int i = 0; i < V_NEXTPER.length; i++) {
+                    list.add(V_NEXTPER[i]);
+                    activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER[i], V_INPER);
                 }
 
-                param.put("idea", V_IDEA);
+                Date date = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                c.add(Calendar.MONTH, 2);
+                c.set(Calendar.DAY_OF_MONTH, 0);
+                String time = getShtgtime.Shtgtime();
                 param.put("shtgtime", time);
-                param.put(perList, list);
 
-                ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
-                        param);
+                try {
+                    for (int i = 0; i < parName.length; i++) {
+                        if (parName[i].toString().equals("Next_StepCode")) {
+                            perList = parVal[i].toString();
+                        } else {
+                            param.put(parName[i].toString(), parVal[i].toString());
+                        }
+                    }
 
-                /*
-                 * 等待定时发送即时通
-                 * */
-                for (int i = 0; i < list.size(); i++) {
-                    cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, list.get(i).toString(), flowtype, "-1");
+                    param.put("idea", V_IDEA);
+                    param.put("shtgtime", time);
+                    param.put(perList, list);
+
+                    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, businessKey,
+                            param);
+
+                    /*
+                     * 等待定时发送即时通
+                     * */
+                    for (int i = 0; i < list.size(); i++) {
+                        cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, list.get(i).toString(), flowtype, "-1");
+                    }
+
+                    result.put("id", processInstance.getId());
+                    result.put("InstanceId", processInstance.getProcessInstanceId());
+                    result.put("BusinessKey", processInstance.getBusinessKey());
+                    result.put("ProcessId", processInstance.getProcessDefinitionId());
+                    result.put("ret", "OK");
+                    result.put("msg", "流程发起成功");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result.put("ret", "ERROR");
+                    result.put("msg", "流程发起失败");
                 }
-
-                result.put("id", processInstance.getId());
-                result.put("InstanceId", processInstance.getProcessInstanceId());
-                result.put("BusinessKey", processInstance.getBusinessKey());
-                result.put("ProcessId", processInstance.getProcessDefinitionId());
-                result.put("ret", "OK");
-                result.put("msg", "流程发起成功");
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
                 result.put("ret", "ERROR");
-                result.put("msg", "流程发起失败");
+                result.put("msg", "流程发起失败,流程businesskey重复");
             }
         } else {
             result.put("ret", "ERROR");
-            result.put("msg", "流程发起失败,流程businesskey重复");
+            result.put("msg", "流程发起失败,流程businesskey为空");
         }
 
         return result;

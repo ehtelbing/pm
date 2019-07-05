@@ -354,6 +354,7 @@ public class MMController {
         Map test = new HashMap();
         List<Map> result = null;
         String resJson;
+        boolean bs = false;
         try {
             String id = "";
             String str = "";
@@ -368,20 +369,22 @@ public class MMController {
                     if (!str.equals("88")) {
                         String state = fmap.get("SYSTEM_STATUS").toString();  //状态
                         if (!state.equals("TECO")) {// 已发的 不在发送
-                            boolean bs = valicate(V_V_ORDERGUID, x_personcode, request, response);
+                            bs = valicate(V_V_ORDERGUID, x_personcode, request, response);
 
                             System.out.println("=====================输出发送SAP工单接口 Stsrt===========================");
                             System.out.println("=====================输出发送SAP工单接口 :" + bs + "===========================");
                             System.out.println("=====================输出发送SAP工单接口 End===========================");
 
                         }
-                        List<Map> list11 = zdhService.PRO_PM_WORKORDER_SPARE_VIEW1(V_V_ORDERGUID);
-                        if (list11.size() > 0) {
-                            Map map11 = list11.get(0);
-                            List list13 = (List) map11.get("list");
-                            if (list13.size() == 0) {
-                                test.put("V_CURSOR", '1');
-                                return test;
+                        if (bs) {
+                            List<Map> list11 = zdhService.PRO_PM_WORKORDER_SPARE_VIEW1(V_V_ORDERGUID);
+                            if (list11.size() > 0) {
+                                Map map11 = list11.get(0);
+                                List list13 = (List) map11.get("list");
+                                if (list13.size() == 0) {
+                                    test.put("V_CURSOR", '1');
+                                    return test;
+                                }
                             }
                         }
                     }
