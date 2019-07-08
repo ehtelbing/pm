@@ -1195,6 +1195,24 @@ function loadData() {
                     }
                 }
             });
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/YEAR_TO_MONTH_SDEF_EQU',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_YEARGUID: yearGuid,
+                    V_MONTHGUID: V_MONTHPLAN_GUID,
+                    V_DEFECTGUID: '',
+                    V_PER_CODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.EQU_CODE != undefined&&resp.EQU_TYPE !=null) {
+                        Ext.getCmp('sblx').select(resp.EQU_TYPE);
+                        Ext.getCmp('sbmc').select(resp.EQU_CODE);
+                    }
+                }
+            });
         }
 
     }
@@ -1209,314 +1227,6 @@ function loadData() {
                     V_MONTHGUID: V_MONTHPLAN_GUID,
                     V_DEFECTGUID: '',
                     V_PER_CODE: Ext.util.Cookies.get('v_personcode')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 },
                 success: function (resp) {
                     var resp = Ext.decode(resp.responseText);
@@ -1527,6 +1237,25 @@ function loadData() {
                         Ext.getCmp('month').select(MONTH);
                         Ext.getCmp('ck').select(Ext.util.Cookies.get("v_orgCode"));  //厂矿编码
                         Ext.getCmp('zyq').select(Ext.util.Cookies.get("v_deptcode"));
+                    }
+                }
+            });
+            Ext.Ajax.request({
+                url: AppUrl + 'dxfile/YEAR_TO_MONTH_SDEF_EQU',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_YEARGUID: yearGuid,
+                    V_MONTHGUID: V_MONTHPLAN_GUID,
+                    V_DEFECTGUID: '',
+                    V_PER_CODE: Ext.util.Cookies.get('v_personcode')
+                },
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.EQU_CODE != undefined&&resp.EQU_TYPE !=null) {
+                        Ext.getCmp('sblx').select(resp.EQU_TYPE);
+                        Ext.getCmp('sbmc').select(resp.EQU_CODE);
+
                     }
                 }
             });
@@ -1733,6 +1462,65 @@ function OnButtonSaveDate() {
             }
         }
     });
+    //修改为关联年计划的缺陷状态
+    Ext.Ajax.request({//获取所选缺陷GUID
+        url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_WEEK_GUID: V_MONTHPLAN_GUID
+        },
+        success: function (resp) {
+            var respguid = Ext.decode(resp.responseText);
+            if (respguid.list.length > 0) {
+                for (var i = 0; i < respguid.list.length; i++) {
+                    Ext.Ajax.request({//保存缺陷详细日志
+                        url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                            V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2') + ':缺陷导入月计划（' + V_MONTHPLAN_GUID + '）',
+                            V_V_FINISHCODE: '30',
+                            V_V_KEY: ''//缺陷guid
+                        },
+                        success: function (ret) {
+                            var resp = Ext.decode(ret.responseText);
+                            if (resp.V_INFO == '成功') {
+                                //修改缺陷状态
+                                Ext.Ajax.request({
+                                    url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                    method: 'POST',
+                                    async: false,
+                                    params: {
+                                        V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                        V_V_STATECODE: '50'//已计划
+                                    },
+                                    success: function (ret) {
+                                        var resp = Ext.decode(ret.responseText);
+                                        if (resp.V_INFO == 'success') {
+                                        } else {
+                                            alert("修改缺陷状态失败");
+                                            return false;
+                                        }
+                                    }
+                                });
+
+                            } else {
+                                alert("缺陷日志记录失败");
+                                return false;
+                            }
+
+                        }
+                    });
+                }
+            } else {
+                alert("缺陷日志添加错误");return false;
+            }
+        }
+    });
+
+
 
 
     //模型

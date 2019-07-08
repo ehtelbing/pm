@@ -6409,5 +6409,36 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PM_DEFECTTOWEEK_DEL_ALL");
         return result;
     }
+    //月计划其他缺陷添加设备返回值
+    public Map YEAR_TO_MONTH_SDEF_EQU(String V_YEARGUID,String V_MONTHGUID,String V_DEFECTGUID,String V_PER_CODE)throws SQLException{
+        logger.info("begin YEAR_TO_MONTH_SDEF_EQU");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call YEAR_TO_MONTH_SDEF_EQU(:V_YEARGUID,:V_MONTHGUID,:V_DEFECTGUID,:V_PER_CODE,:EQU_CODE,:EQU_TYPE)}");
+            cstmt.setString("V_YEARGUID", V_YEARGUID);
+            cstmt.setString("V_MONTHGUID", V_MONTHGUID);
+            cstmt.setString("V_DEFECTGUID", V_DEFECTGUID);
+            cstmt.setString("V_PER_CODE", V_PER_CODE);
+            cstmt.registerOutParameter("EQU_CODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("EQU_TYPE", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("EQU_CODE", (String) cstmt.getObject("EQU_CODE"));
+            result.put("EQU_TYPE", (String) cstmt.getObject("EQU_TYPE"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+
+        logger.debug("result:" + result);
+        logger.info("end YEAR_TO_MONTH_SDEF_EQU");
+        return result;
+    }
 }
 

@@ -4879,6 +4879,19 @@ public class Dx_fileController {
         Map<String, Object> result = dx_fileService.PM_DEFECTTOWEEK_DEL_ALL(V_V_WEEKGUID,V_INPER);
         return result;
     }
+    //月计划其他缺陷添加设备返回值
+    @RequestMapping(value = "YEAR_TO_MONTH_SDEF_EQU", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> YEAR_TO_MONTH_SDEF_EQU(@RequestParam(value = "V_YEARGUID") String V_YEARGUID,
+                                                       @RequestParam(value = "V_MONTHGUID") String V_MONTHGUID,
+                                                      @RequestParam(value = "V_DEFECTGUID") String V_DEFECTGUID,
+                                                      @RequestParam(value = "V_PER_CODE") String V_PER_CODE,
+                                                       HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.YEAR_TO_MONTH_SDEF_EQU(V_YEARGUID,V_MONTHGUID,V_DEFECTGUID,V_PER_CODE);
+        return result;
+    }
+
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

@@ -753,11 +753,11 @@ function updateDefData(){
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
-                if (resp.RET =='1') {
+                if (resp.list =='1') {
                     var owidth = window.document.body.offsetWidth - 200;
                     var oheight = window.document.body.offsetHeight - 100;
                     var ret = window.open(AppUrl + "page/PM_0702/indexUpdt.html?v_guid="
-                        + defguid, 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                        + defguid,'', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 }
                 /*else if(resp.RET =='1') {
                     alert("该缺陷不是手动录入或者状态不是未处理，故无法修改");

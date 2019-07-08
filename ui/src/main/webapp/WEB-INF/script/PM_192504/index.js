@@ -418,7 +418,7 @@ function onclick(node, checked, eOpts){
         return;
     }
     var selectedModel = selectModel.getSelection()[0].data;
-
+    var orgcode=(selectedModel.V_DEPTCODE).toString().substring(0,4);
     if (checked == true) {
         Ext.Ajax.request({
             url : AppUrl + 'basic/PRO_BASE_ROLETOMENU_SET',
@@ -431,6 +431,7 @@ function onclick(node, checked, eOpts){
                 V_V_DEPTCODE : selectedModel.V_DEPTCODE
             }
         });
+
 
     } else {
         Ext.Ajax.request({
@@ -445,10 +446,27 @@ function onclick(node, checked, eOpts){
             }
         });
     }
-
-
-
+    //接口调用
+    jkdy(selectedModel.V_ROLECODE,orgcode);
 }
+function jkdy(role,orgcode){
+    Ext.Ajax.request({
+        url : AppUrl + 'wxjh/SI_RYQX_Out_Syn_PR1003',
+        method: 'POST',
+        async: false,
+        params: {
+            ROLECODE: role,
+            ORG:orgcode
+        },
+        success: function (ret) {
+            var resp=Ext.decode(ret.responseText);
+            if(resp.type='S'){
+
+            }
+        }
+    });
+}
+
 
 function QueryMenuTree(){
     menuTreeLoad = false;
