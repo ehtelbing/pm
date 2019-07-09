@@ -87,50 +87,20 @@ Ext.onReady(function(){
         },
         columns: [
             {xtype: 'rownumberer', text: '序号', align: 'center', width: 50},
-            {text: '放行唯一编码', align: 'center', width: 150, dataIndex: 'FX_GUID', hidden: true},
-            {text: '工程编码', align:'left',style : {'text-align' : 'center'}, width: 150, dataIndex: 'V_PROJECT_CODE',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '工程名称', align:'left',style : {'text-align' : 'center'}, width: 150, dataIndex: 'V_PROJECT_NAME',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text:'工单数量',align:'center',width:100,dataIndex:'WORKNUM',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '年度投资（万元）', align: 'center', width: 150, dataIndex: 'FX_MONEY'},
-            {text: '放行计划主要内容', align:'left',style : {'text-align' : 'center'}, width: 180, dataIndex: 'FX_CONTENT',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: 'WBS编码', align:'left',style : {'text-align' : 'center'},width: 150, dataIndex: 'V_WBS_CODE',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '维修工程项目名称', align: 'center', width: 150, dataIndex: 'V_WBS_NAME',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '开工时间', align: 'center', width: 150, dataIndex: 'V_DATE_B',renderer:timeTurn,
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '竣工时间', align: 'center', width: 150, dataIndex: 'V_DATE_E',renderer:timeTurn,
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
+            {text: '放行唯一编码', align: 'center', width: 100, dataIndex: 'FX_GUID', hidden: true},
+            {xtype: 'treecolumn', text: '工程编码', align: 'center', width: 100, dataIndex: 'V_PROJECT_CODE'},
+            {text: '工程名称', align: 'center', width: 100, dataIndex: 'V_PROJECT_NAME'},
+            {text:'工单数量',align:'center',width:60,dataIndex:'WORKNUM'},
+            {text: '年度投资（万元）', align: 'center', width: 100, dataIndex: 'FX_MONEY'},
+            {text: '放行计划主要内容', align: 'center', width: 120, dataIndex: 'FX_CONTENT'},
+            {text: 'WBS编码', align: 'center', width: 100, dataIndex: 'V_WBS_CODE'},
+            {text: '维修工程项目名称', align: 'center', width: 100, dataIndex: 'V_WBS_NAME'},
+            {text: '开工时间', align: 'center', width: 120, dataIndex: 'V_DATE_B',renderer:timeTurn},
+            {text: '竣工时间', align: 'center', width: 150, dataIndex: 'V_DATE_E',renderer:timeTurn},
             {text: '建设单位编码', align: 'center', width: 100, dataIndex: 'V_REPAIR_DEPT', hidden: true},
-            {text: '建设单位名称', align:'left',style : {'text-align' : 'center'}, width: 180,  dataIndex: 'V_REPAIR_DEPT_TXT',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '建设单位负责人编码', align: 'center', width: 150, dataIndex: 'V_FZR', hidden: true},
-            {text: '建设单位负责人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }}
+            {text: '建设单位名称', align: 'center', width: 180, dataIndex: 'V_REPAIR_DEPT_TXT'},
+            {text: '建设单位负责人编码', align: 'center', width: 100, dataIndex: 'V_FZR', hidden: true},
+            {text: '建设单位负责人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME'}
         ]
         , listeners: {
             itemClick: function (record,node ) {
@@ -138,6 +108,7 @@ Ext.onReady(function(){
             }
         }
     });
+
     Ext.create('Ext.container.Viewport',{
         id: "id",
         layout: 'border',

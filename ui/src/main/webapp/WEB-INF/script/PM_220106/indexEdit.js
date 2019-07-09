@@ -101,49 +101,19 @@ Ext.onReady(function(){
         },
         columns: [
             {xtype: 'rownumberer', text: '序号', align: 'center', width: 50},
-            {text: '放行唯一编码', align: 'center', width: 150, dataIndex: 'FX_GUID', hidden: true},
-            {text: '工程编码', align:'left',style : {'text-align' : 'center'},  width: 140, dataIndex: 'V_PROJECT_CODE',renderer:atleft,
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '工程名称', align: 'center', width: 150, dataIndex: 'V_PROJECT_NAME',renderer:atleft,
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '年度投资（万元）', align: 'center', width: 150, dataIndex: 'FX_MONEY',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '放行计划主要内容', align:'left',style : {'text-align' : 'center'}, width: 210, dataIndex: 'FX_CONTENT',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: 'WBS编码', align:'left',style : {'text-align' : 'center'},width: 150, dataIndex: 'V_WBS_CODE',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '维修工程项目名称', align:'left',style : {'text-align' : 'center'},  width: 210, dataIndex: 'V_WBS_NAME',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '开工时间', align: 'center', width: 150, dataIndex: 'V_DATE_B',renderer:timeTurn,
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '竣工时间', align: 'center', width: 150, dataIndex: 'V_DATE_E',renderer:timeTurn,
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '建设单位编码', align: 'center', width: 150, dataIndex: 'V_REPAIR_DEPT', hidden: true},
-            {text: '建设单位名称', align:'left',style : {'text-align' : 'center'}, width: 210, dataIndex: 'V_REPAIR_DEPT_TXT',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }},
-            {text: '建设单位负责人编码', align: 'center', width: 150, dataIndex: 'V_FZR', hidden: true},
-            {text: '建设单位负责人', align: 'center', width: 140, dataIndex: 'V_PERSONNAME',
-                renderer:function(v){
-                    return "<div title='"+v+"'>"+v+"</div>";
-                }}
+            {text: '放行唯一编码', align: 'center', width: 100, dataIndex: 'FX_GUID', hidden: true},
+            {xtype: 'treecolumn', text: '工程编码', align: 'center', width: 100, dataIndex: 'V_PROJECT_CODE',renderer:atleft},
+            {text: '工程名称', align: 'center', width: 150, dataIndex: 'V_PROJECT_NAME',renderer:atleft},
+            {text: '年度投资（万元）', align: 'center', width: 100, dataIndex: 'FX_MONEY'},
+            {text: '放行计划主要内容', align: 'center', width: 120, dataIndex: 'FX_CONTENT'},
+            {text: 'WBS编码', align: 'center', width: 100, dataIndex: 'V_WBS_CODE'},
+            {text: '维修工程项目名称', align: 'center', width: 100, dataIndex: 'V_WBS_NAME'},
+            {text: '开工时间', align: 'center', width: 120, dataIndex: 'V_DATE_B',renderer:timeTurn},
+            {text: '竣工时间', align: 'center', width: 150, dataIndex: 'V_DATE_E',renderer:timeTurn},
+            {text: '建设单位编码', align: 'center', width: 100, dataIndex: 'V_REPAIR_DEPT', hidden: true},
+            {text: '建设单位名称', align: 'center', width: 180, dataIndex: 'V_REPAIR_DEPT_TXT'},
+            {text: '建设单位负责人编码', align: 'center', width: 100, dataIndex: 'V_FZR', hidden: true},
+            {text: '建设单位负责人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME'}
         ]
         , listeners: {
             itemClick: function (record,node ) {
@@ -234,14 +204,14 @@ Ext.onReady(function(){
 
     });
 //生成工单缺陷窗口store
-    var qxworkStore=Ext.create('Ext.data.Store',{
+     var qxworkStore=Ext.create('Ext.data.Store',{
         id:'qxworkStore',
         autoLoad:false,
-        fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE','V_SOURCENAME','V_SOURCEID','D_DEFECTDATE','D_INDATE','V_PERCODE',
-            'V_PERNAME','V_DEPTCODE','V_DEPTNAME','V_EQUCODE','V_EQUNAME','V_EQUSITE','V_EQUSITENAME','V_EQUTYPECODE',
-            'V_EQUTYPENAME','V_IDEA','V_STATECODE','V_STATENAME','V_GUID','V_EQUSITE','D_DATE_EDITTIME','V_EDIT_GUID',
-            'V_SOURCE_GRADE','V_EQUCHILDCODE','V_INPERCODE','V_INPERNAME','V_EQUTYPECODE','V_ORGCODE','V_DEPTNAME',
-            'V_HOUR','V_BZ','V_REPAIRMAJOR_CODE','V_PROJECT_CODE','V_PROJECT_NAME','V_FLAG','V_PROC_WAY','UP_GUID','V_SYSTEM'],
+         fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE','V_SOURCENAME','V_SOURCEID','D_DEFECTDATE','D_INDATE','V_PERCODE',
+             'V_PERNAME','V_DEPTCODE','V_DEPTNAME','V_EQUCODE','V_EQUNAME','V_EQUSITE','V_EQUSITENAME','V_EQUTYPECODE',
+             'V_EQUTYPENAME','V_IDEA','V_STATECODE','V_STATENAME','V_GUID','V_EQUSITE','D_DATE_EDITTIME','V_EDIT_GUID',
+             'V_SOURCE_GRADE','V_EQUCHILDCODE','V_INPERCODE','V_INPERNAME','V_EQUTYPECODE','V_ORGCODE','V_DEPTNAME',
+             'V_HOUR','V_BZ','V_REPAIRMAJOR_CODE','V_PROJECT_CODE','V_PROJECT_NAME','V_FLAG','V_PROC_WAY','UP_GUID','V_SYSTEM'],
         proxy:{
             type:'ajax',
             async:false,
@@ -359,7 +329,7 @@ function _fenjie(){
                         V_FXGUID:fxguid
                     }
                 });
-                Ext.getCmp("qxWin").show();
+                    Ext.getCmp("qxWin").show();
             }
         }
     });
