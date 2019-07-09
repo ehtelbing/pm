@@ -212,7 +212,8 @@ Ext.onReady(function () {
             xtype: 'rownumberer',
             width: 50,
             sortable: false
-        }, {
+        },
+           /* {
             text: '手工消缺',
             id: 'sgxq',
             xtype: 'templatecolumn',
@@ -220,7 +221,8 @@ Ext.onReady(function () {
             width: 100,
             hidden:true,
             tpl: '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
-        }, {
+        }, */
+            {
             text: 'WBS编码',
             dataIndex: 'WBSCODE',
             align: 'center',
