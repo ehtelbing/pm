@@ -221,7 +221,7 @@ Ext.onReady(function () {
         region: 'north',
         layout: {
             type: 'table',
-            columns: '3'
+            columns: '6'
         },
         items: [
             {
@@ -254,7 +254,7 @@ Ext.onReady(function () {
                 fieldLabel: '作业区',
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
-                labelWidth: 100
+                labelWidth: 80
             }
             , {
                 xtype: 'combo',
@@ -265,7 +265,7 @@ Ext.onReady(function () {
                 fieldLabel: '专业',
                 displayField: 'V_ZYMC',
                 valueField: 'V_GUID',
-                labelWidth: 70
+                labelWidth: 80
             }, {
                 xtype: 'textfield',
                 id: "gcqs",
@@ -302,47 +302,47 @@ Ext.onReady(function () {
                     {
                         xtype: 'button',
                         text: '查询',
-                        style: 'margin:5px 5px 0 5px',
+                        style: 'margin:5px 0 5px 5px',
                         icon: imgpath + '/search.png',
                         listeners: {click: OnButtonQuery}
                     }, {
                         xtype: 'button',
-                        style: 'margin:5px 5px 0 5px',
+                        style: 'margin:5px 0 5px 5px',
                         text: '新增外委工程',
                         icon: imgpath + '/add.png',
                         listeners: {click: OnButtonAdd}
                     },
                     {
                         xtype: 'button',
-                        style: 'margin:5px 5px 0 5px',
+                        style: 'margin:5px 0 5px 5px',
                         text: '备件新增',
                         icon: imgpath + '/add.png',
                         listeners: {click: OnButtonAdd2}
                     },
                     {
                         xtype: 'button',
-                        style: 'margin:5px 5px 0 5px',
+                        style: 'margin:5px 0 5px 5px',
                         text: '编辑',
                         icon: imgpath + '/edit.png',
                         listeners: {click: OnButtonEdit}
                     },
                     {
                         xtype: 'button',
-                        style: 'margin:5px 5px 0 5px',
+                        style: 'margin:5px 0 5px 5px',
                         text: '删除外委工程',
                         icon: imgpath + '/delete.png',
                         listeners: {click: OnButtonDel}
                     },
                     {
                         xtype: 'button',
-                        style: 'margin:5px 5px 0 5px',
+                        style: 'margin:5px 0 5px 5px',
                         text: '导出',
                         icon: imgpath + '/accordion_collapse.png',
                         listeners: {click: OnButtonOut}
                     },
                     {
                         xtype: 'button',
-                        style: 'margin:5px 5px 0 5px',
+                        style: 'margin:5px 0 5px 5px',
                         text: '上报',
                         icon: imgpath + '/accordion_collapse.png',
                         id: 'startFlow',
@@ -365,22 +365,22 @@ Ext.onReady(function () {
             mode: 'SIMPLE'
         },
         columns: [
-            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {xtype: 'rownumberer', text: '序号', width: 70, align: 'center'},
             {
-                text: '流程详细', width: 70, dataIndex: 'V_GUID', align: 'center',
+                text: '流程详细', width: 150, dataIndex: 'V_GUID', align: 'center',
                 renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                     metaData.style = "text-align:left;";
                     return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
                 }
             },
-            {text: '缺陷详情', width: 70, dataIndex: 'V_GUID', align: 'center', renderer: OperaTion},
-            {text: '工程状态', width: 100, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
-            {text: '工程编码', width: 160, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
-            {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
+            {text: '缺陷详情', width: 150, dataIndex: 'V_GUID', align: 'center', renderer: OperaTion},
+            {text: '工程状态', width: 150, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
+            {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
+            {text: '工程名称', width: 220, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
             {text: '工程请示内容', width: 300, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
-            {text: '专业', width: 70, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
-            {text: '开工时间', width: 120, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
-            {text: '竣工时间', width: 120, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}
+            {text: '专业', width: 120, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
+            {text: '开工时间', width: 150, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
+            {text: '竣工时间', width: 150, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}
         ],
         bbar: [{
             id: 'page',
