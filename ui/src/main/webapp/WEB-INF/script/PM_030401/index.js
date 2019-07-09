@@ -344,7 +344,7 @@ Ext.onReady(function () {
                         xtype: 'button',
                         style: 'margin:5px 0 5px 5px',
                         text: '上报',
-                        icon: imgpath + '/accordion_collapse.png',
+                        icon: imgpath + '/accordion_expand.png',
                         id: 'startFlow',
                         handler: btnFlowStart
                     }
