@@ -156,7 +156,7 @@ Ext.onReady(function () {
         region: 'north',
         width: '100%',
         titleAlign: 'center',
-        frame: true,
+        //frame: true,
         layout: 'column',
         defaults: {
             style: 'margin:5px 0px 5px 5px',
@@ -222,7 +222,7 @@ Ext.onReady(function () {
         region: 'north',
         width: '100%',
         titleAlign: 'center',
-        frame: true,
+        //frame: true,
         layout: 'column',
         defaults: {
             style: 'margin:3px 0px 5px 5px',
@@ -253,7 +253,7 @@ Ext.onReady(function () {
             {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
             {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
             {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
-           /* {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center', renderer: atleft},*/
+            /* {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center', renderer: atleft},*/
             {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
             {text: '工程请示内容', width: 300, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
             /*{text: '维修费用', width: 100, dataIndex: 'V_MONEYBUDGET', align: 'center', renderer: atright},*/
@@ -412,7 +412,7 @@ function QueryBudget() {
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
             if (resp.list != null) {
-             //   Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份' + Ext.getCmp('ck').rawValue + '大修年计划查询');
+                //   Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份' + Ext.getCmp('ck').rawValue + '大修年计划查询');
                 Ext.getCmp('panel').setTitle(Ext.getCmp('year').getValue() + '年份外委计划查询');
                 Ext.getCmp('budget').setText('年预算费用：' + resp.list[0].V_BUDGET_CK + '万元；已用费用：' + resp.list[0].V_BUDGET_USE + '万元；剩余费用：' + resp.list[0].V_BUDGET_Y + '万元；')
             }

@@ -280,7 +280,7 @@ Ext.onReady(function () {
                 margin: '5 5 5 5',
                 position: 'absolute',
                 colspan:2,
-                width: 600,
+                width: 520,
                 height: 90
             },
             {
@@ -288,7 +288,7 @@ Ext.onReady(function () {
                 items: [{
                     xtype: 'button',
                     text: '临时保存',
-                    margin: '5 5 5 5',
+                    margin: '65 5 5 5',
                     iconCls: 'buy-button',
                     icon: dxImgPath + '/lsbc.png',
                     handler: btnSaveProject
@@ -296,7 +296,7 @@ Ext.onReady(function () {
                     xtype: 'button',
                     id: 'startFlow',
                     text: '上报',
-                    margin: '5 5 5 5',
+                    margin: '65 5 5 5',
                     iconCls: 'buy-button',
                     icon: dxImgPath + '/wlmx.png',
                     handler: btnFlowStart
@@ -344,16 +344,25 @@ Ext.onReady(function () {
         store: dqxgridStore2,
         region: 'west',
         split: true,
-        width: 540,
+        width: 590,
         autoScroll: true,
         margin: '0px',
         columnLines: true,
         border: true,
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '缺陷类型', width: 70, dataIndex: 'V_SOURCENAME', align: 'center', renderer: atleft},
-            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft},
-            {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft}
+            {text: '缺陷类型', width: 70, dataIndex: 'V_SOURCENAME', style : {'text-align' : 'center'}, renderer: atleft,
+                renderer:function(v){
+                    return "<div title='"+v+"'>"+v+"</div>";
+                }},
+            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', style : {'text-align' : 'center'}, renderer: atleft,
+                renderer:function(v){
+                    return "<div title='"+v+"'>"+v+"</div>";
+                }},
+            {text: '缺陷日期', width: 160, dataIndex: 'D_DEFECTDATE', style : {'text-align' : 'center'}, renderer: atleft,
+                renderer:function(v){
+                    return "<div title='"+v+"'>"+v+"</div>";
+                }}
         ], listeners: {itemclick: OnBtnAddQx}
     });
 

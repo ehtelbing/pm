@@ -243,10 +243,10 @@ Ext.onReady(function () {
                 listeners: {click: OnButtonQuery}
             },
             {
-               xtype: 'button',
-               text: '上报维修计划',
-               icon: imgpath + '/accordion_collapse.png',
-               listeners: {click: OnButtonUp}
+                xtype: 'button',
+                text: '上报维修计划',
+                icon: imgpath + '/accordion_collapse.png',
+                listeners: {click: OnButtonUp}
             }
         ]
     });

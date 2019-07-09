@@ -286,14 +286,14 @@ Ext.onReady(function(){
                 margin: '5 5 5 5',
                 position: 'absolute',
                 labelWidth: 100,
-                width:600,
+                width:520,
                 height: 90,
                 colspan:2
             },{xtype:'panel',frame:true,width:'100%',layout:'column',  baseCls: 'my-panel-no-border',
                 items:[{
                     xtype: 'button',
                     text: '临时保存',
-                    margin: '5 5 5 5',
+                    margin: '65 5 5 5',
                     iconCls: 'buy-button',
                     icon: dxImgPath + '/lsbc.png',
                     handler: btnSaveProject
@@ -301,7 +301,7 @@ Ext.onReady(function(){
                     xtype: 'button',
                     id: 'startFlow',
                     text: '上报',
-                    margin: '5 5 5 5',
+                    margin: '65 5 5 5',
                     iconCls: 'buy-button',
                     icon: dxImgPath + '/wlmx.png',
                     handler: btnFlowStart
@@ -668,10 +668,10 @@ function btnSaveProject() {
             alert("解决方案不可为空");
             return false;
         }
-       /* if(defguid[i].get("BJ_STUFF")==""){
-            alert("备件材料不可为空");
-            return false;
-        }*/
+        /* if(defguid[i].get("BJ_STUFF")==""){
+             alert("备件材料不可为空");
+             return false;
+         }*/
 
     }
     if (Ext.getCmp('ProjectName').getValue() == "") {
@@ -821,10 +821,10 @@ function btnFlowStart() {
             alert("解决方案不可为空");
             return false;
         }
-       /* if(defguid[i].get("BJ_STUFF")==""){
-            alert("备件材料不可为空");
-            return false;
-        }*/
+        /* if(defguid[i].get("BJ_STUFF")==""){
+             alert("备件材料不可为空");
+             return false;
+         }*/
 
     }
     if (Ext.getCmp('ProjectName').getValue() == "") {
