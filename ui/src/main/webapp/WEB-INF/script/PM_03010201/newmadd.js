@@ -26,6 +26,7 @@ var yearStore=Ext.create('Ext.data.Store',{
 });
 
 Ext.onReady(function(){
+    Ext.QuickTips.init();
     //年计划关联缺陷查找
     var ygridStore = Ext.create('Ext.data.Store', {
         id: 'ygridStore',
@@ -78,7 +79,8 @@ Ext.onReady(function(){
     var wxqxGridStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'wxqxGridStore',
-        fields: ['YEAR_GUID', 'DEFECT_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_SOURCENAME', 'V_DEFECTLIST', 'D_DEFECTDATE','WBSCODE','WBSNAME'],
+        fields: ['YEAR_GUID', 'DEFECT_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_SOURCENAME', 'V_DEFECTLIST',
+            'D_DEFECTDATE','WBSCODE','WBSNAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -184,7 +186,7 @@ Ext.onReady(function(){
         columns : [
             {text : '序号',xtype : 'rownumberer',width : 50,sortable : false}
             ,{text : '删除',dataIndex : 'V_GUID',align : 'left',width : 100, renderer : delCorDef},
-             // {text : '单位',dataIndex : 'V_DEPTNAME',align : 'left',width : 100, renderer : CreateGridColumnTd},
+            // {text : '单位',dataIndex : 'V_DEPTNAME',align : 'left',width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷状态', dataIndex : 'V_STATENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '缺陷类型', dataIndex : 'V_SOURCENAME', align : 'left', width : 100, renderer : CreateGridColumnTd},
             {text : '设备', dataIndex : 'V_EQUNAME', align : 'left', width : 200, renderer : CreateGridColumnTd},
@@ -209,7 +211,7 @@ Ext.onReady(function(){
         region:'center',
         split: true,
         width:'45%',
-        frame:true,
+        //frame:true,
         border:false,
         title:'已选择缺陷',
         items:[hChoGrid]
@@ -228,15 +230,15 @@ Ext.onReady(function(){
             icon:dxImgPath+'/back.png',
             listeners: {click: SaveWxQx}
         }
-           /* , {
-                xtype: 'button',
-                text: '关闭',
-                // bodyStyle: 'float:center;',
-                // iconCls: 'buy-button',
-                icon:dxImgPath+'/close.png',
-                listeners: {click: winQxClose}
-            }*/
-           ]
+            /* , {
+                 xtype: 'button',
+                 text: '关闭',
+                 // bodyStyle: 'float:center;',
+                 // iconCls: 'buy-button',
+                 icon:dxImgPath+'/close.png',
+                 listeners: {click: winQxClose}
+             }*/
+        ]
     });
     //年获维修计划关联缺陷guid
     var ydefGPanel= Ext.create('Ext.grid.Panel', {
@@ -268,7 +270,7 @@ Ext.onReady(function(){
         region:'east',
         width:'45%',
         split: true,
-        frame:true,
+        //frame:true,
         border:false,
         title:'计划关联的缺陷',
         // items:[mdGridPanel]
@@ -373,13 +375,13 @@ Ext.onReady(function(){
         border: true,
         selType: 'checkboxmodel',
         columns: [
-            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text:'设备code',width:140,dataIndex:'V_EQUCODE',hidden:true},
-            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center'},
+            {xtype: 'rownumberer', text: '序号', width: 70, align: 'center'},
+            {text:'设备code',width:200,dataIndex:'V_EQUCODE',hidden:true},
+            {text: '设备名称', width: 200, dataIndex: 'V_EQUNAME', align: 'center',renderer: atleft},
 
-            {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'center'},
-            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center'},
-            {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center'}
+            {text: '缺陷类型', width: 200, dataIndex: 'V_SOURCENAME', align: 'center',renderer: atleft},
+            {text: '缺陷内容', width: 350, dataIndex: 'V_DEFECTLIST', align: 'center',renderer: atleft},
+            {text: '缺陷日期', width: 200, dataIndex: 'D_DEFECTDATE', align: 'center',renderer: atleft}
         ],
         tbar:[ {id: 'qxzt', xtype: 'combo', store: sqxzt, editable: false, fieldLabel: '缺陷类型', labelWidth:70, width: 180,
             displayField: 'V_SOURCENAME', valueField: 'V_SOURCECODE', queryMode: 'local', baseCls: 'margin-bottom'},
@@ -537,33 +539,34 @@ function saveMonth(){
     newCreatMonth(planCk);
     //
     // if(record[0].get("QXCONTEXT")==""){  //年计划中无缺陷判断
-        Ext.data.StoreManager.lookup('qxAddStore').load({
-            params: {
-                V_V_DEPTCODE: record[0].get('DEPTCODE'),
-                V_V_EQUCODE: record[0].get('EQUCODE'),
-                V_V_STATECODE: '10'
-            }
-        });
-        //年计划中缺陷数据面板加载
-        Ext.getCmp('ydefGPanel').reconfigure(Ext.data.StoreManager.lookup('wxqxGridStore'));
-        var  chgrid=Ext.getCmp('ydefGPanel');
-        chgrid.store.reload();
-        Ext.getCmp('ydefGPanel').getView().refresh();
-        // Ext.getCmp("btnAdd_tjqx").show();
+    Ext.data.StoreManager.lookup('qxAddStore').load({
+        params: {
+            V_V_DEPTCODE: record[0].get('DEPTCODE'),
+            V_V_EQUCODE: record[0].get('EQUCODE'),
+            V_V_STATECODE: '10'
+        }
+    });
+    //年计划中缺陷数据面板加载
+    Ext.getCmp('ydefGPanel').reconfigure(Ext.data.StoreManager.lookup('wxqxGridStore'));
+    var  chgrid=Ext.getCmp('ydefGPanel');
+    chgrid.store.reload();
+    Ext.getCmp('ydefGPanel').getView().refresh();
+    // Ext.getCmp("btnAdd_tjqx").show();
     // }else{
-        // wxqxLoad(YEARGUID);
-        //维修计划关联
-        // Ext.getCmp('tjqxgrid').reconfigure(Ext.data.StoreManager.lookup('wxqxGridStore'));
-        // var  chgrid=Ext.getCmp('tjqxgrid');
-        // chgrid.store.reload();
-        // Ext.getCmp('tjqxgrid').getView().refresh();
+    // wxqxLoad(YEARGUID);
+    //维修计划关联
+    // Ext.getCmp('tjqxgrid').reconfigure(Ext.data.StoreManager.lookup('wxqxGridStore'));
+    // var  chgrid=Ext.getCmp('tjqxgrid');
+    // chgrid.store.reload();
+    // Ext.getCmp('tjqxgrid').getView().refresh();
 
-        // Ext.getCmp("qx_win").show();
-        // var owidth = window.screen.availWidth-300;
-        // var oheight =  window.screen.availHeight - 500;
-        // var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-        //     +'&MainYEAR='+MainYEAR+'&monthGuid='+'0', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
-    // }
+    // Ext.getCmp("qx_win").show();
+    // var owidth = window.screen.availWidth-300;
+    // var oheight =  window.screen.availHeight - 500;
+    // var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
+    //     +'&MainYEAR='+MainYEAR+'&monthGuid='+'0', '', 'height='+ oheight +'px,width= '+ owidth +
+    'px,top=50px,left=100px,resizable=yes');
+// }
 
 }
 //维修计划查询
@@ -613,60 +616,60 @@ function SaveQx(){
         return false;
     }
 
-   if(YEARGUID==""){
-       Ext.Msg.show({
-           title: '提示',
-           msg: '并未关联年计划，是否关联?',
-           buttons: Ext.Msg.OKCANCEL,
-           icon: Ext.Msg.OKCANCEL,
-           fn: function (button) {
-               if (button == "ok") {
-                   return false;
-               }
-               else{
-
-                   if (monthGuid != "") {
-                       //其他缺陷关联
-                       SaveOtherQx();
-                   }
-               }
-
-           }
-       });
-   }
-   else{
-       //年计划关联缺陷添加
-       SaveWxQx();
-   }
-   /* var snum=0;
-    var qxDdefect = Ext.getCmp('qxAdd').getSelectionModel().getSelection();
-    for(var i=0;i<qxDdefect.length;i++){
-        Ext.Ajax.request({
-            url:AppUrl+'dxfile/YEAR_TO_MONTH_IN',
-            method:'POST',
-            async:false,
-            params:{
-                V_YEARGUID:YEARGUID,
-                V_MONTHGUID:monthGuid,
-                V_DEFECTGUID:qxDdefect[i].data.V_GUID,
-                V_PERCODE:Ext.util.Cookies.get('v_personcode')
-            },
-            success:function(response){
-                var resp = Ext.decode(response.responseText);
-                if (resp.RET =="SUCCESS") {
-                    snum++;
+    if(YEARGUID==""){
+        Ext.Msg.show({
+            title: '提示',
+            msg: '并未关联年计划，是否关联?',
+            buttons: Ext.Msg.OKCANCEL,
+            icon: Ext.Msg.OKCANCEL,
+            fn: function (button) {
+                if (button == "ok") {
+                    return false;
                 }
+                else{
+
+                    if (monthGuid != "") {
+                        //其他缺陷关联
+                        SaveOtherQx();
+                    }
+                }
+
             }
         });
     }
-    if(snum==qxDdefect.length){
-        haveChocieS();
-        /!*var owidth = window.screen.availWidth-300;
-        var oheight =  window.screen.availHeight - 500;
-        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+'0', ''
-            , 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');*!/
-    }*/
+    else{
+        //年计划关联缺陷添加
+        SaveWxQx();
+    }
+    /* var snum=0;
+     var qxDdefect = Ext.getCmp('qxAdd').getSelectionModel().getSelection();
+     for(var i=0;i<qxDdefect.length;i++){
+         Ext.Ajax.request({
+             url:AppUrl+'dxfile/YEAR_TO_MONTH_IN',
+             method:'POST',
+             async:false,
+             params:{
+                 V_YEARGUID:YEARGUID,
+                 V_MONTHGUID:monthGuid,
+                 V_DEFECTGUID:qxDdefect[i].data.V_GUID,
+                 V_PERCODE:Ext.util.Cookies.get('v_personcode')
+             },
+             success:function(response){
+                 var resp = Ext.decode(response.responseText);
+                 if (resp.RET =="SUCCESS") {
+                     snum++;
+                 }
+             }
+         });
+     }
+     if(snum==qxDdefect.length){
+         haveChocieS();
+         /!*var owidth = window.screen.availWidth-300;
+         var oheight =  window.screen.availHeight - 500;
+         var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
+             +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+'0', ''
+             , 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');*!/
+     }*/
 
 }
 //保存选中缺陷加入月计划关联
@@ -814,6 +817,11 @@ function delCorDefect(defGuid){
     });
 
 }
+
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function otherdefsel(){
     var gridStore = Ext.data.StoreManager.lookup('qxAddStore');
     gridStore.proxy.extraParams = {
@@ -829,11 +837,12 @@ function otherdefsel(){
 function turnPage(){
     wxqx="1";
     var owidth = window.screen.availWidth-300;
-        var oheight =  window.screen.availHeight - 500;
-        var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-            +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+wxqx, '',
-            'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+    var oheight =  window.screen.availHeight - 500;
+    var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
+        +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+wxqx, '',
+        'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }
+
 function action1(tab) {
     tab.on('activate', function (tab) {
 
@@ -861,3 +870,4 @@ function choequ(equcode){
  *月计划缺陷直接添加写入 PM_DEFECTTOWORKORDER 表格
  * 月计划关联年计划写入表格 YEAR_TO_MONTH
  */
+

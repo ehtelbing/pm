@@ -61,6 +61,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
+    Ext.QuickTips.init();
 //小时
     var hours = [];
     for (var i = 0; i < 24; i++) {
@@ -321,37 +322,57 @@ Ext.onReady(function () {
         }, {
             text: '单位',
             dataIndex: 'V_ORGCODE',
-            align: 'center',
+            align: 'left',style : {'text-align' : 'center'},
             flex: 2,
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                 var index = ckstore.find('V_DEPTCODE', value);
                 if (index != -1) {
-                    return ckstore.getAt(index).get('V_DEPTNAME');
+                    return "<span title='"+zyqstore.getAt(index).get('V_DEPTNAME')+"'>"+zyqstore.getAt(index).get('V_DEPTNAME')+"</span>";
                 }
                 return null;
             }
         }, {
             text: '作业区',
             dataIndex: 'V_ORGCODE',
-            align: 'center',
+            align: 'left',style : {'text-align' : 'center'},
             flex: 3,
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                 var index = zyqstore.find('V_DEPTCODE', value);
                 if (index != -1) {
-                    return zyqstore.getAt(index).get('V_DEPTNAME');
+                    return "<span title='"+zyqstore.getAt(index).get('V_DEPTNAME')+"'>"+zyqstore.getAt(index).get('V_DEPTNAME')+"</span>";
                 }
                 return null;
             }
         }, {
             text: '模型名称',
             dataIndex: 'V_MX_NAME',
-            align: 'center',
-            flex: 2
+            align: 'left',style : {'text-align' : 'center'},
+            flex: 2,
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
         }, {
             text: '备注',
             dataIndex: 'V_MENO',
-            align: 'center',
-            flex: 2
+            align: 'left',style : {'text-align' : 'center'},
+            flex: 2,
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
+        }],
+        bbar: ['->', {
+            xtype: 'pagingtoolbar',
+            id: 'gpage',
+            dock: 'bottom',
+            displayInfo: true,
+            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
+            emptyMsg: '没有记录',
+            store: 'gridStore',
+            listeners : {
+                "beforechange" : function(bbar, params){
+                    itemClick('');
+                }
+            }
         }],
         bbar: ['->', {
             xtype: 'pagingtoolbar',
@@ -401,23 +422,36 @@ Ext.onReady(function () {
         }, {
             text: '模型名称',
             dataIndex: 'V_MX_NAME',
-            flex: 4,
-            align: 'center'
+            flex: 3,
+            align: 'left',style : {'text-align' : 'center'},
+            renderer:function(v){
+                //return '<div data-qtip="' + value + '" >' + value + '</div>';
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
         }, {
             text: '设备名称',
             dataIndex: 'V_EQUNAME',
-            flex: 3,
-            align: 'center'
+            flex: 2.5,
+            align: 'left',style : {'text-align' : 'center'},
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
         }, {
             text: '检修内容',
             dataIndex: 'V_EQU_MENO',
             flex: 2,
-            align: 'center'
+            align: 'left',style : {'text-align' : 'center'},
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
         }, {
             text: '维修人数',
             dataIndex: 'V_PERNUM',
-            flex: 2,
-            align: 'center'
+            flex: 1,
+            align: 'left',style : {'text-align' : 'center'},
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
             // editor: {
             //     xtype: 'numberfield',
             //     hideTrigger: true,
@@ -426,18 +460,27 @@ Ext.onReady(function () {
         }, {
             text: '预期寿命',
             dataIndex: 'V_LIFELONG',
-            flex: 2,
-            align: 'center'
+            flex: 1.75,
+            align: 'left',style : {'text-align' : 'center'},
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
         }, {
             text: '主要缺陷',
             dataIndex: 'V_MAIN_DEFECT',
-            flex: 2,
-            align: 'center'
+            flex: 1.75,
+            align: 'left',style : {'text-align' : 'center'},
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
         }, {
             text: '施工方式',
             dataIndex: 'V_SGWAYNAME',
-            flex: 2,
-            align: 'center'
+            flex: 1.75,
+            align: 'left',style : {'text-align' : 'center'},
+            renderer:function(v){
+                return "<span title='"+v+"'>"+v+"</span>";
+            }
         }],
         bbar: ['->', {
             xtype: 'pagingtoolbar',
@@ -449,7 +492,6 @@ Ext.onReady(function () {
             store: 'gridStore1'
         }]
     });
-
     var window = Ext.create('Ext.window.Window', {
         id: 'window',
         width: 600,

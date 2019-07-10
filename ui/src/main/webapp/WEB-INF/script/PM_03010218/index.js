@@ -63,6 +63,8 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 
 Ext.onReady(function () {
 
+    Ext.QuickTips.init();
+
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var sqxzt = Ext.create("Ext.data.Store", {
@@ -187,68 +189,68 @@ Ext.onReady(function () {
                 width: 100,
                 renderer: CreateGridColumnTd
             },
-           /* {
-            text: '手工消缺',
-            id: 'sgxq',
-            xtype: 'templatecolumn',
-            align: 'center',
-            width: 100,
-            tpl: '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
-        }, */
+            /* {
+             text: '手工消缺',
+             id: 'sgxq',
+             xtype: 'templatecolumn',
+             align: 'center',
+             width: 100,
+             tpl: '<a href="#" onClick="OnBtnSxQx()">手工消缺</a>'
+         }, */
             {
-            text: '单位',
-            dataIndex: 'V_DEPTNAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '缺陷状态',
-            dataIndex: 'V_STATENAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '缺陷类型',
-            dataIndex: 'V_SOURCENAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '缺陷日期',
-            dataIndex: 'D_DEFECTDATE',
-            align: 'center',
-            width: 200,
-            renderer: CreateGridColumnTime
-        }, {
-            text: '缺陷明细',
-            dataIndex: 'V_DEFECTLIST',
-            align: 'center',
-            width: 700,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '设备',
-            dataIndex: 'V_EQUNAME',
-            align: 'center',
-            width: 200,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '设备位置',
-            dataIndex: 'V_EQUSITE',
-            align: 'center',
-            width: 300,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '负责人',
-            dataIndex: 'V_PERNAME',
-            align: 'center',
-            width: 100,
-            renderer: CreateGridColumnTd
-        }, {
-            text: '处理意见',
-            dataIndex: 'V_IDEA',
-            align: 'center',
-            renderer: CreateGridColumnTd
-        }],
+                text: '单位',
+                dataIndex: 'V_DEPTNAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '缺陷状态',
+                dataIndex: 'V_STATENAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '缺陷类型',
+                dataIndex: 'V_SOURCENAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '缺陷日期',
+                dataIndex: 'D_DEFECTDATE',
+                align: 'center',
+                width: 200,
+                renderer: CreateGridColumnTime
+            }, {
+                text: '缺陷明细',
+                dataIndex: 'V_DEFECTLIST',
+                align: 'center',
+                width: 300,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '设备',
+                dataIndex: 'V_EQUNAME',
+                align: 'center',
+                width: 150,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '设备位置',
+                dataIndex: 'V_EQUSITE',
+                align: 'center',
+                width: 200,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '负责人',
+                dataIndex: 'V_PERNAME',
+                align: 'center',
+                width: 100,
+                renderer: CreateGridColumnTd
+            }, {
+                text: '处理意见',
+                dataIndex: 'V_IDEA',
+                align: 'center',
+                renderer: CreateGridColumnTd
+            }],
         listeners: {
             itemdblclick: itemclick
         },
@@ -328,7 +330,8 @@ function OnBtnSxQx() {
         var GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth +
+            ',top=10px,left=10px,resizable=yes');
     }
 }
 
@@ -363,7 +366,8 @@ function createWorkorder() {
                     param = "";
                 }
                 var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID + '&V_EQUTYPECODE=' + records[i].data.V_EQUTYPECODE + "&V_SOURCECODE=" + records[i].data.V_SOURCECODE + param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    + records[i].data.V_GUID + '&V_EQUTYPECODE=' + records[i].data.V_EQUTYPECODE + "&V_SOURCECODE=" + records
+                        [i].data.V_SOURCECODE + param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             } catch (e) {
                 var owidth = window.document.body.offsetWidth - 200;
@@ -374,7 +378,8 @@ function createWorkorder() {
                     param = "";
                 }
                 var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID + "&V_SOURCECODE=" + records[i].data.V_SOURCECODE + '' + param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    + records[i].data.V_GUID + "&V_SOURCECODE=" + records[i].data.V_SOURCECODE + '' + param, '', 'height=' + oheight +
+                    ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             }
         } else {
@@ -388,7 +393,8 @@ function createWorkorder() {
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time = value.split('.')[0];
-    return time;
+    //return time;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 
 
@@ -419,7 +425,8 @@ function itemclick(s, record, item, index, e, eOpts) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
-        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth +
+        ',top=10px,left=10px,resizable=yes');
 
 }
 
@@ -507,8 +514,10 @@ function Select() {
     var V_EQUTYPECODE = seldata[0].raw.V_EQUTYPECODE;
     var V_EQUCODE = seldata[0].raw.V_EQUCODE;
     if (num == seldata.length) {
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
+        //var owidth = window.document.body.offsetWidth - 200;
+        //var oheight = window.document.body.offsetHeight - 100;
+        var owidth = 600;
+        var oheight = 600 ;
         var ret = window.open(AppUrl + "page/PM_03010219/monthFromDel.html?monthGuid=" + monthGuid +
             "&V_PLANTYPE=" + V_PLANTYPE +
             "&YEAR=" + YEAR +
