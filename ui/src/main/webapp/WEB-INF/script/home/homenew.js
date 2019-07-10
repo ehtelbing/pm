@@ -501,11 +501,11 @@ function toDownloadLodop() {
 }
 
 function toDownloadLodop32() {
-    location.href = AppUrl + "/resources/CLodop_Setup_for_Win32NT.exe";
+    location.href = AppUrl + "/resources/install_lodop32.exe";
 }
 
 function toDownloadLodop64() {
-    location.href = AppUrl + "/resources/CLodop_Setup_for_Win64NT_3.037Extend.exe";
+    location.href = AppUrl + "/resources/install_lodop32.exe";
 }
 
 function noticeUp(obj, top, time) {
