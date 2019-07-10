@@ -330,8 +330,8 @@ Ext.onReady(function () {
             fieldLabel: '维修工程请示',
             margin: '5 5 5 20',
             position: 'absolute',
-            width: 700,
-            labelWidth: 80,
+            width: 750,
+            labelWidth: 100,
             height: 90
         }]
     });

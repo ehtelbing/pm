@@ -8,6 +8,10 @@ for (var i = date.getFullYear() - 4; i <= date.getFullYear() + 1; i++) {
 }
 
 Ext.onReady(function(){
+
+    Ext.QuickTips.init();
+
+
     var yearStore = Ext.create("Ext.data.Store", {
         storeId: 'yearStore',
         fields: ['displayField', 'valueField'],
@@ -102,18 +106,18 @@ Ext.onReady(function(){
         columns: [
             {xtype: 'rownumberer', text: '序号', align: 'center', width: 50},
             {text: '放行唯一编码', align: 'center', width: 100, dataIndex: 'FX_GUID', hidden: true},
-            {xtype: 'treecolumn', text: '工程编码', align: 'center', width: 100, dataIndex: 'V_PROJECT_CODE',renderer:atleft},
+            {text: '工程编码', align: 'center', width: 150, dataIndex: 'V_PROJECT_CODE',renderer:atleft},
             {text: '工程名称', align: 'center', width: 150, dataIndex: 'V_PROJECT_NAME',renderer:atleft},
-            {text: '年度投资（万元）', align: 'center', width: 100, dataIndex: 'FX_MONEY'},
-            {text: '放行计划主要内容', align: 'center', width: 120, dataIndex: 'FX_CONTENT'},
-            {text: 'WBS编码', align: 'center', width: 100, dataIndex: 'V_WBS_CODE'},
-            {text: '维修工程项目名称', align: 'center', width: 100, dataIndex: 'V_WBS_NAME'},
-            {text: '开工时间', align: 'center', width: 120, dataIndex: 'V_DATE_B',renderer:timeTurn},
+            {text: '年度投资（万元）', align: 'center', width: 150, dataIndex: 'FX_MONEY',renderer:atleft},
+            {text: '放行计划主要内容', align: 'center', width: 210, dataIndex: 'FX_CONTENT',renderer:atleft},
+            {text: 'WBS编码', align: 'center', width: 150, dataIndex: 'V_WBS_CODE',renderer:atleft},
+            {text: '维修工程项目名称', align: 'center', width: 210, dataIndex: 'V_WBS_NAME',renderer:atleft},
+            {text: '开工时间', align: 'center', width: 150, dataIndex: 'V_DATE_B',renderer:timeTurn},
             {text: '竣工时间', align: 'center', width: 150, dataIndex: 'V_DATE_E',renderer:timeTurn},
-            {text: '建设单位编码', align: 'center', width: 100, dataIndex: 'V_REPAIR_DEPT', hidden: true},
-            {text: '建设单位名称', align: 'center', width: 180, dataIndex: 'V_REPAIR_DEPT_TXT'},
+            {text: '建设单位编码', align: 'center', width: 150, dataIndex: 'V_REPAIR_DEPT', hidden: true},
+            {text: '建设单位名称', align: 'center', width: 210, dataIndex: 'V_REPAIR_DEPT_TXT',renderer:atleft},
             {text: '建设单位负责人编码', align: 'center', width: 100, dataIndex: 'V_FZR', hidden: true},
-            {text: '建设单位负责人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME'}
+            {text: '建设单位负责人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME',renderer:atleft}
         ]
         , listeners: {
             itemClick: function (record,node ) {
@@ -204,14 +208,14 @@ Ext.onReady(function(){
 
     });
 //生成工单缺陷窗口store
-     var qxworkStore=Ext.create('Ext.data.Store',{
+    var qxworkStore=Ext.create('Ext.data.Store',{
         id:'qxworkStore',
         autoLoad:false,
-         fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE','V_SOURCENAME','V_SOURCEID','D_DEFECTDATE','D_INDATE','V_PERCODE',
-             'V_PERNAME','V_DEPTCODE','V_DEPTNAME','V_EQUCODE','V_EQUNAME','V_EQUSITE','V_EQUSITENAME','V_EQUTYPECODE',
-             'V_EQUTYPENAME','V_IDEA','V_STATECODE','V_STATENAME','V_GUID','V_EQUSITE','D_DATE_EDITTIME','V_EDIT_GUID',
-             'V_SOURCE_GRADE','V_EQUCHILDCODE','V_INPERCODE','V_INPERNAME','V_EQUTYPECODE','V_ORGCODE','V_DEPTNAME',
-             'V_HOUR','V_BZ','V_REPAIRMAJOR_CODE','V_PROJECT_CODE','V_PROJECT_NAME','V_FLAG','V_PROC_WAY','UP_GUID','V_SYSTEM'],
+        fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE','V_SOURCENAME','V_SOURCEID','D_DEFECTDATE','D_INDATE','V_PERCODE',
+            'V_PERNAME','V_DEPTCODE','V_DEPTNAME','V_EQUCODE','V_EQUNAME','V_EQUSITE','V_EQUSITENAME','V_EQUTYPECODE',
+            'V_EQUTYPENAME','V_IDEA','V_STATECODE','V_STATENAME','V_GUID','V_EQUSITE','D_DATE_EDITTIME','V_EDIT_GUID',
+            'V_SOURCE_GRADE','V_EQUCHILDCODE','V_INPERCODE','V_INPERNAME','V_EQUTYPECODE','V_ORGCODE','V_DEPTNAME',
+            'V_HOUR','V_BZ','V_REPAIRMAJOR_CODE','V_PROJECT_CODE','V_PROJECT_NAME','V_FLAG','V_PROC_WAY','UP_GUID','V_SYSTEM'],
         proxy:{
             type:'ajax',
             async:false,
@@ -292,7 +296,7 @@ Ext.onReady(function(){
 function timeTurn(value,metaDate,recode){
     metaDate.style = "text-align:center;";
     var val=value.toString().substr(0,10);
-    return val;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
@@ -329,21 +333,22 @@ function _fenjie(){
                         V_FXGUID:fxguid
                     }
                 });
-                    Ext.getCmp("qxWin").show();
+                Ext.getCmp("qxWin").show();
             }
         }
     });
 
-    // window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+    // window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid, '',
+    'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
 }
 
 function atleft(value,metaDate,recode){
     metaDate.style="text-align:left";
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 function atCenter(value,metaDate,recode){
     metaDate.style="text-align:center";
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 // function qxgridClick(view, record, item, index, e, eOpts){
 //
@@ -400,7 +405,8 @@ function turnPage(){
     }
     if(num==flag){
         Ext.getCmp("qxWin").close();
-        window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid+'&newguid='+newfxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+        window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid+'&newguid='+newfxguid, '',
+            'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
     }
 }
 
@@ -419,7 +425,8 @@ function _workOCreate(){
         }
     });
     Ext.getCmp("qxCworkWin").show();
-    // window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+    // window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '',
+    'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
 }
 
 function turnCreatWPage(){
@@ -479,7 +486,8 @@ function turnCreatWPage(){
             }
         });
         // window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '',
-        //     'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
-    }
+
+        //'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+}
 
 }

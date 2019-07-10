@@ -87,20 +87,20 @@ Ext.onReady(function(){
         },
         columns: [
             {xtype: 'rownumberer', text: '序号', align: 'center', width: 50},
-            {text: '放行唯一编码', align: 'center', width: 100, dataIndex: 'FX_GUID', hidden: true},
-            {xtype: 'treecolumn', text: '工程编码', align: 'center', width: 100, dataIndex: 'V_PROJECT_CODE'},
-            {text: '工程名称', align: 'center', width: 100, dataIndex: 'V_PROJECT_NAME'},
-            {text:'工单数量',align:'center',width:60,dataIndex:'WORKNUM'},
-            {text: '年度投资（万元）', align: 'center', width: 100, dataIndex: 'FX_MONEY'},
-            {text: '放行计划主要内容', align: 'center', width: 120, dataIndex: 'FX_CONTENT'},
-            {text: 'WBS编码', align: 'center', width: 100, dataIndex: 'V_WBS_CODE'},
-            {text: '维修工程项目名称', align: 'center', width: 100, dataIndex: 'V_WBS_NAME'},
-            {text: '开工时间', align: 'center', width: 120, dataIndex: 'V_DATE_B',renderer:timeTurn},
-            {text: '竣工时间', align: 'center', width: 150, dataIndex: 'V_DATE_E',renderer:timeTurn},
-            {text: '建设单位编码', align: 'center', width: 100, dataIndex: 'V_REPAIR_DEPT', hidden: true},
-            {text: '建设单位名称', align: 'center', width: 180, dataIndex: 'V_REPAIR_DEPT_TXT'},
-            {text: '建设单位负责人编码', align: 'center', width: 100, dataIndex: 'V_FZR', hidden: true},
-            {text: '建设单位负责人', align: 'center', width: 150, dataIndex: 'V_PERSONNAME'}
+            {text: '放行唯一编码', align: 'center', width: 150, dataIndex: 'FX_GUID', hidden: true,renderer:atleft},
+            {text: '工程编码', align: 'center', width: 150, dataIndex: 'V_PROJECT_CODE',renderer:atleft},
+            {text: '工程名称', align: 'center', width: 150, dataIndex: 'V_PROJECT_NAME',renderer:atleft},
+            {text:'工单数量',align:'center',width:80,dataIndex:'WORKNUM',renderer:atleft},
+            {text: '年度投资（万元）', align: 'center', width: 140, dataIndex: 'FX_MONEY',renderer:atleft},
+            {text: '放行计划主要内容', align: 'center', width: 150, dataIndex: 'FX_CONTENT',renderer:atleft},
+            {text: 'WBS编码', align: 'center', width: 150, dataIndex: 'V_WBS_CODE',renderer:atleft},
+            {text: '维修工程项目名称', align: 'center', width: 210, dataIndex: 'V_WBS_NAME',renderer:atleft},
+            {text: '开工时间', align: 'center', width: 140, dataIndex: 'V_DATE_B',renderer:timeTurn},
+            {text: '竣工时间', align: 'center', width: 140, dataIndex: 'V_DATE_E',renderer:timeTurn},
+            {text: '建设单位编码', align: 'center', width: 150, dataIndex: 'V_REPAIR_DEPT', hidden: true,renderer:atleft},
+            {text: '建设单位名称', align: 'center', width: 210, dataIndex:'V_REPAIR_DEPT_TXT',renderer:atleft},
+            {text: '建设单位负责人编码', align: 'center', width: 150, dataIndex: 'V_FZR', hidden: true},
+            {text: '建设单位负责人', align: 'center', width: 140, dataIndex: 'V_PERSONNAME',renderer:atleft}
         ]
         , listeners: {
             itemClick: function (record,node ) {

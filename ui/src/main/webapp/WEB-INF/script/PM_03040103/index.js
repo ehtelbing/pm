@@ -24,6 +24,7 @@ if (Ext.urlDecode(location.href.split("?")[1]) != undefined) {
     SIGN = Ext.urlDecode(location.href.split('?')[1]).sign == null ? "" : Ext.urlDecode(location.href.split('?')[1]).sign;
 }
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.getBody().mask();
     var zyqStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
