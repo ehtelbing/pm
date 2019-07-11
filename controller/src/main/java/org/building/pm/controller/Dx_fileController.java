@@ -4534,11 +4534,11 @@ public class Dx_fileController {
     @ResponseBody
     public Map<String, Object> PM_03_PLAN_PROJECT_STAT_SET(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
-            @RequestParam(value = "V_STATE") String V_STATE,
+            @RequestParam(value = "V_V_STATE") String V_V_STATE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        Map data = dx_fileService.PM_03_PLAN_PROJECT_STAT_SET(V_V_GUID, V_STATE);
+        Map data = dx_fileService.PM_03_PLAN_PROJECT_STAT_SET(V_V_GUID, V_V_STATE);
         return data;
     }
 

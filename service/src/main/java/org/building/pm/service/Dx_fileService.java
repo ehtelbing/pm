@@ -5526,7 +5526,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
     }
 
     //    维修计划状态修改
-    public Map PM_03_PLAN_PROJECT_STAT_SET(String V_V_GUID, String V_STATE) throws SQLException {
+    public Map PM_03_PLAN_PROJECT_STAT_SET(String V_V_GUID, String V_V_STATE) throws SQLException {
 
         logger.info("begin PM_03_PLAN_PROJECT_STAT_SET");
 
@@ -5536,9 +5536,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_03_PLAN_PROJECT_STAT_SET" + "(:V_V_GUID,:V_STATE,:RET)}");
+            cstmt = conn.prepareCall("{call PM_03_PLAN_PROJECT_STAT_SET" + "(:V_V_GUID,:V_V_STATE,:RET)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
-            cstmt.setString("V_STATE", V_STATE);
+            cstmt.setString("V_V_STATE", V_V_STATE);
 
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
 //            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);

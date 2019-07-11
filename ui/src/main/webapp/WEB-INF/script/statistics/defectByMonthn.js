@@ -32,7 +32,7 @@ Ext.onReady(function () {
         columnLines: true,
         autoScroll: true,
         columns: [{xtype: 'rownumberer', text: '序号', width: 40, align: 'center'},
-            {text: '单位名称', dataIndex: 'V_ORGNAME', align: 'center', width: 150, renderer: Atleft},
+            {text: '单位名称', dataIndex: 'V_ORGNAME', align: 'center',locked:true, width: 150, renderer: Atleft},
             {
                 header: '1月', align: 'center', width: 300,
                 columns: [{text: '缺陷总数', dataIndex: 'M1_SNUM', align: 'center', width: 100, renderer: AtRight},

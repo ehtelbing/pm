@@ -1276,3 +1276,8 @@ function workMatChangeUpdt() {
         }
     });
 }
+
+function ExpPDF(){
+    document.location.href = AppUrl + 'excel/WORKDY_ExpExcel?V_V_ORDERGUID='
+        + V_ORDERGUID ,'dialogHeight:500px;dialogWidth:800px';
+}
