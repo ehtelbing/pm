@@ -147,7 +147,7 @@ Ext.onReady(function() {
 				value : new Date().getFullYear(),
 				style : ' margin: 5px 0px 5px 5px',
 				labelWidth : 60,
-				width : 210,
+				width : 180,
 				editable : false,
 				displayField : 'displayField',
 				valueField : 'valueField'
@@ -168,7 +168,7 @@ Ext.onReady(function() {
 				labelAlign : 'left',
 				style : ' margin: 5px 0px 5px 5px',
 				labelWidth : 60,
-				width : 210,
+				width : 180,
 				value : (new Date().getMonth() + 1),
 				editable : false,
 				displayField : 'displayField',
@@ -191,7 +191,7 @@ Ext.onReady(function() {
 				labelAlign : 'left',
 				style : ' margin: 5px 0px 5px 5px',
 				labelWidth : 60,
-				width : 210,
+				width : 180,
 				value : '1',
 				editable : false,
 				displayField : 'displayField',
@@ -275,16 +275,16 @@ Ext.onReady(function() {
 		selType : 'checkboxmodel',
 		height : 400,
 		columns : [ {xtype : 'rownumberer',width : 30,sortable : false},
-		            {text : '超时步骤',width : 110,dataIndex : 'V_STATE_LOCK',align : 'center',renderer : atleft},
+		            {text : '超时步骤',width : 150,dataIndex : 'V_STATE_LOCK',align : 'center',renderer : atleft},
 		            {text : '上报时间',width : 150,dataIndex : 'D_DATE_LOCK',align : 'center',renderer : atleft,renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')} ,
-		            {text : '计划单位',width : 110,dataIndex : 'V_DEPTNAME',align : 'center',renderer : atleft} ,
-		            {text : '设备名称',width : 110,dataIndex : 'V_EQUNAME',align : 'center',renderer : atleft} ,
+		            {text : '计划单位',width : 150,dataIndex : 'V_DEPTNAME',align : 'center',renderer : atleft} ,
+		            {text : '设备名称',width : 150,dataIndex : 'V_EQUNAME',align : 'center',renderer : atleft} ,
 		            {text : '检修内容',width : 300,dataIndex : 'V_CONTENT',align : 'center',renderer : atleft} ,
 		            {text : '计划开工时间',width : 150,dataIndex : 'V_STARTTIME',align : 'center',renderer : atleft,renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')},
 		            {text : '计划竣工时间',width : 150,dataIndex : 'V_ENDTIME',align : 'center',renderer : atleft,renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')} ,
-		            {text : '计划工时(小时)',width : 110,dataIndex : 'V_HOUR',align : 'center',renderer : atleft} ,
-		            {text : '施工单位',width : 110,dataIndex : 'V_REPAIRDEPT_NAME',align : 'center',renderer : atleft} ,
-		            {text : '检修负责人',width : 110,dataIndex : 'V_MANNAME',align : 'center',renderer : atleft}]
+		            {text : '计划工时(小时)',width : 150,dataIndex : 'V_HOUR',align : 'center',renderer : atleft} ,
+		            {text : '施工单位',width : 150,dataIndex : 'V_REPAIRDEPT_NAME',align : 'center',renderer : atleft} ,
+		            {text : '检修负责人',width : 150,dataIndex : 'V_MANNAME',align : 'center',renderer : atleft}]
 	});
 
 	Ext.create('Ext.container.Viewport', {

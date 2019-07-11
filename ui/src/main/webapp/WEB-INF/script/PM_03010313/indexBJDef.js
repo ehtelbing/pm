@@ -70,7 +70,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     // Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var sqxzt =Ext.create("Ext.data.Store", {
@@ -178,49 +178,49 @@ Ext.onReady(function () {
             text : '单位',
             dataIndex : 'V_DEPTNAME',
             align : 'center',
-            width : 100,
+            width : 150,
             renderer : CreateGridColumnTd
         }, {
             text : '缺陷状态',
             dataIndex : 'V_STATENAME',
             align : 'center',
-            width : 100,
+            width : 150,
             renderer : CreateGridColumnTd
         }, {
             text : '缺陷类型',
             dataIndex : 'V_SOURCENAME',
             align : 'center',
-            width : 100,
+            width : 150,
             renderer : CreateGridColumnTd
         }, {
             text : '缺陷日期',
             dataIndex : 'D_DEFECTDATE',
             align : 'center',
-            width : 200,
+            width : 150,
             renderer : CreateGridColumnTime
         }, {
             text : '缺陷明细',
             dataIndex : 'V_DEFECTLIST',
             align : 'center',
-            width : 700,
+            width : 400,
             renderer : CreateGridColumnTd
         }, {
             text : '设备',
             dataIndex : 'V_EQUNAME',
             align : 'center',
-            width : 200,
+            width : 150,
             renderer : CreateGridColumnTd
         }, {
             text : '设备位置',
             dataIndex : 'V_EQUSITE',
             align : 'center',
-            width : 300,
+            width : 200,
             renderer : CreateGridColumnTd
         }, {
             text : '负责人',
             dataIndex : 'V_PERNAME',
             align : 'center',
-            width : 100,
+            width : 150,
             renderer : CreateGridColumnTd
         }, {
             text : '处理意见',
@@ -384,7 +384,8 @@ function createWorkorder(){
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time=value.split('.')[0];
-    return time;
+    //return time;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 
 
@@ -469,8 +470,8 @@ function Select(){
     var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
     var V_EQUCODE=seldata[0].raw.V_EQUCODE;
     if (num == seldata.length) {
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
+        var owidth = window.document.body.offsetWidth - 550;
+        var oheight = window.document.body.offsetHeight - 40;
         var ret = window.open(AppUrl + "page/PM_03010315/index.html?V_WEEKPLAN_GUID=" + V_WEEKPLAN_GUID +
             "&V_PLANTYPE=" + V_PLANTYPE +
             "&YEAR=" + YEAR +

@@ -39,8 +39,9 @@ var V_DEPTCODE = null;
 if (location.href.split('?')[1] != undefined) {
     V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTCODE;
 }
-var stateData=[{ displayField:'全部', valueField:'%'},{ displayField:'编辑', valueField:'编辑'},{ displayField:'审批中', valueField:'审批中'},{ displayField:'审批通过', valueField:'审批通过'},{ displayField:'审批驳回', valueField:'审批驳回'}];
-var KSTIME=null;
+var stateData=[{ displayField:'全部', valueField:'%'},{ displayField:'编辑', valueField:'编辑'},{ displayField:'审批中', valueField:'审
+    批中'},{ displayField:'审批通过', valueField:'审批通过'},{ displayField:'审批驳回', valueField:'审批驳回'}];
+    var KSTIME=null;
 if(location.href.split('?')[1]!=undefined){
     KSTIME=Ext.urlDecode(location.href.split('?')[1]).KSTIME;
 }
@@ -70,7 +71,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var sqxzt = Ext.create("Ext.data.Store", {
@@ -181,7 +182,7 @@ Ext.onReady(function () {
             text : '维修工程项目名称',
             dataIndex : 'WBSNAME',
             align : 'center',
-            width : 100,
+            width : 150,
             renderer : CreateGridColumnTd
         },{
             text : '单位',
@@ -316,7 +317,8 @@ function OnBtnSxQx() {
         var GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth +
+            ',top=10px,left=10px,resizable=yes');
     }
 }
 function createWorkorder(){
@@ -350,7 +352,8 @@ function createWorkorder(){
                     param="";
                 }
                 var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID + '&V_EQUTYPECODE='+records[i].data.V_EQUTYPECODE+"&V_SOURCECODE="+records[i].data.V_SOURCECODE+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    + records[i].data.V_GUID + '&V_EQUTYPECODE='+records[i].data.V_EQUTYPECODE+"&V_SOURCECODE="+records
+                        [i].data.V_SOURCECODE+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             } catch (e) {
                 var owidth = window.document.body.offsetWidth-200;
@@ -361,7 +364,8 @@ function createWorkorder(){
                     param="";
                 }
                 var ret = window.open(AppUrl+'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID+"&V_SOURCECODE="+records[i].data.V_SOURCECODE + ''+param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    + records[i].data.V_GUID+"&V_SOURCECODE="+records[i].data.V_SOURCECODE + ''+param, '', 'height=' + oheight +
+                    ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             }
         }else{
@@ -392,7 +396,8 @@ function itemclick(s, record, item, index, e, eOpts) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
-        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth +
+        ',top=10px,left=10px,resizable=yes');
 }
 
 function Select(){
@@ -463,8 +468,8 @@ function Select(){
     var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
     var V_EQUCODE=seldata[0].raw.V_EQUCODE;
     if (num == seldata.length) {
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
+        var owidth = window.document.body.offsetWidth - 550;
+        var oheight = window.document.body.offsetHeight - 40;
         var ret = window.open(AppUrl + "page/PM_03010315/index.html?V_WEEKPLAN_GUID=" + V_WEEKPLAN_GUID +
             "&V_PLANTYPE=" + V_PLANTYPE +
             "&YEAR=" + YEAR +
@@ -475,7 +480,7 @@ function Select(){
             "&V_EQUTYPECODE=" + V_EQUTYPECODE+
             "&V_EQUCODE=" + V_EQUCODE+
             "&KSTIME="+KSTIME, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-       // window.close();
+        // window.close();
     } else {
         alert("缺陷添加错误");
     }

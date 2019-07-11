@@ -488,7 +488,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 220,
+            width: 230,
             value: '',
             displayField: 'V_PERSNAME',
             valueField: 'V_PERSCODE',
@@ -501,7 +501,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 220,
+            width: 230,
             value: '',
             displayField: 'V_PERSONNAME',
             valueField: 'V_PERSONCODE',
@@ -529,7 +529,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             value: ''
         },
         {
-            xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
+            xtype: 'button', text: '查询', margin: '5 0 5 55', icon: imgpath + '/search.png',
             handler: function () {
                 query();
             }
@@ -573,7 +573,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             text: '生成工单',
             margin: '5 0 5 5',
-            icon: imgpath + '/accordion_collapse.png',
+            icon: imgpath + '/accordion_expand.png',
             handler: createWorkorder
         }
     ]
@@ -603,7 +603,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '关联工单数量',
             dataIndex: 'WORKORDERNUM',
-            width: 55,
+            width: 150,
             align: 'center'
         // ,renderer: function (value, metaData, record) {
         //         // return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';

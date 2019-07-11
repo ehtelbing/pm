@@ -403,7 +403,7 @@ Ext.onReady(function () {
                                 value: WEEK,
                                 store: weekStore,
                                 queryMode: 'local'
-                            // ,readOnly:true
+                                // ,readOnly:true
                             },
                             {
                                 xtype: 'combo',
@@ -543,7 +543,7 @@ Ext.onReady(function () {
                         //border: false,
                         baseCls: 'my-panel-no-border',
                         items: [
-                           {
+                            {
                                 xtype: 'combo',
                                 id: 'gx',
                                 fieldLabel: '工序',
@@ -884,7 +884,6 @@ Ext.onReady(function () {
                             id: 'pdc',
                             fieldLabel: '皮带周长',
                             labelAlign: 'right',
-                            minValue:0,
                             margin: '5 0 0 2',
                             labelWidth: 80,
                             width: 250,
@@ -900,10 +899,8 @@ Ext.onReady(function () {
                                 fieldLabel: '更换皮带长度',
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
-                                allowNegative:false,
                                 labelWidth: 80,
                                 width: 225,
-                                minValue:0,
                                 value: 0},{
                                 xtype:'label',
                                 text:"(米）",
@@ -950,33 +947,31 @@ Ext.onReady(function () {
                                 labelAlign: 'right',
                                 margin: '5 0 0 5',
                                 allowNegative: false,
-                                minValue:0,
                                 allowDecimals: false,
                                 labelWidth: 80,
-                                width: 245,
+                                width: 243,
                                 value: '0'
                             },{
                                 xtype:'label',
                                 text:"(小时）",
-                                margin: '7 0 0 2',
-                                width:60
+                                margin: '5 0 0 5',
+                                width:55
                             },
                             {
                                 xtype: 'numberfield',
                                 id: 'jjhour',
                                 fieldLabel: '胶接时间',
                                 labelAlign: 'right',
-                                margin: '5 0 0 2',
-                                minValue:0,
+                                margin: '5 0 0 7',
                                 allowNegative: false,
                                 allowDecimals: false,
                                 labelWidth: 55,
-                                width: 200,
+                                width: 192,
                                 value: '0'
                             },{
                                 xtype:'label',
                                 text:"(小时）",
-                                margin: '7 0 0 2',
+                                margin: '5 0 0 2',
                                 width:60
                             }]
                     },
@@ -1003,8 +998,7 @@ Ext.onReady(function () {
                             allowNegative: false,
                             allowDecimals: false,
                             labelWidth: 85,
-                            width: 230,
-                            minValue:0,
+                            width: 220,
                             value: '0'
                         },
                             {

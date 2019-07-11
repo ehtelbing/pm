@@ -365,8 +365,8 @@ Ext.onReady(function () {
             }, {
                 xtype: 'button',
                 text: '上报设备部',
-                width: 90,
-                icon: imgpath + '/accordion_collapse.png',
+                width: 100,
+                icon: imgpath + '/accordion_expand.png',
                 handler: OnButtonUp
             }]
     });

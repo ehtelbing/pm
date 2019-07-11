@@ -379,7 +379,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             valueField: 'V_DEPTCODE',
             store: jhzyqStore,
             queryMode: 'local'
-        }, 
+        },
         {
             xtype: 'combo',
             id: 'sblx',
@@ -398,7 +398,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             fieldLabel: '设备名称',
             editable: false,
             labelAlign: 'right',
-            margin: '5 0 0 5', labelWidth: 80, width: 280,
+            margin: '5 0 0 5', labelWidth: 80, width: 230,
             value: '',
             displayField: 'V_EQUNAME',
             valueField: 'V_EQUCODE',
@@ -441,7 +441,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 25 0 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             labelAlign: 'right',
             value: '',
             displayField: 'v_name',
@@ -449,8 +449,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
             store: inputerStore,
             queryMode: 'local'
         },
-        /*{xtype: 'displayfield',id:'starttime',fieldLabel: '上报开始时间',readOnly: true,  margin: '5 0 0 5',labelWidth:80,width:230, value: ''},
-        {xtype: 'displayfield',id:'endtime',fieldLabel: '上报截止时间',readOnly: true, margin: '5 0 0 5',labelWidth:80,width:230,value: ''},*/
+        /*{xtype: 'displayfield',id:'starttime',fieldLabel: '上报开始时间',readOnly: true,  margin: '5 0 0 5',labelWidth:80,width:230,
+value: ''},
+        {xtype: 'displayfield',id:'endtime',fieldLabel: '上报截止时间',readOnly: true, margin: '5 0 0 5',labelWidth:80,width:230,value:
+''},*/
         {
             xtype: 'button', text: '查询', margin: '5 0 5 20', icon: imgpath + '/search.png',
             handler: function () {
@@ -482,7 +484,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '审批详情',
             dataIndex: 'V_ORDERID',
-            width: 55,
+            width: 80,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 // if(record.get('DRSIGN')=="1") {
@@ -493,7 +495,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         },{
             text: '工单详情',
             dataIndex: 'WORKORDERNUM',
-            width: 55,
+            width: 80,
             align: 'center',
             renderer: function (value, metaData, record) {
                 // if(record.get('DRSIGN')=="1") {
@@ -513,29 +515,33 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
                 //     metaData.style = "background-color: yellow";
                 // }
                 if(record.data.V_OTHERPLAN_GUID!=""){
-                    return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
+                    return '<a href="#" onclick="OnClickOtherGrid
+                    (\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+'关联计划'+'</a>';
                 }else{
-                    return '<a href="#" onclick="OnClickOtherGrid(\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+''+'</a>';
+                    return '<a href="#" onclick="OnClickOtherGrid
+                    (\''+record.data.V_OTHERPLAN_GUID+'\',\''+record.data.V_OTHERPLAN_TYPE+'\')">'+''+'</a>';
                 }
 
             }
         },
-        {text: '周单号', align: 'center', width: 100, dataIndex: 'V_WEEKID',renderer: dataCss },
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME', renderer: dataCss},
-        {text: '车间名称', align: 'center', width: 100, dataIndex: 'V_DEPTNAME', renderer: dataCss},
-        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: dataCss},
-        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME', renderer: dataCss},
-        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT', renderer: dataCss},
-        {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME', renderer: dataCss},
-        {text: '计划停机日期', align: 'center', width: 150, dataIndex: 'V_STARTTIME', renderer: rendererTime},
-        {text: '计划竣工日期', align: 'center', width: 150, dataIndex: 'V_ENDTIME', renderer: rendererTime},
-        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR', renderer: dataCss},
-        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME', renderer: dataCss},
-        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT', renderer: dataCss},
-        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE', renderer: dataCss},
-        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER', renderer: dataCss},
-        {text: '录入时间', align: 'center', width: 100, dataIndex: 'V_INDATE', renderer: rendererTime}
-        ,{text:'导入标示符',align:'center',width:150,dataIndex:'DRSIGN',hidden:true}
+        {text: '周单号', align: 'left',	style : {'text-align' : 'center'},width: 100, dataIndex: 'V_WEEKID',renderer: dataCss },
+        {text: '厂矿', align: 'left',style : {'text-align' : 'center'},width: 100, dataIndex: 'V_ORGNAME', renderer: dataCss},
+        {text: '车间名称', align: 'left',style : {'text-align' : 'center'},width: 100, dataIndex: 'V_DEPTNAME', renderer: dataCss},
+        {text: '专业', align: 'left',style : {'text-align' : 'center'}, width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: dataCss},
+        {text: '设备名称', align: 'left',style : {'text-align' : 'center'},width: 100, dataIndex: 'V_EQUNAME', renderer: dataCss},
+        {text: '计划内容', align: 'left',style : {'text-align' : 'center'},width: 280, dataIndex: 'V_CONTENT', renderer: dataCss},
+        {text: '检修模型', align: 'left',style : {'text-align' : 'center'},width: 100, dataIndex: 'V_EQUTYPENAME', renderer: dataCss},
+        {text: '计划停机日期', align: 'left',style : {'text-align' : 'center'},width: 150, dataIndex: 'V_STARTTIME', renderer:
+            rendererTime},
+        {text: '计划竣工日期', align: 'left',style : {'text-align' : 'center'},width: 150, dataIndex: 'V_ENDTIME', renderer:
+            rendererTime},
+        {text: '计划工期（小时）',align: 'left',style : {'text-align' : 'center'},width: 150, dataIndex: 'V_HOUR', renderer: dataCss},
+        {text: '录入人',align: 'left',style : {'text-align' : 'center'}, width: 100, dataIndex: 'V_INPERNAME', renderer: dataCss},
+        {text: '主要缺陷',align: 'left',style : {'text-align' : 'center'}, width: 100, dataIndex: 'V_MAIN_DEFECT', renderer: dataCss},
+        {text: '预计寿命',align: 'left',style : {'text-align' : 'center'},width: 100, dataIndex: 'V_EXPECT_AGE', renderer: dataCss},
+        {text: '维修人数',align: 'left',style : {'text-align' : 'center'},width: 100, dataIndex: 'V_REPAIR_PER', renderer: dataCss},
+        {text: '录入时间',align: 'left',style : {'text-align' : 'center'},width: 100, dataIndex: 'V_INDATE', renderer: rendererTime}
+        ,{text:'导入标示符',align: 'left',style : {'text-align' : 'center'},width:150,dataIndex:'DRSIGN',hidden:true}
     ],
     bbar: ["->",
         {
@@ -551,6 +557,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
@@ -695,7 +702,8 @@ function rendererTime(value, metaData,record) {
     if(record.get('DRSIGN')=="1") {
         metaData.style = "background-color: yellow";
     }
-    return value.split(".")[0];
+    //return value.split(".")[0];
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 
 //第几周
@@ -876,10 +884,10 @@ function OnClickOtherGrid(otherguid,othertype){
     if(othertype==""){
         alert('此计划没有关联项');return;
     }
-if (othertype=="MONTH"){
-    window.open(AppUrl + 'page/PM_03010309/month_detail.html?monthguid='
-        + otherguid, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
-}
+    if (othertype=="MONTH"){
+        window.open(AppUrl + 'page/PM_03010309/month_detail.html?monthguid='
+            + otherguid, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+    }
     if(othertype=="YEAR"){
         alert('该条计划关联年计划');
     }
@@ -893,5 +901,6 @@ function dataCss(value, metaData, record, rowIndex, colIndex, store){
     if(record.get('DRSIGN')=="1") {
         metaData.style = "background-color: yellow";
     }
-        return value;
+    //return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }

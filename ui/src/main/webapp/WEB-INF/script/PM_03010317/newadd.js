@@ -68,6 +68,7 @@ var monthStore = Ext.create("Ext.data.Store", {
 });
 
 Ext.onReady(function(){
+    Ext.QuickTips.init();
     //store
     //月计划gridStore
     var mgridStore = Ext.create('Ext.data.Store', {
@@ -266,7 +267,7 @@ Ext.onReady(function(){
         region:'center',
         split: true,
         width:'45%',
-        frame:true,
+        //frame:true,
         border:false,
         title:'已选择缺陷',
         items:[hChoGrid]
@@ -314,7 +315,7 @@ Ext.onReady(function(){
         region:'east',
         width:'45%',
         split: true,
-        frame:true,
+        //frame:true,
         border:false,
         title:'月计划关联的缺陷',
         // items:[mdGridPanel]
@@ -343,23 +344,25 @@ Ext.onReady(function(){
         autoScroll:true,
         // selType:'checkboxmodel',
         tbar: [
-            {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
-            {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
+            {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField:
+                    'valueField',labelWidth: 90, margin: '10 0 5 10'},
+            {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField:
+                    'valueField',labelWidth: 90, margin: '10 0 5 10'},
             {xtype: 'textfield',id:'jhmc',fieldLabel: '计划名称',editable: false, margin: '10 0 0 5',labelWidth:55,width:205,value:''},
             {xtype: 'button', id:'monthsel',text: '查询', margin: '10 0 5 10',icon:imgpath + '/search.png',handler:query}
         ],
         columns:[
             {text: '序号', align: 'right', width: 50, xtype: 'rownumberer'},
-            {text: '厂矿', align: 'left', width: 122, dataIndex: 'V_ORGNAME',renderer : CreateGridColumnTd},
-            {text: '车间名称', align: 'left', width: 100, dataIndex: 'V_DEPTNAME',renderer : CreateGridColumnTd},
-            {text: '专业', align: 'left', width: 54, dataIndex: 'V_REPAIRMAJOR_CODE',renderer : CreateGridColumnTd},
-            {text: '设备名称', align: 'left', width: 131, dataIndex: 'V_EQUNAME',renderer : CreateGridColumnTd},
-            {text: '检修内容', align: 'left', width: 270, dataIndex: 'V_CONTENT',renderer : CreateGridColumnTd},
-            {text: '计划停机日期', align: 'right', width: 148, dataIndex: 'V_STARTTIME',
+            {text: '厂矿', align: 'left', width: 150, dataIndex: 'V_ORGNAME',renderer : CreateGridColumnTd},
+            {text: '车间名称', align: 'left', width: 200, dataIndex: 'V_DEPTNAME',renderer : CreateGridColumnTd},
+            {text: '专业', align: 'left', width: 150, dataIndex: 'V_REPAIRMAJOR_CODE',renderer : CreateGridColumnTd},
+            {text: '设备名称', align: 'left', width: 200, dataIndex: 'V_EQUNAME',renderer : CreateGridColumnTd},
+            {text: '检修内容', align: 'left', width: 300, dataIndex: 'V_CONTENT',renderer : CreateGridColumnTd},
+            {text: '计划停机日期', align: 'right', width: 200, dataIndex: 'V_STARTTIME',
                 renderer: rendererTime},
-            {text: '计划竣工日期', align: 'right', width: 148, dataIndex: 'V_ENDTIME',
+            {text: '计划竣工日期', align: 'right', width: 200, dataIndex: 'V_ENDTIME',
                 renderer: rendererTime},
-            {text: '计划工期（小时）', align: 'right', width:120, dataIndex: 'V_HOUR',renderer : CreateGridColumnTd}
+            {text: '计划工期（小时）', align: 'right', width:200, dataIndex: 'V_HOUR',renderer : CreateGridColumnTd}
         ],
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
@@ -476,9 +479,10 @@ Ext.onReady(function(){
 });
 
 function turnPage(){
-    var owidth = window.document.body.offsetWidth - 200;
+    var owidth = window.document.body.offsetWidth - 550;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
+    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID
+        +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
         +"&WEEK=" + WEEK
         +'&startUpTime='+ startUpTime
         +'&endUpTime='+endUpTime,'','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
@@ -534,12 +538,14 @@ function delCorDefect(defGuid){
 }
 function rendererTime(value, metaData){
     metaData.style="text-align:right";
-    return value.split(".")[0];
+    //return value.split(".")[0];
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style="text-align:right";
     var time=value.split('.')[0];
-    return time;
+    //return time;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
@@ -862,7 +868,8 @@ function weekReMonth(){
 function turnPage(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
+    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID
+        +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
         +"&WEEK=" + WEEK
         +'&startUpTime='+ startUpTime
         +'&endUpTime='+endUpTime,'','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
@@ -915,7 +922,8 @@ function tbitemclick(s, record, item, index, e, eOpts) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
-        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth +
+        ',top=10px,left=10px,resizable=yes');
 
 }
 function retClose(){

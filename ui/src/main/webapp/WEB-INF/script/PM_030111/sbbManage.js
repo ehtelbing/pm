@@ -288,7 +288,7 @@ var panel = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             icon: imgpath + '/search.png',
             text: '查询',
-            width: 80,
+            width: 65,
             handler: QueryGrid
             // ,margin:'5px 0px 5px 50px'
         }, {
@@ -296,7 +296,7 @@ var panel = Ext.create('Ext.form.Panel', {
             text: '导出excel',
             style: ' margin: 5px 0px 5px 5px',
             icon: imgpath + '/excel.gif',
-            width: 100,
+            width: 85,
             listeners: {
                 click: OnClickExcelButton
             }}
@@ -304,8 +304,8 @@ var panel = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             text: '导入excel',
             style: ' margin: 5px 0px 5px 5px',
-            icon: imgpath + '/excel.gif',
-            width: 100,
+            icon: imgpath + '/grid.png',
+            width: 85,
             listeners: {
                 click: OnClickDrExcelButton
             }
@@ -393,7 +393,7 @@ Ext.onReady(function () {
             {
                 text: '工单详情',
                 dataIndex: 'V_ORDERID',
-                width: 55,
+                width: 150,
                 align: 'center',
                 renderer: function (value, metaData, record) {
                     return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';

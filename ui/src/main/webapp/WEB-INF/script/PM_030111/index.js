@@ -219,29 +219,29 @@ Ext.onReady(function () {
                 displayField: 'displayField', valueField: 'valueField'},
             {xtype : 'displayfield', id : 'zks', fieldLabel : '本周开始时间', labelWidth : 80, width:243,labelAlign : 'right'},
             {xtype : 'displayfield', id : 'zjs', fieldLabel : '本周结束时间', labelWidth : 80, width:243,labelAlign : 'right'},
-             {
-            id: 'ck',
-            xtype: 'combo',
-            store: ckstore,
-            editable: false,
-            fieldLabel: '厂矿',
-            labelWidth: 80,
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'zyq',
-            xtype: 'combo',
-            store: zyqstore,
-            editable: false,
-            fieldLabel: '作业区',
-            labelWidth: 80,
-            displayField: 'V_DEPTNAME',
-            valueField: 'V_DEPTCODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
+            {
+                id: 'ck',
+                xtype: 'combo',
+                store: ckstore,
+                editable: false,
+                fieldLabel: '厂矿',
+                labelWidth: 110,
+                displayField: 'V_DEPTNAME',
+                valueField: 'V_DEPTCODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
+                id: 'zyq',
+                xtype: 'combo',
+                store: zyqstore,
+                editable: false,
+                fieldLabel: '作业区',
+                labelWidth: 80,
+                displayField: 'V_DEPTNAME',
+                valueField: 'V_DEPTCODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
                 xtype: 'combo',
                 id: 'sblx',
                 fieldLabel: '设备类型',
@@ -267,52 +267,53 @@ Ext.onReady(function () {
                 store: sbmcStore,
                 queryMode: 'local'
             },{
-            id: 'zy',
-            xtype: 'combo',
-            store: zyStore,
-            editable: false,
-            fieldLabel: '专业',
-            labelWidth: 80,
-            displayField: 'V_MAJOR_CODE',
-            valueField: 'V_MAJOR_NAME',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'zt',
-            xtype: 'combo',
-            store: ztstore,
-            editable: false,
-            fieldLabel: '状态',
-            labelWidth: 80,
-            hidden:true,
-            displayField: 'V_BASENAME',
-            valueField: 'V_BASECODE',
-            queryMode: 'local',
-            baseCls: 'margin-bottom'
-        }, {
-            id: 'seltext',
-            xtype: 'textfield',
-            width: 158,
-            emptyText: '检修明细模糊搜索',
-            margin:'5px 0px 5px 90px'
-        }, {
-            id: 'query',
-            xtype: 'button',
-            icon: imgpath + '/search.png',
-            text: '查询',
-            width: 80,
-            handler:QueryGrid
-        }, {
-            xtype: 'hidden',
-            id: 'tabid'
-        }, {
-            xtype: 'button',
-            text: '生成工单',
-            width: 80,
-            listeners: {
-                click: createWorkorder
-            }
-        },{
+                id: 'zy',
+                xtype: 'combo',
+                store: zyStore,
+                editable: false,
+                fieldLabel: '专业',
+                labelWidth: 80,
+                displayField: 'V_MAJOR_CODE',
+                valueField: 'V_MAJOR_NAME',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
+                id: 'zt',
+                xtype: 'combo',
+                store: ztstore,
+                editable: false,
+                fieldLabel: '状态',
+                labelWidth: 80,
+                hidden:true,
+                displayField: 'V_BASENAME',
+                valueField: 'V_BASECODE',
+                queryMode: 'local',
+                baseCls: 'margin-bottom'
+            }, {
+                id: 'seltext',
+                xtype: 'textfield',
+                width: 158,
+                emptyText: '检修明细模糊搜索',
+                margin:'5px 0px 5px 90px'
+            }, {
+                id: 'query',
+                xtype: 'button',
+                icon: imgpath + '/search.png',
+                text: '查询',
+                width: 80,
+                handler:QueryGrid
+            }, {
+                xtype: 'hidden',
+                id: 'tabid'
+            }, {
+                xtype: 'button',
+                text: '生成工单',
+                icon: imgpath + '/accordion_collapse.png',
+                width: 85,
+                listeners: {
+                    click: createWorkorder
+                }
+            },{
                 xtype: 'button',
                 text: '导出excel',
                 style: ' margin: 5px 0px 5px 5px',
