@@ -118,113 +118,113 @@ Ext.onReady(function () {
         width: '100%',
         default:{labelAlign: 'right'},
         items: [{
-                id: 'year',
-                store: Ext.create("Ext.data.Store", {
-                    fields: ['displayField', 'valueField'],
-                    data: years,
-                    proxy: {
-                        type: 'memory',
-                        reader: {
-                            type: 'json'
-                        }
+            id: 'year',
+            store: Ext.create("Ext.data.Store", {
+                fields: ['displayField', 'valueField'],
+                data: years,
+                proxy: {
+                    type: 'memory',
+                    reader: {
+                        type: 'json'
                     }
-                }),
-                fieldLabel: '计划年份',
-                labelAlign: 'right',
-                labelWidth: 60,
-                width: 210,
-                xtype: 'combo',
-                value: new Date().getFullYear(),
-                style: ' margin: 5px 0px 5px 5px',
-                editable: false,
-                displayField: 'displayField',
-                valueField: 'valueField'
-            }, {
-                id: 'month',
-                store: Ext.create("Ext.data.Store", {
-                    fields: ['displayField', 'valueField'],
-                    data: months,
-                    proxy: {
-                        type: 'memory',
-                        reader: {
-                            type: 'json'
-                        }
-                    }
-                }),
-                xtype: 'combo',
-                fieldLabel: '计划月份',
-                labelAlign: 'left',
-                labelWidth: 60,
-                width: 210,
-                style: ' margin: 5px 0px 5px 5px',
-                value: (new Date().getMonth() + 2),
-                editable: false,
-                displayField: 'displayField',
-                valueField: 'valueField'
-            }, {
-                xtype: 'combo',
-                id: "ck",
-                store: ckStore,
-                editable: false,
-                queryMode: 'local',
-                fieldLabel: '计划厂矿',
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                labelWidth: 60,
-                width: 210,
-                style: ' margin: 5px 0px 5px 5px',
-                labelAlign: 'right'
-            }, {
-                xtype: 'combo',
-                id: "zyq",
-                store: zyqStore,
-                editable: false,
-                queryMode: 'local',
-                fieldLabel: '作业区',
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                labelWidth: 60,
-                width: 210,
-                style: ' margin: 5px 0px 5px 5px',
-                labelAlign: 'right'
-            }, {
-                xtype: 'textfield',
-                id: 'seltext',
-                fieldLabel: '检修内容',
-                style: ' margin: 5px 0px 5px 5px',
-                labelAlign: 'right',
-                labelWidth: 60,
-                width: 210
-            }, {
-                xtype: 'button',
-                text: '查询',
-                icon: imgpath + '/search.png',
-                width: 60,
-                style: ' margin: 5px 0px 5px 5px',
-                handler: function () {
-                    queryGrid();
                 }
-            }, {
-                xtype: 'button',
-                text: '导出Excel',
-                icon: imgpath + '/grid.png',
-                style: ' margin: 5px 0px 5px 5px',
-                listeners: {click: OnButtonExcelClicked}
-            },{
-                xtype: 'displayfield',
-                fieldLabel: '截止时间',
-                id: 'endtime',
-                style: ' margin: 5px 0px 5px 5px',
-                labelAlign: 'right',
-                labelWidth: 60,
-                width: 210
-            }, {
-                xtype: 'button',
-                text: '设置',
-                icon: imgpath + '/cog.png',
-                style: ' margin: 5px 0px 5px 5px',
-                listeners: {click: OnButtonSetupClicked}
-            }]
+            }),
+            fieldLabel: '计划年份',
+            labelAlign: 'right',
+            labelWidth: 60,
+            width: 210,
+            xtype: 'combo',
+            value: new Date().getFullYear(),
+            style: ' margin: 5px 0px 5px 5px',
+            editable: false,
+            displayField: 'displayField',
+            valueField: 'valueField'
+        }, {
+            id: 'month',
+            store: Ext.create("Ext.data.Store", {
+                fields: ['displayField', 'valueField'],
+                data: months,
+                proxy: {
+                    type: 'memory',
+                    reader: {
+                        type: 'json'
+                    }
+                }
+            }),
+            xtype: 'combo',
+            fieldLabel: '计划月份',
+            labelAlign: 'left',
+            labelWidth: 60,
+            width: 210,
+            style: ' margin: 5px 0px 5px 5px',
+            value: (new Date().getMonth() + 2),
+            editable: false,
+            displayField: 'displayField',
+            valueField: 'valueField'
+        }, {
+            xtype: 'combo',
+            id: "ck",
+            store: ckStore,
+            editable: false,
+            queryMode: 'local',
+            fieldLabel: '计划厂矿',
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            labelWidth: 60,
+            width: 210,
+            style: ' margin: 5px 0px 5px 5px',
+            labelAlign: 'right'
+        }, {
+            xtype: 'combo',
+            id: "zyq",
+            store: zyqStore,
+            editable: false,
+            queryMode: 'local',
+            fieldLabel: '作业区',
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            labelWidth: 60,
+            width: 210,
+            style: ' margin: 5px 0px 5px 5px',
+            labelAlign: 'right'
+        }, {
+            xtype: 'textfield',
+            id: 'seltext',
+            fieldLabel: '检修内容',
+            style: ' margin: 5px 0px 5px 5px',
+            labelAlign: 'right',
+            labelWidth: 60,
+            width: 210
+        }, {
+            xtype: 'button',
+            text: '查询',
+            icon: imgpath + '/search.png',
+            width: 60,
+            style: ' margin: 5px 0px 5px 5px',
+            handler: function () {
+                queryGrid();
+            }
+        }, {
+            xtype: 'button',
+            text: '导出Excel',
+            icon: imgpath + '/excel.gif',
+            style: ' margin: 5px 0px 5px 5px',
+            listeners: {click: OnButtonExcelClicked}
+        },{
+            xtype: 'displayfield',
+            fieldLabel: '截止时间',
+            id: 'endtime',
+            style: ' margin: 5px 0px 5px 5px',
+            labelAlign: 'right',
+            labelWidth: 60,
+            width: 210
+        }, {
+            xtype: 'button',
+            text: '设置',
+            icon: imgpath + '/cog.png',
+            style: ' margin: 5px 0px 5px 5px',
+            listeners: {click: OnButtonSetupClicked}
+        }]
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
@@ -245,8 +245,8 @@ Ext.onReady(function () {
                 renderer: atleft,
                 renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')
             },
-            {text: '计划单位', width: 110, dataIndex: 'V_DEPTNAME', align: 'center', renderer: atleft},
-            {text: '设备名称', width: 110, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
+            {text: '计划单位', width: 160, dataIndex: 'V_DEPTNAME', align: 'center', renderer: atleft},
+            {text: '设备名称', width: 160, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
             {text: '检修内容', width: 300, dataIndex: 'V_CONTENT', align: 'center', renderer: atleft},
             {
                 text: '计划开工时间',
@@ -264,9 +264,9 @@ Ext.onReady(function () {
                 renderer: atleft,
                 renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')
             },
-            {text: '计划工时(小时)', width: 110, dataIndex: 'V_HOUR', align: 'center', renderer: atleft},
-            {text: '施工单位', width: 110, dataIndex: 'V_REPAIRDEPT_NAME', align: 'center', renderer: atleft},
-            {text: '检修负责人', width: 110, dataIndex: 'V_REPAIR_PERNAME', align: 'center', renderer: atleft}]
+            {text: '计划工时(小时)', width: 150, dataIndex: 'V_HOUR', align: 'center', renderer: atleft},
+            {text: '施工单位', width: 170, dataIndex: 'V_REPAIRDEPT_NAME', align: 'center', renderer: atleft},
+            {text: '检修负责人', width: 150, dataIndex: 'V_REPAIR_PERNAME', align: 'center', renderer: atleft}]
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -349,5 +349,6 @@ function OnButtonExcelClicked() {
 function OnButtonSetupClicked() {
     var year = Ext.getCmp('year').getValue();
     var month = Ext.getCmp('month').getValue();
-    window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR=' + year + '&V_MONTH=' + month + '&V_WEEK=0' + '&V_TYPE=M'+'&V_ORGCODE='+Ext.getCmp('ck').getValue(), '', "dialogWidth=460px;dialogHeight=280px");
+    window.open(AppUrl + 'page/PM_0301011001/index.html?V_YEAR=' + year + '&V_MONTH=' + month + '&V_WEEK=0' +
+        '&V_TYPE=M'+'&V_ORGCODE='+Ext.getCmp('ck').getValue(), '', "dialogWidth=460px;dialogHeight=280px");
 }

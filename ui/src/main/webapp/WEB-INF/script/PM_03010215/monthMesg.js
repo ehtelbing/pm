@@ -477,7 +477,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             value: ''
         },*/
         {
-            xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
+            xtype: 'button', text: '查询', margin: '5 0 5 45', icon: imgpath + '/search.png',
             handler: function () {
                 query();
             }
@@ -533,14 +533,14 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             dataIndex: 'V_ENDTIME',
             renderer: rendererTime
         },
-        {text: '计划工期（小时）', align: 'center', width: 110, dataIndex: 'V_HOUR'},
+        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
 
         {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
         {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
         {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
         {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
         {
-            text: '录入时间', align: 'center', width: 200, dataIndex: 'V_INDATE',
+            text: '录入时间', align: 'center', width: 150, dataIndex: 'V_INDATE',
             renderer: rendererTime
         }
 

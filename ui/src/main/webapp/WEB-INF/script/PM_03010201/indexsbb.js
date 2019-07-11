@@ -296,7 +296,7 @@ var gridStore = Ext.create('Ext.data.Store', {
         'V_MAIN_DEFECT',
         'V_EXPECT_AGE',
         'V_REPAIR_PER',
-    'V_SBB_GUID'],
+        'V_SBB_GUID'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -492,7 +492,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
         {
             xtype: 'button',
             text: '查询',
-            margin: '5 0 5 5',
+            margin: '5 0 5 45',
             icon: imgpath + '/search.png',
             handler: function () {
                 query();
@@ -503,7 +503,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             text: '上报(设备部)',
             margin: '5 0 5 5',
             width:120,
-            icon: imgpath + '/accordion_collapse.png',
+            icon: imgpath + '/accordion_expand.png',
             handler: OnButtonUp
 
         }
@@ -584,7 +584,7 @@ Ext.onReady(function () {
 
     //计划厂矿加载监听
     Ext.data.StoreManager.lookup('jhckStore').on('load', function () {
-      //  Ext.data.StoreManager.lookup('jhckStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
+        //  Ext.data.StoreManager.lookup('jhckStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
         Ext.getCmp('jhck').select(Ext.data.StoreManager.lookup('jhckStore').getAt(0));
         Ext.data.StoreManager.lookup('jhzyqStore').load({
             params: {
@@ -594,12 +594,12 @@ Ext.onReady(function () {
                 'V_V_DEPTTYPE': '主体作业区'
             }
         });
-       // Queryendtime();
+        // Queryendtime();
     });
     //计划作业区加载监听
     Ext.data.StoreManager.lookup('jhzyqStore').on('load', function () {
 
-         Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
+        Ext.data.StoreManager.lookup('jhzyqStore').insert(0,{ V_DEPTCODE:'%',V_DEPTNAME:'全部'});
         Ext.getCmp('jhzyq').select(Ext.data.StoreManager.lookup('jhzyqStore').getAt(0));
         // Querytime();
     });
@@ -675,8 +675,8 @@ Ext.onReady(function () {
     });
 
     // Ext.data.StoreManager.lookup('stateStore').on('load', function () {
-        Ext.getCmp("state").select('%');
-        // Ext.data.StoreManager.lookup('gridStore').load();
+    Ext.getCmp("state").select('%');
+    // Ext.data.StoreManager.lookup('gridStore').load();
     // });
 
     Ext.getCmp('nf').on('select', function () {
@@ -906,7 +906,8 @@ function saveOnButtonUp(){
         return false;
     }
     // for (var i = 0; i < records.length; i++) {
-    //     if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已驳回') {
+    //     if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已
+    驳回') {
     //         Ext.Msg.alert('提升信息', '此计划状态不能上报');
     //         return false;
     //     }
@@ -914,7 +915,7 @@ function saveOnButtonUp(){
     //
     //
     for(var i=0;i<records.length;i++){
-       nextper.push(records[i].data.V_PERSONCODE);
+        nextper.push(records[i].data.V_PERSONCODE);
     }
     var i_err = 0;
     // for (var i = 0; i < records.length; i++) {
@@ -942,26 +943,28 @@ function saveOnButtonUp(){
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj","flow_type","zyName"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01",records.list[i].V_REPAIRMAJOR_CODE],
-                                processKey: processKey,
-                                businessKey: records.list[i].V_SBB_GUID,
-                                V_STEPCODE: 'Start',
-                                V_STEPNAME:V_STEPNAME,// nextper,
-                                V_IDEA: '请审批！',
-                                V_NEXTPER:nextper,// Ext.getCmp('nextPer').getValue(),
-                                V_INPER: Ext.util.Cookies.get('v_personcode')
-                            },
-                            success: function (response) {
-                                if (Ext.decode(response.responseText).ret == 'OK') {
-                                    Ext.getCmp('nextSprWind').close();
-                                    query();
-                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                    i_err++;
-                                    Ext.Msg.alert('提示', '流程发起失败'+i_err+'条！');
-                                }
+                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code",
+                                    "flow_yj","flow_type","zyName"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审
+                                    批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01",records.list[i].V_REPAIRMAJOR_CODE],
+                        processKey: processKey,
+                            businessKey: records.list[i].V_SBB_GUID,
+                            V_STEPCODE: 'Start',
+                            V_STEPNAME:V_STEPNAME,// nextper,
+                            V_IDEA: '请审批！',
+                            V_NEXTPER:nextper,// Ext.getCmp('nextPer').getValue(),
+                            V_INPER: Ext.util.Cookies.get('v_personcode')
+                    },
+                        success: function (response) {
+                            if (Ext.decode(response.responseText).ret == 'OK') {
+                                Ext.getCmp('nextSprWind').close();
+                                query();
+                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                i_err++;
+                                Ext.Msg.alert('提示', '流程发起失败'+i_err+'条！');
                             }
-                        });
+                        }
+                    });
                         // i_err++;
                         // if (i_err == records.length) {
                         //     query();
@@ -972,7 +975,7 @@ function saveOnButtonUp(){
                 }
             });
         }
-       // Ext.Array.erase(nextper,0,nextper.length);
+        // Ext.Array.erase(nextper,0,nextper.length);
     }
     // }
     Ext.Array.erase(nextper,0,nextper.length);
