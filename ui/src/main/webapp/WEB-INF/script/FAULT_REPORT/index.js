@@ -263,7 +263,7 @@ Ext.onReady(function () {
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
             'V_TYPECODE','V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
-            'V_FAULTID','V_PROCESSINSTANCEID',
+            'V_FAULTID','V_PROCESSINSTANCEID','V_INPERCODE','V_INPERNAME',
             'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
             'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
         proxy: {
@@ -524,34 +524,34 @@ Ext.onReady(function () {
         columns: [{
             xtype: 'rownumberer',
             text: '序号',
-            width: 60,
+            width: 40,
             align: 'center'
         },  {
             text: '状态',
             dataIndex: 'V_STATENAME',
             align: 'center',
-            width: 100
+            width: 80
         },  {
             text: '工单',
             dataIndex: 'V_GUID',
             align: 'center',
-            width: 100,
+            width: 65,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href="#" onclick="_preViewWorkOrder(\'' + value + '\')">至工单列表</a>';
+                return '<a href="#" onclick="_preViewWorkOrder(\'' + value + '\')">至工单</a>';
             }
         },{
             text: '流程',
             dataIndex: 'V_GUID',
-            width: 80,
+            width: 45,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
-                return '<a href="#" onclick="_preViewProcess(\'' + value + '\')">' + '查看流程' + '</a>';
+                return '<a href="#" onclick="_preViewProcess(\'' + value + '\')">' + '查看' + '</a>';
             }
         },{
             text: '详细',
             dataIndex: 'V_GUID',
             align: 'center',
-            width: 80,
+            width: 45,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href="#" onclick="_detailOpen(\'' + value + '\')">详细</a>';
             }
@@ -559,22 +559,17 @@ Ext.onReady(function () {
             text: '事故名称',
             dataIndex: 'V_FAULT_NAME',
             align: 'center',
-            width: 100
+            width: 120
         }, {
             text: '发现时间',
             dataIndex: 'V_FINDTIME',
             align: 'center',
-            width: 100
+            width: 140
         }, {
-            text: '发现时间',
-            dataIndex: 'V_FINDTIME',
-            align: 'center',
-            width: 100
-        },{
             text: '排除时间',
             dataIndex: 'V_ENDTIME',
             align: 'center',
-            width: 100
+            width: 140
         }, {
             text: '设备类型',
             dataIndex: 'V_EQUTYPENAME',
@@ -606,7 +601,7 @@ Ext.onReady(function () {
             text: '部件',
             dataIndex: 'V_EQUCHILD_NAME',
             align: 'center',
-            width: 180
+            width: 150
         },
             {
                 text: '事故类别',
@@ -618,7 +613,7 @@ Ext.onReady(function () {
                 text: '事故原因',
                 dataIndex: 'V_FAULT_YY',
                 align: 'center',
-                width: 100
+                width: 150
             },
             /*{
             text: '故障现象',
@@ -626,31 +621,31 @@ Ext.onReady(function () {
             align: 'center',
             width: 100
         }, */
-            {
+            /*{
                 text: '事故等级',
                 dataIndex: 'V_FAULT_LEVELNAME',
                 align: 'center',
                 width: 100
-            },{
+            },*/{
                 text: '停机时间',
                 dataIndex: 'V_STOPTIME',
                 align: 'center',
-                width: 100
+                width: 70
             },{
                 text: '修理时间',
                 dataIndex: 'V_REPAIRTIME',
                 align: 'center',
-                width: 100
+                width: 70
             },{
                 text: '上报日期',
                 dataIndex: 'V_REPROTTIME',
                 align: 'center',
-                width: 100
+                width: 70
             },{
                 text: '事故报告人',
-                dataIndex: 'V_REPORTER',
+                dataIndex: 'V_INPERNAME',
                 align: 'center',
-                width: 100
+                width: 90
             },{
                 text: '事故直接责任人',
                 dataIndex: 'V_FZR',

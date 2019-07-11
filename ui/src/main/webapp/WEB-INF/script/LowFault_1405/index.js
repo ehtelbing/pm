@@ -229,7 +229,8 @@ Ext.onReady(function () {
             'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
             'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
-            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
+            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN',
+        'V_INPERCODE','V_INPERNAME'],
         proxy: {
             url: AppUrl + 'cxy/PM_BUG_DATA_SEL',
             type: 'ajax',
@@ -587,7 +588,7 @@ Ext.onReady(function () {
                 width: 100
             },{
                 text: '故障报告人',
-                dataIndex: 'V_REPORTER',
+                dataIndex: 'V_INPERNAME',
                 align: 'center',
                 width: 100
             },{

@@ -525,7 +525,7 @@ function _init() {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            if (resp.success!='true') {//成功，会传回true
+            if (resp.success==true) {//成功，会传回true
                 // V_SPR=resp.RET[0].V_SPR;
                 V_V_DEPTCODE_TEMP=resp.RET[0].V_DEPTCODE;
                 V_V_ORGCODE_TEMP=resp.RET[0].V_ORGCODE;
@@ -726,6 +726,7 @@ function _validate(obj) {
 
 
 function _agree() {
+    Ext.getBody().mask('<p>审批中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '通过';
@@ -762,11 +763,20 @@ function _agree() {
                         V_INPER : Ext.util.Cookies.get('v_personcode')
                     },
                     success: function (response) {
+                        Ext.getBody().unmask();
                         var resp = Ext.decode(response.responseText);
                         if (resp.ret == '任务提交成功') {
-
-                            window.close();
-                            window.opener.OnPageLoad();
+                            Ext.MessageBox.show({
+                                title: '提示',
+                                msg: '审批成功',
+                                buttons: Ext.MessageBox.OK,
+                                fn: function () {
+                                    window.opener.QueryTab();
+                                    window.opener.QuerySum();
+                                    window.opener.QueryGrid();
+                                    window.close();
+                                }
+                            });
                         }else{
                             Ext.MessageBox.show({
                                 title: '错误',
@@ -786,9 +796,11 @@ function _agree() {
                     }
                 })
             } else {
-                Ext.Msg.alert('提示', 'state update fail！');
+                Ext.getBody().unmask();
+                Ext.Msg.alert('提示', '事故预案修改状态失败');
             }
         },failure: function (resp) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: resp.responseText,
@@ -801,6 +813,7 @@ function _agree() {
 }
 
 function _reject() {
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批驳回';
@@ -837,15 +850,26 @@ function _reject() {
                         V_INPER: Ext.util.Cookies.get('v_personcode')
                     },
                     success: function (response) {
+                        Ext.getBody().unmask();
                         var resp = Ext.decode(response.responseText);
                         if (resp.ret == '任务提交成功') {
-                            window.close();
-                            window.opener.OnPageLoad();
+                            Ext.MessageBox.show({
+                                title: '提示',
+                                msg: '审批成功',
+                                buttons: Ext.MessageBox.OK,
+                                fn: function () {
+                                    window.opener.QueryTab();
+                                    window.opener.QuerySum();
+                                    window.opener.QueryGrid();
+                                    window.close();
+                                }
+                            });
                         } else {
                             Ext.MessageBox.alert('提示', '任务提交失败');
                         }
                     },
                     failure: function (response) {//访问到后台时执行的方法。
+                        Ext.getBody().unmask();
                         Ext.MessageBox.show({
                             title: '错误',
                             msg: response.responseText,
@@ -855,9 +879,11 @@ function _reject() {
                     }
                 });
             } else {
+                Ext.getBody().unmask();
                 Ext.Msg.alert('提示', '事故预案修改状态失败！');
             }
         },failure: function (resp) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: resp.responseText,

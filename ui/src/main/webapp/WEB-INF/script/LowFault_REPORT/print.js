@@ -112,7 +112,7 @@ function loadPageInfo() {
         //         });
 
                 $.ajax({
-                    url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_GET',
+                    url: AppUrl + 'cxy/PM_BUG_ITEM_DATA_GET',
                     type: 'post',
                     async: false,
                     data: {
@@ -125,7 +125,7 @@ function loadPageInfo() {
                             result.push('   <div id="'+index.toString()+x.toString()+'">');
                             result.push('    <div style="height: 21cm;width: 18cm">');
                             result.push('      <table class="outbox" width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">');
-                            result.push('               <caption style="font-size:22px">设备事故报告单</caption>');
+                            result.push('               <caption style="font-size:22px">设备故障报告单</caption>');
                             result.push('        <tr>');
                             result.push('        <td valign="top">');
                             result.push('            <table class="Ttable" width="100%" border="0" cellspacing="0" cellpadding="0">');
@@ -148,7 +148,7 @@ function loadPageInfo() {
                             result.push('                    <td class="border_r_b" align="center">资产编码</td>');
                             result.push('                    <td class="border_r_b" align="center" width="45">');
                             result.push('                        <span>');
-                            result.push(resp.RET[0].V_EQUCODE==""?"&nbsp;":resp.RET[0].V_EQUCODE);
+                            result.push(resp.RET[0].V_ASSENT_CODE==""?"&nbsp;":resp.RET[0].V_ASSENT_CODE);
                             /*var s1, st1;
                             if(resp.RET[0].V_EQUCODE!=''){
                                 s1 = resp.RET[0].V_EQUCODE;
@@ -224,13 +224,13 @@ function loadPageInfo() {
 
                             result.push('                <tr>');
                             result.push('                    <td class="border_r_b" align="center">');
-                            result.push('                        事故发生时间');
+                            result.push('                        故障发生时间');
                             result.push('                    </td>');
                             result.push('                    <td colspan="3" class="border_r_b" align="center">');
                             result.push(resp.RET[0].V_FINDTIME==""?"&nbsp;":resp.RET[0].V_FINDTIME);
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b" align="center">');
-                            result.push('                        事故排除时间');
+                            result.push('                        故障排除时间');
                             result.push('                    </td>');
                             result.push('                    <td colspan="3" class="border_b" align="center">');
                             result.push(resp.RET[0].V_ENDTIME==""?"&nbsp;":resp.RET[0].V_ENDTIME);
@@ -238,11 +238,11 @@ function loadPageInfo() {
                             result.push('                </tr>');
 
                             result.push('                <tr>');
-                            result.push('                    <td class="border_r_b" align="center">事故报告人</td>');
+                            result.push('                    <td class="border_r_b" align="center">故障报告人</td>');
                             result.push('                    <td colspan="2" class="border_r_b" align="center">');
-                            result.push(resp.RET[0].V_REPORTER==""?"&nbsp;":resp.RET[0].V_REPORTER);
+                            result.push(resp.RET[0].V_INPERNAME==""?"&nbsp;":resp.RET[0].V_INPERNAME);
                             result.push('                    </td>');
-                            result.push('                    <td class="border_r_b" align="center">事故类别</td>');
+                            result.push('                    <td class="border_r_b" align="center">故障类别</td>');
                             result.push('                    <td class="border_r_b" align="center">');
                             result.push(resp.RET[0].V_TYPENAME==""?"&nbsp;":resp.RET[0].V_TYPENAME);
                             result.push('                    </td>');
@@ -268,7 +268,7 @@ function loadPageInfo() {
                             result.push('                </tr>');
 
                             result.push('                <tr>');
-                            result.push('                    <td style="height:30mm" class="border_r_b" align="center">事故经过</td>');
+                            result.push('                    <td style="height:30mm" class="border_r_b" align="center">故障经过</td>');
                             result.push('                    <td colspan="7" style="height:30mm" class="border_b" align="center">');
                             result.push(resp.RET[0].V_FAULT_PASS==""?"&nbsp;":resp.RET[0].V_FAULT_PASS);
                             result.push('                    </td>');
@@ -282,7 +282,7 @@ function loadPageInfo() {
                             result.push('                </tr>');
 
                             result.push('                <tr>');
-                            result.push('                    <td height="90" class="border_r_b" align="center">事故原因</td>');
+                            result.push('                    <td height="90" class="border_r_b" align="center">故障原因</td>');
                             result.push('                    <td colspan="7" align="center" class="border_b">');
                             result.push('                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="Ttable">');
                             result.push('                        <tr>');
@@ -308,8 +308,8 @@ function loadPageInfo() {
                             result.push('                    <tr>');
                             result.push('                    <td class="border_r_b" align="center">安装原因</td>');
                             result.push('                    <td class="border_r_b" align="center">制造质量</td>');
-                            result.push('                    <td class="border_r_b" align="center">自然原因</td>');
-                            result.push('                    <td class="border_r_b" align="center">其他原因</td>');
+                            result.push('                    <td class="border_r_b" align="center">自然因素</td>');
+                            result.push('                    <td class="border_r_b" align="center">其它因素</td>');
                             result.push('                    <td class="border_r_b" >&nbsp;</td>');
                             result.push('                    <td class="border_r_b" >&nbsp;</td>');
                             result.push('                    <td class="border_r_b" >&nbsp;</td>');
@@ -330,7 +330,7 @@ function loadPageInfo() {
                             result.push('                    </tr>');
 
                             result.push('                <tr>');
-                            result.push('                    <td style="height:16mm" class="border_r_b" align="center">事故抢修经过</td>');
+                            result.push('                    <td style="height:16mm" class="border_r_b" align="center">故障抢修经过</td>');
                             result.push('                    <td colspan="7" style="height:16mm" class="border_b" align="center">');
                             result.push(resp.RET[0].V_FAULT_CLGC==""?"&nbsp;":resp.RET[0].V_FAULT_CLGC);
                             result.push('                    </td>');
@@ -389,52 +389,48 @@ function loadPageInfo() {
                                 {
                                     if(strs[i]=='指挥失当'){
 
-                                        document.getElementById("zhsd").innerHTML='&#x2714';
+                                        document.getElementById("zhsd").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='违规操作'){
-                                        document.getElementById("wgcz").innerHTML='&#x2714';
+                                        document.getElementById("wgcz").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='超负荷运转'){
-                                        document.getElementById("cfh").innerHTML='&#x2714';
+                                        document.getElementById("cfh").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='润滑原因'){
-                                        document.getElementById("rhyy").innerHTML='&#x2714';
+                                        document.getElementById("rhyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='检修原因'){
-                                        document.getElementById("jxyy").innerHTML='&#x2714';
+                                        document.getElementById("jxyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='点检原因'){
-                                        document.getElementById("djyy").innerHTML='&#x2714';
+                                        document.getElementById("djyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='材料备件质量'){
-                                        document.getElementById("bjzl").innerHTML='&#x2714';
+                                        document.getElementById("bjzl").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='设计原因'){
-                                        document.getElementById("sjyy").innerHTML='&#x2714';
+                                        document.getElementById("sjyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='安装原因'){
-                                        document.getElementById("azyy").innerHTML='&#x2714';
+                                        document.getElementById("azyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='制造质量'){
-                                        document.getElementById("zzzl").innerHTML='&#x2714';
+                                        document.getElementById("zzzl").innerHTML='&radic;';
                                         continue;
-                                    }else if(strs[i]=='自然原因'){
-                                        document.getElementById("zryy").innerHTML='&#x2714';
+                                    }else if(strs[i]=='自然因素'){
+                                        document.getElementById("zryy").innerHTML='&radic;';
                                         continue;
-                                    }else if(strs[i]=='其他原因'){
-                                        document.getElementById("qtyy").innerHTML='&#x2714';
+                                    }else if(strs[i]=='其它因素'){
+                                        document.getElementById("qtyy").innerHTML='&radic;';
                                         continue;
                                     }else{
                                         temp+=strs[i];
                                         continue;
                                     }
-
                                 }
                                     document.getElementById("zxyy").innerHTML=temp;
-
                                 }
-
-
                             // }
                             result = [];
                         }

@@ -326,8 +326,8 @@ Ext.onReady(function () {
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
             'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
-            'V_FAULTID','V_PROCESSINSTANCEID',
-            'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
+            'V_FAULTID','V_PROCESSINSTANCEID','V_INPERCODE','V_INPERNAME',
+            'V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
             'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
         proxy: {
             url: AppUrl + 'cxy/PM_BUG_DATA_OVER_SEL',
@@ -690,12 +690,12 @@ Ext.onReady(function () {
             align: 'center',
             width: 100
         }, */
-            {
+            /*{
                 text: '故障等级',
                 dataIndex: 'V_FAULT_LEVELNAME',
                 align: 'center',
                 width: 100
-            },{
+            },*/{
                 text: '停机时间',
                 dataIndex: 'V_STOPTIME',
                 align: 'center',
@@ -712,7 +712,7 @@ Ext.onReady(function () {
                 width: 100
             },{
                 text: '故障报告人',
-                dataIndex: 'V_REPORTER',
+                dataIndex: 'V_INPERNAME',
                 align: 'center',
                 width: 100
             },{

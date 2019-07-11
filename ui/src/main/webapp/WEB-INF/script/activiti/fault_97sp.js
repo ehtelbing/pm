@@ -97,7 +97,7 @@ Ext.onReady(function () {
     });
     var orgStore2 = Ext.create('Ext.data.Store', {
         id: 'orgStore2',
-        autoLoad: true,
+        autoLoad: false,
         fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
         proxy: {
             type: 'ajax',
@@ -231,13 +231,14 @@ Ext.onReady(function () {
                 Ext.getCmp('nextSprb').select(store.first());
                 var list = Ext.getCmp("nextSprb").getStore().data.items;
                 for (var i = 0; i < list.length; i++) {
-                    if (list[i].raw.V_PERSONCODE == Assignee) {
-                        Ext.getCmp("nextSprb").setValue(Assignee);
-                    }
                     if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
 
                         Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
                     }
+                    if (list[i].raw.V_PERSONCODE == Assignee) {
+                        Ext.getCmp("nextSprb").setValue(Assignee);
+                    }
+
                 }
             }
         }
@@ -759,7 +760,7 @@ Ext.onReady(function () {
                         {boxLabel: '安装原因', name: 'azyy'},
                         {boxLabel: '制造质量', name: 'zzzl'},
                         {boxLabel: '自然因素', name: 'zryy'},
-                        {boxLabel: '其他因素', name: 'qtyy'}
+                        {boxLabel: '其它因素', name: 'qtyy'}
 
                     ]
                 }
@@ -767,7 +768,7 @@ Ext.onReady(function () {
                      xtype: 'textfield',
                      id: 'faultRea22',
                      column:2,
-                     // fieldLabel: '其他因素',
+                     // fieldLabel: '其它因素',
                      // labelWidth: 70,
                      style: ' margin: 5px 0px 0px 67px',
                      labelAlign: 'right',
@@ -938,10 +939,10 @@ Ext.onReady(function () {
                     name: 'V_V_FILEBLOB2',
                     enctype: "multipart/form-data",
                     fieldLabel: '附件',
-                    labelWidth: 70,
+                    labelWidth: 80,
                     labelAlign: 'right',
                     inputWidth: 201,
-                    style: ' margin: 5px 0px 0px -2px',
+                    style: ' margin: 5px 0px 0px -1px',
                     buttonText: '选择文件',
                     allowBlank: false
                 }, {
@@ -982,8 +983,8 @@ Ext.onReady(function () {
                 }]},{
                 columnWidth: 1,
                 height: 225,
-                width: 540,
-                margin: '10px 0px 0px 0px',
+                width: 525,
+                margin: '10px 0px 0px 15px',
                 items: filegridPanel2
             }
         ]
@@ -1083,7 +1084,7 @@ function _selectNextPer(code) {
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
-    // Ext.getBody().unmask();
+    Ext.getBody().unmask();
     // selNextPer();
 
 }
@@ -1098,7 +1099,8 @@ function _init() {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            if (resp.success!='true') {//成功，会传回true
+            if (resp.success==true) {//成功，会传回true
+                _selectOrg2();
                 Ext.data.StoreManager.lookup('orgStore2').on('load', function () {
                     // Ext.getCmp('V_V_ORGCODE1').select(V_V_ORGCODE);
                     Ext.getCmp('V_V_ORGCODE2').setValue(resp.RET[0].V_ORGCODE);
@@ -1113,7 +1115,13 @@ function _init() {
                 });
                 Ext.data.StoreManager.lookup('equFaultStore2').on('load', function () {
                     Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPECODE);
-                    Ext.getBody().unmask();
+                    // Ext.getBody().unmask();
+                    if(resp.RET[0].V_TYPECODE=='1'||resp.RET[0].V_TYPECODE=='2'){
+                        _selectTaskId(resp.RET[0].V_DEPTCODE);
+                    }else{
+                        _selectTaskId('99000101');
+
+                    }
                 });
                 //Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPECODE);
                 V_V_ORGCODE_TEMP=resp.RET[0].V_ORGCODE;
@@ -1166,12 +1174,7 @@ function _init() {
                     }*/
 
                 }
-                if(resp.RET[0].V_TYPECODE=='1'||resp.RET[0].V_TYPECODE=='2'){
-                    _selectTaskId(resp.RET[0].V_DEPTCODE);
-                }else{
-                    _selectTaskId('99000101');
 
-                }
                 V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
                 V_V_FILE_GUID=resp.RET[0].V_FILE_GUID;
                 filequery2(V_ORDERGUID);
@@ -1214,6 +1217,20 @@ function _selectGridPanel() {
     gridStore.load();
 }
 
+function _selectOrg2() {
+    var orgStore2 = Ext.data.StoreManager.lookup('orgStore2');
+
+    orgStore2.proxy.extraParams = {
+        'V_V_PERSONCODE': V_V_PERSONCODE,
+        'V_V_DEPTCODE': V_V_DEPTCODE,
+        'V_V_DEPTCODENEXT': '%',
+        'V_V_DEPTTYPE': '基层单位'
+    };
+
+    orgStore2.currentPage = 1;
+    orgStore2.load();
+
+}
 function _selectDept2() {
     var deptStore2 = Ext.data.StoreManager.lookup('deptStore2');
     deptStore2.proxy.extraParams = {
@@ -1434,6 +1451,7 @@ function delFixContent(faultguid,equcode) {
 
 }
 function _agree() {
+    Ext.getBody().mask('<p>审批中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '通过';
@@ -1459,12 +1477,23 @@ function _agree() {
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
+            Ext.getBody().unmask();
             var resp = Ext.decode(response.responseText);
             if (resp.ret == '任务提交成功') {
 
-                window.close();
-                window.opener.OnPageLoad();
+                Ext.MessageBox.show({
+                    title: '提示',
+                    msg: '审批成功',
+                    buttons: Ext.MessageBox.OK,
+                    fn: function () {
+                        window.opener.QueryTab();
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
+                        window.close();
+                    }
+                });
             }else{
+
                 Ext.MessageBox.show({
                     title: '错误',
                     msg: resp.ret,
@@ -1474,6 +1503,7 @@ function _agree() {
             }
         },
         failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,
@@ -1485,6 +1515,7 @@ function _agree() {
 }
 
 function _reject() {
+    Ext.getBody().mask('<p>审批中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批驳回';
@@ -1522,15 +1553,26 @@ function _reject() {
                         V_INPER: Ext.util.Cookies.get('v_personcode')
                     },
                     success: function (response) {
+                        Ext.getBody().unmask();
                         var resp = Ext.decode(response.responseText);
                         if (resp.ret == '任务提交成功') {
-                            window.close();
-                            window.opener.OnPageLoad();
+                            Ext.MessageBox.show({
+                                title: '提示',
+                                msg: '驳回成功',
+                                buttons: Ext.MessageBox.OK,
+                                fn: function () {
+                                    window.opener.QueryTab();
+                                    window.opener.QuerySum();
+                                    window.opener.QueryGrid();
+                                    window.close();
+                                }
+                            });
                         } else {
-                            Ext.MessageBox.alert('提示', '任务提交失败');
+                            Ext.MessageBox.alert('提示', '驳回失败');
                         }
                     },
                     failure: function (response) {//访问到后台时执行的方法。
+                        Ext.getBody().unmask();
                         Ext.MessageBox.show({
                             title: '错误',
                             msg: response.responseText,
@@ -1540,9 +1582,11 @@ function _reject() {
                     }
                 });
             } else {
+                Ext.getBody().unmask();
                 Ext.Msg.alert('提示', '事故修改状态失败！');
             }
         },failure: function (resp) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: resp.responseText,

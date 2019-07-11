@@ -200,19 +200,21 @@ Ext.onReady(function() {
             align : 'center',
             renderer : left
         }, {
-            text: '关联事故',
+            text: '关联事故/故障',
             dataIndex: 'V_GL_FAULT',
             align: 'center',
-            width: 100,
+            width: 150,
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 if(value=='0'){
-                    return '<a href="#" onclick="_preViewFault(\'' +record.data.V_ORGCODE+ '\',\''+record.data.V_DEPTCODE+'\',\''+record.data.V_ORDERGUID+'\')">关联事故</a>';
+                    return '<a href="#" onclick="_preViewFault(\'' +record.data.V_ORGCODE+ '\',\''+record.data.V_DEPTCODE+'\',\''+record.data.V_ORDERGUID+'\',\'fault\')">关联事故</a>&nbsp;<a href="#" onclick="_preViewFault(\'' +record.data.V_ORGCODE+ '\',\''+record.data.V_DEPTCODE+'\',\''+record.data.V_ORDERGUID+'\',\'bug\')">关联故障</a>';
                 }else if(value=='1') {
-                    return '已关联';
+                    return '已关联事故';
+                }else if(value=='2'){
+                    return '已关联故障';
                 }
 
             }
-        },{
+        },/*{
             text: '关联状态',
             dataIndex: 'V_GL_FAULT',
             align: 'center',
@@ -221,10 +223,12 @@ Ext.onReady(function() {
                 if(value=='0'){
                     return '未关联';
                 }else if(value=='1') {
-                    return '已关联';
+                    return '已关联事故';
+                }else if(value=='2'){
+                    return '已关联故障';
                 }
             }
-        },
+        },*/
             {
             text : '流程明细',
             dataIndex : 'V_ORDERGUID',
@@ -232,14 +236,14 @@ Ext.onReady(function() {
             align : 'center',
             renderer : left,
             renderer : rendererFlow
-        },  {
+        },  /*{
             text : '子工单数量',
             dataIndex : 'WORKORDERNUM',
             width : 100,
             align : 'center',
             renderer : left,
             renderer : rendererZGD
-        }, {
+        },*/ {
             text : '工单描述',
             dataIndex : 'V_SHORT_TXT',
             width : 300,
@@ -589,10 +593,15 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
 
 
 
-function _preViewFault(V_ORGCODE,V_DEPTCODE,V_ORDERGUID) {
+function _preViewFault(V_ORGCODE,V_DEPTCODE,V_ORDERGUID,flag) {
     var owidth = window.screen.availWidth-100;
     var oheight = window.screen.availHeight-50;
-    window.open(AppUrl + "page/No4124/fault.html?V_V_ORGCODE="+V_ORGCODE+'&V_V_DEPTCODE='+V_DEPTCODE+'&V_V_ORDERGUID='+V_ORDERGUID, '',  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
+    if(flag=='fault'){
+        window.open(AppUrl + "page/No4124/fault.html?V_V_ORGCODE="+V_ORGCODE+'&V_V_DEPTCODE='+V_DEPTCODE+'&V_V_ORDERGUID='+V_ORDERGUID, '',  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
+    }else{
+        window.open(AppUrl + "page/No4124/bug.html?V_V_ORGCODE="+V_ORGCODE+'&V_V_DEPTCODE='+V_DEPTCODE+'&V_V_ORDERGUID='+V_ORDERGUID, '',  'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes,autoScroll=true');
+    }
+
 }
 /*
 function _addqxgdOpen() {

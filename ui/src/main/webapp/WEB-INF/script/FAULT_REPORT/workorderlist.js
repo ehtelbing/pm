@@ -12,7 +12,7 @@ var gridStore =Ext.create('Ext.data.Store', {
     ],
     proxy : {
         type : 'ajax',
-        url: AppUrl + 'cxy/PRO_PM_WORKORDER_FAULT_OVER_SEL',
+        url: AppUrl + 'cxy/PM_WORKORDER_FAULT_OVER_SEL',
         actionMethods : {
             read : 'POST'
         },

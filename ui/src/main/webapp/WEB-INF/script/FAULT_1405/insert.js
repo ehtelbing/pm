@@ -716,7 +716,7 @@ Ext.onReady(function () {
                             {boxLabel: '安装原因', name: 'azyy'},
                             {boxLabel: '制造质量', name: 'zzzl'},
                             {boxLabel: '自然因素', name: 'zryy'},
-                            {boxLabel: '其他因素', name: 'qtyy'}
+                            {boxLabel: '其它因素', name: 'qtyy'}
 
                         ]
                     }
@@ -1140,7 +1140,7 @@ function _addFault() {
     // });
     // Ext.getCmp('begintime1').setValue(V_begintime);
 
-    Ext.data.StoreManager.lookup('equFaultStore1').on('load', function () {
+    /*Ext.data.StoreManager.lookup('equFaultStore1').on('load', function () {
         if (V_equFaultname == '%') {
                 Ext.getCmp('equFaultname1').select(Ext.data.StoreManager.lookup('equFaultStore1').getAt(1).get('V_TYPECODE'));
 
@@ -1148,7 +1148,7 @@ function _addFault() {
         } else {
                 Ext.getCmp('equFaultname1').select(V_equFaultname);
         }
-    });
+    });*/
     // _selecteFaultStore1();
     filequery(V_V_GUID);
     // Ext.getBody().unmask();//去除页面笼罩
@@ -1306,7 +1306,7 @@ function _saveBtnFault() {
             faultguid += "-";
     }
 
-    var intime = Ext.Date.format(new Date(), 'Y-m-d');
+    var intime = Ext.Date.format(new Date(), 'Y-m-d H:m:s');
     var records=Ext.getCmp('equGridpanel').getStore().data;
     if(records.length==0){
         Ext.MessageBox.show({

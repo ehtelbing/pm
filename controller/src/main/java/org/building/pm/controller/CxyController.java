@@ -736,12 +736,12 @@ public class CxyController {
 //        result.put("success", true);
         return result;
     }
-    @RequestMapping(value = "/PRO_PM_WORKORDER_FAULT_OVER_SEL", method = RequestMethod.POST)
+    @RequestMapping(value = "/PM_WORKORDER_FAULT_OVER_SEL", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_PM_WORKORDER_FAULT_OVER_SEL(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
+    public Map PM_WORKORDER_FAULT_OVER_SEL(@RequestParam(value = "V_V_FAULTCODE") String V_V_FAULTCODE,
                                    HttpServletRequest request,
                                    HttpServletResponse response) throws Exception {
-        Map map = cService.PRO_PM_WORKORDER_FAULT_OVER_SEL(V_V_FAULTCODE);
+        Map map = cService.PM_WORKORDER_FAULT_OVER_SEL(V_V_FAULTCODE);
         return map;
     }
 
@@ -1587,8 +1587,9 @@ public class CxyController {
                                                       @RequestParam(value = "V_V_REPAIRCOST") String V_V_REPAIRCOST,
                                                       @RequestParam(value = "V_V_REPROTTIME") String V_V_REPROTTIME,
                                                       @RequestParam(value = "V_V_FAULT_PASS") String V_V_FAULT_PASS,
-                                                      @RequestParam(value = "V_CAUSEANALYSIS") String V_CAUSEANALYSIS,
-                                                      @RequestParam(value = "V_REPAIR_PLAN") String V_REPAIR_PLAN,
+                                                      @RequestParam(value = "V_V_CAUSEANALYSIS") String V_V_CAUSEANALYSIS,
+                                                      @RequestParam(value = "V_V_REPAIR_PLAN") String V_V_REPAIR_PLAN,
+                                                       @RequestParam(value = "V_V_ASSENT_CODE") String V_V_ASSENT_CODE,
                                                       HttpServletRequest request,
                                                       HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -1596,7 +1597,7 @@ public class CxyController {
         HashMap data = cService.PM_BUG_ITEM_DATA_UPDATE(V_V_GUID, V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE, V_V_EQUCODE,
                 V_V_EQUCHILD_CODE, V_V_FAULT_GUID, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME,V_V_FAULT_XX,V_V_JJBF, V_V_FAULT_LEVEL,
                 V_V_FILE_GUID,V_V_INTIME,V_V_PERCODE,V_V_IP,V_V_FAULT_NAME,V_V_FAULT_PART,V_V_FAULT_CLGC,V_V_FAULT_SS,V_V_FAULT_XZ,V_V_FAULT_ZGCS,V_V_FZR_CL,
-                V_V_ENDTIME,V_V_REPORTER,V_V_FZR,V_V_STOPTIME,V_V_REPAIRTIME,V_V_REPAIRCOST,V_V_REPROTTIME,V_V_FAULT_PASS,V_CAUSEANALYSIS,V_REPAIR_PLAN);
+                V_V_ENDTIME,V_V_REPORTER,V_V_FZR,V_V_STOPTIME,V_V_REPAIRTIME,V_V_REPAIRCOST,V_V_REPROTTIME,V_V_FAULT_PASS,V_V_CAUSEANALYSIS,V_V_REPAIR_PLAN,V_V_ASSENT_CODE);
 
         String RET = (String) data.get("RET");
         result.put("RET", RET);
@@ -1633,6 +1634,56 @@ public class CxyController {
         String V_INFO = (String) data.get("V_INFO");
         result.put("list", list);
         result.put("ret", V_INFO);
+        return result;
+    }
+    @RequestMapping(value = "/PM_WORKORDER_TO_BUG_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_WORKORDER_TO_BUG_SEL(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                         @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
+        Map result = cService.PM_WORKORDER_TO_BUG_SEL(V_V_ORGCODE,V_V_DEPTCODE,V_V_YEAR,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+    @RequestMapping(value = "/PM_WORKORDER_BUG_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_WORKORDER_BUG_SET(
+            @RequestParam(value = "V_V_FAULT_GUID") String V_V_FAULT_GUID,
+            @RequestParam(value = "V_V_WORKORDER_ORDERID") String V_V_WORKORDER_ORDERID,
+            @RequestParam(value = "V_V_INPER_CODE") String V_V_INPER_CODE,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        HashMap data = cService.PM_WORKORDER_BUG_SET(V_V_FAULT_GUID,V_V_WORKORDER_ORDERID,V_V_INPER_CODE);
+        String ss = (String) data.get("RET");
+        result.put("RET", ss);
+        result.put("success", true);
+        return result;
+    }
+
+    @RequestMapping(value = "/PM_BUG_TYPE_ITEM_SEL_TJ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_BUG_TYPE_ITEM_SEL_TJ(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                             @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                             @RequestParam(value = "V_V_EQUCHILD_CODE") String V_V_EQUCHILD_CODE,
+                                                             @RequestParam(value = "V_V_FAULT_TYPE") String V_V_FAULT_TYPE,
+                                                             @RequestParam(value = "V_V_FAULT_YY") String V_V_FAULT_YY,
+                                                             @RequestParam(value = "V_V_FINDTIME_B") String V_V_FINDTIME_B,
+                                                             @RequestParam(value = "V_V_FINDTIME_E") String V_V_FINDTIME_E,
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = cService.PM_BUG_TYPE_ITEM_SEL_TJ(V_V_ORGCODE, V_V_DEPTCODE, V_V_EQUTYPE,
+                V_V_EQUCODE, V_V_EQUCHILD_CODE, V_V_FAULT_TYPE, V_V_FAULT_YY, V_V_FINDTIME_B, V_V_FINDTIME_E);
+        List<Map<String, Object>> list = (List) data.get("list");
+        result.put("list", list);
+        result.put("success", true);
         return result;
     }
 }

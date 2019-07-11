@@ -189,7 +189,7 @@ Ext.onReady(function () {
         fields: ['V_TYPECODE', 'V_TYPENAME'],
         proxy: {
             type: 'ajax',
-            url: AppUrl + 'PM_14/PM_14_FAULT_TYPE_ITEM_SEL',
+            url: AppUrl + 'cxy/PM_BUG_TYPE_ITEM_SEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -217,14 +217,13 @@ Ext.onReady(function () {
             'V_FAULT_YY', 'V_FAULT_XX', 'V_FAULT_LEVEL', 'V_FAULT_LEVELNAME','V_JJBF', 'V_GUID', 'V_FILE_GUID',
             'V_ORGCODE', 'I_ID', 'V_DEPTNAME', 'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_TYPECODE',
             'V_EQUTYPECODE', 'V_EQUTYPENAME', 'V_EQUCODE', 'V_FAULT_GUID', 'V_FINDTIME', 'V_PART',
-            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
+            'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME','V_INPERCODE','V_INPERNAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
             'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
-            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN',
-            'V_INPERCODE','V_INPERNAME'],
+            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
         proxy: {
             // url: AppUrl + 'PM_14/PM_14_FAULT_ITEM_DATA_SEL',
-            url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_SEL_NEW',
+            url: AppUrl + 'cxy/PM_BUG_TYPE_ITEM_SEL_TJ',
             type: 'ajax',
             actionMethods: {
                 read: 'POST'
@@ -383,7 +382,7 @@ Ext.onReady(function () {
                 valueField: 'V_TYPECODE',
                 displayField: 'V_TYPENAME',
                 forceSelection: true,
-                fieldLabel: '事故类型',
+                fieldLabel: '故障类型',
                 editable: false,
                 labelWidth: 70,
                 width: 250
@@ -411,7 +410,7 @@ Ext.onReady(function () {
        ,{
                 xtype: 'textfield',
                 id: 'faulttext',
-                fieldLabel: '事故原因',
+                fieldLabel: '故障原因',
                 labelWidth: 70,
                 width: 250
             }, {
@@ -458,8 +457,8 @@ Ext.onReady(function () {
             //     //     return value;
             //     // }
             // }
-        }, {
-            text: '事故名称',
+        },  {
+            text: '故障名称',
             dataIndex: 'V_FAULT_NAME',
             align: 'center',
             width: 100
@@ -507,29 +506,29 @@ Ext.onReady(function () {
             width: 180
         },
             {
-                text: '事故类别',
+                text: '故障类别',
                 dataIndex: 'V_TYPENAME',
                 align: 'center',
                 width: 100
             },
             {
-                text: '事故原因',
+                text: '故障原因',
                 dataIndex: 'V_FAULT_YY',
+                align: 'center',
+                width: 100
+            }, {
+                text: '故障现象',
+                dataIndex: 'V_FAULT_XX',
                 align: 'center',
                 width: 100
             },
             /*{
-            text: '故障现象',
-            dataIndex: 'V_FAULT_XX',
+            text: '故障等级',
+            dataIndex: 'V_FAULT_LEVELNAME',
             align: 'center',
             width: 100
-        }, */
-            /* {
-             text: '事故等级',
-             dataIndex: 'V_FAULT_LEVELNAME',
-             align: 'center',
-             width: 100
-         },*/{
+        },*/
+            {
                 text: '停机时间',
                 dataIndex: 'V_STOPTIME',
                 align: 'center',
@@ -545,12 +544,12 @@ Ext.onReady(function () {
                 align: 'center',
                 width: 100
             },{
-                text: '事故报告人',
+                text: '故障报告人',
                 dataIndex: 'V_INPERNAME',
                 align: 'center',
                 width: 100
             },{
-                text: '事故直接责任人',
+                text: '故障直接责任人',
                 dataIndex: 'V_FZR',
                 align: 'center',
                 width: 100

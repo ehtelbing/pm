@@ -440,9 +440,11 @@ public class MMController {
             String mid = map.get("I_ID").toString();
             Map listmaps = this.GetDepartKC_storeid(1000, materialcode, "", plant, workarea, "", "0", personcode, request, response);
             List mylist = (List) listmaps.get("list");
-            for (int j = 0; j < mylist.size(); j++) {
-                Map map6 = (Map) mylist.get(j);
-                sum += Double.parseDouble(map6.get("ABLECOUNT").toString() == null ? "0" : map6.get("ABLECOUNT").toString());
+            if(mylist!=null) {
+                for (int j = 0; j < mylist.size(); j++) {
+                    Map map6 = (Map) mylist.get(j);
+                    sum += Double.parseDouble(map6.get("ABLECOUNT").toString() == null ? "0" : map6.get("ABLECOUNT").toString());
+                }
             }
             cxyService.PRO_PM_WORKORDER_SPARE_MMORSAP(orderguid, mid, materialcode, sum);//?合计有问题
         }

@@ -70,10 +70,9 @@ Ext.onReady(function () {
             'V_TYPENAME', 'V_EQUCHILD_NAME','V_FAULT_NAME','V_STATE','V_STATENAME',
             'V_FAULT_PART','V_FAULT_CLGC','V_FAULT_SS','V_FAULT_XZ','V_FAULT_ZGCS','V_FZR_CL',
             'V_FAULTID','V_PROCESSINSTANCEID','V_ENDTIME','V_REPORTER','V_FZR','V_STOPTIME','V_GGXH',
-            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN',
-            'V_INPERCODE','V_INPERNAME'],
+            'V_REPAIRTIME','V_REPAIRCOST','V_REPROTTIME','V_FAULT_PASS','V_CAUSEANALYSIS','V_REPAIR_PLAN'],
         proxy: {
-            url: AppUrl + 'cxy/PM_WORKORDER_TO_FAULT_SEL',
+            url: AppUrl + 'cxy/PM_WORKORDER_TO_BUG_SEL',
             type: 'ajax',
             async: false,
             actionMethods: {
@@ -115,7 +114,7 @@ Ext.onReady(function () {
             //     }
             // }
         }, {
-            text: '事故名称',
+            text: '故障名称',
             dataIndex: 'V_FAULT_NAME',
             align: 'center',
             width: 100
@@ -163,29 +162,29 @@ Ext.onReady(function () {
             width: 180
         },
             {
-                text: '事故类别',
+                text: '故障类别',
                 dataIndex: 'V_TYPENAME',
                 align: 'center',
                 width: 100
             },
             {
-                text: '事故原因',
+                text: '故障原因',
                 dataIndex: 'V_FAULT_YY',
+                align: 'center',
+                width: 100
+            }, {
+                text: '故障现象',
+                dataIndex: 'V_FAULT_XX',
                 align: 'center',
                 width: 100
             },
             /*{
-            text: '故障现象',
-            dataIndex: 'V_FAULT_XX',
+            text: '故障等级',
+            dataIndex: 'V_FAULT_LEVELNAME',
             align: 'center',
             width: 100
-        }, */
-            /* {
-             text: '事故等级',
-             dataIndex: 'V_FAULT_LEVELNAME',
-             align: 'center',
-             width: 100
-         },*/{
+        },*/
+            {
                 text: '停机时间',
                 dataIndex: 'V_STOPTIME',
                 align: 'center',
@@ -201,12 +200,12 @@ Ext.onReady(function () {
                 align: 'center',
                 width: 100
             },{
-                text: '事故报告人',
-                dataIndex: 'V_INPERNAME',
+                text: '故障报告人',
+                dataIndex: 'V_REPORTER',
                 align: 'center',
                 width: 100
             },{
-                text: '事故直接责任人',
+                text: '故障直接责任人',
                 dataIndex: 'V_FZR',
                 align: 'center',
                 width: 100
@@ -315,7 +314,7 @@ function _chose() {
     }
     else{
         Ext.Ajax.request({
-            url: AppUrl + 'cxy/PM_WORKORDER_FAULT_SET',
+            url: AppUrl + 'cxy/PM_WORKORDER_BUG_SET',
             type: 'ajax',
             method: 'POST',
             params: {

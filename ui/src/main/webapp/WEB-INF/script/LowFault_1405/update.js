@@ -102,7 +102,7 @@ Ext.onReady(function () {
     });
     var orgStore2 = Ext.create('Ext.data.Store', {
         id: 'orgStore2',
-        autoLoad: true,
+        autoLoad: false,
         fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
         proxy: {
             type: 'ajax',
@@ -693,7 +693,7 @@ Ext.onReady(function () {
                         {boxLabel: '安装原因', name: 'azyy'},
                         {boxLabel: '制造质量', name: 'zzzl'},
                         {boxLabel: '自然因素', name: 'zryy'},
-                        {boxLabel: '其他因素', name: 'qtyy'}
+                        {boxLabel: '其它因素', name: 'qtyy'}
 
                     ]
                 }
@@ -984,7 +984,7 @@ function _init() {
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
                 if (resp.success!='true') {//成功，会传回true
-
+                    _selectOrg2();
                     Ext.data.StoreManager.lookup('orgStore2').on('load', function () {
                         // Ext.getCmp('V_V_ORGCODE1').select(V_V_ORGCODE);
                         Ext.getCmp('V_V_ORGCODE2').setValue(resp.RET[0].V_ORGCODE);
@@ -1083,6 +1083,20 @@ function _selectGridPanel() {
         'V_V_FAULTCODE': V_V_GUID
     };
     gridStore.load();
+}
+function _selectOrg2() {
+    var orgStore2 = Ext.data.StoreManager.lookup('orgStore2');
+
+    orgStore2.proxy.extraParams = {
+        'V_V_PERSONCODE': V_V_PERSONCODE,
+        'V_V_DEPTCODE': V_V_DEPTCODE,
+        'V_V_DEPTCODENEXT': '%',
+        'V_V_DEPTTYPE': '基层单位'
+    };
+
+    orgStore2.currentPage = 1;
+    orgStore2.load();
+
 }
 function _selectDept2() {
     var deptStore2 = Ext.data.StoreManager.lookup('deptStore2');

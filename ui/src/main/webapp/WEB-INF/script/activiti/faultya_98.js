@@ -894,6 +894,7 @@ function delFixContent(faultguid,equcode) {
 
 }
 function _agree() {
+    Ext.getBody().mask('<p>提交中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批通过';
@@ -948,15 +949,17 @@ function _agree() {
                                                 V_INPER: Ext.util.Cookies.get('v_personcode')
                                             },
                                             success: function (response) {
+                                                Ext.getBody().unmask();
                                                 var resp = Ext.decode(response.responseText);
-                                                if (resp.ret == '任务提交成功') {
+                                                if (resp.ret == '提交成功') {
                                                     window.close();
                                                     window.opener.OnPageLoad();
                                                 } else {
-                                                    Ext.MessageBox.alert('提示', '任务提交失败');
+                                                    Ext.MessageBox.alert('提示', '提交失败');
                                                 }
                                             },
                                             failure: function (response) {//访问到后台时执行的方法。
+                                                Ext.getBody().unmask();
                                                 Ext.MessageBox.show({
                                                     title: '错误',
                                                     msg: response.responseText,
@@ -980,10 +983,11 @@ function _agree() {
                             });*/
 
                         }else{
-                            Ext.Msg.alert('提示', '事故修改状态失败！');
+                            Ext.getBody().unmask();
+                            Ext.Msg.alert('提示', '事故状态修改失败！');
                         }
                     },failure: function (ret) {//访问到后台时执行的方法。
-
+                        Ext.getBody().unmask();
                         Ext.MessageBox.show({
                             title: '错误',
                             msg: ret.responseText,
@@ -996,6 +1000,7 @@ function _agree() {
 
 
             } else {
+                Ext.getBody().unmask();
                 Ext.MessageBox.show({
                     title: '错误',
                     msg: data.RET,
@@ -1005,6 +1010,7 @@ function _agree() {
             }
         },
         failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: '修改内容失败',//response.responseText
@@ -1015,6 +1021,7 @@ function _agree() {
     })
 }
 function _reject() {
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
     Ext.Ajax.request({
         url: AppUrl + 'cxy/PM_FAULT_PLAN_STATE_UPDATE',
         method: 'POST',
@@ -1047,9 +1054,10 @@ function _reject() {
 
                     },
                     success: function (response) {
+                        Ext.getBody().unmask();
                         Ext.MessageBox.show({
                             title: '提示',
-                            msg: '已驳回',
+                            msg: '驳回成功',
                             buttons: Ext.MessageBox.OK,
                             fn: function () {
                                 window.close();
@@ -1059,6 +1067,7 @@ function _reject() {
 
                     },
                     failure: function (response) {//访问到后台时执行的方法。
+                        Ext.getBody().unmask();
                         Ext.MessageBox.show({
                             title: '错误',
                             msg: response.responseText,
@@ -1069,6 +1078,7 @@ function _reject() {
                 });
             }
         },failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,

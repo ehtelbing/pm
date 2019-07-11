@@ -200,7 +200,7 @@ Ext.onReady(function () {
         listeners: {
             load: function (store, records) {
                 equFaultLoad1 = true;
-                store.insert(0, {V_TYPENAME: '全部', V_TYPECODE: '%'});
+                // store.insert(0, {V_TYPENAME: '全部', V_TYPECODE: '%'});
                 Ext.getCmp('equFaultname1').select(store.first());
             }
         }
@@ -674,7 +674,7 @@ Ext.onReady(function () {
                             {boxLabel: '安装原因', name: 'azyy'},
                             {boxLabel: '制造质量', name: 'zzzl'},
                             {boxLabel: '自然因素', name: 'zryy'},
-                            {boxLabel: '其他因素', name: 'qtyy'}
+                            {boxLabel: '其它因素', name: 'qtyy'}
 
                         ]
                     }
@@ -1060,13 +1060,13 @@ function _addFault() {
         Ext.getCmp('V_V_DEPTCODE1').select(V_V_DEPTCODE);
         Ext.getBody().unmask();
     });
-    Ext.data.StoreManager.lookup('equFaultStore1').on('load', function () {
+    /*Ext.data.StoreManager.lookup('equFaultStore1').on('load', function () {
         if (V_equFaultname == '%') {
                 Ext.getCmp('equFaultname1').select(Ext.data.StoreManager.lookup('equFaultStore1').getAt(1).get('V_TYPECODE'));
         } else {
                 Ext.getCmp('equFaultname1').select(V_equFaultname);
         }
-    });
+    });*/
     // _selecteFaultStore1();
     filequery(V_V_GUID);
 }

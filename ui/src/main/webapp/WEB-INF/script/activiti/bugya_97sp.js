@@ -517,10 +517,10 @@ Ext.onReady(function () {
 
         ]
     });
-    _selectTaskId();
+
     _init();
     getAssignee();
-
+    setTimeout("_selectTaskId()",500);
     // _selecteFaultStore2();
 
 });
@@ -538,7 +538,7 @@ function _selectTaskId() {
             var data = Ext.decode(resp.responseText);//后台返回的值
             taskId = data.taskId;
             V_STEPCODE = data.TaskDefinitionKey;
-            _selectNextPer();
+            _selectNextPer(data.TaskDefinitionKey);
         },
         failure: function (response) {
             Ext.MessageBox.show({
@@ -550,14 +550,14 @@ function _selectTaskId() {
         }
     })
 }
-function _selectNextPer() {
+function _selectNextPer(value) {
     var nextSprStore = Ext.data.StoreManager.lookup('nextSprStoreb');
     nextSprStore.proxy.extraParams = {
         V_V_ORGCODE: V_V_ORGCODE_TEMP,
         V_V_DEPTCODE: V_V_DEPTCODE_TEMP,
         V_V_REPAIRCODE: '',
         V_V_FLOWTYPE: 'HitchYn',
-        V_V_FLOW_STEP: V_STEPCODE,//$.url().param("TaskDefinitionKey"),
+        V_V_FLOW_STEP: value,//$.url().param("TaskDefinitionKey"),
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '',
         V_V_WHERE: '通过'
@@ -580,7 +580,7 @@ function _init() {
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            if (resp.success!='true') {//成功，会传回true
+            if (resp.success==true) {//成功，会传回true
                 // V_SPR=resp.RET[0].V_SPR;
                 V_V_DEPTCODE_TEMP=resp.RET[0].V_DEPTCODE;
                 V_V_ORGCODE_TEMP=resp.RET[0].V_ORGCODE;
@@ -908,6 +908,7 @@ function delFixContent(faultguid,equcode) {
 
 }
 function _agree() {
+    Ext.getBody().mask('<p>审批中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '通过';
@@ -932,11 +933,20 @@ function _agree() {
             V_INPER : Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
+            Ext.getBody().unmask();
             var resp = Ext.decode(response.responseText);
             if (resp.ret == '任务提交成功') {
-
-                window.close();
-                window.opener.OnPageLoad();
+                Ext.MessageBox.show({
+                    title: '提示',
+                    msg: '审批成功',
+                    buttons: Ext.MessageBox.OK,
+                    fn: function () {
+                        window.opener.QueryTab();
+                        window.opener.QuerySum();
+                        window.opener.QueryGrid();
+                        window.close();
+                    }
+                });
             }else{
                 Ext.MessageBox.show({
                     title: '错误',
@@ -947,6 +957,7 @@ function _agree() {
             }
         },
         failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,
@@ -971,6 +982,7 @@ function _agree() {
 }
 
 function _reject() {
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批驳回';
@@ -1007,16 +1019,26 @@ function _reject() {
                         V_INPER: Ext.util.Cookies.get('v_personcode')
                     },
                     success: function (response) {
+                        Ext.getBody().unmask();
                         var resp = Ext.decode(response.responseText);
                         if (resp.ret == '任务提交成功') {
-                            window.close();
-                            window.opener.OnPageLoad();
-
+                            Ext.MessageBox.show({
+                                title: '提示',
+                                msg: '驳回成功',
+                                buttons: Ext.MessageBox.OK,
+                                fn: function () {
+                                    window.opener.QueryTab();
+                                    window.opener.QuerySum();
+                                    window.opener.QueryGrid();
+                                    window.close();
+                                }
+                            });
                         } else {
-                            Ext.MessageBox.alert('提示', '任务提交失败');
+                            Ext.MessageBox.alert('提示', '驳回失败');
                         }
                     },
                     failure: function (response) {//访问到后台时执行的方法。
+                        Ext.getBody().unmask();
                         Ext.MessageBox.show({
                             title: '错误',
                             msg: response.responseText,
@@ -1026,9 +1048,11 @@ function _reject() {
                     }
                 });
             } else {
-                Ext.Msg.alert('提示', '故障修改状态失败！');
+                Ext.getBody().unmask();
+                Ext.Msg.alert('提示', '故障预案状态修改失败！');
             }
         },failure: function (resp) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: resp.responseText,

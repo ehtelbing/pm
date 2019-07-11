@@ -81,11 +81,14 @@ function Preview() {
 
 
 function loadPageInfo() {
-
+    $("#yesprint").empty();
     var argument = [];
 
     $.each(window.opener.selectID, function (index, items) {
-        argument.push(items);
+        if(index+1==window.opener.selectID.length){
+            argument.push(items);
+        }
+
     });
 
 
@@ -150,7 +153,7 @@ function loadPageInfo() {
                             result.push('                    <td class="border_r_b" align="center">资产编码</td>');
                             result.push('                    <td class="border_r_b" align="center" width="45">');
                             result.push('                        <span>');
-                            result.push(resp.RET[0].V_EQUCODE==""?"&nbsp;":resp.RET[0].V_EQUCODE);
+                            result.push(resp.RET[0].V_ASSENT_CODE==""?"&nbsp;":resp.RET[0].V_ASSENT_CODE);
                             /*var s1, st1;
                             if(resp.RET[0].V_EQUCODE!=''){
                                 s1 = resp.RET[0].V_EQUCODE;
@@ -242,7 +245,7 @@ function loadPageInfo() {
                             result.push('                <tr>');
                             result.push('                    <td class="border_r_b" align="center">事故报告人</td>');
                             result.push('                    <td colspan="2" class="border_r_b" align="center">');
-                            result.push(resp.RET[0].V_REPORTER==""?"&nbsp;":resp.RET[0].V_REPORTER);
+                            result.push(resp.RET[0].V_INPERNAME==""?"&nbsp;":resp.RET[0].V_INPERNAME);
                             result.push('                    </td>');
                             result.push('                    <td class="border_r_b" align="center">事故类别</td>');
                             result.push('                    <td class="border_r_b" align="center">');
@@ -310,8 +313,8 @@ function loadPageInfo() {
                             result.push('                    <tr>');
                             result.push('                    <td class="border_r_b" align="center">安装原因</td>');
                             result.push('                    <td class="border_r_b" align="center">制造质量</td>');
-                            result.push('                    <td class="border_r_b" align="center">自然原因</td>');
-                            result.push('                    <td class="border_r_b" align="center">其他原因</td>');
+                            result.push('                    <td class="border_r_b" align="center">自然因素</td>');
+                            result.push('                    <td class="border_r_b" align="center">其它因素</td>');
                             result.push('                    <td class="border_r_b" >&nbsp;</td>');
                             result.push('                    <td class="border_r_b" >&nbsp;</td>');
                             result.push('                    <td class="border_r_b" >&nbsp;</td>');
@@ -322,7 +325,7 @@ function loadPageInfo() {
                             result.push('                    <td class="border_r" id="zzzl" align="center">&nbsp;</td>');
                             result.push('                    <td class="border_r" id="zryy" align="center">&nbsp;</td>');
                             result.push('                    <td class="border_r" id="qtyy" align="center">&nbsp;</td>');
-                            result.push('                    <td class="border_r" id="zxyy" align="center">&nbsp;</td>');
+                            result.push('                    <td class="border_r" >&nbsp;</td>');//id="zxyy" align="center"
                             result.push('                    <td class="border_r">&nbsp;</td>');
                             result.push('                    <td class="border_r">&nbsp;</td>');
                             result.push('                    <td>&nbsp;</td>');
@@ -391,48 +394,48 @@ function loadPageInfo() {
                                 {
                                     if(strs[i]=='指挥失当'){
 
-                                        document.getElementById("zhsd").innerHTML='&#x2714';
+                                        document.getElementById("zhsd").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='违规操作'){
-                                        document.getElementById("wgcz").innerHTML='&#x2714';
+                                        document.getElementById("wgcz").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='超负荷运转'){
-                                        document.getElementById("cfh").innerHTML='&#x2714';
+                                        document.getElementById("cfh").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='润滑原因'){
-                                        document.getElementById("rhyy").innerHTML='&#x2714';
+                                        document.getElementById("rhyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='检修原因'){
-                                        document.getElementById("jxyy").innerHTML='&#x2714';
+                                        document.getElementById("jxyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='点检原因'){
-                                        document.getElementById("djyy").innerHTML='&#x2714';
+                                        document.getElementById("djyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='材料备件质量'){
-                                        document.getElementById("bjzl").innerHTML='&#x2714';
+                                        document.getElementById("bjzl").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='设计原因'){
-                                        document.getElementById("sjyy").innerHTML='&#x2714';
+                                        document.getElementById("sjyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='安装原因'){
-                                        document.getElementById("azyy").innerHTML='&#x2714';
+                                        document.getElementById("azyy").innerHTML='&radic;';
                                         continue;
                                     }else if(strs[i]=='制造质量'){
-                                        document.getElementById("zzzl").innerHTML='&#x2714';
+                                        document.getElementById("zzzl").innerHTML='&radic;';
                                         continue;
-                                    }else if(strs[i]=='自然原因'){
-                                        document.getElementById("zryy").innerHTML='&#x2714';
+                                    }else if(strs[i]=='自然因素'){
+                                        document.getElementById("zryy").innerHTML='&radic;';
                                         continue;
-                                    }else if(strs[i]=='其他原因'){
-                                        document.getElementById("qtyy").innerHTML='&#x2714';
+                                    }else if(strs[i]=='其它因素'){
+                                        document.getElementById("qtyy").innerHTML='&radic;';
                                         continue;
-                                    }else{
+                                    }/*else{
                                         temp+=strs[i];
                                         continue;
-                                    }
+                                    }*/
 
                                 }
-                                    document.getElementById("zxyy").innerHTML=temp;
+                                    // document.getElementById("zxyy").innerHTML=temp;
 
                                 }
 
