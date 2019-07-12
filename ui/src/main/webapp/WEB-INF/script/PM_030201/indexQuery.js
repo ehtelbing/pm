@@ -259,6 +259,9 @@ Ext.onReady(function () {
             /*{text: '维修费用', width: 100, dataIndex: 'V_MONEYBUDGET', align: 'center', renderer: atright},*/
             {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
             {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}],
+        listeners : {
+            itemdblclick : itemClick
+        },
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -315,7 +318,8 @@ Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', {
         id: "id",
         layout: 'border',
-        items: [panel,panel2, grid]
+        // items: [panel,panel2, grid]
+        items: [panel, grid]
     });
 
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
@@ -470,4 +474,17 @@ function timelfet(value, metaDate, record, rowIndex, colIndex, store){
     metaDate.style="text-align:right;";
     //return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';
     return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+//维修工单详情
+function itemClick(s, record, item, index, e, eOpts) {
+
+    if(record.data.V_GUID!=null&&record.data.V_GUID!=undefined){
+        var wxguid=record.data.V_GUID;
+        var owidth = window.screen.availWidth;
+        var oheight = window.screen.availHeight - 50;
+        var ret = window.open(AppUrl + 'page/PM_030201/wxDetail.html?V_GUID='
+            + wxguid
+            +  '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+    }
+
 }

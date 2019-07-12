@@ -296,7 +296,7 @@ Ext.onReady(function(){
 function timeTurn(value,metaDate,recode){
     metaDate.style = "text-align:center;";
     var val=value.toString().substr(0,10);
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
+    return '<div data-qtip="' + val + '" >' + val + '</div>';
 }
 function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
@@ -338,8 +338,7 @@ function _fenjie(){
         }
     });
 
-    // window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid, '',
-    'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
+    // window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no')
 }
 
 function atleft(value,metaDate,recode){
@@ -405,8 +404,7 @@ function turnPage(){
     }
     if(num==flag){
         Ext.getCmp("qxWin").close();
-        window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid+'&newguid='+newfxguid, '',
-            'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+        window.open(AppUrl+'page/PM_220106/fjAddFx.html?fxguid=' +fxguid+'&newguid='+newfxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
     }
 }
 
@@ -425,8 +423,7 @@ function _workOCreate(){
         }
     });
     Ext.getCmp("qxCworkWin").show();
-    // window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '',
-    'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+    // window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
 }
 
 function turnCreatWPage(){
@@ -486,8 +483,7 @@ function turnCreatWPage(){
             }
         });
         // window.open(AppUrl+'page/PM_220106/fx_workorder.html?fxguid=' +fxguid, '',
-
-        //'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
-}
+        //     'height=600px,width=1200px,top=50px,left=100px,resizable=no,toolbat=no,menubar=no,scrollbars=auto,location=no,status=no');
+    }
 
 }

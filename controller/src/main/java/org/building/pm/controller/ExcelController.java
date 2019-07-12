@@ -1,41 +1,43 @@
 package org.building.pm.controller;
 
-import com.sun.net.httpserver.HttpContext;
-import net.sf.json.JSONObject;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import jdk.nashorn.internal.objects.Global;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.building.pm.service.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import sun.plugin2.util.ColorUtil;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.filechooser.FileSystemView;
 import java.io.*;
+
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
+
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.sql.Date;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
+
+
 
 /**
  * Created by zjh on 2017/1/22.
@@ -72,6 +74,12 @@ public class ExcelController {
 
     @Autowired
     private Dx_fileService dx_fileService;
+
+    @Autowired
+    private CjyService cjyService;
+
+    @Autowired
+    private ZdhService zdhService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -3678,7 +3686,7 @@ public class ExcelController {
         cell.setCellValue("录入时间");
         cell.setCellStyle(style);
 
-        cell=row.createCell((short) 12);
+        cell = row.createCell((short) 12);
         cell.setCellValue("SBBGUID");
         cell.setCellStyle(style);
 
@@ -3824,11 +3832,11 @@ public class ExcelController {
             NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
-        String zy=zy = V_V_ZY.equals("1") ? "%" : V_V_ZY;
+        String zy = zy = V_V_ZY.equals("1") ? "%" : V_V_ZY;
 
         V_V_DEFECT = new String(V_V_DEFECT.getBytes("iso-8859-1"), "utf-8");
 
-        Map<String, Object> data = dx_fileService.PM_03_PLAN_YEAR_FX_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE,zy,
+        Map<String, Object> data = dx_fileService.PM_03_PLAN_YEAR_FX_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_PERCODE, zy,
                 V_SDATE, V_EDATE, V_V_SPECIALTY, V_V_DEFECT, V_V_FLAG);
 
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -3896,7 +3904,6 @@ public class ExcelController {
         cell.setCellStyle(style);
 
 
-
         if (data.size() > 0) {
             list = (List) data.get("list");
 
@@ -3907,7 +3914,7 @@ public class ExcelController {
 
                 row.createCell((short) 0).setCellValue(i + 1);
 
-                row.createCell((short) 1).setCellValue(map.get("FX_GUID").equals("")? "否" :"是");// map.get("FX_GUID").toString());
+                row.createCell((short) 1).setCellValue(map.get("FX_GUID").equals("") ? "否" : "是");// map.get("FX_GUID").toString());
 
                 row.createCell((short) 2).setCellValue(map.get("V_GUID") == null ? "" : map.get("V_GUID").toString());
                 row.createCell((short) 3).setCellValue(map.get("V_PORJECT_CODE") == null ? "" : map.get("V_PORJECT_CODE").toString());
@@ -3937,4 +3944,398 @@ public class ExcelController {
             }
         }
     }
+
+    // 工单打印pdf
+    @RequestMapping(value = "/WORKDY_ExpExcel", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void WORKDY_ExpExcel(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                           HttpServletRequest request,
+                           HttpServletResponse response)
+             throws DocumentException, IOException, Exception, SQLException {
+        String V_V_ORGCODE = "";
+        String V_WORK_TYPE = "";
+        String V_DEPT_CODE = "";
+
+        /*工单基本信息-data*/
+        List<Map<String, Object>> workresult = (List) cjyService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID).get("list");
+        if (workresult.size() > 0) {
+            V_V_ORGCODE = workresult.get(0).get("V_ORGCODE").toString().equals("")?"":workresult.get(0).get("V_ORGCODE").toString(); //厂矿
+            V_WORK_TYPE = workresult.get(0).get("V_ORDER_TYP_TXT").toString().equals("")?"":workresult.get(0).get("V_ORDER_TYP_TXT").toString(); //工单类型
+            V_DEPT_CODE = workresult.get(0).get("V_DEPTCODE").toString().equals("")?"":workresult.get(0).get("V_DEPTCODE").toString(); //作业区
+        }
+
+        /*工序data*/
+        List<Map<String, Object>> workgxresult = (List) zdhService.PRO_PM_WORKORDER_ET_OPERATIONS(V_V_ORDERGUID).get("list");
+
+        /*物料data*/
+        List<Map<String, Object>> mmresult = (List) zdhService.PRO_PM_WORKORDER_SPARE_VIEW(V_V_ORDERGUID).get("list");
+
+        int rowWF=10+workgxresult.size();
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+//        标头字体
+        HSSFFont fontHead = wb.createFont();
+        fontHead.setColor(HSSFColor.BLACK.index);
+        fontHead.setFontHeightInPoints((short) 12);
+        fontHead.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
+        //标题字体
+        HSSFFont fontT = wb.createFont();
+        fontT.setColor(HSSFColor.BLACK.index);
+        fontT.setFontHeightInPoints((short) 10);
+        fontT.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
+
+        //正文一个字体
+        HSSFFont font = wb.createFont();
+        font.setColor(HSSFColor.BLACK.index);
+        font.setFontHeightInPoints((short) 10);
+//        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//加粗
+
+        HSSFCellStyle styleHead = wb.createCellStyle();
+        styleHead.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        styleHead.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直居中
+        styleHead.setFont(fontHead);
+
+        HSSFCellStyle styleTitle = wb.createCellStyle();
+        styleTitle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        styleTitle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直居中
+        styleTitle.setFont(fontT);
+
+        HSSFCellStyle styleOne = wb.createCellStyle();
+        styleOne.setWrapText(true);
+        styleOne.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        styleOne.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直居中
+        /*styleOne.setBorderTop(HSSFCellStyle.ALIGN_CENTER);
+        styleOne.setBorderLeft(HSSFCellStyle.ALIGN_CENTER);
+        styleOne.setBorderBottom(HSSFCellStyle.ALIGN_CENTER);
+        styleOne.setBorderRight(HSSFCellStyle.ALIGN_CENTER);
+        styleOne.setTopBorderColor(HSSFColor.BLACK.index);
+        styleOne.setLeftBorderColor(HSSFColor.BLACK.index);
+        styleOne.setBottomBorderColor(HSSFColor.BLACK.index);
+        styleOne.setRightBorderColor(HSSFColor.BLACK.index);*/
+        styleOne.setFont(font);
+
+        HSSFCellStyle styleTwo = wb.createCellStyle();
+        styleTwo.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        styleTwo.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直居中
+        styleTwo.setFillForegroundColor(HSSFColor.CORNFLOWER_BLUE.index);  /* 背景色*/
+        styleTwo.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        styleTwo.setFillBackgroundColor(HSSFColor.CORNFLOWER_BLUE.index);
+       /* styleTwo.setBorderTop(HSSFCellStyle.ALIGN_CENTER);
+        styleTwo.setBorderLeft(HSSFCellStyle.ALIGN_CENTER);
+        styleTwo.setBorderBottom(HSSFCellStyle.ALIGN_CENTER);
+        styleTwo.setBorderRight(HSSFCellStyle.ALIGN_CENTER);
+        styleTwo.setTopBorderColor(HSSFColor.BLACK.index);
+        styleTwo.setLeftBorderColor(HSSFColor.BLACK.index);
+        styleTwo.setBottomBorderColor(HSSFColor.BLACK.index);
+        styleTwo.setRightBorderColor(HSSFColor.BLACK.index);*/
+        styleTwo.setFont(fontT);
+
+
+        sheet.addMergedRegion(new CellRangeAddress(0,0,0,10)); //row 1
+        sheet.addMergedRegion(new CellRangeAddress(1,1,0,4));//row 2
+        sheet.addMergedRegion(new CellRangeAddress(1,1,5,10)); //row 2
+        sheet.addMergedRegion(new CellRangeAddress(2,2,3,4)); //row 3
+        sheet.addMergedRegion(new CellRangeAddress(2,2,6,10)); //row 3
+        sheet.addMergedRegion(new CellRangeAddress(3,3,3,4)); //row 4
+        sheet.addMergedRegion(new CellRangeAddress(3,3,6,10)); //row 4
+        sheet.addMergedRegion(new CellRangeAddress(4,4,3,4)); //row 5
+        sheet.addMergedRegion(new CellRangeAddress(4,4,6,7)); //row 5
+        sheet.addMergedRegion(new CellRangeAddress(4,4,9,10)); //row 5
+        sheet.addMergedRegion(new CellRangeAddress(5,5,1,4)); //row 6
+        sheet.addMergedRegion(new CellRangeAddress(5,5,6,7)); //row 6
+        sheet.addMergedRegion(new CellRangeAddress(5,5,9,10)); //row 6
+        sheet.addMergedRegion(new CellRangeAddress(6,6,6,7)); //row 7
+        sheet.addMergedRegion(new CellRangeAddress(6,6,9,10)); //row 7
+        sheet.addMergedRegion(new CellRangeAddress(6,6,1,4)); //row 7
+        sheet.addMergedRegion(new CellRangeAddress(7,7,1,10)); //row 8
+
+        sheet.addMergedRegion(new CellRangeAddress(8,8,0,10)); //row 9
+
+        sheet.addMergedRegion(new CellRangeAddress(rowWF,rowWF,0,10));//row物料标题行
+
+        //第一行
+        HSSFRow rowOne = sheet.createRow((int) 0);
+        sheet.setColumnWidth(0, 12 * 256);
+        sheet.setColumnWidth(1, 12 * 256);
+        sheet.setColumnWidth(2, 12 * 256);
+        sheet.setColumnWidth(3, 10 * 256);
+        sheet.setColumnWidth(4, 10 * 256);
+        sheet.setColumnWidth(5, 15 * 256);
+        sheet.setColumnWidth(6, 10 * 256);
+        sheet.setColumnWidth(7, 10 * 256);
+        sheet.setColumnWidth(8, 15 * 256);
+        sheet.setColumnWidth(9, 10 * 256);
+        sheet.setColumnWidth(10, 10 * 256);
+
+        //第一列
+        HSSFCell cella = rowOne.createCell((short) 0);
+        cella.setCellValue("工单打印");
+        cella.setCellStyle(styleHead);
+
+        //第2行
+        HSSFRow rowTwo = sheet.createRow((int) 1);
+        //1列
+        HSSFCell cellb = rowTwo.createCell((short) 0);
+        cellb.setCellValue("1、基本信息栏");
+        cellb.setCellStyle(styleTitle);
+        //2列
+        cellb = rowTwo.createCell((short) 5);
+        cellb.setCellValue("2、任务信息栏");
+        cellb.setCellStyle(styleTitle);
+
+        //第3行
+        HSSFRow rowThree = sheet.createRow((int) 2);
+        //1列
+        HSSFCell cellc = rowThree.createCell((short) 0);
+        cellc.setCellValue("厂矿单位：");
+        cellc.setCellStyle(styleTwo);
+
+        cellc = rowThree.createCell((short) 1);
+        cellc.setCellValue(V_V_ORGCODE);
+        cellc.setCellStyle(styleOne);
+
+        cellc = rowThree.createCell((short) 2);
+        cellc.setCellValue("工单类型：");
+        cellc.setCellStyle(styleTwo);
+
+        cellc = rowThree.createCell((short) 3);
+        cellc.setCellValue(V_WORK_TYPE);
+        cellc.setCellStyle(styleOne);
+        cellc = rowThree.createCell((short) 4);
+        cellc.setCellStyle(styleOne);
+        cellc = rowThree.createCell((short) 5);
+        cellc.setCellValue("WBS编码：");
+        cellc.setCellStyle(styleTwo);
+
+        cellc = rowThree.createCell((short) 6);
+        cellc.setCellValue(workresult.get(0).get("V_WBS").toString().equals("")?"":workresult.get(0).get("V_WBS").toString());
+        cellc.setCellStyle(styleOne);
+
+        //4行
+        HSSFRow rowFour = sheet.createRow((int) 3);
+        HSSFCell celld = rowFour.createCell((short) 0);
+        celld.setCellValue("作业区：");
+        celld.setCellStyle(styleTwo);
+
+        cellc = rowFour.createCell((short) 1);
+        cellc.setCellValue(V_DEPT_CODE);
+        cellc.setCellStyle(styleOne);
+
+        cellc = rowFour.createCell((short) 2);
+        cellc.setCellValue("工单号：");
+        cellc.setCellStyle(styleTwo);
+
+        cellc = rowFour.createCell((short) 3);
+        cellc.setCellValue(workresult.get(0).get("V_ORDERID").toString().equals("")?"":workresult.get(0).get("V_ORDERID").toString());
+        cellc.setCellStyle(styleOne);
+
+        cellc = rowFour.createCell((short) 5);
+        cellc.setCellValue("项目名称：");
+        cellc.setCellStyle(styleTwo);
+
+        cellc = rowFour.createCell((short) 6);
+        cellc.setCellValue(workresult.get(0).get("V_WBS_TXT").toString().equals("")?"":workresult.get(0).get("V_WBS_TXT").toString());
+        cellc.setCellStyle(styleOne);
+
+        //5行
+        HSSFRow rowFive = sheet.createRow((int) 4);
+        HSSFCell celle = rowFive.createCell((short) 0);
+        celle.setCellValue("设备名称：");
+        celle.setCellStyle(styleTwo);
+
+        celle = rowFive.createCell((short) 1);
+        celle.setCellValue(workresult.get(0).get("V_EQUIP_NAME").toString().equals("")?"":workresult.get(0).get("V_EQUIP_NAME").toString());
+        celle.setCellStyle(styleOne);
+
+        celle = rowFive.createCell((short) 2);
+        celle.setCellValue("检修单位：");
+        celle.setCellStyle(styleTwo);
+
+        celle = rowFive.createCell((short) 3);
+        celle.setCellValue(workresult.get(0).get("V_DEPTNAMEREPARIR").toString().equals("")?"":workresult.get(0).get("V_DEPTNAMEREPARIR").toString());
+        celle.setCellStyle(styleOne);
+
+        celle = rowFive.createCell((short) 5);
+        celle.setCellValue("创建人：");
+        celle.setCellStyle(styleTwo);
+
+        celle = rowFive.createCell((short) 6);
+        celle.setCellValue(workresult.get(0).get("V_ENTERED_BY").toString().equals("")?"":workresult.get(0).get("V_ENTERED_BY").toString());
+        celle.setCellStyle(styleOne);
+
+        celle = rowFive.createCell((short) 8);
+        celle.setCellValue("创建时间：");
+        celle.setCellStyle(styleTwo);
+
+        celle = rowFive.createCell((short) 9);
+        celle.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("")?"":workresult.get(0).get("D_ENTER_DATE").toString());
+        celle.setCellStyle(styleOne);
+
+        //6行
+        HSSFRow rowSix = sheet.createRow((int) 5);
+        HSSFCell cellf = rowSix.createCell((short) 0);
+        cellf.setCellValue("设备编码：");
+        cellf.setCellStyle(styleTwo);
+
+        cellf = rowSix.createCell((short) 1);
+        cellf.setCellValue(workresult.get(0).get("V_EQUIP_NO").toString().equals("")?"":workresult.get(0).get("V_EQUIP_NO").toString());
+        cellf.setCellStyle(styleOne);
+
+        cellf = rowSix.createCell((short) 5);
+        cellf.setCellValue("计划开始时间：");
+        cellf.setCellStyle(styleTwo);
+
+        cellf = rowSix.createCell((short) 6);
+        cellf.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("")?"":workresult.get(0).get("D_ENTER_DATE").toString());
+        cellf.setCellStyle(styleOne);
+
+        cellf = rowSix.createCell((short) 8);
+        cellf.setCellValue("实际开始时间：");
+        cellf.setCellStyle(styleTwo);
+
+        cellf = rowSix.createCell((short) 9);
+        cellf.setCellValue(workresult.get(0).get("D_FACT_START_DATE").toString().equals("")?"":workresult.get(0).get("D_FACT_START_DATE").toString());
+        cellf.setCellStyle(styleOne);
+
+        //7行
+        HSSFRow rowSeven = sheet.createRow((int) 6);
+        HSSFCell cellg = rowSeven.createCell((short) 0);
+        cellg.setCellValue("功能位置：");
+        cellg.setCellStyle(styleTwo);
+
+        cellg = rowFive.createCell((short) 1);
+        cellg.setCellValue(workresult.get(0).get("V_EQUSITENAME").toString().equals("")?"":workresult.get(0).get("V_EQUSITENAME").toString());
+        cellg.setCellStyle(styleOne);
+
+        cellg = rowFive.createCell((short) 5);
+        cellg.setCellValue("计划完成时间：");
+        cellg.setCellStyle(styleTwo);
+
+        cellg = rowFive.createCell((short) 6);
+        cellg.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("")?"":workresult.get(0).get("D_ENTER_DATE").toString());
+        cellg.setCellStyle(styleOne);
+
+        cellg = rowFive.createCell((short) 8);
+        cellg.setCellValue("实际完成时间：");
+        cellg.setCellStyle(styleTwo);
+
+        cellg = rowFive.createCell((short) 9);
+        cellg.setCellValue(workresult.get(0).get("D_FACT_FINISH_DATE").toString().equals("")?"":workresult.get(0).get("D_FACT_FINISH_DATE").toString());
+        cellg.setCellStyle(styleOne);
+
+        //8行
+        HSSFRow rowEight = sheet.createRow((int) 7);
+        HSSFCell cellh = rowEight.createCell((short) 0);
+        cellh.setCellValue("工单描述：");
+        cellh.setCellStyle(styleTwo);
+
+        cellh = rowFive.createCell((short) 1);
+        cellh.setCellValue(workresult.get(0).get("V_SHORT_TXT").toString().equals("")?"":workresult.get(0).get("V_SHORT_TXT").toString());
+        cellh.setCellStyle(styleOne);
+
+        //9行
+        HSSFRow rownight = sheet.createRow((int) 8);
+        HSSFCell celli = rownight.createCell((short) 0);
+        celli.setCellValue("3、任务细节：");
+        celli.setCellStyle(styleTitle);
+
+        //9行
+        HSSFRow rowten = sheet.createRow((int) 9);
+        HSSFCell cellj = rowten.createCell((short) 0);
+        cellj.setCellValue("工作编号");cellj.setCellStyle(styleTwo);
+
+        cellj = rowten.createCell((short) 1);cellj.setCellValue("工作中心");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 2);cellj.setCellValue("工序内容");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 3);cellj.setCellValue("定额时间");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 4);cellj.setCellValue("定额人数");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 5);cellj.setCellValue("实际时间");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 6);cellj.setCellValue("实际人数");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 7);cellj.setCellValue("机具");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 8);cellj.setCellValue("工具");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 9);cellj.setCellValue("技术要求");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 10);cellj.setCellValue("安全措施");cellj.setCellStyle(styleTwo);
+
+        if(workgxresult.size()>0){
+            int sizegx=workgxresult.size()+10;
+            for(int i=10;i<sizegx;i++){
+                HSSFRow rowgx = sheet.createRow((int) i);
+                int a=i-10;
+                rowgx.createCell((short) 0).setCellValue(workgxresult.get(a).get("V_ACTIVITY").toString().equals("") ? "" :workgxresult.get(a).get("V_ACTIVITY").toString());
+                rowgx.createCell((short) 1).setCellValue(workgxresult.get(a).get("V_WORK_CENTER").toString().equals("") ? "" :workgxresult.get(a).get("V_WORK_CENTER").toString());// map.get("FX_GUID").toString());
+                rowgx.createCell((short) 2).setCellValue(workgxresult.get(a).get("V_DESCRIPTION").toString().equals("") ? "" :workgxresult.get(a).get("V_DESCRIPTION").toString());
+                rowgx.createCell((short) 3).setCellValue(workgxresult.get(a).get("I_WORK_ACTIVITY").toString().equals("") ? "" :workgxresult.get(a).get("I_WORK_ACTIVITY").toString());
+                rowgx.createCell((short) 4).setCellValue(workgxresult.get(a).get("I_DURATION_NORMAL").toString().equals("") ? "" :workgxresult.get(a).get("I_DURATION_NORMAL").toString());
+                rowgx.createCell((short) 5).setCellValue(workgxresult.get(a).get("I_ACTUAL_TIME").toString().equals("") ? "" :workgxresult.get(a).get("I_ACTUAL_TIME").toString());
+                rowgx.createCell((short) 6).setCellValue(workgxresult.get(a).get("I_NUMBER_OF_PEOPLE").toString().equals("") ? "" :workgxresult.get(a).get("I_NUMBER_OF_PEOPLE").toString());
+                rowgx.createCell((short) 7).setCellValue(workgxresult.get(a).get("V_JJ_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_JJ_NAME").toString());
+                rowgx.createCell((short) 8).setCellValue(workgxresult.get(a).get("V_GJ_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_GJ_NAME").toString());
+                rowgx.createCell((short) 9).setCellValue(workgxresult.get(a).get("V_JSQY_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_JSQY_NAME").toString());
+                rowgx.createCell((short) 10).setCellValue(workgxresult.get(a).get("V_AQSC_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_AQSC_NAME").toString());
+                rowgx.createCell((short) a).setCellStyle(styleOne);
+            }
+
+        }
+
+        //物料标题
+        HSSFRow rowMH= sheet.createRow((int) rowWF);
+        HSSFCell cellk = rowMH.createCell((short) 0);
+        cellk.setCellValue("4、物料信息：");
+        cellk.setCellStyle(styleTitle);
+
+        HSSFRow rowMtit= sheet.createRow((int) rowWF+1);
+        sheet.addMergedRegion(new CellRangeAddress(rowWF+1,rowWF+1,3,4));//row物料标题行
+        HSSFCell celll = rowMtit.createCell((short) 0);
+        celll.setCellValue("序号");
+        celll.setCellStyle(styleTwo);
+
+        celll = rowMtit.createCell((short) 1);celll.setCellValue("工序");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 2);celll.setCellValue("物料编码");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 3);celll.setCellValue("物料描述");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 5);celll.setCellValue("单位");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 6);celll.setCellValue("计划数量");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 7);celll.setCellValue("总金额");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 8);celll.setCellValue("实际金额");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 9);celll.setCellValue("实际总金额");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 10);celll.setCellValue("备注");celll.setCellStyle(styleTwo);
+
+        if(mmresult.size()>0){
+
+            int sizemat=mmresult.size()+rowWF;
+            int insize=rowWF+2;
+            for(int j=insize;j<sizemat;j++){
+                sheet.addMergedRegion(new CellRangeAddress(j,j,3,4));//row物料标题行
+                HSSFRow rowmat = sheet.createRow((int) j);
+                int b=j-rowWF-2;
+                rowmat.createCell((short) 0).setCellValue(workgxresult.get(b).get("sid").toString().equals("") ? "" :workgxresult.get(b).get("sid").toString());
+                rowmat.createCell((short) 1).setCellValue(workgxresult.get(b).get("V_ACTIVITY").toString().equals("") ? "" :workgxresult.get(b).get("V_ACTIVITY").toString());// map.get("FX_GUID").toString());
+                rowmat.createCell((short) 2).setCellValue(workgxresult.get(b).get("V_MATERIALCODE").toString().equals("") ? "" :workgxresult.get(b).get("V_MATERIALCODE").toString());
+                rowmat.createCell((short) 3).setCellValue(workgxresult.get(b).get("V_MATERIALNAME").toString().equals("") ? "" :workgxresult.get(b).get("V_MATERIALNAME").toString());
+                rowmat.createCell((short) 5).setCellValue(workgxresult.get(b).get("V_UNIT").toString().equals("") ? "" :workgxresult.get(b).get("V_UNIT").toString());
+                rowmat.createCell((short) 6).setCellValue(workgxresult.get(b).get("I_PLANAMOUNT").toString().equals("") ? "" :workgxresult.get(b).get("I_PLANAMOUNT").toString());
+                rowmat.createCell((short) 7).setCellValue(workgxresult.get(b).get("F_PLANMONEY").toString().equals("") ? "" :workgxresult.get(b).get("F_PLANMONEY").toString());
+                rowmat.createCell((short) 8).setCellValue(workgxresult.get(b).get("I_ACTUALAMOUNT").toString().equals("") ? "" :workgxresult.get(b).get("I_ACTUALAMOUNT").toString());
+                rowmat.createCell((short) 9).setCellValue(workgxresult.get(b).get("F_ACTUALMONEY").toString().equals("") ? "" :workgxresult.get(b).get("F_ACTUALMONEY").toString());
+                rowmat.createCell((short) 10).setCellValue(workgxresult.get(b).get("").toString().equals("") ? "" :workgxresult.get(b).get("").toString());
+                rowmat.createCell((short) b).setCellStyle(styleOne);
+            }
+
+        }
+        try {
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename="
+                    + URLEncoder.encode("工单打印Excel.xls", "UTF-8"));
+            OutputStream out = response.getOutputStream();
+
+            wb.write(out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

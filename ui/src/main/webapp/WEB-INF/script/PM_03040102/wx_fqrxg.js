@@ -287,7 +287,7 @@ Ext.onReady(function(){
                 text: '作废',
                 margin: '0 0 5 8',
                 iconCls: 'buy-button',
-                hidden:true,
+                // hidden:true,
                 icon:dxImgPath + '/back.png',
                 handler:btnFlowZF
             }
@@ -1963,7 +1963,7 @@ function btnFlowZF(){
                 async: false,
                 params: {
                     V_V_GUID: Guid,
-                    V_STATE:'-1'
+                    V_V_STATE:'-1'
                 },
                 success: function (response) {
                     var resp = Ext.decode(response.responseText);//后台返回的值

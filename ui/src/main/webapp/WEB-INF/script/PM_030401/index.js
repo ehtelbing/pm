@@ -711,7 +711,7 @@ function OnButtonDel() {
         return;
     } else {
         for (var k = 0; k < chodata.length; k++) {
-            if (chodata[k].data.V_STATE != '99' && chodata[k].data.V_STATE != '-1') {
+            if (chodata[k].data.V_STATE != '99' && chodata[k].data.V_STATE != '-1') {//&&chodata[k].data.V_STATE != '98'作废
                 alert('不是编辑和作废状态的数据，无法删除');
                 return false;
             }
