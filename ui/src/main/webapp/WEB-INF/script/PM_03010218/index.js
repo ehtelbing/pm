@@ -330,8 +330,7 @@ function OnBtnSxQx() {
         var GUID = Ext.getCmp('overhaulApplyPanel').getSelectionModel().getSelection()[0].data.V_GUID;
         var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth +
-            ',top=10px,left=10px,resizable=yes');
+        var ret = window.open(AppUrl + "page/PM_070201/index.html?V_GUID=" + GUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
     }
 }
 
@@ -366,8 +365,7 @@ function createWorkorder() {
                     param = "";
                 }
                 var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID + '&V_EQUTYPECODE=' + records[i].data.V_EQUTYPECODE + "&V_SOURCECODE=" + records
-                        [i].data.V_SOURCECODE + param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    + records[i].data.V_GUID + '&V_EQUTYPECODE=' + records[i].data.V_EQUTYPECODE + "&V_SOURCECODE=" + records[i].data.V_SOURCECODE + param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             } catch (e) {
                 var owidth = window.document.body.offsetWidth - 200;
@@ -378,8 +376,7 @@ function createWorkorder() {
                     param = "";
                 }
                 var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID='
-                    + records[i].data.V_GUID + "&V_SOURCECODE=" + records[i].data.V_SOURCECODE + '' + param, '', 'height=' + oheight +
-                    ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    + records[i].data.V_GUID + "&V_SOURCECODE=" + records[i].data.V_SOURCECODE + '' + param, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
             }
         } else {
@@ -394,7 +391,7 @@ function createWorkorder() {
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time = value.split('.')[0];
     //return time;
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 
@@ -425,8 +422,7 @@ function itemclick(s, record, item, index, e, eOpts) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
-        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth +
-        ',top=10px,left=10px,resizable=yes');
+        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }
 

@@ -344,10 +344,8 @@ Ext.onReady(function(){
         autoScroll:true,
         // selType:'checkboxmodel',
         tbar: [
-            {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField:
-                    'valueField',labelWidth: 90, margin: '10 0 5 10'},
-            {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField:
-                    'valueField',labelWidth: 90, margin: '10 0 5 10'},
+            {xtype:'combobox',id: 'mnf',allowBlank: false,fieldLabel: '年份',store: myearStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
+            {xtype:'combobox',id: 'myf',allowBlank: false,fieldLabel: '月份',store: monthStore,displayField: 'displayField',valueField: 'valueField',labelWidth: 90, margin: '10 0 5 10'},
             {xtype: 'textfield',id:'jhmc',fieldLabel: '计划名称',editable: false, margin: '10 0 0 5',labelWidth:55,width:205,value:''},
             {xtype: 'button', id:'monthsel',text: '查询', margin: '10 0 5 10',icon:imgpath + '/search.png',handler:query}
         ],
@@ -481,8 +479,7 @@ Ext.onReady(function(){
 function turnPage(){
     var owidth = window.document.body.offsetWidth - 550;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID
-        +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
+    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
         +"&WEEK=" + WEEK
         +'&startUpTime='+ startUpTime
         +'&endUpTime='+endUpTime,'','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
@@ -538,14 +535,12 @@ function delCorDefect(defGuid){
 }
 function rendererTime(value, metaData){
     metaData.style="text-align:right";
-    //return value.split(".")[0];
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
+    return value.split(".")[0];
 }
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style="text-align:right";
     var time=value.split('.')[0];
-    //return time;
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
+    return time;
 }
 function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
@@ -868,8 +863,7 @@ function weekReMonth(){
 function turnPage(){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID
-        +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
+    var ret = window.open(AppUrl + "page/PM_03010318/index.html?MONGUID="+MGUID +'&WEEKGUID='+WEEKGUID+'&WeekYear='+WeekYear+'&WeekMonth='+WeekMonth+'&WSIGN='+0
         +"&WEEK=" + WEEK
         +'&startUpTime='+ startUpTime
         +'&endUpTime='+endUpTime,'','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
@@ -922,8 +916,7 @@ function tbitemclick(s, record, item, index, e, eOpts) {
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
     var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
-        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth +
-        ',top=10px,left=10px,resizable=yes');
+        + Ext.getStore("gridStore").getAt(index).get("V_GUID"), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
 }
 function retClose(){

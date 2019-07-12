@@ -906,8 +906,7 @@ function saveOnButtonUp(){
         return false;
     }
     // for (var i = 0; i < records.length; i++) {
-    //     if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已
-    驳回') {
+    //     if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已驳回') {
     //         Ext.Msg.alert('提升信息', '此计划状态不能上报');
     //         return false;
     //     }
@@ -915,7 +914,7 @@ function saveOnButtonUp(){
     //
     //
     for(var i=0;i<records.length;i++){
-        nextper.push(records[i].data.V_PERSONCODE);
+       nextper.push(records[i].data.V_PERSONCODE);
     }
     var i_err = 0;
     // for (var i = 0; i < records.length; i++) {
@@ -943,28 +942,26 @@ function saveOnButtonUp(){
                             async: false,
                             method: 'post',
                             params: {
-                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code",
-                                    "flow_yj","flow_type","zyName"],
-                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审
-                                    批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01",records.list[i].V_REPAIRMAJOR_CODE],
-                        processKey: processKey,
-                            businessKey: records.list[i].V_SBB_GUID,
-                            V_STEPCODE: 'Start',
-                            V_STEPNAME:V_STEPNAME,// nextper,
-                            V_IDEA: '请审批！',
-                            V_NEXTPER:nextper,// Ext.getCmp('nextPer').getValue(),
-                            V_INPER: Ext.util.Cookies.get('v_personcode')
-                    },
-                        success: function (response) {
-                            if (Ext.decode(response.responseText).ret == 'OK') {
-                                Ext.getCmp('nextSprWind').close();
-                                query();
-                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                                i_err++;
-                                Ext.Msg.alert('提示', '流程发起失败'+i_err+'条！');
+                                parName: ["originator", "flow_businesskey", "Next_StepCode", "idea", "remark", "flow_code", "flow_yj","flow_type","zyName"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), records.list[i].V_SBB_GUID, V_NEXT_SETP+'List', "请审批!", records.list[i].V_CONTENT, records.list[i].V_MONTHID, "请审批！","MonthPlan01",records.list[i].V_REPAIRMAJOR_CODE],
+                                processKey: processKey,
+                                businessKey: records.list[i].V_SBB_GUID,
+                                V_STEPCODE: 'Start',
+                                V_STEPNAME:V_STEPNAME,// nextper,
+                                V_IDEA: '请审批！',
+                                V_NEXTPER:nextper,// Ext.getCmp('nextPer').getValue(),
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
+                            },
+                            success: function (response) {
+                                if (Ext.decode(response.responseText).ret == 'OK') {
+                                    Ext.getCmp('nextSprWind').close();
+                                    query();
+                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                    i_err++;
+                                    Ext.Msg.alert('提示', '流程发起失败'+i_err+'条！');
+                                }
                             }
-                        }
-                    });
+                        });
                         // i_err++;
                         // if (i_err == records.length) {
                         //     query();
@@ -975,7 +972,7 @@ function saveOnButtonUp(){
                 }
             });
         }
-        // Ext.Array.erase(nextper,0,nextper.length);
+       // Ext.Array.erase(nextper,0,nextper.length);
     }
     // }
     Ext.Array.erase(nextper,0,nextper.length);

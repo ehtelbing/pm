@@ -385,7 +385,7 @@ function createWorkorder(){
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time=value.split('.')[0];
     //return time;
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 
@@ -470,7 +470,7 @@ function Select(){
     var V_EQUTYPECODE=seldata[0].raw.V_EQUTYPECODE;;
     var V_EQUCODE=seldata[0].raw.V_EQUCODE;
     if (num == seldata.length) {
-        var owidth = window.document.body.offsetWidth - 550;
+        var owidth = window.document.body.offsetWidth - 200;
         var oheight = window.document.body.offsetHeight - 40;
         var ret = window.open(AppUrl + "page/PM_03010315/index.html?V_WEEKPLAN_GUID=" + V_WEEKPLAN_GUID +
             "&V_PLANTYPE=" + V_PLANTYPE +
