@@ -1482,10 +1482,10 @@ function _agree() {
                                 success: function (response) {
                                     Ext.getBody().unmask();
                                     var resp = Ext.decode(response.responseText);
-                                    if (resp.ret == '审批成功') {
+                                    if (resp.ret == '任务提交成功') {
                                         Ext.MessageBox.show({
                                             title: '提示',
-                                            msg: '任务提交成功',
+                                            msg: '审批成功',
                                             buttons: Ext.MessageBox.OK,
                                             fn: function () {
                                                 window.opener.QueryTab();

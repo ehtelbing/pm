@@ -949,7 +949,7 @@ function OnButtonUp() {
                 var i_err = 0;
                 for (var i = 0; i < records.length; i++) {
                     var vguid=records[i].get('V_GUID');
-                    var vfaultxx=records[i].get('V_FAULT_XX');
+                    var vfaultxx=records[i].get('V_FAULT_NAME');
                     var vfaultid=records[i].get('V_FAULTID');
                     Ext.Ajax.request({
                         url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_UP',
