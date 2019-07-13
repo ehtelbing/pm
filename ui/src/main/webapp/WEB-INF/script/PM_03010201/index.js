@@ -316,7 +316,6 @@ function query() {
      });*/
 }
 
-
 var northPanel = Ext.create('Ext.form.Panel', {
     region: 'north',
     frame: true,
@@ -333,7 +332,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             displayField: 'displayField',
             valueField: 'valueField',
             value: '',
@@ -349,7 +348,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 5',
             labelAlign: 'right',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             displayField: 'displayField',
             valueField: 'valueField',
             value: '',
@@ -363,7 +362,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: '',
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
@@ -377,7 +376,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: '',
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
@@ -392,7 +391,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: '',
             displayField: 'V_EQUTYPENAME',
             valueField: 'V_EQUTYPECODE',
@@ -408,7 +407,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: '',
             displayField: 'V_EQUNAME',
             valueField: 'V_EQUCODE',
@@ -423,7 +422,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: '',
             displayField: 'V_BASENAME',
             valueField: 'V_SPECIALTYCODE',
@@ -437,7 +436,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: '',
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
@@ -449,7 +448,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             fieldLabel: '检修内容',
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230
+            width: 250
         }, {
             xtype: 'combo',
             id: 'nextPer',
@@ -458,7 +457,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: '',
             displayField: 'V_PERSONNAME',
             valueField: 'V_PERSONCODE',
@@ -473,7 +472,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             readOnly: true,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 230,
+            width: 250,
             value: ''
         },
         {
@@ -547,7 +546,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             text: '上报',
             margin: '5 0 5 5',
-            icon: imgpath + '/accordion_expand.png',
+            icon: imgpath + '/accordion_collapse.png',
             handler: OnButtonUp
         }
         /*,{
@@ -567,6 +566,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
         }*/
     ]
 });
+
 var gridPanel = Ext.create('Ext.grid.Panel', {
     id: 'gridPanel',
     region: 'center',
@@ -578,12 +578,9 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATE',hidden:true},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
-        {text: '流程详细', dataIndex: 'V_ORDERID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx,
-                                                                                               colIdx, store, view) {return '<a href="javascript:_preViewProcess(\'' + record.data.V_GUID + '\')" >' + '详细' + '</a>';}},
-        {text: '缺陷详细', dataIndex: 'V_GUID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx,
-                                                                                            store, view) {return '<a href="javascript:OnLookDefect(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';}},
-        {text: '对应周计划', dataIndex: 'V_WEEKNUM', width: 100, align: 'center', renderer: function (value, metaData, record, rowIdx,
-                                                                                                 colIdx, store, view) {return record.data.V_WEEKNUM+' 条';}},
+        {text: '流程详细', dataIndex: 'V_ORDERID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:_preViewProcess(\'' + record.data.V_GUID + '\')" >' + '详细' + '</a>';}},
+        {text: '缺陷详细', dataIndex: 'V_GUID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:OnLookDefect(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';}},
+        {text: '对应周计划', dataIndex: 'V_WEEKNUM', width: 80, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return record.data.V_WEEKNUM+' 条';}},
         {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
         {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
@@ -765,8 +762,7 @@ Ext.onReady(function () {
 function OnLookDefect(MonthGuid){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03010201/LookDefet.html?V_V_GUID='+MonthGuid, '', 'height=' + oheight + ',width=' + owidth +
-        ',top=10px,left=10px,resizable=yes');
+    window.open(AppUrl + 'page/PM_03010201/LookDefet.html?V_V_GUID='+MonthGuid, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 }
 
 function getMonth(){
@@ -862,14 +858,12 @@ function OnButtonEditClicked() {
     console.log(seldata[0].data.V_STATE);
     if (seldata[0].data.V_STATE == 10 || seldata[0].data.V_STATE == 100) {
         V_MONTHPLAN_GUID = seldata[0].data.V_GUID;
-        // var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '',
-        'height=600px,width=1200px,top=50px,left=100px,resizable=no');
-var ret = window.open(AppUrl + 'page/PM_03010209/upMData.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID+'&MainMONTH='+Ext.getCmp
-    ("yf").getValue()
-    +'&MainYEAR='+Ext.getCmp("nf").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
-}else {
-    Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
-}
+        // var ret = window.open(AppUrl + 'page/PM_03010208/index.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID, '', 'height=600px,width=1200px,top=50px,left=100px,resizable=no');
+        var ret = window.open(AppUrl + 'page/PM_03010209/upMData.html?V_MONTHPLAN_GUID=' + V_MONTHPLAN_GUID+'&MainMONTH='+Ext.getCmp("yf").getValue()
+            +'&MainYEAR='+Ext.getCmp("nf").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+    }else {
+        Ext.Msg.alert('操作信息', '该流程已上报，无法修改！');
+    }
 
 }
 //作废
@@ -990,22 +984,6 @@ function OnButtonDeleteData(){
                         }
                     });
 
-                    //月计划缺陷状态关联删除
-                    Ext.Ajax.request({
-                        url: AppUrl + 'dxfile/PRO_PM_DEL_MONTH_RE_DEF',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            V_V_GUID:records[i].get('V_GUID')
-                        },
-                        success: function (response) {
-                            var resp = Ext.decode(response.responseText);//后台返回的值
-                            if (resp.RET == 'SUCCESS') {
-
-                            }
-                        }
-                    });
-
                     Ext.Ajax.request({
                         url: AppUrl + 'hp/PRO_PM_03_PLAN_MONTH_DELDATA',
                         method: 'POST',
@@ -1069,67 +1047,64 @@ function OnButtonUp() {
         return false;
     }
     for (var i = 0; i < records.length; i++) {
-        if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已驳
-            回') {
-        Ext.Msg.alert('提升信息', '此计划状态不能上报');
-        return false;
-    }
-}
-
-
-var i_err = 0;
-for (var i = 0; i < records.length; i++) {
-    Ext.Ajax.request({
-        url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_SEND',
-        method: 'POST',
-        async: false,
-        params: {
-            V_V_GUID: records[i].data.V_GUID,
-            V_V_ORGCODE: records[i].data.V_ORGCODE,
-            V_V_DEPTCODE: records[i].data.V_DEPTCODE,
-            V_V_FLOWCODE: records[i].data.V_FLOWCODE,
-            V_V_PLANTYPE: 'MONTH',
-            V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText).list[0];
-            if (resp.V_INFO != 'Fail') {
-
-                Ext.Ajax.request({
-                    url: AppUrl + 'Activiti/StratProcess',
-                    async: false,
-                    method: 'post',
-                    params: {
-                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code",
-                            "flow_yj","flow_type","zyName"],
-                        parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "
-                            请审批!", records[i].get('V_CONTENT'), records[i].get('V_MONTHID'), "请审批！","MonthPlan",records[i].get('V_REPAIRMAJOR_CODE')],
-                processKey: processKey,
-                    businessKey: records[i].get('V_GUID'),
-                    V_STEPCODE: 'Start',
-                    V_STEPNAME: V_STEPNAME,
-                    V_IDEA: '请审批！',
-                    V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                    V_INPER: Ext.util.Cookies.get('v_personcode')
-            },
-                success: function (response) {
-                    if (Ext.decode(response.responseText).ret == 'OK') {
-
-                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                        Ext.Msg.alert('提示', '该流程发起失败！');
-                    }
-                }
-            });
-                i_err++;
-                if (i_err == records.length) {
-                    query();
-                }
-            } else {
-                Ext.Msg.alert('提示', '上报失败！');
-            }
+        if (records[i].data.V_STATENAME == '审批中'|| records[i].data.V_STATENAME == '审批完成' || records[i].data.V_STATENAME == '已驳回') {
+            Ext.Msg.alert('提升信息', '此计划状态不能上报');
+            return false;
         }
-    });
-}
+    }
+
+
+    var i_err = 0;
+    for (var i = 0; i < records.length; i++) {
+        Ext.Ajax.request({
+            url: AppUrl + 'PM_03/PRO_PM_03_PLAN_MONTH_SEND',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: records[i].data.V_GUID,
+                V_V_ORGCODE: records[i].data.V_ORGCODE,
+                V_V_DEPTCODE: records[i].data.V_DEPTCODE,
+                V_V_FLOWCODE: records[i].data.V_FLOWCODE,
+                V_V_PLANTYPE: 'MONTH',
+                V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText).list[0];
+                if (resp.V_INFO != 'Fail') {
+
+                    Ext.Ajax.request({
+                        url: AppUrl + 'Activiti/StratProcess',
+                        async: false,
+                        method: 'post',
+                        params: {
+                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj","flow_type","zyName"],
+                            parVal: [Ext.util.Cookies.get('v_personcode'), records[i].get('V_GUID'), Ext.getCmp('nextPer').getValue(), "请审批!", records[i].get('V_CONTENT'), records[i].get('V_MONTHID'), "请审批！","MonthPlan",records[i].get('V_REPAIRMAJOR_CODE')],
+                            processKey: processKey,
+                            businessKey: records[i].get('V_GUID'),
+                            V_STEPCODE: 'Start',
+                            V_STEPNAME: V_STEPNAME,
+                            V_IDEA: '请审批！',
+                            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                            V_INPER: Ext.util.Cookies.get('v_personcode')
+                        },
+                        success: function (response) {
+                            if (Ext.decode(response.responseText).ret == 'OK') {
+
+                            } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                Ext.Msg.alert('提示', '该流程发起失败！');
+                            }
+                        }
+                    });
+                    i_err++;
+                    if (i_err == records.length) {
+                        query();
+                    }
+                } else {
+                    Ext.Msg.alert('提示', '上报失败！');
+                }
+            }
+        });
+    }
 
 }
 //截止上报时间
@@ -1198,8 +1173,7 @@ function _weekPlanDetail(monthGuid)
 
     var owidth = window.screen.availWidth-300;
     var oheight =  window.screen.availHeight - 500;
-    var ret = window.open(AppUrl + 'page/PM_03010201/weekdetail.html?monthGuid='+monthGuid, '', 'height='+ oheight +'px,width= '+ owidth
-        + 'px,top=50px,left=100px,resizable=yes');
+    var ret = window.open(AppUrl + 'page/PM_03010201/weekdetail.html?monthGuid='+monthGuid, '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 
 }
 //缺陷添加
@@ -1236,8 +1210,7 @@ function OnButtonDefectAddClicked() {
         "&YEAR=" + Ext.getCmp("nf").getValue() +
         "&MONTH=" + Ext.getCmp("yf").getValue() +
         "&V_ORGCODE=" + Ext.getCmp("jhck").getValue() +
-        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '',
-        'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
+        "&V_DEPTCODE=" + Ext.getCmp("jhzyq").getValue(), '', 'height=600px,width=1200px,top=50px,left=100px,resizable=yes');
     //                         }
     //                     } else {
     //                         alert("初始数据保存失败");
@@ -1331,8 +1304,7 @@ function createWorkorder() {
                                         });
 
                                     }
-                                    window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID +
-                                        "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
+                                    window.open(AppUrl + "page/pm_dxgc_orderEdit/index.html?V_V_ORDERGUID=" + V_V_ORDERGUID + "&V_V_SOURCECODE=" + V_V_SOURCECODE + '&V_V_EQUTYPE=' + V_V_EQUTYPE,
                                         "", "dialogHeight:700px;dialogWidth:1100px");
                                 }
                             }
@@ -1389,8 +1361,7 @@ function OnButtonAddFYear(){
     var year=Ext.getCmp("nf").getValue();
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    // window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
-    window.open(AppUrl + 'page/PM_03010201/newmadd.html?MainMONTH='
+    window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
         + Ext.getCmp('yf').getValue()
         +"&MainYEAR=" + year
         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
@@ -1398,7 +1369,6 @@ function OnButtonAddFYear(){
 
 //从备件添加缺陷
 function OnButtonBJAddClicked(){
-
 
     V_PLANTYPE = 'BJ';
     var ret = window.open(AppUrl + 'page/PM_03010220/index.html?Month=' + "" +

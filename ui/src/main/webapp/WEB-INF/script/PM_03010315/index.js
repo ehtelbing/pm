@@ -594,11 +594,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             listeners: {
                                 select: function (field, newValue, oldValue) {
                                     Ext.getCmp('jhtgdate').setMinValue(new Date(KSTIME));
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":"
-                                        + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
                                     var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":"
-                                        + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
                                     //Ext.getCmp('jhtgdate').setMinValue(new Date(KSTIME));
 
@@ -640,11 +638,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":"
-                                        + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
                                     var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":"
-                                        + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
 
 
@@ -686,11 +682,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":"
-                                        + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
                                     var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":"
-                                        + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
 
 
@@ -739,11 +733,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             value: '',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":"
-                                        + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
                                     var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":"
-                                        + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
 
 
@@ -785,11 +777,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":"
-                                        + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
                                     var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":"
-                                        + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
 
 
@@ -831,11 +821,9 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             queryMode: 'local',
                             listeners: {
                                 select: function (field, newValue, oldValue) {
-                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":"
-                                        + Ext.getCmp('jhtgminute').getValue() + ":00";
+                                    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
                                     var date11 = new Date(date1);
-                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":"
-                                        + Ext.getCmp('jhjgminute').getValue() + ":00";
+                                    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
                                     var date22 = new Date(date2);
 
 
@@ -887,6 +875,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                     ]
                 },
                 {layout: 'hbox',
+                    hidden:true,
                     defaults: {labelAlign: 'right'},
                     frame: true,
                     border: false,
@@ -904,6 +893,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             valueField: 'V_BH',
                             labelWidth: 80,
                             width: 280,
+                            hidden:true,
                             labelAlign : 'right'
                         },{
                             xtype : 'combo',
@@ -917,6 +907,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             margin: '5 0 5 5',
                             labelWidth: 55,
                             width: 255,
+                            hidden:true,
                             labelAlign : 'right',
                             listConfig:{
                                 minWidth:420
@@ -1039,29 +1030,29 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             allowNegative: false,
                             allowDecimals: false,
                             labelWidth: 80,
-                            width: 243,
+                            width: 245,
                             value: '0'
                         },{
                             xtype:'label',
                             text:"(小时）",
-                            margin: '5 0 0 5',
-                            width:55
+                            margin: '7 0 0 2',
+                            width:60
                         },
                         {
                             xtype: 'numberfield',
                             id: 'jjhour',
                             fieldLabel: '胶接时间',
                             labelAlign: 'right',
-                            margin: '5 0 0 7',
+                            margin: '5 0 0 2',
                             allowNegative: false,
                             allowDecimals: false,
                             labelWidth: 55,
-                            width: 192,
+                            width: 200,
                             value: '0'
                         },{
                             xtype:'label',
                             text:"(小时）",
-                            margin: '5 0 0 2',
+                            margin: '7 0 0 2',
                             width:60
                         }]
                 },
@@ -1088,7 +1079,7 @@ var editPanel = Ext.create('Ext.form.Panel', {
                         allowNegative: false,
                         allowDecimals: false,
                         labelWidth: 85,
-                        width: 220,
+                        width: 230,
                         value: '0'
                     },
                         {
@@ -1334,8 +1325,7 @@ function jhSelect() {
         + '&V_V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
         + '&V_V_EQUCODE=' + Ext.getCmp('sbmc').getValue()
         + '&V_V_ZY=' + Ext.getCmp('zy').getValue()
-        + '&V_V_JXNR=' + Ext.getCmp('jxnr').getValue(), '', 'height=' + oheight + ',width=' + owidth +
-        ',top=100px,left=100px,resizable=yes');
+        + '&V_V_JXNR=' + Ext.getCmp('jxnr').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 function mxSelect() {
     var owidth = window.document.body.offsetWidth - 200;
@@ -1343,8 +1333,7 @@ function mxSelect() {
     var ret = window.open(AppUrl + 'page/PM_03010312/index.html?V_ORGCODE=' + Ext.getCmp('ck').getValue()
         + '&V_DEPTCODE=' + Ext.getCmp('zyq').getValue()
         + '&V_EQUTYPE=' + Ext.getCmp('sblx').getValue()
-        + '&V_EQUCODE=' + Ext.getCmp('sbmc').getValue(), '', 'height=' + oheight + ',width=' + owidth +
-        ',top=100px,left=100px,resizable=yes');
+        + '&V_EQUCODE=' + Ext.getCmp('sbmc').getValue(), '', 'height=' + oheight + ',width=' + owidth + ',top=100px,left=100px,resizable=yes');
 }
 function getReturnJHXZ(retdata, type) {
     Ext.Ajax.request({
@@ -1514,195 +1503,193 @@ function OnButtonSaveClick() {
         method: 'POST',
         params: {
             V_V_INPER: Ext.util.Cookies.get('v_personcode'),               //人员cookies                                    //人员编码
-            V_V_GUID: V_WEEKPLAN_GUID,                         //季度计划guid                                                      //计
-            划GUID
+            V_V_GUID: V_WEEKPLAN_GUID,                         //季度计划guid                                                      //计划GUID
             V_V_YEAR: Ext.getCmp('year').getValue(),                        //年份                                            //年份
-        V_V_MONTH: Ext.getCmp('month').getValue(),                     //月份                                           //年份
-        V_V_WEEK: Ext.getCmp('week').getValue(),                      //周                                          //年份
-        V_V_ORGCODE: Ext.getCmp('ck').getValue(),                        //厂矿                                              //厂矿
-        V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),                      //作业区
-        V_V_EQUTYPECODE: Ext.getCmp('sblx').getValue(),                  //设备类型                                              //
-        设备类型编码
-    V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),                     //设备名称
-        V_V_REPAIRMAJOR_CODE: Ext.getCmp('zy').getValue(),              //检修专业
-        V_V_CONTENT: Ext.getCmp('jxnr').getValue(),                     //检修内容
-        V_V_STARTTIME: jhtgTime,                                       //开始时间
-        V_V_ENDTIME: jhjgTime,                                          //结束时间
-        V_V_OTHERPLAN_GUID: '',                                  //检修工序编码
-        V_V_OTHERPLAN_TYPE: '',                                  //检修模型编码
-        V_V_JHMX_GUID: '',                                          //检修标准
-        V_V_HOUR: Ext.getCmp('jhgshj').getValue(),
-        V_V_BZ: Ext.getCmp('bz').getValue(),
-        V_V_DEFECTGUID: '',
-        V_V_MAIN_DEFECT: Ext.getCmp('maindefect').getValue(),//主要缺陷
-        V_V_EXPECT_AGE: Ext.getCmp('expectage').getValue(),//预计寿命
-        V_V_REPAIR_PER: Ext.getCmp('repairper').getValue()//维修人数
+            V_V_MONTH: Ext.getCmp('month').getValue(),                     //月份                                           //年份
+            V_V_WEEK: Ext.getCmp('week').getValue(),                      //周                                          //年份
+            V_V_ORGCODE: Ext.getCmp('ck').getValue(),                        //厂矿                                              //厂矿
+            V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),                      //作业区
+            V_V_EQUTYPECODE: Ext.getCmp('sblx').getValue(),                  //设备类型                                              //设备类型编码
+            V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),                     //设备名称
+            V_V_REPAIRMAJOR_CODE: Ext.getCmp('zy').getValue(),              //检修专业
+            V_V_CONTENT: Ext.getCmp('jxnr').getValue(),                     //检修内容
+            V_V_STARTTIME: jhtgTime,                                       //开始时间
+            V_V_ENDTIME: jhjgTime,                                          //结束时间
+            V_V_OTHERPLAN_GUID: '',                                  //检修工序编码
+            V_V_OTHERPLAN_TYPE: '',                                  //检修模型编码
+            V_V_JHMX_GUID: '',                                          //检修标准
+            V_V_HOUR: Ext.getCmp('jhgshj').getValue(),
+            V_V_BZ: Ext.getCmp('bz').getValue(),
+            V_V_DEFECTGUID: '',
+            V_V_MAIN_DEFECT: Ext.getCmp('maindefect').getValue(),//主要缺陷
+            V_V_EXPECT_AGE: Ext.getCmp('expectage').getValue(),//预计寿命
+            V_V_REPAIR_PER: Ext.getCmp('repairper').getValue()//维修人数
 
-        //--update 2018-1113
-        , V_V_PDC:Ext.getCmp('pdc').getValue(), //皮带周长
-        V_V_GYYQ:Ext.getCmp('gyyq').getValue(),//工艺要求
-        V_V_CHANGPDC:Ext.getCmp('changpdc').getValue(), //更换皮带长度
-        V_V_JXHOUR:Ext.getCmp('jxhour').getValue(),//检修时间
-        V_V_JJHOUR:Ext.getCmp('jjhour').getValue(),//接胶时间
-        V_V_TELNAME:Ext.getCmp('telname').getValue(),//联系人姓名
-        V_V_TELNUMB:Ext.getCmp('telnumb').getValue(),//联系人电话
-        V_V_PDGG:Ext.getCmp('pdgg').getValue()//皮带规格
+            //--update 2018-1113
+            , V_V_PDC:Ext.getCmp('pdc').getValue(), //皮带周长
+            V_V_GYYQ:Ext.getCmp('gyyq').getValue(),//工艺要求
+            V_V_CHANGPDC:Ext.getCmp('changpdc').getValue(), //更换皮带长度
+            V_V_JXHOUR:Ext.getCmp('jxhour').getValue(),//检修时间
+            V_V_JJHOUR:Ext.getCmp('jjhour').getValue(),//接胶时间
+            V_V_TELNAME:Ext.getCmp('telname').getValue(),//联系人姓名
+            V_V_TELNUMB:Ext.getCmp('telnumb').getValue(),//联系人电话
+            V_V_PDGG:Ext.getCmp('pdgg').getValue()//皮带规格
 
-        , V_V_THICKNESS:Ext.getCmp('hd').getValue(),  //厚度
-        V_V_REASON:Ext.getCmp('sgyy').getValue(),  //--施工原因
-        V_V_EVERTIME:Ext.Date.format(Ext.getCmp('evertime').getValue(),'Y/m/d').toString(),  //上次施工时间
-        //end up
-        //-2018-1113
-        V_V_FLAG:Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,
-        V_V_RDEPATCODE:Ext.getCmp('sgfs').getValue(),
-        V_V_RDEPATNAME:Ext.getCmp('sgfs').getDisplayValue(),
-        V_V_SGWAY:Ext.getCmp('repairDept').getValue(),
-        V_V_SGWAYNAME:Ext.getCmp('repairDept').getDisplayValue(),
-        //cxy2019/2/26
-        V_V_OPERANAME:Ext.getCmp('gx').getValue()  //工序
-},
-    success: function (ret) {
-        var resp = Ext.decode(ret.responseText);
-        if (resp.V_INFO == '成功') {
-            //检修模型管理
-            /*Ext.Ajax.request({
-             method: 'POST',
-             async: false,
-             url: AppUrl + 'basic/PM_1917_JXMX_DATA_SET',
-             params: {
-             V_V_JXMX_CODE:V_JXMX_CODE,
-             V_V_JXMX_NAME: Ext.getCmp('sbmc').getRawValue(),
-             V_V_ORGCODE: Ext.getCmp('ck').getValue(),
-             V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
-             V_V_EQUTYPECODE: Ext.getCmp('sblx').getValue(),
-             V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
-             V_V_EQUCODE_CHILD: '%',
-             V_V_REPAIRMAJOR_CODE:Ext.getCmp('zy').getValue(),
-             V_V_BZ:Ext.getCmp('bz').getValue(),
-             V_V_HOUR:Ext.getCmp('jhgshj').getValue(),
-             V_V_IN_PER: Ext.util.Cookies.get('v_personcode'),
-             V_V_IN_DATE: Ext.util.Format.date(new Date(), 'Y-m-d')
-             },
-             success: function (response) {
-             var resp = Ext.decode(response.responseText);
-             //检修工序管理
-             Ext.Ajax.request({
-             url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_SET',
-             method: 'POST',
-             async: false,
-             params: {
-             V_V_JXGX_CODE:V_JXGX_CODE,
-             V_V_JXGX_NAME: "月计划检修工序",
-             V_V_JXGX_NR: Ext.getCmp('jxnr').getValue(),
-             V_V_GZZX_CODE:'',
-             V_V_JXMX_CODE:resp.list[0].V_INFO,
-             V_V_ORDER: '1',//排序
-             V_V_PERNUM:'0',//检修额定人数
-             V_V_PERTIME: Ext.util.Format.date(new Date(), 'Y-m-d')//检修额定时间
-             },
-             success: function (ret) {}
-             });
-             }
-             });*/
-            //Ext.Msg.alert('操作信息', '保存成功');
+            , V_V_THICKNESS:Ext.getCmp('hd').getValue(),  //厚度
+            V_V_REASON:Ext.getCmp('sgyy').getValue(),  //--施工原因
+            V_V_EVERTIME:Ext.Date.format(Ext.getCmp('evertime').getValue(),'Y/m/d').toString(),  //上次施工时间
+            //end up
+            //-2018-1113
+            V_V_FLAG:Ext.getCmp('iflag').getValue()==false?Ext.getCmp('iflag').uncheckedValue:Ext.getCmp('iflag').inputValue,
+            V_V_RDEPATCODE:Ext.getCmp('sgfs').getValue(),
+            V_V_RDEPATNAME:Ext.getCmp('sgfs').getDisplayValue(),
+            V_V_SGWAY:Ext.getCmp('repairDept').getValue(),
+            V_V_SGWAYNAME:Ext.getCmp('repairDept').getDisplayValue(),
+            //cxy2019/2/26
+            V_V_OPERANAME:Ext.getCmp('gx').getValue()  //工序
+        },
+        success: function (ret) {
+            var resp = Ext.decode(ret.responseText);
+            if (resp.V_INFO == '成功') {
+                //检修模型管理
+                /*Ext.Ajax.request({
+                 method: 'POST',
+                 async: false,
+                 url: AppUrl + 'basic/PM_1917_JXMX_DATA_SET',
+                 params: {
+                 V_V_JXMX_CODE:V_JXMX_CODE,
+                 V_V_JXMX_NAME: Ext.getCmp('sbmc').getRawValue(),
+                 V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+                 V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
+                 V_V_EQUTYPECODE: Ext.getCmp('sblx').getValue(),
+                 V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
+                 V_V_EQUCODE_CHILD: '%',
+                 V_V_REPAIRMAJOR_CODE:Ext.getCmp('zy').getValue(),
+                 V_V_BZ:Ext.getCmp('bz').getValue(),
+                 V_V_HOUR:Ext.getCmp('jhgshj').getValue(),
+                 V_V_IN_PER: Ext.util.Cookies.get('v_personcode'),
+                 V_V_IN_DATE: Ext.util.Format.date(new Date(), 'Y-m-d')
+                 },
+                 success: function (response) {
+                 var resp = Ext.decode(response.responseText);
+                 //检修工序管理
+                 Ext.Ajax.request({
+                 url: AppUrl + 'pm_19/PM_1917_JXGX_DATA_SET',
+                 method: 'POST',
+                 async: false,
+                 params: {
+                 V_V_JXGX_CODE:V_JXGX_CODE,
+                 V_V_JXGX_NAME: "月计划检修工序",
+                 V_V_JXGX_NR: Ext.getCmp('jxnr').getValue(),
+                 V_V_GZZX_CODE:'',
+                 V_V_JXMX_CODE:resp.list[0].V_INFO,
+                 V_V_ORDER: '1',//排序
+                 V_V_PERNUM:'0',//检修额定人数
+                 V_V_PERTIME: Ext.util.Format.date(new Date(), 'Y-m-d')//检修额定时间
+                 },
+                 success: function (ret) {}
+                 });
+                 }
+                 });*/
+                //Ext.Msg.alert('操作信息', '保存成功');
 
-            //缺陷详细添加，缺陷状态变更为已计划
-            var weekid='0';
-            Ext.Ajax.request({//获取V_WEEKID
-                url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
-                },
-                success: function (resp) {
-                    var resp = Ext.decode(resp.responseText);
+                //缺陷详细添加，缺陷状态变更为已计划
+                var weekid='0';
+                Ext.Ajax.request({//获取V_WEEKID
+                    url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_GET',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_WEEKPLAN_GUID: V_WEEKPLAN_GUID
+                    },
+                    success: function (resp) {
+                        var resp = Ext.decode(resp.responseText);
 
-                    if (resp.list.length == 1) {
-                        weekid=resp.list[0].V_WEEKID;
+                        if (resp.list.length == 1) {
+                            weekid=resp.list[0].V_WEEKID;
+                        }
                     }
-                }
-            });
+                });
 
-            Ext.Ajax.request({//获取所选缺陷GUID
-                url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SEL',
-                method: 'POST',
-                async: false,
-                params: {
-                    V_V_WEEK_GUID: V_WEEKPLAN_GUID
-                },
-                success: function (resp) {
-                    var respguid = Ext.decode(resp.responseText);
+                Ext.Ajax.request({//获取所选缺陷GUID
+                    url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SEL',
+                    method: 'POST',
+                    async: false,
+                    params: {
+                        V_V_WEEK_GUID: V_WEEKPLAN_GUID
+                    },
+                    success: function (resp) {
+                        var respguid = Ext.decode(resp.responseText);
 
-                    if (respguid.list.length >0) {
-                        retlen=respguid.list.length;
-                        for(var i=0;i<respguid.list.length;i++)
-                        {
-                            Ext.Ajax.request({//保存缺陷详细日志
-                                url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
-                                method: 'POST',
-                                async: false,
-                                params: {
-                                    V_V_GUID: respguid.list[i].V_DEFECT_GUID,
-                                    V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+':缺陷导入周计划（'+weekid+'）',
-                                    V_V_FINISHCODE: '30',
-                                    V_V_KEY:''//缺陷guid
+                        if (respguid.list.length >0) {
+                            retlen=respguid.list.length;
+                            for(var i=0;i<respguid.list.length;i++)
+                            {
+                                Ext.Ajax.request({//保存缺陷详细日志
+                                    url: AppUrl + 'cjy/PRO_PM_DEFECT_LOG_SET',
+                                    method: 'POST',
+                                    async: false,
+                                    params: {
+                                        V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                        V_V_LOGREMARK: Ext.util.Cookies.get('v_personname2')+':缺陷导入周计划（'+weekid+'）',
+                                        V_V_FINISHCODE: '30',
+                                        V_V_KEY:''//缺陷guid
 
-                                },
-                                success: function (ret) {
-                                    var resp = Ext.decode(ret.responseText);
-                                    if(resp.V_INFO=='成功'){
-                                        //修改缺陷状态
-                                        Ext.Ajax.request({
-                                            url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
-                                            method: 'POST',
-                                            async: false,
-                                            params: {
-                                                V_V_GUID: respguid.list[i].V_DEFECT_GUID,
-                                                V_V_STATECODE: '50'//,已计划
+                                    },
+                                    success: function (ret) {
+                                        var resp = Ext.decode(ret.responseText);
+                                        if(resp.V_INFO=='成功'){
+                                            //修改缺陷状态
+                                            Ext.Ajax.request({
+                                                url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
+                                                method: 'POST',
+                                                async: false,
+                                                params: {
+                                                    V_V_GUID: respguid.list[i].V_DEFECT_GUID,
+                                                    V_V_STATECODE: '50'//,已计划
 
-                                            },
-                                            success: function (ret) {
-                                                var resp = Ext.decode(ret.responseText);
-                                                if(resp.V_INFO=='success'){
-                                                    sdefnum++;
+                                                },
+                                                success: function (ret) {
+                                                    var resp = Ext.decode(ret.responseText);
+                                                    if(resp.V_INFO=='success'){
+                                                        sdefnum++;
 
-                                                }else{
-                                                    alert("修改缺陷状态失败");
+                                                    }else{
+                                                        alert("修改缺陷状态失败");
+                                                    }
+
                                                 }
+                                            });
 
-                                            }
-                                        });
+                                        }else{
+                                            alert("缺陷日志记录失败");
+                                        }
 
-                                    }else{
-                                        alert("缺陷日志记录失败");
                                     }
+                                });
+                            }
+                            if(sdefnum==retlen){
+                                alert('周计划保存成功');
+                                window.opener.Winclose();
+                                window.close();
+                            }
 
-                                }
-                            });
+                        }else{
+
+                            alert("缺陷日志添加错误");
                         }
-                        if(sdefnum==retlen){
-                            alert('周计划保存成功');
-                            window.opener.Winclose();
-                            window.close();
-                        }
-
-                    }else{
-
-                        alert("缺陷日志添加错误");
                     }
-                }
-            });
+                });
 
 
-            window.close();
-            window.opener.closeSelf();
-        } else {
-            Ext.Msg.alert('操作信息', resp.V_INFO);
+                window.close();
+                window.opener.closeSelf();
+            } else {
+                Ext.Msg.alert('操作信息', resp.V_INFO);
+            }
+
         }
-
-    }
-});
+    });
 }
 function OnButtonCancelClick() {
     window.opener.query();
@@ -1710,11 +1697,9 @@ function OnButtonCancelClick() {
 }
 
 function _gongshiheji() {
-    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp
-    ('jhtgminute').getValue() + ":00";
+    var date1 = Ext.getCmp('jhtgdate').getSubmitValue() + " " + Ext.getCmp('jhtghour').getValue() + ":" + Ext.getCmp('jhtgminute').getValue() + ":00";
     var date11 = new Date(date1);
-    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp
-    ('jhjgminute').getValue() + ":00";
+    var date2 = Ext.getCmp('jhjgdate').getSubmitValue() + " " + Ext.getCmp('jhjghour').getValue() + ":" + Ext.getCmp('jhjgminute').getValue() + ":00";
     var date22 = new Date(date2);
 
 

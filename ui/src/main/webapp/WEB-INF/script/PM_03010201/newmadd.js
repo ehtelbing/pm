@@ -7,7 +7,6 @@ var MainYEAR="";
 var monthGuid="";
 var retEquDif="";
 var YCK="";
-var wxqx="";
 if(location.href.split("?")[1]!=undefined){
     MainMONTH=Ext.urlDecode(location.href.split('?')[1]).MainMONTH;
     MainYEAR=Ext.urlDecode(location.href.split('?')[1]).MainYEAR;
@@ -26,7 +25,6 @@ var yearStore=Ext.create('Ext.data.Store',{
 });
 
 Ext.onReady(function(){
-    Ext.QuickTips.init();
     //年计划关联缺陷查找
     var ygridStore = Ext.create('Ext.data.Store', {
         id: 'ygridStore',
@@ -79,8 +77,7 @@ Ext.onReady(function(){
     var wxqxGridStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'wxqxGridStore',
-        fields: ['YEAR_GUID', 'DEFECT_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_SOURCENAME', 'V_DEFECTLIST',
-            'D_DEFECTDATE','WBSCODE','WBSNAME'],
+        fields: ['YEAR_GUID', 'DEFECT_GUID', 'V_EQUCODE', 'V_EQUNAME', 'V_SOURCENAME', 'V_DEFECTLIST', 'D_DEFECTDATE','WBSCODE','WBSNAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -211,7 +208,7 @@ Ext.onReady(function(){
         region:'center',
         split: true,
         width:'45%',
-        //frame:true,
+        frame:true,
         border:false,
         title:'已选择缺陷',
         items:[hChoGrid]
@@ -270,7 +267,7 @@ Ext.onReady(function(){
         region:'east',
         width:'45%',
         split: true,
-        //frame:true,
+        frame:true,
         border:false,
         title:'计划关联的缺陷',
         // items:[mdGridPanel]
@@ -375,13 +372,13 @@ Ext.onReady(function(){
         border: true,
         selType: 'checkboxmodel',
         columns: [
-            {xtype: 'rownumberer', text: '序号', width: 70, align: 'center'},
-            {text:'设备code',width:200,dataIndex:'V_EQUCODE',hidden:true},
-            {text: '设备名称', width: 200, dataIndex: 'V_EQUNAME', align: 'center',renderer: atleft},
+            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {text:'设备code',width:140,dataIndex:'V_EQUCODE',hidden:true},
+            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center'},
 
-            {text: '缺陷类型', width: 200, dataIndex: 'V_SOURCENAME', align: 'center',renderer: atleft},
-            {text: '缺陷内容', width: 350, dataIndex: 'V_DEFECTLIST', align: 'center',renderer: atleft},
-            {text: '缺陷日期', width: 200, dataIndex: 'D_DEFECTDATE', align: 'center',renderer: atleft}
+            {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'center'},
+            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center'},
+            {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center'}
         ],
         tbar:[ {id: 'qxzt', xtype: 'combo', store: sqxzt, editable: false, fieldLabel: '缺陷类型', labelWidth:70, width: 180,
             displayField: 'V_SOURCENAME', valueField: 'V_SOURCECODE', queryMode: 'local', baseCls: 'margin-bottom'},
@@ -564,9 +561,8 @@ function saveMonth(){
     // var owidth = window.screen.availWidth-300;
     // var oheight =  window.screen.availHeight - 500;
     // var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-    //     +'&MainYEAR='+MainYEAR+'&monthGuid='+'0', '', 'height='+ oheight +'px,width= '+ owidth +
-    'px,top=50px,left=100px,resizable=yes');
-// }
+    //     +'&MainYEAR='+MainYEAR+'&monthGuid='+'0', '', 'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
+    // }
 
 }
 //维修计划查询
@@ -817,11 +813,6 @@ function delCorDefect(defGuid){
     });
 
 }
-
-function atleft(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:left;";
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
-}
 function otherdefsel(){
     var gridStore = Ext.data.StoreManager.lookup('qxAddStore');
     gridStore.proxy.extraParams = {
@@ -835,14 +826,12 @@ function otherdefsel(){
     gridStore.load();
 }
 function turnPage(){
-    wxqx="1";
     var owidth = window.screen.availWidth-300;
     var oheight =  window.screen.availHeight - 500;
     var ret = window.open(AppUrl + 'page/PM_03010209/index.html?yearGuid='+YEARGUID+'&MainMONTH='+MainMONTH
-        +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+wxqx, '',
+        +'&MainYEAR='+MainYEAR+'&monthGuid='+monthGuid+'&wxqx='+'1', '',
         'height='+ oheight +'px,width= '+ owidth + 'px,top=50px,left=100px,resizable=yes');
 }
-
 function action1(tab) {
     tab.on('activate', function (tab) {
 
@@ -870,4 +859,3 @@ function choequ(equcode){
  *月计划缺陷直接添加写入 PM_DEFECTTOWORKORDER 表格
  * 月计划关联年计划写入表格 YEAR_TO_MONTH
  */
-
