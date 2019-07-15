@@ -59,7 +59,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var sqxzt = Ext.create("Ext.data.Store", {
@@ -422,7 +422,7 @@ function createWorkorder(){
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time=value.split('.')[0];
-    return time;
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 
