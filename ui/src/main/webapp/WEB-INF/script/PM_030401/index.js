@@ -297,12 +297,12 @@ Ext.onReady(function () {
                 labelWidth: 70,
                 labelAlign: 'right'
             }, {
-                xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 2, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
+                xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
                 items: [
                     {
                         xtype: 'button',
                         text: '查询',
-                        style: 'margin:5px 0 5px 5px',
+                        style: 'margin:5px 0 5px 50px',
                         icon: imgpath + '/search.png',
                         listeners: {click: OnButtonQuery}
                     }, {
