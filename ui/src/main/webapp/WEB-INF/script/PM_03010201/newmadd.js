@@ -373,7 +373,7 @@ Ext.onReady(function(){
         border: true,
         selType: 'checkboxmodel',
         columns: [
-            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            {xtype: 'rownumberer', text: '序号', width: 55, align: 'center'},
             {text:'设备code',width:200,dataIndex:'V_EQUCODE',hidden:true},
             {text: '设备名称', width: 200, dataIndex: 'V_EQUNAME', align: 'center',renderer: atleft},
 
