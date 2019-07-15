@@ -25,6 +25,7 @@ var yearStore=Ext.create('Ext.data.Store',{
 });
 
 Ext.onReady(function(){
+    Ext.QuickTips.init();
     //年计划关联缺陷查找
     var ygridStore = Ext.create('Ext.data.Store', {
         id: 'ygridStore',
@@ -208,7 +209,7 @@ Ext.onReady(function(){
         region:'center',
         split: true,
         width:'45%',
-        frame:true,
+        //frame:true,
         border:false,
         title:'已选择缺陷',
         items:[hChoGrid]
@@ -267,7 +268,7 @@ Ext.onReady(function(){
         region:'east',
         width:'45%',
         split: true,
-        frame:true,
+        //frame:true,
         border:false,
         title:'计划关联的缺陷',
         // items:[mdGridPanel]
@@ -373,12 +374,12 @@ Ext.onReady(function(){
         selType: 'checkboxmodel',
         columns: [
             {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text:'设备code',width:140,dataIndex:'V_EQUCODE',hidden:true},
-            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center'},
+            {text:'设备code',width:200,dataIndex:'V_EQUCODE',hidden:true},
+            {text: '设备名称', width: 200, dataIndex: 'V_EQUNAME', align: 'center',renderer: atleft},
 
-            {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'center'},
-            {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center'},
-            {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center'}
+            {text: '缺陷类型', width: 200, dataIndex: 'V_SOURCENAME', align: 'center',renderer: atleft},
+            {text: '缺陷内容', width: 400, dataIndex: 'V_DEFECTLIST', align: 'center',renderer: atleft},
+            {text: '缺陷日期', width: 200, dataIndex: 'D_DEFECTDATE', align: 'center',renderer: atleft}
         ],
         tbar:[ {id: 'qxzt', xtype: 'combo', store: sqxzt, editable: false, fieldLabel: '缺陷类型', labelWidth:70, width: 180,
             displayField: 'V_SOURCENAME', valueField: 'V_SOURCECODE', queryMode: 'local', baseCls: 'margin-bottom'},
@@ -437,6 +438,10 @@ Ext.onReady(function(){
     haveChocieS();
 
 });
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function timeTurn(value,metaData,recode,store){
     metaData.style="text-align:center";
     var val=value.toString().substring(0,10);
@@ -457,9 +462,11 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
         return '<div data-qtip="' + value + '" ></div>';
     }
     else{
-        return '<div data-qtip="' + value + '" >' + value + '</div>';
+        var val=value.toString();
+        return '<div data-qtip="' + val + '" >' + val + '</div>';
     }
 }
+
 //月计划查询
 function selFinishYear(){
     Ext.data.StoreManager.lookup("ygridStore").load({
@@ -813,6 +820,7 @@ function delCorDefect(defGuid){
     });
 
 }
+
 function otherdefsel(){
     var gridStore = Ext.data.StoreManager.lookup('qxAddStore');
     gridStore.proxy.extraParams = {
