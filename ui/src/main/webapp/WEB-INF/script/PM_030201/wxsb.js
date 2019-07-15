@@ -500,6 +500,7 @@ function selectGridTurn(){
 
 function OnButtonUp(){
     var wxGuidArr=[];
+    var num=0;
     var chodata = Ext.getCmp('grid').getSelectionModel().getSelection();
     if(chodata.length<=0){
         return false;
@@ -531,13 +532,16 @@ function OnButtonUp(){
                         success: function (resp) {
                             var resp = Ext.decode(resp.responseText);
                             if (resp.V_INFO == 'SUCCESS') {
-                                alert('上报成功！');
-                                wxGuidArr.splice(0,wxGuidArr.length);
-                                console.log(wxGuidArr);
-                                OnButtonQuery();
+                                ++num;
                             }
                         }
                     });
+                }
+                if(num==wxGuidArr.length){
+                    alert('上报成功！');
+                    wxGuidArr.splice(0,wxGuidArr.length);
+                    console.log(wxGuidArr);
+                    OnButtonQuery();
                 }
 
             }
