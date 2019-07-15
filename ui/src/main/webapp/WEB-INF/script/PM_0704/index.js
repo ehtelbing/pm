@@ -282,7 +282,6 @@ Ext.onReady(function() {
                 align : 'center',
                 width : 100,
                 dataIndex : '月份',
-                hidden : true,
                 renderer : left
             }, {
                 text : '缺陷数量',

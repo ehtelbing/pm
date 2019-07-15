@@ -666,3 +666,7 @@ function MoreAcceptBill() {
         });
     }
 }
+
+function btnAnZhuang(){
+    location.href = AppUrl + "resources/install_lodop32.exe";
+}
