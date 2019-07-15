@@ -153,10 +153,12 @@ Ext.onReady(function () {
         }, {
             xtype: 'button',
             text: '查询',
+            margin: '5 0 5 5',
             handler: _selectOverhaulApply
         }, {
             xtype: 'button',
             text: '选择',
+            margin: '5 0 5 5',
             handler: Select
         }]
     });
@@ -186,7 +188,7 @@ Ext.onReady(function () {
                 text: '维修工程项目名称',
                 dataIndex: 'WBSNAME',
                 align: 'center',
-                width: 100,
+                width: 150,
                 renderer: CreateGridColumnTd
             },
             /* {
@@ -249,6 +251,7 @@ Ext.onReady(function () {
                 text: '处理意见',
                 dataIndex: 'V_IDEA',
                 align: 'center',
+                width: 150,
                 renderer: CreateGridColumnTd
             }],
         listeners: {
