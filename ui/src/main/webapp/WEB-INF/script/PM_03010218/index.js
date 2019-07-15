@@ -188,7 +188,7 @@ Ext.onReady(function () {
                 text: '维修工程项目名称',
                 dataIndex: 'WBSNAME',
                 align: 'center',
-                width: 150,
+                width: 200,
                 renderer: CreateGridColumnTd
             },
             /* {
@@ -209,13 +209,13 @@ Ext.onReady(function () {
                 text: '缺陷状态',
                 dataIndex: 'V_STATENAME',
                 align: 'center',
-                width: 100,
+                width: 150,
                 renderer: CreateGridColumnTd
             }, {
                 text: '缺陷类型',
                 dataIndex: 'V_SOURCENAME',
                 align: 'center',
-                width: 100,
+                width: 150,
                 renderer: CreateGridColumnTd
             }, {
                 text: '缺陷日期',
