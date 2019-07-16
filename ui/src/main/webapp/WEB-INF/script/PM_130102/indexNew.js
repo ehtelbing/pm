@@ -226,8 +226,8 @@
                 xtype: 'button',
                 text: '导出Excel',
                 width: 100,
-                style: 'margin:5px 0px 5px 20px',
-                icon: imgpath + '/search.png',
+                style: 'margin:5px 0px 5px 5px',
+                icon: imgpath + '/excel.gif',
                 listeners: {
                     click: OnExcelButtonClicked
                 }
@@ -242,14 +242,14 @@
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', width: 30, sortable: false},
-            {text: '部门名称', dataIndex: 'V_DEPTNAME', width: 100, align: 'center', width: 100},
-            {text: '设备名称', dataIndex: 'V_EQUNAME', width: 100, align: 'center', width: 100},
-            {text: '装置名称', dataIndex: 'V_SETNAME', width: 100, align: 'center', width: 100},
+            {text: '部门名称', dataIndex: 'V_DEPTNAME', width: 100, align: 'center', width: 130},
+            {text: '设备名称', dataIndex: 'V_EQUNAME', width: 100, align: 'center', width: 130},
+            {text: '装置名称', dataIndex: 'V_SETNAME', width: 100, align: 'center', width: 140},
             {text: '给油脂场所', dataIndex: 'V_LUBADDRESS', width: 100, align: 'center', width: 150},
-            {text: '润滑方式', dataIndex: 'V_LUBMODE', width: 100, align: 'center', width: 100},
+            {text: '润滑方式', dataIndex: 'V_LUBMODE', width: 100, align: 'center', width: 140},
             {text: '润滑牌号', dataIndex: 'V_LUBTRADEMARK', width: 100, align: 'center', width: 100},
-            {text: '润滑点数', dataIndex: 'F_LUBCOUNT', width: 100, align: 'center', width: 100},
-            {text: '加油量', dataIndex: 'F_OILAMOUNT', width: 100, align: 'center', width: 100},
+            {text: '润滑点数', dataIndex: 'F_LUBCOUNT', width: 100, align: 'center', width: 140},
+            {text: '加油量', dataIndex: 'F_OILAMOUNT', width: 100, align: 'center', width: 140},
             {text: '单位', dataIndex: 'I_UNIT', width: 50, align: 'center', width: 100},
             {
                 text: '加油时间', width: 160, dataIndex: 'D_OPERATEDATE', align: 'center',
@@ -262,7 +262,7 @@
                 }
             },
             {text: '加油人员', dataIndex: 'V_OPERATEPERSON', width: 100, align: 'center', width: 100},
-            {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 300}/*,
+            {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 250}/*,
             {text: '类型', dataIndex: 'V_ADDORCHANGE', align: 'center', width: 100}*/
 
 
