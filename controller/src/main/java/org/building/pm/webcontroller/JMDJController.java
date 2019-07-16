@@ -45,13 +45,27 @@ public class JMDJController {
             List<Map> list = new ArrayList<Map>();
             while (iter.hasNext()) {
                 Element recordEle = (Element) iter.next(); // 输出下一行
-                String str=recordEle.elementTextTrim("vch_departName");
-                if(str.equals("齐大山铁矿")||str.equals("齐大山选矿厂")||str.equals("大孤山球团厂")
-                        ||str.equals("大孤山铁矿")||str.equals("眼前山铁矿")||str.equals("鞍千矿业公司")
-                        ||str.equals("东鞍山烧结厂")){
+                String str=recordEle.elementTextTrim("vch_departCode");
+                if(str.equals("9905")||str.equals("9908")||str.equals("9907")
+                        ||str.equals("9902")||str.equals("9904")||str.equals("9906")
+                        ||str.equals("9910")){
                     Map M = new HashMap();
                     M.put("code",recordEle.elementTextTrim("vch_departCode"));
-                    M.put("name",recordEle.elementTextTrim("vch_departName"));
+                    if(str.equals("9906")){
+                        M.put("name","鞍千");
+                    }else if(str.equals("9905")){
+                        M.put("name","齐矿");
+                    }else if(str.equals("9908")){
+                        M.put("name","齐选");
+                    }else if(str.equals("9907")){
+                        M.put("name","大球");
+                    }else if(str.equals("9902")){
+                        M.put("name","大矿");
+                    }else if(str.equals("9904")){
+                        M.put("name","眼矿");
+                    }else if(str.equals("9910")){
+                        M.put("name","东烧");
+                    }
                     M.put("jhn", recordEle.elementTextTrim("i_check_number_jh"));
                     M.put("sjn", recordEle.elementTextTrim("i_check_number_sj"));
                     M.put("rate", recordEle.elementTextTrim("f_exe_rate"));
@@ -59,12 +73,11 @@ public class JMDJController {
                 }
             }
             // 日志 ---- 日志内容 - 日志报文 - 时间 - 日志类型 - 人员编码
-            java.util.Date currentTime = new java.util.Date();
+            /*java.util.Date currentTime = new java.util.Date();
             SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
             String titleNameTime = Format.format(currentTime);
-
             mmService.PRO_LOG_WEB_SET("服务日志:" + jmdjUrl,
-                    null, titleNameTime, "JMDJ", "");
+                    null, titleNameTime, "JMDJ", "");*/
             test.put("list", list);
         } catch (MalformedURLException e) {
             e.printStackTrace();
