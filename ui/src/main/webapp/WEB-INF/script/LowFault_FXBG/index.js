@@ -600,6 +600,7 @@ function _updateOpen(value) {
 
 //上报
 function OnButtonUp() {
+    // Ext.getBody().mask('<p>上报中...请稍候</p>');
     var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
 
     if (records.length == 0) {
@@ -626,36 +627,37 @@ function OnButtonUp() {
                     var vfaultxx=records[i].get('V_PLAN');
                     var vfaultid=records[i].get('V_FAULTYNID');
                     Ext.Ajax.request({
-                        url: AppUrl + 'cxy/PM_BUG_PLAN_UP',
-                        type: 'ajax',
-                        method: 'POST',
+                        url: AppUrl + 'Activiti/StratProcess',
+                        async: false,
+                        method: 'post',
                         params: {
-                            'V_V_PERCODE': V_V_PERSONCODE,
-                            'V_V_GUID': vguid
+                            parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark","flow_code", "flow_yj", "flow_type"],
+                            parVal: [V_V_PERSONCODE, vguid, Ext.getCmp('nextPer').getValue(),
+                                "请审批!", vfaultxx, vfaultid, "请审批！", "HitchYn"],
+                            processKey: processKey,
+                            businessKey: vguid,
+                            V_STEPCODE: 'Start',
+                            V_STEPNAME: V_STEPNAME,
+                            V_IDEA: '请审批！',
+                            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
+                            V_INPER: Ext.util.Cookies.get('v_personcode')
                         },
                         success: function (response) {
-                            var resp = Ext.decode(response.responseText);
-                            if (resp.RET == 'success') {//成功，会传回true
+                            if (Ext.decode(response.responseText).ret == 'OK') {
                                 Ext.Ajax.request({
-                                    url: AppUrl + 'Activiti/StratProcess',
-                                    async: false,
-                                    method: 'post',
+                                    url: AppUrl + 'cxy/PM_BUG_PLAN_UP',
+                                    type: 'ajax',
+                                    method: 'POST',
                                     params: {
-                                        parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark","flow_code", "flow_yj", "flow_type"],
-                                        parVal: [V_V_PERSONCODE, vguid, Ext.getCmp('nextPer').getValue(),
-                                            "请审批!", vfaultxx, vfaultid, "请审批！", "HitchYn"],
-                                        processKey: processKey,
-                                        businessKey: vguid,
-                                        V_STEPCODE: 'Start',
-                                        V_STEPNAME: V_STEPNAME,
-                                        V_IDEA: '请审批！',
-                                        V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-                                        V_INPER: Ext.util.Cookies.get('v_personcode')
+                                        'V_V_PERCODE': V_V_PERSONCODE,
+                                        'V_V_GUID': vguid
                                     },
                                     success: function (response) {
-                                        if (Ext.decode(response.responseText).ret == 'OK') {
+                                        var resp = Ext.decode(response.responseText);
+                                        if (resp.RET == 'success') {//成功，会传回true
                                             i_err++;
                                             if (i_err == records.length) {
+                                                // Ext.getBody().unmask();
                                                 Ext.MessageBox.show({
                                                     title: '提示',
                                                     msg: '上报成功!',
@@ -665,33 +667,37 @@ function OnButtonUp() {
                                                     }
                                                 });
                                             }
-                                        } else if (Ext.decode(response.responseText).ret == 'ERROR') {
-                                            Ext.Msg.alert('提示', Ext.decode(response.responseText).msg);
+                                        } else {
+                                            Ext.MessageBox.show({
+                                                title: '错误',
+                                                msg: resp.RET,
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR,
+                                                fn: function () {
+                                                    _seltctFault();
+                                                }
+                                            });
                                         }
-                                    }
-                                });
-                            } else {
-                                Ext.MessageBox.show({
-                                    title: '错误',
-                                    msg: resp.RET,
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR,
-                                    fn: function () {
-                                        _seltctFault();
-                                    }
-                                });
-                            }
 
-                        },
-                        failure: function (response) {
-                            Ext.MessageBox.show({
-                                title: '错误',
-                                msg: response.responseText,
-                                buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR
-                            });
+                                    },
+                                    failure: function (response) {
+                                        // Ext.getBody().unmask();
+                                        Ext.MessageBox.show({
+                                            title: '错误',
+                                            msg: response.responseText,
+                                            buttons: Ext.MessageBox.OK,
+                                            icon: Ext.MessageBox.ERROR
+                                        });
+                                    }
+                                });
+
+                            } else if (Ext.decode(response.responseText).ret == 'ERROR') {
+                                // Ext.getBody().unmask();
+                                Ext.Msg.alert('提示', Ext.decode(response.responseText).msg);
+                            }
                         }
                     });
+
 
 
                 }
