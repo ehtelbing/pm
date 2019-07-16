@@ -492,7 +492,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             value: ''
         },*/
         {
-            xtype: 'button', text: '查询', margin: '5 0 5 20', icon: imgpath + '/search.png',
+            xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
             handler: function () {
                 query();
             }
@@ -525,7 +525,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '详细',
             dataIndex: 'V_ORDERID',
-            width: 55,
+            width: 100,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
@@ -534,19 +534,19 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '周计划详情',
             dataIndex: 'V_WEEKNUM',
-            width: 55,
+            width: 100,
             align: 'center',
             renderer: function (value, metaData, record) {
                 return '<a href="#" onclick="OnClickWeekGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
             }
         },
-        {text: '月单号', align: 'center', width: 100, dataIndex: 'V_MONTHID'},
+        {text: '月单号', align: 'center', width: 150, dataIndex: 'V_MONTHID', renderer: atleft},
         /*{text: '流程步骤', align: 'center', width: 100, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
-        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
-        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
-        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME'},
-        {xtype: 'linebreakcolumn',text: '检修内容', align: 'center', width: 280, dataIndex: 'V_CONTENT'},
+        {text: '厂矿', align: 'center', width: 150, dataIndex: 'V_ORGNAME', renderer: atleft},
+        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME', renderer: atleft},
+        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: atleft},
+        {text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME', renderer: atleft},
+        {text: '检修内容', align: 'center', width: 200, dataIndex: 'V_CONTENT', renderer: atleft},
         {
             text: '计划停机日期',
             align: 'center',
@@ -561,16 +561,16 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             dataIndex: 'V_ENDTIME',
             renderer: rendererTime
         },
-        {text: '计划工期（小时）', align: 'center', width: 110, dataIndex: 'V_HOUR'},
+        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR', renderer: atleft},
 
-        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
-        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
-        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
-        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
+        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME', renderer: atleft},
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT', renderer: atleft},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE', renderer: atleft},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER', renderer: atleft},
         {
             text: '录入时间', align: 'center', width: 200, dataIndex: 'V_INDATE',
             renderer: rendererTime
-        }, {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'}
+        }, {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME', renderer: atleft}
 
     ],
     bbar: ["->",
@@ -587,6 +587,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
@@ -714,7 +715,12 @@ Ext.onReady(function () {
 
 function rendererTime(value, metaData){
 
-    return value.split(".")[0];
+    //return value.split(".")[0];
+    return '<div data-qtip="' + value.split(".")[0] + '" >' + value.split(".")[0] + '</div>';
+}
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 //截止上报时间
 function Queryendtime() {
