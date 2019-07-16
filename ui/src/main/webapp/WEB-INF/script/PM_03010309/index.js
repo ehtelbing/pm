@@ -398,7 +398,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             fieldLabel: '设备名称',
             editable: false,
             labelAlign: 'right',
-            margin: '5 0 0 5', labelWidth: 80, width: 280,
+            margin: '5 0 0 5', labelWidth: 80, width: 230,
             value: '',
             displayField: 'V_EQUNAME',
             valueField: 'V_EQUCODE',
@@ -441,7 +441,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 25 0 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             labelAlign: 'right',
             value: '',
             displayField: 'v_name',
@@ -482,7 +482,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '审批详情',
             dataIndex: 'V_ORDERID',
-            width: 55,
+            width: 150,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 // if(record.get('DRSIGN')=="1") {
@@ -493,7 +493,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         },{
             text: '工单详情',
             dataIndex: 'WORKORDERNUM',
-            width: 55,
+            width: 150,
             align: 'center',
             renderer: function (value, metaData, record) {
                 // if(record.get('DRSIGN')=="1") {
