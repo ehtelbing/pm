@@ -149,10 +149,12 @@ Ext.onReady(function () {
         },{
             xtype : 'button',
             text : '查询',
+            margin: '5 0 5 5',
             handler : _selectOverhaulApply
         },{
             xtype: 'button',
             text: '选择',
+            margin: '5 0 5 5',
             handler : Select
         } ]
     });
@@ -377,7 +379,7 @@ function createWorkorder(){
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time=value.split('.')[0];
-    return time;
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 
