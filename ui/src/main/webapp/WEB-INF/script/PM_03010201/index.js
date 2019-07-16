@@ -465,6 +465,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
             queryMode: 'local'
         },
         {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
+            items: [
+        {
             xtype: 'displayfield',
             id: 'endtime',
             labelAlign: 'right',
@@ -564,6 +567,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon: imgpath + '/accordion_collapse.png',
             handler: createWorkorder
         }*/
+
+         ]
+        }
     ]
 });
 
