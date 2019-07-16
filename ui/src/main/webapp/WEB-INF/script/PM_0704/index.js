@@ -1,6 +1,7 @@
 var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 Ext.onReady(function() {
+    Ext.QuickTips.init();
     var dt = new Date();
     var thisYear = dt.getFullYear();
     var years = [];
@@ -198,6 +199,7 @@ Ext.onReady(function() {
         }, {
             xtype : 'button',
             text : '查看柱状图',
+            icon: imgpath + '/search.png',
             id : 'looktu',
             width : 100,
             listeners : {
@@ -565,10 +567,10 @@ function addTab() {
 function left(value, metaData) {
     metaData.style = "text-align:left";
     if(value == null){
-        return 0;
+        return '<div data-qtip="' + 0 + '" >' + 0 + '</div>';
     }
     else{
-        return value;
+        return '<div data-qtip="' + value + '" >' + value + '</div>';
     }
 
 }
