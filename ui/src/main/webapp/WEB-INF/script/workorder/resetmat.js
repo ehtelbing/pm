@@ -35,10 +35,10 @@ Ext.onReady(function () {
             fieldLabel: '工单号',
             id: 'orderid',
             labelWidth: 70,
-            style: ' margin: 5px 0px 0px 10px',
+            style: ' margin: 5px 0px 5px 10px',
             labelAlign: 'right'
         },
-            {xtype: 'button', text: '查询', style: ' margin: 5px 0px 0px 10px', listeners: {click: QueryGrid}}]
+            {xtype: 'button', text: '查询', style: ' margin: 5px 0px 5px 10px', listeners: {click: QueryGrid}}]
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
@@ -49,15 +49,15 @@ Ext.onReady(function () {
         store: gridStore,
         autoScroll: true,
         height: 400,
-        columns: [{xtype: 'rownumberer', text: '序号', width: 35, sortable: false},
-            {text: '接口传递', width: 100, dataIndex: 'V_ORDERID', align: 'center', renderer: goSetMat},
+        columns: [{xtype: 'rownumberer', text: '序号', width: 55, sortable: false},
+            {text: '接口传递', width: 150, dataIndex: 'V_ORDERID', align: 'center', renderer: goSetMat},
             {text: '工单号', width: 200, dataIndex: 'V_ORDERID', align: 'center', renderer: Atleft},
-            {text: '工单描述', width: 200, dataIndex: 'V_SHORT_TXT', align: 'center', renderer: Atleft},
-            {text: '工单类型', width: 200, dataIndex: 'V_ORDER_TYP_TXT', align: 'center', renderer: Atleft},
-            {text: '设备名称', width: 200, dataIndex: 'V_EQUIP_NAME', align: 'center', renderer: Atleft},
-            {text: '委托人', width: 200, dataIndex: 'V_ENTERED_BY', align: 'center', renderer: Atleft},
+            {text: '工单描述', width: 250, dataIndex: 'V_SHORT_TXT', align: 'center', renderer: Atleft},
+            {text: '工单类型', width: 180, dataIndex: 'V_ORDER_TYP_TXT', align: 'center', renderer: Atleft},
+            {text: '设备名称', width: 250, dataIndex: 'V_EQUIP_NAME', align: 'center', renderer: Atleft},
+            {text: '委托人', width: 180, dataIndex: 'V_ENTERED_BY', align: 'center', renderer: Atleft},
             {text: '委托时间', width: 200, dataIndex: 'D_ENTER_DATE', align: 'center', renderer: Atleft},
-            {text: '检修单位', width: 200, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: Atleft}],
+            {text: '检修单位', width: 250, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: Atleft}],
         listeners: {
             itemdblclick: itemClick
         }
