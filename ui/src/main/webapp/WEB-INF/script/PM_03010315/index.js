@@ -1030,29 +1030,29 @@ var editPanel = Ext.create('Ext.form.Panel', {
                             allowNegative: false,
                             allowDecimals: false,
                             labelWidth: 80,
-                            width: 245,
+                            width: 243,
                             value: '0'
                         },{
                             xtype:'label',
                             text:"(小时）",
-                            margin: '7 0 0 2',
-                            width:60
+                            margin: '5 0 0 5',
+                            width:55
                         },
                         {
                             xtype: 'numberfield',
                             id: 'jjhour',
                             fieldLabel: '胶接时间',
                             labelAlign: 'right',
-                            margin: '5 0 0 2',
+                            margin: '5 0 0 7',
                             allowNegative: false,
                             allowDecimals: false,
                             labelWidth: 55,
-                            width: 200,
+                            width: 192,
                             value: '0'
                         },{
                             xtype:'label',
                             text:"(小时）",
-                            margin: '7 0 0 2',
+                            margin: '5 0 0 2',
                             width:60
                         }]
                 },
@@ -1068,18 +1068,18 @@ var editPanel = Ext.create('Ext.form.Panel', {
                         labelAlign: 'right',
                         margin: '5 0 0 5',
                         labelWidth: 80,
-                        width: 280,
+                        width: 275,
                         value: ''
                     },{
                         xtype: 'numberfield',
                         id: 'hd',
                         fieldLabel: '厚度',
                         labelAlign: 'right',
-                        margin: '5 0 0 2',
+                        margin: '5 0 0 5',
                         allowNegative: false,
                         allowDecimals: false,
                         labelWidth: 85,
-                        width: 230,
+                        width: 222,
                         value: '0'
                     },
                         {
