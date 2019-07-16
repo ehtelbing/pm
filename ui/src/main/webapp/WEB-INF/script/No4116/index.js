@@ -173,7 +173,7 @@ Ext.onReady(function() {
                 {id : 'selshortTxt',xtype : 'textfield', width : 158,emptyText : '按工单描述模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'selmatDesc',xtype : 'textfield', width : 158,emptyText : '按使用物料模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}},
-                { xtype : 'button',text : '导出excel',icon : '../../images/gif/grid.png',width : 85, listeners : { click : OnClickExcelButton}},
+                { xtype : 'button',text : '导出excel',icon: imgpath + '/excel.gif',width : 85, listeners : { click : OnClickExcelButton}},
             { xtype : 'button',text : '批量打印',width : 85, listeners : { click : OnButtonCreateBillClicked}},
                 { xtype : 'hidden',id : 'tabid'}]
         });
