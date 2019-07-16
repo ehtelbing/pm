@@ -38,7 +38,7 @@ Ext.onReady(function () {
             style: ' margin: 5px 0px 5px 10px',
             labelAlign: 'right'
         },
-            {xtype: 'button', text: '查询', style: ' margin: 5px 0px 5px 10px', listeners: {click: QueryGrid}}]
+            {xtype: 'button',icon: imgpath + '/search.png', text: '查询', style: ' margin: 5px 0px 5px 10px', listeners: {click: QueryGrid}}]
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
