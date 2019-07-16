@@ -144,10 +144,12 @@ Ext.onReady(function () {
         },{
             xtype : 'button',
             text : '查询',
+            margin: '5 0 5 5',
             handler : _selectOverhaulApply
         },{
             xtype: 'button',
             text: '选择',
+            margin: '5 0 5 5',
             handler : Select
         } ]
     });
