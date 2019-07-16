@@ -527,7 +527,7 @@ Ext.onReady(function () {
                                 id: 'repairper',
                                 fieldLabel: '维修人数',
                                 labelAlign: 'right',
-                                margin: '5 0 0 5',
+                                margin: '5 0 0 2',
                                 labelWidth: 70,
                                 allowNegative:false,
                                 width: 255,
