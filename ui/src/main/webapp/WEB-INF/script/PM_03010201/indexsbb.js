@@ -523,7 +523,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '详细',
             dataIndex: 'V_ORDERID',
-            width: 55,
+            width: 80,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 // return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
