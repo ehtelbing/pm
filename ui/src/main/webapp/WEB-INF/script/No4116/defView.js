@@ -6,7 +6,7 @@ if(Ext.urlDecode(location.href.split("?")[1])!=undefined){
 }
 
 Ext.onReady(function(){
-
+    Ext.QuickTips.init();
     var gridStore = Ext.create('Ext.data.Store', {
         autoLoad: true,
         storeId: 'gridStore',

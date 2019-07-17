@@ -187,9 +187,9 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '厂矿CODE', align: 'center', width: 100, dataIndex: 'V_ORGCODE',hidden:true},
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
-        {text: '总数', align: 'center', width: 100, dataIndex: 'ALLNUM'},
-        {text: '执行数', align: 'center', width: 100, dataIndex: 'EXENUM'},
+        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME',renderer:aleft},
+        {text: '总数', align: 'center', width: 100, dataIndex: 'ALLNUM',renderer:aleft},
+        {text: '执行数', align: 'center', width: 100, dataIndex: 'EXENUM',renderer:aleft},
         {text: '执行率（%)', align: 'center', width: 100, dataIndex: 'EXTRATE',renderer:aleft},
         {text:'查看详情',align:'center',width:100,dataIndex:'V_ORGCODE',renderer:turnTo}
     ]
@@ -207,6 +207,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     // ]
 });
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
@@ -269,7 +270,7 @@ function OnClickExcelButton() {
 
 function aleft(value,cellmeta,record,rowIndex,columnIndex,store){
     var newval=value.substring(0,4);
-    return newval;
+    return '<div data-qtip="' + newval + '" >' + newval + '</div>';
 }
 
 
