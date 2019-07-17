@@ -245,7 +245,7 @@ Ext.onReady(function () {
             {
                 xtype: 'button',
                 text: '上报维修计划',
-                icon: imgpath + '/accordion_collapse.png',
+                icon: imgpath + '/accordion_expand.png',
                 listeners: {click: OnButtonUp}
             }
         ]
@@ -266,16 +266,16 @@ Ext.onReady(function () {
             mode: 'SIMPLE'
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text:'缺陷详情',width:140,dataIndex:'V_GUID',align:'center',renderer:OperaTion},
-            {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center',renderer:atleft},
-            {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center',renderer:atleft},
-            {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center',renderer:atleft},
-            {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center',renderer:atleft},
-            {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center',renderer:atleft},
+            {text:'缺陷详情',width:150,dataIndex:'V_GUID',align:'center',renderer:OperaTion},
+            {text: '工程状态', width: 150, dataIndex: 'V_STATENAME', align: 'center',renderer:atleft},
+            {text: '工程编码', width: 150, dataIndex: 'V_PORJECT_CODE', align: 'center',renderer:atleft},
+            {text: '工程名称', width: 150, dataIndex: 'V_PORJECT_NAME', align: 'center',renderer:atleft},
+            {text: '维修类型', width: 150, dataIndex: 'V_WXTYPENAME', align: 'center',renderer:atleft},
+            {text: '专业', width: 150, dataIndex: 'V_SPECIALTYNAME', align: 'center',renderer:atleft},
             {text: '维修内容', width: 300, dataIndex: 'V_CONTENT', align: 'center',renderer:atleft},
             {text: '维修费用（万元）', width: 120, dataIndex: 'V_MONEYBUDGET', align: 'center',renderer:atright},
-            {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center',renderer:timelfet},
-            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center',renderer:timelfet}],
+            {text: '开工时间', width: 150, dataIndex: 'V_BDATE', align: 'center',renderer:timelfet},
+            {text: '竣工时间', width: 150, dataIndex: 'V_EDATE', align: 'center',renderer:timelfet}],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -500,6 +500,7 @@ function selectGridTurn(){
 
 function OnButtonUp(){
     var wxGuidArr=[];
+    var num=0;
     var chodata = Ext.getCmp('grid').getSelectionModel().getSelection();
     if(chodata.length<=0){
         return false;
@@ -531,13 +532,16 @@ function OnButtonUp(){
                         success: function (resp) {
                             var resp = Ext.decode(resp.responseText);
                             if (resp.V_INFO == 'SUCCESS') {
-                                alert('上报成功！');
-                                wxGuidArr.splice(0,wxGuidArr.length);
-                                console.log(wxGuidArr);
-                                OnButtonQuery();
+                                ++num;
                             }
                         }
                     });
+                }
+                if(num==wxGuidArr.length){
+                    alert('上报成功！');
+                    wxGuidArr.splice(0,wxGuidArr.length);
+                    console.log(wxGuidArr);
+                    OnButtonQuery();
                 }
 
             }

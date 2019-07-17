@@ -6440,5 +6440,31 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end YEAR_TO_MONTH_SDEF_EQU");
         return result;
     }
+    //缺陷统计（设备部）
+    public Map PRO_PM_07_DEF_SBBTJ_VIEW(String V_NF,String V_YF)throws SQLException{
+        logger.info("begin PRO_PM_07_DEF_SBBTJ_VIEW");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEF_SBBTJ_VIEW(:V_NF,:V_YF,:RET)}");
+            cstmt.setString("V_NF", V_NF);
+            cstmt.setString("V_YF", V_YF);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEF_SBBTJ_VIEW");
+        return result;
+    }
 }
 

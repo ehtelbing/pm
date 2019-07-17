@@ -13,7 +13,7 @@ Ext.onReady(function() {
     var imagePanel = new Ext.Panel({
         id : 'imagePanel',
         region: 'center',
-        html :      '<div id="mainEchart" style="height:60%;padding:30px;text-align:center;"></div>',
+        html :      '<div id="mainEchart" style="height:177px;width:308px;padding:0px;text-align:center;"></div>',
         frame : false,
         border : false,
         buttonAlign : 'center',
@@ -48,24 +48,21 @@ function load() {
     var oheight = window.document.body.offsetHeight -30;
     myChart2.on('click', function (params) {
         if(params.componentType == "xAxis"){
-            if(params.value=='齐大山铁矿'){
+            if(params.value=='齐矿'){
                 window.open('http://10.101.32.102/equSystemWeb_JMDJ/Upload_report/BrowseFiles_all.aspx?Folder=%2fEquSystemWeb_JMDJ%2fUpFiles%2f2019%2f%E9%BD%90%E7%9F%BF', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
-            }else if(params.value=='齐大山选矿厂'){
+            }else if(params.value=='齐选'){
                 window.open('http://10.101.32.102/equSystemWeb_JMDJ/Upload_report/BrowseFiles_all.aspx?Folder=%2fEquSystemWeb_JMDJ%2fUpFiles%2f2019%2f%E9%BD%90%E9%80%89', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
-            }else if(params.value=='大孤山球团厂'){
+            }else if(params.value=='大球'){
                 window.open('http://10.101.32.102/equSystemWeb_JMDJ/Upload_report/BrowseFiles_all.aspx?Folder=%2fEquSystemWeb_JMDJ%2fUpFiles%2f2019%2f%E5%A4%A7%E7%90%83', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' )
-            }else if(params.value=='大孤山铁矿'){
+            }else if(params.value=='大矿'){
                 window.open('http://10.101.32.102/equSystemWeb_JMDJ/Upload_report/BrowseFiles_all.aspx?Folder=%2fEquSystemWeb_JMDJ%2fUpFiles%2f2019%2f%E5%A4%A7%E7%9F%BF', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' )
-            }else if(params.value=='眼前山铁矿'){
+            }else if(params.value=='眼矿'){
                 window.open('http://10.101.32.102/equSystemWeb_JMDJ/Upload_report/BrowseFiles_all.aspx?Folder=%2fEquSystemWeb_JMDJ%2fUpFiles%2f2019%2f%E7%9C%BC%E7%9F%BF', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' )
-            }else if(params.value=='鞍千矿业公司'){
+            }else if(params.value=='鞍千'){
                 window.open('http://10.101.32.102/equSystemWeb_JMDJ/Upload_report/BrowseFiles_all.aspx?Folder=%2fEquSystemWeb_JMDJ%2fUpFiles%2f2019%2f%E9%9E%8D%E5%8D%83', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' )
-            }else if(params.value=='东鞍山烧结厂'){
+            }else if(params.value=='东烧'){
                 window.open('http://10.101.32.102/equSystemWeb_JMDJ/Upload_report/BrowseFiles_all.aspx?Folder=%2fEquSystemWeb_JMDJ%2fUpFiles%2f2019%2f%E4%B8%9C%E7%83%A7', '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' )
             }
-
-        }else{
-            alert("单击了"+params.name+"柱状图");
         }
     });
     //图
@@ -98,16 +95,20 @@ function load() {
                         trigger: 'item'
                     },
                     legend: {
-                        data:['计划台数（台）','实际台数（台）','计划执行率']
+                        data:['计划台数（台）','实际台数（台）','计划执行率'],
+                        y:'bottom',
+                        itemWidth:10,
+                        itemHeight:10,
+                        itemGap:4
                     },
                     calculable: true,
                     grid: {
                         borderWidth: 0,
-                        x: 80,
-                        x2: 60,
-//                    	        y: 80,
-//                    	        y2: 60
-                        bottom:'30%'
+                        x: 40,
+                        x2: 40,
+                   	        y: 9,
+                   	        y2: 55
+                        // bottom:'55%'
                     },
                     xAxis: [
                         {
@@ -118,20 +119,26 @@ function load() {
                                 interval:0,//横轴信息全部显示
                                 rotate:90,//-30度角倾斜显示
                             },*/
-                            triggerEvent: true,
+                           triggerEvent: true,
                             axisLabel:{
-                                formatter:function(value){
-                                    return value.split("").join("\n")
-                                }
-                            },
+                                 formatter:function(value){
+                                     return value.split("").join("\n")
+                                 }
+                             },
                             data: x_1
                         }
                     ],
                     yAxis: [
                         {
                             type: 'value',
-                            show: true,
-                            name: '数量'
+                            show: true
+                            // name: '数量'
+//
+                        },
+                        {
+                            type: 'value',
+                            show: true
+                            // name: '数量'
 //
                         }
                     ],
@@ -160,6 +167,7 @@ function load() {
                             },
 //                    	            data: [12,21,10,4,12,5,6,5,25,23,7],
                             data: y_1
+                            // yAxisIndex:0
                         },
                         {
                             name: '实际台数（台）',
@@ -185,11 +193,12 @@ function load() {
                             },
 //                    	            data: [12,21,10,4,12,5,6,5,25,23,7],
                             data: y_2
+                            // yAxisIndex:0
                         },
                         {
-                            name: '计划执行率',
+                            name: '计划执行率(%)',
                             type: 'line',
-                            symbol:'circle',
+                            symbol:'none',
                             itemStyle: {
                                 normal: {
                                     color:  '#99a78e',
@@ -205,7 +214,8 @@ function load() {
                                 }
                             },
 //                    	            data: [12,21,10,4,12,5,6,5,25,23,7],
-                            data: y_3
+                            data: y_3,
+                            yAxisIndex:1
                         }
                     ]
                 };

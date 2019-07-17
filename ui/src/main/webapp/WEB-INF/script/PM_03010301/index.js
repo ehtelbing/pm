@@ -529,6 +529,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
             value: ''
         },
         {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
+            items: [
+        {
             xtype: 'button', text: '查询', margin: '5 0 5 55', icon: imgpath + '/search.png',
             handler: function () {
                 query();
@@ -566,15 +569,17 @@ var northPanel = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             text: '上报',
             margin: '5 0 5 5',
-            icon: imgpath + '/accordion_collapse.png',
+            icon: imgpath + '/accordion_expand.png',
             handler: OnButtonUp
         },
         {
             xtype: 'button',
             text: '生成工单',
             margin: '5 0 5 5',
-            icon: imgpath + '/accordion_expand.png',
+            icon: imgpath + '/accordion_collapse.png',
             handler: createWorkorder
+        }
+    ]
         }
     ]
 });

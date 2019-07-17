@@ -331,8 +331,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             fieldLabel: '年份',
             editable: false,
             margin: '5 0 5 5',
-            labelWidth: 80,
-            width: 250,
+            labelWidth: 95,
+            width: 230,
             displayField: 'displayField',
             valueField: 'valueField',
             value: '',
@@ -348,7 +348,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             margin: '5 0 5 5',
             labelAlign: 'right',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             displayField: 'displayField',
             valueField: 'valueField',
             value: '',
@@ -362,7 +362,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             value: '',
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
@@ -376,7 +376,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             value: '',
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
@@ -391,7 +391,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             value: '',
             displayField: 'V_EQUTYPENAME',
             valueField: 'V_EQUTYPECODE',
@@ -407,7 +407,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             value: '',
             displayField: 'V_EQUNAME',
             valueField: 'V_EQUCODE',
@@ -421,8 +421,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             labelAlign: 'right',
             editable: false,
             margin: '5 0 5 5',
-            labelWidth: 80,
-            width: 250,
+            labelWidth: 95,
+            width: 230,
             value: '',
             displayField: 'V_BASENAME',
             valueField: 'V_SPECIALTYCODE',
@@ -436,7 +436,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             value: '',
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
@@ -448,7 +448,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             fieldLabel: '检修内容',
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250
+            width: 230
         }, {
             xtype: 'combo',
             id: 'nextPer',
@@ -457,13 +457,16 @@ var northPanel = Ext.create('Ext.form.Panel', {
             editable: false,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             value: '',
             displayField: 'V_PERSONNAME',
             valueField: 'V_PERSONCODE',
             store: nextSprStore,
             queryMode: 'local'
         },
+        {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
+            items: [
         {
             xtype: 'displayfield',
             id: 'endtime',
@@ -472,13 +475,13 @@ var northPanel = Ext.create('Ext.form.Panel', {
             readOnly: true,
             margin: '5 0 5 5',
             labelWidth: 80,
-            width: 250,
+            width: 230,
             value: ''
         },
         {
             xtype: 'button',
             text: '查询',
-            margin: '5 0 5 5',
+            margin: '5 0 5 45',
             icon: imgpath + '/search.png',
             handler: function () {
                 query();
@@ -546,7 +549,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             xtype: 'button',
             text: '上报',
             margin: '5 0 5 5',
-            icon: imgpath + '/accordion_collapse.png',
+            icon: imgpath + '/accordion_expand.png',
             handler: OnButtonUp
         }
         /*,{
@@ -564,6 +567,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
             icon: imgpath + '/accordion_collapse.png',
             handler: createWorkorder
         }*/
+
+         ]
+        }
     ]
 });
 
@@ -580,7 +586,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
         {text: '流程详细', dataIndex: 'V_ORDERID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:_preViewProcess(\'' + record.data.V_GUID + '\')" >' + '详细' + '</a>';}},
         {text: '缺陷详细', dataIndex: 'V_GUID', width: 90, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return '<a href="javascript:OnLookDefect(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';}},
-        {text: '对应周计划', dataIndex: 'V_WEEKNUM', width: 80, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return record.data.V_WEEKNUM+' 条';}},
+        {text: '对应周计划', dataIndex: 'V_WEEKNUM', width: 100, align: 'center', renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {return record.data.V_WEEKNUM+' 条';}},
         {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
         {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
         {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
@@ -984,6 +990,22 @@ function OnButtonDeleteData(){
                         }
                     });
 
+                    //月计划缺陷状态关联删除
+                    Ext.Ajax.request({
+                        url: AppUrl + 'dxfile/PRO_PM_DEL_MONTH_RE_DEF',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID:records[i].get('V_GUID')
+                        },
+                        success: function (response) {
+                            var resp = Ext.decode(response.responseText);//后台返回的值
+                            if (resp.RET == 'SUCCESS') {
+
+                            }
+                        }
+                    });
+
                     Ext.Ajax.request({
                         url: AppUrl + 'hp/PRO_PM_03_PLAN_MONTH_DELDATA',
                         method: 'POST',
@@ -1361,7 +1383,8 @@ function OnButtonAddFYear(){
     var year=Ext.getCmp("nf").getValue();
     var owidth = window.document.body.offsetWidth - 600;
     var oheight = window.document.body.offsetHeight - 100;
-    window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
+    // window.open(AppUrl + 'page/PM_03010201/finishyear.html?MainMONTH='
+    window.open(AppUrl + 'page/PM_03010201/newmadd.html?MainMONTH='
         + Ext.getCmp('yf').getValue()
         +"&MainYEAR=" + year
         + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes' );
@@ -1369,6 +1392,7 @@ function OnButtonAddFYear(){
 
 //从备件添加缺陷
 function OnButtonBJAddClicked(){
+
 
     V_PLANTYPE = 'BJ';
     var ret = window.open(AppUrl + 'page/PM_03010220/index.html?Month=' + "" +

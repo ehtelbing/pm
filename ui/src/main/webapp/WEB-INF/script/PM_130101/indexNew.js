@@ -153,7 +153,7 @@ Ext.onReady(function () {
                                         xtype: "button",
                                         text: "添加",
                                         icon: imgpath + '/add.png',
-                                        margin: '5px 5px 5px 5px',
+                                        margin: '5px 0 5px 5px',
                                         handler: function () {
                                             if (globalTree == null) {
                                                 Ext.Msg.alert('操作信息', '请选择设备位置');
@@ -183,7 +183,7 @@ Ext.onReady(function () {
                                     {
                                         xtype: "button",
                                         text: "修改",
-                                        margin: '5px 5px 5px 5px',
+                                        margin: '5px 0 5px 5px',
                                         icon: imgpath + '/edit.png',
                                         handler: function () {
                                             Ext.getCmp('x_equname2').setValue(Ext.getCmp('x_equtypename1').getValue());
@@ -263,7 +263,7 @@ Ext.onReady(function () {
                                     {
                                         xtype: "button",
                                         text: "删除",
-                                        margin: '5px 5px 5px 5px',
+                                        margin: '5px 0 5px 5px',
                                         icon: imgpath + '/delete1.png',
                                         handler: function () {
                                             var selectModel = Ext.getCmp('gridpanel').getSelectionModel();
@@ -311,14 +311,14 @@ Ext.onReady(function () {
                                 columns: [
                                     Ext.create('Ext.grid.RowNumberer', {width: 30}),
                                     //{ text: '', width: 30, dataIndex: 'XUHAO', align: 'center' },
-                                    {text: '设备名称', width: 80, dataIndex: 'V_EQUNAME', align: 'center'},
-                                    {text: '装置名称', width: 80, dataIndex: 'V_SETNAME', align: 'center'},
-                                    {text: '给油脂场所', width: 80, dataIndex: 'V_LUBADDRESS', align: 'center'},
-                                    {text: '润滑方式', width: 80, dataIndex: 'V_LUBMODE', align: 'center'},
-                                    {text: '润滑牌号', width: 80, dataIndex: 'V_LUBTRADEMARK', align: 'center'},
-                                    {text: '润滑点数', width: 80, dataIndex: 'F_LUBCOUNT', align: 'center'},
-                                    {text: '加油量', width: 80, dataIndex: 'F_OILAMOUNT', align: 'center'},
-                                    {text: '单位', width: 80, dataIndex: 'I_UNIT', align: 'center'},
+                                    {text: '设备名称', width: 150, dataIndex: 'V_EQUNAME', align: 'center'},
+                                    {text: '装置名称', width: 150, dataIndex: 'V_SETNAME', align: 'center'},
+                                    {text: '给油脂场所', width: 150, dataIndex: 'V_LUBADDRESS', align: 'center'},
+                                    {text: '润滑方式', width: 150, dataIndex: 'V_LUBMODE', align: 'center'},
+                                    {text: '润滑牌号', width: 150, dataIndex: 'V_LUBTRADEMARK', align: 'center'},
+                                    {text: '润滑点数', width: 150, dataIndex: 'F_LUBCOUNT', align: 'center'},
+                                    {text: '加油量', width: 150, dataIndex: 'F_OILAMOUNT', align: 'center'},
+                                    {text: '单位', width: 150, dataIndex: 'I_UNIT', align: 'center'},
                                     {
                                         text: '加油时间', width: 160, dataIndex: 'D_OPERATEDATE', align: 'center',
                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
@@ -329,7 +329,7 @@ Ext.onReady(function () {
                                             return null;
                                         }
                                     },
-                                    {text: '加油人员', width: 80, dataIndex: 'V_OPERATEPERSON', align: 'center'},
+                                    {text: '加油人员', width: 100, dataIndex: 'V_OPERATEPERSON', align: 'center'},
                                     {text: '加油原因', width: 150, dataIndex: 'V_OPERATEREASON', align: 'center'},
                                    /* {text: '类型', width: 100, dataIndex: 'V_ADDORCHANGE', align: 'center'},*/
                                     {width: 0, dataIndex: 'V_LUBRICATIONCODE', align: 'center'},

@@ -8,6 +8,7 @@ for (var i = date.getFullYear() - 4; i <= date.getFullYear() + 1; i++) {
 }
 
 Ext.onReady(function(){
+    Ext.QuickTips.init();
     var yearStore = Ext.create("Ext.data.Store", {
         storeId: 'yearStore',
         fields: ['displayField', 'valueField'],
@@ -90,15 +91,15 @@ Ext.onReady(function(){
             {text: '放行唯一编码', align: 'center', width: 150, dataIndex: 'FX_GUID', hidden: true,renderer:atleft},
             {text: '工程编码', align: 'center', width: 150, dataIndex: 'V_PROJECT_CODE',renderer:atleft},
             {text: '工程名称', align: 'center', width: 150, dataIndex: 'V_PROJECT_NAME',renderer:atleft},
-            {text:'工单数量',align:'center',width:80,dataIndex:'WORKNUM',renderer:atleft},
+            {text:'工单数量',align:'center',width:70,dataIndex:'WORKNUM',renderer:atleft},
             {text: '年度投资（万元）', align: 'center', width: 140, dataIndex: 'FX_MONEY',renderer:atleft},
             {text: '放行计划主要内容', align: 'center', width: 150, dataIndex: 'FX_CONTENT',renderer:atleft},
             {text: 'WBS编码', align: 'center', width: 150, dataIndex: 'V_WBS_CODE',renderer:atleft},
-            {text: '维修工程项目名称', align: 'center', width: 210, dataIndex: 'V_WBS_NAME',renderer:atleft},
+            {text: '维修工程项目名称', align: 'center', width: 200, dataIndex: 'V_WBS_NAME',renderer:atleft},
             {text: '开工时间', align: 'center', width: 140, dataIndex: 'V_DATE_B',renderer:timeTurn},
             {text: '竣工时间', align: 'center', width: 140, dataIndex: 'V_DATE_E',renderer:timeTurn},
             {text: '建设单位编码', align: 'center', width: 150, dataIndex: 'V_REPAIR_DEPT', hidden: true,renderer:atleft},
-            {text: '建设单位名称', align: 'center', width: 210, dataIndex:'V_REPAIR_DEPT_TXT',renderer:atleft},
+            {text: '建设单位名称', align: 'center', width: 200, dataIndex:'V_REPAIR_DEPT_TXT',renderer:atleft},
             {text: '建设单位负责人编码', align: 'center', width: 150, dataIndex: 'V_FZR', hidden: true},
             {text: '建设单位负责人', align: 'center', width: 140, dataIndex: 'V_PERSONNAME',renderer:atleft}
         ]
@@ -121,7 +122,7 @@ Ext.onReady(function(){
 function timeTurn(value,metaDate,recode){
     metaDate.style = "text-align:center;";
     var val=value.toString().substr(0,10);
-    return val;
+    return '<div data-qtip="' + val + '" >' + val + '</div>';
 }
 function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
@@ -136,5 +137,5 @@ function queryGrid(){
 
 function atleft(value,metaDate,recode){
     metaDate.style="text-align:left";
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }

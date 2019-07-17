@@ -4892,6 +4892,16 @@ public class Dx_fileController {
         return result;
     }
 
+    //缺陷统计（设备部）
+    @RequestMapping(value = "PRO_PM_07_DEF_SBBTJ_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEF_SBBTJ_VIEW(@RequestParam(value = "V_NF") String V_NF,
+                                                      @RequestParam(value = "V_YF") String V_YF,
+                                                      HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_PM_07_DEF_SBBTJ_VIEW(V_NF,V_YF);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

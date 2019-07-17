@@ -1518,44 +1518,45 @@ function _reject() {
     Ext.getBody().mask('<p>审批中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
-        spyj = '审批驳回';
+        spyj = '驳回';
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
     Ext.Ajax.request({
-        url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
-        method: 'POST',
+        url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
+        method: 'POST',
         params: {
-            V_V_PERCODE:V_V_PERSONCODE,
-            V_V_GUID: $.url().param("V_ORDERGUID"),
-            V_V_STATE: '10',//驳回
-            V_DEFECT_STATE:'24'//驳回
+            taskId: taskId,
+            idea: '不通过',
+            parName: ['fqrxg', "flow_yj"],
+            parVal: [V_SPR, spyj],
+            processKey: $.url().param("ProcessDefinitionKey"),
+            businessKey: V_ORDERGUID,
+            V_STEPCODE: 'fqrxg',
+            V_STEPNAME: '发起人修改',
+            V_IDEA: '不通过',
+            V_NEXTPER: V_SPR,
+            V_INPER: Ext.util.Cookies.get('v_personcode')
         },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText);
-            if (resp.RET == 'SUCCESS') {
+        success: function (response) {
+
+            var resp = Ext.decode(response.responseText);
+            if (resp.ret == '任务提交成功') {
                 Ext.Ajax.request({
-                    url: AppUrl + 'Activiti/TaskComplete',
-                    type: 'ajax',
+                    url: AppUrl + 'cxy/PM_14_FAULT_ITEM_DATA_STATE_UPDATE',
                     method: 'POST',
+                    type: 'ajax',
                     params: {
-                        taskId: taskId,
-                        idea: '不通过',
-                        parName: ['fqrxg', "flow_yj"],
-                        parVal: [V_SPR, spyj],
-                        processKey: $.url().param("ProcessDefinitionKey"),
-                        businessKey: V_ORDERGUID,
-                        V_STEPCODE: 'fqrxg',
-                        V_STEPNAME: '发起人修改',
-                        V_IDEA: '不通过',
-                        V_NEXTPER: V_SPR,
-                        V_INPER: Ext.util.Cookies.get('v_personcode')
+                        V_V_PERCODE:V_V_PERSONCODE,
+                        V_V_GUID: $.url().param("V_ORDERGUID"),
+                        V_V_STATE: '10',//驳回
+                        V_DEFECT_STATE:'24'//驳回
                     },
-                    success: function (response) {
+                    success: function (resp) {
                         Ext.getBody().unmask();
-                        var resp = Ext.decode(response.responseText);
-                        if (resp.ret == '任务提交成功') {
+                        var resp = Ext.decode(resp.responseText);
+                        if (resp.RET == 'SUCCESS') {
                             Ext.MessageBox.show({
                                 title: '提示',
                                 msg: '驳回成功',
@@ -1568,31 +1569,34 @@ function _reject() {
                                 }
                             });
                         } else {
-                            Ext.MessageBox.alert('提示', '驳回失败');
+
+                            Ext.Msg.alert('提示', '事故修改状态失败！');
                         }
-                    },
-                    failure: function (response) {//访问到后台时执行的方法。
+                    },failure: function (resp) {//访问到后台时执行的方法。
                         Ext.getBody().unmask();
                         Ext.MessageBox.show({
                             title: '错误',
-                            msg: response.responseText,
+                            msg: resp.responseText,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.ERROR
                         })
                     }
                 });
+
             } else {
                 Ext.getBody().unmask();
-                Ext.Msg.alert('提示', '事故修改状态失败！');
+                Ext.MessageBox.alert('提示', '驳回失败');
             }
-        },failure: function (resp) {//访问到后台时执行的方法。
+        },
+        failure: function (response) {//访问到后台时执行的方法。
             Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
-                msg: resp.responseText,
+                msg: response.responseText,
                 buttons: Ext.MessageBox.OK,
                 icon: Ext.MessageBox.ERROR
             })
         }
     });
+
 }

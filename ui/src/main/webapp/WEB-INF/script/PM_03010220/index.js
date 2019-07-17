@@ -59,7 +59,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var sqxzt = Ext.create("Ext.data.Store", {
@@ -143,10 +143,12 @@ Ext.onReady(function () {
         },{
             xtype : 'button',
             text : '查询',
+            margin: '5 0 5 5',
             handler : _selectOverhaulApply
         },{
             xtype: 'button',
             text: '选择',
+            margin: '5 0 5 5',
             handler : Select
         } ]
     });
@@ -202,7 +204,7 @@ Ext.onReady(function () {
             text : '缺陷明细',
             dataIndex : 'V_DEFECTLIST',
             align : 'center',
-            width : 700,
+            width : 500,
             renderer : CreateGridColumnTd
         }, {
             text : '设备',
@@ -420,7 +422,7 @@ function createWorkorder(){
 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     var time=value.split('.')[0];
-    return time;
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 
