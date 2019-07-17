@@ -462,8 +462,7 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
         return '<div data-qtip="' + value + '" ></div>';
     }
     else{
-        var val=value.toString();
-        return '<div data-qtip="' + val + '" >' + val + '</div>';
+        return '<div data-qtip="' + value + '" >' + value + '</div>';
     }
 }
 
