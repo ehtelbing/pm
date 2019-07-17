@@ -70,7 +70,7 @@ Ext.onReady(function() {
         }, {
             text : '设备名称',
             dataIndex : 'V_EQUIP_NAME',
-            width : 130,
+            width : 135,
             align : 'center',
             renderer : left,
             renderer : CreateGridColumnTd
@@ -91,14 +91,14 @@ Ext.onReady(function() {
         }, {
             text : '委托单位',
             dataIndex : 'V_DEPTNAME',
-            width : 65,
+            width : 150,
             align : 'center',
             renderer : left,
             renderer : CreateGridColumnTd
         }, {
             text : '委托人',
             dataIndex : 'V_PERSONNAME',
-            width : 50,
+            width : 100,
             align : 'center',
             renderer : left
         }, {
@@ -118,14 +118,14 @@ Ext.onReady(function() {
         }, {
             text : '工单类型描述',
             dataIndex : 'V_ORDER_TYP_TXT',
-            width : 100,
+            width : 150,
             align : 'center',
             renderer : left,
             renderer : CreateGridColumnTd
         }, {
             text : '工单状态',
             dataIndex : 'V_STATENAME',
-            width : 65,
+            width : 140,
             align : 'center',
             renderer : left,
             renderer : CreateGridColumnTd
