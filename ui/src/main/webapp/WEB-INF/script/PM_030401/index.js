@@ -215,14 +215,16 @@ Ext.onReady(function () {
 
     var toolPanel = Ext.create('Ext.panel.Panel', {
         id: 'toolPanel',
+        width: '100%',
+        layout: 'column',
         frame: true,
         border: false,
         defaults: {margin: '5 5 0 5', labelAlign: 'right'},
         region: 'north',
-        layout: {
-            type: 'table',
-            columns: '6'
-        },
+        // layout: {
+        //     type: 'table',
+        //     columns: '6'
+        // },
         items: [
             {
                 id: 'year',
@@ -230,7 +232,7 @@ Ext.onReady(function () {
                 xtype: 'combo',
                 fieldLabel: '年份',
                 value: nowDate,//+1,
-                labelWidth: 70,
+                labelWidth: 80,
                 labelAlign: 'right',
                 displayField: 'id',
                 valueField: 'value'
@@ -243,7 +245,7 @@ Ext.onReady(function () {
                 fieldLabel: '计划厂矿',
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
-                labelWidth: 100
+                labelWidth: 80
             }
             , {
                 xtype: 'combo',
@@ -272,7 +274,7 @@ Ext.onReady(function () {
                 editable: false,
                 queryMode: 'local',
                 fieldLabel: '工程请示内容',
-                labelWidth: 100
+                labelWidth: 80
             }, {
                 xtype: 'combo',
                 id: 'fzPer',
@@ -282,7 +284,7 @@ Ext.onReady(function () {
                 fieldLabel: '下一步审批人',
                 displayField: 'V_PERSONNAME',
                 valueField: 'V_PERSONCODE',
-                labelWidth: 100,
+                labelWidth: 80,
                 labelAlign: 'right'
             },
             {
@@ -294,7 +296,7 @@ Ext.onReady(function () {
                 fieldLabel: '上报人',
                 displayField: 'PERNAME',
                 valueField: 'PERCODE',
-                labelWidth: 70,
+                labelWidth: 80,
                 labelAlign: 'right'
             }, {
                 xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
