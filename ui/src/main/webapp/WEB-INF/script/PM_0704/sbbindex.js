@@ -115,7 +115,8 @@ Ext.onReady(function () {
     var girdPanel=Ext.create('Ext.grid.Panel',{
         id:'gridPanel',
         store:gridStore,
-        columnLines:true,
+        columnLines: true,
+        region:'center',
         columns:[
             // fields: ['V_ORGCODE','V_ORGNAME','V_V_SUMNUM','V_V_XDGX_NUM','V_V_YS_NUM','V_V_WCL_NUM','V_V_YXQ_NUM','V_V_YCL_NUM','V_V_CLL_NUM','V_V_XQL_NUM'],
             {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
