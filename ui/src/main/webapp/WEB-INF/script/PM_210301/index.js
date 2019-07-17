@@ -41,6 +41,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var ProcessTypeStore = Ext.create("Ext.data.Store", {
@@ -137,22 +138,26 @@ Ext.onReady(function () {
             text: '流程步骤',
             width: '23%',
             dataIndex: 'ActivityName',
-            align: 'center'
+            align: 'center',
+            renderer:atleft
         }, {
             text: '操作人',
             width: '23%',
             dataIndex: 'AssigneeName',
-            align: 'center'
+            align: 'center',
+            renderer:atleft
         }, {
             text: '审批意见',
             width: '24%',
             dataIndex: 'Idea',
-            align: 'center'
+            align: 'center',
+            renderer:atleft
         }, {
             text: '审批时间',
             width: '30%',
             dataIndex: 'EndTime',
-            align: 'center'
+            align: 'center',
+            renderer:atleft
         }]
     });
 
@@ -207,6 +212,11 @@ Ext.onReady(function () {
 
     _init();
 });
+
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 
 function _init() {
     Ext.getCmp('browseImage').setHeight(Ext.getCmp('gridPanel').getSize().height-20);
