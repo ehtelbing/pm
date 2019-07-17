@@ -3,7 +3,7 @@ if (location.href.split('?')[1] != null) {
     main = Ext.urlDecode(location.href.split('?')[1]).main;
 }
 Ext.onReady(function() {
-
+    Ext.QuickTips.init();
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         pageSize: 15,
@@ -38,43 +38,45 @@ Ext.onReady(function() {
             sortable : false
         }, {
             text : '作业区',
-            width : 100,
+            width : 150,
             dataIndex : 'V_DEPTNAME',
             align : 'center',
-            renderer : atCenter
+            renderer:aleft
         }, {
             text : '验收工单数',
-            width : 80,
+            width : 150,
             dataIndex : 'WR_OK',
             align : 'center',
-            renderer : atCenter
+            renderer:aleft
         }, {
             text : '未验收数量',
-            width : 80,
+            width : 150,
             dataIndex : 'WR_TOTAL',
             align : 'center',
             renderer : receiveCenter
         }, {
             text : '工单总数',
-            width : 80,
+            width : 150,
             dataIndex : 'WR_TOTAL',
             align : 'center',
-            renderer : atCenter
+            renderer:aleft
         }, {
             text : '工单执行率',
-            width : 80,
+            width : 150,
             dataIndex : 'RATE',
             align : 'center',
-            renderer : rateCenter
+            renderer:aleft
+
         } ]
     });
 
     var searchPanel = Ext.create('Ext.form.Panel', {
         id : 'searchPanel',
+
         style : 'margin:5px 0px 2px 2px',
         region : 'north',
         width : '100%',
-        baseCls : 'my-panel-no-border',
+        //baseCls : 'my-panel-no-border',
         defaults : {
             style : 'margin:5px 0px 5px 10px',
             labelAlign : 'right'
@@ -149,7 +151,10 @@ function atCenter(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:center;";
     return value;
 }
-
+function aleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function rateCenter(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:center;";
     return value + '%';
