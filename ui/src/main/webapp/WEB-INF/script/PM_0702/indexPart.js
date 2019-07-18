@@ -1,5 +1,5 @@
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     var parttypeStore = Ext.create("Ext.data.Store", {
         autoLoad: true,
         storeId: 'parttypeStore',
@@ -240,7 +240,8 @@ function CreateGridColumnTd(value, metaData, record, rowIndex, colIndex, store) 
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
     var time = value.split('.')[0];
-    return time;
+    //return time;
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 
