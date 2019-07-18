@@ -47,7 +47,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var sqxzt = Ext.create("Ext.data.Store", {
@@ -244,7 +244,7 @@ Ext.onReady(function () {
             text: '缺陷状态',
             dataIndex: 'V_STATENAME',
             align: 'center',
-            width: 80,
+            width: 70,
             renderer: CreateGridColumnTd
         },  {
             text: '缺陷日期',
@@ -256,7 +256,7 @@ Ext.onReady(function () {
             text:'缺陷等级',
             dataIndex:'V_SOURCE_GRADE',
             align:'center',
-            width:70,
+            width:60,
             renderer:AtRight
         },{
             text: '缺陷明细',
@@ -690,13 +690,15 @@ function createWorkorder() {
 function CreateGridColumnTime(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
     var time = value.split('.')[0];
-    return time;
+    //return time;
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 function AtRight(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;color:" + store.getAt(rowIndex).get('V_STATECOLOR');
     var time = value.split('.')[0];
-    return time;
+    //return time;
+    return '<div data-qtip="' + time + '" >' + time + '</div>';
 }
 
 
