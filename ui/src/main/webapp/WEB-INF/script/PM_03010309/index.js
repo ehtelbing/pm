@@ -477,7 +477,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     columnLines: true,
     selType: 'checkboxmodel',
     columns: [
-        {text: '序号', align: 'center', width: 50, xtype: 'rownumberer', renderer: dataCss},
+        {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME', renderer: dataCss},
         {
             text: '审批详情',
@@ -551,6 +551,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
