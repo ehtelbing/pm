@@ -38,31 +38,31 @@ Ext.onReady(function() {
             sortable : false
         }, {
             text : '作业区',
-            width : 150,
+            width : 250,
             dataIndex : 'V_DEPTNAME',
             align : 'center',
             renderer:aleft
         }, {
             text : '验收工单数',
-            width : 150,
+            width : 190,
             dataIndex : 'WR_OK',
             align : 'center',
             renderer:aleft
         }, {
             text : '未验收数量',
-            width : 150,
+            width : 190,
             dataIndex : 'WR_TOTAL',
             align : 'center',
             renderer : receiveCenter
         }, {
             text : '工单总数',
-            width : 150,
+            width : 190,
             dataIndex : 'WR_TOTAL',
             align : 'center',
             renderer:aleft
         }, {
             text : '工单执行率',
-            width : 150,
+            width : 200,
             dataIndex : 'RATE',
             align : 'center',
             renderer:aleft
