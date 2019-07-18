@@ -482,7 +482,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text: '审批详情',
             dataIndex: 'V_ORDERID',
-            width: 150,
+            width: 100,
             align: 'center',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 // if(record.get('DRSIGN')=="1") {
@@ -493,7 +493,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         },{
             text: '工单详情',
             dataIndex: 'WORKORDERNUM',
-            width: 150,
+            width: 100,
             align: 'center',
             renderer: function (value, metaData, record) {
                 // if(record.get('DRSIGN')=="1") {
@@ -506,7 +506,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {
             text:'关联计划',
             dataIndex:'',
-            width:75,
+            width:100,
             align:'center',
             renderer:function(value,metaData,record){
                 // if(record.get('DRSIGN')=="1") {
@@ -525,7 +525,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         {text: '车间名称', align: 'center', width: 100, dataIndex: 'V_DEPTNAME', renderer: dataCss},
         {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: dataCss},
         {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME', renderer: dataCss},
-        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT', renderer: dataCss},
+        {text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT', renderer: dataCss},
         {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME', renderer: dataCss},
         {text: '计划停机日期', align: 'center', width: 150, dataIndex: 'V_STARTTIME', renderer: rendererTime},
         {text: '计划竣工日期', align: 'center', width: 150, dataIndex: 'V_ENDTIME', renderer: rendererTime},
@@ -695,7 +695,7 @@ function rendererTime(value, metaData,record) {
     if(record.get('DRSIGN')=="1") {
         metaData.style = "background-color: yellow";
     }
-    return value.split(".")[0];
+    return '<div data-qtip="' + value.split(".")[0] + '" >' + value.split(".")[0] + '</div>';
 }
 
 //第几周
@@ -893,5 +893,5 @@ function dataCss(value, metaData, record, rowIndex, colIndex, store){
     if(record.get('DRSIGN')=="1") {
         metaData.style = "background-color: yellow";
     }
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
