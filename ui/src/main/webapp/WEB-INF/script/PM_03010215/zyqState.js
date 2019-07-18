@@ -154,11 +154,11 @@ var cpanel=Ext.create('Ext.grid.Panel',{
     store: 'gridStore',
     // selType: 'checkboxmodel',
     columns: [{text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
-        {text: '厂矿编码', align: 'center', width: 100, dataIndex: 'V_DEPTCODE',hidden:true},
-        {text: '厂矿名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME',renderer:aleft},
-        {text: '月计划总数', align: 'center', width: 100, dataIndex: 'ALLNUM',renderer:aleft},
-        {text: '执行数', align: 'center', width: 100, dataIndex: 'EXENUM',renderer:aleft},
-        {text: '执行率（%)', align: 'center', width: 100, dataIndex: 'EXTRATE',renderer:aleft}]
+        {text: '厂矿编码', align: 'center', width: 240, dataIndex: 'V_DEPTCODE',hidden:true},
+        {text: '厂矿名称', align: 'center', width: 300, dataIndex: 'V_DEPTNAME',renderer:aleft},
+        {text: '月计划总数', align: 'center', width: 240, dataIndex: 'ALLNUM',renderer:aleft},
+        {text: '执行数', align: 'center', width: 240, dataIndex: 'EXENUM',renderer:aleft},
+        {text: '执行率（%)', align: 'center', width: 240, dataIndex: 'EXTRATE',renderer:aleft}]
 });
 Ext.onReady(function () {
     Ext.QuickTips.init();
