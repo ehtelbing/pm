@@ -84,7 +84,8 @@ Ext.onReady(function () {
     var panel = Ext.create('Ext.panel.Panel', {
         region: 'north',
         width: '100%',
-        baseCls: 'my-panel-no-border',
+        frame: true,
+        //baseCls: 'my-panel-no-border',
         defaults: {
             style: 'margin:5px 0px 5px 10px',
             labelAlign: 'right'
@@ -145,12 +146,12 @@ Ext.onReady(function () {
         autoScroll: true,
         height: 400,
         columns: [{ xtype: 'rownumberer', width: 50, text: '序号', align: 'center', sortable: false },
-            {text: '生成备件问题', dataIndex: 'V_MODELNUMBER', width: 150, align: 'center', renderer: CDefect},
-            {text: '预装件名称', dataIndex: 'V_MODELNAME', width: 200, align: 'center', renderer: left},
-            {text: '预装件型号', dataIndex: 'V_TYPE', width: 150, align: 'center', renderer: left},
-            {text: '预装件单位', dataIndex: 'V_UNIT', width: 150, align: 'center', renderer: left},
-            {text: '安装位置', dataIndex: 'V_SETSITE', width: 150, align: 'center', renderer: left},
-            {text: '备注', dataIndex: 'V_MEMO', width: 150, align: 'center', renderer: left},
+            {text: '生成备件问题', dataIndex: 'V_MODELNUMBER', width: 140, align: 'center', renderer: CDefect},
+            {text: '预装件名称', dataIndex: 'V_MODELNAME', width: 170, align: 'center', renderer: left},
+            {text: '预装件型号', dataIndex: 'V_TYPE', width: 140, align: 'center', renderer: left},
+            {text: '预装件单位', dataIndex: 'V_UNIT', width: 140, align: 'center', renderer: left},
+            {text: '安装位置', dataIndex: 'V_SETSITE', width: 140, align: 'center', renderer: left},
+            {text: '备注', dataIndex: 'V_MEMO', width: 140, align: 'center', renderer: left},
             {text: '详细', dataIndex: 'V_MODELNUMBER', width: 150, align: 'center', renderer: LookMore}]
     });
 
