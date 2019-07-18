@@ -505,10 +505,15 @@ function OnButtonUp(){
     if(chodata.length<=0){
         return false;
     }
-
+    for(var i=0;i<chodata.length;i++){
+        if(chodata[i].get("V_STATE")=='10');
+        alert('存在计划已上报，请重新选择');
+        return false;
+    }
     for(var i=0;i<chodata.length;i++){
         wxGuidArr.push(chodata[i].get("V_GUID"));
     }
+
 
     Ext.Ajax.request({
         url: AppUrl + 'wxjh/SI_WWQX_Out_Syn_PM0011',
@@ -543,7 +548,6 @@ function OnButtonUp(){
                     console.log(wxGuidArr);
                     OnButtonQuery();
                 }
-
             }
         }
     });

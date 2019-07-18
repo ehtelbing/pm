@@ -1,5 +1,6 @@
 /**
  * Created by Administrator on 2018/8/16 0016.
+ * 大球、齐选特殊作业区工单创建 手工录入页面
  */
 var V_GUID = null;
 var V_EQUTYPECODE = null;
