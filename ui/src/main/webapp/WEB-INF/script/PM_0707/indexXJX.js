@@ -142,7 +142,7 @@ Ext.onReady(function () {
             //{xtype: 'combo', id: 'qxdj', store: djStore, fieldLabel: '问题等级', labelAlign: 'right', editable: false, margin: '5 0 5 5', labelWidth: 75, width: 255, displayField: 'V_LEVELNAME', valueField: 'V_LEVELCODE', queryMode: 'local'},
             {xtype: 'combo', id: 'clfs', store:[['JHX','计划修']],hidden:true, fieldLabel: '处理方式', labelAlign: 'right', editable: false, margin: '5 0 5 5', width:300,labelWidth: 75,  queryMode: 'local',value:'JHX'},
             {xtype: 'textfield', id: 'inper', fieldLabel: '录入名字', margin: '5 0 10 5', labelAlign: 'right', labelWidth: 75,  width:300,value: decodeURI(V_V_PERSONNAME)},
-            {id: 'begintime', xtype: 'datefield', editable: false, format: 'Y/m/d', value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), fieldLabel: '发现时间', labelAlign: 'right', labelWidth: 75, width:300, baseCls: 'margin-bottom'},
+            {id: 'begintime', xtype: 'datefield', editable: false, format: 'Y/m/d', value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), fieldLabel: '发现时间', labelAlign: 'right', labelWidth: 80, width:300, baseCls: 'margin-bottom'},
             {xtype: 'textarea', id: 'qxmc', fieldLabel: '问题明细', margin: '5 0 10 5', labelAlign: 'right',labelWidth:75,height:80, width:300,value: ''},
             {xtype: 'textarea',id:'clyj',fieldLabel: '处理意见',margin: '5 0 10 5',labelAlign: 'right',labelWidth:75,height:80,width:300, value: ''},
             {xtype:'panel',frame:true,layout:'column',width:255,baseCls : 'my-panel-noborder',
