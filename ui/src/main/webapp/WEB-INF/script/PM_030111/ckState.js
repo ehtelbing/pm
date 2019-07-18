@@ -160,7 +160,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
         //     queryMode: 'local'
         // },
         {
-            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 3, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 80px',
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 3, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 85px',
             items: [
         {
             xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
