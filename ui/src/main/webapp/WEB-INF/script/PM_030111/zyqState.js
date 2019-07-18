@@ -201,10 +201,10 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '厂矿CODE', align: 'center', width: 100, dataIndex: 'V_DEPTCODE',hidden:true},
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_DEPTNAME',renderer:aleft},
-        {text: '总数', align: 'center', width: 100, dataIndex: 'V_ALLNUM',renderer:aleft},
-        {text: '执行数', align: 'center', width: 100, dataIndex: 'V_EXENUM',renderer:aleft},
-        {text: '执行率（%)', align: 'center', width: 100, dataIndex: 'V_EXTRATE',renderer:aleft}
+        {text: '厂矿', align: 'center', width: 300, dataIndex: 'V_DEPTNAME',renderer:aleft},
+        {text: '总数', align: 'center', width: 240, dataIndex: 'V_ALLNUM',renderer:aleft},
+        {text: '执行数', align: 'center', width: 240, dataIndex: 'V_EXENUM',renderer:aleft},
+        {text: '执行率（%)', align: 'center', width: 240, dataIndex: 'V_EXTRATE',renderer:aleft}
     ]
 
 });
