@@ -225,7 +225,7 @@ Ext.onReady(function () {
                 store: ckstore,
                 editable: false,
                 fieldLabel: '厂矿',
-                labelWidth: 110,
+                labelWidth: 80,
                 displayField: 'V_DEPTNAME',
                 valueField: 'V_DEPTCODE',
                 queryMode: 'local',
