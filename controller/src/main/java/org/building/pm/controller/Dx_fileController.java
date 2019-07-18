@@ -3716,14 +3716,14 @@ public class Dx_fileController {
     }
 
     //工单物料改变写入
-    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_SIGN_IN", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_IN", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_IN(
+    public Map PRO_WORKORDER_MAT_CHANGE_IN(
             @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
             @RequestParam(value = "V_SIGN") String V_SIGN,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_IN(V_WORKGUID, V_SIGN);
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_IN(V_WORKGUID, V_SIGN);
         return data;
     }
 
@@ -3740,14 +3740,14 @@ public class Dx_fileController {
     }
 
     //工单物料状态修改
-    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_SIGN_UPD", method = RequestMethod.POST)
+    @RequestMapping(value = "PRO_WORKORDER_MAT_CHANGE_UPD", method = RequestMethod.POST)
     @ResponseBody
-    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(
+    public Map PRO_WORKORDER_MAT_CHANGE_UPD(
             @RequestParam(value = "V_WORKGUID") String V_WORKGUID,
             @RequestParam(value = "V_SIGN") String V_SIGN,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(V_WORKGUID, V_SIGN);
+        Map data = dx_fileService.PRO_WORKORDER_MAT_CHANGE_UPD(V_WORKGUID, V_SIGN);
         return data;
     }
 

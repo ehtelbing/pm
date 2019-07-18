@@ -1993,7 +1993,7 @@ function workMatChangeSel(){
 //物料改变值状态
 function workMatChangeUpdt(){
     Ext.Ajax.request({
-        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_UPD',
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_UPD',
         type:'POST',
         async:false,
         params:{
