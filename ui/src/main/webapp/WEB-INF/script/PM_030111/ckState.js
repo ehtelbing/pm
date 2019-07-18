@@ -190,12 +190,12 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     // selType: 'checkboxmodel',
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
-        {text: '厂矿CODE', align: 'center', width: 100, dataIndex: 'V_ORGCODE',hidden:true},
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME',renderer:aleft},
-        {text: '总数', align: 'center', width: 100, dataIndex: 'ALLNUM',renderer:aleft},
-        {text: '执行数', align: 'center', width: 100, dataIndex: 'EXENUM',renderer:aleft},
-        {text: '执行率（%)', align: 'center', width: 100, dataIndex: 'EXTRATE',renderer:aleft},
-        {text:'查看详情',align:'center',width:100,dataIndex:'V_ORGCODE',renderer:turnTo}
+        {text: '厂矿CODE', align: 'center', width: 190, dataIndex: 'V_ORGCODE',hidden:true},
+        {text: '厂矿', align: 'center', width: 250, dataIndex: 'V_ORGNAME',renderer:aleft},
+        {text: '总数', align: 'center', width: 190, dataIndex: 'ALLNUM',renderer:aleft},
+        {text: '执行数', align: 'center', width: 190, dataIndex: 'EXENUM',renderer:aleft},
+        {text: '执行率（%)', align: 'center', width: 190, dataIndex: 'EXTRATE',renderer:aleft},
+        {text:'查看详情',align:'center',width:200,dataIndex:'V_ORGCODE',renderer:turnTo}
     ]
     // ,bbar: ["->",
     //     {
