@@ -321,7 +321,6 @@ var northPanel = Ext.create('Ext.form.Panel', {
     frame: true,
     border: false,
     layout: 'column',
-    frame: true,
     //baseCls: 'my-panel-no-border',
     defaults: {labelAlign: 'right'},
     items: [
