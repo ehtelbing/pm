@@ -59,8 +59,10 @@ Ext.onReady(function () {
 
     var form = Ext.create('Ext.form.Panel', {
 
+
         region: 'north',
         defaults: {
+            style: 'margin:5px 0px 5px 0px',
             labelAlign: 'right',
             labelWidth: 60
         },
@@ -72,8 +74,8 @@ Ext.onReady(function () {
 
             { id: 'ck', xtype: 'combo', fieldLabel: '厂矿名称', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE', queryMode: 'local', store: ckstore },
             { id: 'zyq', xtype: 'combo', fieldLabel: '作业区', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE', queryMode: 'local', store: zyqstore },
-            { id: 'add', xtype: 'button', text: '新增预装件', style: 'margin: 0px 0px 0px 10px' },
-            { id: 'del', xtype: 'button', text: '删除预装件', style: 'margin: 0px 0px 0px 10px' },
+            { id: 'add', xtype: 'button', text: '新增预装件', style: 'margin: 5px 0px 5px 10px' },
+            { id: 'del', xtype: 'button', text: '删除预装件', style: 'margin: 5px 0px 5px 5px' },
 
             //树类型
             {id: 'x_equtypenameH', xtype: 'hidden', value: '' },
