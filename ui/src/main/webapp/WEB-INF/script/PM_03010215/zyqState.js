@@ -121,6 +121,10 @@ var npanel = Ext.create('Ext.panel.Panel', {
             store: jhckStore,
             queryMode: 'local'
         },{
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 3, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 85px',
+            items: [
+
+        {
             xtype:'button',
             id:'selQuery',
             text:'查询',
@@ -138,8 +142,10 @@ var npanel = Ext.create('Ext.panel.Panel', {
             listeners: {
                 click: OnClickExcelButton
             }
-        },{xtype: 'label', style: ' margin: 8px 0px 5px 5px;color:red', text: '*注：执行数为生成周计划数量；执行率为执行数/审批完成的月计划总数'}]
+        },{xtype: 'label', style: ' margin: 8px 0px 5px 5px;color:red', text: '*注：执行数为生成周计划数量；执行率为执行数/审批完成的月计划总数'}
+        ]}
 
+    ]
 });
 var cpanel=Ext.create('Ext.grid.Panel',{
     id:'cpanel',
