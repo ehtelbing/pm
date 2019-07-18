@@ -119,9 +119,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
             id: 'nf',
             fieldLabel: '年份',
             editable: false,
-            margin: '5 0 0 5',
-            labelWidth: 80,
-            width: 230,
+            margin: '5 0 5 5',
+            labelWidth: 70,
+            width: 200,
             displayField: 'displayField',
             valueField: 'valueField',
             value: '',
@@ -133,8 +133,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             id: 'yf',
             fieldLabel: '月份',
             editable: false,
-            margin: '5 0 0 5',
-            labelWidth: 80,
+            margin: '5 0 5 5',
+            labelWidth: 70,
             width: 230,
             displayField: 'displayField',
             valueField: 'valueField',
@@ -147,8 +147,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             id: 'zhou',
             fieldLabel: '周',
             editable: false,
-            margin: '5 0 0 5',
-            labelWidth: 80,
+            margin: '5 0 5 5',
+            labelWidth: 70,
             width: 230,
             displayField: 'displayField',
             valueField: 'valueField',
@@ -160,8 +160,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
             id: 'jhck',
             fieldLabel: '计划厂矿',
             editable: false,
-            margin: '5 0 0 5',
-            labelWidth: 80,
+            margin: '5 0 5 5',
+            labelWidth: 70,
             width: 230,
             value: '',
             displayField: 'V_DEPTNAME',
@@ -170,7 +170,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
             queryMode: 'local'
         },
         {
-            xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 70px',
+            items: [
+        {
+            xtype: 'button', text: '查询',margin: '5 0 5 5', icon: imgpath + '/search.png',
             handler: function () {
                 query();
             }
@@ -184,7 +187,8 @@ var northPanel = Ext.create('Ext.form.Panel', {
                 click: OnClickExcelButton
             }
         },{xtype:'label', style: ' margin: 8px 0px 5px 5px;color:red',text:'*注：执行数为生成工单数量；执行率为执行数/审批完成的周计划总数'}
-    ]
+            ]}
+        ]
 });
 
 var gridPanel = Ext.create('Ext.grid.Panel', {
