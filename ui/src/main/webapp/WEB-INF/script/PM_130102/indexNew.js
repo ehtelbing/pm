@@ -1,4 +1,5 @@
 ﻿Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');
     var deptStore = Ext.create('Ext.data.Store', {
         id: 'deptStore',
@@ -129,7 +130,7 @@
         align: 'center',
         frame: true,
         layout: 'column',
-        defaults: {labelAlign: 'right', labelWidth: 70, inputWidth: 140, style: 'margin:5px 0px 5px 0px'},
+        defaults: {labelAlign: 'right', labelWidth: 80, inputWidth: 140, style: 'margin:5px 0px 5px 0px'},
         items: [
             {id: 'x_timelowerlimit', xtype: 'datefield', format: 'Y-m-d', value: sdate, fieldLabel: '起始日期'},
             {id: 'x_timeupperlimit', xtype: 'datefield', format: 'Y-m-d', value: nextDate, fieldLabel: '终止日期'}, {
@@ -242,27 +243,28 @@
         autoScroll: true,
         columns: [
             {xtype: 'rownumberer', width: 30, sortable: false},
-            {text: '部门名称', dataIndex: 'V_DEPTNAME', width: 100, align: 'center', width: 130},
-            {text: '设备名称', dataIndex: 'V_EQUNAME', width: 100, align: 'center', width: 130},
-            {text: '装置名称', dataIndex: 'V_SETNAME', width: 100, align: 'center', width: 140},
-            {text: '给油脂场所', dataIndex: 'V_LUBADDRESS', width: 100, align: 'center', width: 150},
-            {text: '润滑方式', dataIndex: 'V_LUBMODE', width: 100, align: 'center', width: 140},
-            {text: '润滑牌号', dataIndex: 'V_LUBTRADEMARK', width: 100, align: 'center', width: 100},
-            {text: '润滑点数', dataIndex: 'F_LUBCOUNT', width: 100, align: 'center', width: 140},
-            {text: '加油量', dataIndex: 'F_OILAMOUNT', width: 100, align: 'center', width: 140},
-            {text: '单位', dataIndex: 'I_UNIT', width: 50, align: 'center', width: 100},
+            {text: '部门名称', dataIndex: 'V_DEPTNAME', width: 100, align: 'center', width: 130,renderer:atleft},
+            {text: '设备名称', dataIndex: 'V_EQUNAME', width: 100, align: 'center', width: 130,renderer:atleft},
+            {text: '装置名称', dataIndex: 'V_SETNAME', width: 100, align: 'center', width: 140,renderer:atleft},
+            {text: '给油脂场所', dataIndex: 'V_LUBADDRESS', width: 100, align: 'center', width: 150,renderer:atleft},
+            {text: '润滑方式', dataIndex: 'V_LUBMODE', width: 100, align: 'center', width: 140,renderer:atleft},
+            {text: '润滑牌号', dataIndex: 'V_LUBTRADEMARK', width: 100, align: 'center', width: 100,renderer:atleft},
+            {text: '润滑点数', dataIndex: 'F_LUBCOUNT', width: 100, align: 'center', width: 140,renderer:atleft},
+            {text: '加油量', dataIndex: 'F_OILAMOUNT', width: 100, align: 'center', width: 140,renderer:atleft},
+            {text: '单位', dataIndex: 'I_UNIT', width: 50, align: 'center', width: 100,renderer:atleft},
             {
                 text: '加油时间', width: 160, dataIndex: 'D_OPERATEDATE', align: 'center',
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                     var index = store.find('D_OPERATEDATE', value);
                     if (index != -1) {
-                        return store.getAt(index).get('D_OPERATEDATE').substring(0, 19);
+                        //return store.getAt(index).get('D_OPERATEDATE').substring(0, 19);
+                        return '<div data-qtip="' + store.getAt(index).get('D_OPERATEDATE').substring(0, 19) + '" >' + store.getAt(index).get('D_OPERATEDATE').substring(0, 19) + '</div>';
                     }
                     return null;
                 }
             },
-            {text: '加油人员', dataIndex: 'V_OPERATEPERSON', width: 100, align: 'center', width: 100},
-            {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 250}/*,
+            {text: '加油人员', dataIndex: 'V_OPERATEPERSON', width: 100, align: 'center', width: 100,renderer:atleft},
+            {text: '加油原因', dataIndex: 'V_OPERATEREASON', width: 200, align: 'center', width: 250,renderer:atleft}/*,
             {text: '类型', dataIndex: 'V_ADDORCHANGE', align: 'center', width: 100}*/
 
 
@@ -300,6 +302,10 @@
         items: [panel, grid]
     });
 });
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 
 function _init() {
     if (deptLoad) {
