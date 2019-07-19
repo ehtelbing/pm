@@ -537,44 +537,57 @@ Ext.onReady(function () {
                 displayField: 'V_MAJOR_NAME',
                 valueField: 'V_MAJOR_CODE',
                 queryMode: 'local'
-            }, {
+            },{
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin: 5px 5px 5px 5px',
+            items: [
+
+            {   xtype: 'textfield',
                 id: 'mxname',
-                xtype: 'textfield',
                 fieldLabel: '模型名称',
-                editable: false,
                 labelWidth: 70,
-                queryMode: 'local'
+                editable: false,
+                queryMode: 'local',
+                labelAlign: 'right'
+
+
             },{
                         xtype: 'button',
                         text: '查询',
                         icon: imgpath + '/search.png',
+                        margin: '0px 0px 0px 5px',
                         handler: queryGrid1
                     }, {
                         xtype: 'button',
                         text: '添加模型',
                         icon: imgpath + '/add.png',
+                        margin: '0px 0px 0px 5px',
                         handler: addModel
                     }, {
                         xtype: 'button',
                         text: '修改模型',
                         icon: imgpath + '/edit.png',
+                        margin: '0px 0px 0px 5px',
                         handler: _preUpdateModel
                     }, {
                         xtype: 'button',
                         text: '添加设备',
                         icon: imgpath + '/add.png',
+                        margin: '0px 0px 0px 5px',
                         handler: addshebei
                     }, {
                         xtype: 'button',
                         text: '修改设备',
                         icon: imgpath + '/edit.png',
+                        margin: '0px 0px 0px 5px',
                         handler: _preUpdateshebei
                     }, {
                         xtype: 'button',
                         text: '删除',
                         icon: imgpath + '/delete.png',
+                        margin: '0px 0px 0px 5px',
                         handler: _delete
                     }
+                    ]}
                 ]
     });
 
