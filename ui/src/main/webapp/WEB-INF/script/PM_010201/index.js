@@ -383,19 +383,19 @@ Ext.onReady(function () {
             }, {
                 xtype: 'button',
                 text: '添加',
-                style: ' margin: 5px 0px 5px 10px',
+                style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/add.png',
                 handler: _insert
             }, {
                 xtype: 'button',
                 text: '修改',
-                style: ' margin: 5px 0px 5px 10px',
+                style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/edit.png',
                 handler: _update
             }, {
                 xtype: 'button',
                 text: '删除',
-                style: ' margin: 5px 0px 5px 10px',
+                style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/delete.png',
                 handler: _delete
             },
@@ -403,20 +403,21 @@ Ext.onReady(function () {
                     xtype: 'button',
                     text: '通用',
                     handler: addTYbtn,
-                    style: ' margin: 5px 0px 5px 10px',
+                    style: ' margin: 5px 0px 5px 5px',
                     icon: imgpath + '/add.png'
                 },
                 {
                     xtype: 'button',
                     text: '上一页',
                     style: ' margin: 5px 0px 5px 200px',
-                    icon: imgpath + '/accordion_collapse.png',
+                    icon: imgpath + '/accordion_expand.png',
+
                     handler: _last
                 }, {
                     xtype: 'button',
                     text: '下一页',
                 style: ' margin: 5px 0px 5px 10px',
-                icon: imgpath + '/accordion_expand.png',
+                    icon: imgpath + '/accordion_collapse.png',
                 handler: _next
             }]
         }]
