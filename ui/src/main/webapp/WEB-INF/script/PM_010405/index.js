@@ -372,7 +372,7 @@ Ext.onReady(function () {
             }, {
                 xtype: 'textfield',
                 emptyText: '润滑部位搜索',
-                style: ' margin: 5px 0px 5px 10px'
+                style: ' margin: 5px 0px 5px 85px'
             },
             {
                 xtype: 'button',
