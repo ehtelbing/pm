@@ -119,7 +119,7 @@ Ext.onReady(function() {
 					{ text: '重量单位', dataIndex: 'V_WEIGHTTYPE', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '购置日期', dataIndex: 'V_GZRQ', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '开始日期', dataIndex: 'V_DATE_B', width: 100 ,renderer : CreateGridColumnTd},
-					{ text: '技术对象的截止日期', dataIndex: 'V_DATE_E', width: 100 ,renderer : CreateGridColumnTd},
+					{ text: '技术对象的截止日期', dataIndex: 'V_DATE_E', width: 150 ,renderer : CreateGridColumnTd},
 					{ text: '资产制造商', dataIndex: 'V_ZZS', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '型号规格', dataIndex: 'V_GGXH', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: 'ABC 标识', dataIndex: 'V_ABC', width: 100 ,renderer : CreateGridColumnTd},
@@ -129,7 +129,7 @@ Ext.onReady(function() {
 							return '<div><a href="javascript:OnClickDeleteLink(\'' + value + '\')">修改</a></div>';
 						}
 					},
-					{ text: '上一级设备代号', dataIndex: 'V_EQUCODEUP', width: 100 ,renderer : CreateGridColumnTd}
+					{ text: '上一级设备代号', dataIndex: 'V_EQUCODEUP', width: 150 ,renderer : CreateGridColumnTd}
                     , { text: '功能位置', dataIndex: 'V_SITENAME_DOWN', width: 100 ,renderer : CreateGridColumnTd,hidden:true}],
 				bbar: [{
 					id:'page',
