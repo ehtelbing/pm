@@ -423,6 +423,9 @@ Ext.onReady(function () {
             //     valueField: 'V_EQUCODE'
             // },
                 {
+                    xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 5, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 70px',
+                    items: [
+                {
                 xtype: 'textfield',
                 id: "V_V_REPAIR_NAME",
                 labelWidth: 70,
@@ -432,29 +435,30 @@ Ext.onReady(function () {
             }, {
                 xtype: 'button',
                 text: '查询',
-                style: ' margin: 5px 0px 5px 20px',
+                style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/search.png',
                 handler: _select
             }, {
                 xtype: 'button',
                 text: '添加',
-                style: ' margin: 5px 0px 5px 10px',
+                style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/add.png',
                 handler: _insert
             }, {
                 xtype: 'button',
                 text: '修改',
-                style: ' margin: 5px 0px 5px 10px',
+                style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/edit.png',
                 handler: _update
             },{
                 xtype: 'button',
                 text: '删除',
-                style: ' margin: 5px 0px 5px 10px',
+                style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/delete.png',
                 handler: _delete
             }
 
+            ]}
             ]
         }]
 
