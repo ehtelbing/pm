@@ -95,14 +95,18 @@ Ext.onReady(function() {
 		items:[{xtype:'panel',frame:true,width:'100%',region:'north',layout:'column',
 			items:[{ xtype: 'combo', id: 'ck', store: ckStore, fieldLabel: '厂矿', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, labelAlign: 'right', editable: false, queryMode: 'local', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE' },
 				{ xtype: 'combo', id: 'zyq', store: zyqStore, fieldLabel: '作业区', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, labelAlign: 'right', editable: false, queryMode: 'local', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE' },
-				{xtype : 'textfield',id :'eququery',emptyText : '输入设备名称',width:158,style: ' margin: 5px 0px 5px 70px'},
+				{
+					xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 3, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 70px',
+					items: [
+				{xtype : 'textfield',id :'eququery',emptyText : '输入设备名称',width:158,style: ' margin: 5px 0px 5px 0px'},
 				{xtype:'button',text:'刷新', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/search.png',handler:QueryGrid},
 				{xtype:'button',text:'复制设备', style: ' margin: 5px 0px 5px 5px',listeners:{click:OnCopyClicked}},
 				{xtype:'button',text:'添加设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/add.png',listeners:{click:OnBtnClicked}},
 				{xtype:'button',text:'修改设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnEditClicked}},
 				{xtype:'button',text:'修改主设备', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnEditMainClicked}},
 				{xtype:'button',text:'备件清单编辑', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/edit.png',listeners:{click:OnBZEditClicked}}
-			]},
+					]}
+				]},
 			{xtype:'grid',id:'grid', store: gridStore,columnLines : true,autoScroll : true,region:'center',border:false,
 				columns:[{ text: '设备编号', dataIndex: 'V_EQUCODE', width: 100 ,renderer : CreateGridColumnTd},
 					{ text: '设备种类', dataIndex: 'V_EQULEV', width: 100 ,renderer : CreateGridColumnTd},
