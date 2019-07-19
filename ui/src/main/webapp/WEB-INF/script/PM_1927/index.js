@@ -97,7 +97,7 @@ var Layout = {
                 {
                     xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin: 5px 5px 5px 5px',
                     items: [
-                {xtype: 'textfield', fieldLabel: '技术要求名称', labelWidth: 80, id: 'jsyqname' },
+                {xtype: 'textfield', fieldLabel: '技术要求名称', labelWidth: 80, id: 'jsyqname',labelAlign: 'right' },
                 { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png', style: { margin: ' 0 0 0 10px'}},
                 { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png', style: { margin: ' 0 0 0 5px'}},
                 { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png', style: { margin: ' 0 0 0 5px'}},
