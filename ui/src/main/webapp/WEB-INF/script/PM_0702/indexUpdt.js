@@ -31,6 +31,45 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
         return request;
     }
 });
+//小时
+var hours = [];
+for (var i = 0; i < 24; i++) {
+    if (i < 10) {
+        i = '0' + i;
+    } else {
+        i = '' + i;
+    }
+    hours.push({displayField: i, valueField: i});
+}
+var hourStore = Ext.create("Ext.data.Store", {
+    storeId: 'hourStore',
+    fields: ['displayField', 'valueField'],
+    data: hours,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
+
+//分钟
+var minutes = [];
+for (var i = 0; i < 60; i++) {
+    if (i < 10) {
+        i = '0' + i;
+    } else {
+        i = '' + i;
+    }
+    minutes.push({displayField: i, valueField: i});
+}
+var minuteStore = Ext.create("Ext.data.Store", {
+    storeId: 'minuteStore',
+    fields: ['displayField', 'valueField'],
+    data: minutes,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
@@ -520,6 +559,16 @@ Ext.onReady(function () {
                 queryMode: 'local'
             },
             {
+                xtype: 'textfield',
+                id: 'inper',
+                fieldLabel: '录入名字',
+                margin: '5 0 10 5',
+                labelAlign: 'right',
+                labelWidth: 75,
+                width: 255,
+                value: decodeURI(V_V_PERSONNAME)
+            },
+            {
                 id: 'begintime',
                 xtype: 'datefield',
                 editable: false,
@@ -530,17 +579,37 @@ Ext.onReady(function () {
                 labelWidth: 75,
                 width: 255,
                 baseCls: 'margin-bottom'
-            } , {
-                xtype: 'textfield',
-                id: 'inper',
-                fieldLabel: '录入名字',
-                margin: '5 0 10 5',
+            },
+            {
+                xtype: 'combo',
+                id: 'hour',
+                fieldLabel: '小时',
+                editable: false,
+                margin: '5 0 0 5',
                 labelAlign: 'right',
                 labelWidth: 75,
                 width: 255,
-                value: decodeURI(V_V_PERSONNAME)
-            }
-            ,
+                value: '',
+                displayField: 'displayField',
+                valueField: 'valueField',
+                store: hourStore,
+                queryMode: 'local'
+            },
+            {
+                xtype: 'combo',
+                id: 'minute',
+                fieldLabel: '分钟',
+                editable: false,
+                margin: '5 0 0 5',
+                labelAlign: 'right',
+                labelWidth: 75,
+                width: 255,
+                value: '',
+                displayField: 'displayField',
+                valueField: 'valueField',
+                store: minuteStore,
+                queryMode: 'local'
+            },
             {
                 xtype: 'textarea',
                 id: 'qxmc',
@@ -580,6 +649,9 @@ Ext.onReady(function () {
         layout: 'border',
         items: [panel]
     });
+
+    Ext.getCmp('hour').select(Ext.data.StoreManager.lookup('hourStore').getAt(0));
+    Ext.getCmp('minute').select(Ext.data.StoreManager.lookup('minuteStore').getAt(0));
 
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
         Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
@@ -785,6 +857,14 @@ function dataLoad() {
                 Ext.getCmp('clyj').setValue(list[0].V_IDEA);
                 Ext.getCmp('qxdj').select(list[0].V_SOURCE_GRADE);
                 Ext.getCmp('clfs').select(list[0].V_PROC_WAY);
+                var findDate=list[0].D_DEFECTDATE
+                var findDAT=findDate.split(" ")[0];
+                var hms=findDate.split(" ")[1];
+                var fhour=hms.split(":")[0];
+                var fminute=hms.split(":")[1];
+                Ext.getCmp("begintime").setValue(new Date(findDAT));
+                Ext.getCmp('hour').select(fhour);
+                Ext.getCmp('minute').select(fminute);
                 // Ext.getCmp('inper').getValue(decodeURI(Ext.util.Cookies.get('v_personcode')));
                 selectnum=0;
             }
@@ -810,6 +890,8 @@ function OnButtonSave() {
         Ext.Msg.alert('操作信息', '设备类型或设备名称不可以为空');
         return;
     }
+    var findDate=Ext.getCmp("begintime").getSubmitValue();
+    var findTime=findDate+" "+Ext.getCmp("hour").getValue()+":"+Ext.getCmp("minute").getValue()+":"+"00";
     Ext.Ajax.request({
         url: AppUrl + 'PM_07/PRO_PM_07_DEFECT_UPDATE',
         method: 'POST',
@@ -823,7 +905,7 @@ function OnButtonSave() {
             V_V_DEFECTLIST: Ext.getCmp('qxmc').getValue(),
             V_V_SOURCECODE: Ext.getCmp('qxlx').getValue(),//'defct01',
             V_V_SOURCEID: '',
-            V_D_DEFECTDATE: Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),//Ext.getCmp("begintime").getSubmitValue(),//Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),
+            V_D_DEFECTDATE: Ext.util.Format.date(new Date(findTime),'Y/m/d H:m:s'),//Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),//Ext.getCmp("begintime").getSubmitValue(),//Ext.util.Format.date(new Date(), 'Y/m/d H:m:s'),
             V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
             V_V_EQUCODE: Ext.getCmp('sbmc').getValue(),
             V_V_EQUCHILDCODE: Ext.getCmp('zsbmc').getValue(),

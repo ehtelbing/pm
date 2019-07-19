@@ -367,6 +367,10 @@ Ext.onReady(function () {
     });
 
     Ext.data.StoreManager.lookup('zyStore').on('load',function(){
+        Ext.getCmp('zy').store.insert(0, {
+            'V_GUID': '%',
+            'V_ZYMC': '-全部-'
+        });
         Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
         OnButtonQuery();
     });
