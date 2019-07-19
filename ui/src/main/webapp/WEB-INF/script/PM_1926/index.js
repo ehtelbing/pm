@@ -97,8 +97,8 @@ var Layout = {
                 {
                     xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin: 5px 5px 5px 5px',
                     items: [
-                {xtype: 'textfield', fieldLabel: '安全措施名称', labelWidth: 80, id: 'aqcsname',margin: '0px 5px 0px 5px' },
-                { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png',margin: '0px 5px 0px 5px'},
+                {xtype: 'textfield', fieldLabel: '安全措施名称', labelWidth: 80,labelAlign: 'right', id: 'aqcsname',margin: '0px 5px 0px 5px' },
+                { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png',margin: '0px 0px 0px 5px'},
                 { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png',margin: '0px 0px 0px 5px'},
                 { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png',margin: '0px 0px 0px 5px'},
                 { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png',margin: '0px 0px 0px 5px'},
