@@ -94,13 +94,17 @@ var Layout = {
                     fieldLabel: '作业区', editable: false, labelWidth: 80},
                 {xtype: 'combo', id: 'sblx', store: sblxStore, queryMode: 'local', valueField: 'V_EQUTYPECODE', displayField: 'V_EQUTYPENAME',
                     fieldLabel: '设备类型', editable: false, labelWidth: 80},
+                {
+                    xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin: 5px 5px 5px 5px',
+                    items: [
                 {xtype: 'textfield', fieldLabel: '技术要求名称', labelWidth: 80, id: 'jsyqname' },
-                { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '通用', handler: addTYbtn,  icon: imgpath + '/add.png', style: { margin: ' 5px 0 5px 10px'}}
-            ]
+                { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png', style: { margin: ' 0 0 0 10px'}},
+                { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png', style: { margin: ' 0 0 0 5px'}},
+                { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png', style: { margin: ' 0 0 0 5px'}},
+                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png', style: { margin: ' 0 0 0 5px'}},
+                { xtype: 'button', text: '通用', handler: addTYbtn,  icon: imgpath + '/add.png', style: { margin: ' 0 0 0 5px'}}
+            ]}
+                ]
         },
         { xtype: 'gridpanel', region: 'center',  columnLines: true, id: 'grid', store: 'gridStore',
             selType : 'checkboxmodel',
