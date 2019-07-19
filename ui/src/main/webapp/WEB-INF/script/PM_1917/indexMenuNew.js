@@ -895,54 +895,68 @@ Ext.onReady(function () {
                 }
             }
         }, {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin: 5px 5px 5px 80px',
+            items: [
+
+            {
             xtype: 'button',
             text: '添加模型',
             icon: imgpath + '/add.png',
             width: 100,
+            margin: '0px 0px 0px 5px',
             handler: _openmanageWindow
         }, {
             xtype: 'button',
             text: '修改模型',
             icon: imgpath + '/edit.png',
             width: 100,
+            margin: '0px 0px 0px 5px',
             handler: _openUpdateWindow
         }, {
             xtype: 'button',
             text: '删除模型',
             icon: imgpath + '/delete1.png',
             width: 100,
+            margin: '0px 0px 0px 5px',
             handler: _deleteJXMX
         }, {
             xtype: 'button',
             text: '添加工序',
             icon: imgpath + '/add.png',
             width: 100,
+             margin: '0px 0px 0px 5px',
             handler: _addProcedureWindow
         }, {
             xtype: 'button',
             text: '修改工序',
             icon: imgpath + '/edit.png',
             width: 100,
+            margin: '0px 0px 0px 5px',
             handler: _editProcedureWindow
         }, {
             xtype: 'button',
             text: '删除工序',
             icon: imgpath + '/delete1.png',
             width: 100,
+            margin: '0px 0px 0px 5px',
             handler: _deleteProcedure
         }, {
             xtype: 'button',
             text: '查看详细',
             icon: imgpath + '/search.png',
             width: 100,
+            margin: '0px 0px 0px 5px',
             handler: _procedualDetail
         },{
             xtype:'button',
             text:'附件添加',
             icon:imgpath+'/fj.png',
             width:100,
+            margin: '0px 0px 0px 5px',
             handler:_addmxfile
-        }]
+        }
+        ]}
+        ]
     });
     // 设备树treePanel
     var sblxTreePanel = Ext.create('Ext.tree.Panel', {
