@@ -4183,15 +4183,15 @@ public class Dx_fileService {
     }
 
     //工单物料改变写入
-    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_IN(String V_WORKGUID, String V_SIGN) throws SQLException {
+    public Map PRO_WORKORDER_MAT_CHANGE_IN(String V_WORKGUID, String V_SIGN) throws SQLException {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
-            logger.info("begin PRO_WORKORDER_MAT_CHANGE_SIGN_IN");
+            logger.info("begin PRO_WORKORDER_MAT_CHANGE_IN");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_SIGN_IN(:V_WORKGUID,:V_SIGN,:RET)}");
+            cstmt = conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_IN(:V_WORKGUID,:V_SIGN,:RET)}");
             cstmt.setString("V_WORKGUID", V_WORKGUID);
             cstmt.setString("V_SIGN", V_SIGN);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
@@ -4204,7 +4204,7 @@ public class Dx_fileService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_WORKORDER_MAT_CHANGE_SIGN_IN");
+        logger.info("end PRO_WORKORDER_MAT_CHANGE_IN");
         return result;
     }
 
@@ -4235,15 +4235,15 @@ public class Dx_fileService {
     }
 
     //工单物料状态修改
-    public Map PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(String V_WORKGUID, String V_SIGN) throws SQLException {
+    public Map PRO_WORKORDER_MAT_CHANGE_UPD(String V_WORKGUID, String V_SIGN) throws SQLException {
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
         try {
-            logger.info("begin PRO_WORKORDER_MAT_CHANGE_SIGN_UPD");
+            logger.info("begin PRO_WORKORDER_MAT_CHANGE_UPD");
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_SIGN_UPD(:V_WORKGUID,:V_SIGN,:RET)}");
+            cstmt = conn.prepareCall("{call PRO_WORKORDER_MAT_CHANGE_UPD(:V_WORKGUID,:V_SIGN,:RET)}");
             cstmt.setString("V_WORKGUID", V_WORKGUID);
             cstmt.setString("V_SIGN", V_SIGN);
             cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
@@ -4256,7 +4256,7 @@ public class Dx_fileService {
             conn.close();
         }
         logger.debug("result:" + result);
-        logger.info("end PRO_WORKORDER_MAT_CHANGE_SIGN_UPD");
+        logger.info("end PRO_WORKORDER_MAT_CHANGE_UPD");
         return result;
     }
 

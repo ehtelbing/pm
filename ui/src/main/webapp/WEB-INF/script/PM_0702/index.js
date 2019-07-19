@@ -97,7 +97,7 @@ Ext.onReady(function () {
         id: 'gridStore',
         pageSize: 50,
         autoLoad: false,
-        fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME',
+        fields: ['D_DEFECTDATE', 'V_DEFECTLIST', 'V_EQUNAME','V_DEPTCODE',
             'V_EQUSITE', 'V_DEPTNAME', 'V_PERNAME', 'V_IDEA',
             'V_STATENAME', 'V_SOURCENAME', 'V_SOURCEID',
             'D_INDATE', 'V_PERCODE', 'V_GUID', 'V_STATECODE',
@@ -288,7 +288,16 @@ Ext.onReady(function () {
             align: 'center',
             width: 100,
             renderer: CreateGridColumnTd
-        }],
+        }
+            ,  {
+                text: '作业区编码',
+                dataIndex: 'V_DEPTCODE',
+                align: 'center',
+                width: 100,
+                hidden:true,
+                renderer: CreateGridColumnTd
+            }
+        ],
         listeners: {
             itemdblclick: itemclick
         },
@@ -671,17 +680,23 @@ function createWorkorder() {
                     var V_SOURCECODE = seldata[0].raw.V_SOURCECODE;
                     var owidth = window.document.body.offsetWidth - 500;
                     var oheight = window.document.body.offsetHeight - 500;
-
-                    var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID=' + V_ORDERGUID +
-                        '&V_EQUTYPECODE=' + V_EQUTYPECODE +
-                        "&V_SOURCECODE=" + V_SOURCECODE +
-                        "&D_BE_SJ=" + D_BE_SJ +
-                        "&D_EN_SJ=" + D_EN_SJ, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-
+                    if(seldata[0].data.V_DEPTCODE!='99070205'&&seldata[0].data.V_DEPTCODE!='99070210'&&seldata[0].data.V_DEPTCODE!='99080206'&&seldata[0].data.V_DEPTCODE!='99080207'){
+                        var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID=' + V_ORDERGUID +
+                            '&V_EQUTYPECODE=' + V_EQUTYPECODE +
+                            "&V_SOURCECODE=" + V_SOURCECODE +
+                            "&D_BE_SJ=" + D_BE_SJ +
+                            "&D_EN_SJ=" + D_EN_SJ, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    }
+                    else{
+                        var ret = window.open(AppUrl + 'page/dq0205/workorder_newWork.html?V_GUID=' + V_ORDERGUID +
+                            '&V_EQUTYPECODE=' + V_EQUTYPECODE +
+                            "&V_SOURCECODE=" + V_SOURCECODE +
+                            "&D_BE_SJ=" + D_BE_SJ +
+                            "&D_EN_SJ=" + D_EN_SJ, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                    }
                 } else {
                     alert('创建工单失败');
                 }
-
             }
         });
     //}

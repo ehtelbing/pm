@@ -797,7 +797,7 @@ function OnCompareElem ( editor, context, eOpts ){
         setMatSign=1;
     }
     Ext.Ajax.request({
-        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_IN',
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_IN',
         type:'POST',
         async:false,
         params:{
@@ -813,7 +813,7 @@ function OnCompareElem ( editor, context, eOpts ){
 
 function matSignChange(){
     Ext.Ajax.request({
-        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_SIGN_IN',
+        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_IN',
         type:'POST',
         async:false,
         params:{

@@ -1,4 +1,8 @@
-
+/**
+*缺陷统计（设备部）
+ * create by hrb 2019-7-16
+*
+ */
 var yearlist=[];
 var monthlist=[];
 var date=new Date();
@@ -122,6 +126,7 @@ Ext.onReady(function () {
             {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
             {text: '厂矿编码', align: 'center', width: 100, dataIndex: 'V_ORGCODE',hidden:true},
             {text: '厂矿名称', align: 'center', width: 150, dataIndex: 'V_ORGNAME',renderer:leftStyle},
+            {text: '缺陷数量', align: 'center', width: 100, dataIndex: 'V_V_SUMNUM',renderer:leftStyle},
             {text: '下工单数量', align: 'center', width: 100, dataIndex: 'V_V_XDGX_NUM',renderer:leftStyle},
             {text: '处理率(%)', align: 'center', width: 100, dataIndex: 'V_V_CLL_NUM',renderer:leftStyle},
             {text: '消缺率（%)', align: 'center', width: 100, dataIndex: 'V_V_XQL_NUM',renderer:leftStyle}
