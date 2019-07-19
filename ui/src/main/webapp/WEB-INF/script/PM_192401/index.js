@@ -96,7 +96,7 @@ Ext.onReady(function() {
 			items:[{ xtype: 'combo', id: 'ck', store: ckStore, fieldLabel: '厂矿', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, labelAlign: 'right', editable: false, queryMode: 'local', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE' },
 				{ xtype: 'combo', id: 'zyq', store: zyqStore, fieldLabel: '作业区', style: ' margin: 5px 0px 5px 5px', labelWidth: 60, labelAlign: 'right', editable: false, queryMode: 'local', displayField: 'V_DEPTNAME', valueField: 'V_DEPTCODE' },
 				{
-					xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 3, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 70px',
+					xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 7, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 70px',
 					items: [
 				{xtype : 'textfield',id :'eququery',emptyText : '输入设备名称',width:158,style: ' margin: 5px 0px 5px 0px'},
 				{xtype:'button',text:'刷新', style: ' margin: 5px 0px 5px 5px',icon: imgpath +'/search.png',handler:QueryGrid},
