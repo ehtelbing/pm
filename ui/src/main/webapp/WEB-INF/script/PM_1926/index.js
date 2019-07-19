@@ -89,18 +89,22 @@ var Layout = {
             xtype : 'panel', border : false, region : 'north', layout : 'column', defaults: { style: { margin: '5px 0px 5px 5px'}, labelAlign: 'right'},frame:true,
             items: [
                 {xtype: 'combo', id: 'ck', store: ckStore, queryMode: 'local', valueField: 'V_DEPTCODE', displayField: 'V_DEPTNAME',
-                    fieldLabel: '厂矿', editable: false, labelWidth: 80},
+                    fieldLabel: '厂矿', editable: false, labelWidth: 85},
                 {xtype: 'combo', id: 'zyq', store: zyqStore, queryMode: 'local', valueField: 'V_DEPTCODE', displayField: 'V_DEPTNAME',
                     fieldLabel: '作业区', editable: false, labelWidth: 80},
                 {xtype: 'combo', id: 'sblx', store: sblxStore, queryMode: 'local', valueField: 'V_EQUTYPECODE', displayField: 'V_EQUTYPENAME',
                     fieldLabel: '设备类型', editable: false, labelWidth: 80},
-                {xtype: 'textfield', fieldLabel: '安全措施名称', labelWidth: 80, id: 'aqcsname' },
-                { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png'},
-                { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png'},
-                { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png'},
-                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png'},
-                { xtype: 'button', text: '通用', handler: addTYbtn,  icon: imgpath + '/add.png'}
-            ]
+                {
+                    xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin: 5px 5px 5px 5px',
+                    items: [
+                {xtype: 'textfield', fieldLabel: '安全措施名称', labelWidth: 80, id: 'aqcsname',margin: '0px 5px 0px 5px' },
+                { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png',margin: '0px 5px 0px 5px'},
+                { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png',margin: '0px 0px 0px 5px'},
+                { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png',margin: '0px 0px 0px 5px'},
+                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png',margin: '0px 0px 0px 5px'},
+                { xtype: 'button', text: '通用', handler: addTYbtn,  icon: imgpath + '/add.png',margin: '0px 0px 0px 5px'}
+            ]}
+                ]
         },
         { xtype: 'gridpanel', region: 'center',  columnLines: true, id: 'grid', store: 'gridStore',
             selType : 'checkboxmodel',
