@@ -81,7 +81,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
         },{
             xtype: 'button',
             text: '删除',
-            margin: '5 0 5 15',
+            margin: '5 0 5 5',
             icon: imgpath + '/delete1.png',
             handler: OnButtonDelete
         }
@@ -120,8 +120,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '时间', align: 'center', width: 100, dataIndex: 'V_TIME',renderer: rendererTime},
-        {text: '页面', align: 'center', width: 230, dataIndex: 'V_MENUNAME'
-            }
+        {text: '页面', align: 'center', width: 230, dataIndex: 'V_MENUNAME',renderer : atleft}
         // {text: '', align: '', width: 200, dataIndex: 'V_DATE',hidden:true}
 
     ]
@@ -153,6 +152,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     // ]
 });
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [{
@@ -185,8 +185,11 @@ Ext.onReady(function () {
     getColumn();
 });
 function rendererTime(value, metaData) {
-
-    return value.split(":")[0]+':'+value.split(":")[1];
+    return '<div data-qtip="' + value.split(":")[0]+':'+value.split(":")[1] + '" >' + value.split(":")[0]+':'+value.split(":")[1] + '</div>';
+}
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 //删除
 function OnButtonDelete(){
@@ -263,6 +266,7 @@ function OnButtonDelete(){
         }
     });
 }
+
 function insertHistory(active) {
     Ext.Ajax.request({
         url: AppUrl + 'cxy/MM_USER_TRENDS_INS',
