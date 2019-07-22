@@ -100,6 +100,11 @@ var gridStore = Ext.create('Ext.data.Store', {
     }
 });
 
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
+
 var GridPanel = Ext.create('Ext.grid.Panel', {
     id : 'gridPanel',
     region:'center',
@@ -116,20 +121,24 @@ var GridPanel = Ext.create('Ext.grid.Panel', {
     }, {
         ID : 'V_ROLECODE',
         text : "角色编码",
-        dataIndex : 'V_ROLECODE'
+        dataIndex : 'V_ROLECODE',
+        renderer : atleft
     }, {
         ID : 'V_ROLENAME',
         text : "角色名称",
-        dataIndex : 'V_ROLENAME'
+        dataIndex : 'V_ROLENAME',
+        renderer : atleft
     }, {
         ID : 'V_ROLETYPE',
         text : "角色类型",
-        dataIndex : 'V_ROLETYPE'
+        dataIndex : 'V_ROLETYPE',
+        renderer : atleft
     }, {
         ID : 'V_DEPTNAME',
         text : "部门",
         width : 150,
-        dataIndex : 'V_DEPTNAME'
+        dataIndex : 'V_DEPTNAME',
+        renderer : atleft
     }]
 });
 var westPanel= Ext.create('Ext.panel.Panel', {
@@ -231,7 +240,7 @@ var RoleTree = Ext.create('Ext.tree.Panel', {
 });
 
 Ext.onReady(function() {
-
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         xtype : 'panel',
         layout : {
