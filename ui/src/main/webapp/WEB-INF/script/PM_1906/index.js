@@ -94,21 +94,21 @@ var Layout = {
             frame:true,
             items: [
                 {xtype: 'combo', id: 'ck', store: ckStore, queryMode: 'local', valueField: 'V_DEPTCODE', displayField: 'V_DEPTNAME',
-                    fieldLabel: '厂矿', editable: false, labelWidth: 80},
+                    fieldLabel: '厂矿', editable: false, labelWidth: 90,margin: '5px 0px 5px 10px'},
                 {xtype: 'combo', id: 'zyq', store: zyqStore, queryMode: 'local', valueField: 'V_DEPTCODE', displayField: 'V_DEPTNAME',
-                    fieldLabel: '作业区', editable: false, labelWidth: 80},
+                    fieldLabel: '作业区', editable: false, labelWidth: 90,margin: '5px 0px 5px 10px'},
                 {xtype: 'combo', id: 'sblx', store: sblxStore, queryMode: 'local', valueField: 'V_EQUTYPECODE', displayField: 'V_EQUTYPENAME',
-                    fieldLabel: '设备类型', editable: false, labelWidth: 80},
+                    fieldLabel: '设备类型', editable: false, labelWidth: 90,margin: '5px 0px 5px 10px'},
                 {
-                    xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 50px',
+                    xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 0px',
                     items: [
-                {xtype: 'textfield', fieldLabel: '车辆名称', labelWidth: 80, id: 'carname',labelAlign: 'right',style: {margin: ' 5px 0 5px 0px'}},
+                {xtype: 'textfield', fieldLabel: '车辆名称',  id: 'carname',labelAlign: 'right',style: {margin: ' 5px 0 5px 0px'}},
                 {
                     xtype: 'button',
                     text: '查询',
                     handler: queryGrid,
                     icon: imgpath + '/search.png',
-                    style: {margin: ' 5px 0 5px 10px'}
+                    style: {margin: ' 5px 0 5px 5px'}
                 },
                 {
                     xtype: 'button',
@@ -143,34 +143,34 @@ var Layout = {
                     xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '车辆编码', align: 'center', width: 150, dataIndex: 'V_CARCODE'
+                    text: '车辆编码', align: 'center', width: 150, dataIndex: 'V_CARCODE',renderer:atleft
                 },
                 {
-                    text: '车辆名称', align: 'center', width: 150, dataIndex: 'V_CARNAME'
+                    text: '车辆名称', align: 'center', width: 150, dataIndex: 'V_CARNAME',renderer:atleft
                 },
                 {
-                    text: '车辆类型', align: 'center', width: 150, dataIndex: 'V_CARTYPE'
+                    text: '车辆类型', align: 'center', width: 150, dataIndex: 'V_CARTYPE',renderer:atleft
                 },
                 {
-                    text: '车辆归属', align: 'center', width: 150, dataIndex: 'V_CARGUISUO'
+                    text: '车辆归属', align: 'center', width: 150, dataIndex: 'V_CARGUISUO',renderer:atleft
                 },
                 {
-                    text: '车辆状态', align: 'center', width: 150, dataIndex: 'V_FLAG'
+                    text: '车辆状态', align: 'center', width: 150, dataIndex: 'V_FLAG',renderer:atleft
                 },
                 {
-                    text: '车辆信息', align: 'center', width: 150, dataIndex: 'V_CARINFO'
+                    text: '车辆信息', align: 'center', width: 150, dataIndex: 'V_CARINFO',renderer:atleft
                 },
                 {
-                    text: '车辆定额', align: 'center', width: 150, dataIndex: 'V_DE'
+                    text: '车辆定额', align: 'center', width: 150, dataIndex: 'V_DE',renderer:atleft
                 },
                 {
-                    text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE'
+                    text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE',renderer:atleft
                 },
                 {
-                    text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME'
+                    text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME',renderer:atleft
                 },
                 {
-                    text: '功能位置', align: 'center', width: 150, dataIndex: 'V_EQUSITE'
+                    text: '功能位置', align: 'center', width: 150, dataIndex: 'V_EQUSITE',renderer:atleft
                 }
             ]
         },
@@ -272,7 +272,10 @@ var win = Ext.create('Ext.window.Window', {
     }]
 });
 
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function onPageLoaded() {
     Ext.create('Ext.container.Viewport', Layout);
     //厂矿加载时
@@ -526,3 +529,6 @@ function renderFont(value, metaData) {
     return value;
 }
 Ext.onReady(onPageLoaded);
+Ext.QuickTips.init();
+
+
