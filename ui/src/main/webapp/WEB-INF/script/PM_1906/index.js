@@ -205,28 +205,32 @@ var win = Ext.create('Ext.window.Window', {
         fieldLabel: '车辆编码',
         labelAlign: 'right',
         width: '300',
-        margin: '30px 0 0 0px'
+        margin: '30px 0 0 0px',
+        renderer:atleft
     }, {
         xtype: 'textfield',
         id: 'wincarname',
         fieldLabel: '车辆名称',
         labelAlign: 'right',
         width: '300',
-        margin: '20px 0 0 0px'
+        margin: '20px 0 0 0px',
+        renderer:atleft
     }, {
         xtype: 'textfield',
         id: 'wincartype',
         fieldLabel: '车辆类型',
         labelAlign: 'right',
         width: '300',
-        margin: '20px 0 0 0px'
+        margin: '20px 0 0 0px',
+        renderer:atleft
     }, {
         xtype: 'textfield',
         id: 'wings',
         fieldLabel: '车辆归属',
         labelAlign: 'right',
         width: '300',
-        margin: '20px 0 0 0px'
+        margin: '20px 0 0 0px',
+        renderer:atleft
     }, {
         xtype: 'combo',
         id: 'winfalg',
@@ -239,21 +243,24 @@ var win = Ext.create('Ext.window.Window', {
         value: '在用',
         editable: false,
         width: '300',
-        margin: '20px 0 0 0px'
+        margin: '20px 0 0 0px',
+        renderer:atleft
     },{
         xtype: 'textfield',
         id: 'wininf',
         fieldLabel: '车辆信息',
         labelAlign: 'right',
         width: '300',
-        margin: '20px 0 0 0px'
+        margin: '20px 0 0 0px',
+        renderer:atleft
     },{
         xtype: 'numberfield',
         id: 'winde',
         fieldLabel: '车辆定额',
         labelAlign: 'right',
         width: '300',
-        margin: '20px 0 0 0px'
+        margin: '20px 0 0 0px',
+        renderer:atleft
     }],
     buttons: [{
         xtype: 'button',
