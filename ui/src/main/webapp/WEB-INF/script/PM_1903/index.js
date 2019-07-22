@@ -54,15 +54,18 @@ var GridPanel = Ext.create('Ext.grid.Panel', {
     }, {
         ID: 'V_ROLECODE',
         text: "角色编码",
-        dataIndex: 'V_ROLECODE'
+        dataIndex: 'V_ROLECODE',
+        renderer : atleft
     }, {
         ID: 'V_ROLENAME',
         text: "角色名称",
-        dataIndex: 'V_ROLENAME'
+        dataIndex: 'V_ROLENAME',
+        renderer : atleft
     }, {
         ID: 'V_ROLETYPE',
         text: "角色类型",
-        dataIndex: 'V_ROLETYPE'
+        dataIndex: 'V_ROLETYPE',
+        renderer : atleft
     }],
     dockedItems: [{
         xtype: 'panel',
@@ -92,6 +95,7 @@ var GridPanel = Ext.create('Ext.grid.Panel', {
             itemId: 'create',
             xtype: 'button',
             style: 'margin:5px 0px 5px 15px',
+            icon: imgpath + '/add.png',
             listeners: {
                 click: OnClickAddButton
             }
@@ -100,6 +104,7 @@ var GridPanel = Ext.create('Ext.grid.Panel', {
             itemId: 'update',
             xtype: 'button',
             style: 'margin:5px 0px 5px 5px',
+            icon: imgpath + '/edit.png',
             listeners: {
                 click: OnClickUpdateButton
             }
@@ -108,6 +113,7 @@ var GridPanel = Ext.create('Ext.grid.Panel', {
             itemId: 'delete',
             xtype: 'button',
             style: 'margin:5px 0px 5px 5px',
+            icon: imgpath + '/delete1.png',
             listeners: {
                 click: OnClickDeleteButton
             }
@@ -115,6 +121,10 @@ var GridPanel = Ext.create('Ext.grid.Panel', {
     }]
 });
 
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 //var MenuTree = Ext.create('Ext.tree.Panel', {
 //	flex : 1,
 //	id : 'MenuTree',
@@ -182,6 +192,7 @@ function query() {
     });
 }
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [GridPanel]
