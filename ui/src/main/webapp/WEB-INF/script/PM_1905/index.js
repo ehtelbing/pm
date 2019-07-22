@@ -102,7 +102,7 @@ Ext.onReady(function () {
             displayField: 'V_DEPTNAME',
             fieldLabel: '厂矿',
             editable: false,
-            labelWidth: 80
+            labelWidth: 95
         }, {
             xtype: 'combo',
             id: 'zyq',
@@ -112,7 +112,7 @@ Ext.onReady(function () {
             displayField: 'V_DEPTNAME',
             fieldLabel: '作业区',
             editable: false,
-            labelWidth: 80
+            labelWidth: 95
         }, {
             xtype: 'combo',
             id: 'sblx',
@@ -122,19 +122,21 @@ Ext.onReady(function () {
             displayField: 'V_EQUTYPENAME',
             fieldLabel: '设备类型',
             editable: false,
-            labelWidth: 80
-        }, {
-            xtype: 'textfield',
-            fieldLabel: '工具名称',
-            labelWidth: 80,
-            id: 'toolname'
+            labelWidth: 95,
+            style: {
+                margin: ' 5px 0px 5px 0'
+            }
+        },  {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 6, baseCls: 'my-panel-noborder',style: 'margin:0 5px 0 0px',
+            items: [
+                {xtype: 'textfield', fieldLabel: '工具名称',  id: 'toolname',labelAlign: 'right',style: {margin: ' 5px 0 5px 0px'}
         }, {
             xtype: 'button',
             text: '查询',
             handler: queryGrid,
             icon: imgpath + '/search.png',
             style: {
-                margin: ' 5px 0 5px 10px'
+                margin: ' 5px 0 5px 20px'
             }
         }, {
             xtype: 'button',
@@ -142,7 +144,7 @@ Ext.onReady(function () {
             handler: addbtn,
             icon: imgpath + '/add.png',
             style: {
-                margin: ' 5px 0 5px 10px'
+                margin: ' 5px 0 5px 5px'
             }
         }, {
             xtype: 'button',
@@ -150,7 +152,7 @@ Ext.onReady(function () {
             handler: editbtn,
             icon: imgpath + '/edit.png',
             style: {
-                margin: ' 5px 0 5px 10px'
+                margin: ' 5px 0 5px 5px'
             }
         }, {
             xtype: 'button',
@@ -158,23 +160,24 @@ Ext.onReady(function () {
             handler: delbtn,
             icon: imgpath + '/delete.png',
             style: {
-                margin: ' 5px 0 5px 10px'
+                margin: ' 5px 0 5px 5px'
             }
         }, {
-            xtype: 'button',
-            text: '通用',
-            handler: addTYbtn,
-            icon: imgpath + '/add.png',
-            style: {
-                margin: ' 5px 0 5px 10px'
-            }
+                    xtype: 'button',
+                    text: '通用',
+                    handler: addTYbtn,
+                    icon: imgpath + '/add.png',
+                    style: {
+                        margin: ' 5px 0 5px 5px'
+                    }
+                }]
         }]
     });
     // gridPanel
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
         store: gridStore,
-        frame: true,
+        //frame: true,
         columnLines: true,
         border: false,
         forceFit: true,
@@ -195,27 +198,32 @@ Ext.onReady(function () {
             text: '工具名称',
             align: 'center',
             width: 150,
-            dataIndex: 'V_TOOLNAME'
+            dataIndex: 'V_TOOLNAME',
+            renderer : atleft
         }, {
             text: '工具类型',
             align: 'center',
             width: 150,
-            dataIndex: 'V_TOOLTYPE'
+            dataIndex: 'V_TOOLTYPE',
+            renderer : atleft
         }, {
             text: '设备编码',
             align: 'center',
             width: 150,
-            dataIndex: 'V_EQUCODE'
+            dataIndex: 'V_EQUCODE',
+            renderer : atleft
         }, {
             text: '设备名称',
             align: 'center',
             width: 150,
-            dataIndex: 'V_EQUNAME'
+            dataIndex: 'V_EQUNAME',
+            renderer : atleft
         }, {
             text: '功能位置',
             align: 'center',
             width: 150,
-            dataIndex: 'V_EQUSITE'
+            dataIndex: 'V_EQUSITE',
+            renderer : atleft
         }]
     });
     // 设备树treePanel
@@ -254,6 +262,7 @@ Ext.onReady(function () {
             fieldLabel: '工具名称',
             labelAlign: 'right',
             width: '300',
+            renderer : atleft,
             margin: '20px 0 0 0px'
         }, {
             xtype: 'textfield',
@@ -261,6 +270,7 @@ Ext.onReady(function () {
             fieldLabel: '工具类型',
             labelAlign: 'right',
             width: '300',
+            renderer : atleft,
             margin: '20px 0 0 0px'
         }],
         buttons: [{
@@ -308,8 +318,13 @@ Ext.onReady(function () {
     });
     onPageLoaded();
 });
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 
 function onPageLoaded() {
+    Ext.QuickTips.init();
     //厂矿加载时
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
         Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
