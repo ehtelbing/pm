@@ -37,19 +37,19 @@ var Layout = {
                 { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '工种编码', align: 'center', width: 150, dataIndex: 'V_WORKCODE'
+                    text: '工种编码', align: 'center', width: 150, dataIndex: 'V_WORKCODE',renderer : atleft
                 },
                 {
-                    text: '工种名称', align: 'center', width: 150, dataIndex: 'V_WORKNAME'
+                    text: '工种名称', align: 'center', width: 150, dataIndex: 'V_WORKNAME',renderer : atleft
                 },
                 {
-                    text: '工种类型', align: 'center', width: 150, dataIndex: 'V_WORKTYPE'
+                    text: '工种类型', align: 'center', width: 150, dataIndex: 'V_WORKTYPE',renderer : atleft
                 },
                 {
-                    text: '台时', align: 'center', width: 150, dataIndex: 'V_TIME'
+                    text: '台时', align: 'center', width: 150, dataIndex: 'V_TIME',renderer : atleft
                 },
                 {
-                    text: '定额', align: 'center', width: 150, dataIndex: 'V_DE'
+                    text: '定额', align: 'center', width: 150, dataIndex: 'V_DE',renderer : atleft
                 }
             ]
         }
@@ -94,6 +94,7 @@ var window = Ext.create('Ext.window.Window', {
         labelAlign : 'right',
         width : '300',
         margin : '20px 0 0 0px',
+        renderer : atleft,
         readOnly : true
     },{
         xtype : 'textfield',
@@ -102,6 +103,7 @@ var window = Ext.create('Ext.window.Window', {
         labelAlign : 'right',
         width : '300',
         margin : '20px 0 0 0px',
+        renderer : atleft,
         readOnly : true
     },{
         xtype : 'textfield',
@@ -111,12 +113,14 @@ var window = Ext.create('Ext.window.Window', {
         width : '300',
         value : '1',
         readOnly : true,
+        renderer : atleft,
         margin : '20px 0 0 0px'
     },{
         xtype : 'textfield',
         id : 'winde',
         fieldLabel : '定额',
         labelAlign : 'right',
+        renderer : atleft,
         width : '300',
         margin : '20px 0 0 0px'
     }],
@@ -137,9 +141,13 @@ var window = Ext.create('Ext.window.Window', {
 
 function onPageLoaded() {
     Ext.create('Ext.container.Viewport', Layout);
+    Ext.QuickTips.init();
 
 }
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function queryGrid(){
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
