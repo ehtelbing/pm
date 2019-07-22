@@ -12,6 +12,7 @@ var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
 Ext.require(['com.data.Manage', 'com.store.GridStore']);
 var treepercode='';
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     var dataManage = Ext.create('com.data.Manage');
     var splantname = Ext.create("Ext.data.Store", {
         autoLoad: true,
@@ -519,14 +520,14 @@ Ext.onReady(function () {
         items:[{xtype:'panel', region:'north',minWidth:330,layout:'hbox',height:'100%',frame:true,baseCls: 'my-panel-no-border',
             items:[{xtype:'panel', minWidth:330,  layout:'vbox',baseCls: 'my-panel-no-border',
                 items:[
-                    {xtype:'textfield',id:'percode',fieldLabel:'人员编码',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 15px 0px 0px 10px',readOnly:true},
-                    {xtype:'textfield',id:'pername',fieldLabel:'人员名称',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
-                    {xtype:'textfield',id:'perlogname',fieldLabel:'登录名',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
-                    {xtype:'textfield',id:'perpassword',fieldLabel:'密码',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
-                    {xtype:'textfield',id:'perdept',fieldLabel:'厂矿',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
-                    {xtype:'textfield',id:'perrole',fieldLabel:'角色',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
-                    {xtype:'textfield',id:'perclass',fieldLabel:'工作中心',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true},
-                    {xtype:'textfield',id:'pertel',fieldLabel:'电话',labelAlign:'right',labelWidth:80,width:280,style: ' margin: 5px 0px 0px 10px',readOnly:true}
+                    {xtype:'textfield',id:'percode',fieldLabel:'人员编码',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 15px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'pername',fieldLabel:'人员名称',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perlogname',fieldLabel:'登录名',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perpassword',fieldLabel:'密码',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perdept',fieldLabel:'厂矿',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perrole',fieldLabel:'角色',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'perclass',fieldLabel:'工作中心',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 5px 0px 0px 10px',readOnly:true},
+                    {xtype:'textfield',id:'pertel',fieldLabel:'电话',labelAlign:'left',labelWidth:55,width:170,style: ' margin: 5px 0px 0px 10px',readOnly:true}
                     ]}]}]
     });
     var centerPanel1= Ext.create('Ext.panel.Panel', {
@@ -546,7 +547,7 @@ Ext.onReady(function () {
                     xtype: 'button',
                     text: '添加',
                     icon: imgpath + '/add.png',
-                    width: 80,
+                    width: 56,
                     handler: function () {
                         if (Ext.ComponentManager
                                 .get("tree1hidden")
@@ -577,7 +578,9 @@ Ext.onReady(function () {
                     text: '修改',
                     icon: imgpath + '/edit.png',
                     style: 'margin:0px 10px 0px 10px',
-                    width: 80,
+                    width: 56,
+
+                    margin:'0 5 0 5',
                     handler: function () {
 
                         /*var selectModel = Ext
@@ -639,7 +642,7 @@ Ext.onReady(function () {
                     xtype: 'button',
                     text: '删除',
                     icon: imgpath + '/delete1.png',
-                    width: 80,
+                    width: 56,
                     handler: function () {
                        /* var selectModel = Ext
                             .getCmp("grid")
@@ -705,7 +708,7 @@ Ext.onReady(function () {
         id: 'postTree',
         title: '岗位树',
         region: 'west',
-        width: '30%',
+        width: 228,
         rootVisible: false,
         autoLoad: false,
         border: false,
@@ -729,17 +732,21 @@ Ext.onReady(function () {
                 text: '岗位编码',
                 dataIndex: 'V_POSTCODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '岗位名称',
                 dataIndex: 'V_POSTNAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '作业区',
                 dataIndex: 'V_DEPTNAME',
+
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             },{
                 text: '删除',
                 align: 'center',
@@ -749,6 +756,14 @@ Ext.onReady(function () {
                 }
             }]
     });
+
+    function atleft(value, metaData, record, rowIndex, colIndex, store) {
+
+        return '<div data-qtip="' + value + '" >' + value + '</div>';
+    }
+
+
+
     var postPanel= Ext.create('Ext.panel.Panel', {
         title:'人员岗位',
         region: 'center',
@@ -776,12 +791,14 @@ Ext.onReady(function () {
                 text: '角色编码',
                 dataIndex: 'V_ROLECODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '角色名称',
                 dataIndex: 'V_ROLENAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }],
         listeners : {
             itemclick : roleitemclick
@@ -803,22 +820,26 @@ Ext.onReady(function () {
                 text: '角色编码',
                 dataIndex: 'V_ROLECODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '角色名称',
                 dataIndex: 'V_ROLENAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             },{
                 text: '人员编码',
                 dataIndex: 'V_PERSONCODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '人员名称',
                 dataIndex: 'V_PERSONNAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '删除',
                 align: 'center',
@@ -855,12 +876,14 @@ Ext.onReady(function () {
                 text: '工作中心编码',
                 dataIndex: 'V_SAP_WORK',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '工作中心名称',
                 dataIndex: 'V_SAP_WORKNAME',
                 align: 'center',
-                flex: 1
+                flex: 1.8,
+                renderer : atleft
             }],
         listeners : {
             itemclick : classitemclick
@@ -879,25 +902,29 @@ Ext.onReady(function () {
             // '序号',width : 50,align :
             // 'center'},
             {
-                text: '所在工作中心编码',
+                text: '工作中心编码',
                 dataIndex: 'V_CLASS_CODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
-                text: '所在工作中心名称',
+                text: '工作中心名称',
                 dataIndex: 'V_SAP_WORKNAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '人员编码',
                 dataIndex: 'V_PERSONCODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '人员名称',
                 dataIndex: 'V_PERSONNAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             },{
                 text: '删除',
                 align: 'center',
@@ -957,7 +984,7 @@ Ext.onReady(function () {
         id: 'equTree',
         title:'设备类型树',
         region: 'west',
-        width: '20%',
+        width: '28%',
         rootVisible: false,
         autoLoad: false,
         border: false,
@@ -985,22 +1012,26 @@ Ext.onReady(function () {
                 text: '设备编码',
                 dataIndex: 'V_EQUCODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
                 text: '设备名称',
                 dataIndex: 'V_EQUNAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             },  {
                 text : '设备位置编码',
                 dataIndex : 'V_EQUSITE',
                 flex: 1,
-                align : 'center'
+                align : 'center',
+                renderer : atleft
             }, {
                 text : '设备位置',
                 dataIndex : 'V_EQUSITENAME',
                 flex: 1,
-                align : 'center'
+                align : 'center',
+                renderer : atleft
             }],
         listeners : {
             select : OnSelectionEquChanged,
@@ -1116,25 +1147,29 @@ Ext.onReady(function () {
             // '序号',width : 50,align :
             // 'center'},
             {
-                text: '工种编码',
+                text: '编码',
                 dataIndex: 'V_WORKCODE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
-                text: '工种名称',
+                text: '工种',
                 dataIndex: 'V_WORKNAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
-                text: '工种类型',
+                text: '类型',
                 dataIndex: 'V_WORKTYPE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }, {
-                text: '工种定额',
+                text: '定额',
                 dataIndex: 'V_DE',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer : atleft
             }],
         listeners : {
             itemclick : typeitemclick
