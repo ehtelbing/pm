@@ -80,6 +80,24 @@ Ext.onReady(function() {
         }
     });
 
+    //检修作业区
+    var jxZyqStore=Ext.create("Ext.data.Store",{
+        id:'jxZyqStore',
+        autoLoad:false,
+        fields:['V_DEPTREPAIRCODE','V_DEPTREPAIRNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'zdh/fixdept_sel',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
     var sgdzt = Ext.create("Ext.data.Store", {
         autoLoad : false,
         storeId : 'sgdzt',
@@ -164,6 +182,7 @@ Ext.onReady(function() {
                  { id : 'endtime',xtype : 'datefield',editable : false,format : 'Y/m/d',value : new Date(),fieldLabel : '至',labelWidth : 80},
                  {id : 'ck',xtype : 'combo',store : ckstore,editable : false,fieldLabel : '厂矿',labelWidth : 80,displayField : 'V_DEPTNAME', valueField : 'V_DEPTCODE',queryMode : 'local', baseCls : 'margin-bottom' },
                  {id : 'zyq',xtype : 'combo',store : zyqstore,editable : false,fieldLabel : '作业区',labelWidth : 80, displayField : 'V_DEPTNAME',valueField : 'V_DEPTCODE',queryMode : 'local', baseCls : 'margin-bottom'},
+                 {id : 'jxzyq',xtype : 'combo',store : jxZyqStore,editable : false,fieldLabel : '检修作业区',labelWidth : 80, displayField : 'V_DEPTREPAIRNAME',valueField : 'V_DEPTREPAIRCODE',queryMode : 'local', baseCls : 'margin-bottom'},
                  {id : 'gdzt',xtype : 'combo',store : sgdzt,editable : false, fieldLabel : '工单状态',labelWidth : 80,displayField : 'V_STATENAME', valueField : 'V_STATECODE', queryMode : 'local', baseCls : 'margin-bottom'},
                  {id : 'sblx',xtype : 'combo', store : ssblx,editable : false,fieldLabel : '设备类型', labelWidth : 80,displayField : 'V_EQUTYPENAME',valueField : 'V_EQUTYPECODE',queryMode : 'local', baseCls : 'margin-bottom'},
                  {id : 'sbmc',xtype : 'combo', store : ssbmc,editable : false,fieldLabel : '设备名称', labelWidth : 80,displayField : 'V_EQUNAME',valueField : 'V_EQUCODE',queryMode : 'local',listConfig:{
@@ -369,6 +388,11 @@ Ext.onReady(function() {
                 V_V_DEPTCODENEXT:Ext.getCmp("zyq").getValue()
             }
         });
+        Ext.data.StoreManager.lookup('jxZyqStore').load({
+            params : {
+                V_V_DEPTCODE:Ext.getCmp("zyq").getValue()
+            }
+        });
     });
 
     Ext.data.StoreManager.lookup('ssblx').on('load', function() {
@@ -380,6 +404,10 @@ Ext.onReady(function() {
             }
         });
 
+    });
+    Ext.data.StoreManager.lookup('jxZyqStore').on('load', function() {
+        Ext.ComponentManager.get('jxzyq').store.insert(0,{'V_DEPTREPAIRCODE':'%','V_DEPTREPAIRNAME':'全部'});
+        Ext.getCmp("jxzyq").select(Ext.data.StoreManager.lookup('jxZyqStore').getAt(0));
     });
 
     Ext.data.StoreManager.lookup('ssbmc').on('load', function() {
@@ -465,7 +493,7 @@ Ext.onReady(function() {
             store.proxy.extraParams.V_D_ENTER_DATE_E = Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d');
             store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp( "ck").getValue();
             store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp( "zyq").getValue();
-            store.proxy.extraParams.V_V_DEPTCODEREPARIR ='';
+            store.proxy.extraParams.V_V_DEPTCODEREPARIR =Ext.getCmp("jxzyq").getValue();
             store.proxy.extraParams.V_V_STATECODE = Ext.getCmp( "gdzt").getValue();
             store.proxy.extraParams.V_EQUTYPE_CODE = Ext.getCmp( "sblx").getValue();
             store.proxy.extraParams.V_EQU_CODE = Ext.getCmp( "sbmc").getValue();
@@ -569,11 +597,12 @@ function goToFlow(V_ORDERGUID){
 }
 
 function OnClickExcelButton(){
+    var JXZYQCODE=Ext.ComponentManager.get("jxzyq").getValue()=='%'?'':encodeURI(Ext.ComponentManager.get("jxzyq").getValue());
     document.location.href=AppUrl + 'excel/GDCX_EXCEL2?V_D_ENTER_DATE_B='+Ext.Date.format(Ext.getCmp( "begintime").getValue(), 'Y-m-d')+
         '&V_D_DEFECTDATE_E='+Ext.Date.format(Ext.getCmp( "endtime").getValue(), 'Y-m-d')+
         '&V_V_ORGCODE='+Ext.ComponentManager.get("ck").getValue()+
         '&V_V_DEPTCODE='+encodeURI(Ext.ComponentManager.get("zyq").getValue())+
-        '&V_V_DEPTCODEREPARIR='+ ''+
+        '&V_V_DEPTCODEREPARIR='+JXZYQCODE+
         '&V_V_STATECODE='+encodeURI(Ext.ComponentManager.get("gdzt").getValue())+
         '&V_EQUTYPE_CODE='+encodeURI(Ext.ComponentManager.get("sblx").getValue())+
         '&V_EQU_CODE='+encodeURI(Ext.ComponentManager.get("sbmc").getValue())+
@@ -596,7 +625,7 @@ function addTab(){
                 V_D_ENTER_DATE_E:Ext.Date.format(Ext.ComponentManager.get("endtime").getValue(), 'Y-m-d'),
                 V_V_ORGCODE:Ext.ComponentManager.get("ck").getValue(),
                 V_V_DEPTCODE:Ext.ComponentManager.get("zyq").getValue(),
-                V_V_DEPTCODEREPARIR:'',
+                V_V_DEPTCODEREPARIR:Ext.ComponentManager.get("jxzyq").getValue(),
                 V_V_STATECODE:   Ext.ComponentManager.get("gdzt").getValue(),
                 V_EQUTYPE_CODE:    Ext.ComponentManager.get("sblx").getValue(),
                 V_EQU_CODE:    Ext.ComponentManager.get("sbmc").getValue(),

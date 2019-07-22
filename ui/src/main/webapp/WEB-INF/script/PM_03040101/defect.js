@@ -87,7 +87,8 @@ Ext.onReady(function(){
             {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
             {text: '缺陷类型', width: 120, dataIndex: 'V_SOURCENAME', align: 'center', renderer: atleft},
             {text: '缺陷内容', width: 300, dataIndex: 'V_DEFECTLIST', align: 'center', renderer: atleft},
-            {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft}
+            {text: '缺陷日期', width: 140, dataIndex: 'D_DEFECTDATE', align: 'center', renderer: atleft},
+            {text:'处理意见',width:150,dataIndex:'V_IDEA',align:'center',renderer:atleft}
         ],
         tbar:[{
             xtype:'button',
@@ -155,6 +156,31 @@ function OnBtnAddQx() {
                             var resp = Ext.decode(response.responseText);
                         }
                     });
+                    //写入解决方案
+                    if(record[i].data.V_IDEA!=''){
+                        Ext.Ajax.request({
+                            url: AppUrl + 'dxfile/DEFECT_BY_MAINTAINPLAN_IN',
+                            method: 'POST',
+                            params: {
+                                V_PROGUID: Guid,
+                                V_DEFECTGUID: record[i].data.V_GUID,//defectguid,//e.context.record.data.V_GUID,
+                                V_INPERCODE: Ext.util.Cookies.get('v_personcode'),
+                                V_INDEPT: Ext.util.Cookies.get('v_deptcode'),
+                                V_INORG: Ext.util.Cookies.get('v_orgCode'),//decodeURI(Ext.util.Cookies.get('v_orgname').substring()),
+                                V_DEF_SOLVE: record[i].data.V_IDEA,// e.context.record.data.DEF_SOLVE,
+                                V_BJ_STUFF: '',// e.context.record.data.BJ_STUFF,
+                                V_EQUCODE: record[i].data.V_EQUCODE//equcode//e.context.record.data.V_EQUCODE
+                            },
+                            success: function (response) {
+                                var resp = Ext.decode(response.responseText);
+                                if (resp.RET == "SUCCESS") {
+
+                                } else {
+                                    alert("解决方案写入失败");
+                                }
+                            }
+                        });
+                    }
                     //修改缺陷状态
                     Ext.Ajax.request({
                         url: AppUrl + 'cjy/PRO_PM_DEFECT_STATE_SET',
@@ -177,6 +203,7 @@ function OnBtnAddQx() {
 
                         }
                     });
+
 
                     // QueryDefect();
                 } else {

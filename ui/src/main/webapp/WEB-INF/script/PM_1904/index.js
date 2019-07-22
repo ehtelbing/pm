@@ -67,7 +67,7 @@ var window = Ext.create('Ext.window.Window', {
         labelAlign : 'right',
         width : '300',
         margin : '30px 0 0 0px',
-        renderer : atleft,
+        renderer : atleft
     },{
         xtype : 'textfield',
         id : 'winworkname',
