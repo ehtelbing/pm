@@ -26,9 +26,9 @@ var Layout = {
             items: [
                 {xtype: 'textfield', fieldLabel: '工种名称', labelWidth: 60, id: 'workname' },
                 { xtype: 'button', text: '查询', handler: queryGrid,  icon: imgpath + '/search.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png', style: { margin: ' 5px 0 5px 10px'}},
-                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png', style: { margin: ' 5px 0 5px 10px'}},
+                { xtype: 'button', text: '添加', handler: addbtn,  icon: imgpath + '/add.png', style: { margin: ' 5px 0 5px 5px'}},
+                { xtype: 'button', text: '修改', handler: editbtn,  icon: imgpath + '/edit.png', style: { margin: ' 5px 0 5px 5px'}},
+                { xtype: 'button', text: '删除', handler: delbtn,  icon: imgpath + '/delete.png', style: { margin: ' 5px 0 5px 5px'}},
             ]
         },
         { xtype: 'gridpanel', region: 'center',  columnLines: true, id: 'grid', store: 'gridStore',
@@ -37,13 +37,13 @@ var Layout = {
                 { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '工种编码', align: 'center', width: 150, dataIndex: 'V_WORKCODE'
+                    text: '工种编码', align: 'center', width: 150, dataIndex: 'V_WORKCODE',renderer : atleft
                 },
                 {
-                    text: '工种名称', align: 'center', width: 150, dataIndex: 'V_WORKNAME'
+                    text: '工种名称', align: 'center', width: 150, dataIndex: 'V_WORKNAME',renderer : atleft
                 },
                 {
-                    text: '工种类型', align: 'center', width: 150, dataIndex: 'V_WORKTYPE'
+                    text: '工种类型', align: 'center', width: 150, dataIndex: 'V_WORKTYPE',renderer : atleft
                 }
             ]
         }
@@ -66,13 +66,15 @@ var window = Ext.create('Ext.window.Window', {
         fieldLabel : '工种编码',
         labelAlign : 'right',
         width : '300',
-        margin : '30px 0 0 0px'
+        margin : '30px 0 0 0px',
+        renderer : atleft,
     },{
         xtype : 'textfield',
         id : 'winworkname',
         fieldLabel : '工种名称',
         labelAlign : 'right',
         width : '300',
+        renderer : atleft,
         margin : '20px 0 0 0px'
     },{
         xtype : 'textfield',
@@ -80,6 +82,7 @@ var window = Ext.create('Ext.window.Window', {
         fieldLabel : '工种类型',
         labelAlign : 'right',
         width : '300',
+        renderer: atleft,
         margin : '20px 0 0 0px'
     }],
     buttons : [{
@@ -97,8 +100,12 @@ var window = Ext.create('Ext.window.Window', {
         }}]
 });
 
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function onPageLoaded() {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', Layout);
 
 }
@@ -180,3 +187,5 @@ function renderFont(value, metaData){
     return value;
 }
 Ext.onReady(onPageLoaded);
+
+
