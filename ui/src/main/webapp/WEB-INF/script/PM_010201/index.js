@@ -34,6 +34,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var orgStore = Ext.create('Ext.data.Store', {
@@ -786,5 +787,5 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 
 function atright(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:right;";
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
