@@ -26,6 +26,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
+    Ext.QuickTips.init();
 
     var ckstore = Ext.create("Ext.data.Store", {
         autoLoad: true,
@@ -618,7 +619,8 @@ Ext.onReady(function () {
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                 var index = ckstore.find('V_DEPTCODE', value);
                 if (index != -1) {
-                    return ckstore.getAt(index).get('V_DEPTNAME');
+                    //return ckstore.getAt(index).get('V_DEPTNAME');
+                    return '<div data-qtip="' + ckstore.getAt(index).get('V_DEPTNAME') + '" >' + ckstore.getAt(index).get('V_DEPTNAME') + '</div>';
                 }
                 return null;
             }
@@ -630,7 +632,8 @@ Ext.onReady(function () {
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {//渲染
                 var index = zyqstore.find('V_DEPTCODE', value);
                 if (index != -1) {
-                    return zyqstore.getAt(index).get('V_DEPTNAME');
+                   // return zyqstore.getAt(index).get('V_DEPTNAME');
+                    return '<div data-qtip="' + zyqstore.getAt(index).get('V_DEPTNAME') + '" >' + zyqstore.getAt(index).get('V_DEPTNAME') + '</div>';
                 }
                 return null;
             }
@@ -686,42 +689,50 @@ Ext.onReady(function () {
             xtype: 'rownumberer',
             text: '序号',
             align: 'center',
-            flex: 0.25
+            flex: 0.25,
+            renderer: atleft
         }, {
             text: '模型名称',
             dataIndex: 'V_MX_NAME',
             flex: 4,
-            align: 'center'
+            align: 'center',
+            renderer: atleft
         }, {
             text: '设备名称',
             dataIndex: 'V_EQUNAME',
             flex: 3,
-            align: 'center'
+            align: 'center',
+            renderer: atleft
         }, {
             text: '检修内容',
             dataIndex: 'V_EQU_MENO',
             flex: 2,
-            align: 'center'
+            align: 'center',
+            renderer: atleft
         }, {
             text: '维修人数',
             dataIndex: 'V_PERNUM',
             flex: 2,
-            align: 'center'
+            align: 'center',
+            renderer: atleft
         }, {
             text: '预期寿命',
             dataIndex: 'V_LIFELONG',
             flex: 2,
-            align: 'center'
+            align: 'center',
+            renderer: atleft
         }, {
             text: '主要缺陷',
             dataIndex: 'V_MAIN_DEFECT',
             flex: 2,
-            align: 'center'
+            align: 'center',
+            renderer: atleft
         }, {
             text: '施工方式',
             dataIndex: 'V_SGWAYNAME',
             flex: 2,
-            align: 'center'
+            align: 'center',
+            renderer: atleft
         }],
         bbar: ['->', {
             xtype: 'pagingtoolbar',
@@ -1234,7 +1245,10 @@ Ext.onReady(function () {
 
 
 });
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function _selectSbSecond() {
     var zyqstore = Ext.data.StoreManager.lookup('zyqstore');
     zyqstore.proxy.extraParams = {
