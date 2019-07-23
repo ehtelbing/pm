@@ -576,8 +576,8 @@ Ext.onReady(function () {
                 value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
                 fieldLabel: '发现时间',
                 labelAlign: 'right',
-                labelWidth: 75,
-                width: 255,
+                labelWidth: 80,
+                width: 260,
                 baseCls: 'margin-bottom'
             },
             {
@@ -689,7 +689,7 @@ Ext.onReady(function () {
     //设备名称加载监听
     Ext.data.StoreManager.lookup('sbmcStore').on('load', function () {
         Ext.getCmp("sbmc").select(Ext.data.StoreManager.lookup('sbmcStore').getAt(0));
-        Ext.getCmp("mainequsite").setText("主设备位置:"+Ext.data.StoreManager.lookup('sbmcStore').data.items[0].get("V_EQUSITENAME"));
+        Ext.getCmp("mainequsite").setText("主设备位置:　"+Ext.data.StoreManager.lookup('sbmcStore').data.items[0].get("V_EQUSITENAME"));
         Ext.data.StoreManager.lookup('childEquStore').load({
             params: {
                 V_V_PERSONCODE: V_V_PERSONCODE,
