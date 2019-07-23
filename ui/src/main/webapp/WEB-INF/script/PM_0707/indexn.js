@@ -569,7 +569,7 @@ Ext.onReady(function () {
                 value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
                 fieldLabel: '发现时间',
                 labelAlign: 'right',
-                labelWidth: 75,
+                labelWidth: 80,
                 width: 255,
                 baseCls: 'margin-bottom'
             },
