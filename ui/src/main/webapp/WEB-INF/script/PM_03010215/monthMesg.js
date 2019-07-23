@@ -559,6 +559,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
