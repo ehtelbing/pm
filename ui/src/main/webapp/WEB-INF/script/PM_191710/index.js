@@ -18,6 +18,8 @@ if (location.href.split('?')[1] != undefined) {
 }
 
 Ext.onReady(function () {
+
+    Ext.QuickTips.init();
     //Ext.getBody().mask('<p>页面载入中...</p>');
 
     var gridStore = Ext.create('Ext.data.Store', {
@@ -119,12 +121,14 @@ Ext.onReady(function () {
             text: '检修模型编码',
             dataIndex: 'V_MX_CODE',
             align: 'center',
-            width: 150
+            width: 150,
+            renderer: atleft
         }, {
             text: '检修模型名称',
             dataIndex: 'V_MX_NAME',
             align: 'center',
-            width: 150
+            width: 150,
+            renderer: atleft
         }, {
             text: '工序名称',
             align: 'center',
@@ -134,7 +138,8 @@ Ext.onReady(function () {
             text: '备注',
             dataIndex: 'V_BZ',
             align: 'center',
-            width: 150
+            width: 150,
+            renderer: atleft
         }
         ],
         bbar: [{
@@ -347,7 +352,10 @@ function btn_select(){
 function detail(a,value,metaData){
     return '<a href="javascript:ondetail(\'' + metaData.data.V_MX_CODE + '\')">详情</a>';
 }
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function ondetail(a){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
