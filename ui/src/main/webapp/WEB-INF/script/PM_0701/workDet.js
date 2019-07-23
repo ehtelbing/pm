@@ -7,6 +7,7 @@ if(Ext.urlDecode(location.href.split("?")[1])!=undefined){
 
 Ext.onReady(function(){
 
+    Ext.QuickTips.init();
     var gridStore = Ext.create('Ext.data.Store', {
         autoLoad: true,
         storeId: 'gridStore',
@@ -103,7 +104,7 @@ Ext.onReady(function(){
             {text: '备件消耗', width: 120, dataIndex: 'V_EQUSITENAME', align: 'center', renderer: atleft},
             {text: '委托单位', width: 200, dataIndex: 'V_DEPTNAME', align: 'center', renderer: atleft},
             {text: '委托人', width: 120, dataIndex: 'V_PERSONNAME', align: 'center', renderer: atleft},
-            {text: '委托时间', width: 120, dataIndex: 'D_ENTER_DATE', align: 'center', renderer: timelfet},
+            {text: '委托时间', width: 150, dataIndex: 'D_ENTER_DATE', align: 'center', renderer: timelfet},
             {text: '检修单位', width: 150, dataIndex: 'V_DEPTNAMEREPARIR', align: 'center', renderer: atleft},
             {text: '工单类型描述', width: 90, dataIndex: 'V_ORDER_TYP_TXT', align: 'center', renderer: atleft},
             {text: '工单状态', width: 120, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
@@ -125,5 +126,6 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 }
 function timelfet(value, metaDate, record, rowIndex, colIndex, store){
     metaDate.style="text-align:center;";
-    return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';
+    //return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
