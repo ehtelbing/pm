@@ -35,7 +35,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     var teamStore123 = Ext.create('Ext.data.Store', {//检修工作中心
         storeId: 'teamStore123',
         autoLoad: true,
@@ -996,17 +996,20 @@ Ext.onReady(function () {
             text: '检修模型名称',
             dataIndex: 'V_MX_NAME',
             style: 'text-align: center;',
-            width: 110
+            width: 110,
+            renderer: atleft
         }, {
             text: '模型版本号',
             dataIndex: 'V_MXBB_NUM',
             style: 'text-align: center;',
-            width: 120
+            width: 120,
+            renderer: atleft
         }, {
             text: '备注',
             dataIndex: 'V_BZ',
             style: 'text-align: center;',
-            width: 100
+            width: 100,
+            renderer: atleft
         }],
         listeners: {
             itemclick: function (panel, record, item, index, e, eOpts) {
@@ -1047,17 +1050,20 @@ Ext.onReady(function () {
             text: '检修模型名称',
             dataIndex: 'V_MX_NAME',
             style: 'text-align: center;',
-            flex: 1
+            flex: 1,
+            renderer: atleft
         }, {
             text: '工序名称',
             dataIndex: 'V_JXGX_NAME',
             style: 'text-align: center;',
-            flex: 1
+            flex: 1,
+            renderer: atleft
         }, {
             text: '工序内容',
             dataIndex: 'V_JXGX_NR',
             style: 'text-align: center;',
-            flex: 1
+            flex: 1,
+            renderer: atleft
         }],
         bbar: ['->', {
             xtype: 'pagingtoolbar',
@@ -1155,17 +1161,20 @@ Ext.onReady(function () {
                 text: '附件名称',
                 dataIndex: 'V_FILENAME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer: atleft
             }, {
                 text: '上传时间',
                 dataIndex: 'V_TIME',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer: atleft
             }, {
                 text: '上传人',
                 dataIndex: 'V_PERSON',
                 align: 'center',
-                flex: 1
+                flex: 1,
+                renderer: atleft
             }, {
                 text: '下载',
                 align: 'center',
@@ -1740,7 +1749,10 @@ Ext.onReady(function () {
         items:[mxfilepanel]
     });
 });
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 // 根据厂矿进行作业区联动
 function _selectDept() {
     var zyqStore = Ext.data.StoreManager.lookup('zyqStore');
