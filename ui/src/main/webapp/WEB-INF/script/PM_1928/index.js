@@ -27,6 +27,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 });
 
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.getBody().mask('<p>页面载入中...</p>');//页面笼罩效果
 
     var ckstore = Ext.create("Ext.data.Store", {
@@ -132,9 +133,10 @@ Ext.onReady(function () {
     var inputPanel = Ext.create('Ext.panel.Panel', {
         id: 'inputPanel',
         layout: 'column',
+        store: gridStore,
         frame: true,
         border: false,
-        baseCls: 'my-panel-no-border',
+        //baseCls: 'my-panel-no-border',
         items: [{
             xtype: 'panel',
             region: 'center',
@@ -165,12 +167,14 @@ Ext.onReady(function () {
             }]
         }
         ]
-    });
+    }
+
+    );
 
     var gridPanel = Ext.create('Ext.grid.Panel', {
         id: 'gridPanel',
+        //frame: true,
         store: gridStore,
-        frame: true,
         columnLines: true,
         selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
             selType: 'checkboxmodel',
@@ -180,27 +184,32 @@ Ext.onReady(function () {
             text: '工种编码',
             width: 200,
             dataIndex: 'V_WORKCODE',
-            align: 'center'
+            align: 'center',
+            renderer : atleft
         }, {
             text: '工种名称',
             width: 100,
             dataIndex: 'V_WORKNAME',
-            align: 'center'
+            align: 'center',
+            renderer : atleft
         }, {
             text: '工时',
             width: 100,
             dataIndex: 'V_TIME',
-            align: 'center'
+            align: 'center',
+            renderer : atleft
         }, {
             text: '定额',
             width: 200,
             dataIndex: 'V_DE',
-            align: 'center'
+            align: 'center',
+            renderer : atleft
         }, {
             text: '工种类型',
             width: 200,
             dataIndex: 'V_WORKTYPE',
-            align: 'center'
+            align: 'center',
+            renderer : atleft
         }],
         listeners: {
             itemclick: OnClickGridPanel
@@ -264,7 +273,10 @@ function _init() {
     }
 
 }
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function _select() {
     var gridStore = Ext.data.StoreManager.lookup('gridStore');
     gridStore.proxy.extraParams = {
