@@ -6,7 +6,7 @@ if (location.href.split('?')[1] != undefined) {
 }
 
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     var gridStore = Ext.create("Ext.data.Store", {
         autoLoad: true,
         storeId: 'ckstore',
@@ -98,16 +98,16 @@ Ext.onReady(function () {
                         }
         })],
         columns: [Ext.create('Ext.grid.RowNumberer', { align: 'center' }),
-            { header: "备件编码", dataIndex: 'V_SPCODE', align: 'center' ,width:100},
-            { header: "备件名称", dataIndex: 'V_SPNAME', align: 'center',width:150},
+            { header: "备件编码", dataIndex: 'V_SPCODE', align: 'center' ,width:100,renderer: atleft},
+            { header: "备件名称", dataIndex: 'V_SPNAME', align: 'center',width:150,renderer: atleft},
             { header: "规格型号", dataIndex: 'V_SIZE', editor: {
                 xtype:'textfield',id:'size_v',
                     allowBlank: false
-                }, align: 'center' ,width:100},
-            { header: "单价", dataIndex: 'N_UNITPRICE', align: 'right', width:50},
+                }, align: 'center' ,width:100,renderer: atleft},
+            { header: "单价", dataIndex: 'N_UNITPRICE', align: 'right', width:50,renderer: atleft},
             { header: "需求数量", dataIndex: 'N_NUMBER',editor: {
                 xtype:'numberfield',minValue:'0',id:"g2",decimalPrecision:2,
-                allowBlank: false }, align: 'right',width:100}
+                allowBlank: false }, align: 'right',width:100,renderer: atleft}
         ],
         selType: 'cellmodel'
     });
@@ -123,7 +123,10 @@ Ext.onReady(function () {
     queryText(x_modelnumberF);
 
 })
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function queryText(x_modelnumberF) {
 
     if (x_modelnumberF != "") {
