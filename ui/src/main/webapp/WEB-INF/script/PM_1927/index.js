@@ -112,19 +112,19 @@ var Layout = {
                 { xtype: 'rownumberer', text: '序号', width: 60, align: 'center'
                 },
                 {
-                    text: '技术要求编码', align: 'center', width: 150, dataIndex: 'V_JSYQ_CODE',hidden:true,
+                    text: '技术要求编码', align: 'center', width: 150, dataIndex: 'V_JSYQ_CODE', renderer: atleft,hidden:true,
                 },
                 {
-                    text: '技术要求名称', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME'
+                    text: '技术要求名称', align: 'center', width: 150, dataIndex: 'V_JSYQ_NAME', renderer: atleft
                 },
                 {
-                    text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE'
+                    text: '设备编码', align: 'center', width: 150, dataIndex: 'V_EQUCODE', renderer: atleft
                 },
                 {
-                    text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME'
+                    text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME', renderer: atleft
                 },
                 {
-                    text: '功能位置', align: 'center', width: 150, dataIndex: 'V_EQUSITE'
+                    text: '功能位置', align: 'center', width: 150, dataIndex: 'V_EQUSITE', renderer: atleft
                 }
             ]
         },{
@@ -184,6 +184,7 @@ var window = Ext.create('Ext.window.Window', {
 
 
 function onPageLoaded() {
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', Layout);
     //厂矿加载时
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
@@ -251,7 +252,10 @@ function onPageLoaded() {
     });
 }
 
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 //树查询
 function QueryTree(){
     Ext.getCmp('tree').store.setProxy({
