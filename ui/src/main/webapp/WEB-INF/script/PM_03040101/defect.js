@@ -12,6 +12,7 @@ if(Ext.urlDecode(location.href.split("")[1])!=undefined)
 }
 
 Ext.onReady(function(){
+    Ext.QuickTips.init();
     //缺陷查找
     var dqxgridStore = Ext.create('Ext.data.Store', {
         autoLoad: true,
@@ -91,6 +92,7 @@ Ext.onReady(function(){
             {text:'处理意见',width:150,dataIndex:'V_IDEA',align:'center',renderer:atleft}
         ],
         tbar:[{
+
             xtype:'button',
             text:'确认返回',
             handler:OnBtnAddQx
