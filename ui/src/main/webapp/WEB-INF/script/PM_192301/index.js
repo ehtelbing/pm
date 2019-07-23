@@ -1,5 +1,6 @@
 ﻿var sp, equCode, personid;
 Ext.onReady(function() {
+			Ext.QuickTips.init();
 			sp = '';
 			equCode = '';
 			personid = '';
@@ -334,7 +335,7 @@ function CenterTreeOnClick(aa, record, item, index, e, eOpts) {
 
 function Left(value, metaData, record, rowIndex, colIndex, store) {
 	metaData.style = "text-align:left";
-	return value;
+	return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 // 添加
 function OnSelectionChanged(pp, record, index, eOpts) {
