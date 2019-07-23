@@ -513,12 +513,12 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
         //     }
         // },
         /*{text: '流程步骤', align: 'center', width: 100, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
-        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
-        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
-        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME'},
-        {xtype: 'linebreakcolumn',text: '检修内容', align: 'center', width: 280, dataIndex: 'V_CONTENT'},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME',renderer: atleft},
+        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME',renderer: atleft},
+        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME',renderer: atleft},
+        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE',renderer: atleft},
+        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME',renderer: atleft},
+        {xtype: 'linebreakcolumn',text: '检修内容', align: 'center', width: 280, dataIndex: 'V_CONTENT',renderer: atleft},
         {
             text: '计划停机日期',
             align: 'center',
@@ -533,12 +533,12 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             dataIndex: 'V_ENDTIME',
             renderer: rendererTime
         },
-        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
+        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR',renderer: atleft},
 
-        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
-        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
-        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
-        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
+        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME',renderer: atleft},
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT',renderer: atleft},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE',renderer: atleft},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER',renderer: atleft},
         {
             text: '录入时间', align: 'center', width: 150, dataIndex: 'V_INDATE',
             renderer: rendererTime
@@ -682,7 +682,12 @@ Ext.onReady(function () {
 
 function rendererTime(value, metaData){
 
-    return value.split(".")[0];
+    //return value.split(".")[0];
+    return '<div data-qtip="' + value.split(".")[0] + '" >' + value.split(".")[0] + '</div>';
+}
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 //截止上报时间
 function Queryendtime() {
