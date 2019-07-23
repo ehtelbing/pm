@@ -184,14 +184,17 @@ Ext.onReady(function () {
             {
             xtype: 'button',
             text: '查询',
+            icon: imgpath + '/search.png',
             handler: _selectOverhaulApply2
         }, {
             xtype: 'button',
             text: '生成工单',
+            icon: imgpath + '/accordion_collapse.png',
             handler: createWorkorder
         }, {
                 xtype: 'button',
                 text: '缺陷修改',
+                icon: imgpath + '/edit.png',
                 handler: updateDefData
             }]
     });
