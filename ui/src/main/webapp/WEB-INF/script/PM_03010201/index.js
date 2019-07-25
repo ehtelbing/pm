@@ -463,9 +463,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             store: nextSprStore,
             queryMode: 'local'
         },
-        {
-            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
-            items: [
+
         {
             xtype: 'displayfield',
             id: 'endtime',
@@ -477,6 +475,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
             width: 230,
             value: ''
         },
+        {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 7, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 45px',
+            items: [
         {
             xtype: 'button',
             text: '查询',
