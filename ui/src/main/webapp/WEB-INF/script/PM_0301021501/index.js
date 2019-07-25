@@ -80,7 +80,7 @@ var cp=Ext.create('Ext.grid.Panel',{
         {
             text: '关联工单数量',
             dataIndex: 'WORKORDERNUM',
-            width: 55,
+            width: 150,
             align: 'center',
             renderer: left
         },
