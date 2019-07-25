@@ -490,6 +490,9 @@ var northPanel = Ext.create('Ext.form.Panel', {
         //     value: ''
         // },
         {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 2, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 45px',
+            items: [
+        {
             xtype: 'button',
             text: '查询',
             margin: '5 0 5 45',
@@ -507,6 +510,7 @@ var northPanel = Ext.create('Ext.form.Panel', {
             handler: OnButtonUp
 
         }
+        ]}
     ]
 });
 
@@ -519,7 +523,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     //selType: 'checkboxmodel',
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME', renderer: atleft},
         {
             text: '详细',
             dataIndex: 'V_ORDERID',
@@ -531,11 +535,11 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             }
         },
         /*{text: '流程步骤', align: 'center', width: 150, dataIndex: 'V_FLOWNAME', renderer: rendererStep},*/
-        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME'},
-        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
-        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
-        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME'},
-        {xtype: 'linebreakcolumn', text: '检修内容', align: 'center', width: 280, dataIndex: 'V_CONTENT'},
+        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME', renderer: atleft},
+        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME', renderer: atleft},
+        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE', renderer: atleft},
+        {text: '设备名称', align: 'center', width: 100, dataIndex: 'V_EQUNAME', renderer: atleft},
+        {xtype: 'linebreakcolumn', text: '检修内容', align: 'center', width: 280, dataIndex: 'V_CONTENT', renderer: atleft},
         {
             text: '计划停机日期',
             align: 'center',
@@ -550,12 +554,12 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             dataIndex: 'V_ENDTIME',
             renderer: rendererTime/*Ext.util.Format.dateRenderer('Y-m-d H:m:s')*/
         },
-        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
+        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR', renderer: atleft},
 
-        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
-        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
-        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
-        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
+        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME', renderer: atleft},
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT', renderer: atleft},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE', renderer: atleft},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER', renderer: atleft},
         {
             text: '录入时间', align: 'center', width: 200, dataIndex: 'V_INDATE',
             renderer: rendererTime/*Ext.util.Format.dateRenderer('Y-m-d H:m:s')*/
@@ -576,6 +580,8 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+
+    Ext.QuickTips.init();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
         items: [northPanel, gridPanel]
@@ -775,10 +781,13 @@ function _selectNextSprStore() {
     nextSprStore.currentPage = 1;
     nextSprStore.load();
 }
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function rendererTime(value, metaData) {
 
-    return value.split(".")[0];
+    return '<div data-qtip="' + value.split(".")[0] + '" >' + value.split(".")[0] + '</div>';
 }
 
 function rendererStep(value, metaData, record, rowIndex, colIndex, store, view) {
