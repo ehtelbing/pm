@@ -84,16 +84,16 @@ var cp=Ext.create('Ext.grid.Panel',{
             align: 'center',
             renderer: left
         },
-        {text: '厂矿', align: 'center', width: 120, dataIndex: 'V_ORGNAME',renderer: left},
-        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME',renderer: left},
+        {text: '厂矿', align: 'center', width: 100, dataIndex: 'V_ORGNAME',renderer: left},
+        {text: '车间名称', align: 'center', width: 130, dataIndex: 'V_DEPTNAME',renderer: left},
         {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE',renderer: left},
-        {text: '设备名称', align: 'center', width: 180, dataIndex: 'V_EQUNAME',renderer: left},
+        {text: '设备名称', align: 'center', width: 150, dataIndex: 'V_EQUNAME',renderer: left},
         // {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT'},
         {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME',renderer: left},
         {
             text: '计划停机日期',
             align: 'center',
-            width: 150,
+            width: 120,
             dataIndex: 'V_STARTTIME',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
@@ -104,7 +104,7 @@ var cp=Ext.create('Ext.grid.Panel',{
         {
             text: '计划竣工日期',
             align: 'center',
-            width: 150,
+            width: 120,
             dataIndex: 'V_ENDTIME',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
@@ -112,7 +112,7 @@ var cp=Ext.create('Ext.grid.Panel',{
             }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
-        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR',renderer: left},
+        {text: '计划工期（小时）', align: 'center', width: 120, dataIndex: 'V_HOUR',renderer: left},
         {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME',renderer: left},
 
         {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT',renderer: left},
@@ -122,7 +122,7 @@ var cp=Ext.create('Ext.grid.Panel',{
         {
             text: '录入时间',
             align: 'center',
-            width: 150,
+            width: 120,
             dataIndex: 'V_INDATE',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
