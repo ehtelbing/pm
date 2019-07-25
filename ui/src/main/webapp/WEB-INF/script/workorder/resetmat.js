@@ -1,5 +1,6 @@
 Ext.onReady(function () {
 
+    Ext.QuickTips.init();
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         autoLoad: false,
