@@ -529,10 +529,10 @@ var northPanel = Ext.create('Ext.form.Panel', {
             value: ''
         },
         {
-            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 8, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 5px',
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 9, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 55px',
             items: [
         {
-            xtype: 'button', text: '查询', margin: '5 0 5 55', icon: imgpath + '/search.png',
+            xtype: 'button', text: '查询', margin: '5 0 5 5', icon: imgpath + '/search.png',
             handler: function () {
                 query();
             }
