@@ -146,8 +146,8 @@ Ext.onReady(function() {
 				xtype : 'combo',
 				value : new Date().getFullYear(),
 				style : ' margin: 5px 0px 5px 5px',
-				labelWidth : 60,
-				width : 180,
+				labelWidth : 80,
+				width : 230,
 				editable : false,
 				displayField : 'displayField',
 				valueField : 'valueField'
@@ -167,8 +167,8 @@ Ext.onReady(function() {
 				fieldLabel : '年',
 				labelAlign : 'left',
 				style : ' margin: 5px 0px 5px 5px',
-				labelWidth : 60,
-				width : 180,
+				labelWidth : 80,
+				width : 230,
 				value : (new Date().getMonth() + 1),
 				editable : false,
 				displayField : 'displayField',
@@ -190,8 +190,8 @@ Ext.onReady(function() {
 				fieldLabel : '月',
 				labelAlign : 'left',
 				style : ' margin: 5px 0px 5px 5px',
-				labelWidth : 60,
-				width : 180,
+				labelWidth : 80,
+				width : 230,
 				value : '1',
 				editable : false,
 				displayField : 'displayField',
@@ -210,8 +210,8 @@ Ext.onReady(function() {
 				displayField : 'V_DEPTNAME',
 				valueField : 'V_DEPTCODE',
 				style : ' margin: 5px 0px 5px 5px',
-				labelWidth : 60,
-				width : 210,
+				labelWidth : 80,
+				width : 230,
 				labelAlign : 'right'
 			}, {
 				xtype : 'combo',
@@ -223,14 +223,18 @@ Ext.onReady(function() {
 				displayField : 'V_DEPTNAME',
 				valueField : 'V_DEPTCODE',
 				style : ' margin: 5px 0px 5px 5px',
-				labelWidth : 60,
-				width : 210,
+				labelWidth : 80,
+				width : 230,
 				labelAlign : 'right'
-			}, {
+			},
+			{
+				xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 5, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 25px',
+				items: [
+			{
 				xtype : 'textfield',
 				id : 'seltext',
 				fieldLabel : '检修内容',
-				style : ' margin: 5px 0px 5px 5px',
+				margin:'0px 5px 5px 0px',
 				labelWidth : 60,
 				width : 210,
 				labelAlign : 'right'
@@ -239,7 +243,7 @@ Ext.onReady(function() {
 				text : '查询',
 				icon : imgpath+'/search.png',
 				width : 60,
-				style : ' margin: 5px 0px 5px 5px',
+				margin:'0px 5px 5px 5px',
 				handler:function(){
 					queryGrid();
 				}
@@ -247,13 +251,13 @@ Ext.onReady(function() {
 				xtype : 'button',
 				text : '导出Excel',
 				icon : imgpath+'/grid.png',
-				style : ' margin: 5px 0px 5px 5px',
+				margin:'0px 5px 5px 5px',
 				listeners:{click:OnButtonExcelClicked}
 			}, {
 				xtype : 'displayfield',
 				fieldLabel : '截止时间',
 				id : 'endtime',
-				style : ' margin: 5px 10px 5px 5px',
+				margin:'0px 5px 5px 5px',
 				labelAlign:'right',
 				labelWidth : 60,
 				width : 210
@@ -261,9 +265,11 @@ Ext.onReady(function() {
 				xtype : 'button',
 				text : '设置',
 				icon : imgpath+'/cog.png',
-				style : ' margin: 5px 0px 0px 10x',
+				margin:'0px 5px 5px 5px',
 				listeners:{click:OnButtonSetupClicked}
-			} ]
+			}
+			]}
+			]
 	});
 
 	var grid = Ext.create('Ext.grid.Panel', {
