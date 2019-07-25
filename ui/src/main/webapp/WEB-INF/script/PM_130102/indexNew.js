@@ -218,7 +218,11 @@
             // { id: 'x_equtypecode', xtype: 'combo', store: GetEqutype, fieldLabel: '设备类型', labelWidth: 70, displayField: 'V_EQUTYPENAME', valueField: 'V_EQUTYPECODE', queryMode: 'local', baseCls: 'margin-bottom' },
             //  { id: 'x_equcode', xtype: 'combo', store: GetEqucode, fieldLabel: '设备名称', labelWidth: 65, displayField: 'V_EQUNAME', valueField: 'V_EQUCODE', queryMode: 'local', baseCls: 'margin-bottom' },
             {
-                xtype: 'button', text: '查询', width: 60, style: 'margin:5px 0px 5px 20px', icon: imgpath + '/search.png',
+                xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 2, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 40px',
+                items: [
+
+            {
+                xtype: 'button', text: '查询', width: 60, margin:'0px 5px 5px 45px', icon: imgpath + '/search.png',
                 listeners: {
                     click: OnGridQueryButtonClicked
                 }
@@ -227,12 +231,13 @@
                 xtype: 'button',
                 text: '导出Excel',
                 width: 100,
-                style: 'margin:5px 0px 5px 5px',
+                margin:'0px 5px 5px 5px',
                 icon: imgpath + '/excel.gif',
                 listeners: {
                     click: OnExcelButtonClicked
                 }
             }
+            ]}
         ]
     });
     var grid = Ext.create('Ext.grid.Panel', {
