@@ -114,5 +114,6 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
 }
 function timelfet(value, metaDate, record, rowIndex, colIndex, store){
     metaDate.style="text-align:center;";
-    return '<div date-qtip="'+value + '" >' +value.toString().substring(0,10)+ '</div>';
+    //return '<div date-qtip="'+value.toString().substring(0,10) + '" >' +value.toString().substring(0,10)+ '</div>';
+    return '<div data-qtip="' + value.split('.0')[0] + '" >' + value.split('.0')[0] + '</div>';
 }
