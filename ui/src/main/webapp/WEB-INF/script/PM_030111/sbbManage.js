@@ -313,7 +313,7 @@ var panel = Ext.create('Ext.form.Panel', {
     ]
 });
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     var gridStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'gridStore',
@@ -847,22 +847,22 @@ function OnClickDrExcelButton(){
 }
 function Atleft(value, metaData) {
     metaData.style = 'text-align: left';
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 function rendererTime(value, metaData,record, rowIndex, colIndex, store) {
     if(record.get('DRSIGN')=="1") {
         metaData.style = "background-color: yellow";
     }
-    return value.split(".")[0];
+    return '<div data-qtip="' + value.split(".")[0] + '" >' + value.split(".")[0] + '</div>';
 }
 function dataCss(value, metaData, record, rowIndex, colIndex, store){
     if(record.get('DRSIGN')=="1") {
         metaData.style = "background-color: yellow;text-align: left;";
         // return '<div  data-qtip="' + value + '" >' + value + '</div>';
-        return value;
+        return '<div data-qtip="' + value + '" >' + value + '</div>';
     } else{
         metaData.style = 'text-align: left';
         // return '<div  data-qtip="' + value + '" >' + value + '</div>';
-        return value;
+        return '<div data-qtip="' + value + '" >' + value + '</div>';
     }
 }
