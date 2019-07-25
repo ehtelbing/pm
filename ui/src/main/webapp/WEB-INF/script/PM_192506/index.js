@@ -27,7 +27,7 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
     }
 });
 Ext.onReady(function () {
-
+    Ext.QuickTips.init();
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         autoLoad: false,
@@ -173,7 +173,8 @@ Ext.onReady(function () {
             id: 'V_V_MODULECODE',
             name: 'V_V_MODULECODE',
             fieldLabel: '模块编码',
-            allowBlank: false
+            allowBlank: false,
+            renderer : atleft
         }, {
             xtype: 'textfield',
             height: 25,
@@ -181,7 +182,8 @@ Ext.onReady(function () {
             id: 'V_V_MODULENAME',
             name: 'V_V_MODULENAME',
             fieldLabel: '模块名称',
-            allowBlank: false
+            allowBlank: false,
+            renderer : atleft
         }],
         buttons: [{
             xtype: 'button',
@@ -345,7 +347,10 @@ function OnClickAddButton() {
     Ext.getCmp('modulePreAdd').setTitle('新增');
     Ext.getCmp('modulePreAdd').show();
 }
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function OnClickUpdateButton() {
     var selectModel = Ext.getCmp('gridPanel').getSelectionModel();
     if (!selectModel.hasSelection()) {
