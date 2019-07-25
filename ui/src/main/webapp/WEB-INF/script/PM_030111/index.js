@@ -289,18 +289,22 @@ Ext.onReady(function () {
                 valueField: 'V_BASECODE',
                 queryMode: 'local',
                 baseCls: 'margin-bottom'
-            }, {
+            },   {
+                xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 4, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 45px',
+                items: [
+            {
                 id: 'seltext',
                 xtype: 'textfield',
                 width: 158,
                 emptyText: '检修明细模糊搜索',
-                margin:'5px 0px 5px 90px'
+                margin:'0px 5px 5px 45px'
             }, {
                 id: 'query',
                 xtype: 'button',
                 icon: imgpath + '/search.png',
                 text: '查询',
                 width: 80,
+                margin:'0px 5px 5px 0px',
                 handler:QueryGrid
             }, {
                 xtype: 'hidden',
@@ -310,6 +314,7 @@ Ext.onReady(function () {
                 text: '生成工单',
                 icon: imgpath + '/accordion_collapse.png',
                 width: 85,
+                margin:'0px 5px 5px 0px',
                 listeners: {
                     click: createWorkorder
                 }
@@ -319,10 +324,13 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 5px 5px',
                 icon: imgpath + '/excel.gif',
                 width: 100,
+                margin:'0px 5px 5px 0px',
                 listeners: {
                     click: OnClickExcelButton
                 }
-            }]
+            }
+            ]}
+            ]
     });
     var grid=Ext.create('Ext.grid.Panel',{
         region:'center',
