@@ -594,7 +594,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     columns: [
         {text: '序号', align: 'center', width: 50, xtype: 'rownumberer'},
         {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATE',hidden:true},
-        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME'},
+        {text: '计划状态', align: 'center', width: 100, dataIndex: 'V_STATENAME',renderer: atleft},
         {
             text: '流程详细',
             dataIndex: 'V_ORDERID',
@@ -609,18 +609,19 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             text: '关联工单数量',
             dataIndex: 'WORKORDERNUM',
             width: 150,
-            align: 'center'
+            align: 'center',
+        renderer: atleft
         // ,renderer: function (value, metaData, record) {
         //         // return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + '工单详情' + '</a>';
         //         return '<a href="#" onclick="OnClickGrid(\'' + record.data.V_GUID + '\')">' + value + '</a>';
         //     }
         },
-        {text: '厂矿', align: 'center', width: 120, dataIndex: 'V_ORGNAME'},
-        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME'},
-        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE'},
-        {text: '设备名称', align: 'center', width: 180, dataIndex: 'V_EQUNAME'},
-        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT'},
-        {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME'},
+        {text: '厂矿', align: 'center', width: 120, dataIndex: 'V_ORGNAME',renderer: atleft},
+        {text: '车间名称', align: 'center', width: 150, dataIndex: 'V_DEPTNAME',renderer: atleft},
+        {text: '专业', align: 'center', width: 100, dataIndex: 'V_REPAIRMAJOR_CODE',renderer: atleft},
+        {text: '设备名称', align: 'center', width: 180, dataIndex: 'V_EQUNAME',renderer: atleft},
+        {xtype: 'linebreakcolumn', text: '计划内容', align: 'center', width: 280, dataIndex: 'V_CONTENT',renderer: atleft},
+        {text: '检修模型', align: 'center', width: 100, dataIndex: 'V_EQUTYPENAME',renderer: atleft},
         {
             text: '计划停机日期',
             align: 'center',
@@ -628,7 +629,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             dataIndex: 'V_STARTTIME',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
-                return value;
+                return '<div data-qtip="' + value + '" >' + value + '</div>';
             }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
@@ -639,16 +640,16 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             dataIndex: 'V_ENDTIME',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
-                return value;
+                return '<div data-qtip="' + value + '" >' + value + '</div>';
             }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
-        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR'},
-        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME'},
+        {text: '计划工期（小时）', align: 'center', width: 150, dataIndex: 'V_HOUR',renderer: atleft},
+        {text: '录入人', align: 'center', width: 100, dataIndex: 'V_INPERNAME',renderer: atleft},
 
-        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT'},
-        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE'},
-        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER'},
+        {text: '主要缺陷', align: 'center', width: 100, dataIndex: 'V_MAIN_DEFECT',renderer: atleft},
+        {text: '预计寿命', align: 'center', width: 100, dataIndex: 'V_EXPECT_AGE',renderer: atleft},
+        {text: '维修人数', align: 'center', width: 100, dataIndex: 'V_REPAIR_PER',renderer: atleft},
         {text:'施工方式',align:'center',width:'70',dataIndex:'V_SGWAYNAME',hidden:true},
         {
             text: '录入时间',
@@ -657,7 +658,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
             dataIndex: 'V_INDATE',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
-                return value;
+                return '<div data-qtip="' + value + '" >' + value + '</div>';
             }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         }/*,
@@ -677,6 +678,7 @@ var gridPanel = Ext.create('Ext.grid.Panel', {
     ]
 });
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     Ext.getBody().mask();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
@@ -832,7 +834,10 @@ Ext.onReady(function () {
 
 
 });
-
+function atleft(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
+}
 function OnLookDefect(MonthGuid){
     var owidth = window.document.body.offsetWidth - 200;
     var oheight = window.document.body.offsetHeight - 100;
