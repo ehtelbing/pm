@@ -187,7 +187,11 @@ Ext.onReady(function () {
             width: 210,
             style: ' margin: 5px 0px 5px 5px',
             labelAlign: 'right'
-        }, {
+        },  {
+            xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 5, baseCls: 'my-panel-noborder',style: 'margin:0px 5px 0 45px',
+            items: [
+
+            {
             xtype: 'textfield',
             id: 'seltext',
             fieldLabel: '检修内容',
@@ -224,7 +228,9 @@ Ext.onReady(function () {
             icon: imgpath + '/cog.png',
             style: ' margin: 5px 0px 5px 5px',
             listeners: {click: OnButtonSetupClicked}
-        }]
+        }
+        ]}
+        ]
     });
 
     var grid = Ext.create('Ext.grid.Panel', {
