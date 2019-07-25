@@ -4,6 +4,7 @@ if (location.href.split('?')[1] != undefined) {
 }
 Ext.onReady(function () {
 
+    Ext.QuickTips.init();
     //表格信息加载
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -82,5 +83,5 @@ function writeIn(fileid) {
 
 function atleft(value, metaData) {
     metaData.style = "text-align:left;";
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
