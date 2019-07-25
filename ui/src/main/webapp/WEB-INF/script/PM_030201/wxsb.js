@@ -428,10 +428,6 @@ function beforeloadStore(store) {
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
 
-function atleft(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:left;";
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
-}
 
 
 function OnButtonQuery (){
