@@ -494,8 +494,7 @@ Ext.onReady(function () {
 });
 
 function rendererTime(value, metaData){
-
-    return value.split(".")[0];
+    return '<div data-qtip="' + value.split(".")[0] + '" >' + value.split(".")[0] + '</div>';
 }
 //第几周
 function getWeekOfMonth() {//周一为起始
@@ -618,7 +617,7 @@ function createWorkorder(){
 }
 function Atleft(value, metaData) {
     metaData.style = 'text-align: left';
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 function QueryGrid(){
     Ext.getCmp('page').store.currentPage = 1;
