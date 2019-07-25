@@ -24,6 +24,7 @@ var V_NEXT_SETP = '';
 //     url_zy = Ext.urlDecode(location.href.split('?')[1]).v_specialty;
 // }
 Ext.onReady(function () {
+    Ext.QuickTips.init();
     var ckstore = Ext.create("Ext.data.Store", {
         autoLoad: true,
         storeId: 'ckstore',
@@ -345,30 +346,39 @@ Ext.onReady(function () {
             //     queryMode: 'local'
             // },
             {
+                xtype: 'panel', frame: true, width: '100%', layout: 'column', colspan: 3, baseCls: 'my-panel-noborder',style: 'margin:5px 5px 0 45px',
+                items: [
+            {
                 id: 'seltext',
                 xtype: 'textfield',
                 width: 158,
                 emptyText: '检修明细模糊搜索',
-                margin:'5px 0px 5px 90px'
-            }, {
+                margin:'0px 5px 5px 45px'
+            },
+            {
                 id: 'query',
                 xtype: 'button',
                 icon: imgpath + '/search.png',
                 text: '查询',
                 width: 80,
+                margin:'0px 5px 5px 0px',
                 handler:QueryGrid
             }, {
                 xtype: 'label',
                 hidden:true,
                 width:90,
+                margin:'0px 5px 5px 0px',
                 id: 'tabid'
             }, {
                 xtype: 'button',
                 text: '上报设备部',
                 width: 100,
+                margin:'0px 5px 5px 0px',
                 icon: imgpath + '/accordion_expand.png',
                 handler: OnButtonUp
-            }]
+            }
+            ]}
+            ]
     });
     var grid=Ext.create('Ext.grid.Panel',{
         region:'center',
@@ -633,7 +643,7 @@ Ext.onReady(function () {
 
 function rendererTime(value, metaData){
 
-    return value.split(".")[0];
+    return '<div data-qtip="' + value.split(".")[0] + '" >' + value.split(".")[0] + '</div>';
 }
 //第几周
 function getWeekOfMonth() {//周一为起始
@@ -674,7 +684,7 @@ function getWeeks(){
 
 function Atleft(value, metaData) {
     metaData.style = 'text-align: left';
-    return value;
+    return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
 
 function AtFalg(value, metaData){
@@ -683,7 +693,7 @@ function AtFalg(value, metaData){
     if(value==0){
         ret="否";
     }
-    return ret;
+    return '<div data-qtip="' + ret + '" >' + ret + '</div>';
 }
 function QueryGrid(){
     Ext.getCmp('page').store.currentPage = 1;
