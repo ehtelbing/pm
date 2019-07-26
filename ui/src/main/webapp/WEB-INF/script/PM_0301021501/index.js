@@ -97,7 +97,7 @@ var cp=Ext.create('Ext.grid.Panel',{
             dataIndex: 'V_STARTTIME',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
-                return value;
+                return '<div data-qtip="' + value + '" >' + value + '</div>';
             }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
@@ -108,7 +108,7 @@ var cp=Ext.create('Ext.grid.Panel',{
             dataIndex: 'V_ENDTIME',
             renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                 metaData.style = "text-align:center;";
-                return value;
+                return '<div data-qtip="' + value + '" >' + value + '</div>';
             }
             //renderer: Ext.util.Format.dateRenderer('Y/m/d H:i:s')
         },
