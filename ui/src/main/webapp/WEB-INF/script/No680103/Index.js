@@ -61,15 +61,12 @@ var Layout = {
     layout: 'border',
     items: [{
         xtype: 'panel',
-        title: '信息修改',
-        region: 'north'
-    }, {
-        xtype: 'panel',
         border: false,
+        title: '信息修改',
+        titleAlign:'center',
         region: 'north',
         layout: 'column',
         frame: true,
-        baseCls: 'my-panel-no-border',
         defaults: {
             style: {
                 margin: '5px 0px 5px 10px'

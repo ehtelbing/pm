@@ -67,11 +67,9 @@ var wpanel = Ext.create('Ext.panel.Panel', {
     width: 230,
     layout: 'border',
     autoScroll: true,
-    baseCls: 'my-panel-no-border',
     items: [{
         xtype: 'panel',
         region: 'north',
-        baseCls: 'my-panel-no-border',
         items: [{
             xtype: 'button',
             text: '全选',
@@ -90,7 +88,6 @@ var wpanel = Ext.create('Ext.panel.Panel', {
     }, {
         xtype: 'panel',
         region: 'center',
-        baseCls: 'my-panel-no-border',
         id: 'xgbmPanel'
     }]
 });
@@ -98,11 +95,10 @@ var cpanel = Ext.create('Ext.panel.Panel', {
     region: 'center',
     frame: true,
     width: '100%',
-    layout: 'border',
+    layout: 'vbox',
     items: [{
         xtype: 'panel',
         layout: 'column',
-        region: 'north',
         baseCls: 'my-panel-no-border',
         defaults: {
             labelAlign: 'right',
@@ -138,7 +134,6 @@ var cpanel = Ext.create('Ext.panel.Panel', {
     }, {
         xtype: 'panel',
         layout: 'column',
-        region: 'north',
         baseCls: 'my-panel-no-border',
         defaults: {
             labelAlign: 'right',
@@ -173,7 +168,6 @@ var cpanel = Ext.create('Ext.panel.Panel', {
         }]
     }, {
         xtype: 'panel',
-        region: 'north',
         baseCls: 'my-panel-no-border',
         items: [{
             xtype: 'textarea',
@@ -189,7 +183,6 @@ var cpanel = Ext.create('Ext.panel.Panel', {
         }]
     }, {
         xtype: 'panel',
-        region: 'north',
         baseCls: 'my-panel-no-border',
         items: [{
             xtype: 'checkbox',
@@ -273,7 +266,7 @@ function getXgbm() {
         async: false,
         method: 'POST',
         params: {
-            IS_V_DEPTCODE: '%',
+            IS_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
             IS_V_DEPTTYPE: '[信息接收]'
         },
         success: function (response) {
@@ -301,7 +294,7 @@ function getXgbm() {
             }
             Ext.getCmp('xgbmPanel').removeAll();
             Ext.getCmp('xgbmPanel').add({
-                xtype: 'radiogroup',
+                xtype: 'checkboxgroup',
                 fieldLabel: '相关部门',
                 labelAlign: 'top',
                 labelWidth: 60,

@@ -82,17 +82,14 @@ var gridStore = Ext.create("Ext.data.Store", {
 });
 var Layout = {
     layout: 'border',
-    items: [{
-        xtype: 'panel',
-        title: '信息查询',
-        region: 'north'
-    }, {
+    items: [ {
         xtype: 'panel',
         border: false,
+        title: '信息查询',
+        titleAlign:'center',
         region: 'north',
         layout: 'column',
         frame: true,
-        baseCls: 'my-panel-no-border',
         defaults: {
             style: {
                 margin: '5px 0px 5px 10px'
@@ -136,7 +133,6 @@ var Layout = {
         region: 'north',
         layout: 'column',
         frame: true,
-        baseCls: 'my-panel-no-border',
         defaults: {
             style: {
                 margin: '5px 0px 5px 10px'
