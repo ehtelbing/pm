@@ -6466,5 +6466,80 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_07_DEF_SBBTJ_VIEW");
         return result;
     }
+    //工单类型判别
+    public Map PRO_MAINTAIN_BY_DEF_SELSIGN(String V_WORKORDER)throws SQLException{
+        logger.info("begin PRO_MAINTAIN_BY_DEF_SELSIGN");
+        Map<String, Object> result = new HashMap<String, Object>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_MAINTAIN_BY_DEF_SELSIGN(:V_WORKORDER,:RET)}");
+            cstmt.setString("V_WORKORDER", V_WORKORDER);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_MAINTAIN_BY_DEF_SELSIGN");
+        return result;
+    }
+    //维修计划备件查询
+    public Map PRO_PM_DEFECT_SPECIL_SEL2(String V_DEPT_CODE)throws SQLException{
+        logger.info("begin PRO_PM_DEFECT_SPECIL_SEL2");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_DEFECT_SPECIL_SEL2(:V_DEPT_CODE,:RET)}");
+            cstmt.setString("V_DEPT_CODE", V_DEPT_CODE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_DEFECT_SPECIL_SEL2");
+        return result;
+    }
+    //工单接收、返回下一步人员查找
+    public Map WORKCTR_TO_PERCODE_SEL(String V_V_REPAIRCODE,String V_V_EQUCODE)throws SQLException{
+        logger.info("begin WORKCTR_TO_PERCODE_SEL");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call WORKCTR_TO_PERCODE_SEL(:V_V_REPAIRCODE,:V_V_EQUCODE,:RET)}");
+            cstmt.setString("V_V_REPAIRCODE", V_V_REPAIRCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end WORKCTR_TO_PERCODE_SEL");
+        return result;
+    }
 }
 

@@ -4902,6 +4902,35 @@ public class Dx_fileController {
         Map<String, Object> result = dx_fileService.PRO_PM_07_DEF_SBBTJ_VIEW(V_NF,V_YF);
         return result;
     }
+    //工单类型判别
+    @RequestMapping(value = "PRO_MAINTAIN_BY_DEF_SELSIGN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_MAINTAIN_BY_DEF_SELSIGN(@RequestParam(value = "V_WORKORDER") String V_WORKORDER,
+                                                        HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_MAINTAIN_BY_DEF_SELSIGN(V_WORKORDER);
+        return result;
+    }
+    //维修计划备件查询
+    @RequestMapping(value = "PRO_PM_DEFECT_SPECIL_SEL2", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_DEFECT_SPECIL_SEL2(@RequestParam(value = "V_DEPT_CODE") String V_DEPT_CODE,
+                                                           HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_PM_DEFECT_SPECIL_SEL2(V_DEPT_CODE);
+        return result;
+    }
+
+    //工单接收、返回下一步人员查找
+    @RequestMapping(value = "WORKCTR_TO_PERCODE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> WORKCTR_TO_PERCODE_SEL(@RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
+                                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.WORKCTR_TO_PERCODE_SEL(V_V_REPAIRCODE,V_V_EQUCODE);
+        return result;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

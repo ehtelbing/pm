@@ -105,6 +105,37 @@ Ext.onReady(function(){
             }
         }
     });
+    var bjzyqStore=Ext.create('Ext.data.Store',{
+        id:'bjzyqStore',
+        autoLoad:true,
+        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+        proxy:{
+            type:'ajax',
+            async: false,
+            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams:{
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+        , listeners: {
+            load: function (store, records, success, eOpts) {
+                store.insert(records.length,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+                Ext.getCmp("bjzyq").setValue(store.first());
+                QueryBjZyq();
+                //   QueryZyFzr();
+            }
+        }
+    });
     //不含设备的缺陷添加完成查找
     var qxGridStore=Ext.create('Ext.data.Store', {
         autoLoad: false,
@@ -129,21 +160,24 @@ Ext.onReady(function(){
         }
     });
 //不含设备的缺陷查找
-    var dqxgridStore2=Ext.create('Ext.data.Store', {
-        autoLoad: true,
+    var dqxgridStore2 = Ext.create('Ext.data.Store', {
+        autoLoad: false,
         storeId: 'dqxgridStore2',
-        fields: ['I_ID','V_DEFECTLIST','V_SOURCECODE','V_SOURCENAME','V_SOURCEID',
-            'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_DEPTCODE', 'V_EQUNAME','V_EQUCODE', 'V_IDEA', 'V_STATECODE',
+        fields: ['I_ID', 'V_DEFECTLIST', 'V_SOURCECODE', 'V_SOURCENAME', 'V_SOURCEID',
+            'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_DEPTCODE', 'V_EQUNAME', 'V_EQUCODE', 'V_IDEA', 'V_STATECODE',
             'V_GUID', 'V_EQUSITE', 'D_DATE_EDITTIME', 'V_EDIT_GUID', 'V_SOURCE_GRADE', 'V_EQUCHILDCODE', 'V_INPERCODE', 'V_INPERNAME',
             'V_EQUTYPECODE', 'V_ORGCODE', 'V_HOUR', 'V_BZ', 'V_REPAIRMAJOR_CODE', 'V_PROJECT_CODE', 'V_PROJECT_NAME', 'V_FLAG',
             'V_PROC_WAY'],
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'dxfile/PRO_PM_DEFECT_SPECIL_SEL',
+            url: AppUrl + 'dxfile/PRO_PM_DEFECT_SPECIL_SEL2',
             actionMethods: {
                 read: 'POST'
             },
+            /* extraParams: {
+                 V_DEPT_CODE:Ext.getCmp('bjzyq').getValue()//Ext.util.Cookies.get("v_deptcode")
+             },*/
             reader: {
                 type: 'json',
                 root: 'list'
@@ -524,6 +558,22 @@ Ext.onReady(function(){
             {text: '缺陷类型',width: 120, dataIndex: 'V_SOURCENAME', align: 'center',renderer:atleft},
             {text: '缺陷内容',width: 300, dataIndex: 'V_DEFECTLIST', align: 'center',renderer:atleft},
             {text: '缺陷日期',width: 140, dataIndex: 'D_DEFECTDATE', align: 'center',renderer:atleft}
+        ],
+        tbar:[
+            {
+                xtype: 'combo',
+                id: 'bjzyq',
+                store: bjzyqStore,
+                fieldLabel: '作业区',
+                labelAlign: 'right',
+                editable: false,
+                margin: '5 0 5 15',
+                labelWidth: 75,
+                width: 255,
+                displayField: 'V_DEPTNAME',
+                valueField: 'V_DEPTCODE',
+                queryMode: 'local'
+            }
         ],listeners:{itemclick:OnBtnAddQx}
     });
     //选择panel
@@ -759,7 +809,9 @@ Ext.onReady(function(){
 
         QueryZyFzr();
     });
-
+    Ext.getCmp('bjzyq').on('select',function(){
+        QueryBjZyq();
+    });
 
 
     pageLoad();
@@ -1968,5 +2020,12 @@ function btnFlowZF(){
             })
         }
 
+    });
+}
+function QueryBjZyq(){
+    Ext.data.StoreManager.lookup("dqxgridStore2").load({
+        params:{
+            V_DEPT_CODE:Ext.getCmp('bjzyq').getValue()
+        }
     });
 }

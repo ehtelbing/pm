@@ -66,6 +66,37 @@ Ext.onReady(function () {
             }
         }
     });
+    var bjzyqStore=Ext.create('Ext.data.Store',{
+        id:'bjzyqStore',
+        autoLoad:true,
+        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
+        proxy:{
+            type:'ajax',
+            async: false,
+            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+            actionMethods: {
+                read: 'POST'
+            },
+            extraParams:{
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+        , listeners: {
+            load: function (store, records, success, eOpts) {
+                store.insert(records.length,{V_DEPTNAME:'全部',V_DEPTCODE:'%'});
+                Ext.getCmp("bjzyq").setValue(store.first());
+                QueryBjZyq();
+                //   QueryZyFzr();
+            }
+        }
+    });
     //不含设备的缺陷添加完成查找
     var qxGridStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
@@ -91,7 +122,7 @@ Ext.onReady(function () {
     });
 //不含设备的缺陷查找
     var dqxgridStore2 = Ext.create('Ext.data.Store', {
-        autoLoad: true,
+        autoLoad: false,
         storeId: 'dqxgridStore2',
         fields: ['I_ID', 'V_DEFECTLIST', 'V_SOURCECODE', 'V_SOURCENAME', 'V_SOURCEID',
             'D_DEFECTDATE', 'D_INDATE', 'V_PERCODE', 'V_PERNAME', 'V_DEPTCODE', 'V_EQUNAME', 'V_EQUCODE', 'V_IDEA', 'V_STATECODE',
@@ -101,10 +132,13 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'dxfile/PRO_PM_DEFECT_SPECIL_SEL',
+            url: AppUrl + 'dxfile/PRO_PM_DEFECT_SPECIL_SEL2',
             actionMethods: {
                 read: 'POST'
             },
+           /* extraParams: {
+                V_DEPT_CODE:Ext.getCmp('bjzyq').getValue()//Ext.util.Cookies.get("v_deptcode")
+            },*/
             reader: {
                 type: 'json',
                 root: 'list'
@@ -364,7 +398,24 @@ Ext.onReady(function () {
                 renderer:function(v){
                     return "<div title='"+v+"'>"+v+"</div>";
                 }}
-        ], listeners: {itemclick: OnBtnAddQx}
+        ],
+        tbar:[
+            {
+                xtype: 'combo',
+                id: 'bjzyq',
+                store: bjzyqStore,
+                fieldLabel: '作业区',
+                labelAlign: 'right',
+                editable: false,
+                margin: '5 0 5 15',
+                labelWidth: 75,
+                width: 255,
+                displayField: 'V_DEPTNAME',
+                valueField: 'V_DEPTCODE',
+                queryMode: 'local'
+            }
+        ],
+        listeners: {itemclick: OnBtnAddQx}
     });
 
     //解决方案窗口
@@ -559,8 +610,10 @@ Ext.onReady(function () {
         // CreateProjectCode();
     });
     Ext.getCmp('zyq').on('select', function () {
-
         QueryZyFzr();
+    });
+    Ext.getCmp('bjzyq').on('select',function(){
+        QueryBjZyq();
     });
 
 
@@ -1475,6 +1528,14 @@ function QueryDefect() {
     Ext.data.StoreManager.lookup('qxGridStore').load({
         params: {
             V_V_PROJECT_GUID: Guid
+        }
+    });
+}
+
+function QueryBjZyq(){
+    Ext.data.StoreManager.lookup("dqxgridStore2").load({
+        params:{
+            V_DEPT_CODE:Ext.getCmp('bjzyq').getValue()
         }
     });
 }
