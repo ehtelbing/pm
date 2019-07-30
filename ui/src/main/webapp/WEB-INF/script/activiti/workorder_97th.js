@@ -2774,7 +2774,7 @@ function DisAgree() {
         params: {
             taskId: taskId,
             idea: '退回',
-            parName: [V_NEXT_SETP, "flow_yj",],
+            parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [Ext.getCmp('nextSpr').getValue(), spyj],
             processKey: $.url().param("ProcessDefinitionKey"),
             businessKey: $.url().param("V_ORDERGUID"),
@@ -2816,7 +2816,7 @@ function DisAgreeP() {
         params: {
             taskId: taskId,
             idea: '未打印',
-            parName: [V_NEXT_SETP, "flow_yj",],
+            parName: [V_NEXT_SETP, "flow_yj"],
             parVal: [Ext.getCmp('nextSprp').getValue(), spyj],
             processKey: $.url().param("ProcessDefinitionKey"),
             businessKey: $.url().param("V_ORDERGUID"),

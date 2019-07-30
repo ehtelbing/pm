@@ -15,6 +15,8 @@ var V_NEXT_SETP = '';
 var wuliaochaxunlist = [];
 var ProcessInstanceId = '';
 var Assignee = '';
+var AssigneeName="";
+var V_V_EQUCODE="";
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_DBGUID = Ext.urlDecode(location.href.split('?')[1]).V_DBGUID;
@@ -46,7 +48,7 @@ $(function () {
                 V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
                 V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
 
-                Ext.getCmp('nextSpr2').select(store.first());
+               /* Ext.getCmp('nextSpr2').select(store.first());
                 var list = Ext.getCmp("nextSpr2").getStore().data.items;
                 for (var i = 0; i < list.length; i++) {
                     if (list[i].raw.V_PERSONCODE == Assignee) {
@@ -55,11 +57,46 @@ $(function () {
                     if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
                         Ext.getCmp("nextSpr2").setValue(Ext.util.Cookies.get('v_personcode'));
                     }
-                }
+                }*/
             }
         }
     });
+    var nextSprS = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'nextSprS',
+        // fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
+        fields: ['YG_NO', 'YGXM', 'V_PERSONCODE', 'V_PERSONNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            // url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+            url: AppUrl + 'dxfile/WORKCTR_TO_PERCODE_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {}
+        },
+        listeners: {
+            load: function (store, records, success, eOpts) {
+                store.insert(records.length,{V_PERSONCODE:Assignee,V_PERSONNAME:AssigneeName});
+                /*Ext.getCmp('nextSprb').select(store.first());
+                var list = Ext.getCmp("nextSprb").getStore().data.items;
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i].raw.V_PERSONCODE == Ext.util.Cookies.get('v_personcode')) {
+                        Ext.getCmp("nextSprb").setValue(Ext.util.Cookies.get('v_personcode'));
+                    }
+                    if (list[i].raw.V_PERSONCODE == Assignee) {
+                        Ext.getCmp("nextSprb").setValue(Assignee);
+                    }
+                }*/
+            }
 
+        }
+    });
     var addInputPanel2 = Ext.create('Ext.form.Panel', {
         id: 'addInputPanel2',
         region: 'center',
@@ -99,20 +136,47 @@ $(function () {
             }
         ]
     });
-
+    var nextPerGrid=Ext.create('Ext.grid.Panel',{
+        id:'nextPerGrid',
+        store:nextSprS,
+        region : 'center',
+        split: true,
+        autoScroll:true,
+        selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
+            selType: 'checkboxmodel',
+            mode: 'SINGLE'
+        },
+        columnLines: true,
+        border: true,
+        tbar:[{
+            xtype: 'button',
+            text: '确定',
+            icon: imgpath + '/saved.png',
+            style: ' margin: 5px 0px 0px 15px',
+            handler: activitiOrderissued
+        }],
+        columns: [
+            {xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
+            // {text: '设备名称',width: 140, dataIndex: 'V_EQUNAME', align: 'center',renderer:atleft},
+            {text: '姓名',width: 120, dataIndex: 'V_PERSONNAME', align: 'center'},
+            {text: '编码',width: 120, dataIndex: 'V_PERSONCODE', align: 'center'}
+        ]
+    });
     var window2 = Ext.create('Ext.window.Window', {
         id: 'window2',
-        width: 370,
-        height: 150,
+        width: 400,
+        height: 180,
         bodyPadding: 15,
-        layout: 'vbox',
+        layout: 'border',
         title: '选择下一步接收人',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,
         closeAction: 'hide',
         closable: true,
-        items: [addInputPanel2]
+        // items: [addInputPanel2]
+        items:[nextPerGrid]
     });
+
 
     bindDate("D_FACT_START_DATE");
     bindDate("D_FACT_FINISH_DATE");
@@ -291,7 +355,13 @@ function getAssignee() {
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            Assignee = resp.list[0].Assignee;
+            for(var i=0;i<=resp.list.length;i++){
+                if(resp.list[i].ActivityName=="Start"){
+                    Assignee = resp.list[i].Assignee;
+                    AssigneeName=resp.list[i].AssigneeName;
+                    break;
+                }
+            }
         }
     });
 }
@@ -310,6 +380,7 @@ function loadOrder() {
                 V_V_ORGCODE = resp.list[0].V_ORGCODE;
                 V_V_DEPTCODE = resp.list[0].V_DEPTCODE;
                 V_V_REPAIRCODE = resp.list[0].V_DEPTCODEREPARIR;
+                V_V_EQUCODE=resp.list[0].V_EQUIP_NO;
                 $("#V_ORDER_TYP_TXT").html(resp.list[0].V_ORDER_TYP_TXT);
                 $("#V_ORGNAME").html(resp.list[0].V_ORGNAME);
                 $("#V_DEPTNAME").html(resp.list[0].V_DEPTNAME);
@@ -746,10 +817,24 @@ function _preOrderissued() {
     };
     nextSprStore2.currentPage = 1;
     nextSprStore2.load();
+    Ext.data.StoreManager.lookup('nextSprS').load({
+        params:{
+            V_V_REPAIRCODE:V_V_REPAIRCODE,
+            V_V_EQUCODE:V_V_EQUCODE
+        }
+    });
     Ext.getCmp('window2').show();
 }
 
 function activitiOrderissued() {
+
+    var choicePer="";
+    var nextPercode=Ext.getCmp("nextPerGrid").getSelectionModel().getSelection();
+    if(nextPercode.length>1){
+        alert("请选择一位下一步审批人"); return false;
+    }else{
+        choicePer=nextPercode[0].data.V_PERSONCODE
+    }
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/TaskComplete',
         type: 'ajax',
@@ -758,13 +843,13 @@ function activitiOrderissued() {
             taskId: taskId,
             idea: '已反馈',
             parName: [V_NEXT_SETP, "flow_yj"],
-            parVal: [Ext.getCmp('nextSpr2').getValue(), '已反馈'],
+            parVal: [choicePer, '已反馈'],//[Ext.getCmp('nextSpr2').getValue(), '已反馈'],
             processKey: processKey,
             businessKey: $.url().param("V_ORDERGUID"),
             V_STEPCODE: V_STEPCODE,
             V_STEPNAME: V_STEPNAME,
             V_IDEA: '已反馈',
-            V_NEXTPER: Ext.getCmp('nextSpr2').getValue(),
+            V_NEXTPER: choicePer,//Ext.getCmp('nextSpr2').getValue(),
             V_INPER: Ext.util.Cookies.get('v_personcode')
         },
         success: function (response) {
