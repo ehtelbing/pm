@@ -24,6 +24,7 @@ var TaskDefinitionKey="";
 var PASS="PASS";
 var NOPASS="NOPASS";
 var taskId="";
+var gcqsMsg="";
 if(Ext.urlDecode(location.href.split('?')[1])!=null){
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
@@ -378,6 +379,7 @@ Ext.onReady(function(){
                 format:'Y/m/d',
                 value:new Date()
             }
+            ,{xtype:'button', margin: '5px 0px 5px 5px',text:'工程请示详情',icon: imgpath + '/add.png',handler: gcqsClick}
         ]
     });
     var textpanel=Ext.create('Ext.panel.Panel',{
@@ -685,6 +687,25 @@ Ext.onReady(function(){
         }],
         closable: true,
         model: true
+    });
+
+    var detGcqs=Ext.create('Ext.window.Window',{
+        id:'detGcqs',
+        width:650,
+        height:600,
+        closeAction:'hide',
+        layout: "column",
+        items: [
+            {
+                xtype: 'textareafield',
+                id: 'gcqsxq',
+                fieldLabel: '工程请示详情',
+                maxLength: 5000,
+                labelWidth :45,
+                width:630,
+                height:550
+
+            }]
     });
     Ext.create('Ext.container.Viewport',{
         id:'main',
@@ -1153,7 +1174,7 @@ function updateLoad(){
                     Ext.getCmp('ProjectCode').setValue(resp.list[0].V_PORJECT_CODE);Ext.getCmp("ProjectCode").setReadOnly(true);
                     Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);Ext.getCmp("ProjectName").setReadOnly(true);
                     Ext.getCmp("qstext").setValue(resp.list[0].V_QSTEXT);Ext.getCmp("qstext").setReadOnly(true);
-
+                    gcqsMsg=resp.list[0].V_QSTEXT;
                     if(resp.list[0].V_BDATE==''){
                         Ext.getCmp('btime').setValue(new Date());Ext.getCmp("btime").setReadOnly(true);
                     }else{
@@ -1920,7 +1941,13 @@ function  disPassDefect(){
                     // window.opener.selectGridTurn();
                     // window.close();
                 }
+
             }
         });
     }
+}
+function gcqsClick(){
+    // Ext.MessageBox.alert('工程请示详情',gcqsMsg);
+ Ext.getCmp("detGcqs").show();
+ Ext.getCmp("gcqsxq").setValue(gcqsMsg);
 }

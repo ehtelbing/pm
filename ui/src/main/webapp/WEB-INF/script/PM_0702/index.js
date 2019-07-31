@@ -683,15 +683,23 @@ function createWorkorder() {
                     var V_SOURCECODE = seldata[0].raw.V_SOURCECODE;
                     var owidth = window.document.body.offsetWidth - 500;
                     var oheight = window.document.body.offsetHeight - 500;
-                    if(seldata[0].data.V_DEPTCODE!='99070205'&&seldata[0].data.V_DEPTCODE!='99070210'&&seldata[0].data.V_DEPTCODE!='99080206'&&seldata[0].data.V_DEPTCODE!='99080207'){
+                    if(Ext.util.Cookies.get("v_deptcode")=='99070205'||Ext.util.Cookies.get("v_deptcode")=='99070210'||Ext.util.Cookies.get("v_deptcode")=='99080206'||Ext.util.Cookies.get("v_deptcode")=='99080207'){
+                        if(seldata[0].data.V_DEPTCODE!=Ext.util.Cookies.get("v_deptcode")){
+                            var ret = window.open(AppUrl + 'page/dq0205/workorder_newWork.html?V_GUID=' + V_ORDERGUID +
+                                '&V_EQUTYPECODE=' + V_EQUTYPECODE +
+                                "&V_SOURCECODE=" + V_SOURCECODE +
+                                "&D_BE_SJ=" + D_BE_SJ +
+                                "&D_EN_SJ=" + D_EN_SJ, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                        }
+                        else{
+                            var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID=' + V_ORDERGUID +
+                                '&V_EQUTYPECODE=' + V_EQUTYPECODE +
+                                "&V_SOURCECODE=" + V_SOURCECODE +
+                                "&D_BE_SJ=" + D_BE_SJ +
+                                "&D_EN_SJ=" + D_EN_SJ, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                        }
+                    }else{
                         var ret = window.open(AppUrl + 'page/PM_090201/index.html?V_GUID=' + V_ORDERGUID +
-                            '&V_EQUTYPECODE=' + V_EQUTYPECODE +
-                            "&V_SOURCECODE=" + V_SOURCECODE +
-                            "&D_BE_SJ=" + D_BE_SJ +
-                            "&D_EN_SJ=" + D_EN_SJ, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-                    }
-                    else{
-                        var ret = window.open(AppUrl + 'page/dq0205/workorder_newWork.html?V_GUID=' + V_ORDERGUID +
                             '&V_EQUTYPECODE=' + V_EQUTYPECODE +
                             "&V_SOURCECODE=" + V_SOURCECODE +
                             "&D_BE_SJ=" + D_BE_SJ +
