@@ -102,6 +102,8 @@ Ext.onReady(function () {
 
                                     if(resp.msg=="Success"){
                                         QueryGrid();
+                                        //window.close();
+                                        window.opener.QueryPerGrid();
                                     }
                                 }
                             });

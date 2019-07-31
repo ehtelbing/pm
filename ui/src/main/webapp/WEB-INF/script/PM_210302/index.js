@@ -8,6 +8,7 @@ var ProcessInstanceId = '';
 var BusinessKey = '';
 var flowtype = '';
 var msg = [];
+var activityIdP="";
 if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.ProcessInstanceId == ProcessInstanceId) ? ProcessInstanceId = "" : ProcessInstanceId = parameters.ProcessInstanceId;
@@ -76,12 +77,10 @@ Ext.onReady(function () {
             align: 'center',
             renderer: function (value, metaData, record) {
                 if (record.data.running) {
-                    // '<a href=javascript:_activiti(\'' + record.data.id + '\')>' + '放弃' + '</a>&nbsp;&nbsp;' +
                     return '<a href=javascript:perManage(\'' + record.data.id + '\')>' + '审批人' + '</a>';
 
                 } else {
-                    return '<a href=javascript:_activiti(\'' + record.data.id + '\',\''
-                        + record.data.Assignee + '\')>' + '激活' + '</a>';
+                    return '<a href=javascript:_activiti(\'' + record.data.id + '\')>' + '激活' + '</a>';
                 }
             }
         }]
@@ -112,18 +111,10 @@ Ext.onReady(function () {
     _select();
     queryProcessCode();
 
-    var gridStore = Ext.create('Ext.data.Store', {
-        fields: ['ActivityId',
-            'ActivityName',
-            'ActivityType',
-            'Assignee',
-            'AssigneeName',
-            'EndTime',
-            'Id',
-            'StartTime',
-            'post'],
+    var gridStoreP = Ext.create('Ext.data.Store', {
+        fields: ['ActivityId', 'ActivityName', 'ActivityType', 'Assignee', 'AssigneeName', 'EndTime', 'Id', 'StartTime', 'post'],
         autoLoad: false,
-        id: 'gridStore',
+        id: 'gridStoreP',
         proxy: {
             type: 'ajax',
             actionMethods: {
@@ -137,19 +128,28 @@ Ext.onReady(function () {
         }
     });
 
-    var sgrid=Ext.create('Ext.grid.Panel',{
-        id:'sgrid',
+    var sgrid = Ext.create('Ext.grid.Panel', {
+        id: 'sgrid',
         region: 'center',
         width: '100%',
-        store:gridStore,
+        store: gridStoreP,
         autoScroll: true,
-        columns:[Ext.create('Ext.grid.RowNumberer',{header:'序号',width:50,align:'center',sortable:true}),
-            {header:'审批人编码',dataIndex: 'Assignee',sortable:true,align:'center',width:200},
-            {header:'审批人姓名',dataIndex: 'AssigneeName',sortable:true,align:'center',width:200},
-            {header:'操作',dataIndex: 'ActivityId',sortable:true,align:'center',width:60,renderer: function (value, metaData, record) {
-                return '<a href=javascript:changPerson(\'' + value + '\')>' + '审批人' + '</a>';} }
-        ]});
-    var window= Ext.create('Ext.window.Window', {
+        columns: [Ext.create('Ext.grid.RowNumberer', {header: '序号', width: 50, align: 'center', sortable: true}),
+            {header: '审批人编码', dataIndex: 'Assignee', sortable: true, align: 'center', width: 200},
+            {header: '审批人姓名', dataIndex: 'AssigneeName', sortable: true, align: 'center', width: 200},
+            {
+                header: '操作',
+                dataIndex: 'ActivityId',
+                sortable: true,
+                align: 'center',
+                width: 60,
+                renderer: function (value, metaData, record) {
+                    return '<a href=javascript:changPerson(\'' + value + '\')>' + '审批人' + '</a>';
+                }
+            }
+        ]
+    });
+    var window = Ext.create('Ext.window.Window', {
         id: 'window',
         width: 520,
         height: 357,
@@ -163,11 +163,12 @@ Ext.onReady(function () {
 
 
 function _select() {
-    var gridStore = Ext.data.StoreManager.lookup('gridStore');
-    gridStore.proxy.extraParams = {
-        instanceId: ProcessInstanceId
-    };
-    gridStore.load();
+
+    Ext.data.StoreManager.lookup('gridStore').load({
+        params:{
+            instanceId: ProcessInstanceId
+        }
+    });
     _preViewImage();
 }
 
@@ -202,7 +203,6 @@ function AddLeft(value) {
  * 激活流程步骤
  **/
 function _activiti(activityId, assignee) {
-    var ass=Ext.data.StoreManager.lookup('gridStore').data.getAt(0).data.Assignee;
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/activateActivityCancelCurrent',
         type: 'ajax',
@@ -213,11 +213,11 @@ function _activiti(activityId, assignee) {
             instanceId: ProcessInstanceId,
             activityId: activityId,
             flowStep: activityId,
-            assignees: assignee=="undefined" ? ass :"lcjs"  // : ass
+            assignees: "lcjs"
         },
         success: function (response) {
             var resp = Ext.decode(response.responseText);
-            if( resp.flag){
+            if (resp.flag) {
                 _select();
             }
         }
@@ -241,17 +241,23 @@ function getActivitiMsg() {
     });
 }
 
-function perManage(activityId){
+function perManage(activityId) {
     var owidth = window.screen.availWidth;
     var oheight = window.screen.availHeight - 50;
-    var gridStore = Ext.data.StoreManager.lookup('gridStore');
-    gridStore.proxy.extraParams = {
-        businessKey: BusinessKey,
-        ActivitiId:activityId
-    };
-    gridStore.load();
+    activityIdP=activityId;
+    QueryPerGrid();
     Ext.getCmp("window").show();
 }
+
+function QueryPerGrid(){
+    Ext.data.StoreManager.lookup('gridStoreP').load({
+        params:{
+            businessKey: BusinessKey,
+            ActivitiId: activityIdP
+        }
+    });
+}
+
 //function perManage(activityId){
 function changPerson(value) {
     var owidth = window.screen.availWidth;
