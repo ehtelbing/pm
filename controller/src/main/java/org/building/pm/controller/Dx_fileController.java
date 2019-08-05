@@ -4932,6 +4932,31 @@ public class Dx_fileController {
         return result;
     }
 
+    //生产写实状态修改
+    @RequestMapping(value = "PP_INFORMATION_STAT_UPDT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PP_INFORMATION_STAT_UPDT(@RequestParam(value = "V_ID") String V_ID,
+                                                        @RequestParam(value = "V_STATE") String V_STATE,
+                                                        @RequestParam(value = "V_DEFCODE") String V_DEFCODE,
+                                                      HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PP_INFORMATION_STAT_UPDT(V_ID,V_STATE,V_DEFCODE);
+        return result;
+    }
+
+    //生产写实完成处理
+    @RequestMapping(value = "PP_INFORMATION_FINISH_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PP_INFORMATION_FINISH_IN(@RequestParam(value = "V_ID") String V_ID,
+                                                      @RequestParam(value = "V_PERCODE") String V_PERCODE,
+                                                        @RequestParam(value = "V_PERNAME") String V_PERNAME,
+                                                        @RequestParam(value = "V_REMARK") String V_REMARK,
+                                                      HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PP_INFORMATION_FINISH_IN(V_ID,V_PERCODE,V_PERNAME,V_REMARK);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

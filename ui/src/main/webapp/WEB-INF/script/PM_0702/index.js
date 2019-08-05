@@ -191,12 +191,18 @@ Ext.onReady(function () {
             text: '生成工单',
             icon: imgpath + '/accordion_collapse.png',
             handler: createWorkorder
-        }, {
+        },{
                 xtype: 'button',
                 text: '缺陷修改',
                 icon: imgpath + '/edit.png',
                 handler: updateDefData
-            }]
+            },{
+                xtype: 'button',
+                text: '缺陷导出',
+                icon: imgpath + '/edit.png',
+                handler: expExcelDefData
+            }
+            ]
     });
 
     var overhaulApplyPanel = Ext.create('Ext.grid.Panel', {
@@ -803,10 +809,20 @@ function getSel(){
     gridStore.proxy.extraParams = {
         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        PUT_PERNAME:Ext.getCmp('fzr').getValue()==""?"%":Ext.getCmp("fzr").getValue().toString(),
+        PUT_PERNAME:Ext.getCmp('fzr').getValue()=="0"?"%":Ext.getCmp("fzr").getValue().toString(),
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
         V_SIGN:1
     };
     gridStore.load();
+}
+
+//导出缺陷处理
+function expExcelDefData(){
+    var V_V_STATECODE=Ext.ComponentManager.get("qxzt").getValue()=="%"?"0":Ext.ComponentManager.get("qxzt").getValue();
+    var PUT_PERNAME=Ext.getCmp('fzr').getValue()==""?"0":Ext.getCmp("fzr").getValue().toString();
+    document.location.href=AppUrl + 'excel/DEFCL_EXCEL?V_V_STATECODE='+V_V_STATECODE+
+        '&X_PERSONCODE='+Ext.util.Cookies.get('v_personcode')+
+        '&PUT_PERNAME='+PUT_PERNAME+
+        '&V_SIGN='+1;
 }

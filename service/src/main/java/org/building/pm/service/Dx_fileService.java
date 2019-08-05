@@ -6541,5 +6541,95 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORKCTR_TO_PERCODE_SEL");
         return result;
     }
+    //生产写实状态修改
+    public Map PP_INFORMATION_STAT_UPDT(String V_ID,String V_STATE,String V_DEFCODE)throws SQLException{
+        logger.info("begin PP_INFORMATION_STAT_UPDT");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PP_INFORMATION_STAT_UPDT(:V_ID,:V_STATE,:V_DEFCODE,:RET)}");
+            cstmt.setString("V_ID", V_ID);
+            cstmt.setString("V_STATE", V_STATE);
+            cstmt.setString("V_DEFCODE", V_DEFCODE);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PP_INFORMATION_STAT_UPDT");
+        return result;
+    }
+    //生产写实完成处理
+    public Map PP_INFORMATION_FINISH_IN(String V_ID,String V_PERCODE,String V_PERNAME,String V_REMARK)throws SQLException{
+        logger.info("begin PP_INFORMATION_FINISH_IN");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PP_INFORMATION_FINISH_IN(:V_ID,:V_PERCODE,:V_PERNAME,:V_REMARK,:RET)}");
+            cstmt.setString("V_ID", V_ID);
+            cstmt.setString("V_PERCODE", V_PERCODE);
+            cstmt.setString("V_PERNAME", V_PERNAME);
+            cstmt.setString("V_REMARK", V_REMARK);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PP_INFORMATION_FINISH_IN");
+        return result;
+    }
+    //缺陷处理导出查询
+    public Map PRO_PM_07_DEFECT_EXPEXCEL(String V_V_STATECODE,
+                                             String X_PERSONCODE,String PUT_PERNAME,String V_SIGN) throws SQLException {
+
+        logger.info("begin PRO_PM_07_DEFECT_EXPEXCEL");
+//        logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_07_DEFECT_EXPEXCEL(:V_V_STATECODE,:X_PERSONCODE,:PUT_PERNAME,:V_SIGN,:V_V_SNUM,:V_CURSOR)}");
+            cstmt.setString("V_V_STATECODE", V_V_STATECODE);
+            cstmt.setString("X_PERSONCODE", X_PERSONCODE);
+            cstmt.setString("PUT_PERNAME",PUT_PERNAME);
+            cstmt.setString("V_SIGN",V_SIGN);
+            cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("total", (String) cstmt.getObject("V_V_SNUM"));
+
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_07_DEFECT_EXPEXCEL");
+        return result;
+    }
 }
 

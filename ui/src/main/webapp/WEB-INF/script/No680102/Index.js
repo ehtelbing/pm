@@ -1,4 +1,7 @@
-﻿var bmmcStore = Ext.create("Ext.data.Store", {
+﻿var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
+var V_V_PERSONNAME = Ext.util.Cookies.get('v_personname');
+var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
+var bmmcStore = Ext.create("Ext.data.Store", {
     autoLoad: true,
     storeId: 'bmmcStore',
     fields: ['V_DEPTNAME', 'V_DEPTCODE'],
@@ -64,7 +67,7 @@ var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
     pageSize: 15,
-    fields: ['D_DATE', 'I_ID', 'V_CLASS', 'V_CLASSTYPE', 'V_DEPT', 'V_INFORMATION', 'V_PERSONNAME', 'V_TYPE'],
+    fields: ['D_DATE', 'I_ID', 'V_CLASS', 'V_CLASSTYPE', 'V_DEPT', 'V_INFORMATION', 'V_PERSONNAME', 'V_TYPE','STATE','DEFCODE'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -155,7 +158,8 @@ var Layout = {
             id: 'enddate',
             format: 'Y年m月d日',
             value: new Date()
-        }, {
+        },
+            {
             xtype: 'button',
             text: '查询',
             handler: queryGrid,
@@ -167,6 +171,16 @@ var Layout = {
             xtype: 'button',
             text: '导出Excel',
             handler: OnButtonExcelClicked,
+            icon: imgpath + '/001.gif'
+        }, {
+            xtype: 'button',
+            text: '转成缺陷',
+            handler: OnButtonToDefect,
+            icon: imgpath + '/001.gif'
+        }, {
+            xtype: 'button',
+            text: '完成处理',
+            handler: OnButtonFinish,
             icon: imgpath + '/001.gif'
         }]
     }, {
@@ -191,6 +205,11 @@ var Layout = {
             width: 35,
             align: 'center'
         }, {
+            text:'状态',
+            align:'center',
+            width:70,
+            dataIndex:'STATE'
+        },{
             text: '日期',
             align: 'center',
             width: 110,
@@ -239,6 +258,12 @@ var Layout = {
             width: 150,
             dataIndex: 'V_DEPT',
             renderer: renderFont
+        }, {
+            text: '缺陷详情',
+            align: 'center',
+            width: 150,
+            dataIndex: 'DEFCODE',
+            renderer:turnToPage
         }],
         bbar: ['->', {
             xtype: 'pagingtoolbar',
@@ -252,6 +277,52 @@ var Layout = {
 };
 
 function onPageLoaded() {
+    var fpanel=Ext.create('Ext.panel.Panel',{
+        id:'fpanel',
+        layout:'vbox',
+        region:'center',
+        items:[
+            {xtype:'textfield',id:'inper',fieldLabel:'处理人员',margin:'5 0 10 5',labelAlign:'right',labelWidth:75,width:250,value:decodeURI(V_V_PERSONNAME)},
+            {
+                xtype     : 'textareafield',
+                id:'content',
+                labelAlign:'right',
+                grow      : true,
+                fieldLabel: '内容详情',
+                anchor    : '100%',
+                margin:'5 0 10 5',
+                labelWidth :75,
+                width:450,
+                height:70
+            },
+            {xtype:'panel',layout:'column', style:'background-color:#FFFFFF;',
+             baseCls: 'my-panel-no-border',
+            items:[{xtype:'button',
+                margin:'5 0 10 20',
+                id:'qr',
+                text:'确认',
+                handler:ComnitFinsh},
+                {
+                    xtype:'button',
+                    margin:'5 0 10 20',
+                    id:'qx',
+                    text:'取消',
+                    handler:WinClose
+                }]
+            }
+
+        ]
+    });
+    var finishWin=Ext.create('Ext.window.Window',{
+        id:'finishWin',
+        layout:'border',
+        width:560,
+        height:350,
+        frame:true,
+        closeAction:'hide',
+        closable:true,
+        items:[fpanel]
+    });
     Ext.create('Ext.container.Viewport', Layout);
     Ext.data.StoreManager.lookup('bmmcStore').on('load', function () {
         Ext.data.StoreManager.lookup('bmmcStore').insert(0, {
@@ -333,3 +404,77 @@ function OnButtonExcelClicked() {
 }
 
 Ext.onReady(onPageLoaded);
+
+function OnButtonToDefect(){
+    var I_ID="";
+    var records=Ext.getCmp("grid").getSelectionModel().getSelection();
+    if(records.length!=1){
+        alert("请选择一条数据进行操作");
+        return false;
+    }
+    else{
+        I_ID=records[0].get("I_ID");
+        var owidth = window.document.body.offsetWidth - 200;
+        var oheight = window.document.body.offsetHeight - 100;
+        var ret = window.open(AppUrl + 'page/No680102/createDef.html?I_ID=' + I_ID,
+            '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    }
+}
+
+//完场处理
+function OnButtonFinish(){
+      Ext.getCmp("finishWin").show();
+}
+function ComnitFinsh(){
+    var I_ID="";
+    var records=Ext.getCmp("grid").getSelectionModel().getSelection();
+    if(records.length!=1){
+        alert("请选择一条数据进行操作");
+        return false;
+    }
+    else {
+        I_ID = records[0].get("I_ID");
+        Ext.Ajax.request({
+            url: AppUrl + 'dxfile/PP_INFORMATION_FINISH_IN',
+            method: 'POST',
+            async: false,
+            params: {
+                V_ID:I_ID,
+                V_PERCODE:V_V_PERSONCODE,
+                V_PERNAME:Ext.getCmp("inper").getValue(),
+                V_REMARK:Ext.getCmp("content").getValue()
+    },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.RET != null) {
+                if(resp.RET=='SUCCESS'){
+                    alert('处理成功');
+                }
+                else{
+                    alert(resp.RET);
+                }
+            } else {
+                alert("状态修改失败");
+            }
+        }
+    });
+    }
+}
+function WinClose(){
+    Ext.getCmp("finishWin").close();
+}
+function turnToPage(value, metaData, record, rowIdx, colIdx, store, view){
+    if(value==""){
+        return '<a href="javascript:defclick(\'' + value + '\')">' + "" + '</a>';
+    }else{
+        return '<a href="javascript:defclick(\'' + value + '\')">' + "缺陷详情" + '</a>';
+    }
+
+}
+function defclick(value) {
+    var owidth = window.document.body.offsetWidth - 200;
+    var oheight = window.document.body.offsetHeight - 100;
+    var ret = window.open(AppUrl + "page/PM_070301/index1.html?v_guid="
+        +value, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+
+}
