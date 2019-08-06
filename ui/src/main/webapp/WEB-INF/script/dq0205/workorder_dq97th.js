@@ -286,6 +286,7 @@ $(function () {
                 labelAlign: 'right',
                 columns: 2,
                 width: 290,
+                hidden:true,
                 margin: '5 10 5 10',
                 items: [
                     {
@@ -587,17 +588,44 @@ function valueChange(field, newvalue, oldvalue) {
 }
 function comboConfirm() {
 
+    Ext.getBody().mask('<p>驳回中...请稍候</p>');
+    var newQxState="10";
+    if (Ext.getCmp('radiotypexqx').getValue().xqxtypename == '1') { //新缺陷是否消缺
+        newQxState="30";
+    }
 
     if (Ext.getCmp('radiotypesc').getValue().sctypename == '1') { //生成新的缺陷
+        var workguid=$.url().param("V_ORDERGUID");
+        var oldDefCode="";
+        Ext.Ajax.request({// 四、查找工单对应的缺陷
+            method: 'POST',
+            async: false,
+            // url: AppUrl + 'cjy/PM_DEFECTTOWORKORDER_SELBYWORK',
+            url:AppUrl+'dxfile/PM_DEFECT_SEL_TO_WORK',
+            params: {
+                V_V_WORKORDER_GUID: $.url().param("V_ORDERGUID"),
+                V_V_FLAG: "1"
+            },
+            success: function (response) {
+                var respl = Ext.decode(response.responseText);
+                if (respl.list.length > 0) {
+                    for (var i = 0; i < respl.list.length; i++) {
+                        oldDefCode=respl.list[i].V_DEFECT_GUID;
+                    }
+                }
+            }
+        });
         var owidth = window.document.body.offsetWidth;
         var oheight = window.document.body.offsetHeight;
-        var ret = window.open(AppUrl + 'page/PM_0709/index.html?&defect=' + '' +
+        var ret = window.open(AppUrl + 'page/PM_0709/index.html?&defect=' +oldDefCode+'&defState='+newQxState+
+            '&wguid='+workguid+
             '','newwindow','_blank','height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
 
     }
     else{
         confirmYS();
     }
+
     /*if (Ext.getCmp('radiotypesc').getValue().sctypename == '1') {
         if (Ext.getCmp('qxmx').getValue() == '') {
             Ext.MessageBox.alert('提示', '请填写缺陷明细');

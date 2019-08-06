@@ -320,4 +320,17 @@ public ResponseEntity<String> DEFECT_UPFILE_INSERT(@RequestParam(value = "V_V_BL
         Map result = pm_07Service.PRO_PM_07_DEFECT_UPDT_SEL(V_V_GUID);
         return result;
     }
+    //缺陷评定录入
+    @RequestMapping(value = "/PM_DEFECT_RE_NEWDEF_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PM_DEFECT_RE_NEWDEF_IN(@RequestParam(value = "NEW_CODE") String NEW_CODE,
+                                      @RequestParam(value = "OLD_CODE") String OLD_CODE,
+                                      @RequestParam(value = "V_PERCODE") String V_PERCODE,
+                                      @RequestParam(value = "V_SEL") String V_SEL,
+                                      @RequestParam(value = "V_SELNAME") String V_SELNAME,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws Exception {
+        Map result = pm_07Service.PM_DEFECT_RE_NEWDEF_IN(NEW_CODE,OLD_CODE,V_PERCODE,V_SEL,V_SELNAME);
+        return result;
+    }
 }

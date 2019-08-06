@@ -570,5 +570,34 @@ public class PM_07Service {
         logger.info("end PRO_PM_07_DEFECT_UPDT_SEL");
         return result;
     }
+//缺陷评定录入
+    public Map PM_DEFECT_RE_NEWDEF_IN(String NEW_CODE,String OLD_CODE,String V_PERCODE,String V_SEL,String V_SELNAME)
+    throws SQLException{
+        logger.info("begin PM_DEFECT_RE_NEWDEF_IN");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PM_DEFECT_RE_NEWDEF_IN" + "(:NEW_CODE,:OLD_CODE,:V_PERCODE,:V_SEL,:V_SELNAME,:RET)}");
+            cstmt.setString("NEW_CODE", NEW_CODE);
+            cstmt.setString("OLD_CODE", OLD_CODE);
+            cstmt.setString("V_PERCODE", V_PERCODE);
+            cstmt.setString("V_SEL", V_SEL);
+            cstmt.setString("V_SELNAME", V_SELNAME);
 
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("RET", (String) cstmt.getObject("RET"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_DEFECT_RE_NEWDEF_IN");
+        return result;
+    }
 }
