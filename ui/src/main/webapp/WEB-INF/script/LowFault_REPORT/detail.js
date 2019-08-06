@@ -363,21 +363,6 @@ Ext.onReady(function () {
                 labelAlign: 'right',
                 width: 270
             },  {
-                xtype: 'textfield',
-                id: 'assentcode2',//faultbgr
-                fieldLabel: '资产编码',
-                readOnly:true,
-                labelWidth: 80,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
-            }]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [ {
                 xtype: 'combo',
                 id: 'equFaultname2',
                 store: equFaultStore2,
@@ -389,8 +374,24 @@ Ext.onReady(function () {
                 editable: false,
                 labelWidth: 80,
                 readOnly:true,
+                style: ' margin: 5px 0px 0px -3px',
+                labelAlign: 'right',
+                width: 270
+            }]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                xtype: 'textfield',
+                id: 'assentcode2',//faultbgr
+                fieldLabel: '资产编码',
+                readOnly:true,
+                labelWidth: 80,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
+                hidden:true,
                 width: 270
             }, {
                 xtype: 'textfield',
@@ -398,6 +399,7 @@ Ext.onReady(function () {
                 fieldLabel: '直接责任人',
                 labelWidth: 80,
                 readOnly:true,
+                hidden:true,
                 style: ' margin: 5px 0px 0px -3px',
                 labelAlign: 'right',
                 width: 270
@@ -737,7 +739,7 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textarea',
                 id: 'fzrcl2',
-                fieldLabel: '负责者处理',
+                fieldLabel: '责任者处理',
                 readOnly:true,
                 labelWidth: 80,
                 style: ' margin: 5px 0px 0px -8px',

@@ -95,7 +95,7 @@ function load() {
                         trigger: 'item'
                     },
                     legend: {
-                        data:['计划台数（台）','实际台数（台）','计划执行率'],
+                        data:['计划台数(台)','实际台数(台)','计划执行率(%)'],
                         y:'bottom',
                         itemWidth:10,
                         itemHeight:10,
@@ -121,6 +121,9 @@ function load() {
                             },*/
                            triggerEvent: true,
                             axisLabel:{
+                                 textStyle: {
+                                    color: '#0377dc'
+                                 },
                                  formatter:function(value){
                                      return value.split("").join("\n")
                                  }
@@ -144,7 +147,7 @@ function load() {
                     ],
                     series: [
                         {
-                            name: '计划台数（台）',
+                            name: '计划台数(台)',
                             type: 'bar',
                             itemStyle: {
                                 normal: {
@@ -170,7 +173,7 @@ function load() {
                             // yAxisIndex:0
                         },
                         {
-                            name: '实际台数（台）',
+                            name: '实际台数(台)',
                             type: 'bar',
                             itemStyle: {
                                 normal: {

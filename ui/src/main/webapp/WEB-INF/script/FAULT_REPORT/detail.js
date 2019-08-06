@@ -803,7 +803,7 @@ Ext.onReady(function () {
                 items: [{
                     xtype: 'textarea',
                     id: 'fzrcl2',
-                    fieldLabel: '负责者处理',
+                    fieldLabel: '责任者处理',
                     labelWidth: 80,
                     readOnly:true,
                     style: ' margin: 5px 0px 0px -8px',

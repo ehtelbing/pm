@@ -410,21 +410,7 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 270
-            },  {
-                xtype: 'textfield',
-                id: 'assentcode2',//faultbgr
-                fieldLabel: '资产编码',
-                labelWidth: 80,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
-            }]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [ {
+            }, {
                 xtype: 'combo',
                 id: 'equFaultname2',
                 store: equFaultStore2,
@@ -435,6 +421,21 @@ Ext.onReady(function () {
                 fieldLabel: '故障类别',
                 editable: false,
                 labelWidth: 80,
+                style: ' margin: 5px 0px 0px -3px',
+                labelAlign: 'right',
+                width: 270
+            } ]
+        }, {
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                xtype: 'textfield',
+                id: 'assentcode2',//faultbgr
+                fieldLabel: '资产编码',
+                labelWidth: 80,
+                hidden:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 270
@@ -442,6 +443,7 @@ Ext.onReady(function () {
                 xtype: 'textfield',
                 id: 'faultzjzrr2',
                 fieldLabel: '直接责任人',
+                hidden:true,
                 labelWidth: 80,
                 style: ' margin: 5px 0px 0px -3px',
                 labelAlign: 'right',
@@ -767,7 +769,7 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textarea',
                 id: 'fzrcl2',
-                fieldLabel: '负责者处理',
+                fieldLabel: '责任者处理',
                 labelWidth: 80,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
@@ -1248,6 +1250,16 @@ function _hideFault2() {
 }
 
 function _saveBtnFault2() {
+    var faultname=Ext.getCmp("faultname2").getValue();
+    if(faultname==''){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '故障名称不能为空',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
     var V_V_IP = '';
     if (location.href.split('?')[0] != undefined) {
         var parameters = Ext.urlDecode(location.href.split('?')[0]);

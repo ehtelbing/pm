@@ -366,14 +366,20 @@ Ext.onReady(function () {
                     labelAlign: 'right',
                     width: 270
                 },{
-                        xtype: 'textfield',
-                        id: 'assentcode',//faultbgr
-                        fieldLabel: '资产编码',
-                        labelWidth: 80,
-                        style: ' margin: 5px 0px 0px -3px',
-                        labelAlign: 'right',
-                        width: 270
-                    }
+                    xtype: 'combo',
+                    id: 'equFaultname1',
+                    store: equFaultStore1,
+                    queryMode: 'local',
+                    valueField: 'V_TYPECODE',
+                    displayField: 'V_TYPENAME',
+                    forceSelection: true,
+                    fieldLabel: '故障类别',
+                    editable: false,
+                    labelWidth: 80,
+                    style: ' margin: 5px 0px 0px -3px',
+                    labelAlign: 'right',
+                    width: 270
+                }
                     ]
                 }, {
                     xtype: 'panel',
@@ -381,27 +387,24 @@ Ext.onReady(function () {
                     layout: 'column',
                     baseCls: 'my-panel-no-border',
                     items: [{
-                        xtype: 'combo',
-                        id: 'equFaultname1',
-                        store: equFaultStore1,
-                        queryMode: 'local',
-                        valueField: 'V_TYPECODE',
-                        displayField: 'V_TYPENAME',
-                        forceSelection: true,
-                        fieldLabel: '故障类别',
-                        editable: false,
+                        xtype: 'textfield',
+                        id: 'faultzjzrr',
+                        fieldLabel: '直接责任人',
                         labelWidth: 80,
+                        hidden:true,
                         style: ' margin: 5px 0px 0px -8px',
                         labelAlign: 'right',
                         width: 270
                     },{
                         xtype: 'textfield',
-                        id: 'faultzjzrr',
-                        fieldLabel: '直接责任人',
+                        id: 'assentcode',//faultbgr
+                        fieldLabel: '资产编码',
                         labelWidth: 80,
                         style: ' margin: 5px 0px 0px -3px',
                         labelAlign: 'right',
+                        hidden:true,
                         width: 270
+
                     }
 
                     ]
@@ -746,7 +749,7 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textarea',
                 id: 'fzrcl',
-                fieldLabel: '负责者处理',
+                fieldLabel: '责任者处理',
                 labelWidth: 80,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
@@ -1188,6 +1191,16 @@ function _hideFault2() {
 }
 
 function _saveBtnFault() {
+    var faultname=Ext.getCmp("faultname").getValue();
+    if(faultname==''){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '故障名称不能为空',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
     var V_V_IP = '';
     if (location.href.split('?')[0] != undefined) {
         var parameters = Ext.urlDecode(location.href.split('?')[0]);
@@ -1256,7 +1269,7 @@ function _saveBtnFault() {
                 'V_V_INTIME': intime,
                 'V_V_PERCODE': V_V_PERSONCODE,
                 'V_V_IP': V_V_IP,
-                'V_V_FAULT_NAME':Ext.getCmp("faultname").getValue(),
+                'V_V_FAULT_NAME':faultname,
                 'V_V_FAULT_PART':Ext.getCmp("faultpart").getValue(),
                 'V_V_FAULT_CLGC':Ext.getCmp("faultclgc").getValue(),
                 'V_V_FAULT_SS':Ext.getCmp("faultss").getValue(),

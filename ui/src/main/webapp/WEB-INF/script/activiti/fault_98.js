@@ -840,7 +840,7 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textarea',
                 id: 'fzrcl2',
-                fieldLabel: '负责者处理',
+                fieldLabel: '责任者处理',
                 labelWidth: 80,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
@@ -1469,6 +1469,16 @@ function delFixContent(faultguid,equcode) {
 
 }
 function _agree() {
+    var faultname=Ext.getCmp("faultname2").getValue();
+    if(faultname==''){
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '事故名称不能为空',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return;
+    }
     Ext.getBody().mask('<p>提交中...请稍候</p>');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {

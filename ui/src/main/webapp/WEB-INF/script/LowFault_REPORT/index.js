@@ -715,12 +715,13 @@ Ext.onReady(function () {
                 dataIndex: 'V_INPERNAME',
                 align: 'center',
                 width: 100
-            },{
+            },
+            /*{
                 text: '故障直接责任人',
                 dataIndex: 'V_FZR',
                 align: 'center',
                 width: 100
-            },
+            },*/
             /* {
              text: '解决办法',
              dataIndex: 'V_JJBF',
@@ -752,12 +753,12 @@ Ext.onReady(function () {
                 dataIndex: 'V_FAULT_ZGCS',
                 align: 'center',
                 width: 100
-            }, {
+            }/*, {
                 text: '责任者处理',
                 dataIndex: 'V_FZR_CL',
                 align: 'center',
                 width: 100
-            }
+            }*/
 
         ]
 
