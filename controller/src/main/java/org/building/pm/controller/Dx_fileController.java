@@ -4957,6 +4957,56 @@ public class Dx_fileController {
         return result;
     }
 
+    /*外围计划删除写入*/
+    @RequestMapping(value = "PM_PLAN_PROJECT_LOG_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PLAN_PROJECT_LOG_IN(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                        @RequestParam(value = "V_PERCODE") String V_PERCODE,
+                                                        @RequestParam(value = "V_V_PERNAME") String V_V_PERNAME,
+                                                        @RequestParam(value = "V_OPINION") String V_OPINION,
+                                                        HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_PLAN_PROJECT_LOG_IN(V_V_GUID,V_PERCODE,V_V_PERNAME,V_OPINION);
+        return result;
+    }
+
+    /*月计划删除写入*/
+    @RequestMapping(value = "PM_PLAN_MONTH_LOG_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PLAN_MONTH_LOG_IN(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                      @RequestParam(value = "V_PERCODE") String V_PERCODE,
+                                                      @RequestParam(value = "V_PERNAME") String V_PERNAME,
+                                                      @RequestParam(value = "V_OPERATION") String V_OPERATION,
+                                                      HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_PLAN_MONTH_LOG_IN(V_V_GUID,V_PERCODE,V_PERNAME,V_OPERATION);
+        return result;
+    }
+
+    /*周计划删除写入*/
+    @RequestMapping(value = "PM_PLAN_WEEK_LOG_IN", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_PLAN_WEEK_LOG_IN(@RequestParam(value = "V_V_GUID") String V_V_GUID,
+                                                    @RequestParam(value = "V_PERCODE") String V_PERCODE,
+                                                    @RequestParam(value = "V_PERNAME") String V_PERNAME,
+                                                    @RequestParam(value = "V_OPERATION") String V_OPERATION,
+                                                    HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_PLAN_WEEK_LOG_IN(V_V_GUID,V_PERCODE,V_PERNAME,V_OPERATION);
+        return result;
+    }
+
+    //缺陷跟踪负责人
+    @RequestMapping(value = "PRO_DEFECT_PER_VIEW_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_PER_VIEW_SEL(@RequestParam(value = "V_V_DEPT") String V_V_DEPT,
+                                                       @RequestParam(value = "V_V_EQU") String V_V_EQU,
+                                                       HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_DEFECT_PER_VIEW_SEL(V_V_DEPT,V_V_EQU);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
