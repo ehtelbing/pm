@@ -497,10 +497,10 @@ Ext.onReady(function(){
             mode: 'SINGLE'
         },
         columns:[
-            {text:'设备编码',dataIndex: 'V_EQUCODE',width:'200',hidden:true,render:atLeft},
-            {text:'设备名称',dataIndex: 'V_EQUNAME',width:'200',render:atLeft},
-            {text:'设备位置编码',dataIndex: 'V_EQUSITE',width:'530',hidden:true,render:atLeft},
-            {text:'设备位置',dataIndex: 'V_EQUSITENAME',width:'530',render:atLeft}
+            {text:'设备编码',dataIndex: 'V_EQUCODE',width:200,hidden:true,render:atLeft},
+            {text:'设备名称',dataIndex: 'V_EQUNAME',width:200,render:atLeft},
+            {text:'设备位置编码',dataIndex: 'V_EQUSITE',width:430,hidden:true,render:atLeft},
+            {text:'设备位置',dataIndex: 'V_EQUSITENAME',width:430,render:atLeft}
         ]/*,
         listener:{
             onStoreLoad:function(){
@@ -514,7 +514,7 @@ Ext.onReady(function(){
     var eastPanel=Ext.create('Ext.panel.Panel',{
         id:'eastPanel',
         layout:'vbox',
-        width:'30%',
+        width:'50%',
         region:'east',
         items:[
             {
@@ -758,8 +758,8 @@ Ext.onReady(function(){
         // Ext.getCmp('cpanel').show();
         // Ext.getCmp('sgrid').getView().refresh()
     });
-    Ext.data.StoreManager.lookup('childEquStore').on('load', function () {
-        Ext.getCmp("zsbmc").insert(0,{V_EQUNAME:'全部',V_EQUCODE:'%'});
+    Ext.data.StoreManager.lookup('childEquStore').on('load', function (store) {
+        store.insert(0,{V_EQUNAME:'全部',V_EQUCODE:'%'});
         Ext.getCmp("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(0));
     });
 //厂矿改变
@@ -998,6 +998,10 @@ function OnButtonSave() {
         Ext.Msg.alert('操作信息', '设备类型或设备名称不可以为空');
         return;
     }
+    if (Ext.getCmp('zsbmc').getValue() == '%') {
+        Ext.Msg.alert('操作信息', '子设备不可以为全部');
+        return;
+    }
     var findDate=Ext.getCmp("begintime").getSubmitValue();
     var findTime=findDate+" "+Ext.getCmp("hour").getValue()+":"+Ext.getCmp("minute").getValue()+":"+"00";
     Ext.Ajax.request({
@@ -1044,7 +1048,7 @@ function OnButtonSave() {
             if (resp.V_INFO == '成功') {
                 Ext.Msg.alert('操作信息', '保存成功', function () {
                     // window.location.reload();
-                    window.opener.loadMatList();
+                    window.opener.queryGrid();
                     window.close();
                 });
             }

@@ -423,7 +423,14 @@ function OnButtonToDefect(){
 
 //完场处理
 function OnButtonFinish(){
-      Ext.getCmp("finishWin").show();
+    var records=Ext.getCmp("grid").getSelectionModel().getSelection();
+    if(records[0].get("STATE")=="已转出"){
+        alert("已生成缺陷的无法进行完成处理");
+        return false;
+    }else{
+        Ext.getCmp("finishWin").show();
+    }
+
 }
 function ComnitFinsh(){
     var I_ID="";
