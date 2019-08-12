@@ -6729,7 +6729,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         return result;
     }
     //缺陷跟踪负责人
-    public Map PRO_DEFECT_PER_VIEW_SEL(String V_V_DEPT,String V_V_EQU) throws SQLException {
+    public Map PRO_DEFECT_PER_VIEW_SEL(String V_V_DEPT,String V_V_EQUTYPE,String V_V_EQU) throws SQLException {
 
         logger.info("begin PRO_DEFECT_PER_VIEW_SEL");
         Map<String, Object> result = new HashMap<String, Object>();
@@ -6739,8 +6739,9 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_DEFECT_PER_VIEW_SEL(:V_V_DEPT,:V_V_EQU,:V_V_SNUM,:RET)}");
+            cstmt = conn.prepareCall("{call PRO_DEFECT_PER_VIEW_SEL(:V_V_DEPT,:V_V_EQUTYPE,:V_V_EQU,:V_V_SNUM,:RET)}");
             cstmt.setString("V_V_DEPT", V_V_DEPT);
+            cstmt.setString("V_V_EQUTYPE",V_V_EQUTYPE);
             cstmt.setString("V_V_EQU", V_V_EQU);
 
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);

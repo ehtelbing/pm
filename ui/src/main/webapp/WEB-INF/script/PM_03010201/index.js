@@ -971,6 +971,24 @@ function OnButtonDeleteData(){
             if (btn == 'yes') {
                 var i_err = 0;
                 for (var i = 0; i < records.length; i++) {
+                    //月计划删除日志写入
+                    Ext.Ajax.request({
+                        url: AppUrl + 'dxfile/PM_PLAN_MONTH_LOG_IN',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].get('V_GUID'),
+                            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                            V_PERNAME:decodeURI(Ext.util.Cookies.get('v_personname')),
+                            V_OPERATION:'del'
+                        },
+                        success: function (resp) {
+                            var resp = Ext.decode(resp.responseText);
+                            if (resp.RET == 'SUCCESS') {
+
+                            }
+                        }
+                    });
                     //修改年计划添加未关联关联缺陷状态
                     Ext.Ajax.request({
                         url: AppUrl + 'dxfile/YEAR_TO_MONTH_DEL',
@@ -1025,7 +1043,7 @@ function OnButtonDeleteData(){
                                     title: '错误',
                                     msg: resp.V_INFO,
                                     buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.ERROR,
+                                    icon: Ext.MessageBox.none,//ERROR,
                                     fn: function () {
                                         query();
                                     }
@@ -1037,7 +1055,7 @@ function OnButtonDeleteData(){
                                 title: '错误',
                                 msg: response.responseText,
                                 buttons: Ext.MessageBox.OK,
-                                icon: Ext.MessageBox.ERROR,
+                                icon: Ext.MessageBox.none,
                                 fn: function () {
                                     query();
                                 }

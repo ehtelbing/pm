@@ -4017,6 +4017,7 @@ public class CjyController {
  //周计划批量通过
     @RequestMapping(value = "/batchAgreeForWeek", method = RequestMethod.POST)
     @ResponseBody
+
     public Map batchAgreeForWeek(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                  @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
                                  @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,

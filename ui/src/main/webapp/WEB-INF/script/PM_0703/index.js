@@ -103,6 +103,25 @@ Ext.onReady(function () {
         }
     });
 
+    var fzrper = Ext.create("Ext.data.Store", {
+        autoLoad: false,
+        storeId: 'fzrper',
+        fields: ['V_PERCODE', 'V_PERNAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/PRO_DEFECT_PER_VIEW_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            },
+            extraParams: {}
+        }
+    });
+
     var panel = Ext.create('Ext.form.Panel', {
         id: 'panellow',
         region: 'north',
@@ -187,6 +206,17 @@ Ext.onReady(function () {
             queryMode: 'local',
             baseCls: 'margin-bottom'
         }, {
+            id:'fzrid',
+            xtype:'combo',
+            store:fzrper,
+            editable:false,
+            fieldLabel:'负责人',
+            labelWidth:100,
+            displayField:'V_PERNAME',
+            valueField:'V_PERCODE',
+            queryMode:'local',
+            baseCls:'margin-bottom'
+        },{
             id: 'seltext',
             xtype: 'textfield',
             width: 158,
@@ -217,7 +247,7 @@ Ext.onReady(function () {
                 });*/
                 Ext.ComponentManager.get('tabpanel').removeAll();
                 Ext.Ajax.request({
-                    url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_COUNT',
+                    url: AppUrl + 'qx/PRO_DEFECT_SOURCE_COUNT_SEL',
                     method: 'POST',
                     async: false,
                     params: {
@@ -228,7 +258,8 @@ Ext.onReady(function () {
                         V_V_EQUCODE: Ext.ComponentManager.get("sbname").getValue(),
                         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
                         V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
-                        X_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+                        X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                        V_V_FZPERCODE:Ext.ComponentManager.get("fzrid").getDisplayValue()==null?'%':Ext.ComponentManager.get("fzrid").getDisplayValue()
                     },
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
@@ -294,7 +325,8 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'qx/PRO_PM_07_DEFECT_VIEW_PER',
+            // url: AppUrl + 'qx/PRO_PM_07_DEFECT_VIEW_PER',
+            url: AppUrl + 'qx/PRO_PM_07_DEFECT_VIEW_QXGZSEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -472,6 +504,7 @@ Ext.onReady(function () {
                         V_V_SOURCECODE: Ext.ComponentManager.get("tabid").getValue(),
                         V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
                         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                        V_V_FZPERCODE:Ext.ComponentManager.get("fzrid").getDisplayValue()==""?'%':Ext.ComponentManager.get("fzrid").getDisplayValue(),
                         V_V_PAGE: Ext.getCmp('page').store.currentPage,
                         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
                     }
@@ -498,8 +531,6 @@ Ext.onReady(function () {
     });
     ckstore.on("load", function () {
         Ext.getCmp("ck").select(ckstore.getAt(0));
-
-
     });
 
     Ext.ComponentManager.get("ck").on("change", function () {
@@ -513,6 +544,7 @@ Ext.onReady(function () {
             }
         });
     });
+
 
     zyqstore.on("load", function () {
         Ext.getCmp("zyq").select(zyqstore.getAt(0));
@@ -576,6 +608,31 @@ Ext.onReady(function () {
     var flag = 1;
     ssbname.on("load", function () {
         Ext.getCmp("sbname").select(ssbname.getAt(0));
+        fzrper.load({
+            params:{
+                V_V_DEPT:Ext.getCmp("zyq").getValue(),
+                V_V_EQUTYPE:Ext.getCmp("sbtype").getValue(),
+                V_V_EQU:Ext.getCmp("sbname").getValue()
+            }
+        });
+        /*if (flag == 1) {
+            addTab();
+            flag++;
+        }*/
+    });
+    Ext.getCmp("sbname").on("change", function () {
+        Ext.ComponentManager.get('fzrid').getStore().removeAll();
+        fzrper.load({
+            params:{
+                V_V_DEPT:Ext.getCmp("zyq").getValue(),
+                V_V_EQUTYPE:Ext.getCmp("sbtype").getValue(),
+                V_V_EQU:Ext.getCmp("sbname").getValue()
+            }
+        });
+    });
+    Ext.data.StoreManager.lookup('fzrper').on('load',function(store){
+        store.insert(0,{V_PERCODE:'%',V_PERNAME:'全部'});
+        Ext.getCmp("fzrid").select(store.getAt(0));
         if (flag == 1) {
             addTab();
             flag++;
@@ -610,7 +667,8 @@ function itemclick(s, record, item, index, e, eOpts) {
 
 function addTab() {
     Ext.Ajax.request({
-        url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_COUNT',
+        url: AppUrl + 'qx/PRO_DEFECT_SOURCE_COUNT_SEL',
+        // url: AppUrl + 'qx/PRO_PM_07_DEFECT_SOURCE_COUNT',
         // url : '/NO2102/PRO_PM_DEFECT_SOURCE_COUNT',
         method: 'POST',
         async: false,
@@ -622,7 +680,8 @@ function addTab() {
             V_V_EQUCODE: Ext.ComponentManager.get("sbname").getValue(),
             V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
             V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
-            X_PERSONCODE: Ext.util.Cookies.get('v_personcode')
+            X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_FZPERCODE:Ext.ComponentManager.get("fzrid").getDisplayValue()==null?'%':Ext.ComponentManager.get("fzrid").getDisplayValue()
             //parName: ['v_d_defectdate_b', 'v_d_defectdate_e',
             //    'v_v_deptcode', 'v_v_equtypecode', 'v_v_equcode',
             //    'v_v_statecode', 'v_v_defectlist', 'x_personcode'],
@@ -673,11 +732,13 @@ function addTab() {
             V_V_SOURCECODE: Ext.ComponentManager.get("tabid").getValue(),
             V_V_DEFECTLIST: Ext.ComponentManager.get("seltext").getValue(),
             X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_FZPERCODE:Ext.ComponentManager.get("fzrid").getDisplayValue()==null?'%':Ext.ComponentManager.get("fzrid").getDisplayValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
 
         }
     });
+
 }
 
 function GoToBad() {

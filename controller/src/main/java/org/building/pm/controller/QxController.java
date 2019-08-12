@@ -371,6 +371,41 @@ public class QxController {
         Map result = qxService.PRO_PM_07_DEFECT_PART_PER(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE, V_V_PAGE, V_V_PAGESIZE);
         return result;
     }
-
-
+    @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_QXGZSEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_07_DEFECT_VIEW_QXGZSEL(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                                                         @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                                         @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                         @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                         @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                         @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                         @RequestParam(value = "V_V_SOURCECODE") String V_V_SOURCECODE,
+                                                         @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                         @RequestParam(value="V_V_FZPERCODE") String V_V_FZPERCODE,
+                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                         HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = qxService.PRO_PM_07_DEFECT_VIEW_QXGZSEL(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
+                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_SOURCECODE, V_V_DEFECTLIST, X_PERSONCODE,V_V_FZPERCODE,V_V_PAGE,V_V_PAGESIZE);
+        return result;
+    }
+    @RequestMapping(value = "PRO_DEFECT_SOURCE_COUNT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_DEFECT_SOURCE_COUNT_SEL(@RequestParam(value = "V_D_DEFECTDATE_B") String V_D_DEFECTDATE_B,
+                                                             @RequestParam(value = "V_D_DEFECTDATE_E") String V_D_DEFECTDATE_E,
+                                                             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                             @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                                             @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                             @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+                                                             @RequestParam(value = "V_V_DEFECTLIST") String V_V_DEFECTLIST,
+                                                             @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                             @RequestParam(value="V_V_FZPERCODE") String V_V_FZPERCODE,
+                                                             HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = qxService.PRO_DEFECT_SOURCE_COUNT_SEL(V_D_DEFECTDATE_B, V_D_DEFECTDATE_E, V_V_DEPTCODE,
+                V_V_EQUTYPECODE, V_V_EQUCODE, V_V_STATECODE, V_V_DEFECTLIST, X_PERSONCODE,V_V_FZPERCODE);
+        return result;
+    }
 }

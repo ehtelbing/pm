@@ -1148,6 +1148,25 @@ function OnButtonDeleteData(){
             if (btn == 'yes') {
                 var i_err = 0;
                 for (var i = 0; i < records.length; i++) {
+                    //周计划删除日志
+                    Ext.Ajax.request({
+                        url: AppUrl + 'dxfile/PM_PLAN_WEEK_LOG_IN',
+                        method: 'POST',
+                        async: false,
+                        params: {
+                            V_V_GUID: records[i].get('V_GUID'),
+                            V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                            V_PERNAME:decodeURI(Ext.util.Cookies.get('v_personname')),
+                            V_OPERATION:'del'
+                        },
+                        success: function (resp) {
+                            var resp = Ext.decode(resp.responseText);
+                            if (resp.RET == 'SUCCESS') {
+
+                            }
+                        }
+                    });
+
                     Ext.Ajax.request({
                         url: AppUrl + 'PM_03/PRO_PM_03_PLAN_WEEK_DELDATA',
                         method: 'POST',

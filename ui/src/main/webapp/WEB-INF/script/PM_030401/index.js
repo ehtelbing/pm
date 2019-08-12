@@ -738,6 +738,23 @@ function OnButtonDel() {
 function deleteData(){
     var chodata = Ext.getCmp('mainpanel').getSelectionModel().getSelection();
     for (var j = 0; j < chodata.length; j++) {
+        Ext.Ajax.request({
+           url: AppUrl + 'dxfile/PM_PLAN_PROJECT_LOG_IN',
+            method: 'POST',
+            async: false,
+            params: {
+                V_V_GUID: chodata[j].data.V_GUID,
+                V_PERCODE:Ext.util.Cookies.get('v_personcode'),
+                V_V_PERNAME:decodeURI(Ext.util.Cookies.get('v_personname')),
+                V_OPINION:'del'
+            },
+            success: function (resp) {
+                var resp = Ext.decode(resp.responseText);
+                if (resp.RET == 'SUCCESS') {
+
+                }
+            }
+        });
 
         var num = 0;
         Ext.Ajax.request({

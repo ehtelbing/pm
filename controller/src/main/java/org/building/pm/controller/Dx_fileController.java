@@ -5000,10 +5000,11 @@ public class Dx_fileController {
     @RequestMapping(value = "PRO_DEFECT_PER_VIEW_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_DEFECT_PER_VIEW_SEL(@RequestParam(value = "V_V_DEPT") String V_V_DEPT,
+                                                       @RequestParam(value="V_V_EQUTYPE") String V_V_EQUTYPE,
                                                        @RequestParam(value = "V_V_EQU") String V_V_EQU,
                                                        HttpServletRequest request)
             throws SQLException {
-        Map<String, Object> result = dx_fileService.PRO_DEFECT_PER_VIEW_SEL(V_V_DEPT,V_V_EQU);
+        Map<String, Object> result = dx_fileService.PRO_DEFECT_PER_VIEW_SEL(V_V_DEPT,V_V_EQUTYPE,V_V_EQU);
         return result;
     }
 
