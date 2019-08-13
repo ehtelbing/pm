@@ -759,7 +759,7 @@ Ext.onReady(function(){
         // Ext.getCmp('sgrid').getView().refresh()
     });
     Ext.data.StoreManager.lookup('childEquStore').on('load', function (store) {
-        store.insert(0,{V_EQUNAME:'全部',V_EQUCODE:'%'});
+        // store.insert(0,{V_EQUNAME:'全部',V_EQUCODE:'%'});
         Ext.getCmp("zsbmc").select(Ext.data.StoreManager.lookup('childEquStore').getAt(0));
     });
 //厂矿改变
