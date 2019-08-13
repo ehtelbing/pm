@@ -172,17 +172,15 @@ Ext.onReady(function () {
                 fieldLabel: "预览图片",
                 autoEl: {
                     width: '100%',
-                    height: 500,
                     tag: 'input',
                     type: 'image',
                     src: Ext.BLANK_IMAGE_URL,
-                    style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe; margin-left: 0px;margin-top: 0px;',
+                    style: 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale); border:1px solid #bebebe;margin-left:0px;margin-top:0px;/* height：500px;*/',
                     // complete: 'off',
                     id: 'imageBrowse',
                     name: 'imageBrowse'
                 }
             }]
-
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -211,6 +209,8 @@ Ext.onReady(function () {
     });
 
     _init();
+    removeStyle()
+
 });
 
 function atleft(value, metaData, record, rowIndex, colIndex, store) {
@@ -245,7 +245,10 @@ function _preViewImage() {
 
     Ext.getCmp("browseImage").getEl().dom.src = url;
 }
-
+function removeStyle(){
+    $("#browseImage").removeAttr('style');
+    $("#browseImage").attr("style","border: 1px solid rgb(190, 190, 190);margin-left: 0px;margin-top:0px;height: 297.47px;");
+}
 
 
 
