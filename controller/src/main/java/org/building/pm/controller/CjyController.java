@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -2678,6 +2675,83 @@ public class CjyController {
         return result;
     }
 
+    //维修计划批量驳回
+    @RequestMapping(value="/batchDisAgreeForMaintain",method=RequestMethod.POST)
+    @ResponseBody
+    public Map batchDisAgreeForMaintain(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                        @RequestParam(value = "V_ORDERGUID") String[] V_ORDERGUID,
+                                        @RequestParam(value = "ProcessDefinitionKey") String[] ProcessDefinitionKey,
+                                        @RequestParam(value = "ProcessInstanceId") String[] ProcessInstanceId,
+                                        @RequestParam(value="FlowType") String[] FlowType,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) throws Exception {
+        Map result = new HashMap();
+        int sucNum = 0;
+        int fqrNum = 0;
+        int faiNum = 0;
+        List<String> nexperList = new ArrayList<String>();
+        for (int i = 0; i < V_ORDERGUID.length; i++) {
+            Map statresult = new HashMap();
+            Map stepresult = new HashMap();
+            Map complresult = new HashMap();
+            Map flowresult = new HashMap();
+            String taskid = "";
+            String V_STEPCODE = "";
+            try {
+                stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
+                taskid = stepresult.get("taskId").toString();
+                V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
+                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
+                    fqrNum++;
+                } else {
+
+                    statresult = activitiController.InstanceState(ProcessInstanceId[i]);
+                    List<Map<String, Object>> Assigneelist = (List) statresult.get("list");
+                    String Assignee = Assigneelist.get(0).get("Assignee").toString();
+                    if (Assignee.equals("")) {
+                        faiNum++;
+                    } else {
+                        String[] parName = new String[]{"fqrxg", "flow_yj"};
+                        String[] parVal = new String[]{Assignee, "批量审批驳回"};
+
+                        complresult = activitiController.TaskCompletePL(taskid, "不通过", parName, parVal, ProcessDefinitionKey[i], V_ORDERGUID[i], "fqrxg", "发起人修改", "不通过", Assignee, V_V_PERSONCODE);
+                        if (complresult.get("ret").toString().equals("任务提交成功")) {
+//                            if (FlowType[i].equals("WeekPlan")) {
+                            flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], FlowType[i], ProcessDefinitionKey[i], V_STEPCODE, "fqrxg");
+                            if (flowresult.get("V_INFO").toString().equals("success")) {
+                                sucNum++;
+                                nexperList.add(Assignee);
+                            }
+                        } else {
+                            faiNum++;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                faiNum++;
+            }
+        }
+
+        Map groupPer = groupList(nexperList);//
+        Iterator<String> iter = groupPer.keySet().iterator();
+        while (iter.hasNext()) {
+            String per = iter.next();
+            String dbnum = groupPer.get(per).toString();
+            //System.out.println(key+" "+value);
+            //发送即时通
+            String mes = amToMessController.MessageSend(dbnum, "维修计划", per);
+            if (mes.equals("fail")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "维修计划", "-1");
+            } else if (mes.equals("true")) {
+                PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, per, "维修计划", "0");
+            }
+        }
+
+        result.put("mes", "维修计划批量驳回成功" + sucNum + "条,失败" + faiNum + "条,无法批量驳回" + fqrNum + "条");
+        return result;
+    }
+
     @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_GET", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_03_PLAN_MONTH_GET(
@@ -4495,6 +4569,8 @@ public class CjyController {
         result.put("mes", "维修计划批量审批成功" + sucNum + "条,失败" + faiNum + "条,无法批量审批" + fqrNum + "条");
         return result;
     }
+    //维修计划批量驳回
+
 }
 
 

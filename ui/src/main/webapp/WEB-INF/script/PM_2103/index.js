@@ -822,6 +822,45 @@ function DisAgreeData() {
             alert("请选择审批数据！");
             return;
         }
+    }else if (Ext.getCmp('tabid').getValue() == 'MaintainPlan') {
+        var record = Ext.getCmp('grid').getSelectionModel().getSelection();
+        var num = 0;
+        var fnum = 0;
+        if (record.length > 0) {
+            var BusinessKeysData = [];
+            var ProcessDefinitionKeyData = [];
+            var ProcessInstanceIdData = [];
+            var FlowType = [];
+            for (var i = 0; i < record.length; i++) {
+                BusinessKeysData.push(record[i].data.BusinessKey);
+                ProcessDefinitionKeyData.push(record[i].data.ProcessDefinitionKey);
+                ProcessInstanceIdData.push(record[i].data.ProcessInstanceId);
+                FlowType.push(record[i].data.flow_type);
+            }
+
+            Ext.Ajax.request({
+                url: AppUrl + 'cjy/batchDisAgreeForMaintain',
+                async: false,
+                type: 'ajax',
+                method: 'POST',
+                params: {
+                    V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
+                    V_ORDERGUID: BusinessKeysData,
+                    ProcessDefinitionKey: ProcessDefinitionKeyData,
+                    ProcessInstanceId: ProcessInstanceIdData,
+                    FlowType: FlowType
+                },
+                success: function (response) {
+                    var data = Ext.decode(response.responseText);
+                    alert(data.mes);
+                    QuerySum();
+                    QueryGrid();
+                }
+            });
+        }else {
+            alert("请选择审批数据！");
+            return;
+        }
     }
 
 }

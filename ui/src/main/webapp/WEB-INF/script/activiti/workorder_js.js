@@ -840,7 +840,8 @@ function OpenEditMat() {
             var resp = Ext.JSON.decode(ret.responseText);
             var owidth = window.document.body.offsetWidth - 200;
             var oheight = window.document.body.offsetHeight - 100;
-            var ret = window.open(AppUrl + 'page/PM_050103/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            // var ret = window.open(AppUrl + 'page/PM_050103/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            var ret = window.open(AppUrl + 'page/PM_050104/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '', '_blank',  'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
             loadMatList();
         }
     });
@@ -1695,7 +1696,43 @@ function feedBack() {
     selectID.push(V_ORDERGUID);
     workMatChangeSel();
     if(MATSIGN==1||returnMatSign=="1"){
-        matChangeFlow();
+        // matChangeFlow(); //驳回给发起人
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'mm/SetMat',
+            params: {
+                V_V_ORDERGUID:V_ORDERGUID,// $("#V_ORDERGUID").val(),
+                x_personcode: Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if (resp.V_CURSOR == '1') {
+                }
+            }
+        });
+        var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
+        nextSprStoreb.proxy.extraParams = {
+            V_V_ORGCODE: V_V_ORGCODE,
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_REPAIRCODE: V_V_REPAIRCODE,
+            V_V_FLOWTYPE: 'WORK',
+            V_V_FLOW_STEP: V_STEPCODE,
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE: '已反馈'
+
+        };
+
+        nextSprStoreb.currentPage = 1;
+        nextSprStoreb.load();
+        Ext.data.StoreManager.lookup('nextSprS').load({
+            params:{
+                V_V_REPAIRCODE:V_V_REPAIRCODE,
+                V_V_EQUCODE:V_V_EQUCODE
+            }
+        });
+        Ext.getCmp('windowb').show();
     }else {
         var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
         nextSprStoreb.proxy.extraParams = {
@@ -1918,7 +1955,6 @@ function GetBillMatByOrder() {
 
 function loadSetMat(){
     MATSIGN=1;
-
 }
 
 function matChangeFlow(){
@@ -2084,7 +2120,6 @@ function workMatChangeUpdt(){
         },
         success:function(ret){
             var resp=Ext.decode(ret.responseText);
-
         }
     });
 }

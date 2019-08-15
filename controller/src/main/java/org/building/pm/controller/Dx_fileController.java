@@ -5008,6 +5008,25 @@ public class Dx_fileController {
         return result;
     }
 
+    //工单接收-厂矿下拉列表
+    @RequestMapping(value = "PRO_BASE_ORG_FROMW_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_ORG_FROMW_SEL(@RequestParam(value = "WORKORDER") String WORKORDER,
+                                                       HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_BASE_ORG_FROMW_SEL(WORKORDER);
+        return result;
+    }
+    //工单接收-检修单位下拉列表
+    @RequestMapping(value = "PRO_BASE_DEPT_FROMW_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_DEPT_FROMW_SEL(@RequestParam(value = "WORKORDER") String WORKORDER,
+                                                       HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PRO_BASE_DEPT_FROMW_SEL(WORKORDER);
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {

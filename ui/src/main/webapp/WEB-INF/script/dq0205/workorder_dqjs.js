@@ -14,6 +14,8 @@ var V_STEPNAME = '';
 var V_NEXT_SETP = '';
 var wuliaochaxunlist = [];
 var ProcessInstanceId = '';
+var MATSIGN=0;
+var returnMatSign="";
 var Assignee = '';
 var AssigneeName="";
 var V_V_EQUCODE="";
@@ -828,7 +830,8 @@ function OpenEditMat() {
             var resp = Ext.JSON.decode(ret.responseText);
             var owidth = window.document.body.offsetWidth - 200;
             var oheight = window.document.body.offsetHeight - 100;
-            var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            // var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+            var ret = window.open(AppUrl + 'page/PM_050104/index.html?flag=all&V_ORDERGUID=' + V_ORDERGUID + '', '','_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
             loadMatList();
         }
     });
@@ -1675,29 +1678,73 @@ function ReturnIsToTask() {
 }
 
 function feedBack() {
-    var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
-    nextSprStoreb.proxy.extraParams = {
-        V_V_ORGCODE: V_V_ORGCODE,
-        V_V_DEPTCODE: V_V_DEPTCODE,
-        V_V_REPAIRCODE: V_V_REPAIRCODE,
-        V_V_FLOWTYPE: 'DQWORK',
-        V_V_FLOW_STEP: V_STEPCODE,
-        V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-        V_V_SPECIALTY: '%',
-        V_V_WHERE:  '已反馈'
+    selectID.push(V_ORDERGUID);
+    workMatChangeSel();
+    if(MATSIGN==1||returnMatSign=="1"){
+        // matChangeFlow(); //驳回给发起人
+        Ext.Ajax.request({
+            method: 'POST',
+            async: false,
+            url: AppUrl + 'mm/SetMat',
+            params: {
+                V_V_ORDERGUID:V_ORDERGUID,// $("#V_ORDERGUID").val(),
+                x_personcode: Ext.util.Cookies.get('v_personcode')
+            },
+            success: function (response) {
+                var resp = Ext.decode(response.responseText);
+                if (resp.V_CURSOR == '1') {
+                }
+            }
+        });
+        var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
+        nextSprStoreb.proxy.extraParams = {
+            V_V_ORGCODE: V_V_ORGCODE,
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_REPAIRCODE: V_V_REPAIRCODE,
+            V_V_FLOWTYPE: 'DQWORK',
+            V_V_FLOW_STEP: V_STEPCODE,
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE:  '已反馈'
 
-    };
+        };
 
-    nextSprStoreb.currentPage = 1;
-    nextSprStoreb.load();
+        nextSprStoreb.currentPage = 1;
+        nextSprStoreb.load();
 
-    Ext.data.StoreManager.lookup('nextSprS').load({
-        params:{
-            V_V_REPAIRCODE:V_V_REPAIRCODE,
-            V_V_EQUCODE:V_V_EQUCODE
-        }
-    });
-    Ext.getCmp('windowb').show();
+        Ext.data.StoreManager.lookup('nextSprS').load({
+            params:{
+                V_V_REPAIRCODE:V_V_REPAIRCODE,
+                V_V_EQUCODE:V_V_EQUCODE
+            }
+        });
+        Ext.getCmp('windowb').show();
+    }else {
+        var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
+        nextSprStoreb.proxy.extraParams = {
+            V_V_ORGCODE: V_V_ORGCODE,
+            V_V_DEPTCODE: V_V_DEPTCODE,
+            V_V_REPAIRCODE: V_V_REPAIRCODE,
+            V_V_FLOWTYPE: 'DQWORK',
+            V_V_FLOW_STEP: V_STEPCODE,
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_SPECIALTY: '%',
+            V_V_WHERE:  '已反馈'
+
+        };
+
+        nextSprStoreb.currentPage = 1;
+        nextSprStoreb.load();
+
+        Ext.data.StoreManager.lookup('nextSprS').load({
+            params:{
+                V_V_REPAIRCODE:V_V_REPAIRCODE,
+                V_V_EQUCODE:V_V_EQUCODE
+            }
+        });
+        Ext.getCmp('windowb').show();
+    }
+
 }
 
 function ConfirmAccept() {
@@ -1979,6 +2026,27 @@ function filequery(V_ORDERGUID) {
         params: {
             V_WOEKGUID: V_ORDERGUID,
             V_PERCODE:Ext.util.Cookies.get("v_personcode")
+        }
+    });
+}
+function loadSetMat(){
+    MATSIGN=1;
+}
+//查找是否物料有改变
+function workMatChangeSel(){
+    Ext.Ajax.request({
+        url:AppUrl+'dxfile/PRO_MAT_CHANGE_SIGN_SEL',
+        type:'POST',
+        async:false,
+        params:{
+            V_WORKGUID:V_ORDERGUID,//$("#V_ORDERGUID").val(),
+            V_SIGN:''
+        },
+        success:function(ret){
+            var resp=Ext.decode(ret.responseText);
+            if(resp.RET!=undefined){
+                returnMatSign=resp.RET;
+            }
         }
     });
 }
