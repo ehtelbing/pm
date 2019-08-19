@@ -409,7 +409,7 @@ Ext.onReady(function () {
             xtype: 'button',
             text: '打印',
             // width: 90,
-            icon: imgpath + '/accordion_collapse.png',
+            icon: imgpath + '/printer.png',
             handler: OnButtonPrint
         }
         ]

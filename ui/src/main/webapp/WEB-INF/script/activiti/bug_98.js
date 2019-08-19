@@ -192,7 +192,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_14/PRO_BASE_BUG_SEL',
+            url: AppUrl + 'PM_14/PRO_BASE_FILE_SEL',
             actionMethods: {
                 read: 'POST'
             },

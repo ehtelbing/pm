@@ -145,32 +145,9 @@ function loadPageInfo() {
                             result.push('                </tr>');
 
                             result.push('                <tr>');
-                            result.push('                    <td class="border_r_b" align="center">资产编码</td>');
-                            result.push('                    <td class="border_r_b" align="center" width="45">');
-                            result.push('                        <span>');
-                            result.push(resp.RET[0].V_ASSENT_CODE==""?"&nbsp;":resp.RET[0].V_ASSENT_CODE);
-                            /*var s1, st1;
-                            if(resp.RET[0].V_EQUCODE!=''){
-                                s1 = resp.RET[0].V_EQUCODE;
-                                st1 = [];
-                                st1 = s1.split(',');
-                                for(var k=0;k<st1.length;k++){
-                                    if(k==st1.length-1){
-                                        result.push(st1[k]);
-                                    }else{
-                                        result.push(st1[k]+',</br>');
-                                    }
 
-
-                                }
-                            }else{
-                                result.push("&nbsp;");
-                            }*/
-
-                            result.push('</span>');
-                            result.push('                    </td>');
                             result.push('                    <td class="border_r_b" align="center" width="45">设备名称</td>');
-                            result.push('                    <td class="border_r_b" align="center" width="90">');
+                            result.push('                    <td class="border_r_b" colspan="3" align="center" width="90">');
                             result.push('                        <span>');
                             /*var s2, st2;
                             if(resp.RET[0].V_EQUNAME!=''){

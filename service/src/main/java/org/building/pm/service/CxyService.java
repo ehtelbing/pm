@@ -1597,7 +1597,8 @@ public class CxyService {
         logger.info("end PM_FAULT_PLAN_GET");
         return result;
     }
-    public HashMap PM_FAULT_PLAN_UPDATE(String V_V_GUID, String V_V_PROGRAM, String V_V_MODE, String V_V_PLAN, String V_V_PREVENT) throws SQLException {
+    public HashMap PM_FAULT_PLAN_UPDATE(String V_V_GUID,String V_V_ORGANIZATIONAL,String V_V_PROGRAM,String V_V_WORK_TYPE,
+                                        String V_V_TOOLS,String V_V_MATERIAL,String V_V_PLAN, String V_V_PREVENT) throws SQLException {
         logger.info("begin PM_FAULT_PLAN_UPDATE");
 
         HashMap result = new HashMap();
@@ -1606,11 +1607,15 @@ public class CxyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_FAULT_PLAN_UPDATE" + "(:V_V_GUID,:V_V_PROGRAM,:V_V_MODE," +
+            cstmt = conn.prepareCall("{call PM_FAULT_PLAN_UPDATE" + "(:V_V_GUID,:V_V_ORGANIZATIONAL,:V_V_PROGRAM," +
+                    ":V_V_WORK_TYPE,:V_V_TOOLS,:V_V_MATERIAL," +
                     ":V_V_PLAN,:V_V_PREVENT,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGANIZATIONAL", V_V_ORGANIZATIONAL);
             cstmt.setString("V_V_PROGRAM", V_V_PROGRAM);
-            cstmt.setString("V_V_MODE", V_V_MODE);
+            cstmt.setString("V_V_WORK_TYPE", V_V_WORK_TYPE);
+            cstmt.setString("V_V_TOOLS", V_V_TOOLS);
+            cstmt.setString("V_V_MATERIAL", V_V_MATERIAL);
             cstmt.setString("V_V_PLAN", V_V_PLAN);
             cstmt.setString("V_V_PREVENT", V_V_PREVENT);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
@@ -2387,7 +2392,8 @@ public class CxyService {
         logger.info("end PM_BUG_PLAN_GET");
         return result;
     }
-    public HashMap PM_BUG_PLAN_UPDATE(String V_V_GUID, String V_V_PROGRAM, String V_V_MODE, String V_V_PLAN, String V_V_PREVENT) throws SQLException {
+    public HashMap PM_BUG_PLAN_UPDATE(String V_V_GUID,String V_V_ORGANIZATIONAL,String V_V_PROGRAM,String V_V_WORK_TYPE,
+                                      String V_V_TOOLS,String V_V_MATERIAL,String V_V_PLAN, String V_V_PREVENT) throws SQLException {
         logger.info("begin PM_BUG_PLAN_UPDATE");
 
         HashMap result = new HashMap();
@@ -2396,11 +2402,15 @@ public class CxyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PM_BUG_PLAN_UPDATE" + "(:V_V_GUID,:V_V_PROGRAM,:V_V_MODE," +
+            cstmt = conn.prepareCall("{call PM_BUG_PLAN_UPDATE" + "(:V_V_GUID,:V_V_ORGANIZATIONAL,:V_V_PROGRAM," +
+                    ":V_V_WORK_TYPE,:V_V_TOOLS,:V_V_MATERIAL," +
                     ":V_V_PLAN,:V_V_PREVENT,:V_INFO)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_ORGANIZATIONAL", V_V_ORGANIZATIONAL);
             cstmt.setString("V_V_PROGRAM", V_V_PROGRAM);
-            cstmt.setString("V_V_MODE", V_V_MODE);
+            cstmt.setString("V_V_WORK_TYPE", V_V_WORK_TYPE);
+            cstmt.setString("V_V_TOOLS", V_V_TOOLS);
+            cstmt.setString("V_V_MATERIAL", V_V_MATERIAL);
             cstmt.setString("V_V_PLAN", V_V_PLAN);
             cstmt.setString("V_V_PREVENT", V_V_PREVENT);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);

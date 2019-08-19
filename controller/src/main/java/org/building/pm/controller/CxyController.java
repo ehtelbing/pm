@@ -1023,15 +1023,17 @@ public class CxyController {
     @RequestMapping(value = "/PM_FAULT_PLAN_UPDATE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_FAULT_PLAN_UPDATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                               @RequestParam(value = "V_V_PROGRAM") String V_V_PROGRAM,
-                                                               @RequestParam(value = "V_V_MODE") String V_V_MODE,
-                                                               @RequestParam(value = "V_V_PLAN") String V_V_PLAN,
-                                                               @RequestParam(value = "V_V_PREVENT") String V_V_PREVENT,
-
-                                                               HttpServletRequest request,
-                                                               HttpServletResponse response) throws Exception {
+                                                    @RequestParam(value = "V_V_ORGANIZATIONAL") String V_V_ORGANIZATIONAL,
+                                                    @RequestParam(value = "V_V_PROGRAM") String V_V_PROGRAM,
+                                                    @RequestParam(value = "V_V_WORK_TYPE") String V_V_WORK_TYPE,
+                                                    @RequestParam(value = "V_V_TOOLS") String V_V_TOOLS,
+                                                    @RequestParam(value = "V_V_MATERIAL") String V_V_MATERIAL,
+                                                    @RequestParam(value = "V_V_PLAN") String V_V_PLAN,
+                                                    @RequestParam(value = "V_V_PREVENT") String V_V_PREVENT,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = cService.PM_FAULT_PLAN_UPDATE(V_V_GUID, V_V_PROGRAM, V_V_MODE, V_V_PLAN, V_V_PREVENT);
+        HashMap data = cService.PM_FAULT_PLAN_UPDATE(V_V_GUID,V_V_ORGANIZATIONAL, V_V_PROGRAM, V_V_WORK_TYPE,V_V_TOOLS, V_V_MATERIAL,V_V_PLAN, V_V_PREVENT);
         String RET = (String) data.get("RET");
         result.put("RET", RET);
         result.put("success", true);
@@ -1504,15 +1506,17 @@ public class CxyController {
     @RequestMapping(value = "/PM_BUG_PLAN_UPDATE", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_BUG_PLAN_UPDATE(@RequestParam(value = "V_V_GUID") String V_V_GUID,
-                                                    @RequestParam(value = "V_V_PROGRAM") String V_V_PROGRAM,
-                                                    @RequestParam(value = "V_V_MODE") String V_V_MODE,
-                                                    @RequestParam(value = "V_V_PLAN") String V_V_PLAN,
-                                                    @RequestParam(value = "V_V_PREVENT") String V_V_PREVENT,
-
+                                                  @RequestParam(value = "V_V_ORGANIZATIONAL") String V_V_ORGANIZATIONAL,
+                                                  @RequestParam(value = "V_V_PROGRAM") String V_V_PROGRAM,
+                                                  @RequestParam(value = "V_V_WORK_TYPE") String V_V_WORK_TYPE,
+                                                  @RequestParam(value = "V_V_TOOLS") String V_V_TOOLS,
+                                                  @RequestParam(value = "V_V_MATERIAL") String V_V_MATERIAL,
+                                                  @RequestParam(value = "V_V_PLAN") String V_V_PLAN,
+                                                  @RequestParam(value = "V_V_PREVENT") String V_V_PREVENT,
                                                     HttpServletRequest request,
                                                     HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        HashMap data = cService.PM_BUG_PLAN_UPDATE(V_V_GUID, V_V_PROGRAM, V_V_MODE, V_V_PLAN, V_V_PREVENT);
+        HashMap data = cService.PM_BUG_PLAN_UPDATE(V_V_GUID,V_V_ORGANIZATIONAL, V_V_PROGRAM, V_V_WORK_TYPE,V_V_TOOLS, V_V_MATERIAL,V_V_PLAN, V_V_PREVENT);
         String RET = (String) data.get("RET");
         result.put("RET", RET);
         result.put("success", true);

@@ -18,6 +18,7 @@ var V_NEXT_SETP = '';
 var processKey2 = '';
 var V_STEPNAME2 = '';
 var V_NEXT_SETP2 = '';
+var selectID = [];
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -141,7 +142,7 @@ Ext.onReady(function () {
         //pageSize: -1,
         fields: ['V_GUID', 'V_FAULT_NAME', 'V_DEPTCODE','V_DEPTNAME',
             'V_PROGRAM', 'V_MODE','V_WORK_TYPE','V_PERSON_NUM',
-            'V_EQUIP','V_TOOLS','V_MATERIAL','V_SPARE_PART',
+            'V_EQUIP','V_TOOLS','V_MATERIAL','V_SPARE_PART','V_ORGANIZATIONAL',
             'V_PLAN','V_ORGCODE','V_ORGNAME','V_EQUNAME','V_FAULTYNID',
             'V_SPARE_PARTNAME','V_PREVENT','V_STAUTSNAME','V_STAUTS'],
         proxy: {
@@ -182,6 +183,12 @@ Ext.onReady(function () {
             // width: 90,
             icon: imgpath + '/accordion_collapse.png',
             handler: OnButtonUp
+        },{
+            xtype: 'button',
+            text: '打印',
+            // width: 90,
+            icon: imgpath + '/printer.png',
+            handler: OnButtonPrint
         }
         ]
     });
@@ -283,72 +290,52 @@ Ext.onReady(function () {
                 }
             }
         }, {
-            text: '设备名称',
-            dataIndex: 'V_EQUNAME',
-            align: 'center',
-            width: 100
-        },{
             text: '作业区',
             dataIndex: 'V_DEPTNAME',
             align: 'center',
             width: 100
         }, {
-            text: '事故名称',
+            text: '故障名称',
             dataIndex: 'V_FAULT_NAME',
             align: 'center',
             width: 100
-        },
-
-            {
-            text: '联络程序',
-            dataIndex: 'V_PROGRAM',
+        },{
+            text: '组织机构',
+            dataIndex: 'V_ORGANIZATIONAL',
             align: 'center',
             width: 100
         },{
-                text: '联络方式',
-                dataIndex: 'V_MODE',
-                align: 'center',
-                width: 100
-            },{
-                text: '工种',
-                dataIndex: 'V_WORK_TYPE',
-                align: 'center',
-                width: 100
-            },{
-                text: '人数',
-                dataIndex: 'V_PERSON_NUM',
-                align: 'center',
-                width: 100
-            },{
-                text: '机具',
-                dataIndex: 'V_TOOLS',
-                align: 'center',
-                width: 100
-            },{
-                text: '材料',
-                dataIndex: 'V_MATERIAL',
-                align: 'center',
-                width: 100
-            },
-             {
-             text: '备件',
-             dataIndex: 'V_SPARE_PARTNAME',
-             align: 'center',
-             width: 100
-         }, {
-             text: '故障抢修方案',
-             dataIndex: 'V_PLAN',
-             align: 'center',
-             width: 100
-         }, {
-             text: '故障抢修预防',
-             dataIndex: 'V_PREVENT',
-             align: 'center',
-             width: 100
-         }
-
+            text: '联络程序及方式',
+            dataIndex: 'V_PROGRAM',
+            align: 'center',
+            width: 200
+        },{
+            text: '工种及人数',
+            dataIndex: 'V_WORK_TYPE',
+            align: 'center',
+            width: 200
+        },{
+            text: '设备及检修机具',
+            dataIndex: 'V_TOOLS',
+            align: 'center',
+            width: 300
+        },{
+            text: '材料和备件',
+            dataIndex: 'V_MATERIAL',
+            align: 'center',
+            width: 300
+        }, {
+            text: '抢修方案',
+            dataIndex: 'V_PLAN',
+            align: 'center',
+            width: 200
+        }, {
+            text: '抢修预防',
+            dataIndex: 'V_PREVENT',
+            align: 'center',
+            width: 200
+        }
         ]
-
     });
 
 
@@ -704,6 +691,31 @@ function OnButtonUp() {
             }
         }
     });
+}
+function OnButtonPrint() {
+    var records = Ext.getCmp('faultItemPanel').getSelectionModel().getSelection();
 
-
+    if (records.length == 0) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '请选择数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    if (records.length > 1) {
+        Ext.MessageBox.show({
+            title: '提示',
+            msg: '只能选择一条数据',
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.WARNING
+        });
+        return false;
+    }
+    var owidth = window.screen.availWidth-200;
+    var oheight = window.screen.availHeight - 150;
+    selectID=[];
+    selectID.push(records[0].get('V_GUID'));
+    window.open(AppUrl + 'page/LowFault_FXBG/print.html', 'selectID', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 }

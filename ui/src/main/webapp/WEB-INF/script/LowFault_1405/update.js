@@ -51,10 +51,7 @@ if (location.href.split('?')[1] != undefined) {
     var parameters = Ext.urlDecode(location.href.split('?')[1]);
     (parameters.V_V_GUID == undefined) ? V_V_GUID = '' : V_V_GUID = parameters.V_V_GUID;
 }
-if (location.href.split('?')[1] != undefined) {
-    var parameters = Ext.urlDecode(location.href.split('?')[1]);
-    (parameters.V_V_GUID == undefined) ? V_V_GUID = '' : V_V_GUID = parameters.V_V_GUID;
-}
+
 Ext.define('Ext.ux.data.proxy.Ajax', {
     extend: 'Ext.data.proxy.Ajax',
     async: true,
@@ -168,7 +165,7 @@ Ext.onReady(function () {
 
     var equFaultStore2 = Ext.create('Ext.data.Store', {
         id: 'equFaultStore2',
-        autoLoad: true,
+        autoLoad: false,
         fields: ['V_TYPECODE', 'V_TYPENAME'],
         proxy: {
             type: 'ajax',
@@ -181,8 +178,8 @@ Ext.onReady(function () {
                 type: 'json',
                 root: 'list'
             }
-        },
-        listeners: {
+        }
+        /*listeners: {
             load: function (store, records) {
                 equFaultLoad2 = true;
                 store.insert(0, {V_TYPENAME: '全部', V_TYPECODE: '%'});
@@ -191,7 +188,7 @@ Ext.onReady(function () {
                     _init2();
                 }
             }
-        }
+        }*/
     });
 
 
@@ -966,7 +963,7 @@ Ext.onReady(function () {
     });
     _init();
 
-    _selecteFaultStore2();
+    // _selecteFaultStore2();
 
 });
 function _init2(){
@@ -995,6 +992,7 @@ function _init() {
 
                     Ext.data.StoreManager.lookup('deptStore2').on('load', function () {
                         Ext.getCmp('V_V_DEPTCODE2').setValue(resp.RET[0].V_DEPTCODE);
+                        _selecteFaultStore2();
                     });
                     Ext.data.StoreManager.lookup('equFaultStore2').on('load', function () {
                         Ext.getCmp('equFaultname2').setValue(resp.RET[0].V_TYPECODE);

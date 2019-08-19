@@ -223,15 +223,6 @@ Ext.onReady(function () {
                 labelAlign: 'right',
                 readOnly:true,
                 width: 270
-            },{
-                xtype: 'textfield',
-                id: 'pernum',
-                fieldLabel: '人数',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
-                width: 270
             }
 
             ]
@@ -242,8 +233,24 @@ Ext.onReady(function () {
             baseCls: 'my-panel-no-border',
             items: [ {
                 xtype: 'textfield',
-                id: 'equname',
-                fieldLabel: '设备名称',
+                id: 'organ',
+                fieldLabel: '组织机构',
+                labelWidth: 70,
+                readOnly:true,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                xtype: 'textarea',
+                id: 'program',
+                fieldLabel: '联络程序及方式',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
@@ -257,9 +264,9 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [ {
-                xtype: 'textfield',
+                xtype: 'textarea',
                 id: 'worktype',
-                fieldLabel: '工种',
+                fieldLabel: '工种及人数',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
@@ -273,9 +280,9 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [ {
-                xtype: 'textfield',
+                xtype: 'textarea',
                 id: 'tools',
-                fieldLabel: '机具',
+                fieldLabel: '设备及检修机具',
                 labelWidth: 70,
                 readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
@@ -290,62 +297,16 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [
-                /*  {
-                  xtype: 'textfield',
-                  id: 'mat',
-                  fieldLabel: '材料',
-                  labelWidth: 70,
-                  readOnly:true,
-                  style: ' margin: 5px 0px 0px -8px',
-                  labelAlign: 'right',
-                  width: 270
-              },*/
                 {
-                    xtype: 'textfield',
-                    id: 'spare',
-                    fieldLabel: '备件',
+                    xtype: 'textarea',
+                    id: 'material',
+                    fieldLabel: '材料和备件',
                     labelWidth: 70,
                     readOnly:true,
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
                     width: 537
                 }
-
-            ]
-        },{
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textarea',
-                id: 'program',
-                fieldLabel: '联络程序',
-                readOnly:true,
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 537
-            }
-
-            ]
-        },{ xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textfield',
-                id: 'mode',
-                column:2,
-                fieldLabel: '联络方式',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 537
-            }
-
-
             ]
         }, {
             xtype: 'panel',
@@ -356,11 +317,12 @@ Ext.onReady(function () {
                 xtype: 'textarea',
                 id: 'plan',
                 fieldLabel: '抢修方案',
-                readOnly:true,
                 labelWidth: 70,
+                readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 537
+                width: 537,
+                height:105
             }]},{
             xtype: 'panel',
             region: 'north',
@@ -369,14 +331,14 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textarea',
                 id: 'prevent',
-                fieldLabel: '故障预防',
-                readOnly:true,
+                fieldLabel: '抢修预防',
                 labelWidth: 70,
+                readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
-                width: 537
+                width: 537,
+                height:105
             }
-
             ]
         }]
     });
@@ -395,16 +357,16 @@ Ext.onReady(function () {
         columns: [{
             text: '附件名称',
             id: 'F_V_V_FILENAME',
-            flex: 0.7,
+            flex: 1,
             align: 'center',
             dataIndex: "V_FILENAME",
             renderer: _downloadRander
-        }, {
+        }/*, {
             text: '操作',
             flex: 0.3,
             align: 'center',
             renderer: _delRander
-        }]
+        }*/]
     });
 
 
@@ -423,7 +385,7 @@ Ext.onReady(function () {
         fileUpload: true,
 
         items: [
-            {
+            /*{
                 xtype: 'form',
                 id:'uploadForm2',
                 region: 'north',
@@ -476,7 +438,7 @@ Ext.onReady(function () {
                     xtype: 'hidden',
                     name: 'V_V_REMARK2',
                     id: 'V_V_REMARK2'
-                }]},{
+                }]}*/,{
                 columnWidth: 1,
                 height: 225,
                 width: 540,
@@ -587,21 +549,18 @@ function _init() {
                 Ext.getCmp('orgname').setValue(resp.RET[0].V_ORGNAME);
                 Ext.getCmp('deptname').setValue(resp.RET[0].V_DEPTNAME);
                 Ext.getCmp('faultname').setValue(resp.RET[0].V_FAULT_NAME);
-                Ext.getCmp('worktype').setValue(resp.RET[0].V_WORK_TYPE);
-                Ext.getCmp('pernum').setValue(resp.RET[0].V_PERSON_NUM);
-                Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
-                // Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
-                Ext.getCmp('spare').setValue(resp.RET[0].V_SPARE_PARTNAME);//备件
-                Ext.getCmp('equname').setValue(resp.RET[0].V_EQUNAME);
+                Ext.getCmp('organ').setValue(resp.RET[0].V_ORGANIZATIONAL);
                 Ext.getCmp('program').setValue(resp.RET[0].V_PROGRAM);
-                Ext.getCmp('mode').setValue(resp.RET[0].V_MODE);
-                Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);
+                Ext.getCmp('worktype').setValue(resp.RET[0].V_WORK_TYPE);
+                Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
+                Ext.getCmp('material').setValue(resp.RET[0].V_MATERIAL);
                 Ext.getCmp('plan').setValue(resp.RET[0].V_PLAN);
+                Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);
                 V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
                 filequery2(V_ORDERGUID);
 
-                Ext.getCmp('uploadForm2').disable();
-                Ext.getCmp('filegridPanel2').disable();
+                // Ext.getCmp('uploadForm2').disable();
+                // Ext.getCmp('filegridPanel2').disable();
                 // _selectsubequName2();
                 // Ext.getCmp('SUB_V_EQUNAME2').setValue(resp.RET[0].V_EQUCHILD_CODE);
                 Ext.getBody().unmask();//去除页面笼罩

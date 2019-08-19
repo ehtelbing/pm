@@ -53,76 +53,6 @@ Ext.define('Ext.ux.data.proxy.Ajax', {
 Ext.onReady(function () {
     Ext.getBody().mask('<p>页面载入中...</p>');
 
-
-
-    var orgStore2 = Ext.create('Ext.data.Store', {
-        id: 'orgStore2',
-        autoLoad: true,
-        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'V_V_PERSONCODE': V_V_PERSONCODE,
-                'V_V_DEPTCODE': V_V_DEPTCODE,
-                'V_V_DEPTCODENEXT': '%',
-                'V_V_DEPTTYPE': '基层单位'
-            }
-        }
-        // listeners: {
-        //     load: function (store, records) {
-        //         orgLoad2 = true;
-        //         if (init) {
-        //             //Ext.getCmp('V_V_ORGCODE2').select(store.first());
-        //             //   _init2();
-        //         }
-        //
-        //     }
-        // }
-    });
-
-
-
-    var deptStore2 = Ext.create('Ext.data.Store', {
-        id: 'deptStore2',
-        autoLoad: false,
-        fields: ['V_SAP_WORK', 'V_SAP_JHGC', 'V_DEPTNAME', 'V_DEPTCODE_UP', 'V_DEPTCODE', 'V_SAP_YWFW', 'V_SAP_DEPT'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                if (init) {
-                    //Ext.getCmp('V_V_DEPTCODE2').select(store.first());
-                    //   _init2();
-                } else {
-                    //alert(1)
-                    Ext.getCmp('V_V_DEPTCODE2').select(store.first());
-                }
-
-            }
-        }
-    });
-
-
-
     var fileGridStore2 = Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'fileGridStore2',
@@ -144,7 +74,6 @@ Ext.onReady(function () {
             }
         }
     });
-
 
     var inputPanel = Ext.create('Ext.Panel', {
         id : 'inputPanel',
@@ -179,7 +108,6 @@ Ext.onReady(function () {
             }
         ]
     });
-
 
     var addPanel2 = Ext.create('Ext.form.FormPanel', {
         border: false,
@@ -226,20 +154,11 @@ Ext.onReady(function () {
             items: [{
                 xtype: 'textfield',
                 id: 'faultname',
-                fieldLabel: '事故名称',
+                fieldLabel: '故障名称',
                 labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 readOnly:true,
-                width: 270
-            },{
-                xtype: 'textfield',
-                id: 'pernum',
-                fieldLabel: '人数',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -3px',
-                labelAlign: 'right',
                 width: 270
             }
 
@@ -251,10 +170,24 @@ Ext.onReady(function () {
             baseCls: 'my-panel-no-border',
             items: [ {
                 xtype: 'textfield',
-                id: 'equname',
-                fieldLabel: '设备名称',
+                id: 'organ',
+                fieldLabel: '组织机构',
                 labelWidth: 70,
-                readOnly:true,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
+            ]
+        },{
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [ {
+                xtype: 'textarea',
+                id: 'program',
+                fieldLabel: '联络程序及方式',
+                labelWidth: 70,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
@@ -266,11 +199,10 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [ {
-                xtype: 'textfield',
+                xtype: 'textarea',
                 id: 'worktype',
-                fieldLabel: '工种',
+                fieldLabel: '工种及人数',
                 labelWidth: 70,
-                readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
@@ -282,11 +214,10 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [ {
-                xtype: 'textfield',
+                xtype: 'textarea',
                 id: 'tools',
-                fieldLabel: '机具',
+                fieldLabel: '设备及检修机具',
                 labelWidth: 70,
-                readOnly:true,
                 style: ' margin: 5px 0px 0px -8px',
                 labelAlign: 'right',
                 width: 537
@@ -299,60 +230,15 @@ Ext.onReady(function () {
             layout: 'column',
             baseCls: 'my-panel-no-border',
             items: [
-              /*  {
-                xtype: 'textfield',
-                id: 'mat',
-                fieldLabel: '材料',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 270
-            },*/
                 {
-                xtype: 'textfield',
-                id: 'spare',
-                fieldLabel: '备件',
-                labelWidth: 70,
-                readOnly:true,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 537
-            }
-
-            ]
-        },{
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                xtype: 'textarea',
-                id: 'program',
-                fieldLabel: '联络程序',
-                labelWidth: 70,
-                style: ' margin: 5px 0px 0px -8px',
-                labelAlign: 'right',
-                width: 537
-            }
-
-            ]
-        },{ xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                    xtype: 'textfield',
-                    id: 'mode',
-                    column:2,
-                    fieldLabel: '联络方式',
+                    xtype: 'textarea',
+                    id: 'material',
+                    fieldLabel: '材料和备件',
                     labelWidth: 70,
                     style: ' margin: 5px 0px 0px -8px',
                     labelAlign: 'right',
                     width: 537
                 }
-
-
             ]
         }, {
             xtype: 'panel',
@@ -368,20 +254,19 @@ Ext.onReady(function () {
                 labelAlign: 'right',
                 width: 537
             }]},{
-                xtype: 'panel',
-                region: 'north',
-                layout: 'column',
-                baseCls: 'my-panel-no-border',
-                items: [{
-                    xtype: 'textarea',
-                    id: 'prevent',
-                    fieldLabel: '事故预防',
-                    labelWidth: 70,
-                    style: ' margin: 5px 0px 0px -8px',
-                    labelAlign: 'right',
-                    width: 537
-                }
-
+            xtype: 'panel',
+            region: 'north',
+            layout: 'column',
+            baseCls: 'my-panel-no-border',
+            items: [{
+                xtype: 'textarea',
+                id: 'prevent',
+                fieldLabel: '抢修预防',
+                labelWidth: 70,
+                style: ' margin: 5px 0px 0px -8px',
+                labelAlign: 'right',
+                width: 537
+            }
             ]
         }]
     });
@@ -551,16 +436,13 @@ function _init() {
                     Ext.getCmp('orgname').setValue(resp.RET[0].V_ORGNAME);
                     Ext.getCmp('deptname').setValue(resp.RET[0].V_DEPTNAME);
                     Ext.getCmp('faultname').setValue(resp.RET[0].V_FAULT_NAME);
-                    Ext.getCmp('worktype').setValue(resp.RET[0].V_WORK_TYPE);
-                    Ext.getCmp('pernum').setValue(resp.RET[0].V_PERSON_NUM);
-                    Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
-                    // Ext.getCmp('mat').setValue(resp.RET[0].V_MATERIAL);
-                    Ext.getCmp('spare').setValue(resp.RET[0].V_SPARE_PARTNAME);//备件
-                    Ext.getCmp('equname').setValue(resp.RET[0].V_EQUNAME);
+                    Ext.getCmp('organ').setValue(resp.RET[0].V_ORGANIZATIONAL);
                     Ext.getCmp('program').setValue(resp.RET[0].V_PROGRAM);
-                    Ext.getCmp('mode').setValue(resp.RET[0].V_MODE);
-                    Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);
+                    Ext.getCmp('worktype').setValue(resp.RET[0].V_WORK_TYPE);
+                    Ext.getCmp('tools').setValue(resp.RET[0].V_TOOLS);
+                    Ext.getCmp('material').setValue(resp.RET[0].V_MATERIAL);
                     Ext.getCmp('plan').setValue(resp.RET[0].V_PLAN);
+                    Ext.getCmp('prevent').setValue(resp.RET[0].V_PREVENT);
                     V_V_FAULT_GUID=resp.RET[0].V_FAULT_GUID;
                     filequery2(V_V_GUID);
 
@@ -835,10 +717,12 @@ function _saveBtnFault2() {
             type: 'ajax',
             method: 'POST',
             params: {
-
                 'V_V_GUID': V_V_GUID,
+                'V_V_ORGANIZATIONAL':Ext.getCmp("organ").getValue(),
                 'V_V_PROGRAM': Ext.getCmp("program").getValue(),
-                'V_V_MODE': Ext.getCmp("mode").getValue(),
+                'V_V_WORK_TYPE':Ext.getCmp("worktype").getValue(),
+                'V_V_TOOLS':Ext.getCmp("tools").getValue(),
+                'V_V_MATERIAL': Ext.getCmp("material").getValue(),
                 'V_V_PLAN': Ext.getCmp("plan").getValue(),
                 'V_V_PREVENT':Ext.getCmp("prevent").getValue()
             },
@@ -848,18 +732,23 @@ function _saveBtnFault2() {
                     Ext.MessageBox.show({
                         title: '提示',
                         msg:  '修改成功',
-                        buttons: Ext.MessageBox.OK
+                        buttons: Ext.MessageBox.OK,
+                        fn:function(){
+                            window.opener._seltctFault();
+                            window.close();
+                        }
                     });
-                    window.opener._seltctFault();
-                    window.close();
+
                 } else {
                     Ext.MessageBox.show({
                         title: '错误',
                         msg: data.RET,
                         buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.ERROR
+                        icon: Ext.MessageBox.ERROR,
+                        fn:function(){
+                            window.opener._seltctFault();
+                        }
                     });
-                    window.opener._seltctFault();
                 }
             },
             failure: function (response) {
@@ -867,9 +756,11 @@ function _saveBtnFault2() {
                     title: '错误',
                     msg: response.responseText,
                     buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
+                    icon: Ext.MessageBox.ERROR,
+                    fn:function(){
+                        window.opener._seltctFault();
+                    }
                 });
-                window.opener._seltctFault();
             }
         });
     } else {
@@ -881,10 +772,7 @@ function _saveBtnFault2() {
         });
         return;
     }
-
-
 }
-
 
 function _validate(obj) {
     var valid = true;
