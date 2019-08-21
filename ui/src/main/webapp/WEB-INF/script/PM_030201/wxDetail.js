@@ -168,20 +168,19 @@ function LoadData(){
                 var OrgName = resp.list[0].V_ORGNAME;
                 var DeptCode = resp.list[0].V_DEPTCODE;
                 var DeptName=resp.list[0].V_DEPTNAME;
-                var fzrPer = resp.list[0].V_SPECIALTYMAN;
+                var fzrPer = resp.list[0].V_PERNAME;
                 //专业默认值
 
                 Ext.getCmp('zy').setValue(resp.list[0].V_SPECIALTYNAME);
-                Ext.getCmp('fzPer').setValue(resp.list[0].V_SPECIALTYNAME);
+                Ext.getCmp('fzPer').setValue(resp.list[0].V_SPECIALTYMAN);
                 Ext.getCmp('ProjectCode').setValue(resp.list[0].V_SPECIALTYNAME);
 
                 Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_CODE);
                 Ext.getCmp('ProjectName').setValue(resp.list[0].V_PORJECT_NAME);
                 Ext.getCmp("zyq").setValue(DeptName);
-                Ext.getCmp("qstext").setValue(resp.list[0].V_QSTEXT)
+                Ext.getCmp("qstext").setValue(resp.list[0].V_QSTEXT);
                 Ext.getCmp('btime').setValue(resp.list[0].V_BDATE.split(" ")[0]);
                 Ext.getCmp('etime').setValue(resp.list[0].V_EDATE.split(" ")[0]);
-
             }
         }
     });

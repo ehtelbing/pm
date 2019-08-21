@@ -91,6 +91,25 @@ Ext.onReady(function () {
             }
         }
     });
+    //state
+    var stateStore = Ext.create('Ext.data.Store', {
+        autoLoad: true,
+        storeId: 'stateStore',
+        fields: ['V_STATECODE', 'V_STATENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_STATE_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+
     //下一步审批人
     var fzPerStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
@@ -175,7 +194,7 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'dxfile/PRO_PM_03_PLAN_YEAR_VIEW_E',
+            url: AppUrl + 'dxfile/PRO_PM_03_PLAN_YEAR_VIEW_Q',
             actionMethods: {
                 read: 'POST'
             },
@@ -267,6 +286,16 @@ Ext.onReady(function () {
                 fieldLabel: '专业',
                 displayField: 'V_ZYMC',
                 valueField: 'V_GUID',
+                labelWidth: 80
+            },{
+                xtype:'combo',
+                id:'state',
+                store:stateStore,
+                editable:false,
+                queryMode:'local',
+                fieldLabel:'状  态',
+                displayField: 'V_STATENAME',
+                valueField: 'V_STATECODE',
                 labelWidth: 80
             }, {
                 xtype: 'textfield',
@@ -455,7 +484,11 @@ Ext.onReady(function () {
         // OnButtonQuery();
 
     });
-
+    Ext.data.StoreManager.lookup('stateStore').on('load',function(store,records){
+        store.insert(0,{V_STATENAME:'全部',V_STATECODE:'%'});
+        store.insert(1,{V_STATENAME:'编辑',V_STATECODE:'99'});
+        Ext.getCmp('state').select(Ext.data.StoreManager.lookup("stateStore").getAt(0));
+    });
 
     Ext.getCmp('ck').on('select', function () {
         Ext.data.StoreManager.lookup('zyqStore').load({
@@ -467,18 +500,21 @@ Ext.onReady(function () {
             }
         });
     });
+
+
     // myMask.hide();
     Ext.getCmp('zyq').on('select', function () {
         OnButtonQuery();
         QueryZyFzr();
     });
-
+    Ext.getCmp('state').on('select',function(){
+        OnButtonQuery()
+    });
 
     Ext.getCmp('zy').on('select', function () {
         OnButtonQuery();
     });
     pageLoad();
-
 
 });
 
@@ -543,8 +579,6 @@ function pageLoad() {
         });
     });
     Ext.data.StoreManager.lookup('zyStore').load();
-
-
 }
 
 //负责人查找
@@ -559,7 +593,6 @@ function QueryZyFzr() {
         V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
         V_V_SPECIALTY: '',
         V_V_WHERE: ''
-
     };
     nextSprStore.currentPage = 1;
     nextSprStore.load();
@@ -585,6 +618,7 @@ function OnButtonQuery() {
             V_V_ORGCODE: Ext.getCmp('ck').getValue(),
             V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),//"",
             V_V_ZY: Ext.getCmp('zy').getValue(),
+            V_V_STATE:Ext.getCmp('state').getValue(),
             V_V_QSTEXT: Ext.getCmp('gcqs').getValue(), //工程请示内容
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
