@@ -4520,7 +4520,7 @@ function btnFlowAgree(){
                     async: false,
                     params: {
                         'V_V_ORDERID': Guid,
-                        'V_V_PROCESS_NAMESPACE': 'Maintain',
+                        'V_V_PROCESS_NAMESPACE': 'MaintainPlan',
                         'V_V_PROCESS_CODE': processKey,
                         'V_V_STEPCODE': V_STEPCODE,
                         'V_V_STEPNEXT_CODE': V_NEXT_SETP
@@ -4631,7 +4631,7 @@ function btnFlowDisAgree(){
                         async: false,
                         params: {
                             'V_V_ORDERID': Guid,
-                            'V_V_PROCESS_NAMESPACE': 'Maintain',
+                            'V_V_PROCESS_NAMESPACE': 'MaintainPlan',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
                             'V_V_STEPNEXT_CODE': 'fqrxg'

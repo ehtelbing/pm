@@ -157,9 +157,7 @@ Ext.onReady(function(){
                     V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
                     Ext.getCmp('fzPer').select(store.first());
                 }
-
             }
-
         }
     });
 
@@ -1668,7 +1666,7 @@ function btnFlowAgree(){
                     async: false,
                     params: {
                         'V_V_ORDERID': Guid,
-                        'V_V_PROCESS_NAMESPACE': 'Maintain',
+                        'V_V_PROCESS_NAMESPACE': 'MaintainPlan',
                         'V_V_PROCESS_CODE': processKey,
                         'V_V_STEPCODE': V_STEPCODE,
                         'V_V_STEPNEXT_CODE': V_NEXT_SETP
@@ -1686,8 +1684,6 @@ function btnFlowAgree(){
                 Ext.getBody().unmask();//去除页面笼罩
                 Ext.MessageBox.alert('提示', '任务提交失败');
             }
-
-
         },
         failure: function (response) {//访问到后台时执行的方法。
             Ext.getBody().unmask();//去除页面笼罩
@@ -1786,7 +1782,7 @@ function btnFlowDisAgree(){
                         async: false,
                         params: {
                             'V_V_ORDERID': Guid,
-                            'V_V_PROCESS_NAMESPACE': 'Maintain',
+                            'V_V_PROCESS_NAMESPACE': 'MaintainPlan',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
                             'V_V_STEPNEXT_CODE': 'fqrxg'

@@ -336,7 +336,7 @@ Ext.onReady(function(){
             {
                 xtype: 'button',
                 id:'agreeFlow',
-                text: '同意',
+                text: '提交',//'同意',
                 margin: '0 0 5 8',
                 iconCls: 'buy-button',
                 icon:dxImgPath + '/wlmx.png',
@@ -1285,7 +1285,7 @@ function Onjjfa(value, metaDate, record, rowIndex, colIndex, store){
             height: 25,
             width: 110,
             text: '解决方案',
-            margin: 'padding:10px 50px 10px 10px;',
+            margin:'padding:10px 50px 10px 10px;',
             handler: function () {
                 onJjfa(record.data.V_GUID,record.data.V_EQUCODE);
             }
@@ -1910,7 +1910,7 @@ function btnFlowDisAgree(){
                         async: false,
                         params: {
                             'V_V_ORDERID': Guid,
-                            'V_V_PROCESS_NAMESPACE': 'Maintain',
+                            'V_V_PROCESS_NAMESPACE': 'MaintainPlan',
                             'V_V_PROCESS_CODE': processKey,
                             'V_V_STEPCODE': V_STEPCODE,
                             'V_V_STEPNEXT_CODE': 'fqrxg'

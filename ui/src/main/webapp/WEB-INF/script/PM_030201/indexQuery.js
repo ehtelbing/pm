@@ -16,6 +16,22 @@ var yearStore = Ext.create("Ext.data.Store", {
     }
 });
 
+//月份
+var months = [];
+for (var i = 1; i <= 12; i++) {
+    months.push({displayField: i, valueField: i});
+}
+months.push({displayField: '全部', valueField: '%'});
+var monthStore = Ext.create("Ext.data.Store", {
+    storeId: 'monthStore',
+    fields: ['displayField', 'valueField'],
+    data: months,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
+
 Ext.onReady(function () {
     Ext.QuickTips.init();
 
@@ -89,6 +105,25 @@ Ext.onReady(function () {
             type: 'ajax',
             async: false,
             url: AppUrl + 'PM_03/PM_03_PLAN_ZY_SEL',
+            actionMethods: {
+                read: 'POST'
+            },
+            reader: {
+                type: 'json',
+                root: 'list'
+            }
+        }
+    });
+
+    //state
+    var stateStore = Ext.create('Ext.data.Store', {
+        autoLoad: true,
+        storeId: 'stateStore',
+        fields: ['V_STATECODE', 'V_STATENAME'],
+        proxy: {
+            type: 'ajax',
+            async: false,
+            url: AppUrl + 'dxfile/PM_03_PLAN_YEAR_STATE_SEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -183,6 +218,23 @@ Ext.onReady(function () {
             editable: false,
             displayField: 'displayField',
             valueField: 'valueField'
+        },{
+            xtype: 'combo',
+            id: 'month',
+            fieldLabel: '月份',
+            editable: false,
+            margin: '5 0 0 5',
+            labelWidth: 70,
+            width: 255,
+            displayField: 'displayField',
+            valueField: 'valueField',
+            value: dt.getMonth()+1,
+            store: monthStore,
+            queryMode: 'local'
+            /*,listeners:{
+                select:function(){
+                    }
+            }*/
         }, {
             xtype: 'combo',
             id: "ck",
@@ -194,7 +246,51 @@ Ext.onReady(function () {
             valueField: 'V_DEPTCODE',
             labelWidth: 80,
             width: 250
-        }, /*{
+        },{
+            xtype: 'combo',
+            id: 'zyq',
+            store: zyqStore,
+            fieldLabel: '作业区',
+            labelAlign: 'right',
+            editable: false,
+            margin: '5 0 5 5',
+            labelWidth: 75,
+            width: 255,
+            displayField: 'V_DEPTNAME',
+            valueField: 'V_DEPTCODE',
+            queryMode: 'local'
+            /*, listeners: {
+                change: function (field, newValue, oldValue) {
+
+
+                }
+            }*/
+        },{
+            xtype: 'combo',
+            id: "zy",
+            store: zyStore,
+            editable: false,
+            queryMode: 'local',
+            fieldLabel: '专 业',
+            margin: '5 5 5 5',
+            displayField: 'V_ZYMC',
+            valueField: 'V_GUID',
+            labelWidth: 100,
+            labelAlign: 'right'
+        },{
+          xtype:'combo',
+          id:'state',
+          store:stateStore,
+          editable:false,
+          queryMode:'local',
+          fieldLabel:'状  态',
+            margin:'5 5 5 5',
+            displayField: 'V_STATENAME',
+            valueField: 'V_STATECODE',
+            labelWidth: 100,
+            labelAlign: 'right'
+        },
+            /*{
             xtype: 'label',
             id: "budget",
             style: ' margin: 8px 0px 0px 10px'
@@ -322,22 +418,63 @@ Ext.onReady(function () {
         items: [panel, grid]
     });
 
-    Ext.data.StoreManager.lookup('ckStore').on('load', function () {
-        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
+    Ext.getCmp('year').on('select', function () {
         QueryBudget();
         OnButtonQuery();
+    });
+    Ext.getCmp('month').on('select', function () {
+        QueryBudget();
+        OnButtonQuery();
+    });
+    Ext.data.StoreManager.lookup('ckStore').on('load', function () {
+        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
+        Ext.data.StoreManager.lookup('zyqStore').load({
+            params: {
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            }
+        });
     });
 
 
     Ext.getCmp('ck').on('select', function () {
+        Ext.data.StoreManager.lookup('zyqStore').load({
+            params: {
+                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
+                'V_V_DEPTCODE': Ext.getCmp('ck').getValue(),
+                'V_V_DEPTCODENEXT': '%',
+                'V_V_DEPTTYPE': '主体作业区'
+            }
+        });
+    });
+
+//作业区加载数据
+    Ext.data.StoreManager.lookup('zyqStore').on('load', function () {
+        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+        Ext.data.StoreManager.lookup('zyStore').load();
         QueryBudget();
         OnButtonQuery();
     });
-
-    Ext.getCmp('year').on('select', function () {
+    //作业区改变
+    Ext.getCmp('zyq').on('select', function () {
         QueryBudget();
         OnButtonQuery();
-    })
+    });
+    Ext.data.StoreManager.lookup("zyStore").on('load',function(store, records){
+        store.insert(0,{V_ZYMC:'全部',V_GUID:'%'});
+        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup("zyStore").getAt(0));
+    });
+    Ext.getCmp('zy').on('select',function(){
+        QueryBudget();
+        OnButtonQuery();
+    });
+    Ext.data.StoreManager.lookup('stateStore').on('load',function(store,records){
+        store.insert(0,{V_STATENAME:'全部',V_STATECODE:'%'});
+        Ext.getCmp('state').select(Ext.data.StoreManager.lookup("stateStore").getAt(0));
+    });
+
 });
 
 //缺陷详情
@@ -428,7 +565,11 @@ function QueryBudget() {
 
 function beforeloadStore(store) {
     store.proxy.extraParams.V_V_YEAR = Ext.getCmp('year').getValue();
+    store.proxy.extraParams.V_V_MONTH = Ext.getCmp('month').getValue();
     store.proxy.extraParams.V_V_ORGCODE = Ext.getCmp('ck').getValue();
+    store.proxy.extraParams.V_V_DEPT = Ext.getCmp('zyq').getValue();
+    store.proxy.extraParams.V_V_STATE = Ext.getCmp('state').getValue();
+    store.proxy.extraParams.V_V_ZY = Ext.getCmp('zy').getValue();
     store.proxy.extraParams.V_V_PERCODE =  Ext.util.Cookies.get('v_personcode');
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
@@ -445,7 +586,11 @@ function OnButtonQuery() {
     Ext.data.StoreManager.lookup('gridStore').load({
         params: {
             V_V_YEAR: Ext.getCmp('year').getValue(),
+            V_V_MONTH: Ext.getCmp('month').getValue(),
             V_V_ORGCODE: Ext.getCmp('ck').getValue(),
+            V_V_DEPT: Ext.getCmp('zyq').getValue(),
+            V_V_STATE: Ext.getCmp('state').getValue(),
+            V_V_ZY: Ext.getCmp('zy').getValue(),
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
@@ -486,5 +631,4 @@ function itemClick(s, record, item, index, e, eOpts) {
             + wxguid
             +  '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
     }
-
 }

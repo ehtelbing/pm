@@ -6815,5 +6815,30 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_BASE_DEPT_FROMW_SEL");
         return result;
     }
+    //维修计划状态下拉
+    public Map PM_03_PLAN_YEAR_STATE_SEL()throws SQLException{
+        logger.info("begin PM_03_PLAN_YEAR_STATE_SEL");
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_03_PLAN_YEAR_STATE_SEL(:RET)}");
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PM_03_PLAN_YEAR_STATE_SEL");
+        return result;
+    }
 }
 

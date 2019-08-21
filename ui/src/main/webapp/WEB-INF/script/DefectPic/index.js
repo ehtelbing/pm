@@ -74,7 +74,7 @@ function OnPageLoad() {
 }
 
 function down(value, metaData, record) {
-    return '<a href="javascript:writeIn(\'' + record.data.FILE_CODE + '\')" >下载</a>';
+    return '<div>'+record.data.FILE_NAME+'</div>'+'  '+'<a href="javascript:writeIn(\'' + record.data.FILE_CODE + '\')" >下载</a>';
 }
 
 function writeIn(fileid) {

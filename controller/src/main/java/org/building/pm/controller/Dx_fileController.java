@@ -5027,6 +5027,15 @@ public class Dx_fileController {
         return result;
     }
 
+    //维修计划状态下拉
+    @RequestMapping(value = "PM_03_PLAN_YEAR_STATE_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PM_03_PLAN_YEAR_STATE_SEL(HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = dx_fileService.PM_03_PLAN_YEAR_STATE_SEL();
+        return result;
+    }
+
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> setPage(HttpServletRequest req, HttpServletResponse resp, HashMap data) {
