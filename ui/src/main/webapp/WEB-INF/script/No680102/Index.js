@@ -1,6 +1,24 @@
 ﻿var V_V_PERSONCODE = Ext.util.Cookies.get('v_personcode');
 var V_V_PERSONNAME = Ext.util.Cookies.get('v_personname');
 var V_V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');
+
+var states = [];
+states.push({id: '全部', value: '%'});
+states.push({id: '报警', value: '报警'});
+states.push({id: '已转出', value: '已转出'});
+states.push({id: '已关闭', value: '已关闭'});
+// states.push({id: '0', value: ''});
+
+
+var stateStore = Ext.create("Ext.data.Store", {
+    storeId: 'stateStore',
+    fields: ['id', 'value'],
+    data: states,
+    proxy: {
+        type: 'memory',
+        reader: {type: 'json'}
+    }
+});
 var bmmcStore = Ext.create("Ext.data.Store", {
     autoLoad: true,
     storeId: 'bmmcStore',
@@ -88,7 +106,7 @@ var Layout = {
     items: [ {
         xtype: 'panel',
         border: false,
-        title: '信息查询',
+        title: '信息处理',
         titleAlign:'center',
         region: 'north',
         layout: 'column',
@@ -128,6 +146,16 @@ var Layout = {
             editable: false,
             displayField: 'V_BASENAME',
             valueField: 'V_BASECODE',
+            queryMode: 'local'
+        },{
+            xtype: 'combo',
+            fieldLabel: '状态',
+            labelWidth: 60,
+            id: 'stateid',
+            store: stateStore,
+            editable: false,
+            displayField: 'id',
+            valueField: 'value',
             queryMode: 'local'
         }]
     }, {
@@ -345,6 +373,7 @@ function onPageLoaded() {
         });
         Ext.getCmp('bx').select(Ext.data.StoreManager.lookup('bxStore').getAt(0));
     });
+    Ext.getCmp('stateid').select('%');
     setTimeout('queryGrid()', 1000 * 1);
 }
 
@@ -356,7 +385,8 @@ function queryGrid() {
             V_V_TYPE: Ext.getCmp('lx').getValue(),
             V_V_CLASSTYPE: Ext.getCmp('bx').getValue(),
             V_D_FROMDATE: Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y/m/d'),
-            V_D_TODATE: Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y/m/d')
+            V_D_TODATE: Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y/m/d'),
+            V_V_STATE:Ext.getCmp('stateid').getValue()
         }
     });
 }
@@ -400,7 +430,7 @@ function renderMoney(value, metaData) {
 }
 
 function OnButtonExcelClicked() {
-    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_LIST_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bx').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d'));
+    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_LIST_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bx').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d')+'&V_V_STATE='+Ext.getCmp('stateid').getValue());
 }
 
 Ext.onReady(onPageLoaded);

@@ -186,6 +186,7 @@ Ext.onReady(function(){
         , listeners: {
             load: function (store, records) {
                 Ext.getCmp('qxlx').select(store.first());
+                Ext.getCmp('qxlx').setReadOnly(true);
             }
         }
     });

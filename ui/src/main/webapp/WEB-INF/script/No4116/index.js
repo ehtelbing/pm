@@ -26,7 +26,8 @@ Ext.onReady(function() {
         proxy : {
             type : 'ajax',
             async : false,
-            url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
+            // url : AppUrl + 'WorkOrder/PRO_PM_WORKORDER_SELECT_ADMIN',
+            url:AppUrl+'WorkOrder/PRO_PM_WORKORDER_SELECT_N',
             actionMethods : {
                 read : 'POST'
             },
@@ -191,6 +192,7 @@ Ext.onReady(function() {
                  {id : 'djy',xtype : 'combo', store : sdjy,editable : false,fieldLabel : '点检员', labelWidth : 80,displayField : 'V_PERSONNAME',valueField : 'V_PERSONCODE',queryMode : 'local', baseCls : 'margin-bottom'},
                 {id : 'selshortTxt',xtype : 'textfield', width : 158,emptyText : '按工单描述模糊搜索',margin:'5px 0px 5px 90px'},
                 {id : 'selmatDesc',xtype : 'textfield', width : 158,emptyText : '按使用物料模糊搜索',margin:'5px 0px 5px 90px'},
+                {id : 'workid',xtype : 'textfield', width : 158,emptyText : '按工单号搜索',margin:'5px 0px 5px 90px'},
                 {id : 'query',xtype : 'button', icon : '../../images/gif/search.png',text : '查询', width : 80,listeners: {click: QueryGrid}},
                 { xtype : 'button',text : '导出excel',icon: imgpath + '/excel.gif',width : 85, listeners : { click : OnClickExcelButton}},
             { xtype : 'button',text : '批量打印',width : 85, listeners : { click : OnButtonCreateBillClicked}},
@@ -502,6 +504,7 @@ Ext.onReady(function() {
             store.proxy.extraParams.V_V_SHORT_TXT = Ext.getCmp( "selshortTxt").getValue();
             store.proxy.extraParams.V_V_BJ_TXT = Ext.getCmp("selmatDesc").getValue();
             store.proxy.extraParams.V_V_ORDER_TYP = Ext.getCmp('tabpanel').getActiveTab().id;
+            store.proxy.extraParams.V_V_WORKID = Ext.util.Format.trim(Ext.getCmp('workid').getValue());
             store.proxy.extraParams.V_V_PAGE= Ext.getCmp('page').store.currentPage;
             store.proxy.extraParams.V_V_PAGESIZE= Ext.getCmp('page').store.pageSize;
         });
@@ -513,7 +516,8 @@ function OnSearch() {
 
     Ext.ComponentManager.get('tabpanel').removeAll();
     Ext.Ajax.request({
-        url : AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_ADMIN',
+        // url : AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_ADMIN',
+        url : AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_N',
         async : false,
         method : 'POST',
         params : {
@@ -527,7 +531,8 @@ function OnSearch() {
             V_EQU_CODE:    Ext.ComponentManager.get("sbmc").getValue(),
             V_DJ_PERCODE:    Ext.ComponentManager.get("djy").getValue(),
             V_V_SHORT_TXT:   Ext.ComponentManager.get("selshortTxt").getValue(),
-            V_V_BJ_TXT:   Ext.ComponentManager.get("selmatDesc").getValue()
+            V_V_BJ_TXT:   Ext.ComponentManager.get("selmatDesc").getValue(),
+            V_V_WORKID:Ext.util.Format.trim(Ext.getCmp('workid').getValue())
         },
         success : function(ret) {
             var respRoot = Ext.JSON.decode(ret.responseText);
@@ -636,7 +641,8 @@ function unMatExcelButton(){
 function addTab(){
     Ext.ComponentManager.get('tabpanel').removeAll();
     Ext.Ajax.request({
-            url : AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_ADMIN',
+            // url : AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_ADMIN',
+            url : AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_N',
             async : false,
             method : 'POST',
             params : {
@@ -650,7 +656,8 @@ function addTab(){
                 V_EQU_CODE:    Ext.ComponentManager.get("sbmc").getValue(),
                 V_DJ_PERCODE:    Ext.ComponentManager.get("djy").getValue(),
                 V_V_SHORT_TXT:   Ext.ComponentManager.get("selshortTxt").getValue(),
-                V_V_BJ_TXT:   Ext.ComponentManager.get("selmatDesc").getValue()
+                V_V_BJ_TXT:   Ext.ComponentManager.get("selmatDesc").getValue(),
+                V_V_WORKID:Ext.util.Format.trim(Ext.getCmp('workid').getValue())
             },
             success : function(ret) {
                 var respRoot = Ext.JSON.decode(ret.responseText);

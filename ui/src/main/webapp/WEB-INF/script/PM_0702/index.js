@@ -486,7 +486,7 @@ function _selectOverhaulApply() {
     gridStore.proxy.extraParams = {
         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        PUT_PERNAME:"",
+        PUT_PERNAME:Ext.getCmp('fzr2').getValue()==""?"%":Ext.getCmp("fzr2").getValue().toString(),//"",
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
         V_SIGN:0
@@ -500,7 +500,7 @@ function _selectOverhaulApply2() {
     gridStore.proxy.extraParams = {
         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        PUT_PERNAME:Ext.getCmp('fzr').getValue()==""?"%":Ext.getCmp("fzr").getValue().toString(),
+        PUT_PERNAME:Ext.getCmp('fzr2').getValue()==""?"%":Ext.getCmp("fzr2").getValue().toString(),
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
         V_SIGN:1
@@ -809,7 +809,7 @@ function getSel(){
     gridStore.proxy.extraParams = {
         V_V_STATECODE: Ext.ComponentManager.get("qxzt").getValue(),
         X_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-        PUT_PERNAME:Ext.getCmp('fzr').getValue()=="0"?"%":Ext.getCmp("fzr").getValue().toString(),
+        PUT_PERNAME:Ext.getCmp('fzr2').getValue()=="0"?"%":Ext.getCmp("fzr2").getValue().toString(),
         V_V_PAGE: Ext.getCmp('page').store.currentPage,
         V_V_PAGESIZE: Ext.getCmp('page').store.pageSize,
         V_SIGN:1
@@ -820,7 +820,7 @@ function getSel(){
 //导出缺陷处理
 function expExcelDefData(){
     var V_V_STATECODE=Ext.ComponentManager.get("qxzt").getValue()=="%"?"0":Ext.ComponentManager.get("qxzt").getValue();
-    var PUT_PERNAME=Ext.getCmp('fzr').getValue()==""?"0":Ext.getCmp("fzr").getValue().toString();
+    var PUT_PERNAME=Ext.getCmp('fzr2').getValue()==""?"0":Ext.getCmp("fzr2").getValue().toString();
     document.location.href=AppUrl + 'excel/DEFCL_EXCEL?V_V_STATECODE='+V_V_STATECODE+
         '&X_PERSONCODE='+Ext.util.Cookies.get('v_personcode')+
         '&PUT_PERNAME='+PUT_PERNAME+

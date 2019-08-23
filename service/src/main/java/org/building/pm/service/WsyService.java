@@ -1668,7 +1668,7 @@ public class WsyService {
         return result;
     }
 
-    public HashMap PRO_PP_INFORMATION_LIST(final String V_V_PERSONCODE, final String V_V_DEPT, final String V_V_TYPE, final String V_V_CLASSTYPE, final String V_D_FROMDATE, final String V_D_TODATE) throws SQLException {
+    public HashMap PRO_PP_INFORMATION_LIST(final String V_V_PERSONCODE, final String V_V_DEPT, final String V_V_TYPE, final String V_V_CLASSTYPE, final String V_D_FROMDATE, final String V_D_TODATE,String V_V_STATE) throws SQLException {
 
         logger.info("begin PRO_PP_INFORMATION_LIST");
         HashMap result = new HashMap();
@@ -1677,11 +1677,12 @@ public class WsyService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_LIST" + "(:V_V_PERSONCODE,:V_V_DEPT,:V_V_TYPE,:V_V_CLASSTYPE,:V_D_FROMDATE,:V_D_TODATE,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PP_INFORMATION_LIST" + "(:V_V_PERSONCODE,:V_V_DEPT,:V_V_TYPE,:V_V_CLASSTYPE,:V_D_FROMDATE,:V_D_TODATE,:V_V_STATE,:V_CURSOR)}");
             cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
             cstmt.setString("V_V_DEPT", V_V_DEPT);
             cstmt.setString("V_V_TYPE", V_V_TYPE);
             cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
+
 //            if (V_D_FROMDATE.equals("")) {
 //                cstmt.setDate("V_D_FROMDATE", null);
 //            } else {
@@ -1694,6 +1695,7 @@ public class WsyService {
 //            }
             cstmt.setString("V_D_FROMDATE", V_D_FROMDATE);
             cstmt.setString("V_D_TODATE", V_D_TODATE);
+            cstmt.setString("V_V_STATE",V_V_STATE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
 //            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
