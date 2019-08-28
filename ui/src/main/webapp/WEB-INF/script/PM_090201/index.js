@@ -1123,3 +1123,8 @@ function Getjxzy() {//关联检修标准
 
 
 }
+function getReturnMX(mxcode) {
+    loadTaskGrid();
+    loadMatList();
+    loadWorkDesc(mxcode);
+}
