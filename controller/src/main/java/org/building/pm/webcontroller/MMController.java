@@ -83,7 +83,7 @@ public class MMController {
                 String price = recordEle.elementTextTrim("price");
                 String f_number = recordEle.elementTextTrim("f_number");
                 String BillType = recordEle.elementTextTrim("BillType");
-                String univalent=recordEle.elementTextTrim("");
+                String univalent=recordEle.elementTextTrim("sap_departCode");
                 String setret = mmService.PRO_PM_WORKORDER_SPARE_MM_SET(V_V_ORDERGUID, V_V_ORDERID, billcode, vch_sparepart_code, vch_sparepart_name, vch_type,
                         vch_unit, price, f_number, BillType,univalent);
             }

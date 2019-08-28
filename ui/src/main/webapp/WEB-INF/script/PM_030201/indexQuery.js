@@ -175,7 +175,8 @@ Ext.onReady(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+            // url: AppUrl + 'PM_03/PM_03_PROJECT_DEFECT_SEL',
+            url: AppUrl + 'dxfile/PM_03_PROJECT_DEFECT_SEL_ALL',
             actionMethods: {
                 read: 'POST'
             },
