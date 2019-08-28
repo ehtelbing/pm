@@ -28,7 +28,7 @@ public class MMService {
     private ComboPooledDataSource dataSources;
 
 
-    public String PRO_PM_WORKORDER_SPARE_MM_SET(String v_V_ORDERGUID, String v_V_ORDERID, String billcode, String vch_sparepart_code, String vch_sparepart_name, String vch_type, String vch_unit, String price, String f_number, String billType) throws SQLException {
+    public String PRO_PM_WORKORDER_SPARE_MM_SET(String v_V_ORDERGUID, String v_V_ORDERID, String billcode, String vch_sparepart_code, String vch_sparepart_name, String vch_type, String vch_unit, String price, String f_number, String billType,String univalent) throws SQLException {
         logger.info("begin PRO_PM_WORKORDER_SPARE_MM_SET");
         String ret = "";
         Connection conn = null;
@@ -36,7 +36,7 @@ public class MMService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_MM_SET(:V_V_ORDERGUID,:V_V_ORDERID,:V_BILLCODE,:V_VCH_SPAREPART_CODE,:V_VCH_SPAREPART_NAME,:V_VCH_TYPE,:V_VCH_UNIT,:V_PRICE,:V_F_NUMBER,:V_BILLTYPE,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_MM_SET(:V_V_ORDERGUID,:V_V_ORDERID,:V_BILLCODE,:V_VCH_SPAREPART_CODE,:V_VCH_SPAREPART_NAME,:V_VCH_TYPE,:V_VCH_UNIT,:V_PRICE,:V_F_NUMBER,:V_BILLTYPE,:V_UNIVALENT,:V_CURSOR)}");
             cstmt.setString("V_V_ORDERGUID", v_V_ORDERGUID);
             cstmt.setString("V_V_ORDERID", v_V_ORDERID);
             cstmt.setString("V_BILLCODE", billcode);
@@ -47,6 +47,7 @@ public class MMService {
             cstmt.setDouble("V_PRICE", new Double(price));
             cstmt.setDouble("V_F_NUMBER", new Double(f_number));
             cstmt.setString("V_BILLTYPE", billType);
+            cstmt.setString("V_UNIVALENT",univalent);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
             ret = (String) cstmt.getObject("V_CURSOR");

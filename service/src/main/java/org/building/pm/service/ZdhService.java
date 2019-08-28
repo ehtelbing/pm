@@ -2970,4 +2970,32 @@ public class ZdhService {
         logger.info("end PRO_PM_WORKORDER_SPARE_SET2");
         return result;
     }
+    public Map PRO_BASE_DEPTTOSAPWORKCSAT_N(String V_V_DEPTREPAIRCODE,String V_V_EQUCODE,String V_V_DEPTCODE) throws SQLException {
+
+        logger.info("begin PRO_BASE_DEPTTOSAPWORKCSAT_N");
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPTTOSAPWORKCSAT_N(:V_V_DEPTREPAIRCODE,:V_V_EQUCODE,:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPTREPAIRCODE", V_V_DEPTREPAIRCODE);
+            cstmt.setString("V_V_EQUCODE", V_V_EQUCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPTTOSAPWORKCSAT_N");
+        return result;
+    }
 }

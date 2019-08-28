@@ -5054,6 +5054,17 @@ public class Dx_fileController {
         return data;
     }
 
+//物料编辑作业区下拉列表
+    @RequestMapping(value="PRO_PM_WORK_MAT_DEPT_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORK_MAT_DEPT_SEL(
+            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+            @RequestParam(value = "V_V_DEPTCODEREP") String V_V_DEPTCODEREP,
+            @RequestParam(value = "V_V_GXID") String V_V_GXID) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_WORK_MAT_DEPT_SEL(V_V_ORDERGUID,V_V_DEPTCODEREP,V_V_GXID);
+        return data;
+    }
 
     @RequestMapping(value = "/setPage", method = RequestMethod.POST)
     @ResponseBody

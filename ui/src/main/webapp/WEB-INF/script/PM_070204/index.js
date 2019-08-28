@@ -8,33 +8,20 @@ var aqcsCodeList=[];
 var sign="";
 var A_USERID = Ext.util.Cookies.get('v_personcode');
 var A_USERNAME = Ext.util.Cookies.get('v_personname2');
+var V_DEPTREPAIRCODE = null;
+var V_ORGCODE = null;
+var V_DEPTCODE = null;
+var V_EQUTYPE = null;
+var V_EQUCODE = null;
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
-}
-var V_EQUCODE = null;
-if (location.href.split('?')[1] != undefined) {
-    V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
-}
-
-var V_ORGCODE = null;
-if (location.href.split('?')[1] != undefined) {
+    V_DEPTREPAIRCODE = Ext.urlDecode(location.href.split('?')[1]).V_DEPTREPAIRCODE;
     V_ORGCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_ORGCODE;
-}
-
-var V_DEPTCODE = null;
-if (location.href.split('?')[1] != undefined) {
     V_DEPTCODE = Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE;
-}
-
-var V_EQUTYPE = null;
-if (location.href.split('?')[1] != undefined) {
     V_EQUTYPE = Ext.urlDecode(location.href.split('?')[1]).V_EQUTYPE;
-}
-
-var V_EQUCODE = null;
-if (location.href.split('?')[1] != undefined) {
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
 }
+
 var gridStore = Ext.create('Ext.data.Store', {
     id: 'gridStore',
     autoLoad: true,
@@ -62,7 +49,8 @@ var workCenterStore = Ext.create('Ext.data.Store', {
     fields: ['V_SAP_WORKNAME', 'V_SAP_WORK'],
     proxy: {
         type: 'ajax',
-        url: AppUrl + 'zdh/workcenter_sel',
+        // url: AppUrl + 'zdh/workcenter_sel',
+        url: AppUrl + 'zdh/PRO_BASE_DEPTTOSAPWORKCSAT_N',
         actionMethods: {
             read: 'POST'
         },
@@ -71,7 +59,10 @@ var workCenterStore = Ext.create('Ext.data.Store', {
             root: 'list'
         },
         extraParams: {
-            V_V_DEPTREPAIRCODE: Ext.urlDecode(location.href.split('?')[1]).V_DEPTREPAIRCODE
+            V_V_DEPTREPAIRCODE: Ext.urlDecode(location.href.split('?')[1]).V_DEPTREPAIRCODE,
+            V_V_EQUCODE: V_EQUCODE,
+            V_V_DEPTCODE: V_DEPTCODE
+
         }
     }
 });

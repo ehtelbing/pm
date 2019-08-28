@@ -1519,5 +1519,18 @@ public class ZdhController {
         test.put("list", result);
         return test;
     }
+    /*
+     * 工作中心查询
+     * */
+    @RequestMapping(value = "PRO_BASE_DEPTTOSAPWORKCSAT_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_BASE_DEPTTOSAPWORKCSAT_N(@RequestParam(value = "V_V_DEPTREPAIRCODE") String V_V_DEPTREPAIRCODE,
+                                                            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                              HttpServletRequest request)
+            throws SQLException {
+        Map<String, Object> result = zdhService.PRO_BASE_DEPTTOSAPWORKCSAT_N(V_V_DEPTREPAIRCODE,V_V_EQUCODE,V_V_DEPTCODE);
+        return result;
+    }
 
 }

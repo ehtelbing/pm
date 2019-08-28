@@ -373,7 +373,7 @@ function OpenEditMat() {
             } else {
                 var owidth = window.document.body.offsetWidth;
                 var oheight = window.document.body.offsetHeight;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '&V_EQUCODE='+$("#V_EQUCODE").val()+'','_blank','height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '&V_EQUCODE='+$("#V_EQUCODE").val()+'&DEPTCODEREP='+$("#selPlant").val()+'','_blank','height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }

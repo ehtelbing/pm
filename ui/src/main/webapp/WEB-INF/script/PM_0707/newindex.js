@@ -448,10 +448,10 @@ Ext.onReady(function(){
             mode: 'SINGLE'
         },
         columns:[
-            {text:'设备编码',dataIndex: 'V_EQUCODE',width:'200',hidden:true,render:atLeft},
-            {text:'设备名称',dataIndex: 'V_EQUNAME',width:'200',render:atLeft},
-            {text:'设备位置编码',dataIndex: 'V_EQUSITE',width:'530',hidden:true,render:atLeft},
-            {text:'设备位置',dataIndex: 'V_EQUSITENAME',width:'530',render:atLeft}
+            {text:'设备编码',dataIndex: 'V_EQUCODE',width:200,hidden:true,render:atLeft},
+            {text:'设备名称',dataIndex: 'V_EQUNAME',width:200,render:atLeft},
+            {text:'设备位置编码',dataIndex: 'V_EQUSITE',width:330,hidden:true,render:atLeft},
+            {text:'设备位置',dataIndex: 'V_EQUSITENAME',width:330,render:atLeft}
         ]
     });
     var eastPanel=Ext.create('Ext.panel.Panel',{
