@@ -6909,5 +6909,164 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_WORK_MAT_DEPT_SEL");
         return result;
     }
+    // 工作中心保存
+    public List<Map> PRO_PM_WORKORDER_ET_SET_N(Double V_I_ID, String V_V_ORDERGUID, String V_V_DESCRIPTION,
+                                                 String V_I_WORK_ACTIVITY, String V_I_DURATION_NORMAL, String V_V_WORK_CENTER,
+                                                 String V_I_ACTUAL_TIME, String V_I_NUMBER_OF_PEOPLE, String V_V_ID, String V_V_GUID,
+                                                 String V_V_JXBZ, String V_V_JXBZ_VALUE_DOWN, String V_V_JXBZ_VALUE_UP,String V_V_CENT_DEPT) throws SQLException {
+        logger.info("begin PRO_PM_WORKORDER_ET_SET_N");
+        List<Map> result = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_ET_SET_N" + "(:V_I_ID,:V_V_ORDERGUID,:V_V_DESCRIPTION," +
+                    ":V_I_WORK_ACTIVITY,:V_I_DURATION_NORMAL,:V_V_WORK_CENTER,:V_I_ACTUAL_TIME,:V_I_NUMBER_OF_PEOPLE," +
+                    ":V_V_ID,:V_V_GUID,:V_V_JXBZ,:V_V_JXBZ_VALUE_DOWN,:V_V_JXBZ_VALUE_UP,:V_V_CENT_DEPT)}");
+
+
+            cstmt.setDouble("V_I_ID", V_I_ID);
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_DESCRIPTION", V_V_DESCRIPTION);
+            cstmt.setString("V_I_WORK_ACTIVITY", V_I_WORK_ACTIVITY);
+            cstmt.setString("V_I_DURATION_NORMAL", V_I_DURATION_NORMAL);
+            cstmt.setString("V_V_WORK_CENTER", V_V_WORK_CENTER);
+            cstmt.setString("V_I_ACTUAL_TIME", V_I_ACTUAL_TIME);
+            cstmt.setString("V_I_NUMBER_OF_PEOPLE", V_I_NUMBER_OF_PEOPLE);
+            cstmt.setString("V_V_ID", V_V_ID);
+            cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.setString("V_V_JXBZ", V_V_JXBZ);
+            cstmt.setString("V_V_JXBZ_VALUE_DOWN", V_V_JXBZ_VALUE_DOWN);
+            cstmt.setString("V_V_JXBZ_VALUE_UP", V_V_JXBZ_VALUE_UP);
+            cstmt.setString("V_V_CENT_DEPT", V_V_CENT_DEPT);
+            cstmt.execute();
+            Map sledata = new HashMap();
+            sledata.put("V_INFO", "SUCCESS");
+            result.add(sledata);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_ET_SET_N");
+        return result;
+    }
+    //new 工序下拉
+    public Map PRO_PM_WORKORDER_ET_ACT_N(String V_V_ORDERGUID,String V_V_STEP)throws SQLException{
+        logger.info("begin PRO_PM_WORKORDER_ET_ACT_N");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_ET_ACT_N" + "(:V_V_ORDERGUID,:V_V_STEP,:V_CURSOR)}");
+
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_STEP", V_V_STEP);
+
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_ET_ACT_N");
+        return result;
+    }
+    //物料编辑-厂矿
+    public Map PRO_PM_WORK_MAT_ORG_SEL(String V_V_ORDERGUID,String V_V_GXID,String V_V_STEP)throws SQLException{
+        logger.info("begin PRO_PM_WORK_MAT_ORG_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORK_MAT_ORG_SEL" + "(:V_V_ORDERGUID,:V_V_GXID,:V_V_STEP,:V_MSG,:RET)}");
+
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_GXID", V_V_GXID);
+            cstmt.setString("V_V_STEP", V_V_STEP);
+
+            cstmt.registerOutParameter("V_MSG",OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("RET",(String) cstmt.getObject("V_MSG"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORK_MAT_ORG_SEL");
+        return result;
+    }
+    //物料编辑-作业区
+    public Map PRO_PM_WORK_MAT_DEPT_SEL(String V_V_ORDERGUID,String V_V_GXID,String V_V_STEP,String V_V_ORG)throws SQLException{
+        logger.info("begin PRO_PM_WORK_MAT_DEPT_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORK_MAT_DEPT_SEL" + "(:V_V_ORDERGUID,:V_V_GXID,:V_V_STEP,:V_V_ORG,:V_CURSOR)}");
+
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_GXID", V_V_GXID);
+            cstmt.setString("V_V_STEP", V_V_STEP);
+            cstmt.setString("V_V_ORG", V_V_ORG);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORK_MAT_DEPT_SEL");
+        return result;
+    }
+    //工序物料查询
+    public Map PRO_PM_WORKORDER_SPARE_V_N(String V_V_ORDERGUID,String V_V_STEP)throws SQLException{
+        logger.info("begin PRO_PM_WORKORDER_SPARE_V_N");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_V_N" + "(:V_V_ORDERGUID,:V_V_STEP,:V_CURSOR)}");
+
+            cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
+            cstmt.setString("V_V_STEP", V_V_STEP);
+
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SPARE_V_N");
+        return result;
+    }
+
 }
 

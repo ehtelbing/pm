@@ -14,6 +14,7 @@ if (location.href.split('?')[1] != undefined) {
 }
 if (location.href.split('?')[1] != undefined) {
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+    STEP=Ext.urlDecode(location.href.split('?')[1]).STEP;
 }
 var gridStore = Ext.create('Ext.data.Store',
     {
@@ -25,7 +26,8 @@ var gridStore = Ext.create('Ext.data.Store',
             'V_TYPE', 'F_ACTUALMONEY'],
         proxy: {
             type: 'ajax',
-            url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+            // url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
+            url: AppUrl + 'dxfile/PRO_PM_WORKORDER_SPARE_V_N',
             actionMethods: {
                 read: 'POST'
             },
@@ -34,7 +36,8 @@ var gridStore = Ext.create('Ext.data.Store',
                 root: 'list'
             },
             extraParams: {
-                V_V_ORDERGUID: V_ORDERGUID
+                V_V_ORDERGUID: V_ORDERGUID,
+                V_V_STEP:STEP
             }
         }
     });
@@ -195,7 +198,7 @@ var framePanel = Ext.create('Ext.panel.Panel', {
     layout: 'fit',
     flex: 5,
     html: '<iframe frameborder="0" width="100%" height="100%"  src="' + AppUrl
-        + 'page/PM_05010203/index.html?V_ORDERGUID=' + V_ORDERGUID +'&V_EQUCODE='+V_EQUCODE
+        + 'page/PM_05010203/index.html?V_ORDERGUID=' + V_ORDERGUID +'&V_EQUCODE='+V_EQUCODE+'&STEP='+STEP
         + '"></iframe>'
 
 });
@@ -783,6 +786,7 @@ function WatchOrder() {
         + V_ORDERGUID
         + '&V_MATERIALCODE='
         + Ext.getCmp("grid2").getSelectionModel().getSelection()[0].data.V_MATERIALCODE
+        +'&STEP='+STEP
         + '';
 
     Ext.getCmp('windowPanel').html = '<iframe frameborder="0" width="100%" height="100%" id="OrderDescFrame"  src="'
@@ -791,7 +795,7 @@ function WatchOrder() {
 }
 function OnCompareElem ( editor, context, eOpts ){
 
-    if(context.originalValue==context.value&&setMatSign==0){
+    if((context.originalValue==context.value&&setMatSign==0)&&(STEP!="检修工单创建（调度）"||STEP!='创建工单')){
         setMatSign=0;
     }else{
         setMatSign=1;
@@ -812,16 +816,18 @@ function OnCompareElem ( editor, context, eOpts ){
 }
 
 function matSignChange(){
-    Ext.Ajax.request({
-        url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_IN',
-        type:'POST',
-        async:false,
-        params:{
-            V_WORKGUID:V_ORDERGUID,
-            V_SIGN:setMatSign
-        },
-        success:function(ret){
-            var resp=Ext.decode(ret.responseText);
-        }
-    });
+    if(STEP!="检修工单创建（调度）"||STEP!='创建工单'){
+        Ext.Ajax.request({
+            url:AppUrl+'dxfile/PRO_WORKORDER_MAT_CHANGE_IN',
+            type:'POST',
+            async:false,
+            params:{
+                V_WORKGUID:V_ORDERGUID,
+                V_SIGN:setMatSign
+            },
+            success:function(ret){
+                var resp=Ext.decode(ret.responseText);
+            }
+        });
+    }
 }

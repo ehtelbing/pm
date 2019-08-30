@@ -469,7 +469,8 @@ function OnClickSaveButton() {
         console.log(aqcsCodeList);
     }
     Ext.Ajax.request({
-        url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_SET_NEW',
+        // url: AppUrl + 'cjy/PRO_PM_WORKORDER_ET_SET_NEW',
+        url: AppUrl + 'dxfile/PRO_PM_WORKORDER_ET_SET_N',
         method: 'POST',
         params: {
             V_I_ID: I_ID,
@@ -484,7 +485,8 @@ function OnClickSaveButton() {
             V_V_GUID: Ext.getCmp('jxgxbm').getValue(),
             V_V_JXBZ: Ext.getCmp('jxtecbzguid').getValue(),
             V_V_JXBZ_VALUE_DOWN: Ext.getCmp('jxtechnologybzd').getValue(),
-            V_V_JXBZ_VALUE_UP: Ext.getCmp('jxtechnologybzu').getValue()
+            V_V_JXBZ_VALUE_UP: Ext.getCmp('jxtechnologybzu').getValue(),
+            V_V_CENT_DEPT:Ext.getCmp('selWorkCenter').valueModels[0].raw.V_DEPTCODE
         }, success: function (response) {
             _userInfor(A_USERID, Ext.getCmp('selWorkCenter').getValue());
             Ext.getCmp('dialog').hide();

@@ -5054,15 +5054,79 @@ public class Dx_fileController {
         return data;
     }
 
-//物料编辑作业区下拉列表
+
+
+    @RequestMapping(value = "/PRO_PM_WORKORDER_ET_SET_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PM_WORKORDER_ET_SET_N(@RequestParam(value = "V_I_ID") Double V_I_ID,
+                                           @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+                                           @RequestParam(value = "V_V_DESCRIPTION",required=false) String V_V_DESCRIPTION,
+                                           @RequestParam(value = "V_I_WORK_ACTIVITY",required=false) String V_I_WORK_ACTIVITY,
+                                           @RequestParam(value = "V_I_DURATION_NORMAL",required=false) String V_I_DURATION_NORMAL,
+                                           @RequestParam(value = "V_V_WORK_CENTER",required=false) String V_V_WORK_CENTER,
+                                           @RequestParam(value = "V_I_ACTUAL_TIME",required=false) String V_I_ACTUAL_TIME,
+                                           @RequestParam(value = "V_I_NUMBER_OF_PEOPLE",required=false) String V_I_NUMBER_OF_PEOPLE,
+                                           @RequestParam(value = "V_V_ID",required=false) String V_V_ID,
+                                           @RequestParam(value = "V_V_GUID",required=false) String V_V_GUID,
+                                           @RequestParam(value = "V_V_JXBZ",required=false) String V_V_JXBZ,
+                                           @RequestParam(value = "V_V_JXBZ_VALUE_DOWN",required=false) String V_V_JXBZ_VALUE_DOWN,
+                                           @RequestParam(value = "V_V_JXBZ_VALUE_UP",required=false) String V_V_JXBZ_VALUE_UP,
+                                           @RequestParam(value = "V_V_CENT_DEPT",required=false) String V_V_CENT_DEPT,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        Map test = new HashMap();
+
+        List<Map> result = null;
+        result = dx_fileService.PRO_PM_WORKORDER_ET_SET_N(V_I_ID, V_V_ORDERGUID, V_V_DESCRIPTION,
+                V_I_WORK_ACTIVITY, V_I_DURATION_NORMAL, V_V_WORK_CENTER,
+                V_I_ACTUAL_TIME, V_I_NUMBER_OF_PEOPLE, V_V_ID, V_V_GUID, V_V_JXBZ, V_V_JXBZ_VALUE_DOWN, V_V_JXBZ_VALUE_UP,V_V_CENT_DEPT);
+        test.put("list", result);
+        return test;
+    }
+    //new 工序下拉
+    @RequestMapping(value="PRO_PM_WORKORDER_ET_ACT_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_ET_ACT_N(
+            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+            @RequestParam(value = "V_V_STEP") String V_V_STEP) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_WORKORDER_ET_ACT_N(V_V_ORDERGUID,V_V_STEP);
+        return data;
+    }
+
+    //物料编辑-厂矿
+    @RequestMapping(value="PRO_PM_WORK_MAT_ORG_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORK_MAT_ORG_SEL(
+            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+            @RequestParam(value = "V_V_GXID") String V_V_GXID,
+            @RequestParam(value = "V_V_STEP") String V_V_STEP) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_WORK_MAT_ORG_SEL(V_V_ORDERGUID,V_V_GXID,V_V_STEP);
+        return data;
+    }
+
+    //物料编辑-作业区
     @RequestMapping(value="PRO_PM_WORK_MAT_DEPT_SEL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORK_MAT_DEPT_SEL(
             @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-            @RequestParam(value = "V_V_DEPTCODEREP") String V_V_DEPTCODEREP,
-            @RequestParam(value = "V_V_GXID") String V_V_GXID) throws Exception {
+            @RequestParam(value = "V_V_GXID") String V_V_GXID,
+            @RequestParam(value = "V_V_STEP") String V_V_STEP,
+            @RequestParam(value = "V_V_ORG") String V_V_ORG) throws Exception {
 
-        Map data = dx_fileService.PRO_PM_WORK_MAT_DEPT_SEL(V_V_ORDERGUID,V_V_DEPTCODEREP,V_V_GXID);
+        Map data = dx_fileService.PRO_PM_WORK_MAT_DEPT_SEL(V_V_ORDERGUID,V_V_GXID,V_V_STEP,V_V_ORG);
+        return data;
+    }
+
+    //工序物料查询
+    @RequestMapping(value="PRO_PM_WORKORDER_SPARE_V_N", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_PM_WORKORDER_SPARE_V_N(
+            @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
+            @RequestParam(value = "V_V_STEP") String V_V_STEP) throws Exception {
+
+        Map data = dx_fileService.PRO_PM_WORKORDER_SPARE_V_N(V_V_ORDERGUID,V_V_STEP);
         return data;
     }
 
@@ -5117,5 +5181,7 @@ public class Dx_fileController {
         }
 
     }
+
+
 
 }

@@ -1,9 +1,11 @@
 var V_ORDERGUID = null;
 var temp = 0;
 var V_EQUCODE;
+var STEP="";
 if (location.href.split('?')[1] != undefined) {
     V_ORDERGUID = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     V_EQUCODE=Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
+    STEP=Ext.urlDecode(location.href.split('?')[1]).STEP;
 }
 var GridModel = Ext.create('Ext.selection.RowModel', {});
 Ext
@@ -17,12 +19,14 @@ Ext
             fields: ['V_ACTIVITY'],
             proxy: {
                 type: 'ajax',
-                url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+                // url: AppUrl + 'zdh/PRO_PM_WORKORDER_ET_ACTIVITY',
+                url:AppUrl+'dxfile/PRO_PM_WORKORDER_ET_ACT_N',
                 actionMethods: {
                     read: 'POST'
                 },
                 extraParams: {
-                    V_V_ORDERGUID: V_ORDERGUID
+                    V_V_ORDERGUID: V_ORDERGUID,
+                    V_V_STEP:STEP
                 },
                 reader: {
                     type: 'json',
@@ -33,21 +37,19 @@ Ext
 
         var KCPlantStore = Ext.create('Ext.data.Store', {
             id: 'KCPlantStore',
-            autoLoad: true,
-            // fields: ['V_DEPTNAME', 'V_DEPTCODE', 'V_SAP_DEPT', 'V_SAP_JHGC', 'V_SAP_WORK'],
-            fields: ['V_DEPTNAME', 'V_DEPTCODE'],
+            autoLoad: false,
+            fields: ['V_DEPTNAME', 'V_DEPTCODE', 'V_SAP_DEPT', 'V_SAP_JHGC', 'V_SAP_WORK'],
             proxy: {
                 type: 'ajax',
                 // url: AppUrl + 'zdh/plant_sel',
-                url: AppUrl + 'dxfile/PRO_BASE_ORG_FROMW_SEL',
+                url:AppUrl+'dxfile/PRO_PM_WORK_MAT_ORG_SEL',
                 actionMethods: {
                     read: 'POST'
                 },
-                extraParams: {
-                    /*IS_V_DEPTCODE: Ext.util.Cookies.get("v_orgCode"),
-                    IS_V_DEPTTYPE: "[基层单位]"*/
-                    WORKORDER:V_ORDERGUID
-                },
+                /*extraParams: {
+                    IS_V_DEPTCODE: Ext.util.Cookies.get("v_orgCode"),
+                    IS_V_DEPTTYPE: "[基层单位]"
+                },*/
                 reader: {
                     type: 'json',
                     root: 'list'
@@ -57,19 +59,15 @@ Ext
 
         var KCSectionStore = Ext.create('Ext.data.Store', {
             id: 'KCSectionStore',
-            autoLoad: true,
-            // fields: ['V_DEPTNAME', 'V_DEPTCODE', 'V_SAP_DEPT', 'V_SAP_JHGC', 'V_SAP_WORK'],
-            fields: ['V_DEPTNAME', 'V_DEPTCODE', 'V_SAP_DEPT'],
+            autoLoad: false,
+            fields: ['V_DEPTNAME', 'V_DEPTCODE', 'V_SAP_DEPT', 'V_SAP_JHGC', 'V_SAP_WORK'],
             proxy: {
                 type: 'ajax',
                 // url: AppUrl + 'lxm/PRO_BASE_DEPT_VIEW_PER',
-                url:AppUrl+'dxfile/PRO_BASE_DEPT_FROMW_SEL',
+                url:AppUrl+'dxfile/PRO_PM_WORK_MAT_DEPT_SEL',
                 actionMethods: {
                     read: 'POST'
                 },
-                extraParams: {
-                WORKORDER:V_ORDERGUID
-            },
                 reader: {
                     type: 'json',
                     root: 'list'
@@ -327,6 +325,16 @@ Ext
                         layout: 'column',
                         items: [{
                             xtype: 'combo',
+                            id: 'selKCActi',
+                            editable: false,
+                            store: activityStore,
+                            labelAlign: 'right',
+                            labelWidth: 30, // queryMode: 'local',
+                            displayField: 'V_ACTIVITY',
+                            valueField: 'V_ACTIVITY',
+                            style: 'margin:5px 0 0 10px'
+                        },{
+                            xtype: 'combo',
                             id: 'selKCPlant',
                             fieldLabel: '厂矿',
                             editable: false,
@@ -349,7 +357,7 @@ Ext
                             displayField: 'V_DEPTNAME',
                             valueField: 'V_SAP_DEPT',//'V_DEPTCODE',
                             style: 'margin:5px 0 0 10px',
-                            queryMode: 'local',
+                            // queryMode: 'local',
                             width:300
                         }, {
                             xtype: 'combo',
@@ -362,19 +370,9 @@ Ext
                             displayField: 'store_desc',
                             valueField: 'store_id',
                             style: 'margin:5px 0 0 10px',
-                            queryMode: 'local',
+                            // queryMode: 'local',
                             width:300
-                        }, {
-                            xtype: 'combo',
-                            id: 'selKCActi',
-                            editable: false,
-                            store: activityStore,
-                            labelAlign: 'right',
-                            labelWidth: 30, // queryMode: 'local',
-                            displayField: 'V_ACTIVITY',
-                            valueField: 'V_ACTIVITY',
-                            style: 'margin:5px 0 0 10px'
-                        }, {
+                        },  {
                             xtype: 'textfield',
                             id: 'KCmatCode',
                             emptyText: '按物料编码搜索',
@@ -704,6 +702,11 @@ Ext
 
             Ext.ComponentManager.get("tabpanel").setActiveTab(0);
         }
+        Ext.create('Ext.container.Viewport', {
+            id:'main',
+            layout:'border',
+            items: [bomgrid,tab]
+        });
 
         function loadQuery() {
             if (Ext.getCmp('matCode').getValue() == '') {
@@ -859,6 +862,147 @@ Ext
                 + '" >' + value + '</div>';
         }
 
+        Ext.data.StoreManager.get('activityStore').on('load',function(){
+            Ext.getCmp('selActivity').select(activityStore.getAt(0));
+            Ext.getCmp('selYZJActi').select(activityStore.getAt(0));
+            Ext.getCmp('selJPActi').select(activityStore.getAt(0));
+            Ext.getCmp('selKCActi').select(activityStore.getAt(0));
+            Ext.data.StoreManager.get('KCPlantStore').load({
+                params:{
+                    V_V_ORDERGUID:V_ORDERGUID,
+                    V_V_GXID:Ext.getCmp('selActivity').getValue(),
+                    V_V_STEP:STEP
+                }
+            });
+            Ext.data.StoreManager.get('KCSectionStore').load({
+                params:{
+                    V_V_ORDERGUID:V_ORDERGUID,
+                    V_V_GXID:Ext.getCmp('selKCActi').getValue(),
+                    V_V_STEP:STEP,
+                    V_V_ORG:Ext.getCmp('selKCPlant').getValue()
+                }
+            });
+
+        });
+        Ext.data.StoreManager.get('activityStore').on('change',function(){
+            Ext.data.StoreManager.get('KCPlantStore').load({
+                params:{
+                    V_V_ORDERGUID:V_ORDERGUID,
+                    V_V_GXID:Ext.getCmp('selKCActi').getValue(),
+                    V_V_STEP:STEP
+                }
+            });
+            Ext.data.StoreManager.get('KCSectionStore').load({
+                params:{
+                    V_V_ORDERGUID:V_ORDERGUID,
+                    V_V_GXID:Ext.getCmp('selKCActi').getValue(),
+                    V_V_STEP:STEP,
+                    V_V_ORG:Ext.getCmp('selKCPlant').getValue()
+                }
+            });
+        });
+        Ext.data.StoreManager.get('KCPlantStore').on('load',function(store,view){
+            Ext.getCmp('selKCPlant').select(store.getAt(0));
+            var plantCode = '';
+
+            Ext.Ajax.request({
+                url: AppUrl + 'zdh/PRO_BASE_DEPT_SAP_JHGC',
+                async: false,
+                method: 'post',
+                params: {
+                    V_V_SAP_JHGC: Ext.getCmp('selKCPlant').valueModels[0].data.V_SAP_JHGC
+                },
+                success: function (response) {
+                    /*Ext.data.StoreManager.get('KCSectionStore').load(
+                        {
+                            params: {
+                                V_DEPTCODE: Ext.util.Cookies.get("v_orgCode"),
+                                V_DEPTTYPE: "[主体作业区]",
+                                V_V_PERSON:Ext.util.Cookies.get("v_personcode")
+                            }
+                        });*/
+                }
+            });
+        });
+        Ext.data.StoreManager.get('KCSectionStore').on('load',function(store,view){
+            Ext.getCmp('selKCSection').select(store.getAt(0));
+            Ext.Ajax.request({
+                url: AppUrl + 'zdh/PRO_WX_WORKORDER_GET',
+                method: 'POST',
+                async: false,
+                params: {
+                    V_V_ORDERGUID: V_ORDERGUID
+                },
+                success: function (ret) {
+                    var resp = Ext.JSON.decode(ret.responseText);
+                    if (resp.list != "" && resp.list != null) {
+                        if(resp.list[0].V_DEPTCODEREPARIR==null) {
+                            Ext.data.StoreManager.get('kfSectionStore').load({
+                                params: {
+                                    SAP_PLANTCODE: Ext.getCmp('selKCPlant').valueModels[0].data.V_SAP_JHGC,
+                                    SAP_DEPARTCODE: Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
+                                    V_V_PERCODE: Ext.util.Cookies.get("v_personcode")
+                                }
+                            });
+                        }else{
+                            //if(resp.list[0].V_DEPTCODEREPARIR != null){
+                            //    alert("adfasdf");
+                            //   alert(resp.list[0].V_DEPTCODEREPARIR);
+                            //   Ext.getCmp('selKCSection').select(resp.list[0].V_DEPTCODEREPARIR);
+                            // }
+                            Ext.data.StoreManager.get('kfSectionStore').load({
+                                params: {
+                                    SAP_PLANTCODE: Ext.getCmp('selKCPlant').valueModels[0].data.V_SAP_JHGC,
+                                    SAP_DEPARTCODE: Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
+                                    V_V_PERCODE: Ext.util.Cookies.get("v_personcode")
+                                }
+                            });
+                        }
+
+                    } else {
+                        Ext.data.StoreManager.get('kfSectionStore').load({
+                            params: {
+                                SAP_PLANTCODE: Ext.getCmp('selKCPlant').valueModels[0].data.V_SAP_JHGC,
+                                SAP_DEPARTCODE: Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
+                                V_V_PERCODE: Ext.util.Cookies.get("v_personcode")
+                            }
+                        });
+                    }
+                }
+            });
+            Ext.data.StoreManager.get('YZJStore').load({
+                params: {
+                    V_V_EQUCODE: V_EQUCODE,
+                    V_V_DEPTCODE: Ext.getCmp('selKCSection').valueModels[0].data.V_SAP_DEPT,
+                    V_V_STATUS: '在备'
+                }
+            });
+
+        });
+        Ext.data.StoreManager.get('kfSectionStore').on('load',function(store){
+            Ext.getStore('kfSectionStore').insert(0, { 'store_id': '0', 'store_desc': '全部' });
+            Ext.getCmp('kfSection').select(store.getAt(0));
+        });
+        Ext.ComponentManager.get('selType').select('材料');
+        Ext.getCmp('selKCActi').on('select',function(){
+            Ext.data.StoreManager.get('KCPlantStore').load({
+                params:{
+                    V_V_ORDERGUID:V_ORDERGUID,
+                    V_V_GXID:Ext.getCmp('selKCActi').getValue(),
+                    V_V_STEP:STEP
+                }
+            });
+            Ext.data.StoreManager.get('KCSectionStore').load({
+                params:{
+                    V_V_ORDERGUID:V_ORDERGUID,
+                    V_V_GXID:Ext.getCmp('selKCActi').getValue(),
+                    V_V_STEP:STEP,
+                    V_V_ORG:Ext.getCmp('selKCPlant').getValue()
+                }
+            });
+        });
+
+        /*
         activityStore.on('load', function () {
             Ext.getCmp('selActivity').select(activityStore.getAt(0));
             Ext.getCmp('selYZJActi').select(activityStore.getAt(0));
@@ -866,11 +1010,7 @@ Ext
             Ext.getCmp('selKCActi').select(activityStore.getAt(0));
         });
 
-        Ext.create('Ext.container.Viewport', {
-            id:'main',
-            layout:'border',
-            items: [bomgrid,tab]
-        });
+
 
         Ext.ComponentManager.get('selType').select('材料');
 
@@ -895,15 +1035,16 @@ Ext
                             {
                                 params: {
                                     WORKORDER:V_ORDERGUID
-                                   /* V_DEPTCODE: Ext.util.Cookies.get("v_orgCode"),
-                                    V_DEPTTYPE: "[主体作业区]",
-                                    V_V_PERSON:Ext.util.Cookies.get("v_personcode")*/
+                                   // V_DEPTCODE: Ext.util.Cookies.get("v_orgCode"),
+                                   // V_DEPTTYPE: "[主体作业区]",
+                                   // V_V_PERSON:Ext.util.Cookies.get("v_personcode")
                                 }
                             });
                     }
                 });
-            });
+            });  */
 
+        /*
         Ext.data.StoreManager.get('KCSectionStore').on('load', function () {
 
             Ext.Ajax.request({
@@ -926,11 +1067,11 @@ Ext
                                 }
                             });
                         }else{
-                            /*if(resp.list[0].V_DEPTCODEREPARIR != null){
-                                alert("adfasdf");
-                                alert(resp.list[0].V_DEPTCODEREPARIR);
-                                Ext.getCmp('selKCSection').select(resp.list[0].V_DEPTCODEREPARIR);
-                            }*/
+                            //if(resp.list[0].V_DEPTCODEREPARIR != null){
+                            //    alert("adfasdf");
+                            //    alert(resp.list[0].V_DEPTCODEREPARIR);
+                            //    Ext.getCmp('selKCSection').select(resp.list[0].V_DEPTCODEREPARIR);
+                            //}
                             Ext.getCmp('selKCSection').select(Ext.data.StoreManager.lookup('KCSectionStore').getAt(0));
                             Ext.data.StoreManager.get('kfSectionStore').load({
                                 params: {
@@ -1002,4 +1143,5 @@ Ext
                     }
                 });
             });
+        */
     });

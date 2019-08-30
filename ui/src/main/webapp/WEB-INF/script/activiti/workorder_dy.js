@@ -1281,3 +1281,8 @@ function ExpPDF(){
     document.location.href = AppUrl + 'excel/WORKDY_ExpExcel?V_V_ORDERGUID='
         + V_ORDERGUID ,'dialogHeight:500px;dialogWidth:800px';
 }
+function ViewLook() {
+    var owidth = window.document.body.offsetWidth-200;
+    var oheight = window.document.body.offsetHeight-100 ;
+    var ret = window.open(AppUrl+'page/PM_090903/index.html?V_ORDERGUID='+V_ORDERGUID, '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+}
