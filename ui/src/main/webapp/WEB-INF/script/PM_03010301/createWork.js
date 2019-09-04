@@ -25,11 +25,7 @@ $(function () {
 
 
     loadPageInfo();
-    loadTypelist();
-    loadRepairList();
 
-    loadTaskGrid();
-    loadMatList();
 
     var gridStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
@@ -185,10 +181,11 @@ $(function () {
 
 function loadSPR() {
     $.ajax({//审批人
-        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+        url: AppUrl + 'hp/POR_WORKORDER_REPER_SEL',
         type: 'post',
         async: false,
         data: {
+            V_V_WORKORDERGUID:$("#V_ORDERGUID").val(),
             V_V_ORGCODE: $("#V_ORGCODE").val(),
             V_V_DEPTCODE: $("#V_DEPTCODE").val(),
             V_V_REPAIRCODE: $("#selPlant").val(),
@@ -263,7 +260,11 @@ function loadPageInfo() {
                     $("#planFinDate").val(resp.list[0].D_FINISH_DATE);
                 }
 
+                loadTypelist();
+                loadRepairList();
 
+                loadTaskGrid();
+                loadMatList();
             } else {
             }
         }
@@ -349,6 +350,7 @@ function loadTaskGrid() {
                     $("#TtableT tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
                 }
             }
+            loadSPR();
         }
     });
 }

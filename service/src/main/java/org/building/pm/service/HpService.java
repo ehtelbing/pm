@@ -2310,7 +2310,7 @@ public class HpService {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
-            cstmt = conn.prepareCall("{call PM_ACTIVITI_PROCESS_PER_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_REPAIRCODE,:V_V_FLOWTYPE,:V_V_FLOW_STEP,:V_V_PERCODE,:V_V_SPECIALTY,:V_V_PROCESS_CODE,:V_V_WHERE,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PM_ACTIVITI_PROCESS_PER_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_REPAIRCODE,:V_V_FLOWTYPE,:V_V_FLOW_STEP,:V_V_PERCODE,:V_V_SPECIALTY,:V_V_WHERE,:V_V_PROCESS_CODE,:V_CURSOR)}");
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_REPAIRCODE", V_V_REPAIRCODE);
@@ -2335,6 +2335,45 @@ public class HpService {
         logger.info("end PM_ACTIVITI_PROCESS_PER_SEL");
         return result;
     }
+
+    public HashMap POR_WORKORDER_REPER_SEL(String V_V_WORKORDERGUID,String V_V_ORGCODE,String V_V_DEPTCODE,String V_V_REPAIRCODE,String V_V_FLOWTYPE,String V_V_FLOW_STEP,String V_V_PERCODE,String V_V_SPECIALTY,String V_V_WHERE) throws SQLException {
+
+        logger.info("begin POR_WORKORDER_REPER_SEL");
+//      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call POR_WORKORDER_REPER_SEL" + "(:V_V_WORKORDERGUID,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_REPAIRCODE,:V_V_FLOWTYPE,:V_V_FLOW_STEP,:V_V_PERCODE,:V_V_SPECIALTY,:V_V_WHERE,:V_V_PROCESS_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_WORKORDERGUID", V_V_WORKORDERGUID);
+            cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_REPAIRCODE", V_V_REPAIRCODE);
+            cstmt.setString("V_V_FLOWTYPE", V_V_FLOWTYPE);
+            cstmt.setString("V_V_FLOW_STEP", V_V_FLOW_STEP);
+            cstmt.setString("V_V_PERCODE", V_V_PERCODE);
+            cstmt.setString("V_V_SPECIALTY", V_V_SPECIALTY);
+            cstmt.setString("V_V_WHERE", V_V_WHERE);
+            cstmt.registerOutParameter("V_V_PROCESS_CODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+
+            result.put("RET", cstmt.getString("V_V_PROCESS_CODE"));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end POR_WORKORDER_REPER_SEL");
+        return result;
+    }
+
 
     public List<Map> PRO_WX_ORDER_BOOKED(String V_V_ORDERGUID,String V_V_YQTIME,String V_V_YQYY) throws SQLException {
 //        logger.info("begin PRO_WX_ORDER_BOOKED");

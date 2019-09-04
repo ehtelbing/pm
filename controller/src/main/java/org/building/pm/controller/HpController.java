@@ -1114,10 +1114,10 @@ public class HpController {
     @RequestMapping(value = "PRO_PM_07_DEFECT_VIEW_NEW_N", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_07_DEFECT_VIEW_NEW_N(@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
-                                                         @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
-                                                         @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-                                                         @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
-                                                         HttpServletRequest request)
+                                                           @RequestParam(value = "X_PERSONCODE") String X_PERSONCODE,
+                                                           @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+                                                           @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
+                                                           HttpServletRequest request)
             throws SQLException {
         Map<String, Object> result = hpService.PRO_PM_07_DEFECT_VIEW_NEW_N(V_V_STATECODE, X_PERSONCODE, V_V_PAGE,
                 V_V_PAGESIZE);
@@ -1291,7 +1291,7 @@ public class HpController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
-        Map result = hpService.PM_EQU_REPAIR_FLOW_MENU_SEL(V_V_PROCESS_KEY, V_V_FLOW_STEP,V_V_BUSINESSGUID);
+        Map result = hpService.PM_EQU_REPAIR_FLOW_MENU_SEL(V_V_PROCESS_KEY, V_V_FLOW_STEP, V_V_BUSINESSGUID);
 
         result.put("success", true);
         return result;
@@ -2001,6 +2001,32 @@ public class HpController {
         return result;
     }
 
+    @RequestMapping(value = "/POR_WORKORDER_REPER_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> POR_WORKORDER_REPER_SEL(@RequestParam(value = "V_V_WORKORDERGUID") String V_V_WORKORDERGUID,
+                                                       @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                       @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                       @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
+                                                       @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                                                       @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
+                                                       @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                       @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                                                       @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        HashMap data = hpService.POR_WORKORDER_REPER_SEL(V_V_WORKORDERGUID,V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);
+
+        List<Map<String, Object>> list = (List) data.get("list");
+
+        String ret = (String) data.get("RET");
+        result.put("RET", ret);
+        result.put("list", list);
+        result.put("success", true);
+        return result;
+    }
+
     //工单打印确认状态
     @RequestMapping(value = "/PRO_WX_ORDER_BOOKED", method = RequestMethod.POST)
     @ResponseBody
@@ -2082,6 +2108,7 @@ public class HpController {
         Map<String, Object> result = hpService.PM_03_PLAN_MONTH_DEL(V_V_GUID);
         return result;
     }
+
     //PM_03010201,月计划报表，删除
     @RequestMapping(value = "/PRO_PM_03_PLAN_MONTH_DELDATA", method = RequestMethod.POST)
     @ResponseBody
@@ -2092,6 +2119,7 @@ public class HpController {
         Map<String, Object> result = hpService.PRO_PM_03_PLAN_MONTH_DELDATA(V_V_GUID);
         return result;
     }
+
     @RequestMapping(value = "/PRO_PM_WORKORDER_GX_VIEW", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_GX_VIEW(
@@ -2762,19 +2790,20 @@ public class HpController {
         Map result = hpService.PRO_SAP_EQU_BOM_VIEWN(V_V_EQUCODE, V_V_SPNAME);
         return result;
     }
+
     //工单创建审批人
     @RequestMapping(value = "/PM_ACTIVITI_PROCESS_PER_SEL2", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PM_ACTIVITI_PROCESS_PER_SEL2(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                           @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                           @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
-                                                           @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
-                                                           @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
-                                                           @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
-                                                           @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
-                                                           @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
-                                                           HttpServletRequest request,
-                                                           HttpServletResponse response) throws Exception {
+                                                            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                            @RequestParam(value = "V_V_REPAIRCODE") String V_V_REPAIRCODE,
+                                                            @RequestParam(value = "V_V_FLOWTYPE") String V_V_FLOWTYPE,
+                                                            @RequestParam(value = "V_V_FLOW_STEP") String V_V_FLOW_STEP,
+                                                            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+                                                            @RequestParam(value = "V_V_SPECIALTY") String V_V_SPECIALTY,
+                                                            @RequestParam(value = "V_V_WHERE") String V_V_WHERE,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
         HashMap data = hpService.PM_ACTIVITI_PROCESS_PER_SEL2(V_V_ORGCODE, V_V_DEPTCODE, V_V_REPAIRCODE, V_V_FLOWTYPE, V_V_FLOW_STEP, V_V_PERCODE, V_V_SPECIALTY, V_V_WHERE);

@@ -8,10 +8,6 @@ $(function () {
     NowDate_b("V_D_START_DATE");
     NowDate_e("V_D_FINISH_DATE");
     NowDate2("V_D_ENTER_DATE");
-    loadDEPT();
-
-    loadTaskGrid();
-    loadMatList();
 
 
     $("#btnTask").click(function () {
@@ -72,9 +68,14 @@ function loadPageInfo() {
 
                 $("#V_DEPTCODEREPARIR").val(resp.list[0].V_DEPTCODEREPAIR);
 
-                var orderRes=[];
+                var orderRes = [];
                 orderRes.push("<option value=\"" + resp.list[0].V_ORDER_TYP + "\">" + resp.list[0].V_ORDER_TYP_TXT + "</option>");
                 $("#ORDER_TYP").html(orderRes.join(""));
+
+                loadDEPT();
+
+                loadTaskGrid();
+                loadMatList();
             }
         }
     });
@@ -138,13 +139,13 @@ function loadPlantlist() {
             V_V_DEPTCODE: $("#selZYQ").val()
         },
         success: function (resp) {
-         //   var resp = Ext.JSON.decode(re.responseText);
+            //   var resp = Ext.JSON.decode(re.responseText);
             $("#V_DEPTNAMEREPARI").empty();
             $.each(resp.list, function (index, item) {
-                if (item.V_DEPTCODEREPARIR == $("#V_DEPTCODEREPARI").val()&&index==0) {
+                if (item.V_DEPTCODEREPARIR == $("#V_DEPTCODEREPARI").val() && index == 0) {
                     $("<option selected=\"selected\" value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>").appendTo("#V_DEPTNAMEREPARI");
                 } else {
-                   $("<option  value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>").appendTo("#V_DEPTNAMEREPARI");
+                    $("<option  value=\"" + item.V_DEPTREPAIRCODE + "\">" + item.V_DEPTREPAIRNAME + "</option>").appendTo("#V_DEPTNAMEREPARI");
                 }
             });
             loadSPR();
@@ -154,10 +155,11 @@ function loadPlantlist() {
 
 function loadSPR() {
     $.ajax({//审批人
-        url: AppUrl + 'cjy/PM_ACTIVITI_PROCESS_PER_SEL',
+        url: AppUrl + 'hp/POR_WORKORDER_REPER_SEL',
         type: 'post',
         async: false,
         data: {
+            V_V_WORKORDERGUID: $("#V_ORDERGUID").val(),
             V_V_ORGCODE: $("#selDW").val(),
             V_V_DEPTCODE: $("#selZYQ").val(),
             V_V_REPAIRCODE: $("#V_DEPTNAMEREPARI").val(),
@@ -216,6 +218,7 @@ function loadTaskGrid() {
                     $("#TtableT tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
                 }
             }
+            loadSPR();
         }
     });
 }
@@ -311,7 +314,7 @@ function OpenEditMat() {
             } else {
                 var owidth = window.document.body.offsetWidth;
                 var oheight = window.document.body.offsetHeight;
-                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '','', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+                var ret = window.open(AppUrl + 'page/PM_050102/index.html?flag=all&V_ORDERGUID=' + $("#V_ORDERGUID").val() + '', '', '_blank', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
                 loadMatList();
             }
         }
@@ -528,6 +531,7 @@ function OnStamp() {
     window.open(AppUrl + "page/No410101/Index.html", selectID,
         "dialogHeight:700px;dialogWidth:1100px");
 }
+
 function Getjxzy() {//关联检修标准
     if ($("#V_EQUIP_NO").val() == '') {
         alert('请选择设备！');

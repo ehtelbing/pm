@@ -35,7 +35,7 @@ $(function () {
         proxy: {
             type: 'ajax',
             async: false,
-            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+            url: AppUrl + 'hp/POR_WORKORDER_REPER_SEL',
             actionMethods: {
                 read: 'POST'
             },
@@ -82,8 +82,7 @@ $(function () {
             valueField: 'V_PERSONCODE',
             queryMode: 'local',
             style: ' margin: 5px 0px 0px 0px',
-            labelAlign: 'right',
-            width: 250
+            labelAlign: 'right'
         }
         ], buttons: [{
             text: '确定',
@@ -97,7 +96,7 @@ $(function () {
         id: 'windowb',
         width: 370,
         height: 300,
-        layout: 'vbox',
+        layout: 'border',
         title: '选择接收人',
         modal: true,//弹出窗口时后面背景不可编辑
         frame: true,
@@ -974,6 +973,7 @@ function Receive() {
     } else {
         var nextSprStoreb = Ext.data.StoreManager.lookup('nextSprStoreb');
         nextSprStoreb.proxy.extraParams = {
+            V_V_WORKORDERGUID: $.url().param("V_ORDERGUID"),
             V_V_ORGCODE: V_V_ORGCODE,
             V_V_DEPTCODE: V_V_DEPTCODE,
             V_V_REPAIRCODE: V_V_REPAIRCODE,

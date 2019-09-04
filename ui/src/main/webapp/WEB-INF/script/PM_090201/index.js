@@ -32,11 +32,7 @@ $(function () {
 
 
     loadPageInfo();
-    loadTypelist();
-    loadRepairList();
 
-    loadTaskGrid();
-    loadMatList();
 
     var gridStore = Ext.create("Ext.data.Store", {
         autoLoad: false,
@@ -178,20 +174,7 @@ $(function () {
     $("#selType").change(function () {
         $("#ORDER_TYP").html($("#selType").val());
     });
-    // $("#selPlant").on("input propertychange",function(){
-    //     if($("#selPlant").val()=="99170208"){
-    //         $("#selType").val("AK11");
-    //     }else{
-    //         $("#selType").val($("#selType").get(0).checked=true)
-    //     }
-    // });
-    //WBS编码选择页面
-    /*$("#wbsCode").click(function () {
-        var owidth = window.document.body.offsetWidth - 200;
-        var oheight = window.document.body.offsetHeight - 100;
-        var ret = window.open(AppUrl + 'page/PM_04/index.html?V_ORGCODE=' + $("#V_ORGCODE").val() + '&V_DEPTCODE=' + $("#V_DEPTCODE").val() +
-            '&V_EQUTYPECODE=' + V_EQUTYPECODE + '&V_EQUCODE=' + $("#V_EQUCODE").val() + '&wbsCode=' + $("#wbsCode").val(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
-    });*/
+
 });
 
 function loadPageInfo() {
@@ -232,7 +215,11 @@ function loadPageInfo() {
                 $("#proName").val(resp.list[0].V_WBS_TXT);
                 Defectguid=resp.list[0].V_DEFECTGUID;
 
+                loadTypelist();
+                loadRepairList();
 
+                loadTaskGrid();
+                loadMatList();
             } else {
             }
         }
@@ -290,10 +277,11 @@ function loadRepairList() {
 
 function loadSPR() {
     $.ajax({//审批人
-        url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
+        url: AppUrl + 'hp/POR_WORKORDER_REPER_SEL',
         type: 'post',
         async: false,
         data: {
+            V_V_WORKORDERGUID:$("#V_ORDERGUID").val(),
             V_V_ORGCODE: $("#V_ORGCODE").val(),
             V_V_DEPTCODE: $("#V_DEPTCODE").val(),
             V_V_REPAIRCODE: $("#selPlant").val(),
@@ -361,6 +349,7 @@ function loadTaskGrid() {
                     $("#TtableT tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
                 }
             }
+            loadSPR();
         }
     });
 }
