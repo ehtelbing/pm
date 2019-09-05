@@ -625,7 +625,7 @@ public class MMController {
             String BillType = "";
             String price = "0";
             String f_number = "0";
-
+            String univalent="";
             while (iter.hasNext()) {
 
                 Element recordEle = (Element) iter.next();           //输出下一行
@@ -642,11 +642,11 @@ public class MMController {
                 price = recordEle.elementTextTrim("price");
                 f_number = recordEle.elementTextTrim("f_number");
                 BillType = recordEle.elementTextTrim("BillType");
-
+                univalent=recordEle.elementTextTrim("sap_departCode");
                 list.add(M);
 
-                result = zdhService.PRO_PM_WORKORDER_SPARE_MM_SET(V_V_ORDERGUID, V_V_ORDERID, billcode, vch_sparepart_code,
-                        vch_sparepart_name, vch_type, vch_unit, price, f_number, BillType);
+                String setret = mmService.PRO_PM_WORKORDER_SPARE_MM_SET(V_V_ORDERGUID, V_V_ORDERID, billcode, vch_sparepart_code,
+                        vch_sparepart_name, vch_type, vch_unit, price, f_number, BillType,univalent);
 
             }
             result = zdhService.PRO_PM_WORKORDER_SPARE_UPDATE(V_V_ORDERGUID);
