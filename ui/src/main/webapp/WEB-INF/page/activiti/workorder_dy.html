@@ -193,11 +193,17 @@
                             style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
                         设备编号：
                     </td>
-                    <td colspan="3"
-                            style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+                    <td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
                         <label id="V_EQUIP_NO"></label>
                     </td>
-                    <!--<td rowspan="2"
+                    <td rowspan="2"
+                        style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
+                        工单描述：
+                    </td>
+                    <td rowspan="2"  style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
+                        <label id="V_SHORT_TXT"></label>
+                    </td>
+                   <!-- <td rowspan="2"
                         style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF">
                         工单描述：
                     </td>
@@ -226,7 +232,7 @@
                     <td style="border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF">
                         功能位置：
                     </td>
-                    <td colspan="3" style="border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left">
+                    <td style="border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left">
                         <label id="V_FUNC_LOC"></label>
                     </td>
                     <td style="border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF">
@@ -244,107 +250,17 @@
                         <!--<label type="text" id="D_FACT_FINISH_DATE" style="width: 95%; height:35px;"></label>-->
                     </td>
                 </tr>
-                <tr>
-                    <td
-                        style="height:26px; border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF">
-                        工单描述：
-                    </td>
-                    <td colspan="7" style="border-bottom: 0; border-right: 1px solid #000; text-align: left">
-                        <label id="V_SHORT_TXT"></label>
-                    </td>
-                </tr>
+
             </table>
         </td>
-       <!-- <td style="width: 450px;">
-            <table class="Tabel_pl" style="border: 0px">
-                <tr>
-                    <td colspan="4"
-                        style="border-bottom: 1px solid #000; border-top: 0px; border-left: 0px; border-right: 0px; background-color: #F4F5F7">
-                        ②任务信息栏
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                            style="width: 21%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
-                        创建人：
-                    </td>
-                    <td
-                            style="width: 28%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
-                        <label id="V_ENTERED_BY">
-                        </label>
-                    </td>
-                    <td
-                            style="width: 23%; border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
-                        创建日期：
-                    </td>
-                    <td
-                            style="width: 30%; border-bottom: 1px solid #000; border-right: 0px; text-align: left">
-                        <label id="D_ENTER_DATE"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                            style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
-                        WBS编码：
-                    </td>
-                    <td colspan="3"
-                        style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">
-                        <label id="V_WBS"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                            style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
-                        项目名称：
-                    </td>
-                    <td colspan="3"
-                        style="border-bottom: 1px solid #000; border-right: 0px; text-align: left">
-                        <label id="V_WBS_TXT"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td
-                            style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
-                        计划开始时间：
-                    </td>
-                    <td
-                            style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: left">
-                        <label id="D_START_DATE"></label>
-                    </td>
-                    <td style="border-bottom: 1px solid #000; border-right: 1px solid #000; border-left: 0; text-align: right; background-color: #BFDFFF">
-                        实际开始时间：
-                    </td>
-                    <td style="border-bottom: 1px solid #000; border-right: 0px;">
-                        <input type="text" id="D_FACT_START_DATE"
-                               style="background-color: #FFFF99; width: 136px; height:35px;text-align: left;line-height:35px;font-size:12px;font-weight:lighter;"/>
-                        &lt;!&ndash;<label type="text" id="D_FACT_START_DATE" style="width: 130px; height:35px; " ></label>&ndash;&gt;
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border-bottom: 0; height:35px; border-right: 1px solid #000;border-left: 0; text-align: right; background-color: #BFDFFF">
-                        计划完成时间：
-                    </td>
-                    <td style="border-bottom: 0; border-right: 1px solid #000; border-left: 0; text-align: left">
-                        <label id="D_FINISH_DATE"></label>
-                    </td>
-                    <td style="border-bottom: 0; border-right: 1px solid #000; border-left:0; text-align: right; background-color: #BFDFFF">
-                        实际完成时间：
-                    </td>
-                    <td style="border-bottom: 0; border-right: 0px;">
-                        <input type="text" id="D_FACT_FINISH_DATE"
-                               style="background-color: #FFFF99; width: 136px; height:35px;text-align: left;line-height:35px;font-size:12px;font-weight:lighter;"/>
-                        &lt;!&ndash;<label type="text" id="D_FACT_FINISH_DATE" style="width: 95%; height:35px;"></label>&ndash;&gt;
-                    </td>
-                </tr>
-            </table>
-        </td>-->
+
     </tr>
     <tr>
         <td colspan="3" style="text-align: left; background-color: #F4F5F7">
             ③任务细节
             <!--<input type="button" id="btnTask" class="btnprint" value="人员与工时查看" onclick="ViewTask()" />-->
             <input type="button" class="btnprint" id="btnGS" value="人员与工时填写"/>
-            <input type="button" id="btnTask" class="btnprint" value="编辑任务"/>
+            <!--<input type="button" id="btnTask" class="btnprint" value="编辑任务"/>-->
         </td>
     </tr>
     <tr>
@@ -681,6 +597,7 @@
         <td style="border-bottom:0px;">${V_AQSC_NAME}</td>
     </tr>
 
+
 </script>
 <script id="TtableMTemplate" type="text/x-jquery-tmpl">
     <tr>
@@ -695,6 +612,7 @@
         <td>${F_ACTUALMONEY}</td>
         <td>&nbsp;</td>
     </tr>
+
 
 </script>
 </body>
