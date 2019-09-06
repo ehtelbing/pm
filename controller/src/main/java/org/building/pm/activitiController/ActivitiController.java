@@ -90,6 +90,10 @@ public class ActivitiController {
 
     @Autowired
     private CjyController cjyController;
+
+    @Autowired
+    private ZdhService zdhService;
+
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
 
@@ -145,6 +149,7 @@ public class ActivitiController {
             throws SQLException {
         Map result = new HashMap();
         Map param = new HashMap();
+        Map zd = new HashMap();
 
         int num = (int) taskService.createTaskQuery().processVariableValueLike("flow_businesskey", businessKey).count();
 
@@ -160,13 +165,7 @@ public class ActivitiController {
 
             c.add(Calendar.MONTH, 2);
             c.set(Calendar.DAY_OF_MONTH, 0);
-            /* int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH)+1;
-            int date = c.get(Calendar.DATE);
-           int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-            int second = c.get(Calendar.SECOND);*/
-//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
+
             String time = getShtgtime.Shtgtime();
 
             try {
@@ -200,6 +199,15 @@ public class ActivitiController {
                     } catch (Exception e) {
                         e.printStackTrace();
                         result.put("sendAm", "Fail");
+                    }
+
+                }
+
+                //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (processKey.indexOf("MaintainPlan") != -1) {
+                    if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                        zd = TaskCompleteZd(processKey, businessKey, V_INPER, "MaintainPlan");
+                        result.put("info", zd.get("info").toString());
                     }
                 }
 
@@ -697,8 +705,7 @@ public class ActivitiController {
                         }
 
                     }
-                }
-                else if (taskmap.get("flow_type").toString().indexOf("Hitch") != -1) {
+                } else if (taskmap.get("flow_type").toString().indexOf("Hitch") != -1) {
 //                    equIp_name = (List) cxyService.PRO_FAULT_ITEM_DATA_GET(taskmap.get("BusinessKey").toString()).get("list");
                     if (taskmap.get("flow_type").equals("Hitch")) {
                         equIp_name = (List) cxyService.PM_BUG_ITEM_DATA_GET(taskmap.get("BusinessKey") == null ? "" : taskmap.get("BusinessKey").toString()).get("list");
@@ -1112,6 +1119,7 @@ public class ActivitiController {
         Map result = new HashMap();
         Map map = new HashMap();
         String flowtype = "error";
+        Map zd = new HashMap();
 
         if (processKey.indexOf("Year") != -1) {
             flowtype = "年计划";
@@ -1141,14 +1149,6 @@ public class ActivitiController {
         }
 
         try {
-
-//            Date date = new Date();
-//            Calendar c = Calendar.getInstance();
-//            c.setTime(date);
-//
-//            c.add(Calendar.MONTH, 2);
-//            c.set(Calendar.DAY_OF_MONTH, 0);
-//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
             String time = getShtgtime.Shtgtime();
             map.put("shtgtime", time);
 
@@ -1163,6 +1163,15 @@ public class ActivitiController {
                 cjyController.PRO_AM_SEND_LOG_SET(infopuburl, infopubusername, infopubpassword, V_NEXTPER, flowtype, "-1");
             }
 
+            //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("MaintainPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "MaintainPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
+
         } catch (Exception e) {
             result.put("ret", "任务提交失败");
             result.put("msg", "Error");
@@ -1171,6 +1180,135 @@ public class ActivitiController {
         return result;
     }
 
+    //判断是否满足自动审批条件
+    public Map TaskCompleteZd(String processKey, String businessKey, String V_INPER, String V_V_FLOWTYPE) {
+        Map result = new HashMap();
+        String orgCode = "";
+        String deptCode = "";
+        String flowStep = "";
+        String flowStepName = "";
+        String taskId = "";
+        String[] parName = new String[2];
+        String[] parVal = new String[2];
+
+        //通过人员编码获取人员所在厂矿以及作业区
+        try {
+            Map perData = zdhService.PRO_BASE_PERSON_GET(V_INPER);
+            List perDataL = (List) perData.get("list");
+            if (perDataL.size() > 0) {
+                Map perM = (Map) perDataL.get(0);
+                orgCode = perM.get("V_ORGCODE").toString();
+                deptCode = perM.get("V_DEPTCODE").toString();
+            } else {
+                result.put("info", "未找到相应人员信息");
+            }
+
+            //通过businessKey获取步骤编码
+            Map acdata = GetTaskIdFromBusinessId(businessKey, V_INPER);
+            if (acdata.size() > 0) {
+                flowStep = acdata.get("TaskDefinitionKey").toString();
+                flowStepName = acdata.get("taskName").toString();
+                taskId = acdata.get("taskId").toString();
+            } else {
+                result.put("info", "未找到相应流程");
+            }
+
+            Map fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", V_V_FLOWTYPE, flowStep, "", "通过");
+            List fstepList = (List) fstep.get("list");
+            if (fstepList.size() > 0) {
+                Map fstepMap = (Map) fstepList.get(0);
+                parName[0] = fstepMap.get("V_V_NEXT_SETP").toString();
+            }
+            parName[1] = "flow_yj";
+
+            parVal[0] = V_INPER;
+            parVal[1] = "系统自动审批通过";
+
+            if (!flowStep.equals("lcjs")) {
+                //查找下一步审批人员信息
+                Map fper = hpService.PM_ACTIVITI_PROCESS_PER_SEL(orgCode, deptCode, "", V_V_FLOWTYPE, flowStep, V_INPER, "", "通过");
+                List fperList = (List) fper.get("list");
+                if (fperList.size() > 0) {
+                    Map fperMap = (Map) fperList.get(0);
+
+                    if (V_INPER.equals(fperMap.get("V_PERSONCODE").toString())) {
+                        //下一步审批人为当前人员，进行自动审批
+                        MaintainPlanZDComplete(taskId, "通过", parName, parVal, "系统自动审批通过", V_INPER, V_INPER, flowStepName, flowStep, processKey, businessKey);
+                    }
+                } else {
+                    //下一步无审批人员，当前人员自动审批
+                    MaintainPlanZDComplete(taskId, "通过", parName, parVal, "系统自动审批通过", V_INPER, V_INPER, flowStepName, flowStep, processKey, businessKey);
+                }
+                result.put("info", "自动审批成功");
+            } else {
+                result.put("info", "下一步无法自动审批");
+            }
+
+
+        } catch (Exception e) {
+            result.put("info", "自动审批失败");
+        }
+        return result;
+    }
+
+    //外委维修申请自动审批
+    public void MaintainPlanZDComplete(String taskId, String idea, String[] parName, String[] parVal, String V_IDEA, String V_INPER, String V_NEXTPER,
+                                       String V_STEPNAME, String V_STEPCODE, String processKey, String businessKey) throws SQLException {
+        Map map = new HashMap();
+        String pername = "";
+        String npername = "";
+        String orgCode = "";
+        String deptCode = "";
+        String stepcodeN = "";
+        for (int i = 0; i < parName.length; i++) {
+            map.put(parName[i], parVal[i]);
+            if (parName[i].equals("flow_yj")) {
+                map.put(taskId, parVal[i]);
+            }
+        }
+
+        try {
+            String time = getShtgtime.Shtgtime();
+            map.put("shtgtime", time);
+            map.put("idea", idea);
+            taskService.complete(taskId, map);
+            activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
+            Map perData = zdhService.PRO_BASE_PERSON_GET(V_INPER);
+            List perDataL = (List) perData.get("list");
+            if (perDataL.size() > 0) {
+                Map perM = (Map) perDataL.get(0);
+                pername = perM.get("V_PERSONNAME").toString();
+                orgCode = perM.get("V_ORGCODE").toString();
+                deptCode = perM.get("V_DEPTCODE").toString();
+            }
+
+            Map nperData = zdhService.PRO_BASE_PERSON_GET(V_INPER);
+            List nperDataL = (List) nperData.get("list");
+            if (nperDataL.size() > 0) {
+                Map nperM = (Map) perDataL.get(0);
+                npername = nperM.get("V_PERSONNAME").toString();
+            }
+
+            //查询下一步
+            Map fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "MaintainPlan", V_STEPCODE, "", "通过");
+            List fstepList = (List) fstep.get("list");
+            if (fstepList.size() > 0) {
+                Map fstepMap = (Map) fstepList.get(0);
+                stepcodeN = fstepMap.get("V_V_NEXT_SETP").toString();
+            }
+
+            //更新状态
+            pm_03Service.PM_03_PLAN_YEAR_FLOW_LOG_SET(businessKey, "2", "系统自动审批通过", "通过", V_INPER, pername, V_NEXTPER, npername);
+            hpService.PRO_ACTIVITI_FLOW_AGREE(businessKey, "MaintainPlan", processKey, V_STEPCODE, stepcodeN);
+            //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                TaskCompleteZd(processKey, businessKey, V_INPER, "MaintainPlan");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // 完成任务
     @RequestMapping(value = "TaskCompletePL", method = RequestMethod.POST)
@@ -1188,6 +1326,7 @@ public class ActivitiController {
                                               @RequestParam(value = "businessKey") String businessKey) throws SQLException {
         Map result = new HashMap();
         Map map = new HashMap();
+        Map zd = new HashMap();
 
         HashMap data = activitiService.PM_ACTIVITI_STEP_LOG_SET(businessKey, processKey, V_STEPCODE, V_STEPNAME, V_IDEA, V_NEXTPER, V_INPER);
 
@@ -1204,11 +1343,19 @@ public class ActivitiController {
             c.setTime(date);
             c.add(Calendar.MONTH, 2);
             c.set(Calendar.DAY_OF_MONTH, 0);
-//            String time = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + 1 + "-" + c.get(Calendar.DATE) + "T23:59:59";
             String time = getShtgtime.Shtgtime();
             map.put("shtgtime", time);
             map.put("idea", idea);
             taskService.complete(taskId, map);
+
+            //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("MaintainPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "MaintainPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
             result.put("ret", "任务提交成功");
             result.put("msg", "OK");
         } catch (Exception e) {

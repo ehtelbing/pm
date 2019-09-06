@@ -178,6 +178,39 @@ public class ActivitiService {
         return result;
     }
 
+    public HashMap PM_ACTIVITI_PROCESS_STEP_SEL(String orgCode,String deptCode,String repairCode,String V_V_FLOWTYPE,String flowStep,String specialty, String v_where) throws SQLException {
+
+        logger.info("begin PM_ACTIVITI_PROCESS_STEP_SEL");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PM_ACTIVITI_PROCESS_STEP_SEL" + "(:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_REPAIRCODE,:V_V_FLOWTYPE,:V_V_FLOW_STEP,:V_V_SPECIALTY,:V_V_WHERE,:V_V_PROCESS_CODE,:V_CURSOR)}");
+            cstmt.setString("V_V_ORGCODE", orgCode);
+            cstmt.setString("V_V_DEPTCODE", deptCode);
+            cstmt.setString("V_V_REPAIRCODE", repairCode);
+            cstmt.setString("V_V_FLOWTYPE", V_V_FLOWTYPE);
+            cstmt.setString("V_V_FLOW_STEP", flowStep);
+            cstmt.setString("V_V_SPECIALTY", specialty);
+            cstmt.setString("V_V_WHERE", v_where);
+            cstmt.registerOutParameter("V_V_PROCESS_CODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("processCode",cstmt.getString("V_V_PROCESS_CODE"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_WORKORDER_SPARE_VIEW");
+        return result;
+    }
+
     public boolean activateActivityCancelCurrent(String instanceId, String activityId, String flowStep, String[] assignees) throws SQLException {
         try {
             Map<String, Object> variables;

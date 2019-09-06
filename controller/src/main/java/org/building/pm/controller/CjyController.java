@@ -4484,9 +4484,6 @@ public class CjyController {
                         String V_NEXT_SETP = "";
                         String sppercode = "";
                         String processKey = "";
-//                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
-//
-//                        } else {
                         spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "MaintainPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
                         List<Map<String, Object>> spperlist = (List) spperresult.get("list");
 
@@ -4495,18 +4492,9 @@ public class CjyController {
                         sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
 
                         processKey = spperresult.get("RET").toString();
-//                        }
-
 
                         if (V_NEXT_SETP.equals("lcjs")) {//最后一步
 
-//                            java.util.Date d = new java.util.Date();
-//                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//                            Calendar ca = Calendar.getInstance();
-//                            ca.add(Calendar.DATE, 30);
-//
-//                            d = ca.getTime();
-//                            String currdate = format.format(d);
                             String currdate=getShtgtime.Shtgtime();
 
                             String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
@@ -4525,7 +4513,7 @@ public class CjyController {
                             String[] parName = new String[]{V_NEXT_SETP, "flow_yj"};
                             String[] parVal = new String[]{sppercode, "批量审批通过"};
 
-                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, processKey, V_ORDERGUID[i], V_STEPCODE, V_STEPNAME, "请审批！", sppercode, V_V_PERSONCODE);
+                            complresult = activitiController.TaskCompletePL(taskid, "通过", parName, parVal, "请审批！",V_V_PERSONCODE,sppercode,V_STEPNAME,V_STEPCODE,processKey, V_ORDERGUID[i] );
                             if (complresult.get("ret").toString().equals("任务提交成功")) {
                                 flowresult = cjyService.PRO_ACTIVITI_FLOW_AGREE(V_ORDERGUID[i], "Maintain", processKey, V_STEPCODE, V_NEXT_SETP);
                                 if (flowresult.get("V_INFO").toString().equals("success")) {
