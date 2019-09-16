@@ -5046,11 +5046,12 @@ public class Dx_fileController {
             @RequestParam(value = "V_V_ZY") String V_V_ZY,
             @RequestParam(value="V_V_STATE") String V_V_STATE,
             @RequestParam(value = "V_V_QSTEXT") String V_V_QSTEXT,
-
+            @RequestParam(value = "V_V_INMANCODE") String V_V_INMANCODE,
             @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
             @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
 
-        Map data = dx_fileService.PRO_PM_03_PLAN_YEAR_VIEW_Q(V_V_YEAR, V_V_ORGCODE,V_V_DEPTCODE,V_V_ZY,V_V_STATE,V_V_QSTEXT,V_V_PAGE,V_V_PAGESIZE);
+        Map data = dx_fileService.PRO_PM_03_PLAN_YEAR_VIEW_Q(V_V_YEAR, V_V_ORGCODE,V_V_DEPTCODE,V_V_ZY,V_V_STATE,V_V_QSTEXT,V_V_INMANCODE,V_V_PAGE,V_V_PAGESIZE);
+        //V_V_INMAN,
         return data;
     }
 

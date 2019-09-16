@@ -176,9 +176,7 @@ Ext.onReady(function () {
                 // }else{
                 //
                 // }
-
             }
-
         }
     });
     //表格信息加载
@@ -186,8 +184,8 @@ Ext.onReady(function () {
         id: 'gridStore',
         pageSize: 50,
         autoLoad: false,
-        fields: ['I_ID', 'V_GUID', 'V_GUID_UP', 'V_YEAR', 'V_MONTH', 'V_ORGCODE', 'V_ORGNAME',
-            'V_DEPTCODE', 'V_DEPTNAME', 'V_PORJECT_CODE', 'V_PORJECT_NAME', 'V_SPECIALTY', 'V_SPECIALTYNAME',
+        fields: ['I_ID', 'V_GUID', 'V_GUID_UP', 'V_YEAR', ' V_MONTH', 'V_ORGCODE', 'V_ORGNAME',
+            'V_DEPTCODE', 'V_DEPTNAME', 'V_PORJECT_CODE', 'V_PORJECT_NAME','V_DEPTNAME', 'V_SPECIALTY', 'V_SPECIALTYNAME',
             'V_SPECIALTYMANCODE', 'V_SPECIALTYMAN', 'V_WXTYPECODE', 'V_WXTYPENAME', 'V_CONTENT', 'V_MONEYBUDGET',
             'V_REPAIRDEPTCODE', 'V_BDATE', 'V_EDATE', 'V_STATE', 'V_FLAG', 'V_INMAN', 'V_INMANCODE', 'V_INDATE',
             'V_STATENAME', 'V_QSTEXT', 'DEFNUM'],
@@ -407,12 +405,14 @@ Ext.onReady(function () {
             },
             {text: '缺陷详情', width: 150, dataIndex: 'V_GUID', align: 'center', renderer: OperaTion},
             {text: '工程状态', width: 150, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
-            {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
-            {text: '工程名称', width: 220, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
-            {text: '工程请示内容', width: 300, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
-            {text: '专业', width: 120, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
-            {text: '开工时间', width: 150, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
-            {text: '竣工时间', width: 150, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}
+            {text: '工程编码', width: 150, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
+            {text: '工程名称', width: 150, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
+            {text: '工程请示内容', width: 200, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
+            {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
+            {text: '计划作业区', width: 150, dataIndex: 'V_DEPTNAME', align: 'center', renderer: atleft},
+            {text: '上报人', width: 150, dataIndex: 'V_INMAN', align: 'center', renderer: atleft},
+            {text: '开工时间', width: 130, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
+            {text: '竣工时间', width: 130, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}
         ],
         bbar: [{
             id: 'page',
@@ -491,6 +491,8 @@ Ext.onReady(function () {
         Ext.getCmp('state').select(Ext.data.StoreManager.lookup("stateStore").getAt(0));
     });
 
+
+
     Ext.getCmp('ck').on('select', function () {
         Ext.data.StoreManager.lookup('zyqStore').load({
             params: {
@@ -515,6 +517,10 @@ Ext.onReady(function () {
     Ext.getCmp('zy').on('select', function () {
         OnButtonQuery();
     });
+
+    Ext.getCmp('sbPer').on('select',function(){
+        OnButtonQuery();
+    });
     pageLoad();
 
 });
@@ -525,6 +531,7 @@ function beforeloadStore(store) {
     store.proxy.extraParams.V_V_DEPTCODE = ""; //Ext.getCmp('zyq').getValue();
     store.proxy.extraParams.V_V_ZY = Ext.getCmp('zy').getValue();
     store.proxy.extraParams.V_V_QSTEXT = Ext.getCmp('gcqs').getValue();
+
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
@@ -621,6 +628,7 @@ function OnButtonQuery() {
             V_V_ZY: Ext.getCmp('zy').getValue(),
             V_V_STATE:Ext.getCmp('state').getValue(),
             V_V_QSTEXT: Ext.getCmp('gcqs').getValue(), //工程请示内容
+            V_V_INMANCODE: Ext.getCmp('sbPer').getValue(),
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }

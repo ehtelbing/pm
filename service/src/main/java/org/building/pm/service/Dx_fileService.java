@@ -6081,7 +6081,6 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
            String V_V_INFO=(String) cstmt.getString("V_INFO") ;
            result.put("V_INFO",V_V_INFO);
            result.put("list",ResultHash((ResultSet) cstmt.getObject("RET")));
-
             }
             catch(SQLException ex) {
                 logger.error(ex);
@@ -6842,8 +6841,8 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
     }
     //维修简版查询_N
     public Map PRO_PM_03_PLAN_YEAR_VIEW_Q(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY,String V_V_STATE,
-                                          String V_V_QSTEXT,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
-
+                                          String V_V_QSTEXT,String V_V_INMANCODE ,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
+        //String V_V_INMAN ,
         logger.info("begin PRO_PM_03_PLAN_YEAR_VIEW_Q");
 
         HashMap result = new HashMap();
@@ -6853,14 +6852,15 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
             conn = dataSources.getConnection();
             conn.setAutoCommit(false);
             cstmt = conn.prepareCall("{call PRO_PM_03_PLAN_YEAR_VIEW_Q" + "(:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_ZY,:V_V_STATE,:V_V_QSTEXT," +
-                    ":V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+                    ":V_V_INMANCODE,:V_V_PAGE,:V_V_PAGESIZE,:V_V_SNUM,:V_CURSOR)}");
+            //V_V_INMANCODE,:
             cstmt.setString("V_V_YEAR", V_V_YEAR);
             cstmt.setString("V_V_ORGCODE", V_V_ORGCODE);
             cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
             cstmt.setString("V_V_ZY", V_V_ZY);
             cstmt.setString("V_V_STATE",V_V_STATE);
             cstmt.setString("V_V_QSTEXT", V_V_QSTEXT);
-
+            cstmt.setString("V_V_INMANCODE",V_V_INMANCODE);
             cstmt.setString("V_V_PAGE", V_V_PAGE);
             cstmt.setString("V_V_PAGESIZE", V_V_PAGESIZE);
             cstmt.registerOutParameter("V_V_SNUM", OracleTypes.VARCHAR);
