@@ -67,23 +67,6 @@ Ext.onReady(function () {
         }
     });
 
-    var wxlxStore = Ext.create('Ext.data.Store', {
-        autoLoad: false,
-        storeId: 'wxlxStore',
-        fields: ['V_BASECODE', 'V_BASENAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'PM_06/PRO_PM_BASEDIC_VIEW',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
 
     var zyStore = Ext.create('Ext.data.Store', {
         autoLoad: false,
@@ -102,6 +85,7 @@ Ext.onReady(function () {
             }
         }
     });
+
     var fzPerStore=  Ext.create("Ext.data.Store", {
         autoLoad: false,
         storeId: 'fzPerStore',
@@ -116,22 +100,7 @@ Ext.onReady(function () {
             reader: {
                 type: 'json',
                 root: 'list'
-            },
-            extraParams: {}
-        },
-        listeners: {
-            load: function (store, records, success, eOpts) {
-                if( store.getAt(0)==undefined){
-                    Ext.getCmp('fzPer').select(''); return;
-                }else{
-                    processKey = store.getProxy().getReader().rawData.RET;
-                    V_STEPNAME = store.getAt(0).data.V_V_FLOW_STEPNAME;
-                    V_NEXT_SETP = store.getAt(0).data.V_V_NEXT_SETP;
-                    Ext.getCmp('fzPer').select(store.first());
-                }
-
             }
-
         }
     });
 
@@ -216,19 +185,7 @@ Ext.onReady(function () {
                 valueField: 'V_DEPTCODE',
                 labelWidth: 80,
                 width: 250
-            }
-            ,{
-                xtype: 'combo',
-                id: "wxlx",
-                store: wxlxStore,
-                editable: false,
-                queryMode: 'local',
-                fieldLabel: '维修类型',
-                displayField: 'V_BASENAME',
-                valueField: 'V_BASECODE',
-                labelWidth: 80,
-                width: 250
-            }, {
+            },{
                 xtype: 'combo',
                 id: "zy",
                 store: zyStore,
@@ -239,15 +196,7 @@ Ext.onReady(function () {
                 valueField: 'V_GUID',
                 labelWidth: 80,
                 width: 250
-            }, {
-                xtype: 'textfield',
-                id: "jxnr",
-                editable: false,
-                queryMode: 'local',
-                fieldLabel: '检修内容',
-                labelWidth: 80,
-                width: 250
-            }, {
+            },{
                 xtype : 'combo',
                 id:'fzPer',
                 store:fzPerStore,
@@ -266,15 +215,9 @@ Ext.onReady(function () {
                 style: ' margin: 5px 0px 0px 10px',
                 icon: imgpath + '/search.png',
                 listeners: {click: OnButtonQuery}
-            },/*{
-            xtype: 'button',
-            text: '获取年预算',
-            style: ' margin: 5px 0px 0px 10px',
-            icon: imgpath + '/search.png',
-            listeners: {click: QueryBudget}
-        },*/{
+            },{
                 xtype: 'button',
-                text: '新增工程项目',
+                text: '新增年计划',
                 icon: imgpath + '/add.png',
                 listeners: {click: OnButtonAdd}
             },
@@ -286,17 +229,10 @@ Ext.onReady(function () {
             },
             {
                 xtype: 'button',
-                text: '删除工程项目',
+                text: '删除年计划',
                 icon: imgpath + '/delete.png',
                 listeners: {click: OnButtonDel}
-            },
-            //{
-            //    xtype: 'button',
-            //    text: '上报年计划',
-            //    icon: imgpath + '/accordion_collapse.png',
-            //    listeners: {click: OnButtonUp}
-            //},
-            {
+            },{
                 xtype: 'button',
                 text: '导出',
                 icon: imgpath + '/accordion_collapse.png',
@@ -309,49 +245,9 @@ Ext.onReady(function () {
                 id:'startFlow',
                 handler:btnFlowStart
             }
-            ,{
-                xtype: 'button',
-                text: '查看详情',
-                icon: imgpath + '/accordion_collapse.png',
-                id:'viewBtn',
-                handler:btnView
-            }
-            // {
-            //     xtype: 'button',
-            //     text: '关联维修计划',//'导入放行计划',
-            //     icon: imgpath + '/accordion_expand.png',
-            //     listeners: {click: OnButtonDR}
-            // }
-            // ,{
-            //     xtype: 'button',
-            //     text: '新增2',
-            //     icon: imgpath + '/add.png',
-            //     listeners: {click: OnButtonAdd2}
-            // },
-            // {
-            //     xtype: 'button',
-            //     text: '编辑2',
-            //     icon: imgpath + '/edit.png',
-            //     listeners: {click: OnButtonEdit2}
-            // }
-            // ,{
-            //     xtype:'button',
-            //     text:'查看施工进度',
-            //     listeners: {click: OnButtonSgjd}
-            //
-            // }
-            // ,{
-            //     xtype: 'button',
-            //     text: '生成工单',
-            //     // icon: imgpath + '/accordion_expand.png',
-            //     listeners: {click: OnButtonWorkorder}
-            // }
         ]
     });
-    // var myMask = new Ext.LoadMask({
-    //     msg    : 'Please wait...',
-    //     target : panel
-    // }).show();
+
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
         region: 'center',
@@ -367,15 +263,15 @@ Ext.onReady(function () {
             mode: 'SIMPLE'
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '工程状态', width: 140, dataIndex: 'V_STATENAME', align: 'center',renderer:atleft},
-            {text: '工程编码', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center',renderer:atleft},
-            {text: '工程名称', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center',renderer:atleft},
-            {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center',renderer:atleft},
-            {text: '专业', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center',renderer:atleft},
-            {text: '维修内容', width: 300, dataIndex: 'V_CONTENT', align: 'center',renderer:atleft},
-            {text: '维修费用（万元）', width: 120, dataIndex: 'V_MONEYBUDGET', align: 'center',renderer:atright},
-            {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center',renderer:timelfet},
-            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center',renderer:timelfet}],
+            {text: '查看甘特图', width: 140, dataIndex: 'V_STATENAME', align: 'center',renderer:atleft},
+            {text: '状态', width: 140, dataIndex: 'V_STATENAME', align: 'center',renderer:atleft},
+            {text: '年计划名称', width: 200, dataIndex: 'V_PORJECT_CODE', align: 'center',renderer:atleft},
+            {text: '专业', width: 200, dataIndex: 'V_PORJECT_NAME', align: 'center',renderer:atleft},
+            {text: '产线', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center',renderer:atleft},
+            {text: '设备名称', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center',renderer:atleft},
+            {text: '计划开工时间', width: 100, dataIndex: 'V_SPECIALTYNAME', align: 'center',renderer:atleft},
+            {text: '计划竣工时间', width: 300, dataIndex: 'V_CONTENT', align: 'center',renderer:atleft},
+            {text: '计划工期', width: 120, dataIndex: 'V_MONEYBUDGET', align: 'center',renderer:atright}],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -403,26 +299,12 @@ Ext.onReady(function () {
                 'V_V_DEPTTYPE': '主体作业区'
             }
         });
-        Ext.data.StoreManager.lookup('wxlxStore').load({
-            params:{
-                IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
-            }
-        });
     });
 
     Ext.data.StoreManager.lookup("zyqStore").on('load',function(){
         Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
-        Ext.data.StoreManager.lookup('wxlxStore').load({
-            params:{
-                IS_V_BASETYPE:'PM_DX/REPAIRTYPE'
-            }
-        });
-        QueryZyFzr();
-    });
-
-    Ext.data.StoreManager.lookup('wxlxStore').on('load',function(){
-        Ext.getCmp('wxlx').select(Ext.data.StoreManager.lookup('wxlxStore').getAt(0));
         Ext.data.StoreManager.lookup('zyStore').load()
+        QueryZyFzr();
     });
 
     Ext.data.StoreManager.lookup('zyStore').on('load',function(){
@@ -430,8 +312,6 @@ Ext.onReady(function () {
         OnButtonQuery();
         Ext.getBody().unmask();
     });
-    // Ext.getBody().unmask();
-
 
     Ext.getCmp('ck').on('select',function(){
         Ext.data.StoreManager.lookup('zyqStore').load({
@@ -449,9 +329,6 @@ Ext.onReady(function () {
         QueryZyFzr();
     });
 
-    Ext.getCmp('wxlx').on('select',function(){
-        OnButtonQuery();
-    });
 
     Ext.getCmp('zy').on('select',function(){
         OnButtonQuery();
