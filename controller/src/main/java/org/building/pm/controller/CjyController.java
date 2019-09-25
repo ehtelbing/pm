@@ -74,6 +74,9 @@ public class CjyController {
     @Autowired
     private PM_03Service pm_03Service;
 
+    @Autowired
+    private PM_06Service pm_06Service;
+
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
 
@@ -4345,11 +4348,11 @@ public class CjyController {
                 stepresult = activitiController.GetTaskIdFromBusinessId(V_ORDERGUID[i], V_V_PERSONCODE);
                 String taskid = stepresult.get("taskId").toString();
                 String V_STEPCODE = stepresult.get("TaskDefinitionKey").toString();
-                if (V_STEPCODE.equals("fqrxg")) {//返回发起人，不能审批和驳回
+                if (V_STEPCODE.equals("fqrxg") || V_STEPCODE.equals("sbbsp")) {//返回发起人，不能审批和驳回
                     fqrNum++;
                 } else {
                     if (FlowType[i].equals("YearPlan")) {
-                        perresult = dx_fileService.PM_PLAN_YEAR_GETONE_SEL(V_ORDERGUID[i]);
+                        perresult = pm_06Service.PRO_PLAN_YEAR_SEL_BYGUID(V_ORDERGUID[i]);
                         List<Map<String, Object>> perlist = (List) perresult.get("RET");
                         String V_V_ORGCODE = perlist.get(0).get("ORGCODE").toString();
                         String V_V_DEPTCODE = perlist.get(0).get("DEPTCODE").toString();
@@ -4359,9 +4362,7 @@ public class CjyController {
                         String V_NEXT_SETP = "";
                         String sppercode = "";
                         String processKey = "";
-//                        if (V_STEPCODE.equals("sbczsp")) {//最后一步
-//
-//                        } else {
+
                         spperresult = cjyService.PM_ACTIVITI_PROCESS_PER_SEL(V_V_ORGCODE, V_V_DEPTCODE, "", "YearPlan", V_STEPCODE, V_V_PERSONCODE, V_V_SPECIALTY, "通过");
                         List<Map<String, Object>> spperlist = (List) spperresult.get("list");
 
@@ -4370,18 +4371,9 @@ public class CjyController {
                         sppercode = spperlist.get(0).get("V_PERSONCODE").toString();
 
                         processKey = spperresult.get("RET").toString();
-//                        }
-
 
                         if (V_NEXT_SETP.equals("lcjs")) {//最后一步
 
-//                            java.util.Date d = new java.util.Date();
-//                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//                            Calendar ca = Calendar.getInstance();
-//                            ca.add(Calendar.DATE, 30);
-//
-//                            d = ca.getTime();
-//                            String currdate = format.format(d);
                             String currdate=getShtgtime.Shtgtime();
 
                             String[] parName = new String[]{"lcjs", "flow_yj", "shtgtime"};
@@ -4406,7 +4398,6 @@ public class CjyController {
                                 if (flowresult.get("V_INFO").toString().equals("success")) {
                                     sucNum++;
                                     nexperList.add(sppercode);
-                                    //result.put("nestper", sppercode);
                                 }
                             } else {
                                 faiNum++;

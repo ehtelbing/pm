@@ -134,7 +134,7 @@ public class PM_06Controller {
                                       HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_06Service.PM_06_DJ_CRITERION_SEL(V_V_ORGCODE, V_V_DEPTCODE,V_V_CK_EQUTYPECODE,V_V_EQUTYPE,V_V_EQUCODE, V_V_PAGE, V_V_PAGESIZE);
+        HashMap data = pm_06Service.PM_06_DJ_CRITERION_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_PAGE, V_V_PAGESIZE);
         return data;
     }
 
@@ -193,39 +193,39 @@ public class PM_06Controller {
     //�������׼��
     @RequestMapping(value = "/PM_06_DJ_CRITERION_SET", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> PM_06_DJ_CRITERION_SET(  @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
-                                                        @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
-                                                        @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
-                                                        @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
-                                                        @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
-                                                        @RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
-                                                        @RequestParam(value = "V_V_CRITERION_ITEM") String V_V_CRITERION_ITEM,
-                                                        @RequestParam(value = "V_V_CRITERION_CONTENT") String V_V_CRITERION_CONTENT,
-                                                        @RequestParam(value = "V_V_CRITERION_CR") String V_V_CRITERION_CR,
-                                                        @RequestParam(value = "V_V_CRITERION_CYCLE") String V_V_CRITERION_CYCLE,
-                                                        @RequestParam(value = "V_V_CRITERION_CYCLETYPE") String V_V_CRITERION_CYCLETYPE,
-                                                        @RequestParam(value = "V_V_EQU_STATE1") String V_V_EQU_STATE1,
-                                                        @RequestParam(value = "V_V_EQU_STATE2") String V_V_EQU_STATE2,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION1") String V_V_CK_FUNCTION1,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION2") String V_V_CK_FUNCTION2,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION3") String V_V_CK_FUNCTION3,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION4") String V_V_CK_FUNCTION4,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION5") String V_V_CK_FUNCTION5,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION6") String V_V_CK_FUNCTION6,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION7") String V_V_CK_FUNCTION7,
-                                                        @RequestParam(value = "V_V_CK_FUNCTION8") String V_V_CK_FUNCTION8,
-                                                        @RequestParam(value = "V_I_ORDER") String V_I_ORDER,
-                                                        @RequestParam(value = "V_I_FLAG") String V_I_FLAG,
-                                                        @RequestParam(value = "V_V_CKTYPE") String V_V_CKTYPE,
-                                                        @RequestParam(value = "V_I_WEIGHT") String V_I_WEIGHT,
-                                                        @RequestParam(value = "V_I_YJ") String V_I_YJ,
-                                                        @RequestParam(value = "V_V_INPER") String V_V_INPER,
-                                                        HttpServletRequest request,
-                                                        HttpServletResponse response) throws Exception {
+    public Map<String, Object> PM_06_DJ_CRITERION_SET(@RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+                                                      @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                      @RequestParam(value = "V_V_CK_EQUTYPECODE") String V_V_CK_EQUTYPECODE,
+                                                      @RequestParam(value = "V_V_EQUTYPE") String V_V_EQUTYPE,
+                                                      @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                      @RequestParam(value = "V_V_CRITERION_CODE") String V_V_CRITERION_CODE,
+                                                      @RequestParam(value = "V_V_CRITERION_ITEM") String V_V_CRITERION_ITEM,
+                                                      @RequestParam(value = "V_V_CRITERION_CONTENT") String V_V_CRITERION_CONTENT,
+                                                      @RequestParam(value = "V_V_CRITERION_CR") String V_V_CRITERION_CR,
+                                                      @RequestParam(value = "V_V_CRITERION_CYCLE") String V_V_CRITERION_CYCLE,
+                                                      @RequestParam(value = "V_V_CRITERION_CYCLETYPE") String V_V_CRITERION_CYCLETYPE,
+                                                      @RequestParam(value = "V_V_EQU_STATE1") String V_V_EQU_STATE1,
+                                                      @RequestParam(value = "V_V_EQU_STATE2") String V_V_EQU_STATE2,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION1") String V_V_CK_FUNCTION1,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION2") String V_V_CK_FUNCTION2,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION3") String V_V_CK_FUNCTION3,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION4") String V_V_CK_FUNCTION4,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION5") String V_V_CK_FUNCTION5,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION6") String V_V_CK_FUNCTION6,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION7") String V_V_CK_FUNCTION7,
+                                                      @RequestParam(value = "V_V_CK_FUNCTION8") String V_V_CK_FUNCTION8,
+                                                      @RequestParam(value = "V_I_ORDER") String V_I_ORDER,
+                                                      @RequestParam(value = "V_I_FLAG") String V_I_FLAG,
+                                                      @RequestParam(value = "V_V_CKTYPE") String V_V_CKTYPE,
+                                                      @RequestParam(value = "V_I_WEIGHT") String V_I_WEIGHT,
+                                                      @RequestParam(value = "V_I_YJ") String V_I_YJ,
+                                                      @RequestParam(value = "V_V_INPER") String V_V_INPER,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_06Service.PM_06_DJ_CRITERION_SET(V_V_ORGCODE,V_V_DEPTCODE,V_V_CK_EQUTYPECODE,V_V_EQUTYPE,V_V_EQUCODE,V_V_CRITERION_CODE,
-                V_V_CRITERION_ITEM, V_V_CRITERION_CONTENT, V_V_CRITERION_CR, V_V_CRITERION_CYCLE, V_V_CRITERION_CYCLETYPE, V_V_EQU_STATE1,V_V_EQU_STATE2,V_V_CK_FUNCTION1,
+        HashMap data = pm_06Service.PM_06_DJ_CRITERION_SET(V_V_ORGCODE, V_V_DEPTCODE, V_V_CK_EQUTYPECODE, V_V_EQUTYPE, V_V_EQUCODE, V_V_CRITERION_CODE,
+                V_V_CRITERION_ITEM, V_V_CRITERION_CONTENT, V_V_CRITERION_CR, V_V_CRITERION_CYCLE, V_V_CRITERION_CYCLETYPE, V_V_EQU_STATE1, V_V_EQU_STATE2, V_V_CK_FUNCTION1,
                 V_V_CK_FUNCTION2, V_V_CK_FUNCTION3, V_V_CK_FUNCTION4, V_V_CK_FUNCTION5, V_V_CK_FUNCTION6, V_V_CK_FUNCTION7, V_V_CK_FUNCTION8, V_I_ORDER, V_I_FLAG,
                 V_V_CKTYPE, V_I_WEIGHT, V_I_YJ, V_V_INPER);
 
@@ -317,7 +317,7 @@ public class PM_06Controller {
                                                  HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_06Service.PM_06_DJ_DATA_SET(V_V_GUID, V_V_DJ_STATE, V_V_DJ_DATE, V_V_DJ_PER, V_V_DJ_NR,V_V_DJ_TYPE);
+        HashMap data = pm_06Service.PM_06_DJ_DATA_SET(V_V_GUID, V_V_DJ_STATE, V_V_DJ_DATE, V_V_DJ_PER, V_V_DJ_NR, V_V_DJ_TYPE);
 
         String pm_06 = (String) data.get("RET");
 
@@ -337,7 +337,7 @@ public class PM_06Controller {
                                                            HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_06Service.PM_06_DJ_CRITERION_DATA_SET(V_V_CRITERION_CODE,V_V_FZ_PER,V_V_PLAN_STATE,V_V_PLAN_TIME,
+        HashMap data = pm_06Service.PM_06_DJ_CRITERION_DATA_SET(V_V_CRITERION_CODE, V_V_FZ_PER, V_V_PLAN_STATE, V_V_PLAN_TIME,
                 V_V_PLAN_PER);
 
         String pm_06 = (String) data.get("RET");
@@ -413,7 +413,7 @@ public class PM_06Controller {
                                                            HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_06Service.PM_06_DJ_CRITERION_DATA_DEL(V_V_CRITERION_CODE,V_V_PLAN_STATE,V_V_PLAN_TIME,
+        HashMap data = pm_06Service.PM_06_DJ_CRITERION_DATA_DEL(V_V_CRITERION_CODE, V_V_PLAN_STATE, V_V_PLAN_TIME,
                 V_V_PLAN_PER);
 
         String pm_06 = (String) data.get("RET");
@@ -434,7 +434,7 @@ public class PM_06Controller {
             HttpServletResponse response) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        HashMap data = pm_06Service.PM_06_JMDJ_YEARPLAN_DATA_SEL(V_V_YEAR,V_V_INPERCODE,V_V_INPERNAME);
+        HashMap data = pm_06Service.PM_06_JMDJ_YEARPLAN_DATA_SEL(V_V_YEAR, V_V_INPERCODE, V_V_INPERNAME);
 
         List<Map<String, Object>> pm_06list = (List) data.get("list");
 
@@ -452,7 +452,7 @@ public class PM_06Controller {
             @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Map result = pm_06Service.PRO_PM_06_PLAN_JMDJ_SEND(V_V_GUID,V_V_FLOWCODE,V_V_PLANTYPE,V_V_PERSONCODE);
+        Map result = pm_06Service.PRO_PM_06_PLAN_JMDJ_SEND(V_V_GUID, V_V_FLOWCODE, V_V_PLANTYPE, V_V_PERSONCODE);
         return result;
     }
 
@@ -470,4 +470,109 @@ public class PM_06Controller {
         HashMap result = pm_06Service.PRO_PM_06_ACTIVITI_FLOW_AGREE(V_V_ORDERID, V_V_PROCESS_NAMESPACE, V_V_PROCESS_CODE, V_V_STEPCODE, V_V_STEPNEXT_CODE);
         return result;
     }
+
+    /*
+     * 年计划
+     * */
+    @RequestMapping(value = "/PRO_PLAN_YEAR_CX_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PLAN_YEAR_CX_SEL(
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_CXNAME") String V_V_CXNAME) throws Exception {
+        HashMap result = pm_06Service.PRO_PLAN_YEAR_CX_SEL(V_V_ORGCODE, V_V_DEPTCODE, V_V_CXNAME);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_YEAR_PLAN_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PLAN_SEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+            @RequestParam(value = "V_V_ZYCODE") String V_V_ZYCODE,
+            @RequestParam(value = "V_V_ZTCODE") String V_V_ZTCODE,
+            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
+            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_PLAN_SEL(V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_ZYCODE,V_V_ZTCODE, V_V_PAGE, V_V_PAGESIZE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_YEAR_CXEQU_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_CXEQU_SEL(
+            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_CXEQU_SEL(V_V_CXCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_YEAR_PLAN_C_SAVE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PLAN_C_SAVE(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
+            @RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+            @RequestParam(value = "V_V_ZYCODE") String V_V_ZYCODE,
+            @RequestParam(value = "V_V_JXNR") String V_V_JXNR,
+            @RequestParam(value = "V_V_JHTJSJ") String V_V_JHTJSJ,
+            @RequestParam(value = "V_V_JHJGSJ") String V_V_JHJGSJ,
+            @RequestParam(value = "V_V_JHGQ") String V_V_JHGQ,
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_PLAN_C_SAVE(V_V_GUID, V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_EQUCODE, V_V_ZYCODE,
+                V_V_JXNR, V_V_JHTJSJ, V_V_JHJGSJ, V_V_JHGQ, V_V_PERCODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_YEAR_PLAN_C_SEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PLAN_C_SEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_PLAN_C_SEL(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_YEAR_PLAN_C_TIMESEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PLAN_C_TIMESEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_PLAN_C_TIMESEL(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_YEAR_PLAN_C_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_YEAR_PLAN_C_DEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_PLAN_C_DEL(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PLAN_YEAR_DEL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PLAN_YEAR_DEL(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+        HashMap result = pm_06Service.PRO_PLAN_YEAR_DEL(V_V_GUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PLAN_YEAR_STATE_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PLAN_YEAR_STATE_SET(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID,@RequestParam(value = "V_V_STATECODE") String V_V_STATECODE) throws Exception {
+        HashMap result = pm_06Service.PRO_PLAN_YEAR_STATE_SET(V_V_GUID,V_V_STATECODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_PLAN_YEAR_SEL_BYGUID", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_PLAN_YEAR_SEL_BYGUID(
+            @RequestParam(value = "V_V_GUID") String V_V_GUID) throws Exception {
+        HashMap result = pm_06Service.PRO_PLAN_YEAR_SEL_BYGUID(V_V_GUID);
+        return result;
+    }
+
 }

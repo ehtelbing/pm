@@ -94,6 +94,9 @@ public class ActivitiController {
     @Autowired
     private ZdhService zdhService;
 
+    @Autowired
+    private PM_06Service pm_06Service;
+
     @Value("#{configProperties['infopub.url']}")
     private String infopuburl;
 
@@ -736,17 +739,17 @@ public class ActivitiController {
                 }
                 //yearplan
                 else if (taskmap.get("flow_type").toString().indexOf("YearPlan") != -1) {
-                    equIp_name = (List) dx_fileService.PM_PLAN_YEAR_GET(taskmap.get("BusinessKey").toString()).get("list");
+                    equIp_name = (List) pm_06Service.PRO_PLAN_YEAR_SEL_BYGUID(taskmap.get("BusinessKey").toString()).get("list");
                     if (equIp_name.size() > 0) {
                         Map equmap = (Map) equIp_name.get(0);
                         taskmap.put("EQUNAME", equmap.get("V_EQUNAME").toString());
-                        taskmap.put("PLANSTART", equmap.get("PLANTJMONTH").toString());
-                        taskmap.put("PLANEND", equmap.get("PLANJGMONTH").toString());
-                        taskmap.put("PLANHOUR", equmap.get("PLANHOUR").toString());
-                        taskmap.put("OPERANAME", equmap.get("SCLBNAME").toString());
-                        taskmap.put("ORGNAME", equmap.get("ORGNAME").toString());
-                        taskmap.put("DEPTNAME", equmap.get("DEPTCODE").toString());
-                        taskmap.put("ZYNAME", equmap.get("ZYNAME").toString());
+                        taskmap.put("PLANSTART", equmap.get("V_JHTJSJ").toString());
+                        taskmap.put("PLANEND", equmap.get("V_JHJGSJ").toString());
+                        taskmap.put("PLANHOUR", equmap.get("V_JHGQ").toString());
+                        taskmap.put("OPERANAME", equmap.get("V_CXNAME").toString());
+                        taskmap.put("ORGNAME", equmap.get("V_ORGNAME").toString());
+                        taskmap.put("DEPTNAME", equmap.get("V_DEPTCODE").toString());
+                        taskmap.put("ZYNAME", equmap.get("V_ZYMC").toString());
                     }
                 }
                 //projectPlan
@@ -1171,6 +1174,14 @@ public class ActivitiController {
                 }
             }
 
+            //年计划，下一步没有审批人或者下一步审批人为自己时自动通过
+            if (idea.equals("通过") && processKey.indexOf("YearPlan") != -1) {
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    zd = TaskCompleteZd(processKey, businessKey, V_INPER, "YearPlan");
+                    result.put("info", zd.get("info").toString());
+                }
+            }
+
 
         } catch (Exception e) {
             result.put("ret", "任务提交失败");
@@ -1224,7 +1235,7 @@ public class ActivitiController {
             parVal[0] = V_INPER;
             parVal[1] = "系统自动审批通过";
 
-            if (!flowStep.equals("lcjs")) {
+            if (!flowStep.equals("lcjs") || !flowStep.equals("ckjhysp")) {
                 //查找下一步审批人员信息
                 Map fper = hpService.PM_ACTIVITI_PROCESS_PER_SEL(orgCode, deptCode, "", V_V_FLOWTYPE, flowStep, V_INPER, "", "通过");
                 List fperList = (List) fper.get("list");
@@ -1290,7 +1301,13 @@ public class ActivitiController {
             }
 
             //查询下一步
-            Map fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "MaintainPlan", V_STEPCODE, "", "通过");
+            Map fstep = new HashMap();
+            if (processKey.indexOf("MaintainPlan") != -1) {
+                fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "MaintainPlan", V_STEPCODE, "", "通过");
+            } else if (processKey.indexOf("YearPlan") != -1) {
+                fstep = activitiService.PM_ACTIVITI_PROCESS_STEP_SEL(orgCode, deptCode, "", "YearPlan", V_STEPCODE, "", "通过");
+            }
+
             List fstepList = (List) fstep.get("list");
             if (fstepList.size() > 0) {
                 Map fstepMap = (Map) fstepList.get(0);
@@ -1299,10 +1316,18 @@ public class ActivitiController {
 
             //更新状态
             pm_03Service.PM_03_PLAN_YEAR_FLOW_LOG_SET(businessKey, "2", "系统自动审批通过", "通过", V_INPER, pername, V_NEXTPER, npername);
-            hpService.PRO_ACTIVITI_FLOW_AGREE(businessKey, "MaintainPlan", processKey, V_STEPCODE, stepcodeN);
-            //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
-            if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
-                TaskCompleteZd(processKey, businessKey, V_INPER, "MaintainPlan");
+            if (processKey.indexOf("MaintainPlan") != -1) {
+                hpService.PRO_ACTIVITI_FLOW_AGREE(businessKey, "MaintainPlan", processKey, V_STEPCODE, stepcodeN);
+                //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    TaskCompleteZd(processKey, businessKey, V_INPER, "MaintainPlan");
+                }
+            } else if (processKey.indexOf("YearPlan") != -1) {
+                hpService.PRO_ACTIVITI_FLOW_AGREE(businessKey, "YearPlan", processKey, V_STEPCODE, stepcodeN);
+                //外委申请，下一步没有审批人或者下一步审批人为自己时自动通过
+                if (V_NEXTPER == null || V_NEXTPER.equals("") || V_NEXTPER.equals(V_INPER)) {
+                    TaskCompleteZd(processKey, businessKey, V_INPER, "YearPlan");
+                }
             }
 
         } catch (Exception e) {
