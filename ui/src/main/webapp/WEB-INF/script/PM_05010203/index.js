@@ -883,6 +883,7 @@ Ext
                 }
             });
 
+
         });
         Ext.data.StoreManager.get('activityStore').on('change',function(){
             Ext.data.StoreManager.get('KCPlantStore').load({

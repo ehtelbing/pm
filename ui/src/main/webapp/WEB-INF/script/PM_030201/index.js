@@ -286,7 +286,7 @@ Ext.onReady(function () {
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
         region: 'center',
-        width: '50%',
+        width: '70%',
         columnLines: true,
         store: gridStore,
         autoScroll: true,
@@ -323,7 +323,7 @@ Ext.onReady(function () {
         region: 'south',
         layout: 'border',
         width: '100%',
-        height: '50%',
+        height: '30%',
         items: []
     });
 
@@ -548,8 +548,7 @@ function OnButtonDel() {
     }
 }
 
-function OnShow(s,record){
-    yearguid = record.data.V_GUID;
+function OnShow(){
     Ext.getCmp('rpanel').removeAll();
     pageFunction.QueryGanttData();
 }

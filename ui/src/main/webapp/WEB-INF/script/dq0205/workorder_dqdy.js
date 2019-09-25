@@ -149,7 +149,7 @@ $(function () {
         });
         var owidth = window.document.body.offsetWidth-200;
         var oheight = window.document.body.offsetHeight-100 ;
-        window.open(AppUrl+'page/PM_090510/index.html?V_ORDERGUID=' + V_ORDERGUID
+        window.open(AppUrl+'page/PM_070204/index.html?V_ORDERGUID=' + V_ORDERGUID
             + '&V_DEPTREPAIRCODE=' + V_V_REPAIRCODE
             + '&V_EQUCODE=' + $('#V_EQUIP_NO').html()
             + '&V_V_ORGCODE=' + V_V_ORGCODE

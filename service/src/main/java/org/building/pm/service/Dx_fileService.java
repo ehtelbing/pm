@@ -7041,7 +7041,7 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         return result;
     }
     //工序物料查询
-    public Map PRO_PM_WORKORDER_SPARE_V_N(String V_V_ORDERGUID,String V_V_STEP)throws SQLException{
+    public Map PRO_PM_WORKORDER_SPARE_V_N(String V_V_ORDERGUID,String V_V_V_ACTIVITY)throws SQLException{
         logger.info("begin PRO_PM_WORKORDER_SPARE_V_N");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -7049,14 +7049,14 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_V_N" + "(:V_V_ORDERGUID,:V_V_STEP,:V_CURSOR)}");
+            cstmt = conn.prepareCall("{call PRO_PM_WORKORDER_SPARE_V_N" + "(:V_V_ORDERGUID,:V_V_V_ACTIVITY,:V_CURSOR)}");
 
             cstmt.setString("V_V_ORDERGUID", V_V_ORDERGUID);
-            cstmt.setString("V_V_STEP", V_V_STEP);
+            cstmt.setString("V_V_V_ACTIVITY", V_V_V_ACTIVITY);
 
-            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

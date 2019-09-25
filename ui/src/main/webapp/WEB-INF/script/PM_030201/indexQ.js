@@ -302,7 +302,7 @@ Ext.onReady(function () {
         region: 'south',
         layout: 'border',
         width: '100%',
-        height: '50%',
+        height: '30%',
          items: []
 
     });

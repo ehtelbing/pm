@@ -45,7 +45,7 @@ var workCenterStore = Ext.create('Ext.data.Store', {
     fields: ['V_SAP_WORKNAME', 'V_SAP_WORK'],
     proxy: {
         type: 'ajax',
-        url: AppUrl + 'zdh/workcenter_sel',
+        url: AppUrl + 'zdh/PRO_BASE_DEPTTOSAPWORKCSAT_N',
         actionMethods: {
             read: 'POST'
         },
@@ -54,7 +54,9 @@ var workCenterStore = Ext.create('Ext.data.Store', {
             root: 'list'
         },
         extraParams: {
-            V_V_DEPTREPAIRCODE : Ext.urlDecode(location.href.split('?')[1]).V_DEPTREPAIRCODE
+            V_V_DEPTREPAIRCODE: Ext.urlDecode(location.href.split('?')[1]).V_DEPTREPAIRCODE,
+            V_V_EQUCODE: Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE,
+            V_V_DEPTCODE: Ext.urlDecode(location.href.split('?')[1]).V_V_DEPTCODE
         }
     }
 });

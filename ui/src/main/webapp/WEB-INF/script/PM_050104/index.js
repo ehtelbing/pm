@@ -16,8 +16,7 @@ if (location.href.split('?')[1] != undefined) {
     V_EQUCODE = Ext.urlDecode(location.href.split('?')[1]).V_EQUCODE;
     STEP=Ext.urlDecode(location.href.split('?')[1]).STEP;
 }
-var gridStore = Ext.create('Ext.data.Store',
-    {
+var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
         autoLoad: true,
         fields: ['V_ACTIVITY', 'V_MATERIALCODE', 'V_MATERIALNAME',
@@ -26,7 +25,6 @@ var gridStore = Ext.create('Ext.data.Store',
             'V_TYPE', 'F_ACTUALMONEY'],
         proxy: {
             type: 'ajax',
-            // url: AppUrl + 'zdh/PRO_PM_WORKORDER_SPARE_VIEW',
             url: AppUrl + 'dxfile/PRO_PM_WORKORDER_SPARE_V_N',
             actionMethods: {
                 read: 'POST'
@@ -37,7 +35,7 @@ var gridStore = Ext.create('Ext.data.Store',
             },
             extraParams: {
                 V_V_ORDERGUID: V_ORDERGUID,
-                V_V_STEP:STEP
+                V_V_V_ACTIVITY:STEP
             }
         }
     });

@@ -4564,17 +4564,7 @@ public class Dx_fileController {
         Map data = dx_fileService.PRO_PM_DEFECT_SEL_FROM_WORK(V_WORK_GUID);
         return data;
     }
-    //工单查询 附件查询
-    @RequestMapping(value = "PRO_PM_SELECT_SEL_FROM_WORK", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> PRO_PM_SELECT_SEL_FROM_WORK(
-            @RequestParam(value = "V_WORK_GUID") String V_WORK_GUID,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
 
-        Map data = dx_fileService.PRO_PM_SELECT_SEL_FROM_WORK(V_WORK_GUID);
-        return data;
-    }
     //缺陷查找工单
     @RequestMapping(value = "PRO_PM_WORKORDER_SEL_FROM_DEL", method = RequestMethod.POST)
     @ResponseBody
@@ -5136,9 +5126,9 @@ public class Dx_fileController {
     @ResponseBody
     public Map<String, Object> PRO_PM_WORKORDER_SPARE_V_N(
             @RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-            @RequestParam(value = "V_V_STEP") String V_V_STEP) throws Exception {
+            @RequestParam(value = "V_V_V_ACTIVITY") String V_V_V_ACTIVITY) throws Exception {
 
-        Map data = dx_fileService.PRO_PM_WORKORDER_SPARE_V_N(V_V_ORDERGUID,V_V_STEP);
+        Map data = dx_fileService.PRO_PM_WORKORDER_SPARE_V_N(V_V_ORDERGUID,V_V_V_ACTIVITY);
         return data;
     }
 
