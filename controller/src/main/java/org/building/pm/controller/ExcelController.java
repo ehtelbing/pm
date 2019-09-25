@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
 /**
  * Created by zjh on 2017/1/22.
  * <p>
@@ -76,6 +75,9 @@ public class ExcelController {
 
     @Autowired
     private ZdhService zdhService;
+
+    @Autowired
+    private PM_06Service pm_06Service;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -3945,9 +3947,9 @@ public class ExcelController {
     @RequestMapping(value = "/WORKDY_ExpExcel", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
     public void WORKDY_ExpExcel(@RequestParam(value = "V_V_ORDERGUID") String V_V_ORDERGUID,
-                           HttpServletRequest request,
-                           HttpServletResponse response)
-             throws DocumentException, IOException, Exception, SQLException {
+                                HttpServletRequest request,
+                                HttpServletResponse response)
+            throws DocumentException, IOException, Exception, SQLException {
         String V_V_ORGCODE = "";
         String V_WORK_TYPE = "";
         String V_DEPT_CODE = "";
@@ -3955,9 +3957,9 @@ public class ExcelController {
         /*工单基本信息-data*/
         List<Map<String, Object>> workresult = (List) cjyService.PRO_PM_WORKORDER_GET(V_V_ORDERGUID).get("list");
         if (workresult.size() > 0) {
-            V_V_ORGCODE = workresult.get(0).get("V_ORGCODE").toString().equals("")?"":workresult.get(0).get("V_ORGCODE").toString(); //厂矿
-            V_WORK_TYPE = workresult.get(0).get("V_ORDER_TYP_TXT").toString().equals("")?"":workresult.get(0).get("V_ORDER_TYP_TXT").toString(); //工单类型
-            V_DEPT_CODE = workresult.get(0).get("V_DEPTCODE").toString().equals("")?"":workresult.get(0).get("V_DEPTCODE").toString(); //作业区
+            V_V_ORGCODE = workresult.get(0).get("V_ORGCODE").toString().equals("") ? "" : workresult.get(0).get("V_ORGCODE").toString(); //厂矿
+            V_WORK_TYPE = workresult.get(0).get("V_ORDER_TYP_TXT").toString().equals("") ? "" : workresult.get(0).get("V_ORDER_TYP_TXT").toString(); //工单类型
+            V_DEPT_CODE = workresult.get(0).get("V_DEPTCODE").toString().equals("") ? "" : workresult.get(0).get("V_DEPTCODE").toString(); //作业区
         }
 
         /*工序data*/
@@ -3966,7 +3968,7 @@ public class ExcelController {
         /*物料data*/
         List<Map<String, Object>> mmresult = (List) zdhService.PRO_PM_WORKORDER_SPARE_VIEW(V_V_ORDERGUID).get("list");
 
-        int rowWF=10+workgxresult.size();
+        int rowWF = 10 + workgxresult.size();
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
         for (int i = 0; i <= 1; i++) {
@@ -4046,27 +4048,27 @@ public class ExcelController {
         styleTwo.setFont(fontT);
 
 
-        sheet.addMergedRegion(new CellRangeAddress(0,0,0,10)); //row 1
-        sheet.addMergedRegion(new CellRangeAddress(1,1,0,4));//row 2
-        sheet.addMergedRegion(new CellRangeAddress(1,1,5,10)); //row 2
-        sheet.addMergedRegion(new CellRangeAddress(2,2,3,4)); //row 3
-        sheet.addMergedRegion(new CellRangeAddress(2,2,6,10)); //row 3
-        sheet.addMergedRegion(new CellRangeAddress(3,3,3,4)); //row 4
-        sheet.addMergedRegion(new CellRangeAddress(3,3,6,10)); //row 4
-        sheet.addMergedRegion(new CellRangeAddress(4,4,3,4)); //row 5
-        sheet.addMergedRegion(new CellRangeAddress(4,4,6,7)); //row 5
-        sheet.addMergedRegion(new CellRangeAddress(4,4,9,10)); //row 5
-        sheet.addMergedRegion(new CellRangeAddress(5,5,1,4)); //row 6
-        sheet.addMergedRegion(new CellRangeAddress(5,5,6,7)); //row 6
-        sheet.addMergedRegion(new CellRangeAddress(5,5,9,10)); //row 6
-        sheet.addMergedRegion(new CellRangeAddress(6,6,6,7)); //row 7
-        sheet.addMergedRegion(new CellRangeAddress(6,6,9,10)); //row 7
-        sheet.addMergedRegion(new CellRangeAddress(6,6,1,4)); //row 7
-        sheet.addMergedRegion(new CellRangeAddress(7,7,1,10)); //row 8
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10)); //row 1
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 4));//row 2
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 10)); //row 2
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 3, 4)); //row 3
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 6, 10)); //row 3
+        sheet.addMergedRegion(new CellRangeAddress(3, 3, 3, 4)); //row 4
+        sheet.addMergedRegion(new CellRangeAddress(3, 3, 6, 10)); //row 4
+        sheet.addMergedRegion(new CellRangeAddress(4, 4, 3, 4)); //row 5
+        sheet.addMergedRegion(new CellRangeAddress(4, 4, 6, 7)); //row 5
+        sheet.addMergedRegion(new CellRangeAddress(4, 4, 9, 10)); //row 5
+        sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 4)); //row 6
+        sheet.addMergedRegion(new CellRangeAddress(5, 5, 6, 7)); //row 6
+        sheet.addMergedRegion(new CellRangeAddress(5, 5, 9, 10)); //row 6
+        sheet.addMergedRegion(new CellRangeAddress(6, 6, 6, 7)); //row 7
+        sheet.addMergedRegion(new CellRangeAddress(6, 6, 9, 10)); //row 7
+        sheet.addMergedRegion(new CellRangeAddress(6, 6, 1, 4)); //row 7
+        sheet.addMergedRegion(new CellRangeAddress(7, 7, 1, 10)); //row 8
 
-        sheet.addMergedRegion(new CellRangeAddress(8,8,0,10)); //row 9
+        sheet.addMergedRegion(new CellRangeAddress(8, 8, 0, 10)); //row 9
 
-        sheet.addMergedRegion(new CellRangeAddress(rowWF,rowWF,0,10));//row物料标题行
+        sheet.addMergedRegion(new CellRangeAddress(rowWF, rowWF, 0, 10));//row物料标题行
 
 
         //第一行
@@ -4085,13 +4087,14 @@ public class ExcelController {
 
         //第一列
         HSSFCell cella = rowOne.createCell((short) 0);
-        cella.setCellValue("工单打印");cella.setCellStyle(styleHead);
-        CellRangeAddress cra1 =new CellRangeAddress(0,0,0,10);
+        cella.setCellValue("工单打印");
+        cella.setCellStyle(styleHead);
+        CellRangeAddress cra1 = new CellRangeAddress(0, 0, 0, 10);
         sheet.addMergedRegion(cra1);
-        RegionUtil.setBorderBottom(1, cra1, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra1, sheet, wb);
 //        RegionUtil.setBorderLeft(1, cra, sheet); // 左边框
-        RegionUtil.setBorderRight(1, cra1, sheet,wb); // 有边框
-        RegionUtil.setBorderTop(1, cra1, sheet,wb); // 上边框
+        RegionUtil.setBorderRight(1, cra1, sheet, wb); // 有边框
+        RegionUtil.setBorderTop(1, cra1, sheet, wb); // 上边框
 
         //第2行
         HSSFRow rowTwo = sheet.createRow((int) 1);
@@ -4105,16 +4108,16 @@ public class ExcelController {
         cellb.setCellValue("2、任务信息栏");
         cellb.setCellStyle(styleTitle);
 
-        CellRangeAddress cra2=new CellRangeAddress(1,1,0,4);
+        CellRangeAddress cra2 = new CellRangeAddress(1, 1, 0, 4);
         sheet.addMergedRegion(cra2);
-        RegionUtil.setBorderBottom(1, cra2, sheet,wb);
-        RegionUtil.setBorderRight(1, cra2, sheet,wb);
-        RegionUtil.setBorderTop(1, cra2, sheet,wb);
-        CellRangeAddress cra3 =new CellRangeAddress(1,1,5,10);
+        RegionUtil.setBorderBottom(1, cra2, sheet, wb);
+        RegionUtil.setBorderRight(1, cra2, sheet, wb);
+        RegionUtil.setBorderTop(1, cra2, sheet, wb);
+        CellRangeAddress cra3 = new CellRangeAddress(1, 1, 5, 10);
         sheet.addMergedRegion(cra3);
-        RegionUtil.setBorderBottom(1, cra3, sheet,wb);
-        RegionUtil.setBorderRight(1, cra3, sheet,wb);
-        RegionUtil.setBorderTop(1, cra3, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra3, sheet, wb);
+        RegionUtil.setBorderRight(1, cra3, sheet, wb);
+        RegionUtil.setBorderTop(1, cra3, sheet, wb);
 
         //第3行
         HSSFRow rowThree = sheet.createRow(2);
@@ -4141,19 +4144,19 @@ public class ExcelController {
         cellc.setCellStyle(styleTwo);
 
         cellc = rowThree.createCell((short) 6);
-        cellc.setCellValue(workresult.get(0).get("V_WBS").toString().equals("")?"":workresult.get(0).get("V_WBS").toString());
+        cellc.setCellValue(workresult.get(0).get("V_WBS").toString().equals("") ? "" : workresult.get(0).get("V_WBS").toString());
         cellc.setCellStyle(styleOne);
 
-        CellRangeAddress cra4 =new CellRangeAddress(2,2,3,4);
+        CellRangeAddress cra4 = new CellRangeAddress(2, 2, 3, 4);
         sheet.addMergedRegion(cra4);
-        RegionUtil.setBorderBottom(1, cra4, sheet,wb);
-        RegionUtil.setBorderRight(1, cra4, sheet,wb);
-        RegionUtil.setBorderTop(1, cra4, sheet,wb);
-        CellRangeAddress cra5 =new CellRangeAddress(2,2,6,10);
+        RegionUtil.setBorderBottom(1, cra4, sheet, wb);
+        RegionUtil.setBorderRight(1, cra4, sheet, wb);
+        RegionUtil.setBorderTop(1, cra4, sheet, wb);
+        CellRangeAddress cra5 = new CellRangeAddress(2, 2, 6, 10);
         sheet.addMergedRegion(cra5);
-        RegionUtil.setBorderBottom(1, cra5, sheet,wb);
-        RegionUtil.setBorderRight(1, cra5, sheet,wb);
-        RegionUtil.setBorderTop(1, cra5, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra5, sheet, wb);
+        RegionUtil.setBorderRight(1, cra5, sheet, wb);
+        RegionUtil.setBorderTop(1, cra5, sheet, wb);
 
         //4行
         HSSFRow rowFour = sheet.createRow((int) 3);
@@ -4170,7 +4173,7 @@ public class ExcelController {
         celld.setCellStyle(styleTwo);
 
         celld = rowFour.createCell((short) 3);
-        celld.setCellValue(workresult.get(0).get("V_ORDERID").toString().equals("")?"":workresult.get(0).get("V_ORDERID").toString());
+        celld.setCellValue(workresult.get(0).get("V_ORDERID").toString().equals("") ? "" : workresult.get(0).get("V_ORDERID").toString());
         celld.setCellStyle(styleOne);
 
         celld = rowFour.createCell((short) 4);
@@ -4182,19 +4185,19 @@ public class ExcelController {
         celld.setCellStyle(styleTwo);
 
         celld = rowFour.createCell((short) 6);
-        celld.setCellValue(workresult.get(0).get("V_WBS_TXT").toString().equals("")?"":workresult.get(0).get("V_WBS_TXT").toString());
+        celld.setCellValue(workresult.get(0).get("V_WBS_TXT").toString().equals("") ? "" : workresult.get(0).get("V_WBS_TXT").toString());
         celld.setCellStyle(styleOne);
 
-        CellRangeAddress cra6 =new CellRangeAddress(3,3,3,4);
+        CellRangeAddress cra6 = new CellRangeAddress(3, 3, 3, 4);
         sheet.addMergedRegion(cra6);
-        RegionUtil.setBorderBottom(1, cra6, sheet,wb);
-        RegionUtil.setBorderRight(1, cra6, sheet,wb);
-        RegionUtil.setBorderTop(1, cra6, sheet,wb);
-        CellRangeAddress cra7 =new CellRangeAddress(3,3,6,10);
+        RegionUtil.setBorderBottom(1, cra6, sheet, wb);
+        RegionUtil.setBorderRight(1, cra6, sheet, wb);
+        RegionUtil.setBorderTop(1, cra6, sheet, wb);
+        CellRangeAddress cra7 = new CellRangeAddress(3, 3, 6, 10);
         sheet.addMergedRegion(cra7);
-        RegionUtil.setBorderBottom(1, cra7, sheet,wb);
-        RegionUtil.setBorderRight(1, cra7, sheet,wb);
-        RegionUtil.setBorderTop(1, cra7, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra7, sheet, wb);
+        RegionUtil.setBorderRight(1, cra7, sheet, wb);
+        RegionUtil.setBorderTop(1, cra7, sheet, wb);
 
         //5行
         HSSFRow rowFive = sheet.createRow((int) 4);
@@ -4203,7 +4206,7 @@ public class ExcelController {
         celle.setCellStyle(styleTwo);
 
         celle = rowFive.createCell((short) 1);
-        celle.setCellValue(workresult.get(0).get("V_EQUIP_NAME").toString().equals("")?"":workresult.get(0).get("V_EQUIP_NAME").toString());
+        celle.setCellValue(workresult.get(0).get("V_EQUIP_NAME").toString().equals("") ? "" : workresult.get(0).get("V_EQUIP_NAME").toString());
         celle.setCellStyle(styleOne);
 
         celle = rowFive.createCell((short) 2);
@@ -4211,7 +4214,7 @@ public class ExcelController {
         celle.setCellStyle(styleTwo);
 
         celle = rowFive.createCell((short) 3);
-        celle.setCellValue(workresult.get(0).get("V_DEPTNAMEREPARIR").toString().equals("")?"":workresult.get(0).get("V_DEPTNAMEREPARIR").toString());
+        celle.setCellValue(workresult.get(0).get("V_DEPTNAMEREPARIR").toString().equals("") ? "" : workresult.get(0).get("V_DEPTNAMEREPARIR").toString());
         celle.setCellStyle(styleOne);
 
         celle = rowFive.createCell((short) 5);
@@ -4219,7 +4222,7 @@ public class ExcelController {
         celle.setCellStyle(styleTwo);
 
         celle = rowFive.createCell((short) 6);
-        celle.setCellValue(workresult.get(0).get("V_ENTERED_BY").toString().equals("")?"":workresult.get(0).get("V_ENTERED_BY").toString());
+        celle.setCellValue(workresult.get(0).get("V_ENTERED_BY").toString().equals("") ? "" : workresult.get(0).get("V_ENTERED_BY").toString());
         celle.setCellStyle(styleOne);
 
         celle = rowFive.createCell((short) 8);
@@ -4227,24 +4230,24 @@ public class ExcelController {
         celle.setCellStyle(styleTwo);
 
         celle = rowFive.createCell((short) 9);
-        celle.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("")?"":workresult.get(0).get("D_ENTER_DATE").toString());
+        celle.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("") ? "" : workresult.get(0).get("D_ENTER_DATE").toString());
         celle.setCellStyle(styleOne);
 
-        CellRangeAddress cra8 =new CellRangeAddress(4,4,3,4);
+        CellRangeAddress cra8 = new CellRangeAddress(4, 4, 3, 4);
         sheet.addMergedRegion(cra8);
-        RegionUtil.setBorderBottom(1, cra8, sheet,wb);
-        RegionUtil.setBorderRight(1, cra8, sheet,wb);
-        RegionUtil.setBorderTop(1, cra8, sheet,wb);
-        CellRangeAddress cra9 =new CellRangeAddress(4,4,6,7);
+        RegionUtil.setBorderBottom(1, cra8, sheet, wb);
+        RegionUtil.setBorderRight(1, cra8, sheet, wb);
+        RegionUtil.setBorderTop(1, cra8, sheet, wb);
+        CellRangeAddress cra9 = new CellRangeAddress(4, 4, 6, 7);
         sheet.addMergedRegion(cra9);
-        RegionUtil.setBorderBottom(1, cra9, sheet,wb);
-        RegionUtil.setBorderRight(1, cra9, sheet,wb);
-        RegionUtil.setBorderTop(1, cra9, sheet,wb);
-        CellRangeAddress cra10 =new CellRangeAddress(4,4,9,10);
+        RegionUtil.setBorderBottom(1, cra9, sheet, wb);
+        RegionUtil.setBorderRight(1, cra9, sheet, wb);
+        RegionUtil.setBorderTop(1, cra9, sheet, wb);
+        CellRangeAddress cra10 = new CellRangeAddress(4, 4, 9, 10);
         sheet.addMergedRegion(cra10);
-        RegionUtil.setBorderBottom(1, cra10, sheet,wb);
-        RegionUtil.setBorderRight(1, cra10, sheet,wb);
-        RegionUtil.setBorderTop(1, cra10, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra10, sheet, wb);
+        RegionUtil.setBorderRight(1, cra10, sheet, wb);
+        RegionUtil.setBorderTop(1, cra10, sheet, wb);
 
         //6行
         HSSFRow rowSix = sheet.createRow((int) 5);
@@ -4253,7 +4256,7 @@ public class ExcelController {
         cellf.setCellStyle(styleTwo);
 
         cellf = rowSix.createCell((short) 1);
-        cellf.setCellValue(workresult.get(0).get("V_EQUIP_NO").toString().equals("")?"":workresult.get(0).get("V_EQUIP_NO").toString());
+        cellf.setCellValue(workresult.get(0).get("V_EQUIP_NO").toString().equals("") ? "" : workresult.get(0).get("V_EQUIP_NO").toString());
         cellf.setCellStyle(styleOne);
 
         cellf = rowSix.createCell((short) 5);
@@ -4261,7 +4264,7 @@ public class ExcelController {
         cellf.setCellStyle(styleTwo);
 
         cellf = rowSix.createCell((short) 6);
-        cellf.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("")?"":workresult.get(0).get("D_ENTER_DATE").toString());
+        cellf.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("") ? "" : workresult.get(0).get("D_ENTER_DATE").toString());
         cellf.setCellStyle(styleOne);
 
         cellf = rowSix.createCell((short) 8);
@@ -4269,24 +4272,24 @@ public class ExcelController {
         cellf.setCellStyle(styleTwo);
 
         cellf = rowSix.createCell((short) 9);
-        cellf.setCellValue(workresult.get(0).get("D_FACT_START_DATE").toString().equals("")?"":workresult.get(0).get("D_FACT_START_DATE").toString());
+        cellf.setCellValue(workresult.get(0).get("D_FACT_START_DATE").toString().equals("") ? "" : workresult.get(0).get("D_FACT_START_DATE").toString());
         cellf.setCellStyle(styleOne);
 
-        CellRangeAddress cra11 =new CellRangeAddress(5,5,1,4);
+        CellRangeAddress cra11 = new CellRangeAddress(5, 5, 1, 4);
         sheet.addMergedRegion(cra11);
-        RegionUtil.setBorderBottom(1, cra11, sheet,wb);
-        RegionUtil.setBorderRight(1, cra11, sheet,wb);
-        RegionUtil.setBorderTop(1, cra11, sheet,wb);
-        CellRangeAddress cra12 =new CellRangeAddress(5,5,6,7);
+        RegionUtil.setBorderBottom(1, cra11, sheet, wb);
+        RegionUtil.setBorderRight(1, cra11, sheet, wb);
+        RegionUtil.setBorderTop(1, cra11, sheet, wb);
+        CellRangeAddress cra12 = new CellRangeAddress(5, 5, 6, 7);
         sheet.addMergedRegion(cra12);
-        RegionUtil.setBorderBottom(1, cra12, sheet,wb);
-        RegionUtil.setBorderRight(1, cra12, sheet,wb);
-        RegionUtil.setBorderTop(1, cra12, sheet,wb);
-        CellRangeAddress cra13 =new CellRangeAddress(5,5,9,10);
+        RegionUtil.setBorderBottom(1, cra12, sheet, wb);
+        RegionUtil.setBorderRight(1, cra12, sheet, wb);
+        RegionUtil.setBorderTop(1, cra12, sheet, wb);
+        CellRangeAddress cra13 = new CellRangeAddress(5, 5, 9, 10);
         sheet.addMergedRegion(cra13);
-        RegionUtil.setBorderBottom(1, cra13, sheet,wb);
-        RegionUtil.setBorderRight(1, cra13, sheet,wb);
-        RegionUtil.setBorderTop(1, cra13, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra13, sheet, wb);
+        RegionUtil.setBorderRight(1, cra13, sheet, wb);
+        RegionUtil.setBorderTop(1, cra13, sheet, wb);
 
 
         //7行
@@ -4296,7 +4299,7 @@ public class ExcelController {
         cellg.setCellStyle(styleTwo);
 
         cellg = rowFive.createCell((short) 1);
-        cellg.setCellValue(workresult.get(0).get("V_EQUSITENAME").toString().equals("")?"":workresult.get(0).get("V_EQUSITENAME").toString());
+        cellg.setCellValue(workresult.get(0).get("V_EQUSITENAME").toString().equals("") ? "" : workresult.get(0).get("V_EQUSITENAME").toString());
         cellg.setCellStyle(styleOne);
 
         cellg = rowFive.createCell((short) 5);
@@ -4304,7 +4307,7 @@ public class ExcelController {
         cellg.setCellStyle(styleTwo);
 
         cellg = rowFive.createCell((short) 6);
-        cellg.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("")?"":workresult.get(0).get("D_ENTER_DATE").toString());
+        cellg.setCellValue(workresult.get(0).get("D_ENTER_DATE").toString().equals("") ? "" : workresult.get(0).get("D_ENTER_DATE").toString());
         cellg.setCellStyle(styleOne);
 
         cellg = rowFive.createCell((short) 8);
@@ -4312,24 +4315,24 @@ public class ExcelController {
         cellg.setCellStyle(styleTwo);
 
         cellg = rowFive.createCell((short) 9);
-        cellg.setCellValue(workresult.get(0).get("D_FACT_FINISH_DATE").toString().equals("")?"":workresult.get(0).get("D_FACT_FINISH_DATE").toString());
+        cellg.setCellValue(workresult.get(0).get("D_FACT_FINISH_DATE").toString().equals("") ? "" : workresult.get(0).get("D_FACT_FINISH_DATE").toString());
         cellg.setCellStyle(styleOne);
 
-        CellRangeAddress cra14 =new CellRangeAddress(6,6,6,7);
+        CellRangeAddress cra14 = new CellRangeAddress(6, 6, 6, 7);
         sheet.addMergedRegion(cra14);
-        RegionUtil.setBorderBottom(1, cra14, sheet,wb);
-        RegionUtil.setBorderRight(1, cra14, sheet,wb);
-        RegionUtil.setBorderTop(1, cra14, sheet,wb);
-        CellRangeAddress cra15 =new CellRangeAddress(6,6,9,10);
+        RegionUtil.setBorderBottom(1, cra14, sheet, wb);
+        RegionUtil.setBorderRight(1, cra14, sheet, wb);
+        RegionUtil.setBorderTop(1, cra14, sheet, wb);
+        CellRangeAddress cra15 = new CellRangeAddress(6, 6, 9, 10);
         sheet.addMergedRegion(cra15);
-        RegionUtil.setBorderBottom(1, cra15, sheet,wb);
-        RegionUtil.setBorderRight(1, cra15, sheet,wb);
-        RegionUtil.setBorderTop(1, cra15, sheet,wb);
-        CellRangeAddress cra16 =new CellRangeAddress(6,6,1,4);
+        RegionUtil.setBorderBottom(1, cra15, sheet, wb);
+        RegionUtil.setBorderRight(1, cra15, sheet, wb);
+        RegionUtil.setBorderTop(1, cra15, sheet, wb);
+        CellRangeAddress cra16 = new CellRangeAddress(6, 6, 1, 4);
         sheet.addMergedRegion(cra16);
-        RegionUtil.setBorderBottom(1, cra16, sheet,wb);
-        RegionUtil.setBorderRight(1, cra16, sheet,wb);
-        RegionUtil.setBorderTop(1, cra16, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra16, sheet, wb);
+        RegionUtil.setBorderRight(1, cra16, sheet, wb);
+        RegionUtil.setBorderTop(1, cra16, sheet, wb);
 
         //8行
         HSSFRow rowEight = sheet.createRow((int) 7);
@@ -4338,123 +4341,162 @@ public class ExcelController {
         cellh.setCellStyle(styleTwo);
 
         cellh = rowFive.createCell((short) 1);
-        cellh.setCellValue(workresult.get(0).get("V_SHORT_TXT").toString().equals("")?"":workresult.get(0).get("V_SHORT_TXT").toString());
+        cellh.setCellValue(workresult.get(0).get("V_SHORT_TXT").toString().equals("") ? "" : workresult.get(0).get("V_SHORT_TXT").toString());
         cellh.setCellStyle(styleOne);
 
-        CellRangeAddress cra17 =new CellRangeAddress(7,7,1,10);
+        CellRangeAddress cra17 = new CellRangeAddress(7, 7, 1, 10);
         sheet.addMergedRegion(cra17);
-        RegionUtil.setBorderBottom(1, cra17, sheet,wb);
-        RegionUtil.setBorderRight(1, cra17, sheet,wb);
-        RegionUtil.setBorderTop(1, cra17, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra17, sheet, wb);
+        RegionUtil.setBorderRight(1, cra17, sheet, wb);
+        RegionUtil.setBorderTop(1, cra17, sheet, wb);
 
         //9行
         HSSFRow rownight = sheet.createRow((int) 8);
         HSSFCell celli = rownight.createCell((short) 0);
         celli.setCellValue("3、任务细节：");
         celli.setCellStyle(styleTitle);
-        CellRangeAddress cra18 =new CellRangeAddress(8,8,0,10);
+        CellRangeAddress cra18 = new CellRangeAddress(8, 8, 0, 10);
         sheet.addMergedRegion(cra18);
-        RegionUtil.setBorderBottom(1, cra18, sheet,wb);
-        RegionUtil.setBorderRight(1, cra18, sheet,wb);
-        RegionUtil.setBorderTop(1, cra18, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra18, sheet, wb);
+        RegionUtil.setBorderRight(1, cra18, sheet, wb);
+        RegionUtil.setBorderTop(1, cra18, sheet, wb);
 
         //9行
         HSSFRow rowten = sheet.createRow((int) 9);
         HSSFCell cellj = rowten.createCell((short) 0);
-        cellj.setCellValue("工作编号");cellj.setCellStyle(styleTwo);
+        cellj.setCellValue("工作编号");
+        cellj.setCellStyle(styleTwo);
 
-        cellj = rowten.createCell((short) 1);cellj.setCellValue("工作中心");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 2);cellj.setCellValue("工序内容");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 3);cellj.setCellValue("定额时间");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 4);cellj.setCellValue("定额人数");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 5);cellj.setCellValue("实际时间");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 6);cellj.setCellValue("实际人数");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 7);cellj.setCellValue("机具");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 8);cellj.setCellValue("工具");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 9);cellj.setCellValue("技术要求");cellj.setCellStyle(styleTwo);
-        cellj = rowten.createCell((short) 10);cellj.setCellValue("安全措施");cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 1);
+        cellj.setCellValue("工作中心");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 2);
+        cellj.setCellValue("工序内容");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 3);
+        cellj.setCellValue("定额时间");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 4);
+        cellj.setCellValue("定额人数");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 5);
+        cellj.setCellValue("实际时间");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 6);
+        cellj.setCellValue("实际人数");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 7);
+        cellj.setCellValue("机具");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 8);
+        cellj.setCellValue("工具");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 9);
+        cellj.setCellValue("技术要求");
+        cellj.setCellStyle(styleTwo);
+        cellj = rowten.createCell((short) 10);
+        cellj.setCellValue("安全措施");
+        cellj.setCellStyle(styleTwo);
 
-        if(workgxresult.size()>0){
-            int sizegx=workgxresult.size()+10;
-            for(int i=10;i<sizegx;i++){
+        if (workgxresult.size() > 0) {
+            int sizegx = workgxresult.size() + 10;
+            for (int i = 10; i < sizegx; i++) {
                 HSSFRow rowgx = sheet.createRow((int) i);
-                int a=i-10;
-                rowgx.createCell((short) 0).setCellValue(workgxresult.get(a).get("V_ACTIVITY").toString().equals("") ? "" :workgxresult.get(a).get("V_ACTIVITY").toString());
-                rowgx.createCell((short) 1).setCellValue(workgxresult.get(a).get("V_WORK_CENTER").toString().equals("") ? "" :workgxresult.get(a).get("V_WORK_CENTER").toString());// map.get("FX_GUID").toString());
-                rowgx.createCell((short) 2).setCellValue(workgxresult.get(a).get("V_DESCRIPTION").toString().equals("") ? "" :workgxresult.get(a).get("V_DESCRIPTION").toString());
-                rowgx.createCell((short) 3).setCellValue(workgxresult.get(a).get("I_WORK_ACTIVITY").toString().equals("") ? "" :workgxresult.get(a).get("I_WORK_ACTIVITY").toString());
-                rowgx.createCell((short) 4).setCellValue(workgxresult.get(a).get("I_DURATION_NORMAL").toString().equals("") ? "" :workgxresult.get(a).get("I_DURATION_NORMAL").toString());
-                rowgx.createCell((short) 5).setCellValue(workgxresult.get(a).get("I_ACTUAL_TIME").toString().equals("") ? "" :workgxresult.get(a).get("I_ACTUAL_TIME").toString());
-                rowgx.createCell((short) 6).setCellValue(workgxresult.get(a).get("I_NUMBER_OF_PEOPLE").toString().equals("") ? "" :workgxresult.get(a).get("I_NUMBER_OF_PEOPLE").toString());
-                rowgx.createCell((short) 7).setCellValue(workgxresult.get(a).get("V_JJ_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_JJ_NAME").toString());
-                rowgx.createCell((short) 8).setCellValue(workgxresult.get(a).get("V_GJ_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_GJ_NAME").toString());
-                rowgx.createCell((short) 9).setCellValue(workgxresult.get(a).get("V_JSQY_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_JSQY_NAME").toString());
-                rowgx.createCell((short) 10).setCellValue(workgxresult.get(a).get("V_AQSC_NAME").toString().equals("") ? "" :workgxresult.get(a).get("V_AQSC_NAME").toString());
-                for(int m=0;m<=10;m++){
-                    sheet.addMergedRegion(new CellRangeAddress(i,i,m,m));
-                    RegionUtil.setBorderBottom(1, new CellRangeAddress(i,i,m,m), sheet,wb);
-                    RegionUtil.setBorderRight(1, new CellRangeAddress(i,i,m,m), sheet,wb);
-                    RegionUtil.setBorderTop(1, new CellRangeAddress(i,i,m,m), sheet,wb);
+                int a = i - 10;
+                rowgx.createCell((short) 0).setCellValue(workgxresult.get(a).get("V_ACTIVITY").toString().equals("") ? "" : workgxresult.get(a).get("V_ACTIVITY").toString());
+                rowgx.createCell((short) 1).setCellValue(workgxresult.get(a).get("V_WORK_CENTER").toString().equals("") ? "" : workgxresult.get(a).get("V_WORK_CENTER").toString());// map.get("FX_GUID").toString());
+                rowgx.createCell((short) 2).setCellValue(workgxresult.get(a).get("V_DESCRIPTION").toString().equals("") ? "" : workgxresult.get(a).get("V_DESCRIPTION").toString());
+                rowgx.createCell((short) 3).setCellValue(workgxresult.get(a).get("I_WORK_ACTIVITY").toString().equals("") ? "" : workgxresult.get(a).get("I_WORK_ACTIVITY").toString());
+                rowgx.createCell((short) 4).setCellValue(workgxresult.get(a).get("I_DURATION_NORMAL").toString().equals("") ? "" : workgxresult.get(a).get("I_DURATION_NORMAL").toString());
+                rowgx.createCell((short) 5).setCellValue(workgxresult.get(a).get("I_ACTUAL_TIME").toString().equals("") ? "" : workgxresult.get(a).get("I_ACTUAL_TIME").toString());
+                rowgx.createCell((short) 6).setCellValue(workgxresult.get(a).get("I_NUMBER_OF_PEOPLE").toString().equals("") ? "" : workgxresult.get(a).get("I_NUMBER_OF_PEOPLE").toString());
+                rowgx.createCell((short) 7).setCellValue(workgxresult.get(a).get("V_JJ_NAME").toString().equals("") ? "" : workgxresult.get(a).get("V_JJ_NAME").toString());
+                rowgx.createCell((short) 8).setCellValue(workgxresult.get(a).get("V_GJ_NAME").toString().equals("") ? "" : workgxresult.get(a).get("V_GJ_NAME").toString());
+                rowgx.createCell((short) 9).setCellValue(workgxresult.get(a).get("V_JSQY_NAME").toString().equals("") ? "" : workgxresult.get(a).get("V_JSQY_NAME").toString());
+                rowgx.createCell((short) 10).setCellValue(workgxresult.get(a).get("V_AQSC_NAME").toString().equals("") ? "" : workgxresult.get(a).get("V_AQSC_NAME").toString());
+                for (int m = 0; m <= 10; m++) {
+                    sheet.addMergedRegion(new CellRangeAddress(i, i, m, m));
+                    RegionUtil.setBorderBottom(1, new CellRangeAddress(i, i, m, m), sheet, wb);
+                    RegionUtil.setBorderRight(1, new CellRangeAddress(i, i, m, m), sheet, wb);
+                    RegionUtil.setBorderTop(1, new CellRangeAddress(i, i, m, m), sheet, wb);
                 }
             }
         }
 
         //物料标题
-        HSSFRow rowMH= sheet.createRow((int) rowWF);
+        HSSFRow rowMH = sheet.createRow((int) rowWF);
         HSSFCell cellk = rowMH.createCell((short) 0);
         cellk.setCellValue("4、物料信息：");
         cellk.setCellStyle(styleTitle);
 
-        CellRangeAddress cra19 =new CellRangeAddress(rowWF,rowWF,0,10);
+        CellRangeAddress cra19 = new CellRangeAddress(rowWF, rowWF, 0, 10);
         sheet.addMergedRegion(cra19);
-        RegionUtil.setBorderBottom(1, cra19, sheet,wb);
-        RegionUtil.setBorderRight(1, cra19, sheet,wb);
-        RegionUtil.setBorderTop(1, cra19, sheet,wb);
+        RegionUtil.setBorderBottom(1, cra19, sheet, wb);
+        RegionUtil.setBorderRight(1, cra19, sheet, wb);
+        RegionUtil.setBorderTop(1, cra19, sheet, wb);
 
-        HSSFRow rowMtit= sheet.createRow((int) rowWF+1);
-        sheet.addMergedRegion(new CellRangeAddress(rowWF+1,rowWF+1,3,4));//row物料标题行
+        HSSFRow rowMtit = sheet.createRow((int) rowWF + 1);
+        sheet.addMergedRegion(new CellRangeAddress(rowWF + 1, rowWF + 1, 3, 4));//row物料标题行
         HSSFCell celll = rowMtit.createCell((short) 0);
         celll.setCellValue("序号");
         celll.setCellStyle(styleTwo);
 
-        celll = rowMtit.createCell((short) 1);celll.setCellValue("工序");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 2);celll.setCellValue("物料编码");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 3);celll.setCellValue("物料描述");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 5);celll.setCellValue("单位");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 6);celll.setCellValue("计划数量");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 7);celll.setCellValue("总金额");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 8);celll.setCellValue("实际金额");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 9);celll.setCellValue("实际总金额");celll.setCellStyle(styleTwo);
-        celll = rowMtit.createCell((short) 10);celll.setCellValue("备注");celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 1);
+        celll.setCellValue("工序");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 2);
+        celll.setCellValue("物料编码");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 3);
+        celll.setCellValue("物料描述");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 5);
+        celll.setCellValue("单位");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 6);
+        celll.setCellValue("计划数量");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 7);
+        celll.setCellValue("总金额");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 8);
+        celll.setCellValue("实际金额");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 9);
+        celll.setCellValue("实际总金额");
+        celll.setCellStyle(styleTwo);
+        celll = rowMtit.createCell((short) 10);
+        celll.setCellValue("备注");
+        celll.setCellStyle(styleTwo);
 
-        if(mmresult.size()>0){
-            int sizemat=mmresult.size()+rowWF+2;
-            int insize=rowWF+2;
-            for(int j=insize;j<sizemat;j++){
-                sheet.addMergedRegion(new CellRangeAddress(j,j,3,4));//row物料标题行
+        if (mmresult.size() > 0) {
+            int sizemat = mmresult.size() + rowWF + 2;
+            int insize = rowWF + 2;
+            for (int j = insize; j < sizemat; j++) {
+                sheet.addMergedRegion(new CellRangeAddress(j, j, 3, 4));//row物料标题行
                 HSSFRow rowmat = sheet.createRow((int) j);
 
-                int b=j-rowWF-2;
-                rowmat.createCell((short) 0).setCellValue(b+1);
-                rowmat.createCell((short) 1).setCellValue(mmresult.get(b).get("V_ACTIVITY").toString().equals("") ? "" :mmresult.get(b).get("V_ACTIVITY").toString());
-                rowmat.createCell((short) 2).setCellValue(mmresult.get(b).get("V_MATERIALCODE").toString().equals("") ? "" :mmresult.get(b).get("V_MATERIALCODE").toString());
-                rowmat.createCell((short) 3).setCellValue(mmresult.get(b).get("V_MATERIALNAME").toString().equals("") ? "" :mmresult.get(b).get("V_MATERIALNAME").toString());
-                rowmat.createCell((short) 5).setCellValue(mmresult.get(b).get("V_UNIT").toString().equals("") ? "" :mmresult.get(b).get("V_UNIT").toString());
-                rowmat.createCell((short) 6).setCellValue(mmresult.get(b).get("I_PLANAMOUNT").toString().equals("") ? "" :mmresult.get(b).get("I_PLANAMOUNT").toString());
-                rowmat.createCell((short) 7).setCellValue(mmresult.get(b).get("F_PLANMONEY").toString().equals("") ? "" :mmresult.get(b).get("F_PLANMONEY").toString());
-                rowmat.createCell((short) 8).setCellValue(mmresult.get(b).get("I_ACTUALAMOUNT").toString().equals("") ? "" :mmresult.get(b).get("I_ACTUALAMOUNT").toString());
-                rowmat.createCell((short) 9).setCellValue(mmresult.get(b).get("F_ACTUALMONEY").toString().equals("") ? "" :mmresult.get(b).get("F_ACTUALMONEY").toString());
+                int b = j - rowWF - 2;
+                rowmat.createCell((short) 0).setCellValue(b + 1);
+                rowmat.createCell((short) 1).setCellValue(mmresult.get(b).get("V_ACTIVITY").toString().equals("") ? "" : mmresult.get(b).get("V_ACTIVITY").toString());
+                rowmat.createCell((short) 2).setCellValue(mmresult.get(b).get("V_MATERIALCODE").toString().equals("") ? "" : mmresult.get(b).get("V_MATERIALCODE").toString());
+                rowmat.createCell((short) 3).setCellValue(mmresult.get(b).get("V_MATERIALNAME").toString().equals("") ? "" : mmresult.get(b).get("V_MATERIALNAME").toString());
+                rowmat.createCell((short) 5).setCellValue(mmresult.get(b).get("V_UNIT").toString().equals("") ? "" : mmresult.get(b).get("V_UNIT").toString());
+                rowmat.createCell((short) 6).setCellValue(mmresult.get(b).get("I_PLANAMOUNT").toString().equals("") ? "" : mmresult.get(b).get("I_PLANAMOUNT").toString());
+                rowmat.createCell((short) 7).setCellValue(mmresult.get(b).get("F_PLANMONEY").toString().equals("") ? "" : mmresult.get(b).get("F_PLANMONEY").toString());
+                rowmat.createCell((short) 8).setCellValue(mmresult.get(b).get("I_ACTUALAMOUNT").toString().equals("") ? "" : mmresult.get(b).get("I_ACTUALAMOUNT").toString());
+                rowmat.createCell((short) 9).setCellValue(mmresult.get(b).get("F_ACTUALMONEY").toString().equals("") ? "" : mmresult.get(b).get("F_ACTUALMONEY").toString());
                 rowmat.createCell((short) 10).setCellValue("");
-                for(int n=0;n<=10;n++){
-                    sheet.addMergedRegion(new CellRangeAddress(j,j,n,n));
-                    RegionUtil.setBorderBottom(1, new CellRangeAddress(j,j,n,n), sheet,wb);
-                    RegionUtil.setBorderRight(1, new CellRangeAddress(j,j,n,n), sheet,wb);
-                    RegionUtil.setBorderTop(1, new CellRangeAddress(j,j,n,n), sheet,wb);
+                for (int n = 0; n <= 10; n++) {
+                    sheet.addMergedRegion(new CellRangeAddress(j, j, n, n));
+                    RegionUtil.setBorderBottom(1, new CellRangeAddress(j, j, n, n), sheet, wb);
+                    RegionUtil.setBorderRight(1, new CellRangeAddress(j, j, n, n), sheet, wb);
+                    RegionUtil.setBorderTop(1, new CellRangeAddress(j, j, n, n), sheet, wb);
                 }
-                sheet.addMergedRegion(new CellRangeAddress(j,j,3,4));
-                RegionUtil.setBorderBottom(1, new CellRangeAddress(j,j,3,4), sheet,wb);
-                RegionUtil.setBorderRight(1, new CellRangeAddress(j,j,3,4), sheet,wb);
-                RegionUtil.setBorderTop(1, new CellRangeAddress(j,j,3,4), sheet,wb);
+                sheet.addMergedRegion(new CellRangeAddress(j, j, 3, 4));
+                RegionUtil.setBorderBottom(1, new CellRangeAddress(j, j, 3, 4), sheet, wb);
+                RegionUtil.setBorderRight(1, new CellRangeAddress(j, j, 3, 4), sheet, wb);
+                RegionUtil.setBorderTop(1, new CellRangeAddress(j, j, 3, 4), sheet, wb);
             }
         }
         try {
@@ -4472,6 +4514,7 @@ public class ExcelController {
         }
 
     }
+
     //工单备件消耗查找
     @RequestMapping(value = "/WORKBJ_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -4610,6 +4653,7 @@ public class ExcelController {
             }
         }
     }
+
     //缺陷处理导出
     @RequestMapping(value = "/DEFCL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
@@ -4727,4 +4771,132 @@ public class ExcelController {
             }
         }
     }
+
+    /*
+     * 年计划导出
+     * */
+    @RequestMapping(value = "/YearPlan_Excel", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void DEFCL_EXCEL(
+            @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
+            @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+            @RequestParam(value = "V_V_CX") String V_V_CX,
+            @RequestParam(value = "V_V_ZY") String V_V_ZY,
+            @RequestParam(value = "V_V_STATECODE") String V_V_STATECODE,
+            HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+
+        List list = new ArrayList();
+        Map<String, Object> data = pm_06Service.PRO_YEAR_PLAN_SEL(V_V_YEAR, V_V_ORGCODE.equals("all") ? "%" : V_V_ORGCODE,
+                V_V_DEPTCODE.equals("all") ? "%" : V_V_DEPTCODE, V_V_CX.equals("all") ? "%" : V_V_CX,
+                V_V_ZY.equals("all") ? "%" : V_V_ZY, V_V_STATECODE.equals("all") ? "%" : V_V_STATECODE,"0","ALL");
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("厂矿");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("作业区");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("产线名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("专业");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("主要检修内容");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("计划停机时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("计划竣工时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("计划工期（小时）");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("录入人");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("录入时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 12);
+        cell.setCellValue("计划状态");
+        cell.setCellStyle(style);
+
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("V_ORGNAME") == null ? "" : map.get("V_ORGNAME").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("V_DEPTNAME") == null ? "" : map.get("V_DEPTNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("V_CXNAME") == null ? "" : map.get("V_CXNAME").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("V_ZYMC") == null ? "" : map.get("V_ZYMC").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("V_EQUNAME") == null ? "" : map.get("V_EQUNAME").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("V_COUNT") == null ? "" : map.get("V_COUNT").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("V_JHTJSJ") == null ? "" : map.get("V_JHTJSJ").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("V_JHJGSJ") == null ? "" : map.get("V_JHJGSJ").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("V_JHGQ") == null ? "" : map.get("V_JHGQ").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("V_INPERNAME") == null ? "" : map.get("V_INPERNAME").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("V_INDATE") == null ? "" : map.get("V_INDATE").toString());
+
+                row.createCell((short) 12).setCellValue(map.get("V_BASENAME") == null ? "" : map.get("V_BASENAME").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("年计划l.xls", "UTF-8"));
+                OutputStream out = response.getOutputStream();
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
