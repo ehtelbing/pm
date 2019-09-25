@@ -264,7 +264,7 @@ Ext.onReady(function () {
     var grid = Ext.create('Ext.grid.Panel', {
         id: 'grid',
         region: 'center',
-        width: '50%',
+        width: '100%',
         columnLines: true,
         store: gridStore,
         autoScroll: true,
@@ -293,17 +293,19 @@ Ext.onReady(function () {
             displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
             emptyMsg: '没有记录',
             store: 'gridStore'
-        }], listeners: {itemClick: OnGridClick}
+        }], listeners: {
+            itemClick: OnGridClick}
     });
 
     var gpanel = Ext.create('Ext.panel.Panel', {
         id: 'rpanel',
-        region: 'east',
+        region: 'south',
         layout: 'border',
-        width: '50%',
-        height: '100%',
-        items: []
-    })
+        width: '100%',
+        height: '50%',
+         items: []
+
+    });
 
     Ext.create('Ext.container.Viewport', {
         id: "id",
@@ -398,6 +400,11 @@ Ext.onReady(function () {
         OnButtonQuery();
     });
 
+    Ext.data.StoreManager.lookup('gridStore').on('load', function () {
+        yearguid = Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
+        OnShow();
+    });
+
 });
 
 function beforeloadStore(store) {
@@ -415,7 +422,6 @@ function atleft(value, metaData, record, rowIndex, colIndex, store) {
     metaData.style = "text-align:left;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
-
 
 function OnButtonQuery() {
     Ext.data.StoreManager.lookup('gridStore').currentPage = 1;
@@ -445,6 +451,10 @@ function OnButtonEdit() {
     }
 }
 
+function OnShow(){
+    Ext.getCmp('rpanel').removeAll();
+    pageFunction.QueryGanttData();
+}
 
 function OnGridClick(s, record) {
     yearguid = record.data.V_GUID;

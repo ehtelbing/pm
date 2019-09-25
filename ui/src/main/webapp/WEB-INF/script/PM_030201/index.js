@@ -320,12 +320,12 @@ Ext.onReady(function () {
 
     var gpanel = Ext.create('Ext.panel.Panel', {
         id: 'rpanel',
-        region: 'east',
+        region: 'south',
         layout: 'border',
-        width: '50%',
-        height: '100%',
+        width: '100%',
+        height: '50%',
         items: []
-    })
+    });
 
     Ext.create('Ext.container.Viewport', {
         id: "id",
@@ -446,6 +446,11 @@ Ext.onReady(function () {
         OnButtonQuery();
     });
 
+    Ext.data.StoreManager.lookup('gridStore').on('load', function () {
+        yearguid = Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
+        OnShow();
+    });
+
 });
 
 function beforeloadStore(store) {
@@ -541,6 +546,12 @@ function OnButtonDel() {
             }
         }
     }
+}
+
+function OnShow(s,record){
+    yearguid = record.data.V_GUID;
+    Ext.getCmp('rpanel').removeAll();
+    pageFunction.QueryGanttData();
 }
 
 function OnGridClick(s, record) {
