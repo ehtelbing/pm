@@ -94,8 +94,8 @@ $(function () {
 
     var windowb = Ext.create('Ext.window.Window', {
         id: 'windowb',
-        width: 370,
-        height: 300,
+        width: 600,
+        height: 600,
         layout: 'border',
         title: '选择接收人',
         modal: true,//弹出窗口时后面背景不可编辑
