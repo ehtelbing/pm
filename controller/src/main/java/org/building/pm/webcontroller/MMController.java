@@ -562,7 +562,7 @@ public class MMController {
 
                 Element Materials = Fields.addElement("Materials"); //添加子节点
 
-                System.out.println(trmap.get("I_KC_ID").toString());
+             //   System.out.println(trmap.get("I_KC_ID").toString());
 
                 Materials.addElement("ORDERID").setText(ORDERID);
                 Materials.addElement("ACTIVITY").setText(trmap.get("V_ACTIVITY") == null ? "" : trmap.get("V_ACTIVITY").toString());

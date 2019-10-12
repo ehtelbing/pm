@@ -172,8 +172,8 @@ $(function () {
     });
     var windowb = Ext.create('Ext.window.Window', {
         id: 'windowb',
-        width: 400,
-        height: 180,
+        width: 600,
+        height: 600,
         bodyPadding: 15,
         layout: 'border',
         title: '选择接收人',

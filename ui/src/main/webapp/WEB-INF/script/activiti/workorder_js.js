@@ -351,8 +351,8 @@ $(function () {
     });
     var windowb = Ext.create('Ext.window.Window', {
         id: 'windowb',
-        width: 370,
-        height: 150,
+        width: 600,
+        height: 600,
         bodyPadding: 15,
         layout: 'border',
         title: '选择反馈接收人',

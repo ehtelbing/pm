@@ -93,7 +93,7 @@ public class UploadUtil
 
 
         //在服务器上生成压缩图片文件
-        System.out.println("22222222222222222222222222222222222222222222222222222"+getImagePath + "/" + fileNewName);
+       // System.out.println("22222222222222222222222222222222222222222222222222222"+getImagePath + "/" + fileNewName);
         FileOutputStream fos = new FileOutputStream(getImagePath + "/" + fileNewName);
 
         FileInputStream fis = (FileInputStream) file.getInputStream();
