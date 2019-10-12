@@ -5319,6 +5319,36 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end WORK_FILE_DEL");
         return result;
     }
+    //工单附件下载
+    public Map WORK_FILE_DOWN(String V_FILEGUID) throws SQLException {
+        logger.info("begin WORK_FILE_DOWN");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call WORK_FILE_DOWN" + "(:V_FILECODE,:V_FILEBLOB,:V_FILENAME,:V_FILETYPECODE,:V_INFO)}");
+            cstmt.setString("V_FILEGUID", V_FILEGUID);
+            cstmt.registerOutParameter("V_FILEBLOB", OracleTypes.BLOB);
+            cstmt.registerOutParameter("V_FILENAME", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_FILETYPECODE", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
+            cstmt.execute();
+            result.put("V_INFO", (String) cstmt.getObject("V_INFO"));
+            result.put("V_FILETYPECODE", (String) cstmt.getObject("V_FILETYPECODE"));
+            result.put("V_FILENAME", (String) cstmt.getObject("V_FILENAME"));
+            result.put("V_FILEBLOB", cstmt.getBlob("V_FILEBLOB"));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end WORK_FILE_DOWN");
+        return result;
+    }
     //维修简版查询
     public Map PRO_PM_03_PLAN_YEAR_VIEW_E(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_ZY,
                                           String V_V_QSTEXT,String V_V_PAGE,String V_V_PAGESIZE) throws SQLException {
@@ -5616,7 +5646,36 @@ public Map YEAR_TO_MONTH_CH_WEEK_SIGN(String V_WEEKGUID) throws SQLException {
         logger.info("end PRO_PM_DEFECT_SEL_FROM_WORK");
         return result;
     }
+    //    工单查询  缺陷详情
+    public Map PRO_PM_SELECT_SEL_FROM_WORK(String V_WORK_GUID) throws SQLException {
 
+        logger.info("begin PRO_PM_SELECT_SEL_FROM_WORK");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_PM_SELECT_SEL_FROM_WORK" + "(:V_WORK_GUID,:RET)}");
+            cstmt.setString("V_WORK_GUID", V_WORK_GUID);
+
+//            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+//            String sunm = (String) cstmt.getObject("RET");
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+//            result.put("RET", sunm);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_PM_SELECT_SEL_FROM_WORK");
+        return result;
+    }
     //缺陷查找工单
     public Map PRO_PM_WORKORDER_SEL_FROM_DEL(String V_DEL_GUID) throws SQLException {
 

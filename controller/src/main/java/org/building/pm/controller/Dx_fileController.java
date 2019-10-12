@@ -4351,6 +4351,29 @@ public class Dx_fileController {
         Map<String, Object> result = dx_fileService.WORK_FILE_DEL(V_WORKGUID,V_FILEGUID);
         return result;
     }
+    //工单附件下载
+    @RequestMapping(value = "/WORK_FILE_DOWN", method = RequestMethod.GET)
+    @ResponseBody
+    public void WORK_FILE_DOWN_NTKO(@RequestParam(value = "V_FILEGUID") String V_FILEGUID,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) throws Exception {
+        Map result = dx_fileService.WORK_FILE_DOWN(V_FILEGUID);
+
+
+        Blob fileblob = (Blob) result.get("V_FILEBLOB");
+
+        InputStream is = fileblob.getBinaryStream();
+
+
+        OutputStream fos = response.getOutputStream();
+        byte[] b = new byte[20480];
+        int length;
+        while ((length = is.read(b)) > 0) {
+            fos.write(b, 0, length);
+        }
+        is.close();
+        fos.close();
+    }
     //维修简版查询
     @RequestMapping(value = "PRO_PM_03_PLAN_YEAR_VIEW_E", method = RequestMethod.POST)
     @ResponseBody
