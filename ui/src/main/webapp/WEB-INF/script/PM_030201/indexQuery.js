@@ -140,7 +140,7 @@ Ext.onReady(function () {
         pageSize: 100,
         autoLoad: false,
         fields: ['I_ID','V_GUID','V_GUID_UP','V_YEAR','V_MONTH','V_ORGCODE','V_ORGNAME',
-            'V_DEPTCODE','V_DEPTNAME','V_PORJECT_CODE','V_PORJECT_NAME','V_SPECIALTY','V_SPECIALTYNAME',
+            'V_DEPTCODE','V_DEPTNAME','V_PORJECT_CODE','V_PORJECT_NAME','V_INMAN','V_DEPTNAME','V_SPECIALTY','V_SPECIALTYNAME',
             'V_SPECIALTYMANCODE','V_SPECIALTYMAN','V_WXTYPECODE','V_WXTYPENAME','V_CONTENT','V_MONEYBUDGET',
             'V_REPAIRDEPTCODE','V_BDATE','V_EDATE','V_STATE','V_FLAG','V_INMAN','V_INMANCODE','V_INDATE',
             'V_STATENAME','V_QSTEXT','DEFNUM'],
@@ -245,7 +245,7 @@ Ext.onReady(function () {
             fieldLabel: '计划厂矿',
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
-            labelWidth: 80,
+            labelWidth: 75,
             width: 250
         },{
             xtype: 'combo',
@@ -259,11 +259,9 @@ Ext.onReady(function () {
             width: 255,
             displayField: 'V_DEPTNAME',
             valueField: 'V_DEPTCODE',
-            queryMode: 'local'
+             queryMode: 'local'
             /*, listeners: {
                 change: function (field, newValue, oldValue) {
-
-
                 }
             }*/
         },{
@@ -276,7 +274,7 @@ Ext.onReady(function () {
             margin: '5 5 5 5',
             displayField: 'V_ZYMC',
             valueField: 'V_GUID',
-            labelWidth: 100,
+            labelWidth: 75,
             labelAlign: 'right'
         },{
           xtype:'combo',
@@ -288,7 +286,7 @@ Ext.onReady(function () {
             margin:'5 5 5 5',
             displayField: 'V_STATENAME',
             valueField: 'V_STATECODE',
-            labelWidth: 100,
+            labelWidth: 75,
             labelAlign: 'right'
         },
             /*{
@@ -342,20 +340,22 @@ Ext.onReady(function () {
         style: 'text-align:center',
         height: 400,
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '流程详细', width: 160, dataIndex: 'V_GUID', align: 'center',
+            {text: '流程详细', width: 150, dataIndex: 'V_GUID', align: 'center',
                 renderer: function (value, metaData, record, rowIdx, colIdx, store, view) {
                     return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + '详细' + '</a>';
                 }},
-            {text:'缺陷详情',width:160,dataIndex:'V_GUID',align:'center',renderer:OperaTion},
-            {text: '工程状态', width: 160, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
-            {text: '工程编码', width: 210, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
-            {text: '工程名称', width: 210, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
+            {text:'缺陷详情',width:150,dataIndex:'V_GUID',align:'center',renderer:OperaTion},
+            {text: '工程状态', width: 150, dataIndex: 'V_STATENAME', align: 'center', renderer: atleft},
+            {text: '工程编码', width: 150, dataIndex: 'V_PORJECT_CODE', align: 'center', renderer: atleft},
+            {text: '工程名称', width: 150, dataIndex: 'V_PORJECT_NAME', align: 'center', renderer: atleft},
             /* {text: '维修类型', width: 100, dataIndex: 'V_WXTYPENAME', align: 'center', renderer: atleft},*/
             {text: '专业', width: 120, dataIndex: 'V_SPECIALTYNAME', align: 'center', renderer: atleft},
-            {text: '工程请示内容', width: 300, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
+            {text: '工程请示内容', width: 200, dataIndex: 'V_QSTEXT', align: 'center', renderer: atleft},
+            {text: '计划作业区', width: 150, dataIndex: 'V_DEPTNAME', align: 'center', renderer: atleft},
+            {text: '上报人', width: 150, dataIndex: 'V_INMAN', align: 'center', renderer: atleft},
             /*{text: '维修费用', width: 100, dataIndex: 'V_MONEYBUDGET', align: 'center', renderer: atright},*/
-            {text: '开工时间', width: 140, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
-            {text: '竣工时间', width: 140, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}],
+            {text: '开工时间', width: 130, dataIndex: 'V_BDATE', align: 'center', renderer: timelfet},
+            {text: '竣工时间', width: 130, dataIndex: 'V_EDATE', align: 'center', renderer: timelfet}],
         listeners : {
             itemdblclick : itemClick
         },

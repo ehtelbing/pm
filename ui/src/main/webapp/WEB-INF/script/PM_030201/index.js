@@ -1,4 +1,4 @@
-﻿var dt = new Date();
+﻿﻿var dt = new Date();
 var thisYear = dt.getFullYear();
 var thisMonth = dt.getMonth() + 1;
 var thisDate = dt.getDate();

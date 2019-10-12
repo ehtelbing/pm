@@ -353,7 +353,7 @@ Ext.onReady(function () {
                                     loading: false,
                                     fields: ['V_EQUNAME', 'V_SETNAME', 'V_LUBADDRESS', 'V_LUBMODE', 'V_LUBTRADEMARK', 'F_LUBCOUNT',
                                         'F_OILAMOUNT', 'I_UNIT', 'D_OPERATEDATE', 'V_OPERATEPERSON', 'V_OPERATEREASON', 'V_LUBRICATIONCODE',
-                                        'V_DEPTCODE', 'V_EQUTYPECODE', 'V_EQUCODE'],
+                                        'V_DEPTCODE', 'V_EQUTYPECODE', 'V_EQUCODE','V_INMAN'],
                                     proxy: {
                                         type: 'ajax',
                                         async: true,

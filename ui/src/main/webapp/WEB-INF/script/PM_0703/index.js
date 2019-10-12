@@ -269,14 +269,14 @@ Ext.onReady(function () {
                         for (i = 0; i < resp.length; i++) {
                             Ext.ComponentManager.get("tabpanel").add({
                                 id: 'tabpanel' + i,
-                                title: resp[i].V_SOURCENAME,
+                                //
                                 items: [{
                                     xtype: 'hidden',
                                     value: resp[i].V_SOURCECODE
                                 }]
                             });
                         }
-                        Ext.ComponentManager.get("tabpanel").setActiveTab(tabIndex);
+                      /*  Ext.ComponentManager.get("tabpanel").setActiveTab(tabIndex);*/
                     }
                 });
                 /* */

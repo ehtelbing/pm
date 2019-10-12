@@ -389,7 +389,6 @@ public class PM_07Service {
             conn.setAutoCommit(true);
             cstmt = conn.prepareCall("{call DEFECT_UPFILE_SELECT" + "(:V_GUID,:RET)}");
             cstmt.setString("V_GUID", V_GUID);
-
             cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));

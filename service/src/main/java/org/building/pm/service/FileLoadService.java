@@ -17,7 +17,7 @@ import java.util.HashMap;
  * Created by Administrator on 17-4-23.
  */
 @Service
-public class FileLoadService {
+public class  FileLoadService {
     private static final Logger logger = Logger.getLogger(FileLoadService.class.getName());
 
     @Value("#{configProperties['system.copyright']}")

@@ -229,6 +229,13 @@ Ext.onReady(function() {
                 renderer : _defDetail
             },
             {
+                text : '附件详情',
+                dataIndex : 'V_ORDERGUID',
+                width : 100,
+                align : 'center',
+                renderer : _defDetail1
+            },
+            {
             text : '流程明细',
             dataIndex : 'V_ORDERGUID',
             width : 100,
@@ -552,8 +559,6 @@ function OnSearch() {
             querytool = true;
         }
     });
-
-
 }
 function QueryGrid() {
 
@@ -567,6 +572,7 @@ function QueryGrid() {
         Ext.data.StoreManager.lookup('gridStore').load();
     }
 }
+
 function rendererZGD(a, value, metaData){
     return '<a href="javascript:goToZGD(\'' + metaData.data.V_ORDERGUID + '\')">' + a + '</a>';
 }
@@ -612,7 +618,7 @@ function OnClickExcelButton(){
         '&V_V_STATECODE='+encodeURI(Ext.ComponentManager.get("gdzt").getValue())+
         '&V_EQUTYPE_CODE='+encodeURI(Ext.ComponentManager.get("sblx").getValue())+
         '&V_EQU_CODE='+encodeURI(Ext.ComponentManager.get("sbmc").getValue())+
-        '&V_DJ_PERCODE='+ encodeURI(Ext.ComponentManager.get("djy").getValue())+
+        '&V_DJ_PERCODE='+ encodpeURI(Ext.ComponentManager.get("djy").getValue())+
         '&V_V_SHORT_TXT='+ Ext.ComponentManager.get("selshortTxt").getValue()+
         '&V_V_BJ_TXT='+Ext.ComponentManager.get("selmatDesc").getValue()+
         '&V_V_ORDER_TYP='+Ext.getCmp('tabpanel').getActiveTab().id
@@ -759,8 +765,21 @@ function _defDetail(value, metaData, record, rowIndex, colIndex, store){
 
 
 }
+function _defDetail1(value, metaData, record, rowIndex, colIndex, store){
+
+    metaData.style = "text-align:center";
+    return '<a href="#" onclick="onClickDef1(\''+value+'\')">'+"附件详情"+'</a>';
+
+
+}
 function onClickDef(workguid){
     window.open(AppUrl + "page/No4116/defView.html?V_GUID="+workguid+
         // + Ext.getStore("gridStore").getAt(index).get("V_ORDERGUID"),
         "", "dialogHeight:600px;dialogWidth:800px");
 }
+function onClickDef1(workguid){
+    window.open(AppUrl + "page/No4116/accessory.html?V_GUID="+workguid+
+        // + Ext.getStore("gridStore").getAt(index).get("V_ORDERGUID"),
+        "", "dialogHeight:600px;dialogWidth:800px");
+}
+

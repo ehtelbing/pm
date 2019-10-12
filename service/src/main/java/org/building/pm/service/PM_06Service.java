@@ -67,10 +67,8 @@ public class PM_06Service {
 
     //��λ���ƹ���
     public HashMap PRO_BASE_DEPT_VIEW_ROLE(String V_V_PERSONCODE, String V_V_DEPTCODE, String V_V_DEPTCODENEXT, String V_V_DEPTTYPE) throws SQLException {
-
         logger.info("begin PRO_BASE_DEPT_VIEW_ROLE");
 //      logger.debug("params:V_V_DEPTREPAIRCODE:" + V_V_DEPTREPAIRCODE);
-
         HashMap result = new HashMap();
         Connection conn = null;
         CallableStatement cstmt = null;
@@ -84,7 +82,6 @@ public class PM_06Service {
             cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
-
             result.put("list",
                     ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
         } catch (SQLException e) {
