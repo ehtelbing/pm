@@ -453,7 +453,7 @@ function zhuce() {
                 V_V_INFORMATION: Ext.getCmp('xxnr').getValue(),
                 V_V_D_DATE: Ext.Date.format(Ext.getCmp('nowtime').getValue(), 'Y-m-d') + ' ' + aHour + ':' + aMinute + ':' + '01',
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
-                V_V_PERSONNAME: Ext.util.Cookies.get('v_personname2'),
+                V_V_PERSONNAME: Ext.getCmp('llr').getValue(),
                 V_V_TYPE: Ext.getCmp('lx').getValue(),
                 V_V_CLASS: Ext.getCmp('bz').getValue(),
                 V_V_CLASSTYPE: Ext.getCmp('bx').getValue(),

@@ -125,7 +125,7 @@ Ext.onReady(function () {
             labelAlign: 'right',
             labelAlign: 'right',
             labelWidth: 40,
-            style: 'margin-bottom:3px'
+            style: {margin: '5px 0 0 5px'}
         },
         width: '100%',
         frame: true,
@@ -171,114 +171,112 @@ Ext.onReady(function () {
             hidden: true,
             displayField: 'V_STATENAME',
             valueField: 'V_STATECODE',
-            queryMode: 'local'/*
-				 * , baseCls :
-				 * 'margin-bottom'
-				 */
+            queryMode: 'local'
         }, {
             id: 'begintime',
             xtype: 'datefield',
             format: 'Y-m-d',
             fieldLabel: '起始日期',
             labelWidth: 60,
-            value: new Date(new Date() - 1 * 24 * 60 * 60 * 1000)
-        }, {
-            xtype: 'combo',
-            width: 60,
             editable: false,
-            id: 'Hour',
-            store: HourStore,
-            displayField: 'NAME',
-            valueField: 'CODE',
-            value: new Date().getHours()
-        },
-            {xtype: 'label', text: '时', style: {margin: '5px 0 0 5px'}},
-            {
-                xtype: 'combo',
-                width: 60,
-                id: 'Minute',
-                editable: false,
-                store: MinuteStore,
-                displayField: 'NAME',
-                valueField: 'CODE',
-                value: new Date().getMinutes()
-            },
-            {xtype: 'label', text: '分', style: {margin: '5px 0 0 5px'}}, {
-            id: 'endtime',
-            display: 'hidden',
-            xtype: 'datefield',
-            format: 'Y-m-d',
-            fieldLabel: '终止日期',
-            labelWidth: 60,
             value: new Date()
-        },  {
+        }, {
             xtype: 'combo',
             width: 60,
             editable: false,
-            id: 'Hour1',
+            id: 'sHour',
             store: HourStore,
             displayField: 'NAME',
             valueField: 'CODE',
             value: new Date().getHours()
         },
-            {xtype: 'label', text: '时', style: {margin: '5px 0 0 5px'}},
+            {xtype: 'label', text: '时'},
             {
                 xtype: 'combo',
                 width: 60,
-                id: 'Minute1',
+                id: 'sMinute',
                 editable: false,
                 store: MinuteStore,
                 displayField: 'NAME',
                 valueField: 'CODE',
                 value: new Date().getMinutes()
             },
-            {xtype: 'label', text: '分', style: {margin: '5px 0 0 5px'}},
+            {xtype: 'label', text: '分'}, {
+                id: 'endtime',
+                xtype: 'datefield',
+                format: 'Y-m-d',
+                fieldLabel: '终止日期',
+                labelWidth: 60,
+                editable: false,
+                value: new Date()
+            }, {
+                xtype: 'combo',
+                width: 60,
+                editable: false,
+                id: 'eHour',
+                store: HourStore,
+                displayField: 'NAME',
+                valueField: 'CODE',
+                value: new Date().getHours()
+            },
+            {xtype: 'label', text: '时'},
             {
-            xtype: 'button',
-            display: 'hidden',
-            text: '查 询',
-            style: ' margin-left: 10px',
-            icon: imgpath + '/search.png',
-            handler: function () {
-                queryStore();
-            }
-        }, {
-            xtype: 'button',
-            display: 'hidden',
-            text: '导 出',
-            style: ' margin-left: 10px',
-            icon: imgpath + '/311.gif',
-            handler: function () {
-                OnButtonExcelClicked();
-            }
-        }, {
-            xtype: 'button',
-            display: 'hidden',
-            text: '打 印',
-            style: ' margin-left: 10px',
-            icon: imgpath + '/printer.png',
-            handler: function () {
-                var ID_list = [];
-                printStore.removeAll();
-                var gridStore = Ext.getStore('gridStore');
-                for (var i = 0; i < gridStore.getCount(); i++) {
-                    if (document.getElementById(gridStore.getAt(i).get('I_ID')).checked) {
-                        ID_list.push(Ext.getStore('gridStore').getAt(i).get('I_ID'));
-                        //printStore.add(gridStore.getAt(i).get('I_ID'));
+                xtype: 'combo',
+                width: 60,
+                id: 'eMinute',
+                editable: false,
+                store: MinuteStore,
+                displayField: 'NAME',
+                valueField: 'CODE',
+                value: new Date().getMinutes()
+            },
+            {xtype: 'label', text: '分'},
+            {
+                xtype: 'button',
+                display: 'hidden',
+                text: '查 询',
+                style: ' margin-left: 10px',
+                icon: imgpath + '/search.png',
+                handler: function () {
+                    queryStore();
+                }
+            }, {
+                xtype: 'button',
+                display: 'hidden',
+                text: '导 出',
+                style: ' margin-left: 10px',
+                icon: imgpath + '/311.gif',
+                handler: function () {
+                    OnButtonExcelClicked();
+                }
+            }, {
+                xtype: 'button',
+                display: 'hidden',
+                text: '打 印',
+                style: ' margin-left: 10px',
+                icon: imgpath + '/printer.png',
+                handler: function () {
+                    var ID_list = [];
+                    printStore.removeAll();
+                    var gridStore = Ext.getStore('gridStore');
+                    for (var i = 0; i < gridStore.getCount(); i++) {
+                        if (document.getElementById(gridStore.getAt(i).get('I_ID')).checked) {
+                            ID_list.push(Ext.getStore('gridStore').getAt(i).get('I_ID'));
+                            //printStore.add(gridStore.getAt(i).get('I_ID'));
+                        }
+                    }
+                    if (printStore.getCount() > 0) {
+                        window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue() + "&endtime=" + Ext.getCmp('endtime').getRawValue(), "打印", "dialogHeight:700px;dialogWidth:1100px");
+                    } else {
+                        Ext.MessageBox.show({
+                            title: '提示',
+                            msg: '没有要打印的内容',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
                     }
                 }
-                if (printStore.getCount() > 0) {
-                    window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue() + "&endtime=" + Ext.getCmp('endtime').getRawValue(), "打印", "dialogHeight:700px;dialogWidth:1100px");
-                } else {
-                    Ext.MessageBox.show({
-                        title: '提示',
-                        msg: '没有要打印的内容',
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.WARNING
-                    });
-                }
-            }
-        }]
+            }]
     });
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -434,7 +432,7 @@ Ext.onReady(function () {
     });
     gridStore.on("load", function () {
         Ext.ComponentManager.get('sum').setValue(
-                '数量：' + Ext.getStore('gridStore').data.items.length);
+            '数量：' + Ext.getStore('gridStore').data.items.length);
     });
 //    Ext.getCmp('lx').on("change", function () {
 //        if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
@@ -482,8 +480,8 @@ function queryStore() {
                 V_V_TYPE: Ext.ComponentManager.get('lx').getValue(),
                 V_V_CLASSTYPE: Ext.ComponentManager.get('bb').getValue(),
                 V_V_TYPE_STATE: Ext.ComponentManager.get('qxstrue').getValue(),
-                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'),
-                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')
+                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d')+" "+Ext.getCmp('sHour').getValue()+":"+Ext.getCmp('sMinute').getValue()+":00",
+                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d')+" "+Ext.getCmp('eHour').getValue()+":"+Ext.getCmp('eMinute').getValue()+":00"
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
@@ -502,10 +500,8 @@ function queryStore() {
                 V_V_DEPT: Ext.ComponentManager.get('bmmc').getValue(),
                 V_V_TYPE: Ext.ComponentManager.get('lx').getValue(),
                 V_V_CLASSTYPE: Ext.ComponentManager.get('bb').getValue(),
-                // V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y/m/d H:i:m'),
-                // V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y/m/d H:i:s')
-                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y/m/d'),
-                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y/m/d')
+                V_D_FROMDATE:Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d')+" "+Ext.getCmp('sHour').getValue()+":"+Ext.getCmp('sMinute').getValue()+":00",
+                V_D_TODATE:  Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d')+" "+Ext.getCmp('eHour').getValue()+":"+Ext.getCmp('eMinute').getValue()+":00"
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
@@ -516,46 +512,13 @@ function queryStore() {
     }
 }
 
-function Bind() {
-    Ext.getStore('gridStore').load({
-        params: {
-            parName: ['V_V_PERSONCODE', 'v_v_dept', 'v_v_type', 'v_v_classtype', 'v_d_fromdate', 'v_d_todate'],
-            parType: ['s', 's', 's', 's', 'dt', 'da'],
-            parVal: [Ext.util.Cookies.get('v_personcode'), Ext.ComponentManager.get('bmmc').getValue(), Ext.ComponentManager.get('lx').getValue(), Ext.ComponentManager.get('bb').getValue(), Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d') + " 16:00:00", Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d')],
-            proName: 'PRO_PP_INFORMATION_WITHD_LIST2',
-            cursorName: 'v_cursor'
-        }
-    });
-    Ext.Ajax.request({
-        url: APP + '/ModelSelect',
-        method: 'POST',
-        async: false,
-        params: {
-            parName: ['V_V_PERSONCODE', 'v_v_dept', 'v_v_type', 'v_v_classtype', 'v_d_fromdate', 'v_d_todate'],
-            parType: ['s', 's', 's', 's', 'dt', 'dt'],
-            parVal: [Ext.util.Cookies.get('v_personcode'), Ext.ComponentManager.get('bmmc').getValue(), Ext.ComponentManager.get('lx').getValue(), Ext.ComponentManager.get('bb').getValue(), Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m'), Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s')],
-            proName: 'PRO_PP_INFORMATION_WITHD_LIST2',
-            cursorName: 'v_cursor'
-        },
-        success: function (resp) {
-            var resp = Ext.decode(resp.responseText).list;
-            if (resp == '') {
-                Ext.getCmp('miao').setValue('未设置');
-            } else {
-                Ext.getCmp('miao').setValue(resp[0].D_DATE);
-            }
-        }
-    });
-}
-
 function query() {
     setTimeout("query()", 1000 * 60 * 5);
-    // Bind();
 }
 
 function check(value, metaData, record, rowIndex, colIndex, store) {
     return '<input type="checkbox" checked="checked" id=' + record.raw.I_ID
-            + '></input>'
+        + '></input>'
 }
 
 function renderRQ(v, metaData, record, rowIndex, colIndex, store) {
