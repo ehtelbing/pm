@@ -44,6 +44,48 @@ Ext.onReady(function () {
             extraParams: {}
         }
     });
+    var Hours = [];
+    for (var i = 0; i < 24; i++) {
+        if (i < 10) {
+            Hours.push({CODE: '0' + i, NAME: i});
+        }
+        else {
+            Hours.push({CODE: i, NAME: i});
+        }
+    }
+    var HourStore = Ext.create("Ext.data.Store", {
+        autoLoad: true,
+        storeId: 'HourStore',
+        fields: ['CODE', 'NAME'],
+        data: Hours,
+        proxy: {
+            type: 'memory',
+            render: {
+                type: 'json'
+            }
+        }
+    });
+    var Minutes = [];
+    for (i = 0; i < 60; i++) {
+        if (i < 10) {
+            Minutes.push({CODE: '0' + i, NAME: i});
+        }
+        else {
+            Minutes.push({CODE: i, NAME: i});
+        }
+    }
+    var MinuteStore = Ext.create("Ext.data.Store", {
+        autoLoad: true,
+        storeId: 'MinuteStore',
+        fields: ['CODE', 'NAME'],
+        data: Minutes,
+        proxy: {
+            type: 'memory',
+            render: {
+                type: 'json'
+            }
+        }
+    });
     var lxstore = Ext.create('Ext.data.Store', {
         autoLoad: false,
         storeId: 'lxstore',
@@ -141,12 +183,27 @@ Ext.onReady(function () {
             labelWidth: 60,
             value: new Date(new Date() - 1 * 24 * 60 * 60 * 1000)
         }, {
-            id: 'miao',
-            display: 'hidden',
-            xtype: 'displayfield',
-            labelWidth: 60,
-            value: '18:30:00'
-        }, {
+            xtype: 'combo',
+            width: 60,
+            editable: false,
+            id: 'Hour',
+            store: HourStore,
+            displayField: 'NAME',
+            valueField: 'CODE',
+            value: new Date().getHours()
+        },
+            {xtype: 'label', text: '时', style: {margin: '5px 0 0 5px'}},
+            {
+                xtype: 'combo',
+                width: 60,
+                id: 'Minute',
+                editable: false,
+                store: MinuteStore,
+                displayField: 'NAME',
+                valueField: 'CODE',
+                value: new Date().getMinutes()
+            },
+            {xtype: 'label', text: '分', style: {margin: '5px 0 0 5px'}}, {
             id: 'endtime',
             display: 'hidden',
             xtype: 'datefield',
@@ -154,13 +211,29 @@ Ext.onReady(function () {
             fieldLabel: '终止日期',
             labelWidth: 60,
             value: new Date()
-        }, {
-            id: 'miao2',
-            display: 'hidden',
-            xtype: 'displayfield',
-            labelWidth: 60,
-            value: '18:30:00'
-        }, {
+        },  {
+            xtype: 'combo',
+            width: 60,
+            editable: false,
+            id: 'Hour1',
+            store: HourStore,
+            displayField: 'NAME',
+            valueField: 'CODE',
+            value: new Date().getHours()
+        },
+            {xtype: 'label', text: '时', style: {margin: '5px 0 0 5px'}},
+            {
+                xtype: 'combo',
+                width: 60,
+                id: 'Minute1',
+                editable: false,
+                store: MinuteStore,
+                displayField: 'NAME',
+                valueField: 'CODE',
+                value: new Date().getMinutes()
+            },
+            {xtype: 'label', text: '分', style: {margin: '5px 0 0 5px'}},
+            {
             xtype: 'button',
             display: 'hidden',
             text: '查 询',
@@ -185,13 +258,13 @@ Ext.onReady(function () {
             style: ' margin-left: 10px',
             icon: imgpath + '/printer.png',
             handler: function () {
-//                var ID_list = [];
+                var ID_list = [];
                 printStore.removeAll();
                 var gridStore = Ext.getStore('gridStore');
                 for (var i = 0; i < gridStore.getCount(); i++) {
                     if (document.getElementById(gridStore.getAt(i).get('I_ID')).checked) {
-//                        ID_list.push(Ext.getStore('gridStore').getAt(i).get('I_ID'));
-                        printStore.add(gridStore.getAt(i));
+                        ID_list.push(Ext.getStore('gridStore').getAt(i).get('I_ID'));
+                        //printStore.add(gridStore.getAt(i).get('I_ID'));
                     }
                 }
                 if (printStore.getCount() > 0) {
@@ -324,22 +397,24 @@ Ext.onReady(function () {
             V_DEPTNAME: '--全部--',
             V_DEPTCODE: '%'
         });
-        if (Ext.ComponentManager.get('bmmc').findRecordByValue(Ext.util.Cookies.get('v_deptcode')) == false) {
-            Ext.ComponentManager.get('bmmc').select(bmmcstore.getAt(0));
-        } else {
-            Ext.ComponentManager.get('bmmc').select(Ext.util.Cookies.get('v_deptcode'));
-        }
+        // if (Ext.ComponentManager.get('bmmc').findRecordByValue(Ext.util.Cookies.get('v_deptcode')) == false) {
+        //     Ext.ComponentManager.get('bmmc').select(bmmcstore.getAt(0));
+        // } else {
+        //     Ext.ComponentManager.get('bmmc').select(Ext.util.Cookies.get('v_deptcode'));
+        // }
+        Ext.ComponentManager.get('bmmc').select(bmmcstore.getAt(0));
     });
     lxstore.on("load", function () {
         Ext.data.StoreManager.lookup('lxstore').insert(0, {
             V_BASENAME: '--全部--',
             V_BASECODE: '%'
         });
-        if (Ext.ComponentManager.get('lx').findRecordByValue('PP_INFORMATION|MESSAGE') == false) {
-            Ext.ComponentManager.get('lx').select(lxstore.getAt(0));
-        } else {
-            Ext.ComponentManager.get('lx').select('PP_INFORMATION|MESSAGE');
-        }
+        // if (Ext.ComponentManager.get('lx').findRecordByValue('PP_INFORMATION|MESSAGE') == false) {
+        //     Ext.ComponentManager.get('lx').select(lxstore.getAt(0));
+        // } else {
+        //     Ext.ComponentManager.get('lx').select('PP_INFORMATION|MESSAGE');
+        // }
+        Ext.ComponentManager.get('lx').select(lxstore.getAt(0));
         bbstore.load({
             params: {
                 IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASSTYPE'
@@ -381,13 +456,18 @@ Ext.onReady(function () {
 //    });
 });
 
+// function OnButtonExcelClicked() {
+//     if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
+//         document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST3_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_V_TYPE_STATE=' + encodeURI(Ext.ComponentManager.get('qxstrue').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
+//     } else {
+//         document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
+//     }
+// }
+
 function OnButtonExcelClicked() {
-    if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
-        document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST3_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_V_TYPE_STATE=' + encodeURI(Ext.ComponentManager.get('qxstrue').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
-    } else {
-        document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
-    }
+    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bb').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d'));
 }
+
 
 function queryStore() {
     if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {

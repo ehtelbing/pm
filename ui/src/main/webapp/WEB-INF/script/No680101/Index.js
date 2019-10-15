@@ -272,7 +272,7 @@ var Layout = {
                                     xtype: 'textfield',
                                     fieldLabel: '录入人',
                                     value: Ext.util.Cookies.get('v_personname2'),
-                                    readOnly: true,
+                                    readOnly: false,
                                     editable: false,
                                     id: 'llr'
                                 }
