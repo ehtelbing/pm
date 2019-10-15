@@ -1,8 +1,5 @@
-﻿var printStore = Ext.create('Ext.data.Store', {
-    id: 'printStore',
-    autoLoad: false,
-    fields: ['V_INFORMATION', 'MTYPE', 'V_STATE', 'I_ID', 'D_DATE', 'V_EQUIP', 'V_TYPE', 'V_CLASSTYPE', 'V_PERSON', 'YS']
-});
+﻿var ID_list = [];
+
 Ext.onReady(function () {
     var bmmcstore = Ext.create('Ext.data.Store', {
         autoLoad: true,
@@ -256,17 +253,14 @@ Ext.onReady(function () {
                 style: ' margin-left: 10px',
                 icon: imgpath + '/printer.png',
                 handler: function () {
-                    var ID_list = [];
-                    printStore.removeAll();
-                    var gridStore = Ext.getStore('gridStore');
-                    for (var i = 0; i < gridStore.getCount(); i++) {
-                        if (document.getElementById(gridStore.getAt(i).get('I_ID')).checked) {
-                            ID_list.push(Ext.getStore('gridStore').getAt(i).get('I_ID'));
-                            //printStore.add(gridStore.getAt(i).get('I_ID'));
+                    ID_list = [];
+                    for (var i = 0; i < document.getElementsByName('GridPrint').length; i++) {
+                        if (document.getElementsByName('GridPrint')[i].checked) {
+                            ID_list.push(document.getElementsByName('GridPrint')[i].id);
                         }
                     }
-                    if (printStore.getCount() > 0) {
-                        window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue() + "&endtime=" + Ext.getCmp('endtime').getRawValue(), "打印", "dialogHeight:700px;dialogWidth:1100px");
+                    if (ID_list.length > 0) {
+                        window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue() + "&endtime=" + Ext.getCmp('endtime').getRawValue(), ID_list, "dialogHeight:700px;dialogWidth:1100px");
                     } else {
                         Ext.MessageBox.show({
                             title: '提示',
@@ -301,7 +295,7 @@ Ext.onReady(function () {
         columns: [{
             text: '序号',
             xtype: 'rownumberer',
-            width: 30,
+            width: 50,
             sortable: false
         }, {
             text: 'ID',
@@ -313,7 +307,7 @@ Ext.onReady(function () {
             dataIndex: 'D_DATE',
             align: 'center',
             renderer: renderRQ,
-            width: 120
+            width: 150
         }, {
             text: '设备名称',
             dataIndex: 'V_EQUIP',
@@ -375,18 +369,18 @@ Ext.onReady(function () {
         layout: 'fit',
         items: [grid]
     });
-    Ext.ComponentManager.get('begintime').setMaxValue(Ext.ComponentManager.get('endtime').getValue());
-    Ext.ComponentManager.get('endtime').setMinValue(Ext.ComponentManager.get('begintime').getValue());
-    Ext.ComponentManager.get('begintime').on("change", function () {
-        Ext.ComponentManager.get('begintime').setMaxValue(Ext.ComponentManager.get('endtime').getValue());
-        Ext.ComponentManager.get('endtime').setMinValue(Ext.ComponentManager.get('begintime').getValue());
+    Ext.getCmp('begintime').setMaxValue(Ext.getCmp('endtime').getValue());
+    Ext.getCmp('endtime').setMinValue(Ext.getCmp('begintime').getValue());
+    Ext.getCmp('begintime').on("change", function () {
+        Ext.getCmp('begintime').setMaxValue(Ext.getCmp('endtime').getValue());
+        Ext.getCmp('endtime').setMinValue(Ext.getCmp('begintime').getValue());
     });
-    Ext.ComponentManager.get('endtime').on("change", function () {
+    Ext.getCmp('endtime').on("change", function () {
         Ext.ComponentManager.get('endtime').setMinValue(Ext.ComponentManager.get('begintime').getValue());
         Ext.ComponentManager.get('begintime').setMaxValue(Ext.ComponentManager.get('endtime').getValue());
     });
-    bmmcstore.on("load", function () {
-        lxstore.load({
+    Ext.data.StoreManager.lookup('bmmcstore').on("load", function () {
+        Ext.data.StoreManager.lookup('lxstore').load({
             params: {
                 IS_V_BASETYPE: 'PP_INFORMATION/V_TYPE'
             }
@@ -395,77 +389,40 @@ Ext.onReady(function () {
             V_DEPTNAME: '--全部--',
             V_DEPTCODE: '%'
         });
-        // if (Ext.ComponentManager.get('bmmc').findRecordByValue(Ext.util.Cookies.get('v_deptcode')) == false) {
-        //     Ext.ComponentManager.get('bmmc').select(bmmcstore.getAt(0));
-        // } else {
-        //     Ext.ComponentManager.get('bmmc').select(Ext.util.Cookies.get('v_deptcode'));
-        // }
-        Ext.ComponentManager.get('bmmc').select(bmmcstore.getAt(0));
+        Ext.getCmp('bmmc').select(Ext.data.StoreManager.lookup('bmmcstore').getAt(0));
     });
-    lxstore.on("load", function () {
+    Ext.data.StoreManager.lookup('lxstore').on("load", function () {
         Ext.data.StoreManager.lookup('lxstore').insert(0, {
             V_BASENAME: '--全部--',
             V_BASECODE: '%'
         });
-        // if (Ext.ComponentManager.get('lx').findRecordByValue('PP_INFORMATION|MESSAGE') == false) {
-        //     Ext.ComponentManager.get('lx').select(lxstore.getAt(0));
-        // } else {
-        //     Ext.ComponentManager.get('lx').select('PP_INFORMATION|MESSAGE');
-        // }
-        Ext.ComponentManager.get('lx').select(lxstore.getAt(0));
-        bbstore.load({
+        Ext.getCmp('lx').select(Ext.data.StoreManager.lookup('lxstore').getAt(0));
+        Ext.data.StoreManager.lookup('bbstore').load({
             params: {
                 IS_V_BASETYPE: 'PM_DIARYDATA/V_CLASSTYPE'
             }
         });
-        sqxzt.load();
+        Ext.data.StoreManager.lookup('sqxzt').load();
     });
-    sqxzt.on("load", function () {
-        Ext.getCmp("qxstrue").select(sqxzt.getAt(0));
+    Ext.data.StoreManager.lookup('sqxzt').on("load", function () {
+        Ext.getCmp("qxstrue").select(Ext.data.StoreManager.lookup('sqxzt').getAt(0));
     });
-    bbstore.on("load", function () {
+    Ext.data.StoreManager.lookup('bbstore').on("load", function () {
         Ext.data.StoreManager.lookup('bbstore').insert(0, {
             V_BASENAME: '--全部--',
             V_BASECODE: '%'
         });
-        Ext.ComponentManager.get('bb').select(bbstore.getAt(0));
+        Ext.getCmp('bb').select(Ext.data.StoreManager.lookup('bbstore').getAt(0));
     });
-    gridStore.on("load", function () {
-        Ext.ComponentManager.get('sum').setValue(
+    Ext.data.StoreManager.lookup('gridStore').on("load", function () {
+        Ext.getCmp('sum').setValue(
             '数量：' + Ext.getStore('gridStore').data.items.length);
     });
-//    Ext.getCmp('lx').on("change", function () {
-//        if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
-//            Ext.getCmp('qxstrue').show();
-//            Ext.getCmp('bb').setHideTrigger(true);
-//            Ext.getCmp('bb').setReadOnly(true);
-//            Ext.getCmp('bb').setValue('%');
-//        } else if (Ext.ComponentManager.get("lx").getRawValue() == '工单') {
-//            Ext.getCmp('qxstrue').hide();
-//            Ext.getCmp('bb').setHideTrigger(true);
-//            Ext.getCmp('bb').setReadOnly(true);
-//            Ext.getCmp('bb').setValue('%');
-//        } else {
-//            Ext.getCmp('qxstrue').hide();
-//            Ext.getCmp('bb').setHideTrigger(false);
-//            Ext.getCmp('bb').setReadOnly(false);
-//            Ext.getCmp('bb').setValue('%');
-//        }
-//    });
 });
-
-// function OnButtonExcelClicked() {
-//     if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
-//         document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST3_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_V_TYPE_STATE=' + encodeURI(Ext.ComponentManager.get('qxstrue').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
-//     } else {
-//         document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.ComponentManager.get('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.ComponentManager.get('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.ComponentManager.get('bb').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d H:i:m')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d H:i:s'));
-//     }
-// }
 
 function OnButtonExcelClicked() {
     document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bb').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d'));
 }
-
 
 function queryStore() {
     if (Ext.ComponentManager.get("lx").getRawValue() == '缺陷') {
@@ -480,8 +437,8 @@ function queryStore() {
                 V_V_TYPE: Ext.ComponentManager.get('lx').getValue(),
                 V_V_CLASSTYPE: Ext.ComponentManager.get('bb').getValue(),
                 V_V_TYPE_STATE: Ext.ComponentManager.get('qxstrue').getValue(),
-                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d')+" "+Ext.getCmp('sHour').getValue()+":"+Ext.getCmp('sMinute').getValue()+":00",
-                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d')+" "+Ext.getCmp('eHour').getValue()+":"+Ext.getCmp('eMinute').getValue()+":00"
+                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d') + " " + Ext.getCmp('sHour').getValue() + ":" + Ext.getCmp('sMinute').getValue() + ":00",
+                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d') + " " + Ext.getCmp('eHour').getValue() + ":" + Ext.getCmp('eMinute').getValue() + ":00"
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
@@ -500,8 +457,8 @@ function queryStore() {
                 V_V_DEPT: Ext.ComponentManager.get('bmmc').getValue(),
                 V_V_TYPE: Ext.ComponentManager.get('lx').getValue(),
                 V_V_CLASSTYPE: Ext.ComponentManager.get('bb').getValue(),
-                V_D_FROMDATE:Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d')+" "+Ext.getCmp('sHour').getValue()+":"+Ext.getCmp('sMinute').getValue()+":00",
-                V_D_TODATE:  Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d')+" "+Ext.getCmp('eHour').getValue()+":"+Ext.getCmp('eMinute').getValue()+":00"
+                V_D_FROMDATE: Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d') + " " + Ext.getCmp('sHour').getValue() + ":" + Ext.getCmp('sMinute').getValue() + ":00",
+                V_D_TODATE: Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d') + " " + Ext.getCmp('eHour').getValue() + ":" + Ext.getCmp('eMinute').getValue() + ":00"
             },
             success: function (resp) {
                 var resp = Ext.decode(resp.responseText);
@@ -516,22 +473,21 @@ function query() {
     setTimeout("query()", 1000 * 60 * 5);
 }
 
-function check(value, metaData, record, rowIndex, colIndex, store) {
-    return '<input type="checkbox" checked="checked" id=' + record.raw.I_ID
-        + '></input>'
+function check(value, metaData, record) {
+    return '<input type="checkbox" checked="checked" name="GridPrint" id=' + record.raw.I_ID + '></input>'
 }
 
-function renderRQ(v, metaData, record, rowIndex, colIndex, store) {
+function renderRQ(v, metaData, record) {
     metaData.style = "color: " + record.data.YS;
     return Ext.Date.format(Ext.Date.parse(v, "Y-m-d H:i:s"), 'Y-m-d H:i');
 }
 
-function left(value, metaData, record, rowIndex, colIndex, store) {
+function left(value, metaData, record) {
     metaData.style = "text-align:left; color: " + record.data.YS;
     return value;
 }
 
-function renderBgColor(value, metaData, record, rowIndex, colIndex, store) {
+function renderBgColor(value, metaData, record) {
     metaData.style = "text-align:left; color: " + record.data.YS;
     return value;
 }
