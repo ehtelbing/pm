@@ -260,7 +260,7 @@ Ext.onReady(function () {
                         }
                     }
                     if (ID_list.length > 0) {
-                        window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue() + "&endtime=" + Ext.getCmp('endtime').getRawValue(), ID_list, "dialogHeight:700px;dialogWidth:1100px");
+                        window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue()+ " " + Ext.getCmp('sHour').getValue() + ":" + Ext.getCmp('sMinute').getValue() + ":00" + "&endtime=" + Ext.getCmp('endtime').getRawValue()+ " " + Ext.getCmp('eHour').getValue() + ":" + Ext.getCmp('eMinute').getValue() + ":00", ID_list, "dialogHeight:700px;dialogWidth:1100px");
                     } else {
                         Ext.MessageBox.show({
                             title: '提示',

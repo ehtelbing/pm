@@ -40,7 +40,7 @@ function loadPage() {
 }
 
 function createPage(printStoreTemp) {
-    result.push('<div style=width: 1100px>\n');
+    result.push('<div id=page' + page + ' style=width: 1100px>\n');
     result.push('<div style=width: 1100px>\n');
     result.push('<DIV style="LINE-HEIGHT: 30px" class=size16 align=center><STRONG><font color="#0000FF">写实信息打印</font></STRONG></DIV>        \n');
     result.push('<TABLE border=1 cellSpacing=0 cellPadding=0 width="100%">\n');
@@ -109,18 +109,38 @@ function DefaultPrintSettings() {
 function Print() {
     try {
         DefaultPrintSettings();
-        LODOP.NewPage();
+        for (var i = 1; i <= page; i++) {
+            LODOP.NewPage();
+            Prnt_Oneform("page" + i + "");
+        }
     } catch (e) {
         $("#exception").show();
     }
 }
 
+function Prnt_Oneform(strID) {
+    DefaultPrintSettings();
+    LODOP.ADD_PRINT_HTM("1mm", "1mm", "100%", "100%", $(strID).html());
+    LODOP.PRINT();
+}
+
 function Preview() {
     try {
         DefaultPrintSettings();
+        for (var i = 1; i <= page; i++) {
+            LODOP.NewPage();
+            LODOP.ADD_PRINT_HTM("1mm", "1mm", "100%", "100%", $("#page" + i).html());
+        }
         LODOP.PREVIEW();
     } catch (e) {
         $("#exception").show();
     }
 }
 
+function rowspan(x, max_operation) {
+    if (x == 0) {
+        return max_operation;
+    } else {
+        return max_operation - x * 20
+    }
+}
