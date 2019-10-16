@@ -434,7 +434,7 @@ Ext.onReady(function () {
                 'V_V_CXNAME': '%'
             }
         });
-        Ext.data.StoreManager.lookup('zyStore').load();
+
     });
 
     Ext.data.StoreManager.lookup('cxStore').on('load', function () {
@@ -446,12 +446,14 @@ Ext.onReady(function () {
         });
     })
 
-    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
-        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
-    });
-
     Ext.data.StoreManager.lookup('equStore').on('load', function () {
         Ext.getCmp('equ').select(Ext.data.StoreManager.lookup('equStore').getAt(0));
+        Ext.data.StoreManager.lookup('zyStore').load();
+    });
+
+    Ext.data.StoreManager.lookup('zyStore').on('load', function () {
+        Ext.getCmp('zy').select(Ext.data.StoreManager.lookup('zyStore').getAt(0));
+        QueryEquGrid();
     });
 
     Ext.getCmp('ck').on('select', function () {
@@ -483,7 +485,12 @@ Ext.onReady(function () {
         });
     })
 
-    QueryEquGrid();
+    Ext.data.StoreManager.lookup('gridStore').on('load',function(){
+        if( Ext.data.StoreManager.lookup('gridStore').data.items.length>0){
+            QueryFirstData(Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID);
+        }
+    })
+
     OnPageLoad()
 });
 
@@ -839,6 +846,7 @@ function _selectTaskId() {
 }
 
 function OnBtnUp() {
+    Ext.getBody().mask('加载中，请稍后！');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '同意';
@@ -877,6 +885,7 @@ function OnBtnUp() {
                     },
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
+                        Ext.getBody().unmask();
                         if (resp.V_INFO == 'SUCCESS') {
                             window.opener.QueryTabY();
                             window.opener.QuerySum();
@@ -889,6 +898,7 @@ function OnBtnUp() {
             }
         },
         failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,
@@ -900,6 +910,7 @@ function OnBtnUp() {
 }
 
 function OnBtnBack() {
+    Ext.getBody().mask('加载中，请稍后！');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '设备部审批驳回';
@@ -961,6 +972,7 @@ function OnBtnBack() {
                         },
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);
+                            Ext.getBody().unmask();
                             if (resp.V_INFO == 'success') {
                                 window.opener.QueryTabY();
                                 window.opener.QuerySum();
@@ -971,10 +983,12 @@ function OnBtnBack() {
                         }
                     });
                 } else {
+                    Ext.getBody().unmask();
                     Ext.MessageBox.alert('提示', '任务提交失败');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
+                Ext.getBody().unmask();
                 Ext.MessageBox.show({
                     title: '错误',
                     msg: response.responseText,
@@ -995,6 +1009,49 @@ function OnBtnSelC(s, record) {
         async: false,
         params: {
             V_V_GUID: record.data.V_GUID
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.list != null) {
+                if (resp.list.length > 0) {
+                    Ext.getCmp('year').select(resp.list[0].V_YEAR);
+                    Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
+                    Ext.getCmp('zyq').select(resp.list[0].V_DEPTCODE);
+                    Ext.getCmp('cx').select(resp.list[0].V_CXCODE);
+                    Ext.getCmp('zy').select(resp.list[0].V_ZY);
+                    Ext.getCmp('equ').select(resp.list[0].V_EQUCODE);
+                    Ext.getCmp('jxnr').setValue(resp.list[0].V_COUNT);
+                    Ext.getCmp('jhtjsj').setValue(resp.list[0].V_JHTJSJ.split(" ")[0]);
+                    if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
+                        Ext.getCmp('jhtjsjxs').setValue("0");
+                        Ext.getCmp('jhtjsjfz').setValue("0");
+                    } else {
+                        Ext.getCmp('jhtjsjxs').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[0]);
+                        Ext.getCmp('jhtjsjfz').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[1]);
+                    }
+
+                    Ext.getCmp('jhjgsj').setValue(resp.list[0].V_JHJGSJ.split(" ")[0]);
+                    if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
+                        Ext.getCmp('jhjgsjxs').setValue("0");
+                        Ext.getCmp('jhjgsjfz').setValue("0");
+                    } else {
+                        Ext.getCmp('jhjgsjxs').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[0]);
+                        Ext.getCmp('jhjgsjfz').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[1]);
+                    }
+                    Ext.getCmp('jhgq').setValue(resp.list[0].V_JHGQ);
+                }
+            }
+        }
+    });
+}
+
+function QueryFirstData(YearChildGuid) {
+    Ext.Ajax.request({
+        url: AppUrl + 'PM_06/PRO_YEAR_PLAN_C_SEL',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID: YearChildGuid
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);

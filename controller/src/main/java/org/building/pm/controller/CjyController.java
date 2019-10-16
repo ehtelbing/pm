@@ -4353,10 +4353,10 @@ public class CjyController {
                 } else {
                     if (FlowType[i].equals("YearPlan")) {
                         perresult = pm_06Service.PRO_PLAN_YEAR_SEL_BYGUID(V_ORDERGUID[i]);
-                        List<Map<String, Object>> perlist = (List) perresult.get("RET");
-                        String V_V_ORGCODE = perlist.get(0).get("ORGCODE").toString();
-                        String V_V_DEPTCODE = perlist.get(0).get("DEPTCODE").toString();
-                        String V_V_SPECIALTY = perlist.get(0).get("REDEPTCODE").toString();
+                        List<Map<String, Object>> perlist = (List) perresult.get("list");
+                        String V_V_ORGCODE = perlist.get(0).get("V_ORGCODE").toString();
+                        String V_V_DEPTCODE = perlist.get(0).get("V_DEPTCODE").toString();
+                        String V_V_SPECIALTY = "";
 
                         String V_STEPNAME = "";
                         String V_NEXT_SETP = "";
