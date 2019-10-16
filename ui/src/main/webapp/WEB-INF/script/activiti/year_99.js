@@ -420,6 +420,7 @@ function atright(value, metaData) {
 }
 
 function OnBtnGo() {
+    Ext.getBody().mask('加载中，请稍后！');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '通过';
@@ -461,6 +462,7 @@ function OnBtnGo() {
                     },
                     success: function (ret) {
                         var resp = Ext.JSON.decode(ret.responseText);
+                        Ext.getBody().unmask();
                         if (resp.V_INFO == 'success') {
                             window.opener.QueryTabY();
                             window.opener.QuerySum();
@@ -473,6 +475,7 @@ function OnBtnGo() {
             }
         },
         failure: function (response) {//访问到后台时执行的方法。
+            Ext.getBody().unmask();
             Ext.MessageBox.show({
                 title: '错误',
                 msg: response.responseText,
@@ -484,6 +487,7 @@ function OnBtnGo() {
 }
 
 function OnBtnBack() {
+    Ext.getBody().mask('加载中，请稍后！');
     var spyj = '';
     if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
         spyj = '审批驳回';
@@ -542,6 +546,7 @@ function OnBtnBack() {
                         },
                         success: function (ret) {
                             var resp = Ext.JSON.decode(ret.responseText);
+                            Ext.getBody().unmask();
                             if (resp.V_INFO == 'success') {
                                 window.opener.QueryTabY();
                                 window.opener.QuerySum();
@@ -552,10 +557,12 @@ function OnBtnBack() {
                         }
                     });
                 } else {
+                    Ext.getBody().unmask();
                     Ext.MessageBox.alert('提示', '任务提交失败');
                 }
             },
             failure: function (response) {//访问到后台时执行的方法。
+                Ext.getBody().unmask();
                 Ext.MessageBox.show({
                     title: '错误',
                     msg: response.responseText,
@@ -565,6 +572,7 @@ function OnBtnBack() {
             }
         })
     }else{
+        Ext.getBody().unmask();
         alert("发起人信息错误，无法驳回");
     }
 }

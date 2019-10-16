@@ -371,6 +371,7 @@ function OnBtnClose() {
 }
 
 function OnBtnUp() {
+    Ext.getBody().mask('加载中，请稍后！');
     Ext.Ajax.request({
         url: AppUrl + 'PM_06/PRO_PLAN_YEAR_SEL_BYGUID',
         method: 'POST',
@@ -409,12 +410,14 @@ function OnBtnUp() {
                                     },
                                     success: function (resp) {
                                         var resp = Ext.decode(resp.responseText);
+                                        Ext.getBody().unmask();
                                         if (resp.V_INFO == 'SUCCESS') {
                                             OnBtnClose();
                                         }
                                     }
                                 });
                             } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                Ext.getBody().unmask();
                                 Ext.Msg.alert('提示', '该流程发起失败！');
                             }
                         }

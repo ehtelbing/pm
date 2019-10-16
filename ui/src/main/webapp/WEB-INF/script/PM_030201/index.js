@@ -1,4 +1,4 @@
-﻿﻿var dt = new Date();
+﻿var dt = new Date();
 var thisYear = dt.getFullYear();
 var thisMonth = dt.getMonth() + 1;
 var thisDate = dt.getDate();
@@ -299,7 +299,7 @@ Ext.onReady(function () {
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             {text: '年计划编号', width: 100, dataIndex: 'V_YEARID', align: 'center', renderer: atleft},
-            {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: atleft},
+            {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: lookFlow},
             {text: '专业', width: 100, dataIndex: 'V_ZYMC', align: 'center', renderer: atleft},
             {text: '产线', width: 160, dataIndex: 'V_CXNAME', align: 'center', renderer: atleft},
             {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
@@ -447,7 +447,9 @@ Ext.onReady(function () {
     });
 
     Ext.data.StoreManager.lookup('gridStore').on('load', function () {
-        yearguid = Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
+        if (Ext.data.StoreManager.lookup('gridStore').data.items.length > 0) {
+            yearguid = Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
+        }
         OnShow();
     });
 
@@ -459,15 +461,11 @@ function beforeloadStore(store) {
     store.proxy.extraParams.V_V_DEPTCODE = Ext.getCmp('zyq').getValue();
     store.proxy.extraParams.V_V_CXCODE = Ext.getCmp('cx').getValue();
     store.proxy.extraParams.V_V_ZYCODE = Ext.getCmp('zy').getValue();
-    store.proxy.extraParams.V_V_ZTCODE = '10';
+    store.proxy.extraParams.V_V_ZTCODE = '%';
     store.proxy.extraParams.V_V_PAGE = Ext.getCmp('page').store.currentPage;
     store.proxy.extraParams.V_V_PAGESIZE = Ext.getCmp('page').store.pageSize;
 }
 
-function atleft(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:left;";
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
-}
 
 
 function OnButtonQuery() {
@@ -479,7 +477,7 @@ function OnButtonQuery() {
             V_V_DEPTCODE: Ext.getCmp('zyq').getValue(),
             V_V_CXCODE: Ext.getCmp('cx').getValue(),
             V_V_ZYCODE: Ext.getCmp('zy').getValue(),
-            V_V_ZTCODE: '10',
+            V_V_ZTCODE: '%',
             V_V_PAGE: Ext.getCmp('page').store.currentPage,
             V_V_PAGESIZE: Ext.getCmp('page').store.pageSize
         }
@@ -548,7 +546,7 @@ function OnButtonDel() {
     }
 }
 
-function OnShow(){
+function OnShow() {
     Ext.getCmp('rpanel').removeAll();
     pageFunction.QueryGanttData();
 }
@@ -786,8 +784,46 @@ function atright(value, metaData, record, rowIndex, colIndex, store) {
 }
 
 function timelfet(value, metaDate, record, rowIndex, colIndex, store) {
-    metaDate.style = "text-align:right;";
+    metaDate.style = "text-align:left;";
     return '<div date-qtip="' + value + '" >' + value.toString().substring(0, 10) + '</div>';
+}
+
+function lookFlow(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + value + '</a>';
+}
+
+function _preViewProcess(businessKey) {
+    var ProcessInstanceId = '';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if (data.msg == 'Ok') {
+                ProcessInstanceId = data.InstanceId;
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }
 
 //维修计划上报
@@ -795,7 +831,7 @@ function btnFlowStart() {
     var snum = 0;
     var chodata = Ext.getCmp('grid').getSelectionModel().getSelection();
     if (chodata.length <= 0) {
-        alert('请选择至少一条数据进行查看！');
+        alert('请选择至少一条数据进行上报！');
         return;
     } else {
 
@@ -807,9 +843,9 @@ function btnFlowStart() {
                 method: 'post',
                 params: {
                     parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                    parVal: [Ext.util.Cookies.get('v_personcode'), chodata[k].get("V_GUID"), Ext.getCmp('fzPer').getValue(), "请审批!", chodata[k].get('V_CONTENT'), chodata[k].get("V_PORJECT_CODE"), "请审批！", "YearPlan"],
+                    parVal: [Ext.util.Cookies.get('v_personcode'), chodata[k].data.V_GUID, Ext.getCmp('fzPer').getValue(), "请审批!", chodata[k].data.V_COUNT, chodata[k].data.V_YEARID, "请审批！", "YearPlan"],
                     processKey: processKey,
-                    businessKey: chodata[k].get("V_GUID"),
+                    businessKey: chodata[k].data.V_GUID,
                     V_STEPCODE: 'Start',
                     V_STEPNAME: V_STEPNAME,
                     V_IDEA: '请审批！',
