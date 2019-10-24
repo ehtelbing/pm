@@ -511,7 +511,9 @@ public class PM_06Controller {
     @ResponseBody
     public Map PRO_YEAR_PLAN_C_SAVE(
             @RequestParam(value = "V_V_GUID") String V_V_GUID,
+            @RequestParam(value = "V_V_CGUID") String V_V_CGUID,
             @RequestParam(value = "V_V_YEAR") String V_V_YEAR,
+            @RequestParam(value = "V_V_YEARNAME") String V_V_YEARNAME,
             @RequestParam(value = "V_V_ORGCODE") String V_V_ORGCODE,
             @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
             @RequestParam(value = "V_V_CXCODE") String V_V_CXCODE,
@@ -521,9 +523,10 @@ public class PM_06Controller {
             @RequestParam(value = "V_V_JHTJSJ") String V_V_JHTJSJ,
             @RequestParam(value = "V_V_JHJGSJ") String V_V_JHJGSJ,
             @RequestParam(value = "V_V_JHGQ") String V_V_JHGQ,
-            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE) throws Exception {
-        HashMap result = pm_06Service.PRO_YEAR_PLAN_C_SAVE(V_V_GUID, V_V_YEAR, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_EQUCODE, V_V_ZYCODE,
-                V_V_JXNR, V_V_JHTJSJ, V_V_JHJGSJ, V_V_JHGQ, V_V_PERCODE);
+            @RequestParam(value = "V_V_PERCODE") String V_V_PERCODE,
+            @RequestParam(value = "V_V_YEARCOUNT") String V_V_YEARCOUNT) throws Exception {
+        HashMap result = pm_06Service.PRO_YEAR_PLAN_C_SAVE(V_V_GUID,V_V_CGUID, V_V_YEAR,V_V_YEARNAME, V_V_ORGCODE, V_V_DEPTCODE, V_V_CXCODE, V_V_EQUCODE, V_V_ZYCODE,
+                V_V_JXNR, V_V_JHTJSJ, V_V_JHJGSJ, V_V_JHGQ, V_V_PERCODE,V_V_YEARCOUNT);
         return result;
     }
 

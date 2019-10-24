@@ -19,6 +19,7 @@ var years = [];
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
 
 var Guid = "";
+var cGuid = "";
 if (Ext.urlDecode(location.href.split('?')[1]) != null) {
     Guid = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID == null ? "" : Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     processKey = Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey == null ? "" : Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey;
@@ -238,6 +239,23 @@ Ext.onReady(function () {
             labelWidth: 100
         },
         items: [{
+            xtype: 'label',
+            text: '-----------------------------年计划信息----------------------------------',
+            colspan: 2
+        }, {
+            xtype: 'textfield',
+            id: 'yearName',
+            fieldLabel: '年计划名称',
+            width: 500,
+            colspan: 2
+        }, {
+            xtype: 'textarea',
+            id: 'njhnr',
+            fieldLabel: '年计划主要内容',
+            height: 60,
+            width: 500,
+            colspan: 2
+        }, {
             id: 'year',
             store: yearStore,
             xtype: 'combo',
@@ -274,6 +292,10 @@ Ext.onReady(function () {
             displayField: 'V_CXNAME',
             valueField: 'V_CXCODE'
         }, {
+            xtype: 'label',
+            text: '-----------------------------产线设备信息----------------------------------',
+            colspan: 2
+        }, {
             xtype: 'combo',
             id: "equ",
             store: equStore,
@@ -294,7 +316,7 @@ Ext.onReady(function () {
         }, {
             xtype: 'textarea',
             id: 'jxnr',
-            fieldLabel: '检修内容',
+            fieldLabel: '设备检修内容',
             height: 60,
             width: 500,
             colspan: 2
@@ -360,7 +382,8 @@ Ext.onReady(function () {
             allowBlank: false
         }, {
             xtype: 'panel', frame: true, baseCls: 'my-panel-no-border', layout: 'column', width: '100%',
-            items: [{xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '保存设备', listeners: {click: OnBtnSaveEqu}},
+            items: [{xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '新增设备', listeners: {click: OnBtnAddEqu}},
+                {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '修改设备', listeners: {click: OnBtnSaveEqu}},
                 {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '删除设备', listeners: {click: OnBtnDelEquC}},
                 {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '关闭', listeners: {click: OnBtnClose}}]
         }]
@@ -485,9 +508,10 @@ Ext.onReady(function () {
         });
     })
 
-    Ext.data.StoreManager.lookup('gridStore').on('load',function(){
-        if( Ext.data.StoreManager.lookup('gridStore').data.items.length>0){
-            QueryFirstData(Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID);
+    Ext.data.StoreManager.lookup('gridStore').on('load', function () {
+        if (Ext.data.StoreManager.lookup('gridStore').data.items.length > 0) {
+            cGuid=Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
+            QueryFirstData(cGuid);
         }
     })
 
@@ -511,8 +535,43 @@ function OnPageLoad() {
                     V_V_ORGCODE = resp.list[0].V_ORGCODE;
                     V_V_DEPTCODE = resp.list[0].V_DEPTCODE;
                     V_V_SPECIALTY = resp.list[0].V_ZY;
+                    Ext.getCmp('yearName').setValue(resp.list[0].V_YEARNAME);
+                    Ext.getCmp('njhnr').setValue(resp.list[0].V_COUNT);
                     _selectTaskId();
                 }
+            }
+        }
+    });
+}
+
+function OnBtnAddEqu() {
+    Ext.Ajax.request({
+        url: AppUrl + '/PM_06/PRO_YEAR_PLAN_C_SAVE',
+        method: 'POST',
+        async: false,
+        params: {
+            V_V_GUID: Guid,
+            V_V_CGUID: '-1',
+            V_V_YEAR: Ext.getCmp("year").getValue(),
+            V_V_YEARNAME: Ext.getCmp("yearName").getValue(),
+            V_V_ORGCODE: Ext.getCmp("ck").getValue(),
+            V_V_DEPTCODE: Ext.getCmp("zyq").getValue(),
+            V_V_CXCODE: Ext.getCmp('cx').getValue(),
+            V_V_EQUCODE: Ext.getCmp('equ').getValue(),
+            V_V_ZYCODE: Ext.getCmp('zy').getValue(),
+            V_V_JXNR: Ext.getCmp('jxnr').getValue(),
+            V_V_JHTJSJ: Ext.Date.format(Ext.getCmp('jhtjsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhtjsjxs').getValue() + ":" + Ext.getCmp('jhtjsjfz').getValue() + ":00",
+            V_V_JHJGSJ: Ext.Date.format(Ext.getCmp('jhjgsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhjgsjxs').getValue() + ":" + Ext.getCmp('jhjgsjfz').getValue() + ":00",
+            V_V_JHGQ: Ext.getCmp('jhgq').getValue(),
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_YEARCOUNT: Ext.getCmp("njhnr").getValue()
+        },
+        success: function (resp) {
+            var resp = Ext.decode(resp.responseText);
+            if (resp.V_INFO == 'SUCCESS') {
+                QueryEquGrid();
+            } else {
+                alert(resp.V_INFO);
             }
         }
     });
@@ -525,7 +584,9 @@ function OnBtnSaveEqu() {
         async: false,
         params: {
             V_V_GUID: Guid,
+            V_V_CGUID: cGuid,
             V_V_YEAR: Ext.getCmp("year").getValue(),
+            V_V_YEARNAME: Ext.getCmp("yearName").getValue(),
             V_V_ORGCODE: Ext.getCmp("ck").getValue(),
             V_V_DEPTCODE: Ext.getCmp("zyq").getValue(),
             V_V_CXCODE: Ext.getCmp('cx').getValue(),
@@ -535,7 +596,8 @@ function OnBtnSaveEqu() {
             V_V_JHTJSJ: Ext.Date.format(Ext.getCmp('jhtjsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhtjsjxs').getValue() + ":" + Ext.getCmp('jhtjsjfz').getValue() + ":00",
             V_V_JHJGSJ: Ext.Date.format(Ext.getCmp('jhjgsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhjgsjxs').getValue() + ":" + Ext.getCmp('jhjgsjfz').getValue() + ":00",
             V_V_JHGQ: Ext.getCmp('jhgq').getValue(),
-            V_V_PERCODE: Ext.util.Cookies.get('v_personcode')
+            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
+            V_V_YEARCOUNT: Ext.getCmp("njhnr").getValue()
         },
         success: function (resp) {
             var resp = Ext.decode(resp.responseText);
@@ -1015,6 +1077,8 @@ function OnBtnSelC(s, record) {
             if (resp.list != null) {
                 if (resp.list.length > 0) {
                     Ext.getCmp('year').select(resp.list[0].V_YEAR);
+                    Ext.getCmp('yearName').setValue(resp.list[0].V_YEARNAME);
+                    Ext.getCmp('njhnr').setValue(resp.list[0].V_YEARCOUNT);
                     Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
                     Ext.getCmp('zyq').select(resp.list[0].V_DEPTCODE);
                     Ext.getCmp('cx').select(resp.list[0].V_CXCODE);
@@ -1058,6 +1122,8 @@ function QueryFirstData(YearChildGuid) {
             if (resp.list != null) {
                 if (resp.list.length > 0) {
                     Ext.getCmp('year').select(resp.list[0].V_YEAR);
+                    Ext.getCmp('yearName').setValue(resp.list[0].V_YEARNAME);
+                    Ext.getCmp('njhnr').setValue(resp.list[0].V_YEARCOUNT);
                     Ext.getCmp('ck').select(resp.list[0].V_ORGCODE);
                     Ext.getCmp('zyq').select(resp.list[0].V_DEPTCODE);
                     Ext.getCmp('cx').select(resp.list[0].V_CXCODE);

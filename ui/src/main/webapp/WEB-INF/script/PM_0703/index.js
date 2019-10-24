@@ -138,7 +138,7 @@ Ext.onReady(function () {
             xtype: 'datefield',
             editable: false,
             format: 'Y/m/d',
-            value: new Date(new Date().getFullYear(), 0, 1),
+            value: Ext.Date.getFirstDateOfMonth(new Date()),
             fieldLabel: '时间段选择',
             labelWidth: 100,
             baseCls: 'margin-bottom'
@@ -229,7 +229,7 @@ Ext.onReady(function () {
             text: '查询',
             width: 80,
             handler: function () {
-                tabIndex = parseInt(Ext.getCmp('tabpanel').getActiveTab().id.substring(8));
+                tabIndex = Ext.getCmp('tabpanel').getActiveTab().id.substring(8);
                 Ext.getCmp('page').store.currentPage = 1;
                 Ext.data.StoreManager.lookup('gridStore').load();
                 /*gridStore.load({

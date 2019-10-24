@@ -1,6 +1,6 @@
 ﻿var Guid = "";
 var processKey = "";
-var ProcessInstanceId='';
+var ProcessInstanceId = '';
 var taskId = "";
 var V_STEPCODE = '';
 
@@ -69,33 +69,35 @@ Ext.onReady(function () {
 
     var npanel = Ext.create('Ext.panel.Panel', {
         region: 'north',
-        layout: 'column',
+        layout: 'vbox',
         frame: true,
         width: '100%',
-        items: [{
-            id: 'spyj',
-            xtype: 'textfield',
-            fieldLabel: '审批意见',
-            labelWidth: 90,
-            //baseCls: 'margin-bottom',
-            fieldStyle: 'background-color: #FFEBCD; background-image: none;',
-            style: ' margin: 5px 0px 0px 5px',
-            labelAlign: 'right',
-            width: 250
-        }, {
-            xtype: 'combo',
-            id: 'nextPer',
-            store: fzPerStore,
-            editable: false,
-            queryMode: 'local',
-            fieldLabel: '下一步审批人',
-            displayField: 'V_PERSONNAME',
-            valueField: 'V_PERSONCODE',
-            margin: '5 5 5 10',
-            labelWidth: 100,
-            labelAlign: 'right'
-        }, {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '同意', listeners: {click: OnBtnGo}},
-            {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '驳回', listeners: {click: OnBtnBack}}]
+        items: [{xtype:'panel',frame:true,width:'100%',layout:'column', baseCls: 'my-panel-no-border',
+            items:[{
+                id: 'spyj',
+                xtype: 'textfield',
+                fieldLabel: '审批意见',
+                labelWidth: 90,
+                fieldStyle: 'background-color: #FFEBCD; background-image: none;',
+                style: ' margin: 5px 0px 0px 5px',
+                labelAlign: 'right',
+                width: 250
+            }, {
+                xtype: 'combo',
+                id: 'nextPer',
+                store: fzPerStore,
+                editable: false,
+                queryMode: 'local',
+                fieldLabel: '下一步审批人',
+                displayField: 'V_PERSONNAME',
+                valueField: 'V_PERSONCODE',
+                margin: '5 5 5 10',
+                labelWidth: 100,
+                labelAlign: 'right'
+            }, {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '同意', listeners: {click: OnBtnGo}},
+                {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '驳回', listeners: {click: OnBtnBack}}]},
+            {xtype:'textfield',id:'njhName',fieldLabel:'年计划名称',style: ' margin: 5px 0px 0px 5px',width:600,readOnly:true},
+            {xtype:'textareafield',id:'njhnr',fieldLabel:'年计划内容',style: ' margin: 5px 0px 10px 5px',width:600,readOnly:true,height:60}]
     });
 
     var cgrid = Ext.create('Ext.grid.Panel', {
@@ -160,6 +162,8 @@ function OnPageLoad() {
                     V_V_ORGCODE = resp.list[0].V_ORGCODE;
                     V_V_DEPTCODE = resp.list[0].V_DEPTCODE;
                     V_V_SPECIALTY = resp.list[0].V_ZY;
+                    Ext.getCmp('njhName').setValue(resp.list[0].V_YEARNAME);
+                    Ext.getCmp('njhnr').setValue(resp.list[0].V_COUNT);
                     _selectTaskId();
                 }
             }
@@ -167,7 +171,7 @@ function OnPageLoad() {
     });
 }
 
-function QueryNextPer(){
+function QueryNextPer() {
     Ext.data.StoreManager.lookup('fzPerStore').load({
         params: {
             V_V_ORGCODE: V_V_ORGCODE,
@@ -494,7 +498,7 @@ function OnBtnBack() {
     } else {
         spyj = Ext.getCmp('spyj').getValue();
     }
-    var Assignee='';
+    var Assignee = '';
     Ext.Ajax.request({
         url: AppUrl + 'Activiti/InstanceState',
         method: 'POST',
@@ -504,15 +508,16 @@ function OnBtnBack() {
         },
         success: function (ret) {
             var resp = Ext.JSON.decode(ret.responseText);
-            for(var i=0;i<resp.list.length;i++){
-                if(resp.list[i].ActivityName=="Start"){
-                    Assignee=resp.list[i].Assignee;break;
+            for (var i = 0; i < resp.list.length; i++) {
+                if (resp.list[i].ActivityName == "Start") {
+                    Assignee = resp.list[i].Assignee;
+                    break;
                 }
             }
         }
     });
 
-    if(Assignee!=''){
+    if (Assignee != '') {
         Ext.Ajax.request({
             url: AppUrl + 'Activiti/TaskComplete',
             type: 'ajax',
@@ -571,7 +576,7 @@ function OnBtnBack() {
                 })
             }
         })
-    }else{
+    } else {
         Ext.getBody().unmask();
         alert("发起人信息错误，无法驳回");
     }

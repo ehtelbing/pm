@@ -838,7 +838,7 @@ public class PM_06Service {
         return result;
     }
 
-    public HashMap PRO_YEAR_PLAN_SEL(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_CXCODE, String V_V_ZYCODE,String V_V_ZTCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
+    public HashMap PRO_YEAR_PLAN_SEL(String V_V_YEAR, String V_V_ORGCODE, String V_V_DEPTCODE, String V_V_CXCODE, String V_V_ZYCODE, String V_V_ZTCODE, String V_V_PAGE, String V_V_PAGESIZE) throws SQLException {
         logger.info("begin PRO_YEAR_PLAN_SEL");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -895,8 +895,8 @@ public class PM_06Service {
         return result;
     }
 
-    public HashMap PRO_YEAR_PLAN_C_SAVE(String v_v_guid, String v_v_year, String v_v_orgcode, String v_v_deptcode, String v_v_cxcode, String v_v_equcode,
-                                        String v_v_zycode, String v_v_jxnr, String v_v_jhtjsj, String v_v_jhjgsj, String v_v_jhgq, String v_v_percode) throws SQLException {
+    public HashMap PRO_YEAR_PLAN_C_SAVE(String v_v_guid, String v_v_cguid, String v_v_year, String v_v_yearname, String v_v_orgcode, String v_v_deptcode, String v_v_cxcode, String v_v_equcode,
+                                        String v_v_zycode, String v_v_jxnr, String v_v_jhtjsj, String v_v_jhjgsj, String v_v_jhgq, String v_v_percode, String v_v_yearcount) throws SQLException {
         logger.info("begin PRO_YEAR_PLAN_C_SAVE");
         HashMap result = new HashMap();
         Connection conn = null;
@@ -904,9 +904,11 @@ public class PM_06Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_YEAR_PLAN_C_SAVE" + "(:V_V_GUID,:V_V_YEAR,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_CXCODE,:V_V_EQUCODE,:V_V_ZYCODE,:V_V_JXNR,:V_V_JHTJSJ,:V_V_JHJGSJ,:V_V_JHGQ,:V_V_PERCODE,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_YEAR_PLAN_C_SAVE" + "(:V_V_GUID,:V_V_CGUID,:V_V_YEAR,:V_V_YEARNAME,:V_V_ORGCODE,:V_V_DEPTCODE,:V_V_CXCODE,:V_V_EQUCODE,:V_V_ZYCODE,:V_V_JXNR,:V_V_JHTJSJ,:V_V_JHJGSJ,:V_V_JHGQ,:V_V_PERCODE,:V_V_YEARCOUNT,:V_INFO)}");
             cstmt.setString("V_V_GUID", v_v_guid);
+            cstmt.setString("V_V_CGUID", v_v_cguid);
             cstmt.setString("V_V_YEAR", v_v_year);
+            cstmt.setString("V_V_YEARNAME", v_v_yearname);
             cstmt.setString("V_V_ORGCODE", v_v_orgcode);
             cstmt.setString("V_V_DEPTCODE", v_v_deptcode);
             cstmt.setString("V_V_CXCODE", v_v_cxcode);
@@ -917,6 +919,7 @@ public class PM_06Service {
             cstmt.setString("V_V_JHJGSJ", v_v_jhjgsj);
             cstmt.setString("V_V_JHGQ", v_v_jhgq);
             cstmt.setString("V_V_PERCODE", v_v_percode);
+            cstmt.setString("V_V_YEARCOUNT", v_v_yearcount);
             cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("V_INFO", cstmt.getString("V_INFO"));
@@ -1060,11 +1063,13 @@ public class PM_06Service {
         try {
             conn = dataSources.getConnection();
             conn.setAutoCommit(true);
-            cstmt = conn.prepareCall("{call PRO_PLAN_YEAR_SEL_BYGUID" + "(:V_V_GUID,:V_INFO)}");
+            cstmt = conn.prepareCall("{call PRO_PLAN_YEAR_SEL_BYGUID" + "(:V_V_GUID,:V_INFO,:V_CURSOR)}");
             cstmt.setString("V_V_GUID", V_V_GUID);
+            cstmt.registerOutParameter("V_INFO", OracleTypes.VARCHAR);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+            result.put("V_INFO", cstmt.getString("V_INFO"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {

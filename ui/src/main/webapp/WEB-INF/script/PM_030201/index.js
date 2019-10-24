@@ -142,7 +142,7 @@ Ext.onReady(function () {
         fields: ['V_GUID', 'V_YEARID', 'V_YEAR', 'V_ORGCODE',
             'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_CXCODE', 'V_CXNAME',
             'V_ZY', 'V_STATE', 'V_DEL', 'V_INPER', 'V_INPERNAME', 'V_INDATE',
-            'V_JHTJSJ', 'V_JHJGSJ', 'V_JHGQ', 'V_COUNT', 'V_EQUCODE', 'V_EQUNAME', 'V_BASENAME', 'V_ZYMC'],
+            'V_JHTJSJ', 'V_JHJGSJ', 'V_JHGQ', 'V_COUNT', 'V_EQUCODE', 'V_EQUNAME', 'V_BASENAME', 'V_ZYMC','V_YEARNAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -298,15 +298,15 @@ Ext.onReady(function () {
             mode: 'SIMPLE'
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '年计划编号', width: 100, dataIndex: 'V_YEARID', align: 'center', renderer: atleft},
-            {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: lookFlow},
-            {text: '专业', width: 100, dataIndex: 'V_ZYMC', align: 'center', renderer: atleft},
+            /*{text: '年计划编号', width: 100, dataIndex: 'V_YEARID', align: 'center', renderer: atleft},*/
             {text: '产线', width: 160, dataIndex: 'V_CXNAME', align: 'center', renderer: atleft},
-            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
+            {text: '年计划名称', width: 140, dataIndex: 'V_YEARNAME', align: 'center', renderer: atleft},
             {text: '检修内容', width: 200, dataIndex: 'V_COUNT', align: 'center', renderer: atleft},
             {text: '计划开工时间', width: 140, dataIndex: 'V_JHTJSJ', align: 'center', renderer: atleft},
-            {text: '计划竣工时间', width: 140, dataIndex: 'V_JHJGSJ', align: 'center', renderer: atleft},
-            {text: '计划工期', width: 120, dataIndex: 'V_JHGQ', align: 'center', renderer: atleft}],
+          //  {text: '计划竣工时间', width: 140, dataIndex: 'V_JHJGSJ', align: 'center', renderer: atleft},
+            {text: '计划工期', width: 120, dataIndex: 'V_JHGQ', align: 'center', renderer: atleft},
+            {text: '专业', width: 100, dataIndex: 'V_ZYMC', align: 'center', renderer: atleft},
+            {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: lookFlow}],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -834,46 +834,61 @@ function btnFlowStart() {
         alert('请选择至少一条数据进行上报！');
         return;
     } else {
-
         for (var k = 0; k < chodata.length; k++) {
             //流程发起
             Ext.Ajax.request({
-                url: AppUrl + 'Activiti/StratProcess',
+                url: AppUrl + 'PM_06/PRO_PLAN_YEAR_SEL_BYGUID',
+                method: 'POST',
                 async: false,
-                method: 'post',
                 params: {
-                    parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
-                    parVal: [Ext.util.Cookies.get('v_personcode'), chodata[k].data.V_GUID, Ext.getCmp('fzPer').getValue(), "请审批!", chodata[k].data.V_COUNT, chodata[k].data.V_YEARID, "请审批！", "YearPlan"],
-                    processKey: processKey,
-                    businessKey: chodata[k].data.V_GUID,
-                    V_STEPCODE: 'Start',
-                    V_STEPNAME: V_STEPNAME,
-                    V_IDEA: '请审批！',
-                    V_NEXTPER: Ext.getCmp('fzPer').getValue(),
-                    V_INPER: Ext.util.Cookies.get('v_personcode')
+                    V_V_GUID: chodata[k].data.V_GUID
                 },
-                success: function (response) {
-                    if (Ext.decode(response.responseText).ret == 'OK') {
+                success: function (resp) {
+                    var resp = Ext.decode(resp.responseText);
+                    if (resp.V_INFO == 'SUCCESS') {
                         Ext.Ajax.request({
-                            url: AppUrl + 'PM_06/PRO_PLAN_YEAR_STATE_SET',
-                            method: 'POST',
+                            url: AppUrl + 'Activiti/StratProcess',
                             async: false,
+                            method: 'post',
                             params: {
-                                V_V_GUID: chodata[k].get("V_GUID"),
-                                V_V_STATECODE: '20'
+                                parName: ["originator", "flow_businesskey", V_NEXT_SETP, "idea", "remark", "flow_code", "flow_yj", "flow_type"],
+                                parVal: [Ext.util.Cookies.get('v_personcode'), chodata[k].data.V_GUID, Ext.getCmp('fzPer').getValue(), "请审批!", chodata[k].data.V_COUNT, chodata[k].data.V_YEARID, "请审批！", "YearPlan"],
+                                processKey: processKey,
+                                businessKey: chodata[k].data.V_GUID,
+                                V_STEPCODE: 'Start',
+                                V_STEPNAME: V_STEPNAME,
+                                V_IDEA: '请审批！',
+                                V_NEXTPER: Ext.getCmp('fzPer').getValue(),
+                                V_INPER: Ext.util.Cookies.get('v_personcode')
                             },
-                            success: function (resp) {
-                                var resp = Ext.decode(resp.responseText);
-                                if (resp.V_INFO == 'SUCCESS') {
-                                    snum++;
+                            success: function (response) {
+                                if (Ext.decode(response.responseText).ret == 'OK') {
+                                    Ext.Ajax.request({
+                                        url: AppUrl + 'PM_06/PRO_PLAN_YEAR_STATE_SET',
+                                        method: 'POST',
+                                        async: false,
+                                        params: {
+                                            V_V_GUID: chodata[k].get("V_GUID"),
+                                            V_V_STATECODE: '20'
+                                        },
+                                        success: function (resp) {
+                                            var resp = Ext.decode(resp.responseText);
+                                            if (resp.V_INFO == 'SUCCESS') {
+                                                snum++;
+                                            }
+                                        }
+                                    });
+                                } else if (Ext.decode(response.responseText).error == 'ERROR') {
+                                    Ext.Msg.alert('提示', '该流程发起失败！');
                                 }
                             }
                         });
-                    } else if (Ext.decode(response.responseText).error == 'ERROR') {
-                        Ext.Msg.alert('提示', '该流程发起失败！');
+                    } else {
+                        alert(resp.V_INFO)
                     }
                 }
-            });
+            })
+
         }
         if (snum == chodata.length) {
             alert('上报成功！');

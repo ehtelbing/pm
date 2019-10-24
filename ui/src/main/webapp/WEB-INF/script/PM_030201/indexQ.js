@@ -142,7 +142,7 @@ Ext.onReady(function () {
         fields: ['V_GUID', 'V_YEARID', 'V_YEAR', 'V_ORGCODE',
             'V_ORGNAME', 'V_DEPTCODE', 'V_DEPTNAME', 'V_CXCODE', 'V_CXNAME',
             'V_ZY', 'V_STATE', 'V_DEL', 'V_INPER', 'V_INPERNAME', 'V_INDATE',
-            'V_JHTJSJ', 'V_JHJGSJ', 'V_JHGQ', 'V_COUNT', 'V_EQUCODE', 'V_EQUNAME', 'V_BASENAME', 'V_ZYMC'],
+            'V_JHTJSJ', 'V_JHJGSJ', 'V_JHGQ', 'V_COUNT', 'V_EQUCODE', 'V_EQUNAME', 'V_BASENAME', 'V_ZYMC','V_YEARNAME'],
         proxy: {
             type: 'ajax',
             async: false,
@@ -276,15 +276,15 @@ Ext.onReady(function () {
             mode: 'SIMPLE'
         },
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
-            {text: '年计划编号', width: 100, dataIndex: 'V_YEARID', align: 'center', renderer: atleft},
-            {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: atleft},
-            {text: '专业', width: 100, dataIndex: 'V_ZYMC', align: 'center', renderer: atleft},
+            /*{text: '年计划编号', width: 100, dataIndex: 'V_YEARID', align: 'center', renderer: atleft},*/
             {text: '产线', width: 160, dataIndex: 'V_CXNAME', align: 'center', renderer: atleft},
-            {text: '设备名称', width: 140, dataIndex: 'V_EQUNAME', align: 'center', renderer: atleft},
+            {text: '年计划名称', width: 140, dataIndex: 'V_YEARNAME', align: 'center', renderer: atleft},
             {text: '检修内容', width: 200, dataIndex: 'V_COUNT', align: 'center', renderer: atleft},
             {text: '计划开工时间', width: 140, dataIndex: 'V_JHTJSJ', align: 'center', renderer: atleft},
-            {text: '计划竣工时间', width: 140, dataIndex: 'V_JHJGSJ', align: 'center', renderer: atleft},
-            {text: '计划工期', width: 120, dataIndex: 'V_JHGQ', align: 'center', renderer: atleft}],
+            //  {text: '计划竣工时间', width: 140, dataIndex: 'V_JHJGSJ', align: 'center', renderer: atleft},
+            {text: '计划工期', width: 120, dataIndex: 'V_JHGQ', align: 'center', renderer: atleft},
+            {text: '专业', width: 100, dataIndex: 'V_ZYMC', align: 'center', renderer: atleft},
+            {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: lookFlow}],
         bbar: [{
             id: 'page',
             xtype: 'pagingtoolbar',
@@ -700,4 +700,42 @@ function OnButtonOut() {
     var V_V_ZY=Ext.getCmp('zy').getValue() == "%" ? "all" : Ext.getCmp('zy').getValue();
     var V_V_STATECODE=Ext.getCmp('zt').getValue() == "%" ? "all" : Ext.getCmp('zt').getValue();
     document.location.href = AppUrl + 'excel/YearPlan_Excel?V_V_YEAR='+ Ext.getCmp('year').getValue() + '&V_V_ORGCODE=' + V_V_ORGCODE + '&V_V_DEPTCODE=' +V_V_DEPTCODE + '&V_V_CX=' +V_V_CX + '&V_V_ZY=' + V_V_ZY + '&V_V_STATECODE=' + V_V_STATECODE;
+}
+
+function lookFlow(value, metaData, record, rowIndex, colIndex, store) {
+    metaData.style = "text-align:left;";
+    return '<a href="#" onclick="_preViewProcess(\'' + record.data.V_GUID + '\')">' + value + '</a>';
+}
+
+function _preViewProcess(businessKey) {
+    var ProcessInstanceId = '';
+    Ext.Ajax.request({
+        url: AppUrl + 'Activiti/GetActivitiStepFromBusinessId',
+        type: 'ajax',
+        method: 'POST',
+        async: false,
+        params: {
+            businessKey: businessKey
+        },
+        success: function (resp) {
+            var data = Ext.decode(resp.responseText);//后台返回的值
+            if (data.msg == 'Ok') {
+                ProcessInstanceId = data.InstanceId;
+            }
+        },
+        failure: function (response) {
+            Ext.MessageBox.show({
+                title: '错误',
+                msg: response.responseText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+
+    var owidth = window.screen.availWidth;
+    var oheight = window.screen.availHeight - 50;
+    window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
+        + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
+
 }
