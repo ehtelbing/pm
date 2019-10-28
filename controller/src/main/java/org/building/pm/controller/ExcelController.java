@@ -714,14 +714,11 @@ public class ExcelController {
             @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
             @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
             @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
-//            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-//            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
-//        V_V_REPAIRMAJOR_CODE = new String(V_V_REPAIRMAJOR_CODE.getBytes("iso-8859-1"), "utf-8");
-        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SEL_ADMINALL(V_D_ENTER_DATE_B.equals("0") ? "%" : V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0") ? "%" : V_D_DEFECTDATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
-                V_V_STATECODE, V_EQUTYPE_CODE.equals("0") ? "%" : V_EQUTYPE_CODE, V_EQU_CODE.equals("0") ? "%" : V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT,
+        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SEL_ADMINALL(V_D_ENTER_DATE_B.equals("0") ? "%" : V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0") ? "%" : V_D_DEFECTDATE_E, V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE, V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE, V_V_DEPTCODEREPARIR.equals("0") ? "%" : V_V_DEPTCODEREPARIR,
+                V_V_STATECODE.equals("0") ? "%" : V_V_STATECODE, V_EQUTYPE_CODE.equals("0") ? "%" : V_EQUTYPE_CODE, V_EQU_CODE.equals("0") ? "%" : V_EQU_CODE, V_DJ_PERCODE.equals("0") ? "%" : V_DJ_PERCODE, V_V_SHORT_TXT,
                 V_V_BJ_TXT, V_V_ORDER_TYP);
 
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -4531,14 +4528,11 @@ public class ExcelController {
             @RequestParam(value = "V_V_SHORT_TXT") String V_V_SHORT_TXT,
             @RequestParam(value = "V_V_BJ_TXT") String V_V_BJ_TXT,
             @RequestParam(value = "V_V_ORDER_TYP") String V_V_ORDER_TYP,
-//            @RequestParam(value = "V_V_PAGE") String V_V_PAGE,
-//            @RequestParam(value = "V_V_PAGESIZE") String V_V_PAGESIZE,
             HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 
         List list = new ArrayList();
-//        V_V_REPAIRMAJOR_CODE = new String(V_V_REPAIRMAJOR_CODE.getBytes("iso-8859-1"), "utf-8");
-        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SEL_NOBJ(V_D_ENTER_DATE_B.equals("0") ? "%" : V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0") ? "%" : V_D_DEFECTDATE_E, V_V_ORGCODE, V_V_DEPTCODE, V_V_DEPTCODEREPARIR,
-                V_V_STATECODE, V_EQUTYPE_CODE.equals("0") ? "%" : V_EQUTYPE_CODE, V_EQU_CODE.equals("0") ? "%" : V_EQU_CODE, V_DJ_PERCODE, V_V_SHORT_TXT,
+        Map<String, Object> data = workOrderService.PRO_PM_WORKORDER_SEL_NOBJ(V_D_ENTER_DATE_B.equals("0") ? "%" : V_D_ENTER_DATE_B, V_D_DEFECTDATE_E.equals("0") ? "%" : V_D_DEFECTDATE_E, V_V_ORGCODE.equals("0") ? "%" : V_V_ORGCODE, V_V_DEPTCODE.equals("0") ? "%" : V_V_DEPTCODE, V_V_DEPTCODEREPARIR.equals("0") ? "%" : V_V_DEPTCODEREPARIR,
+                V_V_STATECODE.equals("0") ? "%" : V_V_STATECODE, V_EQUTYPE_CODE.equals("0") ? "%" : V_EQUTYPE_CODE, V_EQU_CODE.equals("0") ? "%" : V_EQU_CODE, V_DJ_PERCODE.equals("0") ? "%" : V_DJ_PERCODE, V_V_SHORT_TXT,
                 V_V_BJ_TXT, V_V_ORDER_TYP);
 
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -4789,7 +4783,7 @@ public class ExcelController {
         List list = new ArrayList();
         Map<String, Object> data = pm_06Service.PRO_YEAR_PLAN_SEL(V_V_YEAR, V_V_ORGCODE.equals("all") ? "%" : V_V_ORGCODE,
                 V_V_DEPTCODE.equals("all") ? "%" : V_V_DEPTCODE, V_V_CX.equals("all") ? "%" : V_V_CX,
-                V_V_ZY.equals("all") ? "%" : V_V_ZY, V_V_STATECODE.equals("all") ? "%" : V_V_STATECODE,"0","ALL");
+                V_V_ZY.equals("all") ? "%" : V_V_ZY, V_V_STATECODE.equals("all") ? "%" : V_V_STATECODE, "0", "ALL");
 
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
