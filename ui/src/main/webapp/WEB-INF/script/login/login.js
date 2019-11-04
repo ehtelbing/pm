@@ -177,7 +177,7 @@ function OnLogInClick() {
             success: function (response) {
                 var resp = Ext.decode(response.responseText);
                 if (resp.V_INFO == "SUCCESS") {
-
+                    console.log(resp.list[0]);
 
                     Ext.util.Cookies.set("v_class_code",
                         encodeURI(resp.list[0].V_CLASS_CODE));
