@@ -974,4 +974,51 @@ public class LLController {
         Map result = llService.PRO_RUN_SITE_DELETE(A_SITE_ID);
         return result;
     }
+
+    @RequestMapping(value = "/PRO_RUN_EQU_VGURL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_EQU_VGURL(@RequestParam(value = "A_EQUID") String A_EQUID,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_EQU_VGURL(A_EQUID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_ALL(HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_CYCLE_ALL();
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_ADD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_ADD(@RequestParam(value = "A_CYCLE_DESC") String A_CYCLE_DESC,
+                                                 @RequestParam(value = "A_CYCLE_UNIT") String A_CYCLE_UNIT,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_CYCLE_ADD(A_CYCLE_DESC, A_CYCLE_UNIT);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_UPDATE(@RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                    @RequestParam(value = "A_CYCLE_DESC") String A_CYCLE_DESC,
+                                                    @RequestParam(value = "A_CYCLE_UNIT") String A_CYCLE_UNIT,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_CYCLE_UPDATE(A_CYCLE_ID, A_CYCLE_DESC, A_CYCLE_UNIT);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_DELETE(@RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_CYCLE_DELETE(A_CYCLE_ID);
+        return result;
+    }
 }

@@ -1304,4 +1304,153 @@ public class LLService {
         logger.info("end PRO_RUN_SITE_UPDATE");
         return result;
     }
+
+    public HashMap PRO_RUN_EQU_VGURL(String A_EQUID) throws SQLException {
+
+        logger.info("begin PRO_RUN_EQU_VGURL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_EQU_VGURL" + "(:A_EQUID,:RET_URL)}");
+            cstmt.setString("A_EQUID", A_EQUID);
+
+            cstmt.registerOutParameter("RET_URL", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_URL = (String) cstmt.getObject("RET_URL");
+            result.put("RET_URL", RET_URL);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_EQU_VGURL");
+        return result;
+    }
+
+    public HashMap PRO_RUN_CYCLE_ALL() throws SQLException {
+
+        logger.info("begin PRO_RUN_CYCLE_ALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_CYCLE_ALL(:RET)}");
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_CYCLE_ALL");
+        return result;
+    }
+
+    public HashMap PRO_RUN_CYCLE_ADD(String A_CYCLE_DESC, String A_CYCLE_UNIT) throws SQLException {
+
+        logger.info("begin PRO_RUN_CYCLE_ADD");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_CYCLE_ADD" + "(:A_CYCLE_DESC,:A_CYCLE_UNIT,:RET_MSG,:RET)}");
+            cstmt.setString("A_CYCLE_DESC", A_CYCLE_DESC);
+            cstmt.setString("A_CYCLE_UNIT", A_CYCLE_UNIT);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_CYCLE_ADD");
+        return result;
+    }
+
+    public HashMap PRO_RUN_CYCLE_UPDATE(String A_CYCLE_ID, String A_CYCLE_DESC, String A_CYCLE_UNIT) throws SQLException {
+
+        logger.info("begin PRO_RUN_CYCLE_UPDATE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_CYCLE_UPDATE" + "(:A_CYCLE_ID,:A_CYCLE_DESC,:A_CYCLE_UNIT,:RET_MSG,:RET)}");
+            cstmt.setString("A_CYCLE_ID", A_CYCLE_ID);
+            cstmt.setString("A_CYCLE_DESC", A_CYCLE_DESC);
+            cstmt.setString("A_CYCLE_UNIT", A_CYCLE_UNIT);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_CYCLE_UPDATE");
+        return result;
+    }
+
+    public HashMap PRO_RUN_CYCLE_DELETE(String A_CYCLE_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN_CYCLE_DELETE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_CYCLE_DELETE" + "(:A_CYCLE_ID,:RET_MSG,:RET)}");
+            cstmt.setString("A_CYCLE_ID", A_CYCLE_ID);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_CYCLE_DELETE");
+        return result;
+    }
 }
