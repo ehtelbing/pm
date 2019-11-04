@@ -884,4 +884,94 @@ public class LLController {
         test.put("success", true);
         return test;
     }
+
+    @RequestMapping(value = "/PRO_BASE_DEPT_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public List PRO_BASE_DEPT_TREE(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        List list = llService.PRO_BASE_DEPT_TREE(V_V_DEPTCODE);
+        return list;
+    }
+
+    @RequestMapping(value = "/PRO_GET_DEPTEQUTYPE_PER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_GET_DEPTEQUTYPE_PER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                       @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT) throws Exception {
+        Map map = llService.PRO_GET_DEPTEQUTYPE_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT);
+        return map;
+    }
+
+    @RequestMapping(value = "/PRO_GET_DEPTEQU_PER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_GET_DEPTEQU_PER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                   @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                   @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_GET_DEPTEQU_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_BASE_DEPT_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_DEPT_VIEW(@RequestParam(value = "IS_V_DEPTCODE") String IS_V_DEPTCODE,
+                                  @RequestParam(value = "IS_V_DEPTTYPE") String IS_V_DEPTTYPE,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_BASE_DEPT_VIEW(IS_V_DEPTCODE, IS_V_DEPTTYPE);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_ALL(@RequestParam(value = "A_EQU_ID") String A_EQU_ID,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_SITE_ALL(A_EQU_ID);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_ADD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_ADD(@RequestParam(value = "A_SITE_DESC") String A_SITE_DESC,
+                                                @RequestParam(value = "A_EQUID") String A_EQUID,
+                                                @RequestParam(value = "A_REMARK") String A_REMARK,
+                                                @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                                @RequestParam(value = "A_MEND_DEPART") String A_MEND_DEPART,
+                                                @RequestParam(value = "A_MEND_USERNAME") String A_MEND_USERNAME,
+                                                @RequestParam(value = "A_MEND_USERNAMEID") String A_MEND_USERNAMEID,
+                                                @RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                @RequestParam(value = "a_bj_amount") String a_bj_amount,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_SITE_ADD(A_SITE_DESC, A_EQUID, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_UPDATE(@RequestParam(value = "A_SITE_ID") String A_SITE_ID,
+                                                   @RequestParam(value = "A_SITE_DESC") String A_SITE_DESC,
+                                                   @RequestParam(value = "A_REMARK") String A_REMARK,
+                                                   @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                                   @RequestParam(value = "A_MEND_DEPART") String A_MEND_DEPART,
+                                                   @RequestParam(value = "A_MEND_USERNAME") String A_MEND_USERNAME,
+                                                   @RequestParam(value = "A_MEND_USERNAMEID") String A_MEND_USERNAMEID,
+                                                   @RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                   @RequestParam(value = "a_bj_amount") String a_bj_amount,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_SITE_UPDATE(A_SITE_ID, A_SITE_DESC, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_DELETE(@RequestParam(value = "A_SITE_ID") String A_SITE_ID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = llService.PRO_RUN_SITE_DELETE(A_SITE_ID);
+        return result;
+    }
 }
