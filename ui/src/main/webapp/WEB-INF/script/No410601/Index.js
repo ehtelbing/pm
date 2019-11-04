@@ -148,7 +148,7 @@ function OnClickSavedButton() {
 Ext.onReady(function () {
     Ext.create('Ext.container.Viewport', PageLayout);
 
-    // 点击加号加载
+    // 点击加号加载 //
     Ext.getCmp("sectTree").on("beforeload", function (store, operation) {
         Ext.apply(store.proxy.extraParams, {
                 V_V_PERSONCODE: Ext.util.Cookies.get('v_personcode'),
