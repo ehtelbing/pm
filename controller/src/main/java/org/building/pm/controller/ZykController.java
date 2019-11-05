@@ -96,4 +96,80 @@ public class ZykController {
         return result;
     }
 
+    //7121的数据查询
+    @RequestMapping(value = "/PRO_RUN7121_SELECTEQULIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7121_SELECTEQULIST(@RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+                                                         @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7121_SELECTEQULIST(V_DEPARTCODE, V_PLANTCODE);
+        return result;
+    }
+
+    //7121新增根据设备编号查数据
+    @RequestMapping(value = "/PRO_RUN7121_GETEQULIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7121_GETEQULIST(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7121_GETEQULIST(V_EQU_ID);
+        return result;
+    }
+
+    //7121新增
+    @RequestMapping(value = "/PRO_RUN7121_ADDEQU", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7121_ADDEQU(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                  @RequestParam(value = "V_EQU_DESC") String V_EQU_DESC,
+                                                  @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+                                                  @RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+                                                  @RequestParam(value = "V_USERID") String V_USERID,
+
+                                                  @RequestParam(value = "V_USERNAME") String V_USERNAME,
+                                                  @RequestParam(value = "V_STATUS") String V_STATUS,
+                                                  @RequestParam(value = "V_PP_CODE") String V_PP_CODE,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7121_ADDEQU(V_EQU_ID, V_EQU_DESC, V_DEPARTCODE, V_PLANTCODE, V_USERID,
+                V_USERNAME, V_STATUS, V_PP_CODE);
+        return result;
+    }
+
+    //7121修改
+    @RequestMapping(value = "/PRO_RUN7121_UPDATEEQU", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7121_UPDATEEQU(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                     @RequestParam(value = "V_EQU_DESC") String V_EQU_DESC,
+                                                     @RequestParam(value = "V_USERID") String V_USERID,
+                                                     @RequestParam(value = "V_USERNAME") String V_USERNAME,
+                                                     @RequestParam(value = "V_STATUS") String V_STATUS,
+                                                     @RequestParam(value = "V_PP_CODE") String V_PP_CODE,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7121_UPDATEEQU(V_EQU_ID, V_EQU_DESC, V_USERID,
+                V_USERNAME, V_STATUS, V_PP_CODE);
+        return result;
+    }
+
+    //7121状态停用
+    @RequestMapping(value = "/PRO_RUN7121_STOP", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7121_STOP(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7121_STOP(V_EQU_ID);
+        return result;
+    }
+
+    //7121状态启用
+    @RequestMapping(value = "/PRO_RUN7121_STARTEQU", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7121_STARTEQU(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7121_STARTEQU(V_EQU_ID);
+        return result;
+    }
+
 }
