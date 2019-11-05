@@ -172,4 +172,35 @@ public class ZykController {
         return result;
     }
 
+    //7122查询
+    @RequestMapping(value = "/PRO_RUN7122_SELECTVGLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7122_SELECTVGLIST(@RequestParam(value = "V_VG_DESC") String V_VG_DESC,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7122_SELECTVGLIST(V_VG_DESC);
+        return result;
+    }
+
+    //7122新增
+    @RequestMapping(value = "/PRO_RUN7122_ADDVGURL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7122_ADDVGURL(@RequestParam(value = "V_VG_DESC") String V_VG_DESC,
+                                                    @RequestParam(value = "V_URL") String V_URL,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7122_ADDVGURL(V_VG_DESC, V_URL);
+        return result;
+    }
+
+    //7122删除
+    @RequestMapping(value = "/PRO_RUN7122_DELETEVGURL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7122_DELETEVGURL(@RequestParam(value = "V_ID") String V_ID,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7122_DELETEVGURL(V_ID);
+        return result;
+    }
+
 }

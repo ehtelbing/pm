@@ -283,4 +283,91 @@ public class ZykService {
         return result;
     }
 
+    //7122查询
+    public HashMap PRO_RUN7122_SELECTVGLIST(String V_VG_DESC) throws SQLException {
+
+        logger.info("begin PRO_RUN7122_SELECTVGLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7122_SELECTVGLIST(:V_VG_DESC,:OUT_RESULT)}");
+            cstmt.setString("V_VG_DESC", V_VG_DESC);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7122_SELECTVGLIST");
+        return result;
+    }
+
+    //7122新增
+    public HashMap PRO_RUN7122_ADDVGURL(String V_VG_DESC, String V_URL) throws SQLException {
+
+        logger.info("begin PRO_RUN7122_ADDVGURL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7122_ADDVGURL" + "(:V_VG_DESC,:V_URL,:OUT_RESULT)}");
+
+            cstmt.setString("V_VG_DESC", V_VG_DESC);
+            cstmt.setString("V_URL", V_URL);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7122_ADDVGURL");
+        return result;
+    }
+
+    //7122删除
+    public HashMap PRO_RUN7122_DELETEVGURL(String V_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7122_DELETEVGURL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7122_DELETEVGURL" + "(:V_ID,:OUT_RESULT)}");
+
+            cstmt.setString("V_ID", V_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7122_DELETEVGURL");
+        return result;
+    }
+
 }
