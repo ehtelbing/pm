@@ -1453,4 +1453,122 @@ public class LLService {
         logger.info("end PRO_RUN_CYCLE_DELETE");
         return result;
     }
+
+    public HashMap PRO_RUN_CYCLE_ABLE() throws SQLException {
+
+        logger.info("begin PRO_RUN_CYCLE_ABLE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_CYCLE_ABLE(:RET)}");
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_CYCLE_ABLE");
+        return result;
+    }
+
+    public HashMap PRO_RUN_YEILD_SELECT_MANAGE(String A_EQUID, java.util.Date A_WORKDATE, String A_CYCLE_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN_YEILD_SELECT_MANAGE");
+        java.sql.Date sql_A_WORKDATE = new java.sql.Date(A_WORKDATE.getTime());
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_YEILD_SELECT_MANAGE(:A_EQUID,:A_WORKDATE,:A_CYCLE_ID,:RET)}");
+            cstmt.setString("A_EQUID", A_EQUID);
+            cstmt.setDate("A_WORKDATE", sql_A_WORKDATE);
+            cstmt.setString("A_CYCLE_ID", A_CYCLE_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_YEILD_SELECT_MANAGE");
+        return result;
+    }
+
+    public HashMap PRO_RUN_YEILD_INPUT(String A_EQU_ID, String A_CYCLE_ID, java.util.Date  A_WORKDATE, String A_INSERTVALUE, String A_INSRTPERSON) throws SQLException {
+
+        logger.info("begin PRO_RUN_YEILD_INPUT");
+        java.sql.Date sql_A_WORKDATE = new java.sql.Date(A_WORKDATE.getTime());
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_YEILD_INPUT(:A_EQU_ID,:A_CYCLE_ID,:A_WORKDATE,:A_INSERTVALUE,:A_INSRTPERSON,:RET_MSG,:RET)}");
+            cstmt.setString("A_EQU_ID", A_EQU_ID);
+            cstmt.setString("A_CYCLE_ID", A_CYCLE_ID);
+            cstmt.setDate("A_BJ_TYPE", sql_A_WORKDATE);
+            cstmt.setString("A_INSERTVALUE", A_INSERTVALUE);
+            cstmt.setString("A_INSRTPERSON", A_INSRTPERSON);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_YEILD_INPUT");
+        return result;
+    }
+
+    public HashMap PRO_RUN_TEILD_DELETE(String A_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN_TEILD_DELETE");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_TEILD_DELETE(:A_ID,:RET_MSG,:RET)}");
+            cstmt.setString("A_ID", A_ID);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_TEILD_DELETE");
+        return result;
+    }
 }

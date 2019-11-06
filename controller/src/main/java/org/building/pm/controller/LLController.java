@@ -890,16 +890,14 @@ public class LLController {
     public List PRO_BASE_DEPT_TREE(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
                                    HttpServletRequest request,
                                    HttpServletResponse response) throws Exception {
-        List list = llService.PRO_BASE_DEPT_TREE(V_V_DEPTCODE);
-        return list;
+        return llService.PRO_BASE_DEPT_TREE(V_V_DEPTCODE);
     }
 
     @RequestMapping(value = "/PRO_GET_DEPTEQUTYPE_PER", method = RequestMethod.POST)
     @ResponseBody
     public Map PRO_GET_DEPTEQUTYPE_PER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
                                        @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT) throws Exception {
-        Map map = llService.PRO_GET_DEPTEQUTYPE_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT);
-        return map;
+        return llService.PRO_GET_DEPTEQUTYPE_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT);
     }
 
     @RequestMapping(value = "/PRO_GET_DEPTEQU_PER", method = RequestMethod.POST)
@@ -909,8 +907,7 @@ public class LLController {
                                    @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
                                    HttpServletRequest request,
                                    HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_GET_DEPTEQU_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE);
-        return result;
+        return llService.PRO_GET_DEPTEQU_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE);
     }
 
     @RequestMapping(value = "/PRO_BASE_DEPT_VIEW", method = RequestMethod.POST)
@@ -919,8 +916,7 @@ public class LLController {
                                   @RequestParam(value = "IS_V_DEPTTYPE") String IS_V_DEPTTYPE,
                                   HttpServletRequest request,
                                   HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_BASE_DEPT_VIEW(IS_V_DEPTCODE, IS_V_DEPTTYPE);
-        return result;
+        return llService.PRO_BASE_DEPT_VIEW(IS_V_DEPTCODE, IS_V_DEPTTYPE);
     }
 
     @RequestMapping(value = "/PRO_RUN_SITE_ALL", method = RequestMethod.POST)
@@ -928,8 +924,7 @@ public class LLController {
     public Map<String, Object> PRO_RUN_SITE_ALL(@RequestParam(value = "A_EQU_ID") String A_EQU_ID,
                                                 HttpServletRequest request,
                                                 HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_SITE_ALL(A_EQU_ID);
-        return result;
+        return llService.PRO_RUN_SITE_ALL(A_EQU_ID);
     }
 
     @RequestMapping(value = "/PRO_RUN_SITE_ADD", method = RequestMethod.POST)
@@ -945,8 +940,7 @@ public class LLController {
                                                 @RequestParam(value = "a_bj_amount") String a_bj_amount,
                                                 HttpServletRequest request,
                                                 HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_SITE_ADD(A_SITE_DESC, A_EQUID, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
-        return result;
+        return llService.PRO_RUN_SITE_ADD(A_SITE_DESC, A_EQUID, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
     }
 
     @RequestMapping(value = "/PRO_RUN_SITE_UPDATE", method = RequestMethod.POST)
@@ -962,8 +956,7 @@ public class LLController {
                                                    @RequestParam(value = "a_bj_amount") String a_bj_amount,
                                                    HttpServletRequest request,
                                                    HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_SITE_UPDATE(A_SITE_ID, A_SITE_DESC, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
-        return result;
+        return llService.PRO_RUN_SITE_UPDATE(A_SITE_ID, A_SITE_DESC, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
     }
 
     @RequestMapping(value = "/PRO_RUN_SITE_DELETE", method = RequestMethod.POST)
@@ -971,8 +964,7 @@ public class LLController {
     public Map<String, Object> PRO_RUN_SITE_DELETE(@RequestParam(value = "A_SITE_ID") String A_SITE_ID,
                                                    HttpServletRequest request,
                                                    HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_SITE_DELETE(A_SITE_ID);
-        return result;
+        return llService.PRO_RUN_SITE_DELETE(A_SITE_ID);
     }
 
     @RequestMapping(value = "/PRO_RUN_EQU_VGURL", method = RequestMethod.POST)
@@ -980,16 +972,14 @@ public class LLController {
     public Map<String, Object> PRO_RUN_EQU_VGURL(@RequestParam(value = "A_EQUID") String A_EQUID,
                                                  HttpServletRequest request,
                                                  HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_EQU_VGURL(A_EQUID);
-        return result;
+        return llService.PRO_RUN_EQU_VGURL(A_EQUID);
     }
 
     @RequestMapping(value = "/PRO_RUN_CYCLE_ALL", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> PRO_RUN_CYCLE_ALL(HttpServletRequest request,
                                                  HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_CYCLE_ALL();
-        return result;
+        return llService.PRO_RUN_CYCLE_ALL();
     }
 
     @RequestMapping(value = "/PRO_RUN_CYCLE_ADD", method = RequestMethod.POST)
@@ -998,8 +988,7 @@ public class LLController {
                                                  @RequestParam(value = "A_CYCLE_UNIT") String A_CYCLE_UNIT,
                                                  HttpServletRequest request,
                                                  HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_CYCLE_ADD(A_CYCLE_DESC, A_CYCLE_UNIT);
-        return result;
+        return llService.PRO_RUN_CYCLE_ADD(A_CYCLE_DESC, A_CYCLE_UNIT);
     }
 
     @RequestMapping(value = "/PRO_RUN_CYCLE_UPDATE", method = RequestMethod.POST)
@@ -1009,8 +998,7 @@ public class LLController {
                                                     @RequestParam(value = "A_CYCLE_UNIT") String A_CYCLE_UNIT,
                                                     HttpServletRequest request,
                                                     HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_CYCLE_UPDATE(A_CYCLE_ID, A_CYCLE_DESC, A_CYCLE_UNIT);
-        return result;
+        return llService.PRO_RUN_CYCLE_UPDATE(A_CYCLE_ID, A_CYCLE_DESC, A_CYCLE_UNIT);
     }
 
     @RequestMapping(value = "/PRO_RUN_CYCLE_DELETE", method = RequestMethod.POST)
@@ -1018,7 +1006,42 @@ public class LLController {
     public Map<String, Object> PRO_RUN_CYCLE_DELETE(@RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
                                                     HttpServletRequest request,
                                                     HttpServletResponse response) throws Exception {
-        Map result = llService.PRO_RUN_CYCLE_DELETE(A_CYCLE_ID);
-        return result;
+        return llService.PRO_RUN_CYCLE_DELETE(A_CYCLE_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_ABLE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_ABLE(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_CYCLE_ABLE();
+    }
+
+    @RequestMapping(value = "/PRO_RUN_YEILD_SELECT_MANAGE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_YEILD_SELECT_MANAGE(@RequestParam(value = "A_EQUID") String A_EQUID,
+                                                           @RequestParam(value = "A_WORKDATE") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date A_WORKDATE,
+                                                           @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_YEILD_SELECT_MANAGE(A_EQUID, A_WORKDATE, A_CYCLE_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_YEILD_INPUT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_YEILD_INPUT(@RequestParam(value = "A_EQU_ID") String A_EQU_ID,
+                                                   @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                   @RequestParam(value = "A_WORKDATE") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date A_WORKDATE,
+                                                   @RequestParam(value = "A_INSERTVALUE") String A_INSERTVALUE,
+                                                   @RequestParam(value = "A_INSRTPERSON") String A_INSRTPERSON,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_YEILD_INPUT(A_EQU_ID, A_CYCLE_ID, A_WORKDATE, A_INSERTVALUE, A_INSRTPERSON);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_TEILD_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_TEILD_DELETE(@RequestParam(value = "A_ID") String A_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_TEILD_DELETE(A_ID);
     }
 }
