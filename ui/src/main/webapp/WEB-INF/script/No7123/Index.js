@@ -1,6 +1,9 @@
 ﻿/** ****************变量及数据集******************* */
 QueryCheckAlertMsg = "请填写当前设备";
 
+var win;
+var returnValue;
+
 var STATUS_ARR = [];
 STATUS_ARR.push({
     "STATUS_CODE": "0",
@@ -32,7 +35,7 @@ var selPlantstore = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+        url: AppUrl + 'Zyk/PRO_BASE_DEPT_VIEW',
         actionMethods: {
             read: 'POST'
         },
@@ -41,10 +44,8 @@ var selPlantstore = Ext.create('Ext.data.Store', {
             root: 'list'
         },
         extraParams: {
-            'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-            'V_V_DEPTCODE': Ext.util.Cookies.get('v_orgCode'),
-            'V_V_DEPTCODENEXT': Ext.util.Cookies.get('v_deptcode'),
-            'V_V_DEPTTYPE': '基层单位'
+            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+            V_V_DEPTTYPE: '[基层单位]'
         }
     }
 });
@@ -56,7 +57,7 @@ var selSectionstore = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'PM_06/PRO_BASE_DEPT_VIEW_ROLE',
+        url: AppUrl + 'Zyk/PRO_BASE_DEPT_VIEW',
         actionMethods: {
             read: 'POST'
         },
@@ -93,7 +94,7 @@ var gridStore = Ext.create('Ext.data.Store', {
     proxy: {
         type: 'ajax',
         async: false,
-        url: AppUrl + 'cjy/pro_run7123_selectstlist',
+        url: AppUrl + 'Zyk/PRO_RUN7123_SELECTSTLIST',
         actionMethods: {
             read: 'POST'
         },
@@ -149,7 +150,39 @@ var queryPanel = Ext.create('Ext.panel.Panel', {
             style: ' margin: 5px 0px 5px 10px',
             listeners: {
                 focus: function () {
-                    window.open(AppUrl + 'page/PM_090101/index.html?V_DEPTCODE=' + Ext.ComponentManager.get('selSection').getValue(), '', 'height=' + '400px' + ',width=' + '650px' + ',top=10px,left=10px,resizable=yes');
+                    var DEPTCODE = null;
+
+                    if (Ext.getCmp('selSection').getValue() == "%") {
+                        Ext.example.msg('操作信息', '请选择作业区');
+                        return;
+                    } else {
+                        DEPTCODE = Ext.ComponentManager.get('selSection').getValue();
+                    }
+                    returnValue = null;
+                    win = Ext.create('Ext.window.Window', {
+                        title: '搜索设备',
+                        modal: true,
+                        autoShow: true,
+                        maximized: false,
+                        maximizable: true,
+                        width: 1000,
+                        height: document.documentElement.clientHeight * 0.8,
+                        html: '<iframe src=' + AppUrl + 'page/No410601/Index.html?DEPTCODE=' + DEPTCODE + ' style="width: 100%; height: 100%;" frameborder="0"/ >',
+                        listeners: {
+                            close: function (panel, eOpts) {
+                                if (returnValue != "" && returnValue != null) {
+                                    Ext.ComponentManager.get('xzsb').setValue(returnValue[0].data.V_EQUNAME);
+                                    Ext.ComponentManager.get('equcode').setValue(returnValue[0].data.V_EQUCODE);
+                                    Ext.data.StoreManager.lookup('selSiteStore').load({
+                                        params: {
+                                            A_EQU_ID: returnValue[0].data.V_EQUCODE
+                                        }
+                                    });
+                                }
+                                Ext.ComponentManager.get('selPlant').focus(false, 0);
+                            }
+                        }
+                    });
                 }
             }
         }, {
@@ -397,22 +430,20 @@ function onPageLoaded() {
 
     Ext.data.StoreManager.lookup('selPlantstore')
         .on(
-        "load",
-        function () {
-            Ext.getCmp("selPlant").select(
-                Ext.data.StoreManager.lookup('selPlantstore')
-                    .getAt(0));
+            "load",
+            function () {
+                Ext.getCmp("selPlant").select(
+                    Ext.data.StoreManager.lookup('selPlantstore')
+                        .getAt(0));
 
-            Ext.data.StoreManager.lookup('selSectionstore').load(
-                {
-                    params: {
-                        'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                        'V_V_DEPTCODE': Ext.getCmp("selPlant").getValue(),
-                        'V_V_DEPTCODENEXT': Ext.util.Cookies.get('v_deptcode'),
-                        'V_V_DEPTTYPE': '[主体作业区]'
-                    }
-                });
-        });
+                Ext.data.StoreManager.lookup('selSectionstore').load(
+                    {
+                        params: {
+                            V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+                            V_V_DEPTTYPE: '[主体作业区]'
+                        }
+                    });
+            });
     Ext.data.StoreManager.lookup('selSectionstore').on(
         "load",
         function () {
@@ -424,10 +455,8 @@ function onPageLoaded() {
         Ext.data.StoreManager.lookup('selSectionstore').removeAll();
         Ext.data.StoreManager.lookup('selSectionstore').load({
             params: {
-                'V_V_PERSONCODE': Ext.util.Cookies.get('v_personcode'),
-                'V_V_DEPTCODE': Ext.getCmp("selPlant").getValue(),
-                'V_V_DEPTCODENEXT': Ext.util.Cookies.get('v_deptcode'),
-                'V_V_DEPTTYPE': '[主体作业区]'
+                V_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+                V_V_DEPTTYPE: '[主体作业区]'
             }
         });
     });
@@ -439,7 +468,7 @@ function onPageLoaded() {
                 Ext.data.StoreManager.lookup('selSiteStore').getAt(0));
         });
 
-}
+};
 
 function query() {
 
@@ -465,51 +494,36 @@ function saveClick() {
     }
 }
 
-function getEquipReturnValue(ret) {
-    var str = ret.split('^');
-    Ext.getCmp('xzsb').setValue(str[1]);
-    Ext.getCmp('equcode').setValue(str[0]);
-    Ext.getCmp('nowDevice_Site').setValue(str[3]);
-
-    Ext.data.StoreManager.lookup('selSiteStore').load({
-        params: {
-            A_EQU_ID: str[0]
-        }
-    });
-
-    Ext.ComponentManager.get('selPlant').focus(false, 0);
-}
-
 function create() {
     var desc = Ext.getCmp('tagDesc').getValue();
     var unit = Ext.getCmp('tagUnit').getValue();
     if (!checkDescSize(desc)) {
         Ext.example.msg('操作信息', '指标名称不能超过50个字符');
+        // Ext.getCmp('tagDesc').setValue(desc.substring(0, 50));
     } else if (!checkUnitSize(unit)) {
         Ext.example.msg('操作信息', '指标计量单位不能超过8个字符');
+        // Ext.getCmp('tagUnit').setValue(unit.substring(0, 8));
     } else {
-        Ext.Ajax
-            .request({
-                url: AppUrl + 'cjy/pro_run7123_addst',
-                method: 'POST',
-                params: {
-                    V_SITE_ID: Ext.getCmp('selSite').getValue(),
-                    V_TAG_DESC: Ext.getCmp('tagDesc').getValue(),
-                    V_TAG_UNIT: Ext.getCmp('tagUnit').getValue(),
-                    V_STATUS: Ext.getCmp('status').getValue()
-                },
-                success: function (response) {
-                    var resp = Ext.decode(response.responseText);
-                    if (resp.OUT_RESULT == 'success') {
-                        Ext.example.msg('操作信息', '操作成功');
-                        Ext.getCmp('operateWindow').hide();
-                        query();
-                    } else {
-                        Ext.example.msg('操作信息', '操作失败');
-                        Ext.getCmp('operateWindow').hide();
-                    }
+        Ext.Ajax.request({
+            url: AppUrl + 'Zyk/PRO_RUN7123_ADDST',
+            method: 'POST',
+            params: {
+                V_SITE_ID: Ext.getCmp('selSite').getValue(),
+                V_TAG_DESC: Ext.getCmp('tagDesc').getValue(),
+                V_TAG_UNIT: Ext.getCmp('tagUnit').getValue(),
+                V_STATUS: Ext.getCmp('status').getValue()
+            },
+            success: function (resp) {
+                resp = Ext.decode(resp.responseText);
+                if (resp.OUT_RESULT == 'success') {
+                    Ext.example.msg('操作信息', '操作成功');
+                    Ext.getCmp('operateWindow').hide();
+                    query();
+                } else {
+                    Ext.example.msg('操作信息', '操作失败');
                 }
-            });
+            }
+        });
     }
 }
 
@@ -518,11 +532,13 @@ function modify() {
     var unit = Ext.getCmp('tagUnit').getValue();
     if (!checkDescSize(desc)) {
         Ext.example.msg('操作信息', '指标名称不能超过50个字符');
+        // Ext.getCmp('tagDesc').setValue(desc.substring(0, 50));
     } else if (!checkUnitSize(unit)) {
         Ext.example.msg('操作信息', '指标计量单位不能超过8个字符');
+        // Ext.getCmp('tagUnit').setValue(unit.substring(0, 8));
     } else {
         Ext.Ajax.request({
-            url: AppUrl + 'cjy/pro_run7123_updatest',
+            url: AppUrl + 'Zyk/PRO_RUN7123_UPDATEST',
             method: 'POST',
             params: {
                 V_TAG_ID: Ext.getCmp('tagId').getValue(),
@@ -531,15 +547,14 @@ function modify() {
                 V_TAG_UNIT: Ext.getCmp('tagUnit').getValue(),
                 V_STATUS: Ext.getCmp('status').getValue()
             },
-            success: function (response) {
-                var resp = Ext.decode(response.responseText);
+            success: function (resp) {
+                resp = Ext.decode(resp.responseText);
                 if (resp.OUT_RESULT == 'success') {
                     Ext.example.msg('操作信息', '操作成功');
                     Ext.getCmp('operateWindow').hide();
                     query();
                 } else {
                     Ext.example.msg('操作信息', '操作失败');
-                    Ext.getCmp('operateWindow').hide();
                 }
             }
         });
@@ -547,41 +562,27 @@ function modify() {
 }
 
 function changeStatus(code, status) {
+    var url = '';
     if (status == '1') {
-        Ext.Ajax.request({
-            url: AppUrl + 'cjy/pro_run7123_stopst',
-            async: false,
-            method: 'POST',
-            params: {
-                V_TAG_ID: code
-            },
-            success: function (ret) {
-                var resp = Ext.JSON.decode(ret.responseText);
-                if (resp.OUT_RESULT == "success") {
-                    query();
-                } else {
-                    Ext.example.msg('操作信息', '操作失败');
-                }
-            }
-        });
+        url = AppUrl + 'Zyk/PRO_RUN7123_STOPST';
     } else if (status == '0') {
-        Ext.Ajax.request({
-            url: AppUrl + 'cjy/pro_run7123_startst',
-            async: false,
-            method: 'POST',
-            params: {
-                V_TAG_ID: code
-            },
-            success: function (ret) {
-                var resp = Ext.JSON.decode(ret.responseText);
-                if (resp.OUT_RESULT == "success") {
-                    query();
-                } else {
-                    Ext.example.msg('操作信息', '操作失败');
-                }
-            }
-        });
+        url = AppUrl + 'Zyk/PRO_RUN7123_STARTST';
     }
+
+    Ext.Ajax.request({
+        url: url,
+        async: false,
+        method: 'POST',
+        params: {
+            V_TAG_ID: code
+        },
+        success: function (resp) {
+            resp = Ext.decode(resp.responseText);
+            if (resp.OUT_RESULT == 'success') {
+                query();
+            }
+        }
+    });
 }
 
 function checkUnitSize(unit) {
