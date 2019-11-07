@@ -109,7 +109,7 @@ public class LxController {
                                     @RequestParam(value = "a_departcode") String a_departcode,
                                     @RequestParam(value = "A_EQUID") String A_EQUID,
                                      @RequestParam(value = "A_BEGINDATE") String A_BEGINDATE,
-                                     @RequestParam(value = "A_ENDDATE") String A_ENDDATE,
+                                    @RequestParam(value = "A_ENDDATE") String A_ENDDATE,
                                      @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
                                      HttpServletResponse response)
             throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
@@ -177,6 +177,135 @@ public class LxController {
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
                 String fileName = new String("设备作业量台账Excel.xls".getBytes("UTF-8"), "ISO-8859-1");
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/PRO_RUN_EQU_BJ_ALERT_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_EQU_BJ_ALERT_ALL(
+            @RequestParam(value = "A_EQUID") String A_EQUID,
+            @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+
+        Map result = lxService.PRO_RUN_EQU_BJ_ALERT_ALL(A_EQUID,A_CYCLE_ID);
+
+        return result;
+    }
+
+    @RequestMapping(value = "/PRO_RUN_EQU_BJ_ALERT_ALL_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void PRO_RUN_EQU_BJ_ALERT_ALL_EXCEL(
+            @RequestParam(value = "A_EQUID") String A_EQUID,
+            @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+            HttpServletResponse response)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+        List list = new ArrayList();
+        A_EQUID = URLDecoder.decode(A_EQUID, "UTF-8");
+        A_CYCLE_ID = URLDecoder.decode(A_CYCLE_ID, "UTF-8");
+
+        Map<String, Object> data = lxService.PRO_RUN_EQU_BJ_ALERT_ALL(A_EQUID, A_CYCLE_ID);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 14; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("备件安装位置");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("当前备件唯一  标识");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("物资编码");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("物资描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("计量单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("更换时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("作业量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("周期类型");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 9);
+        cell.setCellValue("报警值");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 10);
+        cell.setCellValue("预警偏移量");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 11);
+        cell.setCellValue("备件状态");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("SITE_DESC") == null ? "" : map.get("SITE_DESC").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("BJ_UNIQUE_CODE") == null ? "" : map.get("BJ_UNIQUE_CODE").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("MATERIALCODE") == null ? "" : map.get("MATERIALCODE").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("CHANGEDATE") == null ? "" : map.get("CHANGEDATE").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("SUM_YEILD") == null ? "" : map.get("SUM_YEILD").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("CYCLE_DESC") == null ? "" : map.get("CYCLE_DESC").toString());
+
+                row.createCell((short) 9).setCellValue(map.get("ALERT_VALUE") == null ? "" : map.get("ALERT_VALUE").toString());
+
+                row.createCell((short) 10).setCellValue(map.get("OFFSET") == null ? "" : map.get("OFFSET").toString());
+
+                row.createCell((short) 11).setCellValue(map.get("BJ_STATUS") == null ? "" : map.get("BJ_STATUS").toString());
+            }
+
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("设备运行台账Excel.xls".getBytes("UTF-8"), "ISO-8859-1");
                 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
                 OutputStream out = response.getOutputStream();
 

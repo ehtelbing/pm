@@ -173,4 +173,32 @@ public class LxService {
         logger.info("end GET_WORK_YEILD_table");
         return result;
     }
+
+    public HashMap PRO_RUN_EQU_BJ_ALERT_ALL(String A_EQUID, String A_CYCLE_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN_EQU_BJ_ALERT_ALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_EQU_BJ_ALERT_ALL" + "(:A_EQUID,:A_CYCLE_ID,:RET)}");
+            cstmt.setString("A_EQUID", A_EQUID);
+            cstmt.setString("A_CYCLE_ID", A_CYCLE_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_EQU_BJ_ALERT_ALL");
+        return result;
+    }
 }
