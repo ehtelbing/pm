@@ -860,4 +860,89 @@ public class ZykService {
         return result;
     }
 
+    //7126查询
+    public HashMap PRO_RUN7126_SITEVGLIST(String V_EQU_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7126_SITEVGLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7126_SITEVGLIST(:V_EQU_ID,:OUT_RESULT)}");
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7126_SITEVGLIST");
+        return result;
+    }
+
+    //7126新增
+    public HashMap PRO_RUN7126_ADDSITEVG_NEW(String V_SITE_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7126_ADDSITEVG_NEW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7126_ADDSITEVG_NEW(:V_SITE_ID,:V_VG_ID,:RET)}");
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7126_ADDSITEVG_NEW");
+        return result;
+    }
+
+    //7126删除
+    public HashMap PRO_RUN7126_DELSITEVG(String V_SITE_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7126_DELSITEVG");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7126_DELSITEVG(:V_SITE_ID,:V_VG_ID,:OUT_RESULT)}");
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7126_DELSITEVG");
+        return result;
+    }
 }

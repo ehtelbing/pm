@@ -396,4 +396,37 @@ public class ZykController {
         Map result = zykService.PRO_RUN7125_DELEQUVG(V_EQU_ID, V_VG_ID);
         return result;
     }
+
+    //7126查询
+    @RequestMapping(value = "/PRO_RUN7126_SITEVGLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7126_SITEVGLIST(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7126_SITEVGLIST(V_EQU_ID);
+        return result;
+    }
+
+    //7126新增
+    @RequestMapping(value = "/PRO_RUN7126_ADDSITEVG_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7126_ADDSITEVG_NEW(@RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+                                                     @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7126_ADDSITEVG_NEW(V_SITE_ID, V_VG_ID);
+        return result;
+    }
+
+    //7126删除
+    @RequestMapping(value = "/PRO_RUN7126_DELSITEVG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7126_DELSITEVG(@RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+                                                     @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7126_DELSITEVG(V_SITE_ID, V_VG_ID);
+        return result;
+    }
+
 }
