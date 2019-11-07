@@ -1,5 +1,6 @@
 ﻿/** ****************变量及数据集******************* */
 var CREATE_WINDOW_TITLE = '新增设置';
+QuerySelSectionsMsg = "请选择作业区";
 
 var win;
 var returnValue;
