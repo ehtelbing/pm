@@ -364,4 +364,36 @@ public class ZykController {
         return result;
     }
 
+    //7125查询
+    @RequestMapping(value = "/PRO_RUN7125_EQUVGLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7125_EQUVGLIST(@RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+                                                     @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7125_EQUVGLIST(V_PLANTCODE, V_DEPARTCODE);
+        return result;
+    }
+
+    //7125新增
+    @RequestMapping(value = "/PRO_RUN7125_ADDEQUVG_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7125_ADDEQUVG_NEW(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                    @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7125_ADDEQUVG_NEW(V_EQU_ID, V_VG_ID);
+        return result;
+    }
+
+    //7125删除
+    @RequestMapping(value = "/PRO_RUN7125_DELEQUVG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7125_DELEQUVG(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                    @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7125_DELEQUVG(V_EQU_ID, V_VG_ID);
+        return result;
+    }
 }

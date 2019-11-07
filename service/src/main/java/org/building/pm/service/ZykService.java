@@ -773,4 +773,91 @@ public class ZykService {
         return result;
     }
 
+    //7125查询
+    public HashMap PRO_RUN7125_EQUVGLIST(String V_PLANTCODE, String V_DEPARTCODE) throws SQLException {
+
+        logger.info("begin pro_run7125_equvglist");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7125_EQUVGLIST(:V_PLANTCODE,:V_DEPARTCODE,:OUT_RESULT)}");
+            cstmt.setString("V_PLANTCODE", V_PLANTCODE);
+            cstmt.setString("V_DEPARTCODE", V_DEPARTCODE);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7125_EQUVGLIST");
+        return result;
+    }
+
+    //7125新增
+    public HashMap PRO_RUN7125_ADDEQUVG_NEW(String V_EQU_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7125_ADDEQUVG_NEW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7125_ADDEQUVG_NEW(:V_EQU_ID,:V_VG_ID,:RET)}");
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7125_ADDEQUVG_NEW");
+        return result;
+    }
+
+    //7125删除
+    public HashMap PRO_RUN7125_DELEQUVG(String V_EQU_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin pro_run7125_delequvg");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7125_DELEQUVG(:V_EQU_ID,:V_VG_ID,:OUT_RESULT)}");
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7125_DELEQUVG");
+        return result;
+    }
+
 }
