@@ -203,4 +203,230 @@ public class ZykController {
         return result;
     }
 
+    //7123查询
+    @RequestMapping(value = "/PRO_RUN7123_SELECTSTLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7123_SELECTSTLIST(@RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7123_SELECTSTLIST(V_SITE_ID);
+        return result;
+    }
+
+    //7123新增
+    @RequestMapping(value = "/PRO_RUN7123_ADDST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7123_ADDST(@RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+                                                 @RequestParam(value = "V_TAG_DESC") String V_TAG_DESC,
+                                                 @RequestParam(value = "V_TAG_UNIT") String V_TAG_UNIT,
+                                                 @RequestParam(value = "V_STATUS") String V_STATUS,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7123_ADDST(V_SITE_ID, V_TAG_DESC, V_TAG_UNIT, V_STATUS);
+        return result;
+    }
+
+    //7123修改
+    @RequestMapping(value = "/PRO_RUN7123_UPDATEST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7123_UPDATEST(@RequestParam(value = "V_TAG_ID") String V_TAG_ID,
+                                                    @RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+                                                    @RequestParam(value = "V_TAG_DESC") String V_TAG_DESC,
+                                                    @RequestParam(value = "V_TAG_UNIT") String V_TAG_UNIT,
+                                                    @RequestParam(value = "V_STATUS") String V_STATUS,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7123_UPDATEST(V_TAG_ID, V_SITE_ID, V_TAG_DESC, V_TAG_UNIT, V_STATUS);
+        return result;
+    }
+
+    //7123状态停用
+    @RequestMapping(value = "/PRO_RUN7123_STOPST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7123_STOPST(@RequestParam(value = "V_TAG_ID") String V_TAG_ID,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7123_STOPST(V_TAG_ID);
+        return result;
+    }
+
+    //7123状态启用
+    @RequestMapping(value = "/PRO_RUN7123_STARTST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7123_STARTST(@RequestParam(value = "V_TAG_ID") String V_TAG_ID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7123_STARTST(V_TAG_ID);
+        return result;
+    }
+
+    //7124查询
+    @RequestMapping(value = "/PRO_RUN7124_SUPPLYLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_SUPPLYLIST(@RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
+                                                      @RequestParam(value = "V_SUPPLY_NAME") String V_SUPPLY_NAME,
+                                                      @RequestParam(value = "V_SUPPLY_STATUS") String V_SUPPLY_STATUS,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_SUPPLYLIST(V_SUPPLY_CODE, V_SUPPLY_NAME, V_SUPPLY_STATUS);
+        return result;
+    }
+
+    //7124新增
+    @RequestMapping(value = "/PRO_RUN7124_ADDSUPPLY", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_ADDSUPPLY(@RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
+                                                     @RequestParam(value = "V_SUPPLY_NAME") String V_SUPPLY_NAME,
+                                                     @RequestParam(value = "V_SUPPLY_DESC") String V_SUPPLY_DESC,
+                                                     @RequestParam(value = "V_SUPPLY_RENAGE") String V_SUPPLY_RENAGE,
+                                                     @RequestParam(value = "V_SUPPLY_MANAGER") String V_SUPPLY_MANAGER,
+
+                                                     @RequestParam(value = "V_LINK_PERSON") String V_LINK_PERSON,
+                                                     @RequestParam(value = "V_LINK_TYPE") String V_LINK_TYPE,
+                                                     @RequestParam(value = "V_LINK_PHONECODE") String V_LINK_PHONECODE,
+                                                     @RequestParam(value = "V_SUPPLY_STATUS") String V_SUPPLY_STATUS,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_ADDSUPPLY(V_SUPPLY_CODE, V_SUPPLY_NAME, V_SUPPLY_DESC, V_SUPPLY_RENAGE, V_SUPPLY_MANAGER,
+                V_LINK_PERSON, V_LINK_TYPE, V_LINK_PHONECODE, V_SUPPLY_STATUS);
+        return result;
+    }
+
+    //7124修改
+    @RequestMapping(value = "/PRO_RUN7124_UPDATESUPPLY", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_UPDATESUPPLY(@RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
+                                                        @RequestParam(value = "V_SUPPLY_NAME") String V_SUPPLY_NAME,
+                                                        @RequestParam(value = "V_SUPPLY_DESC") String V_SUPPLY_DESC,
+                                                        @RequestParam(value = "V_SUPPLY_RENAGE") String V_SUPPLY_RENAGE,
+                                                        @RequestParam(value = "V_SUPPLY_MANAGER") String V_SUPPLY_MANAGER,
+
+                                                        @RequestParam(value = "V_LINK_PERSON") String V_LINK_PERSON,
+                                                        @RequestParam(value = "V_LINK_TYPE") String V_LINK_TYPE,
+                                                        @RequestParam(value = "V_LINK_PHONECODE") String V_LINK_PHONECODE,
+                                                        @RequestParam(value = "V_SUPPLY_STATUS") String V_SUPPLY_STATUS,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_UPDATESUPPLY(V_SUPPLY_CODE, V_SUPPLY_NAME, V_SUPPLY_DESC, V_SUPPLY_RENAGE, V_SUPPLY_MANAGER,
+                V_LINK_PERSON, V_LINK_TYPE, V_LINK_PHONECODE, V_SUPPLY_STATUS);
+        return result;
+    }
+
+    //7124状态停用
+    @RequestMapping(value = "/PRO_RUN7124_STOPST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_STOPST(@RequestParam(value = "SUPPLY_CODE") String SUPPLY_CODE,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_STOPST(SUPPLY_CODE);
+        return result;
+    }
+
+    //7124状态启用
+    @RequestMapping(value = "/PRO_RUN7124_STARTST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_STARTST(@RequestParam(value = "SUPPLY_CODE") String SUPPLY_CODE,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_STARTST(SUPPLY_CODE);
+        return result;
+    }
+
+    //712401查询
+    @RequestMapping(value = "/PRO_RUN7124_SUPPLYMATLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_SUPPLYMATLIST(@RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
+                                                         HttpServletRequest request,
+                                                         HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_SUPPLYMATLIST(V_SUPPLY_CODE);
+        return result;
+    }
+
+    //712401新增
+    @RequestMapping(value = "/PRO_RUN7124_ADDSUPPLYMAT_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_ADDSUPPLYMAT_NEW(@RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
+                                                        @RequestParam(value = "V_MATERIALCODE") String V_MATERIALCODE,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_ADDSUPPLYMAT_NEW(V_SUPPLY_CODE, V_MATERIALCODE);
+        return result;
+    }
+
+    //712401删除
+    @RequestMapping(value = "/PRO_RUN7124_DELSUPPLYMAT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7124_DELSUPPLYMAT(@RequestParam(value = "V_SUPPLY_CODE") String V_SUPPLY_CODE,
+                                                        @RequestParam(value = "V_MATERIALCODE") String V_MATERIALCODE,
+                                                        HttpServletRequest request,
+                                                        HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7124_DELSUPPLYMAT(V_SUPPLY_CODE, V_MATERIALCODE);
+        return result;
+    }
+
+    //7125查询
+    @RequestMapping(value = "/PRO_RUN7125_EQUVGLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7125_EQUVGLIST(@RequestParam(value = "V_PLANTCODE") String V_PLANTCODE,
+                                                     @RequestParam(value = "V_DEPARTCODE") String V_DEPARTCODE,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7125_EQUVGLIST(V_PLANTCODE, V_DEPARTCODE);
+        return result;
+    }
+
+    //7125新增
+    @RequestMapping(value = "/PRO_RUN7125_ADDEQUVG_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7125_ADDEQUVG_NEW(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                    @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7125_ADDEQUVG_NEW(V_EQU_ID, V_VG_ID);
+        return result;
+    }
+
+    //7125删除
+    @RequestMapping(value = "/PRO_RUN7125_DELEQUVG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7125_DELEQUVG(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                    @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7125_DELEQUVG(V_EQU_ID, V_VG_ID);
+        return result;
+    }
+
+    //7126查询
+    @RequestMapping(value = "/PRO_RUN7126_SITEVGLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7126_SITEVGLIST(@RequestParam(value = "V_EQU_ID") String V_EQU_ID,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7126_SITEVGLIST(V_EQU_ID);
+        return result;
+    }
+
+    //7126新增
+    @RequestMapping(value = "/PRO_RUN7126_ADDSITEVG_NEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7126_ADDSITEVG_NEW(@RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+                                                     @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7126_ADDSITEVG_NEW(V_SITE_ID, V_VG_ID);
+        return result;
+    }
+
+    //7126删除
+    @RequestMapping(value = "/PRO_RUN7126_DELSITEVG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7126_DELSITEVG(@RequestParam(value = "V_SITE_ID") String V_SITE_ID,
+                                                     @RequestParam(value = "V_VG_ID") String V_VG_ID,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7126_DELSITEVG(V_SITE_ID, V_VG_ID);
+        return result;
+    }
+
 }

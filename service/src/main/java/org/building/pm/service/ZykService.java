@@ -370,4 +370,579 @@ public class ZykService {
         return result;
     }
 
+    //7123查询
+    public HashMap PRO_RUN7123_SELECTSTLIST(String V_SITE_ID) throws SQLException {
+
+        logger.info("begin pro_run7123_selectstlist");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7123_SELECTSTLIST(:V_SITE_ID,:OUT_RESULT)}");
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7123_SELECTSTLIST");
+        return result;
+    }
+
+    //7123新增
+    public HashMap PRO_RUN7123_ADDST(String V_SITE_ID, String V_TAG_DESC, String V_TAG_UNIT,
+                                     String V_STATUS) throws SQLException {
+
+        logger.info("begin pro_run7123_addst");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7123_ADDST" + "(:V_SITE_ID,:V_TAG_DESC,:V_TAG_UNIT," +
+                    ":V_STATUS,:OUT_RESULT)}");
+
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.setString("V_TAG_DESC", V_TAG_DESC);
+            cstmt.setString("V_TAG_UNIT", V_TAG_UNIT);
+            cstmt.setString("V_STATUS", V_STATUS);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7123_ADDST");
+        return result;
+    }
+
+    //7123修改
+    public HashMap PRO_RUN7123_UPDATEST(String V_TAG_ID, String V_SITE_ID, String V_TAG_DESC, String V_TAG_UNIT,
+                                        String V_STATUS) throws SQLException {
+
+        logger.info("begin PRO_RUN7123_UPDATEST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7123_UPDATEST" + "(:V_TAG_ID,:V_SITE_ID,:V_TAG_DESC,:V_TAG_UNIT," +
+                    ":V_STATUS,:OUT_RESULT)}");
+            cstmt.setString("V_TAG_ID", V_TAG_ID);
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.setString("V_TAG_DESC", V_TAG_DESC);
+            cstmt.setString("V_TAG_UNIT", V_TAG_UNIT);
+            cstmt.setString("V_STATUS", V_STATUS);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7123_UPDATEST");
+        return result;
+    }
+
+    //7123状态停用
+    public HashMap PRO_RUN7123_STOPST(String V_TAG_ID) throws SQLException {
+
+        logger.info("begin pro_run7123_stopst");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7123_STOPST" + "(:V_TAG_ID,:OUT_RESULT)}");
+            cstmt.setString("V_TAG_ID", V_TAG_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7123_STOPST");
+        return result;
+    }
+
+    //7123状态启用
+    public HashMap PRO_RUN7123_STARTST(String V_TAG_ID) throws SQLException {
+
+        logger.info("begin pro_run7123_startst");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7123_STARTST" + "(:V_TAG_ID,:OUT_RESULT)}");
+            cstmt.setString("V_TAG_ID", V_TAG_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7123_STARTST");
+        return result;
+    }
+
+    //7124查询
+    public HashMap PRO_RUN7124_SUPPLYLIST(String V_SUPPLY_CODE, String V_SUPPLY_NAME, String V_SUPPLY_STATUS) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_SUPPLYLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_SUPPLYLIST(:V_SUPPLY_CODE,:V_SUPPLY_NAME,:V_SUPPLY_STATUS,:OUT_RESULT)}");
+            cstmt.setString("V_SUPPLY_CODE", V_SUPPLY_CODE);
+            cstmt.setString("V_SUPPLY_NAME", V_SUPPLY_NAME);
+            cstmt.setString("V_SUPPLY_STATUS", V_SUPPLY_STATUS);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_SUPPLYLIST");
+        return result;
+    }
+
+    //7124新增
+    public HashMap PRO_RUN7124_ADDSUPPLY(String V_SUPPLY_CODE, String V_SUPPLY_NAME, String V_SUPPLY_DESC, String V_SUPPLY_RENAGE, String V_SUPPLY_MANAGER,
+                                         String V_LINK_PERSON, String V_LINK_TYPE, String V_LINK_PHONECODE, String V_SUPPLY_STATUS) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_ADDSUPPLY");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_ADDSUPPLY" + "(:V_SUPPLY_CODE,:V_SUPPLY_NAME,:V_SUPPLY_DESC,:V_SUPPLY_RENAGE,:V_SUPPLY_MANAGER," +
+                    ":V_LINK_PERSON,:V_LINK_TYPE,:V_LINK_PHONECODE,:V_SUPPLY_STATUS,:OUT_RESULT)}");
+            cstmt.setString("V_SUPPLY_CODE", V_SUPPLY_CODE);
+            cstmt.setString("V_SUPPLY_NAME", V_SUPPLY_NAME);
+            cstmt.setString("V_SUPPLY_DESC", V_SUPPLY_DESC);
+            cstmt.setString("V_SUPPLY_RENAGE", V_SUPPLY_RENAGE);
+            cstmt.setString("V_SUPPLY_MANAGER", V_SUPPLY_MANAGER);
+
+            cstmt.setString("V_LINK_PERSON", V_LINK_PERSON);
+            cstmt.setString("V_LINK_TYPE", V_LINK_TYPE);
+            cstmt.setString("V_LINK_PHONECODE", V_LINK_PHONECODE);
+            cstmt.setString("V_SUPPLY_STATUS", V_SUPPLY_STATUS);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_ADDSUPPLY");
+        return result;
+    }
+
+    //7124修改
+    public HashMap PRO_RUN7124_UPDATESUPPLY(String V_SUPPLY_CODE, String V_SUPPLY_NAME, String V_SUPPLY_DESC, String V_SUPPLY_RENAGE, String V_SUPPLY_MANAGER,
+                                            String V_LINK_PERSON, String V_LINK_TYPE, String V_LINK_PHONECODE, String V_SUPPLY_STATUS) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_UPDATESUPPLY");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_UPDATESUPPLY" + "(:V_SUPPLY_CODE,:V_SUPPLY_NAME,:V_SUPPLY_DESC,:V_SUPPLY_RENAGE,:V_SUPPLY_MANAGER," +
+                    ":V_LINK_PERSON,:V_LINK_TYPE,:V_LINK_PHONECODE,:V_SUPPLY_STATUS,:OUT_RESULT)}");
+            cstmt.setString("V_SUPPLY_CODE", V_SUPPLY_CODE);
+            cstmt.setString("V_SUPPLY_NAME", V_SUPPLY_NAME);
+            cstmt.setString("V_SUPPLY_DESC", V_SUPPLY_DESC);
+            cstmt.setString("V_SUPPLY_RENAGE", V_SUPPLY_RENAGE);
+            cstmt.setString("V_SUPPLY_MANAGER", V_SUPPLY_MANAGER);
+
+            cstmt.setString("V_LINK_PERSON", V_LINK_PERSON);
+            cstmt.setString("V_LINK_TYPE", V_LINK_TYPE);
+            cstmt.setString("V_LINK_PHONECODE", V_LINK_PHONECODE);
+            cstmt.setString("V_SUPPLY_STATUS", V_SUPPLY_STATUS);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_UPDATESUPPLY");
+        return result;
+    }
+
+    //7124状态停用
+    public HashMap PRO_RUN7124_STOPST(String SUPPLY_CODE) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_STOPST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_STOPST" + "(:V_SUPPLY_CODE,:OUT_RESULT)}");
+            cstmt.setString("V_SUPPLY_CODE", SUPPLY_CODE);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_STOPST");
+        return result;
+    }
+
+    //7124状态启用
+    public HashMap PRO_RUN7124_STARTST(String SUPPLY_CODE) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_STARTST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_STARTST" + "(:V_SUPPLY_CODE,:OUT_RESULT)}");
+            cstmt.setString("V_SUPPLY_CODE", SUPPLY_CODE);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_STARTST");
+        return result;
+    }
+
+    //712401查询
+    public HashMap PRO_RUN7124_SUPPLYMATLIST(String V_SUPPLY_CODE) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_SUPPLYMATLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_SUPPLYMATLIST(:V_SUPPLY_CODE,:OUT_RESULT)}");
+            cstmt.setString("V_SUPPLY_CODE", V_SUPPLY_CODE);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_SUPPLYMATLIST");
+        return result;
+    }
+
+    //712401添加
+    public HashMap PRO_RUN7124_ADDSUPPLYMAT_NEW(String V_SUPPLY_CODE, String V_MATERIALCODE) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_ADDSUPPLYMAT_NEW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_ADDSUPPLYMAT_NEW" + "(:V_SUPPLY_CODE,:V_MATERIALCODE,:RET)}");
+            cstmt.setString("V_SUPPLY_CODE", V_SUPPLY_CODE);
+            cstmt.setString("v_materialcode", V_MATERIALCODE);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_ADDSUPPLYMAT_NEW");
+        return result;
+    }
+
+    //712401删除
+    public HashMap PRO_RUN7124_DELSUPPLYMAT(String V_SUPPLY_CODE, String V_MATERIALCODE) throws SQLException {
+
+        logger.info("begin PRO_RUN7124_DELSUPPLYMAT");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7124_DELSUPPLYMAT" + "(:V_SUPPLY_CODE,:V_MATERIALCODE,:OUT_RESULT)}");
+            cstmt.setString("V_SUPPLY_CODE", V_SUPPLY_CODE);
+            cstmt.setString("V_MATERIALCODE", V_MATERIALCODE);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7124_DELSUPPLYMAT");
+        return result;
+    }
+
+    //7125查询
+    public HashMap PRO_RUN7125_EQUVGLIST(String V_PLANTCODE, String V_DEPARTCODE) throws SQLException {
+
+        logger.info("begin pro_run7125_equvglist");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7125_EQUVGLIST(:V_PLANTCODE,:V_DEPARTCODE,:OUT_RESULT)}");
+            cstmt.setString("V_PLANTCODE", V_PLANTCODE);
+            cstmt.setString("V_DEPARTCODE", V_DEPARTCODE);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7125_EQUVGLIST");
+        return result;
+    }
+
+    //7125新增
+    public HashMap PRO_RUN7125_ADDEQUVG_NEW(String V_EQU_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7125_ADDEQUVG_NEW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7125_ADDEQUVG_NEW(:V_EQU_ID,:V_VG_ID,:RET)}");
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7125_ADDEQUVG_NEW");
+        return result;
+    }
+
+    //7125删除
+    public HashMap PRO_RUN7125_DELEQUVG(String V_EQU_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin pro_run7125_delequvg");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7125_DELEQUVG(:V_EQU_ID,:V_VG_ID,:OUT_RESULT)}");
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7125_DELEQUVG");
+        return result;
+    }
+
+    //7126查询
+    public HashMap PRO_RUN7126_SITEVGLIST(String V_EQU_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7126_SITEVGLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7126_SITEVGLIST(:V_EQU_ID,:OUT_RESULT)}");
+            cstmt.setString("V_EQU_ID", V_EQU_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("OUT_RESULT")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7126_SITEVGLIST");
+        return result;
+    }
+
+    //7126新增
+    public HashMap PRO_RUN7126_ADDSITEVG_NEW(String V_SITE_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7126_ADDSITEVG_NEW");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7126_ADDSITEVG_NEW(:V_SITE_ID,:V_VG_ID,:RET)}");
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7126_ADDSITEVG_NEW");
+        return result;
+    }
+
+    //7126删除
+    public HashMap PRO_RUN7126_DELSITEVG(String V_SITE_ID, String V_VG_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN7126_DELSITEVG");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7126_DELSITEVG(:V_SITE_ID,:V_VG_ID,:OUT_RESULT)}");
+            cstmt.setString("V_SITE_ID", V_SITE_ID);
+            cstmt.setString("V_VG_ID", V_VG_ID);
+            cstmt.registerOutParameter("OUT_RESULT", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String OUT_RESULT = (String) cstmt.getObject("OUT_RESULT");
+            result.put("OUT_RESULT", OUT_RESULT);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7126_DELSITEVG");
+        return result;
+    }
 }
