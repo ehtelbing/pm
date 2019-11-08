@@ -1044,4 +1044,74 @@ public class LLController {
                                                     HttpServletResponse response) throws Exception {
         return llService.PRO_RUN_TEILD_DELETE(A_ID);
     }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_BJ_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN_SITE_BJ_ALL(@RequestParam(value = "IN_EQUID") String IN_EQUID,
+                                   @RequestParam(value = "IN_PLANT") String IN_PLANT,
+                                   @RequestParam(value = "IN_DEPART") String IN_DEPART,
+                                   @RequestParam(value = "IN_STATUS") String IN_STATUS,
+                                   @RequestParam(value = "IN_BJCODE") String IN_BJCODE,
+                                   @RequestParam(value = "IN_BJDESC") String IN_BJDESC,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_SITE_BJ_ALL(IN_EQUID, IN_PLANT, IN_DEPART, IN_STATUS, IN_BJCODE, IN_BJDESC);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_CURRENT_ALERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN_BJ_CURRENT_ALERT(@RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_CURRENT_ALERT(A_BJ_UNIQUE_CODE);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_CURRENT_ALERT_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_BJ_CURRENT_ALERT_SET(@RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
+                                                            @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                            @RequestParam(value = "A_ALERT_VALUE") String A_ALERT_VALUE,
+                                                            @RequestParam(value = "A_OFFSET") String A_OFFSET,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_CURRENT_ALERT_SET(A_BJ_UNIQUE_CODE, A_CYCLE_ID, Double.valueOf(A_ALERT_VALUE.toString()), Double.valueOf(A_OFFSET.toString()));
+    }
+
+    @RequestMapping(value = "/PRO_RUN7110_SITESUPPLYLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7110_SITESUPPLYLIST(@RequestParam(value = "A_ID") String A_ID,
+                                                          @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                                          @RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7110_SITESUPPLYLIST(A_ID, A_MATERIALCODE, A_ORDERID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_MAT_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_BJ_MAT_ALL(@RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_MAT_ALL(A_BJ_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_CHANGE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_BJ_CHANGE(@RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
+                                                 @RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                 @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                                 @RequestParam(value = "A_SITE_ID") String A_SITE_ID,
+                                                 @RequestParam(value = "A_EQUID") String A_EQUID,
+                                                 @RequestParam(value = "A_PERSON") String A_PERSON,
+                                                 @RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                                 @RequestParam(value = "A_REMARK") String A_REMARK,
+                                                 @RequestParam(value = "A_CHANGEDATE") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date A_CHANGEDATE,
+                                                 @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                                 @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                                 @RequestParam(value = "A_SUPPLY_CODE") String A_SUPPLY_CODE,
+                                                 @RequestParam(value = "A_SUPPLY_NAME") String A_SUPPLY_NAME,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_CHANGE(A_BJ_UNIQUE_CODE, A_BJ_ID, A_MATERIALCODE, A_SITE_ID, A_EQUID, A_PERSON, A_ORDERID, A_REMARK, A_CHANGEDATE, A_PLANTCODE, A_DEPARTCODE, A_SUPPLY_CODE, A_SUPPLY_NAME);
+    }
 }

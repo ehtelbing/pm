@@ -1507,7 +1507,7 @@ public class LLService {
         return result;
     }
 
-    public HashMap PRO_RUN_YEILD_INPUT(String A_EQU_ID, String A_CYCLE_ID, java.util.Date  A_WORKDATE, String A_INSERTVALUE, String A_INSRTPERSON) throws SQLException {
+    public HashMap PRO_RUN_YEILD_INPUT(String A_EQU_ID, String A_CYCLE_ID, java.util.Date A_WORKDATE, String A_INSERTVALUE, String A_INSRTPERSON) throws SQLException {
 
         logger.info("begin PRO_RUN_YEILD_INPUT");
         java.sql.Date sql_A_WORKDATE = new java.sql.Date(A_WORKDATE.getTime());
@@ -1569,6 +1569,193 @@ public class LLService {
         }
         logger.debug("result:" + result);
         logger.info("end PRO_RUN_TEILD_DELETE");
+        return result;
+    }
+
+    public Map PRO_RUN_SITE_BJ_ALL(String IN_EQUID, String IN_PLANT, String IN_DEPART, String IN_STATUS, String IN_BJCODE, String IN_BJDESC) throws SQLException {
+        logger.info("begin PRO_RUN_SITE_BJ_ALL");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_RUN_SITE_BJ_ALL(:IN_EQUID,:IN_PLANT,:IN_DEPART,:IN_STATUS,:IN_BJCODE,:IN_BJDESC,:RET)}");
+            cstmt.setString("IN_EQUID", IN_EQUID);
+            cstmt.setString("IN_PLANT", IN_PLANT);
+            cstmt.setString("IN_DEPART", IN_DEPART);
+            cstmt.setString("IN_STATUS", IN_STATUS);
+            cstmt.setString("IN_BJCODE", IN_BJCODE);
+            cstmt.setString("IN_BJDESC", IN_BJDESC);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_SITE_BJ_ALL");
+        return result;
+    }
+
+    public Map PRO_RUN_BJ_CURRENT_ALERT(String A_BJ_UNIQUE_CODE) throws SQLException {
+        logger.info("begin PRO_RUN_BJ_CURRENT_ALERT");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_RUN_BJ_CURRENT_ALERT(:A_BJ_UNIQUE_CODE,:RET)}");
+            cstmt.setString("A_BJ_UNIQUE_CODE", A_BJ_UNIQUE_CODE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_BJ_CURRENT_ALERT");
+        return result;
+    }
+
+    public HashMap PRO_RUN_BJ_CURRENT_ALERT_SET(String A_BJ_UNIQUE_CODE, String A_CYCLE_ID, Double A_ALERT_VALUE, Double A_OFFSET) throws SQLException {
+
+        logger.info("begin PRO_RUN_BJ_CURRENT_ALERT_SET");
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_BJ_CURRENT_ALERT_SET(:A_BJ_UNIQUE_CODE,:A_CYCLE_ID,:A_ALERT_VALUE,:A_OFFSET, :RET_MSG,:RET)}");
+            cstmt.setString("A_BJ_UNIQUE_CODE", A_BJ_UNIQUE_CODE);
+            cstmt.setString("A_CYCLE_ID", A_CYCLE_ID);
+            cstmt.setDouble("A_ALERT_VALUE", A_ALERT_VALUE);
+            cstmt.setDouble("A_OFFSET", A_OFFSET);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_BJ_CURRENT_ALERT_SET");
+        return result;
+    }
+
+    public HashMap PRO_RUN7110_SITESUPPLYLIST(String a_id, String a_materialcode, String a_orderid) throws SQLException {
+
+        logger.info("begin PRO_RUN7110_SITESUPPLYLIST");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7110_SITESUPPLYLIST(:a_id,:a_materialcode,:a_orderid,:ret)}");
+            cstmt.setString("a_id", a_id);
+            cstmt.setString("a_materialcode", a_materialcode);
+            cstmt.setString("a_orderid", a_orderid);
+            cstmt.registerOutParameter("ret", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("ret")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7110_SITESUPPLYLIST");
+        return result;
+    }
+
+    public HashMap PRO_RUN_BJ_MAT_ALL(String A_BJ_ID) throws SQLException {
+
+        logger.info("begin PRO_RUN_BJ_MAT_ALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_BJ_MAT_ALL(:A_BJ_ID,:RET)}");
+            cstmt.setString("A_BJ_ID", A_BJ_ID);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_BJ_MAT_ALL");
+        return result;
+    }
+
+    public HashMap PRO_RUN_BJ_CHANGE(String A_BJ_UNIQUE_CODE, String A_BJ_ID, String A_MATERIALCODE,  String A_SITE_ID,String A_EQUID, String A_PERSON,String A_ORDERID, String A_REMARK,java.util.Date A_CHANGEDATE, String A_PLANTCODE, String A_DEPARTCODE, String A_SUPPLY_CODE,  String A_SUPPLY_NAME) throws SQLException {
+
+        logger.info("begin PRO_RUN_BJ_CHANGE");
+        java.sql.Date sql_A_CHANGEDATE = new java.sql.Date(A_CHANGEDATE.getTime());
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_BJ_CHANGE(:A_BJ_UNIQUE_CODE,:A_BJ_ID,:A_MATERIALCODE,:A_SITE_ID,:A_EQUID,:A_PERSON,:A_ORDERID,:A_REMARK,:A_CHANGEDATE,:A_PLANTCODE,:A_DEPARTCODE,:A_SUPPLY_CODE,:A_SUPPLY_NAME,:RET_BJ,:RET_MSG,:RET)}");
+            cstmt.setString("A_BJ_UNIQUE_CODE", A_BJ_UNIQUE_CODE);
+            cstmt.setString("A_BJ_ID", A_BJ_ID);
+            cstmt.setString("A_MATERIALCODE", A_MATERIALCODE);
+            cstmt.setString("A_SITE_ID", A_SITE_ID);
+            cstmt.setString("A_EQUID", A_EQUID);
+            cstmt.setString("A_PERSON", A_PERSON);
+            cstmt.setString("A_ORDERID", A_ORDERID);
+            cstmt.setString("A_REMARK", A_REMARK);
+            cstmt.setDate("A_CHANGEDATE", sql_A_CHANGEDATE);
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_SUPPLY_CODE", A_SUPPLY_CODE);
+            cstmt.setString("A_SUPPLY_NAME", A_SUPPLY_NAME);
+
+            cstmt.registerOutParameter("RET_BJ", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_BJ = (String) cstmt.getObject("RET_BJ");
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_BJ", RET_BJ);
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_BJ_CHANGE");
         return result;
     }
 }
