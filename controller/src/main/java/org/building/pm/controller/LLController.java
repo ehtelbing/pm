@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
@@ -1114,4 +1113,62 @@ public class LLController {
                                                  HttpServletResponse response) throws Exception {
         return llService.PRO_RUN_BJ_CHANGE(A_BJ_UNIQUE_CODE, A_BJ_ID, A_MATERIALCODE, A_SITE_ID, A_EQUID, A_PERSON, A_ORDERID, A_REMARK, A_CHANGEDATE, A_PLANTCODE, A_DEPARTCODE, A_SUPPLY_CODE, A_SUPPLY_NAME);
     }
+
+    @RequestMapping(value = "/PRO_RUN7111_TAGLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7111_TAGLIST(@RequestParam(value = "PID") String PID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7111_TAGLIST(PID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN7111_EQULIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7111_EQULIST(@RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+                                                   @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7111_EQULIST(V_V_PLANTCODE, V_V_DEPTCODE);
+    }
+
+    @RequestMapping(value = "/PRO_RUN7111_USEBJLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7111_USEBJLIST(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7111_USEBJLIST(V_V_EQUCODE);
+    }
+
+    @RequestMapping(value = "/PRO_RUN7111_ADDLOG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN7111_ADDLOG(
+            @RequestParam(value = "v_v_bjcode") String v_v_bjcode,
+            @RequestParam(value = "v_v_checktime") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date v_v_checktime,
+            @RequestParam(value = "v_v_checkcount") String v_v_checkcount,
+            @RequestParam(value = "upload") MultipartFile upload,
+            @RequestParam(value = "v_v_usercode") String v_v_usercode,
+            @RequestParam(value = "v_v_username") String v_v_username,
+            @RequestParam(value = "v_v_tagid") String v_v_tagid,
+            @RequestParam(value = "v_v_siteid") String v_v_siteid,
+            @RequestParam(value = "v_v_tagvalue") Double v_v_tagvalue,
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+
+        InputStream upload_InputStream = upload.getInputStream();// 获取上传二进制流
+        String filename = getFileName(upload.getOriginalFilename());
+
+        Map test = new HashMap();
+        List<Map> result = null;
+        result = llService.PRO_RUN7111_ADDLOG(v_v_bjcode, v_v_checktime, v_v_checkcount, upload_InputStream, filename, v_v_usercode, v_v_username, v_v_tagid, v_v_siteid,  v_v_tagvalue);
+        upload_InputStream.close();
+
+        test.put("list", result);
+        test.put("success", true);
+        return test;
+    }
+
+    public static String getFileName(String filePath) {
+        String filePaths[] = filePath.split("[\\\\|/]");
+        return filePaths[filePaths.length - 1];
+    }
+
 }
