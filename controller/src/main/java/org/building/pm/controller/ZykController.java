@@ -1,5 +1,6 @@
 package org.building.pm.controller;
 
+import org.apache.poi.hssf.usermodel.*;
 import org.building.pm.service.ZykService;
 import org.codehaus.xfire.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -429,4 +434,180 @@ public class ZykController {
         return result;
     }
 
+    //7134查询重点备件表（临时）
+    @RequestMapping(value = "/PRO_RUN7134_GETBJLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7134_GETBJLIST(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                    @RequestParam(value = "A_MAT_DESC") String A_MAT_DESC,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7134_GETBJLIST(A_MAT_NO, A_MAT_DESC);
+        return result;
+    }
+
+    //7134查询重点备件表
+    @RequestMapping(value = "/PG_RUN7134_GETBJLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PG_RUN7134_GETBJLIST(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                     @RequestParam(value = "A_MAT_DESC") String A_MAT_DESC,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PG_RUN7134_GETBJLIST(A_MAT_NO, A_MAT_DESC);
+        return result;
+    }
+
+    //7134查询备件安装位置
+    @RequestMapping(value = "/PG_RUN7134_GETSITELIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PG_RUN7134_GETSITELIST(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = zykService.PG_RUN7134_GETSITELIST(A_MAT_NO);
+        return result;
+    }
+
+    //7134查询备件安装位置（临时）
+    @RequestMapping(value = "/PRO_RUN7134_GETSITELIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7134_GETSITELIST(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7134_GETSITELIST(A_MAT_NO);
+        return result;
+    }
+
+    //7134新增备件的备件查询
+    @RequestMapping(value = "/PG_RUN7134_GETMATLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PG_RUN7134_GETMATLIST(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                     @RequestParam(value = "A_MAT_DESC") String A_MAT_DESC,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        Map result = zykService.PG_RUN7134_GETMATLIST(A_MAT_NO, A_MAT_DESC);
+        return result;
+    }
+
+    //7134备件新增
+    @RequestMapping(value = "/PG_RUN7134_ADDBJ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PG_RUN7134_ADDBJ(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                @RequestParam(value = "A_MAT_DESC") String A_MAT_DESC,
+                                                @RequestParam(value = "A_ETALON") String A_ETALON,
+                                                @RequestParam(value = "A_UNIT") String A_UNIT,
+                                                @RequestParam(value = "A_PRICE") String A_PRICE,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map result = zykService.PG_RUN7134_ADDBJ(A_MAT_NO, A_MAT_DESC, A_ETALON, A_UNIT, A_PRICE);
+        return result;
+    }
+
+    //7134备件新增（临时）
+    @RequestMapping(value = "/PRO_RUN7134_ADDBJ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7134_ADDBJ(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                @RequestParam(value = "A_MAT_DESC") String A_MAT_DESC,
+                                                @RequestParam(value = "A_ETALON") String A_ETALON,
+                                                @RequestParam(value = "A_UNIT") String A_UNIT,
+                                                @RequestParam(value = "A_PRICE") String A_PRICE,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7134_ADDBJ(A_MAT_NO, A_MAT_DESC, A_ETALON, A_UNIT, A_PRICE);
+        return result;
+    }
+
+    //7134备件删除
+    @RequestMapping(value = "/PG_RUN7134_DELETEBJ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PG_RUN7134_DELETEBJ(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = zykService.PG_RUN7134_DELETEBJ(A_MAT_NO);
+        return result;
+    }
+
+    //7134备件删除（删除）
+    @RequestMapping(value = "/PRO_RUN7134_DELETEBJ", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7134_DELETEBJ(@RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7134_DELETEBJ(A_MAT_NO);
+        return result;
+    }
+
+    //7134备件导出
+    @RequestMapping(value = "/PG_RUN7134_GETBJLIST_TABLE", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void PG_RUN7134_GETBJLIST_TABLE(
+            @RequestParam(value = "A_MAT_NO") String A_MAT_NO,
+            @RequestParam(value = "A_MAT_DESC") String A_MAT_DESC,
+            HttpServletResponse response) throws Exception {
+
+        List list = new ArrayList();
+
+        //原存储过程
+        //Map<String, Object> data = zykService.PG_RUN7134_GETBJLIST_TABLE( A_MAT_NO, A_MAT_DESC);
+        Map<String, Object> data = zykService.PRO_RUN7134_GETBJLIST( A_MAT_NO, A_MAT_DESC);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("备件编码");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("备件名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("计量单位");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("计划单价");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("MATERIALCODE") == null ? "" : map.get("MATERIALCODE").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("MATERIALNAME") == null ? "" : map.get("MATERIALNAME").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("UNIT") == null ? "" : map.get("UNIT").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("F_PRICE") == null ? "" : map.get("F_PRICE").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("重点备件字典设置.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

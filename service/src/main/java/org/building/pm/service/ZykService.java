@@ -945,4 +945,288 @@ public class ZykService {
         logger.info("end PRO_RUN7126_DELSITEVG");
         return result;
     }
+
+    //7134查询重点备件表
+    public HashMap PG_RUN7134_GETBJLIST(String A_MAT_NO, String A_MAT_DESC) throws SQLException {
+
+        logger.info("begin PG_RUN7134_GETBJLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_RUN7134.GETBJLIST(:A_MAT_NO,:A_MAT_DESC,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+            cstmt.setString("A_MAT_DESC", A_MAT_DESC);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PG_RUN7134_GETBJLIST");
+        return result;
+    }
+
+    //7134查询重点备件表(临时)
+    public HashMap PRO_RUN7134_GETBJLIST(String A_MAT_NO, String A_MAT_DESC) throws SQLException {
+
+        logger.info("begin PRO_RUN7134_GETBJLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7134_GETBJLIST(:A_MAT_NO,:A_MAT_DESC,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+            cstmt.setString("A_MAT_DESC", A_MAT_DESC);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7134_GETBJLIST");
+        return result;
+    }
+
+    //7134查询备件安装位置
+    public HashMap PG_RUN7134_GETSITELIST(String A_MAT_NO) throws SQLException {
+
+        logger.info("begin PG_RUN7134_GETSITELIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_RUN7134.GETSITELIST(:A_MAT_NO,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PG_RUN7134_GETSITELIST");
+        return result;
+    }
+
+    //7134查询备件安装位置（临时）
+    public HashMap PRO_RUN7134_GETSITELIST(String A_MAT_NO) throws SQLException {
+
+        logger.info("begin PRO_RUN7134_GETSITELIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7134_GETSITELIST(:A_MAT_NO,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7134_GETSITELIST");
+        return result;
+    }
+
+    //7134新增备件的备件查询
+    public HashMap PG_RUN7134_GETMATLIST(String A_MAT_NO, String A_MAT_DESC) throws SQLException {
+
+        logger.info("begin PG_RUN7134_GETMATLIST");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_RUN7134.GETMATLIST(:A_MAT_NO,:A_MAT_DESC,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+            cstmt.setString("A_MAT_DESC", A_MAT_DESC);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list",
+                    ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PG_RUN7134_GETMATLIST");
+        return result;
+    }
+
+    //7134新增备件
+    public HashMap PG_RUN7134_ADDBJ(String A_MAT_NO, String A_MAT_DESC, String A_ETALON, String A_UNIT, String A_PRICE) throws SQLException {
+
+        logger.info("begin PG_RUN7134_ADDBJ");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_RUN7134.ADDBJ" + "(:A_MAT_NO,:A_MAT_DESC,:A_ETALON,:A_UNIT,:A_PRICE," +
+                    ":RET_MSG,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+            cstmt.setString("A_MAT_DESC", A_MAT_DESC);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_UNIT", A_UNIT);
+            cstmt.setString("A_PRICE", A_PRICE);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PG_RUN7134_ADDBJ");
+        return result;
+    }
+
+    //7134新增备件(临时)
+    public HashMap PRO_RUN7134_ADDBJ(String A_MAT_NO, String A_MAT_DESC, String A_ETALON, String A_UNIT, String A_PRICE) throws SQLException {
+
+        logger.info("begin PRO_RUN7134_ADDBJ");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7134_ADDBJ" + "(:A_MAT_NO,:A_MAT_DESC,:A_ETALON,:A_UNIT,:A_PRICE," +
+                    ":RET_MSG,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+            cstmt.setString("A_MAT_DESC", A_MAT_DESC);
+            cstmt.setString("A_ETALON", A_ETALON);
+            cstmt.setString("A_UNIT", A_UNIT);
+            cstmt.setString("A_PRICE", A_PRICE);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7134_ADDBJ");
+        return result;
+    }
+
+    //7134备件删除
+    public HashMap PG_RUN7134_DELETEBJ(String A_MAT_NO) throws SQLException {
+
+        logger.info("begin PG_RUN7134_DELETEBJ");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PG_RUN7134.DELETEBJ" + "(:A_MAT_NO," +
+                    ":RET_MSG,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PG_RUN7134_DELETEBJ");
+        return result;
+    }
+
+    //7134备件删除（临时）
+    public HashMap PRO_RUN7134_DELETEBJ(String A_MAT_NO) throws SQLException {
+
+        logger.info("begin PRO_RUN7134_DELETEBJ");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7134_DELETEBJ" + "(:A_MAT_NO," +
+                    ":RET_MSG,:RET)}");
+            cstmt.setString("A_MAT_NO", A_MAT_NO);
+
+            cstmt.registerOutParameter("RET_MSG", OracleTypes.VARCHAR);
+            cstmt.registerOutParameter("RET", OracleTypes.VARCHAR);
+            cstmt.execute();
+            String RET_MSG = (String) cstmt.getObject("RET_MSG");
+            String RET = (String) cstmt.getObject("RET");
+            result.put("RET_MSG", RET_MSG);
+            result.put("RET", RET);
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7134_DELETEBJ");
+        return result;
+    }
+
 }
