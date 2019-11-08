@@ -201,4 +201,93 @@ public class LxService {
         logger.info("end PRO_RUN_EQU_BJ_ALERT_ALL");
         return result;
     }
+
+    public HashMap PRO_BASE_DEPT_VIEW_ROLE(String V_V_PERSONCODE, String V_V_DEPTCODE , String V_V_DEPTCODENEXT, String V_V_DEPTTYPE ) throws SQLException {
+
+        logger.info("begin PRO_BASE_DEPT_VIEW_ROLE");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_BASE_DEPT_VIEW_ROLE" + "(:V_V_PERSONCODE,:V_V_DEPTCODE,:V_V_DEPTCODENEXT , :V_V_DEPTTYPE ,:RET)}");
+            cstmt.setString("V_V_PERSONCODE", V_V_PERSONCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.setString("V_V_DEPTCODENEXT", V_V_DEPTCODENEXT);
+            cstmt.setString("V_V_DEPTTYPE", V_V_DEPTTYPE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_BASE_DEPT_VIEW_ROLE");
+        return result;
+    }
+
+    public HashMap PRO_RUN_BJ_USE_ALL(String A_PLANTCODE, String A_DEPARTCODE , String A_EQUID, String A_BJ_UNIQUE_CODE, String A_BEGINDATE , String A_ENDDATE ) throws SQLException {
+
+        logger.info("begin PRO_RUN_BJ_USE_ALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_BJ_USE_ALL" + "(:A_PLANTCODE,:A_DEPARTCODE,:A_EQUID , :A_BJ_UNIQUE_CODE,:A_BEGINDATE,:A_ENDDATE ,:RET)}");
+            cstmt.setString("A_PLANTCODE", A_PLANTCODE);
+            cstmt.setString("A_DEPARTCODE", A_DEPARTCODE);
+            cstmt.setString("A_EQUID", A_EQUID);
+            cstmt.setString("A_BJ_UNIQUE_CODE", A_BJ_UNIQUE_CODE);
+            cstmt.setDate("A_BEGINDATE", Date.valueOf(A_BEGINDATE));
+            cstmt.setDate("A_ENDDATE", Date.valueOf(A_ENDDATE));
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_BJ_USE_ALL");
+        return result;
+    }
+
+    public HashMap PRO_RUN_BJ_CHANGE_LOG_ALL(String A_BJ_UNIQUE_CODE ) throws SQLException {
+
+        logger.info("begin PRO_RUN_BJ_CHANGE_LOG_ALL");
+
+        HashMap result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN_BJ_CHANGE_LOG_ALL" + "(:A_BJ_UNIQUE_CODE,:RET)}");
+            cstmt.setString("A_BJ_UNIQUE_CODE", A_BJ_UNIQUE_CODE);
+            cstmt.registerOutParameter("RET", OracleTypes.CURSOR);
+
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("RET")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN_BJ_CHANGE_LOG_ALL");
+        return result;
+    }
 }
