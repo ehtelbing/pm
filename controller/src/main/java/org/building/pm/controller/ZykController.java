@@ -1,6 +1,7 @@
 package org.building.pm.controller;
 
 import org.apache.poi.hssf.usermodel.*;
+import org.building.pm.service.PM_12Service;
 import org.building.pm.service.ZykService;
 import org.codehaus.xfire.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class ZykController {
 
     @Autowired
     private ZykService zykService;
+    @Autowired
+    private PM_12Service pm_12Service;
 
     @Value("#{configProperties['WS_MMToXL']}")
     private String WS_MMToXL;
@@ -599,6 +602,144 @@ public class ZykController {
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
                 String fileName = new String("重点备件字典设置.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                OutputStream out = response.getOutputStream();
+
+                wb.write(out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //7115设备查询
+    @RequestMapping(value = "/PRO_RUN7111_EQULIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7111_EQULIST(@RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+                                                   @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        HashMap result = zykService.PRO_RUN7111_EQULIST(V_V_PLANTCODE,V_V_DEPTCODE);
+        return result;
+    }
+
+    //7115负责人查询
+    @RequestMapping(value = "/PRO_RUN7115_PERSONLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN7115_PERSONLIST(
+            @RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
+            @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+            @RequestParam(value = "V_V_BJ_ID") String V_V_BJ_ID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7115_PERSONLIST(V_V_DEPARTCODE, V_V_PLANTCODE,V_V_BJ_ID);
+        return result;
+    }
+
+    //7115查询
+    @RequestMapping(value = "/PRO_RUN7115_SELECT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN7115_SELECT(
+            @RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
+            @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+            @RequestParam(value = "V_V_BJ_ID") String V_V_BJ_ID,
+            @RequestParam(value = "V_V_USERID") String V_V_USERID,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Map result = zykService.PRO_RUN7115_SELECT(V_V_DEPARTCODE, V_V_PLANTCODE, V_V_BJ_ID,V_V_USERID);
+        return result;
+    }
+
+    //7115导出
+    @RequestMapping(value = "/PRO_RUN7115_SELECT_TABLE", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
+    @ResponseBody
+    public void PRO_RUN7115_SELECT_TABLE(
+            @RequestParam(value = "V_V_DEPARTCODE") String V_V_DEPARTCODE,
+            @RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+            @RequestParam(value = "V_V_BJ_ID") String V_V_BJ_ID,
+            @RequestParam(value = "V_V_USERID") String V_V_USERID,
+            HttpServletResponse response) throws Exception {
+
+        List list = new ArrayList();
+
+        Map<String, Object> data = zykService.PRO_RUN7115_SELECT(V_V_DEPARTCODE, V_V_PLANTCODE, V_V_BJ_ID, V_V_USERID);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet();
+        for (int i = 0; i <= 1; i++) {
+            sheet.setColumnWidth(i, 3000);
+        }
+        HSSFRow row = sheet.createRow((int) 0);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        HSSFCell cell = row.createCell((short) 0);
+        cell.setCellValue("序号");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 1);
+        cell.setCellValue("处理结果");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 2);
+        cell.setCellValue("设备名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 3);
+        cell.setCellValue("位置");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 4);
+        cell.setCellValue("备件唯一编码");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 5);
+        cell.setCellValue("备件描述");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 6);
+        cell.setCellValue("报警内容");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 7);
+        cell.setCellValue("报警时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell((short) 8);
+        cell.setCellValue("设备负责人");
+        cell.setCellStyle(style);
+
+        if (data.size() > 0) {
+            list = (List) data.get("list");
+
+
+            for (int i = 0; i < list.size(); i++) {
+                row = sheet.createRow((int) i + 1);
+                Map map = (Map) list.get(i);
+
+                row.createCell((short) 0).setCellValue(i + 1);
+
+                row.createCell((short) 1).setCellValue(map.get("HANDLE_CONTEXT") == null ? "" : map.get("HANDLE_CONTEXT").toString());
+
+                row.createCell((short) 2).setCellValue(map.get("EQU_DESC") == null ? "" : map.get("EQU_DESC").toString());
+
+                row.createCell((short) 3).setCellValue(map.get("SITE_DESC") == null ? "" : map.get("SITE_DESC").toString());
+
+                row.createCell((short) 4).setCellValue(map.get("BJ_UNIQUECODE") == null ? "" : map.get("BJ_UNIQUECODE").toString());
+
+                row.createCell((short) 5).setCellValue(map.get("BJ_DESC") == null ? "" : map.get("BJ_DESC").toString());
+
+                row.createCell((short) 6).setCellValue(map.get("ALERT_CONTEXT") == null ? "" : map.get("ALERT_CONTEXT").toString());
+
+                row.createCell((short) 7).setCellValue(map.get("HANDLE_DATE") == null ? "" : map.get("HANDLE_DATE").toString());
+
+                row.createCell((short) 8).setCellValue(map.get("USERNAME") == null ? "" : map.get("USERNAME").toString());
+
+            }
+            try {
+                response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+                String fileName = new String("报警信息处理.xls".getBytes("UTF-8"), "ISO-8859-1");// 设置下载时客户端Excel的名称
                 response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
                 OutputStream out = response.getOutputStream();
 

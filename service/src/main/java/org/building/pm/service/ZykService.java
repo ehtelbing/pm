@@ -1229,4 +1229,88 @@ public class ZykService {
         return result;
     }
 
+    //7115设备查询
+    public HashMap PRO_RUN7111_EQULIST(String V_V_PLANTCODE,String V_V_DEPTCODE) throws SQLException {
+
+        logger.info("begin PRO_RUN7111_EQULIST");
+
+        HashMap result = new HashMap();
+        List<Map> resultList = new ArrayList<Map>();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(false);
+            cstmt = conn.prepareCall("{call PRO_RUN7111_EQULIST(:V_V_PLANTCODE,:V_V_DEPTCODE,:V_CURSOR)}");
+            cstmt.setString("V_V_PLANTCODE", V_V_PLANTCODE);
+            cstmt.setString("V_V_DEPTCODE", V_V_DEPTCODE);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7111_EQULIST");
+        return result;
+    }
+
+    //7115负责人查询
+    public Map PRO_RUN7115_PERSONLIST(String V_V_DEPARTCODE,String V_V_PLANTCODE,String V_V_BJ_ID) throws SQLException {
+        logger.info("begin PRO_RUN7115_PERSONLIST");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_RUN7115_PERSONLIST" + "(:V_V_DEPARTCODE,:V_V_PLANTCODE,:V_V_BJ_ID,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPARTCODE", V_V_DEPARTCODE);
+            cstmt.setString("V_V_PLANTCODE", V_V_PLANTCODE);
+            cstmt.setString("V_V_BJ_ID", V_V_BJ_ID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7115_PERSONLIST");
+        return result;
+    }
+
+    //7115查询
+    public Map PRO_RUN7115_SELECT(String V_V_DEPARTCODE,String V_V_PLANTCODE,String V_V_BJ_ID,String V_V_USERID) throws SQLException {
+        logger.info("begin PRO_RUN7115_SELECT");
+        Map result = new HashMap();
+        Connection conn = null;
+        CallableStatement cstmt = null;
+        try {
+            conn = dataSources.getConnection();
+            conn.setAutoCommit(true);
+            cstmt = conn.prepareCall("{call PRO_RUN7115_SELECT" + "(:V_V_DEPARTCODE,:V_V_PLANTCODE,:V_V_BJ_ID,:V_V_USERID,:V_CURSOR)}");
+            cstmt.setString("V_V_DEPARTCODE", V_V_DEPARTCODE);
+            cstmt.setString("V_V_PLANTCODE", V_V_PLANTCODE);
+            cstmt.setString("V_V_BJ_ID", V_V_BJ_ID);
+            cstmt.setString("V_V_USERID", V_V_USERID);
+            cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
+            cstmt.execute();
+            result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
+        } catch (SQLException e) {
+            logger.error(e);
+        } finally {
+            cstmt.close();
+            conn.close();
+        }
+        logger.debug("result:" + result);
+        logger.info("end PRO_RUN7115_SELECT");
+        return result;
+    }
+
 }
