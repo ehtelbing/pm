@@ -404,8 +404,8 @@ public class WsyController {
     @RequestMapping(value = "/BASE_GX_GZ_UPD", method = RequestMethod.POST)
     @ResponseBody
     public HashMap<String, Object> BASE_GX_GZ_UPD(@RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE, @RequestParam(value = "V_V_PERCODE_DE") String V_V_PERCODE_DE, @RequestParam(value = "V_V_TS") String V_V_TS, @RequestParam(value = "V_V_DE") String V_V_DE,
-                                                  @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.BASE_GX_GZ_UPD(V_V_JXGX_CODE, V_V_PERCODE_DE, V_V_TS, V_V_DE,V_V_PERNUM);
+                                                  @RequestParam(value = "V_V_PERNUM") String V_V_PERNUM, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HashMap data = wsyService.BASE_GX_GZ_UPD(V_V_JXGX_CODE, V_V_PERCODE_DE, V_V_TS, V_V_DE, V_V_PERNUM);
         return data;
     }
 
@@ -546,8 +546,8 @@ public class WsyController {
 
     @RequestMapping(value = "/PM_REALINFOTL_QUERY", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PM_REALINFOTL_QUERY(@RequestParam(value="V_PERCODE") String V_PERCODE
-            ,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public HashMap PM_REALINFOTL_QUERY(@RequestParam(value = "V_PERCODE") String V_PERCODE
+            , HttpServletRequest request, HttpServletResponse response) throws Exception {
         HashMap data = wsyService.PM_REALINFOTL_QUERY(V_PERCODE);
         return data;
     }
@@ -562,21 +562,16 @@ public class WsyController {
     @RequestMapping(value = "/PRO_PP_INFORMATION_SET", method = RequestMethod.POST)
     @ResponseBody
     public HashMap PRO_PP_INFORMATION_SET(@RequestParam(value = "V_V_I_ID") String V_V_I_ID, @RequestParam(value = "V_V_DEPT") String[] V_V_DEPT, @RequestParam(value = "V_V_INFORMATION") String V_V_INFORMATION, @RequestParam(value = "V_V_D_DATE") String V_V_D_DATE, @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_PERSONNAME") String V_V_PERSONNAME, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASS") String V_V_CLASS, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_V_NOTIFICATION") String V_V_NOTIFICATION, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data;
-        int sum = 0;
+        String V_V_DEPTCODE = "";
         for (int i = 0; i < V_V_DEPT.length; i++) {
-            data = wsyService.PRO_PP_INFORMATION_SET(V_V_I_ID, V_V_DEPT[i], V_V_INFORMATION, V_V_D_DATE, V_V_PERSONCODE, V_V_PERSONNAME, V_V_TYPE, V_V_CLASS, V_V_CLASSTYPE, V_V_NOTIFICATION);
-            if (!"success".equals(data.get("V_INFO"))) {
-                sum = sum + 1;
-                System.out.println(data.get("V_INFO"));
+            if (i == 0) {
+                V_V_DEPTCODE = V_V_DEPT[i];
+            } else {
+                V_V_DEPTCODE = V_V_DEPTCODE + "|" + V_V_DEPT[i];
             }
         }
-        HashMap result = new HashMap();
-        if (sum == 0) {
-            result.put("V_INFO", "Success");
-        } else {
-            result.put("V_INFO", "Fail");
-        }
+        HashMap result = wsyService.PRO_PP_INFORMATION_SET(V_V_I_ID, V_V_DEPTCODE, V_V_INFORMATION, V_V_D_DATE, V_V_PERSONCODE, V_V_PERSONNAME, V_V_TYPE, V_V_CLASS, V_V_CLASSTYPE, V_V_NOTIFICATION);
+
         return result;
     }
 
@@ -584,9 +579,9 @@ public class WsyController {
     @ResponseBody
     public HashMap PM_REALINFOTL_EDIT(@RequestParam(value = "V_V_CODE") String V_V_CODE,
                                       @RequestParam(value = "V_V_CONTENT") String V_V_CONTENT,
-                                      @RequestParam(value="V_PERCODE") String V_PERCODE,
+                                      @RequestParam(value = "V_PERCODE") String V_PERCODE,
                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.PM_REALINFOTL_EDIT(V_V_CODE,V_V_CONTENT,V_PERCODE);
+        HashMap data = wsyService.PM_REALINFOTL_EDIT(V_V_CODE, V_V_CONTENT, V_PERCODE);
         return data;
     }
 
@@ -606,12 +601,15 @@ public class WsyController {
 
     @RequestMapping(value = "/PRO_PP_INFORMATION_LIST", method = RequestMethod.POST)
     @ResponseBody
-    public HashMap PRO_PP_INFORMATION_LIST(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_DEPT") String V_V_DEPT,
-                                           @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE,
-                                           @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE, @RequestParam(value = "V_D_TODATE") String V_D_TODATE,
+    public HashMap PRO_PP_INFORMATION_LIST(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                           @RequestParam(value = "V_V_DEPT") String V_V_DEPT,
+                                           @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                           @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE,
+                                           @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE,
+                                           @RequestParam(value = "V_D_TODATE") String V_D_TODATE,
                                            @RequestParam(value = "V_V_STATE") String V_V_STATE,
                                            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HashMap data = wsyService.PRO_PP_INFORMATION_LIST(V_V_PERSONCODE, V_V_DEPT, V_V_TYPE, V_V_CLASSTYPE, V_D_FROMDATE, V_D_TODATE,V_V_STATE);
+        HashMap data = wsyService.PRO_PP_INFORMATION_LIST(V_V_PERSONCODE, V_V_DEPT, V_V_TYPE, V_V_CLASSTYPE, V_D_FROMDATE, V_D_TODATE, V_V_STATE);
         return data;
     }
 
@@ -665,16 +663,17 @@ public class WsyController {
 
     @RequestMapping(value = "PRO_PP_INFORMATION_LIST_EXCEL", method = RequestMethod.GET, produces = "application/html;charset=UTF-8")
     @ResponseBody
-    public void PRO_PP_INFORMATION_LIST_EXCEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE, @RequestParam(value = "V_V_DEPT") String V_V_DEPT, @RequestParam(value = "V_V_TYPE") String V_V_TYPE, @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE, @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE, @RequestParam(value = "V_D_TODATE") String V_D_TODATE,
-                                              @RequestParam(value = "V_V_PERSONCODE") String V_V_STATE,HttpServletResponse response) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+    public void PRO_PP_INFORMATION_LIST_EXCEL(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                              @RequestParam(value = "V_V_DEPT") String V_V_DEPT,
+                                              @RequestParam(value = "V_V_TYPE") String V_V_TYPE,
+                                              @RequestParam(value = "V_V_CLASSTYPE") String V_V_CLASSTYPE,
+                                              @RequestParam(value = "V_D_FROMDATE") String V_D_FROMDATE,
+                                              @RequestParam(value = "V_D_TODATE") String V_D_TODATE,
+                                              @RequestParam(value = "V_V_STATE") String V_V_STATE,
+                                              HttpServletResponse response) throws  SQLException {
         List list;
-//        V_V_PERSONCODE = URLDecoder.decode(V_V_PERSONCODE, "UTF-8");
-//        V_V_DEPT = URLDecoder.decode(V_V_DEPT, "UTF-8");
-//        V_V_TYPE = URLDecoder.decode(V_V_TYPE, "UTF-8");
-//        V_V_CLASSTYPE = URLDecoder.decode(V_V_CLASSTYPE, "UTF-8");
-//        V_D_FROMDATE = URLDecoder.decode(V_D_FROMDATE, "UTF-8");
-//        V_D_TODATE = URLDecoder.decode(V_D_TODATE, "UTF-8");
-        HashMap data = wsyService.PRO_PP_INFORMATION_LIST(V_V_PERSONCODE, V_V_DEPT, V_V_TYPE, V_V_CLASSTYPE, V_D_FROMDATE, V_D_TODATE,V_V_STATE);
+
+        HashMap data = wsyService.PRO_PP_INFORMATION_LIST(V_V_PERSONCODE, V_V_DEPT, V_V_TYPE, V_V_CLASSTYPE, V_D_FROMDATE, V_D_TODATE, V_V_STATE);
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet();
         for (int i = 0; i <= 6; i++) {
@@ -857,12 +856,15 @@ public class WsyController {
         cell.setCellValue("上报人");
         cell.setCellStyle(style);
         cell = row.createCell((short) 4);
-        cell.setCellValue("状态");
+        cell.setCellValue("所属部门");
         cell.setCellStyle(style);
         cell = row.createCell((short) 5);
-        cell.setCellValue("类型");
+        cell.setCellValue("状态");
         cell.setCellStyle(style);
         cell = row.createCell((short) 6);
+        cell.setCellValue("类型");
+        cell.setCellStyle(style);
+        cell = row.createCell((short) 7);
         cell.setCellValue("班型");
         cell.setCellStyle(style);
         if (data.size() > 0) {
@@ -874,9 +876,10 @@ public class WsyController {
                 row.createCell((short) 1).setCellValue(map.get("V_EQUIP") == null ? "" : map.get("V_EQUIP").toString());
                 row.createCell((short) 2).setCellValue(map.get("V_INFORMATION") == null ? "" : map.get("V_INFORMATION").toString());
                 row.createCell((short) 3).setCellValue(map.get("V_PERSON") == null ? "" : map.get("V_PERSON").toString());
-                row.createCell((short) 4).setCellValue(map.get("V_STATE") == null ? "" : map.get("V_STATE").toString());
-                row.createCell((short) 5).setCellValue(map.get("V_TYPE") == null ? "" : map.get("V_TYPE").toString());
-                row.createCell((short) 6).setCellValue(map.get("V_CLASSTYPE") == null ? "" : map.get("V_CLASSTYPE").toString());
+                row.createCell((short) 4).setCellValue(map.get("V_DEPT") == null ? "" : map.get("V_DEPT").toString());
+                row.createCell((short) 5).setCellValue(map.get("V_STATE") == null ? "" : map.get("V_STATE").toString());
+                row.createCell((short) 6).setCellValue(map.get("V_TYPE") == null ? "" : map.get("V_TYPE").toString());
+                row.createCell((short) 7).setCellValue(map.get("V_CLASSTYPE") == null ? "" : map.get("V_CLASSTYPE").toString());
             }
             try {
                 response.setContentType("application/vnd.ms-excel;charset=UTF-8");
@@ -1051,25 +1054,26 @@ public class WsyController {
         }
         return result;
     }
+
     //---模型人数写入人数   2018-09-25
     @RequestMapping(value = "PM_1917_JXGX_DATA_UPERS", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> PM_1917_JXGX_DATA_UPERS(
+    public Map<String, Object> PM_1917_JXGX_DATA_UPERS(
             @RequestParam(value = "V_V_JXGX_CODE") String V_V_JXGX_CODE,
             @RequestParam(value = "V_V_JXMX_CODE") String V_V_JXMX_CODE)
             throws SQLException {
-        Map<String,Object> result = wsyService.PM_1917_JXGX_DATA_UPERS(V_V_JXGX_CODE, V_V_JXMX_CODE);
+        Map<String, Object> result = wsyService.PM_1917_JXGX_DATA_UPERS(V_V_JXGX_CODE, V_V_JXMX_CODE);
         return result;
     }
     //--获取物料弹出窗口数据  018-09-26
 
     @RequestMapping(value = "SEL_EQUTOWL", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> SEL_EQUTOWL(
+    public Map<String, Object> SEL_EQUTOWL(
             @RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
             @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT)
             throws SQLException {
-        Map<String,Object> result = wsyService.SEL_EQUTOWL(V_V_PERSONCODE, V_V_DEPTCODENEXT);
+        Map<String, Object> result = wsyService.SEL_EQUTOWL(V_V_PERSONCODE, V_V_DEPTCODENEXT);
         return result;
     }
 

@@ -250,10 +250,15 @@ Ext.onReady(function () {
             listeners: {click: OnButtonQuery}
         }, {
             xtype: 'button',
+            text: '查看详情',
+            icon: imgpath + '/search.png',
+            handler: OnLookInfo
+        }, /*{
+            xtype: 'button',
             text: '编辑',
             icon: imgpath + '/edit.png',
             listeners: {click: OnButtonEdit}
-        }, {
+        },*/ {
             xtype: 'button',
             text: '导出',
             icon: imgpath + '/accordion_collapse.png',
@@ -268,20 +273,19 @@ Ext.onReady(function () {
         columnLines: true,
         store: gridStore,
         autoScroll: true,
-        selType: 'checkboxmodel',
+       /* selType: 'checkboxmodel',*/
         style: 'text-align:center',
         height: 400,
-        selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
+       /* selModel: { //指定单选还是多选,SINGLE为单选，SIMPLE为多选
             selType: 'checkboxmodel',
             mode: 'SIMPLE'
-        },
+        },*/
         columns: [{xtype: 'rownumberer', text: '序号', width: 50, align: 'center'},
             /*{text: '年计划编号', width: 100, dataIndex: 'V_YEARID', align: 'center', renderer: atleft},*/
             {text: '产线', width: 160, dataIndex: 'V_CXNAME', align: 'center', renderer: atleft},
             {text: '年计划名称', width: 140, dataIndex: 'V_YEARNAME', align: 'center', renderer: atleft},
             {text: '检修内容', width: 200, dataIndex: 'V_COUNT', align: 'center', renderer: atleft},
             {text: '计划开工时间', width: 140, dataIndex: 'V_JHTJSJ', align: 'center', renderer: atleft},
-            //  {text: '计划竣工时间', width: 140, dataIndex: 'V_JHJGSJ', align: 'center', renderer: atleft},
             {text: '计划工期', width: 120, dataIndex: 'V_JHGQ', align: 'center', renderer: atleft},
             {text: '专业', width: 100, dataIndex: 'V_ZYMC', align: 'center', renderer: atleft},
             {text: '状态', width: 100, dataIndex: 'V_BASENAME', align: 'center', renderer: lookFlow}],
@@ -472,14 +476,14 @@ var pageFunction = {
         var endtime = '';
         for (var i = 0; i < ganttdata.length; i++) {
             if (i == 0) {
-                starttime = new Date(ganttdata[0].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
-                endtime = new Date(ganttdata[0].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
+                starttime =new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00");
+                endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59");
             } else {
-                if (new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/")) < starttime) {
-                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
+                if (new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00") < starttime) {
+                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00");
                 }
-                if (new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/")) > endtime) {
-                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
+                if (new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59")> endtime) {
+                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59");
                 }
             }
         }
@@ -618,7 +622,7 @@ var pageFunction = {
         }
         if (today <= startd) {
             var vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
-            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40 + 40;
+            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40 ;
             var gtt = '<div style="left:' + vleft.toString() + 'px;height:27px;width:' + vwidth.toString() + 'px;background-color: #CC3333;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div  class="sch-event-inner">' + record.data.V_EQUNAME + '</div></div><div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + stime.split('.0')[0] + '<br>' + '结束时间：' + etime.split('.0')[0] + '<br>';
             var cont = record.data.V_COUNT.split(',');
             var contt = '内容：';
@@ -636,7 +640,7 @@ var pageFunction = {
             var nowtime2 = Ext.Date.format(new Date(), 'Y-m-d 00:00:00')
             var vleft = vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
             var vwidth1 = ((today.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
-            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40 + 40;
+            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40 ;
             var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
             if (Ext.Date.format(Ext.Date.getLastDateOfMonth(startd), 'Y-m-d') == Ext.Date.format(startd, 'Y-m-d')) {
                 vwidth = vwidth + 40;
@@ -738,4 +742,16 @@ function _preViewProcess(businessKey) {
     window.open(AppUrl + 'page/PM_210301/index.html?ProcessInstanceId='
         + ProcessInstanceId, '', 'height=' + oheight + 'px,width= ' + owidth + 'px,top=50px,left=100px,resizable=yes');
 
+}
+
+function OnLookInfo() {
+    var seldata = Ext.getCmp('grid').getSelectionModel().getSelection();
+    if (seldata.length != 1) {
+        alert('请选择一条数据进行查看！');
+        return false;
+    } else {
+        var owidth = window.document.body.offsetWidth - 600;
+        var oheight = window.document.body.offsetHeight - 100;
+        window.open(AppUrl + 'page/PM_030201/indexInfo.html?V_GUID=' + seldata[0].data.V_GUID + '&random=' + Math.random(), '', 'height=' + oheight + ',width=' + owidth + ',top=10px,left=10px,resizable=yes');
+    }
 }

@@ -1682,25 +1682,12 @@ public class WsyService {
             cstmt.setString("V_V_DEPT", V_V_DEPT);
             cstmt.setString("V_V_TYPE", V_V_TYPE);
             cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
-
-//            if (V_D_FROMDATE.equals("")) {
-//                cstmt.setDate("V_D_FROMDATE", null);
-//            } else {
-//                cstmt.setDate("V_D_FROMDATE", java.sql.Date.valueOf(V_D_FROMDATE));
-//            }
-//            if (V_D_TODATE.equals("")) {
-//                cstmt.setDate("V_D_TODATE", null);
-//            } else {
-//                cstmt.setDate("V_D_TODATE", java.sql.Date.valueOf(V_D_TODATE));
-//            }
             cstmt.setString("V_D_FROMDATE", V_D_FROMDATE);
             cstmt.setString("V_D_TODATE", V_D_TODATE);
             cstmt.setString("V_V_STATE",V_V_STATE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);
-//            cstmt.registerOutParameter("V_CURSOR", OracleTypes.VARCHAR);
             cstmt.execute();
             result.put("list", ResultHash((ResultSet) cstmt.getObject("V_CURSOR")));
-//            result.put("V_CURSOR", (String) cstmt.getObject("V_CURSOR"));
         } catch (SQLException e) {
             logger.error(e);
         } finally {
@@ -1793,18 +1780,6 @@ public class WsyService {
             cstmt.setString("V_V_DEPT", V_V_DEPT);
             cstmt.setString("V_V_TYPE", V_V_TYPE);
             cstmt.setString("V_V_CLASSTYPE", V_V_CLASSTYPE);
-//            if (V_D_FROMDATE.equals("")) {
-//                cstmt.setDate("V_D_FROMDATE", null);
-//            } else {
-//                Timestamp time = Timestamp.valueOf(V_D_FROMDATE);
-//                cstmt.setTimestamp("V_D_FROMDATE", time);
-//            }
-//            if (V_D_TODATE.equals("")) {
-//                cstmt.setDate("V_D_TODATE", null);
-//            } else {
-//                Timestamp time = Timestamp.valueOf(V_D_TODATE);
-//                cstmt.setTimestamp("V_D_TODATE", time);
-//            }
             cstmt.setString("V_D_FROMDATE", V_D_FROMDATE);
             cstmt.setString("V_D_TODATE", V_D_TODATE);
             cstmt.registerOutParameter("V_CURSOR", OracleTypes.CURSOR);

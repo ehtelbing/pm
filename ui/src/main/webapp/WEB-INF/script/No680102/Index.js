@@ -84,7 +84,7 @@ var bxStore = Ext.create("Ext.data.Store", {
 var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
-    pageSize: 15,
+    pageSize: 50,
     fields: ['D_DATE', 'I_ID', 'V_CLASS', 'V_CLASSTYPE', 'V_DEPT', 'V_INFORMATION', 'V_PERSONNAME', 'V_TYPE','STATE','DEFCODE'],
     proxy: {
         type: 'ajax',
@@ -97,8 +97,6 @@ var gridStore = Ext.create("Ext.data.Store", {
             type: 'json',
             root: 'list'
         }
-    },
-    listeners: {
     }
 });
 var Layout = {
@@ -430,7 +428,10 @@ function renderMoney(value, metaData) {
 }
 
 function OnButtonExcelClicked() {
-    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_LIST_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bx').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d')+'&V_V_STATE='+Ext.getCmp('stateid').getValue());
+    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_LIST_EXCEL?V_V_PERSONCODE='
+        + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue())
+        + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bx').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('stardate').getValue(), 'Y-m-d'))
+        + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('enddate').getValue(), 'Y-m-d'))+'&V_V_STATE='+Ext.getCmp('stateid').getValue();
 }
 
 Ext.onReady(onPageLoaded);

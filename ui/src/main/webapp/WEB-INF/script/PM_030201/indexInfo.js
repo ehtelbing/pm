@@ -1,8 +1,4 @@
 ﻿var Guid = "";
-var processKey = "";
-var ProcessInstanceId = '';
-var taskId = "";
-var V_STEPCODE = '';
 
 var cmItems = [];
 var ganttdata = [];
@@ -11,42 +7,15 @@ var vEnd = '';
 var stime = '';
 var etime = '';
 
-var V_V_PERSONCODE = '';
-var V_PERSONNAME = '';
-var V_V_ORGCODE = '';
-var V_V_DEPTCODE = '';
-var V_V_SPECIALTY = '';
-
-
 //初始化时间参数
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
 
 if (Ext.urlDecode(location.href.split('?')[1]) != null) {
-    Guid = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID == null ? "" : Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
-    processKey = Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey == null ? "" : Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey;
-    ProcessInstanceId = Ext.urlDecode(location.href.split('?')[1]).ProcessInstanceId == null ? "" : Ext.urlDecode(location.href.split('?')[1]).ProcessInstanceId;
+    Guid = Ext.urlDecode(location.href.split('?')[1]).V_GUID == null ? "" : Ext.urlDecode(location.href.split('?')[1]).V_GUID;
 }
 
 Ext.onReady(function () {
     Ext.QuickTips.init();
-
-    var fzPerStore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        storeId: 'fzPerStore',
-        fields: ['V_PERSONCODE', 'V_PERSONNAME', 'V_V_NEXT_SETP', 'V_V_FLOW_STEPNAME'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'hp/PM_ACTIVITI_PROCESS_PER_SEL',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            }
-        }
-    });
 
     var gridStore = Ext.create('Ext.data.Store', {
         id: 'gridStore',
@@ -72,32 +41,24 @@ Ext.onReady(function () {
         layout: 'vbox',
         frame: true,
         width: '100%',
-        items: [{xtype:'panel',frame:true,width:'100%',layout:'column', baseCls: 'my-panel-no-border',
-            items:[{
-                id: 'spyj',
+        items: [
+            {
                 xtype: 'textfield',
-                fieldLabel: '审批意见',
-                labelWidth: 90,
-                fieldStyle: 'background-color: #FFEBCD; background-image: none;',
+                id: 'njhName',
+                fieldLabel: '年计划名称',
                 style: ' margin: 5px 0px 0px 5px',
-                labelAlign: 'right',
-                width: 250
-            }, {
-                xtype: 'combo',
-                id: 'nextPer',
-                store: fzPerStore,
-                editable: false,
-                queryMode: 'local',
-                fieldLabel: '下一步审批人',
-                displayField: 'V_PERSONNAME',
-                valueField: 'V_PERSONCODE',
-                margin: '5 5 5 10',
-                labelWidth: 100,
-                labelAlign: 'right'
-            }, {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '同意', listeners: {click: OnBtnGo}},
-                {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '驳回', listeners: {click: OnBtnBack}}]},
-            {xtype:'textfield',id:'njhName',fieldLabel:'年计划名称',style: ' margin: 5px 0px 0px 5px',width:600,readOnly:true},
-            {xtype:'textareafield',id:'njhnr',fieldLabel:'年计划内容',style: ' margin: 5px 0px 10px 5px',width:600,readOnly:true,height:60}]
+                width: 600,
+                readOnly: true
+            },
+            {
+                xtype: 'textareafield',
+                id: 'njhnr',
+                fieldLabel: '年计划内容',
+                style: ' margin: 5px 0px 10px 5px',
+                width: 600,
+                readOnly: true,
+                height: 60
+            }]
     });
 
     var cgrid = Ext.create('Ext.grid.Panel', {
@@ -134,13 +95,6 @@ Ext.onReady(function () {
         items: [npanel, cgrid, rpanel]
     });
 
-    Ext.data.StoreManager.lookup('fzPerStore').on('load', function () {
-        Ext.getCmp('nextPer').select(Ext.data.StoreManager.lookup('fzPerStore').getAt(0));
-        processKey = Ext.data.StoreManager.lookup('fzPerStore').getProxy().getReader().rawData.RET;
-        V_STEPNAME = Ext.data.StoreManager.lookup('fzPerStore').getAt(0).data.V_V_FLOW_STEPNAME;
-        V_NEXT_SETP = Ext.data.StoreManager.lookup('fzPerStore').getAt(0).data.V_V_NEXT_SETP;
-    })
-
     OnPageLoad();
     QueryEquGrid();
 });
@@ -157,31 +111,10 @@ function OnPageLoad() {
             var resp = Ext.decode(resp.responseText);
             if (resp.list != null) {
                 if (resp.list.length > 0) {
-                    V_V_PERSONCODE = resp.list[0].V_INPER;
-                    V_PERSONNAME = resp.list[0].V_INPERNAME;
-                    V_V_ORGCODE = resp.list[0].V_ORGCODE;
-                    V_V_DEPTCODE = resp.list[0].V_DEPTCODE;
-                    V_V_SPECIALTY = resp.list[0].V_ZY;
                     Ext.getCmp('njhName').setValue(resp.list[0].V_YEARNAME);
                     Ext.getCmp('njhnr').setValue(resp.list[0].V_COUNT);
-                    _selectTaskId();
                 }
             }
-        }
-    });
-}
-
-function QueryNextPer() {
-    Ext.data.StoreManager.lookup('fzPerStore').load({
-        params: {
-            V_V_ORGCODE: V_V_ORGCODE,
-            V_V_DEPTCODE: V_V_DEPTCODE,
-            V_V_REPAIRCODE: '',
-            V_V_FLOWTYPE: 'YearPlan',
-            V_V_FLOW_STEP: V_STEPCODE,
-            V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
-            V_V_SPECIALTY: V_V_SPECIALTY,
-            V_V_WHERE: '通过'
         }
     });
 }
@@ -207,14 +140,14 @@ var pageFunction = {
         var endtime = '';
         for (var i = 0; i < ganttdata.length; i++) {
             if (i == 0) {
-                starttime =new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00");
-                endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59");
+                starttime = new Date(ganttdata[0].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
+                endtime = new Date(ganttdata[0].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
             } else {
-                if (new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00") < starttime) {
-                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00");
+                if (new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/")) < starttime) {
+                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
                 }
-                if (new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59")> endtime) {
-                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59");
+                if (new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/")) > endtime) {
+                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
                 }
             }
         }
@@ -353,7 +286,7 @@ var pageFunction = {
         }
         if (today <= startd) {
             var vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
-            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40 ;
+            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40 + 40;
             var gtt = '<div style="left:' + vleft.toString() + 'px;height:27px;width:' + vwidth.toString() + 'px;background-color: #CC3333;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div  class="sch-event-inner">' + record.data.V_EQUNAME + '</div></div><div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + stime.split('.0')[0] + '<br>' + '结束时间：' + etime.split('.0')[0] + '<br>';
             var cont = record.data.V_COUNT.split(',');
             var contt = '内容：';
@@ -371,7 +304,7 @@ var pageFunction = {
             var nowtime2 = Ext.Date.format(new Date(), 'Y-m-d 00:00:00')
             var vleft = vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
             var vwidth1 = ((today.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
-            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40 ;
+            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40 + 40;
             var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
             if (Ext.Date.format(Ext.Date.getLastDateOfMonth(startd), 'Y-m-d') == Ext.Date.format(startd, 'Y-m-d')) {
                 vwidth = vwidth + 40;
@@ -422,190 +355,3 @@ function atright(value, metaData) {
     metaData.style = "text-align:right;";
     return '<div data-qtip="' + value + '" >' + value + '</div>';
 }
-
-function OnBtnGo() {
-    Ext.getBody().mask('加载中，请稍后！');
-    var spyj = '';
-    if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
-        spyj = '通过';
-    } else {
-        spyj = Ext.getCmp('spyj').getValue();
-    }
-
-    Ext.Ajax.request({
-        url: AppUrl + 'Activiti/TaskComplete',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            taskId: taskId,
-            idea: '通过',
-            parName: [V_NEXT_SETP, "flow_yj"],
-            parVal: [Ext.getCmp('nextPer').getValue(), spyj],
-            processKey: processKey,
-            businessKey: Guid,
-            V_STEPCODE: V_STEPCODE,
-            V_STEPNAME: V_STEPNAME,
-            V_IDEA: '请审批！',
-            V_NEXTPER: Ext.getCmp('nextPer').getValue(),
-            V_INPER: Ext.util.Cookies.get('v_personcode')
-        },
-        success: function (response) {
-            var resp = Ext.decode(response.responseText);
-
-            if (resp.ret == '任务提交成功') {
-                Ext.Ajax.request({
-                    url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
-                    method: 'POST',
-                    async: false,
-                    params: {
-                        'V_V_ORDERID': Guid,
-                        'V_V_PROCESS_NAMESPACE': 'YearPlan',
-                        'V_V_PROCESS_CODE': processKey,
-                        'V_V_STEPCODE': V_STEPCODE,
-                        'V_V_STEPNEXT_CODE': V_NEXT_SETP
-                    },
-                    success: function (ret) {
-                        var resp = Ext.JSON.decode(ret.responseText);
-                        Ext.getBody().unmask();
-                        if (resp.V_INFO == 'success') {
-                            window.opener.QueryTabY();
-                            window.opener.QuerySum();
-                            window.opener.QueryGrid();
-                            window.opener.OnPageLoad();
-                            window.close();
-                        }
-                    }
-                });
-            }
-        },
-        failure: function (response) {//访问到后台时执行的方法。
-            Ext.getBody().unmask();
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            })
-        }
-    })
-}
-
-function OnBtnBack() {
-    Ext.getBody().mask('加载中，请稍后！');
-    var spyj = '';
-    if (Ext.getCmp('spyj').getValue() == '' || Ext.getCmp('spyj').getValue() == null) {
-        spyj = '审批驳回';
-    } else {
-        spyj = Ext.getCmp('spyj').getValue();
-    }
-    var Assignee = '';
-    Ext.Ajax.request({
-        url: AppUrl + 'Activiti/InstanceState',
-        method: 'POST',
-        async: false,
-        params: {
-            instanceId: ProcessInstanceId
-        },
-        success: function (ret) {
-            var resp = Ext.JSON.decode(ret.responseText);
-            for (var i = 0; i < resp.list.length; i++) {
-                if (resp.list[i].ActivityName == "Start") {
-                    Assignee = resp.list[i].Assignee;
-                    break;
-                }
-            }
-        }
-    });
-
-    if (Assignee != '') {
-        Ext.Ajax.request({
-            url: AppUrl + 'Activiti/TaskComplete',
-            type: 'ajax',
-            method: 'POST',
-            params: {
-                taskId: taskId,
-                idea: '不通过',
-                parName: ['fqrxg', "flow_yj"],
-                parVal: [Assignee, spyj],
-                processKey: processKey,
-                businessKey: Guid,
-                V_STEPCODE: 'fqrxg',
-                V_STEPNAME: '发起人修改',
-                V_IDEA: '不通过',
-                V_NEXTPER: Assignee,
-                V_INPER: Ext.util.Cookies.get('v_personcode')
-            },
-            success: function (response) {
-                var resp = Ext.decode(response.responseText);
-                if (resp.ret == '任务提交成功') {
-                    Ext.Ajax.request({
-                        url: AppUrl + 'hp/PRO_ACTIVITI_FLOW_AGREE',
-                        method: 'POST',
-                        async: false,
-                        params: {
-                            'V_V_ORDERID': Guid,
-                            'V_V_PROCESS_NAMESPACE': 'YearPlan',
-                            'V_V_PROCESS_CODE': processKey,
-                            'V_V_STEPCODE': V_STEPCODE,
-                            'V_V_STEPNEXT_CODE': 'fqrxg'
-                        },
-                        success: function (ret) {
-                            var resp = Ext.JSON.decode(ret.responseText);
-                            Ext.getBody().unmask();
-                            if (resp.V_INFO == 'success') {
-                                window.opener.QueryTabY();
-                                window.opener.QuerySum();
-                                window.opener.QueryGrid();
-                                window.opener.OnPageLoad();
-                                window.close();
-                            }
-                        }
-                    });
-                } else {
-                    Ext.getBody().unmask();
-                    Ext.MessageBox.alert('提示', '任务提交失败');
-                }
-            },
-            failure: function (response) {//访问到后台时执行的方法。
-                Ext.getBody().unmask();
-                Ext.MessageBox.show({
-                    title: '错误',
-                    msg: response.responseText,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                })
-            }
-        })
-    } else {
-        Ext.getBody().unmask();
-        alert("发起人信息错误，无法驳回");
-    }
-}
-
-
-function _selectTaskId() {
-    Ext.Ajax.request({
-        url: AppUrl + 'Activiti/GetTaskIdFromBusinessId',
-        type: 'ajax',
-        method: 'POST',
-        params: {
-            businessKey: Guid,
-            userCode: Ext.util.Cookies.get('v_personcode')
-        },
-        success: function (resp) {
-            var data = Ext.decode(resp.responseText);//后台返回的值
-            taskId = data.taskId;
-            V_STEPCODE = data.TaskDefinitionKey;
-            QueryNextPer();
-        },
-        failure: function (response) {
-            Ext.MessageBox.show({
-                title: '错误',
-                msg: response.responseText,
-                buttons: Ext.MessageBox.OK,
-                icon: Ext.MessageBox.ERROR
-            });
-        }
-    })
-}
-
