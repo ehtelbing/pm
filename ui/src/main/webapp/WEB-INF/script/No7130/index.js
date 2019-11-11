@@ -1,469 +1,487 @@
-var V_DEPTCODE = Ext.util.Cookies.get('v_deptcode');//作业区编码
-var V_DEPTNAME = Ext.util.Cookies.get('v_deptname2');//作业区名称
-var V_V_PLANTCODE = '';
-var V_V_DEPTCODE = '';
-var V_SUPPLY_CODE = '';
-var V_MATERIALNAME = '';
-var D_BEGIN_DATE = '';
-var D_END_DATE = '';
-var V_CYCLE_ID = '';
-var ckStoreLoad = false;
-var deptStoreLoad = false;
-var supplyStoreLoad = false;
-
-Ext.onReady(function () {
-    Ext.getBody().mask('<p>正在载入中...</p>');
-
-    //厂矿
-    var ckStore = Ext.create('Ext.data.Store', {
-        id: 'ckStore',
-        autoLoad: true,
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                IS_V_DEPTCODE: "",
-                IS_V_DEPTTYPE: '[基层单位]'
-            }
+var SITE_ID = '';
+if (location.href.split('?')[1] != null) {
+    SITE_ID = Ext.urlDecode(location.href.split('?')[1]).SITE_ID;
+}
+//厂矿数据集
+var ckStore = Ext.create('Ext.data.Store', {
+    autoLoad : false,
+    storeId : 'ckStore',
+    fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url : AppUrl + 'zy/PRO_BASE_DEPT_VIEW',
+        actionMethods : {
+            read : 'POST'
         },
-        listeners: {
-            load: function (store, records) {
-                ckStoreLoad = true;
-                Ext.getCmp('ckName').select(store.first());
-                _init();
-            }
+        reader : {
+            type : 'json',
+            root : 'list'
         }
-    });
-
-    //作业区
-    var deptStore = Ext.create('Ext.data.Store', {
-        id: 'deptStore',
-        autoLoad: false,
-        fields: ['V_DEPTCODE', 'V_DEPTNAME'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'PM_12/PRO_BASE_DEPT_VIEW',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
-        },
-        listeners: {
-            load: function (store, records) {
-                store.insert(0, {
-                    'V_DEPTCODE': V_DEPTCODE,
-                    'V_DEPTNAME': V_DEPTNAME
-                });
-
-                Ext.getCmp('zyqName').setValue(V_DEPTCODE);
-                //Ext.getCmp('zyqName').select(store.first());
-                deptStoreLoad = true;
-                _init();
-            }
-        }
-
-    });
-
-    //供应商Store
-    var supplyStore = Ext.create("Ext.data.Store", {
-        id: 'supplyStore',
-        autoLoad: true,
-        fields: ['SUPPLY_CODE', 'SUPPLY_NAME'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'ml/PRO_RUN7110_SITESUPPLYLIST',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {
-                'A_ID': '%',
-                'A_MATERIALCODE': '%',
-                'A_ORDERID': '%'
-            }
-        },
-        listeners: {
-            load: function (store, records) {
-                store.insert(0, {
-                    'SUPPLY_CODE': '%',
-                    'SUPPLY_NAME': '全部'
-                });
-                Ext.getCmp('SUPPLY_NAME').select(store.first());
-                supplyStoreLoad = true;
-                _init();
-            }
-        }
-    });
-
-    //作业周期类型
-    var zyCycleStore = Ext.create("Ext.data.Store", {
-        id: 'zyCycleStore',
-        autoLoad: true,
-        pageSize: 100,
-        fields: ['CYCLE_ID', 'CYCLE_DESC'],
-        proxy: {
-            type: 'ajax',
-            url: AppUrl + 'ml/PRO_RUN_CYCLE_ABLE',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list'
-            },
-            extraParams: {}
-        },
-        listeners: {
-            load: function (store, records) {
-                zyCycleStoreLoad = true;
-                Ext.getCmp('CYCLE_TYPE').select(store.first());
-                _init();
-            }
-        }
-
-    });
-
-    //备件寿命Store
-    var bjTimeStore = Ext.create("Ext.data.Store", {
-        autoLoad: false,
-        pageSize: 100,
-        storeId: 'bjTimeStore',
-        fields: ['CHANGEDATE_S', 'CHANGEDATE_D', 'S_DAY', 'SITE_DESC', 'EQU_DESC', 'SUPPLY_NAME', 'MATERIALCODE',
-            'MATERIALNAME', 'WORK_TIEM', 'REMARK'],
-        proxy: {
-            type: 'ajax',
-            async: false,
-            url: AppUrl + 'ml/PRO_RUN7130_SELECTBJTIME',
-            actionMethods: {
-                read: 'POST'
-            },
-            reader: {
-                type: 'json',
-                root: 'list',
-                totalProperty: 'total'
-            },
-            extraParams: {}
-        }
-
-    });
-
-    //菜单面板
-    var tablePanel = Ext.create('Ext.panel.Panel', {
-        //  title:'a',
-        id: 'tablePanel',
-        region: 'north',
-        layout: 'vbox',
-        frame: true,
-        items: [{
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                id: 'ckName',
-                xtype: 'combo',
-                store: ckStore,
-                editable: false,
-                fieldLabel: '厂矿',
-                labelWidth: 80,
-                width: 250,
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                queryMode: 'local',
-                style: ' margin: 5px 0px 5px 0px',
-                labelAlign: 'right',
-                listeners: {
-                    change: function (field, newValue, oldValue) {
-                        _selectDeptName();
-                    }
-                }
-            }, {
-                id: 'zyqName',
-                xtype: 'combo',
-                store: deptStore,
-                fieldLabel: '作业区',
-                labelWidth: 80,
-                width: 250,
-                displayField: 'V_DEPTNAME',
-                valueField: 'V_DEPTCODE',
-                queryMode: 'local',
-                style: ' margin: 5px 0px 5px 0px',
-                labelAlign: 'right'
-            }, {
-                id: 'SUPPLY_NAME',
-                xtype: 'combo',
-                store: supplyStore,
-                fieldLabel: '供应商',
-                labelWidth: 80,
-                width: 250,
-                displayField: 'SUPPLY_NAME',
-                valueField: 'SUPPLY_CODE',
-                style: ' margin: 5px 0px 5px 0px',
-                labelAlign: 'right'
-            }, {
-                xtype: 'textfield',
-                emptyText: '请输入物料描述',
-                id: 'MATERIAL_DESC',
-                queryMode: 'local',
-                fieldLabel: '物料描述',
-                labelWidth: 80,
-                width: 250,
-                style: ' margin: 5px 0px 0px 0px',
-                labelAlign: 'right'
-            }]
-        }, {
-            xtype: 'panel',
-            region: 'north',
-            layout: 'column',
-            baseCls: 'my-panel-no-border',
-            items: [{
-                id: 'A_BEGINDATE',
-                xtype: 'datefield',
-                editable: false,
-                format: 'Y/m/d',
-                submitFormat: 'Y-m-d',
-                labelAlign: 'right',
-                value: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-                fieldLabel: '安装日期: 从',
-                labelSeparator: '',
-                labelWidth: 80,
-                width: 250,
-                style: ' margin: 5px 0px 5px 0px',
-                labelAlign: 'right'
-            }, {
-                id: 'A_ENDDATE',
-                xtype: 'datefield',
-                editable: false,
-                format: 'Y/m/d',
-                submitFormat: 'Y-m-d',
-                value: Ext.util.Format.date(new Date(new Date(new Date().getUTCFullYear(), new Date().getMonth() + 1, 1) - 86400000), "Y-m-d"),
-                fieldLabel: '到',
-                labelSeparator: '',
-                labelWidth: 80,
-                width: 250,
-                style: ' margin: 5px 0px 5px 0px',
-                labelAlign: 'right'
-            }, {
-                id: 'CYCLE_TYPE',
-                xtype: 'combo',
-                store: zyCycleStore,
-                fieldLabel: '周期类型',
-                labelWidth: 80,
-                width: 250,
-                displayField: 'CYCLE_DESC',
-                valueField: 'CYCLE_ID',
-                style: ' margin: 5px 0px 5px 0px',
-                labelAlign: 'right'
-            }, {
-                xtype: 'button',
-                text: '查询',
-                style: ' margin: 5px 0px 5px 30px',
-                icon: imgpath + '/search.png',
-                handler: _selectBJ
-            }, {
-                xtype: 'button',
-                text: '导出到Excel',
-                style: ' margin: 5px 0px 5px 5px',
-                icon: imgpath + '/excel.gif',
-                handler: _exportExcel
-            }]
-        }]
-    });
-
-    //显示面板
-    var bjGridPanel = Ext.create('Ext.grid.Panel', {
-        id: 'bjGridPanel',
-        store: bjTimeStore,
-        width: '100%',
-        region: 'sourth',
-        border: false,
-        columnLines: true,
-        columns: [{
-            text: '安装日期',
-            dataIndex: 'CHANGEDATE_S',
-            align: 'center',
-            width: 120,
-            renderer: atleft
-        }, {
-            text: '换下日期',
-            dataIndex: 'CHANGEDATE_D',
-            align: 'center',
-            width: 120,
-            renderer: atleft
-        }, {
-            text: '安装天数',
-            dataIndex: 'S_DAY',
-            align: 'center',
-            width: 120,
-            renderer: atright
-        }, {
-            text: '位置',
-            dataIndex: 'SITE_DESC',
-            align: 'center',
-            width: 180,
-            renderer: atleft
-        }, {
-            text: '设备',
-            dataIndex: 'EQU_DESC',
-            align: 'center',
-            width: 120,
-            renderer: atleft
-        }, {
-            text: '供应商',
-            dataIndex: 'SUPPLY_NAME',
-            align: 'center',
-            width: 120,
-            renderer: atleft
-        }, {
-            text: '物资编码',
-            dataIndex: 'MATERIALCODE',
-            align: 'center',
-            width: 120,
-            renderer: atright
-        }, {
-            text: '物资描述',
-            dataIndex: 'MATERIALNAME',
-            align: 'center',
-            width: 120,
-            renderer: atleft
-        }, {
-            text: '累计作业量',
-            dataIndex: 'WORK_TIEM',
-            align: 'center',
-            width: 80,
-            renderer: atright
-        }, {
-            text: '备注',
-            dataIndex: 'REMARK',
-            align: 'center',
-            width: 120,
-            renderer: atleft
-        }],
-        bbar: [{
-            id: 'gpage',
-            xtype: 'pagingtoolbar',
-            dock: 'bottom',
-            displayInfo: true,
-            width: '100%',
-            displayMsg: '显示第{0}条到第{1}条记录,一共{2}条',
-            emptyMsg: '没有记录',
-            store: bjTimeStore
-        }]
-    });
-
-    //整体视图容器
-    Ext.create('Ext.container.Viewport', {
-        layout: {
-            type: 'border',
-            regionWeights: {
-                west: -1,
-                north: 1,
-                south: 1,
-                east: -1
-            }
-        },
-        items: [{
-            region: 'north',
-            border: false,
-            items: [tablePanel]
-        }, {
-            region: 'center',
-            layout: 'fit',
-            border: false,
-            items: [bjGridPanel]
-        }]
-
-    });
-
-    _init();
-
+    }
 });
 
-//初始化
-function _init() {
-
-    if (ckStoreLoad && supplyStoreLoad && deptStoreLoad && zyCycleStoreLoad) {
-        Ext.getBody().unmask();//去除页面笼罩
+//作业区数据集
+var zyqStore = Ext.create('Ext.data.Store', {
+    autoLoad : false,
+    storeId : 'zyqStore',
+    fields : [ 'V_DEPTCODE', 'V_DEPTNAME' ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url : AppUrl + 'zy/PRO_BASE_DEPT_VIEW',
+        actionMethods : {
+            read : 'POST'
+        },
+        reader : {
+            type : 'json',
+            root : 'list'
+        }
     }
-};
+});
 
-//查询作业区
-function _selectDeptName() {
-    var deptStore = Ext.data.StoreManager.lookup('deptStore');
-    deptStore.proxy.extraParams = {
-        'IS_V_DEPTCODE': Ext.getCmp('ckName').getValue(),
-        'IS_V_DEPTTYPE': '[主体作业区]'
+//供应商数据集
+var supplyStore = Ext.create('Ext.data.Store', {
+    autoLoad : false,
+    storeId : 'supplyStore',
+    fields : [ 'SUPPLY_CODE', 'SUPPLY_NAME' ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url : AppUrl + 'zy/PRO_RUN7110_SITESUPPLYLIST',
+        actionMethods : {
+            read : 'POST'
+        },
+        reader : {
+            type : 'json',
+            root : 'list'
+        }
+    }
+});
 
-    };
-    deptStore.currentPage = 1;
-    deptStore.load();
-};
+//周期类型
+var cycletypeStore = Ext.create('Ext.data.Store', {
+    autoLoad : true,
+    storeId : 'cycletypeStore',
+    fields : [ 'CYCLE_ID', 'CYCLE_DESC' ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url : AppUrl + 'zy/PRO_RUN_CYCLE_ABLE',
+        actionMethods : {
+            read : 'POST'
+        },
+        reader : {
+            type : 'json',
+            root : 'list'
+        },
+        extraParams : {}
+    }
+});
+
+//备件寿命数据集
+var gridStore = Ext.create("Ext.data.Store", {
+    autoLoad : false,
+    storeId : 'gridStore',
+    pageSize : 100,
+    fields : [ 'CHANGEDATE_S', 'CHANGEDATE_D', 'EQU_DESC', 'MATERIALCODE',
+        'MATERIALNAME', 'REMARK', 'SITE_DESC', 'SUPPLY_NAME', 'S_DAY',
+        'WORK_TIEM','BJ_UNQIUE_CODE','ORDERID_S','ORDERID_D','BJ_UNIQUE_CODE','CHANGE_AMOUNT' ],
+    proxy : {
+        type : 'ajax',
+        async : false,
+        url : AppUrl + 'zy/PRO_RUN7130_SELECTBJTIME',
+        actionMethods : {
+            read : 'POST'
+        },
+        reader : {
+            type : 'json',
+            root : 'list'
+        }
+    },
+    listeners: {
+        beforeload:loadgridStore
+        //beforeload:query()
+    }
+});
+
+var creatpanel = Ext.create('Ext.form.Panel', {
+    id : 'creatpanel',
+    style : 'margin:5px 0px 2px 2px',
+    region : 'north',
+    width : '100%',
+    baseCls : 'my-panel-no-border',
+    defaults : {
+        // style : 'margin:5px 0px 5px 10px',
+        labelAlign : 'right'
+    },
+    layout : {
+        type : 'vbox'
+    },
+    items : [
+        {
+            xtype : 'panel',
+            layout : 'column',
+            frame : true,
+            //baseCls : 'my-panel-noborder',
+            width : '100%',
+            items : [ {
+                xtype : 'combo',
+                id : 'ck',
+                store : 'ckStore',
+                labelAlign : 'right',
+                fieldLabel : '厂矿 ',
+                editable : false,
+                style : 'margin:5px 0px 5px 5px',
+                labelWidth : 80,
+                queryMode : 'local',
+                valueField : 'V_DEPTCODE',
+                displayField : 'V_DEPTNAME'
+            }, {
+                xtype : 'combo',
+                id : 'zyq',
+                store : 'zyqStore',
+                labelAlign : 'right',
+                fieldLabel : '作业区 ',
+                editable : false,
+                style : 'margin:5px 0px 5px 5px',
+                labelWidth : 60,
+                queryMode : 'local',
+                valueField : 'V_DEPTCODE',
+                displayField : 'V_DEPTNAME'
+            }, {
+                xtype : 'combo',
+                labelWidth : 80,
+                id : 'supply',
+                store : supplyStore,
+                editable : false,
+                queryMode : 'local',
+                fieldLabel : '供应商',
+                displayField : 'SUPPLY_NAME',
+                valueField : 'SUPPLY_CODE',
+                style : ' margin: 5px 0px 0px 5px',
+                labelAlign : 'right'
+            }, {
+                xtype : 'textfield',
+                fieldLabel : '物料描述',
+                id : 'wlms',
+                emptyText : '请输入物料描述',
+                labelAlign : 'right',
+                labelWidth : 90,
+                style : ' margin: 5px 0px 0px 5px'
+            } ]
+        },
+        {
+            xtype : 'panel',
+            layout : 'column',
+            frame : true,
+            //baseCls : 'my-panel-noborder',
+            width : '100%',
+            items : [
+                {
+                    xtype : 'datefield',
+                    format : 'Y/m/d',
+                    labelAlign : 'right',
+                    fieldLabel : '起始日期',
+                    labelWidth : 80,
+                    id : 'startTime',
+                    value : new Date(new Date().getFullYear(),
+                        new Date().getMonth(), 1),
+                    style : 'margin: 5px 0px 5px 5px'
 
 
-//查询备件历史更换台账
-function _selectBJ() {
-    V_V_PLANTCODE = Ext.getCmp('ckName').getValue();
-    V_V_DEPTCODE = Ext.getCmp('zyqName').getValue();
-    V_SUPPLY_CODE = Ext.getCmp('SUPPLY_NAME').getValue();
-    V_MATERIALNAME = Ext.getCmp('MATERIAL_DESC').getValue();
-    D_BEGIN_DATE = Ext.getCmp('A_BEGINDATE').getSubmitValue();
-    D_END_DATE = Ext.getCmp('A_ENDDATE').getSubmitValue();
-    V_CYCLE_ID = Ext.getCmp('CYCLE_TYPE').getValue();
+                }, {
+                    xtype : 'datefield',
+                    format : 'Y/m/d',
+                    fieldLabel : '结束日期',
+                    labelAlign : 'left',
+                    labelWidth : 60,
+                    id : 'endTime',
+                    value : Ext.Date.getLastDateOfMonth(new Date()),
+                    style : 'margin: 5px 0px 5px 5px'
+                }, {
+                    xtype : 'combo',
+                    labelWidth : 80,
+                    id : 'cycletype',
+                    store : cycletypeStore,
+                    editable : false,
+                    queryMode : 'local',
+                    fieldLabel : '周期类型',
+                    displayField : 'CYCLE_DESC',
+                    valueField : 'CYCLE_ID',
+                    style : ' margin: 5px 0px 0px 5px',
+                    labelAlign : 'right'
+                }, {
+                    xtype : 'button',
+                    text : '查询',
+                    icon : imgpath + '/search.png',
+                    width : 80,
+                    handler : query,
+                    style : ' margin: 5px 0px 0px 30px'
+                }, {
+                    xtype : 'button',
+                    text : '导出Excel',
+                    width : 100,
+                    handler : OnButtonExportClicked,
+                    style : ' margin: 5px 0px 0px 30px'
+                } ]
+        } ]
+});
+var grid = Ext.create("Ext.grid.Panel", {
+    xtype : 'gridpanel',
+    id : 'grid',
+    region : 'center',
+    columnLines : true,
+    width : '100%',
+    store : gridStore,
+    autoScroll : true,
+    height : 400,
+    columns : [ {
+        text : '安装工单 ',
+        dataIndex : 'ORDERID_S',
+        align : 'center',
+        width : 80,
+        renderer : RenderFontLeft
+    }, {
+        text : '换下工单',
+        dataIndex : 'ORDERID_D',
+        align : 'center',
+        labelAlign : 'right',
+        width : 80,
+        renderer : RenderFontLeft
+    },{
+        text : '安装日期 ',
+        dataIndex : 'CHANGEDATE_S',
+        align : 'center',
+        width : 100,
+        renderer : RenderFontLeft
+    },{
+        text : '更换数量 ',
+        dataIndex : 'CHANGE_AMOUNT',
+        align : 'center',
+        width : 80
+    }, {
+        text : '换下日期',
+        dataIndex : 'CHANGEDATE_D',
+        align : 'center',
+        labelAlign : 'right',
+        width : 100,
+        renderer : RenderFontLeft
+    }, {
+        text : '安装天数',
+        dataIndex : 'S_DAY',
+        align : 'center',
+        width : 80
+    }, {
+        text : '备件安装位置 ',
+        dataIndex : 'SITE_DESC',
+        align : 'center',
+        width : 100,
+        renderer : RenderFontLeft
+    }, {
+        text : '设备 ',
+        dataIndex : 'EQU_DESC',
+        align : 'center',
+        width : 100,
+        renderer : RenderFontLeft
+    }, {
+        text : '供应商 ',
+        dataIndex : 'SUPPLY_NAME',
+        align : 'center',
+        width : 80,
+        renderer : RenderFontLeft
+    }, {
+        text : '物资编码 ',
+        dataIndex : 'MATERIALCODE',
+        align : 'center',
+        width : 80,
+        renderer : RenderFontLeft
+    }, {
+        text : '物资描述 ',
+        dataIndex : 'MATERIALNAME',
+        align : 'center',
+        width : 100,
+        renderer : RenderFontLeft
+    }, {
+        text : '累计作业量 ',
+        dataIndex : 'WORK_TIEM',
+        align : 'center',
+        width : 80
+    }, {
+        text : '备注 ',
+        dataIndex : 'REMARK',
+        align : 'center',
+        width : 150,
+        renderer : RenderFontLeft
+    }, {
+        text : '唯一码',
+        dataIndex : 'BJ_UNIQUE_CODE',
+        align : 'center',
+        width : 150,
+        renderer : RenderFontLeft
+    } ],
+    bbar : [ '->', {
+        xtype : 'pagingtoolbar',
+        dock : 'bottom',
+        displayInfo : true,
+        displayMsg : '显示第{0}条到第{1}条记录,一共{2}条',
+        emptyMsg : '没有记录',
+        store : 'gridStore'
+    } ]
+});
+Ext.onReady(function() {
+    Ext.create('Ext.container.Viewport', {
+        id : "id",
+        layout : 'border',
+        items : [ creatpanel, grid ]
+    });
+
+    Ext.data.StoreManager.lookup('supplyStore').on('load',
+        function() {
+            Ext.getCmp('supply').store.insert(0, {
+                'SUPPLY_CODE' : '%',
+                'SUPPLY_NAME' : '全部'
+            });
+            Ext.getCmp('supply').select(Ext.data.StoreManager.lookup('supplyStore').getAt(0));
+            Ext.data.StoreManager.lookup('cycletypeStore').load();
+        });
+    Ext.data.StoreManager.lookup('ckStore').load({
+        params : {
+            IS_V_DEPTCODE: Ext.util.Cookies.get('v_orgCode'),
+            IS_V_DEPTTYPE: '[基层单位]'
+        }
+    });
 
 
-    var bjTimeStore = Ext.data.StoreManager.lookup('bjTimeStore');
-
-    bjTimeStore.proxy.extraParams = {
-        V_PLANTCODE: V_V_PLANTCODE,
-        V_DEPARTCODE: V_V_DEPTCODE,
-        V_SUPPLY_CODE: V_SUPPLY_CODE,
-        V_MATERIALNAME: V_MATERIALNAME,
-        D_BEGIN_DATE: D_BEGIN_DATE,
-        D_END_DATE: D_END_DATE,
-        V_CYCLE_ID: V_CYCLE_ID
-    };
-    bjTimeStore.load();
-
-};
-
-//时间显示
-function rendererTime(value, metaData) {
-    metaData.style = "text-align:right";
-    return '<div data-qtip="' + value.substring(0, 10) + '" >' + value.substring(0, 10) + '</div>';
-};
-
-
-function atleft(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:left;";
-    return '<div data-qtip="' + value + '" >' + value + '</div>';
-};
-
-function atright(value, metaData, record, rowIndex, colIndex, store) {
-    metaData.style = "text-align:right;";
-    return value;
-};
-
-//导出设备备件Excel
-function _exportExcel() {
-    document.location.href = AppUrl + 'ml/PRO_RUN7130_SELECTBJTIME_EXCEL?V_PLANTCODE=' + encodeURI(encodeURI(V_V_PLANTCODE)) + '&V_DEPARTCODE=' + encodeURI(encodeURI(V_V_DEPTCODE)) +
-    '&V_SUPPLY_CODE=' + encodeURI(encodeURI(V_SUPPLY_CODE)) + '&V_MATERIALNAME=' + encodeURI(encodeURI(V_MATERIALNAME)) + '&V_CYCLE_ID=' + encodeURI(encodeURI(V_CYCLE_ID)) +
-    '&D_BEGIN_DATE=' + D_BEGIN_DATE + '&D_END_DATE=' + D_END_DATE;
+    Ext.data.StoreManager.lookup('ckStore').on('load',function() {
+        Ext.getCmp('ck').select(Ext.data.StoreManager.lookup('ckStore').getAt(0));
+        Ext.data.StoreManager.lookup('zyqStore').load({
+            params : {
+                IS_V_DEPTCODE : Ext.util.Cookies.get('v_orgCode'),
+                IS_V_DEPTTYPE : '[主体作业区]'
+            }
+        });
+    });
+    Ext.data.StoreManager.lookup('zyqStore').on('load',function() {
+        Ext.getCmp('zyq').store.insert(0, {
+            'V_DEPTCODE' : '%',
+            'V_DEPTNAME' : '全部'
+        });
+        Ext.getCmp('zyq').select(Ext.data.StoreManager.lookup('zyqStore').getAt(0));
+        Ext.data.StoreManager.lookup('supplyStore').load({
+            params : {
+                A_ID : SITE_ID ,
+                A_MATERIALCODE : '%',
+                A_ORDERID : '%'
+              //  parVal : [ SITE_ID ]
+            }
+        });
+    });
+    Ext.data.StoreManager.lookup('cycletypeStore').on('load',function() {
+        Ext.getCmp('cycletype').select(Ext.data.StoreManager.lookup('cycletypeStore').getAt(0));
+        query();
+    });
+});
+// 查询
+function query() {
+    Ext.data.StoreManager.lookup('gridStore').load(
+        {
+            params : {
+                V_PLANTCODE : Ext.getCmp('ck').getValue(),
+                V_DEPARTCODE :  Ext.getCmp('zyq').getValue(),
+                V_SUPPLY_CODE : Ext.getCmp('supply').getValue(),
+                V_MATERIALNAME : Ext.getCmp('wlms').getValue(),
+                //D_BEGIN_DATE : Ext.util.Format.date(Ext.getCmp('startTime').getValue(), 'Y-m-d'),
+                D_BEGIN_DATE : Ext.Date.format(Ext.getCmp('startTime').getValue(),'Y-m-d'),
+               // D_END_DATE :  Ext.util.Format.date(Ext.getCmp('endTime') .getValue(), 'Y-m-d'),
+                D_END_DATE : Ext.Date.format(Ext.getCmp('endTime').getValue(),'Y-m-d'),
+                V_CYCLE_ID : Ext.getCmp('cycletype').getValue()
+            }
+        });
 }
+function RenderFontLeft(value, metaData) {
+    metaData.style = 'text-align: left';
+    //value = value.split(' ')[0];
+    return value;
+}
+function OnButtonExportClicked() {
+    var V_PLANTCODE = Ext.getCmp('ck').getValue();
+    var V_DEPARTCODE =  Ext.getCmp('zyq').getValue();
+    var V_SUPPLY_CODE = Ext.getCmp('supply').getValue();
+    var V_MATERIALNAME = Ext.getCmp('wlms').getValue();
+        //D_BEGIN_DATE : Ext.util.Format.date(Ext.getCmp('startTime').getValue(), 'Y-m-d'),
+    var D_BEGIN_DATE = Ext.Date.format(Ext.getCmp('startTime').getValue(),'Y-m-d');
+        // D_END_DATE :  Ext.util.Format.date(Ext.getCmp('endTime') .getValue(), 'Y-m-d'),
+    var D_END_DATE = Ext.Date.format(Ext.getCmp('endTime').getValue(),'Y-m-d');
+    var V_CYCLE_ID = Ext.getCmp('cycletype').getValue();
+
+    document.location.href = AppUrl + 'zy/PRO_RUN7130_SELECTBJTIME_excel?' +
+        'V_PLANTCODE='+ encodeURI(encodeURI(V_PLANTCODE)) +
+        '&V_DEPARTCODE='+ encodeURI(encodeURI(V_DEPARTCODE)) +
+        '&V_SUPPLY_CODE=' + encodeURI(encodeURI(V_SUPPLY_CODE)) +
+        '&V_MATERIALNAME='+ encodeURI(encodeURI(V_MATERIALNAME)) +
+        '&D_BEGIN_DATE=' + encodeURI(encodeURI(D_BEGIN_DATE)) +
+        '&D_END_DATE='+ encodeURI(encodeURI(D_END_DATE)) +
+        '&V_CYCLE_ID=' + encodeURI(encodeURI(V_CYCLE_ID));
+            //'&A_EQUID=' + encodeURI(encodeURI(A_EQUID)) +
+    // var tableName = [ "安装工单", "换下工单","安装日期", "更换数量", "换下日期", "安装天数", "备件安装位置", "设备", "供应商", "物资编码",
+    //     "物资描述", "累计作业量", "备注","唯一码" ];
+    // var tableKey = [ 'ORDERID_S', 'ORDERID_D','CHANGEDATE_S', 'CHANGE_AMOUNT','CHANGEDATE_D', 'S_DAY', 'SITE_DESC',
+    //     'EQU_DESC', 'SUPPLY_NAME', 'MATERIALCODE', 'MATERIALNAME',
+    //     'WORK_TIEM', 'REMARK','BJ_UNIQUE_CODE' ];
+    // var parName = ['V_PLANTCODE','V_DEPARTCODE','V_SUPPLY_CODE','V_MATERIALNAME','D_BEGIN_DATE','D_END_DATE','V_CYCLE_ID'];
+    // var parType = ['s', 's', 's', 's','da','da', 's'];
+    // var parVal = [
+    //     excelCS(Ext.getCmp('ck').getValue()),
+    //     excelCS(Ext.getCmp('zyq').getValue()),
+    //     excelCS(Ext.getCmp('supply').getValue()),
+    //     excelCS(Ext.getCmp('wlms').getValue()),
+    //     excelCS(Ext.util.Format.date(Ext.getCmp('startTime')
+    //         .getValue(), 'Y-m-d')),
+    //     excelCS(Ext.util.Format.date(Ext.getCmp('endTime')
+    //         .getValue(), 'Y-m-d')),
+    //     excelCS(Ext.getCmp('cycletype').getValue())];
+    // var proName = 'pro_run7130_selectbjtime';
+    // var ExcelName = '备件寿命统计';
+    // var cursorName = 'OUT_RESULT';
+    // var returnStr = [ 'null' ];
+    // var returnStrName = [ 'null' ];
+    // var returnStrType = [ 'null' ];
+    //
+    //
+    // submitData("ModelExcelTotal", tableName, tableKey, parName, parType,
+    //     parVal, proName, returnStr, returnStrType, returnStrName,
+    //     cursorName, "title", "备件寿命统计");
+}
+function excelCS(str) {
+    if(str==undefined) return 'null';
+    if(str==null) return 'null';
+    if(str=='') return 'null';
+    return str;
+}
+function loadgridStore(store){
+    // store.proxy.extraParams.parVal = [Ext.getCmp('ck').getValue(),
+    //     Ext.getCmp('zyq').getValue(),
+    //     Ext.getCmp('supply').getValue(),
+    //     Ext.getCmp('wlms').getValue(),
+    //     Ext.util.Format.date(Ext.getCmp('startTime')
+    //         .getValue(), 'Y-m-d'),
+    //     Ext.util.Format.date(Ext.getCmp('endTime')
+    //         .getValue(), 'Y-m-d'),
+    //     Ext.getCmp('cycletype').getValue()];
+
+    store.proxy.extraParams, {
+        V_PLANTCODE : Ext.getCmp('ck').getValue(),
+        V_DEPARTCODE :  Ext.getCmp('zyq').getValue(),
+        V_SUPPLY_CODE : Ext.getCmp('supply').getValue(),
+        V_MATERIALNAME : Ext.getCmp('wlms').getValue(),
+        //D_BEGIN_DATE : Ext.util.Format.date(Ext.getCmp('startTime').getValue(), 'Y-m-d'),
+        D_BEGIN_DATE : Ext.Date.format(Ext.getCmp('startTime').getValue(),'Y-m-d'),
+        // D_END_DATE :  Ext.util.Format.date(Ext.getCmp('endTime') .getValue(), 'Y-m-d'),
+        D_END_DATE : Ext.Date.format(Ext.getCmp('endTime').getValue(),'Y-m-d'),
+        V_CYCLE_ID : Ext.getCmp('cycletype').getValue()
+
+    }
 
 
-
+}
