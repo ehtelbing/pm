@@ -207,14 +207,14 @@ var pageFunction = {
         var endtime = '';
         for (var i = 0; i < ganttdata.length; i++) {
             if (i == 0) {
-                starttime = new Date(ganttdata[0].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
-                endtime = new Date(ganttdata[0].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
+                starttime =new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00");
+                endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59");
             } else {
-                if (new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/")) < starttime) {
-                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
+                if (new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00") < starttime) {
+                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(" ")[0]+" 00:00:00");
                 }
-                if (new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/")) > endtime) {
-                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
+                if (new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59")> endtime) {
+                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0]+" 23:59:59");
                 }
             }
         }
@@ -353,7 +353,7 @@ var pageFunction = {
         }
         if (today <= startd) {
             var vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
-            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40 + 40;
+            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40 ;
             var gtt = '<div style="left:' + vleft.toString() + 'px;height:27px;width:' + vwidth.toString() + 'px;background-color: #CC3333;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div  class="sch-event-inner">' + record.data.V_EQUNAME + '</div></div><div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + stime.split('.0')[0] + '<br>' + '结束时间：' + etime.split('.0')[0] + '<br>';
             var cont = record.data.V_COUNT.split(',');
             var contt = '内容：';
@@ -371,7 +371,7 @@ var pageFunction = {
             var nowtime2 = Ext.Date.format(new Date(), 'Y-m-d 00:00:00')
             var vleft = vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
             var vwidth1 = ((today.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
-            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40 + 40;
+            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40 ;
             var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
             if (Ext.Date.format(Ext.Date.getLastDateOfMonth(startd), 'Y-m-d') == Ext.Date.format(startd, 'Y-m-d')) {
                 vwidth = vwidth + 40;

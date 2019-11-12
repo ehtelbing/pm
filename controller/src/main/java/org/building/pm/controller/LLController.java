@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Blob;
@@ -884,4 +883,292 @@ public class LLController {
         test.put("success", true);
         return test;
     }
+
+    @RequestMapping(value = "/PRO_BASE_DEPT_TREE", method = RequestMethod.POST)
+    @ResponseBody
+    public List PRO_BASE_DEPT_TREE(@RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_BASE_DEPT_TREE(V_V_DEPTCODE);
+    }
+
+    @RequestMapping(value = "/PRO_GET_DEPTEQUTYPE_PER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_GET_DEPTEQUTYPE_PER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                       @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT) throws Exception {
+        return llService.PRO_GET_DEPTEQUTYPE_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT);
+    }
+
+    @RequestMapping(value = "/PRO_GET_DEPTEQU_PER", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_GET_DEPTEQU_PER(@RequestParam(value = "V_V_PERSONCODE") String V_V_PERSONCODE,
+                                   @RequestParam(value = "V_V_DEPTCODENEXT") String V_V_DEPTCODENEXT,
+                                   @RequestParam(value = "V_V_EQUTYPECODE") String V_V_EQUTYPECODE,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_GET_DEPTEQU_PER(V_V_PERSONCODE, V_V_DEPTCODENEXT, V_V_EQUTYPECODE);
+    }
+
+    @RequestMapping(value = "/PRO_BASE_DEPT_VIEW", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_BASE_DEPT_VIEW(@RequestParam(value = "IS_V_DEPTCODE") String IS_V_DEPTCODE,
+                                  @RequestParam(value = "IS_V_DEPTTYPE") String IS_V_DEPTTYPE,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response) throws Exception {
+        return llService.PRO_BASE_DEPT_VIEW(IS_V_DEPTCODE, IS_V_DEPTTYPE);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_ALL(@RequestParam(value = "A_EQU_ID") String A_EQU_ID,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_SITE_ALL(A_EQU_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_ADD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_ADD(@RequestParam(value = "A_SITE_DESC") String A_SITE_DESC,
+                                                @RequestParam(value = "A_EQUID") String A_EQUID,
+                                                @RequestParam(value = "A_REMARK") String A_REMARK,
+                                                @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                                @RequestParam(value = "A_MEND_DEPART") String A_MEND_DEPART,
+                                                @RequestParam(value = "A_MEND_USERNAME") String A_MEND_USERNAME,
+                                                @RequestParam(value = "A_MEND_USERNAMEID") String A_MEND_USERNAMEID,
+                                                @RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                @RequestParam(value = "a_bj_amount") String a_bj_amount,
+                                                HttpServletRequest request,
+                                                HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_SITE_ADD(A_SITE_DESC, A_EQUID, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_UPDATE(@RequestParam(value = "A_SITE_ID") String A_SITE_ID,
+                                                   @RequestParam(value = "A_SITE_DESC") String A_SITE_DESC,
+                                                   @RequestParam(value = "A_REMARK") String A_REMARK,
+                                                   @RequestParam(value = "A_USERNAME") String A_USERNAME,
+                                                   @RequestParam(value = "A_MEND_DEPART") String A_MEND_DEPART,
+                                                   @RequestParam(value = "A_MEND_USERNAME") String A_MEND_USERNAME,
+                                                   @RequestParam(value = "A_MEND_USERNAMEID") String A_MEND_USERNAMEID,
+                                                   @RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                   @RequestParam(value = "a_bj_amount") String a_bj_amount,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_SITE_UPDATE(A_SITE_ID, A_SITE_DESC, A_REMARK, A_USERNAME, A_MEND_DEPART, A_MEND_USERNAME, A_MEND_USERNAMEID, A_BJ_ID, a_bj_amount);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_SITE_DELETE(@RequestParam(value = "A_SITE_ID") String A_SITE_ID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_SITE_DELETE(A_SITE_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_EQU_VGURL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_EQU_VGURL(@RequestParam(value = "A_EQUID") String A_EQUID,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_EQU_VGURL(A_EQUID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_ALL(HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_CYCLE_ALL();
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_ADD", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_ADD(@RequestParam(value = "A_CYCLE_DESC") String A_CYCLE_DESC,
+                                                 @RequestParam(value = "A_CYCLE_UNIT") String A_CYCLE_UNIT,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_CYCLE_ADD(A_CYCLE_DESC, A_CYCLE_UNIT);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_UPDATE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_UPDATE(@RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                    @RequestParam(value = "A_CYCLE_DESC") String A_CYCLE_DESC,
+                                                    @RequestParam(value = "A_CYCLE_UNIT") String A_CYCLE_UNIT,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_CYCLE_UPDATE(A_CYCLE_ID, A_CYCLE_DESC, A_CYCLE_UNIT);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_DELETE(@RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_CYCLE_DELETE(A_CYCLE_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_CYCLE_ABLE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_CYCLE_ABLE(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_CYCLE_ABLE();
+    }
+
+    @RequestMapping(value = "/PRO_RUN_YEILD_SELECT_MANAGE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_YEILD_SELECT_MANAGE(@RequestParam(value = "A_EQUID") String A_EQUID,
+                                                           @RequestParam(value = "A_WORKDATE") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date A_WORKDATE,
+                                                           @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                           HttpServletRequest request,
+                                                           HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_YEILD_SELECT_MANAGE(A_EQUID, A_WORKDATE, A_CYCLE_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_YEILD_INPUT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_YEILD_INPUT(@RequestParam(value = "A_EQU_ID") String A_EQU_ID,
+                                                   @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                   @RequestParam(value = "A_WORKDATE") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date A_WORKDATE,
+                                                   @RequestParam(value = "A_INSERTVALUE") String A_INSERTVALUE,
+                                                   @RequestParam(value = "A_INSRTPERSON") String A_INSRTPERSON,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_YEILD_INPUT(A_EQU_ID, A_CYCLE_ID, A_WORKDATE, A_INSERTVALUE, A_INSRTPERSON);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_TEILD_DELETE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_TEILD_DELETE(@RequestParam(value = "A_ID") String A_ID,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_TEILD_DELETE(A_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_SITE_BJ_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN_SITE_BJ_ALL(@RequestParam(value = "IN_EQUID") String IN_EQUID,
+                                   @RequestParam(value = "IN_PLANT") String IN_PLANT,
+                                   @RequestParam(value = "IN_DEPART") String IN_DEPART,
+                                   @RequestParam(value = "IN_STATUS") String IN_STATUS,
+                                   @RequestParam(value = "IN_BJCODE") String IN_BJCODE,
+                                   @RequestParam(value = "IN_BJDESC") String IN_BJDESC,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_SITE_BJ_ALL(IN_EQUID, IN_PLANT, IN_DEPART, IN_STATUS, IN_BJCODE, IN_BJDESC);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_CURRENT_ALERT", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN_BJ_CURRENT_ALERT(@RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_CURRENT_ALERT(A_BJ_UNIQUE_CODE);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_CURRENT_ALERT_SET", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_BJ_CURRENT_ALERT_SET(@RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
+                                                            @RequestParam(value = "A_CYCLE_ID") String A_CYCLE_ID,
+                                                            @RequestParam(value = "A_ALERT_VALUE") String A_ALERT_VALUE,
+                                                            @RequestParam(value = "A_OFFSET") String A_OFFSET,
+                                                            HttpServletRequest request,
+                                                            HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_CURRENT_ALERT_SET(A_BJ_UNIQUE_CODE, A_CYCLE_ID, Double.valueOf(A_ALERT_VALUE.toString()), Double.valueOf(A_OFFSET.toString()));
+    }
+
+    @RequestMapping(value = "/PRO_RUN7110_SITESUPPLYLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7110_SITESUPPLYLIST(@RequestParam(value = "A_ID") String A_ID,
+                                                          @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                                          @RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7110_SITESUPPLYLIST(A_ID, A_MATERIALCODE, A_ORDERID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_MAT_ALL", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_BJ_MAT_ALL(@RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                  HttpServletRequest request,
+                                                  HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_MAT_ALL(A_BJ_ID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN_BJ_CHANGE", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN_BJ_CHANGE(@RequestParam(value = "A_BJ_UNIQUE_CODE") String A_BJ_UNIQUE_CODE,
+                                                 @RequestParam(value = "A_BJ_ID") String A_BJ_ID,
+                                                 @RequestParam(value = "A_MATERIALCODE") String A_MATERIALCODE,
+                                                 @RequestParam(value = "A_SITE_ID") String A_SITE_ID,
+                                                 @RequestParam(value = "A_EQUID") String A_EQUID,
+                                                 @RequestParam(value = "A_PERSON") String A_PERSON,
+                                                 @RequestParam(value = "A_ORDERID") String A_ORDERID,
+                                                 @RequestParam(value = "A_REMARK") String A_REMARK,
+                                                 @RequestParam(value = "A_CHANGEDATE") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date A_CHANGEDATE,
+                                                 @RequestParam(value = "A_PLANTCODE") String A_PLANTCODE,
+                                                 @RequestParam(value = "A_DEPARTCODE") String A_DEPARTCODE,
+                                                 @RequestParam(value = "A_SUPPLY_CODE") String A_SUPPLY_CODE,
+                                                 @RequestParam(value = "A_SUPPLY_NAME") String A_SUPPLY_NAME,
+                                                 HttpServletRequest request,
+                                                 HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN_BJ_CHANGE(A_BJ_UNIQUE_CODE, A_BJ_ID, A_MATERIALCODE, A_SITE_ID, A_EQUID, A_PERSON, A_ORDERID, A_REMARK, A_CHANGEDATE, A_PLANTCODE, A_DEPARTCODE, A_SUPPLY_CODE, A_SUPPLY_NAME);
+    }
+
+    @RequestMapping(value = "/PRO_RUN7111_TAGLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7111_TAGLIST(@RequestParam(value = "PID") String PID,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7111_TAGLIST(PID);
+    }
+
+    @RequestMapping(value = "/PRO_RUN7111_EQULIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7111_EQULIST(@RequestParam(value = "V_V_PLANTCODE") String V_V_PLANTCODE,
+                                                   @RequestParam(value = "V_V_DEPTCODE") String V_V_DEPTCODE,
+                                                   HttpServletRequest request,
+                                                   HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7111_EQULIST(V_V_PLANTCODE, V_V_DEPTCODE);
+    }
+
+    @RequestMapping(value = "/PRO_RUN7111_USEBJLIST", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> PRO_RUN7111_USEBJLIST(@RequestParam(value = "V_V_EQUCODE") String V_V_EQUCODE,
+                                                     HttpServletRequest request,
+                                                     HttpServletResponse response) throws Exception {
+        return llService.PRO_RUN7111_USEBJLIST(V_V_EQUCODE);
+    }
+
+    @RequestMapping(value = "/PRO_RUN7111_ADDLOG", method = RequestMethod.POST)
+    @ResponseBody
+    public Map PRO_RUN7111_ADDLOG(
+            @RequestParam(value = "v_v_bjcode") String v_v_bjcode,
+            @RequestParam(value = "v_v_checktime") @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date v_v_checktime,
+            @RequestParam(value = "v_v_checkcount") String v_v_checkcount,
+            @RequestParam(value = "upload") MultipartFile upload,
+            @RequestParam(value = "v_v_usercode") String v_v_usercode,
+            @RequestParam(value = "v_v_username") String v_v_username,
+            @RequestParam(value = "v_v_tagid") String v_v_tagid,
+            @RequestParam(value = "v_v_siteid") String v_v_siteid,
+            @RequestParam(value = "v_v_tagvalue") Double v_v_tagvalue,
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+
+        InputStream upload_InputStream = upload.getInputStream();// 获取上传二进制流
+        String filename = getFileName(upload.getOriginalFilename());
+
+        Map test = new HashMap();
+        List<Map> result = null;
+        result = llService.PRO_RUN7111_ADDLOG(v_v_bjcode, v_v_checktime, v_v_checkcount, upload_InputStream, filename, v_v_usercode, v_v_username, v_v_tagid, v_v_siteid,  v_v_tagvalue);
+        upload_InputStream.close();
+
+        test.put("list", result);
+        test.put("success", true);
+        return test;
+    }
+
+    public static String getFileName(String filePath) {
+        String filePaths[] = filePath.split("[\\\\|/]");
+        return filePaths[filePaths.length - 1];
+    }
+
 }

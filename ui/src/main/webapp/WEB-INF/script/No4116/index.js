@@ -767,14 +767,13 @@ function unMatExcelButton() {
         '&V_V_SHORT_TXT=' + Ext.getCmp("selshortTxt").getValue() +
         '&V_V_BJ_TXT=' + Ext.getCmp("selmatDesc").getValue() +
         '&V_V_ORDER_TYP=' + Ext.getCmp('tabpanel').getActiveTab().id
-    /*+'&V_V_PAGE='+ Ext.getCmp('page').store.currentPage+
-    '&V_V_PAGESIZE='+ Ext.getCmp('page').store.pageSize*/;
+/*+'&V_V_PAGE='+ Ext.getCmp('page').store.currentPage+
+'&V_V_PAGESIZE='+ Ext.getCmp('page').store.pageSize*/;
 }
 
 function addTab() {
     Ext.getCmp('tabpanel').removeAll();
     Ext.Ajax.request({
-        // url : AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_ADMIN',
         url: AppUrl + 'WorkOrder/PRO_PM_WORKTYPCOUNT_N',
         async: false,
         method: 'POST',
@@ -881,7 +880,6 @@ function OnButtonCreateBillClicked() {
 
 
     }
-
 
 }
 

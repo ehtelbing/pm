@@ -16,7 +16,7 @@ var years = [];
 var today = new Date(Ext.Date.format(new Date(), 'Y-m-d'));
 
 var Guid = "";
-var cGuid="";
+var cGuid = "";
 if (Ext.urlDecode(location.href.split('?')[1]) != null) {
     Guid = Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID == null ? "" : Ext.urlDecode(location.href.split('?')[1]).V_ORDERGUID;
     processKey = Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey == null ? "" : Ext.urlDecode(location.href.split('?')[1]).ProcessDefinitionKey;
@@ -244,12 +244,17 @@ Ext.onReady(function () {
             margin: '5 5 5 10',
             labelWidth: 60,
             labelAlign: 'right'
-        }, {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '上报', listeners: {click: OnBtnUp}}]
+        },
+            {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '上报', listeners: {click: OnBtnUp}},
+            {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '新增设备', listeners: {click: OnBtnAddEqu}},
+            {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '修改设备', listeners: {click: OnBtnSaveEqu}},
+            {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '删除设备', listeners: {click: OnBtnDelEquC}},
+            {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '关闭', listeners: {click: OnBtnClose}}]
     });
 
     var dpanel = Ext.create('Ext.panel.Panel', {
-        region: 'north',
-        width: '100%',
+        region: 'west',
+        width: '40%',
         layout: {
             type: 'table',
             columns: 2
@@ -313,7 +318,7 @@ Ext.onReady(function () {
             fieldLabel: '产线名称',
             displayField: 'V_CXNAME',
             valueField: 'V_CXCODE'
-        },{
+        }, {
             xtype: 'label',
             text: '-----------------------------产线设备信息----------------------------------',
             colspan: 2
@@ -360,54 +365,12 @@ Ext.onReady(function () {
             store: hourStore,
             queryMode: 'local'
         }, {
-            xtype: 'combo',
-            id: 'jhtjsjfz',
-            fieldLabel: '分钟',
-            editable: false,
-            value: '0',
-            displayField: 'displayField',
-            valueField: 'valueField',
-            store: minuteStore,
-            queryMode: 'local'
-        }, {
-            xtype: 'datefield',
-            id: 'jhjgsj',
-            fieldLabel: '计划竣工时间',
-            format: 'Y/m/d',
-            editable: false,
-            value: new Date()
-        }, {
-            xtype: 'combo',
-            id: 'jhjgsjxs',
-            fieldLabel: '小时',
-            editable: false,
-            value: '0',
-            displayField: 'displayField',
-            valueField: 'valueField',
-            store: hourStore,
-            queryMode: 'local'
-        }, {
-            xtype: 'combo',
-            id: 'jhjgsjfz',
-            fieldLabel: '分钟',
-            editable: false,
-            value: '0',
-            displayField: 'displayField',
-            valueField: 'valueField',
-            store: minuteStore,
-            queryMode: 'local'
-        }, {
             xtype: 'numberfield',
             id: 'jhgq',
             value: 0,
             fieldLabel: '计划工期（小时）',
+            minValue:0,
             allowBlank: false
-        }, {
-            xtype: 'panel', frame: true, baseCls: 'my-panel-no-border', layout: 'column', width: '100%',
-            items: [{xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '新增设备', listeners: {click:OnBtnAddEqu }},
-                {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '修改设备', listeners: {click: OnBtnSaveEqu}},
-                {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '删除设备', listeners: {click: OnBtnDelEquC}},
-                {xtype: 'button', style: 'margin:5px 0px 5px 5px', text: '关闭', listeners: {click: OnBtnClose}}]
         }]
     });
 
@@ -433,29 +396,29 @@ Ext.onReady(function () {
         listeners: {itemClick: OnBtnSelC}
     })
 
+    var rpanel = Ext.create('Ext.panel.Panel', {
+        id: 'rpanel',
+        region: 'south',
+        layout: 'border',
+        frame: true,
+        width: '100%',
+        height: '40%',
+        items: []
+    })
+
     var cpanel = Ext.create('Ext.panel.Panel', {
         region: 'center',
         layout: 'border',
         frame: true,
-        width: '50%',
+        width: '60%',
         autoScroll: true,
-        items: [dpanel, cgrid]
-    })
-
-    var rpanel = Ext.create('Ext.panel.Panel', {
-        id: 'rpanel',
-        region: 'east',
-        layout: 'border',
-        frame: true,
-        width: '50%',
-        height: '100%',
-        items: []
+        items: [cgrid, rpanel]
     })
 
     Ext.create('Ext.container.Viewport', {
         id: "id",
         layout: 'border',
-        items: [npanel, cpanel, rpanel]
+        items: [npanel, dpanel, cpanel]
     });
 
     Ext.data.StoreManager.lookup('ckStore').on('load', function () {
@@ -536,9 +499,9 @@ Ext.onReady(function () {
         });
     })
 
-    Ext.data.StoreManager.lookup('gridStore').on('load',function(){
-        if( Ext.data.StoreManager.lookup('gridStore').data.items.length>0){
-            cGuid=Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
+    Ext.data.StoreManager.lookup('gridStore').on('load', function () {
+        if (Ext.data.StoreManager.lookup('gridStore').data.items.length > 0) {
+            cGuid = Ext.data.StoreManager.lookup('gridStore').data.items[0].data.V_GUID;
             QueryFirstData(cGuid);
         }
     })
@@ -581,15 +544,15 @@ function OnBtnAddEqu() {
             V_V_GUID: Guid,
             V_V_CGUID: '-1',
             V_V_YEAR: Ext.getCmp("year").getValue(),
-            V_V_YEARNAME:Ext.getCmp("yearName").getValue(),
+            V_V_YEARNAME: Ext.getCmp("yearName").getValue(),
             V_V_ORGCODE: Ext.getCmp("ck").getValue(),
             V_V_DEPTCODE: Ext.getCmp("zyq").getValue(),
             V_V_CXCODE: Ext.getCmp('cx').getValue(),
             V_V_EQUCODE: Ext.getCmp('equ').getValue(),
             V_V_ZYCODE: Ext.getCmp('zy').getValue(),
             V_V_JXNR: Ext.getCmp('jxnr').getValue(),
-            V_V_JHTJSJ: Ext.Date.format(Ext.getCmp('jhtjsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhtjsjxs').getValue() + ":" + Ext.getCmp('jhtjsjfz').getValue() + ":00",
-            V_V_JHJGSJ: Ext.Date.format(Ext.getCmp('jhjgsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhjgsjxs').getValue() + ":" + Ext.getCmp('jhjgsjfz').getValue() + ":00",
+            V_V_JHTJSJ: Ext.Date.format(Ext.getCmp('jhtjsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhtjsjxs').getValue() + ":00:00",
+            V_V_JHJGSJ: "",
             V_V_JHGQ: Ext.getCmp('jhgq').getValue(),
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_YEARCOUNT: Ext.getCmp("njhnr").getValue()
@@ -614,15 +577,15 @@ function OnBtnSaveEqu() {
             V_V_GUID: Guid,
             V_V_CGUID: cGuid,
             V_V_YEAR: Ext.getCmp("year").getValue(),
-            V_V_YEARNAME:Ext.getCmp("yearName").getValue(),
+            V_V_YEARNAME: Ext.getCmp("yearName").getValue(),
             V_V_ORGCODE: Ext.getCmp("ck").getValue(),
             V_V_DEPTCODE: Ext.getCmp("zyq").getValue(),
             V_V_CXCODE: Ext.getCmp('cx').getValue(),
             V_V_EQUCODE: Ext.getCmp('equ').getValue(),
             V_V_ZYCODE: Ext.getCmp('zy').getValue(),
             V_V_JXNR: Ext.getCmp('jxnr').getValue(),
-            V_V_JHTJSJ: Ext.Date.format(Ext.getCmp('jhtjsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhtjsjxs').getValue() + ":" + Ext.getCmp('jhtjsjfz').getValue() + ":00",
-            V_V_JHJGSJ: Ext.Date.format(Ext.getCmp('jhjgsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhjgsjxs').getValue() + ":" + Ext.getCmp('jhjgsjfz').getValue() + ":00",
+            V_V_JHTJSJ: Ext.Date.format(Ext.getCmp('jhtjsj').getValue(), 'Y-m-d') + " " + Ext.getCmp('jhtjsjxs').getValue() + ":00:00",
+            V_V_JHJGSJ: "",
             V_V_JHGQ: Ext.getCmp('jhgq').getValue(),
             V_V_PERCODE: Ext.util.Cookies.get('v_personcode'),
             V_V_YEARCOUNT: Ext.getCmp("njhnr").getValue()
@@ -689,14 +652,14 @@ var pageFunction = {
         var endtime = '';
         for (var i = 0; i < ganttdata.length; i++) {
             if (i == 0) {
-                starttime = new Date(ganttdata[0].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
-                endtime = new Date(ganttdata[0].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
+                starttime = new Date(ganttdata[i].V_JHTJSJ.split(" ")[0] + " 00:00:00");
+                endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0] + " 23:59:59");
             } else {
-                if (new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/")) < starttime) {
-                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(".0")[0].replace(/-/g, "/"));
+                if (new Date(ganttdata[i].V_JHTJSJ.split(" ")[0] + " 00:00:00") < starttime) {
+                    starttime = new Date(ganttdata[i].V_JHTJSJ.split(" ")[0] + " 00:00:00");
                 }
-                if (new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/")) > endtime) {
-                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(".0")[0].replace(/-/g, "/"));
+                if (new Date(ganttdata[i].V_JHJGSJ.split(" ")[0] + " 23:59:59") > endtime) {
+                    endtime = new Date(ganttdata[i].V_JHJGSJ.split(" ")[0] + " 23:59:59");
                 }
             }
         }
@@ -835,7 +798,7 @@ var pageFunction = {
         }
         if (today <= startd) {
             var vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
-            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40 + 40;
+            var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
             var gtt = '<div style="left:' + vleft.toString() + 'px;height:27px;width:' + vwidth.toString() + 'px;background-color: #CC3333;" class="sch-event" onmouseover="a1(\'' + record.data.V_GUID + '\')" onmouseout="a2(\'' + record.data.V_GUID + '\')"><div  class="sch-event-inner">' + record.data.V_EQUNAME + '</div></div><div class="lxm"  id="' + record.data.V_GUID + '" style="display:none; position:absolute; z-index:9999; border:1px solid #666;">开始时间：' + stime.split('.0')[0] + '<br>' + '结束时间：' + etime.split('.0')[0] + '<br>';
             var cont = record.data.V_COUNT.split(',');
             var contt = '内容：';
@@ -853,7 +816,7 @@ var pageFunction = {
             var nowtime2 = Ext.Date.format(new Date(), 'Y-m-d 00:00:00')
             var vleft = vleft = ((startd.getTime() - vStart.getTime()) / (86400 * 1000)) * 40;
             var vwidth1 = ((today.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
-            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40 + 40;
+            var vwidth2 = ((endd.getTime() - today.getTime()) / (86400 * 1000)) * 40;
             var vwidth = ((endd.getTime() - startd.getTime()) / (86400 * 1000)) * 40;
             if (Ext.Date.format(Ext.Date.getLastDateOfMonth(startd), 'Y-m-d') == Ext.Date.format(startd, 'Y-m-d')) {
                 vwidth = vwidth + 40;
@@ -1019,7 +982,7 @@ function OnBtnUp() {
 }
 
 function OnBtnSelC(s, record) {
-    cGuid=record.data.V_GUID;
+    cGuid = record.data.V_GUID;
     Ext.Ajax.request({
         url: AppUrl + 'PM_06/PRO_YEAR_PLAN_C_SEL',
         method: 'POST',
@@ -1043,20 +1006,10 @@ function OnBtnSelC(s, record) {
                     Ext.getCmp('jhtjsj').setValue(resp.list[0].V_JHTJSJ.split(" ")[0]);
                     if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
                         Ext.getCmp('jhtjsjxs').setValue("0");
-                        Ext.getCmp('jhtjsjfz').setValue("0");
                     } else {
                         Ext.getCmp('jhtjsjxs').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[0]);
-                        Ext.getCmp('jhtjsjfz').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[1]);
                     }
 
-                    Ext.getCmp('jhjgsj').setValue(resp.list[0].V_JHJGSJ.split(" ")[0]);
-                    if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
-                        Ext.getCmp('jhjgsjxs').setValue("0");
-                        Ext.getCmp('jhjgsjfz').setValue("0");
-                    } else {
-                        Ext.getCmp('jhjgsjxs').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[0]);
-                        Ext.getCmp('jhjgsjfz').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[1]);
-                    }
                     Ext.getCmp('jhgq').setValue(resp.list[0].V_JHGQ);
                 }
             }
@@ -1088,20 +1041,10 @@ function QueryFirstData(YearChildGuid) {
                     Ext.getCmp('jhtjsj').setValue(resp.list[0].V_JHTJSJ.split(" ")[0]);
                     if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
                         Ext.getCmp('jhtjsjxs').setValue("0");
-                        Ext.getCmp('jhtjsjfz').setValue("0");
                     } else {
                         Ext.getCmp('jhtjsjxs').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[0]);
-                        Ext.getCmp('jhtjsjfz').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[1]);
                     }
 
-                    Ext.getCmp('jhjgsj').setValue(resp.list[0].V_JHJGSJ.split(" ")[0]);
-                    if (resp.list[0].V_JHTJSJ.split(" ").length == 1) {
-                        Ext.getCmp('jhjgsjxs').setValue("0");
-                        Ext.getCmp('jhjgsjfz').setValue("0");
-                    } else {
-                        Ext.getCmp('jhjgsjxs').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[0]);
-                        Ext.getCmp('jhjgsjfz').setValue(resp.list[0].V_JHTJSJ.split(" ")[1].split(":")[1]);
-                    }
                     Ext.getCmp('jhgq').setValue(resp.list[0].V_JHGQ);
                 }
             }

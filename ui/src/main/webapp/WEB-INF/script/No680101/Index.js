@@ -461,7 +461,7 @@ function zhuce() {
             },
             success: function (response) {
                 var data = Ext.decode(response.responseText);
-                if (data.V_INFO == 'Success') {
+                if (data.V_INFO == 'SUCCESS') {
                     Ext.Msg.alert('操作信息', '操作成功');
                     getXgbm();
                     Ext.getCmp('xxnr').setValue('');

@@ -127,7 +127,7 @@ var gridStore = Ext.create("Ext.data.Store", {
     autoLoad: false,
     storeId: 'gridStore',
     pageSize: 15,
-    fields: ['D_DATE', 'I_ID', 'V_CLASS', 'V_CLASSTYPE', 'V_DEPT', 'V_INFORMATION', 'V_PERSONNAME', 'V_TYPE','STATE','DEFCODE'],
+    fields: ['D_DATE', 'I_ID', 'MTYPE', 'V_CLASSTYPE', 'V_DEPT', 'V_EQUIP', 'V_INFORMATION', 'V_PERSON','V_STATE','V_TYPE','YS'],
     proxy: {
         type: 'ajax',
         async: false,
@@ -343,7 +343,9 @@ var Layout = {
                         }
                     }
                     if (ID_list.length > 0) {
-                        window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue() + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue()+ " " + Ext.getCmp('sHour').getValue() + ":" + Ext.getCmp('sMinute').getValue() + ":00" + "&endtime=" + Ext.getCmp('endtime').getRawValue()+ " " + Ext.getCmp('eHour').getValue() + ":" + Ext.getCmp('eMinute').getValue() + ":00", ID_list, "dialogHeight:700px;dialogWidth:1100px");
+                        window.open(AppUrl + "page/No680109/printNew2.html?bmmc=" + Ext.getCmp('bmmc').getRawValue() + "&lx=" + Ext.getCmp('lx').getRawValue()
+                            + "&bb=" + Ext.getCmp('bb').getRawValue() + "&begintime=" + Ext.getCmp('begintime').getRawValue()+ " " + Ext.getCmp('sHour').getValue() + ":" + Ext.getCmp('sMinute').getValue() + ":00"
+                            + "&endtime=" + Ext.getCmp('endtime').getRawValue()+ " " + Ext.getCmp('eHour').getValue() + ":" + Ext.getCmp('eMinute').getValue() + ":00", ID_list, "dialogHeight:700px;dialogWidth:1100px");
                     } else {
                         Ext.MessageBox.show({
                             title: '提示',
@@ -396,9 +398,13 @@ var Layout = {
             text: '上报人',
             dataIndex: 'V_PERSON',
             width: 70,
-            renderer: renderBgColor,
-            hidden: true
+            renderer: renderBgColor
         }, {
+            text: '作业区',
+            dataIndex: 'V_DEPT',
+            width: 120,
+            renderer: renderBgColor
+        },{
             text: '状态',
             dataIndex: 'V_STATE',
             align: 'center',
@@ -591,7 +597,11 @@ function renderDate(value, metaData) {
 }
 
 function OnButtonExcelClicked() {
-    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode')) + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue()) + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bb').getValue()) + '&V_D_FROMDATE=' + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d')) + '&V_D_TODATE=' + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d'));
+    document.location.href = AppUrl + 'Wsy/PRO_PP_INFORMATION_WITHD_LIST2_EXCEL?V_V_PERSONCODE=' + encodeURI(Ext.util.Cookies.get('v_personcode'))
+        + '&V_V_DEPT=' + encodeURI(Ext.getCmp('bmmc').getValue()) + '&V_V_TYPE=' + encodeURI(Ext.getCmp('lx').getValue())
+        + '&V_V_CLASSTYPE=' + encodeURI(Ext.getCmp('bb').getValue()) + '&V_D_FROMDATE='
+        + encodeURI(Ext.Date.format(Ext.getCmp('begintime').getValue(), 'Y-m-d') + " " + Ext.getCmp('sHour').getValue() + ":" + Ext.getCmp('sMinute').getValue() + ":00") + '&V_D_TODATE='
+        + encodeURI(Ext.Date.format(Ext.getCmp('endtime').getValue(), 'Y-m-d') + " " + Ext.getCmp('eHour').getValue() + ":" + Ext.getCmp('eMinute').getValue());
 }
 
 Ext.onReady(onPageLoaded);

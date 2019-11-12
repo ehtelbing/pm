@@ -60,12 +60,16 @@ function createPage(printStoreTemp) {
     result.push('  <TR>\n');
     result.push('    <TD width="10%">\n');
     result.push('      <DIV align=center><b>ID</b></DIV></TD>\n');
-    result.push('    <TD width="15%">\n');
+    result.push('    <TD width="10%">\n');
     result.push('      <DIV align=center><b>日期时间</b></DIV></TD>\n');
-    result.push('    <TD width="15%">\n');
+    result.push('    <TD width="10%">\n');
     result.push('      <DIV align=center><b>设备名称</b></DIV></TD>\n');
-    result.push('    <TD width="30%">\n');
+    result.push('    <TD width="20%">\n');
     result.push('      <DIV align=center><b>内容</b></DIV></TD>\n');
+    result.push('    <TD width="10%">\n');
+    result.push('      <DIV align=center><b>上报人</b></DIV></TD>\n');
+    result.push('    <TD width="10%">\n');
+    result.push('      <DIV align=center><b>所属部门</b></DIV></TD>\n');
     result.push('    <TD width="10%">\n');
     result.push('      <DIV align=center><b>状态</b></DIV></TD>\n');
     result.push('    <TD width="10%">\n');
@@ -80,6 +84,8 @@ function createPage(printStoreTemp) {
         result.push('    <TD>' + printStoreTemp[i][0].D_DATE + '</TD>\n');
         result.push('    <TD>' + printStoreTemp[i][0].V_V_EQUNAME + '</TD>\n');
         result.push('    <TD>' + printStoreTemp[i][0].V_INFORMATION + '</TD>\n');
+        result.push('    <TD>' + printStoreTemp[i][0].V_PERSONNAME + '</TD>\n');
+        result.push('    <TD>' + printStoreTemp[i][0].V_DEPTNAME + '</TD>\n');
         result.push('    <TD>' + printStoreTemp[i][0].STATE + '</TD>\n');
         result.push('    <TD>' + printStoreTemp[i][0].V_TYPENAME + '</TD>\n');
         result.push('    <TD>' + printStoreTemp[i][0].V_CLASSTYPE + '</TD>\n');
